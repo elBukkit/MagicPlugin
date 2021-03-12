@@ -10,7 +10,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -130,13 +129,11 @@ public class ModifyBlockAction extends BaseSpellAction {
             if (undoList != null) {
                 undoList.setConsumed(true);
             }
-            ItemStack requires = brush.getItemStack(1);
-            if (!mage.hasItem(requires, consumeVariants)) {
+            if (!mage.consumeBlock(brush, consumeVariants)) {
                 String requiresMessage = context.getMessage("insufficient_resources");
                 context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", brush.getName()));
                 return SpellResult.STOP;
             }
-            mage.removeItem(requires, consumeVariants);
         }
 
         if (!commit) {

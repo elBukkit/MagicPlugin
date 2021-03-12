@@ -2859,6 +2859,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public boolean consumeBlock(MaterialAndData block, boolean allowVariants) {
+        ItemStack requires = block.getItemStack(1);
+        if (!hasItem(requires, allowVariants)) {
+            Currency currency = controller.getBlockExchangeCurrency();
+            if (currency != null) {
+                double worth = controller.getBlockExchangeWorth(requires);
+                if (worth > 0 && currency.has(this, getActiveProperties(), worth)) {
+                    currency.deduct(this, getActiveProperties(), worth);
+                    return true;
+                }
+            }
+            return false;
+        }
+        removeItem(requires, allowVariants);
+        return true;
+    }
+
+    @Override
     public int getItemCount(ItemStack itemStack, boolean allowDamaged) {
         if (!isPlayer()) return 0;
         Integer sp = Wand.getSP(itemStack);

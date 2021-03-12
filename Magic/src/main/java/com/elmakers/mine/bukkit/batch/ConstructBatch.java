@@ -16,7 +16,6 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.Button;
 import org.bukkit.material.Lever;
 import org.bukkit.material.PistonBaseMaterial;
@@ -549,14 +548,12 @@ public class ConstructBatch extends BrushBatch {
 
         if (brush.isValid() && (isDifferent || commit)) {
             if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {
-                ItemStack requires = brush.getItemStack(1);
-                if (!mage.hasItem(requires, consumeVariants)) {
+                if (!mage.consumeBlock(brush, consumeVariants)) {
                     String requiresMessage = context.getMessage("insufficient_resources");
                     context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", brush.getName()));
                     finish();
                     return;
                 }
-                mage.removeItem(requires, consumeVariants);
             }
 
             if (!commit) {

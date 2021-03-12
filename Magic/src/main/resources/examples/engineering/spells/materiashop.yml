@@ -1,0 +1,7 @@
+materiashop:
+  inherit: buyshop
+  parameters:
+    items:
+      - item: materia:10
+      - item: materia:100
+      - item: materia:1000

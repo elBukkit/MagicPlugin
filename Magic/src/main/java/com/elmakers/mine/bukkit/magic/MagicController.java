@@ -2711,517 +2711,7 @@ public class MagicController implements MageController {
         return addExamples != null && addExamples.size() > 0;
     }
 
-    protected void loadProperties(CommandSender sender, ConfigurationSection properties)
-    {
-        if (properties == null) return;
-
-        // Delegate to resource pack handler
-        resourcePacks.load(properties, sender, !loaded);
-
-        logVerbosity = properties.getInt("log_verbosity", 0);
-        SkinUtils.DEBUG = logVerbosity >= 5;
-        LOG_WATCHDOG_TIMEOUT = properties.getInt("load_watchdog_timeout", 30000);
-        logger.setColorize(properties.getBoolean("colored_logs", true));
-
-        // Cancel any pending save tasks
-        if (autoSaveTaskId > 0) {
-            Bukkit.getScheduler().cancelTask(autoSaveTaskId);
-            autoSaveTaskId = 0;
-        }
-        if (configCheckTask != null) {
-            configCheckTask.cancel();
-            configCheckTask = null;
-        }
-        if (logNotifyTask != null) {
-            logNotifyTask.cancel();
-            logNotifyTask = null;
-        }
-
-        debugEffectLib = properties.getBoolean("debug_effects", false);
-        com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
-        boolean effectLibStackTraces = properties.getBoolean("debug_effects_stack_traces", false);
-        com.elmakers.mine.bukkit.effect.EffectPlayer.showStackTraces(effectLibStackTraces);
-        CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
-        com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
-
-        showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
-        showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
-        castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
-        activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
-        urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
-        legacyIconsEnabled = properties.getBoolean("legacy_icons_enabled", legacyIconsEnabled);
-        spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
-        autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
-        autoPathUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoPathUpgradesEnabled);
-        undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
-        workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
-        workFrequency = properties.getInt("work_frequency", workFrequency);
-        automataUpdateFrequency = properties.getInt("automata_update_frequency", automataUpdateFrequency);
-        mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
-        undoFrequency = properties.getInt("undo_frequency", undoFrequency);
-        pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
-        undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
-        commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
-        saveNonPlayerMages = properties.getBoolean("save_non_player_mages", saveNonPlayerMages);
-        defaultWandPath = properties.getString("default_wand_path", "");
-        Wand.DEFAULT_WAND_TEMPLATE = properties.getString("default_wand", "");
-        defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
-        defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
-        backupInventories = properties.getBoolean("backup_player_inventory", true);
-        Wand.brushSelectSpell = properties.getString("brush_select_spell", Wand.brushSelectSpell);
-        showMessages = properties.getBoolean("show_messages", showMessages);
-        showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
-        messageThrottle = properties.getInt("message_throttle", 0);
-        soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
-        fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
-        Wand.FILL_CREATOR = properties.getBoolean("fill_wand_creator", Wand.FILL_CREATOR);
-        Wand.CREATIVE_CHEST_MODE = properties.getBoolean("wand_creative_chest_switch", Wand.CREATIVE_CHEST_MODE);
-        maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
-        welcomeWand = properties.getString("welcome_wand", "");
-        maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
-        maxConstructionPowerMultiplier = (float)properties.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
-        maxRangePowerMultiplier = (float)properties.getDouble("max_power_range_multiplier", maxRangePowerMultiplier);
-        maxRangePowerMultiplierMax = (float)properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
-        maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
-        maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
-        materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
-        materialVariants = ConfigurationUtils.getList(properties, "material_variants");
-        blockItems = properties.getConfigurationSection("block_items");
-        currencyConfiguration = properties.getConfigurationSection("custom_currency");
-        loadBlockSkins(properties.getConfigurationSection("block_skins"));
-        loadMobSkins(properties.getConfigurationSection("mob_skins"));
-        loadMobEggs(properties.getConfigurationSection("mob_eggs"));
-        loadSkulls(properties.getConfigurationSection("skulls"));
-        loadOtherMaterials(properties);
-        WandCommandExecutor.CONSOLE_BYPASS_LOCKED = properties.getBoolean("console_bypass_locked_wands", true);
-
-        maxPower = (float)properties.getDouble("max_power", maxPower);
-        ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");
-        if (damageTypes != null) {
-            Set<String> typeKeys = damageTypes.getKeys(false);
-            for (String typeKey : typeKeys) {
-                ConfigurationSection damageType = damageTypes.getConfigurationSection(typeKey);
-                this.damageTypes.put(typeKey, new DamageType(damageType));
-            }
-        }
-        maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
-        maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
-        maxMana = properties.getInt("max_mana", maxMana);
-        maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
-        worthSkillPoints = properties.getDouble("worth_sp", 1);
-        skillPointIcon = properties.getString("sp_item_icon_url");
-        skillPointItemsEnabled = properties.getBoolean("sp_items_enabled", true);
-        worthBase = properties.getDouble("worth_base", 1);
-        worthXP = properties.getDouble("worth_xp", 1);
-        com.elmakers.mine.bukkit.item.ItemData.EARN_SCALE = properties.getDouble("default_earn_scale", 0.5);
-        ConfigurationSection currencies = properties.getConfigurationSection("currency");
-        if (currencies != null)
-        {
-            Collection<String> worthItemKeys = currencies.getKeys(false);
-            for (String worthItemKey : worthItemKeys) {
-                ConfigurationSection currencyConfig = currencies.getConfigurationSection(worthItemKey);
-                if (!currencyConfig.getBoolean("enabled", true)) continue;
-                MaterialAndData material = new MaterialAndData(worthItemKey);
-                ItemStack worthItemType = material.getItemStack(1);
-                double worthItemAmount = currencyConfig.getDouble("worth");
-                String worthItemName = currencyConfig.getString("name");
-                String worthItemNamePlural = currencyConfig.getString("name_plural");
-
-                currencyItem = new CurrencyItem(worthItemType, worthItemAmount, worthItemName, worthItemNamePlural);
-
-                // This is kind of a hack, but makes it easier to override the default ...
-                if (!worthItemKey.equals("emerald")) {
-                    break;
-                }
-            }
-        }
-        else
-        {
-            currencyItem = null;
-        }
-
-        SafetyUtils.MAX_VELOCITY = properties.getDouble("max_velocity", 10);
-        HitboxUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
-        HitboxUtils.setHitboxScaleY(properties.getDouble("hitbox_scale_y", 1.0));
-        HitboxUtils.setHitboxSneakScaleY(properties.getDouble("hitbox_sneaking_scale_y", 0.75));
-        if (properties.contains("hitboxes"))
-        {
-            HitboxUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));
-        }
-        if (properties.contains("head_sizes"))
-        {
-            HitboxUtils.configureHeadSizes(properties.getConfigurationSection("head_sizes"));
-        }
-        if (properties.contains("max_height"))
-        {
-            HitboxUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
-        }
-
-        // These were changed from set values to multipliers, we're going to translate for backwards compatibility.
-        // The default configs used to have these set to either 0 or 100, where 100 indicated that we should be
-        // turning off the costs/cooldowns.
-
-        if (properties.contains("cast_command_cost_reduction")) {
-            castCommandCostFree = (properties.getDouble("cast_command_cost_reduction") > 0);
-        } else {
-            castCommandCostFree = properties.getBoolean("cast_command_cost_free", castCommandCostFree);
-        }
-        if (properties.contains("cast_command_cooldown_reduction")) {
-            castCommandCooldownFree = (properties.getDouble("cast_command_cooldown_reduction") > 0);
-        } else {
-            castCommandCooldownFree =  properties.getBoolean("cast_command_cooldown_free", castCommandCooldownFree);
-        }
-        if (properties.contains("cast_console_cost_reduction")) {
-            castConsoleCostFree = (properties.getDouble("cast_console_cost_reduction") > 0);
-        } else {
-            castConsoleCostFree = properties.getBoolean("cast_console_cost_free", castConsoleCostFree);
-        }
-        if (properties.contains("cast_console_cooldown_reduction")) {
-            castConsoleCooldownFree = (properties.getDouble("cast_console_cooldown_reduction") > 0);
-        } else {
-            castConsoleCooldownFree = properties.getBoolean("cast_console_cooldown_free", castConsoleCooldownFree);
-        }
-
-        castConsoleFeedback = properties.getBoolean("cast_console_feedback", false);
-        editorURL = properties.getString("editor_url");
-
-        castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
-        castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
-
-        maps.setAnimationAllowed(properties.getBoolean("enable_map_animations", true));
-        costReduction = (float)properties.getDouble("cost_reduction", costReduction);
-        cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
-        autoUndo = properties.getInt("auto_undo", autoUndo);
-        spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
-        essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
-        logBlockEnabled = properties.getBoolean("logblock_enabled", logBlockEnabled);
-        citizensEnabled = properties.getBoolean("enable_citizens", citizensEnabled);
-        dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
-        dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
-        dynmapOnlyPlayerSpells = properties.getBoolean("dynmap_only_player_spells", dynmapOnlyPlayerSpells);
-        dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
-        protectLocked = properties.getBoolean("protect_locked", protectLocked);
-        bindOnGive = properties.getBoolean("bind_on_give", bindOnGive);
-        bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
-        bypassBreakPermissions = properties.getBoolean("bypass_break", bypassBreakPermissions);
-        bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
-        bypassFriendlyFire = properties.getBoolean("bypass_friendly_fire", bypassFriendlyFire);
-        useScoreboardTeams = properties.getBoolean("use_scoreboard_teams", useScoreboardTeams);
-        defaultFriendly = properties.getBoolean("default_friendly", defaultFriendly);
-        extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
-        createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
-        defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
-        skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
-        skillsSpell = properties.getString("mskills_spell", skillsSpell);
-        InventoryUtils.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", InventoryUtils.MAX_LORE_LENGTH);
-        libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
-        skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
-        useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);
-        placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
-        lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
-        skriptEnabled = properties.getBoolean("skript_enabled", skriptEnabled);
-        vaultEnabled = properties.getConfigurationSection("vault").getBoolean("enabled");
-        citadelConfiguration = properties.getConfigurationSection("citadel");
-        mobArenaConfiguration = properties.getConfigurationSection("mobarena");
-        residenceConfiguration = properties.getConfigurationSection("residence");
-        redProtectConfiguration = properties.getConfigurationSection("redprotect");
-        ajParkourConfiguration = properties.getConfigurationSection("ajparkour");
-        if (mobArenaManager != null) {
-            mobArenaManager.configure(mobArenaConfiguration);
-        }
-        String swingTypeString = properties.getString("left_click_type");
-        try {
-            swingType = SwingType.valueOf(swingTypeString.toUpperCase());
-        } catch (Exception ex) {
-            getLogger().warning("Invalid left_click_type: " + swingTypeString);
-        }
-
-        List<? extends Object> permissionTeams = properties.getList("permission_teams");
-        if (permissionTeams != null) {
-            this.permissionTeams = new ArrayList<>();
-            for (Object o : permissionTeams) {
-                if (o instanceof List) {
-                    @SuppressWarnings("unchecked")
-                    List<String> stringList = (List<String>)o;
-                    this.permissionTeams.add(stringList);
-                } else if (o instanceof String) {
-                    List<String> newList = new ArrayList<>();
-                    newList.add((String)o);
-                    this.permissionTeams.add(newList);
-                }
-            }
-        }
-
-        String defaultSpellIcon = properties.getString("default_spell_icon");
-        try {
-            BaseSpell.DEFAULT_SPELL_ICON = Material.valueOf(defaultSpellIcon.toUpperCase());
-        } catch (Exception ex) {
-            getLogger().warning("Invalid default_spell_icon: " + defaultSpellIcon);
-        }
-
-        skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
-        useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
-        useSkillAPIAllies = properties.getBoolean("use_skillapi_allies", useSkillAPIAllies);
-        useBattleArenaTeams = properties.getBoolean("use_battlearena_teams", useBattleArenaTeams);
-        useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
-        heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
-        skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
-
-        messagePrefix = properties.getString("message_prefix", messagePrefix);
-        castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
-        Messages.RANGE_FORMATTER = new DecimalFormat(properties.getString("range_formatter"));
-        Messages.MOMENT_SECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_seconds_formatter"));
-        Messages.MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_milliseconds_formatter"));
-        Messages.SECONDS_FORMATTER = new DecimalFormat(properties.getString("seconds_formatter"));
-        Messages.MINUTES_FORMATTER = new DecimalFormat(properties.getString("minutes_formatter"));
-        Messages.HOURS_FORMATTER = new DecimalFormat(properties.getString("hours_formatter"));
-
-        redstoneReplacement = ConfigurationUtils.getMaterialAndData(properties, "redstone_replacement", redstoneReplacement);
-
-        messagePrefix = ChatColor.translateAlternateColorCodes('&', messagePrefix);
-        castMessagePrefix = ChatColor.translateAlternateColorCodes('&', castMessagePrefix);
-
-        worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", worldGuardManager.isEnabled()));
-        factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
-        pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
-        multiverseManager.setEnabled(properties.getBoolean("multiverse_enabled", multiverseManager.isEnabled()));
-        preciousStonesManager.setEnabled(properties.getBoolean("precious_stones_enabled", preciousStonesManager.isEnabled()));
-        preciousStonesManager.setOverride(properties.getBoolean("precious_stones_override", true));
-        townyManager.setEnabled(properties.getBoolean("towny_enabled", townyManager.isEnabled()));
-        townyManager.setWildernessBypass(properties.getBoolean("towny_wilderness_bypass", true));
-        locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
-        griefPreventionManager.setEnabled(properties.getBoolean("grief_prevention_enabled", griefPreventionManager.isEnabled()));
-        ncpManager.setEnabled(properties.getBoolean("ncp_enabled", false));
-        useWildStacker = properties.getBoolean("wildstacker.enabled", true);
-        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CLASS = properties.getString("default_mage_class", "");
-
-        metricsLevel = properties.getInt("metrics_level", metricsLevel);
-
-        ConfigurationSection autoWandsConfig = properties.getConfigurationSection("auto_wands");
-        Set<String> autoWandsKeys = autoWandsConfig.getKeys(false);
-        autoWands.clear();
-        for (String autoWandKey : autoWandsKeys) {
-            try {
-                Material autoWandMaterial = Material.valueOf(autoWandKey.toUpperCase());
-                autoWands.put(autoWandMaterial, autoWandsConfig.getString(autoWandKey));
-            } catch (Exception ex) {
-                getLogger().warning("Invalid material in auto_wands config: " + autoWandKey);
-            }
-        }
-
-        ConfigurationSection builtinExampleConfigs = properties.getConfigurationSection("external_examples");
-        Set<String> exampleKeys = builtinExampleConfigs.getKeys(false);
-        builtinExternalExamples.clear();
-        for (String exampleKey : exampleKeys) {
-            builtinExternalExamples.put(exampleKey, builtinExampleConfigs.getString(exampleKey));
-        }
-
-        Wand.regenWhileInactive = properties.getBoolean("regenerate_while_inactive", Wand.regenWhileInactive);
-        if (properties.contains("mana_display")) {
-            String manaDisplay = properties.getString("mana_display");
-            if (manaDisplay.equalsIgnoreCase("bar") || manaDisplay.equalsIgnoreCase("hybrid")) {
-                Wand.manaMode = WandManaMode.BAR;
-            } else if (manaDisplay.equalsIgnoreCase("number")) {
-                Wand.manaMode = WandManaMode.NUMBER;
-            } else if (manaDisplay.equalsIgnoreCase("durability")) {
-                Wand.manaMode = WandManaMode.DURABILITY;
-            } else if (manaDisplay.equalsIgnoreCase("glow")) {
-                Wand.manaMode = WandManaMode.GLOW;
-            } else if (manaDisplay.equalsIgnoreCase("none")) {
-                Wand.manaMode = WandManaMode.NONE;
-            }
-        }
-        if (properties.contains("sp_display")) {
-            String spDisplay = properties.getString("sp_display");
-            if (spDisplay.equalsIgnoreCase("number")) {
-                Wand.currencyMode = WandManaMode.NUMBER;
-            } else {
-                Wand.currencyMode = WandManaMode.NONE;
-            }
-        }
-        spEnabled = properties.getBoolean("sp_enabled", true);
-        spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
-        spMaximum = properties.getInt("sp_max", 9999);
-
-        populateEntityTypes(undoEntityTypes, properties, "entity_undo_types");
-        populateEntityTypes(friendlyEntityTypes, properties, "friendly_entity_types");
-
-        ActionHandler.setRestrictedActions(properties.getStringList("restricted_spell_actions"));
-
-        String defaultLocationString = properties.getString("default_cast_location");
-        try {
-            com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION = CastSourceLocation.valueOf(defaultLocationString.toUpperCase());
-        } catch (Exception ex) {
-            com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION = CastSourceLocation.MAINHAND;
-            getLogger().warning("Invalid default_cast_location: " + defaultLocationString);
-        }
-        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.setZ(properties.getDouble("default_cast_location_offset", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.getZ()));
-        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.setY(properties.getDouble("default_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.getY()));
-        com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN = properties.getInt("offhand_cast_cooldown", com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN);
-        com.elmakers.mine.bukkit.magic.Mage.SNEAKING_CAST_OFFSET = properties.getDouble("sneaking_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.SNEAKING_CAST_OFFSET);
-
-        // Parse wand settings
-        Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);
-        Wand.SpellGlow = properties.getBoolean("spell_glow", Wand.SpellGlow);
-        Wand.LiveHotbarSkills = properties.getBoolean("live_hotbar_skills", Wand.LiveHotbarSkills);
-        Wand.LiveHotbar = properties.getBoolean("live_hotbar", Wand.LiveHotbar);
-        Wand.LiveHotbarCooldown = properties.getBoolean("live_hotbar_cooldown", Wand.LiveHotbarCooldown);
-        Wand.LiveHotbarMana = properties.getBoolean("live_hotbar_mana", Wand.LiveHotbarMana);
-        Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
-        Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
-        Wand.WAND_KEY = properties.getString("wand_key", "wand");
-        Wand.UPGRADE_KEY = properties.getString("wand_upgrade_key", "wand");
-        Wand.WAND_SELF_DESTRUCT_KEY = properties.getString("wand_self_destruct_key", "");
-        if (Wand.WAND_SELF_DESTRUCT_KEY.isEmpty()) {
-            Wand.WAND_SELF_DESTRUCT_KEY = null;
-        }
-        Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", Wand.HIDE_FLAGS);
-        Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
-        Wand.Unstashable = properties.getBoolean("wand_undroppable", properties.getBoolean("wand_unstashable", Wand.Unstashable));
-
-        MaterialBrush.CopyMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "copy_item", legacyIconsEnabled, MaterialBrush.CopyMaterial);
-        MaterialBrush.EraseMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "erase_item", legacyIconsEnabled, MaterialBrush.EraseMaterial);
-        MaterialBrush.CloneMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "clone_item", legacyIconsEnabled, MaterialBrush.CloneMaterial);
-        MaterialBrush.ReplicateMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "replicate_item", legacyIconsEnabled, MaterialBrush.ReplicateMaterial);
-        MaterialBrush.SchematicMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "schematic_item", legacyIconsEnabled, MaterialBrush.SchematicMaterial);
-        MaterialBrush.MapMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "map_item", legacyIconsEnabled, MaterialBrush.MapMaterial);
-        MaterialBrush.DefaultBrushMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "default_brush_item", legacyIconsEnabled, MaterialBrush.DefaultBrushMaterial);
-        MaterialBrush.configureReplacements(properties.getConfigurationSection("brush_replacements"));
-
-        MaterialBrush.CopyCustomIcon = properties.getString("copy_icon_url", MaterialBrush.CopyCustomIcon);
-        MaterialBrush.EraseCustomIcon = properties.getString("erase_icon_url", MaterialBrush.EraseCustomIcon);
-        MaterialBrush.CloneCustomIcon = properties.getString("clone_icon_url", MaterialBrush.CloneCustomIcon);
-        MaterialBrush.ReplicateCustomIcon = properties.getString("replicate_icon_url", MaterialBrush.ReplicateCustomIcon);
-        MaterialBrush.SchematicCustomIcon = properties.getString("schematic_icon_url", MaterialBrush.SchematicCustomIcon);
-        MaterialBrush.MapCustomIcon = properties.getString("map_icon_url", MaterialBrush.MapCustomIcon);
-        MaterialBrush.DefaultBrushCustomIcon = properties.getString("default_brush_icon_url", MaterialBrush.DefaultBrushCustomIcon);
-
-        BaseSpell.DEFAULT_DISABLED_ICON_URL = properties.getString("disabled_icon_url", BaseSpell.DEFAULT_DISABLED_ICON_URL);
-
-        Wand.DEFAULT_CAST_OFFSET.setZ(properties.getDouble("wand_location_offset", Wand.DEFAULT_CAST_OFFSET.getZ()));
-        Wand.DEFAULT_CAST_OFFSET.setY(properties.getDouble("wand_location_offset_vertical", Wand.DEFAULT_CAST_OFFSET.getY()));
-        com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);
-        com.elmakers.mine.bukkit.magic.Mage.CHANGE_WORLD_EQUIP_COOLDOWN = properties.getInt("change_world_equip_cooldown", 0);
-        com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = properties.getBoolean("close_wand_on_world_change", false);
-        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_SP = properties.getInt("sp_default", 0);
-
-        Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
-        Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
-        Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
-        Wand.noActionSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_no_action_sound"));
-        Wand.itemPickupSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_pickup_item_sound"));
-
-        // Configure sub-controllers
-        explosionController.loadProperties(properties);
-        inventoryController.loadProperties(properties);
-        entityController.loadProperties(properties);
-        playerController.loadProperties(properties);
-        blockController.loadProperties(properties);
-
-        // Set up other systems
-        com.elmakers.mine.bukkit.effect.EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
-
-        // Set up auto-save timer
-        int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;
-        if (autoSaveIntervalTicks > 1) {
-            final AutoSaveTask autoSave = new AutoSaveTask(this);
-            autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoSave,
-                    autoSaveIntervalTicks, autoSaveIntervalTicks);
-        }
-
-        savePlayerData = properties.getBoolean("save_player_data", true);
-        externalPlayerData = properties.getBoolean("external_player_data", false);
-        if (externalPlayerData) {
-            getLogger().info("Magic is expecting player data to be loaded from an external source");
-        } else if (!savePlayerData) {
-            getLogger().info("Magic player data saving is disabled");
-        }
-        asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
-        isFileLockingEnabled = properties.getBoolean("use_file_locking", false);
-        fileLoadDelay = properties.getInt("file_load_delay", 0);
-        despawnMagicMobs = properties.getBoolean("despawn_magic_mobs", false);
-        MobController.REMOVE_INVULNERABLE = properties.getBoolean("remove_invulnerable_mobs", false);
-        com.elmakers.mine.bukkit.effect.EffectPlayer.ENABLE_VANILLA_SOUNDS = properties.getBoolean("enable_vanilla_sounds", true);
-
-        if (mageDataStore != null) {
-            mageDataStore.close();
-        }
-
-        ConfigurationSection mageDataStoreConfiguration = properties.getConfigurationSection("player_data_store");
-        if (mageDataStoreConfiguration != null) {
-            mageDataStore = loadMageDataStore(mageDataStoreConfiguration);
-            if (mageDataStore == null) {
-                getLogger().log(Level.WARNING, "Failed to load player_data_store configuration, player data saving disabled!");
-            }
-        } else {
-            getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
-            mageDataStore = null;
-        }
-
-        ConfigurationSection migrateDataStoreConfiguration = properties.getConfigurationSection("migrate_data_store");
-        if (migrateDataStoreConfiguration != null) {
-            migrateDataStore = loadMageDataStore(migrateDataStoreConfiguration);
-            if (migrateDataStore == null) {
-                getLogger().log(Level.WARNING, "Failed to load migrate_data_store configuration, migration will not work");
-            }
-        } else {
-            migrateDataStore = null;
-        }
-
-        if (migrateDataStore != null) {
-            migrateDataStore.close();
-        }
-
-        // Semi-deprecated Wand defaults
-        Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
-        Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
-
-        // Load sub-controllers
-        enchanting.setEnabled(properties.getBoolean("enable_enchanting", enchanting.isEnabled()));
-        if (enchanting.isEnabled()) {
-            log("Wand enchanting is enabled");
-        }
-        crafting.loadMainConfiguration(properties);
-        if (crafting.isEnabled()) {
-            log("Wand crafting is enabled");
-        }
-        anvil.load(properties);
-        if (anvil.isCombiningEnabled()) {
-            log("Wand anvil combining is enabled");
-        }
-        if (anvil.isOrganizingEnabled()) {
-            log("Wand anvil organizing is enabled");
-        }
-        if (isUrlIconsEnabled()) {
-            log("Skin-based spell icons enabled");
-        } else {
-            log("Skin-based spell icons disabled");
-        }
-
-        // Set up sandbox config update timer
-        int configUpdateInterval = properties.getInt("config_update_interval");
-        if (configUpdateInterval > 0) {
-            log("Sandbox enabled, will check for updates from the web UI");
-            final ConfigCheckTask configCheck = new ConfigCheckTask(this);
-            configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
-                configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
-        }
-
-        // Set up log notify timer
-        logger.clearNotify();
-        int logNotifyInterval = properties.getInt("log_notify_interval");
-        if (logNotifyInterval > 0) {
-            final LogNotifyTask logNotify = new LogNotifyTask(this);
-            logNotifyTask = Bukkit.getScheduler().runTaskTimer(plugin, logNotify,
-                logNotifyInterval * 20 / 1000, logNotifyInterval * 20 / 1000);
-        }
-
-        // Configure world generation and spawn replacement
-        worldController.load(properties.getConfigurationSection("world_modification"));
-
-        // Link to generic protection plugins
-        protectionManager.initialize(plugin, ConfigurationUtils.getStringList(properties, "generic_protection"));
-    }
+    private String                              blockExchangeCurrency       = null;
 
     @Nullable
     private MageDataStore loadMageDataStore(ConfigurationSection configuration) {
@@ -7563,6 +7053,535 @@ public class MagicController implements MageController {
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
     }
+    private double                              blockExchangeWorth          = 1.0;
+
+    protected void loadProperties(CommandSender sender, ConfigurationSection properties)
+    {
+        if (properties == null) return;
+
+        // Delegate to resource pack handler
+        resourcePacks.load(properties, sender, !loaded);
+
+        logVerbosity = properties.getInt("log_verbosity", 0);
+        SkinUtils.DEBUG = logVerbosity >= 5;
+        LOG_WATCHDOG_TIMEOUT = properties.getInt("load_watchdog_timeout", 30000);
+        logger.setColorize(properties.getBoolean("colored_logs", true));
+
+        // Cancel any pending save tasks
+        if (autoSaveTaskId > 0) {
+            Bukkit.getScheduler().cancelTask(autoSaveTaskId);
+            autoSaveTaskId = 0;
+        }
+        if (configCheckTask != null) {
+            configCheckTask.cancel();
+            configCheckTask = null;
+        }
+        if (logNotifyTask != null) {
+            logNotifyTask.cancel();
+            logNotifyTask = null;
+        }
+
+        debugEffectLib = properties.getBoolean("debug_effects", false);
+        com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
+        boolean effectLibStackTraces = properties.getBoolean("debug_effects_stack_traces", false);
+        com.elmakers.mine.bukkit.effect.EffectPlayer.showStackTraces(effectLibStackTraces);
+        CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
+        com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
+
+        showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
+        showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
+        castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
+        activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
+        urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
+        legacyIconsEnabled = properties.getBoolean("legacy_icons_enabled", legacyIconsEnabled);
+        spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
+        autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
+        autoPathUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoPathUpgradesEnabled);
+        undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
+        workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
+        workFrequency = properties.getInt("work_frequency", workFrequency);
+        automataUpdateFrequency = properties.getInt("automata_update_frequency", automataUpdateFrequency);
+        mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
+        undoFrequency = properties.getInt("undo_frequency", undoFrequency);
+        pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
+        undoMaxPersistSize = properties.getInt("undo_max_persist_size", undoMaxPersistSize);
+        commitOnQuit = properties.getBoolean("commit_on_quit", commitOnQuit);
+        saveNonPlayerMages = properties.getBoolean("save_non_player_mages", saveNonPlayerMages);
+        defaultWandPath = properties.getString("default_wand_path", "");
+        Wand.DEFAULT_WAND_TEMPLATE = properties.getString("default_wand", "");
+        defaultWandMode = Wand.parseWandMode(properties.getString("default_wand_mode", ""), defaultWandMode);
+        defaultBrushMode = Wand.parseWandMode(properties.getString("default_brush_mode", ""), defaultBrushMode);
+        backupInventories = properties.getBoolean("backup_player_inventory", true);
+        Wand.brushSelectSpell = properties.getString("brush_select_spell", Wand.brushSelectSpell);
+        showMessages = properties.getBoolean("show_messages", showMessages);
+        showCastMessages = properties.getBoolean("show_cast_messages", showCastMessages);
+        messageThrottle = properties.getInt("message_throttle", 0);
+        soundsEnabled = properties.getBoolean("sounds", soundsEnabled);
+        fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
+        Wand.FILL_CREATOR = properties.getBoolean("fill_wand_creator", Wand.FILL_CREATOR);
+        Wand.CREATIVE_CHEST_MODE = properties.getBoolean("wand_creative_chest_switch", Wand.CREATIVE_CHEST_MODE);
+        maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
+        welcomeWand = properties.getString("welcome_wand", "");
+        maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
+        maxConstructionPowerMultiplier = (float)properties.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
+        maxRangePowerMultiplier = (float)properties.getDouble("max_power_range_multiplier", maxRangePowerMultiplier);
+        maxRangePowerMultiplierMax = (float)properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
+        maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
+        maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
+        materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
+        materialVariants = ConfigurationUtils.getList(properties, "material_variants");
+        blockItems = properties.getConfigurationSection("block_items");
+        currencyConfiguration = properties.getConfigurationSection("custom_currency");
+        loadBlockSkins(properties.getConfigurationSection("block_skins"));
+        loadMobSkins(properties.getConfigurationSection("mob_skins"));
+        loadMobEggs(properties.getConfigurationSection("mob_eggs"));
+        loadSkulls(properties.getConfigurationSection("skulls"));
+        loadOtherMaterials(properties);
+        WandCommandExecutor.CONSOLE_BYPASS_LOCKED = properties.getBoolean("console_bypass_locked_wands", true);
+
+        maxPower = (float)properties.getDouble("max_power", maxPower);
+        ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");
+        if (damageTypes != null) {
+            Set<String> typeKeys = damageTypes.getKeys(false);
+            for (String typeKey : typeKeys) {
+                ConfigurationSection damageType = damageTypes.getConfigurationSection(typeKey);
+                this.damageTypes.put(typeKey, new DamageType(damageType));
+            }
+        }
+        maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
+        maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
+        maxMana = properties.getInt("max_mana", maxMana);
+        maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
+        worthSkillPoints = properties.getDouble("worth_sp", 1);
+        skillPointIcon = properties.getString("sp_item_icon_url");
+        skillPointItemsEnabled = properties.getBoolean("sp_items_enabled", true);
+        worthBase = properties.getDouble("worth_base", 1);
+        worthXP = properties.getDouble("worth_xp", 1);
+        com.elmakers.mine.bukkit.item.ItemData.EARN_SCALE = properties.getDouble("default_earn_scale", 0.5);
+        ConfigurationSection currencies = properties.getConfigurationSection("currency");
+        if (currencies != null)
+        {
+            Collection<String> worthItemKeys = currencies.getKeys(false);
+            for (String worthItemKey : worthItemKeys) {
+                ConfigurationSection currencyConfig = currencies.getConfigurationSection(worthItemKey);
+                if (!currencyConfig.getBoolean("enabled", true)) continue;
+                MaterialAndData material = new MaterialAndData(worthItemKey);
+                ItemStack worthItemType = material.getItemStack(1);
+                double worthItemAmount = currencyConfig.getDouble("worth");
+                String worthItemName = currencyConfig.getString("name");
+                String worthItemNamePlural = currencyConfig.getString("name_plural");
+
+                currencyItem = new CurrencyItem(worthItemType, worthItemAmount, worthItemName, worthItemNamePlural);
+
+                // This is kind of a hack, but makes it easier to override the default ...
+                if (!worthItemKey.equals("emerald")) {
+                    break;
+                }
+            }
+        }
+        else
+        {
+            currencyItem = null;
+        }
+
+        SafetyUtils.MAX_VELOCITY = properties.getDouble("max_velocity", 10);
+        HitboxUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
+        HitboxUtils.setHitboxScaleY(properties.getDouble("hitbox_scale_y", 1.0));
+        HitboxUtils.setHitboxSneakScaleY(properties.getDouble("hitbox_sneaking_scale_y", 0.75));
+        if (properties.contains("hitboxes"))
+        {
+            HitboxUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));
+        }
+        if (properties.contains("head_sizes"))
+        {
+            HitboxUtils.configureHeadSizes(properties.getConfigurationSection("head_sizes"));
+        }
+        if (properties.contains("max_height"))
+        {
+            HitboxUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
+        }
+
+        // These were changed from set values to multipliers, we're going to translate for backwards compatibility.
+        // The default configs used to have these set to either 0 or 100, where 100 indicated that we should be
+        // turning off the costs/cooldowns.
+
+        if (properties.contains("cast_command_cost_reduction")) {
+            castCommandCostFree = (properties.getDouble("cast_command_cost_reduction") > 0);
+        } else {
+            castCommandCostFree = properties.getBoolean("cast_command_cost_free", castCommandCostFree);
+        }
+        if (properties.contains("cast_command_cooldown_reduction")) {
+            castCommandCooldownFree = (properties.getDouble("cast_command_cooldown_reduction") > 0);
+        } else {
+            castCommandCooldownFree =  properties.getBoolean("cast_command_cooldown_free", castCommandCooldownFree);
+        }
+        if (properties.contains("cast_console_cost_reduction")) {
+            castConsoleCostFree = (properties.getDouble("cast_console_cost_reduction") > 0);
+        } else {
+            castConsoleCostFree = properties.getBoolean("cast_console_cost_free", castConsoleCostFree);
+        }
+        if (properties.contains("cast_console_cooldown_reduction")) {
+            castConsoleCooldownFree = (properties.getDouble("cast_console_cooldown_reduction") > 0);
+        } else {
+            castConsoleCooldownFree = properties.getBoolean("cast_console_cooldown_free", castConsoleCooldownFree);
+        }
+
+        castConsoleFeedback = properties.getBoolean("cast_console_feedback", false);
+        editorURL = properties.getString("editor_url");
+
+        castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
+        castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
+
+        maps.setAnimationAllowed(properties.getBoolean("enable_map_animations", true));
+        costReduction = (float)properties.getDouble("cost_reduction", costReduction);
+        cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
+        autoUndo = properties.getInt("auto_undo", autoUndo);
+        spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
+        essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
+        logBlockEnabled = properties.getBoolean("logblock_enabled", logBlockEnabled);
+        citizensEnabled = properties.getBoolean("enable_citizens", citizensEnabled);
+        dynmapShowWands = properties.getBoolean("dynmap_show_wands", dynmapShowWands);
+        dynmapShowSpells = properties.getBoolean("dynmap_show_spells", dynmapShowSpells);
+        dynmapOnlyPlayerSpells = properties.getBoolean("dynmap_only_player_spells", dynmapOnlyPlayerSpells);
+        dynmapUpdate = properties.getBoolean("dynmap_update", dynmapUpdate);
+        protectLocked = properties.getBoolean("protect_locked", protectLocked);
+        bindOnGive = properties.getBoolean("bind_on_give", bindOnGive);
+        bypassBuildPermissions = properties.getBoolean("bypass_build", bypassBuildPermissions);
+        bypassBreakPermissions = properties.getBoolean("bypass_break", bypassBreakPermissions);
+        bypassPvpPermissions = properties.getBoolean("bypass_pvp", bypassPvpPermissions);
+        bypassFriendlyFire = properties.getBoolean("bypass_friendly_fire", bypassFriendlyFire);
+        useScoreboardTeams = properties.getBoolean("use_scoreboard_teams", useScoreboardTeams);
+        defaultFriendly = properties.getBoolean("default_friendly", defaultFriendly);
+        extraSchematicFilePath = properties.getString("schematic_files", extraSchematicFilePath);
+        createWorldsEnabled = properties.getBoolean("enable_world_creation", createWorldsEnabled);
+        defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
+        skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
+        skillsSpell = properties.getString("mskills_spell", skillsSpell);
+        InventoryUtils.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", InventoryUtils.MAX_LORE_LENGTH);
+        libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
+        skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
+        useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);
+        placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
+        lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
+        skriptEnabled = properties.getBoolean("skript_enabled", skriptEnabled);
+        vaultEnabled = properties.getConfigurationSection("vault").getBoolean("enabled");
+        citadelConfiguration = properties.getConfigurationSection("citadel");
+        mobArenaConfiguration = properties.getConfigurationSection("mobarena");
+        residenceConfiguration = properties.getConfigurationSection("residence");
+        redProtectConfiguration = properties.getConfigurationSection("redprotect");
+        ajParkourConfiguration = properties.getConfigurationSection("ajparkour");
+        if (mobArenaManager != null) {
+            mobArenaManager.configure(mobArenaConfiguration);
+        }
+        String swingTypeString = properties.getString("left_click_type");
+        try {
+            swingType = SwingType.valueOf(swingTypeString.toUpperCase());
+        } catch (Exception ex) {
+            getLogger().warning("Invalid left_click_type: " + swingTypeString);
+        }
+
+        List<? extends Object> permissionTeams = properties.getList("permission_teams");
+        if (permissionTeams != null) {
+            this.permissionTeams = new ArrayList<>();
+            for (Object o : permissionTeams) {
+                if (o instanceof List) {
+                    @SuppressWarnings("unchecked")
+                    List<String> stringList = (List<String>)o;
+                    this.permissionTeams.add(stringList);
+                } else if (o instanceof String) {
+                    List<String> newList = new ArrayList<>();
+                    newList.add((String)o);
+                    this.permissionTeams.add(newList);
+                }
+            }
+        }
+
+        String defaultSpellIcon = properties.getString("default_spell_icon");
+        try {
+            BaseSpell.DEFAULT_SPELL_ICON = Material.valueOf(defaultSpellIcon.toUpperCase());
+        } catch (Exception ex) {
+            getLogger().warning("Invalid default_spell_icon: " + defaultSpellIcon);
+        }
+
+        skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
+        useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
+        useSkillAPIAllies = properties.getBoolean("use_skillapi_allies", useSkillAPIAllies);
+        useBattleArenaTeams = properties.getBoolean("use_battlearena_teams", useBattleArenaTeams);
+        useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
+        heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
+        skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
+
+        messagePrefix = properties.getString("message_prefix", messagePrefix);
+        castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
+        Messages.RANGE_FORMATTER = new DecimalFormat(properties.getString("range_formatter"));
+        Messages.MOMENT_SECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_seconds_formatter"));
+        Messages.MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat(properties.getString("moment_milliseconds_formatter"));
+        Messages.SECONDS_FORMATTER = new DecimalFormat(properties.getString("seconds_formatter"));
+        Messages.MINUTES_FORMATTER = new DecimalFormat(properties.getString("minutes_formatter"));
+        Messages.HOURS_FORMATTER = new DecimalFormat(properties.getString("hours_formatter"));
+
+        redstoneReplacement = ConfigurationUtils.getMaterialAndData(properties, "redstone_replacement", redstoneReplacement);
+
+        messagePrefix = ChatColor.translateAlternateColorCodes('&', messagePrefix);
+        castMessagePrefix = ChatColor.translateAlternateColorCodes('&', castMessagePrefix);
+
+        worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", worldGuardManager.isEnabled()));
+        factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
+        pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
+        multiverseManager.setEnabled(properties.getBoolean("multiverse_enabled", multiverseManager.isEnabled()));
+        preciousStonesManager.setEnabled(properties.getBoolean("precious_stones_enabled", preciousStonesManager.isEnabled()));
+        preciousStonesManager.setOverride(properties.getBoolean("precious_stones_override", true));
+        townyManager.setEnabled(properties.getBoolean("towny_enabled", townyManager.isEnabled()));
+        townyManager.setWildernessBypass(properties.getBoolean("towny_wilderness_bypass", true));
+        locketteManager.setEnabled(properties.getBoolean("lockette_enabled", locketteManager.isEnabled()));
+        griefPreventionManager.setEnabled(properties.getBoolean("grief_prevention_enabled", griefPreventionManager.isEnabled()));
+        ncpManager.setEnabled(properties.getBoolean("ncp_enabled", false));
+        useWildStacker = properties.getBoolean("wildstacker.enabled", true);
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CLASS = properties.getString("default_mage_class", "");
+
+        metricsLevel = properties.getInt("metrics_level", metricsLevel);
+
+        ConfigurationSection autoWandsConfig = properties.getConfigurationSection("auto_wands");
+        Set<String> autoWandsKeys = autoWandsConfig.getKeys(false);
+        autoWands.clear();
+        for (String autoWandKey : autoWandsKeys) {
+            try {
+                Material autoWandMaterial = Material.valueOf(autoWandKey.toUpperCase());
+                autoWands.put(autoWandMaterial, autoWandsConfig.getString(autoWandKey));
+            } catch (Exception ex) {
+                getLogger().warning("Invalid material in auto_wands config: " + autoWandKey);
+            }
+        }
+
+        ConfigurationSection builtinExampleConfigs = properties.getConfigurationSection("external_examples");
+        Set<String> exampleKeys = builtinExampleConfigs.getKeys(false);
+        builtinExternalExamples.clear();
+        for (String exampleKey : exampleKeys) {
+            builtinExternalExamples.put(exampleKey, builtinExampleConfigs.getString(exampleKey));
+        }
+
+        Wand.regenWhileInactive = properties.getBoolean("regenerate_while_inactive", Wand.regenWhileInactive);
+        if (properties.contains("mana_display")) {
+            String manaDisplay = properties.getString("mana_display");
+            if (manaDisplay.equalsIgnoreCase("bar") || manaDisplay.equalsIgnoreCase("hybrid")) {
+                Wand.manaMode = WandManaMode.BAR;
+            } else if (manaDisplay.equalsIgnoreCase("number")) {
+                Wand.manaMode = WandManaMode.NUMBER;
+            } else if (manaDisplay.equalsIgnoreCase("durability")) {
+                Wand.manaMode = WandManaMode.DURABILITY;
+            } else if (manaDisplay.equalsIgnoreCase("glow")) {
+                Wand.manaMode = WandManaMode.GLOW;
+            } else if (manaDisplay.equalsIgnoreCase("none")) {
+                Wand.manaMode = WandManaMode.NONE;
+            }
+        }
+        if (properties.contains("sp_display")) {
+            String spDisplay = properties.getString("sp_display");
+            if (spDisplay.equalsIgnoreCase("number")) {
+                Wand.currencyMode = WandManaMode.NUMBER;
+            } else {
+                Wand.currencyMode = WandManaMode.NONE;
+            }
+        }
+        spEnabled = properties.getBoolean("sp_enabled", true);
+        spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
+        spMaximum = properties.getInt("sp_max", 9999);
+
+        populateEntityTypes(undoEntityTypes, properties, "entity_undo_types");
+        populateEntityTypes(friendlyEntityTypes, properties, "friendly_entity_types");
+
+        ActionHandler.setRestrictedActions(properties.getStringList("restricted_spell_actions"));
+
+        String defaultLocationString = properties.getString("default_cast_location");
+        try {
+            com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION = CastSourceLocation.valueOf(defaultLocationString.toUpperCase());
+        } catch (Exception ex) {
+            com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_LOCATION = CastSourceLocation.MAINHAND;
+            getLogger().warning("Invalid default_cast_location: " + defaultLocationString);
+        }
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.setZ(properties.getDouble("default_cast_location_offset", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.getZ()));
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.setY(properties.getDouble("default_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CAST_OFFSET.getY()));
+        com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN = properties.getInt("offhand_cast_cooldown", com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN);
+        com.elmakers.mine.bukkit.magic.Mage.SNEAKING_CAST_OFFSET = properties.getDouble("sneaking_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.SNEAKING_CAST_OFFSET);
+
+        // Parse wand settings
+        Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);
+        Wand.SpellGlow = properties.getBoolean("spell_glow", Wand.SpellGlow);
+        Wand.LiveHotbarSkills = properties.getBoolean("live_hotbar_skills", Wand.LiveHotbarSkills);
+        Wand.LiveHotbar = properties.getBoolean("live_hotbar", Wand.LiveHotbar);
+        Wand.LiveHotbarCooldown = properties.getBoolean("live_hotbar_cooldown", Wand.LiveHotbarCooldown);
+        Wand.LiveHotbarMana = properties.getBoolean("live_hotbar_mana", Wand.LiveHotbarMana);
+        Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
+        Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
+        Wand.WAND_KEY = properties.getString("wand_key", "wand");
+        Wand.UPGRADE_KEY = properties.getString("wand_upgrade_key", "wand");
+        Wand.WAND_SELF_DESTRUCT_KEY = properties.getString("wand_self_destruct_key", "");
+        if (Wand.WAND_SELF_DESTRUCT_KEY.isEmpty()) {
+            Wand.WAND_SELF_DESTRUCT_KEY = null;
+        }
+        Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", Wand.HIDE_FLAGS);
+        Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
+        Wand.Unstashable = properties.getBoolean("wand_undroppable", properties.getBoolean("wand_unstashable", Wand.Unstashable));
+
+        MaterialBrush.CopyMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "copy_item", legacyIconsEnabled, MaterialBrush.CopyMaterial);
+        MaterialBrush.EraseMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "erase_item", legacyIconsEnabled, MaterialBrush.EraseMaterial);
+        MaterialBrush.CloneMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "clone_item", legacyIconsEnabled, MaterialBrush.CloneMaterial);
+        MaterialBrush.ReplicateMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "replicate_item", legacyIconsEnabled, MaterialBrush.ReplicateMaterial);
+        MaterialBrush.SchematicMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "schematic_item", legacyIconsEnabled, MaterialBrush.SchematicMaterial);
+        MaterialBrush.MapMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "map_item", legacyIconsEnabled, MaterialBrush.MapMaterial);
+        MaterialBrush.DefaultBrushMaterial = ConfigurationUtils.getIconMaterialAndData(properties, "default_brush_item", legacyIconsEnabled, MaterialBrush.DefaultBrushMaterial);
+        MaterialBrush.configureReplacements(properties.getConfigurationSection("brush_replacements"));
+
+        MaterialBrush.CopyCustomIcon = properties.getString("copy_icon_url", MaterialBrush.CopyCustomIcon);
+        MaterialBrush.EraseCustomIcon = properties.getString("erase_icon_url", MaterialBrush.EraseCustomIcon);
+        MaterialBrush.CloneCustomIcon = properties.getString("clone_icon_url", MaterialBrush.CloneCustomIcon);
+        MaterialBrush.ReplicateCustomIcon = properties.getString("replicate_icon_url", MaterialBrush.ReplicateCustomIcon);
+        MaterialBrush.SchematicCustomIcon = properties.getString("schematic_icon_url", MaterialBrush.SchematicCustomIcon);
+        MaterialBrush.MapCustomIcon = properties.getString("map_icon_url", MaterialBrush.MapCustomIcon);
+        MaterialBrush.DefaultBrushCustomIcon = properties.getString("default_brush_icon_url", MaterialBrush.DefaultBrushCustomIcon);
+
+        BaseSpell.DEFAULT_DISABLED_ICON_URL = properties.getString("disabled_icon_url", BaseSpell.DEFAULT_DISABLED_ICON_URL);
+
+        Wand.DEFAULT_CAST_OFFSET.setZ(properties.getDouble("wand_location_offset", Wand.DEFAULT_CAST_OFFSET.getZ()));
+        Wand.DEFAULT_CAST_OFFSET.setY(properties.getDouble("wand_location_offset_vertical", Wand.DEFAULT_CAST_OFFSET.getY()));
+        com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);
+        com.elmakers.mine.bukkit.magic.Mage.CHANGE_WORLD_EQUIP_COOLDOWN = properties.getInt("change_world_equip_cooldown", 0);
+        com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = properties.getBoolean("close_wand_on_world_change", false);
+        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_SP = properties.getInt("sp_default", 0);
+
+        Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
+        Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
+        Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
+        Wand.noActionSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_no_action_sound"));
+        Wand.itemPickupSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_pickup_item_sound"));
+
+        // Configure sub-controllers
+        explosionController.loadProperties(properties);
+        inventoryController.loadProperties(properties);
+        entityController.loadProperties(properties);
+        playerController.loadProperties(properties);
+        blockController.loadProperties(properties);
+
+        // Set up other systems
+        com.elmakers.mine.bukkit.effect.EffectPlayer.SOUNDS_ENABLED = soundsEnabled;
+
+        // Set up auto-save timer
+        int autoSaveIntervalTicks = properties.getInt("auto_save", 0) * 20 / 1000;
+        if (autoSaveIntervalTicks > 1) {
+            final AutoSaveTask autoSave = new AutoSaveTask(this);
+            autoSaveTaskId = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, autoSave,
+                    autoSaveIntervalTicks, autoSaveIntervalTicks);
+        }
+
+        savePlayerData = properties.getBoolean("save_player_data", true);
+        externalPlayerData = properties.getBoolean("external_player_data", false);
+        if (externalPlayerData) {
+            getLogger().info("Magic is expecting player data to be loaded from an external source");
+        } else if (!savePlayerData) {
+            getLogger().info("Magic player data saving is disabled");
+        }
+        asynchronousSaving = properties.getBoolean("save_player_data_asynchronously", true);
+        isFileLockingEnabled = properties.getBoolean("use_file_locking", false);
+        fileLoadDelay = properties.getInt("file_load_delay", 0);
+        despawnMagicMobs = properties.getBoolean("despawn_magic_mobs", false);
+        MobController.REMOVE_INVULNERABLE = properties.getBoolean("remove_invulnerable_mobs", false);
+        com.elmakers.mine.bukkit.effect.EffectPlayer.ENABLE_VANILLA_SOUNDS = properties.getBoolean("enable_vanilla_sounds", true);
+
+        ConfigurationSection blockExchange = properties.getConfigurationSection("block_exchange");
+        if (blockExchange != null) {
+            if (blockExchange.getBoolean("enabled", true)) {
+                blockExchangeCurrency = blockExchange.getString("currency");
+                blockExchangeWorth = blockExchange.getDouble("worth");
+                if (blockExchangeCurrency != null && blockExchangeCurrency.isEmpty()) {
+                    blockExchangeCurrency = null;
+                }
+            } else {
+                blockExchangeCurrency = null;
+            }
+        } else {
+            blockExchangeCurrency = null;
+        }
+
+        // Set up mage data store
+        if (mageDataStore != null) {
+            mageDataStore.close();
+        }
+
+        ConfigurationSection mageDataStoreConfiguration = properties.getConfigurationSection("player_data_store");
+        if (mageDataStoreConfiguration != null) {
+            mageDataStore = loadMageDataStore(mageDataStoreConfiguration);
+            if (mageDataStore == null) {
+                getLogger().log(Level.WARNING, "Failed to load player_data_store configuration, player data saving disabled!");
+            }
+        } else {
+            getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
+            mageDataStore = null;
+        }
+
+        ConfigurationSection migrateDataStoreConfiguration = properties.getConfigurationSection("migrate_data_store");
+        if (migrateDataStoreConfiguration != null) {
+            migrateDataStore = loadMageDataStore(migrateDataStoreConfiguration);
+            if (migrateDataStore == null) {
+                getLogger().log(Level.WARNING, "Failed to load migrate_data_store configuration, migration will not work");
+            }
+        } else {
+            migrateDataStore = null;
+        }
+
+        if (migrateDataStore != null) {
+            migrateDataStore.close();
+        }
+
+        // Semi-deprecated Wand defaults
+        Wand.DefaultWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item", Wand.DefaultWandMaterial);
+        Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
+
+        // Load sub-controllers
+        enchanting.setEnabled(properties.getBoolean("enable_enchanting", enchanting.isEnabled()));
+        if (enchanting.isEnabled()) {
+            log("Wand enchanting is enabled");
+        }
+        crafting.loadMainConfiguration(properties);
+        if (crafting.isEnabled()) {
+            log("Wand crafting is enabled");
+        }
+        anvil.load(properties);
+        if (anvil.isCombiningEnabled()) {
+            log("Wand anvil combining is enabled");
+        }
+        if (anvil.isOrganizingEnabled()) {
+            log("Wand anvil organizing is enabled");
+        }
+        if (isUrlIconsEnabled()) {
+            log("Skin-based spell icons enabled");
+        } else {
+            log("Skin-based spell icons disabled");
+        }
+
+        // Set up sandbox config update timer
+        int configUpdateInterval = properties.getInt("config_update_interval");
+        if (configUpdateInterval > 0) {
+            log("Sandbox enabled, will check for updates from the web UI");
+            final ConfigCheckTask configCheck = new ConfigCheckTask(this);
+            configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
+                configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
+        }
+
+        // Set up log notify timer
+        logger.clearNotify();
+        int logNotifyInterval = properties.getInt("log_notify_interval");
+        if (logNotifyInterval > 0) {
+            final LogNotifyTask logNotify = new LogNotifyTask(this);
+            logNotifyTask = Bukkit.getScheduler().runTaskTimer(plugin, logNotify,
+                logNotifyInterval * 20 / 1000, logNotifyInterval * 20 / 1000);
+        }
+
+        // Configure world generation and spawn replacement
+        worldController.load(properties.getConfigurationSection("world_modification"));
+
+        // Link to generic protection plugins
+        protectionManager.initialize(plugin, ConfigurationUtils.getStringList(properties, "generic_protection"));
+    }
 
     /*
      * Private data
@@ -7929,8 +7948,16 @@ public class MagicController implements MageController {
     private Map<String, PlayerWarpManager>      playerWarpManagers          = new HashMap<>();
     private Map<Material, String>               autoWands                   = new HashMap<>();
     private Map<String, String>                 builtinExternalExamples     = new HashMap<>();
-    private int                                 updatingExternalExamples    = 0;
     private boolean                             showExampleInstructions     = false;
     private int                                 disableSpawnReplacement     = 0;
     private SwingType                           swingType                   = SwingType.ANIMATE_IF_ADVENTURE;
+
+    @Nullable
+    public Currency getBlockExchangeCurrency() {
+        return blockExchangeCurrency == null ? null : getCurrency(blockExchangeCurrency);
+    }
+
+    public double getBlockExchangeWorth(ItemStack itemStack) {
+        return blockExchangeWorth * getWorth(itemStack);
+    }
 }

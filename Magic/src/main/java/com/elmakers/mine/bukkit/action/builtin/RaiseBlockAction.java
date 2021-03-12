@@ -8,7 +8,6 @@ import java.util.List;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -114,13 +113,12 @@ public class RaiseBlockAction extends BaseSpellAction
             Material material = RandomUtils.getRandom(materials);
 
             if (consumeBlocks && !context.isConsumeFree()) {
-                ItemStack requires = new ItemStack(material);
-                if (!mage.hasItem(requires, consumeVariants)) {
+                MaterialAndData block = new MaterialAndData(material);
+                if (!mage.consumeBlock(block, consumeVariants)) {
                     String requiresMessage = context.getMessage("insufficient_resources");
-                    context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", MaterialAndData.getMaterialName(requires, context.getController().getMessages())));
+                    context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", block.getName(context.getController().getMessages())));
                     return SpellResult.STOP;
                 }
-                mage.removeItem(requires, consumeVariants);
             }
 
             targetBlock.setType(material);

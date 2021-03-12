@@ -300,3 +300,7 @@ spells:
         normal: "&fAll block types &awill be &breplaced by Architect spells"
     fling|5:
         upgrade_description: "Faster, Can now be used while gliding with an elytra"
+    materiashop:
+        name: Materia Shop
+        description: Exchange money for Spell Points
+        title: Materia

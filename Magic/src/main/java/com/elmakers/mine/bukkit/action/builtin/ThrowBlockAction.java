@@ -7,7 +7,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.BaseProjectileAction;
@@ -73,13 +72,11 @@ public class ThrowBlockAction extends BaseProjectileAction
             if (undoList != null) {
                 undoList.setConsumed(true);
             }
-            ItemStack requires = buildWith.getItemStack(1);
-            if (!mage.hasItem(requires, consumeVariants)) {
+            if (!mage.consumeBlock(buildWith, consumeVariants)) {
                 String requiresMessage = context.getMessage("insufficient_resources");
                 context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", buildWith.getName()));
                 return SpellResult.STOP;
             }
-            mage.removeItem(requires, consumeVariants);
         }
 
         Material material = buildWith.getMaterial();

@@ -1,32 +1,16 @@
 # TODO
 
-# Reported Bugs
-
-10.03 15:42:42 [Server] INFO Removed example extramobs
-10.03 15:42:42 [Server] WARN Error loading config.yml
-10.03 15:42:42 [Server] INFO java.lang.NullPointerException: null
-10.03 15:42:42 [Server] INFO at java.io.Reader.<init>(Reader.java:78) ~[?:1.8.0_211]
-10.03 15:42:42 [Server] INFO at java.io.InputStreamReader.<init>(InputStreamReader.java:97) ~[?:1.8.0_211]
-10.03 15:42:42 [Server] INFO at com.elmakers.mine.bukkit.utility.CompatibilityUtils.loadConfiguration(CompatibilityUtils.java:717) ~[?:?]
-
-# Path properties
-
- - might need to re-work wand inventories after all
-
 # Engineering Improvements
 
- - Support some special entries in wand spell list:
-   - none
-   - page
- - Make engineering/architect/conduit wands with categorized pages and hotbars
-   - No survival spells except levitate, blink and fling (anything else?)
-   - Adding/removing hotbars should not re-arrange spell inventory
-     - Convert wand inventory saving to separate list of hotbars and pages (?)
+ - Redo Wolf Staff
  - Equivalent exchange
    - enable_currency_exchange: true by default
    - return_currency, Undo action parameter, true by default but always false if enable_currency_exchange is false
    - Consume blocks first, then currency
    - Print message at end of spell showing how much money was consumed (and blocks?)
+   - Make materiashop work, allow using materia:500 .. maybe any currency
+   - Move materia worth to currency exchange
+   - Auto-value currency items in shops
  - Fill out worth values for all blocks (and items, for shops)
 
 # Player Shops
@@ -39,6 +23,7 @@
  - Need a way to add spells to a path
  - target_hit_timeout for CustomProjectile (Phantom)
  - Crown FX very laggy
+ - /mmap slice command for easily making multi-maps
 
 ## Older
 

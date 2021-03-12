@@ -79,3 +79,10 @@ currency:
 # Here you can define custom currencies
 # These can be named in the "currency" section of messages.yml, see the potter example configs for details.
 custom_currency: {}
+
+# This allows engineering spells to work with a custom currency instead
+# of requiring the blocks to build.
+# This only affects spells that use `consume: true`
+# See the engineering configs for an example of use.
+block_exchange:
+  enabled: false
