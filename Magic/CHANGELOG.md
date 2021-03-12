@@ -29,12 +29,15 @@
  - Added "pi" attribute constant
  - The SpawnEntity action can use $pn, $pd and other placeholders in the `name` parameter
 
+# 8.4.3
+
 # 8.4.2
 
  - Update/Fix Towny integration
  - Fix brushes being able to be dropped out of a wand inventory (dupe issue)
  - Fix another case of XP exploits using the grindstone
  - Fix headshots on drowned, pillagers, piglins and other new mobs
+ - Turn off Magic.notify permission by default. Sorry if it was annoying ;(
 
 # 8.4.1
 
