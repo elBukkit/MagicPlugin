@@ -94,6 +94,10 @@ if (count($relocate) > 0) {
 $toTextureFolder = $toFolder . '/assets/minecraft/textures/';
 $fromTextureFolder = $fromFolder . '/assets/minecraft/textures/';
 foreach ($relocate as $filename => $nothing) {
+    if ($filename.contains('_e.png')) {
+        echo "  Skipping $filename, appears to be an emissive texture\n";
+        continue;
+    }
     $fromFilename = $fromTextureFolder . $filename;
     $toFilename = $toTextureFolder . $filename;
     rename($fromFilename, $toFilename);
