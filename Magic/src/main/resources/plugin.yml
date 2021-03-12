@@ -1974,7 +1974,7 @@ permissions:
     default: true
     type: boolean
   Magic.spawners:
-    description: A player may place custom mob spawners without being op'd
+    description: A player may place custom mob spawners
     default: op
     type: boolean
   Magic.migrate:
@@ -1983,5 +1983,5 @@ permissions:
     type: boolean
   Magic.notify:
     description: A player will be notified of errors, warnings and other events
-    default: op
+    default: false
     type: boolean

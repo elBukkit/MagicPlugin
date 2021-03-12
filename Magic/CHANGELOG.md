@@ -20,6 +20,7 @@
  - Hotbar count and mana regeneration/max now follow path configs and can not be upgraded separately
    This can be changed back by editing paths to remove the `properties` sections and change the `base` class
    config back to route mana to `class`, ask for help if you need to revert this change.
+ - Turn off Magic.notify permission by default. Sorry if it was annoying ;()
 
 ## Additions
 
