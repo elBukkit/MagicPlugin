@@ -595,9 +595,15 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
                 return true;
             }
-            ConfigurationSection subSection = data.getConfigurationSection(args[0]);
+            String key = args[0];
+            ConfigurationSection subSection = data.getConfigurationSection(key);
             if (subSection == null) {
-                sender.sendMessage(ChatColor.RED + "Unknown subsection or spell: " + args[0]);
+                Object value = data.get(key);
+                if (value != null) {
+                    sender.sendMessage(ChatColor.AQUA + " " + key + ChatColor.DARK_AQUA + " (" + value + ")");
+                } else {
+                    sender.sendMessage(ChatColor.RED + "Unknown subsection or spell: " + args[0]);
+                }
                 return true;
             }
             data = subSection;
