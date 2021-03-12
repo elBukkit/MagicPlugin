@@ -98,6 +98,18 @@ public class InventoryController implements Listener {
             activeGUI.dragged(event);
             return;
         }
+        if (event.getInventory().getType().name().equals("GRINDSTONE")) {
+            ItemStack oldCursor = event.getOldCursor();
+            oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
+            if (Wand.isSpecial(oldCursor)) {
+                for (int slot : event.getInventorySlots()) {
+                    if (slot == 1 || slot == 0) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+        }
 
         Wand activeWand = mage.getActiveWand();
         boolean isSkillInventory = activeWand != null && activeWand.isInventoryOpen() && activeWand.getMode() == WandMode.SKILLS;
@@ -197,9 +209,10 @@ public class InventoryController implements Listener {
         Player player = (Player)event.getWhoClicked();
         final Mage mage = controller.getMage(player);
         InventoryType.SlotType slotType = event.getSlotType();
+        Integer slot = event.getSlot();
 
         if (mage.getDebugLevel() >= DEBUG_LEVEL) {
-            mage.sendDebugMessage("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + slotType + " in " + event.getInventory().getType() + " slots: " + event.getSlot() + ":" + event.getRawSlot());
+            mage.sendDebugMessage("CLICK: " + event.getAction() + ", " + event.getClick() + " on " + slotType + " in " + event.getInventory().getType() + " slots: " + slot + ":" + event.getRawSlot());
         }
 
         GUIAction gui = mage.getActiveGUI();
@@ -249,7 +262,7 @@ public class InventoryController implements Listener {
         boolean heldWand = Wand.isWand(heldItem);
 
         // Check for putting wands in a grindstone since they will re-apply their enchantments
-        if (inventoryType.name().equals("GRINDSTONE") && heldWand) {
+        if (inventoryType.name().equals("GRINDSTONE") && heldWand && (slot == 1 || slot == 0)) {
             event.setCancelled(true);
             return;
         }
@@ -267,7 +280,6 @@ public class InventoryController implements Listener {
             if (heldWand) {
                 Wand wand = controller.getWand(heldItem);
                 if (wand.hasWearable()) {
-                    int slot = event.getSlot();
                     if (wand.isWearableInSlot(slot)) {
                         ItemStack existing = player.getInventory().getItem(slot);
                         player.getInventory().setItem(slot, heldItem);
@@ -288,7 +300,6 @@ public class InventoryController implements Listener {
 
         boolean tryingToWear = action == InventoryAction.MOVE_TO_OTHER_INVENTORY && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING);
         if (clickedWand && tryingToWear) {
-            int slot = event.getSlot();
             Wand wand = null;
             if (slot == player.getInventory().getHeldItemSlot()) {
                 wand = mage.getActiveWand();
@@ -320,8 +331,8 @@ public class InventoryController implements Listener {
 
         if (isHotbar && slotType == InventoryType.SlotType.ARMOR)
         {
-            int slot = event.getHotbarButton();
-            ItemStack item =  mage.getPlayer().getInventory().getItem(slot);
+            int hotbarButton = event.getHotbarButton();
+            ItemStack item =  mage.getPlayer().getInventory().getItem(hotbarButton);
             if (item != null && Wand.isSpell(item))
             {
                 event.setCancelled(true);
@@ -495,7 +506,6 @@ public class InventoryController implements Listener {
 
                 // This is a hack to deal with spells on cooldown disappearing,
                 // Since the event handler doesn't match the zero-count itemstacks
-                Integer slot = event.getSlot();
                 int heldSlot = player.getInventory().getHeldItemSlot();
                 WandInventory hotbar = activeWand.getHotbar();
                 if (hotbar != null && slot >= 0 && slot <= hotbar.getSize() && slot != heldSlot && activeWand.getMode() == WandMode.INVENTORY)
