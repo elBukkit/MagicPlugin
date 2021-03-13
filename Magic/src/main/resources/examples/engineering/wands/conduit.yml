@@ -12,8 +12,8 @@ conduit:
     hotbar_count: 4
     spells:
         # Hotbar 1, engineering
-        - levitate|5
-        - fling|4
+        - levitate|6
+        - fling|5
         - blink|6
         - place
         - paint

@@ -1,19 +1,17 @@
 wolf:
   inherit: base_wand
+  mode: inventory
   path: staff
   icon: blaze_rod{CustomModelData:18007}
   legacy_icon: wand_icon:7
-  hotbar_count: 3
   protected: true
   powered: true
-  cost_reduction: 2.0
-  cooldown_reduction: 2.0
-  sp_multiplier: 0
+  cost_reduction: 2
+  cooldown_reduction: 2
   consume_reduction: 1
-  mode: inventory
+  sp_multiplier: 0
   effect_color: 0,aa0000000000,cc0000000000
-  effect_particle_radius: 0.2
-  effect_particle_offset: 0.3
+  effect_particle: ENCHANTMENT_TABLE
   overrides:
     - max_dimension 1024
     - floodfill.depth 256
@@ -21,167 +19,227 @@ wolf:
     - recall.warmup 0
     - phase.warmup 0
     - gather.warmup 0
-  effect_particle: ENCHANTMENT_TABLE
   potion_effects:
-    - SATURATION
-    - REGENERATION
+    - saturation
+    - regeneration
   active_brush: erase
-  active_spell: fling|4
+  active_spell: fling|5
+  hotbar_count: 5
   spells:
-    - debugger@7
-    - absorb|2@8
-    - alter@90
-    - animate@51
-    - arrowrain@72
-    - arrow|4@35
-    - backup@91
-    - blast|2@132
-    - blessing@115
-    - blink|6@1
-    - blob@57
-    - boom|2@37
-    - boon|2@135
-    - box@92
-    - bridge@29
-    - superbroom@23
-    - camera@133
-    - collapse@58
-    - commit@93
-    - convert@94
-    - counterspell@59
-    - curse@66
-    - day@3
-    - defender@52
-    - disarm@73
-    - disc@136
-    - disintegrate@31
-    - emp@81
-    - entangle@60
-    - familiar@85
-    - farm@86
-    - fill@10
-    - fireball@61
-    - fire|3@33
-    - flamethrower@62
-    - flare@114
-    - fling|4@2
-    - force@34
-    - gather@40
-    - ghast@38
-    - glider@56
-    - grenade|2@78
-    - testdummy@6
-    - heal
-    - hunter@53
-    - icbm@79
-    - iterate@95
-    - kill@36
-    - laser|3@80
-    - levitate|6@0
-    - life@82
-    - lightning|3@87
-    - damage
-    - missile|4@4
-    - mob@67
-    - monster@68
-    - mount@116
-    - neutron@69
-    - nuke@117
-    - paint@27
-    - petrify@39
-    - phase@118
-    - pickpocket@134
-    - pillar@96
-    - place@9
-    - portal@119
-    - pull@25
-    - push@24
-    - recall|5@22
-    - recurse@97
-    - repair@99
-    - rollback@15
-    - shell|4@63
-    - shrink@64
-    - simulate3@84
-    - simulate@83
-    - singularity@120
-    - stash@137
-    - stun@65
-    - superalter@32
-    - superblast@100
-    - superblob@11
-    - superbox@105
-    - supercollapse@106
-    - superconvert@12
-    - superdisc@107
-    - superdome@108
-    - superkill@5
-    - superpyramid@109
-    - superrepair@14
-    - superring@111
-    - supershell@13
-    - tag@70
-    - tendril@30
-    - supertorch@22
-    - torture@121
-    - toss@112
-    - tree@89
-    - virus@54
-    - volley@113
-    - wither@71
-    - wolfhouse@122
-    - worm@55
-    - wound@28
-    - toggleair@20
+    # Hotbar 1, main
+    - levitate|6
+    - fling|5
+    - blink|6
+    - superheal
+    - day
+    - superkill
+    - testdummy
+    - debugger
+
+    # Hotbar 2, engineering
+    - place
+    - paint
+    - bridge
+    - pillar
+    - alter
+    - commit
+    - rollback
+
+    # Hotbar 3, brushes
+    - toggleair
+    - newpage
+
+    # Hotbar 4, architect
+    - absorb
+    - fill
+    - superblob
+    - superconvert
+    - supershell
+    - superbox
+    - superdisc
+    - floodfill
+
+    # Hotbar 5, conduit
+    - backup
+    - repair
+    - superrepair
+    - superbackup
+    - paste
+    - portal
+    - night
+    - capture
+
+    # Page 1, Engineering
+    - convert
+    - recurse
+    - toss
+    - iterate
+    - tunnel
+    - supertorch
+    - raise
+    - flatten
+    - tree
+
+    # Page 1.5, Architect
+    - superdome
+    - supercube
+    - superring
+    - superpyramid
+    - superwalls
+    - supercylinder
+    - superalter
+    - superlaser
+    - volley
+    - light
+
+    - newpage
+
+    # Page 4, Conduit
+    - portal
+    - anvil
+    - forest
+    - weather
+    - wolfhouse
+    - workbench
+    - stash
+    - disposal
+    - pickpocket
+    - lockpick
+
   brushes:
-    - bedrock
-    - clone@19
-    - copy@17
-    - diamond_block
+    - erase@9
+    - copy@10
+    - clone@11
+    - replicate@12
+    - map@13
+    - map:128@14
+
+    - stone
     - dirt
-    - emerald_block
-    - erase@16
-    - glass
-    - sea_lantern
-    - glowstone
-    - gold_block
+    - sand
     - grass
+    - gravel
+    - glass
+    - glowstone
+    - sea_lantern
+    - shroomlight
+
+    - lava
+    - water
+    - soul_sand
+    - wood
+    - log
+    - vine
+    - mycel
+    - quartz_block
+    - leaves
     - ice
+    - packed_ice
+    - obsidian
+    - redstone_block
+    - bedrock
+    - diamond_block
+    - emerald_block
+    - gold_block
     - iron_block
     - lapis_block
-    - lava
-    - leaves
-    - log
-    - map:128
-    - map@21
-    - mycel
-    - obsidian
-    - packed_ice
-    - quartz_block
-    - quartz_block:1
-    - quartz_block:2
-    - redstone_block
-    - replicate@18
-    - schematic:beacon
-    - schematic:blacksmith
-    - schematic:church
-    - schematic:compact_house
-    - schematic:creeper_rug
-    - schematic:elder_tree
-    - schematic:flare_beacon
-    - schematic:garden_house
-    - schematic:lantern
-    - schematic:rainbow_blocks
-    - schematic:small_house
+
+    - black_wool
+    - blue_wool
+    - brown_wool
+    - cyan_wool
+    - gray_wool
+    - green_wool
+    - light_blue_wool
+    - light_gray_wool
+    - lime_wool
+    - magenta_wool
+    - orange_wool
+    - pink_wool
+    - purple_wool
+    - red_wool
+    - white_wool
+    - yellow_wool
+    - black_terracotta
+    - blue_terracotta
+    - brown_terracotta
+    - cyan_terracotta
+    - gray_terracotta
+    - green_terracotta
+    - light_blue_terracotta
+    - light_gray_terracotta
+    - lime_terracotta
+    - magenta_terracotta
+    - orange_terracotta
+    - pink_terracotta
+    - purple_terracotta
+    - red_terracotta
+    - white_terracotta
+    - yellow_terracotta
+    - black_stained_glass
+    - blue_stained_glass
+    - brown_stained_glass
+    - cyan_stained_glass
+    - gray_stained_glass
+    - green_stained_glass
+    - light_blue_stained_glass
+    - light_gray_stained_glass
+    - lime_stained_glass
+    - magenta_stained_glass
+    - orange_stained_glass
+    - pink_stained_glass
+    - purple_stained_glass
+    - red_stained_glass_pane
+    - white_stained_glass
+    - yellow_stained_glass
+    - black_stained_glass_pane:*
+    - blue_stained_glass_pane:*
+    - brown_stained_glass_pane:*
+    - cyan_stained_glass_pane:*
+    - gray_stained_glass_pane:*
+    - green_stained_glass_pane:*
+    - light_blue_stained_glass_pane:*
+    - light_gray_stained_glass_pane:*
+    - lime_stained_glass_pane:*
+    - magenta_stained_glass_pane:*
+    - orange_stained_glass_pane:*
+    - pink_stained_glass_pane:*
+    - purple_stained_glass_pane:*
+    - red_stained_glass_pane:*
+    - white_stained_glass_pane:*
+    - yellow_stained_glass_pane:*
+    - black_concrete
+    - blue_concrete
+    - brown_concrete
+    - cyan_concrete
+    - gray_concrete
+    - green_concrete
+    - light_blue_concrete
+    - light_gray_concrete
+    - lime_concrete
+    - magenta_concrete
+    - orange_concrete
+    - pink_concrete
+    - purple_concrete
+    - red_concrete
+    - white_concrete
+    - yellow_concrete
+
+    - schematic|rainbow_blocks
+    - schematic|creeper_rug
+    - schematic|rainbow_blocks
+    - schematic|lantern
+    - schematic|creeper_rug
+    - schematic|elder_tree
+    - schematic|church
+    - schematic|blacksmith
+    - schematic|garden_house
+    - schematic|compact_house
+    - schematic|small_house
+    - schematic|nathanwolf
+    - schematic|warped_house
     - schematic:stash_chest
-    - soul_sand
-    - stained_clay
-    - stained_glass
-    - stained_glass_pane
-    - stationary_lava
-    - stationary_water
-    - vine
-    - water
-    - wood
-    - wool
+    - schematic:beacon
+    - schematic:flare_beacon
+    - schematic:elder_tree
 

@@ -1,0 +1,76 @@
+superheal:
+  icon: milk_bucket{CustomModelData:18001}
+  icon_disabled: milk_bucket{CustomModelData:18002}
+  legacy_icon: spell_icon:44
+  legacy_icon_disabled: spell_icon_disabled:44
+  icon_url: http://textures.minecraft.net/texture/1364e3f9597a295108d202d20c2f02539d5ad8377fef53ef622603a7f45b52f
+  upgrade_required_path: student
+  upgrade_required_casts: 20
+  category: light
+  worth: 175
+  earns_sp: 20
+  quick_cast: true
+  actions:
+    cast:
+      - class: AreaOfEffect
+        actions:
+          - class: PotionEffect
+          - class: Feed
+          - class: Heal
+  effects:
+    cast:
+      - sound: entity_generic_drink
+        sound_pitch: 0.1
+        sound_volume: 0.4
+      - sound: block_beacon_activate
+        sound_pitch: 0.1
+        sound_volume: 1.4
+      - sound: entity_generic_drink
+        sound_pitch: 0.3
+        sound_volume: 0.2
+        location: targets
+        source_location: body
+        effectlib:
+          class: Warp
+          radius: 1
+          rings: 8
+          grow: 0.1
+          particle: end_rod
+      - class: EffectSingle
+        sound: magic.shimmer
+        source_location: body
+        location: source
+        effectlib:
+          class: Modified
+          iterations: 40
+          period: 2
+          parameters:
+            radius: "(t/i) * 5 + 0.5"
+            radius_nucleus: "(t/i) * 8 + 2"
+          effect:
+            class: AtomEffect
+            particle_nucleus: heart
+            particle_orbital: crit
+            particles_nucleus: 4
+            particles_orbital: 30
+  parameters:
+    target: self
+    bypass_mage_cooldown: true
+    target_type: LivingEntity
+    radius: 16
+    bypass_confusion: true
+    cooldown: 20000
+    bypass_pvp: true
+    bypass_friendly_fire: true
+    only_friendly: true
+    target_self: true
+    feed: 20
+    remove_effects:
+      - confusion
+      - weakness
+      - poison
+      - slow
+      - slow_digging
+      - wither
+  costs:
+    mana: 30

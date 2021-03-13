@@ -239,6 +239,11 @@ spells:
         cast: You heal $target
         cast_self: You heal yourself
         upgrade_description: "Cooldown decreased"
+    superheal:
+        name: SuperHeal
+        description: Heal, cure and feed everyone around you
+        cast: You heal $target
+        cast_self: You heal yourself
     healing:
         name: Healing
         description: Heal everyone around you
