@@ -82,6 +82,7 @@ spells:
     rollback:
         name: Rollback
         description: Undo the targeted spell
+        usage: "Aim up to undo your most recent cast\nAim down to undo at your feet"
         cast: "&5You undo &d&o$target's &r&6$spell &5cast"
         cast_player: "&5You undo &d&o$target's&r&6 $spell &5cast"
         alternate_up: "&5You undo your previous&r&6 $spell &5cast"
