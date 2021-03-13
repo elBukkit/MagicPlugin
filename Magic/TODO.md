@@ -9,7 +9,6 @@
    - Consume blocks first, then currency
    - Print message at end of spell showing how much money was consumed (and blocks?)
    - Make materiashop work, allow using materia:500 .. maybe any currency
-   - Move materia worth to currency exchange
    - Auto-value currency items in shops
  - Fill out worth values for all blocks (and items, for shops)
 

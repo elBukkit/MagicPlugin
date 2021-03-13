@@ -7491,7 +7491,6 @@ public class MagicController implements MageController {
         if (blockExchange != null) {
             if (blockExchange.getBoolean("enabled", true)) {
                 blockExchangeCurrency = blockExchange.getString("currency");
-                blockExchangeWorth = blockExchange.getDouble("worth");
                 if (blockExchangeCurrency != null && blockExchangeCurrency.isEmpty()) {
                     blockExchangeCurrency = null;
                 }
@@ -7583,30 +7582,6 @@ public class MagicController implements MageController {
         protectionManager.initialize(plugin, ConfigurationUtils.getStringList(properties, "generic_protection"));
     }
 
-    /*
-     * Private data
-     */
-    private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
-
-    private static final String LOST_WANDS_FILE     = "lostwands";
-    private static final String WARPS_FILE          = "warps";
-    private static final String SPELLS_DATA_FILE    = "spells";
-    private static final String AUTOMATA_DATA_FILE  = "automata";
-    private static final String NPC_DATA_FILE       = "npcs";
-    private static final String URL_MAPS_FILE       = "imagemaps";
-
-    private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
-    private @Nonnull MaterialSet                buildingMaterials               = MaterialSets.empty();
-    private @Nonnull MaterialSet                indestructibleMaterials         = MaterialSets.empty();
-    private @Nonnull MaterialSet                restrictedMaterials             = MaterialSets.empty();
-    private @Nonnull MaterialSet                destructibleMaterials           = MaterialSets.empty();
-    private @Nonnull MaterialSet                interactibleMaterials           = MaterialSets.empty();
-    private @Nonnull MaterialSet                containerMaterials              = MaterialSets.empty();
-    private @Nonnull MaterialSet                wearableMaterials               = MaterialSets.empty();
-    private @Nonnull MaterialSet                meleeMaterials                  = MaterialSets.empty();
-    private @Nonnull MaterialSet                climbableMaterials              = MaterialSets.empty();
-    private @Nonnull MaterialSet                undoableMaterials               = MaterialSets.wildcard();
-
     protected void loadMaterials(ConfigurationSection materialNode) {
         if (materialNode == null)
             return;
@@ -7644,6 +7619,35 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.block.UndoList.attachablesDouble = materialSetManager
                 .getMaterialSetEmpty("attachable_double");
     }
+
+    @Nullable
+    public Currency getBlockExchangeCurrency() {
+        return blockExchangeCurrency == null ? null : getCurrency(blockExchangeCurrency);
+    }
+
+    /*
+     * Private data
+     */
+    private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
+
+    private static final String LOST_WANDS_FILE     = "lostwands";
+    private static final String WARPS_FILE          = "warps";
+    private static final String SPELLS_DATA_FILE    = "spells";
+    private static final String AUTOMATA_DATA_FILE  = "automata";
+    private static final String NPC_DATA_FILE       = "npcs";
+    private static final String URL_MAPS_FILE       = "imagemaps";
+
+    private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
+    private @Nonnull MaterialSet                buildingMaterials               = MaterialSets.empty();
+    private @Nonnull MaterialSet                indestructibleMaterials         = MaterialSets.empty();
+    private @Nonnull MaterialSet                restrictedMaterials             = MaterialSets.empty();
+    private @Nonnull MaterialSet                destructibleMaterials           = MaterialSets.empty();
+    private @Nonnull MaterialSet                interactibleMaterials           = MaterialSets.empty();
+    private @Nonnull MaterialSet                containerMaterials              = MaterialSets.empty();
+    private @Nonnull MaterialSet                wearableMaterials               = MaterialSets.empty();
+    private @Nonnull MaterialSet                meleeMaterials                  = MaterialSets.empty();
+    private @Nonnull MaterialSet                climbableMaterials              = MaterialSets.empty();
+    private @Nonnull MaterialSet                undoableMaterials               = MaterialSets.wildcard();
 
     private boolean                             backupInventories               = true;
     private int                                    undoTimeWindow                    = 6000;
@@ -7951,13 +7955,4 @@ public class MagicController implements MageController {
     private boolean                             showExampleInstructions     = false;
     private int                                 disableSpawnReplacement     = 0;
     private SwingType                           swingType                   = SwingType.ANIMATE_IF_ADVENTURE;
-
-    @Nullable
-    public Currency getBlockExchangeCurrency() {
-        return blockExchangeCurrency == null ? null : getCurrency(blockExchangeCurrency);
-    }
-
-    public double getBlockExchangeWorth(ItemStack itemStack) {
-        return blockExchangeWorth * getWorth(itemStack);
-    }
 }

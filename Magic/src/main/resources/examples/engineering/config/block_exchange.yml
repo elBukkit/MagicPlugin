@@ -6,17 +6,20 @@ custom_currency:
     default: 0
     icon: skull:http://textures.minecraft.net/texture/b11206551e723c356c23b32383abd19e6d7e9e5988f191e7866ae89ed6cb24
 
+    # This is how much each materia is worth in vault currency
+    # This is used to translate worth values assigned to blocks in item.yml into materia
+    # values, which is the basis for all of the block exchanges.
+    # Make this value larger to make blocks worth (and cost) more materia.
+    worth: 1
+
 # This allows engineering spells to work with a custom currency instead
 # of requiring the blocks to build.
 # This only affects spells that use `consume: true`
 block_exchange:
+  # This is needed because added examples can't override main config options, only add to them
   override: true
+
+  # Turn on block exchange using the materia currency
   enabled: true
   currency: materia
-
-  # This is how much each materia is worth in vault currency
-  # This is used to translate worth values assigned to blocks in item.yml into materia
-  # values, which is the basis for all of the block exchanges.
-  # Make this value larger to make blocks worth (and cost) more materia.
-  worth: 1
 
