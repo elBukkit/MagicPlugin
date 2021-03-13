@@ -2,7 +2,6 @@
 
 # Engineering Improvements
 
- - Redo Wolf Staff
  - Equivalent exchange
    - enable_currency_exchange: true by default
    - return_currency, Undo action parameter, true by default but always false if enable_currency_exchange is false
@@ -18,6 +17,8 @@
 
 ## Hot
 
+ - Magic.craft.* permission not working when set to false
+ - Brooms should ignore half-blocks for takeoff
  - Cure does heal the caster now, right?
  - Weird behavior spamming (holding) right-click: https://youtu.be/FJfDqyCgztE
  - Recall to bed not working? (Kit reported) ("Not home set" ... "or something" lol)

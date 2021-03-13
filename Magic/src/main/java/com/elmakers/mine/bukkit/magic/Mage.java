@@ -5421,7 +5421,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         if (player != null && controller.hasPermission(player, "Magic.wand.craft")) {
             for (String recipe : recipes) {
-                if (controller.hasPermission(player, "Magic.craft." + recipe, true)) {
+                if (controller.hasPermission(player, "Magic.craft." + recipe)) {
                     CompatibilityUtils.discoverRecipe(player, controller.getPlugin(), recipe);
                 }
             }

@@ -3075,7 +3075,7 @@ public class MagicController implements MageController {
 
     public boolean hasWandPermission(Player player)
     {
-        return hasPermission(player, "Magic.wand.use", true);
+        return hasPermission(player, "Magic.wand.use");
     }
 
     public boolean hasWandPermission(Player player, Wand wand)
@@ -3088,7 +3088,7 @@ public class MagicController implements MageController {
         if (template != null && !template.isEmpty())
         {
             String pNode = "Magic.use." + template;
-            if (!hasPermission(player, pNode, true)) return false;
+            if (!hasPermission(player, pNode)) return false;
         }
         Location location = player.getLocation();
         Boolean override = worldGuardManager.getWandPermission(player, wand, location);

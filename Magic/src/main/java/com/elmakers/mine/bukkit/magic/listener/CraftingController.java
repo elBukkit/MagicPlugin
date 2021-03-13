@@ -106,7 +106,7 @@ public class CraftingController implements Listener {
         if (!controller.hasPermission(player, "Magic.wand.craft")) {
             return false;
         }
-        if (!controller.hasPermission(player, "Magic.craft." + recipe.getKey(), true)) {
+        if (!controller.hasPermission(player, "Magic.craft." + recipe.getKey())) {
             return false;
         }
         if (!recipe.isLocked()) {
