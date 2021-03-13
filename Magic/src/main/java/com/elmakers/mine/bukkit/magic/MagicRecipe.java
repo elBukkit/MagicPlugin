@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.magic;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -266,22 +265,7 @@ public class MagicRecipe {
     }
 
     public boolean isSameRecipe(Recipe matchRecipe) {
-        if (!(matchRecipe instanceof ShapedRecipe)) {
-            return false;
-        }
-        ShapedRecipe shaped = (ShapedRecipe)matchRecipe;
-        if (!Arrays.equals(recipe.getShape(), shaped.getShape())) {
-            return false;
-        }
-        for (Map.Entry<Character, ItemStack> entry : shaped.getIngredientMap().entrySet()) {
-            ItemStack matchItem = entry.getValue();
-            ItemStack thisItem = recipe.getIngredientMap().get(entry.getKey());
-            if (thisItem == null && matchItem != null) return false;
-            if (thisItem != null && matchItem == null) return false;
-            if (!controller.itemsAreEqual(matchItem, thisItem, ignoreDamage)) return false;
-        }
-
-        return true;
+        return CompatibilityUtils.isSameKey(controller.getPlugin(), getKey(), matchRecipe);
     }
 
     @SuppressWarnings("deprecation")

@@ -333,6 +333,8 @@ public class NMSUtils {
     protected static Method class_Keyed_getKeyMethod;
     protected static Method class_LivingEntity_setRemoveWhenFarAway;
     protected static Method class_World_getChunkAtAsyncMethod;
+    protected static Method class_NamespacedKey_getKeyMethod;
+    protected static Method class_NamespacedKey_getNamespaceMethod;
 
     protected static boolean legacyMaps;
 
@@ -1121,6 +1123,8 @@ public class NMSUtils {
                 class_ShapedRecipe_constructor = ShapedRecipe.class.getConstructor(class_NamespacedKey, ItemStack.class);
                 class_Keyed = Class.forName("org.bukkit.Keyed");
                 class_Keyed_getKeyMethod = class_Keyed.getMethod("getKey");
+                class_NamespacedKey_getKeyMethod = class_NamespacedKey.getMethod("getKey");
+                class_NamespacedKey_getNamespaceMethod = class_NamespacedKey.getMethod("getNamespace");
             } catch (Throwable ex) {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;

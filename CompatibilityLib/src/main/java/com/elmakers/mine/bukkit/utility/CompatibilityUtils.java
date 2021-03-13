@@ -75,8 +75,8 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -2294,6 +2294,23 @@ public class CompatibilityUtils extends NMSUtils {
             return true;
         } catch (Throwable e) {
             e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean isSameKey(Plugin plugin, String key, Object keyed) {
+        if (keyed == null || class_Keyed == null || !class_Keyed.isAssignableFrom(keyed.getClass())) {
+            return false;
+        }
+        String namespace = plugin.getName().toLowerCase(Locale.ROOT);
+        key = key.toLowerCase(Locale.ROOT);
+        try {
+            Object namespacedKey = class_Keyed_getKeyMethod.invoke(keyed);
+            Object keyNamespace = class_NamespacedKey_getNamespaceMethod.invoke(namespacedKey);
+            Object keyKey = class_NamespacedKey_getKeyMethod.invoke(namespacedKey);
+            return keyNamespace.equals(namespace) && keyKey.equals(key);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
         return false;
     }

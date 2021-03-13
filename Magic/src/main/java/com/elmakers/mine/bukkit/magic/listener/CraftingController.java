@@ -168,8 +168,8 @@ public class CraftingController implements Listener {
             if (matchType != MagicRecipe.MatchType.NONE) {
                 for (HumanEntity human : event.getViewers()) {
                     if (human instanceof Player && !hasCraftPermission((Player) human, candidate)) {
-                        matchType = MagicRecipe.MatchType.PARTIAL;
-                        break;
+                        inventory.setResult(new ItemStack(Material.AIR));
+                        return;
                     }
                 }
 
@@ -188,7 +188,7 @@ public class CraftingController implements Listener {
             }
         }
 
-        // Force-prevent crafting if we got a partial match or no permission
+        // Force-prevent crafting if we got a partial match
         if (matchType == MagicRecipe.MatchType.PARTIAL) {
             inventory.setResult(new ItemStack(Material.AIR));
             return;

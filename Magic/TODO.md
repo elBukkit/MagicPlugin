@@ -10,6 +10,8 @@
    - Make materiashop work, allow using materia:500 .. maybe any currency
    - Auto-value currency items in shops
  - Fill out worth values for all blocks (and items, for shops)
+ - Improve/fix alt-down rollback cast
+ - Chop + Mine can be used on constructed blocks, which can then be rolled back
 
 # Player Shops
 
@@ -17,7 +19,6 @@
 
 ## Hot
 
- - Magic.craft.* permission not working when set to false
  - Brooms should ignore half-blocks for takeoff
  - Cure does heal the caster now, right?
  - Weird behavior spamming (holding) right-click: https://youtu.be/FJfDqyCgztE
