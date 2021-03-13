@@ -10,6 +10,7 @@ cloak:
     earns_sp: 5
     toggle: undo
     disable_mana_regeneration: true
+    cancel_on_cast_other: true
     quick_cast: true
     boss_bar:
       title: "&7$spell"
