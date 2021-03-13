@@ -942,11 +942,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public void showInstructions() {
+        showInstructions(false);
+    }
+
+    public void showInstructions(boolean forceBound) {
         if (mage == null) return;
         startWandInstructions();
-        showBoundInstructions();
+        if (forceBound) {
+            doShowBoundInstructions();
+        } else {
+            showBoundInstructions();
+        }
         showSpellInstructions();
         showBrushInstructions();
+        showHotbarInstructions();
         showPageInstructions();
         showManaInstructions();
         showPathInstructions();
@@ -1008,6 +1017,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    private void showHotbarInstructions() {
+        if (getInt("hotbar_count") > 1) {
+            String controlKey = getControlKey(WandAction.CYCLE_HOTBAR);
+            if (controlKey != null) {
+                controlKey = controller.getMessages().get("controls." + controlKey);
+                mage.sendMessage(getMessage("hotbar_instructions", "")
+                    .replace("$wand", getName())
+                    .replace("$cycle_hotbar", controlKey));
+            }
+        }
+    }
+
     private void showManaInstructions() {
         String spellKey = getActiveSpellKey();
         SpellTemplate spellTemplate = spellKey != null && !spellKey.isEmpty() ? controller.getSpellTemplate(spellKey) : null;
@@ -1041,14 +1062,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setMage = true;
         }
 
-        if ((ownerId == null || ownerId.length() == 0) && quietLevel < 2)
-        {
-            startWandInstructions();
-            doShowBoundInstructions();
-            showSpellInstructions();
-            showManaInstructions();
-            showPathInstructions();
-            endWandInstructions();
+        if ((ownerId == null || ownerId.length() == 0) && quietLevel < 2) {
+            showInstructions(true);
         }
         owner = ChatColor.stripColor(player.getDisplayName());
         ownerId = mage.getId();
@@ -5024,20 +5039,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             needsSave = true;
         }
 
-        // Check for auto-bind
-        if (bound)
-        {
-            String mageName = ChatColor.stripColor(mage.getPlayer().getDisplayName());
-            String mageId = mage.getId();
-            boolean ownerRenamed = owner != null && ownerId != null && ownerId.equals(mageId) && !owner.equals(mageName);
-
-            if (ownerId == null || ownerId.length() == 0 || owner == null || ownerRenamed)
-            {
-                takeOwnership(mage.getPlayer());
-                needsSave = true;
-            }
-        }
-
         // Check for randomized wands
         if (randomizeOnActivate) {
             randomize();
@@ -5061,6 +5062,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         checkActiveMaterial();
+
+        // Check for auto-bind
+        // Do this after above initialization so the wand instructions have a clear picture of this wand's config
+        if (bound)
+        {
+            String mageName = ChatColor.stripColor(mage.getPlayer().getDisplayName());
+            String mageId = mage.getId();
+            boolean ownerRenamed = owner != null && ownerId != null && ownerId.equals(mageId) && !owner.equals(mageName);
+
+            if (ownerId == null || ownerId.length() == 0 || owner == null || ownerRenamed)
+            {
+                takeOwnership(mage.getPlayer());
+                needsSave = true;
+            }
+        }
+
         if (needsSave) {
             saveState();
         }

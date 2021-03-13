@@ -1836,6 +1836,10 @@ permissions:
   Magic.use:
     description: The wands a player may use
     type: list
+  Magic.use.*:
+    description: A player may use any wand
+    type: boolean
+    default: true
   Magic.wand.enchant:
     description: The player may enchant a wand
     default: true
