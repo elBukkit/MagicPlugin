@@ -9,6 +9,7 @@ cure:
     category: light
     worth: 175
     earns_sp: 20
+    quick_cast: true
     actions:
         cast:
         - class: AreaOfEffect
