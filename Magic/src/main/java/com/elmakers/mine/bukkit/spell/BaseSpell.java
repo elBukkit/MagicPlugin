@@ -1691,12 +1691,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         boolean free = result.isFree(castOnNoTarget);
         if (!free) {
             if (costs != null && !mage.isCostFree()) {
-                UndoList undoList = currentCast.getUndoList();
-                for (CastingCost cost : costs)
-                {
-                    if (undoList != null && cost.isItem() && currentCast != null) {
-                        undoList.setConsumed(true);
-                    }
+                for (CastingCost cost : costs) {
                     cost.use(this);
                 }
             }
