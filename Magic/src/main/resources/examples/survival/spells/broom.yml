@@ -6,6 +6,7 @@ broom:
     hidden: true
     icon_url: http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
     category: specialty
+    tags: noduel
     worth: 600
     upgrade_required_path: broom
     upgrade_required_casts: 20
