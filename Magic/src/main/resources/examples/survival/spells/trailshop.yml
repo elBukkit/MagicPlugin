@@ -30,4 +30,6 @@ trailshop:
       cost: 1000
     - placeholder: true
     - placeholder: true
-    - placeholder: true
+    - icon: barrier
+      name_key: remove_trails
+

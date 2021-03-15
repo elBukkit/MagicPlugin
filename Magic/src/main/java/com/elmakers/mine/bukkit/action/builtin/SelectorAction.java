@@ -1168,6 +1168,12 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     // If this becomes an issue, maybe make it optional
                     wand = actionContext.checkWand();
                 }
+            } else if (lockClasses != null) {
+                for (String lockClass : lockClasses) {
+                    if (lockClass != null && !lockClass.isEmpty()) {
+                        mage.lockClass(lockClass);
+                    }
+                }
             }
 
             if (kitKey != null && !kitKey.isEmpty()) {

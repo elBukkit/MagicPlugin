@@ -1150,6 +1150,7 @@ spells:
         title: "Trails ($balance&0)"
         selected: "You changed to $item"
         not_applicable: "You already have $item"
+        remove_trails: "Remove Current Trail"
     appearanceshop:
         name: Wand Appearances
         description: Change the look of your wand
