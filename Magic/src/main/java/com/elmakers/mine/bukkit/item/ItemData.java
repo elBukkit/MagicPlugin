@@ -418,4 +418,9 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
         pending = null;
     }
+
+    public int getMaxDurability() {
+        ItemStack itemStack = getItemStack();
+        return itemStack == null ? 0 : itemStack.getType().getMaxDurability();
+    }
 }
