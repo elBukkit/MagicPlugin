@@ -2,6 +2,11 @@ commands:
     no_permission: "&cYou are not allowed to use that command."
     in_game: "&cThis command may only be used in-game."
     unknown_command: "&cUnknown command: &f$command"
+    mage:
+      reward:
+        received: "&eYou have been awarded &6$item"
+        gave: "&eGave &3$player &6$item"
+        replacement: "&eGave &3$player &6$replacement&e, already had &6$item"
     mkit:
       usage: "Usage: mkit [player] <kit>"
       console_usage: "Console usage: mkit <player> <kit>"

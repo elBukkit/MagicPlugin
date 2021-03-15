@@ -19,6 +19,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -220,6 +221,11 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 onMageAdd(sender, player, args2);
                 handled = true;
             }
+            if (subCommand.equalsIgnoreCase("reward"))
+            {
+                onMageReward(sender, player, args2);
+                handled = true;
+            }
             if (subCommand.equalsIgnoreCase("remove"))
             {
                 onMageRemove(sender, player, args2);
@@ -259,6 +265,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         List<String> options = new ArrayList<>();
         if (args.length == 1) {
             addIfPermissible(sender, options, "Magic.commands.mage.", "add");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "reward");
             addIfPermissible(sender, options, "Magic.commands.mage.", "remove");
             addIfPermissible(sender, options, "Magic.commands.mage.", "configure");
             addIfPermissible(sender, options, "Magic.commands.mage.", "describe");
@@ -350,6 +357,16 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     }
                     addIfPermissible(sender, options, subCommandPNode, "brush", true);
                 }
+                if (subCommand.equalsIgnoreCase("reward")) {
+                    if (args.length > 1) {
+                         options.addAll(controller.getCurrencyKeys());
+                    } else {
+                        Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                        for (SpellTemplate spell : spellList) {
+                            addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+                        }
+                    }
+                }
 
                 if (subCommand.equalsIgnoreCase("remove")) {
                     if (target != null) {
@@ -362,14 +379,18 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     options.add("brush");
                 }
 
-                if (subCommand.equalsIgnoreCase("remove") && args.length > 0 && args[0].equalsIgnoreCase("brush") && target != null) {
-                    Mage mage = controller.getMage(target);
-
-                    CasterProperties mageClass = mage.getActiveProperties();
-                    if (mageClass != null) {
-                        options.addAll(mageClass.getBrushes());
-                    }
+                if (subCommand.equalsIgnoreCase("add") && args.length > 0 && args[0].equalsIgnoreCase("brush")) {
+                    options.addAll(api.getBrushes());
                 }
+
+                if (subCommand.equalsIgnoreCase("add")) {
+                    Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                    for (SpellTemplate spell : spellList) {
+                        addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+                    }
+                    addIfPermissible(sender, options, subCommandPNode, "brush", true);
+                }
+
 
                 if (subCommand.equalsIgnoreCase("clear")) {
                     options.add("all");
@@ -393,15 +414,6 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                         options.add(attribute);
                     }
                 }
-
-                if (subCommand.equalsIgnoreCase("add")) {
-                    Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
-                    for (SpellTemplate spell : spellList) {
-                        addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
-                    }
-                    addIfPermissible(sender, options, subCommandPNode, "brush", true);
-                }
-
                 if (subCommand.equalsIgnoreCase("lock")
                         || subCommand.equalsIgnoreCase("unlock")
                         || subCommand.equalsIgnoreCase("activate")) {
@@ -1031,6 +1043,58 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             }
         }
 
+        return true;
+    }
+
+    public boolean onMageReward(CommandSender sender, Player player, String[] parameters)
+    {
+        if (parameters.length < 1) {
+            sender.sendMessage("Use: /mage reward <spell> [currency]");
+            return true;
+        }
+
+        Mage mage = controller.getMage(player);
+        CasterProperties caster = mage.getActiveProperties();
+        if (caster == null) {
+            sender.sendMessage("Player " + player.getName() + " has no active class");
+            return true;
+        }
+
+        String itemName = parameters[0];
+        ItemStack item = controller.createItem(itemName);
+        if (CompatibilityUtils.isEmpty(item)) {
+            sender.sendMessage("Invalid item: " + itemName);
+            return true;
+        }
+
+        if (caster.addItem(item)) {
+            mage.sendMessage(controller.getMessages().get("commands.mage.reward.received").replace("$item", controller.describeItem(item)));
+            if (sender != player) {
+                sender.sendMessage(controller.getMessages().get("commands.mage.reward.gave")
+                    .replace("$player", mage.getName())
+                    .replace("$item", controller.describeItem(item)));
+            }
+        } else {
+            String currencyKey = "sp";
+            if (parameters.length > 1) {
+                currencyKey = parameters[1];
+            }
+            Currency currency = controller.getCurrency(currencyKey);
+            if (currency == null || !currency.isValid()) {
+                sender.sendMessage("Invalid currency: " + currency);
+                return true;
+            }
+            double worth = controller.getWorth(item, currencyKey);
+            mage.addCurrency(currencyKey, worth);
+            mage.sendMessage(controller.getMessages().get("commands.mage.reward.received")
+                .replace("$item", currency.formatAmount(worth, controller.getMessages())));
+            if (sender != player) {
+                sender.sendMessage(controller.getMessages().get("commands.mage.reward.replacement")
+                    .replace("$player", mage.getName())
+                    .replace("$replacement", currency.formatAmount(worth, controller.getMessages()))
+                    .replace("$item", controller.describeItem(item)));
+            }
+        }
         return true;
     }
 

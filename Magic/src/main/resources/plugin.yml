@@ -508,6 +508,7 @@ commands:
         /mage configure   Set mage properties
         /mage describe    Show mage properties
         /mage add         Add spells and brushes to a player
+        /mage reward      Add spells to a player, or an equivalent reward
         /mage remove      Remove spells or brushes from a player
         /mage modifier    Add or remove modifiers to a player
         /mage activate    Set or clear a player's active class
@@ -543,8 +544,17 @@ commands:
     usage: |
 
        /mage add <spellname>
-       /mage add material <materialname>
+       /mage add brush <materialname>
     permission: Magic.commands.mage.add
+  "mage reward":
+    description: Add a spell to a player, or give an equivalent reward if they have it already
+    usage: |
+
+       /mage reward <spellname>
+       /mage reward <spellname> <currency>
+       /mage reward blink sp
+       /mage reward fling currency
+    permission: Magic.commands.mage.reward
   "mage remove":
     description: Remove a spell or brush from a player
     usage: |
@@ -1594,6 +1604,7 @@ permissions:
     - Magic.commands.mage
     - Magic.commands.mage.configure
     - Magic.commands.mage.add
+    - Magic.commands.mage.reward
     - Magic.commands.mage.remove
     - Magic.commands.mage.modifier
     - Magic.commands.mage.upgrade
@@ -1622,6 +1633,10 @@ permissions:
     default: op
   Magic.commands.mage.add:
     description: Player may add spells to players
+    type: boolean
+    default: op
+  Magic.commands.mage.reward:
+    description: Player may grant rewards to players
     type: boolean
     default: op
   Magic.commands.mage.remove:
