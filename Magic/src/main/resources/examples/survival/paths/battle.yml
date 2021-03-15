@@ -33,8 +33,9 @@ squire:
     upgrade_item: soldier_upgrade
     follows: student
     inherit: battle
-    mana_regeneration: 30
-    mana_max: 150
+    override_properties:
+      mana_regeneration: 30
+      mana_max: 150
     spells:
       - arrowrain
       - boom
@@ -56,8 +57,9 @@ soldier:
     upgrade_item: knight_upgrade
     inherit: squire
     follows: apprentice
-    mana_regeneration: 40
-    mana_max: 200
+    override_properties:
+      mana_regeneration: 40
+      mana_max: 200
     spells:
       - breach
       - disintegrate
@@ -78,8 +80,9 @@ soldier:
 knight:
     inherit: soldier
     follows: master
-    mana_regeneration: 50
-    mana_max: 250
+    override_properties:
+      mana_regeneration: 50
+      mana_max: 250
     spells:
       - cluster
       - bomb

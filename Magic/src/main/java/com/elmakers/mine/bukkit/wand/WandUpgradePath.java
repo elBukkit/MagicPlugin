@@ -303,7 +303,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             levelMap.put(level, wandLevel);
         }
 
-        properties = template.getConfigurationSection("properties");
+        properties = template.getConfigurationSection("override_properties");
     }
 
     @Override

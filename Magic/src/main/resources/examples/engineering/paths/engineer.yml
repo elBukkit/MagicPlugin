@@ -15,9 +15,10 @@ engineer:
     upgrade: architect
     upgrade_item: architect_upgrade
     inherit: master
-    properties:
-      mana_regeneration: 45
-      mana_max: 250
+    override_properties:
+      mana_regeneration: 50
+      mana_max: 300
+      currency_display: materia
     extra_spells:
       - brushselect
     spells:

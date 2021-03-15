@@ -9,7 +9,7 @@ beginner:
     upgrade: student
     upgrade_item: student_upgrade
     inherit: default
-    properties:
+    override_properties:
       mana_max: 50
       mana_regeneration: 5
       hotbar_count: 1

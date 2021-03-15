@@ -5,7 +5,7 @@ apprentice:
     upgrade: master
     upgrade_item: master_upgrade
     inherit: student
-    properties:
+    override_properties:
       mana_regeneration: 25
       mana_max: 150
     extra_spells:

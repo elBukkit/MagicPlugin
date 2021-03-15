@@ -5,9 +5,8 @@ architect:
     legacy_icon: wand_icon:5
     legacy_migrate_icon: gold_pickaxe
     effect_color: '8B008B'
-    mana_max: 300
-    mana: 300
-    mana_regeneration: 60
+    mana_regeneration: 100
+    mana_max: 500
     active_spell: levitate
     hotbar_count: 3
     spells:

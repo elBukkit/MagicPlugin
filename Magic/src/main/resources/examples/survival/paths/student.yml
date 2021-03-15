@@ -6,7 +6,7 @@ student:
     upgrade_item: apprentice_upgrade
     inherit: beginner
     # Mana will be upgraded when ranking up
-    properties:
+    override_properties:
       mana_regeneration: 15
       mana_max: 100
       hotbar_count: 2
