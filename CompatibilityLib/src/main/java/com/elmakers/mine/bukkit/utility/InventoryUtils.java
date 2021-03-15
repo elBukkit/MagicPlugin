@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.attribute.Attribute;
@@ -33,6 +32,25 @@ import com.google.common.collect.Multimap;
 @SuppressWarnings("deprecation")
 public class InventoryUtils extends NMSUtils
 {
+    public static CurrencyAmount getCurrency(ItemStack item) {
+        if (isEmpty(item)) return null;
+
+        Object currency = InventoryUtils.getNode(item, "currency");
+        if (currency != null) {
+            String currencyType = InventoryUtils.getMetaString(currency, "type");
+            if (currencyType != null) {
+                return new CurrencyAmount(currencyType, InventoryUtils.getMetaInt(currency, "amount"));
+            }
+            return null;
+        }
+
+        // Support for legacy SP items
+        int spAmount = InventoryUtils.getMetaInt(item, "sp", 0);
+        if (spAmount > 0) {
+            return new CurrencyAmount("sp", spAmount);
+        }
+        return null;
+    }
     public static int MAX_LORE_LENGTH = 24;
     public static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
     public static UUID SKULL_UUID = UUID.fromString("3f599490-ca3e-49b5-8e75-78181ebf4232");
@@ -743,6 +761,16 @@ public class InventoryUtils extends NMSUtils
                 Map<String, Object> map = (Map<String, Object>)value;
                 convertIntegers(map);
             }
+        }
+    }
+
+    public static class CurrencyAmount {
+        public String type;
+        public int amount;
+
+        public CurrencyAmount(String type, int amount) {
+            this.type = type;
+            this.amount = amount;
         }
     }
 }

@@ -2963,7 +2963,7 @@ public class MagicController implements MageController {
         currencyConfiguration = configuration.getConfigurationSection("custom_currency");
         Set<String> keys = currencyConfiguration.getKeys(false);
         for (String key : keys) {
-            addCurrency(new CustomCurrency(this, key, currencyConfiguration));
+            addCurrency(new CustomCurrency(this, key, currencyConfiguration.getConfigurationSection(key)));
         }
 
         // Register attribute providers
@@ -4953,7 +4953,7 @@ public class MagicController implements MageController {
                             itemStack = currencyIcon.getItemStack(1);
                             ItemMeta meta = itemStack.getItemMeta();
                             String name = currency.getName(messages);
-                            String itemName = messages.get("currency." + itemKey + ".item_name", messages.get("currency.defaults.item_name"));
+                            String itemName = messages.get("currency." + itemKey + ".item_name", messages.get("currency.default.item_name"));
                             itemName = itemName.replace("$type", name);
                             itemName = itemName.replace("$amount", itemData);
                             meta.setDisplayName(itemName);
@@ -4968,7 +4968,7 @@ public class MagicController implements MageController {
                                 return null;
                             }
 
-                            String currencyDescription = messages.get("currency." + itemKey + ".description", messages.get("currency.defaults.description"));
+                            String currencyDescription = messages.get("currency." + itemKey + ".description", messages.get("currency.default.description"));
                             if (currencyDescription.length() > 0) {
                                 currencyDescription = currencyDescription.replace("$type", name);
                                 currencyDescription = currencyDescription.replace("$amount", itemData);
@@ -5692,6 +5692,11 @@ public class MagicController implements MageController {
         if (configuredItem == null) {
             Wand wand = getIfWand(item);
             if (wand == null) {
+                InventoryUtils.CurrencyAmount currencyAmount = InventoryUtils.getCurrency(item);
+                Currency currency = currencyAmount == null ? null : getCurrency(currencyAmount.type);
+                if (currency != null) {
+                    return currency.getWorth() * currencyAmount.amount * item.getAmount();
+                }
                 return null;
             }
             return (double)wand.getWorth();

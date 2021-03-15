@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.wand.Wand;
+import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class ShopAction extends SelectorAction {
     private boolean showNoPermission;
@@ -248,9 +248,9 @@ public class ShopAction extends SelectorAction {
                         }
                     }
                     ConfigurationSection costSection = itemConfig.createSection("costs");
-                    Integer sp = Wand.getSP(item);
-                    if (sp != null) {
-                        costSection.set("sp", sp);
+                    InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(item);
+                    if (currency != null) {
+                        costSection.set(currency.type, currency.amount);
                     } else {
                         costSection.set(itemName, item.getAmount());
                     }

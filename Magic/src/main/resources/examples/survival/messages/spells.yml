@@ -1208,6 +1208,11 @@ spells:
       description: Earn money for precious metals and gems
       cost_lore: "Deposit $cost"
       deducted: "&d&oYou deposited &r&a$cost &r&d&oof &r&6$item"
+    atm:
+      name: ATM
+      description: Withdraw money as physical cash
+      cost_lore: "Withdraw $cost"
+      deducted: "&d&oYou withdrew &r&a$cost"
     spshop:
       name: SP Shop
       description: Exchange money for Spell Points

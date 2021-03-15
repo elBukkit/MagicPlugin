@@ -220,7 +220,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float cooldownReduction = 0;
     private float consumeReduction = 0;
     private float powerMultiplier = 1;
-    private float earnMultiplier = 1;
+    private float spEarnMultiplier = 1;
     private float manaMaxBoost = 0;
     private float manaRegenerationBoost = 0;
 
@@ -2706,18 +2706,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int removeItem(ItemStack itemStack, boolean allowVariants) {
         if (!isPlayer()) return 0;
-        Integer sp = Wand.getSP(itemStack);
-        if (sp != null) {
-            sp *= itemStack.getAmount();
-            int currentSP = getSkillPoints();
-            int newSP = currentSP - sp;
-            if (currentSP < sp) {
-                sp = sp - currentSP;
-            } else {
-                sp = 0;
-            }
-            setSkillPoints(newSP);
-            return sp;
+        InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(itemStack);
+        if (currency != null) {
+            currency.amount *= itemStack.getAmount();
+            removeCurrency(currency.type, currency.amount);
+            return currency.amount;
         }
         int amount = itemStack == null ? 0 : itemStack.getAmount();
         Inventory inventory = getInventory();
@@ -2818,9 +2811,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean hasItem(ItemStack itemStack, boolean allowVariants) {
         if (!isPlayer()) return false;
-        Integer sp = Wand.getSP(itemStack);
-        if (sp != null) {
-            return getSkillPoints() >= sp * itemStack.getAmount();
+        InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(itemStack);
+        if (currency != null) {
+            return getCurrency(currency.type) >= currency.amount * itemStack.getAmount();
         }
 
         int amount = itemStack == null ? 0 : itemStack.getAmount();
@@ -2878,9 +2871,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int getItemCount(ItemStack itemStack, boolean allowDamaged) {
         if (!isPlayer()) return 0;
-        Integer sp = Wand.getSP(itemStack);
-        if (sp != null) {
-            return getSkillPoints();
+        InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(itemStack);
+        if (currency != null) {
+            int amount = currency.amount <= 0 ? 1 : currency.amount;
+            return (int)Math.ceil(getCurrency(currency.type) / amount);
         }
 
         int amount = 0;
@@ -3994,7 +3988,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     protected void addPassiveEffects(CasterProperties properties, boolean activeReduction) {
-        earnMultiplier = (float) (earnMultiplier * properties.getDouble("earn_multiplier", properties.getDouble("sp_multiplier", 1.0)));
+        spEarnMultiplier = (float) (spEarnMultiplier * properties.getDouble("earn_multiplier", properties.getDouble("sp_multiplier", 1.0)));
         manaRegenerationBoost += properties.getFloat("mana_regeneration_boost", 0);
         manaMaxBoost += properties.getFloat("mana_max_boost", 0);
 
@@ -4122,7 +4116,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         triggeredSpells.clear();
 
-        earnMultiplier = 1;
+        spEarnMultiplier = 1;
         cooldownReduction = 0;
         costReduction = 0;
         consumeReduction = 0;
@@ -4587,12 +4581,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     @Deprecated
     public float getSPMultiplier() {
-        return earnMultiplier;
+        return (float)getEarnMultiplier("sp");
     }
 
     @Override
+    @Deprecated
     public float getEarnMultiplier() {
-        return earnMultiplier;
+        return (float)getEarnMultiplier("sp");
+    }
+
+    @Override
+    public double getEarnMultiplier(String currency) {
+        // TODO: Support different earn mulpiliers
+        return currency.equals("sp") ? spEarnMultiplier : 1;
     }
 
     @Override

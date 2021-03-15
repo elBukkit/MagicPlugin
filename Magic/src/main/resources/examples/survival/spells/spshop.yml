@@ -1,10 +1,8 @@
 spshop:
     inherit: buyshop
     parameters:
+        apply_to_mage: true
         items:
         - item: sp:10
-          cost: 100
         - item: sp:100
-          cost: 1000
         - item: sp:1000
-          cost: 10000

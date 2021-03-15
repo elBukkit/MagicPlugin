@@ -747,41 +747,23 @@ public class PlayerController implements Listener {
 
         // Check for right-clicking SP or currency items
         if (isRightClick) {
-            Integer sp = Wand.getSP(itemInHand);
-            if (sp != null) {
-                sp *= itemInHand.getAmount();
-                if (mage.isAtMaxSkillPoints()) {
-                    String limitMessage = controller.getMessages().get("sp.limit");
-                    limitMessage = limitMessage.replace("$amount", Integer.toString(controller.getSPMaximum()));
+            InventoryUtils.CurrencyAmount currencyAmount = InventoryUtils.getCurrency(itemInHand);
+            Currency currency = currencyAmount == null ? null : controller.getCurrency(currencyAmount.type);
+            if (currency != null) {
+                Messages messages = controller.getMessages();
+                currencyAmount.amount *= itemInHand.getAmount();
+                if (mage.isAtMaxCurrency(currencyAmount.type)) {
+                    String limitMessage = messages.get("currency." + currencyAmount.type + ".limit", messages.get("currency.default.limit"));
+                    limitMessage = limitMessage.replace("$amount", Integer.toString((int)currency.getMaxValue()));
+                    limitMessage = limitMessage.replace("$type", currency.getName(messages));
                     mage.sendMessage(limitMessage);
                 } else {
-                    mage.addSkillPoints(sp);
-                    String balanceMessage = controller.getMessages().get("sp.deposited");
-                    balanceMessage = balanceMessage.replace("$amount", Integer.toString(sp));
-                    balanceMessage = balanceMessage.replace("$balance", Integer.toString(mage.getSkillPoints()));
-                    mage.sendMessage(balanceMessage);
+                    mage.addCurrency(currencyAmount.type, currencyAmount.amount);
                     player.getInventory().setItemInMainHand(null);
-                }
-                event.setCancelled(true);
-                return;
-            }
-            Double value = Wand.getCurrencyAmount(itemInHand);
-            if (value != null) {
-                String currencyKey = Wand.getCurrencyType(itemInHand);
-                if (mage.isAtMaxCurrency(currencyKey)) {
-                    Currency currency = controller.getCurrency(currencyKey);
-                    String limitMessage = controller.getMessages().get("currency." + currencyKey + ".limit", controller.getMessages().get("currency.limit"));
-                    limitMessage = limitMessage.replace("$amount", Integer.toString((int)Math.ceil(currency.getMaxValue())));
-                    limitMessage = limitMessage.replace("$type", controller.getMessages().get("currency." + currencyKey + ".name", currencyKey));
-                    mage.sendMessage(limitMessage);
-                } else {
-                    mage.addCurrency(currencyKey, value);
-                    player.getInventory().setItemInMainHand(null);
-
-                    String balanceMessage = controller.getMessages().get("currency." + currencyKey + ".deposited", controller.getMessages().get("currency.deposited"));
-                    balanceMessage = balanceMessage.replace("$amount", Integer.toString((int)Math.ceil(value)));
-                    balanceMessage = balanceMessage.replace("$balance", Integer.toString((int)Math.ceil(mage.getCurrency(currencyKey))));
-                    balanceMessage = balanceMessage.replace("$type", controller.getMessages().get("currency." + currencyKey + ".name", currencyKey));
+                    String balanceMessage = messages.get("currency." + currencyAmount.type + ".deposited", messages.get("currency.default.deposited"));
+                    balanceMessage = balanceMessage.replace("$amount", Integer.toString(currencyAmount.amount));
+                    balanceMessage = balanceMessage.replace("$balance", Integer.toString((int)mage.getCurrency(currencyAmount.type)));
+                    balanceMessage = balanceMessage.replace("$type", currency.getName(messages));
                     mage.sendMessage(balanceMessage);
                 }
                 event.setCancelled(true);

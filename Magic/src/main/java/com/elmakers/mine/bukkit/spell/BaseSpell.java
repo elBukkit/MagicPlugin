@@ -3041,7 +3041,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (earns != null && controller.isSPEnabled() && controller.isSPEarnEnabled()) {
             int scaledEarn = earns.getRoundedAmount();
             if (mage != null) {
-                scaledEarn = (int)Math.floor(mage.getEarnMultiplier() * scaledEarn);
+                scaledEarn = (int)Math.floor(mage.getEarnMultiplier("sp") * scaledEarn);
             }
             if (scaledEarn > 0) {
                 Cost scaled = new Cost(earns);
@@ -3143,7 +3143,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
                 if (scaledEarn > 0) {
                     Cost earnCost = new Cost(earns);
-                    earnCost.setAmount(Math.floor(mage.getEarnMultiplier() * scaledEarn));
+                    earnCost.setAmount(Math.floor(mage.getEarnMultiplier("sp") * scaledEarn));
 
                     EarnEvent event = new EarnEvent(mage, earns.getType(), earnCost.getAmount(), EarnEvent.EarnCause.SPELL_CAST);
                     Bukkit.getPluginManager().callEvent(event);

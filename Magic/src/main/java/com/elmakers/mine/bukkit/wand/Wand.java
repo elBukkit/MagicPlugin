@@ -2474,35 +2474,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return "<div style=\"background-color: black; margin: 8px; padding: 8px\">" + StringUtils.join(lore, "<br/>") + "</div>";
     }
 
-    @Nullable
-    public static Integer getSP(ItemStack item) {
-        if (InventoryUtils.isEmpty(item)) return null;
-        Object currency = InventoryUtils.getNode(item, "currency");
-        if (currency != null) {
-            String currencyType = InventoryUtils.getMetaString(currency, "type");
-            if (currencyType != null && currencyType.equals("sp")) {
-                return InventoryUtils.getMetaInt(currency, "amount");
-            }
-            return null;
-        }
-        int spAmount = InventoryUtils.getMetaInt(item, "sp", 0);
-        if (spAmount > 0) {
-            return spAmount;
-        }
-        String spNode = InventoryUtils.getMetaString(item, "sp");
-        if (spNode == null) {
-            return null;
-        }
-        Integer sp = null;
-        try {
-            sp = Integer.parseInt(spNode);
-        } catch (Exception ex) {
-            sp = null;
-        }
-
-        return sp;
-    }
-
     private String getPropertyString(String templateName, float value) {
         return getPropertyString(templateName, value, 1);
     }
@@ -3031,22 +3002,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         }
-    }
-
-    @Nullable
-    public static Double getCurrencyAmount(ItemStack item) {
-        if (InventoryUtils.isEmpty(item)) return null;
-        Object currencyNode = InventoryUtils.getNode(item, "currency");
-        if (currencyNode == null) return null;
-        return InventoryUtils.getMetaDouble(currencyNode, "amount");
-    }
-
-    @Nullable
-    public static String getCurrencyType(ItemStack item) {
-        if (InventoryUtils.isEmpty(item)) return null;
-        Object currencyNode = InventoryUtils.getNode(item, "currency");
-        if (currencyNode == null) return null;
-        return InventoryUtils.getMetaString(currencyNode, "type");
     }
 
     public static boolean isSpell(ItemStack item) {
@@ -4063,9 +4018,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (mageClassKeys != null && !mageClassKeys.isEmpty() && mage == null) {
             return false;
         }
-        Integer sp = getSP(item);
+        InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(item);
         boolean isUpgrade = isUpgrade(item);
-        if (!isModifiable() && !isUpgrade && sp == null) return false;
+        if (!isModifiable() && !isUpgrade && currency == null) return false;
         if (isUpgrade) {
             Wand upgradeWand = controller.createWand(item);
             String slot = upgradeWand.getSlot();

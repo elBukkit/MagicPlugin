@@ -13,6 +13,14 @@
 
  - Conduits now have Cost Reduction X, don't have to worry about mana
 
+## Currency Improvements
+
+ - All currencies, builtin and custom, can be configured the same way
+ - Physical items work for all currencies, not just Spell Points
+ - "atm" spell added. a shop where players can withdraw money as physical items they can trade or give away
+ - Note that all currency and spell point messaging was reorganized, see the migration log if you have
+   custom messaging or localization.
+
 ## Changes
 
  - Magic now loads at server startup, so world gen modifications to default worlds catch spawn chunks

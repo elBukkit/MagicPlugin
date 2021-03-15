@@ -42,6 +42,17 @@ withdrawals:
           - emerald@64
           - emerald_block@64
 
+atm:
+  inherit: buyshop
+  requires: Vault
+  parameters:
+    items:
+      - item: currency:1
+      - item: currency:10
+      - item: currency:100
+      - item: currency:1000
+      - item: currency:10000
+
 ledgershop:
     icon: paper
     category: npc

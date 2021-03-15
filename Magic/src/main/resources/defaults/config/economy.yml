@@ -67,7 +67,7 @@ builtin_currency:
     icon: skull:http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
     worth: 1
   xp:
-    worth: 1
+    worth: 10
     icon: skull:http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
   item:
     icon: emerald
