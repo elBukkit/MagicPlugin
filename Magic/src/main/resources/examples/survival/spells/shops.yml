@@ -77,12 +77,13 @@ stoneshop:
     inherit: buyshop
     parameters:
         items:
-        - stone:2@16
-        - stone:4@16
-        - stone:6@16
-        - quartz_block:1@16
-        - quartz_block:2@16
-        - quartz_stairs:0@16
+        - stone@16
+        - adesite@16
+        - diorite@16
+        - granite@16
+        - quartz_block@16
+        - chiseled_quartz_block@16
+        - quartz_pillar@16
         - flint@4
 
 brickshop:
@@ -90,9 +91,9 @@ brickshop:
     parameters:
         items:
         - stone@16
-        - stone:1@16
-        - stone:3@16
-        - stone:5@16
+        - adesite@16
+        - diorite@16
+        - granite@16
         - ender_stone@4
         - cobblestone:0@16
         - cobblestone_stairs:0@16

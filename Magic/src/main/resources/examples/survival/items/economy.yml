@@ -1,5 +1,3 @@
-Craftsman - Stonecutter:
-  worth: 0
 acacia_boat:
   worth: 2.13
 acacia_button:
@@ -50,8 +48,6 @@ anvil:
   worth: 30
 apple:
   worth: 1
-area_effect_cloud:
-  worth: 0
 armor_stand:
   worth: 2.68
 arrow:
@@ -74,16 +70,12 @@ barrier:
   worth: 0
 basalt:
   worth: 2.68
-bat:
-  worth: 0
 bat_spawn_egg:
   worth: 0
 beacon:
   worth: 5494.16
 bedrock:
   worth: 0
-bee:
-  worth: 1.1
 bee_nest:
   worth: 36.61
 bee_spawn_egg:
@@ -170,8 +162,6 @@ blackstone_wall:
   worth: 3.02
 blast_furnace:
   worth: 0
-blaze:
-  worth: 7.14
 blaze_powder:
   worth: 2
 blaze_rod:
@@ -290,8 +280,6 @@ bucket:
   worth: 15.11
 cactus:
   worth: 1.37
-cactus_green:
-  worth: 0.34
 cake:
   worth: 25.07
 campfire:
@@ -306,16 +294,10 @@ cartography_table:
   worth: 0
 carved_pumpkin:
   worth: 0
-cat:
-  worth: 1.1
 cat_spawn_egg:
   worth: 0
 cauldron:
   worth: 0
-cave_air:
-  worth: 0
-cave_spider:
-  worth: 6.59
 cave_spider_spawn_egg:
   worth: 0
 chain:
@@ -336,8 +318,6 @@ chest:
   worth: 2
 chest_minecart:
   worth: 0
-chicken:
-  worth: 0.5
 chicken_spawn_egg:
   worth: 0
 chipped_anvil:
@@ -372,8 +352,6 @@ coal_block:
   worth: 0
 coal_ore:
   worth: 2.68
-coals:
-  worth: 2.2
 coarse_dirt:
   worth: 1.37
 cobblestone:
@@ -426,8 +404,6 @@ cookie:
   worth: 1.79
 cornflower:
   worth: 1.85
-cow:
-  worth: 1.1
 cow_spawn_egg:
   worth: 0
 cracked_nether_bricks:
@@ -438,10 +414,6 @@ cracked_stone_bricks:
   worth: 3.5
 crafting_table:
   worth: 0
-creeper:
-  worth: 4.53
-creeper_banner_pattern:
-  worth: 720.4
 creeper_head:
   worth: 775
 creeper_spawn_egg:
@@ -522,8 +494,6 @@ damaged_anvil:
   worth: 0
 dandelion:
   worth: 3
-dandelion_yellow:
-  worth: 0.62
 dark_oak_boat:
   worth: 2.13
 dark_oak_button:
@@ -648,19 +618,13 @@ dirt:
   worth: 0.05
 dispenser:
   worth: 2
-dolphin:
-  worth: 0
 dolphin_spawn_egg:
-  worth: 0
-donkey:
   worth: 0
 donkey_spawn_egg:
   worth: 0
 dragon_breath:
   worth: 892.86
 dragon_egg:
-  worth: 0
-dragon_fireball:
   worth: 0
 dragon_head:
   worth: 769.23
@@ -672,14 +636,10 @@ dried_kelp_block:
   worth: 0
 dropper:
   worth: 3
-drowned:
-  worth: 3.02
 drowned_spawn_egg:
   worth: 0
 egg:
   worth: 0.5
-elder_guardian:
-  worth: 288.46
 elder_guardian_spawn_egg:
   worth: 0
 elytra:
@@ -718,33 +678,19 @@ end_stone_bricks:
   worth: 2.34
 ender_chest:
   worth: 10
-ender_dragon:
-  worth: 824.18
 ender_eye:
   worth: 30.77
 ender_pearl:
   worth: 10
-enderman:
-  worth: 7.14
 enderman_spawn_egg:
   worth: 0
-endermite:
-  worth: 3.3
 endermite_spawn_egg:
-  worth: 0
-evoker:
-  worth: 7.14
-evoker_fangs:
   worth: 0
 evoker_spawn_egg:
   worth: 0
 experience_bottle:
-  worth: 0
-experience_orb:
-  worth: 0
+  worth: 5000
 eye_of_ender:
-  worth: 0
-falling_block:
   worth: 0
 farmland:
   worth: 0
@@ -782,12 +728,8 @@ flint:
   worth: 0.25
 flint_and_steel:
   worth: 7.28
-flower_banner_pattern:
-  worth: 2.47
 flower_pot:
   worth: 4.88
-fox:
-  worth: 1.1
 fox_spawn_egg:
   worth: 0
 frosted_ice:
@@ -796,14 +738,10 @@ furnace:
   worth: 1
 furnace_minecart:
   worth: 0
-ghast:
-  worth: 10.71
 ghast_spawn_egg:
   worth: 0
 ghast_tear:
   worth: 2
-giant:
-  worth: 96.15
 gilded_blackstone:
   worth: 19.64
 glass:
@@ -814,8 +752,6 @@ glass_pane:
   worth: 0.55
 glistering_melon_slice:
   worth: 8
-globe_banner_pattern:
-  worth: 0
 glowstone:
   worth: 4.67
 glowstone_dust:
@@ -922,8 +858,6 @@ green_wool:
   worth: 3.02
 grindstone:
   worth: 0
-guardian:
-  worth: 17.86
 guardian_spawn_egg:
   worth: 0
 gunpowder:
@@ -934,8 +868,6 @@ heart_of_the_sea:
   worth: 769.23
 heavy_weighted_pressure_plate:
   worth: 11.54
-hoglin:
-  worth: 1.1
 hoglin_spawn_egg:
   worth: 0
 honey_block:
@@ -958,18 +890,12 @@ horn_coral_fan:
   worth: 2.68
 horn_coral_wall_fan:
   worth: 0
-horse:
-  worth: 1.1
 horse_spawn_egg:
   worth: 0
-husk:
-  worth: 3.02
 husk_spawn_egg:
   worth: 0
 ice:
   worth: 0
-illusioner:
-  worth: 7.14
 infested_chiseled_stone_bricks:
   worth: 0
 infested_cobblestone:
@@ -996,8 +922,6 @@ iron_chestplate:
   worth: 80
 iron_door:
   worth: 13.19
-iron_golem:
-  worth: 4.95
 iron_helmet:
   worth: 50
 iron_hoe:
@@ -1020,8 +944,6 @@ iron_sword:
   worth: 20
 iron_trapdoor:
   worth: 21.29
-item:
-  worth: 0
 item_frame:
   worth: 2
 jack_o_lantern:
@@ -1086,8 +1008,6 @@ lava_bucket:
   worth: 0
 lead:
   worth: 12.91
-leash_knot:
-  worth: 0
 leather:
   worth: 1
 leather_boots:
@@ -1158,8 +1078,6 @@ light_gray_wool:
   worth: 0.96
 light_weighted_pressure_plate:
   worth: 38.6
-lightning_bolt:
-  worth: 0
 lilac:
   worth: 7.9
 lily_of_the_valley:
@@ -1194,17 +1112,11 @@ lime_wool:
   worth: 2.75
 lingering_potion:
   worth: 178.57
-llama:
-  worth: 1.1
 llama_spawn_egg:
-  worth: 0
-llama_spit:
   worth: 0
 lodestone:
   worth: 1583.24
 log:
-  worth: 0.82
-log_that_burn:
   worth: 0.82
 loom:
   worth: 0
@@ -1238,8 +1150,6 @@ magma_block:
   worth: 2.68
 magma_cream:
   worth: 8
-magma_cube:
-  worth: 3.3
 magma_cube_spawn_egg:
   worth: 0
 map:
@@ -1256,10 +1166,6 @@ milk_bucket:
   worth: 3.64
 minecart:
   worth: 0
-mojang_banner_pattern:
-  worth: 0.62
-mooshroom:
-  worth: 1.1
 mooshroom_spawn_egg:
   worth: 0
 mossy_cobblestone:
@@ -1280,8 +1186,6 @@ mossy_stone_bricks:
   worth: 3.5
 moving_piston:
   worth: 0
-mule:
-  worth: 1.1
 mule_spawn_egg:
   worth: 0
 mushroom_stem:
@@ -1412,8 +1316,6 @@ observer:
   worth: 27.2
 obsidian:
   worth: 19.64
-ocelot:
-  worth: 0
 ocelot_spawn_egg:
   worth: 0
 orange_banner:
@@ -1450,40 +1352,24 @@ packed_ice:
   worth: 2
 painting:
   worth: 2
-panda:
-  worth: 1.1
 panda_spawn_egg:
   worth: 0
 paper:
   worth: 0.34
-parrot:
-  worth: 1.1
 parrot_spawn_egg:
   worth: 0
 peony:
   worth: 7.9
 petrified_oak_slab:
   worth: 0
-phantom:
-  worth: 4.95
 phantom_membrane:
   worth: 183.93
 phantom_spawn_egg:
   worth: 0
-pig:
-  worth: 1.1
 pig_spawn_egg:
   worth: 0
-piglin:
-  worth: 1.1
-piglin_banner_pattern:
-  worth: 0
-piglin_brute:
-  worth: 115.38
 piglin_spawn_egg:
   worth: 0
-pillager:
-  worth: 4.95
 pillager_spawn_egg:
   worth: 0
 pink_banner:
@@ -1518,8 +1404,6 @@ piston:
   worth: 19.64
 piston_head:
   worth: 0
-planks:
-  worth: 0.27
 player_head:
   worth: 0
 player_wall_head:
@@ -1527,8 +1411,6 @@ player_wall_head:
 podzol:
   worth: 2.68
 poisonous_potato:
-  worth: 0
-polar_bear:
   worth: 0
 polar_bear_spawn_egg:
   worth: 0
@@ -1734,8 +1616,6 @@ rabbit_stew:
   worth: 5
 rail:
   worth: 2.4
-ravager:
-  worth: 7.14
 ravager_spawn_egg:
   worth: 0
 red_banner:
@@ -1810,8 +1690,6 @@ respawn_anchor:
   worth: 440.04
 rose_bush:
   worth: 7.9
-rose_red:
-  worth: 0
 rotten_flesh:
   worth: 1
 saddle:
@@ -1844,33 +1722,21 @@ seagrass:
   worth: 0
 shears:
   worth: 10.3
-sheep:
-  worth: 1.1
 sheep_spawn_egg:
   worth: 0
 shield:
   worth: 7.55
 shroomlight:
   worth: 0
-shulker:
-  worth: 4.95
 shulker_box:
   worth: 785.99
-shulker_bullet:
-  worth: 0
 shulker_shell:
   worth: 390.38
 shulker_spawn_egg:
   worth: 0
 sign:
   worth: 1
-silverfish:
-  worth: 3.3
 silverfish_spawn_egg:
-  worth: 0
-skeleton:
-  worth: 3.02
-skeleton_horse:
   worth: 0
 skeleton_horse_spawn_egg:
   worth: 0
@@ -1880,17 +1746,11 @@ skeleton_spawn_egg:
   worth: 0
 skeleton_wall_skull:
   worth: 0
-skull_banner_pattern:
-  worth: 720.4
-slime:
-  worth: 3.02
 slime_ball:
   worth: 20
 slime_block:
   worth: 59.68
 slime_spawn_egg:
-  worth: 0
-small_fireball:
   worth: 0
 smithing_table:
   worth: 0
@@ -1922,16 +1782,12 @@ snow:
   worth: 0.1
 snow_block:
   worth: 0.25
-snow_golem:
-  worth: 4.95
 snowball:
   worth: 0
 soul_campfire:
   worth: 0
 soul_fire:
   worth: 0
-soul_fire_base_blocks:
-  worth: 2.2
 soul_lantern:
   worth: 8.04
 soul_sand:
@@ -1944,68 +1800,8 @@ soul_wall_torch:
   worth: 1.79
 spawner:
   worth: 10000
-spawner_minecart:
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"bat"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"blaze"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"cave_spider"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"chicken"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"cow"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"creeper"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"ender_dragon"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"enderman"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"ghast"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"giant"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"horse"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"iron_golem"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"magma_cube"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"mooshroom"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"ocelot"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"pig"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"sheep"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"silverfish"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"skeleton"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"slime"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"snow_golem"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"spider"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"squid"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"witch"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"wither"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"wolf"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"zombie"}}}":
-  worth: 0
-"spawner{BlockEntityTag:{SpawnData:{id:"zombie_pigman"}}}":
-  worth: 0
 spectral_arrow:
   worth: 5.01
-spider:
-  worth: 3.02
 spider_eye:
   worth: 0.5
 spider_spawn_egg:
@@ -2046,8 +1842,6 @@ spruce_wall_sign:
   worth: 0
 spruce_wood:
   worth: 1.85
-squid:
-  worth: 1.51
 squid_spawn_egg:
   worth: 0
 stick:
@@ -2068,8 +1862,6 @@ stone_bricks:
   worth: 2.82
 stone_button:
   worth: 0.4
-stone_crafting_materials:
-  worth: 1.65
 stone_hoe:
   worth: 0.1
 stone_pickaxe:
@@ -2084,14 +1876,8 @@ stone_stairs:
   worth: 3.98
 stone_sword:
   worth: "0.10"
-stone_tool_materials:
-  worth: 1.65
-stray:
-  worth: 7.14
 stray_spawn_egg:
   worth: 0
-strider:
-  worth: 1.1
 strider_spawn_egg:
   worth: 0
 string:
@@ -2162,8 +1948,6 @@ torch:
   worth: 0.1
 totem_of_undying:
   worth: 5151.1
-trader_llama:
-  worth: 0
 trader_llama_spawn_egg:
   worth: 0
 trapped_chest:
@@ -2188,8 +1972,6 @@ tube_coral_fan:
   worth: 2.68
 tube_coral_wall_fan:
   worth: 0
-turtle:
-  worth: 1.1
 turtle_egg:
   worth: 5.29
 turtle_helmet:
@@ -2200,27 +1982,17 @@ twisting_vines:
   worth: 0
 twisting_vines_plant:
   worth: 0
-vex:
-  worth: 7.14
 vex_spawn_egg:
-  worth: 0
-villager:
   worth: 0
 villager_spawn_egg:
   worth: 0
-vindicator:
-  worth: 7.14
 vindicator_spawn_egg:
   worth: 0
 vine:
   worth: 2
-void_air:
-  worth: 0
 wall_sign:
   worth: 0
 wall_torch:
-  worth: 0
-wandering_trader:
   worth: 0
 wandering_trader_spawn_egg:
   worth: 0
@@ -2302,26 +2074,16 @@ white_wall_banner:
   worth: 0
 white_wool:
   worth: 0.96
-witch:
-  worth: 4.95
 witch_spawn_egg:
   worth: 0
-wither:
-  worth: 192.31
 wither_rose:
   worth: 5357.14
-wither_skeleton:
-  worth: 4.95
 wither_skeleton_skull:
   worth: 775
 wither_skeleton_spawn_egg:
   worth: 0
 wither_skeleton_wall_skull:
   worth: 0
-wither_skull:
-  worth: 0
-wolf:
-  worth: 1.1
 wolf_spawn_egg:
   worth: 0
 wooden_axe:
@@ -2332,8 +2094,6 @@ wooden_pickaxe:
   worth: 2.13
 wooden_shovel:
   worth: 1.24
-wooden_slabs:
-  worth: 0.21
 wooden_sword:
   worth: 1.37
 wool:
@@ -2368,29 +2128,17 @@ yellow_wall_banner:
   worth: 0
 yellow_wool:
   worth: 3.37
-zoglin:
-  worth: 3.3
 zoglin_spawn_egg:
   worth: 0
-zombie:
-  worth: 3.02
 zombie_head:
   worth: 773.08
-zombie_horse:
-  worth: 3.3
 zombie_horse_spawn_egg:
-  worth: 0
-zombie_pigman_spawn_egg:
   worth: 0
 zombie_spawn_egg:
   worth: 0
-zombie_villager:
-  worth: 3.3
 zombie_villager_spawn_egg:
   worth: 0
 zombie_wall_head:
   worth: 0
-zombified_piglin:
-  worth: 3.3
 zombified_piglin_spawn_egg:
   worth: 0
