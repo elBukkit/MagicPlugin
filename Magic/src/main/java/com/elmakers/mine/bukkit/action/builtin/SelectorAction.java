@@ -1562,6 +1562,15 @@ public class SelectorAction extends CompoundAction implements GUIAction
         if (optionConfigs != null) {
             loadOptions(optionConfigs);
         }
+        ConfigurationSection addOptions = parameters.getConfigurationSection("add_options");
+        if (addOptions != null) {
+            optionConfigs = new ArrayList<>();
+            Set<String> keys = addOptions.getKeys(false);
+            for (String key : keys) {
+                optionConfigs.add(addOptions.getConfigurationSection(key));
+            }
+            loadOptions(optionConfigs);
+        }
         if (chestLocation != null) {
             // Load items from chest if configured
             Block block = chestLocation.getBlock();
