@@ -28,13 +28,14 @@ $map = array();
 if (file_exists($configFile)) {
     $map = spyc_load_file($configFile);
 }
-
+$csvKeys = array();
 if (($handle = fopen($csvFile, "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
         $num = count($data);
         if ($num < 2) {
             continue;
         }
+        $csvKeys[$data[0]] = true;
         if (isset($map[$data[0]])) continue;
         $map[$data[0]] = array('worth' => floatval($data[1]));
     }
@@ -43,5 +44,6 @@ if (($handle = fopen($csvFile, "r")) !== FALSE) {
     die("Failed to load file $csvFile\n");
 }
 
+$map = array_intersect_key($map, $csvKeys);
 ksort($map);
 file_put_contents($configFile, spyc_dump($map));
