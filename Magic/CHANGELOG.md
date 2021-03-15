@@ -29,6 +29,7 @@
    See migration log if you need to change this back
  - Turn off Magic.notify permission by default. Sorry if it was annoying ;()
  - Cloak now turns off when you cast another spell
+ - Reworked the Stun spell
 
 ## Additions
 

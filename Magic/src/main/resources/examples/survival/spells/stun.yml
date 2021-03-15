@@ -11,26 +11,20 @@ stun:
     earns_sp: 10
     actions:
         cast:
-        - class: Firework
-          actions:
-          - class: AreaOfEffect
+          - class: ConeOfEffect
             actions:
             - class: Damage
             - class: PotionEffect
             - class: Deactivate
     effects:
         cast:
-        -  class: EffectSingle
-           sound: magic.shimmer_quiet
-           sound_pitch: 0.1
-           sound_volume: 0.5
-           location: origin
-        projectile:
-        -  class: EffectSingle
-           location: origin
-           color_override: color
-           effectlib:
-             class: Sphere
+        - sound: magic.shimmer_quiet
+          sound_pitch: 0.1
+          sound_volume: 0.5
+          location: origin
+          color_override: color
+          effectlib:
+             class: Cone
              iterations: 16
              particle: redstone
     parameters:
@@ -42,12 +36,7 @@ stun:
         effect_confusion: 5
         effect_slow: 1
         duration: 8000
-        launch: true
         cooldown: 5000
-        firework: ball
-        power: 0
-        speed: 0.5
-        expected_lifespan: 10
     costs:
         mana: 50
 
