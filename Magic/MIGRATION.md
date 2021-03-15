@@ -4,9 +4,9 @@
 
  - Mana and hotbar count are now read from paths directly and not stored on classes.
    If you have a setup where hotbars can be added or mana can be increased, you will need to
-   edit paths to remove the `override_properties` sections and change the `base` class
-   config back to route mana to `class`, ask for help if you need to revert this change.
- - The lores, painterly and slimefun examples no longer implicity include survival.
+   edit paths to remove the `override_properties` sections and add base mana values back to your
+   class. If you need help, come ask on Discord
+ - The lowres, painterly and slimefun examples no longer implicity include survival.
    If you were using one of these examples you may need to add the survival example back
    in, e.g. `/mconfig example set survival painterly`
  - Currencies were refactored:

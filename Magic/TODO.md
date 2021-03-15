@@ -36,6 +36,8 @@
 
 ## Hot
 
+ - Try allowing phasing to the nether (set world_nether max_height to 255)
+ - Re-activating levitate on login does not consume active costs
  - /mage add TheBugWhisperer brush cobblestone fails, tab-complete fails
  - Add kit support to Selector (for kit shops)
  - Re-work Stun so it's not useless

@@ -42,11 +42,24 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                 String[] routes = StringUtils.split(routeList, ",");
                 MagicPropertyType propertyType = null;
                 for (String route : routes) {
+                    // Referenced routes
+                    if (keys.contains(route)) {
+                        propertyType = propertyRoutes.get(route);
+                        break;
+                    }
+
                     try {
                         MagicPropertyType routeType = MagicPropertyType.valueOf(route.toUpperCase());
-                        if (routeType == type) {
+                        if (routeType == type && hasOwnProperty(key)) {
                             propertyType = routeType;
                             break;
+                        }
+                        if (routeType != type) {
+                            BaseMagicConfigurable storage = getStorage(routeType);
+                            if (storage != null && storage.hasOwnProperty(key)) {
+                                propertyType = routeType;
+                                break;
+                            }
                         }
                         if (propertyType == null) {
                             propertyType = routeType;

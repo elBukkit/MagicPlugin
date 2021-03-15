@@ -1079,4 +1079,18 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
         return super.getPropertyConfiguration(key);
     }
+
+    @Override
+    public boolean hasOwnProperty(String key) {
+        if (!key.equals("path") && getStorage("path") == this) {
+            ProgressionPath path = getPath();
+            if (path != null) {
+                ConfigurationSection pathProperties = path.getProperties();
+                if (pathProperties != null && pathProperties.contains(key)) {
+                    return true;
+                }
+            }
+        }
+        return super.hasOwnProperty(key);
+    }
 }
