@@ -214,6 +214,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected boolean switchClass = false;
         protected boolean putInHand = true;
         protected boolean free = false;
+        protected boolean removeLore = false;
         protected boolean applyLoreToItem = false;
         protected boolean applyNameToItem = false;
         protected boolean nameIcon = true;
@@ -319,6 +320,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 earnScale = costScale;
             }
             effects = configuration.getString("effects", effects);
+            removeLore = configuration.getBoolean("remove_lore", removeLore);
             applyLoreToItem = configuration.getBoolean("apply_lore_to_item", applyLoreToItem);
             applyNameToItem = configuration.getBoolean("apply_name_to_item", applyNameToItem);
             allowDroppedItems = configuration.getBoolean("allow_dropped_items", allowDroppedItems);
@@ -600,6 +602,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.free = defaults.free;
             this.costOverride = defaults.costOverride;
             this.effects = defaults.effects;
+            this.removeLore = defaults.removeLore;
             this.applyLoreToItem = defaults.applyLoreToItem;
             this.applyNameToItem = defaults.applyNameToItem;
             this.nameIcon = defaults.nameIcon;
@@ -985,6 +988,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
             if (nameIcon) {
                 meta.setDisplayName(name);
+            }
+            if (removeLore) {
+                meta.setLore(new ArrayList<>());
             }
             if (!lore.isEmpty()) {
                 List<String> itemLore = meta.getLore();
