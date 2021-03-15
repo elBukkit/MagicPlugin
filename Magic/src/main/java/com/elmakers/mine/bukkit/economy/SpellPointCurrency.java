@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.economy;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -7,8 +9,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 public class SpellPointCurrency extends BaseMagicCurrency {
     private final boolean isValid;
 
-    public SpellPointCurrency(MageController controller, double worth) {
-        super(controller, "sp", worth);
+    public SpellPointCurrency(MageController controller, ConfigurationSection configuration) {
+        super(controller, "sp", configuration);
         isValid = controller.isSPEnabled();
     }
 
@@ -39,5 +41,10 @@ public class SpellPointCurrency extends BaseMagicCurrency {
     @Override
     public boolean isValid() {
         return isValid;
+    }
+
+    @Override
+    public double getDefaultValue() {
+        return defaultValue;
     }
 }

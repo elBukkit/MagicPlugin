@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.economy;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -8,8 +10,8 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 public class VaultCurrency extends BaseMagicCurrency {
     private final MageController controller;
 
-    public VaultCurrency(MageController controller) {
-        super(controller, "currency", 1);
+    public VaultCurrency(MageController controller, ConfigurationSection configuration) {
+        super(controller, "currency", configuration);
         this.controller = controller;
     }
 

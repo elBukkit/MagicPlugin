@@ -234,35 +234,39 @@ commands:
     disabled: |-
       Эта команда недоступна, потому что владелец сервера указал ресурс-пак
       в файле server.properties
-costs:
-  sp_amount: $amount ОЗ
-  xp_amount: $amount Опыта
-  levels_amount: $amount Уровней опыта
-  mana_amount: $amount Маны
-  mana: мана
-  xp: Опыт
-  levels: уровни
-  sp: Очки заклинаний
-  sp_short: ОЗ
-  hunger: энергия
-  health: здоровье
-  health_amount: $amount ед. Здоровья
-  hunger_amount: $amount ед. Энергии
-  heroes_mana: $amount Маны
-  currency_singular: Доллар
-  currency: Долларов
-  currency_amount: $$amount
 currency:
-  item_name: '&e$amount &6$type'
-  description: ПКМ, чтобы внести
-  limit: a:&eЛимит для &6$type &eравен &c$amount
-  deposited: 'a:&aВнесено &2$amount &6$type&a, баланс: &2$balance'
-  earned: a:&6+&e$earned
-sp:
-  name: '&e$amount &6Очков Заклинаний'
-  description: Дает тебе очки заклинаний
-  limit: a:&eЛимит для &6Очков Заклинаний &eравен &c$amount
-  deposited: 'a:&aВнесено &2$amount &6Очков Заклинаний&a, баланс: &2$balance'
+  defaults:
+    item_name: '&e$amount &6$type'
+    description: ПКМ, чтобы внести
+    limit: a:&eЛимит для &6$type &eравен &c$amount
+    deposited: 'a:&aВнесено &2$amount &6$type&a, баланс: &2$balance'
+  sp:
+    name: '&6Очков Заклинаний'
+    description: Дает тебе очки заклинаний
+    limit: a:&eЛимит для &6Очков Заклинаний &eравен &c$amount
+    deposited: 'a:&aВнесено &2$amount &6Очков Заклинаний&a, баланс: &2$balance'
+  xp:
+    name: Опыт
+    name_short: XP
+  levels:
+    name: уровни
+  mana:
+    name: мана
+    name_short: MP
+  hunger:
+    name: энергия
+  health:
+    name: здоровье
+    name_short: HP
+  heroes_mana:
+    name: мана
+  currency:
+    name: Долларов
+    name_singular: Доллар
+    amount: "$$amount"
+  item:
+    name_singular: Emerald
+    name: Emeralds
 dynmap:
   spells_markerset: Использованные Заклинания
   wands_markerset: Палочки
@@ -381,7 +385,6 @@ mage:
   spells_not_levelled: Никакие из твоих заклинаний не были улучшены
   reconfigured: Маг был изменен
   not_reconfigured: Маг не изменен
-  earned_sp: a:&6+&e$amount &6ОЗ
   no_class: Ты не обучен использованию $name
   no_spell: Ты не обучен использованию $name
   player_spell_upgraded: '&r&6$name &r&dигрока $player &d&oбыл улучшен до &3$level'
@@ -2788,14 +2791,14 @@ wand:
   wand_instructions_footer: |-
     &8|
     &8 ----------------------------------------------------
-  sp_instructions: |-
+  sp_earn_instructions: |-
     &8| &7> &fТы заработал немного &6Очков Заклинаний!
     &8| &7> &fТвои &6Очки Заклинаний &fотображены над шкалой маны
     &8| &7> &6ОЗ &fможно потратить в &eстоле зачарования
     &8| &7> &f для изучения новых заклинаний
     &8| &7> &fПовторное использование заклинания дает меньше &6ОЗ&f
     &8| &7> &fПопробуй &dкомбинировать заклинания!
-  currency_instructions: |-
+  earn_instructions: |-
     &8| &7> &fТы заработал немного &6$currency!
     &8| &7> &fТвои &6$currency &fотображены над шкалой маны
     &8| &7> &6$currency &fможно потратить в &eстоле зачарования

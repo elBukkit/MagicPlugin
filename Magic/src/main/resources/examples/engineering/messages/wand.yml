@@ -1,0 +1,7 @@
+wand:
+  materia_earn_instructions: |-
+    &8| &7> &fYou have earned some &6Materia!
+    &8| &7> &fYour &6Materia &fare displayed above your mana bar
+    &8| &7> &6Materia &fmay be used to build blocks with magic
+    &8| &7> &6Materia &fcan be absorb by removing blocks with magic
+    &8| &7> &6Materia &fcan also be purchased at an enchanting table

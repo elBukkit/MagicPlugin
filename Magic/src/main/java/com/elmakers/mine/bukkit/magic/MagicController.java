@@ -730,23 +730,27 @@ public class MagicController implements MageController {
 
     @Override
     public double getWorthXP() {
-        return worthXP;
+        return getCurrency("xp").getWorth();
     }
 
     @Override
     public double getWorthSkillPoints() {
-        return worthSkillPoints;
+        return getCurrency("sp").getWorth();
     }
 
     @Nullable
     @Override
     public ItemStack getWorthItem() {
-        return currencyItem == null ? null : currencyItem.getItem();
+        Currency itemCurrency = getCurrency("item");
+        if (itemCurrency == null || !(itemCurrency instanceof ItemCurrency)) {
+            return null;
+        }
+        return ((ItemCurrency)itemCurrency).getItem();
     }
 
     @Override
     public double getWorthItemAmount() {
-        return currencyItem == null ? 0 : currencyItem.getWorth();
+        return getCurrency("item").getWorth();
     }
 
     @Override
@@ -1450,7 +1454,7 @@ public class MagicController implements MageController {
         }
 
         // Register currencies and other preload integrations
-        registerPreLoad();
+        registerPreLoad(loader.getMainConfiguration());
         log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
         // Load custom attributes, do this prior to loadAttributes
@@ -2871,7 +2875,7 @@ public class MagicController implements MageController {
         currencies.put(currency.getKey(), currency);
     }
 
-    protected void registerPreLoad() {
+    protected void registerPreLoad(ConfigurationSection configuration) {
         // Setup custom providers
         currencies.clear();
         attributeProviders.clear();
@@ -2898,16 +2902,57 @@ public class MagicController implements MageController {
         castManagers.addAll(loadEvent.getCastManagers());
         targetingProviders.addAll(loadEvent.getTargetingManagers());
 
+        // Use legacy currency configs if present
+        ConfigurationSection currencyConfiguration = configuration.getConfigurationSection("builtin_currency");
+        ConfigurationSection spSection = currencyConfiguration.getConfigurationSection("sp");
+        ConfigurationSection xpSection = currencyConfiguration.getConfigurationSection("xp");
+        String skillPointIcon = configuration.getString("sp_item_icon_url");
+        if (skillPointIcon != null) {
+            getLogger().warning("The config option sp_item_icon_url is deprecated, see builtin_currencies section");
+            spSection.set("icon", "skull:" + skillPointIcon);
+        }
+        if (configuration.contains("sp_max")) {
+            getLogger().warning("The config option sp_max is deprecated, see builtin_currencies section");
+            spSection.set("max", configuration.getInt("sp_max"));
+        }
+        if (configuration.contains("worth_sp")) {
+            getLogger().warning("The config option worth_sp is deprecated, see builtin_currencies section");
+            spSection.set("worth", configuration.getInt("worth_sp"));
+        }
+        if (configuration.contains("sp_default")) {
+            getLogger().warning("The config option sp_default is deprecated, see builtin_currencies section");
+            spSection.set("default", configuration.getInt("sp_default"));
+        }
+        if (configuration.contains("worth_xp")) {
+            getLogger().warning("The config option worth_xp is deprecated, see builtin_currencies section");
+            xpSection.set("worth", configuration.getDouble("worth_xp"));
+        }
+        ConfigurationSection legacyItemCurrency = configuration.getConfigurationSection("currency");
+        if (legacyItemCurrency != null) {
+            ConfigurationSection itemConfiguration = currencyConfiguration.getConfigurationSection("item");
+            getLogger().warning("The config section currency is deprecated, see builtin_currencies.item section");
+            Collection<String> worthItemKeys = legacyItemCurrency.getKeys(false);
+            for (String worthItemKey : worthItemKeys) {
+                ConfigurationSection currencyConfig = legacyItemCurrency.getConfigurationSection(worthItemKey);
+                if (!currencyConfig.getBoolean("enabled", true)) continue;
+                itemConfiguration.set("item", worthItemKey);
+                itemConfiguration.set("worth", currencyConfig.getDouble("worth"));
+                // This is kind of a hack, but makes it easier to override the default ... (heldover from legacy configs)
+                if (!worthItemKey.equals("emerald")) {
+                    break;
+                }
+            }
+        }
+
         // Load builtin default currencies
-        addCurrency(new ItemCurrency(this, getWorthItem(), getWorthItemAmount(), currencyItem.getName(), currencyItem.getPluralName()));
-        addCurrency(new ManaCurrency(this));
-        addCurrency(new ExperienceCurrency(this, getWorthXP()));
-        addCurrency(new HealthCurrency(this));
-        addCurrency(new HungerCurrency(this));
-        addCurrency(new LevelCurrency(this));
-        addCurrency(new ManaCurrency(this));
-        addCurrency(new SpellPointCurrency(this, getWorthSkillPoints()));
-        addCurrency(new VaultCurrency(this));
+        addCurrency(new ItemCurrency(this, currencyConfiguration.getConfigurationSection("item")));
+        addCurrency(new ManaCurrency(this, currencyConfiguration.getConfigurationSection("mana")));
+        addCurrency(new ExperienceCurrency(this, xpSection));
+        addCurrency(new HealthCurrency(this, currencyConfiguration.getConfigurationSection("health")));
+        addCurrency(new HungerCurrency(this, currencyConfiguration.getConfigurationSection("hunger")));
+        addCurrency(new LevelCurrency(this, currencyConfiguration.getConfigurationSection("levels")));
+        addCurrency(new SpellPointCurrency(this, spSection));
+        addCurrency(new VaultCurrency(this, currencyConfiguration.getConfigurationSection("currency")));
 
         // Custom currencies can override the defaults
         for (Currency currency : loadEvent.getCurrencies()) {
@@ -2915,9 +2960,10 @@ public class MagicController implements MageController {
         }
 
         // Configured currencies override everything else
+        currencyConfiguration = configuration.getConfigurationSection("custom_currency");
         Set<String> keys = currencyConfiguration.getKeys(false);
         for (String key : keys) {
-            addCurrency(new CustomCurrency(this, key, currencyConfiguration.getConfigurationSection(key)));
+            addCurrency(new CustomCurrency(this, key, currencyConfiguration));
         }
 
         // Register attribute providers
@@ -4794,214 +4840,208 @@ public class MagicController implements MageController {
 
         // Handle : or | as delimiter
         magicItemKey = magicItemKey.replace("|", ":");
-        try {
-            if (magicItemKey.startsWith("book:")) {
-                String bookCategory = magicItemKey.substring(5);
-                com.elmakers.mine.bukkit.api.spell.SpellCategory category = null;
-
-                if (!bookCategory.isEmpty() && !bookCategory.equalsIgnoreCase("all")) {
-                    category = categories.get(bookCategory);
-                    if (category == null) {
-                        SpellTemplate spell = getSpellTemplate(bookCategory);
+        String[] pieces = StringUtils.split(magicItemKey, ":", 2);
+        String itemKey = pieces[0];
+        if (pieces.length > 1) {
+            String itemData = pieces[1];
+            try {
+                switch (itemKey) {
+                    case "book": {
+                        com.elmakers.mine.bukkit.api.spell.SpellCategory category;
+                        if (!itemData.isEmpty() && !itemData.equalsIgnoreCase("all")) {
+                            category = categories.get(itemData);
+                            if (category == null) {
+                                SpellTemplate spell = getSpellTemplate(itemData);
+                                if (spell == null) {
+                                    if (callback != null) {
+                                        callback.updated(null);
+                                    }
+                                    return null;
+                                } else {
+                                    itemStack = getSpellBook(spell, amount);
+                                }
+                            } else {
+                                itemStack = getSpellBook(category, amount);
+                            }
+                        }
+                    }
+                    break;
+                    case "learnbook": {
+                        SpellTemplate spell = getSpellTemplate(itemData);
                         if (spell == null) {
                             if (callback != null) {
                                 callback.updated(null);
                             }
                             return null;
-                        } else {
-                            itemStack = getSpellBook(spell, amount);
                         }
-                    } else {
-                        itemStack = getSpellBook(category, amount);
+                        itemStack = getLearnSpellBook(spell, amount);
                     }
-                }
-            } else if (magicItemKey.startsWith("learnbook:")) {
-                String bookSpell = magicItemKey.substring(10);
-                SpellTemplate spell = getSpellTemplate(bookSpell);
-                if (spell == null) {
-                    if (callback != null) {
-                        callback.updated(null);
-                    }
-                    return null;
-                }
-                itemStack = getLearnSpellBook(spell, amount);
-            } else if (magicItemKey.startsWith("recipe:")) {
-                String recipeKey = magicItemKey.substring(7);
-                itemStack = CompatibilityUtils.getKnowledgeBook();
-                if (itemStack != null) {
-                    if (recipeKey.equals("*")) {
-                        Collection<String> keys = crafting.getRecipeKeys();
-                        for (String key : keys) {
-                            CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
-                        }
-                    } else {
-                        String[] recipeKeys = StringUtils.split(recipeKey, ",");
-                        for (String recipe : recipeKeys) {
-                            CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipe);
-                        }
-                    }
-                }
-            } else if (magicItemKey.startsWith("recipes:")) {
-                String recipeKey = magicItemKey.substring(8);
-                itemStack = CompatibilityUtils.getKnowledgeBook();
-                if (itemStack != null) {
-                    if (recipeKey.equals("*")) {
-                        Collection<String> keys = crafting.getRecipeKeys();
-                        for (String key : keys) {
-                            CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
-                        }
-                    } else {
-                        String[] recipeKeys = StringUtils.split(recipeKey, ",");
-                        for (String recipe : recipeKeys) {
-                            MageClassTemplate mageClass = getMageClassTemplate(recipe);
-                            if (mageClass != null) {
-                                for (String key : mageClass.getRecipies()) {
+                    break;
+                    case "recipe": {
+                        itemStack = CompatibilityUtils.getKnowledgeBook();
+                        if (itemStack != null) {
+                            if (itemData.equals("*")) {
+                                Collection<String> keys = crafting.getRecipeKeys();
+                                for (String key : keys) {
                                     CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                                }
+                            } else {
+                                String[] recipeKeys = StringUtils.split(itemData, ",");
+                                for (String recipe : recipeKeys) {
+                                    CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipe);
                                 }
                             }
                         }
                     }
-                }
-            } else if (skillPointItemsEnabled && magicItemKey.startsWith("sp:")) {
-                String spAmountString = magicItemKey.substring(3);
-                int spAmount = 0;
-                try {
-                    spAmount = Integer.parseInt(spAmountString);
-                } catch (Exception ex) {
-                    if (mage != null) {
-                        mage.sendMessage(ChatColor.RED + "SP amount should be a number");
+                    break;
+                    case "recipes": {
+                        itemStack = CompatibilityUtils.getKnowledgeBook();
+                        if (itemStack != null) {
+                            if (itemData.equals("*")) {
+                                Collection<String> keys = crafting.getRecipeKeys();
+                                for (String key : keys) {
+                                    CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                                }
+                            } else {
+                                String[] recipeKeys = StringUtils.split(itemData, ",");
+                                for (String recipe : recipeKeys) {
+                                    MageClassTemplate mageClass = getMageClassTemplate(recipe);
+                                    if (mageClass != null) {
+                                        for (String key : mageClass.getRecipies()) {
+                                            CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
-                }
-                itemStack = getURLSkull(skillPointIcon);
-                ItemMeta meta = itemStack.getItemMeta();
-                meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', messages.get("sp.name")).replace("$amount", Integer.toString(spAmount)));
-                String spDescription = messages.get("sp.description");
-                if (spDescription.length() > 0)
-                {
-                    List<String> lore = new ArrayList<>();
-                    lore.add(ChatColor.translateAlternateColorCodes('&', spDescription));
-                    meta.setLore(lore);
-                }
-                itemStack.setItemMeta(meta);
-                InventoryUtils.setMetaInt(itemStack, "sp", spAmount);
-            } else if (magicItemKey.startsWith("spell:")) {
-                // Fix delimiter replaced above, to handle spell levels
-                magicItemKey = magicItemKey.replace(":", "|");
-                String spellKey = magicItemKey.substring(6);
-                itemStack = createSpellItem(spellKey, brief);
-            } else if (magicItemKey.startsWith("wand:")) {
-                String wandKey = magicItemKey.substring(5);
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
-                if (wand != null) {
-                    itemStack = wand.getItem();
-                }
-            } else if (magicItemKey.startsWith("upgrade:")) {
-                String wandKey = magicItemKey.substring(8);
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(wandKey);
-                if (wand != null) {
-                    wand.makeUpgrade();
-                    itemStack = wand.getItem();
-                }
-            } else if (magicItemKey.startsWith("brush:")) {
-                String brushKey = magicItemKey.substring(6);
-                itemStack = createBrushItem(brushKey);
-            } else if (magicItemKey.startsWith("item:")) {
-                String itemKey = magicItemKey.substring(5);
-                itemStack = createGenericItem(itemKey);
-            } else {
-                String[] pieces = StringUtils.split(magicItemKey, ':');
-                Currency currency = currencies.get(pieces[0]);
-                if (pieces.length > 1 && currency != null) {
-                    String costKey = pieces[0];
-                    String costAmount = pieces[1];
+                    break;
+                    case "spell": {
+                        // Fix delimiter replaced above, to handle spell levels
+                        String spellKey = itemData.replace(":", "|");
+                        itemStack = createSpellItem(spellKey, brief);
+                    }
+                    break;
+                    case "wand": {
+                        com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(itemData);
+                        if (wand != null) {
+                            itemStack = wand.getItem();
+                        }
+                    }
+                    break;
+                    case "upgrade": {
+                        com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(itemData);
+                        if (wand != null) {
+                            wand.makeUpgrade();
+                            itemStack = wand.getItem();
+                        }
+                    }
+                    break;
+                    case "brush": {
+                        itemStack = createBrushItem(itemData);
+                    }
+                    break;
+                    case "item": {
+                        itemStack = createGenericItem(itemData);
+                    }
+                    break;
+                    default: {
+                        // Currency
+                        Currency currency = currencies.get(itemKey);
+                        com.elmakers.mine.bukkit.api.block.MaterialAndData currencyIcon = currency == null ? null : currency.getIcon();
+                        if (pieces.length > 1 && currencyIcon != null) {
+                            itemStack = currencyIcon.getItemStack(1);
+                            ItemMeta meta = itemStack.getItemMeta();
+                            String name = currency.getName(messages);
+                            String itemName = messages.get("currency." + itemKey + ".item_name", messages.get("currency.defaults.item_name"));
+                            itemName = itemName.replace("$type", name);
+                            itemName = itemName.replace("$amount", itemData);
+                            meta.setDisplayName(itemName);
+                            int intAmount;
+                            try {
+                                intAmount = Integer.parseInt(itemData);
+                            } catch (Exception ex) {
+                                getLogger().warning("Invalid amount '" + itemData + "' in " + currency.getKey() + " cost: " + magicItemKey);
+                                if (callback != null) {
+                                    callback.updated(null);
+                                }
+                                return null;
+                            }
 
-                    com.elmakers.mine.bukkit.api.block.MaterialAndData itemType = currency.getIcon();
-                    if (itemType == null) {
-                        itemStack = getURLSkull(skillPointIcon);
-                    } else {
-                        itemStack = itemType.getItemStack(1);
-                    }
-
-                    ItemMeta meta = itemStack.getItemMeta();
-                    String name = messages.get("currency." + costKey + ".name", costKey);
-                    String itemName = messages.get("currency." + costKey + ".item_name", messages.get("currency.item_name"));
-                    itemName = itemName.replace("$type", name);
-                    itemName = itemName.replace("$amount", costAmount);
-                    meta.setDisplayName(itemName);
-                    int intAmount;
-                    try {
-                        intAmount = Integer.parseInt(costAmount);
-                    } catch (Exception ex) {
-                        getLogger().warning("Invalid amount in custom cost: " + magicItemKey);
-                        if (callback != null) {
-                            callback.updated(null);
+                            String currencyDescription = messages.get("currency." + itemKey + ".description", messages.get("currency.defaults.description"));
+                            if (currencyDescription.length() > 0) {
+                                currencyDescription = currencyDescription.replace("$type", name);
+                                currencyDescription = currencyDescription.replace("$amount", itemData);
+                                List<String> lore = new ArrayList<>();
+                                InventoryUtils.wrapText(ChatColor.translateAlternateColorCodes('&', currencyDescription), lore);
+                                meta.setLore(lore);
+                            }
+                            itemStack.setItemMeta(meta);
+                            itemStack = CompatibilityUtils.makeReal(itemStack);
+                            InventoryUtils.makeUnbreakable(itemStack);
+                            InventoryUtils.hideFlags(itemStack, 63);
+                            Object currencyNode = InventoryUtils.createNode(itemStack, "currency");
+                            InventoryUtils.setMetaInt(currencyNode, "amount", intAmount);
+                            InventoryUtils.setMeta(currencyNode, "type", itemKey);
                         }
-                        return null;
-                    }
-
-                    String currencyDescription = messages.get("currency." + costKey + ".description", messages.get("currency.description"));
-                    if (currencyDescription.length() > 0)
-                    {
-                        List<String> lore = new ArrayList<>();
-                        InventoryUtils.wrapText(ChatColor.translateAlternateColorCodes('&', currencyDescription), lore);
-                        meta.setLore(lore);
-                    }
-                    itemStack.setItemMeta(meta);
-                    itemStack = CompatibilityUtils.makeReal(itemStack);
-                    InventoryUtils.makeUnbreakable(itemStack);
-                    InventoryUtils.hideFlags(itemStack, 63);
-                    Object currencyNode = InventoryUtils.createNode(itemStack, "currency");
-                    InventoryUtils.setMetaInt(currencyNode, "amount", intAmount);
-                    InventoryUtils.setMeta(currencyNode, "type", costKey);
-                }
-                if (itemStack == null && items != null) {
-                    ItemData itemData = items.get(magicItemKey);
-                    if (itemData != null) {
-                        itemStack = itemData.getItemStack(amount);
-                        if (callback != null) {
-                            callback.updated(itemStack);
-                        }
-                        return itemStack;
-                    }
-                    MaterialAndData item = new MaterialAndData(magicItemKey);
-                    if (item.isValid() && CompatibilityUtils.isLegacy(item.getMaterial())) {
-                        short convertData = (item.getData() == null ? 0 : item.getData());
-                        item = new MaterialAndData(CompatibilityUtils.migrateMaterial(item.getMaterial(), (byte)convertData));
-                    }
-                    if (item.isValid()) {
-                        return item.getItemStack(amount, callback);
-                    }
-                    com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
-                    if (wand != null) {
-                        ItemStack wandItem = wand.getItem();
-                        if (wandItem != null) {
-                            wandItem.setAmount(amount);
-                        }
-                        if (callback != null) {
-                            callback.updated(wandItem);
-                        }
-                        return wandItem;
-                    }
-                    // Spells may be using the | delimiter for levels
-                    // I am regretting overloading this delimiter!
-                    String spellKey = magicItemKey.replace(":", "|");
-                    itemStack = createSpellItem(spellKey, brief);
-                    if (itemStack != null) {
-                        itemStack.setAmount(amount);
-                        if (callback != null) {
-                            callback.updated(itemStack);
-                        }
-                        return itemStack;
-                    }
-                    itemStack = createBrushItem(magicItemKey);
-                    if (itemStack != null) {
-                        itemStack.setAmount(amount);
                     }
                 }
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
             }
+        }
 
-        } catch (Exception ex) {
-            getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
+
+        // Final fallback, may be a plain item without any data, a
+        // custom item key, or some form of MaterialAnData
+        // also as some fallbacks for wands and classes wtihout a prefix
+        if (itemStack == null && items != null) {
+            try {
+                ItemData customItem = items.get(magicItemKey);
+                if (customItem != null) {
+                    itemStack = customItem.getItemStack(amount);
+                    if (callback != null) {
+                        callback.updated(itemStack);
+                    }
+                    return itemStack;
+                }
+                MaterialAndData item = new MaterialAndData(magicItemKey);
+                if (item.isValid() && CompatibilityUtils.isLegacy(item.getMaterial())) {
+                    short convertData = (item.getData() == null ? 0 : item.getData());
+                    item = new MaterialAndData(CompatibilityUtils.migrateMaterial(item.getMaterial(), (byte) convertData));
+                }
+                if (item.isValid()) {
+                    return item.getItemStack(amount, callback);
+                }
+                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
+                if (wand != null) {
+                    ItemStack wandItem = wand.getItem();
+                    if (wandItem != null) {
+                        wandItem.setAmount(amount);
+                    }
+                    if (callback != null) {
+                        callback.updated(wandItem);
+                    }
+                    return wandItem;
+                }
+                // Spells may be using the | delimiter for levels
+                // I am regretting overloading this delimiter!
+                String spellKey = magicItemKey.replace(":", "|");
+                itemStack = createSpellItem(spellKey, brief);
+                if (itemStack != null) {
+                    itemStack.setAmount(amount);
+                    if (callback != null) {
+                        callback.updated(itemStack);
+                    }
+                    return itemStack;
+                }
+                itemStack = createBrushItem(magicItemKey);
+                if (itemStack != null) {
+                    itemStack.setAmount(amount);
+                }
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);
+            }
         }
 
         if (callback != null) {
@@ -5375,7 +5415,7 @@ public class MagicController implements MageController {
 
     @Override
     public int getSPMaximum() {
-        return spMaximum;
+        return (int)getCurrency("sp").getMaxValue();
     }
 
     @Override
@@ -6026,10 +6066,6 @@ public class MagicController implements MageController {
     @Override
     public String getHeroesSkillPrefix() {
         return heroesSkillPrefix;
-    }
-
-    public boolean skillPointItemsEnabled() {
-        return skillPointItemsEnabled;
     }
 
     public List<AttributeProvider> getAttributeProviders() {
@@ -7124,7 +7160,6 @@ public class MagicController implements MageController {
         materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
         materialVariants = ConfigurationUtils.getList(properties, "material_variants");
         blockItems = properties.getConfigurationSection("block_items");
-        currencyConfiguration = properties.getConfigurationSection("custom_currency");
         loadBlockSkins(properties.getConfigurationSection("block_skins"));
         loadMobSkins(properties.getConfigurationSection("mob_skins"));
         loadMobEggs(properties.getConfigurationSection("mob_eggs"));
@@ -7145,37 +7180,8 @@ public class MagicController implements MageController {
         maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
         maxMana = properties.getInt("max_mana", maxMana);
         maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
-        worthSkillPoints = properties.getDouble("worth_sp", 1);
-        skillPointIcon = properties.getString("sp_item_icon_url");
-        skillPointItemsEnabled = properties.getBoolean("sp_items_enabled", true);
         worthBase = properties.getDouble("worth_base", 1);
-        worthXP = properties.getDouble("worth_xp", 1);
         com.elmakers.mine.bukkit.item.ItemData.EARN_SCALE = properties.getDouble("default_earn_scale", 0.5);
-        ConfigurationSection currencies = properties.getConfigurationSection("currency");
-        if (currencies != null)
-        {
-            Collection<String> worthItemKeys = currencies.getKeys(false);
-            for (String worthItemKey : worthItemKeys) {
-                ConfigurationSection currencyConfig = currencies.getConfigurationSection(worthItemKey);
-                if (!currencyConfig.getBoolean("enabled", true)) continue;
-                MaterialAndData material = new MaterialAndData(worthItemKey);
-                ItemStack worthItemType = material.getItemStack(1);
-                double worthItemAmount = currencyConfig.getDouble("worth");
-                String worthItemName = currencyConfig.getString("name");
-                String worthItemNamePlural = currencyConfig.getString("name_plural");
-
-                currencyItem = new CurrencyItem(worthItemType, worthItemAmount, worthItemName, worthItemNamePlural);
-
-                // This is kind of a hack, but makes it easier to override the default ...
-                if (!worthItemKey.equals("emerald")) {
-                    break;
-                }
-            }
-        }
-        else
-        {
-            currencyItem = null;
-        }
 
         SafetyUtils.MAX_VELOCITY = properties.getDouble("max_velocity", 10);
         HitboxUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
@@ -7378,7 +7384,6 @@ public class MagicController implements MageController {
         }
         spEnabled = properties.getBoolean("sp_enabled", true);
         spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
-        spMaximum = properties.getInt("sp_max", 9999);
 
         populateEntityTypes(undoEntityTypes, properties, "entity_undo_types");
         populateEntityTypes(friendlyEntityTypes, properties, "friendly_entity_types");
@@ -7440,7 +7445,6 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);
         com.elmakers.mine.bukkit.magic.Mage.CHANGE_WORLD_EQUIP_COOLDOWN = properties.getInt("change_world_equip_cooldown", 0);
         com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = properties.getBoolean("close_wand_on_world_change", false);
-        com.elmakers.mine.bukkit.magic.Mage.DEFAULT_SP = properties.getInt("sp_default", 0);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
@@ -7682,14 +7686,8 @@ public class MagicController implements MageController {
     private int                                    maxMana                            = 1000;
     private int                                    maxManaRegeneration                = 100;
     private double                              worthBase                       = 1;
-    private double                              worthSkillPoints                = 1;
-    private String                              skillPointIcon                  = null;
-    private boolean                             skillPointItemsEnabled          = true;
-    private double                              worthXP                         = 1;
-    private CurrencyItem                        currencyItem                    = null;
     private boolean                             spEnabled                       = true;
     private boolean                             spEarnEnabled                   = true;
-    private int                                 spMaximum                       = 0;
 
     private boolean                             castCommandCostFree             = false;
     private boolean                             castCommandCooldownFree         = false;
@@ -7712,7 +7710,6 @@ public class MagicController implements MageController {
     private Collection<ConfigurationSection>    materialColors                  = null;
     private List<Object>                        materialVariants                = null;
     private ConfigurationSection                blockItems                  = null;
-    private ConfigurationSection                currencyConfiguration       = null;
     private Map<Material, String>               blockSkins                  = new HashMap<>();
     private Map<EntityType, String>             mobSkins                    = new HashMap<>();
     private Map<EntityType, MaterialAndData>    skullItems                  = new HashMap<>();

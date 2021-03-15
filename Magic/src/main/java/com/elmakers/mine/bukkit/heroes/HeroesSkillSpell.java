@@ -111,7 +111,7 @@ public class HeroesSkillSpell extends BaseSpell {
         int mana = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.MANA, 0, true);
         if (mana > 0)
         {
-            String manaDescription = messages.get("costs.heroes_mana").replace("$amount", Integer.toString(mana));
+            String manaDescription = messages.get("currency.heroes_mana.amount").replace("$amount", Integer.toString(mana));
             lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", manaDescription));
         }
     }

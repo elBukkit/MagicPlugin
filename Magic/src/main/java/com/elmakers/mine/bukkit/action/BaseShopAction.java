@@ -258,7 +258,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (isXP) {
             worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthXP());
             amountString = Integer.toString((int)worth);
-            amountString = messages.get("costs.xp_amount").replace("$amount", amountString);
+            amountString = messages.get("currency.xp.amount").replace("$amount", amountString);
         }
         else if (isItems)
         {
@@ -268,7 +268,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         else if (isSkillPoints) {
             worth = Math.ceil(costScale * worth * controller.getWorthBase() / controller.getWorthSkillPoints());
             amountString = Integer.toString((int)Math.ceil(worth));
-            amountString = messages.get("costs.sp_amount").replace("$amount", amountString);
+            amountString = messages.get("currency.sp.amount").replace("$amount", amountString);
         }
         else
         {
@@ -572,13 +572,13 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         String description = "";
         if (isXP) {
             String xpAmount = Integer.toString(mage.getExperience());
-            description = messages.get("costs.xp_amount").replace("$amount", xpAmount);
+            description = messages.get("currency.xp.amount").replace("$amount", xpAmount);
         } else if (isItems) {
             int itemAmount = getItemAmount(controller, mage);
             description = formatItemAmount(controller, itemAmount);
         } else if (isSkillPoints) {
             String spAmount = Integer.toString(mage.getSkillPoints());
-            description = messages.get("costs.sp_amount").replace("$amount", spAmount);
+            description = messages.get("currency.sp.amount").replace("$amount", spAmount);
         } else {
             double balance = VaultController.getInstance().getBalance(mage.getPlayer());
             description = VaultController.getInstance().format(balance);

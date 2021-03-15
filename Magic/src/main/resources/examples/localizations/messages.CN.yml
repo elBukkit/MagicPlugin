@@ -1,34 +1,36 @@
 # Translator:qsefthuopq
 # Laste updated:2020-05-01
 costs:
-  sp_amount: $amount SP
-  xp_amount: $amount XP
-  levels_amount: $amount级经验
-  mana_amount: $amount 法力
-  mana: 法力
-  xp: XP
-  levels: 级
-  sp: 魔法点
-  hunger: 能量
-  health: 血量
-  health_amount: $amount 血量
-  hunger_amount: $amount 能量
-  heroes_mana: $amount 法力
-  currency_singular: 金钱
-  currency: 金钱
-  currency_amount: "$$amount"
-
-currency:
-  item_name: "&e$amount &6$type"
-  description: 右击捐款
-  limit: "a:&e &6$type 的上限&e为 &c$amount"
-  deposited: "a:&a已捐赠 &2$amount &6$type&a, 剩余: &2$balance"
-  earned: "a:&6+&e$earned"
-sp:
-  name: '&e$amount &6魔法点'
-  description: 将被你的法杖吸收
-  limit: a:&6魔法点&e上限为 &c$amount
-  deposited: 'a:&a已捐赠 &2$amount &6魔法点&a, 剩余: &2$balance'
+  default:
+    item_name: "&e$amount &6$type"
+    description: 右击捐款
+    limit: "a:&e &6$type 的上限&e为 &c$amount"
+    deposited: "a:&a已捐赠 &2$amount &6$type&a, 剩余: &2$balance"
+    earned: "a:&6+&e$earned"
+  sp:
+    name: Spell Points
+    description: "Right-click to earn $type"
+    name_short: 魔法点
+  xp:
+    name: Experience
+    name_short: XP
+  levels:
+    name: 级
+  mana:
+    name: 法力
+  hunger:
+    name: 能量
+  health:
+    name: 血量
+  heroes_mana:
+    name: 法力
+  currency:
+    name: 金钱
+    name_singular: 金钱
+    amount: "$$amount"
+  item:
+    name_singular: Emerald
+    name: Emeralds
 item:
   duplicated: 已复制你的物品
   destroyed: 已摧毁你的物品
@@ -2172,7 +2174,7 @@ wand:
   enchant_instructions: '&r&b使用附魔台来升级你的$wand&b.'
   brush_instructions: '&r&e材料笔刷已添加到你的$wand内&e. Shift+$toggle
     来选择一个笔刷.'
-  sp_instructions: '&r&6你获得了一些魔法点(SP)! SP显示在
+  sp_earn_instructions: '&r&6你获得了一些魔法点(SP)! SP显示在
     你的魔法条上方, 你可以手持法杖右击附魔台来学习新的魔法.
     重复施法可以获得少许SP.'
   earn_instructions: '&r&6你获得了一些$currency! 这显示在你的魔法条上方

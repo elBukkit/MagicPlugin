@@ -39,7 +39,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         currency = controller.getCurrency(key);
         if (currency == null) {
             if (key.endsWith(":*")) {
-                key = key.substring(0,key.length() - 2);
+                key = key.substring(0, key.length() - 2);
                 itemWildcard = true;
             } else {
                 itemWildcard = false;

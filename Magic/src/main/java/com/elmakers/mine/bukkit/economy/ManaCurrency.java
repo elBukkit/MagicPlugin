@@ -1,12 +1,14 @@
 package com.elmakers.mine.bukkit.economy;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class ManaCurrency extends BaseMagicCurrency {
-    public ManaCurrency(MageController controller) {
-        super(controller, "mana", 1);
+    public ManaCurrency(MageController controller, ConfigurationSection configuration) {
+        super(controller, "mana", configuration);
     }
 
     @Override

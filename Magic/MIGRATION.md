@@ -9,6 +9,9 @@
  - The lores, painterly and slimefun examples no longer implicity include survival.
    If you were using one of these examples you may need to add the survival example back
    in, e.g. `/mconfig example set survival painterly`
+ - Currencies were refactored:
+   sp, xp and "currency" (item-based currency) configuration is now in a builtin_currency section
+   sp localization is now in the currency section with the rest
 
 # 8.4
 

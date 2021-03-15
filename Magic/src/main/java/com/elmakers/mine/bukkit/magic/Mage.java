@@ -134,10 +134,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int OFFHAND_CAST_RANGE = 32;
     public static int OFFHAND_CAST_COOLDOWN = 500;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
-    public static int DEFAULT_SP = 0;
     public static String DEFAULT_CLASS = "";
     private static String defaultMageName = "Mage";
-    private static String SKILL_POINT_KEY = "sp";
 
     public static CastSourceLocation DEFAULT_CAST_LOCATION = CastSourceLocation.MAINHAND;
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, -0.5, 0);
@@ -2863,8 +2861,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         ItemStack requires = block.getItemStack(1);
         if (!hasItem(requires, allowVariants)) {
             Currency currency = controller.getBlockExchangeCurrency();
-            if (currency != null) {
-                double worth = currency.getWorth() * controller.getWorth(requires);
+            Double itemWorth = controller.getWorth(requires);
+            if (currency != null && itemWorth != null) {
+                double worth = currency.getWorth() * itemWorth;
                 if (worth > 0 && currency.has(this, getActiveProperties(), worth)) {
                     currency.deduct(this, getActiveProperties(), worth);
                     return true;
@@ -4297,11 +4296,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         destinationWarp = warp;
     }
 
-    @Override
-    public boolean isAtMaxSkillPoints() {
-        return getSkillPoints() >= controller.getSPMaximum();
-    }
-
     @Nullable
     private Currency initCurrency(String type) {
         Currency currency = controller.getCurrency(type);
@@ -4319,42 +4313,69 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void addCurrency(String type, double delta) {
-        boolean firstEarn = !data.contains(type);
+        boolean isFirstEarn = !data.contains(type);
+        double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
-        double newValue = data.getDouble(type) + delta;
-        if (currency != null && currency.hasMaxValue()) {
-            newValue = Math.min(newValue, currency.getMaxValue());
-        }
+        delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
 
         Messages messages = controller.getMessages();
-        String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.earned"));
+        String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.default.earned"));
         if (delta > 0 && earnMessage != null && !earnMessage.isEmpty()) {
-            String amountString = messages.get("currency." + type + ".amount", type).replace("$amount",Integer.toString((int)Math.ceil(delta)));
-            sendMessage(earnMessage.replace("$earned", amountString));
+            String amountString = currency.formatAmount(delta, messages);
+            sendMessage(earnMessage.replace("$amount", amountString));
         }
 
-        setCurrency(type, newValue);
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
-            if (firstEarn && currency != null) {
+            if (isFirstEarn && currency != null) {
                 startInstructions();
-                sendMessage(activeWand.getMessage("earn_instructions").replace("$currency", currency.getName(controller.getMessages())));
+                String message = activeWand.getMessage(currency.getKey() + "_earn_instructions", activeWand.getMessage("earn_instructions"));
+                sendMessage(message.replace("$currency", currency.getName(controller.getMessages())));
                 endInstructions();
             }
-
             activeWand.updateMana();
         }
     }
 
     @Override
     public void removeCurrency(String type, double delta) {
-        initCurrency(type);
-        double current = data.getDouble(type);
-        data.set(type, current - delta);
+        double previousValue = data.getDouble(type);
+        Currency currency = initCurrency(type);
+        delta = doSetCurrency(currency, type, previousValue, previousValue - delta);
+
+        Messages messages = controller.getMessages();
+        String spendMessage = messages.get("currency." + type + ".spent", messages.get("currency.default.spent"));
+        if (delta < 0 && spendMessage != null && !spendMessage.isEmpty() && currency != null) {
+            String amountString = currency.formatAmount(Math.abs(delta), messages);
+            sendMessage(spendMessage.replace("$amount", amountString));
+        }
+
+        if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
+            activeWand.updateMana();
+        }
     }
 
     @Override
     public void setCurrency(String type, double amount) {
-        data.set(type, amount);
+        doSetCurrency(type, amount);
+    }
+
+    // Returns the change, which may have been capped by min or max
+    private double doSetCurrency(String key, double newValue) {
+        Currency currency = initCurrency(key);
+        return doSetCurrency(currency, key, data.getDouble(key), newValue);
+    }
+
+    private double doSetCurrency(Currency currency, String type, double previousValue, double newValue) {
+        if (currency != null) {
+            if (currency.hasMaxValue()) {
+                newValue = Math.min(newValue, currency.getMaxValue());
+            }
+            if (currency.hasMinValue()) {
+                newValue = Math.max(newValue, currency.getMinValue());
+            }
+        }
+        data.set(type, newValue);
+        return newValue - previousValue;
     }
 
     @Override
@@ -4368,55 +4389,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public int getSkillPoints() {
-        if (!data.contains(SKILL_POINT_KEY)) {
-            if (DEFAULT_SP == 0) {
-                return 0;
-            }
-            data.set(SKILL_POINT_KEY, DEFAULT_SP);
-        }
-        // .. I thought Configuration section would auto-convert? I guess not!
-        if (data.isString(SKILL_POINT_KEY)) {
-            try {
-                data.set(SKILL_POINT_KEY, Integer.parseInt(data.getString(SKILL_POINT_KEY)));
-            } catch (Exception ex) {
-                data.set(SKILL_POINT_KEY, 0);
-            }
-        }
-        return data.getInt(SKILL_POINT_KEY);
+    public boolean isAtMaxSkillPoints() {
+        return isAtMaxCurrency("sp");
     }
 
     @Override
-    public void addSkillPoints(int delta) {
-        int current = getSkillPoints();
-        if (isPlayer()) {
-            String earnMessage = controller.getMessages().get("mage.earned_sp");
-            if (delta > 0 && earnMessage != null && !earnMessage.isEmpty()) {
-                sendMessage(earnMessage.replace("$amount", Integer.toString(delta)));
-            }
-        }
-        setSkillPoints(current + delta);
+    public int getSkillPoints() {
+        return (int)getCurrency("sp");
     }
 
     @Override
     public void setSkillPoints(int amount) {
-        // We don't allow negative skill points.
-        boolean firstEarn = !data.contains(SKILL_POINT_KEY);
-        amount = Math.max(amount, 0);
-        int limit = controller.getSPMaximum();
-        if (limit > 0) {
-            amount = Math.min(amount, limit);
-        }
-        data.set(SKILL_POINT_KEY, amount);
+        setCurrency("sp", amount);
+    }
 
-        if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesSP()) {
-            if (firstEarn) {
-                startInstructions();
-                sendMessage(activeWand.getMessage("sp_instructions"));
-                endInstructions();
-            }
-            activeWand.updateMana();
-        }
+    @Override
+    public void addSkillPoints(int delta) {
+        addCurrency("sp", delta);
     }
 
     @Override

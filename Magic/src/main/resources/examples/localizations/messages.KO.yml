@@ -166,12 +166,11 @@ worlds:
         name: "지옥"
     world_the_end:
         name: "엔더"
-costs:
-    xp_amount: "$amount 경험치"
-    mana_amount: "$amount 마나"
-    mana: "마나"
-    xp: "경험치"
-    insufficient_resources: "$cost 만큼 부족합니다"
+currency:
+    xp:
+        name: "경험치"
+    mana:
+        name: "마나"
 cooldown:
     wait_seconds: "재사용 대기시간 :  $seconds 초 ."
     wait_minutes: "재사용 대기시간 :  $minutes 분."

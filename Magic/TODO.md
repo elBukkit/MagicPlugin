@@ -13,14 +13,34 @@
  - Improve/fix alt-down rollback cast
  - Chop + Mine can be used on constructed blocks, which can then be rolled back
 
+## Client Localization
+
+ - Add MageController.getMessage(Player) and Mage.getMessages()
+ - Don't merge localization files in config load
+ - Use language setting to set default Messages instance
+ - Will need a special-case for EN
+ - Refactor, refactor, refactor ...
+
+## Paths
+
+ - Need to show path overrides in mage and wand describe
+
+## Wolf Staff
+
+ - Add option to use max level of all spells
+ - Barrier brush
+
 # Player Shops
 
  - Add cost scale buttons to shop management UI (maybe 9 buttons for +- 75,50,25,10% and "market value")
 
 ## Hot
 
+ - /mage add TheBugWhisperer brush cobblestone fails, tab-complete fails
+ - Add kit support to Selector (for kit shops)
+ - Re-work Stun so it's not useless
+ - Use Firework projectile in one-way ticket to boomstown so there's still an example of that
  - Brooms should ignore half-blocks for takeoff
- - Cure does heal the caster now, right?
  - Weird behavior spamming (holding) right-click: https://youtu.be/FJfDqyCgztE
  - Recall to bed not working? (Kit reported) ("Not home set" ... "or something" lol)
  - Need a way to add spells to a path

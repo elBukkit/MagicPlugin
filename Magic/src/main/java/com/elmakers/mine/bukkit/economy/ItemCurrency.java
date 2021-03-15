@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.economy;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
@@ -7,19 +8,33 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 
 public class ItemCurrency extends BaseMagicCurrency {
     private final ItemStack item;
-    private final String singularName;
 
-    public ItemCurrency(MageController controller, ItemStack item, double worth, String name, String pluralName) {
-        super("item", worth, pluralName, pluralName);
-        this.item = item;
-        this.singularName = name;
+    public ItemCurrency(MageController controller, ConfigurationSection configuration) {
+        super(controller, "item", configuration);
+
+        String itemKey = configuration.getString("item");
+        if (itemKey == null || itemKey.isEmpty()) {
+            item = null;
+        } else {
+            MaterialAndData material = new MaterialAndData(configuration.getString("item"));
+            if (material.isValid()) {
+                item = material.getItemStack(1);
+            } else {
+                item = null;
+            }
+        }
     }
 
     private ItemStack getItemStack(double amount) {
         item.setAmount(getRoundedAmount(amount));
+        return item;
+    }
+
+    public ItemStack getItem() {
         return item;
     }
 
@@ -56,5 +71,10 @@ public class ItemCurrency extends BaseMagicCurrency {
         String amountString = intFormatter.format(rounded);
         String label = rounded == 1 ? singularName : name;
         return amountString + " " + label;
+    }
+
+    @Override
+    public boolean isValid() {
+        return item != null;
     }
 }

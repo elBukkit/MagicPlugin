@@ -68,12 +68,6 @@ wand:
     health_regeneration: Health Regeneration
     hunger_regeneration: Anti-Hunger
     costs_description: Costs $description
-costs:
-    xp_amount: $amount XP
-    mana_amount: $amount Mana
-    mana: Mana
-    xp: XP
-    insufficient_resources: Not enough $cost
 cooldown:
     wait_seconds: You must wait another $seconds seconds.
     wait_moment: You must wait a moment.

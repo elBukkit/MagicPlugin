@@ -54,31 +54,40 @@ worth_effect_sound: 8
 # match up.
 worth_base: 1
 
-# This is how much Spell Points are worth, relative to virtual currency.
-worth_sp: 1
-
-# If using XP as a currency, how much one XP is worth
-worth_xp: 1
-
-# By default the Magic ecnonomy is balanced towards a typical Vault economy
-# If Vault is not present, Magic falls back to a physical, emerald-based ecnonomy.
-# For balancing purposes, an emerald will be considered worth 100 "vault dollars" by default.
-# This scales all of the prices down when using emeralds.
-#
-# Adjust the "worth" value below to scale an item-based economy up or down. A value of 1 will make
-# emerald costs match configured worth/cost values.
-#
-# It is important that this matches the value of an emerald as defined in the items configuration,
-# If you plan on selling or buying emeralds
-currency:
-  emerald:
-    worth: 50
-    name: Emerald
-    name_plural: Emeralds
-
 # Here you can define custom currencies
 # These can be named in the "currency" section of messages.yml, see the potter example configs for details.
 custom_currency: {}
+
+# Here you can override the default values for builtin currencies like spell points and mana
+builtin_currency:
+  sp:
+    default: 0
+    max: 9999
+    min: 0
+    icon: skull:http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
+    worth: 1
+  xp:
+    worth: 1
+    icon: skull:http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
+  item:
+    icon: emerald
+    item: emerald
+    worth: 50
+  currency:
+    icon: skull:http://textures.minecraft.net/texture/de89b3131c1e346f44ae4779188984625486eea1c0ba8b69513aa92625557
+    worth: 1
+  levels:
+    icon: skull:http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
+    worth: 100
+  health:
+    icon: skull:http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
+    worth: 1
+  hunger:
+    icon: skull:http://textures.minecraft.net/texture/1364e3f9597a295108d202d20c2f02539d5ad8377fef53ef622603a7f45b52f
+    worth: 1
+  mana:
+    icon: skull:http://textures.minecraft.net/texture/ff78194bb5fe3f374ca6a1727c04247b7bac331cff248bf642acc8e73647e
+    worth: 1
 
 # This allows engineering spells to work with a custom currency instead
 # of requiring the blocks to build.

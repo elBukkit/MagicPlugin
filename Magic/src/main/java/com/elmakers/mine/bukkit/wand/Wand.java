@@ -2474,137 +2474,33 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return "<div style=\"background-color: black; margin: 8px; padding: 8px\">" + StringUtils.join(lore, "<br/>") + "</div>";
     }
 
-    protected void addPropertyLore(List<String> lore, boolean isSingleSpell)
-    {
-        if (usesMana() && effectiveManaMax > 0) {
-            int manaMax = getManaMax();
-            if (effectiveManaMax != manaMax) {
-                String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
-                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaMax)), lore);
-            } else {
-                ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
+    @Nullable
+    public static Integer getSP(ItemStack item) {
+        if (InventoryUtils.isEmpty(item)) return null;
+        Object currency = InventoryUtils.getNode(item, "currency");
+        if (currency != null) {
+            String currencyType = InventoryUtils.getMetaString(currency, "type");
+            if (currencyType != null && currencyType.equals("sp")) {
+                return InventoryUtils.getMetaInt(currency, "amount");
             }
-            int manaRegeneration = getManaRegeneration();
-            if (manaRegeneration > 0 && effectiveManaRegeneration > 0) {
-                if (effectiveManaRegeneration != manaRegeneration) {
-                    String fullMessage = getLevelString("mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
-                    ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)), lore);
-                } else {
-                    ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
-                }
-            }
-            if (manaPerDamage > 0) {
-                ConfigurationUtils.addIfNotEmpty(getLevelString("mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()), lore);
-            }
+            return null;
         }
-        if (superPowered) {
-            ConfigurationUtils.addIfNotEmpty(getMessage("super_powered"), lore);
+        int spAmount = InventoryUtils.getMetaInt(item, "sp", 0);
+        if (spAmount > 0) {
+            return spAmount;
         }
-        if (blockReflectChance > 0) {
-            ConfigurationUtils.addIfNotEmpty(getLevelString("reflect_chance", blockReflectChance), lore);
-        } else if (blockChance != 0) {
-            ConfigurationUtils.addIfNotEmpty(getLevelString("block_chance", blockChance), lore);
+        String spNode = InventoryUtils.getMetaString(item, "sp");
+        if (spNode == null) {
+            return null;
         }
-        float manaMaxBoost = getManaMaxBoost();
-        if (manaMaxBoost != 0) {
-            ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_boost", manaMaxBoost), lore);
-        }
-        float manaRegenerationBoost = getManaRegenerationBoost();
-        if (manaRegenerationBoost != 0) {
-            ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_regeneration_boost", manaRegenerationBoost), lore);
+        Integer sp = null;
+        try {
+            sp = Integer.parseInt(spNode);
+        } catch (Exception ex) {
+            sp = null;
         }
 
-        if (castSpell != null) {
-            SpellTemplate spell = controller.getSpellTemplate(castSpell);
-            if (spell != null)
-            {
-                ConfigurationUtils.addIfNotEmpty(getMessage("spell_aura").replace("$spell", spell.getName()), lore);
-            }
-        }
-        for (Map.Entry<PotionEffectType, Integer> effect : getPotionEffects().entrySet()) {
-            ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
-        }
-
-        // If this is a passive wand, then reduction properties stack onto the mage when worn.
-        // In this case we should show it as such in the lore.
-        if (worn) isSingleSpell = false;
-
-        if (consumeReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("consume_reduction", consumeReduction), lore);
-
-        if (costReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("cost_reduction", costReduction), lore);
-        if (cooldownReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("cooldown_reduction", cooldownReduction), lore);
-        if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
-        if (superProtected) {
-            ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
-        } else if (protection != null) {
-            for (Map.Entry<String, Double> entry : protection.entrySet()) {
-                String protectionType = entry.getKey();
-                double amount = entry.getValue();
-                addDamageTypeLore("protection", protectionType, amount, lore);
-            }
-        }
-
-        if (isEnchantable()) {
-            int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
-            ConfigurationSection enchantments = getConfigurationSection("enchantments");
-            if ((hideFlags & 1) == 1 && enchantments != null) {
-                Set<String> enchantmentKeys = enchantments.getKeys(false);
-                for (String enchantmentKey : enchantmentKeys) {
-                    int level = enchantments.getInt(enchantmentKey);
-                    addDamageTypeLore("enchantment", enchantmentKey.toLowerCase(), level, 0, lore);
-                }
-            }
-        }
-
-        ConfigurationSection weaknessConfig = getConfigurationSection("weakness");
-        if (weaknessConfig != null) {
-            Set<String> keys = weaknessConfig.getKeys(false);
-            for (String key : keys) {
-                addDamageTypeLore("weakness", key, weaknessConfig.getDouble(key), lore);
-            }
-        }
-
-        ConfigurationSection strengthConfig = getConfigurationSection("strength");
-        if (strengthConfig != null) {
-            Set<String> keys = strengthConfig.getKeys(false);
-            for (String key : keys) {
-                addDamageTypeLore("strength", key, strengthConfig.getDouble(key), lore);
-            }
-        }
-
-        if (earnMultiplier > 1) {
-            String earnDescription = getPropertyString("earn_multiplier", earnMultiplier - 1);
-            String earnType = getController().getMessages().get("costs.sp_short", "SP");
-            earnDescription = earnDescription.replace("$type", earnType);
-            ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
-        }
-        ConfigurationSection attributes = getConfigurationSection("attributes");
-        if (attributes != null) {
-            // Don't bother with the lore at all if the template has been blanked out
-            String template = getMessage("attributes");
-            if (!template.isEmpty()) {
-                Set<String> keys = attributes.getKeys(false);
-                for (String key : keys) {
-                    String label = controller.getMessages().get("attributes." + key + ".name", key);
-
-                    // We are only display attributes as integers for now
-                    int value = attributes.getInt(key);
-                    if (value == 0) continue;
-
-                    float max = 1;
-                    MagicAttribute attribute = controller.getAttribute(key);
-                    if (attribute != null) {
-                        Double maxValue = attribute.getMax();
-                        if (maxValue != null) {
-                            max = (float)(double)maxValue;
-                        }
-                    }
-
-                    label = getPropertyString("attributes", value, max).replace("$attribute", label);
-                    lore.add(label);
-                }
-            }
-        }
+        return sp;
     }
 
     private String getPropertyString(String templateName, float value) {
@@ -3004,25 +2900,137 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return InventoryUtils.hasMeta(item, "currency");
     }
 
-    @Nullable
-    public static Integer getSP(ItemStack item) {
-        if (InventoryUtils.isEmpty(item)) return null;
-        int spAmount = InventoryUtils.getMetaInt(item, "sp", 0);
-        if (spAmount > 0) {
-            return spAmount;
+    protected void addPropertyLore(List<String> lore, boolean isSingleSpell)
+    {
+        if (usesMana() && effectiveManaMax > 0) {
+            int manaMax = getManaMax();
+            if (effectiveManaMax != manaMax) {
+                String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
+                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaMax)), lore);
+            } else {
+                ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
+            }
+            int manaRegeneration = getManaRegeneration();
+            if (manaRegeneration > 0 && effectiveManaRegeneration > 0) {
+                if (effectiveManaRegeneration != manaRegeneration) {
+                    String fullMessage = getLevelString("mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
+                    ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)), lore);
+                } else {
+                    ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
+                }
+            }
+            if (manaPerDamage > 0) {
+                ConfigurationUtils.addIfNotEmpty(getLevelString("mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()), lore);
+            }
         }
-        String spNode = InventoryUtils.getMetaString(item, "sp");
-        if (spNode == null) {
-            return null;
+        if (superPowered) {
+            ConfigurationUtils.addIfNotEmpty(getMessage("super_powered"), lore);
         }
-        Integer sp = null;
-        try {
-            sp = Integer.parseInt(spNode);
-        } catch (Exception ex) {
-            sp = null;
+        if (blockReflectChance > 0) {
+            ConfigurationUtils.addIfNotEmpty(getLevelString("reflect_chance", blockReflectChance), lore);
+        } else if (blockChance != 0) {
+            ConfigurationUtils.addIfNotEmpty(getLevelString("block_chance", blockChance), lore);
+        }
+        float manaMaxBoost = getManaMaxBoost();
+        if (manaMaxBoost != 0) {
+            ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_boost", manaMaxBoost), lore);
+        }
+        float manaRegenerationBoost = getManaRegenerationBoost();
+        if (manaRegenerationBoost != 0) {
+            ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_regeneration_boost", manaRegenerationBoost), lore);
         }
 
-        return sp;
+        if (castSpell != null) {
+            SpellTemplate spell = controller.getSpellTemplate(castSpell);
+            if (spell != null)
+            {
+                ConfigurationUtils.addIfNotEmpty(getMessage("spell_aura").replace("$spell", spell.getName()), lore);
+            }
+        }
+        for (Map.Entry<PotionEffectType, Integer> effect : getPotionEffects().entrySet()) {
+            ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
+        }
+
+        // If this is a passive wand, then reduction properties stack onto the mage when worn.
+        // In this case we should show it as such in the lore.
+        if (worn) isSingleSpell = false;
+
+        if (consumeReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("consume_reduction", consumeReduction), lore);
+
+        if (costReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("cost_reduction", costReduction), lore);
+        if (cooldownReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("cooldown_reduction", cooldownReduction), lore);
+        if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
+        if (superProtected) {
+            ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
+        } else if (protection != null) {
+            for (Map.Entry<String, Double> entry : protection.entrySet()) {
+                String protectionType = entry.getKey();
+                double amount = entry.getValue();
+                addDamageTypeLore("protection", protectionType, amount, lore);
+            }
+        }
+
+        if (isEnchantable()) {
+            int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
+            ConfigurationSection enchantments = getConfigurationSection("enchantments");
+            if ((hideFlags & 1) == 1 && enchantments != null) {
+                Set<String> enchantmentKeys = enchantments.getKeys(false);
+                for (String enchantmentKey : enchantmentKeys) {
+                    int level = enchantments.getInt(enchantmentKey);
+                    addDamageTypeLore("enchantment", enchantmentKey.toLowerCase(), level, 0, lore);
+                }
+            }
+        }
+
+        ConfigurationSection weaknessConfig = getConfigurationSection("weakness");
+        if (weaknessConfig != null) {
+            Set<String> keys = weaknessConfig.getKeys(false);
+            for (String key : keys) {
+                addDamageTypeLore("weakness", key, weaknessConfig.getDouble(key), lore);
+            }
+        }
+
+        ConfigurationSection strengthConfig = getConfigurationSection("strength");
+        if (strengthConfig != null) {
+            Set<String> keys = strengthConfig.getKeys(false);
+            for (String key : keys) {
+                addDamageTypeLore("strength", key, strengthConfig.getDouble(key), lore);
+            }
+        }
+
+        if (earnMultiplier > 1) {
+            String earnDescription = getPropertyString("earn_multiplier", earnMultiplier - 1);
+            String earnType = getController().getMessages().get("currency.sp.name_short", "SP");
+            earnDescription = earnDescription.replace("$type", earnType);
+            ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
+        }
+        ConfigurationSection attributes = getConfigurationSection("attributes");
+        if (attributes != null) {
+            // Don't bother with the lore at all if the template has been blanked out
+            String template = getMessage("attributes");
+            if (!template.isEmpty()) {
+                Set<String> keys = attributes.getKeys(false);
+                for (String key : keys) {
+                    String label = controller.getMessages().get("attributes." + key + ".name", key);
+
+                    // We are only display attributes as integers for now
+                    int value = attributes.getInt(key);
+                    if (value == 0) continue;
+
+                    float max = 1;
+                    MagicAttribute attribute = controller.getAttribute(key);
+                    if (attribute != null) {
+                        Double maxValue = attribute.getMax();
+                        if (maxValue != null) {
+                            max = (float)(double)maxValue;
+                        }
+                    }
+
+                    label = getPropertyString("attributes", value, max).replace("$attribute", label);
+                    lore.add(label);
+                }
+            }
+        }
     }
 
     @Nullable
@@ -6069,11 +6077,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public boolean usesCurrency(String type) {
+        if (type.equals("sp") && !controller.isSPEarnEnabled()) return false;
         return usesCurrency() && currencyDisplay.getKey().equals(type);
     }
 
     public boolean usesSP() {
-        return controller.isSPEarnEnabled() && usesCurrency("sp");
+        return usesCurrency("sp");
     }
 
     @Override

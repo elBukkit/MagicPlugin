@@ -140,35 +140,38 @@ commands:
       preference: "Préférences pour le resource pack mises à &3$pack&f\n&6/getrp default&f pour le remettre par défaut"
       noauto: "&6/getrp auto &fpour avoir le resource pack automatiquement à la connexion"
       default: "Préférences du resource pack remises par défaut"
-costs:
-    sp_amount: $amount PS
-    xp_amount: $amount XP
-    levels_amount: $amount Niveaux d'XP
-    mana_amount: $amount Mana
-    mana: Mana
-    xp: XP
-    levels: Niveaux
-    sp: Points de Sort
-    sp_short: PS
-    hunger: Energie
-    health: Vie
-    health_amount: $amount Vie
-    hunger_amount: $amount Energie
-    heroes_mana: $amount Mana
-    currency_singular: Dollar
-    currency: Dollars
-    currency_amount: "$$amount"
 currency:
+  defaults:
     item_name: "&e$amount &6$type"
     description: Clic droit pour déposer
     limit: "a:&eLa limite de &6$type &eest de &c$amount"
     deposited: "a:&aDépôt de &2$amount &6$type&a, montant: &2$balance"
-    earned: "a:&6+ &e$earned"
-sp:
-    name: "&e$amount &6Points de Sort"
+  sp:
+    name: "&6Points de Sort"
     description: Clic droit pour récupérer les Points de Sort
     limit: "a:&eLa limite pour les &6Points de Sort &eest de &c$amount"
     deposited: "a:&aDépôt de &2$amount &6Points de Sort&a, montant: &2$balance"
+    name_short: PS
+  xp:
+    name: Experience
+    name_short: XP
+  levels:
+    name: Niveaux
+  mana:
+    name: Mana
+  hunger:
+    name: Energie
+  health:
+    name: Vie
+  heroes_mana:
+    name: Mana
+  currency:
+    name: Dollars
+    name_singular: Dollar
+    amount: "$$amount"
+  item:
+    name_singular: Emerald
+    name: Emeralds
 item:
     duplicated: Ton objet a été dupliqué
     destroyed: Ton objet a été détruit
@@ -215,7 +218,6 @@ mage:
     spells_not_levelled: "Aucun de tes sorts n'ont de niveaux supérieurs"
     reconfigured: Le mage a été reconfiguré
     not_reconfigured: Le mage n'a pas été reconfiguré
-    earned_sp: "a:&6+ &e$amount &6PS"
     no_class: "Tu n'as pas été entraîné à utiliser $name"
     no_spell: "Tu n'as pas été entraîné à utiliser $name"
     player_spell_upgraded: "Le sort &r&6$name de $players &d&oa été amélioré au niveau &3$level"
@@ -657,13 +659,13 @@ wand:
     wand_instructions_footer: |-
       &8|
       &8 ----------------------------------------------------
-    sp_instructions: |-
+    sp_earn_instructions: |-
       &8| &7> &fTu as gagné des &6Points de Sort!
       &8| &7> &fTes &6PS &fsont affichés sous ta barre de Mana
       &8| &7> &6Les PS &fpeuvent être utilisés dans une table d'enchantement pour apprendre de nouveaux sorts
       &8| &7> &fLancer plusieurs fois le même sort te donnera moins de &6PS&f
       &8| &7> &fIl vaut mieux &dalterner les sorts &florsque tu en connais plusieurs!
-    currency_instructions: |-
+    earn_instructions: |-
       &8| &7> &fTu as gagné des &6$currency!
       &8| &7> &fLe montant de &6$currency &fest affiché sous ta barre de Mana
       &8| &7> &6Les $currency &fpeuvent être utilisés dans une table d'enchantement pour apprendre de nouveaux sorts

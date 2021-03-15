@@ -85,6 +85,22 @@ public interface Currency extends MagicProvider {
     double getMaxValue();
 
     /**
+     * Check to see if this currency has a lower limit for player balances.
+     *
+     * @return true if this currency should be limited, typically to prevent negative balances.
+     */
+    default boolean hasMinValue() { return false; }
+
+    /**
+     * Get the minimum value for this currency.
+     * Player balances will be capped to this value.
+     * Only has an effect if @hasMinValue returns true.
+     *
+     * @return The minimum for player balances of this currency, typically 0 if set
+     */
+    default double getMinValue() { return 0; }
+
+    /**
      * Get an icon to use to represent this currency as a physical item.
      * This is used in commands such as /mgive sp:100
      *
@@ -112,6 +128,10 @@ public interface Currency extends MagicProvider {
      */
     @Nonnull
     String getName(Messages messages);
+    @Nonnull
+    default String getSingularName(Messages messages) { return getName(messages); }
+    @Nonnull
+    default String getShortName(Messages messages) { return getSingularName(messages); }
 
     /**
      * Get a human-readable description of an amount of this currency.

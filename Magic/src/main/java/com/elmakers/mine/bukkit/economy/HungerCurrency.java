@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.economy;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -7,8 +8,8 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class HungerCurrency extends BaseMagicCurrency {
-    public HungerCurrency(MageController controller) {
-        super(controller, "hunger", 1);
+    public HungerCurrency(MageController controller, ConfigurationSection configuration) {
+        super(controller, "hunger", configuration);
     }
 
     @Override

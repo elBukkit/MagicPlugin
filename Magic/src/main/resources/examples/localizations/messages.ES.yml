@@ -190,36 +190,38 @@ commands:
     default: Preferencia rp fijó de nuevo a la predeterminada
     disabled: Este comando se ha deshabilitado porque este servidor tiene un paquete de recursos configurado en server.properties
 ##################################################################################
-costs:
-  sp_amount: $amount SP
-  xp_amount: $amount XP
-  levels_amount: $amount Niveles de XP
-  mana_amount: $amount Energia
-  mana: Energia
-  xp: XP
-  levels: Niveles
-  sp: Puntos De Conjuro
-  hunger: La energía
-  health: Salud
-  health_amount: $amount Salud
-  hunger_amount: $amount La energía
-  heroes_mana: $amount Energia
-  currency_singular: Dólar
-  currency: Dólares
-  currency_amount: $$amount
-##################################################################################
 currency:
-  item_name: '&e$amount &6$type'
-  description: Haga clic para depósito
-  limit: a:&eEl límite para &6$type &ees &c$amount
-  deposited: 'a:&aDepositado &2$amount &6$type&a, Saldo: &2$balance'
-  earned: a:&6+&e$earned
-##################################################################################
-sp:
-  name: '&e$amount &6Puntos De Conjuro'
-  description: Será absorbida por su varita
-  limit: a:&eEl límite para &6Puntos De Conjuro &ees &c$amount
-  deposited: 'a:&aDepositado &2$amount &6Puntos De Conjuro&a, balance: &2$balance'
+  defaults:
+    item_name: '&e$amount &6$type'
+    description: Haga clic para depósito
+    limit: a:&eEl límite para &6$type &ees &c$amount
+    deposited: 'a:&aDepositado &2$amount &6$type&a, Saldo: &2$balance'
+  sp:
+    name: '&6Puntos De Conjuro'
+    description: Será absorbida por su varita
+    limit: a:&eEl límite para &6Puntos De Conjuro &ees &c$amount
+    deposited: 'a:&aDepositado &2$amount &6Puntos De Conjuro&a, balance: &2$balance'
+    name_short: SP
+  xp:
+    name: Experience
+    name_short: XP
+  levels:
+    name: Niveles
+  mana:
+    name: Energia
+  hunger:
+    name: La energíam
+  health:
+    name: Salud
+  heroes_mana:
+    name: Energia
+  currency:
+    name: Dólares
+    name_singular: Dólar
+    amount: "$$amount"
+  item:
+    name_singular: Emerald
+    name: Emeralds
 ##################################################################################
 dynmap:
   spells_markerset: Lanzamientos de Hechizos
@@ -297,7 +299,6 @@ mage:
   spells_not_levelled: No a nivel de cualquiera de tus hechizos
   reconfigured: Mago reconfigurado
   not_reconfigured: Mago no reconfigurado
-  earned_sp: a:&6+&e$amount &6SP
   no_class: Usted no está entrenado para usar $name
   no_spell: Usted no está entrenado para usar $name
   player_spell_upgraded: $players's &r&6$name &d&oha sido actualizado a la &3$level
@@ -2954,12 +2955,12 @@ wand:
   brush_instructions: '&r&bMaterial escobillas ha sido añadido a su $wand. Shift+Click
     Derecho para seleccionar un pincel.'
 ##################################################################################
-  sp_instructions: '&r&6Ha ganado algunos Puntos de Conjuro! SP'' se muestran arriba
+  sp_earn_instructions: '&r&6Ha ganado algunos Puntos de Conjuro! SP'' se muestran arriba
     su barra de maná, y puede ser gastado en una encantadora mesa para aprender nuevos
     hechizos. Repita moldes de ganar menos SP''s, trate de mezclar una vez que usted
     tiene más hechizos!'
 ##################################################################################
-  currency_instructions: |-
+  earn_instructions: |-
     &8| &7> &fUsted ha ganado algunos &6$currency!
     &8| &7> &fTu &6$currency &fse muestra por encima de la barra de maná
     &8| &7> &6$currency &fPuede ser gastado en una mesa de &eencantamientos &fPara aprender nuevos hechizos

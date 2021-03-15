@@ -223,13 +223,13 @@ wand:
     wand_instructions_footer: |-
       &8|
       &8 ----------------------------------------------------
-    sp_instructions: |-
+    sp_earn_instructions: |-
       &8| &7> &fYou have earned some &6Spell Points!
       &8| &7> &fYour &6SP &fis displayed above your mana bar
       &8| &7> &6SP &fmay be spent at an &eenchanting table &fto learn new spells
       &8| &7> &fRepeat casts of the same spell earn less &6SP&f
       &8| &7> &fTry &dmixing up your casts &fonce you have more spells!
-    currency_instructions: |-
+    earn_instructions: |-
       &8| &7> &fYou have earned some &6$currency!
       &8| &7> &fYour &6$currency &fis displayed above your mana bar
       &8| &7> &6$currency &fmay be spent at an &enchanting table &fto learn new spells

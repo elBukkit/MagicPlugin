@@ -202,35 +202,37 @@ commands:
     noauto: '&fこのリソースパックをログイン時に自動で適応するには &6/getrp auto&f'
     default: リソースパック設定がデフォルトになりました。
     disabled: このサーバーはserver.propertiesでリソースパックが指定してあるため、このコマンドは無効化されています。
-costs:
-  sp_amount: $amountSP
-  xp_amount: $amountXP
-  levels_amount: $amountXPLevel
-  mana_amount: $amountMP
-  mana: 魔力
-  xp: 経験値
-  levels: 経験値レベル
-  sp: スペルポイント
-  sp_short: SP
-  hunger: 満腹度
-  health: HP
-  health_amount: $amountHP
-  hunger_amount: $amount満腹度
-  heroes_mana: $amountMP
-  currency_singular: ￥
-  currency: 円
-  currency_amount: $amount円
 currency:
-  item_name: '&e$amount&6$type'
-  description: 右クリックで預け入れます。
-  limit: a:&6$type&eの限界量は&c$amount&eです。
-  deposited: 'a:&a預け入れました: &2$amount&6$type&a, 現在: &2$balance'
-  earned: a:&6+&e$earned
-sp:
-  name: '&e$amount&6スペルポイント'
-  description: 右クリックでスペルポイントを稼ぎます。
-  limit: a:&6スペルポイント&eの限界量は&c$amount&eです。
-  deposited: 'a:&a預け入れました: &2$amount&6スペルポイント&a, 現在: &2$balance'
+  default:
+    item_name: '&e$amount&6$type'
+    description: 右クリックで預け入れます。
+    limit: a:&6$type&eの限界量は&c$amount&eです。
+    deposited: 'a:&a預け入れました: &2$amount&6$type&a, 現在: &2$balance'
+  sp:
+    name: "スペルポイント"
+    description: 右クリックでスペルポイントを稼ぎます。
+    limit: a:&6スペルポイント&eの限界量は&c$amount&eです。
+    deposited: 'a:&a預け入れました: &2$amount&6スペルポイント&a, 現在: &2$balance'
+  xp:
+    name: 経験値
+    name_short: XP
+  levels:
+    name: 経験値レベル
+  mana:
+    name: 魔力
+  hunger:
+    name: 満腹度
+  health:
+    name: HP
+  heroes_mana:
+    name: 魔力
+  currency:
+    name: 円
+    name_singular: ￥
+    amount: "$$amount"
+  item:
+    name_singular: Emerald
+    name: Emeralds
 dynmap:
   spells_markerset: スペルキャスト
   wands_markerset: 杖
@@ -2222,13 +2224,13 @@ wand:
   wand_instructions_footer: |-
     &8|
     &8 ----------------------------------------------------
-  sp_instructions: |-
+  sp_earn_instructions: |-
     &8| &7> &6スペルポイント（SP）&fを獲得しました！
     &8| &7> &6SP&fは魔力バー（XPバー）の上に表示されます
     &8| &7> &6SP&fは&eエンチャントテーブル&fで魔法を覚えるときに消費します
     &8| &7> &f同じ魔法を連続して詠唱すると獲得&6SP&fが下がります
     &8| &7> &f魔法を手に入れたら&d複数の魔法を組み合わせて&f使いましょう
-  currency_instructions: |-
+  earn_instructions: |-
     &8| &7> &6$currency&fを手に入れました！
     &8| &7> &6$currency&fは魔力バー（XPバー）の上に表示されます
     &8| &7> &6$currency&fは&eエンチャントテーブル&fで魔法を覚えるときに消費します

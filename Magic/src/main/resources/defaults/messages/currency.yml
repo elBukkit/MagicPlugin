@@ -1,0 +1,34 @@
+currency:
+  default:
+    item_name: "&e$amount &6$type"
+    description: "Right-click to deposit"
+    limit: "a:&eThe limit for &6$type &eis &c$amount"
+    deposited: "a:&aDeposited &2$amount &6$type&a, balance: &2$balance"
+    earned: "a:&a+&2$amount"
+    spent: "a:&c-&4$amount"
+  sp:
+    name: "&bSpell Points"
+    description: "Right-click to earn $type"
+    name_short: "&bSP"
+  xp:
+    name: "&dExperience"
+    name_short: "&dXP"
+  levels:
+    name: "&dLevels"
+  mana:
+    name: "&3Mana"
+    name_short: "&3MP"
+  hunger:
+    name: "&4Energy"
+  health:
+    name: "&cHealth"
+    name_short: "&cHP"
+  heroes_mana:
+    name: "&3Mana"
+  currency:
+    name: "&aDollars"
+    name_singular: "&aDollar"
+    amount: "$$amount"
+  item:
+    name_singular: Emerald
+    name: Emeralds

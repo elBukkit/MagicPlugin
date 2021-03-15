@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.economy;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -8,8 +9,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class HealthCurrency extends BaseMagicCurrency {
-    public HealthCurrency(MageController controller) {
-        super(controller, "health", 1);
+    public HealthCurrency(MageController controller, ConfigurationSection configuration) {
+        super(controller, "health", configuration);
     }
 
     @Override

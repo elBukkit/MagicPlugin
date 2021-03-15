@@ -9,9 +9,6 @@
 
 default_wand: potterwand
 
-# Start players off with some Spell Points
-sp_default: 100
-
 # This is a modifier on the default survival configs
 inherit: survival
 
@@ -31,9 +28,12 @@ skip_inherited:
 # Don't allow crafting
 enable_crafting: false
 
-# Custom physical economy
-currency:
-  emerald:
+builtin_currency:
+  # Start players off with some Spell Points
+  sp:
+   default: 100
+  # Custom physical economy
+  item:
     worth: 1
     name: Galleon
     name_plural: Galleons

@@ -1,12 +1,14 @@
 package com.elmakers.mine.bukkit.economy;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class ExperienceCurrency extends BaseMagicCurrency {
-    public ExperienceCurrency(MageController controller, double worth) {
-        super(controller, "xp", worth);
+    public ExperienceCurrency(MageController controller, ConfigurationSection configuration) {
+        super(controller, "xp", configuration);
     }
 
     @Override

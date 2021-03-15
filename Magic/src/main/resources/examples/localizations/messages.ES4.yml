@@ -2369,7 +2369,7 @@ wand:
   enchant_instructions: '&r&bEncanta Tu Varita Para Mejorar Sus Habilidades.'
   brush_instructions: '&r&bMaterial escobillas ha sido añadido a su $wand. Shift+Click
     Derecho para seleccionar un pincel.'
-  sp_instructions: '&r&6Ha ganado algunos Puntos de Conjuro! SP'' se muestran arriba
+  sp_earn_instructions: '&r&6Ha ganado algunos Puntos de Conjuro! SP'' se muestran arriba
     su barra de maná, y puede ser gastado en una encantadora mesa para aprender nuevos
     hechizos. Repita moldes de ganar menos SP''s, trate de mezclar una vez que usted
     tiene más hechizos!'
