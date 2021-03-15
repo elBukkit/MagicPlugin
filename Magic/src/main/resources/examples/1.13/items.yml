@@ -175,3 +175,314 @@ dragonwingrightwhite:
 
 dragonwingrightyellow:
   item: feather
+
+ink_sack:0:
+  worth: 2
+ink_sack:1:
+  worth: 1
+ink_sack:2:
+  worth: 1
+ink_sack:3:
+  worth: 1
+ink_sack:4:
+  worth: 1
+ink_sack:5:
+  worth: 1
+ink_sack:6:
+  worth: 1
+ink_sack:7:
+  worth: 1
+ink_sack:8:
+  worth: 1
+ink_sack:9:
+  worth: 1
+ink_sack:10:
+  worth: 1
+ink_sack:11:
+  worth: 1
+ink_sack:12:
+  worth: 1
+ink_sack:13:
+  worth: 1
+ink_sack:14:
+  worth: 1
+ink_sack:15:
+  worth: 2
+clay:
+  worth: 0.5
+hard_clay:
+  worth: 0.6
+stained_clay:0:
+  worth: 0.8
+stained_clay:1:
+  worth: 0.8
+stained_clay:2:
+  worth: 0.8
+stained_clay:3:
+  worth: 0.8
+stained_clay:4:
+  worth: 0.8
+stained_clay:5:
+  worth: 0.8
+stained_clay:6:
+  worth: 0.8
+stained_clay:7:
+  worth: 0.8
+stained_clay:8:
+  worth: 0.8
+stained_clay:9:
+  worth: 0.8
+stained_clay:10:
+  worth: 0.8
+stained_clay:11:
+  worth: 0.8
+stained_clay:12:
+  worth: 0.8
+stained_clay:13:
+  worth: 0.8
+stained_clay:14:
+  worth: 0.8
+stained_clay:15:
+  worth: 0.8
+banner:15:
+  worth: 32
+banner:14:
+  worth: 32
+banner:13:
+  worth: 32
+banner:12:
+  worth: 32
+banner:11:
+  worth: 32
+banner:10:
+  worth: 32
+banner:9:
+  worth: 32
+banner:8:
+  worth: 32
+banner:7:
+  worth: 32
+banner:6:
+  worth: 32
+banner:5:
+  worth: 32
+banner:4:
+  worth: 32
+banner:3:
+  worth: 32
+banner:2:
+  worth: 32
+banner:1:
+  worth: 32
+banner:0:
+  worth: 32
+stone:1:
+  worth: 0.4
+stone:2:
+  worth: 0.5
+stone:3:
+  worth: 0.4
+stone:4:
+  worth: 0.5
+stone:5:
+  worth: 0.4
+stone:6:
+  worth: 0.5
+quartz:
+  worth: 0.1
+quartz_block:0:
+  worth: 0.4
+quartz_block:1:
+  worth: 0.5
+quartz_block:2:
+  worth: 0.5
+red_rose:0:
+  worth: 3
+red_rose:1:
+  worth: 3
+red_rose:2:
+  worth: 3
+red_rose:3:
+  worth: 3
+red_rose:4:
+  worth: 3
+red_rose:5:
+  worth: 3
+red_rose:6:
+  worth: 3
+yellow_flower:0:
+  worth: 3
+wood:0:
+  worth: 0.1
+wood:1:
+  worth: 0.1
+wood:2:
+  worth: 0.1
+wood:3:
+  worth: 0.1
+wood:4:
+  worth: 0.1
+wood:5:
+  worth: 0.1
+wood_stairs:
+  worth: 0.1
+birch_wood_stairs:
+  worth: 0.1
+spruce_wood_stairs:0:
+  worth: 0.1
+jungle_wood_stairs:0:
+  worth: 0.1
+dark_oak_stairs:0:
+  worth: 0.1
+wood_step:0:
+  worth: 0.1
+wood_step:1:
+  worth: 0.1
+wood_step:2:
+  worth: 0.1
+wood_step:3:
+  worth: 0.1
+wood_step:4:
+  worth: 0.1
+wood_step:5:
+  worth: 0.1
+log:0:
+  worth: 0.3
+log:1:
+  worth: 0.3
+log:2:
+  worth: 0.3
+log:3:
+  worth: 0.3
+log_2:0:
+  worth: 0.3
+log_2:1:
+  worth: 0.3
+
+stained_glass:1:
+  worth: 0.5
+stained_glass:2:
+  worth: 0.5
+stained_glass:3:
+  worth: 0.5
+stained_glass:4:
+  worth: 0.5
+stained_glass:5:
+  worth: 0.5
+stained_glass:6:
+  worth: 0.5
+stained_glass:7:
+  worth: 0.5
+stained_glass:8:
+  worth: 0.5
+stained_glass:9:
+  worth: 0.5
+stained_glass:10:
+  worth: 0.5
+stained_glass:11:
+  worth: 0.5
+stained_glass:12:
+  worth: 0.5
+stained_glass:13:
+  worth: 0.5
+stained_glass:14:
+  worth: 0.5
+stained_glass:15:
+  worth: 0.5
+thin_glass:
+  worth: 0.1
+stained_glass_pane:1:
+  worth: 0.2
+stained_glass_pane:2:
+  worth: 0.2
+stained_glass_pane:3:
+  worth: 0.2
+stained_glass_pane:4:
+  worth: 0.2
+stained_glass_pane:5:
+  worth: 0.2
+stained_glass_pane:6:
+  worth: 0.2
+stained_glass_pane:7:
+  worth: 0.2
+stained_glass_pane:8:
+  worth: 0.2
+stained_glass_pane:9:
+  worth: 0.2
+stained_glass_pane:10:
+  worth: 0.2
+stained_glass_pane:11:
+  worth: 0.2
+stained_glass_pane:12:
+  worth: 0.2
+stained_glass_pane:13:
+  worth: 0.2
+stained_glass_pane:14:
+  worth: 0.2
+stained_glass_pane:15:
+  worth: 0.2
+wool:0:
+  worth: 0.15
+wool:1:
+  worth: 0.25
+wool:2:
+  worth: 0.25
+wool:3:
+  worth: 0.25
+wool:4:
+  worth: 0.25
+wool:5:
+  worth: 0.25
+wool:6:
+  worth: 0.25
+wool:7:
+  worth: 0.25
+wool:8:
+  worth: 0.25
+wool:9:
+  worth: 0.25
+wool:10:
+  worth: 0.25
+wool:11:
+  worth: 0.25
+wool:12:
+  worth: 0.25
+wool:13:
+  worth: 0.25
+wool:14:
+  worth: 0.25
+wool:15:
+  worth: 0.25
+
+carpet:0:
+  worth: 0.15
+carpet:1:
+  worth: 0.25
+carpet:2:
+  worth: 0.25
+carpet:3:
+  worth: 0.25
+carpet:4:
+  worth: 0.25
+carpet:5:
+  worth: 0.25
+carpet:6:
+  worth: 0.25
+carpet:7:
+  worth: 0.25
+carpet:8:
+  worth: 0.25
+carpet:9:
+  worth: 0.25
+carpet:10:
+  worth: 0.25
+carpet:11:
+  worth: 0.25
+carpet:12:
+  worth: 0.25
+carpet:13:
+  worth: 0.25
+carpet:14:
+  worth: 0.25
+carpet:15:
+  worth: 0.25
