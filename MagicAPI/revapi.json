@@ -442,6 +442,14 @@
           "methodName": "getCurrency",
           "elementKind": "method",
           "justification": "The method had been deprecated for a while, it returned a one-off interface, use getCurrency(type) instead"
+        },
+        {
+          "code": "java.class.removed",
+          "old": "class com.elmakers.mine.bukkit.api.block.CurrencyItem",
+          "package": "com.elmakers.mine.bukkit.api.block",
+          "classSimpleName": "CurrencyItem",
+          "elementKind": "class",
+          "justification": "Only used in deprecated API, replaced a while back by Currency"
         }
       ]
     }
