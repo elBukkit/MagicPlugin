@@ -114,7 +114,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
         this.setKey(key);
         this.materialKey = key;
-        worth = configuration.getDouble("worth", 0);
+        worth = configuration.getDouble("worth", worth);
         if (configuration.contains("earns")) {
             earns = configuration.getDouble("earns");
         } else {
@@ -212,8 +212,20 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     private void setKey(String key) {
         this.key = key;
-        String[] pieces = StringUtils.split(key, "@");
+        String[] pieces = StringUtils.split(key, "@", 2);
         baseKey = pieces[0];
+        if (pieces.length > 1) {
+            try {
+                int amount = Integer.parseInt(pieces[1]);
+                if (amount > 1) {
+                    com.elmakers.mine.bukkit.api.item.ItemData singular = controller.getItem(baseKey);
+                    if (singular != null) {
+                        worth = singular.getWorth() * amount;
+                    }
+                }
+            } catch (Exception ignore) {
+            }
+        }
     }
 
     public ItemData(String key, ItemStack item, double worth, MageController controller) throws Exception {
