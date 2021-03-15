@@ -4,6 +4,8 @@
 
 # 8.4.3
 
+ - Fix Levitate not consuming mana if left on when relogging
+
 # 8.4.2
 
  - Update/Fix Towny integration
