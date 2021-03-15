@@ -91,7 +91,7 @@ brickshop:
     parameters:
         items:
         - stone@16
-        - adesite@16
+        - andesite@16
         - diorite@16
         - granite@16
         - ender_stone@4

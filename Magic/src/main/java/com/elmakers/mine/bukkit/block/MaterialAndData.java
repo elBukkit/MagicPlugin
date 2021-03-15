@@ -432,6 +432,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             short convertData = (this.data == null ? 0 : this.data);
             material = CompatibilityUtils.migrateMaterial(material, (byte)convertData);
             this.material = material;
+        } else if (data != null && CompatibilityUtils.hasLegacyMaterials() && material.getMaxDurability() == 0) {
+            this.data = 0;
         }
 
         isValid = material != null;
