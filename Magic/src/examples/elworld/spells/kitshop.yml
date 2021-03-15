@@ -1,0 +1,11 @@
+kitshop:
+  icon: gold_ingot
+  actions:
+    cast:
+      - class: Selector
+  parameters:
+    target: self
+    options:
+      - kit: gold_kit
+      - placeholder: true
+      - kit: iron_kit

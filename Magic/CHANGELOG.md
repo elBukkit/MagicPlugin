@@ -38,6 +38,7 @@
  - Added "pi" attribute constant
  - The SpawnEntity action can use $pn, $pd and other placeholders in the `name` parameter
  - Added `mage reward` command, for giving players rewards, replaced with some SP or money if they already have it
+ - Add `kit` support to Selector action, see `kitshop` in elworld examples
 
 # 8.4.3
 

@@ -29,6 +29,11 @@ public class MagicKit implements Kit {
     private final boolean isPartial;
     private final boolean isWelcomeWand;
     private final int cooldown;
+    private final String icon;
+    private final String iconDisabled;
+    private final String name;
+    private final String description;
+    private final Double worth;
 
     // Items can be mapped by slot, or not, or a mix of both
     private Map<Integer, ItemData> slotItems;
@@ -43,7 +48,12 @@ public class MagicKit implements Kit {
         isPartial = configuration.getBoolean("partial");
         isWelcomeWand = configuration.getBoolean("welcome_wand");
         cooldown = configuration.getInt("cooldown");
+        icon = configuration.getString("icon");
+        iconDisabled = configuration.getString("icon_disabled");
         requirements = ConfigurationUtils.getRequirements(configuration);
+        worth = configuration.contains("worth") ? configuration.getDouble("worth") : null;
+        name = configuration.getString("name", "");
+        description = configuration.getString("description", "");
         List<? extends Object> itemList = configuration.getList("items");
         if (itemList != null) {
             for (Object itemObject : itemList) {
@@ -277,5 +287,43 @@ public class MagicKit implements Kit {
             return;
         }
         removeFrom(mage);
+    }
+
+    @Override
+    public String getName() {
+        return controller.getMessages().get("kits." + key + ".name", name);
+    }
+
+    @Override
+    public String getDescription() {
+        return controller.getMessages().get("kits." + key + ".description", description);
+    }
+    @Nullable
+    public String getIconKey() {
+        return icon;
+    }
+
+    @Nullable
+    public String getIconDisabledKey() {
+        return iconDisabled;
+    }
+
+    @Override
+    public double getWorth() {
+        if (worth != null) {
+            return worth;
+        }
+        double computed = 0;
+        if (items != null) {
+            for (ItemData item : items) {
+                computed += item.getWorth();
+            }
+        }
+        if (slotItems != null) {
+            for (ItemData item : slotItems.values()) {
+                computed += item.getWorth();
+            }
+        }
+        return computed;
     }
 }

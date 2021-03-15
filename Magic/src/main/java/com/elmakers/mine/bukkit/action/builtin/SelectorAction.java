@@ -35,6 +35,7 @@ import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.kit.Kit;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
@@ -203,6 +204,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable Map<String,String> alternateSpellTags;
         protected @Nonnull String effects = "selected";
         protected @Nullable String attributeKey = null;
+        protected @Nullable String kitKey;
         protected boolean allowAttributeReduction = false;
         protected int attributeAmount = 0;
         protected boolean applyToWand = false;
@@ -265,6 +267,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 lockClasses = new ArrayList<>(lockClasses);
                 lockClasses.remove(unlockClass);
             }
+            kitKey = configuration.getString("kit");
             nameIcon = configuration.getBoolean("apply_name_to_icon", nameIcon);
             autoClose = configuration.getBoolean("auto_close", autoClose);
             showFree = configuration.getBoolean("show_free", showFree);
@@ -421,6 +424,23 @@ public class SelectorAction extends CompoundAction implements GUIAction
                             itemCost.scale(costScale);
                             costs.add(itemCost);
                         }
+                    }
+                }
+
+                if (costs == null && kitKey != null) {
+                    Kit kit = controller.getKit(kitKey);
+                    if (kit != null) {
+                        Cost kitCost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, kit.getWorth());
+                        if (costOverride != null) {
+                            kitCost.convert(controller, costOverride);
+                            kitCost.checkSupported(controller, getCostTypeFallbacks());
+                        } else {
+                            kitCost.checkSupported(controller, getAllCostTypes());
+                        }
+                        kitCost.scale(controller.getWorthBase());
+                        kitCost.scale(costScale);
+                        costs = new ArrayList<>();
+                        costs.add(kitCost);
                     }
                 }
             }
@@ -586,6 +606,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.allowAttributeReduction = defaults.allowAttributeReduction;
             this.unlockClass = defaults.unlockClass;
             this.lockClasses = defaults.lockClasses;
+            this.kitKey = defaults.kitKey;
             this.switchClass = defaults.switchClass;
             this.putInHand = defaults.putInHand;
             this.limit = defaults.limit;
@@ -657,6 +678,12 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     controller.getLogger().warning("Unknown class in selector config: " + unlockClass);
                 }
             }
+            if (name.isEmpty() && kitKey != null && !kitKey.isEmpty()) {
+                Kit kit = controller.getKit(kitKey);
+                if (kit != null) {
+                    name = kit.getName();
+                }
+            }
             String castSpell = getCastSpell(context.getWand());
             if (name.isEmpty() && castSpell != null && !castSpell.isEmpty()) {
                 SpellTemplate spell = controller.getSpellTemplate(castSpell);
@@ -726,6 +753,11 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 } else if (warpKey != null) {
                     Warp warp = controller.getMagicWarp(warpKey);
                     description = warp.getDescription();
+                } else if (kitKey != null) {
+                    Kit kit = controller.getKit(kitKey);
+                    if (kit != null) {
+                        description = kit.getDescription();
+                    }
                 }
             }
 
@@ -950,6 +982,22 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
+            if (icon == null && kitKey != null && !kitKey.isEmpty()) {
+                Kit kit = controller.getKit(kitKey);
+                if (kit != null) {
+                    if (iconDisabledKey == null) {
+                        iconDisabledKey = kit.getIconDisabledKey();
+                    }
+                    String iconKey = kit.getIconKey();
+                    if (iconKey != null && !iconKey.isEmpty()) {
+                        ItemData iconData = controller.getOrCreateItem(iconKey);
+                        if (iconData != null) {
+                            icon = iconData.getItemStack();
+                        }
+                    }
+                }
+            }
+
             if (unavailable && iconDisabledKey != null) {
                 ItemData iconDisabled = controller.getItem(iconDisabledKey);
                 if (iconDisabled != null) {
@@ -1089,6 +1137,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         public SpellResult give(CastContext context) {
             Mage mage = context.getMage();
             Wand wand = context.getWand();
+            MageController controller = context.getController();
 
             if (placeholder) {
                 return SpellResult.NO_ACTION;
@@ -1118,6 +1167,16 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     // This is here to force reload any changes made to wands
                     // If this becomes an issue, maybe make it optional
                     wand = actionContext.checkWand();
+                }
+            }
+
+            if (kitKey != null && !kitKey.isEmpty()) {
+                Kit kit = controller.getKit(kitKey);
+                if (kitKey != null) {
+                    if (!kit.isAllowed(mage)) {
+                        return SpellResult.NO_TARGET;
+                    }
+                    kit.give(mage);
                 }
             }
 
@@ -1164,7 +1223,6 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
-            MageController controller = context.getController();
             String castSpell = getCastSpell(context.getWand());
             if (castSpell != null && !castSpell.isEmpty()) {
                 Spell spell = null;

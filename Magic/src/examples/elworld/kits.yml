@@ -1,0 +1,11 @@
+gold_kit:
+  icon: gold_ingot
+  items:
+    - gold_ingot
+    - gold_nugget@8
+
+iron_kit:
+  icon: iron_ingot
+  items:
+    - iron_ingot
+    - iron_nugget@8
