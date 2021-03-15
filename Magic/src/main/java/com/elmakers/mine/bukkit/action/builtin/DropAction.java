@@ -13,6 +13,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
@@ -99,7 +100,15 @@ public class DropAction extends BaseSpellAction {
         }
         BlockState prior = block.getState();
         block.setType(Material.AIR);
-        if (undoList != null && !undoList.isScheduled()) {
+        if (!undoList.bypass()) {
+            // This prevents dupe/exploit issues by dropping some magically-created blocks and then
+            // undo'ing the original cast
+            BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
+            if (modifiedBlock != null) {
+                modifiedBlock.commit();
+            }
+        }
+        if (!undoList.isScheduled()) {
             context.getController().logBlockChange(context.getMage(), prior, block.getState());
         }
 
