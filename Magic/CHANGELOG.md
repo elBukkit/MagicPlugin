@@ -43,6 +43,7 @@
 # 8.4.3
 
  - Fix Levitate not consuming mana if left on when relogging
+ - Fix Rollback+Chop/Mine exploits
 
 # 8.4.2
 
