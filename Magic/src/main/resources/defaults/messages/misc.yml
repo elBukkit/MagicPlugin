@@ -61,7 +61,9 @@ resource_pack:
     # This will be sent to players on join if resource_pack_prompt is set to true in config.yml.
     prompt: "Use /getrp to download the resource pack."
     off_prompt: "a:&eUse &4/getrp &eto download the resource pack"
-    sending: "t:&3Please Wait\n&bsending resource pack"
+    # This is sent anytime the RP is sent
+    # sending: "t:&3Please Wait\n&bsending resource pack"
+    sending: ""
 
 controls:
   drop: Drop (Q)
