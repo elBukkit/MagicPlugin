@@ -433,6 +433,15 @@
           "classSimpleName": "WandEffectContext",
           "elementKind": "interface",
           "justification": "The context hierarchy was simplified and renamed"
+        },
+        {
+          "code": "java.method.removed",
+          "old": "method com.elmakers.mine.bukkit.api.block.CurrencyItem com.elmakers.mine.bukkit.api.magic.MageController::getCurrency()",
+          "package": "com.elmakers.mine.bukkit.api.magic",
+          "classSimpleName": "MageController",
+          "methodName": "getCurrency",
+          "elementKind": "method",
+          "justification": "The method had been deprecated for a while, it returned a one-off interface, use getCurrency(type) instead"
         }
       ]
     }

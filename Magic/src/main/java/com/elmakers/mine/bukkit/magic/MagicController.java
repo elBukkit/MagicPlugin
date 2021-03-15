@@ -81,7 +81,6 @@ import org.bukkit.scheduler.BukkitTask;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
-import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.MageData;
@@ -748,12 +747,6 @@ public class MagicController implements MageController {
     @Override
     public double getWorthItemAmount() {
         return currencyItem == null ? 0 : currencyItem.getWorth();
-    }
-
-    @Override
-    @Deprecated
-    public CurrencyItem getCurrency() {
-        return currencyItem;
     }
 
     @Override

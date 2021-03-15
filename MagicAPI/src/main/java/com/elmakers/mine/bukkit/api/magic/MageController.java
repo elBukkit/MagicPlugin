@@ -30,7 +30,6 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.automata.Automaton;
 import com.elmakers.mine.bukkit.api.block.BlockList;
-import com.elmakers.mine.bukkit.api.block.CurrencyItem;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.block.UndoList;
@@ -324,8 +323,6 @@ public interface MageController {
     double getWorthItemAmount();
     @Nonnull
     Set<String> getCurrencyKeys();
-    @Deprecated
-    CurrencyItem getCurrency();
     Currency getCurrency(String key);
     boolean itemsAreEqual(ItemStack first, ItemStack second);
     boolean itemsAreEqual(ItemStack first, ItemStack second, boolean ignoreDamage);
