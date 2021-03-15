@@ -6,8 +6,9 @@ crown:
      class: Equation
      duration: 10000000
      particle: redstone
-     particles: 500
-     max_steps: 500
+     particles: 100
+     max_steps: 100
+     period: 2
      color: "#ffd700"
      particle_size: 0.25
      pitch: 0
@@ -26,8 +27,9 @@ crown:
      class: Equation
      duration: 10000000
      particle: redstone
-     particles: 500
-     max_steps: 500
+     particles: 100
+     max_steps: 100
+     period: 3
      color: "#ffd700"
      particle_size: 0.25
      pitch: 0
