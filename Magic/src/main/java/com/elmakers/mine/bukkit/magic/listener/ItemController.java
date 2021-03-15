@@ -100,11 +100,11 @@ public class ItemController {
         if (item == null) {
             String[] pieces = StringUtils.split(key, ':');
             if (pieces.length > 1) {
-                item = items.get(pieces[0]);
-                if (item != null) {
+                ItemData baseItem = items.get(pieces[0]);
+                if (baseItem != null && baseItem.getMaxDurability() > 0) {
                     try {
                         short damage = Short.parseShort(pieces[1]);
-                        item = item.createVariant(key, damage);
+                        item = baseItem.createVariant(key, damage);
                         if (item != null) {
                             items.put(key, item);
                         }
