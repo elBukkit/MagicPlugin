@@ -8,10 +8,9 @@ year1:
     inherit: default
     upgrade: year2
     upgrade_item: year2
-    max_mana: 60
-    max_mana_regeneration: 8
-    mana_regeneration: 1
-    mana_max: 2
+    override_properties:
+      mana_max: 50
+      mana_regeneration: 6
     spells:
       - flagrate
       - vermillious

@@ -3,8 +3,9 @@ year3:
     upgrade: year4
     upgrade_item: year4
     inherit: year2
-    max_mana: 110
-    max_mana_regeneration: 15
+    override_properties:
+      mana_max: 110
+      mana_regeneration: 15
     spells:
       - bombarda
       - snowball

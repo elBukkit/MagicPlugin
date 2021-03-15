@@ -2,8 +2,5 @@ wizard:
   inherit: base
   locked: false
   path: year1
-  mana_max: 50
-  mana: 50
-  mana_regeneration: 6
   spells:
    - vermillious

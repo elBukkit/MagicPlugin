@@ -3,8 +3,9 @@ year4:
     upgrade: year5
     upgrade_item: year5
     inherit: year3
-    max_mana: 130
-    max_mana_regeneration: 20
+    override_properties:
+      mana_max: 130
+      mana_regeneration: 20
     spells:
       - protego
       - rennervate

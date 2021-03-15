@@ -3,8 +3,9 @@ year2:
     upgrade: year3
     upgrade_item: year3
     inherit: year1
-    max_mana: 90
-    max_mana_regeneration: 12
+    override_properties:
+      mana_max: 90
+      mana_regeneration: 12
     spells:
       - immobulus
       - fumos

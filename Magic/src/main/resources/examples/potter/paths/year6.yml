@@ -3,8 +3,9 @@ year6:
     upgrade: year7
     upgrade_item: year7
     inherit: year5
-    max_mana: 170
-    max_mana_regeneration: 34
+    override_properties:
+      mana_max: 170
+      mana_regeneration: 34
     spells:
       - firestorm
       - engorgio

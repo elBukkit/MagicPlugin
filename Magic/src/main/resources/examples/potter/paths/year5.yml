@@ -3,8 +3,9 @@ year5:
     upgrade: year6
     upgrade_item: year6
     inherit: year4
-    max_mana: 150
-    max_mana_regeneration: 28
+    override_properties:
+      mana_max: 150
+      mana_regeneration: 20
     spells:
       - stupefy
       - reducio
