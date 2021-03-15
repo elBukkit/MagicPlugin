@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.io.StringReader;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
@@ -270,6 +271,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                                     material = Material.getMaterial("LEGACY_" + materialKey.toUpperCase());
                                     if (material != null) {
                                         material = CompatibilityUtils.migrateMaterial(material, legacyData);
+                                        pieces = Arrays.copyOfRange(pieces, 0, 1);
                                     }
                                 }
 
