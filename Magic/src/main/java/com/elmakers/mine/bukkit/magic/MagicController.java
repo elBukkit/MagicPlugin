@@ -5678,11 +5678,23 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public Double getWorth(ItemStack item) {
+        return getWorth(item, "currency");
+    }
+
+    @Nullable
+    @Override
+    public Double getWorth(ItemStack item, String inCurrencyKey) {
+        Currency toCurrency = getCurrency(inCurrencyKey);
+        if (toCurrency == null || toCurrency.getWorth() == 0) {
+            return null;
+        }
         String spellKey = Wand.getSpell(item);
         if (spellKey != null) {
+            Currency spellPointCurrency = getCurrency("sp");
             SpellTemplate spell = getSpellTemplate(spellKey);
             if (spell != null) {
-                return spell.getWorth();
+                double spWorth = spellPointCurrency == null ? 1 : spellPointCurrency.getWorth();
+                return spell.getWorth() * spWorth / toCurrency.getWorth();
             }
         }
         int amount = item.getAmount();
@@ -5695,19 +5707,29 @@ public class MagicController implements MageController {
                 InventoryUtils.CurrencyAmount currencyAmount = InventoryUtils.getCurrency(item);
                 Currency currency = currencyAmount == null ? null : getCurrency(currencyAmount.type);
                 if (currency != null) {
-                    return currency.getWorth() * currencyAmount.amount * item.getAmount();
+                    return currency.getWorth() * currencyAmount.amount * item.getAmount() / toCurrency.getWorth();
                 }
                 return null;
             }
-            return (double)wand.getWorth();
+            return (double)wand.getWorth() / toCurrency.getWorth();
         }
 
-        return configuredItem.getWorth() * amount;
+        return configuredItem.getWorth() * amount / toCurrency.getWorth();
     }
 
     @Nullable
     @Override
     public Double getEarns(ItemStack item) {
+        return getEarns(item, "currency");
+    }
+
+    @Nullable
+    @Override
+    public Double getEarns(ItemStack item, String inCurrencyKey) {
+        Currency toCurrency = getCurrency(inCurrencyKey);
+        if (toCurrency == null || toCurrency.getWorth() == 0) {
+            return null;
+        }
         int amount = item.getAmount();
         item.setAmount(1);
         ItemData configuredItem = items.get(item);
@@ -5716,7 +5738,7 @@ public class MagicController implements MageController {
             return null;
         }
 
-        return configuredItem.getEarns() * amount;
+        return configuredItem.getEarns() * amount / toCurrency.getWorth();
     }
 
     public boolean isInventoryBackupEnabled() {

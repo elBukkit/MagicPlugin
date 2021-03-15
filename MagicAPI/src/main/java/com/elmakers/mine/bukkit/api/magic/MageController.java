@@ -543,7 +543,11 @@ public interface MageController {
     @Nullable
     Double getWorth(ItemStack item);
     @Nullable
+    Double getWorth(ItemStack item, String currency);
+    @Nullable
     Double getEarns(ItemStack item);
+    @Nullable
+    Double getEarns(ItemStack item, String currency);
     boolean disguise(Entity entity, ConfigurationSection configuration);
     void managePlayerData(boolean external, boolean backupInventories);
     String getDefaultWandTemplate();

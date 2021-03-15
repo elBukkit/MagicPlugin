@@ -242,7 +242,7 @@ public class ShopAction extends SelectorAction {
                         itemConfig.set("earn", costs);
                         itemConfig.set("cost", null);
                     } else {
-                        Double worth = context.getController().getEarns(item);
+                        Double worth = context.getController().getEarns(item, defaultConfiguration.earnType);
                         if (worth != null && worth > 0) {
                             itemConfig.set("earn", worth);
                         }

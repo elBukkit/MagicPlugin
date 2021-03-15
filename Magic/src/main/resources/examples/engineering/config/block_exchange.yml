@@ -4,7 +4,7 @@ custom_currency:
   materia:
     max: 9999
     default: 0
-    icon: skull:http://textures.minecraft.net/texture/b11206551e723c356c23b32383abd19e6d7e9e5988f191e7866ae89ed6cb24
+    icon: skull:http://textures.minecraft.net/texture/a5454f6488662cdb7d57d5fcaf3d9b061b57c109ba2aaa06c54707174d7a0c4
 
     # This is how much each materia is worth in vault currency
     # This is used to translate worth values assigned to blocks in item.yml into materia

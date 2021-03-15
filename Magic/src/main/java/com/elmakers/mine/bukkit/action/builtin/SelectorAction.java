@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
@@ -399,7 +400,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                         Cost itemCost = null;
                         String spellKey = controller.getSpell(item);
                         if (spellKey == null) {
-                            Double worth = controller.getWorth(item);
+                            Double worth = controller.getWorth(item, costType);
                             if (worth != null && worth > 0) {
                                 itemCost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, worth);
                             }
