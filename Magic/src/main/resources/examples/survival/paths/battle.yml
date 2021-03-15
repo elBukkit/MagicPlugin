@@ -14,6 +14,10 @@ battle:
     follows: beginner
     inherit: default
     spell_count: 1
+    override_properties:
+      mana_max: 50
+      mana_regeneration: 5
+      hotbar_count: 1
     spells:
       - missile
       - arrow
