@@ -1,0 +1,9 @@
+progressmenu:
+  parameters:
+    add_options:
+      materiashop:
+        slot: 2
+        cast_spell: materiashop
+        show_unavailable: false
+        requirements:
+          - path: engineer
