@@ -28,7 +28,6 @@
 ## Wolf Staff
 
  - Add option to use max level of all spells
- - Barrier brush
 
 # Player Shops
 

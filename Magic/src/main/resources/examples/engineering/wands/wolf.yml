@@ -114,6 +114,7 @@ wolf:
     - map@13
     - map:128@14
 
+    - barrier
     - stone
     - dirt
     - sand
