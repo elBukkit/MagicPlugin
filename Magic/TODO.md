@@ -35,8 +35,6 @@
 
 ## Hot
 
- - Re-work Stun so it's not useless
- - Use Firework projectile in one-way ticket to boomstown so there's still an example of that
  - Brooms should ignore half-blocks for takeoff
  - Weird behavior spamming (holding) right-click: https://youtu.be/FJfDqyCgztE
  - Recall to bed not working? (Kit reported) ("Not home set" ... "or something" lol)

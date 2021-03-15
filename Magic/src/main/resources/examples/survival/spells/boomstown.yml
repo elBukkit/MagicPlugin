@@ -1,88 +1,67 @@
 boomstown:
-   icon: firework_rocket{CustomModelData:18003}
-   icon_disabled: firework_rocket{CustomModelData:18004}
-   legacy_icon: spell_icon:196
-   legacy_icon_disabled: spell_icon_disabled:196
-   icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
-   category: combat
-   worth: 1000
-   earns: 8
-   actions:
-     cast:
-       - class: ChangeContext
-         source_at_target: true
-         source_is_target: true
-         requires_entity_target: true
-         actions:
-         - class: Firework
-         - class: Mount
-         - class: Delay
-         - class: ChangeContext
-           target_entity: true
-           actions:
-           - class: Explosion
-   effects:
-       cast:
-       -  class: EffectSingle
-          custom_sound: magic.whip
-          location: origin
-       -  class: EffectSingle
-          custom_sound: magic.electrify
-          location: origin
-       -  class: EffectSingle
-          custom_sound: magic.vanish
-          location: origin
-          effectlib:
-            class: ConeEffect
-            iterations: 16
-            particle: spell_mob
-            color: FE2EF7
-            lengthGrow: 0.4
-       -  class: EffectSingle
-          location: target
-          color: FE2EF7
-          firework: star
-       - class: EffectSingle
+  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
+  inherit: false
+  icon: firework_rocket{CustomModelData:18003}
+  icon_disabled: firework_rocket{CustomModelData:18004}
+  legacy_icon: spell_icon:196
+  legacy_icon_disabled: spell_icon_disabled:196
+  icon_url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
+  category: combat
+  worth: 1000
+  earns: 8
+  actions:
+    cast:
+      - class: Firework
+        expected_lifespan: 30
+        firework: ball
+        speed: 0.5
+        actions:
+          - class: AreaOfEffect
+            radius: 3
+            limit: 1
+            actions:
+              - class: ChangeContext
+                source_at_target: true
+                source_is_target: true
+                requires_entity_target: true
+                actions:
+                  - class: Firework
+                  - class: Mount
+                  - class: Delay
+                  - class: ChangeContext
+                    target_entity: true
+                    actions:
+                      - class: Explosion
+  effects:
+    cast:
+      -  class: EffectSingle
+         custom_sound: magic.whip
+         location: origin
+      -  class: EffectSingle
+         custom_sound: magic.electrify
+         location: origin
+      -  class: EffectSingle
          location: target
-         particle_override: particle_orbital
-         effectlib:
-            class: AtomEffect
-            particle_nucleus: spell_instant
-            particle_orbital: spell_instant
-            iterations: 16
-       no_target:
-       -  class: EffectSingle
-          custom_sound: magic.whip
-          location: origin
-       -  class: EffectSingle
-          custom_sound: magic.electrify
-          location: origin
-       -  class: EffectSingle
-          custom_sound: magic.vanish
-          location: origin
-          effectlib:
-            class: ConeEffect
-            iterations: 16
-            particle: spell_mob
-            color: FE2EF7
-            lengthGrow: 0.4
-       -  class: EffectSingle
-          location: target
-          color: FE2EF7
-          firework: star
-   parameters:
-       instant_block_effects: true
-       target: other
-       launch: true
-       cooldown: 30000
-       power: 0
-       speed: 0.15
-       expected_lifespan: 30
-       size: 4
-       delay: 1500
-       set_target: true
-       duration: 20000
-       undo: 10000
-   costs:
-       mana: 100
-
+         color: FE2EF7
+         firework: star
+    projectile:
+      - location: origin
+        color_override: color
+        effectlib:
+          class: Sphere
+          disappear_with_origin_entity: true
+  parameters:
+    instant_block_effects: true
+    target: other
+    launch: true
+    cooldown: 30000
+    power: 0
+    speed: 0.15
+    expected_lifespan: 30
+    size: 4
+    delay: 1500
+    set_target: true
+    duration: 20000
+    undo: 10000
+  costs:
+    mana: 100
