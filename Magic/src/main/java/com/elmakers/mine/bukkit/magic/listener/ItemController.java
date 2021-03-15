@@ -80,7 +80,7 @@ public class ItemController {
                 controller.getLogger().warning("Could not create item with key " + itemKey);
             }
         } catch (InvalidMaterialException ex) {
-            controller.getLogger().log(Level.WARNING, "Invalid item type '" + itemKey + "', may not exist on your server version: " + ex.getMessage());
+            controller.info("Invalid item type '" + itemKey + "', may not exist on your server version: " + ex.getMessage(), 2);
         } catch (Throwable ex) {
             controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
         }
