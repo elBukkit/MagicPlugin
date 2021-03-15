@@ -1001,7 +1001,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private void showBrushInstructions() {
         int brushCount = brushes.size();
-        if (brushCount == 0) {
+        if (brushCount != 0) {
             String controlKey = getControlKey(WandAction.TOGGLE);
             if (controlKey != null) {
                 controlKey = controller.getMessages().get("controls." + controlKey);
