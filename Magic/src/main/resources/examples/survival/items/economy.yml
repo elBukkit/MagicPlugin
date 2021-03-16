@@ -9,7 +9,7 @@ acacia_fence:
 acacia_fence_gate:
   worth: 1.37
 acacia_leaves:
-  worth: 0
+  worth: 1
 acacia_log:
   worth: 0.96
 acacia_planks:
@@ -27,7 +27,7 @@ acacia_stairs:
 acacia_trapdoor:
   worth: 1.1
 acacia_wall_sign:
-  worth: 0
+  worth: 0.89
 acacia_wood:
   worth: 1.85
 activator_rail:
@@ -53,9 +53,9 @@ armor_stand:
 arrow:
   worth: 0.5
 attached_melon_stem:
-  worth: 0
+  worth: 5
 attached_pumpkin_stem:
-  worth: 0
+  worth: 5
 azure_bluet:
   worth: 1.85
 baked_potato:
@@ -63,23 +63,23 @@ baked_potato:
 bamboo:
   worth: 1.37
 bamboo_sapling:
-  worth: 0
+  worth: 3
 barrel:
-  worth: 0
+  worth: 2.7
 barrier:
-  worth: 0
+  worth: 10000
 basalt:
   worth: 2.68
 bat_spawn_egg:
-  worth: 0
+  worth: 500
 beacon:
   worth: 5494.16
 bedrock:
-  worth: 0
+  worth: 10000
 bee_nest:
   worth: 36.61
 bee_spawn_egg:
-  worth: 0
+  worth: 500
 beef:
   worth: 0.5
 beehive:
@@ -93,7 +93,7 @@ beetroot_soup:
 beetroots:
   worth: 1.37
 bell:
-  worth: 0
+  worth: 300
 birch_boat:
   worth: 2.13
 birch_button:
@@ -105,7 +105,7 @@ birch_fence:
 birch_fence_gate:
   worth: 1.37
 birch_leaves:
-  worth: 0
+  worth: 1
 birch_log:
   worth: 0.96
 birch_planks:
@@ -123,7 +123,7 @@ birch_stairs:
 birch_trapdoor:
   worth: 1.1
 birch_wall_sign:
-  worth: 0
+  worth: 0.89
 birch_wood:
   worth: 1.85
 black_banner:
@@ -141,7 +141,7 @@ black_dye:
 black_glazed_terracotta:
   worth: 3.57
 black_shulker_box:
-  worth: 0
+  worth: 800
 black_stained_glass:
   worth: 1.79
 black_stained_glass_pane:
@@ -149,7 +149,7 @@ black_stained_glass_pane:
 black_terracotta:
   worth: 2.68
 black_wall_banner:
-  worth: 0
+  worth: 6.46
 black_wool:
   worth: 0.96
 blackstone:
@@ -161,15 +161,15 @@ blackstone_stairs:
 blackstone_wall:
   worth: 3.02
 blast_furnace:
-  worth: 0
+  worth: 50
 blaze_powder:
-  worth: 2
+  worth: 10
 blaze_rod:
   worth: 13.19
 blaze_spawn_egg:
-  worth: 0
+  worth: 500
 blue_banner:
-  worth: 22.25
+  worth: 6.46
 blue_bed:
   worth: 6.39
 blue_carpet:
@@ -183,11 +183,11 @@ blue_dye:
 blue_glazed_terracotta:
   worth: 3.43
 blue_ice:
-  worth: 0
+  worth: 18
 blue_orchid:
   worth: 3
 blue_shulker_box:
-  worth: 0
+  worth: 800
 blue_stained_glass:
   worth: 1.65
 blue_stained_glass_pane:
@@ -195,15 +195,15 @@ blue_stained_glass_pane:
 blue_terracotta:
   worth: 2.47
 blue_wall_banner:
-  worth: 0
+  worth: 6.46
 blue_wool:
   worth: 3.37
 boat:
-  worth: 0
+  worth: 2.13
 bone:
   worth: 1
 bone_block:
-  worth: 0
+  worth: 9
 bone_meal:
   worth: 1.24
 book:
@@ -221,11 +221,11 @@ brain_coral_block:
 brain_coral_fan:
   worth: 2.68
 brain_coral_wall_fan:
-  worth: 0
+  worth: 2.68
 bread:
   worth: 4.74
 brewing_stand:
-  worth: 0
+  worth: 15
 brick:
   worth: 1.65
 brick_slab:
@@ -255,7 +255,7 @@ brown_mushroom:
 brown_mushroom_block:
   worth: 0.96
 brown_shulker_box:
-  worth: 0
+  worth: 800
 brown_stained_glass:
   worth: 2.06
 brown_stained_glass_pane:
@@ -263,11 +263,11 @@ brown_stained_glass_pane:
 brown_terracotta:
   worth: 2.88
 brown_wall_banner:
-  worth: 0
+  worth: 6.46
 brown_wool:
   worth: 0.96
 bubble_column:
-  worth: 0
+  worth: 20
 bubble_coral:
   worth: 2.68
 bubble_coral_block:
@@ -275,7 +275,7 @@ bubble_coral_block:
 bubble_coral_fan:
   worth: 2.68
 bubble_coral_wall_fan:
-  worth: 0
+  worth: 2.68
 bucket:
   worth: 15.11
 cactus:
@@ -283,7 +283,7 @@ cactus:
 cake:
   worth: 25.07
 campfire:
-  worth: 0
+  worth: 3.5
 carrot:
   worth: 0.96
 carrot_on_a_stick:
@@ -295,11 +295,11 @@ cartography_table:
 carved_pumpkin:
   worth: 0
 cat_spawn_egg:
-  worth: 0
+  worth: 500
 cauldron:
   worth: 0
 cave_spider_spawn_egg:
-  worth: 0
+  worth: 500
 chain:
   worth: 6.66
 chain_command_block:
@@ -313,13 +313,13 @@ chainmail_helmet:
 chainmail_leggings:
   worth: 0
 charcoal:
-  worth: 0
+  worth: 0.25
 chest:
   worth: 2
 chest_minecart:
   worth: 0
 chicken_spawn_egg:
-  worth: 0
+  worth: 500
 chipped_anvil:
   worth: 0
 chiseled_nether_bricks:
@@ -373,7 +373,7 @@ cod:
 cod_bucket:
   worth: 0
 cod_spawn_egg:
-  worth: 0
+  worth: 500
 command_block:
   worth: 0
 command_block_minecart:
@@ -405,7 +405,7 @@ cookie:
 cornflower:
   worth: 1.85
 cow_spawn_egg:
-  worth: 0
+  worth: 500
 cracked_nether_bricks:
   worth: 4.46
 cracked_polished_blackstone_bricks:
@@ -417,7 +417,7 @@ crafting_table:
 creeper_head:
   worth: 775
 creeper_spawn_egg:
-  worth: 0
+  worth: 500
 creeper_wall_head:
   worth: 0
 crimson_button:
@@ -451,7 +451,7 @@ crimson_stem:
 crimson_trapdoor:
   worth: 2.4
 crimson_wall_sign:
-  worth: 0
+  worth: 0.89
 crossbow:
   worth: 17.93
 crying_obsidian:
@@ -465,7 +465,7 @@ cut_sandstone:
 cut_sandstone_slab:
   worth: 1.44
 cyan_banner:
-  worth: 23.28
+  worth: 6.46
 cyan_bed:
   worth: 6.52
 cyan_carpet:
@@ -479,7 +479,7 @@ cyan_dye:
 cyan_glazed_terracotta:
   worth: 3.43
 cyan_shulker_box:
-  worth: 0
+  worth: 800
 cyan_stained_glass:
   worth: 1.65
 cyan_stained_glass_pane:
@@ -487,7 +487,7 @@ cyan_stained_glass_pane:
 cyan_terracotta:
   worth: 2.47
 cyan_wall_banner:
-  worth: 0
+  worth: 6.46
 cyan_wool:
   worth: 3.5
 damaged_anvil:
@@ -505,7 +505,7 @@ dark_oak_fence:
 dark_oak_fence_gate:
   worth: 1.37
 dark_oak_leaves:
-  worth: 0
+  worth: 1
 dark_oak_log:
   worth: 0.96
 dark_oak_planks:
@@ -523,7 +523,7 @@ dark_oak_stairs:
 dark_oak_trapdoor:
   worth: 1.1
 dark_oak_wall_sign:
-  worth: 0
+  worth: 0.89
 dark_oak_wood:
   worth: 1.85
 dark_prismarine:
@@ -541,7 +541,7 @@ dead_brain_coral_block:
 dead_brain_coral_fan:
   worth: 0.69
 dead_brain_coral_wall_fan:
-  worth: 0
+  worth: 0.69
 dead_bubble_coral:
   worth: 0.69
 dead_bubble_coral_block:
@@ -549,7 +549,7 @@ dead_bubble_coral_block:
 dead_bubble_coral_fan:
   worth: 0.69
 dead_bubble_coral_wall_fan:
-  worth: 0
+  worth: 0.69
 dead_bush:
   worth: 3
 dead_fire_coral:
@@ -559,7 +559,7 @@ dead_fire_coral_block:
 dead_fire_coral_fan:
   worth: 0.69
 dead_fire_coral_wall_fan:
-  worth: 0
+  worth: 0.69
 dead_horn_coral:
   worth: 0.69
 dead_horn_coral_block:
@@ -567,7 +567,7 @@ dead_horn_coral_block:
 dead_horn_coral_fan:
   worth: 0.69
 dead_horn_coral_wall_fan:
-  worth: 0
+  worth: 0.69
 dead_tube_coral:
   worth: 0.69
 dead_tube_coral_block:
@@ -575,7 +575,7 @@ dead_tube_coral_block:
 dead_tube_coral_fan:
   worth: 0.69
 dead_tube_coral_wall_fan:
-  worth: 0
+  worth: 0.69
 debug_stick:
   worth: 0
 detector_rail:
@@ -619,9 +619,9 @@ dirt:
 dispenser:
   worth: 2
 dolphin_spawn_egg:
-  worth: 0
+  worth: 500
 donkey_spawn_egg:
-  worth: 0
+  worth: 500
 dragon_breath:
   worth: 892.86
 dragon_egg:
@@ -637,11 +637,11 @@ dried_kelp_block:
 dropper:
   worth: 3
 drowned_spawn_egg:
-  worth: 0
+  worth: 500
 egg:
   worth: 0.5
 elder_guardian_spawn_egg:
-  worth: 0
+  worth: 500
 elytra:
   worth: 769.23
 emerald:
@@ -683,11 +683,11 @@ ender_eye:
 ender_pearl:
   worth: 10
 enderman_spawn_egg:
-  worth: 0
+  worth: 500
 endermite_spawn_egg:
-  worth: 0
+  worth: 500
 evoker_spawn_egg:
-  worth: 0
+  worth: 500
 experience_bottle:
   worth: 5000
 eye_of_ender:
@@ -703,7 +703,7 @@ fern:
 filled_map:
   worth: 0
 fire:
-  worth: 0
+  worth: 100
 fire_charge:
   worth: 5.29
 fire_coral:
@@ -713,9 +713,7 @@ fire_coral_block:
 fire_coral_fan:
   worth: 2.68
 fire_coral_wall_fan:
-  worth: 0
-fireball:
-  worth: 0
+  worth: 2.68
 firework_rocket:
   worth: 0
 firework_star:
@@ -731,15 +729,15 @@ flint_and_steel:
 flower_pot:
   worth: 4.88
 fox_spawn_egg:
-  worth: 0
+  worth: 500
 frosted_ice:
-  worth: 0
+  worth: 10
 furnace:
   worth: 1
 furnace_minecart:
   worth: 0
 ghast_spawn_egg:
-  worth: 0
+  worth: 500
 ghast_tear:
   worth: 2
 gilded_blackstone:
@@ -819,7 +817,7 @@ gray_dye:
 gray_glazed_terracotta:
   worth: 3.5
 gray_shulker_box:
-  worth: 0
+  worth: 800
 gray_stained_glass:
   worth: 1.72
 gray_stained_glass_pane:
@@ -827,11 +825,11 @@ gray_stained_glass_pane:
 gray_terracotta:
   worth: 2.61
 gray_wall_banner:
-  worth: 0
+  worth: 6.46
 gray_wool:
   worth: 0.96
 green_banner:
-  worth: 20.33
+  worth: 6.46
 green_bed:
   worth: 6.04
 green_carpet:
@@ -845,7 +843,7 @@ green_dye:
 green_glazed_terracotta:
   worth: 3.37
 green_shulker_box:
-  worth: 0
+  worth: 800
 green_stained_glass:
   worth: 1.51
 green_stained_glass_pane:
@@ -853,13 +851,13 @@ green_stained_glass_pane:
 green_terracotta:
   worth: 2.4
 green_wall_banner:
-  worth: 0
+  worth: 6.46
 green_wool:
   worth: 3.02
 grindstone:
   worth: 0
 guardian_spawn_egg:
-  worth: 0
+  worth: 500
 gunpowder:
   worth: 7.55
 hay_block:
@@ -869,7 +867,7 @@ heart_of_the_sea:
 heavy_weighted_pressure_plate:
   worth: 11.54
 hoglin_spawn_egg:
-  worth: 0
+  worth: 500
 honey_block:
   worth: 2.27
 honey_bottle:
@@ -889,13 +887,13 @@ horn_coral_block:
 horn_coral_fan:
   worth: 2.68
 horn_coral_wall_fan:
-  worth: 0
+  worth: 2.68
 horse_spawn_egg:
-  worth: 0
+  worth: 500
 husk_spawn_egg:
-  worth: 0
+  worth: 500
 ice:
-  worth: 0
+  worth: 0.2
 infested_chiseled_stone_bricks:
   worth: 0
 infested_cobblestone:
@@ -963,7 +961,7 @@ jungle_fence:
 jungle_fence_gate:
   worth: 1.37
 jungle_leaves:
-  worth: 0
+  worth: 1
 jungle_log:
   worth: 0.96
 jungle_planks:
@@ -981,7 +979,7 @@ jungle_stairs:
 jungle_trapdoor:
   worth: 1.1
 jungle_wall_sign:
-  worth: 0
+  worth: 0.89
 jungle_wood:
   worth: 1.85
 kelp:
@@ -1003,9 +1001,9 @@ lapis_ore:
 large_fern:
   worth: 3
 lava:
-  worth: 0
+  worth: 10
 lava_bucket:
-  worth: 0
+  worth: 10
 lead:
   worth: 12.91
 leather:
@@ -1025,7 +1023,7 @@ lectern:
 lever:
   worth: 0.8
 light_blue_banner:
-  worth: 22.25
+  worth: 6.46
 light_blue_bed:
   worth: 6.39
 light_blue_carpet:
@@ -1039,7 +1037,7 @@ light_blue_dye:
 light_blue_glazed_terracotta:
   worth: 3.43
 light_blue_shulker_box:
-  worth: 0
+  worth: 800
 light_blue_stained_glass:
   worth: 1.65
 light_blue_stained_glass_pane:
@@ -1047,7 +1045,7 @@ light_blue_stained_glass_pane:
 light_blue_terracotta:
   worth: 2.47
 light_blue_wall_banner:
-  worth: 0
+  worth: 6.46
 light_blue_wool:
   worth: 3.37
 light_gray_banner:
@@ -1065,7 +1063,7 @@ light_gray_dye:
 light_gray_glazed_terracotta:
   worth: 3.43
 light_gray_shulker_box:
-  worth: 0
+  worth: 800
 light_gray_stained_glass:
   worth: 1.65
 light_gray_stained_glass_pane:
@@ -1073,7 +1071,7 @@ light_gray_stained_glass_pane:
 light_gray_terracotta:
   worth: 2.47
 light_gray_wall_banner:
-  worth: 0
+  worth: 6.46
 light_gray_wool:
   worth: 0.96
 light_weighted_pressure_plate:
@@ -1085,7 +1083,7 @@ lily_of_the_valley:
 lily_pad:
   worth: 0
 lime_banner:
-  worth: 18.34
+  worth: 6.46
 lime_bed:
   worth: 5.77
 lime_carpet:
@@ -1099,7 +1097,7 @@ lime_dye:
 lime_glazed_terracotta:
   worth: 3.37
 lime_shulker_box:
-  worth: 0
+  worth: 800
 lime_stained_glass:
   worth: 1.51
 lime_stained_glass_pane:
@@ -1107,13 +1105,13 @@ lime_stained_glass_pane:
 lime_terracotta:
   worth: 2.4
 lime_wall_banner:
-  worth: 0
+  worth: 6.46
 lime_wool:
   worth: 2.75
 lingering_potion:
   worth: 178.57
 llama_spawn_egg:
-  worth: 0
+  worth: 500
 lodestone:
   worth: 1583.24
 log:
@@ -1121,7 +1119,7 @@ log:
 loom:
   worth: 0
 magenta_banner:
-  worth: 21.77
+  worth: 6.46
 magenta_bed:
   worth: 6.32
 magenta_carpet:
@@ -1135,7 +1133,7 @@ magenta_dye:
 magenta_glazed_terracotta:
   worth: 3.43
 magenta_shulker_box:
-  worth: 0
+  worth: 800
 magenta_stained_glass:
   worth: 1.65
 magenta_stained_glass_pane:
@@ -1143,7 +1141,7 @@ magenta_stained_glass_pane:
 magenta_terracotta:
   worth: 2.47
 magenta_wall_banner:
-  worth: 0
+  worth: 6.46
 magenta_wool:
   worth: 3.3
 magma_block:
@@ -1151,7 +1149,7 @@ magma_block:
 magma_cream:
   worth: 8
 magma_cube_spawn_egg:
-  worth: 0
+  worth: 500
 map:
   worth: 30.49
 melon:
@@ -1167,7 +1165,7 @@ milk_bucket:
 minecart:
   worth: 0
 mooshroom_spawn_egg:
-  worth: 0
+  worth: 500
 mossy_cobblestone:
   worth: 2.68
 mossy_cobblestone_slab:
@@ -1187,7 +1185,7 @@ mossy_stone_bricks:
 moving_piston:
   worth: 0
 mule_spawn_egg:
-  worth: 0
+  worth: 500
 mushroom_stem:
   worth: 0.96
 mushroom_stew:
@@ -1291,7 +1289,7 @@ oak_fence:
 oak_fence_gate:
   worth: 1.37
 oak_leaves:
-  worth: 0
+  worth: 1
 oak_log:
   worth: 0.96
 oak_planks:
@@ -1309,7 +1307,7 @@ oak_stairs:
 oak_trapdoor:
   worth: 1.1
 oak_wall_sign:
-  worth: 0
+  worth: 0.89
 oak_wood:
   worth: 1.85
 observer:
@@ -1317,9 +1315,9 @@ observer:
 obsidian:
   worth: 19.64
 ocelot_spawn_egg:
-  worth: 0
+  worth: 500
 orange_banner:
-  worth: 22.25
+  worth: 6.46
 orange_bed:
   worth: 6.39
 orange_carpet:
@@ -1333,7 +1331,7 @@ orange_dye:
 orange_glazed_terracotta:
   worth: 3.43
 orange_shulker_box:
-  worth: 0
+  worth: 800
 orange_stained_glass:
   worth: 1.65
 orange_stained_glass_pane:
@@ -1343,7 +1341,7 @@ orange_terracotta:
 orange_tulip:
   worth: 3
 orange_wall_banner:
-  worth: 0
+  worth: 6.46
 orange_wool:
   worth: 3.37
 oxeye_daisy:
@@ -1353,11 +1351,11 @@ packed_ice:
 painting:
   worth: 2
 panda_spawn_egg:
-  worth: 0
+  worth: 500
 paper:
   worth: 0.34
 parrot_spawn_egg:
-  worth: 0
+  worth: 500
 peony:
   worth: 7.9
 petrified_oak_slab:
@@ -1365,15 +1363,15 @@ petrified_oak_slab:
 phantom_membrane:
   worth: 183.93
 phantom_spawn_egg:
-  worth: 0
+  worth: 500
 pig_spawn_egg:
-  worth: 0
+  worth: 500
 piglin_spawn_egg:
-  worth: 0
+  worth: 500
 pillager_spawn_egg:
-  worth: 0
+  worth: 500
 pink_banner:
-  worth: 20.81
+  worth: 6.46
 pink_bed:
   worth: 6.18
 pink_carpet:
@@ -1387,7 +1385,7 @@ pink_dye:
 pink_glazed_terracotta:
   worth: 3.43
 pink_shulker_box:
-  worth: 0
+  worth: 800
 pink_stained_glass:
   worth: 1.65
 pink_stained_glass_pane:
@@ -1397,7 +1395,7 @@ pink_terracotta:
 pink_tulip:
   worth: 3
 pink_wall_banner:
-  worth: 0
+  worth: 6.46
 pink_wool:
   worth: 3.16
 piston:
@@ -1413,7 +1411,7 @@ podzol:
 poisonous_potato:
   worth: 0
 polar_bear_spawn_egg:
-  worth: 0
+  worth: 500
 polished_andesite:
   worth: 1.37
 polished_andesite_slab:
@@ -1549,7 +1547,7 @@ pufferfish:
 pufferfish_bucket:
   worth: 0
 pufferfish_spawn_egg:
-  worth: 0
+  worth: 500
 pumpkin:
   worth: 1
 pumpkin_pie:
@@ -1559,7 +1557,7 @@ pumpkin_seeds:
 pumpkin_stem:
   worth: 0
 purple_banner:
-  worth: 22.8
+  worth: 6.46
 purple_bed:
   worth: 6.46
 purple_carpet:
@@ -1573,7 +1571,7 @@ purple_dye:
 purple_glazed_terracotta:
   worth: 3.43
 purple_shulker_box:
-  worth: 0
+  worth: 800
 purple_stained_glass:
   worth: 1.65
 purple_stained_glass_pane:
@@ -1581,7 +1579,7 @@ purple_stained_glass_pane:
 purple_terracotta:
   worth: 2.47
 purple_wall_banner:
-  worth: 0
+  worth: 6.46
 purple_wool:
   worth: 3.43
 purpur_block:
@@ -1611,15 +1609,15 @@ rabbit_foot:
 rabbit_hide:
   worth: 0.5
 rabbit_spawn_egg:
-  worth: 0
+  worth: 500
 rabbit_stew:
   worth: 5
 rail:
   worth: 2.4
 ravager_spawn_egg:
-  worth: 0
+  worth: 500
 red_banner:
-  worth: 19.3
+  worth: 6.46
 red_bed:
   worth: 5.91
 red_carpet:
@@ -1655,7 +1653,7 @@ red_sandstone_stairs:
 red_sandstone_wall:
   worth: 6.32
 red_shulker_box:
-  worth: 0
+  worth: 800
 red_stained_glass:
   worth: 1.51
 red_stained_glass_pane:
@@ -1665,7 +1663,7 @@ red_terracotta:
 red_tulip:
   worth: 3
 red_wall_banner:
-  worth: 0
+  worth: 6.46
 red_wool:
   worth: 2.88
 redstone:
@@ -1699,7 +1697,7 @@ salmon:
 salmon_bucket:
   worth: 0
 salmon_spawn_egg:
-  worth: 0
+  worth: 500
 sand:
   worth: 0.48
 sandstone:
@@ -1723,27 +1721,27 @@ seagrass:
 shears:
   worth: 10.3
 sheep_spawn_egg:
-  worth: 0
+  worth: 500
 shield:
   worth: 7.55
 shroomlight:
-  worth: 0
+  worth: 100
 shulker_box:
   worth: 785.99
 shulker_shell:
   worth: 390.38
 shulker_spawn_egg:
-  worth: 0
+  worth: 500
 sign:
   worth: 1
 silverfish_spawn_egg:
-  worth: 0
+  worth: 500
 skeleton_horse_spawn_egg:
-  worth: 0
+  worth: 500
 skeleton_skull:
   worth: 773.08
 skeleton_spawn_egg:
-  worth: 0
+  worth: 500
 skeleton_wall_skull:
   worth: 0
 slime_ball:
@@ -1751,11 +1749,11 @@ slime_ball:
 slime_block:
   worth: 59.68
 slime_spawn_egg:
-  worth: 0
+  worth: 500
 smithing_table:
-  worth: 0
+  worth: 22
 smoker:
-  worth: 0
+  worth: 5
 smooth_quartz:
   worth: 15.73
 smooth_quartz_slab:
@@ -1783,11 +1781,11 @@ snow:
 snow_block:
   worth: 0.25
 snowball:
-  worth: 0
+  worth: 0.05
 soul_campfire:
-  worth: 0
+  worth: 6
 soul_fire:
-  worth: 0
+  worth: 100
 soul_lantern:
   worth: 8.04
 soul_sand:
@@ -1805,7 +1803,7 @@ spectral_arrow:
 spider_eye:
   worth: 0.5
 spider_spawn_egg:
-  worth: 0
+  worth: 500
 splash_potion:
   worth: 178.57
 sponge:
@@ -1821,7 +1819,7 @@ spruce_fence:
 spruce_fence_gate:
   worth: 1.37
 spruce_leaves:
-  worth: 0
+  worth: 1
 spruce_log:
   worth: 0.96
 spruce_planks:
@@ -1839,11 +1837,11 @@ spruce_stairs:
 spruce_trapdoor:
   worth: 1.1
 spruce_wall_sign:
-  worth: 0
+  worth: 0.89
 spruce_wood:
   worth: 1.85
 squid_spawn_egg:
-  worth: 0
+  worth: 500
 stick:
   worth: 0.1
 sticky_piston:
@@ -1877,9 +1875,9 @@ stone_stairs:
 stone_sword:
   worth: "0.10"
 stray_spawn_egg:
-  worth: 0
+  worth: 500
 strider_spawn_egg:
-  worth: 0
+  worth: 500
 string:
   worth: 1
 stripped_acacia_log:
@@ -1915,9 +1913,9 @@ stripped_warped_hyphae:
 stripped_warped_stem:
   worth: 1.37
 structure_block:
-  worth: 0
+  worth: 10000
 structure_void:
-  worth: 0
+  worth: 10000
 sugar:
   worth: 0.25
 sugar_cane:
@@ -1949,7 +1947,7 @@ torch:
 totem_of_undying:
   worth: 5151.1
 trader_llama_spawn_egg:
-  worth: 0
+  worth: 500
 trapped_chest:
   worth: 6.59
 trident:
@@ -1963,7 +1961,7 @@ tropical_fish:
 tropical_fish_bucket:
   worth: 0
 tropical_fish_spawn_egg:
-  worth: 0
+  worth: 500
 tube_coral:
   worth: 2.68
 tube_coral_block:
@@ -1971,31 +1969,31 @@ tube_coral_block:
 tube_coral_fan:
   worth: 2.68
 tube_coral_wall_fan:
-  worth: 0
+  worth: 2.68
 turtle_egg:
   worth: 5.29
 turtle_helmet:
   worth: 85.71
 turtle_spawn_egg:
-  worth: 0
+  worth: 500
 twisting_vines:
   worth: 0
 twisting_vines_plant:
   worth: 0
 vex_spawn_egg:
-  worth: 0
+  worth: 500
 villager_spawn_egg:
-  worth: 0
+  worth: 500
 vindicator_spawn_egg:
-  worth: 0
+  worth: 500
 vine:
   worth: 2
 wall_sign:
-  worth: 0
+  worth: 0.89
 wall_torch:
   worth: 0
 wandering_trader_spawn_egg:
-  worth: 0
+  worth: 500
 warped_button:
   worth: 1.1
 warped_door:
@@ -2029,13 +2027,13 @@ warped_stem:
 warped_trapdoor:
   worth: 2.4
 warped_wall_sign:
-  worth: 0
+  worth: 0.89
 warped_wart_block:
   worth: 2.68
 water:
-  worth: 0
+  worth: 5
 water_bucket:
-  worth: 0
+  worth: 5
 weeping_vines:
   worth: 0
 weeping_vines_plant:
@@ -2061,7 +2059,7 @@ white_dye:
 white_glazed_terracotta:
   worth: 3.37
 white_shulker_box:
-  worth: 0
+  worth: 800
 white_stained_glass:
   worth: 1.51
 white_stained_glass_pane:
@@ -2071,21 +2069,21 @@ white_terracotta:
 white_tulip:
   worth: 3
 white_wall_banner:
-  worth: 0
+  worth: 6.46
 white_wool:
   worth: 0.96
 witch_spawn_egg:
-  worth: 0
+  worth: 500
 wither_rose:
   worth: 5357.14
 wither_skeleton_skull:
   worth: 775
 wither_skeleton_spawn_egg:
-  worth: 0
+  worth: 500
 wither_skeleton_wall_skull:
   worth: 0
 wolf_spawn_egg:
-  worth: 0
+  worth: 500
 wooden_axe:
   worth: 1.85
 wooden_hoe:
@@ -2103,7 +2101,7 @@ writable_book:
 written_book:
   worth: 0
 yellow_banner:
-  worth: 22.25
+  worth: 6.46
 yellow_bed:
   worth: 6.39
 yellow_carpet:
@@ -2117,7 +2115,7 @@ yellow_dye:
 yellow_glazed_terracotta:
   worth: 3.43
 yellow_shulker_box:
-  worth: 0
+  worth: 800
 yellow_stained_glass:
   worth: 1.65
 yellow_stained_glass_pane:
@@ -2125,20 +2123,20 @@ yellow_stained_glass_pane:
 yellow_terracotta:
   worth: 2.47
 yellow_wall_banner:
-  worth: 0
+  worth: 6.46
 yellow_wool:
   worth: 3.37
 zoglin_spawn_egg:
-  worth: 0
+  worth: 500
 zombie_head:
   worth: 773.08
 zombie_horse_spawn_egg:
-  worth: 0
+  worth: 500
 zombie_spawn_egg:
-  worth: 0
+  worth: 500
 zombie_villager_spawn_egg:
-  worth: 0
+  worth: 500
 zombie_wall_head:
   worth: 0
 zombified_piglin_spawn_egg:
-  worth: 0
+  worth: 500
