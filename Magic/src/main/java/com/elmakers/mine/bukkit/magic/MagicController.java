@@ -6117,10 +6117,6 @@ public class MagicController implements MageController {
             "pi"
     );
 
-    public Set<String> getBuiltinAttributes() {
-        return builtinAttributes;
-    }
-
     @Override
     @Nullable
     public MagicAttribute getAttribute(String attributeKey) {

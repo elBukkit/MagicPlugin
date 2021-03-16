@@ -41,6 +41,6 @@ public class MagicConfiguration extends ParameterizedConfiguration {
 
     @Override
     protected Set<String> getParameters() {
-        return controller.getBuiltinAttributes();
+        return controller.getAttributes();
     }
 }
