@@ -514,6 +514,7 @@ public interface MageController {
     Collection<String> getAlternateResourcePacks();
     boolean commitOnQuit();
     int getMaxHeight(World world);
+    int getMinHeight(World world);
 
     Set<String> getItemKeys();
     @Nullable

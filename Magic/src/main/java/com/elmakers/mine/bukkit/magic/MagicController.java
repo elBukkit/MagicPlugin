@@ -6691,6 +6691,16 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public int getMinHeight(World world) {
+        MagicWorld magicWorld = getMagicWorld(world.getName());
+        int minHeight = CompatibilityUtils.getMinHeight(world);
+        if (magicWorld != null) {
+            minHeight = magicWorld.getMinHeight(minHeight);
+        }
+        return minHeight;
+    }
+
+    @Override
     public void setDisableSpawnReplacement(boolean disable) {
         if (disable) {
             disableSpawnReplacement++;

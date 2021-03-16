@@ -888,6 +888,13 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
+    public static int getMinHeight(World world) {
+        if (!NMSUtils.isCurrentVersion()) {
+            return 0;
+        }
+        return -64;
+    }
+
     public static int getMaxHeight(World world) {
         Integer maxHeight = maxHeights.get(world.getEnvironment());
         if (maxHeight == null) {

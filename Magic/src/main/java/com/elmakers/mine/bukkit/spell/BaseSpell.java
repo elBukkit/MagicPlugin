@@ -98,9 +98,6 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     protected static final double LOOK_THRESHOLD = 0.98;
 
-    // TODO: Config-drive
-    protected static final int MIN_Y = 1;
-
     // TODO: Configurable default? this does look cool, though.
     protected static final Material DEFAULT_EFFECT_MATERIAL = Material.WATER;
 
@@ -448,7 +445,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Nullable
     public Location findPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta) {
         if (!CompatibilityUtils.isChunkLoaded(targetLoc)) return null;
-        int minY = MIN_Y;
+        int minY = controller.getMinHeight(targetLoc.getWorld());
         int maxY = controller.getMaxHeight(targetLoc.getWorld());
 
         // Teleport above half blocks, we will get bumped down by checkForHalfBlock
@@ -506,7 +503,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         // search for a spot to stand
         Location targetLocation = target.clone();
         int yDelta = 0;
-        int minY = MIN_Y;
+        int minY = controller.getMinHeight(targetLocation.getWorld());
         int maxY = controller.getMaxHeight(targetLocation.getWorld());
 
         while (minY <= targetLocation.getY() && targetLocation.getY() <= maxY && yDelta < maxDelta)

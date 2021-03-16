@@ -43,6 +43,7 @@ public class MagicWorld {
     private static Random random = new Random();
     private WorldState state = WorldState.UNLOADED;
     private Integer maxHeight;
+    private Integer minHeight;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -57,6 +58,9 @@ public class MagicWorld {
         worldName = name;
         if (config.contains("max_height")) {
             maxHeight = config.getInt("max_height");
+        }
+        if (config.contains("min_height")) {
+            minHeight = config.getInt("min_height");
         }
         copyFrom = config.getString("copy", copyFrom);
         synchronizeTime = config.getBoolean("synchronize_time", synchronizeTime);
@@ -251,5 +255,9 @@ public class MagicWorld {
 
     public int getMaxHeight(int defaultHeight) {
         return maxHeight != null ? maxHeight : defaultHeight;
+    }
+
+    public int getMinHeight(int defaultHeight) {
+        return minHeight != null ? minHeight : defaultHeight;
     }
 }
