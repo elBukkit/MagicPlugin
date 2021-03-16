@@ -1621,6 +1621,11 @@ public class MagicController implements MageController {
         // We should be done adding attributes now
         finalizeAttributes();
 
+        // Requirements providers
+        if (skillAPIManager != null) {
+            requirementProcessors.put("skillapi", skillAPIManager);
+        }
+
         // Team providers
         if (heroesManager != null && useHeroesParties) {
             teamProviders.add(heroesManager);
@@ -2848,6 +2853,8 @@ public class MagicController implements MageController {
         teamProviders.addAll(loadEvent.getTeamProviders());
         castManagers.addAll(loadEvent.getCastManagers());
         targetingProviders.addAll(loadEvent.getTargetingManagers());
+        teamProviders.addAll(loadEvent.getTeamProviders());
+        playerWarpManagers.putAll(loadEvent.getWarpManagers());
 
         // Use legacy currency configs if present
         ConfigurationSection currencyConfiguration = configuration.getConfigurationSection("builtin_currency");
@@ -2911,21 +2918,6 @@ public class MagicController implements MageController {
         Set<String> keys = currencyConfiguration.getKeys(false);
         for (String key : keys) {
             addCurrency(new CustomCurrency(this, key, currencyConfiguration.getConfigurationSection(key)));
-        }
-
-        // Register attribute providers
-        attributeProviders.addAll(loadEvent.getAttributeProviders());
-
-        // Register team providers
-        teamProviders.addAll(loadEvent.getTeamProviders());
-
-        // Register player warp managers=
-        playerWarpManagers.putAll(loadEvent.getWarpManagers());
-
-        // Register requirement processors
-        requirementProcessors.putAll(loadEvent.getRequirementProcessors());
-        if (skillAPIManager != null) {
-            requirementProcessors.put("skillapi", skillAPIManager);
         }
 
         // Re-register any providers previously registered by external plugins via register()

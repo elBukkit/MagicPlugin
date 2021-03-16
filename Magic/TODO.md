@@ -2,11 +2,8 @@
 
 # Engineering Improvements
 
- - Equivalent exchange
-   - Print message at end of spell showing how much money was consumed (and blocks?)
  - Fill out worth values for all blocks (and items, for shops)
  - Improve/fix alt-down rollback cast
- - Brush selector block conversion (right-click to absorb)
  - Fix gaining SP for cast failed due to not enough blocks
 
 ## Client Localization
