@@ -1,5 +1,8 @@
 brush:
   consumes: "&eConsumes $description"
+  absorb: "&aRight-Click &2to absorb all\n &6$type &2blocks in inventory"
+  absorbed: "&aAbsorbed &2$amount &ablocks of &6$type"
+  no_absorbed: "&cYou have no $6$type $cblocks in your inventory"
   # Set this to see the brush key in lore
   # key: "&7$key"
   key: ""

@@ -304,4 +304,4 @@ spells:
     materiashop:
         name: Materia Shop
         description: Exchange money for Spell Points
-        title: Materia
+        title: "&3Materia &7(&a$balance&7)"

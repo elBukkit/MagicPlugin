@@ -10,7 +10,7 @@ custom_currency:
     # This is used to translate worth values assigned to blocks in item.yml into materia
     # values, which is the basis for all of the block exchanges.
     # Make this value larger to make blocks worth (and cost) more materia.
-    worth: 1
+    worth: 10
 
 # This allows engineering spells to work with a custom currency instead
 # of requiring the blocks to build.

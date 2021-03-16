@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryAction;
@@ -21,8 +22,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
@@ -38,6 +41,13 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
     private List<ItemStack> schematics = new ArrayList<>();
     private Map<Material, List<ItemStack>> variants = new HashMap<>();
     private int page = 1;
+    private boolean allowAbsorbing = false;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        allowAbsorbing = parameters.getBoolean("allow_absorbing", true);
+    }
 
     @Override
     public void deactivated() {
@@ -99,6 +109,44 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
 
             mage.deactivateGUI();
+            Currency blockCurrency = context.getController().getBlockExchangeCurrency();
+            if (event.isRightClick() && blockCurrency != null && InventoryUtils.getMetaBoolean(item, "absorb", false) && !mage.isDead()) {
+                Messages messages = context.getController().getMessages();
+                if (mage.isAtMaxCurrency(blockCurrency.getKey())) {
+                    String limitMessage = messages.get("currency." + blockCurrency.getKey() + ".limit", messages.get("currency.default.limit"));
+                    limitMessage = limitMessage.replace("$amount", Integer.toString((int)blockCurrency.getMaxValue()));
+                    limitMessage = limitMessage.replace("$type", blockCurrency.getName(messages));
+                    mage.sendMessage(limitMessage);
+                    return;
+                }
+                Inventory inventory = mage.getInventory();
+                ItemStack[] contents = inventory.getStorageContents();
+                int count = 0;
+                for (int i = 0; i < contents.length; i++) {
+                    if (blockCurrency == null || mage.isAtMaxCurrency(blockCurrency.getKey())) break;
+                    ItemStack itemStack = contents[i];
+                    if (CompatibilityUtils.isEmpty(itemStack)) continue;
+                    if (itemStack.hasItemMeta()) continue;
+                    if (itemStack.getType() != item.getType()) continue;
+                    Double worth = context.getController().getWorth(itemStack, blockCurrency.getKey());
+                    if (worth == null || worth <= 0) continue;
+                    mage.addCurrency(blockCurrency.getKey(), worth);
+                    contents[i] = null;
+                    count += itemStack.getAmount();
+                }
+                inventory.setStorageContents(contents);
+                String message;
+                if (count == 0) {
+                    message = messages.get("brush.no_absorbed");
+                    message = message.replace("$type", context.getController().describeItem(item));
+                } else {
+                    message = messages.get("brush.absorbed");
+                    message = message.replace("$amount", Integer.toString(count));
+                    message = message.replace("$type", context.getController().describeItem(item));
+                }
+                mage.sendMessage(message);
+                return;
+            }
             Wand wand = context.getWand();
             if (wand != null && com.elmakers.mine.bukkit.wand.Wand.isBrush(item))
             {
@@ -144,6 +192,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 if (baseVariant == null) {
                     baseVariant = DefaultMaterials.getBaseVariant(material.getMaterial());
                 }
+                addAbsorbInfo(brushItem);
 
                 if (previous != null && material.getMaterial() == previous.getMaterial())
                 {
@@ -249,7 +298,6 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             inventoryTitle += " (" + page + "/" + numPages + ")";
         }
         int invSize = (int)Math.ceil(showBrushes.size() / 9.0f) * 9;
-
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         for (ItemStack brush : showBrushes)
         {
@@ -258,6 +306,25 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         mage.activateGUI(this, displayInventory);
 
         return SpellResult.CAST;
+    }
+
+    private void addAbsorbInfo(ItemStack itemStack) {
+        if (!allowAbsorbing) return;
+        MageController controller = context.getController();
+        Currency blockCurrency = controller.getBlockExchangeCurrency();
+        if (blockCurrency == null) return;
+        String message = context.getController().getMessages().get("brush.absorb");
+        if (message == null || message.isEmpty()) return;
+        ItemStack plain = new ItemStack(itemStack.getType());
+        Double worth = controller.getWorth(plain, blockCurrency.getKey());
+        if (worth == null || worth == 0) return;
+        message = message.replace("$type", controller.describeItem(plain));
+        ItemMeta meta = itemStack.getItemMeta();
+        List<String> lore = meta.getLore();
+        InventoryUtils.wrapText(message, lore);
+        meta.setLore(lore);
+        itemStack.setItemMeta(meta);
+        InventoryUtils.setMetaBoolean(itemStack, "absorb", true);
     }
 
     private String getBaseName(MaterialAndData material) {
