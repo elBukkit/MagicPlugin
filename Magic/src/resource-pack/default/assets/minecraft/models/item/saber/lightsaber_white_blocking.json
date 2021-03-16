@@ -1,6 +1,6 @@
 {
 	"credit": "Made with Blockbench, by realflamegirl- Do not use without permission. Discord is Flamegirl#0464",
-	"parent": "item/saber/lightsaber_purple",
+	"parent": "item/saber/lightsaber_white",
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [0, 0, 60],

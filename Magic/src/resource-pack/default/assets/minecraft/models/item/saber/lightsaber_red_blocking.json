@@ -1,25 +1,26 @@
 {
-    "parent": "item/saber/lightsaber_red",
-    "display": {
-        "thirdperson_righthand": {
-            "rotation": [ 0, 0, 90 ],
-            "translation": [ -12, -1, 1 ],
-            "scale": [ 2.2, 2.2, 2.2 ]
-        },
-        "firstperson_righthand": {
-            "rotation": [ 0, 0, 90 ],
-            "translation": [ -5, 4, 0.56 ],
-            "scale": [ 1.5, 1.5, 1.5 ]
-        },
-        "thirdperson_lefthand": {
-            "rotation": [ 0, 0, 90 ],
-            "translation": [ -12, -1, 1 ],
-            "scale": [ 2.2, 2.2, 2.2 ]
-        },
-        "firstperson_lefthand": {
-            "rotation": [ 0, 0, 90 ],
-            "translation": [ -5, 4, 0.56 ],
-            "scale": [ 1.5, 1.5, 1.5 ]
-        }
-    }
+	"credit": "Made with Blockbench, by realflamegirl- Do not use without permission. Discord is Flamegirl#0464",
+	"parent": "item/saber/lightsaber_red",
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 0, 60],
+			"translation": [-5.25, 0.75, 1],
+			"scale": [0.85, 0.85, 0.85]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 0, 60],
+			"translation": [-5.25, 0.75, 1],
+			"scale": [0.85, 0.85, 0.85]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 0, 90],
+			"translation": [0, 4, 0.56],
+			"scale": [0.68, 0.68, 0.68]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, 0, 90],
+			"translation": [0, 4, 0.56],
+			"scale": [0.68, 0.68, 0.68]
+		}
+	}
 }

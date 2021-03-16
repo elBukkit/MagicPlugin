@@ -2,6 +2,6 @@
 	"credit": "Made with Blockbench, by realflamegirl- Do not use without permission. Discord is Flamegirl#0464",
 	"parent": "item/saber/lightsaber_base",
 	"textures": {
-		"1": "item/saber/lightsaber_purple"
+		"1": "item/saber/lightsaber_white"
 	}
 }

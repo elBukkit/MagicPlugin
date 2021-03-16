@@ -1,0 +1,765 @@
+{
+	"credit": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta. Used with permission in NathanWolf's Magic plugin. Edited by PhvntxmX using BlockBench.",
+	"parent": "item/custom/lit",
+	"ambientocclusion": false,
+	"textures": {
+		"particle": "item/custom/staff_gandalf",
+		"texture": "item/custom/staff_gandalf",
+		"animated1": "item/custom/animated1"
+	},
+	"elements": [
+		{
+			"name": "Gandalf",
+			"from": [7.625, 14.5, 7.75],
+			"to": [8.375, 14.625, 8.25],
+			"faces": {
+				"north": {"uv": [7.625, 1.375, 8.375, 1.5], "texture": "#texture"},
+				"east": {"uv": [7.75, 1.375, 8.25, 1.5], "texture": "#texture"},
+				"south": {"uv": [7.625, 1.375, 8.375, 1.5], "texture": "#texture"},
+				"west": {"uv": [7.75, 1.375, 8.25, 1.5], "texture": "#texture"},
+				"up": {"uv": [7.625, 7.75, 8.375, 8.25], "texture": "#texture"},
+				"down": {"uv": [8.375, 8.25, 7.625, 7.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.625, 14.625, 7.75],
+			"to": [8.25, 14.75, 8.125],
+			"faces": {
+				"north": {"uv": [7.75, 1.25, 8.375, 1.375], "texture": "#texture"},
+				"east": {"uv": [7.875, 1.25, 8.25, 1.375], "texture": "#texture"},
+				"south": {"uv": [7.625, 1.25, 8.25, 1.375], "texture": "#texture"},
+				"west": {"uv": [7.75, 1.25, 8.125, 1.375], "texture": "#texture"},
+				"up": {"uv": [7.625, 7.75, 8.25, 8.125], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.625, 14.75, 7.75],
+			"to": [8.125, 14.875, 8],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.625, 14.25, 7.875],
+			"to": [8.375, 14.5, 8.125],
+			"faces": {
+				"north": {"uv": [7.625, 1.5, 8.375, 1.75], "texture": "#texture"},
+				"east": {"uv": [7.875, 1.5, 8.125, 1.75], "texture": "#texture"},
+				"south": {"uv": [7.625, 1.5, 8.375, 1.75], "texture": "#texture"},
+				"west": {"uv": [7.875, 1.5, 8.125, 1.75], "texture": "#texture"},
+				"down": {"uv": [8.375, 8.125, 7.625, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.625, 14.875, 7.875],
+			"to": [8.375, 15.125, 8.125],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.625, 15.125, 8],
+			"to": [8.25, 15.25, 8.125],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.375, 7.625],
+			"to": [8.25, 14.5, 7.875],
+			"faces": {
+				"north": {"uv": [7.75, 1.5, 8.25, 1.625], "texture": "#texture"},
+				"east": {"uv": [8.125, 1.5, 8.375, 1.625], "texture": "#texture"},
+				"west": {"uv": [7.625, 1.5, 7.875, 1.625], "texture": "#texture"},
+				"up": {"uv": [7.75, 7.625, 8.25, 7.875], "texture": "#texture"},
+				"down": {"uv": [8.25, 7.875, 7.75, 7.625], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.5, 7.625],
+			"to": [8, 14.875, 7.75],
+			"faces": {
+				"north": {"uv": [8, 1.125, 8.25, 1.5], "texture": "#texture"},
+				"east": {"uv": [8.25, 1.125, 8.375, 1.5], "texture": "#texture"},
+				"south": {"uv": [7.75, 1.125, 8, 1.5], "texture": "#texture"},
+				"west": {"uv": [7.625, 1.125, 7.75, 1.5], "texture": "#texture"},
+				"up": {"uv": [7.75, 7.625, 8, 7.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.125, 7.75],
+			"to": [8.25, 14.25, 8.25],
+			"faces": {
+				"north": {"uv": [7.75, 1.75, 8.25, 1.875], "texture": "#texture"},
+				"east": {"uv": [7.75, 1.75, 8.25, 1.875], "texture": "#texture"},
+				"south": {"uv": [7.75, 1.75, 8.25, 1.875], "texture": "#texture"},
+				"west": {"uv": [7.75, 1.75, 8.25, 1.875], "texture": "#texture"},
+				"up": {"uv": [7.75, 7.75, 8.25, 8.25], "texture": "#texture"},
+				"down": {"uv": [8.25, 8.25, 7.75, 7.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.25, 7.75],
+			"to": [8.25, 14.375, 7.875],
+			"faces": {
+				"north": {"uv": [7.75, 1.625, 8.25, 1.75], "texture": "#texture"},
+				"east": {"uv": [8.125, 1.625, 8.25, 1.75], "texture": "#texture"},
+				"west": {"uv": [7.75, 1.625, 7.875, 1.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.875, 7.75],
+			"to": [7.875, 15.5, 7.875],
+			"faces": {
+				"north": {"uv": [8.125, 0.5, 8.25, 1.125], "texture": "#texture"},
+				"east": {"uv": [8.125, 0.5, 8.25, 1.125], "texture": "#texture"},
+				"south": {"uv": [7.75, 0.5, 7.875, 1.125], "texture": "#texture"},
+				"west": {"uv": [7.75, 0.5, 7.875, 1.125], "texture": "#texture"},
+				"up": {"uv": [7.75, 7.75, 7.875, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 13.375, 7.875],
+			"to": [8.25, 14.125, 8.125],
+			"faces": {
+				"north": {"uv": [7.75, 1.875, 8.25, 2.625], "texture": "#texture"},
+				"east": {"uv": [7.875, 1.875, 8.125, 2.625], "texture": "#texture"},
+				"south": {"uv": [7.75, 1.875, 8.25, 2.625], "texture": "#texture"},
+				"west": {"uv": [7.875, 1.875, 8.125, 2.625], "texture": "#texture"},
+				"down": {"uv": [8.25, 8.125, 7.75, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 7.125, 8],
+			"to": [8.25, 13.375, 8.125],
+			"faces": {
+				"north": {"uv": [7.75, 2.625, 8.25, 8.875], "texture": "#texture"},
+				"east": {"uv": [7.875, 2.625, 8, 8.875], "texture": "#texture"},
+				"south": {"uv": [7.75, 2.625, 8.25, 8.875], "texture": "#texture"},
+				"west": {"uv": [8, 2.625, 8.125, 8.875], "texture": "#texture"},
+				"down": {"uv": [8.25, 8.125, 7.75, 8], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.75, 8],
+			"to": [8.375, 14.875, 8.125],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 15.25, 8],
+			"to": [8.125, 15.5, 8.125],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.25, 8.125],
+			"to": [8.25, 14.5, 8.25],
+			"faces": {
+				"east": {"uv": [7.75, 1.5, 7.875, 1.75], "texture": "#texture"},
+				"south": {"uv": [7.75, 1.5, 8.25, 1.75], "texture": "#texture"},
+				"west": {"uv": [8.125, 1.5, 8.25, 1.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.625, 8.125],
+			"to": [8.375, 14.75, 8.25],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.75, 14.375, 8.25],
+			"to": [8.25, 14.625, 8.375],
+			"faces": {
+				"north": {"uv": [7.75, 1.375, 8.25, 1.625], "texture": "#texture"},
+				"east": {"uv": [7.625, 1.375, 7.75, 1.625], "texture": "#texture"},
+				"south": {"uv": [7.75, 1.375, 8.25, 1.625], "texture": "#texture"},
+				"west": {"uv": [8.25, 1.375, 8.375, 1.625], "texture": "#texture"},
+				"up": {"uv": [7.75, 8.25, 8.25, 8.375], "texture": "#texture"},
+				"down": {"uv": [8.25, 8.375, 7.75, 8.25], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 14.25, 7.625],
+			"to": [8.125, 14.375, 7.75],
+			"faces": {
+				"north": {"uv": [7.875, 1.625, 8.125, 1.75], "texture": "#texture"},
+				"east": {"uv": [8.25, 1.625, 8.375, 1.75], "texture": "#texture"},
+				"west": {"uv": [7.625, 1.625, 7.75, 1.75], "texture": "#texture"},
+				"down": {"uv": [8.125, 7.75, 7.875, 7.625], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 14.875, 7.625],
+			"to": [8, 15, 7.875],
+			"faces": {
+				"north": {"uv": [8, 1, 8.125, 1.125], "texture": "#texture"},
+				"east": {"uv": [8.125, 1, 8.375, 1.125], "texture": "#texture"},
+				"west": {"uv": [7.625, 1, 7.875, 1.125], "texture": "#texture"},
+				"up": {"uv": [7.875, 7.625, 8, 7.875], "texture": "#texture"},
+				"down": {"uv": [8.125, 7.875, 8, 7.625], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 13.125, 7.75],
+			"to": [8.125, 13.375, 8],
+			"faces": {
+				"north": {"uv": [7.875, 2.625, 8.125, 2.875], "texture": "#texture"},
+				"east": {"uv": [8, 2.625, 8.25, 2.875], "texture": "#texture"},
+				"west": {"uv": [7.75, 2.625, 8, 2.875], "texture": "#texture"},
+				"up": {"uv": [7.875, 7.75, 8.125, 8], "texture": "#texture"},
+				"down": {"uv": [8.125, 8, 7.875, 7.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 13.375, 7.75],
+			"to": [8.125, 14.125, 7.875],
+			"faces": {
+				"north": {"uv": [7.875, 1.875, 8.125, 2.625], "texture": "#texture"},
+				"east": {"uv": [8.125, 1.875, 8.25, 2.625], "texture": "#texture"},
+				"west": {"uv": [7.75, 1.875, 7.875, 2.625], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 15, 7.75],
+			"to": [8, 15.125, 7.875],
+			"faces": {
+				"north": {"uv": [8, 0.875, 8.125, 1], "texture": "#texture"},
+				"east": {"uv": [8.125, 0.875, 8.25, 1], "texture": "#texture"},
+				"up": {"uv": [7.875, 7.75, 8, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 5.75, 7.875],
+			"to": [8.25, 7.125, 8.125],
+			"faces": {
+				"north": {"uv": [7.75, 8.875, 8.125, 10.25], "texture": "#texture"},
+				"east": {"uv": [7.875, 8.875, 8.125, 10.25], "texture": "#texture"},
+				"south": {"uv": [7.875, 8.875, 8.25, 10.25], "texture": "#texture"},
+				"west": {"uv": [7.875, 8.875, 8.125, 10.25], "texture": "#texture"},
+				"up": {"uv": [7.875, 7.875, 8.25, 8.125], "texture": "#texture"},
+				"down": {"uv": [8.125, 8.125, 7.75, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 7.125, 7.875],
+			"to": [8.125, 13.125, 8],
+			"faces": {
+				"north": {"uv": [7.875, 2.875, 8.125, 8.875], "texture": "#texture"},
+				"east": {"uv": [8, 2.875, 8.125, 8.875], "texture": "#texture"},
+				"west": {"uv": [7.875, 2.875, 8, 8.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 15.125, 7.875],
+			"to": [8.25, 15.625, 8],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 5.25, 8],
+			"to": [8.375, 5.75, 8.125],
+			"faces": {
+				"north": {"uv": [7.625, 10.25, 8.125, 10.75], "texture": "#texture"},
+				"east": {"uv": [7.875, 10.25, 8, 10.75], "texture": "#texture"},
+				"south": {"uv": [7.875, 10.25, 8.375, 10.75], "texture": "#texture"},
+				"west": {"uv": [8, 10.25, 8.125, 10.75], "texture": "#texture"},
+				"up": {"uv": [7.875, 8, 8.375, 8.125], "texture": "#texture"},
+				"down": {"uv": [8.125, 8.125, 7.625, 8], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 15.5, 8],
+			"to": [8, 15.75, 8.125],
+			"faces": {
+				"north": {"uv": [8, 0.25, 8.125, 0.5], "texture": "#texture"},
+				"east": {"uv": [7.875, 0.25, 8, 0.5], "texture": "#texture"},
+				"south": {"uv": [7.875, 0.25, 8, 0.5], "texture": "#texture"},
+				"west": {"uv": [8, 0.25, 8.125, 0.5], "texture": "#texture"},
+				"up": {"uv": [7.875, 8, 8, 8.125], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 6.375, 8.125],
+			"to": [8.125, 14.125, 8.25],
+			"faces": {
+				"north": {"uv": [7.875, 1.875, 8.125, 9.625], "texture": "#texture"},
+				"east": {"uv": [7.75, 1.875, 7.875, 9.625], "texture": "#texture"},
+				"south": {"uv": [7.875, 1.875, 8.125, 9.625], "texture": "#texture"},
+				"west": {"uv": [8.125, 1.875, 8.25, 9.625], "texture": "#texture"},
+				"down": {"uv": [8.125, 8.25, 7.875, 8.125], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 14.75, 8.125],
+			"to": [8.25, 15, 8.25],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"west": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 14.25, 8.25],
+			"to": [8.125, 14.375, 8.375],
+			"faces": {
+				"east": {"uv": [7.625, 1.625, 7.75, 1.75], "texture": "#texture"},
+				"south": {"uv": [7.875, 1.625, 8.125, 1.75], "texture": "#texture"},
+				"west": {"uv": [8.25, 1.625, 8.375, 1.75], "texture": "#texture"},
+				"down": {"uv": [8.125, 8.375, 7.875, 8.25], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [7.875, 14.625, 8.25],
+			"to": [8.25, 14.75, 8.375],
+			"faces": {
+				"east": {"uv": [7.625, 1.25, 7.75, 1.375], "texture": "#texture"},
+				"south": {"uv": [7.875, 1.25, 8.25, 1.375], "texture": "#texture"},
+				"west": {"uv": [8.25, 1.25, 8.375, 1.375], "texture": "#texture"},
+				"up": {"uv": [7.875, 8.25, 8.25, 8.375], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 14.5, 7.625],
+			"to": [8.125, 14.75, 7.75],
+			"faces": {
+				"north": {"uv": [7.875, 1.25, 8, 1.5], "texture": "#texture"},
+				"east": {"uv": [8.25, 1.25, 8.375, 1.5], "texture": "#texture"},
+				"south": {"uv": [8, 1.25, 8.125, 1.5], "texture": "#texture"},
+				"up": {"uv": [8, 7.625, 8.125, 7.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 0, 7.75],
+			"to": [8.25, 3.125, 8.25],
+			"faces": {
+				"north": {"uv": [7.75, 12.875, 8, 16], "texture": "#texture"},
+				"east": {"uv": [7.75, 12.875, 8.25, 16], "texture": "#texture"},
+				"south": {"uv": [8, 12.875, 8.25, 16], "texture": "#texture"},
+				"west": {"uv": [7.75, 12.875, 8.25, 16], "texture": "#texture"},
+				"up": {"uv": [8, 7.75, 8.25, 8.25], "texture": "#texture"},
+				"down": {"uv": [8, 8.25, 7.75, 7.75], "texture": "#texture", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 4.5, 7.75],
+			"to": [8.25, 4.75, 8.25],
+			"faces": {
+				"north": {"uv": [7.75, 11.25, 8, 11.5], "texture": "#texture"},
+				"east": {"uv": [7.75, 11.25, 8.25, 11.5], "texture": "#texture"},
+				"south": {"uv": [8, 11.25, 8.25, 11.5], "texture": "#texture"},
+				"west": {"uv": [7.75, 11.25, 8.25, 11.5], "texture": "#texture"},
+				"up": {"uv": [8, 7.75, 8.25, 8.25], "texture": "#texture"},
+				"down": {"uv": [8, 8.25, 7.75, 7.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 14.875, 7.75],
+			"to": [8.125, 15, 7.875],
+			"faces": {
+				"north": {"uv": [7.875, 1, 8, 1.125], "texture": "#texture"},
+				"east": {"uv": [8.125, 1, 8.25, 1.125], "texture": "#texture"},
+				"up": {"uv": [8, 7.75, 8.125, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 3.125, 7.875],
+			"to": [8.375, 4.5, 8.125],
+			"faces": {
+				"north": {"uv": [7.625, 11.5, 8, 12.875], "texture": "#texture"},
+				"east": {"uv": [7.875, 11.5, 8.125, 12.875], "texture": "#texture"},
+				"south": {"uv": [8, 11.5, 8.375, 12.875], "texture": "#texture"},
+				"west": {"uv": [7.875, 11.5, 8.125, 12.875], "texture": "#texture"},
+				"up": {"uv": [8, 7.875, 8.375, 8.125], "texture": "#texture"},
+				"down": {"uv": [8, 8.125, 7.625, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 4.75, 7.875],
+			"to": [8.25, 5.25, 8.25],
+			"faces": {
+				"north": {"uv": [7.75, 10.75, 8, 11.25], "texture": "#texture"},
+				"east": {"uv": [7.75, 10.75, 8.125, 11.25], "texture": "#texture"},
+				"south": {"uv": [8, 10.75, 8.25, 11.25], "texture": "#texture"},
+				"west": {"uv": [7.875, 10.75, 8.25, 11.25], "texture": "#texture"},
+				"up": {"uv": [8, 7.875, 8.25, 8.25], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 5.25, 7.875],
+			"to": [8.25, 5.75, 8],
+			"faces": {
+				"north": {"uv": [7.75, 10.25, 8, 10.75], "texture": "#texture"},
+				"east": {"uv": [8, 10.25, 8.125, 10.75], "texture": "#texture"},
+				"west": {"uv": [7.875, 10.25, 8, 10.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 15.75, 7.875],
+			"to": [8.125, 15.875, 8],
+			"faces": {
+				"north": {"uv": [7.875, 0.125, 8, 0.25], "texture": "#texture"},
+				"east": {"uv": [8, 0.125, 8.125, 0.25], "texture": "#texture"},
+				"west": {"uv": [7.875, 0.125, 8, 0.25], "texture": "#texture"},
+				"up": {"uv": [8, 7.875, 8.125, 8], "texture": "#texture"},
+				"down": {"uv": [8, 8, 7.875, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 15.5, 8],
+			"to": [8.25, 15.625, 8.125],
+			"faces": {
+				"east": {"uv": [7.875, 0.375, 8, 0.5], "texture": "#texture"},
+				"south": {"uv": [8, 0.375, 8.25, 0.5], "texture": "#texture"},
+				"up": {"uv": [8, 8, 8.25, 8.125], "texture": "#texture"},
+				"down": {"uv": [8, 8.125, 7.75, 8], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 4.375, 8.125],
+			"to": [8.25, 4.5, 8.25],
+			"faces": {
+				"east": {"uv": [7.75, 11.5, 7.875, 11.625], "texture": "#texture"},
+				"south": {"uv": [8, 11.5, 8.25, 11.625], "texture": "#texture"},
+				"west": {"uv": [8.125, 11.5, 8.25, 11.625], "texture": "#texture"},
+				"down": {"uv": [8, 8.25, 7.75, 8.125], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 5.25, 8.125],
+			"to": [8.25, 6.375, 8.25],
+			"faces": {
+				"north": {"uv": [7.75, 9.625, 8, 10.75], "texture": "#texture"},
+				"east": {"uv": [7.75, 9.625, 7.875, 10.75], "texture": "#texture"},
+				"south": {"uv": [8, 9.625, 8.25, 10.75], "texture": "#texture"},
+				"west": {"uv": [8.125, 9.625, 8.25, 10.75], "texture": "#texture"},
+				"up": {"uv": [8, 8.125, 8.25, 8.25], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 15, 8.125],
+			"to": [8.25, 15.125, 8.25],
+			"faces": {
+				"east": {"uv": [7.75, 0.875, 7.875, 1], "texture": "#texture"},
+				"south": {"uv": [8, 0.875, 8.25, 1], "texture": "#texture"},
+				"west": {"uv": [8.125, 0.875, 8.25, 1], "texture": "#texture"},
+				"up": {"uv": [8, 8.125, 8.25, 8.25], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8, 14.75, 8.25],
+			"to": [8.125, 15, 8.375],
+			"faces": {
+				"east": {"uv": [7.625, 1, 7.75, 1.25], "texture": "#texture"},
+				"south": {"uv": [8, 1, 8.125, 1.25], "texture": "#texture"},
+				"west": {"uv": [8.25, 1, 8.375, 1.25], "texture": "#texture"},
+				"up": {"uv": [8, 8.25, 8.125, 8.375], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 14.5, 7.625],
+			"to": [8.25, 14.625, 7.75],
+			"faces": {
+				"north": {"uv": [7.75, 1.375, 7.875, 1.5], "texture": "#texture"},
+				"east": {"uv": [8.25, 1.375, 8.375, 1.5], "texture": "#texture"},
+				"up": {"uv": [8.125, 7.625, 8.25, 7.75], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 3.125, 7.75],
+			"to": [8.25, 4.5, 7.875],
+			"faces": {
+				"north": {"uv": [7.75, 11.5, 7.875, 12.875], "texture": "#texture"},
+				"east": {"uv": [8.125, 11.5, 8.25, 12.875], "texture": "#texture"},
+				"west": {"uv": [7.75, 11.5, 7.875, 12.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 7.125, 7.875],
+			"to": [8.25, 7.375, 8],
+			"faces": {
+				"north": {"uv": [7.75, 8.625, 7.875, 8.875], "texture": "#texture"},
+				"east": {"uv": [8, 8.625, 8.125, 8.875], "texture": "#texture"},
+				"up": {"uv": [8.125, 7.875, 8.25, 8], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 12.875, 7.875],
+			"to": [8.25, 13.375, 8],
+			"faces": {
+				"north": {"uv": [7.75, 2.625, 7.875, 3.125], "texture": "#texture"},
+				"east": {"uv": [8, 2.625, 8.125, 3.125], "texture": "#texture"},
+				"west": {"uv": [7.875, 2.625, 8, 3.125], "texture": "#texture"},
+				"down": {"uv": [7.875, 8, 7.75, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 14.75, 7.875],
+			"to": [8.25, 14.875, 8],
+			"faces": {
+				"north": {"uv": [7.75, 1.125, 7.875, 1.25], "texture": "#texture"},
+				"east": {"uv": [8, 1.125, 8.125, 1.25], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "RHJvb2JsZWRvcmVMTEM=",
+			"from": [8.125, 15.625, 7.875],
+			"to": [8.25, 15.75, 8.125],
+			"faces": {
+				"north": {"uv": [7.75, 0.25, 7.875, 0.375], "texture": "#texture"},
+				"east": {"uv": [7.875, 0.25, 8.125, 0.375], "texture": "#texture"},
+				"south": {"uv": [8.125, 0.25, 8.25, 0.375], "texture": "#texture"},
+				"west": {"uv": [7.875, 0.25, 8.125, 0.375], "texture": "#texture"},
+				"up": {"uv": [8.125, 7.875, 8.25, 8.125], "texture": "#texture"},
+				"down": {"uv": [7.875, 8.125, 7.75, 7.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 3.125, 8.125],
+			"to": [8.25, 4.375, 8.25],
+			"faces": {
+				"east": {"uv": [7.75, 11.625, 7.875, 12.875], "texture": "#texture"},
+				"south": {"uv": [8.125, 11.625, 8.25, 12.875], "texture": "#texture"},
+				"west": {"uv": [8.125, 11.625, 8.25, 12.875], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 6.375, 8.125],
+			"to": [8.25, 7.375, 8.25],
+			"faces": {
+				"north": {"uv": [7.75, 8.625, 7.875, 9.625], "texture": "#texture"},
+				"east": {"uv": [7.75, 8.625, 7.875, 9.625], "texture": "#texture"},
+				"south": {"uv": [8.125, 8.625, 8.25, 9.625], "texture": "#texture"},
+				"up": {"uv": [8.125, 8.125, 8.25, 8.25], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 15.125, 8.125],
+			"to": [8.25, 15.5, 8.25],
+			"faces": {
+				"north": {"uv": [7.75, 0.5, 7.875, 0.875], "texture": "#texture"},
+				"east": {"uv": [7.75, 0.5, 7.875, 0.875], "texture": "#texture"},
+				"south": {"uv": [8.125, 0.5, 8.25, 0.875], "texture": "#texture"},
+				"west": {"uv": [8.125, 0.5, 8.25, 0.875], "texture": "#texture"},
+				"up": {"uv": [8.125, 8.125, 8.25, 8.25], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.125, 14.75, 8.25],
+			"to": [8.25, 14.875, 8.375],
+			"faces": {
+				"east": {"uv": [7.625, 1.125, 7.75, 1.25], "texture": "#texture"},
+				"south": {"uv": [8.125, 1.125, 8.25, 1.25], "texture": "#texture"},
+				"up": {"uv": [8.125, 8.25, 8.25, 8.375], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.25, 0, 7.875],
+			"to": [8.375, 3.125, 8.125],
+			"faces": {
+				"north": {"uv": [7.625, 12.875, 7.75, 16], "texture": "#texture"},
+				"east": {"uv": [7.875, 12.875, 8.125, 16], "texture": "#texture"},
+				"south": {"uv": [8.25, 12.875, 8.375, 16], "texture": "#texture"},
+				"down": {"uv": [7.75, 8.125, 7.625, 7.875], "texture": "#texture", "cullface": "down"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.25, 4.5, 7.875],
+			"to": [8.375, 5.25, 8.125],
+			"faces": {
+				"north": {"uv": [7.625, 10.75, 7.75, 11.5], "texture": "#texture"},
+				"east": {"uv": [7.875, 10.75, 8.125, 11.5], "texture": "#texture"},
+				"south": {"uv": [8.25, 10.75, 8.375, 11.5], "texture": "#texture"},
+				"west": {"uv": [7.875, 10.75, 8.125, 11.5], "texture": "#texture"},
+				"up": {"uv": [8.25, 7.875, 8.375, 8.125], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "DroobledoreLLC",
+			"from": [8.25, 5.25, 7.875],
+			"to": [8.375, 5.375, 8],
+			"faces": {
+				"north": {"uv": [7.625, 10.625, 7.75, 10.75], "texture": "#texture"},
+				"east": {"uv": [8, 10.625, 8.125, 10.75], "texture": "#texture"},
+				"up": {"uv": [8.25, 7.875, 8.375, 8], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.25, 14.625, 7.875],
+			"to": [8.375, 14.75, 8.125],
+			"faces": {
+				"north": {"uv": [7.625, 1.25, 7.75, 1.375], "texture": "#texture"},
+				"east": {"uv": [7.875, 1.25, 8.125, 1.375], "texture": "#texture"},
+				"up": {"uv": [8.25, 7.875, 8.375, 8.125], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.25, 15.125, 7.875],
+			"to": [8.375, 15.25, 8],
+			"faces": {
+				"north": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.25, 5.75, 8],
+			"to": [8.375, 6, 8.125],
+			"faces": {
+				"north": {"uv": [7.625, 10, 7.75, 10.25], "texture": "#texture"},
+				"east": {"uv": [7.875, 10, 8, 10.25], "texture": "#texture"},
+				"south": {"uv": [8.25, 10, 8.375, 10.25], "texture": "#texture"},
+				"up": {"uv": [8.25, 8, 8.375, 8.125], "texture": "#texture"}
+			}
+		},
+		{
+			"name": "Gandalf",
+			"from": [8.25, 14.75, 8.125],
+			"to": [8.375, 14.875, 8.25],
+			"faces": {
+				"east": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"south": {"uv": [0, 0, 1, 1.5], "texture": "#texture"},
+				"up": {"uv": [0, 0, 1, 1.5], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [5.5, 12, 8],
+			"to": [10.5, 19, 8.0625],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 16], "texture": "#animated1"},
+				"south": {"uv": [0, 0, 16, 16], "texture": "#animated1"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"rotation": [0, 90, 0],
+			"translation": [0, 0.19, 1],
+			"scale": [2.7, 2.7, 2.7]
+		},
+		"thirdperson_lefthand": {
+			"rotation": [0, 90, 0],
+			"translation": [0, 0.19, 1],
+			"scale": [2.7, 2.7, 2.7]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, -99, -14],
+			"translation": [0, 0, 0.56],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -99, -14],
+			"translation": [0, 0, 0.56],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"ground": {
+			"rotation": [-70, 0, 0],
+			"scale": [2, 2, 2]
+		},
+		"gui": {
+			"rotation": [-6, -4, -45],
+			"scale": [1.2, 1.2, 1.2]
+		},
+		"head": {
+			"rotation": [0, 180, 37],
+			"translation": [2.46, -13.8, 4],
+			"scale": [4, 4, 4]
+		},
+		"fixed": {
+			"rotation": [0, 0, 45],
+			"translation": [0, -0.5, -0.5],
+			"scale": [1.5, 1.5, 1.5]
+		}
+	}
+}

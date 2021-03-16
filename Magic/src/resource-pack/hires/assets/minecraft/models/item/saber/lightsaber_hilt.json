@@ -1,0 +1,391 @@
+{
+"__comment": "Created by Droobledore with BDcraft Cubik PRO 0.93 Beta. Used with permission in NathanWolf's Magic plugin.",
+"parent" : "item/custom/lit",
+"ambientocclusion": false,
+"textures": {
+    "texture": "item/custom/lightsaber"
+},
+"elements": [ 
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.625, 4.375, 7.625 ],
+    "to": [ 8.375, 4.625, 8.25 ],
+    "faces": {
+        "down":  { "uv": [ 9, 0.5, 9.5, 1 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 14, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13, 0.5, 15.5, 1 ], "texture": "#texture" },
+        "south": { "uv": [ 13, 0.5, 15.5, 1 ], "texture": "#texture" },
+        "west":  { "uv": [ 13, 0.5, 15.5, 1 ], "texture": "#texture" },
+        "east":  { "uv": [ 13, 0.5, 15.5, 1 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.625, 0.125, 7.75 ],
+    "to": [ 8.375, 0.375, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 9.5, 1.5, 8.75, 1.125 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 14.25, 0.375 ], "texture": "#texture" },
+        "north": { "uv": [ 13, 14, 15.5, 15.5 ], "texture": "#texture" },
+        "south": { "uv": [ 13, 14, 15.5, 15.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 13, 14, 15.5, 15.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 13, 14, 15.5, 15.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.625, 0.625, 7.75 ],
+    "to": [ 8.375, 2, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 10, 7.5, 9.25, 7.125 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.75, 0.375 ], "texture": "#texture" },
+        "north": { "uv": [ 12.5, 9, 16, 13 ], "texture": "#texture" },
+        "south": { "uv": [ 12.5, 9, 16, 13 ], "texture": "#texture" },
+        "west":  { "uv": [ 12.5, 9, 16, 13 ], "texture": "#texture" },
+        "east":  { "uv": [ 12.5, 9, 16, 13 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 0.125, 7.625 ],
+    "to": [ 8.25, 0.375, 7.75 ],
+    "faces": {
+        "down":  { "uv": [ 8.25, 7.75, 7.75, 7.625 ], "texture": "#texture" },
+        "up":    { "uv": [ 7.75, 7.625, 8.25, 7.75 ], "texture": "#texture" },
+        "north": { "uv": [ 7.75, 15.625, 8.25, 15.875 ], "texture": "#texture" },
+        "south": { "uv": [ 7.75, 15.625, 8.25, 15.875 ], "texture": "#texture" },
+        "west":  { "uv": [ 7.625, 15.625, 7.75, 15.875 ], "texture": "#texture" },
+        "east":  { "uv": [ 8.25, 15.625, 8.375, 15.875 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 0.625, 7.625 ],
+    "to": [ 8.25, 2, 7.75 ],
+    "faces": {
+        "down":  { "uv": [ 10, 7.5, 9.25, 7.125 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.75, 0.375 ], "texture": "#texture" },
+        "north": { "uv": [ 12.5, 9, 16, 13 ], "texture": "#texture" },
+        "south": { "uv": [ 12.5, 9, 16, 13 ], "texture": "#texture" },
+        "west":  { "uv": [ 12.5, 9, 13.5, 13 ], "texture": "#texture" },
+        "east":  { "uv": [ 12.5, 9, 13.5, 12.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 0, 7.75 ],
+    "to": [ 8.25, 0.125, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 8.25, 8.125, 7.75, 7.75 ], "texture": "#texture" },
+        "up":    { "uv": [ 7.75, 7.75, 8.25, 8.125 ], "texture": "#texture" },
+        "north": { "uv": [ 7.75, 15.875, 8.25, 16 ], "texture": "#texture" },
+        "south": { "uv": [ 7.75, 15.875, 8.25, 16 ], "texture": "#texture" },
+        "west":  { "uv": [ 7.75, 15.875, 8.125, 16 ], "texture": "#texture" },
+        "east":  { "uv": [ 7.875, 15.875, 8.25, 16 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 0.375, 7.75 ],
+    "to": [ 8.25, 0.625, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 7.5, 0, 9.5, 0.5 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 13, 15, 14 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 13, 15, 14 ], "texture": "#texture" },
+        "west":  { "uv": [ 13.5, 13, 15, 14 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.5, 13, 15, 14 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 2, 7.75 ],
+    "to": [ 8.25, 3.375, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 7.75, 7.75, 8.25, 8.125 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.5, 0.375 ], "texture": "#texture" },
+        "north": { "uv": [ 12.5, 4, 13.5, 9.5 ], "texture": "#texture" },
+        "south": { "uv": [ 12.5, 4, 13.5, 9.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 13, 4, 15.5, 9.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 13, 4, 15.5, 9.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 3.625, 7.75 ],
+    "to": [ 8.25, 3.875, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 9, 4, 10.5, 6 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 3, 15, 4.5 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 3, 15, 4.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 13.5, 3, 15, 4.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.5, 3, 15, 4.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 4.125, 7.75 ],
+    "to": [ 8.25, 4.375, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 9, 0.5, 9.5, 1 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 14, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13, 1, 13.5, 2 ], "texture": "#texture" },
+        "south": { "uv": [ 13, 1, 13.5, 2 ], "texture": "#texture" },
+        "west":  { "uv": [ 13.5, 1, 15, 2 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.5, 1, 15, 2 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 4.625, 7.75 ],
+    "to": [ 8.25, 4.75, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 10, 0, 11, 0.5 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.5, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 0.125, 8.125 ],
+    "to": [ 8.25, 0.375, 8.25 ],
+    "faces": {
+        "down":  { "uv": [ 8, 0, 9, 0.5 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13, 14, 15.5, 15.5 ], "texture": "#texture" },
+        "south": { "uv": [ 13, 14, 15.5, 15.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 13, 14, 13.5, 15.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 13, 14, 13.5, 15.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.75, 0.625, 8.125 ],
+    "to": [ 8.25, 2, 8.25 ],
+    "faces": {
+        "down":  { "uv": [ 10, 7.5, 9.25, 7.125 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.75, 0.375 ], "texture": "#texture" },
+        "north": { "uv": [ 12.5, 9, 16, 13 ], "texture": "#texture" },
+        "south": { "uv": [ 12.5, 9, 16, 13 ], "texture": "#texture" },
+        "west":  { "uv": [ 12.5, 9, 13.5, 13 ], "texture": "#texture" },
+        "east":  { "uv": [ 12.5, 9, 13.5, 13 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 4.375, 7.5 ],
+    "to": [ 8.125, 4.625, 7.625 ],
+    "faces": {
+        "down":  { "uv": [ 6.5, 6, 8, 6.5 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 0.5, 15, 1 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 0.5, 15, 1 ], "texture": "#texture" },
+        "west":  { "uv": [ 13, 0.5, 13.5, 1 ], "texture": "#texture" },
+        "east":  { "uv": [ 13, 0.5, 13.5, 1 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 4.125, 7.625 ],
+    "to": [ 8.125, 4.375, 7.75 ],
+    "faces": {
+        "down":  { "uv": [ 9, 0.5, 9.5, 1 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 14, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 1, 15, 2 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 1, 15, 2 ], "texture": "#texture" },
+        "west":  { "uv": [ 13, 1, 13.5, 2 ], "texture": "#texture" },
+        "east":  { "uv": [ 13, 1, 13.5, 2 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 3.375, 7.75 ],
+    "to": [ 8.125, 3.625, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "west":  { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 3.875, 7.75 ],
+    "to": [ 8.125, 4.125, 8.125 ],
+    "faces": {
+        "down":  { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "west":  { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 4.625, 7.625 ],
+    "to": [ 8.125, 4.75, 7.75 ],
+    "faces": {
+        "down":  { "uv": [ 10, 0, 11, 0.5 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.5, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 13.5, 0, 14, 0.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.5, 0, 14, 0.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 2, 8.125 ],
+    "to": [ 8.125, 3.375, 8.25 ],
+    "faces": {
+        "down":  { "uv": [ 7.75, 7.75, 8.25, 8.125 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.5, 0.375 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 4, 15, 9.5 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 4, 15, 9.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 12.5, 4, 13.5, 9.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 12.5, 4, 13.5, 9.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 3.625, 8.125 ],
+    "to": [ 8.125, 3.875, 8.25 ],
+    "faces": {
+        "down":  { "uv": [ 9, 4, 10.5, 6 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "north": { "uv": [ 14, 3, 14.5, 4.5 ], "texture": "#texture" },
+        "south": { "uv": [ 14, 3, 14.5, 4.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 14, 3, 14.5, 4.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 14, 3, 14.5, 4.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 4.125, 8.125 ],
+    "to": [ 8.125, 4.375, 8.25 ],
+    "faces": {
+        "down":  { "uv": [ 9, 0.5, 9.5, 1 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 14, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 1, 15, 2 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 1, 15, 2 ], "texture": "#texture" },
+        "west":  { "uv": [ 13, 1, 13.5, 2 ], "texture": "#texture" },
+        "east":  { "uv": [ 13, 1, 13.5, 2 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 1.125, 8.25 ],
+    "to": [ 8.125, 2, 8.5 ],
+    "faces": {
+        "down":  { "uv": [ 11.5, 12, 12.5, 12.5 ], "rotation": 90, "texture": "#texture" },
+        "up":    { "uv": [ 11.5, 9.5, 12.5, 10 ], "rotation": 270, "texture": "#texture" },
+        "north": { "uv": [ 11.5, 9.5, 12, 12.5 ], "texture": "#texture" },
+        "south": { "uv": [ 14, 4, 14.5, 9.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 11.5, 9.5, 12.5, 12.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 11.5, 9.5, 12.5, 12.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber",
+    "from": [ 7.875, 4.375, 8.25 ],
+    "to": [ 8.125, 4.625, 8.375 ],
+    "faces": {
+        "down":  { "uv": [ 6.5, 6, 8, 6.5 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 0.5, 15, 1 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 0.5, 15, 1 ], "texture": "#texture" },
+        "west":  { "uv": [ 13, 0.5, 13.5, 1 ], "texture": "#texture" },
+        "east":  { "uv": [ 13, 0.5, 13.5, 1 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber*",
+    "from": [ 7.875, 2, 7.625 ],
+    "to": [ 8.125, 3.375, 7.75 ],
+    "faces": {
+        "down":  { "uv": [ 7.75, 7.75, 8.25, 8.125 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.5, 0.375 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 4, 15, 9.5 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 4, 15, 9.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 12.5, 4, 13.5, 9.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 12.5, 4, 13.5, 9.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber*",
+    "from": [ 7.875, 3.625, 7.625 ],
+    "to": [ 8.125, 3.875, 7.75 ],
+    "faces": {
+        "down":  { "uv": [ 9, 4, 10.5, 6 ], "texture": "#texture" },
+        "up":    { "uv": [ 13.5, 2, 15, 4 ], "texture": "#texture" },
+        "north": { "uv": [ 14, 3, 14.5, 4.5 ], "texture": "#texture" },
+        "south": { "uv": [ 14, 3, 14.5, 4.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 14, 3, 14.5, 4.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 14, 3, 14.5, 4.5 ], "texture": "#texture" }
+    }
+},
+{
+    "__comment": "Lightsaber*",
+    "from": [ 7.875, 4.625, 8.125 ],
+    "to": [ 8.125, 4.75, 8.25 ],
+    "faces": {
+        "down":  { "uv": [ 10, 0, 11, 0.5 ], "texture": "#texture" },
+        "up":    { "uv": [ 14, 0, 14.5, 0.5 ], "texture": "#texture" },
+        "north": { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "south": { "uv": [ 13.5, 0, 15, 0.5 ], "texture": "#texture" },
+        "west":  { "uv": [ 13.5, 0, 14, 0.5 ], "texture": "#texture" },
+        "east":  { "uv": [ 13.5, 0, 14, 0.5 ], "texture": "#texture" }
+    }
+}
+],
+"display":
+{
+    "gui":{
+        "scale":[4,4,4],
+        "translation":[16.06,13.61,0],
+        "rotation":[84,40,-65]
+    },
+    "firstperson_lefthand":{
+        "scale":[1.5,1.5,1.5],
+        "translation":[0.76,7.5,0],
+        "rotation":[7,-132,0]
+    },
+    "firstperson_righthand":{
+        "scale":[1.5,1.5,1.5],
+        "translation":[0.76,7.5,0],
+        "rotation":[7,-132,0]
+    },
+    "fixed":{
+        "scale":[3.7,3.7,3.7],
+        "translation":[0,20.22,-1.7],
+        "rotation":[0,-90,0]
+    },
+    "ground":{
+        "scale":[1,1,1],
+        "translation":[0,6,0],
+        "rotation":[80,0,0]
+    },
+    "head":{
+        "scale":[3,3,3],
+        "translation":[-6.24,-20.79,4.54],
+        "rotation":[90,45,90]
+    },
+    "thirdperson_lefthand":{
+        "scale":[2.2,2.2,2.2],
+        "translation":[0,10.2,1.13],
+        "rotation":[0,0,0]
+    },
+    "thirdperson_righthand":{
+        "scale":[2.2,2.2,2.2],
+        "translation":[0,10.2,1.13],
+        "rotation":[0,0,0]
+    }
+}
+}
