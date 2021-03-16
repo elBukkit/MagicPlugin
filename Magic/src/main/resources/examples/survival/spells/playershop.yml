@@ -11,5 +11,5 @@ playershop:
         # Player shops sell items for cheaper than server shops to encourage trade
         scale: 0.75
 
-        # The shop villager takes a cut
-        earn_scale: 0.7
+        # The shop villager takes a 10% cut
+        earn_scale: 0.9

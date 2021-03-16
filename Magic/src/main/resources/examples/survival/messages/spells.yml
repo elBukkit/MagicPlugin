@@ -1470,9 +1470,15 @@ spells:
       description: Configures a player shop
       moved: Set shop chest location
       teleported: Moved your shopkeeper and updated their name
+      priced: Changed prices
       removed: Removed your Shopkeeper
       remove_label: Remove Shopkeeper (PERMANENTLY!)
       move_label: Teleport Your Shopkeeper Here
+      price_50_label: Set Prices to 50%
+      price_75_label: Set Prices to 75%
+      price_100_label: Set Prices to 100%
+      price_125_label: Set Prices to 125%
+      price_150_label: Set Prices to 150%
       confirm_title: "$item"
       selected_free: ""
       title: "Shop Management"

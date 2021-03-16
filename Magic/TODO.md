@@ -11,7 +11,7 @@
    - Auto-value currency items in shops
  - Fill out worth values for all blocks (and items, for shops)
  - Improve/fix alt-down rollback cast
- - Chop + Mine can be used on constructed blocks, which can then be rolled back
+ - Brush selector block conversion (right-click to absorb)
 
 ## Client Localization
 
@@ -35,6 +35,7 @@
 
 ## Hot
 
+ - Improve mnpc describe, need to be able to describe sub-keys, with tab completion
  - Brooms should ignore half-blocks for takeoff
  - Weird behavior spamming (holding) right-click: https://youtu.be/FJfDqyCgztE
  - Recall to bed not working? (Kit reported) ("Not home set" ... "or something" lol)
