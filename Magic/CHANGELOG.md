@@ -42,6 +42,11 @@
  - Add `kit` support to Selector action, see `kitshop` in elworld examples
  - Wands can now have a `level_spells: true` property to auto-level spells to max
 
+## Fixes
+
+ - Re-arrange plugin load order to (possibly) fix issues in recent builds with custom
+   integrations (such as external attribute registration)
+
 # 8.4.3
 
  - Fix Levitate not consuming mana if left on when relogging

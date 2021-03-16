@@ -219,7 +219,6 @@ import com.elmakers.mine.bukkit.tasks.ChangeServerTask;
 import com.elmakers.mine.bukkit.tasks.ConfigCheckTask;
 import com.elmakers.mine.bukkit.tasks.ConfigurationLoadTask;
 import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
-import com.elmakers.mine.bukkit.tasks.FinalizeIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.LoadDataTask;
 import com.elmakers.mine.bukkit.tasks.LogNotifyTask;
@@ -228,6 +227,7 @@ import com.elmakers.mine.bukkit.tasks.MageQuitTask;
 import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MigrateDataTask;
 import com.elmakers.mine.bukkit.tasks.MigrationTask;
+import com.elmakers.mine.bukkit.tasks.PostStartupLoadTask;
 import com.elmakers.mine.bukkit.tasks.SaveDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageTask;
@@ -1426,12 +1426,28 @@ public class MagicController implements MageController {
         logger.setContext("materials");
         loadMaterials(loader.getMaterials());
 
+        // Load worlds now, we're still in load=STARTUP time
+        logger.setContext("worlds");
+        loadWorlds(loader.getWorlds());
+        logger.setContext(null);
+        log("Loaded " + worldController.getCount() + " customized worlds");
+
+        // We'll need to delay everything else by one tick to let integrating plugins have a chance to load.
+        if (!loaded) {
+            // Some first-time registration that's safe to do at startup
+            activateMetrics();
+            registerListeners();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 1);
+        } else {
+            finalizePostStartupLoad(loader, sender);
+        }
+    }
+
+    public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
         // Finalize integrations, we only do this one time at startup.
         logger.setContext("integration");
         if (!loaded) {
-            activateMetrics();
-            registerListeners();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new FinalizeIntegrationTask(this), 1);
+            finalizeIntegration();
         }
 
         // Register currencies and other preload integrations
@@ -1507,12 +1523,6 @@ public class MagicController implements MageController {
 
         logger.setContext(null);
         log("Loaded " + crafting.getCount() + " crafting recipes");
-
-        // Load worlds
-        logger.setContext("worlds");
-        loadWorlds(loader.getWorlds());
-        logger.setContext(null);
-        log("Loaded " + worldController.getCount() + " customized worlds");
 
         if (!loaded) {
             postLoadIntegration();
