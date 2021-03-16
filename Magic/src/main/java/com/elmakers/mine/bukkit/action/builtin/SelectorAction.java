@@ -724,10 +724,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             if (name.isEmpty() && iconKey != null) {
                 ItemStack icon = parseItem(iconKey);
-                name = controller.describeItem(icon);
-                if (icon.getAmount() > 1) {
-                    String template = getMessage("item_amount");
-                    name = template.replace("$name", name).replace("$amount", Integer.toString(icon.getAmount()));
+                if (icon != null) {
+                    name = controller.describeItem(icon);
+                    if (icon.getAmount() > 1) {
+                        String template = getMessage("item_amount");
+                        name = template.replace("$name", name).replace("$amount", Integer.toString(icon.getAmount()));
+                    }
+                } else {
+                    controller.getLogger().warning("Invalid icon in selector: " + iconKey);
                 }
             }
 
