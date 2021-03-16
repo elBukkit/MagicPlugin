@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.command;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -724,7 +725,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         if (args.length == 0)
         {
             sender.sendMessage(ChatColor.GOLD + "Attributes for: " + ChatColor.AQUA + player.getName());
-            for (String key : attributes) {
+            List<String> attributeList = new ArrayList<>(attributes);
+            Collections.sort(attributeList);
+            for (String key : attributeList) {
                 ChatColor attributeType = internalAttributes.contains(key) ? ChatColor.DARK_AQUA : ChatColor.GRAY;
                 Double value = mage.getAttribute(key);
                 String valueDescription = value == null ? ChatColor.RED + "(not set)" : ChatColor.AQUA + Double.toString(value);

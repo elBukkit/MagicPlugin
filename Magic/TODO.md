@@ -14,6 +14,11 @@
  - Will need a special-case for EN
  - Refactor, refactor, refactor ...
 
+## 1.17
+
+ - Look for all y < 0 checks, encapsulate
+ - Add min_height to MagicWorld, default to -1000 or something
+
 ## Paths
 
  - Need to show path overrides in mage and wand describe
