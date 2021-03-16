@@ -1,7 +1,7 @@
 {
-    "parent" : "item/custom/icon",
+    "parent" : "item/custom/icon_disabled",
     "textures": {
-        "particle": "item/spells_disabled/smite",
-        "texture": "item/spells_disabled/smite"
+        "particle": "item/spells/smite",
+        "texture": "item/spells/smite"
     }
 }
