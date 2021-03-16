@@ -157,9 +157,11 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.BattleArenaManager;
 import com.elmakers.mine.bukkit.integration.GenericMetadataNPCSupplier;
 import com.elmakers.mine.bukkit.integration.GeyserManager;
+import com.elmakers.mine.bukkit.integration.LegacyLibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
 import com.elmakers.mine.bukkit.integration.LogBlockManager;
+import com.elmakers.mine.bukkit.integration.ModernLibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.NPCSupplierSet;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
@@ -1437,7 +1439,7 @@ public class MagicController implements MageController {
             // Some first-time registration that's safe to do at startup
             activateMetrics();
             registerListeners();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 1);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 2);
         } else {
             finalizePostStartupLoad(loader, sender);
         }
@@ -1447,6 +1449,7 @@ public class MagicController implements MageController {
         // Finalize integrations, we only do this one time at startup.
         logger.setContext("integration");
         if (!loaded) {
+            info("Post-startup load started");
             finalizeIntegration();
         }
 
@@ -6814,7 +6817,12 @@ public class MagicController implements MageController {
         if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
             getLogger().info("LibsDisguises not found, magic mob disguises will not be available");
         } else if (libsDisguiseEnabled) {
-            libsDisguiseManager = new LibsDisguiseManager(this, libsDisguisePlugin);
+            if (!LibsDisguiseManager.isCurrentVersion()) {
+                getLogger().info("Using legacy LibsDisguise integration, please update");
+                libsDisguiseManager = new LegacyLibsDisguiseManager(getPlugin(), libsDisguisePlugin);
+            } else {
+                libsDisguiseManager = new ModernLibsDisguiseManager(this, libsDisguisePlugin);
+            }
             if (libsDisguiseManager.initialize()) {
                 getLogger().info("LibsDisguises found, mob disguises and disguise_restricted features enabled");
             } else {
@@ -7135,7 +7143,6 @@ public class MagicController implements MageController {
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
     }
-    private double                              blockExchangeWorth          = 1.0;
 
     protected void loadProperties(CommandSender sender, ConfigurationSection properties)
     {
