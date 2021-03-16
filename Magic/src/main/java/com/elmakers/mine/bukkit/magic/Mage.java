@@ -157,7 +157,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return player.get();
         }
     }
-    private final Map<String, CurrencyMessage> currencyMessages = new HashMap<>();
 
     protected final String id;
     private final @Nonnull MageProperties properties;
@@ -171,6 +170,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Set<String> triggeringSpells = new HashSet<>();
     private final Map<String, Long> lastTriggers = new HashMap<>();
     private final Map<String, MageKit> kits = new HashMap<>();
+    private final Map<String, CurrencyMessage> currencyMessages = new HashMap<>();
 
     public void sendCurrencyMessage(String type, double amount) {
         Messages messages = controller.getMessages();
