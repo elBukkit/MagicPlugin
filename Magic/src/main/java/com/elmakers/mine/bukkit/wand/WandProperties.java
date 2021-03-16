@@ -18,8 +18,8 @@ public abstract class WandProperties extends TemplatedProperties {
     public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
         .addAll(BaseMagicProperties.PROPERTY_KEYS)
         .add(
-            "modifiers", "enchantments", "item_attributes", "item_attribute_slot",
-                "auto_absorb",
+            "modifiers", "enchantments", "item_attributes", "item_attribute_slot", "auto_absorb",
+            "limit_spells_to_path", "limit_brushes_to_path", "level_spells",
             "active_spell", "active_brush", "worn",
             "alternate_spell", "alternate_spell2", "alternate_spell3", "alternate_spell4",
             "alternate_spell5", "alternate_spell6", "alternate_spell7",

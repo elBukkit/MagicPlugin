@@ -624,26 +624,7 @@ public class MagicController implements MageController {
         }
     }
 
-    public void addSpell(Spell variant) {
-        SpellTemplate conflict = spells.get(variant.getKey());
-        if (conflict != null) {
-            getLogger().log(Level.WARNING, "Duplicate spell key: '" + conflict.getKey() + "'");
-        } else {
-            spells.put(variant.getKey(), variant);
-            SpellData data = templateDataMap.get(variant.getSpellKey().getBaseKey());
-            if (data == null) {
-                data = new SpellData(variant.getSpellKey().getBaseKey());
-                templateDataMap.put(variant.getSpellKey().getBaseKey(), data);
-            }
-            if (variant instanceof MageSpell) {
-                ((MageSpell) variant).setSpellData(data);
-            }
-            String alias = variant.getAlias();
-            if (alias != null && alias.length() > 0) {
-                spellAliases.put(alias, variant);
-            }
-        }
-    }
+    private final Map<String, Integer>          maxSpellLevels              = new HashMap<>();
 
     public float getMaxDamagePowerMultiplier() {
         return maxDamagePowerMultiplier;
@@ -2560,64 +2541,30 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void loadSpells(CommandSender sender, ConfigurationSection spellConfigs)
-    {
-        if (spellConfigs == null) return;
-
-        // Reset existing spells.
-        spells.clear();
-        spellAliases.clear();
-        categories.clear();
-
-        Set<String> keys = spellConfigs.getKeys(false);
-        for (String key : keys)
-        {
-            if (key.equals("default") || key.equals("override")) continue;
-            logger.setContext("spells." + key);
-
-            ConfigurationSection spellNode = spellConfigs.getConfigurationSection(key);
-            if (!(spellNode instanceof MagicConfiguration)) {
-                spellNode = MagicConfiguration.getKeyed(this, spellNode, "spell", key);
-                spellConfigs.set(key, spellNode);
-            }
-            Spell newSpell = null;
-            try {
-                newSpell = loadSpell(key, spellNode, this);
-            } catch (Exception ex) {
-                newSpell = null;
-                ex.printStackTrace();
-            }
-
-            if (newSpell == null)
-            {
-                getLogger().warning("Magic: Error loading spell " + key);
-                continue;
-            }
-
-            if (!newSpell.hasIcon())
-            {
-                String icon = spellNode.getString("icon");
-                if (icon != null && !icon.isEmpty())
-                {
-                    getLogger().info("Couldn't load spell icon '" + icon + "' for spell: " + newSpell.getKey());
+    public void addSpell(Spell variant) {
+        SpellTemplate conflict = spells.get(variant.getKey());
+        if (conflict != null) {
+            getLogger().log(Level.WARNING, "Duplicate spell key: '" + conflict.getKey() + "'");
+        } else {
+            SpellKey spellKey = variant.getSpellKey();
+            spells.put(spellKey.getKey(), variant);
+            if (spellKey.getLevel() > 1) {
+                Integer currentMax = maxSpellLevels.get(spellKey.getBaseKey());
+                if (currentMax == null || spellKey.getLevel() > currentMax) {
+                    maxSpellLevels.put(spellKey.getBaseKey(), spellKey.getLevel());
                 }
             }
-            addSpell(newSpell);
-        }
-
-        // Second pass to fulfill requirements, which needs all spells loaded
-        for (String key : keys) {
-            logger.setContext("spells." + key);
-            SpellTemplate template = getSpellTemplate(key);
-            if (template != null) {
-                template.loadPrerequisites(spellConfigs.getConfigurationSection(key));
+            SpellData data = templateDataMap.get(variant.getSpellKey().getBaseKey());
+            if (data == null) {
+                data = new SpellData(variant.getSpellKey().getBaseKey());
+                templateDataMap.put(variant.getSpellKey().getBaseKey(), data);
             }
-        }
-
-        // Update registered mages so their spells are current
-        for (Mage mage : mages.values()) {
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).loadSpells(spellConfigs);
+            if (variant instanceof MageSpell) {
+                ((MageSpell) variant).setSpellData(data);
+            }
+            String alias = variant.getAlias();
+            if (alias != null && alias.length() > 0) {
+                spellAliases.put(alias, variant);
             }
         }
     }
@@ -4422,6 +4369,77 @@ public class MagicController implements MageController {
             }
         }
         return spell;
+    }
+
+    protected void loadSpells(CommandSender sender, ConfigurationSection spellConfigs)
+    {
+        if (spellConfigs == null) return;
+
+        // Reset existing spells.
+        spells.clear();
+        spellAliases.clear();
+        categories.clear();
+        maxSpellLevels.clear();
+
+        Set<String> keys = spellConfigs.getKeys(false);
+        for (String key : keys)
+        {
+            if (key.equals("default") || key.equals("override")) continue;
+            logger.setContext("spells." + key);
+
+            ConfigurationSection spellNode = spellConfigs.getConfigurationSection(key);
+            if (!(spellNode instanceof MagicConfiguration)) {
+                spellNode = MagicConfiguration.getKeyed(this, spellNode, "spell", key);
+                spellConfigs.set(key, spellNode);
+            }
+            Spell newSpell = null;
+            try {
+                newSpell = loadSpell(key, spellNode, this);
+            } catch (Exception ex) {
+                newSpell = null;
+                ex.printStackTrace();
+            }
+
+            if (newSpell == null)
+            {
+                getLogger().warning("Magic: Error loading spell " + key);
+                continue;
+            }
+
+            if (!newSpell.hasIcon())
+            {
+                String icon = spellNode.getString("icon");
+                if (icon != null && !icon.isEmpty())
+                {
+                    getLogger().info("Couldn't load spell icon '" + icon + "' for spell: " + newSpell.getKey());
+                }
+            }
+            addSpell(newSpell);
+        }
+
+        // Second pass to fulfill requirements, which needs all spells loaded
+        for (String key : keys) {
+            logger.setContext("spells." + key);
+            SpellTemplate template = getSpellTemplate(key);
+            if (template != null) {
+                template.loadPrerequisites(spellConfigs.getConfigurationSection(key));
+            }
+        }
+
+        // Update registered mages so their spells are current
+        for (Mage mage : mages.values()) {
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).loadSpells(spellConfigs);
+            }
+        }
+    }
+
+    public SpellKey unalias(SpellKey spellKey) {
+        SpellTemplate spell = spellAliases.get(spellKey.getBaseKey());
+        if (spell != null) {
+            return new SpellKey(spell.getSpellKey().getBaseKey(), spellKey.getLevel());
+        }
+        return spellKey;
     }
 
     @Override
@@ -7751,6 +7769,11 @@ public class MagicController implements MageController {
     private final Map<String, ModifierTemplate> modifiers                   = new HashMap<>();
     private final Map<String, SpellTemplate>    spells                      = new HashMap<>();
     private final Map<String, SpellTemplate>    spellAliases                = new HashMap<>();
+
+    public int getMaxLevel(String spellName) {
+        Integer maxLevel = maxSpellLevels.get(spellName);
+        return maxLevel == null ? 1 : maxLevel;
+    }
     private final Map<String, SpellData>        templateDataMap             = new HashMap<>();
     private final Map<String, SpellCategory>    categories                  = new HashMap<>();
     private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();

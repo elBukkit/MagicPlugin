@@ -23,13 +23,14 @@ wolf:
     - saturation
     - regeneration
   active_brush: erase
-  active_spell: fling|5
+  active_spell: fling
   hotbar_count: 5
+  level_spells: true
   spells:
     # Hotbar 1, main
-    - levitate|6
-    - fling|5
-    - blink|6
+    - levitate
+    - fling
+    - blink
     - superheal
     - day
     - superkill

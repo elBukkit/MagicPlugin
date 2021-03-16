@@ -207,6 +207,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean hasUses = false;
     private boolean isSingleUse = false;
     private boolean limitSpellsToPath = false;
+    private boolean levelSpells = false;
     private boolean limitBrushesToPath = false;
     private Double resetManaOnActivate = null;
     private Currency currencyDisplay = null;
@@ -1389,9 +1390,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             Integer slot = parseSlot(pieces);
 
             // Handle aliases and upgrades smoothly
-            String loadedKey = pieces[0].trim();
-            SpellKey spellKey = new SpellKey(loadedKey);
-            SpellTemplate spell = controller.getSpellTemplate(loadedKey);
+            SpellKey spellKey = new SpellKey(pieces[0].trim());
+            spellKey = controller.unalias(spellKey);
+            if (levelSpells) {
+                int maxLevel = controller.getMaxLevel(spellKey.getBaseKey());
+                if (maxLevel > spellKey.getLevel()) {
+                    spellKey = new SpellKey(spellKey.getBaseKey(), maxLevel);
+                }
+            }
+            SpellTemplate spell = controller.getSpellTemplate(spellKey.getKey());
 
             if (limitSpellsToPath && path != null && !path.containsSpell(spellKey.getBaseKey())) continue;
 
@@ -2234,6 +2241,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         spellInventory.clear();
         limitSpellsToPath = getBoolean("limit_spells_to_path");
         limitBrushesToPath = getBoolean("limit_brushes_to_path");
+        levelSpells = getBoolean("level_spells");
         loadSpells();
 
         // Load spell levels

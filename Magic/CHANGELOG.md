@@ -40,6 +40,7 @@
  - The SpawnEntity action can use $pn, $pd and other placeholders in the `name` parameter
  - Added `mage reward` command, for giving players rewards, replaced with some SP or money if they already have it
  - Add `kit` support to Selector action, see `kitshop` in elworld examples
+ - Wands can now have a `level_spells: true` property to auto-level spells to max
 
 # 8.4.3
 
