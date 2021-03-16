@@ -1625,7 +1625,24 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         InventoryUtils.hideFlags(itemStack, 63);
         updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
         List<String> lore = new ArrayList<>();
-        InventoryUtils.wrapText(ChatColor.GRAY + materialKey, lore);
+        String keyMessage = wand != null ? wand.getMessage("brush.key") : controller.getMessages().get("brush.key");
+        if (keyMessage != null && !keyMessage.isEmpty()) {
+            InventoryUtils.wrapText(keyMessage.replace("$key", materialKey), lore);
+        }
+        double consumeReduction = wand == null ? 0 : wand.getConsumeReduction();
+        if (brushData.getMode() == BrushMode.MATERIAL && consumeReduction < 1) {
+            Currency currency = controller.getBlockExchangeCurrency();
+            if (currency != null) {
+                ItemStack worthItem = new ItemStack(itemStack.getType());
+                Double itemWorth = controller.getWorth(worthItem, currency.getKey());
+                if (itemWorth != null) {
+                    String message = wand != null ? wand.getMessage("brush.consumes") : controller.getMessages().get("brush.consumes");
+                    if (message != null && !message.isEmpty()) {
+                        lore.add(message.replace("$description", currency.formatAmount(itemWorth, controller.getMessages())));
+                    }
+                }
+            }
+        }
         CompatibilityUtils.setLore(itemStack, lore);
         return itemStack;
     }

@@ -2854,7 +2854,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         ItemStack requires = block.getItemStack(1);
         if (!hasItem(requires, allowVariants)) {
             Currency currency = controller.getBlockExchangeCurrency();
-            Double itemWorth = controller.getWorth(requires, currency.getKey());
+            Double itemWorth = currency == null ? null : controller.getWorth(requires, currency.getKey());
             if (currency != null && itemWorth != null) {
                 if (itemWorth > 0 && currency.has(this, getActiveProperties(), itemWorth)) {
                     currency.deduct(this, getActiveProperties(), itemWorth);

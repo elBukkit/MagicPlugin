@@ -7644,6 +7644,7 @@ public class MagicController implements MageController {
                 .getMaterialSetEmpty("attachable_double");
     }
 
+    @Override
     @Nullable
     public Currency getBlockExchangeCurrency() {
         return blockExchangeCurrency == null ? null : getCurrency(blockExchangeCurrency);

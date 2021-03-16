@@ -769,4 +769,6 @@ public interface MageController {
     Set<String> getKitKeys();
     @Nullable
     Kit getKit(String key);
+    @Nullable
+    Currency getBlockExchangeCurrency();
 }

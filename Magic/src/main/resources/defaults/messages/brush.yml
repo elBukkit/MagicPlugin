@@ -1,0 +1,5 @@
+brush:
+  consumes: "&eConsumes $description"
+  # Set this to see the brush key in lore
+  # key: "&7$key"
+  key: ""

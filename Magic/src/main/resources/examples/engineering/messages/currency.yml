@@ -1,4 +1,3 @@
 currency:
     materia:
-      amount: $amount Materia
-      name: Materia
+      name: "&3Materia"
