@@ -3,12 +3,7 @@
 # Engineering Improvements
 
  - Equivalent exchange
-   - enable_currency_exchange: true by default
-   - return_currency, Undo action parameter, true by default but always false if enable_currency_exchange is false
-   - Consume blocks first, then currency
    - Print message at end of spell showing how much money was consumed (and blocks?)
-   - Make materiashop work, allow using materia:500 .. maybe any currency
-   - Auto-value currency items in shops
  - Fill out worth values for all blocks (and items, for shops)
  - Improve/fix alt-down rollback cast
  - Brush selector block conversion (right-click to absorb)
@@ -25,21 +20,13 @@
 
  - Need to show path overrides in mage and wand describe
 
-## Wolf Staff
-
- - Add option to use max level of all spells
-
-# Player Shops
-
- - Add cost scale buttons to shop management UI (maybe 9 buttons for +- 75,50,25,10% and "market value")
-
 ## Hot
 
  - Improve mnpc describe, need to be able to describe sub-keys, with tab completion
  - Brooms should ignore half-blocks for takeoff
  - Weird behavior spamming (holding) right-click: https://youtu.be/FJfDqyCgztE
  - Recall to bed not working? (Kit reported) ("Not home set" ... "or something" lol)
- - Need a way to add spells to a path
+ - Need a way to add spells to a path from a custom config (like add_spells ... needs to be a map)
  - target_hit_timeout for CustomProjectile (Phantom)
  - /mmap slice command for easily making multi-maps
 

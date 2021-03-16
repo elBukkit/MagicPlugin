@@ -289,6 +289,10 @@ offhand_cast_cooldown: 500
 # Which can cause some unintended effects like changing spells or brushes when a wand inventory is open.
 change_world_equip_cooldown: 1000
 
+# How long to wait, in ms, before sending currency earn/spend messages
+# This lets multiple spends in a short interval (such as with engineering magic) add up and show one message
+currency_message_delay: 1000
+
 # This can be used to fix compatibility with PerWorldInventory or other plugins that store players'
 # inventories on world change.
 # This makes sure wands close their inventory before players change worlds.

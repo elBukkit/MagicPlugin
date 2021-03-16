@@ -59,6 +59,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
@@ -113,6 +114,7 @@ import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
 import com.elmakers.mine.bukkit.tasks.CheckWandTask;
 import com.elmakers.mine.bukkit.tasks.MageLoadTask;
+import com.elmakers.mine.bukkit.tasks.SendCurrencyMessageTask;
 import com.elmakers.mine.bukkit.tasks.TeleportTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -133,6 +135,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     public static int OFFHAND_CAST_RANGE = 32;
     public static int OFFHAND_CAST_COOLDOWN = 500;
+    public static int CURRENCY_MESSAGE_DELAY = 1000;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
     public static String DEFAULT_CLASS = "";
     private static String defaultMageName = "Mage";
@@ -154,6 +157,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return player.get();
         }
     }
+    private final Map<String, CurrencyMessage> currencyMessages = new HashMap<>();
 
     protected final String id;
     private final @Nonnull MageProperties properties;
@@ -167,6 +171,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Set<String> triggeringSpells = new HashSet<>();
     private final Map<String, Long> lastTriggers = new HashMap<>();
     private final Map<String, MageKit> kits = new HashMap<>();
+
+    public void sendCurrencyMessage(String type, double amount) {
+        Messages messages = controller.getMessages();
+        Currency currency = controller.getCurrency(type);
+        if (currency != null) {
+            if (amount > 0) {
+                String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.default.earned"));
+                if (earnMessage != null && !earnMessage.isEmpty()) {
+                    String amountString = currency.formatAmount(amount, messages);
+                    sendMessage(earnMessage.replace("$amount", amountString));
+                }
+            } else if (amount < 0) {
+                String spendMessage = messages.get("currency." + type + ".spent", messages.get("currency.default.spent"));
+                if (spendMessage != null && !spendMessage.isEmpty()) {
+                    String amountString = currency.formatAmount(Math.abs(amount), messages);
+                    sendMessage(spendMessage.replace("$amount", amountString));
+                }
+            }
+        }
+        currencyMessages.remove(type);
+    }
     protected ConfigurationSection data = ConfigurationUtils.newConfigurationSection();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> playerRef;
@@ -4321,6 +4346,25 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return data.getDouble(type, currency == null ? 0.0 : currency.getDefaultValue());
     }
 
+    private void queueCurrencyMessage(String currency, double amount) {
+        if (CURRENCY_MESSAGE_DELAY <= 0) {
+            sendCurrencyMessage(currency, amount);
+            return;
+        }
+        BukkitScheduler scheduler = controller.getPlugin().getServer().getScheduler();
+        CurrencyMessage pending = currencyMessages.get(currency);
+        if (pending == null) {
+            pending = new CurrencyMessage();
+            currencyMessages.put(currency, pending);
+        } else {
+            amount += pending.amount;
+            pending.timer.cancel();
+        }
+        pending.amount = amount;
+        Runnable task = new SendCurrencyMessageTask(this, currency, amount);
+        pending.timer = scheduler.runTaskLater(controller.getPlugin(), task, CURRENCY_MESSAGE_DELAY / 50);
+    }
+
     @Override
     public void addCurrency(String type, double delta) {
         boolean isFirstEarn = !data.contains(type);
@@ -4329,12 +4373,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
 
         Messages messages = controller.getMessages();
-        String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.default.earned"));
-        if (delta > 0 && earnMessage != null && !earnMessage.isEmpty()) {
-            String amountString = currency.formatAmount(delta, messages);
-            sendMessage(earnMessage.replace("$amount", amountString));
-        }
-
+        queueCurrencyMessage(type, delta);
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
             if (isFirstEarn && currency != null) {
                 startInstructions();
@@ -4353,15 +4392,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         delta = doSetCurrency(currency, type, previousValue, previousValue - delta);
 
         Messages messages = controller.getMessages();
-        String spendMessage = messages.get("currency." + type + ".spent", messages.get("currency.default.spent"));
-        if (delta < 0 && spendMessage != null && !spendMessage.isEmpty() && currency != null) {
-            String amountString = currency.formatAmount(Math.abs(delta), messages);
-            sendMessage(spendMessage.replace("$amount", amountString));
-        }
-
+        queueCurrencyMessage(type, delta);
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
             activeWand.updateMana();
         }
+    }
+
+    private static class CurrencyMessage {
+        public double amount;
+        public BukkitTask timer;
     }
 
     @Override
