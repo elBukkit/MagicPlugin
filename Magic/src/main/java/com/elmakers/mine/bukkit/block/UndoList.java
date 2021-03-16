@@ -32,7 +32,6 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 
@@ -449,7 +448,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             blockIdMap.remove(blockData.getId());
             Mage owner = getOwner();
             if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
-                owner.giveItem(new ItemStack(currentState.getType(), 1, DeprecatedUtils.getRawData(currentState)));
+                owner.refundBlock(new MaterialAndData(currentState.getType(), DeprecatedUtils.getRawData(currentState)));
             }
 
             CastContext context = getContext();

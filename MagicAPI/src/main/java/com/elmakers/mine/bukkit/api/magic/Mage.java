@@ -470,6 +470,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean hasItem(ItemStack item);
     boolean hasItem(ItemStack item, boolean allowVariants);
     boolean consumeBlock(MaterialAndData block, boolean allowVariants);
+    void refundBlock(MaterialAndData block);
     int getItemCount(ItemStack item, boolean allowDamaged);
     int getItemCount(ItemStack item);
     @Nullable

@@ -2868,6 +2868,23 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public void refundBlock(MaterialAndData block) {
+        boolean gave = false;
+        ItemStack refund = block.getItemStack(1);
+        Currency currency = controller.getBlockExchangeCurrency();
+        if (currency != null && !isAtMaxCurrency(currency.getKey())) {
+            Double itemWorth = controller.getWorth(refund, currency.getKey());
+            if (itemWorth != null && itemWorth > 0) {
+                gave = true;
+                addCurrency(currency.getKey(), itemWorth);
+            }
+        }
+        if (!gave) {
+            giveItem(refund);
+        }
+    }
+
+    @Override
     public int getItemCount(ItemStack itemStack, boolean allowDamaged) {
         if (!isPlayer()) return 0;
         InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(itemStack);
