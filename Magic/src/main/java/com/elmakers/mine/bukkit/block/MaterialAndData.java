@@ -758,28 +758,20 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 return true;
             }
         }
-
         // Special cases
         if (DefaultMaterials.isBanner(material)) {
             // Can't compare patterns for now
             return true;
-        }
-
-        BlockState blockState = block.getState();
-        if (blockState instanceof Sign) {
-            // Not digging into sign text
-            return true;
-        } else if (blockState instanceof CommandBlock && extraData != null && extraData instanceof BlockCommand) {
-            CommandBlock command = (CommandBlock)blockState;
-            if (!command.getCommand().equals(((BlockCommand)extraData).command)) {
-                return true;
-            }
         }
         if (blockData != null) {
             String currentData = CompatibilityUtils.getBlockData(block);
             if (currentData == null || !blockData.equals(currentData)) {
                 return true;
             }
+        }
+        // Error on the side of caution if we stored some extra data
+        if (extraData != null) {
+            return true;
         }
 
         return false;

@@ -8,6 +8,8 @@
 - wand properties didn't immediately take effect
 - hotbar updates stopped working at conduit
 - Tree spell allow using materia?
+- Doesn't seem like conversion rates work? Absorbed 15 obsidian but was able to place a lot more than that
+- building with water and lava doesn't seem to work
 
 # Engineering Improvements
 
@@ -23,16 +25,17 @@
  - Will need a special-case for EN
  - Refactor, refactor, refactor ...
 
-## 1.17
-
- - Look for all y < 0 checks, encapsulate
- - Add min_height to MagicWorld, default to -1000 or something
-
 ## Paths
 
  - Need to show path overrides in mage and wand describe
 
 ## Hot
+
+ - Lots of issues with accursed pistons:
+   - need to catch BlockPistonExtendEvent ?
+   - need to catch BlockPistonRetractEvent
+   - need to
+
 
  - Improve mnpc describe, need to be able to describe sub-keys, with tab completion
  - Brooms should ignore half-blocks for takeoff
