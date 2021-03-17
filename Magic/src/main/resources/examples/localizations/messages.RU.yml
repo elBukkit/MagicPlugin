@@ -59,8 +59,8 @@ commands:
       received: '&eТы получил &6$item &eв качестве награды'
       gave: '&eВыдано &6$item &eигроку &3$player'
       replacement: |-
-	    &eВыдано &6$replacement&e игроку &3$player&e,
-		&eт.к он уже имеет &6$item
+        &eВыдано &6$replacement&e игроку &3$player&e,
+        &eт.к он уже имеет &6$item
   mkit:
     usage: '&cИспользование: /mkit [игрок] <название>'
     console_usage: '&cИспользование (консоль): mkit [игрок] <название>'
