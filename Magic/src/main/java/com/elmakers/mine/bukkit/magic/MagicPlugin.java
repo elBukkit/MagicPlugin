@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MageCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicAutomataCommandExecutor;
@@ -38,7 +37,6 @@ import com.elmakers.mine.bukkit.magic.command.MagicNPCCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicSaveCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicServerCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicSkillsCommandExecutor;
-import com.elmakers.mine.bukkit.magic.command.MagicTraitCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicWarpCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.RPCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
@@ -202,12 +200,8 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         new SpellsCommandExecutor(this).register(this);
         new RPCommandExecutor(this).register(this);
         new MagicWarpCommandExecutor(controller).register(this);
-        CitizensController citizens = controller.getCitizens();
-        if (citizens != null)
-        {
-            new MagicTraitCommandExecutor(this, citizens).register(this);
-        }
         new MagicConfigCommandExecutor(this, controller).register(this);
+        // Note: The Citizens trait command is registered later in MagicController if we decide it's needed
     }
 
     /*

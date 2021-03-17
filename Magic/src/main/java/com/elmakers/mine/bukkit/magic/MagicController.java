@@ -171,6 +171,7 @@ import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.kit.KitController;
 import com.elmakers.mine.bukkit.kit.MagicKit;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicTraitCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.config.FetchExampleRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.UpdateAllExamplesCallback;
@@ -221,6 +222,7 @@ import com.elmakers.mine.bukkit.tasks.ChangeServerTask;
 import com.elmakers.mine.bukkit.tasks.ConfigCheckTask;
 import com.elmakers.mine.bukkit.tasks.ConfigurationLoadTask;
 import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
+import com.elmakers.mine.bukkit.tasks.FinalizeIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.LoadDataTask;
 import com.elmakers.mine.bukkit.tasks.LogNotifyTask;
@@ -1457,6 +1459,7 @@ public class MagicController implements MageController {
             // Some first-time registration that's safe to do at startup
             activateMetrics();
             registerListeners();
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new FinalizeIntegrationTask(this), 1);
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 2);
         } else {
             finalizePostStartupLoad(loader, sender);
@@ -1466,10 +1469,6 @@ public class MagicController implements MageController {
     public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
         // Finalize integrations, we only do this one time at startup.
         logger.setContext("integration");
-        if (!loaded) {
-            info("Post-startup load started");
-            finalizeIntegration();
-        }
 
         // Register currencies and other preload integrations
         registerPreLoad(loader.getMainConfiguration());
@@ -3993,10 +3992,6 @@ public class MagicController implements MageController {
         }
 
         return null;
-    }
-
-    public CitizensController getCitizens() {
-        return citizens;
     }
 
     @Nullable
@@ -7011,6 +7006,7 @@ public class MagicController implements MageController {
             Plugin citizensPlugin = plugin.getServer().getPluginManager().getPlugin("Citizens");
             if (citizensPlugin != null && citizensPlugin.isEnabled()) {
                 citizens = new CitizensController(citizensPlugin, this, citizensEnabled);
+                new MagicTraitCommandExecutor(MagicPlugin.getAPI(), citizens).register(plugin);
             } else {
                 citizens = null;
                 getLogger().info("Citizens not found, Magic trait unavailable.");

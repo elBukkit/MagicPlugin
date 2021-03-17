@@ -2,13 +2,12 @@
 
 # Bugs from Video :(
 
-- map brush is broken
 - TBW got back a ton of blocks somehow?
 - We got materia as items when not maxed out
-- Tree spell allow using materia?
-- wand appearance didn't udate on rankup
-- wand properties did't immediately take effect
+- wand appearance didn't update on rankup
+- wand properties didn't immediately take effect
 - hotbar updates stopped working at conduit
+- Tree spell allow using materia?
 
 # Engineering Improvements
 
