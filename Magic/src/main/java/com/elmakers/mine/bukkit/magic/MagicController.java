@@ -5228,7 +5228,8 @@ public class MagicController implements MageController {
         else if (itemSection.contains("spell"))
         {
             item = InventoryUtils.makeReal(item);
-            InventoryUtils.setMeta(item, "spell", itemSection.getString("spell"));
+            Object spellNode = CompatibilityUtils.createNode(item, "spell");
+            CompatibilityUtils.setMeta(spellNode, "key", itemSection.getString("spell"));
             if (itemSection.contains("skill")) {
                 InventoryUtils.setMeta(item, "skill", "true");
             }
