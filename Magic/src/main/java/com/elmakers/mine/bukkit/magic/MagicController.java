@@ -272,6 +272,26 @@ public class MagicController implements MageController {
     private static int MAX_WARNINGS = 10;
     private static int MAX_ERRORS = 10;
 
+    private final Set<String>                   builtinMageAttributes       = ImmutableSet.of(
+            "health", "health_max", "target_health", "target_health_max",
+            "location_x", "location_y", "location_z",
+            "target_location_x", "target_location_y", "target_location_z",
+            "time", "moon",
+            "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
+            "target_mana", "target_mana_max",
+            "fall_distance",
+            "air", "air_max", "target_air", "target_air_max",
+            "hunger", "target_hunger", "play_time"
+    );
+
+    private final Set<String>                   builtinAttributes           = ImmutableSet.of(
+            "epoch",
+            // For interval parsing
+            "hours", "minutes", "seconds", "days", "weeks",
+            // Other constants
+            "pi"
+    );
+
     // Special constructor used for interrogation
     public MagicController() {
         configFolder = null;
@@ -1136,8 +1156,6 @@ public class MagicController implements MageController {
         load();
         resourcePacks.startResourcePackChecks();
     }
-
-    private GeyserManager                       geyserManager               = null;
 
     protected void postLoadIntegration() {
         if (mobArenaManager != null) {
@@ -6123,14 +6141,6 @@ public class MagicController implements MageController {
         return attributeProviders;
     }
 
-    private final Set<String>                   builtinAttributes           = ImmutableSet.of(
-            "epoch",
-            // For interval parsing
-            "hours", "minutes", "seconds", "days", "weeks",
-            // Other constants
-            "pi"
-    );
-
     @Override
     @Nullable
     public MagicAttribute getAttribute(String attributeKey) {
@@ -7684,6 +7694,26 @@ public class MagicController implements MageController {
     public Currency getBlockExchangeCurrency() {
         return blockExchangeCurrency == null ? null : getCurrency(blockExchangeCurrency);
     }
+    private GeyserManager                       geyserManager               = null;
+
+    public int getMaxLevel(String spellName) {
+        Integer maxLevel = maxSpellLevels.get(spellName);
+        return maxLevel == null ? 1 : maxLevel;
+    }
+
+    @Nullable
+    public Double getBuiltinAttribute(String attributeKey) {
+        switch (attributeKey) {
+            case "weeks": return (double)604800000;
+            case "days": return (double)86400000;
+            case "hours": return (double)3600000;
+            case "minutes": return (double)60000;
+            case "seconds": return (double)1000;
+            case "epoch": return (double)System.currentTimeMillis();
+            case "pi" : return Math.PI;
+            default: return null;
+        }
+    }
 
     /*
      * Private data
@@ -7786,40 +7816,10 @@ public class MagicController implements MageController {
     private final Map<String, ModifierTemplate> modifiers                   = new HashMap<>();
     private final Map<String, SpellTemplate>    spells                      = new HashMap<>();
     private final Map<String, SpellTemplate>    spellAliases                = new HashMap<>();
-
-    public int getMaxLevel(String spellName) {
-        Integer maxLevel = maxSpellLevels.get(spellName);
-        return maxLevel == null ? 1 : maxLevel;
-    }
     private final Map<String, SpellData>        templateDataMap             = new HashMap<>();
     private final Map<String, SpellCategory>    categories                  = new HashMap<>();
     private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();
     private final Set<String>                   registeredAttributes        = new HashSet<>();
-
-    @Nullable
-    public Double getBuiltinAttribute(String attributeKey) {
-        switch (attributeKey) {
-            case "weeks": return (double)604800000;
-            case "days": return (double)86400000;
-            case "hours": return (double)3600000;
-            case "minutes": return (double)60000;
-            case "seconds": return (double)1000;
-            case "epoch": return (double)System.currentTimeMillis();
-            case "pi" : return Math.PI;
-            default: return null;
-        }
-    }
-    private final Set<String>                   builtinMageAttributes       = ImmutableSet.of(
-            "health", "health_max", "target_health", "target_health_max",
-            "location_x", "location_y", "location_z",
-            "target_location_x", "target_location_y", "target_location_z",
-            "time", "moon",
-            "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
-            "target_mana", "target_mana_max",
-            "fall_distance",
-            "air", "air_max", "target_air", "target_air_max",
-            "hunger", "target_hunger", "play_time"
-    );
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
     private final Set<Mage> pendingConstruction                             = new HashSet<>();
     private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
