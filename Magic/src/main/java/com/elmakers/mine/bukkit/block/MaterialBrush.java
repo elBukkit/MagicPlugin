@@ -156,6 +156,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         other.fillWithAir = fillWithAir;
         other.orientVector = orientVector;
         other.commandMap = commandMap;
+        other.mapMaterialBase = mapMaterialBase;
+        other.scale = scale;
     }
 
     @Override
