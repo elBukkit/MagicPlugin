@@ -1,5 +1,15 @@
 # TODO
 
+# Bugs from Video :(
+
+- map brush is broken
+- TBW got back a ton of blocks somehow?
+- We got materia as items when not maxed out
+- Tree spell allow using materia?
+- wand appearance didn't udate on rankup
+- wand properties did't immediately take effect
+- hotbar updates stopped working at conduit
+
 # Engineering Improvements
 
  - Fill out worth values for all blocks (and items, for shops)
