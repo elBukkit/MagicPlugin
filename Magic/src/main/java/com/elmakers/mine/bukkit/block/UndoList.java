@@ -197,6 +197,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void clearAttachables(Block block)
     {
+        // TODO: Special handling for pistons?
+        // Maybe beds too?
+        // Doors .. could be a lot of special-caees here that don't rely on
+        // prxomity searches
         clearAttachables(block, BlockFace.NORTH, attachablesWall);
         clearAttachables(block, BlockFace.SOUTH, attachablesWall);
         clearAttachables(block, BlockFace.EAST, attachablesWall);
@@ -208,7 +212,12 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean clearAttachables(Block block, BlockFace direction, @Nonnull MaterialSet materials)
     {
         Block testBlock = block.getRelative(direction);
-        if (!materials.testBlock(testBlock)) {
+        if (!materials.testBlock(testBlock) || getContext().isIndestructible(block)) {
+            return false;
+        }
+        CastContext context = getContext();
+        boolean isIndestructible = context == null ? false : context.isIndestructible(block);
+        if (isIndestructible) {
             return false;
         }
 
