@@ -31,6 +31,7 @@
  - Turn off Magic.notify permission by default. Sorry if it was annoying ;()
  - Cloak now turns off when you cast another spell
  - Reworked the Stun spell
+ - Console and command block casts now act "SuperPowered", can bypass indestructible materials. Is configurable.
 
 ## Additions
 

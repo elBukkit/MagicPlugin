@@ -7638,6 +7638,8 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN = properties.getInt("offhand_cast_cooldown", com.elmakers.mine.bukkit.magic.Mage.OFFHAND_CAST_COOLDOWN);
         com.elmakers.mine.bukkit.magic.Mage.SNEAKING_CAST_OFFSET = properties.getDouble("sneaking_cast_location_offset_vertical", com.elmakers.mine.bukkit.magic.Mage.SNEAKING_CAST_OFFSET);
         com.elmakers.mine.bukkit.magic.Mage.CURRENCY_MESSAGE_DELAY = properties.getInt("currency_message_delay", com.elmakers.mine.bukkit.magic.Mage.CURRENCY_MESSAGE_DELAY);
+        com.elmakers.mine.bukkit.magic.Mage.COMMAND_BLOCKS_SUPERPOWERED = properties.getBoolean("command_block_superpowered", com.elmakers.mine.bukkit.magic.Mage.COMMAND_BLOCKS_SUPERPOWERED);
+        com.elmakers.mine.bukkit.magic.Mage.CONSOLE_SUPERPOWERED = properties.getBoolean("console_superpowered", com.elmakers.mine.bukkit.magic.Mage.CONSOLE_SUPERPOWERED);
 
         // Parse wand settings
         Wand.DefaultUpgradeMaterial = ConfigurationUtils.getMaterial(properties, "wand_upgrade_item", Wand.DefaultUpgradeMaterial);

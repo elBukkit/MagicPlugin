@@ -33,6 +33,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Creature;
@@ -137,6 +138,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int OFFHAND_CAST_COOLDOWN = 500;
     public static int CURRENCY_MESSAGE_DELAY = 1000;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
+    public static boolean COMMAND_BLOCKS_SUPERPOWERED = true;
+    public static boolean CONSOLE_SUPERPOWERED = true;
     public static String DEFAULT_CLASS = "";
     private static String defaultMageName = "Mage";
 
@@ -2438,6 +2441,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isSuperPowered() {
+        if (isCommandBlock() && COMMAND_BLOCKS_SUPERPOWERED) {
+            return true;
+        }
+        if (isConsole() && CONSOLE_SUPERPOWERED) {
+            return true;
+        }
         return superPowered;
     }
 
@@ -2664,6 +2673,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public boolean isPlayer() {
         Player player = getPlayer();
         return player != null;
+    }
+
+    public boolean isConsole() {
+        CommandSender sender = getCommandSender();
+        return sender != null && sender instanceof ConsoleCommandSender;
+    }
+
+    public boolean isCommandBlock() {
+        CommandSender sender = getCommandSender();
+        return sender != null && sender instanceof BlockCommandSender;
     }
 
     @Override
@@ -4060,7 +4079,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!ignoredByMobs && properties.getBoolean("ignored_by_mobs")) {
             ignoredByMobs = true;
         }
-
 
         // Add potion effects
         effectivePotionEffects.putAll(properties.getPotionEffects());
