@@ -268,13 +268,20 @@ import com.google.common.collect.Maps;
 import de.slikey.effectlib.math.EquationStore;
 
 public class MagicController implements MageController {
-    private static String DEFAULT_DATASTORE_PACKAGE = "com.elmakers.mine.bukkit.data";
-    private static long MAGE_CACHE_EXPIRY = 10000;
+    private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
+    private static final String LOST_WANDS_FILE = "lostwands";
+    private static final String WARPS_FILE = "warps";
+    private static final String SPELLS_DATA_FILE = "spells";
+    private static final String AUTOMATA_DATA_FILE = "automata";
+    private static final String NPC_DATA_FILE = "npcs";
+    private static final String URL_MAPS_FILE = "imagemaps";
+    private static final String DEFAULT_DATASTORE_PACKAGE = "com.elmakers.mine.bukkit.data";
+    private static final long MAGE_CACHE_EXPIRY = 10000;
+    private static final int MAX_WARNINGS = 10;
     private static long LOG_WATCHDOG_TIMEOUT = 30000;
-    private static int MAX_WARNINGS = 10;
-    private static int MAX_ERRORS = 10;
-
-    private final Set<String>                   builtinMageAttributes       = ImmutableSet.of(
+    private static final int MAX_ERRORS = 10;
+    protected static Random random = new Random();
+    private final Set<String> builtinMageAttributes = ImmutableSet.of(
             "health", "health_max", "target_health", "target_health_max",
             "location_x", "location_y", "location_z",
             "target_location_x", "target_location_y", "target_location_z",
@@ -285,14 +292,289 @@ public class MagicController implements MageController {
             "air", "air_max", "target_air", "target_air_max",
             "hunger", "target_hunger", "play_time"
     );
-
-    private final Set<String>                   builtinAttributes           = ImmutableSet.of(
+    private final Set<String> builtinAttributes = ImmutableSet.of(
             "epoch",
             // For interval parsing
             "hours", "minutes", "seconds", "days", "weeks",
             // Other constants
             "pi"
     );
+    private final Map<String, AutomatonTemplate> automatonTemplates = new HashMap<>();
+    private final Map<String, WandTemplate> wandTemplates = new HashMap<>();
+    private final Map<String, MageClassTemplate> mageClasses = new HashMap<>();
+    private final Map<String, ModifierTemplate> modifiers = new HashMap<>();
+    private final Map<String, SpellTemplate> spells = new HashMap<>();
+    private final Map<String, SpellTemplate> spellAliases = new HashMap<>();
+    private final Map<String, SpellData> templateDataMap = new HashMap<>();
+    private final Map<String, SpellCategory> categories = new HashMap<>();
+    private final Map<String, MagicAttribute> attributes = new HashMap<>();
+    private final Set<String> registeredAttributes = new HashSet<>();
+    private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages = Maps.newConcurrentMap();
+    private final Set<Mage> pendingConstruction = new HashSet<>();
+    private final PriorityQueue<UndoList> scheduledUndo = new PriorityQueue<>();
+    private final Map<String, WeakReference<Schematic>> schematics = new HashMap<>();
+    private final Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
+    private final Map<Chunk, Integer> lockedChunks = new HashMap<>();
+    private final MagicLogger logger;
+    private final File configFolder;
+    private final File dataFolder;
+    private final File defaultsFolder;
+    private final Map<String, String> exampleKeyNames = new HashMap<>();
+    // Synchronization
+    private final Object saveLock = new Object();
+    private final SimpleMaterialSetManager materialSetManager = new SimpleMaterialSetManager();
+    private final Map<String, Integer> maxSpellLevels = new HashMap<>();
+    private final int undoTimeWindow = 6000;
+    private final Map<String, DamageType> damageTypes = new HashMap<>();
+    private final Map<Material, String> blockSkins = new HashMap<>();
+    private final Map<EntityType, String> mobSkins = new HashMap<>();
+    private final Map<EntityType, MaterialAndData> skullItems = new HashMap<>();
+    private final Map<EntityType, MaterialAndData> skullWallBlocks = new HashMap<>();
+    private final Map<EntityType, MaterialAndData> skullGroundBlocks = new HashMap<>();
+    private final Map<EntityType, Material> mobEggs = new HashMap<>();
+    private final int toggleMessageRange = 1024;
+    private final Material defaultMaterial = Material.DIRT;
+    private final Set<EntityType> undoEntityTypes = new HashSet<>();
+    private final Set<EntityType> friendlyEntityTypes = new HashSet<>();
+    private final Map<String, Currency> currencies = new HashMap<>();
+    private final Map<String, List<MagicNPC>> npcsByChunk = new HashMap<>();
+    private final Map<UUID, MagicNPC> npcsByEntity = new HashMap<>();
+    private final Map<UUID, MagicNPC> npcs = new HashMap<>();
+    private final Map<String, Map<Long, Automaton>> automata = new HashMap<>();
+    private final Map<Long, Automaton> activeAutomata = new HashMap<>();
+    private final Map<String, LostWand> lostWands = new HashMap<>();
+    private final Map<String, Set<String>> lostWandChunks = new HashMap<>();
+    private final Map<Long, Integer> lightBlocks = new HashMap<>();
+    private final Map<String, Integer> lightChunks = new HashMap<>();
+    private final boolean hasDynmap = false;
+    private final Messages messages = new Messages();
+    private final Set<String> resolvingKeys = new LinkedHashSet<>();
+    private final Map<String, MageData> mageDataPreCache = new ConcurrentHashMap<>();
+    private final FactionsManager factionsManager = new FactionsManager();
+    private final LocketteManager locketteManager = new LocketteManager();
+    private final WorldGuardManager worldGuardManager = new WorldGuardManager();
+    private final PvPManagerManager pvpManager = new PvPManagerManager();
+    private final MultiverseManager multiverseManager = new MultiverseManager();
+    private final PreciousStonesManager preciousStonesManager = new PreciousStonesManager();
+    private final TownyManager townyManager = new TownyManager();
+    private final GriefPreventionManager griefPreventionManager = new GriefPreventionManager();
+    private final NCPManager ncpManager = new NCPManager();
+    private final ProtectionManager protectionManager = new ProtectionManager();
+    private final Set<MagicProvider> externalProviders = new HashSet<>();
+    private final List<BlockBreakManager> blockBreakManagers = new ArrayList<>();
+    private final List<BlockBuildManager> blockBuildManagers = new ArrayList<>();
+    private final List<PVPManager> pvpManagers = new ArrayList<>();
+    private final List<CastPermissionManager> castManagers = new ArrayList<>();
+    private final List<AttributeProvider> attributeProviders = new ArrayList<>();
+    private final List<TeamProvider> teamProviders = new ArrayList<>();
+    private final List<EntityTargetingManager> targetingProviders = new ArrayList<>();
+    private final NPCSupplierSet npcSuppliers = new NPCSupplierSet();
+    private final Map<String, RequirementsProcessor> requirementProcessors = new HashMap<>();
+    private final Map<String, PlayerWarpManager> playerWarpManagers = new HashMap<>();
+    private final Map<Material, String> autoWands = new HashMap<>();
+    private final Map<String, String> builtinExternalExamples = new HashMap<>();
+    private MaterialAndData redstoneReplacement = new MaterialAndData(Material.OBSIDIAN);
+    private @Nonnull
+    MaterialSet buildingMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet indestructibleMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet restrictedMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet destructibleMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet interactibleMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet containerMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet wearableMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet meleeMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet climbableMaterials = MaterialSets.empty();
+    private @Nonnull
+    MaterialSet undoableMaterials = MaterialSets.wildcard();
+    private boolean backupInventories = true;
+    private int undoQueueDepth = 256;
+    private int pendingQueueDepth = 16;
+    private int undoMaxPersistSize = 0;
+    private boolean commitOnQuit = false;
+    private boolean saveNonPlayerMages = false;
+    private String defaultWandPath = "";
+    private WandMode defaultWandMode = WandMode.NONE;
+    private WandMode defaultBrushMode = WandMode.CHEST;
+    private boolean showMessages = true;
+    private boolean showCastMessages = false;
+    private String messagePrefix = "";
+    private String castMessagePrefix = "";
+    private boolean soundsEnabled = true;
+    private String welcomeWand = "";
+    private int messageThrottle = 0;
+    private boolean spellDroppingEnabled = false;
+    private boolean fillingEnabled = false;
+    private int maxFillLevel = 0;
+    private boolean essentialsSignsEnabled = false;
+    private boolean dynmapUpdate = true;
+    private boolean dynmapShowWands = true;
+    private boolean dynmapOnlyPlayerSpells = false;
+    private boolean dynmapShowSpells = true;
+    private boolean createWorldsEnabled = true;
+    private float maxDamagePowerMultiplier = 2.0f;
+    private float maxConstructionPowerMultiplier = 5.0f;
+    private float maxRadiusPowerMultiplier = 2.5f;
+    private float maxRadiusPowerMultiplierMax = 4.0f;
+    private float maxRangePowerMultiplier = 3.0f;
+    private float maxRangePowerMultiplierMax = 5.0f;
+    private float maxPower = 100.0f;
+    private float maxCostReduction = 0.5f;
+    private float maxCooldownReduction = 0.5f;
+    private int maxMana = 1000;
+    private int maxManaRegeneration = 100;
+    private double worthBase = 1;
+    private boolean spEnabled = true;
+    private boolean spEarnEnabled = true;
+    private boolean castCommandCostFree = false;
+    private boolean castCommandCooldownFree = false;
+    private float castCommandPowerMultiplier = 0.0f;
+    private boolean castConsoleCostFree = false;
+    private boolean castConsoleCooldownFree = false;
+    private float castConsolePowerMultiplier = 0.0f;
+    private float costReduction = 0.0f;
+    private float cooldownReduction = 0.0f;
+    private int autoUndo = 0;
+    private int autoSaveTaskId = 0;
+    private BukkitTask configCheckTask = null;
+    private BukkitTask logNotifyTask = null;
+    private boolean savePlayerData = true;
+    private boolean externalPlayerData = false;
+    private boolean asynchronousSaving = true;
+    private boolean debugEffectLib = false;
+    private WarpController warpController = null;
+    private KitController kitController = null;
+    private Collection<ConfigurationSection> materialColors = null;
+    private List<Object> materialVariants = null;
+    private ConfigurationSection blockItems = null;
+    private MageDataStore mageDataStore = null;
+    private MageDataStore migrateDataStore = null;
+    private MigrateDataTask migrateDataTask = null;
+    private BukkitTask logWatchdogTimer = null;
+    private MagicPlugin plugin = null;
+    private int automataUpdateFrequency = 1;
+    private int mageUpdateFrequency = 5;
+    private int workFrequency = 1;
+    private int undoFrequency = 10;
+    private int workPerUpdate = 5000;
+    private int logVerbosity = 0;
+    private boolean showCastHoloText = false;
+    private boolean showActivateHoloText = false;
+    private int castHoloTextRange = 0;
+    private int activateHoloTextRange = 0;
+    private boolean urlIconsEnabled = true;
+    private boolean legacyIconsEnabled = false;
+    private boolean autoSpellUpgradesEnabled = true;
+    private boolean autoPathUpgradesEnabled = true;
+    private boolean spellProgressionEnabled = true;
+    private boolean bypassBuildPermissions = false;
+    private boolean bypassBreakPermissions = false;
+    private boolean bypassPvpPermissions = false;
+    private boolean bypassFriendlyFire = false;
+    private boolean useScoreboardTeams = false;
+    private boolean defaultFriendly = true;
+    private boolean protectLocked = true;
+    private boolean bindOnGive = false;
+    private List<List<String>> permissionTeams = null;
+    private String extraSchematicFilePath = null;
+    private Mailer mailer = null;
+    private PhysicsHandler physicsHandler = null;
+    private List<ConfigurationSection> invalidNPCs = new ArrayList<>();
+    private List<ConfigurationSection> invalidAutomata = new ArrayList<>();
+    private int metricsLevel = 5;
+    private Metrics metrics = null;
+    private boolean hasEssentials = false;
+    private boolean hasCommandBook = false;
+    private String exampleDefaults = null;
+    private Collection<String> addExamples = null;
+    private boolean loaded = false;
+    private boolean shuttingDown = false;
+    private boolean dataLoaded = false;
+    private String defaultSkillIcon = "stick";
+    private boolean despawnMagicMobs = false;
+    private int skillInventoryRows = 6;
+    private boolean skillsUseHeroes = true;
+    private boolean useHeroesMana = true;
+    private boolean useHeroesParties = true;
+    private boolean useSkillAPIAllies = true;
+    private boolean useBattleArenaTeams = true;
+    private boolean skillsUsePermissions = false;
+    private boolean useWildStacker = true;
+    private String heroesSkillPrefix = "";
+    private String skillsSpell = "";
+    private boolean isFileLockingEnabled = false;
+    private int fileLoadDelay = 0;
+    private Mage reloadingMage = null;
+    private ResourcePackManager resourcePacks = null;
+    // Sub-Controllers
+    private CraftingController crafting = null;
+    private MobController mobs = null;
+    private MobController2 mobs2 = null;
+    private ItemController items = null;
+    private EnchantingController enchanting = null;
+    private AnvilController anvil = null;
+    private MapController maps = null;
+    private DynmapController dynmap = null;
+    private ElementalsController elementals = null;
+    private CitizensController citizens = null;
+    private BlockController blockController = null;
+    private HangingController hangingController = null;
+    private PlayerController playerController = null;
+    private EntityController entityController = null;
+    private InventoryController inventoryController = null;
+    private ExplosionController explosionController = null;
+    private JumpController jumpController = null;
+    private WorldController worldController = null;
+    private @Nonnull
+    MageIdentifier mageIdentifier = new MageIdentifier();
+    private boolean citizensEnabled = true;
+    private boolean logBlockEnabled = true;
+    private boolean libsDisguiseEnabled = true;
+    private boolean skillAPIEnabled = true;
+    private boolean useSkillAPIMana = false;
+    private boolean placeholdersEnabled = true;
+    private boolean lightAPIEnabled = true;
+    private boolean skriptEnabled = true;
+    private boolean vaultEnabled = true;
+    private ConfigurationSection residenceConfiguration = null;
+    private ConfigurationSection redProtectConfiguration = null;
+    private ConfigurationSection citadelConfiguration = null;
+    private ConfigurationSection mobArenaConfiguration = null;
+    private ConfigurationSection ajParkourConfiguration = null;
+    private boolean castConsoleFeedback = false;
+    private String editorURL = null;
+    private boolean reloadVerboseLogging = true;
+    private boolean hasShopkeepers = false;
+    private AJParkourManager ajParkourManager = null;
+    private CitadelManager citadelManager = null;
+    private ResidenceManager residenceManager = null;
+    private RedProtectManager redProtectManager = null;
+    private RequirementsController requirementsController = null;
+    private HeroesManager heroesManager = null;
+    private LibsDisguiseManager libsDisguiseManager = null;
+    private SkillAPIManager skillAPIManager = null;
+    private BattleArenaManager battleArenaManager = null;
+    private PlaceholderAPIManager placeholderAPIManager = null;
+    private LightAPIManager lightAPIManager = null;
+    private MobArenaManager mobArenaManager = null;
+    private LogBlockManager logBlockManager = null;
+    private EssentialsController essentialsController = null;
+    private DeadSoulsManager deadSoulsController = null;
+    private boolean loading = false;
+    private boolean showExampleInstructions = false;
+    private int disableSpawnReplacement = 0;
+    private SwingType swingType = SwingType.ANIMATE_IF_ADVENTURE;
+    private String blockExchangeCurrency = null;
+    private @Nonnull
+    MaterialSet offhandMaterials = MaterialSets.empty();
+    private GeyserManager geyserManager = null;
 
     // Special constructor used for interrogation
     public MagicController() {
@@ -316,6 +598,50 @@ public class MagicController implements MageController {
 
         defaultsFolder = new File(configFolder, "defaults");
         defaultsFolder.mkdirs();
+    }
+
+    @Nullable
+    public static Spell loadSpell(String name, ConfigurationSection node, MageController controller) {
+        String className = node.getString("class");
+        if (className == null || className.equalsIgnoreCase("action") || className.equalsIgnoreCase("actionspell")) {
+            className = "com.elmakers.mine.bukkit.spell.ActionSpell";
+        } else if (className.indexOf('.') <= 0) {
+            className = BUILTIN_SPELL_CLASSPATH + "." + className;
+        }
+
+        Class<?> spellClass = null;
+        try {
+            spellClass = Class.forName(className);
+        } catch (Throwable ex) {
+            controller.getLogger().log(Level.WARNING, "Error loading spell: " + className, ex);
+            return null;
+        }
+        if (spellClass.getAnnotation(Deprecated.class) != null) {
+            controller.getLogger().warning("Spell " + name + " is using a deprecated spell class " + className + ". This will be removed in the future, please see the default configs for alternatives.");
+        }
+
+        Object newObject;
+        try {
+            newObject = spellClass.getDeclaredConstructor().newInstance();
+        } catch (Throwable ex) {
+
+            controller.getLogger().log(Level.WARNING, "Error loading spell: " + className, ex);
+            return null;
+        }
+
+        if (newObject == null || !(newObject instanceof MageSpell)) {
+            controller.getLogger().warning("Error loading spell: " + className + ", does it implement MageSpell?");
+            return null;
+        }
+
+        MageSpell newSpell = (MageSpell) newObject;
+        newSpell.initialize(controller);
+        newSpell.loadTemplate(name, node);
+        com.elmakers.mine.bukkit.api.spell.SpellCategory category = newSpell.getCategory();
+        if (category instanceof SpellCategory) {
+            ((SpellCategory) category).addSpellTemplate(newSpell);
+        }
+        return newSpell;
     }
 
     public boolean registerNMSBindings() {
@@ -352,7 +678,7 @@ public class MagicController implements MageController {
     public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(@Nonnull CommandSender commandSender) {
         checkNotNull(commandSender);
         if (commandSender instanceof Player) {
-            return getRegisteredMage((Player)commandSender);
+            return getRegisteredMage((Player) commandSender);
         }
 
         String mageId = mageIdentifier.fromCommandSender(commandSender);
@@ -404,7 +730,6 @@ public class MagicController implements MageController {
         return getMage(mageId, null, commandSender, entity);
     }
 
-
     @Nonnull
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getMage(@Nonnull Player player) {
@@ -441,7 +766,7 @@ public class MagicController implements MageController {
 
         if (!loaded) {
             if (entity instanceof Player) {
-                getLogger().warning("Player data request for " + mageId + " (" + ((Player)commandSender).getName() + ") failed, plugin not loaded yet");
+                getLogger().warning("Player data request for " + mageId + " (" + commandSender.getName() + ") failed, plugin not loaded yet");
             }
 
             throw new PluginNotLoadedException();
@@ -451,13 +776,12 @@ public class MagicController implements MageController {
         if (!mages.containsKey(mageId)) {
             if (shuttingDown) {
                 if (entity instanceof Player) {
-                    getLogger().warning("Player data request for " + mageId + " (" + ((Player)commandSender).getName() + ") failed, plugin is shutting down");
+                    getLogger().warning("Player data request for " + mageId + " (" + commandSender.getName() + ") failed, plugin is shutting down");
                 }
 
                 throw new PluginNotLoadedException();
             }
-            if (entity instanceof Player && !((Player)entity).isOnline() && !isNPC(entity))
-            {
+            if (entity instanceof Player && !((Player) entity).isOnline() && !isNPC(entity)) {
                 getLogger().warning("Player data for " + mageId + " (" + entity.getName() + ") loaded while offline!");
                 Thread.dumpStack();
                 // This will cause some really bad things to happen if using file locking, so we're going to just skip it.
@@ -625,30 +949,24 @@ public class MagicController implements MageController {
         return getMage(plugin.getServer().getConsoleSender());
     }
 
-    public void log(String message)
-    {
+    public void log(String message) {
         info(message, 0);
     }
 
     @Override
-    public void info(String message)
-    {
+    public void info(String message) {
         info(message, 1);
     }
 
     @Override
-    public void info(String message, int verbosity)
-    {
+    public void info(String message, int verbosity) {
         if (loading && !reloadVerboseLogging) {
             return;
         }
-        if (logVerbosity >= verbosity)
-        {
+        if (logVerbosity >= verbosity) {
             getLogger().info(message);
         }
     }
-
-    private final Map<String, Integer>          maxSpellLevels              = new HashMap<>();
 
     public float getMaxDamagePowerMultiplier() {
         return maxDamagePowerMultiplier;
@@ -698,17 +1016,20 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public @Nonnull Set<String> getDamageTypes() {
+    public @Nonnull
+    Set<String> getDamageTypes() {
         return damageTypes.keySet();
     }
 
     @Override
-    public @Nonnull Set<String> getAttributes() {
+    public @Nonnull
+    Set<String> getAttributes() {
         return registeredAttributes;
     }
 
     @Override
-    public @Nonnull Set<String> getInternalAttributes() {
+    public @Nonnull
+    Set<String> getInternalAttributes() {
         return attributes.keySet();
     }
 
@@ -743,6 +1064,10 @@ public class MagicController implements MageController {
         return getCurrency("sp").getWorth();
     }
 
+    /*
+     * Undo system
+     */
+
     @Nullable
     @Override
     public ItemStack getWorthItem() {
@@ -750,13 +1075,17 @@ public class MagicController implements MageController {
         if (itemCurrency == null || !(itemCurrency instanceof ItemCurrency)) {
             return null;
         }
-        return ((ItemCurrency)itemCurrency).getItem();
+        return ((ItemCurrency) itemCurrency).getItem();
     }
 
     @Override
     public double getWorthItemAmount() {
         return getCurrency("item").getWorth();
     }
+
+    /*
+     * Random utility functions
+     */
 
     @Override
     @Nullable
@@ -770,10 +1099,6 @@ public class MagicController implements MageController {
         return currencies.keySet();
     }
 
-    /*
-     * Undo system
-     */
-
     public int getUndoQueueDepth() {
         return undoQueueDepth;
     }
@@ -781,10 +1106,6 @@ public class MagicController implements MageController {
     public int getPendingQueueDepth() {
         return pendingQueueDepth;
     }
-
-    /*
-     * Random utility functions
-     */
 
     @Override
     public String getMessagePrefix() {
@@ -901,8 +1222,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public boolean isPVPAllowed(Player player, Location location)
-    {
+    public boolean isPVPAllowed(Player player, Location location) {
         if (location == null) return true;
         if (bypassPvpPermissions) return true;
         if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
@@ -928,6 +1248,10 @@ public class MagicController implements MageController {
         maps.clearCache();
         maps.resetAll();
     }
+
+    /*
+     * Internal functions - don't call these, or really anything below here.
+     */
 
     @Nullable
     protected InputStream findSchematic(String schematicName, String extension) {
@@ -1063,9 +1387,9 @@ public class MagicController implements MageController {
                         String name = entry.getName();
                         if (name.startsWith("schematics/") && (name.endsWith(".schem") || name.endsWith(".schematic"))) {
                             String schematicName = name
-                                .replace(".schematic", "")
-                                .replace(".schem", "")
-                                .replace("schematics/", "");
+                                    .replace(".schematic", "")
+                                    .replace(".schem", "")
+                                    .replace("schematics/", "");
                             schematicNames.add(schematicName);
                         }
                         entry = zip.getNextEntry();
@@ -1084,8 +1408,8 @@ public class MagicController implements MageController {
                 for (File schematicFile : schematicFolder.listFiles()) {
                     if (schematicFile.getName().endsWith(".schematic") || schematicFile.getName().endsWith(".schem")) {
                         String schematicName = schematicFile.getName()
-                            .replace(".schematic", "")
-                            .replace(".schem", "");
+                                .replace(".schematic", "")
+                                .replace(".schem", "");
                         schematicNames.add(schematicName);
                     }
                 }
@@ -1096,10 +1420,6 @@ public class MagicController implements MageController {
 
         return schematicNames;
     }
-
-    /*
-     * Internal functions - don't call these, or really anything below here.
-     */
 
     /*
      * Saving and loading
@@ -1163,8 +1483,7 @@ public class MagicController implements MageController {
         }
     }
 
-    public void processUndo()
-    {
+    public void processUndo() {
         long now = System.currentTimeMillis();
         while (scheduledUndo.size() > 0) {
             UndoList undo = scheduledUndo.peek();
@@ -1176,15 +1495,14 @@ public class MagicController implements MageController {
         }
     }
 
-    public void processPendingBatches()
-    {
+    public void processPendingBatches() {
         int remainingWork = workPerUpdate;
         if (pendingConstruction.isEmpty()) return;
 
         List<Mage> pending = new ArrayList<>(pendingConstruction);
         while (remainingWork > 0 && !pending.isEmpty()) {
             int workPerMage = Math.max(10, remainingWork / pending.size());
-            for (Iterator<Mage> iterator = pending.iterator(); iterator.hasNext();) {
+            for (Iterator<Mage> iterator = pending.iterator(); iterator.hasNext(); ) {
                 Mage apiMage = iterator.next();
                 if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                     com.elmakers.mine.bukkit.magic.Mage mage = ((com.elmakers.mine.bukkit.magic.Mage) apiMage);
@@ -1217,15 +1535,15 @@ public class MagicController implements MageController {
                             valueMap.put("Essentials", controller.hasEssentials ? 1 : 0);
                             valueMap.put("Dynmap", controller.hasDynmap ? 1 : 0);
                             valueMap.put("Factions", controller.factionsManager.isEnabled() ? 1 : 0);
-                            valueMap.put("WorldGuard", controller.worldGuardManager.isEnabled()  ? 1 : 0);
+                            valueMap.put("WorldGuard", controller.worldGuardManager.isEnabled() ? 1 : 0);
                             valueMap.put("Elementals", controller.elementalsEnabled() ? 1 : 0);
-                            valueMap.put("Citizens", controller.citizens != null  ? 1 : 0);
+                            valueMap.put("Citizens", controller.citizens != null ? 1 : 0);
                             valueMap.put("CommandBook", controller.hasCommandBook ? 1 : 0);
                             valueMap.put("PvpManager", controller.pvpManager.isEnabled() ? 1 : 0);
                             valueMap.put("Multiverse-Core", controller.multiverseManager.isEnabled() ? 1 : 0);
                             valueMap.put("Towny", controller.townyManager.isEnabled() ? 1 : 0);
                             valueMap.put("GriefPrevention", controller.griefPreventionManager.isEnabled() ? 1 : 0);
-                            valueMap.put("PreciousStones", controller.preciousStonesManager.isEnabled()  ? 1 : 0);
+                            valueMap.put("PreciousStones", controller.preciousStonesManager.isEnabled() ? 1 : 0);
                             valueMap.put("Lockette", controller.locketteManager.isEnabled() ? 1 : 0);
                             valueMap.put("NoCheatPlus", controller.ncpManager.isEnabled() ? 1 : 0);
                             return valueMap;
@@ -1248,7 +1566,7 @@ public class MagicController implements MageController {
                         @Override
                         public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
                             for (final SpellCategory category : categories.values()) {
-                                valueMap.put(category.getName(), (int)category.getCastCount());
+                                valueMap.put(category.getName(), (int) category.getCastCount());
                             }
                             return valueMap;
                         }
@@ -1261,7 +1579,7 @@ public class MagicController implements MageController {
                         public HashMap<String, Integer> getValues(HashMap<String, Integer> valueMap) {
                             for (final SpellTemplate spell : spells.values()) {
                                 if (!(spell instanceof Spell)) continue;
-                                valueMap.put(spell.getName(), (int)((Spell)spell).getCastCount());
+                                valueMap.put(spell.getName(), (int) spell.getCastCount());
                             }
                             return valueMap;
                         }
@@ -1918,10 +2236,10 @@ public class MagicController implements MageController {
             }
 
             logger.enableCapture(false);
-             if (logWatchdogTimer != null) {
-                 logWatchdogTimer.cancel();
-                 logWatchdogTimer = null;
-             }
+            if (logWatchdogTimer != null) {
+                logWatchdogTimer.cancel();
+                logWatchdogTimer = null;
+            }
         }
     }
 
@@ -1950,13 +2268,13 @@ public class MagicController implements MageController {
         if (!plugin.isEnabled()) return;
         if (sender != null) {
             synchronized (logger) {
-                 com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(true);
-                 logger.enableCapture(true);
-                 if (logWatchdogTimer != null) {
-                     logWatchdogTimer.cancel();
-                 }
-                 logWatchdogTimer = plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new LogWatchdogTask(this, sender), LOG_WATCHDOG_TIMEOUT / 50);
-                 sender.sendMessage(ChatColor.DARK_AQUA + "Please wait while the configuration is reloaded and validated");
+                com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(true);
+                logger.enableCapture(true);
+                if (logWatchdogTimer != null) {
+                    logWatchdogTimer.cancel();
+                }
+                logWatchdogTimer = plugin.getServer().getScheduler().runTaskLaterAsynchronously(plugin, new LogWatchdogTask(this, sender), LOG_WATCHDOG_TIMEOUT / 50);
+                sender.sendMessage(ChatColor.DARK_AQUA + "Please wait while the configuration is reloaded and validated");
             }
         }
         reloadVerboseLogging = verboseLogging;
@@ -2496,8 +2814,7 @@ public class MagicController implements MageController {
         try {
             for (Entry<String, ? extends Mage> mageEntry : mages.entrySet()) {
                 Mage mage = mageEntry.getValue();
-                if (!mage.isPlayer() && !saveNonPlayerMages)
-                {
+                if (!mage.isPlayer() && !saveNonPlayerMages) {
                     continue;
                 }
 
@@ -2515,13 +2832,11 @@ public class MagicController implements MageController {
         }
     }
 
-    public void save()
-    {
+    public void save() {
         save(false);
     }
 
-    public void save(boolean asynchronous)
-    {
+    public void save(boolean asynchronous) {
         if (!loaded || !dataLoaded) return;
         maps.save(asynchronous);
 
@@ -2603,60 +2918,6 @@ public class MagicController implements MageController {
     }
 
     @Nullable
-    public static Spell loadSpell(String name, ConfigurationSection node, MageController controller) {
-        String className = node.getString("class");
-        if (className == null || className.equalsIgnoreCase("action") || className.equalsIgnoreCase("actionspell"))
-        {
-            className = "com.elmakers.mine.bukkit.spell.ActionSpell";
-        }
-        else if (className.indexOf('.') <= 0)
-        {
-            className = BUILTIN_SPELL_CLASSPATH + "." + className;
-        }
-
-        Class<?> spellClass = null;
-        try
-        {
-            spellClass = Class.forName(className);
-        }
-        catch (Throwable ex)
-        {
-            controller.getLogger().log(Level.WARNING, "Error loading spell: " + className, ex);
-            return null;
-        }
-        if (spellClass.getAnnotation(Deprecated.class) != null) {
-            controller.getLogger().warning("Spell " + name + " is using a deprecated spell class " + className + ". This will be removed in the future, please see the default configs for alternatives.");
-        }
-
-        Object newObject;
-        try
-        {
-            newObject = spellClass.getDeclaredConstructor().newInstance();
-        }
-        catch (Throwable ex)
-        {
-
-            controller.getLogger().log(Level.WARNING, "Error loading spell: " + className, ex);
-            return null;
-        }
-
-        if (newObject == null || !(newObject instanceof MageSpell))
-        {
-            controller.getLogger().warning("Error loading spell: " + className + ", does it implement MageSpell?");
-            return null;
-        }
-
-        MageSpell newSpell = (MageSpell)newObject;
-        newSpell.initialize(controller);
-        newSpell.loadTemplate(name, node);
-        com.elmakers.mine.bukkit.api.spell.SpellCategory category = newSpell.getCategory();
-        if (category instanceof SpellCategory) {
-            ((SpellCategory)category).addSpellTemplate(newSpell);
-        }
-        return newSpell;
-    }
-
-    @Nullable
     @Override
     public String getReflectiveMaterials(Mage mage, Location location) {
         return worldGuardManager.getReflective(mage.getPlayer(), location);
@@ -2688,8 +2949,6 @@ public class MagicController implements MageController {
         return addExamples != null && addExamples.size() > 0;
     }
 
-    private String                              blockExchangeCurrency       = null;
-
     @Nullable
     private MageDataStore loadMageDataStore(ConfigurationSection configuration) {
         MageDataStore mageDataStore = null;
@@ -2704,7 +2963,7 @@ public class MagicController implements MageController {
                 getLogger().log(Level.WARNING, "Invalid player_data_store class " + dataStoreClassName + ", does it implement MageDataStore? Player data saving is disabled!");
                 mageDataStore = null;
             } else {
-                mageDataStore = (MageDataStore)dataStore;
+                mageDataStore = (MageDataStore) dataStore;
                 mageDataStore.initialize(this, configuration);
             }
         } catch (Exception ex) {
@@ -2837,11 +3096,9 @@ public class MagicController implements MageController {
     protected void populateEntityTypes(Set<EntityType> entityTypes, ConfigurationSection configuration, String key) {
 
         entityTypes.clear();
-        if (configuration.contains(key))
-        {
+        if (configuration.contains(key)) {
             Collection<String> typeStrings = ConfigurationUtils.getStringList(configuration, key);
-            for (String typeString : typeStrings)
-            {
+            for (String typeString : typeStrings) {
                 try {
                     entityTypes.add(EntityType.valueOf(typeString.toUpperCase()));
                 } catch (Exception ex) {
@@ -2985,11 +3242,11 @@ public class MagicController implements MageController {
         boolean added = false;
         if (provider instanceof EntityTargetingManager) {
             added = true;
-            targetingProviders.add((EntityTargetingManager)provider);
+            targetingProviders.add((EntityTargetingManager) provider);
         }
         if (provider instanceof AttributeProvider) {
             added = true;
-            AttributeProvider attributes = (AttributeProvider)provider;
+            AttributeProvider attributes = (AttributeProvider) provider;
             attributeProviders.add(attributes);
             if (!loading) {
                 Set<String> providerAttributes = attributes.getAllAttributes();
@@ -3002,15 +3259,15 @@ public class MagicController implements MageController {
         }
         if (provider instanceof TeamProvider) {
             added = true;
-            teamProviders.add((TeamProvider)provider);
+            teamProviders.add((TeamProvider) provider);
         }
         if (provider instanceof Currency) {
             added = true;
-            addCurrency((Currency)provider);
+            addCurrency((Currency) provider);
         }
         if (provider instanceof RequirementsProvider) {
             added = true;
-            RequirementsProvider requirements = (RequirementsProvider)provider;
+            RequirementsProvider requirements = (RequirementsProvider) provider;
             requirementProcessors.put(requirements.getKey(), requirements);
             if (!loading) {
                 checkMagicRequirements();
@@ -3018,24 +3275,24 @@ public class MagicController implements MageController {
         }
         if (provider instanceof PlayerWarpProvider) {
             added = true;
-            PlayerWarpProvider warp = (PlayerWarpProvider)provider;
+            PlayerWarpProvider warp = (PlayerWarpProvider) provider;
             playerWarpManagers.put(warp.getKey(), warp);
         }
         if (provider instanceof BlockBreakManager) {
             added = true;
-            blockBreakManagers.add((BlockBreakManager)provider);
+            blockBreakManagers.add((BlockBreakManager) provider);
         }
         if (provider instanceof PVPManager) {
             added = true;
-            pvpManagers.add((PVPManager)provider);
+            pvpManagers.add((PVPManager) provider);
         }
         if (provider instanceof BlockBuildManager) {
             added = true;
-            blockBuildManagers.add((BlockBuildManager)provider);
+            blockBuildManagers.add((BlockBuildManager) provider);
         }
         if (provider instanceof CastPermissionManager) {
             added = true;
-            castManagers.add((CastPermissionManager)provider);
+            castManagers.add((CastPermissionManager) provider);
         }
         if (added && !loading) {
             externalProviders.add(provider);
@@ -3043,14 +3300,12 @@ public class MagicController implements MageController {
         return added;
     }
 
-    protected void clear()
-    {
+    protected void clear() {
         if (!loaded) {
             return;
         }
         Collection<Mage> saveMages = new ArrayList<>(mages.values());
-        for (Mage mage : saveMages)
-        {
+        for (Mage mage : saveMages) {
             playerQuit(mage);
         }
 
@@ -3060,39 +3315,33 @@ public class MagicController implements MageController {
         loaded = false;
     }
 
-    protected void unregisterPhysicsHandler(Listener listener)
-    {
+    protected void unregisterPhysicsHandler(Listener listener) {
         BlockPhysicsEvent.getHandlerList().unregister(listener);
         physicsHandler = null;
     }
 
     @Override
-    public void scheduleUndo(UndoList undoList)
-    {
+    public void scheduleUndo(UndoList undoList) {
         undoList.setHasBeenScheduled();
         scheduledUndo.add(undoList);
     }
 
     @Override
-    public void cancelScheduledUndo(UndoList undoList)
-    {
+    public void cancelScheduledUndo(UndoList undoList) {
         scheduledUndo.remove(undoList);
     }
 
-    public boolean hasWandPermission(Player player)
-    {
+    public boolean hasWandPermission(Player player) {
         return hasPermission(player, "Magic.wand.use");
     }
 
-    public boolean hasWandPermission(Player player, Wand wand)
-    {
+    public boolean hasWandPermission(Player player, Wand wand) {
         if (hasBypassPermission(player)) return true;
         if (wand.isSuperPowered() && !player.hasPermission("Magic.wand.use.powered")) return false;
         if (wand.isSuperProtected() && !player.hasPermission("Magic.wand.use.protected")) return false;
 
         String template = wand.getTemplateKey();
-        if (template != null && !template.isEmpty())
-        {
+        if (template != null && !template.isEmpty()) {
             String pNode = "Magic.use." + template;
             if (!hasPermission(player, pNode)) return false;
         }
@@ -3102,8 +3351,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public boolean hasCastPermission(CommandSender sender, SpellTemplate spell)
-    {
+    public boolean hasCastPermission(CommandSender sender, SpellTemplate spell) {
         if (sender == null) return true;
         if (hasBypassPermission(sender)) {
             return true;
@@ -3165,11 +3413,10 @@ public class MagicController implements MageController {
     @Override
     public boolean inTaggedRegion(Location location, Set<String> tags) {
         Boolean inRegion = worldGuardManager.inTaggedRegion(location, tags);
-        return inRegion == null ? false : inRegion;
+        return inRegion != null && inRegion;
     }
 
-    public boolean hasPermission(Player player, String pNode, boolean defaultValue)
-    {
+    public boolean hasPermission(Player player, String pNode, boolean defaultValue) {
         // Should this return defaultValue? Can't give perms to console.
         if (player == null) return true;
 
@@ -3187,21 +3434,18 @@ public class MagicController implements MageController {
         return isSet ? player.hasPermission(pNode) : defaultValue;
     }
 
-    public boolean hasPermission(Player player, String pNode)
-    {
+    public boolean hasPermission(Player player, String pNode) {
         return hasPermission(player, pNode, false);
     }
 
     @Override
-    public boolean hasPermission(CommandSender sender, String pNode)
-    {
+    public boolean hasPermission(CommandSender sender, String pNode) {
         if (!(sender instanceof Player)) return true;
         return hasPermission((Player) sender, pNode, false);
     }
 
     @Override
-    public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue)
-    {
+    public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue) {
         if (!(sender instanceof Player)) return true;
         return hasPermission((Player) sender, pNode, defaultValue);
     }
@@ -3221,10 +3465,10 @@ public class MagicController implements MageController {
         if (blockList != null) return blockList;
 
         if (entity instanceof Projectile) {
-            Projectile projectile = (Projectile)entity;
+            Projectile projectile = (Projectile) entity;
             ProjectileSource source = projectile.getShooter();
             if (source instanceof Entity) {
-                entity = (Entity)source;
+                entity = (Entity) source;
 
                 blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
                 if (blockList != null) return blockList;
@@ -3294,7 +3538,7 @@ public class MagicController implements MageController {
         final boolean isOpen = wand != null && wand.isInventoryOpen();
         com.elmakers.mine.bukkit.magic.Mage implementation = null;
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            implementation = (com.elmakers.mine.bukkit.magic.Mage)mage;
+            implementation = (com.elmakers.mine.bukkit.magic.Mage) mage;
             implementation.flagForReactivation();
         }
         mage.deactivate();
@@ -3319,13 +3563,10 @@ public class MagicController implements MageController {
         if (!externalPlayerData || !mage.isPlayer()) {
             removeMage(mage);
         }
-        if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded)
-        {
+        if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded) {
             // Save synchronously on shutdown
             saveMage(mage, !shuttingDown, callback, isOpen, true);
-        }
-        else if (callback != null)
-        {
+        } else if (callback != null) {
             callback.run(null);
         }
     }
@@ -3344,7 +3585,7 @@ public class MagicController implements MageController {
     @Override
     public void forgetMage(Mage mage) {
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            ((com.elmakers.mine.bukkit.magic.Mage)mage).setForget(true);
+            ((com.elmakers.mine.bukkit.magic.Mage) mage).setForget(true);
         }
     }
 
@@ -3361,8 +3602,7 @@ public class MagicController implements MageController {
         }
     }
 
-    public void saveMage(Mage mage, boolean asynchronous)
-    {
+    public void saveMage(Mage mage, boolean asynchronous) {
         saveMage(mage, asynchronous, null);
     }
 
@@ -3370,8 +3610,7 @@ public class MagicController implements MageController {
         saveMage(mage, asynchronous, callback, false, false);
     }
 
-    public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback, boolean wandInventoryOpen, boolean releaseLock)
-    {
+    public void saveMage(Mage mage, boolean asynchronous, final MageDataCallback callback, boolean wandInventoryOpen, boolean releaseLock) {
         if (!savePlayerData) {
             if (callback != null) {
                 callback.run(null);
@@ -3445,8 +3684,8 @@ public class MagicController implements MageController {
             return false;
         }
         Location location = lostWand.getLocation();
-        return addMarker("wand-" + lostWand.getId(), "wand",  "wands", lostWand.getName(), location.getWorld().getName(),
-            location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
+        return addMarker("wand-" + lostWand.getId(), "wand", "wands", lostWand.getName(), location.getWorld().getName(),
+                location.getBlockX(), location.getBlockY(), location.getBlockZ(), lostWand.getDescription()
         );
     }
 
@@ -3454,17 +3693,14 @@ public class MagicController implements MageController {
         // Don't track command-line casts
         // Reach into internals a bit here.
         if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage)apiMage;
-            if (sender != null && sender instanceof BlockCommandSender)
-            {
-                mage.setCostFree(override ? castCommandCostFree : false);
-                mage.setCooldownFree(override ? castCommandCooldownFree : false);
+            com.elmakers.mine.bukkit.magic.Mage mage = (com.elmakers.mine.bukkit.magic.Mage) apiMage;
+            if (sender != null && sender instanceof BlockCommandSender) {
+                mage.setCostFree(override && castCommandCostFree);
+                mage.setCooldownFree(override && castCommandCooldownFree);
                 mage.setPowerMultiplier(override ? castCommandPowerMultiplier : 1);
-            }
-            else
-            {
-                mage.setCostFree(override ? castConsoleCostFree : false);
-                mage.setCooldownFree(override ? castConsoleCooldownFree : false);
+            } else {
+                mage.setCostFree(override && castConsoleCostFree);
+                mage.setCooldownFree(override && castConsoleCooldownFree);
                 mage.setPowerMultiplier(override ? castConsolePowerMultiplier : 1);
             }
         }
@@ -3501,16 +3737,15 @@ public class MagicController implements MageController {
         return cast(null, spellName, config, sender, entity);
     }
 
-    public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity)
-    {
-        Player usePermissions = (sender == entity && entity instanceof Player) ? (Player)entity
-                : (sender instanceof Player ? (Player)sender : null);
+    public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity) {
+        Player usePermissions = (sender == entity && entity instanceof Player) ? (Player) entity
+                : (sender instanceof Player ? (Player) sender : null);
         if (entity == null && sender instanceof Player) {
-            entity = (Player)sender;
+            entity = (Player) sender;
         }
         Location targetLocation = null;
         if (mage == null) {
-            CommandSender mageController = (entity != null && entity instanceof Player) ? (Player)entity : sender;
+            CommandSender mageController = (entity != null && entity instanceof Player) ? (Player) entity : sender;
             if (sender != null && sender instanceof BlockCommandSender) {
                 targetLocation = ((BlockCommandSender) sender).getBlock().getLocation();
             }
@@ -3522,16 +3757,14 @@ public class MagicController implements MageController {
         }
 
         SpellTemplate template = getSpellTemplate(spellName);
-        if (template == null || !template.hasCastPermission(usePermissions))
-        {
+        if (template == null || !template.hasCastPermission(usePermissions)) {
             if (sender != null) {
                 sender.sendMessage("Spell " + spellName + " unknown");
             }
             return false;
         }
         com.elmakers.mine.bukkit.api.spell.Spell spell = mage.getSpell(spellName);
-        if (spell == null)
-        {
+        if (spell == null) {
             if (sender != null) {
                 sender.sendMessage("Spell " + spellName + " unknown");
             }
@@ -3589,8 +3822,7 @@ public class MagicController implements MageController {
     public void sendToMages(String message, Location location, int range) {
         int rangeSquared = range * range;
         if (message != null && message.length() > 0) {
-            for (Mage mage : mages.values())
-            {
+            for (Mage mage : mages.values()) {
                 if (!mage.isPlayer() || mage.isDead() || !mage.isOnline() || !mage.hasLocation()) continue;
                 if (!mage.getLocation().getWorld().equals(location.getWorld())) continue;
                 if (mage.getLocation().toVector().distanceSquared(location.toVector()) < rangeSquared) {
@@ -3644,42 +3876,34 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public void updateBlock(Block block)
-    {
+    public void updateBlock(Block block) {
         updateBlock(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
     }
 
     @Override
-    public void updateBlock(String worldName, int x, int y, int z)
-    {
-        if (dynmap != null && dynmapUpdate)
-        {
+    public void updateBlock(String worldName, int x, int y, int z) {
+        if (dynmap != null && dynmapUpdate) {
             dynmap.triggerRenderOfBlock(worldName, x, y, z);
         }
     }
 
     @Override
-    public void updateVolume(String worldName, int minx, int miny, int minz, int maxx, int maxy, int maxz)
-    {
-        if (dynmap != null && dynmapUpdate && worldName != null && worldName.length() > 0)
-        {
+    public void updateVolume(String worldName, int minx, int miny, int minz, int maxx, int maxy, int maxz) {
+        if (dynmap != null && dynmapUpdate && worldName != null && worldName.length() > 0) {
             dynmap.triggerRenderOfVolume(worldName, minx, miny, minz, maxx, maxy, maxz);
         }
     }
 
-    public void update(String worldName, BoundingBox area)
-    {
-        if (dynmap != null && dynmapUpdate && area != null && worldName != null && worldName.length() > 0)
-        {
+    public void update(String worldName, BoundingBox area) {
+        if (dynmap != null && dynmapUpdate && area != null && worldName != null && worldName.length() > 0) {
             dynmap.triggerRenderOfVolume(worldName,
-                area.getMin().getBlockX(), area.getMin().getBlockY(), area.getMin().getBlockZ(),
-                area.getMax().getBlockX(), area.getMax().getBlockY(), area.getMax().getBlockZ());
+                    area.getMin().getBlockX(), area.getMin().getBlockY(), area.getMin().getBlockZ(),
+                    area.getMax().getBlockX(), area.getMax().getBlockY(), area.getMax().getBlockZ());
         }
     }
 
     @Override
-    public void update(com.elmakers.mine.bukkit.api.block.BlockList blockList)
-    {
+    public void update(com.elmakers.mine.bukkit.api.block.BlockList blockList) {
         if (blockList != null) {
             for (Map.Entry<String, ? extends BoundingBox> entry : blockList.getAreas().entrySet()) {
                 update(entry.getKey(), entry.getValue());
@@ -3704,8 +3928,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public boolean canCreateWorlds()
-    {
+    public boolean canCreateWorlds() {
         return createWorldsEnabled;
     }
 
@@ -3715,8 +3938,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public MagicPlugin getPlugin()
-    {
+    public MagicPlugin getPlugin() {
         return plugin;
     }
 
@@ -3779,14 +4001,13 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public int getMessageThrottle()
-    {
+    public int getMessageThrottle() {
         return messageThrottle;
     }
 
     // TODO: Remove the if and replace it with a precondition
     // once we're sure nothing is calling this with a null value.
-    @SuppressWarnings({ "null", "unused" })
+    @SuppressWarnings({"null", "unused"})
     @Override
     public boolean isMage(Entity entity) {
         if (entity == null) return false;
@@ -3813,8 +4034,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public Collection<String> getPlayerNames()
-    {
+    public Collection<String> getPlayerNames() {
         List<String> playerNames = new ArrayList<>();
         Collection<? extends Player> players = plugin.getServer().getOnlinePlayers();
         for (Player player : players) {
@@ -3825,8 +4045,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public void disablePhysics(int interval)
-    {
+    public void disablePhysics(int interval) {
         if (physicsHandler == null && interval > 0) {
             physicsHandler = new PhysicsHandler(this);
             Bukkit.getPluginManager().registerEvents(physicsHandler, plugin);
@@ -3837,8 +4056,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public boolean commitAll()
-    {
+    public boolean commitAll() {
         boolean undid = false;
         for (Mage mage : mages.values()) {
             undid = mage.commit() || undid;
@@ -3848,8 +4066,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public boolean canTarget(Entity attacker, Entity entity)
-    {
+    public boolean canTarget(Entity attacker, Entity entity) {
         // We can always target ourselves at this level
         if (attacker == entity) return true;
 
@@ -3857,8 +4074,7 @@ public class MagicController implements MageController {
         if (attacker == null || entity == null) return true;
 
         // We can't target our friends (bypassing happens at a higher level)
-        if (isFriendly(attacker, entity, false))
-        {
+        if (isFriendly(attacker, entity, false)) {
             return false;
         }
         for (EntityTargetingManager manager : targetingProviders) {
@@ -3874,8 +4090,7 @@ public class MagicController implements MageController {
         return isFriendly(attacker, entity, true);
     }
 
-    public boolean isFriendly(Entity attacker, Entity entity, boolean friendlyByDefault)
-    {
+    public boolean isFriendly(Entity attacker, Entity entity, boolean friendlyByDefault) {
         // We are always friends with ourselves
         if (attacker == entity) return true;
 
@@ -3893,7 +4108,7 @@ public class MagicController implements MageController {
             if (entity instanceof Player) return defaultFriendly;
 
             // Otherwise we look at the friendly entity types
-            if (friendlyEntityTypes.contains(entity.getType())) return true;
+            return friendlyEntityTypes.contains(entity.getType());
         }
         return false;
     }
@@ -3964,11 +4179,9 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public UndoList undoAny(Block target) {
-        for (Mage mage : mages.values())
-        {
+        for (Mage mage : mages.values()) {
             UndoList undid = mage.undo(target);
-            if (undid != null)
-            {
+            if (undid != null) {
                 return undid;
             }
         }
@@ -3979,12 +4192,10 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public UndoList undoRecent(Block target, int timeout) {
-        for (Mage mage : mages.values())
-        {
+        for (Mage mage : mages.values()) {
             com.elmakers.mine.bukkit.api.block.UndoQueue queue = mage.getUndoQueue();
             UndoList undid = queue.undoRecent(target, timeout);
-            if (undid != null)
-            {
+            if (undid != null) {
                 return undid;
             }
         }
@@ -4102,8 +4313,7 @@ public class MagicController implements MageController {
 
         Set<String> classKeys = properties.getKeys(false);
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
-        for (String key : classKeys)
-        {
+        for (String key : classKeys) {
             logger.setContext("classes." + key);
             ConfigurationSection classConfig = resolveConfiguration(key, properties, templateConfigurations);
             classConfig = MagicConfiguration.getKeyed(this, classConfig, "class", key);
@@ -4112,8 +4322,7 @@ public class MagicController implements MageController {
 
         // Resolve parents, we don't check for an inherited "parent" property, so it's important
         // to use the original un-inherited configs for parenting.
-        for (String key : classKeys)
-        {
+        for (String key : classKeys) {
             logger.setContext("classes." + key);
             MageClassTemplate template = mageClasses.get(key);
             if (template != null) {
@@ -4132,7 +4341,7 @@ public class MagicController implements MageController {
         // Update registered mages so their classes are current
         for (Mage mage : mages.values()) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).reloadClasses();
+                ((com.elmakers.mine.bukkit.magic.Mage) mage).reloadClasses();
             }
         }
     }
@@ -4170,7 +4379,7 @@ public class MagicController implements MageController {
         // Update registered mages so their classes are current
         for (Mage mage : mages.values()) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).reloadModifiers();
+                ((com.elmakers.mine.bukkit.magic.Mage) mage).reloadModifiers();
             }
         }
     }
@@ -4208,8 +4417,7 @@ public class MagicController implements MageController {
 
         Set<String> wandKeys = properties.getKeys(false);
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
-        for (String key : wandKeys)
-        {
+        for (String key : wandKeys) {
             logger.setContext("wands." + key);
             loadWandTemplate(key, resolveConfiguration(key, properties, templateConfigurations));
         }
@@ -4283,41 +4491,35 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public boolean elementalsEnabled()
-    {
+    public boolean elementalsEnabled() {
         return (elementals != null);
     }
 
     @Override
-    public boolean createElemental(Location location, String templateName, CommandSender creator)
-    {
+    public boolean createElemental(Location location, String templateName, CommandSender creator) {
         return elementals.createElemental(location, templateName, creator);
     }
 
     @Override
-    public boolean isElemental(Entity entity)
-    {
+    public boolean isElemental(Entity entity) {
         if (elementals == null || entity.getType() != EntityType.FALLING_BLOCK) return false;
         return elementals.isElemental(entity);
     }
 
     @Override
-    public boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker)
-    {
+    public boolean damageElemental(Entity entity, double damage, int fireTicks, CommandSender attacker) {
         if (elementals == null) return false;
         return elementals.damageElemental(entity, damage, fireTicks, attacker);
     }
 
     @Override
-    public boolean setElementalScale(Entity entity, double scale)
-    {
+    public boolean setElementalScale(Entity entity, double scale) {
         if (elementals == null) return false;
         return elementals.setElementalScale(entity, scale);
     }
 
     @Override
-    public double getElementalScale(Entity entity)
-    {
+    public double getElementalScale(Entity entity) {
         if (elementals == null) return 0;
         return elementals.getElementalScale(entity);
     }
@@ -4337,8 +4539,7 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public Collection<com.elmakers.mine.bukkit.api.spell.SpellCategory> getCategories()
-    {
+    public Collection<com.elmakers.mine.bukkit.api.spell.SpellCategory> getCategories() {
         List<com.elmakers.mine.bukkit.api.spell.SpellCategory> allCategories = new ArrayList<>();
         allCategories.addAll(categories.values());
         return allCategories;
@@ -4350,19 +4551,15 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public Collection<SpellTemplate> getSpellTemplates()
-    {
+    public Collection<SpellTemplate> getSpellTemplates() {
         return getSpellTemplates(false);
     }
 
     @Override
-    public Collection<SpellTemplate> getSpellTemplates(boolean showHidden)
-    {
+    public Collection<SpellTemplate> getSpellTemplates(boolean showHidden) {
         List<SpellTemplate> allSpells = new ArrayList<>();
-        for (SpellTemplate spell : spells.values())
-        {
-            if (showHidden || !spell.isHidden())
-            {
+        for (SpellTemplate spell : spells.values()) {
+            if (showHidden || !spell.isHidden()) {
                 allSpells.add(spell);
             }
         }
@@ -4387,8 +4584,7 @@ public class MagicController implements MageController {
         return spell;
     }
 
-    protected void loadSpells(CommandSender sender, ConfigurationSection spellConfigs)
-    {
+    protected void loadSpells(CommandSender sender, ConfigurationSection spellConfigs) {
         if (spellConfigs == null) return;
 
         // Reset existing spells.
@@ -4398,8 +4594,7 @@ public class MagicController implements MageController {
         maxSpellLevels.clear();
 
         Set<String> keys = spellConfigs.getKeys(false);
-        for (String key : keys)
-        {
+        for (String key : keys) {
             if (key.equals("default") || key.equals("override")) continue;
             logger.setContext("spells." + key);
 
@@ -4416,17 +4611,14 @@ public class MagicController implements MageController {
                 ex.printStackTrace();
             }
 
-            if (newSpell == null)
-            {
+            if (newSpell == null) {
                 getLogger().warning("Magic: Error loading spell " + key);
                 continue;
             }
 
-            if (!newSpell.hasIcon())
-            {
+            if (!newSpell.hasIcon()) {
                 String icon = spellNode.getString("icon");
-                if (icon != null && !icon.isEmpty())
-                {
+                if (icon != null && !icon.isEmpty()) {
                     getLogger().info("Couldn't load spell icon '" + icon + "' for spell: " + newSpell.getKey());
                 }
             }
@@ -4445,7 +4637,7 @@ public class MagicController implements MageController {
         // Update registered mages so their spells are current
         for (Mage mage : mages.values()) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage)mage).loadSpells(spellConfigs);
+                ((com.elmakers.mine.bukkit.magic.Mage) mage).loadSpells(spellConfigs);
             }
         }
     }
@@ -4469,17 +4661,14 @@ public class MagicController implements MageController {
     }
 
     protected String getEntityName(Entity target, boolean display) {
-        if (target == null)
-        {
+        if (target == null) {
             return "Unknown";
         }
-        if (target instanceof Player)
-        {
-            return display ? ((Player)target).getDisplayName() : ((Player)target).getName();
+        if (target instanceof Player) {
+            return display ? ((Player) target).getDisplayName() : target.getName();
         }
 
-        if (isElemental(target))
-        {
+        if (isElemental(target)) {
             return "Elemental";
         }
 
@@ -4532,15 +4721,13 @@ public class MagicController implements MageController {
         Map<String, List<SpellTemplate>> categories = new HashMap<>();
         Collection<SpellTemplate> spellVariants = spells.values();
         String categoryKey = category == null ? null : category.getKey();
-        for (SpellTemplate spell : spellVariants)
-        {
+        for (SpellTemplate spell : spellVariants) {
             if (spell.isHidden() || spell.getSpellKey().isVariant()) continue;
             com.elmakers.mine.bukkit.api.spell.SpellCategory spellCategory = spell.getCategory();
             if (spellCategory == null) continue;
 
             String spellCategoryKey = spellCategory.getKey();
-            if (categoryKey == null || spellCategoryKey.equalsIgnoreCase(categoryKey))
-            {
+            if (categoryKey == null || spellCategoryKey.equalsIgnoreCase(categoryKey)) {
                 List<SpellTemplate> categorySpells = categories.get(spellCategoryKey);
                 if (categorySpells == null) {
                     categorySpells = new ArrayList<>();
@@ -4554,7 +4741,7 @@ public class MagicController implements MageController {
         Collections.sort(categoryKeys);
 
         ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
-        BookMeta book = (BookMeta)bookItem.getItemMeta();
+        BookMeta book = (BookMeta) bookItem.getItemMeta();
         book.setAuthor(messages.get("books.default.author"));
         String title = null;
         if (category != null) {
@@ -4587,7 +4774,7 @@ public class MagicController implements MageController {
 
     public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellTemplate spell, int count) {
         ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
-        BookMeta book = (BookMeta)bookItem.getItemMeta();
+        BookMeta book = (BookMeta) bookItem.getItemMeta();
         book.setAuthor(messages.get("books.default.author"));
         book.setTitle(messages.get("books.spell.title").replace("$spell", spell.getName()));
         List<String> pages = new ArrayList<>();
@@ -4658,19 +4845,15 @@ public class MagicController implements MageController {
         String duration = spell.getDurationDescription(messages);
         if (duration != null) {
             lines.add(ChatColor.DARK_GREEN + duration);
-        }
-        else if (spell.showUndoable())
-        {
+        } else if (spell.showUndoable()) {
             if (spell.isUndoable()) {
                 String undoable = messages.get("spell.undoable", "");
-                if (undoable != null && !undoable.isEmpty())
-                {
+                if (undoable != null && !undoable.isEmpty()) {
                     lines.add(undoable);
                 }
             } else {
                 String notUndoable = messages.get("spell.not_undoable", "");
-                if (notUndoable != null && !notUndoable.isEmpty())
-                {
+                if (notUndoable != null && !notUndoable.isEmpty()) {
                     lines.add(notUndoable);
                 }
             }
@@ -5143,8 +5326,6 @@ public class MagicController implements MageController {
         return Wand.createBrushItem(brushKey, this, null, true);
     }
 
-    private @Nonnull MaterialSet                offhandMaterials                = MaterialSets.empty();
-
     public boolean isSameItem(ItemStack first, ItemStack second) {
         if (first.getType() != second.getType()) return false;
         if (first.getDurability() != second.getDurability()) return false;
@@ -5169,8 +5350,7 @@ public class MagicController implements MageController {
 
         boolean firstIsWand = Wand.isWandOrUpgrade(first);
         boolean secondIsWand = Wand.isWandOrUpgrade(second);
-        if (firstIsWand || secondIsWand)
-        {
+        if (firstIsWand || secondIsWand) {
             if (!firstIsWand || !secondIsWand) return false;
             Wand firstWand = getWand(InventoryUtils.getCopy(first));
             Wand secondWand = getWand(InventoryUtils.getCopy(second));
@@ -5182,16 +5362,14 @@ public class MagicController implements MageController {
 
         String firstSpellKey = Wand.getSpell(first);
         String secondSpellKey = Wand.getSpell(second);
-        if (firstSpellKey != null || secondSpellKey != null)
-        {
+        if (firstSpellKey != null || secondSpellKey != null) {
             if (firstSpellKey == null || secondSpellKey == null) return false;
             return firstSpellKey.equalsIgnoreCase(secondSpellKey);
         }
 
         String firstBrushKey = Wand.getBrush(first);
         String secondBrushKey = Wand.getBrush(second);
-        if (firstBrushKey != null || secondBrushKey != null)
-        {
+        if (firstBrushKey != null || secondBrushKey != null) {
             if (firstBrushKey == null || secondBrushKey == null) return false;
             return firstBrushKey.equalsIgnoreCase(secondBrushKey);
         }
@@ -5233,22 +5411,17 @@ public class MagicController implements MageController {
         if (item == null) {
             return null;
         }
-        if (itemSection.contains("wand"))
-        {
+        if (itemSection.contains("wand")) {
             item = InventoryUtils.makeReal(item);
             Wand.configToItem(itemSection, item);
-        }
-        else if (itemSection.contains("spell"))
-        {
+        } else if (itemSection.contains("spell")) {
             item = InventoryUtils.makeReal(item);
             Object spellNode = CompatibilityUtils.createNode(item, "spell");
             CompatibilityUtils.setMeta(spellNode, "key", itemSection.getString("spell"));
             if (itemSection.contains("skill")) {
                 InventoryUtils.setMeta(item, "skill", "true");
             }
-        }
-        else if (itemSection.contains("brush"))
-        {
+        } else if (itemSection.contains("brush")) {
             item = InventoryUtils.makeReal(item);
             InventoryUtils.setMeta(item, "brush", itemSection.getString("brush"));
         }
@@ -5256,12 +5429,10 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public void serialize(ConfigurationSection root, String key, ItemStack item)
-    {
+    public void serialize(ConfigurationSection root, String key, ItemStack item) {
         ConfigurationSection itemSection = root.createSection(key);
         itemSection.set("item", item);
-        if (Wand.isWandOrUpgrade(item))
-        {
+        if (Wand.isWandOrUpgrade(item)) {
             ConfigurationSection stateNode = itemSection.createSection("wand");
             Wand.itemToConfig(item, stateNode);
         } else if (Wand.isSpell(item)) {
@@ -5269,28 +5440,23 @@ public class MagicController implements MageController {
             if (Wand.isSkill(item)) {
                 itemSection.set("skill", "true");
             }
-        }
-        else if (Wand.isBrush(item))
-        {
+        } else if (Wand.isBrush(item)) {
             itemSection.set("brush", Wand.getBrush(item));
         }
     }
 
     @Override
-    public void disableItemSpawn()
-    {
+    public void disableItemSpawn() {
         entityController.setDisableItemSpawn(true);
     }
 
     @Override
-    public void enableItemSpawn()
-    {
+    public void enableItemSpawn() {
         entityController.setDisableItemSpawn(false);
     }
 
     @Override
-    public void setForceSpawn(boolean force)
-    {
+    public void setForceSpawn(boolean force) {
         entityController.setForceSpawn(force);
     }
 
@@ -5368,7 +5534,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isDisguised(Entity entity) {
-        return !libsDisguiseEnabled || libsDisguiseManager == null || entity == null ? false : libsDisguiseManager.isDisguised(entity);
+        return libsDisguiseEnabled && libsDisguiseManager != null && entity != null && libsDisguiseManager.isDisguised(entity);
     }
 
     @Override
@@ -5420,8 +5586,7 @@ public class MagicController implements MageController {
      * list in {@code materials.yml}. This is primarily used to detect if left
      * clicking an entity should indicate melee damage or a spell being cast.
      *
-     * @param item
-     *            The item to check.
+     * @param item The item to check.
      * @return Whether or not this is a melee weapon.
      */
     public boolean isMeleeWeapon(ItemStack item) {
@@ -5452,7 +5617,7 @@ public class MagicController implements MageController {
 
     @Override
     public int getSPMaximum() {
-        return (int)getCurrency("sp").getMaxValue();
+        return (int) getCurrency("sp").getMaxValue();
     }
 
     @Override
@@ -5525,9 +5690,9 @@ public class MagicController implements MageController {
             return mobs.getKeys();
         }
         return new HashSet<>(mobs.getMobs().stream()
-            .filter(mob -> !mob.isHidden())
-            .map(EntityData::getKey)
-            .collect(Collectors.toList()));
+                .filter(mob -> !mob.isHidden())
+                .map(EntityData::getKey)
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -5748,7 +5913,7 @@ public class MagicController implements MageController {
                 }
                 return null;
             }
-            return (double)wand.getWorth() / toCurrency.getWorth();
+            return (double) wand.getWorth() / toCurrency.getWorth();
         }
 
         return configuredItem.getWorth() * amount / toCurrency.getWorth();
@@ -5948,7 +6113,6 @@ public class MagicController implements MageController {
         return skull;
     }
 
-
     @Override
     @Nonnull
     public ItemStack getSkull(Player player, String itemName) {
@@ -5971,7 +6135,7 @@ public class MagicController implements MageController {
     @Deprecated
     public ItemStack getSkull(Entity entity, String itemName) {
         if (entity instanceof Player) {
-            return getSkull((Player)entity, itemName);
+            return getSkull((Player) entity, itemName);
         }
         return getSkull(entity, itemName, null);
     }
@@ -6029,7 +6193,7 @@ public class MagicController implements MageController {
     @Nonnull
     @Override
     public ItemStack getMap(int mapId) {
-        short durability = NMSUtils.isCurrentVersion() ? 0 : (short)mapId;
+        short durability = NMSUtils.isCurrentVersion() ? 0 : (short) mapId;
         ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
         if (NMSUtils.isCurrentVersion()) {
             mapItem = CompatibilityUtils.makeReal(mapItem);
@@ -6118,7 +6282,8 @@ public class MagicController implements MageController {
         return useSkillAPIMana;
     }
 
-    public @Nonnull MageIdentifier getMageIdentifier() {
+    public @Nonnull
+    MageIdentifier getMageIdentifier() {
         return mageIdentifier;
     }
 
@@ -6214,7 +6379,8 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public @Nullable String checkRequirements(@Nonnull MageContext context, @Nullable Collection<Requirement> requirements) {
+    public @Nullable
+    String checkRequirements(@Nonnull MageContext context, @Nullable Collection<Requirement> requirements) {
         if (requirements == null) return null;
 
         for (Requirement requirement : requirements) {
@@ -6234,7 +6400,8 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public @Nonnull Collection<String> getLoadedExamples() {
+    public @Nonnull
+    Collection<String> getLoadedExamples() {
         List<String> examples = new ArrayList<>();
         if (exampleDefaults != null && !exampleDefaults.isEmpty()) examples.add(exampleDefaults);
         if (addExamples != null) examples.addAll(addExamples);
@@ -6256,16 +6423,16 @@ public class MagicController implements MageController {
             if (src != null) {
                 URL jar = src.getLocation();
                 try (InputStream is = jar.openStream();
-                    ZipInputStream zip = new ZipInputStream(is)) {
+                     ZipInputStream zip = new ZipInputStream(is)) {
                     while (true) {
                         ZipEntry e = zip.getNextEntry();
                         if (e == null)
                             break;
                         String name = e.getName();
                         if (!name.equals("examples/")
-                            && !name.equals("examples/localizations/")
-                            && name.startsWith("examples/")
-                            && name.endsWith("/") && !name.contains(".")) {
+                                && !name.equals("examples/localizations/")
+                                && name.startsWith("examples/")
+                                && name.endsWith("/") && !name.contains(".")) {
                             examples.add(name.replace("examples/", "").replace("/", ""));
                         }
                     }
@@ -6287,16 +6454,16 @@ public class MagicController implements MageController {
             if (src != null) {
                 URL jar = src.getLocation();
                 try (InputStream is = jar.openStream();
-                    ZipInputStream zip = new ZipInputStream(is)) {
+                     ZipInputStream zip = new ZipInputStream(is)) {
                     while (true) {
                         ZipEntry e = zip.getNextEntry();
                         if (e == null)
                             break;
                         String name = e.getName();
                         if (!name.equals("examples/")
-                            && !name.equals("examples/localizations/")
-                            && name.startsWith("examples/localizations/messages.")
-                            && name.endsWith(".yml")) {
+                                && !name.equals("examples/localizations/")
+                                && name.startsWith("examples/localizations/messages.")
+                                && name.endsWith(".yml")) {
                             examples.add(name.replace("examples/localizations/messages.", "").replace(".yml", ""));
                         }
                     }
@@ -6322,7 +6489,7 @@ public class MagicController implements MageController {
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         if (examplesFolder.exists()) {
             for (File file : examplesFolder.listFiles()) {
-                 if (!file.isDirectory() || file.getName().contains(".")) continue;
+                if (!file.isDirectory() || file.getName().contains(".")) continue;
                 examples.add(file.getName());
             }
         }
@@ -6502,7 +6669,7 @@ public class MagicController implements MageController {
         EntityData template = mobs.get(name);
         MagicNPC npc;
         if (template != null && template instanceof com.elmakers.mine.bukkit.entity.EntityData) {
-            npc = new MagicNPC(this, creator, creator.getLocation(), (com.elmakers.mine.bukkit.entity.EntityData)template);
+            npc = new MagicNPC(this, creator, creator.getLocation(), (com.elmakers.mine.bukkit.entity.EntityData) template);
         } else {
             npc = new MagicNPC(this, creator, creator.getLocation(), name);
         }
@@ -6571,7 +6738,7 @@ public class MagicController implements MageController {
 
     @Override
     public void registerMob(@Nonnull Entity entity, @Nonnull EntityData entityData) {
-        mobs.register(entity, (com.elmakers.mine.bukkit.entity.EntityData)entityData);
+        mobs.register(entity, (com.elmakers.mine.bukkit.entity.EntityData) entityData);
     }
 
     public CitizensController getCitizensController() {
@@ -6709,6 +6876,10 @@ public class MagicController implements MageController {
         return minHeight;
     }
 
+    public boolean isDisableSpawnReplacement() {
+        return disableSpawnReplacement > 0;
+    }
+
     @Override
     public void setDisableSpawnReplacement(boolean disable) {
         if (disable) {
@@ -6716,10 +6887,6 @@ public class MagicController implements MageController {
         } else {
             disableSpawnReplacement--;
         }
-    }
-
-    public boolean isDisableSpawnReplacement() {
-        return disableSpawnReplacement > 0;
     }
 
     @Override
@@ -7024,11 +7191,11 @@ public class MagicController implements MageController {
         // Placeholder API
         if (placeholdersEnabled) {
             if (pluginManager.isPluginEnabled("PlaceholderAPI")) {
-               try {
-                   // Can only register this once
-                   if (placeholderAPIManager == null) {
-                       placeholderAPIManager = new PlaceholderAPIManager(this);
-                   }
+                try {
+                    // Can only register this once
+                    if (placeholderAPIManager == null) {
+                        placeholderAPIManager = new PlaceholderAPIManager(this);
+                    }
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with PlaceholderAPI", ex);
                 }
@@ -7151,8 +7318,7 @@ public class MagicController implements MageController {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, undoTask, 0, undoFrequency);
     }
 
-    protected void loadProperties(CommandSender sender, ConfigurationSection properties)
-    {
+    protected void loadProperties(CommandSender sender, ConfigurationSection properties) {
         if (properties == null) return;
 
         // Delegate to resource pack handler
@@ -7218,12 +7384,12 @@ public class MagicController implements MageController {
         Wand.CREATIVE_CHEST_MODE = properties.getBoolean("wand_creative_chest_switch", Wand.CREATIVE_CHEST_MODE);
         maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
         welcomeWand = properties.getString("welcome_wand", "");
-        maxDamagePowerMultiplier = (float)properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
-        maxConstructionPowerMultiplier = (float)properties.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
-        maxRangePowerMultiplier = (float)properties.getDouble("max_power_range_multiplier", maxRangePowerMultiplier);
-        maxRangePowerMultiplierMax = (float)properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
-        maxRadiusPowerMultiplier = (float)properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
-        maxRadiusPowerMultiplierMax = (float)properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
+        maxDamagePowerMultiplier = (float) properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
+        maxConstructionPowerMultiplier = (float) properties.getDouble("max_power_construction_multiplier", maxConstructionPowerMultiplier);
+        maxRangePowerMultiplier = (float) properties.getDouble("max_power_range_multiplier", maxRangePowerMultiplier);
+        maxRangePowerMultiplierMax = (float) properties.getDouble("max_power_range_multiplier_max", maxRangePowerMultiplierMax);
+        maxRadiusPowerMultiplier = (float) properties.getDouble("max_power_radius_multiplier", maxRadiusPowerMultiplier);
+        maxRadiusPowerMultiplierMax = (float) properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
         materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
         materialVariants = ConfigurationUtils.getList(properties, "material_variants");
         blockItems = properties.getConfigurationSection("block_items");
@@ -7234,7 +7400,7 @@ public class MagicController implements MageController {
         loadOtherMaterials(properties);
         WandCommandExecutor.CONSOLE_BYPASS_LOCKED = properties.getBoolean("console_bypass_locked_wands", true);
 
-        maxPower = (float)properties.getDouble("max_power", maxPower);
+        maxPower = (float) properties.getDouble("max_power", maxPower);
         ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");
         if (damageTypes != null) {
             Set<String> typeKeys = damageTypes.getKeys(false);
@@ -7243,8 +7409,8 @@ public class MagicController implements MageController {
                 this.damageTypes.put(typeKey, new DamageType(damageType));
             }
         }
-        maxCostReduction = (float)properties.getDouble("max_cost_reduction", maxCostReduction);
-        maxCooldownReduction = (float)properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
+        maxCostReduction = (float) properties.getDouble("max_cost_reduction", maxCostReduction);
+        maxCooldownReduction = (float) properties.getDouble("max_cooldown_reduction", maxCooldownReduction);
         maxMana = properties.getInt("max_mana", maxMana);
         maxManaRegeneration = properties.getInt("max_mana_regeneration", maxManaRegeneration);
         worthBase = properties.getDouble("worth_base", 1);
@@ -7254,16 +7420,13 @@ public class MagicController implements MageController {
         HitboxUtils.setHitboxScale(properties.getDouble("hitbox_scale", 1.0));
         HitboxUtils.setHitboxScaleY(properties.getDouble("hitbox_scale_y", 1.0));
         HitboxUtils.setHitboxSneakScaleY(properties.getDouble("hitbox_sneaking_scale_y", 0.75));
-        if (properties.contains("hitboxes"))
-        {
+        if (properties.contains("hitboxes")) {
             HitboxUtils.configureHitboxes(properties.getConfigurationSection("hitboxes"));
         }
-        if (properties.contains("head_sizes"))
-        {
+        if (properties.contains("head_sizes")) {
             HitboxUtils.configureHeadSizes(properties.getConfigurationSection("head_sizes"));
         }
-        if (properties.contains("max_height"))
-        {
+        if (properties.contains("max_height")) {
             HitboxUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
         }
 
@@ -7279,7 +7442,7 @@ public class MagicController implements MageController {
         if (properties.contains("cast_command_cooldown_reduction")) {
             castCommandCooldownFree = (properties.getDouble("cast_command_cooldown_reduction") > 0);
         } else {
-            castCommandCooldownFree =  properties.getBoolean("cast_command_cooldown_free", castCommandCooldownFree);
+            castCommandCooldownFree = properties.getBoolean("cast_command_cooldown_free", castCommandCooldownFree);
         }
         if (properties.contains("cast_console_cost_reduction")) {
             castConsoleCostFree = (properties.getDouble("cast_console_cost_reduction") > 0);
@@ -7295,12 +7458,12 @@ public class MagicController implements MageController {
         castConsoleFeedback = properties.getBoolean("cast_console_feedback", false);
         editorURL = properties.getString("editor_url");
 
-        castCommandPowerMultiplier = (float)properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
-        castConsolePowerMultiplier = (float)properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
+        castCommandPowerMultiplier = (float) properties.getDouble("cast_command_power_multiplier", castCommandPowerMultiplier);
+        castConsolePowerMultiplier = (float) properties.getDouble("cast_console_power_multiplier", castConsolePowerMultiplier);
 
         maps.setAnimationAllowed(properties.getBoolean("enable_map_animations", true));
-        costReduction = (float)properties.getDouble("cost_reduction", costReduction);
-        cooldownReduction = (float)properties.getDouble("cooldown_reduction", cooldownReduction);
+        costReduction = (float) properties.getDouble("cost_reduction", costReduction);
+        cooldownReduction = (float) properties.getDouble("cooldown_reduction", cooldownReduction);
         autoUndo = properties.getInt("auto_undo", autoUndo);
         spellDroppingEnabled = properties.getBoolean("allow_spell_dropping", spellDroppingEnabled);
         essentialsSignsEnabled = properties.getBoolean("enable_essentials_signs", essentialsSignsEnabled);
@@ -7352,11 +7515,11 @@ public class MagicController implements MageController {
             for (Object o : permissionTeams) {
                 if (o instanceof List) {
                     @SuppressWarnings("unchecked")
-                    List<String> stringList = (List<String>)o;
+                    List<String> stringList = (List<String>) o;
                     this.permissionTeams.add(stringList);
                 } else if (o instanceof String) {
                     List<String> newList = new ArrayList<>();
-                    newList.add((String)o);
+                    newList.add((String) o);
                     this.permissionTeams.add(newList);
                 }
             }
@@ -7485,7 +7648,7 @@ public class MagicController implements MageController {
         if (Wand.WAND_SELF_DESTRUCT_KEY.isEmpty()) {
             Wand.WAND_SELF_DESTRUCT_KEY = null;
         }
-        Wand.HIDE_FLAGS = (byte)properties.getInt("wand_hide_flags", Wand.HIDE_FLAGS);
+        Wand.HIDE_FLAGS = (byte) properties.getInt("wand_hide_flags", Wand.HIDE_FLAGS);
         Wand.Unbreakable = properties.getBoolean("wand_unbreakable", Wand.Unbreakable);
         Wand.Unstashable = properties.getBoolean("wand_undroppable", properties.getBoolean("wand_unstashable", Wand.Unstashable));
 
@@ -7628,7 +7791,7 @@ public class MagicController implements MageController {
             log("Sandbox enabled, will check for updates from the web UI");
             final ConfigCheckTask configCheck = new ConfigCheckTask(this);
             configCheckTask = Bukkit.getScheduler().runTaskTimerAsynchronously(plugin, configCheck,
-                configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
+                    configUpdateInterval * 20 / 1000, configUpdateInterval * 20 / 1000);
         }
 
         // Set up log notify timer
@@ -7637,7 +7800,7 @@ public class MagicController implements MageController {
         if (logNotifyInterval > 0) {
             final LogNotifyTask logNotify = new LogNotifyTask(this);
             logNotifyTask = Bukkit.getScheduler().runTaskTimer(plugin, logNotify,
-                logNotifyInterval * 20 / 1000, logNotifyInterval * 20 / 1000);
+                    logNotifyInterval * 20 / 1000, logNotifyInterval * 20 / 1000);
         }
 
         // Configure world generation and spawn replacement
@@ -7690,7 +7853,6 @@ public class MagicController implements MageController {
     public Currency getBlockExchangeCurrency() {
         return blockExchangeCurrency == null ? null : getCurrency(blockExchangeCurrency);
     }
-    private GeyserManager                       geyserManager               = null;
 
     public int getMaxLevel(String spellName) {
         Integer maxLevel = maxSpellLevels.get(spellName);
@@ -7700,319 +7862,32 @@ public class MagicController implements MageController {
     @Nullable
     public Double getBuiltinAttribute(String attributeKey) {
         switch (attributeKey) {
-            case "weeks": return (double)604800000;
-            case "days": return (double)86400000;
-            case "hours": return (double)3600000;
-            case "minutes": return (double)60000;
-            case "seconds": return (double)1000;
-            case "epoch": return (double)System.currentTimeMillis();
-            case "pi" : return Math.PI;
-            default: return null;
+            case "weeks":
+                return (double) 604800000;
+            case "days":
+                return (double) 86400000;
+            case "hours":
+                return (double) 3600000;
+            case "minutes":
+                return (double) 60000;
+            case "seconds":
+                return (double) 1000;
+            case "epoch":
+                return (double) System.currentTimeMillis();
+            case "pi":
+                return Math.PI;
+            default:
+                return null;
         }
     }
-
-    /*
-     * Private data
-     */
-    private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
-
-    private static final String LOST_WANDS_FILE     = "lostwands";
-    private static final String WARPS_FILE          = "warps";
-    private static final String SPELLS_DATA_FILE    = "spells";
-    private static final String AUTOMATA_DATA_FILE  = "automata";
-    private static final String NPC_DATA_FILE       = "npcs";
-    private static final String URL_MAPS_FILE       = "imagemaps";
-
-    private MaterialAndData                     redstoneReplacement             = new MaterialAndData(Material.OBSIDIAN);
-    private @Nonnull MaterialSet                buildingMaterials               = MaterialSets.empty();
-    private @Nonnull MaterialSet                indestructibleMaterials         = MaterialSets.empty();
-    private @Nonnull MaterialSet                restrictedMaterials             = MaterialSets.empty();
-    private @Nonnull MaterialSet                destructibleMaterials           = MaterialSets.empty();
-    private @Nonnull MaterialSet                interactibleMaterials           = MaterialSets.empty();
-    private @Nonnull MaterialSet                containerMaterials              = MaterialSets.empty();
-    private @Nonnull MaterialSet                wearableMaterials               = MaterialSets.empty();
-    private @Nonnull MaterialSet                meleeMaterials                  = MaterialSets.empty();
-    private @Nonnull MaterialSet                climbableMaterials              = MaterialSets.empty();
-    private @Nonnull MaterialSet                undoableMaterials               = MaterialSets.wildcard();
 
     @Nullable
     @Override
     public ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.wand.Wand wand, boolean isItem) {
-        return Wand.createBrushItem(materialKey,this, (Wand)wand, isItem);
+        return Wand.createBrushItem(materialKey, this, (Wand) wand, isItem);
     }
-
-    private boolean                             backupInventories               = true;
-    private int                                    undoTimeWindow                    = 6000;
-    private int                                 undoQueueDepth                  = 256;
-    private int                                    pendingQueueDepth                = 16;
-    private int                                 undoMaxPersistSize              = 0;
-    private boolean                             commitOnQuit                     = false;
-    private boolean                             saveNonPlayerMages              = false;
-    private String                              defaultWandPath                 = "";
-    private WandMode                            defaultWandMode                    = WandMode.NONE;
-    private WandMode                            defaultBrushMode                = WandMode.CHEST;
-    private boolean                             showMessages                    = true;
-    private boolean                             showCastMessages                = false;
-    private String                                messagePrefix                    = "";
-    private String                                castMessagePrefix                = "";
-    private boolean                             soundsEnabled                   = true;
-    private String                                welcomeWand                        = "";
-    private int                                    messageThrottle                    = 0;
-    private boolean                                spellDroppingEnabled            = false;
-    private boolean                             fillingEnabled                  = false;
-    private int                                 maxFillLevel                    = 0;
-    private boolean                                essentialsSignsEnabled            = false;
-    private boolean                                dynmapUpdate                    = true;
-    private boolean                                dynmapShowWands                    = true;
-    private boolean                                dynmapOnlyPlayerSpells            = false;
-    private boolean                                dynmapShowSpells                = true;
-    private boolean                                createWorldsEnabled                = true;
-    private float                                maxDamagePowerMultiplier        = 2.0f;
-    private float                                maxConstructionPowerMultiplier  = 5.0f;
-    private float                                maxRadiusPowerMultiplier         = 2.5f;
-    private float                                maxRadiusPowerMultiplierMax     = 4.0f;
-    private float                                maxRangePowerMultiplier         = 3.0f;
-    private float                                maxRangePowerMultiplierMax         = 5.0f;
-
-    private float                                maxPower                        = 100.0f;
-    private Map<String, DamageType>             damageTypes                     = new HashMap<>();
-    private float                                maxCostReduction                 = 0.5f;
-    private float                                maxCooldownReduction            = 0.5f;
-    private int                                    maxMana                            = 1000;
-    private int                                    maxManaRegeneration                = 100;
-    private double                              worthBase                       = 1;
-    private boolean                             spEnabled                       = true;
-    private boolean                             spEarnEnabled                   = true;
-
-    private boolean                             castCommandCostFree             = false;
-    private boolean                             castCommandCooldownFree         = false;
-    private float                                castCommandPowerMultiplier      = 0.0f;
-    private boolean                             castConsoleCostFree             = false;
-    private boolean                             castConsoleCooldownFree         = false;
-    private float                                castConsolePowerMultiplier      = 0.0f;
-    private float                                 costReduction                    = 0.0f;
-    private float                                 cooldownReduction                = 0.0f;
-    private int                                    autoUndo                        = 0;
-    private int                                    autoSaveTaskId                    = 0;
-    private BukkitTask                          configCheckTask                 = null;
-    private BukkitTask                          logNotifyTask                   = null;
-    private boolean                             savePlayerData                  = true;
-    private boolean                             externalPlayerData              = false;
-    private boolean                             asynchronousSaving              = true;
-    private boolean                             debugEffectLib                  = false;
-    private WarpController                        warpController                    = null;
-    private KitController                       kitController                   = null;
-    private Collection<ConfigurationSection>    materialColors                  = null;
-    private List<Object>                        materialVariants                = null;
-    private ConfigurationSection                blockItems                  = null;
-    private Map<Material, String>               blockSkins                  = new HashMap<>();
-    private Map<EntityType, String>             mobSkins                    = new HashMap<>();
-    private Map<EntityType, MaterialAndData>    skullItems                  = new HashMap<>();
-    private Map<EntityType, MaterialAndData>    skullWallBlocks             = new HashMap<>();
-    private Map<EntityType, MaterialAndData>    skullGroundBlocks           = new HashMap<>();
-    private Map<EntityType, Material>           mobEggs                     = new HashMap<>();
-
-    private final Map<String, AutomatonTemplate> automatonTemplates         = new HashMap<>();
-    private final Map<String, WandTemplate>     wandTemplates               = new HashMap<>();
-    private final Map<String, MageClassTemplate> mageClasses                = new HashMap<>();
-    private final Map<String, ModifierTemplate> modifiers                   = new HashMap<>();
-    private final Map<String, SpellTemplate>    spells                      = new HashMap<>();
-    private final Map<String, SpellTemplate>    spellAliases                = new HashMap<>();
-    private final Map<String, SpellData>        templateDataMap             = new HashMap<>();
-    private final Map<String, SpellCategory>    categories                  = new HashMap<>();
-    private final Map<String, MagicAttribute>   attributes                  = new HashMap<>();
-    private final Set<String>                   registeredAttributes        = new HashSet<>();
-    private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages    = Maps.newConcurrentMap();
-    private final Set<Mage> pendingConstruction                             = new HashSet<>();
-    private final PriorityQueue<UndoList>       scheduledUndo               = new PriorityQueue<>();
-    private final Map<String, WeakReference<Schematic>> schematics          = new HashMap<>();
-    private final Map<String, Collection<EffectPlayer>> effects             = new HashMap<>();
-    private final Map<Chunk, Integer> lockedChunks                          = new HashMap<>();
-
-    private MageDataStore                       mageDataStore               = null;
-    private MageDataStore                       migrateDataStore            = null;
-    private MigrateDataTask                     migrateDataTask             = null;
-
-    private final MagicLogger                   logger;
-    private BukkitTask                          logWatchdogTimer            = null;
-    private MagicPlugin                         plugin                      = null;
-    private final File                            configFolder;
-    private final File                            dataFolder;
-    private final File                            defaultsFolder;
-
-    private int                                 toggleMessageRange          = 1024;
-
-    private int                                 automataUpdateFrequency     = 1;
-    private int                                 mageUpdateFrequency         = 5;
-    private int                                 workFrequency               = 1;
-    private int                                 undoFrequency               = 10;
-    private int                                    workPerUpdate                = 5000;
-    private int                                 logVerbosity                = 0;
-
-    private boolean                             showCastHoloText            = false;
-    private boolean                             showActivateHoloText        = false;
-    private int                                 castHoloTextRange           = 0;
-    private int                                 activateHoloTextRange       = 0;
-    private boolean                                urlIconsEnabled             = true;
-    private boolean                             legacyIconsEnabled          = false;
-    private boolean                             autoSpellUpgradesEnabled    = true;
-    private boolean                             autoPathUpgradesEnabled     = true;
-    private boolean                             spellProgressionEnabled     = true;
-
-    private boolean                                bypassBuildPermissions      = false;
-    private boolean                                bypassBreakPermissions      = false;
-    private boolean                                bypassPvpPermissions        = false;
-    private boolean                                bypassFriendlyFire          = false;
-    private boolean                             useScoreboardTeams          = false;
-    private boolean                             defaultFriendly             = true;
-    private boolean                                protectLocked               = true;
-    private boolean                             bindOnGive                  = false;
-    private List<List<String>>                  permissionTeams             = null;
-
-    private String                                extraSchematicFilePath        = null;
-    private Mailer                                mailer                        = null;
-    private Material                            defaultMaterial                = Material.DIRT;
-    private Set<EntityType>                     undoEntityTypes             = new HashSet<>();
-    private Set<EntityType>                     friendlyEntityTypes         = new HashSet<>();
-    private Map<String, Currency> currencies = new HashMap<>();
-
-    private PhysicsHandler                        physicsHandler                = null;
-
-    private Map<String, List<MagicNPC>>          npcsByChunk                = new HashMap<>();
-    private List<ConfigurationSection>           invalidNPCs                = new ArrayList<>();
-    private Map<UUID, MagicNPC>                  npcsByEntity               = new HashMap<>();
-    private Map<UUID, MagicNPC>                  npcs                       = new HashMap<>();
-
-    private Map<String, Map<Long, Automaton>>    automata                   = new HashMap<>();
-    private List<ConfigurationSection>           invalidAutomata            = new ArrayList<>();
-    private Map<Long, Automaton>                 activeAutomata             = new HashMap<>();
-    private Map<String, LostWand>                lostWands                  = new HashMap<>();
-    private Map<String, Set<String>>             lostWandChunks             = new HashMap<>();
-    private Map<Long, Integer>                   lightBlocks                = new HashMap<>();
-    private Map<String, Integer>                 lightChunks                = new HashMap<>();
-
-    private int                                    metricsLevel                = 5;
-    private Metrics                                metrics                        = null;
-    private boolean                                hasDynmap                    = false;
-    private boolean                                hasEssentials                = false;
-    private boolean                                hasCommandBook                = false;
-
-    private String                              exampleDefaults             = null;
-    private Collection<String>                  addExamples                 = null;
-    private final Map<String, String>           exampleKeyNames             = new HashMap<>();
-    private boolean                             loaded                      = false;
-    private boolean                             shuttingDown                = false;
-    private boolean                             dataLoaded                  = false;
-    private String                              defaultSkillIcon            = "stick";
-    private boolean despawnMagicMobs = false;
-    private int                                 skillInventoryRows          = 6;
-    private boolean                             skillsUseHeroes             = true;
-    private boolean                             useHeroesMana               = true;
-    private boolean                             useHeroesParties            = true;
-    private boolean                             useSkillAPIAllies           = true;
-    private boolean                             useBattleArenaTeams         = true;
-    private boolean                             skillsUsePermissions        = false;
-    private boolean                             useWildStacker              = true;
-    private String                              heroesSkillPrefix           = "";
-    private String                              skillsSpell                 = "";
-    private boolean                             isFileLockingEnabled        = false;
-    private int                                 fileLoadDelay               = 0;
-    private Mage                                reloadingMage               = null;
-    private ResourcePackManager                 resourcePacks               = null;
-
-    // Synchronization
-    private final Object                        saveLock                    = new Object();
-
-    protected static Random                     random                      = new Random();
-
-    // Sub-Controllers
-    private CraftingController                    crafting                    = null;
-    private MobController                       mobs                        = null;
-    private MobController2                      mobs2                        = null;
-    private ItemController                      items                        = null;
-    private EnchantingController                enchanting                    = null;
-    private AnvilController                        anvil                        = null;
-    private Messages                            messages                    = new Messages();
-    private MapController                       maps                        = null;
-    private DynmapController                    dynmap                        = null;
-    private ElementalsController                elementals                    = null;
-    private CitizensController                  citizens                    = null;
-    private BlockController                     blockController             = null;
-    private HangingController                   hangingController           = null;
-    private PlayerController                    playerController            = null;
-    private EntityController                    entityController            = null;
-    private InventoryController                 inventoryController         = null;
-    private ExplosionController                 explosionController         = null;
-    private JumpController                      jumpController              = null;
-    private WorldController                     worldController             = null;
-    private @Nonnull MageIdentifier             mageIdentifier              = new MageIdentifier();
-    private final SimpleMaterialSetManager materialSetManager               = new SimpleMaterialSetManager();
-    private boolean                             citizensEnabled                = true;
-    private boolean                             logBlockEnabled             = true;
-    private boolean                             libsDisguiseEnabled            = true;
-    private boolean                             skillAPIEnabled                = true;
-    private boolean                             useSkillAPIMana             = false;
-    private boolean                             placeholdersEnabled         = true;
-    private boolean                             lightAPIEnabled                = true;
-    private boolean                             skriptEnabled                = true;
-    private boolean                             vaultEnabled                = true;
-    private ConfigurationSection                residenceConfiguration        = null;
-    private ConfigurationSection                redProtectConfiguration     = null;
-    private ConfigurationSection                citadelConfiguration        = null;
-    private ConfigurationSection                mobArenaConfiguration       = null;
-    private ConfigurationSection                ajParkourConfiguration      = null;
-    private Set<String>                         resolvingKeys               = new LinkedHashSet<>();
-    private boolean                             castConsoleFeedback         = false;
-    private String                              editorURL                   = null;
-    private boolean                             reloadVerboseLogging        = true;
-    private Map<String, MageData>               mageDataPreCache            = new ConcurrentHashMap<>();
-
-    private boolean                             hasShopkeepers              = false;
-    private FactionsManager                        factionsManager                = new FactionsManager();
-    private LocketteManager                     locketteManager                = new LocketteManager();
-    private WorldGuardManager                    worldGuardManager            = new WorldGuardManager();
-    private PvPManagerManager                   pvpManager                  = new PvPManagerManager();
-    private MultiverseManager                   multiverseManager           = new MultiverseManager();
-    private PreciousStonesManager                preciousStonesManager        = new PreciousStonesManager();
-    private TownyManager                        townyManager                = new TownyManager();
-    private GriefPreventionManager              griefPreventionManager        = new GriefPreventionManager();
-    private NCPManager                          ncpManager                   = new NCPManager();
-    private ProtectionManager                   protectionManager           = new ProtectionManager();
-    private AJParkourManager                    ajParkourManager              = null;
-    private CitadelManager                      citadelManager              = null;
-    private ResidenceManager                    residenceManager            = null;
-    private RedProtectManager                   redProtectManager           = null;
-    private RequirementsController              requirementsController      = null;
-    private HeroesManager                       heroesManager               = null;
-    private LibsDisguiseManager                 libsDisguiseManager         = null;
-    private SkillAPIManager                     skillAPIManager             = null;
-    private BattleArenaManager                  battleArenaManager          = null;
-    private PlaceholderAPIManager               placeholderAPIManager       = null;
-    private LightAPIManager                     lightAPIManager             = null;
 
     public ClientPlatform getClientPlatform(Player player) {
         return geyserManager != null && geyserManager.isBedrock(player.getUniqueId()) ? ClientPlatform.BEDROCk : ClientPlatform.JAVA;
     }
-    private MobArenaManager                     mobArenaManager             = null;
-    private LogBlockManager                     logBlockManager             = null;
-    private EssentialsController                essentialsController        = null;
-    private DeadSoulsManager                    deadSoulsController         = null;
-
-    private boolean                             loading                     = false;
-    private Set<MagicProvider>                  externalProviders           = new HashSet<>();
-    private List<BlockBreakManager>             blockBreakManagers          = new ArrayList<>();
-    private List<BlockBuildManager>             blockBuildManagers          = new ArrayList<>();
-    private List<PVPManager>                    pvpManagers                 = new ArrayList<>();
-    private List<CastPermissionManager>         castManagers                = new ArrayList<>();
-    private List<AttributeProvider>             attributeProviders          = new ArrayList<>();
-    private List<TeamProvider>                  teamProviders               = new ArrayList<>();
-    private List<EntityTargetingManager>        targetingProviders          = new ArrayList<>();
-    private NPCSupplierSet                      npcSuppliers                = new NPCSupplierSet();
-    private Map<String, RequirementsProcessor>  requirementProcessors       = new HashMap<>();
-    private Map<String, PlayerWarpManager>      playerWarpManagers          = new HashMap<>();
-    private Map<Material, String>               autoWands                   = new HashMap<>();
-    private Map<String, String>                 builtinExternalExamples     = new HashMap<>();
-    private boolean                             showExampleInstructions     = false;
-    private int                                 disableSpawnReplacement     = 0;
-    private SwingType                           swingType                   = SwingType.ANIMATE_IF_ADVENTURE;
 }
