@@ -5326,6 +5326,12 @@ public class MagicController implements MageController {
         return Wand.createBrushItem(brushKey, this, null, true);
     }
 
+    @Nullable
+    @Override
+    public ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.wand.Wand wand, boolean isItem) {
+        return Wand.createBrushItem(materialKey, this, (Wand) wand, isItem);
+    }
+
     public boolean isSameItem(ItemStack first, ItemStack second) {
         if (first.getType() != second.getType()) return false;
         if (first.getDurability() != second.getDurability()) return false;
@@ -7879,12 +7885,6 @@ public class MagicController implements MageController {
             default:
                 return null;
         }
-    }
-
-    @Nullable
-    @Override
-    public ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.wand.Wand wand, boolean isItem) {
-        return Wand.createBrushItem(materialKey, this, (Wand) wand, isItem);
     }
 
     public ClientPlatform getClientPlatform(Player player) {
