@@ -837,8 +837,6 @@ public class MagicController implements MageController {
         return destructibleMaterials.testBlock(block);
     }
 
-    private @Nonnull MaterialSet                offhandMaterials                = MaterialSets.empty();
-
     @Override
     public boolean isUndoable(Material material) {
         return undoableMaterials.testMaterial(material);
@@ -5145,6 +5143,8 @@ public class MagicController implements MageController {
         return Wand.createBrushItem(brushKey, this, null, true);
     }
 
+    private @Nonnull MaterialSet                offhandMaterials                = MaterialSets.empty();
+
     public boolean isSameItem(ItemStack first, ItemStack second) {
         if (first.getType() != second.getType()) return false;
         if (first.getDurability() != second.getDurability()) return false;
@@ -7734,6 +7734,12 @@ public class MagicController implements MageController {
     private @Nonnull MaterialSet                meleeMaterials                  = MaterialSets.empty();
     private @Nonnull MaterialSet                climbableMaterials              = MaterialSets.empty();
     private @Nonnull MaterialSet                undoableMaterials               = MaterialSets.wildcard();
+
+    @Nullable
+    @Override
+    public ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.wand.Wand wand, boolean isItem) {
+        return Wand.createBrushItem(materialKey,this, (Wand)wand, isItem);
+    }
 
     private boolean                             backupInventories               = true;
     private int                                    undoTimeWindow                    = 6000;

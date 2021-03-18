@@ -177,7 +177,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         List<ItemStack> specials = new ArrayList<>();
         MaterialAndData previous = null;
         for (String brushKey : brushKeys) {
-            ItemStack brushItem = com.elmakers.mine.bukkit.wand.Wand.createBrushItem(brushKey, controller, null, false);
+            ItemStack brushItem = controller.createBrushItem(brushKey, context.getWand(), false);
             if (MaterialBrush.isSchematic(brushKey)) {
                 schematics.add(brushItem);
                 continue;
@@ -192,7 +192,9 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 if (baseVariant == null) {
                     baseVariant = DefaultMaterials.getBaseVariant(material.getMaterial());
                 }
-                addAbsorbInfo(brushItem);
+                if (!context.isConsumeFree()) {
+                    addAbsorbInfo(brushItem);
+                }
 
                 if (previous != null && material.getMaterial() == previous.getMaterial())
                 {
@@ -321,6 +323,9 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         message = message.replace("$type", controller.describeItem(plain));
         ItemMeta meta = itemStack.getItemMeta();
         List<String> lore = meta.getLore();
+        if (lore == null) {
+            lore = new ArrayList<>();
+        }
         InventoryUtils.wrapText(message, lore);
         meta.setLore(lore);
         itemStack.setItemMeta(meta);

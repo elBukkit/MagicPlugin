@@ -128,6 +128,8 @@ public interface MageController {
     ItemStack createSpellItem(String spellKey, boolean brief);
     @Nullable
     ItemStack createBrushItem(String brushKey);
+    @Nullable
+    ItemStack createBrushItem(String materialKey, Wand wand, boolean isItem);
 
     /**
      * Only returns a Wand instance of the item is already a wand.
