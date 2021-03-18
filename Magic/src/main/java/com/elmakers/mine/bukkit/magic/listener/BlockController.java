@@ -26,6 +26,7 @@ import org.bukkit.event.block.BlockFadeEvent;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
 import org.bukkit.event.block.BlockPistonExtendEvent;
+import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
@@ -225,14 +226,46 @@ public class BlockController implements Listener, ChunkLoadListener {
     }
 
     @EventHandler
+    public void onPistonRetract(BlockPistonRetractEvent event) {
+        Block piston = event.getBlock();
+        Block block = piston.getRelative(event.getDirection());
+        UndoList undoList = controller.getPendingUndo(block.getLocation());
+        if (undoList != null) {
+            // This block is the piston head
+            undoList.add(block);
+            // This block stores the state of the piston (er, I think?)
+            undoList.add(piston);
+            block = piston.getRelative(event.getDirection());
+            // This is the block we will pull if it's not empty
+            if (!DefaultMaterials.isAir(block.getType())) {
+                undoList.add(block);
+            }
+        }
+    }
+
+    @EventHandler
     public void onPistonExtend(BlockPistonExtendEvent event) {
         Block piston = event.getBlock();
         Block block = piston.getRelative(event.getDirection());
         UndoList undoList = controller.getPendingUndo(block.getLocation());
-        if (undoList != null)
-        {
-            undoList.add(block);
+        if (undoList == null) {
+            undoList = controller.getPendingUndo(piston.getLocation());
+        }
+        if (undoList != null) {
+            // This block stores the state of the piston, maybe
             undoList.add(piston);
+            // This block is about to become the piston head
+            undoList.add(block);
+            // Continue to look for more solid blocks we'll push
+            block = block.getRelative(event.getDirection());
+            undoList.add(block);
+            // We need to store the final air block since we'll be pushing a block into that
+            // But after that, we can quit
+            int maxBlocks = 14;
+            while (maxBlocks-- > 0 && !DefaultMaterials.isAir(block.getType())) {
+                block = block.getRelative(event.getDirection());
+                undoList.add(block);
+            }
         }
     }
 
