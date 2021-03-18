@@ -97,6 +97,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     void setConsumed(boolean consumed);
     boolean isUndone();
     boolean isUnbreakable();
+    boolean isIndestructible(Block block);
     void setUnbreakable(boolean unbreakable);
 
     /**

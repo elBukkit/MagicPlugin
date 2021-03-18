@@ -212,15 +212,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     protected boolean clearAttachables(Block block, BlockFace direction, @Nonnull MaterialSet materials)
     {
         Block testBlock = block.getRelative(direction);
-        if (!materials.testBlock(testBlock) || getContext().isIndestructible(block)) {
+        if (!materials.testBlock(testBlock) || isIndestructible(block)) {
             return false;
         }
-        CastContext context = getContext();
-        boolean isIndestructible = context == null ? false : context.isIndestructible(block);
-        if (isIndestructible) {
-            return false;
-        }
-
         add(testBlock);
         MaterialAndData.clearItems(testBlock.getState());
         DeprecatedUtils.setTypeAndData(testBlock, Material.AIR, (byte)0, false);
@@ -229,6 +223,18 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
 
         return true;
+    }
+
+    public boolean isIndestructible(Block block) {
+        CastContext context = getContext();
+        if (context != null && context.isIndestructible(block)) {
+            return true;
+        }
+        Mage owner = getOwner();
+        if (owner != null && owner.isIndestructible(block)) {
+            return true;
+        }
+        return false;
     }
 
     @Override
