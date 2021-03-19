@@ -59,7 +59,7 @@
  - Added Square effect
  - Added "colors" list to all effects, supporting randomized colors from a set of choices
  - Added Line effect parameters: zigZagRelativeOffset, subEffectAtEnd
- - Added subEffectClass and subEffect parameters to all Effecs, this lets you play an entire
+ - Added subEffectClass and subEffect parameters to all Effects, this lets you play an entire
    effect in place of single particles for a given effect
  - Optimizations
 
