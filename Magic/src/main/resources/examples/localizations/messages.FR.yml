@@ -405,7 +405,7 @@ spells:
         insufficient_permission: Tu n'as pas la permission d'utiliser ça ici.
         cast_player_message: "a:&d&o$player &r&5a lancé &3&o$spell &r&5sur toi!"
         indirect_player_message: "a:&d&o$player &r&5a lancé &3&o$spell &r&5sur toi!"
-        insufficient_resources: Pas assez de $cost
+        insufficient_resources: "a:Pas assez de $cost"
         insufficient: "&cNécessite &4$cost"
         cooldown: Tu dois attendre $time.
         cancelled: Ton sort a été annulé!

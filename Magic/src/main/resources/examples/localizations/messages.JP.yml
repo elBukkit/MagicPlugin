@@ -503,7 +503,7 @@ spells:
     insufficient_permission: '&e今はそれはできません！'
     cast_player_message: a:&d&o$player&r&5があなたに対して&3&o$spell&r&5を詠唱しています！
     indirect_player_message: a:&d&o$player&r&5があなたに対して&3&o$spell&r&5を詠唱しています！
-    insufficient_resources: '$costが足りません'
+    insufficient_resources: 'a:$costが足りません'
     insufficient: '&4$cost&cが必要です。'
     cooldown: $time待つ必要があります。
     cancelled: 魔法がキャンセルされました。

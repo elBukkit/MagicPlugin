@@ -250,7 +250,7 @@ spells:
     insufficient_permission: 权限不足.
     cast_player_message: a:&d&o$player &r&5对你施放了&3&o$spell&r&5!
     indirect_player_message: a:&d&o$player &r&5对你施放了&3&o$spell&r&5!
-    insufficient_resources: $cost不足
+    insufficient_resources: "a:$cost不足"
     cooldown: 你必须等待$time.
     cancelled: 施法取消!
     entity_required: 需要一个实体.

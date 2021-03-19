@@ -1718,7 +1718,7 @@ spells:
     insufficient_permission: У тебя нет прав использовать это сейчас.
     cast_player_message: a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!
     indirect_player_message: a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!
-    insufficient_resources: '&cТребуется &4$cost'
+    insufficient_resources: 'a:&cТребуется &4$cost'
     insufficient: '&cТребуется &4$cost'
     cooldown: 'Перезарядка: $time.'
     cancelled: Твое заклинание было отменено

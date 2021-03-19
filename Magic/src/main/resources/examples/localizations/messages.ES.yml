@@ -528,7 +528,7 @@ spells:
     insufficient_permission: No Puedes Lanzar Hechizos Aqui
     cast_player_message: '&d&o$player &r&5Te Ha Lanzado&3&o$spell &r&5!'
     indirect_player_message: '&d&o$player &r&5Te Ha Lanzado &3&o$spell &r&5!'
-    insufficient_resources: No Tienes Suficiente $cost
+    insufficient_resources: "a:No Tienes Suficiente $cost"
     insufficient: '&cRequieres &4$cost'
     cooldown: Tienes Que Esperar $time.
     cancelled: El hechizo fue cancelado!

@@ -1,5 +1,14 @@
 # TODO
 
+# Bugs from Club
+
+- don't prevent eating if in queue for the arena
+- player shops should show balance
+- arctic fox helmet still won't sell after setting price
+- undo bugs :( idk
+- right-clicking an NPC with a wand casts your spell
+- still end gateways in hogwarts??
+
 # Bugs from Video :(
 
 - TBW got back a ton of blocks somehow?

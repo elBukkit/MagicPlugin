@@ -242,7 +242,7 @@ spells:
         insufficient_permission: "당신은 그 마법을 여기서 사용할 권한이 없습니다!"
         cast_player_message: "&d&o$player &r&5님이&3&o$spell &r&5을(를) 당신에게 시전!"
         indirect_player_message: "&d&o$player &r&5님이&3&o$spell &r&5을(를) 당신에게 시전!"
-        insufficient_resources: "$cost 이(가) 부족합니다"
+        insufficient_resources: "a:$cost 이(가) 부족합니다"
         cooldown: "$time 만큼 기다리셔야 합니다"
         cancelled: "당신의 마법이 취소되었습니다!"
         entity_required: "이 마법을 사용하기 위해선 엔티티가 필요합니다"
