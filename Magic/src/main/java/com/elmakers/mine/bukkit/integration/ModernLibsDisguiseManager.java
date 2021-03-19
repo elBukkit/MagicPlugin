@@ -35,14 +35,17 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
         this.controller = controller;
     }
 
+    @Override
     public boolean initialize() {
         return (disguisePlugin != null && disguisePlugin instanceof LibsDisguises);
     }
 
+    @Override
     public boolean isDisguised(Entity entity) {
         return DisguiseAPI.isDisguised(entity);
     }
 
+    @Override
     public boolean disguise(Entity entity, ConfigurationSection configuration) {
         if (configuration == null) {
             DisguiseAPI.undisguiseToAll(entity);
@@ -177,6 +180,7 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
         return true;
     }
 
+    @Override
     @Nullable
     public String getSkin(Player player) {
         WrappedGameProfile profile = WrappedGameProfile.fromPlayer(player);

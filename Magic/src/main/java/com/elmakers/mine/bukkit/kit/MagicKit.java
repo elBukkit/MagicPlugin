@@ -298,6 +298,8 @@ public class MagicKit implements Kit {
     public String getDescription() {
         return controller.getMessages().get("kits." + key + ".description", description);
     }
+
+    @Override
     @Nullable
     public String getIconKey() {
         return icon;

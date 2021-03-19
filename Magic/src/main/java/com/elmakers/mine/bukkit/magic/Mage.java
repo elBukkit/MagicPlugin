@@ -5539,6 +5539,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return gaveWelcomeWand;
     }
 
+    @Override
     public ClientPlatform getClientPlatform() {
         Player player = getPlayer();
         if (player == null) {

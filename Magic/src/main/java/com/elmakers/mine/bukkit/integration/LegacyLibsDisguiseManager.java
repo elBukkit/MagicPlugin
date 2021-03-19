@@ -26,14 +26,17 @@ public class LegacyLibsDisguiseManager implements LibsDisguiseManager {
         this.disguisePlugin = disguisePlugin;
     }
 
+    @Override
     public boolean initialize() {
         return (disguisePlugin != null && disguisePlugin instanceof LibsDisguises);
     }
 
+    @Override
     public boolean isDisguised(Entity entity) {
         return DisguiseAPI.isDisguised(entity);
     }
 
+    @Override
     public boolean disguise(Entity entity, ConfigurationSection configuration) {
         String disguiseName = configuration.getString("type");
         if (disguiseName == null || disguiseName.isEmpty()) {
@@ -64,8 +67,8 @@ public class LegacyLibsDisguiseManager implements LibsDisguiseManager {
         return true;
     }
 
-    @Nullable
     @Override
+    @Nullable
     public String getSkin(Player player) {
         return null;
     }

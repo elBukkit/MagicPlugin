@@ -225,6 +225,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return true;
     }
 
+    @Override
     public boolean isIndestructible(Block block) {
         CastContext context = getContext();
         if (context != null && context.isIndestructible(block)) {
