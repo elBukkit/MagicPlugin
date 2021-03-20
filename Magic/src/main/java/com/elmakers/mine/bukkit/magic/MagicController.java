@@ -3450,6 +3450,15 @@ public class MagicController implements MageController {
         return hasPermission((Player) sender, pNode, defaultValue);
     }
 
+    @Override
+    public boolean hasPermission(Entity entity, String pNode) {
+        if (entity instanceof CommandSender) {
+            return hasPermission((CommandSender)entity, pNode);
+        }
+        EntityData entityData = getMob(entity);
+        return entityData != null && entityData.hasPermission(pNode);
+    }
+
     public void registerFallingBlock(Entity fallingBlock, Block block) {
         UndoList undoList = getPendingUndo(fallingBlock.getLocation());
         if (undoList != null) {

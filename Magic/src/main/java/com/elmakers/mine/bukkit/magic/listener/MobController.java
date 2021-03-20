@@ -220,6 +220,34 @@ public class MobController implements Listener, ChunkLoadListener {
                 event.setCancelled(true);
                 return;
             }
+
+            com.elmakers.mine.bukkit.api.entity.EntityData entityData = controller.getMob(source);
+            if (entityData != null) {
+                // Docile handled above in onEntityTarget
+                Collection<String> ignorePermissions = entityData.getIgnorePermissions();
+                if (ignorePermissions != null) {
+                    for (String permission : ignorePermissions) {
+                        if (!controller.hasPermission(target, permission)) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                    }
+                }
+                Collection<String> attackPermissions = entityData.getAttackPermissions();
+                if (attackPermissions != null) {
+                    boolean hasAny = false;
+                    for (String permission : attackPermissions) {
+                        if (controller.hasPermission(target, permission)) {
+                            hasAny = true;
+                            break;
+                        }
+                    }
+                    if (!hasAny) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
         }
 
         Mage mage = controller.getRegisteredMage(source);

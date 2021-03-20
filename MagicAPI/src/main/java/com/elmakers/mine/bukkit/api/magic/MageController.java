@@ -256,6 +256,7 @@ public interface MageController {
 
     boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue);
     boolean hasPermission(CommandSender sender, String pNode);
+    boolean hasPermission(Entity entity, String pNode);
     boolean hasCastPermission(CommandSender sender, SpellTemplate spell);
     @Nullable
     Boolean getRegionCastPermission(Player player, SpellTemplate spell, Location location);

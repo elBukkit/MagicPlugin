@@ -51,6 +51,11 @@ public interface EntityData extends Cloneable {
     boolean isHidden();
     boolean isSuperProtected();
     @Nullable
+    Collection<String> getAttackPermissions();
+    @Nullable
+    Collection<String> getIgnorePermissions();
+    boolean hasPermission(String node);
+    @Nullable
     Entity spawn();
     @Nullable
     Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason);
