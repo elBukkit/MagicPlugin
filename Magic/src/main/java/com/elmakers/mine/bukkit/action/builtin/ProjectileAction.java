@@ -12,6 +12,7 @@ import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Fireball;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.ShulkerBullet;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -144,6 +145,10 @@ public class ProjectileAction  extends BaseProjectileAction
                     projectile.setShooter(shootingEntity);
                 }
 
+                if (projectile instanceof ShulkerBullet) {
+                    ShulkerBullet bullet = (ShulkerBullet)projectile;
+                    bullet.setTarget(context.getTargetEntity());
+                }
                 if (projectile instanceof ThrownPotion && color != null && !color.isEmpty()) {
                     ThrownPotion potion = (ThrownPotion)projectile;
                     if (color.startsWith("#")) {
