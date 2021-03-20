@@ -168,6 +168,7 @@ public class NMSUtils {
     protected static Class<?> class_CraftPlayer;
     protected static Class<?> class_CraftChunk;
     protected static Class<?> class_CraftEntity;
+    protected static Class<?> class_IProjectile;
     protected static Class<?> class_EntityProjectile;
     protected static Class<?> class_EntityFireball;
     protected static Class<?> class_EntityArrow;
@@ -687,6 +688,11 @@ public class NMSUtils {
             }
 
             try {
+                class_IProjectile = NMSUtils.getBukkitClass("net.minecraft.server.IProjectile");
+            } catch (Throwable ignore) {
+            }
+
+            try {
                 Class.forName("org.bukkit.event.entity.EntityTransformEvent");
                 hasEntityTransformEvent = true;
             } catch (Throwable ex) {
@@ -915,6 +921,10 @@ public class NMSUtils {
                                 entityTypes.put("EntityLargeFireball", entityType);
                             } else if (name.equals("Trident")) {
                                 entityTypes.put("EntityThrownTrident", entityType);
+                            } else if (name.equals("EntityExperienceBottle")) {
+                                entityTypes.put("EntityThrownExpBottle", entityType);
+                            } else if (name.equals("EntityExperienceBottle")) {
+                                entityTypes.put("EntityThrownExpBottle", entityType);
                             }
                         }
                     }

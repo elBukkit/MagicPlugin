@@ -1011,7 +1011,9 @@ public class CompatibilityUtils extends NMSUtils {
         return projectileType != null
                 && (class_EntityArrow.isAssignableFrom(projectileType)
                 || class_EntityProjectile.isAssignableFrom(projectileType)
-                || class_EntityFireball.isAssignableFrom(projectileType));
+                || class_EntityFireball.isAssignableFrom(projectileType)
+                || (class_IProjectile != null && class_IProjectile.isAssignableFrom(projectileType))
+        );
     }
 
     public static Projectile spawnProjectile(Class<?> projectileType, Location location, Vector direction, ProjectileSource source, float speed, float spread, float spreadLocations, Random random) {

@@ -50,7 +50,7 @@
  - Re-arrange plugin load order to (possibly) fix issues in recent builds with custom
    integrations (such as external attribute registration)
  - Fix LibsDisguise integration on old legacy versions of LD
- - Fix using ThrownTrident in Projectile action
+ - Fix using ThrownTrident, ThrownExpBottle and ShulkerBullet in Projectile action
 
 ## EffectLib 9.0
 
