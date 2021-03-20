@@ -913,6 +913,8 @@ public class NMSUtils {
                                 entityTypes.put("EntityTippedArrow", entityType);
                             } else if (name.equals("EntityFireball")) {
                                 entityTypes.put("EntityLargeFireball", entityType);
+                            } else if (name.equals("Trident")) {
+                                entityTypes.put("EntityThrownTrident", entityType);
                             }
                         }
                     }
