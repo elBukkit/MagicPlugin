@@ -919,12 +919,14 @@ public class NMSUtils {
                                 entityTypes.put("EntityTippedArrow", entityType);
                             } else if (name.equals("EntityFireball")) {
                                 entityTypes.put("EntityLargeFireball", entityType);
-                            } else if (name.equals("Trident")) {
+                            } else if (name.equals("EntityTrident")) {
                                 entityTypes.put("EntityThrownTrident", entityType);
                             } else if (name.equals("EntityExperienceBottle")) {
                                 entityTypes.put("EntityThrownExpBottle", entityType);
                             } else if (name.equals("EntityExperienceBottle")) {
                                 entityTypes.put("EntityThrownExpBottle", entityType);
+                            } else if (name.equals("EntityFishingBobber")) {
+                                entityTypes.put("EntityFishingHook", entityType);
                             }
                         }
                     }

@@ -20,6 +20,11 @@
 - Doesn't seem like conversion rates work? Absorbed 15 obsidian but was able to place a lot more than that
 - building with water and lava doesn't seem to work
 
+# Other Bugs... too many bugs .. crrryy
+
+- Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
+- See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
+
 # Engineering Improvements
 
  - Fill out worth values for all blocks (and items, for shops)
