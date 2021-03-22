@@ -41,6 +41,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.automata.Automaton;
+import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -652,5 +653,17 @@ public class EntityController implements Listener {
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error casting bow spell", ex);
         }
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerDeath(PlayerDeathEvent event) {
+        Entity entity = event.getEntity();
+        EntityDamageEvent.DamageCause cause = entity.getLastDamageCause() == null ? null : entity.getLastDamageCause().getCause();
+        controller.info("* Finalizing death of " + entity.getName()
+            + " from " + cause
+            + " with drops: " + event.getDrops().size()
+            + " undoing? " + BlockData.undoing
+            + " disable drops? " + disableItemSpawn
+            + " keep inv? " + event.getKeepInventory(), 20);
     }
 }

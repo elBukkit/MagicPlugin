@@ -989,6 +989,11 @@ public class PlayerController implements Listener {
     public void onPlayerPickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
         Player player = event.getPlayer();
+        if (player.isDead()) {
+            controller.info("Player picking up item while dead? " + player.getName() + ", cancelling", 5);
+            event.setCancelled(true);
+            return;
+        }
         Mage mage = controller.getMage(player);
 
         // If a wand's inventory is active, add the item there
