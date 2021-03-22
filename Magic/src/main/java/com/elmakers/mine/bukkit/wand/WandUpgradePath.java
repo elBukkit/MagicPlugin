@@ -60,6 +60,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private int[] levels = null;
     private final String key;
     private final WandUpgradePath parent;
+    private final WandUpgradePath follows;
     private final Set<String> spells = new HashSet<>();
     private final Set<String> brushes = new HashSet<>();
     private final Set<String> extraSpells = new HashSet<>();
@@ -73,7 +74,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private String upgradeItemKey;
     private String name;
     private String description;
-    private String followsPath;
     private Set<String> tags;
     private boolean hidden = false;
     private boolean earnsSP = true;
@@ -97,56 +97,52 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     private float bonusLevelMultiplier = 0.5f;
 
-    public WandUpgradePath(MageController controller, String key, WandUpgradePath inherit, ConfigurationSection template)
+    public WandUpgradePath(MageController controller, String key, WandUpgradePath inherit, WandUpgradePath follows, ConfigurationSection template)
     {
         this.parent = inherit;
+        this.follows = follows;
         this.key = key;
-        this.levels = inherit.levels;
-        this.maxMaxMana = inherit.maxMaxMana;
-        this.maxManaRegeneration = inherit.maxManaRegeneration;
-        this.maxProperties.putAll(inherit.maxProperties);
-        this.minLevel = inherit.minLevel;
-        this.maxLevel = inherit.maxLevel;
-        this.matchSpellMana = inherit.matchSpellMana;
-        this.earnsSP = inherit.earnsSP;
-        this.levelMap = new TreeMap<>(inherit.levelMap);
-        this.icon = inherit.icon;
-        this.migrateIcon = inherit.migrateIcon;
-        this.maxMana = inherit.maxMana;
-        this.manaRegeneration = inherit.manaRegeneration;
-        this.upgradeBroadcast = inherit.upgradeBroadcast;
-        effects.putAll(inherit.effects);
-        allRequiredSpells.addAll(inherit.allRequiredSpells);
-        allSpells.addAll(inherit.allSpells);
-        allExtraSpells.addAll(inherit.allExtraSpells);
-        allBrushes.addAll(inherit.allBrushes);
+        if (inherit != null) {
+            this.levels = inherit.levels;
+            this.maxMaxMana = inherit.maxMaxMana;
+            this.maxManaRegeneration = inherit.maxManaRegeneration;
+            this.maxProperties.putAll(inherit.maxProperties);
+            this.minLevel = inherit.minLevel;
+            this.maxLevel = inherit.maxLevel;
+            this.matchSpellMana = inherit.matchSpellMana;
+            this.earnsSP = inherit.earnsSP;
+            this.levelMap = new TreeMap<>(inherit.levelMap);
+            this.icon = inherit.icon;
+            this.migrateIcon = inherit.migrateIcon;
+            this.maxMana = inherit.maxMana;
+            this.manaRegeneration = inherit.manaRegeneration;
+            this.upgradeBroadcast = inherit.upgradeBroadcast;
+            effects.putAll(inherit.effects);
+            allRequiredSpells.addAll(inherit.allRequiredSpells);
+            allSpells.addAll(inherit.allSpells);
+            allExtraSpells.addAll(inherit.allExtraSpells);
+            allBrushes.addAll(inherit.allBrushes);
 
-        if (inherit.tags != null && !inherit.tags.isEmpty())
-        {
-            this.tags = new HashSet<>(inherit.tags);
-        }
-
-        load(controller, key, template);
-
-        if ((this.upgradeCommands == null || this.upgradeCommands.size() == 0) && inherit.upgradeCommands != null)
-        {
-            this.upgradeCommands = new ArrayList<>();
-            this.upgradeCommands.addAll(inherit.upgradeCommands);
-        }
-        if (inherit.properties != null) {
-            if (this.properties == null) {
-                this.properties = ConfigurationUtils.cloneConfiguration(inherit.properties);
-            } else {
-                ConfigurationUtils.addConfigurations(this.properties, inherit.properties, false);
+            if (inherit.tags != null && !inherit.tags.isEmpty()) {
+                this.tags = new HashSet<>(inherit.tags);
             }
         }
-    }
 
-    public WandUpgradePath(MageController controller, String key, ConfigurationSection template) {
-        this.key = key;
-        this.parent = null;
-        this.tags = null;
         load(controller, key, template);
+
+        if (inherit != null) {
+            if ((this.upgradeCommands == null || this.upgradeCommands.size() == 0) && inherit.upgradeCommands != null) {
+                this.upgradeCommands = new ArrayList<>();
+                this.upgradeCommands.addAll(inherit.upgradeCommands);
+            }
+            if (inherit.properties != null) {
+                if (this.properties == null) {
+                    this.properties = ConfigurationUtils.cloneConfiguration(inherit.properties);
+                } else {
+                    ConfigurationUtils.addConfigurations(this.properties, inherit.properties, false);
+                }
+            }
+        }
     }
 
     protected void load(MageController controller, String key, ConfigurationSection template) {
@@ -167,7 +163,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         allBrushes.addAll(brushes);
 
         // Upgrade information
-        followsPath = template.getString("follows");
         upgradeKey = template.getString("upgrade");
         upgradeItemKey = template.getString("upgrade_item");
 
@@ -348,16 +343,25 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
             parameters = MagicConfiguration.getKeyed(controller, parameters, "path", key);
             String inheritKey = parameters.getString("inherit");
+            WandUpgradePath inherit = null;
             if (inheritKey != null && !inheritKey.isEmpty()) {
-                WandUpgradePath inherit = getPath(controller, inheritKey, configuration, resolving);
+                inherit = getPath(controller, inheritKey, configuration, resolving);
                 if (inherit == null) {
-                    Bukkit.getLogger().warning("Failed to load inherited path '" + inheritKey + "' for path: " + key);
+                    controller.getLogger().warning("Failed to load inherited path '" + inheritKey + "' for path: " + key);
                     return null;
                 }
-                path = new WandUpgradePath(controller, key, inherit, parameters);
-            } else {
-                path = new WandUpgradePath(controller, key, parameters);
             }
+
+            String followsKey = parameters.getString("follows");
+            WandUpgradePath follows = null;
+            if (followsKey != null && !followsKey.isEmpty()) {
+                follows = getPath(controller, followsKey, configuration, resolving);
+                if (follows == null) {
+                    controller.getLogger().warning("Failed to load follows path '" + followsKey + "' for path: " + key);
+                    return null;
+                }
+            }
+            path = new WandUpgradePath(controller, key, inherit, follows, parameters);
 
             paths.put(key, path);
         }
@@ -731,7 +735,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     @Override
     public boolean hasPath(String pathName) {
         if (this.key.equalsIgnoreCase(pathName)) return true;
-        if (followsPath != null && followsPath.equalsIgnoreCase(pathName)) return true;
+        if (follows != null && follows.hasPath(pathName)) return true;
         if (parent != null) {
             return parent.hasPath(pathName);
         }
@@ -741,8 +745,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public String translatePath(String pathKey) {
-        if (followsPath != null) {
-            if (followsPath.equalsIgnoreCase(pathKey)) {
+        if (follows != null) {
+            if (follows.hasPath(pathKey)) {
                 return key;
             }
             if (upgradeKey != null) {
