@@ -2609,9 +2609,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean cancel()
     {
-        if (isActive()) {
+        if (isActive() && isActive) {
+            // Avoid double-cancels because deactivate() will also chain to cancel()
+            isActive = false;
             sendMessageKey("cancel");
-            deactivate();
+            deactivate(false, false, true, true);
         }
         if (currentCast != null) {
             currentCast.cancelEffects();
@@ -2651,13 +2653,17 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean deactivate(boolean force, boolean quiet, boolean effects) {
+        return deactivate(force, quiet, effects, false);
+    }
+
+    public boolean deactivate(boolean force, boolean quiet, boolean effects, boolean cancelled) {
         if (!force && bypassDeactivate) {
             return false;
         }
         if (currentCast == null || !currentCast.getResult().isFree()) {
             updateCooldown();
         }
-        if (isActive) {
+        if (isActive || cancelled) {
             isActive = false;
             onDeactivate();
 
