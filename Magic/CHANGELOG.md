@@ -51,6 +51,7 @@
    integrations (such as external attribute registration)
  - Fix LibsDisguise integration on old legacy versions of LD
  - Fix using ThrownTrident, ThrownExpBottle and ShulkerBullet in Projectile action
+ - Fix some cases of using but disabling the default configs
 
 ## EffectLib 9.0
 

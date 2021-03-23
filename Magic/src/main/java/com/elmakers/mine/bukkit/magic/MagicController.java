@@ -4308,6 +4308,7 @@ public class MagicController implements MageController {
 
                     // Some properties don't inherit, this is kind of hacky.
                     newConfiguration.set("hidden", configuration.get("hidden"));
+                    newConfiguration.set("enabled", configuration.get("enabled"));
                     configuration = newConfiguration;
                 }
             }

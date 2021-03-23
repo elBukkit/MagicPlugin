@@ -468,7 +468,7 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Apply overrides after loading defaults and examples
-        if (isMainConfig) {
+        if (!isMainConfig) {
             enableAll(overrides);
         }
         ConfigurationUtils.addConfigurations(config, overrides);
