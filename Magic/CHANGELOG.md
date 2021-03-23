@@ -6,6 +6,7 @@
 
  - Fix Levitate not consuming mana if left on when relogging
  - Fix Rollback+Chop/Mine exploits
+ - Fix a specific case of players' items not dropping on death
 
 # 8.4.2
 
