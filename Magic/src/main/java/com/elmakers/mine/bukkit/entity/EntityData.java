@@ -866,6 +866,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public boolean modify(Entity entity) {
         // Don't check isValid here since it will be false on the spawn event!
         if (entity.isDead()) return false;
+        if (!(entity instanceof Player)) {
+            controller.registerMob(entity, this);
+        }
         boolean modifiedPre = modifyPreSpawn(entity);
         boolean modifiedPost = modifyPostSpawn(entity);
         return modifiedPre || modifiedPost;
@@ -874,7 +877,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     private boolean modifyPreSpawn(Entity entity) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
 
-        controller.registerMob(entity, this);
+        if (!(entity instanceof Player)) {
+            controller.registerMob(entity, this);
+        }
         boolean isPlayer = (entity instanceof Player);
         if (extraData != null) {
             extraData.apply(entity);
