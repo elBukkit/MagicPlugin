@@ -279,6 +279,11 @@ public class MobController implements Listener, ChunkLoadListener {
             return;
         }
 
+        if (entity instanceof Player) {
+            controller.getLogger().warning("A player has magic mob data on death, this shouldn't happen");
+            return;
+        }
+
         // Prevent processing double-death events
         activeMobs.remove(entity);
         MagicMobDeathEvent deathEvent = new MagicMobDeathEvent(controller, mob, event);
