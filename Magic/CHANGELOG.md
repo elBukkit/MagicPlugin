@@ -51,6 +51,7 @@
    integrations (such as external attribute registration)
  - Fix LibsDisguise integration on old legacy versions of LD
  - Fix using ThrownTrident, ThrownExpBottle and ShulkerBullet in Projectile action
+ - Fix a specific case of players' items not dropping on death
 
 ## EffectLib 9.0
 
