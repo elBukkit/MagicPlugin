@@ -43,7 +43,8 @@ public abstract class Paginator<T> {
         int start = page * rowsPerPage;
         int end = start + rowsPerPage;
         int pages = (int)Math.ceil((double)sorted.size() / rowsPerPage);
-        if (start < 0 || start > sorted.size()) {
+        end = Math.min(end, sorted.size());
+        if (start < 0 || start >= sorted.size()) {
             sender.sendMessage(ChatColor.RED + "Invalid page number: " + ChatColor.WHITE + pageNumber
                 + ChatColor.GRAY + "/" + ChatColor.GOLD + pages);
             return;
