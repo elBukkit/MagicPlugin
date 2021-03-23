@@ -641,10 +641,6 @@ public class ConfigurationLoadTask implements Runnable {
             if (key.equals("default") || key.equals("override")) continue;
 
             ConfigurationSection spellNode = getSpellConfig(key, spellConfiguration);
-            if (!ConfigurationUtils.isEnabled(spellNode)) {
-                continue;
-            }
-
             // Kind of a hacky way to do this, and only works with BaseSpell spells.
             if (noPvpRestricted) {
                 spellNode.set("pvp_restricted", false);

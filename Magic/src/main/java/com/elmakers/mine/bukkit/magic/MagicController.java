@@ -4609,6 +4609,10 @@ public class MagicController implements MageController {
             logger.setContext("spells." + key);
 
             ConfigurationSection spellNode = spellConfigs.getConfigurationSection(key);
+            if (!ConfigurationUtils.isEnabled(spellNode)) {
+                continue;
+            }
+
             if (!(spellNode instanceof MagicConfiguration)) {
                 spellNode = MagicConfiguration.getKeyed(this, spellNode, "spell", key);
                 spellConfigs.set(key, spellNode);
