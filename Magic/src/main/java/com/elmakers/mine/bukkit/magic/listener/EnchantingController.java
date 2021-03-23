@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
@@ -25,7 +26,7 @@ public class EnchantingController implements Listener {
         this.controller = controller;
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onEnchantItem(EnchantItemEvent event) {
         ItemStack item = event.getItem();
         Wand wand = controller.getIfWand(item);
