@@ -19,6 +19,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.TippedArrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
+import org.bukkit.event.HandlerList;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityCombustEvent;
@@ -34,6 +35,7 @@ import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.event.entity.ProjectileLaunchEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
@@ -655,15 +657,62 @@ public class EntityController implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerDeath(PlayerDeathEvent event) {
+    @EventHandler(priority = EventPriority.NORMAL)
+    public void onPlayerDeathNormal(PlayerDeathEvent event) {
         Entity entity = event.getEntity();
         EntityDamageEvent.DamageCause cause = entity.getLastDamageCause() == null ? null : entity.getLastDamageCause().getCause();
-        controller.info("* Finalizing death of " + entity.getName()
+        controller.info("* NORMAL death of " + entity.getName()
+                + " from " + cause
+                + " with drops: " + event.getDrops().size()
+                + " undoing? " + BlockData.undoing
+                + " disable drops? " + disableItemSpawn
+                + " keep inv? " + event.getKeepInventory(), 30);
+
+        controller.info("** Registered entity death listeners: ", 40);
+        HandlerList deathEventHandlers = EntityDeathEvent.getHandlerList();
+        for (RegisteredListener listener : deathEventHandlers.getRegisteredListeners()) {
+            controller.info("*** " + listener.getPlugin().getName() + " at " + listener.getPriority(), 40);
+        }
+        controller.info("** Registered player death listeners: ", 40);
+        deathEventHandlers = PlayerDeathEvent.getHandlerList();
+        for (RegisteredListener listener : deathEventHandlers.getRegisteredListeners()) {
+            controller.info("*** " + listener.getPlugin().getName() + " at " + listener.getPriority(), 40);
+        }
+    }
+
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onPlayerDeathHigh(PlayerDeathEvent event) {
+        Entity entity = event.getEntity();
+        EntityDamageEvent.DamageCause cause = entity.getLastDamageCause() == null ? null : entity.getLastDamageCause().getCause();
+        controller.info("* HIGH death of " + entity.getName()
+                + " from " + cause
+                + " with drops: " + event.getDrops().size()
+                + " undoing? " + BlockData.undoing
+                + " disable drops? " + disableItemSpawn
+                + " keep inv? " + event.getKeepInventory(), 30);
+    }
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onPlayerDeathHighest(PlayerDeathEvent event) {
+        Entity entity = event.getEntity();
+        EntityDamageEvent.DamageCause cause = entity.getLastDamageCause() == null ? null : entity.getLastDamageCause().getCause();
+        controller.info("* HIGHEST death of " + entity.getName()
+                + " from " + cause
+                + " with drops: " + event.getDrops().size()
+                + " undoing? " + BlockData.undoing
+                + " disable drops? " + disableItemSpawn
+                + " keep inv? " + event.getKeepInventory(), 30);
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerDeathMonitor(PlayerDeathEvent event) {
+        Entity entity = event.getEntity();
+        EntityDamageEvent.DamageCause cause = entity.getLastDamageCause() == null ? null : entity.getLastDamageCause().getCause();
+        controller.info("* MONITOR death of " + entity.getName()
             + " from " + cause
             + " with drops: " + event.getDrops().size()
             + " undoing? " + BlockData.undoing
             + " disable drops? " + disableItemSpawn
-            + " keep inv? " + event.getKeepInventory(), 20);
+            + " keep inv? " + event.getKeepInventory(), 30);
     }
 }
