@@ -236,3 +236,9 @@ hardhat:
   attributes:
     constitution: 2
 
+randompower:
+  inherit: base_wand
+  path: randompower
+  mana_regeneration: 50
+  mana_max: 100
+  spells: missile
