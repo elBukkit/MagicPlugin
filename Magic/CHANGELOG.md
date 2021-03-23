@@ -51,7 +51,6 @@
    integrations (such as external attribute registration)
  - Fix LibsDisguise integration on old legacy versions of LD
  - Fix using ThrownTrident, ThrownExpBottle and ShulkerBullet in Projectile action
- - Fix a specific case of players' items not dropping on death
 
 ## EffectLib 9.0
 
@@ -71,6 +70,7 @@
 
  - Fix Levitate not consuming mana if left on when relogging
  - Fix Rollback+Chop/Mine exploits
+ - Fix a specific case of players' items not dropping on death
 
 # 8.4.2
 
