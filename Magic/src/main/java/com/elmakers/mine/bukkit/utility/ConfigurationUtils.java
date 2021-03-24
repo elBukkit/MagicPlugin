@@ -997,7 +997,7 @@ public class ConfigurationUtils extends ConfigUtils {
                         requiredSpells.add(prerequisiteSpell);
                         controller.getLogger().warning("Unknown or disabled spell requirement " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext + ", upgrade will be disabled");
                     } else {
-                        controller.getLogger().info("Unknown or disabled spell prerequisite " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext + ", ignoring");
+                        controller.info("Unknown or disabled spell prerequisite " + prerequisiteSpell.getSpellKey().getKey() + " in " + loadContext + ", ignoring", 5);
                     }
                 }
             }
