@@ -35,6 +35,7 @@ forcechoke:
           disappear_with_target_entity: true
     parameters:
       duration: 4000
+      cooldown: 10 seconds
       range: 16
       add_effects:
         levitation: 1
