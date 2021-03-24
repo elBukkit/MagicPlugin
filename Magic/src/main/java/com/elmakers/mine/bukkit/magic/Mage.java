@@ -15,7 +15,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Level;
@@ -147,20 +146,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0.5, -0.5, 0);
     public static double SNEAKING_CAST_OFFSET = -0.2;
 
-    private static class DamagedBy {
-        private WeakReference<Entity> player;
-        public double damage;
-
-        public DamagedBy(Entity entity, double damage) {
-            this.player = new WeakReference<>(entity);
-            this.damage = damage;
-        }
-
-        public Entity getEntity() {
-            return player.get();
-        }
-    }
-
     protected final String id;
     private final @Nonnull MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
@@ -233,11 +218,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private MageContext effectContext = null;
     private BossBarTracker bossBar = null;
 
-    private DamagedBy topDamager;
-    private DamagedBy lastDamager;
-    private Map<UUID, DamagedBy> damagedBy;
-    private WeakReference<Entity> lastDamageTarget;
     private Map<Player, MageConversation> conversations = new WeakHashMap<>();
+    private MageTargeting targeting;
+    private WeakReference<Entity> lastDamageSource;
+    private WeakReference<Entity> lastDamageTarget;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     private Map<String, Double> protection = new HashMap<>();
@@ -492,8 +476,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    private void setTarget(Entity target) {
-        if (entityData != null && !entityData.shouldFocusOnDamager()) return;
+    public void setTarget(Entity target) {
         if (!canTarget(target)) return;
 
         LivingEntity li = getLivingEntity();
@@ -508,21 +491,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public @Nullable Collection<Entity> getDamagers() {
-        if (damagedBy == null) return null;
-        Collection<Entity> damagers = new ArrayList<>();
-        for (DamagedBy damager : damagedBy.values()) {
-            Entity entity = damager.getEntity();
-            if (entity != null) {
-                damagers.add(entity);
-            }
-        }
-        return damagers;
+    @Nullable
+    public Collection<Entity> getDamagers() {
+        return targeting == null ? null : targeting.getDamagers();
     }
 
     @Override
     public @Nullable Entity getLastDamager() {
-        return lastDamager == null ? null : lastDamager.getEntity();
+        return lastDamageSource == null ? null : lastDamageSource.get();
     }
 
     @Override
@@ -532,41 +508,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public @Nullable Entity getTopDamager() {
-        if (topDamager == null) return null;
-        Entity topEntity = topDamager.getEntity();
-        if (topEntity == null && damagedBy != null) {
-            double topDamage = 0;
-            for (Iterator<Map.Entry<UUID, DamagedBy>> it = damagedBy.entrySet().iterator(); it.hasNext();) {
-                Map.Entry<UUID, DamagedBy> entry = it.next();
-                DamagedBy damaged = entry.getValue();
-                Entity entity = damaged.getEntity();
-                if (entity != null && entity.isValid() && !entity.isDead()) {
-                    boolean withinRange = withinRange(entity);
-                    if (withinRange && damaged.damage > topDamage) {
-                        topEntity = entity;
-                        topDamage = damaged.damage;
-                        topDamager = damaged;
-                    }
-                } else {
-                    it.remove();
-                }
-            }
-        }
-
-        return topEntity;
+        return targeting == null ? null : targeting.getTopDamager();
     }
 
     public boolean canTarget(Entity entity) {
         return entityData != null ? entityData.canTarget(entity) : true;
-    }
-
-    private boolean withinRange(Entity entity) {
-        boolean withinRange = getLocation().getWorld() == entity.getLocation().getWorld();
-        double rangeSquared = entityData == null ? 0 : entityData.getTrackRadiusSquared();
-        if (rangeSquared > 0 && withinRange) {
-            withinRange = getLocation().distanceSquared(entity.getLocation()) <= rangeSquared;
-        }
-        return withinRange;
     }
 
     @Override
@@ -577,38 +523,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // Don't count self-attacks
         if (damager == null || damager == getEntity()) return;
 
-        // See if this is the same damager as last time
-        Entity lastDamagerEntity = lastDamager == null ? null : lastDamager.getEntity();
-        if (lastDamagerEntity == damager) {
-            lastDamager.damage += damage;
-        } else {
-            // See if we have been damaged by this before
-            // Currently only mobs track damage history like this
-            if (damagedBy != null) {
-                lastDamager = damagedBy.get(damager.getUniqueId());
-            } else {
-                lastDamager = null;
-            }
-            // If this is a new damager, create a new record to track it
-            if (lastDamager == null) {
-                lastDamager = new DamagedBy(damager, damage);
-                if (damagedBy != null) {
-                    damagedBy.put(damager.getUniqueId(), lastDamager);
-                }
-            } else {
-                lastDamager.damage += damage;
-            }
+        // Update targeting information
+        if (targeting != null) {
+            targeting.damagedBy(damager, damage);
         }
 
-        if (topDamager != null) {
-            if (topDamager.getEntity() == null || topDamager.damage < lastDamager.damage || !withinRange(topDamager.getEntity())) {
-                topDamager = lastDamager;
-                setTarget(damager);
-            }
-        } else {
-            topDamager = lastDamager;
-            setTarget(damager);
-        }
+        // Record last damager separately for passive targeting
+        lastDamageSource = new WeakReference<>(damager);
     }
 
     public void onDamageDealt(EntityDamageEvent event) {
@@ -4509,8 +4430,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // Initialize boss bar
         bossBar = entityData.getBossBar(this);
 
-        // Only Magic Mobs tracks damage by player, for now
-        damagedBy = new HashMap<>();
+        // Initialize targeting
+        targeting = new MageTargeting(this);
     }
 
     @Override
@@ -5318,6 +5239,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nonnull
     public Map<Player, MageConversation> getConversations() {
         return conversations;
+    }
+
+    @Nullable
+    public MageTargeting getTargeting() {
+        return targeting;
     }
 
     @Override
