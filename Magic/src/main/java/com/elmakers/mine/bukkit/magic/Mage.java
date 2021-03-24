@@ -2634,41 +2634,52 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Nullable
     @Override
-    public ItemStack getItem(int slot) {
-        if (slot >= InventorySlot.BOOTS.getSlot()) {
+    public ItemStack getItem(int slotIndex) {
+        InventorySlot slot = InventorySlot.getSlot(slotIndex);
+        if (slot.isArmorSlot()) {
             Player player = getPlayer();
             if (player != null) {
-                return player.getInventory().getItem(slot);
+                return player.getInventory().getItem(slotIndex);
+            }
+            LivingEntity living = getLivingEntity();
+            if (living != null) {
+                return slot.getItem(living.getEquipment());
             }
             return null;
         }
 
         Inventory inventory = getInventory();
-        if (slot >= 0 && slot < inventory.getSize()) {
-            return inventory.getItem(slot);
+        if (slotIndex >= 0 && slotIndex < inventory.getSize()) {
+            return inventory.getItem(slotIndex);
         }
         return null;
     }
 
     @Override
-    public boolean setItem(int slot, ItemStack item) {
+    public boolean setItem(int slotIndex, ItemStack item) {
         Player player = getPlayer();
         if (player != null && player.isDead() && !CompatibilityUtils.isEmpty(item)) {
-            controller.info("** Giving item while dead (slot " + slot + "): " + TextUtils.nameItem(item));
-            addToRespawnInventory(slot, item);
+            controller.info("** Giving item while dead (slot " + slotIndex + "): " + TextUtils.nameItem(item));
+            addToRespawnInventory(slotIndex, item);
             return true;
         }
-        if (slot >= InventorySlot.BOOTS.getSlot()) {
+
+        InventorySlot slot = InventorySlot.getSlot(slotIndex);
+        if (slot.isArmorSlot()) {
             if (player != null) {
-                player.getInventory().setItem(slot, item);
+                player.getInventory().setItem(slotIndex, item);
                 return true;
+            }
+            LivingEntity living = getLivingEntity();
+            if (living != null) {
+                return slot.setItem(living.getEquipment(), item);
             }
             return false;
         }
 
         Inventory inventory = getInventory();
-        if (slot >= 0 && slot < inventory.getSize()) {
-            inventory.setItem(slot, item);
+        if (slotIndex >= 0 && slotIndex < inventory.getSize()) {
+            inventory.setItem(slotIndex, item);
             return true;
         }
         return false;

@@ -13,7 +13,8 @@ import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -67,65 +68,6 @@ public class EquipAction extends BaseSpellAction
         }
     }
 
-    private static class WearUndoAction implements Runnable
-    {
-        private final MageController controller;
-        private final WeakReference<Player> player;
-        private final int slotNumber;
-        private boolean returned = false;
-
-        public WearUndoAction(MageController controller, Player player, int slotNumber) {
-            this.controller = controller;
-            this.player = new WeakReference<>(player);
-            this.slotNumber = slotNumber;
-        }
-
-        private void returnItem() {
-            if (returned) return;
-            returned = true;
-            Player player = this.player.get();
-            if (player == null) return;
-
-            Mage targetMage = controller.getRegisteredMage(player);
-            ItemStack currentItem = targetMage.getItem(slotNumber);
-            if (NMSUtils.isTemporary(currentItem)) {
-                ItemStack replacement = NMSUtils.getReplacement(currentItem);
-                targetMage.setItem(slotNumber, replacement);
-            }
-            if (targetMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                com.elmakers.mine.bukkit.magic.Mage implMage = ((com.elmakers.mine.bukkit.magic.Mage)targetMage);
-                implMage.armorUpdated();
-                implMage.checkWandNextTick();
-            }
-        }
-
-        @Override
-        public void run() {
-            returnItem();
-        }
-    }
-
-    @Override
-    public void prepare(CastContext context, ConfigurationSection parameters) {
-        material = ConfigurationUtils.getMaterialAndData(parameters, "material");
-        item = context.getController().createItem(parameters.getString("item"));
-        String slotName = parameters.getString("slot");
-        if (slotName != null && !slotName.isEmpty()) {
-            try {
-                slot = InventorySlot.valueOf(slotName.toUpperCase());
-            } catch (Exception ex) {
-                context.getLogger().warning("Invalid slot in Wear action: " + slotName);
-            }
-        } else {
-            slot = InventorySlot.getArmorSlot(parameters.getInt("armor_slot", 3));
-        }
-
-        useItem = parameters.getBoolean("use_item", false);
-        unbreakable = parameters.getBoolean("unbreakable", true);
-        returnOnFinish = parameters.getBoolean("return_on_finish", false);
-        makeTemporary = parameters.getBoolean("temporary", true);
-    }
-
     @Override
     public SpellResult perform(CastContext context) {
         if (slot == null) {
@@ -136,14 +78,17 @@ public class EquipAction extends BaseSpellAction
             if (!context.getTargetsCaster()) return SpellResult.NO_TARGET;
             entity = context.getEntity();
         }
-        if (entity == null || !(entity instanceof Player)) {
+        if (entity == null) {
             return SpellResult.NO_TARGET;
         }
+        if (!(entity instanceof LivingEntity)) {
+            return SpellResult.LIVING_ENTITY_REQUIRED;
+        }
 
-        Player player = (Player)entity;
+        EntityEquipment equipment = ((LivingEntity)entity).getEquipment();
         MaterialAndData material = this.material;
         MageController controller = context.getController();
-        Mage mage = controller.getMage(player);
+        Mage mage = controller.getMage(entity);
         ItemStack equipItem = null;
 
         // Find or create the item to wear
@@ -159,7 +104,7 @@ public class EquipAction extends BaseSpellAction
                 activeWand.deactivate();
             }
 
-            ItemStack itemInHand = player.getInventory().getItemInMainHand();
+            ItemStack itemInHand = equipment.getItemInMainHand();
             if (itemInHand == null || itemInHand.getType() == Material.AIR) {
                 return SpellResult.FAIL;
             }
@@ -264,20 +209,20 @@ public class EquipAction extends BaseSpellAction
             // Otherwise, store the item inside the new item, to be returned on click or when
             // the spell finished
             if (useItem) {
-                player.getInventory().setItemInMainHand(existingItem);
+                equipment.setItemInMainHand(existingItem);
             } else {
                 NMSUtils.setReplacement(equipItem, existingItem);
             }
         } else if (useItem) {
             // If we didn't swap the wand out with the item in the target slot, we need to clear the main hand
             // slot since we're going to equip that item and don't want to dupe it
-            player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+            equipment.setItemInMainHand(new ItemStack(Material.AIR));
         }
 
         // Put the new item in the target slot
         mage.setItem(slotNumber, equipItem);
 
-        undoAction = new WearUndoAction(controller, player, slotNumber);
+        undoAction = new WearUndoAction(mage, slotNumber);
         context.registerForUndo(undoAction);
 
         if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
@@ -286,6 +231,61 @@ public class EquipAction extends BaseSpellAction
             implMage.checkWandNextTick();
         }
         return SpellResult.CAST;
+    }
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        material = ConfigurationUtils.getMaterialAndData(parameters, "material");
+        item = context.getController().createItem(parameters.getString("item"));
+        String slotName = parameters.getString("slot");
+        if (slotName != null && !slotName.isEmpty()) {
+            try {
+                slot = InventorySlot.valueOf(slotName.toUpperCase());
+            } catch (Exception ex) {
+                context.getLogger().warning("Invalid slot in Wear action: " + slotName);
+            }
+        } else {
+            slot = InventorySlot.getArmorSlot(parameters.getInt("armor_slot", 3));
+        }
+
+        useItem = parameters.getBoolean("use_item", false);
+        unbreakable = parameters.getBoolean("unbreakable", true);
+        returnOnFinish = parameters.getBoolean("return_on_finish", false);
+        makeTemporary = parameters.getBoolean("temporary", true);
+    }
+
+    private static class WearUndoAction implements Runnable {
+        private final WeakReference<Mage> mage;
+        private final int slotNumber;
+        private boolean returned = false;
+
+        public WearUndoAction(Mage mage, int slotNumber) {
+            this.mage = new WeakReference<>(mage);
+            this.slotNumber = slotNumber;
+        }
+
+        private void returnItem() {
+            if (returned) return;
+            returned = true;
+            Mage mage = this.mage.get();
+            if (mage == null) return;
+
+            ItemStack currentItem = mage.getItem(slotNumber);
+            if (NMSUtils.isTemporary(currentItem)) {
+                ItemStack replacement = NMSUtils.getReplacement(currentItem);
+                mage.setItem(slotNumber, replacement);
+            }
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                com.elmakers.mine.bukkit.magic.Mage implMage = ((com.elmakers.mine.bukkit.magic.Mage)mage);
+                implMage.armorUpdated();
+                implMage.checkWandNextTick();
+            }
+        }
+
+        @Override
+        public void run() {
+            returnItem();
+        }
     }
 
     @Override

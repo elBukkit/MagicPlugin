@@ -15,7 +15,10 @@ public enum InventorySlot {
     MAIN_HAND(), OFF_HAND(), FREE(),
 
     // This is here for armor stands
-    RIGHT_ARM();
+    RIGHT_ARM(),
+
+    // This is here for getSlot when getting a non armor-slot
+    INVENTORY();
 
     private final int slot;
 
@@ -38,12 +41,14 @@ public enum InventorySlot {
         return HELMET;
     }
 
-    public int getArmorSlot() {
-        return slot - 36;
-    }
-
-    public boolean isArmorSlot() {
-        return slot != -1;
+    public static InventorySlot getSlot(int slot) {
+        switch (slot) {
+            case 36: return BOOTS;
+            case 37: return LEGGINGS;
+            case 38: return CHESTPLATE;
+            case 39: return HELMET;
+        }
+        return INVENTORY;
     }
 
     public int getSlot() {
@@ -73,28 +78,32 @@ public enum InventorySlot {
         return -1;
     }
 
-    public boolean setItem(EntityEquipment equitment, ItemStack itemStack) {
+    public boolean isArmorSlot() {
+        return slot != -1;
+    }
+
+    public boolean setItem(EntityEquipment equipment, ItemStack itemStack) {
         switch (this) {
             case HELMET:
-                equitment.setHelmet(itemStack);
+                equipment.setHelmet(itemStack);
                 break;
             case CHESTPLATE:
-                equitment.setChestplate(itemStack);
+                equipment.setChestplate(itemStack);
                 break;
             case LEGGINGS:
-                equitment.setLeggings(itemStack);
+                equipment.setLeggings(itemStack);
                 break;
             case BOOTS:
-                equitment.setBoots(itemStack);
+                equipment.setBoots(itemStack);
                 break;
             case MAIN_HAND:
-                equitment.setItemInMainHand(itemStack);
+                equipment.setItemInMainHand(itemStack);
                 break;
             case OFF_HAND:
-                equitment.setItemInOffHand(itemStack);
+                equipment.setItemInOffHand(itemStack);
                 break;
             case RIGHT_ARM:
-                equitment.setItemInOffHand(itemStack);
+                equipment.setItemInOffHand(itemStack);
                 break;
             default: return false;
         }
