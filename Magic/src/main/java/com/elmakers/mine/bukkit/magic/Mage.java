@@ -494,6 +494,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private void setTarget(Entity target) {
         if (entityData != null && !entityData.shouldFocusOnDamager()) return;
+        if (!canTarget(target)) return;
 
         LivingEntity li = getLivingEntity();
         if (li != null && li instanceof Creature && target instanceof LivingEntity) {
@@ -553,6 +554,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         return topEntity;
+    }
+
+    public boolean canTarget(Entity entity) {
+        return entityData != null ? entityData.canTarget(entity) : true;
     }
 
     private boolean withinRange(Entity entity) {

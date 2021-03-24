@@ -1455,6 +1455,30 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return permissions != null && permissions.contains(key);
     }
 
+    public boolean canTarget(Entity target) {
+        if (target == null) return true;
+        if (ignorePermissions != null) {
+            for (String permission : ignorePermissions) {
+                if (controller.hasPermission(target, permission)) {
+                    return false;
+                }
+            }
+        }
+        if (attackPermissions != null) {
+            boolean hasAny = false;
+            for (String permission : attackPermissions) {
+                if (controller.hasPermission(target, permission)) {
+                    hasAny = true;
+                    break;
+                }
+            }
+            if (!hasAny) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     @Override
     public boolean isTransformable() {
         return transformable;
