@@ -22,16 +22,13 @@ cloak:
         - class: PotionEffect
         - class: Wear
           item: pumpkin_seeds
-          armor_slot: 0
+          slot: chestplate
         - class: Wear
           item: pumpkin_seeds
-          armor_slot: 1
+          slot: leggings
         - class: Wear
           item: pumpkin_seeds
-          armor_slot: 2
-        - class: Wear
-          item: pumpkin_seeds
-          armor_slot: 3
+          slot: boots
         - class: AreaOfEffect
           actions:
             - class: Aggro

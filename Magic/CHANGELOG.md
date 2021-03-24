@@ -33,6 +33,7 @@
  - Reworked the Stun spell
  - Console and command block casts now act "SuperPowered", can bypass indestructible materials. Is configurable.
  - The Equip action can now be used on mobs
+ - Cloak won't replace your helmet
 
 ## Additions
 
