@@ -11,12 +11,12 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MobTargeting {
     private final MageController controller;
-    private final List<String> allowedPermissions;
+    private final List<String> requiredParameters;
     private final List<String> deniedPermissions;
 
     private MobTargeting(MageController controller, ConfigurationSection parameters) {
         this.controller = controller;
-        allowedPermissions = ConfigurationUtils.getStringList(parameters, "allowed_permissions");
+        requiredParameters = ConfigurationUtils.getStringList(parameters, "required_permissions");
         deniedPermissions = ConfigurationUtils.getStringList(parameters, "denied_permissions");
     }
 
@@ -37,9 +37,9 @@ public class MobTargeting {
                 }
             }
         }
-        if (allowedPermissions != null) {
+        if (requiredParameters != null) {
             boolean hasAny = false;
-            for (String permission : allowedPermissions) {
+            for (String permission : requiredParameters) {
                 if (controller.hasPermission(target, permission)) {
                     hasAny = true;
                     break;
