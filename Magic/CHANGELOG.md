@@ -42,7 +42,7 @@
  - Added `mage reward` command, for giving players rewards, replaced with some SP or money if they already have it
  - Add `kit` support to Selector action, see `kitshop` in elworld examples
  - Wands can now have a `level_spells: true` property to auto-level spells to max
- - Add `attack_permissions` and `ignore_permissions` mob parameters for permission-based mob factions
+ - Add `targeting` parameter section to mob configs, can be used to set up mob factions, see stars example rebel/imperial
  - Add `permissions` mob parameter, currently only works for permission-based targeting checks via the above parameters
 
 ## Fixes

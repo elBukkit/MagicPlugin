@@ -1,0 +1,14 @@
+imperial:
+  type: husk
+  name: "Imperial"
+  disguise:
+    type: player
+    skin: Empire
+    name: Imperial
+  health: 100
+  silent: true
+  default_drops: false
+  permissions: magic.team.magic
+  targeting:
+    required_permissions: magic.team.rebel
+    denied_permissions: magic.team.imperial

@@ -1,0 +1,14 @@
+rebel:
+  type: husk
+  name: "Rebel"
+  disguise:
+    type: player
+    skin: Rebel
+    name: Rebel
+  health: 100
+  silent: true
+  default_drops: false
+  permissions: magic.team.rebel
+  targeting:
+    required_permissions: magic.team.imperial
+    denied_permissions: magic.team.rebel
