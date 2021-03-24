@@ -256,14 +256,6 @@ public class EntityController implements Listener {
                 }
                 event.setDamage(event.getDamage() * (1 - meleeDamageReduction));
             }
-
-            if (isMelee && damagerMage != null) {
-                activeWand = damagerMage.getActiveWand();
-                if (activeWand != null) {
-                    activeWand.playEffects("hit_entity");
-                    activeWand.damageDealt(event.getDamage(), entity);
-                }
-            }
             if (preventWandMeleeDamage)
             {
                 boolean hasWand = activeWand != null;
@@ -274,6 +266,15 @@ public class EntityController implements Listener {
                     event.setCancelled(true);
                 } else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
                     event.setCancelled(true);
+                }
+            }
+            if (!event.isCancelled()) {
+                if (isMelee && damagerMage != null) {
+                    activeWand = damagerMage.getActiveWand();
+                    if (activeWand != null) {
+                        activeWand.playEffects("hit_entity");
+                        activeWand.damageDealt(event.getDamage(), entity);
+                    }
                 }
             }
         } else {
