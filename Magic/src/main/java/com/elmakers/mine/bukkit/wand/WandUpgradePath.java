@@ -60,7 +60,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private int[] levels = null;
     private final String key;
     private final WandUpgradePath parent;
-    private final WandUpgradePath follows;
+    private WandUpgradePath follows;
     private final Set<String> spells = new HashSet<>();
     private final Set<String> brushes = new HashSet<>();
     private final Set<String> extraSpells = new HashSet<>();
@@ -97,10 +97,9 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     private float bonusLevelMultiplier = 0.5f;
 
-    public WandUpgradePath(MageController controller, String key, WandUpgradePath inherit, WandUpgradePath follows, ConfigurationSection template)
+    public WandUpgradePath(MageController controller, String key, WandUpgradePath inherit, ConfigurationSection template)
     {
         this.parent = inherit;
-        this.follows = follows;
         this.key = key;
         if (inherit != null) {
             this.levels = inherit.levels;
@@ -322,13 +321,13 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     }
 
     @Nullable
-    protected static WandUpgradePath getPath(MagicController controller, String key, ConfigurationSection configuration) {
+    protected static WandUpgradePath loadPath(MagicController controller, String key, ConfigurationSection configuration) {
         resolvingKeys.clear();
-        return getPath(controller, key, configuration, resolvingKeys);
+        return loadPath(controller, key, configuration, resolvingKeys);
     }
 
     @Nullable
-    protected static WandUpgradePath getPath(MagicController controller, String key, ConfigurationSection configuration, Set<String> resolving) {
+    protected static WandUpgradePath loadPath(MagicController controller, String key, ConfigurationSection configuration, Set<String> resolving) {
         // Catch circular dependencies
         if (resolving.contains(key)) {
             controller.getLogger().log(Level.WARNING, "Circular dependency detected in paths: " + StringUtils.join(resolving, " -> ") + " -> " + key);
@@ -345,39 +344,54 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             String inheritKey = parameters.getString("inherit");
             WandUpgradePath inherit = null;
             if (inheritKey != null && !inheritKey.isEmpty()) {
-                inherit = getPath(controller, inheritKey, configuration, resolving);
+                inherit = loadPath(controller, inheritKey, configuration, resolving);
                 if (inherit == null) {
                     controller.getLogger().warning("Failed to load inherited path '" + inheritKey + "' for path: " + key);
                     return null;
                 }
             }
-
-            String followsKey = parameters.getString("follows");
-            WandUpgradePath follows = null;
-            if (followsKey != null && !followsKey.isEmpty()) {
-                follows = getPath(controller, followsKey, configuration, resolving);
-                if (follows == null) {
-                    controller.getLogger().warning("Failed to load follows path '" + followsKey + "' for path: " + key);
-                    return null;
-                }
-            }
-            path = new WandUpgradePath(controller, key, inherit, follows, parameters);
+            path = new WandUpgradePath(controller, key, inherit, parameters);
 
             paths.put(key, path);
         }
-
         return path;
-    }
-
-    public static WandUpgradePath getPath(String key) {
-        return paths.get(key);
     }
 
     public static void loadPaths(MagicController controller, ConfigurationSection configuration) {
         paths.clear();
         Set<String> pathKeys = configuration.getKeys(false);
         for (String key : pathKeys) {
-            getPath(controller, key, configuration);
+            loadPath(controller, key, configuration);
+        }
+        // Resolve follows tree in a second pass to avoid complexities in detecting infinite loops
+        for (WandUpgradePath path : paths.values())  {
+            path.loadFollows(controller, configuration);
+        }
+    }
+
+    public static WandUpgradePath getPath(String key) {
+        return paths.get(key);
+    }
+
+    protected void loadFollows(MagicController controller, ConfigurationSection pathsConfiguration) {
+        ConfigurationSection parameters = pathsConfiguration.getConfigurationSection(key);
+        String followsKey = parameters.getString("follows");
+        if (followsKey != null && !followsKey.isEmpty()) {
+            follows = paths.get(followsKey);
+            if (follows == null) {
+                controller.getLogger().warning("Failed to load follows path '" + followsKey + "' for path: " + key);
+                return;
+            }
+
+            // This is a little hacky, but to keep it simpler this seems best
+            // Just going to make it a warning though and allow it, in case there's some
+            // weird reason someone needs this I can't think of.
+            ConfigurationSection followParameters = pathsConfiguration.getConfigurationSection(followsKey);
+            if (followParameters.contains("follows")) {
+                controller.getLogger().warning("Path " + key + " follows path " + followsKey + " which follows "
+                    + followParameters.getString("follows")
+                    + ", paths shouldn't follow paths that follow paths... probably. Consider re-arranging this?");
+            }
         }
     }
 
