@@ -3438,12 +3438,14 @@ public class MagicController implements MageController {
         return hasPermission(player, pNode, false);
     }
 
+    // Note that this version doesn't work with mob permissions
     @Override
     public boolean hasPermission(CommandSender sender, String pNode) {
         if (!(sender instanceof Player)) return true;
         return hasPermission((Player) sender, pNode, false);
     }
 
+    // Note that this version doesn't work with mob permissions
     @Override
     public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue) {
         if (!(sender instanceof Player)) return true;
@@ -3452,11 +3454,15 @@ public class MagicController implements MageController {
 
     @Override
     public boolean hasPermission(Entity entity, String pNode) {
-        if (entity instanceof CommandSender) {
+        EntityData entityData = getMob(entity);
+        if (entityData != null && entityData.hasPermission(pNode)) {
+            return true;
+        }
+        // I did not realize that Entity extends CommandSender .. ??
+        if (entity instanceof Player) {
             return hasPermission((CommandSender)entity, pNode);
         }
-        EntityData entityData = getMob(entity);
-        return entityData != null && entityData.hasPermission(pNode);
+        return false;
     }
 
     public void registerFallingBlock(Entity fallingBlock, Block block) {
