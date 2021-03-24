@@ -32,6 +32,7 @@ public class EntityMageData {
     // These properties will get copied directly to mage data, as if they were in the "mage" section.
     private static final String[] MAGE_PROPERTIES = {"protection", "weakness", "strength"};
 
+    protected MobTargeting targeting;
     protected long tickInterval;
     protected long lifetime;
     protected @Nullable Multimap<String, MobTrigger> triggers;
@@ -48,6 +49,7 @@ public class EntityMageData {
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
 
+        targeting = MobTargeting.getFromMobConfig(controller, parameters);
         mageProperties = parameters.getConfigurationSection("mage");
 
         for (String mageProperty : MAGE_PROPERTIES) {
@@ -108,7 +110,8 @@ public class EntityMageData {
         boolean hasTriggers = triggers != null;
         boolean hasProperties = mageProperties != null;
         boolean hasLifetime = lifetime > 0;
-        return !hasProperties && !hasTriggers && !aggro && !hasLifetime && !hasDialog();
+        boolean hasTargeting = targeting != null;
+        return !hasProperties && !hasTriggers && !aggro && !hasLifetime && !hasDialog() && !hasTargeting;
     }
 
     public boolean hasDialog() {
@@ -210,9 +213,18 @@ public class EntityMageData {
                 }
             }
         }
+
+        if (targeting != null) {
+            targeting.tick(mage);
+        }
     }
 
     public double getTrackRadiusSquared() {
         return trackRadiusSquared;
+    }
+
+    public boolean canTarget(Entity target) {
+        if (target == null || targeting == null) return true;
+        return targeting.canTarget(target);
     }
 }

@@ -603,6 +603,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     Entity getLastDamageTarget();
     @Nullable
     Long getLastTrigger(String trigger);
+    void setTarget(Entity entity);
 
     /**
      * This will return properties for the mage's active wand, if holding one, or if not then the active class.

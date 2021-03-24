@@ -43,6 +43,11 @@
  - Add `kit` support to Selector action, see `kitshop` in elworld examples
  - Wands can now have a `level_spells: true` property to auto-level spells to max
  - Add `targeting` parameter section to mob configs, can be used to set up mob factions, see stars example rebel/imperial
+   - required_permissions: A player or mob must have one of these permissions for this mob to attack it
+   - denied_permissions: A player or mob with any of these permissions will not be attacked
+   - radius: If specified (as well as an interval on the main  mob config), this will periodically check
+     for a new target.
+   - TODO: line of sight checks
  - Add `permissions` mob parameter, currently only works for permission-based targeting checks via the above parameters
 
 ## Fixes

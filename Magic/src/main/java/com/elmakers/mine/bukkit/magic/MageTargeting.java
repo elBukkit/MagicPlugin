@@ -20,6 +20,7 @@ public class MageTargeting {
     private final Map<UUID, DamagedBy> damagedBy = new HashMap<>();
     private DamagedBy topDamager;
     private DamagedBy lastDamager;
+
     public MageTargeting(Mage mage) {
         this.mage = mage;
         this.entityData = mage.getEntityData();

@@ -476,6 +476,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    @Override
     public void setTarget(Entity target) {
         if (!canTarget(target)) return;
 

@@ -9,6 +9,8 @@ rebel:
   silent: true
   default_drops: false
   permissions: magic.team.rebel
+  interval: 5000
   targeting:
+    radius: 32
     required_permissions: magic.team.imperial
     denied_permissions: magic.team.rebel

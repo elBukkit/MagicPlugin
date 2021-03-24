@@ -133,7 +133,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Boolean persist = null;
     protected Boolean removeWhenFarAway = null;
     protected int fireTicks;
-    protected MobTargeting targeting;
     protected Set<String> permissions;
 
     protected DyeColor dyeColor;
@@ -379,7 +378,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         bossBar = BossBarConfiguration.parse(controller, parameters, "$pn");
         preventDismount = parameters.getBoolean("prevent_dismount", false);
         cancelExplosion = parameters.getBoolean("cancel_explosion", false);
-        targeting = MobTargeting.getFromMobConfig(controller, parameters);
         List<String> permissionsList = ConfigurationUtils.getStringList(parameters, "permissions");
         if (permissionsList != null && !permissionsList.isEmpty()) {
             permissions = new HashSet<>(permissionsList);
@@ -1446,8 +1444,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public boolean canTarget(Entity target) {
-        if (target == null || targeting == null) return true;
-        return targeting.canTarget(target);
+        if (target == null || mageData == null) return true;
+        return mageData.canTarget(target);
     }
 
     @Override

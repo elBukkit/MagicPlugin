@@ -8,7 +8,9 @@ imperial:
   health: 100
   silent: true
   default_drops: false
-  permissions: magic.team.magic
+  permissions: magic.team.imperial
+  interval: 5000
   targeting:
+    radius: 32
     required_permissions: magic.team.rebel
     denied_permissions: magic.team.imperial
