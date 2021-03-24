@@ -50,10 +50,6 @@ public interface EntityData extends Cloneable {
     boolean isNPC();
     boolean isHidden();
     boolean isSuperProtected();
-    @Nullable
-    Collection<String> getAttackPermissions();
-    @Nullable
-    Collection<String> getIgnorePermissions();
     boolean canTarget(Entity other);
     boolean hasPermission(String node);
     @Nullable

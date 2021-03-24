@@ -133,8 +133,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Boolean persist = null;
     protected Boolean removeWhenFarAway = null;
     protected int fireTicks;
-    protected List<String> attackPermissions;
-    protected List<String> ignorePermissions;
+    protected MobTargeting targeting;
     protected Set<String> permissions;
 
     protected DyeColor dyeColor;
@@ -380,8 +379,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         bossBar = BossBarConfiguration.parse(controller, parameters, "$pn");
         preventDismount = parameters.getBoolean("prevent_dismount", false);
         cancelExplosion = parameters.getBoolean("cancel_explosion", false);
-        attackPermissions = ConfigurationUtils.getStringList(parameters, "attack_permissions");
-        ignorePermissions = ConfigurationUtils.getStringList(parameters, "ignore_permissions");
+        targeting = MobTargeting.getFromMobConfig(controller, parameters);
         List<String> permissionsList = ConfigurationUtils.getStringList(parameters, "permissions");
         if (permissionsList != null && !permissionsList.isEmpty()) {
             permissions = new HashSet<>(permissionsList);
@@ -1443,40 +1441,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return isDocile;
     }
 
-    public Collection<String> getAttackPermissions() {
-        return attackPermissions;
-    }
-
-    public Collection<String> getIgnorePermissions() {
-        return ignorePermissions;
-    }
-
     public boolean hasPermission(String key) {
         return permissions != null && permissions.contains(key);
     }
 
     public boolean canTarget(Entity target) {
-        if (target == null) return true;
-        if (ignorePermissions != null) {
-            for (String permission : ignorePermissions) {
-                if (controller.hasPermission(target, permission)) {
-                    return false;
-                }
-            }
-        }
-        if (attackPermissions != null) {
-            boolean hasAny = false;
-            for (String permission : attackPermissions) {
-                if (controller.hasPermission(target, permission)) {
-                    hasAny = true;
-                    break;
-                }
-            }
-            if (!hasAny) {
-                return false;
-            }
-        }
-        return true;
+        if (target == null || targeting == null) return true;
+        return targeting.canTarget(target);
     }
 
     @Override
