@@ -414,7 +414,9 @@ public class ConstructBatch extends BrushBatch {
         int y = center.getBlockY() + dy;
         int z = center.getBlockZ() + dz;
 
-        if (y < 0 || y > center.getWorld().getMaxHeight()) return true;
+        int minY = controller.getMinHeight(center.getWorld());
+        int maxY = controller.getMaxHeight(center.getWorld());
+        if (y < minY || y > maxY) return true;
 
         // Make sure the block is loaded.
         Location location = new Location(center.getWorld(), x, y, z);
