@@ -689,13 +689,15 @@ public class CustomProjectileAction extends CompoundAction
 
         // Max Height check
         int y = targetLocation.getBlockY();
-        boolean maxHeight = y >= targetLocation.getWorld().getMaxHeight();
-        boolean minHeight = y <= 0;
+        int maxY = context.getController().getMaxHeight(targetLocation.getWorld());
+        int minY = context.getController().getMinHeight(targetLocation.getWorld());
+        boolean maxHeight = y > maxY;
+        boolean minHeight = y < minY;
 
         if (maxHeight) {
-            targetLocation.setY(targetLocation.getWorld().getMaxHeight());
+            targetLocation.setY(maxY);
         } else if (minHeight) {
-            targetLocation.setY(0);
+            targetLocation.setY(minY);
         }
 
         if (hasTickEffects && effectDistanceTravelled > tickSize) {
