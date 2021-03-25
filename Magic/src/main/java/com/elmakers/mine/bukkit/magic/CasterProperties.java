@@ -13,7 +13,9 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -1092,5 +1094,24 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             }
         }
         return super.hasOwnProperty(key);
+    }
+
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
+        super.describe(sender, ignoreProperties, overriddenProperties);
+        ProgressionPath path = getPath();
+        if (path != null) {
+            ConfigurationSection pathProperties = path.getProperties();
+            if (pathProperties != null) {
+                sender.sendMessage(ChatColor.GOLD + "Path Properties Override:");
+                Set<String> keys = pathProperties.getKeys(false);
+                for (String key : keys) {
+                    Object value = pathProperties.get(key);
+                    if (value != null && (ignoreProperties == null || !ignoreProperties.contains(key))) {
+                        ChatColor propertyColor = ChatColor.YELLOW;
+                        sender.sendMessage(propertyColor.toString() + key + ChatColor.GRAY + ": " + ChatColor.WHITE + describeProperty(value));
+                    }
+                }
+            }
+        }
     }
 }

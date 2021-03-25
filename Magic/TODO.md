@@ -2,7 +2,6 @@
 
 # Bugs from Club
 
-- don't prevent eating if in queue for the arena
 - undo bugs :( idk
 - right-clicking an NPC with a wand casts your spell
 
@@ -25,7 +24,6 @@
 # Engineering Improvements
 
  - Fill out worth values for all blocks (and items, for shops)
- - Improve/fix alt-down rollback cast
  - Fix gaining SP for cast failed due to not enough blocks
 
 ## Client Localization
@@ -35,10 +33,6 @@
  - Use language setting to set default Messages instance
  - Will need a special-case for EN
  - Refactor, refactor, refactor ...
-
-## Paths
-
- - Need to show path overrides in mage and wand describe
 
 ## Hot
 
