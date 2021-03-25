@@ -70,11 +70,7 @@ public class ChangeWorldAction extends BaseTeleportAction
             if (targetWorld == null) {
                 return null;
             }
-            if (targetWorld.getEnvironment() == World.Environment.THE_END) {
-                targetLocation = targetWorld.getSpawnLocation();
-            } else {
-                targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
-            }
+            targetLocation = new Location(targetWorld, playerLocation.getX() * scale, playerLocation.getY(), playerLocation.getZ() * scale);
         } else if (worldMap != null) {
             if (!worldMap.contains(worldName)) {
                 return null;
@@ -123,10 +119,7 @@ public class ChangeWorldAction extends BaseTeleportAction
                 worldName = worldName.replace("_the_end", "");
                 World targetWorld = Bukkit.getWorld(worldName);
                 if (targetWorld != null) {
-                    // No scaling here?
-                    // Just send them to spawn... this is kind of to fix players finding the real spawn
-                    // on my own server, but I'm not just sure how best to handle this anyway.
-                    targetLocation = targetWorld.getSpawnLocation();
+                    targetLocation = new Location(targetWorld, playerLocation.getX(), playerLocation.getY(), playerLocation.getZ());
                 }
             } else if (worldName.contains("_nether")) {
                 worldName = worldName.replace("_nether", "");
