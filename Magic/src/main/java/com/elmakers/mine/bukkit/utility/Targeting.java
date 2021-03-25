@@ -331,7 +331,9 @@ public class Targeting {
         Block block = null;
         if (!ignoreBlocks) {
             findTargetBlock(context, range);
-            block = currentBlock;
+            if (!result.isMiss()) {
+                block = currentBlock;
+            }
         }
 
         if (isBlock) {
@@ -648,7 +650,7 @@ public class Targeting {
         Location effectLocation = blockLocation.add(0.5, 0.5, 0.5);
         context.playEffects("break", 1, context.getLocation(), null, effectLocation, null);
 
-        // TODO: Re-examime this?
+        // TODO: Re-examine this?
         UndoList undoList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(blockLocation);
         if (undoList != null) {
             undoList.add(block);
