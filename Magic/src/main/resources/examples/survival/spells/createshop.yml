@@ -15,4 +15,4 @@ createshop:
             interact_spell_parameters:
                 owner_uuid: $uuid
                 chest_location: $tx,$ty,$tz,$tworld
-                title: $npc_name
+                title: "($balance) $npc_name"

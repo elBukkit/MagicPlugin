@@ -8,6 +8,8 @@ manageshop:
             npc_parameters:
               interact_spell_parameters:
                 chest_location: $tx,$ty,$tz,$tworld
+                # Update title to latest
+                title: "($balance) $npc_name"
           - class: Message
             message_key: moved
         fail:
