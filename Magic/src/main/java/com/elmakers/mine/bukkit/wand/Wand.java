@@ -564,6 +564,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     // in which case we want to add a new hotbar inventory without re-arranging the main inventories
     // newly added hotbars will be empty, spells in removed hotbars will be added to the end of the inventories.
     protected void checkHotbarCount() {
+        if (!hasInventory) return;
         int hotbarCount = Math.max(1, getInt("hotbar_count", 1));
         if (hotbarCount != hotbars.size()) {
             while (hotbars.size() < hotbarCount) {
