@@ -1,12 +1,11 @@
 package com.elmakers.mine.bukkit.block;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,8 +22,7 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 
 public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     protected final Map<String,BoundingBox> areas = new HashMap<>();
-    protected final Deque<BlockData>    blockList = new ArrayDeque<>();
-    protected final Map<Long, BlockData> blockIdMap = new HashMap<>();
+    protected final Map<Long, BlockData> blockQueue = new LinkedHashMap<>();
 
     public BlockList()
     {
@@ -59,9 +57,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
             return false;
         }
 
-        synchronized (blockList) {
-            blockIdMap.put(blockData.getId(), blockData);
-            blockList.addLast(blockData);
+        synchronized (blockQueue) {
+            blockQueue.put(blockData.getId(), blockData);
         }
         return true;
     }
@@ -70,7 +67,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     protected BlockData get(Block block) {
         long id = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
         add(block);
-        return blockIdMap.get(id);
+        return blockQueue.get(id);
     }
 
     @Override
@@ -124,9 +121,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public void clear()
     {
-        synchronized (blockList) {
-            blockIdMap.clear();
-            blockList.clear();
+        synchronized (blockQueue) {
+            blockQueue.clear();
         }
     }
 
@@ -134,8 +130,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     public boolean contains(Block block)
     {
         boolean contains;
-        synchronized (blockList) {
-            contains = blockIdMap.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
+        synchronized (blockQueue) {
+            contains = blockQueue.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
         }
         return contains;
     }
@@ -143,8 +139,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     public boolean contains(BlockData blockData)
     {
         boolean contains;
-        synchronized (blockList) {
-            contains = blockIdMap.containsKey(blockData.getId());
+        synchronized (blockQueue) {
+            contains = blockQueue.containsKey(blockData.getId());
         }
         return contains;
     }
@@ -160,8 +156,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
         }
         // Fall back to map
         boolean contains;
-        synchronized (blockList) {
-            contains = blockIdMap.containsKey(arg0);
+        synchronized (blockQueue) {
+            contains = blockQueue.containsKey(arg0);
         }
         return contains;
     }
@@ -170,8 +166,8 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     public boolean containsAll(Collection<?> arg0)
     {
         boolean contains;
-        synchronized (blockList) {
-            contains = blockIdMap.keySet().containsAll(arg0);
+        synchronized (blockQueue) {
+            contains = blockQueue.keySet().containsAll(arg0);
         }
         return contains;
     }
@@ -196,38 +192,37 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
     public Collection<BlockData> getBlockList()
     {
-        return blockList;
+        return blockQueue.values();
     }
 
     @Override
     public int size()
     {
-        return blockList.size();
+        return blockQueue.size();
     }
 
     @Override
     public boolean isEmpty()
     {
-        return blockList.isEmpty();
+        return blockQueue.isEmpty();
     }
 
     @Override
     public Iterator<BlockData> iterator()
     {
-        return blockList.iterator();
+        return blockQueue.values().iterator();
     }
 
     @Override
     public boolean remove(Object removeObject)
     {
         // Note that we never shrink the BB!
-        boolean removed;
-        synchronized (blockList) {
+        boolean removed = false;
+        synchronized (blockQueue) {
             if (removeObject instanceof BlockData)
             {
-                blockIdMap.remove(((BlockData)removeObject).getId());
+                removed = blockQueue.remove(((BlockData)removeObject).getId()) != null;
             }
-            removed = blockList.remove(removeObject);
         }
         return removed;
     }
@@ -235,16 +230,12 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public boolean removeAll(Collection<?> removeCollection)
     {
-        boolean removed;
-        synchronized (blockList) {
+        boolean removed = false;
+        synchronized (blockQueue) {
             for (Object removeObject : removeCollection)
             {
-                if (removeObject instanceof BlockData)
-                {
-                    blockIdMap.remove(((BlockData)removeObject).getId());
-                }
+                removed = remove(removeObject) || removed;
             }
-            removed = blockList.removeAll(removeCollection);;
         }
         return removed;
     }
@@ -252,19 +243,19 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Override
     public boolean retainAll(Collection<?> arg0)
     {
-        return blockList.retainAll(arg0);
+        return blockQueue.values().retainAll(arg0);
     }
 
     @Override
     @Nullable
     public Object[] toArray() {
-        return blockList.toArray();
+        return blockQueue.values().toArray();
     }
 
     @Override
     @Nullable
     public <T> T[] toArray(T[] arg0) {
-        return blockList.toArray(arg0);
+        return blockQueue.values().toArray(arg0);
     }
 
     @Override
@@ -281,10 +272,10 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
 
     @Override
     public void save(ConfigurationSection node) {
-        synchronized (blockList) {
-            if (!blockList.isEmpty()) {
+        synchronized (blockQueue) {
+            if (!blockQueue.isEmpty()) {
                 List<String> blockData = new ArrayList<>();
-                for (BlockData block : blockList) {
+                for (BlockData block : blockQueue.values()) {
                     if (!block.isFake()) {
                         blockData.add(block.toString());
                     }
@@ -305,7 +296,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     @Nonnull
     public Set<Chunk> getChunks() {
         Set<Chunk> chunks = new HashSet<>();
-        for (BlockData block : blockList) {
+        for (BlockData block : blockQueue.values()) {
             chunks.add(block.getChunk());
         }
         return chunks;

@@ -164,7 +164,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public boolean isEmpty()
     {
         return (
-            (blockList == null || blockList.isEmpty())
+            (blockQueue == null || blockQueue.isEmpty())
         &&     (spawnedEntities == null || spawnedEntities.isEmpty())
         &&     (runnables == null || runnables.isEmpty()));
     }
@@ -318,7 +318,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         Long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(testBlock);
 
         // This gets called recursively, so don't re-process anything
-        if (blockIdMap != null && blockIdMap.containsKey(blockId))
+        if (blockQueue != null && blockQueue.containsKey(blockId))
         {
             return false;
         }
@@ -386,9 +386,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     {
         unlink();
         unregisterWatched();
-        if (blockList == null) return;
+        if (blockQueue == null) return;
 
-        for (BlockData block : blockList)
+        for (BlockData block : blockQueue.values())
         {
             commit(block);
         }
@@ -402,6 +402,41 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public static void commitAll()
     {
         registry.commitAll();
+    }
+
+    public boolean commitNext() {
+        if (blockQueue == null || blockQueue.isEmpty()) {
+            unlink();
+            unregisterWatched();
+            clear();
+            return false;
+        }
+        BlockData block = removeFirst();
+        if (block != null) {
+            commit(block);
+        }
+        return true;
+    }
+
+    @Nullable
+    private BlockData removeFirst() {
+        Iterator<Map.Entry<Long, BlockData>> iterator = blockQueue.entrySet().iterator();
+        if (iterator.hasNext()) {
+            BlockData block = iterator.next().getValue();
+            iterator.remove();
+            return block;
+        }
+        return null;
+    }
+
+    @Nullable
+    private BlockData getFirst() {
+        Iterator<Map.Entry<Long, BlockData>> iterator = blockQueue.entrySet().iterator();
+        if (iterator.hasNext()) {
+            BlockData block = iterator.next().getValue();
+            return block;
+        }
+        return null;
     }
 
     @Override
@@ -446,22 +481,20 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public BlockData undoNext(boolean applyPhysics)
     {
-        if (blockList.size() == 0) {
+        if (blockQueue.size() == 0) {
             return null;
         }
-        BlockData blockData = blockList.removeFirst();
+        BlockData blockData = getFirst();
         Block block = blockData.getBlock();
         if (forceSynchronous && !CompatibilityUtils.isChunkLoaded(block)) {
             block.getChunk().load();
         } else if (!CompatibilityUtils.checkChunk(blockData.getWorldLocation())) {
-            blockList.addFirst(blockData);
             // Skip through this undo if we need to start loading chunks
             speed = 0;
             return null;
         }
         BlockState currentState = block.getState();
         if (undo(blockData, applyPhysics)) {
-            blockIdMap.remove(blockData.getId());
             Mage owner = getOwner();
             if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
                 owner.refundBlock(new MaterialAndData(currentState.getType(), DeprecatedUtils.getRawData(currentState)));
@@ -475,10 +508,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
                     context.playEffects("undo_block", 1.0f, null, null, block.getLocation(), null, block);
                 }
             }
-
+            removeFirst();
             return blockData;
         }
-        blockList.addFirst(blockData);
 
         return null;
     }
@@ -567,7 +599,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             runnables = null;
         }
 
-        if (blockList == null) {
+        if (blockQueue == null) {
             undoEntityEffects();
             return;
         }
@@ -910,7 +942,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void prune()
     {
-        if (blockList == null) return;
+        if (blockQueue == null) return;
 
         Iterator<BlockData> iterator = iterator();
         while (iterator.hasNext()) {
@@ -1188,10 +1220,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     }
 
     public void sort(MaterialSet attachables) {
-        if (blockList == null) return;
+        if (blockQueue == null) return;
 
-        List<BlockData> sortedList = new ArrayList<>(blockList);
-        blockList.clear();
+        List<BlockData> sortedList = new ArrayList<>(blockQueue.values());
+        blockQueue.clear();
         if (reverse) {
             Collections.reverse(sortedList);
         }
@@ -1199,7 +1231,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             blockComparator.setAttachables(attachables);
             Collections.sort(sortedList, blockComparator);
         }
-        blockList.addAll(sortedList);
+        for (BlockData block : sortedList) {
+            blockQueue.put(block.getId(), block);
+        }
     }
 
     public double getUndoSpeed() {
@@ -1223,7 +1257,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void removeFromMap(BlockData blockData) {
         removeFromModified(blockData);
-        blockIdMap.remove(blockData.getId());
+        blockQueue.remove(blockData.getId());
     }
 
     @Override

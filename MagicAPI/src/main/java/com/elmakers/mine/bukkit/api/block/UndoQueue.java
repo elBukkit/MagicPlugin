@@ -67,6 +67,8 @@ public interface UndoQueue {
     boolean isEmpty();
 
     boolean commit();
+    // Returns true if there are more blocks to commit
+    boolean commitNext();
 
     /**
      * Save the data in this undo queue.
