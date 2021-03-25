@@ -297,7 +297,7 @@ public class MagicController implements MageController {
             // For interval parsing
             "hours", "minutes", "seconds", "days", "weeks",
             // Other constants
-            "pi"
+            "pi", "degrees"
     );
     private final Map<String, AutomatonTemplate> automatonTemplates = new HashMap<>();
     private final Map<String, WandTemplate> wandTemplates = new HashMap<>();
@@ -7904,6 +7904,8 @@ public class MagicController implements MageController {
                 return (double) System.currentTimeMillis();
             case "pi":
                 return Math.PI;
+            case "degrees":
+                return Math.PI / 180;
             default:
                 return null;
         }
