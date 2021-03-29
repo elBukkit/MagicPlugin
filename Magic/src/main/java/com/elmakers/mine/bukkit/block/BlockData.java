@@ -186,10 +186,6 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         {
             return true;
         }
-        UndoList undoList = getUndoList();
-        if (undoList != null && undoList.isIndestructible(block)) {
-            return true;
-        }
         if (fakeSentToPlayers != null) {
             if (nextState == null) {
                 for (WeakReference<Player> playerRef : fakeSentToPlayers) {
