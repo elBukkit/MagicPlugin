@@ -331,9 +331,7 @@ public class Targeting {
         Block block = null;
         if (!ignoreBlocks) {
             findTargetBlock(context, range);
-            if (!result.isMiss()) {
-                block = currentBlock;
-            }
+            block = currentBlock;
         }
 
         if (isBlock) {
@@ -342,9 +340,9 @@ public class Targeting {
 
         Target targetBlock = block == null ? null : new Target(source, block, useHitbox, hitboxBlockPadding);
 
-        // Don't target entities beyond the block we just hit
-        if (targetBlock != null && source != null && source.getWorld().equals(block.getWorld()))
-        {
+        // Don't target entities beyond the block we just hit,
+        // but only if that block was solid, and not just at max range
+        if (targetBlock != null && source != null && source.getWorld().equals(block.getWorld()) && !result.isMiss()) {
             range = Math.min(range, source.distance(targetBlock.getLocation()));
         }
 
@@ -383,7 +381,7 @@ public class Targeting {
         }
 
         if (targetBlock != null && entityTarget != null) {
-            if (targetBlock.getDistanceSquared() < entityTarget.getDistanceSquared() - hitboxPadding * hitboxPadding) {
+            if (targetBlock.getDistanceSquared() < entityTarget.getDistanceSquared() - hitboxPadding * hitboxPadding && !result.isMiss()) {
                 entityTarget = null;
             } else {
                 targetBlock = null;
