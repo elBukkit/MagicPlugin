@@ -331,9 +331,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (item == null) {
             return false;
         }
-        Object handle = NMSUtils.getHandle(item);
-        if (handle == null) return false;
-        Object tag = NMSUtils.getTag(handle);
+        Object tag = NMSUtils.getTag(item);
         if (tag == null) return false;
 
         return loadAllTagsFromNBT(tags, tag);

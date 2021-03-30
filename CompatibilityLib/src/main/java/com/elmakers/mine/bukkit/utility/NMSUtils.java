@@ -1938,6 +1938,24 @@ public class NMSUtils {
         return tag;
     }
 
+    public static Object getTag(ItemStack itemStack) {
+        Object tag = null;
+        try {
+            Object mcItemStack = getHandle(itemStack);
+            if (mcItemStack == null) {
+                if (itemStack.hasItemMeta()) {
+                    itemStack = makeReal(itemStack);
+                    mcItemStack = getHandle(itemStack);
+                }
+            }
+            if (mcItemStack == null) return null;
+            tag = class_ItemStack_tagField.get(mcItemStack);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return tag;
+    }
+
     protected static Object getNMSCopy(ItemStack stack) {
         Object nms = null;
         try {
@@ -1995,25 +2013,11 @@ public class NMSUtils {
         return getNode(stack, tag) != null;
     }
 
-    public static Object getTag(ItemStack itemStack) {
-        Object tag = null;
-        try {
-            Object mcItemStack = getHandle(itemStack);
-            if (mcItemStack == null) return null;
-            tag = class_ItemStack_tagField.get(mcItemStack);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return tag;
-    }
-
     public static Object getNode(ItemStack stack, String tag) {
         if (NMSUtils.isEmpty(stack)) return null;
         Object meta = null;
         try {
-            Object craft = getHandle(stack);
-            if (craft == null) return null;
-            Object tagObject = getTag(craft);
+            Object tagObject = getTag(stack);
             if (tagObject == null) return null;
             meta = class_NBTTagCompound_getMethod.invoke(tagObject, tag);
         } catch (Throwable ex) {
@@ -2130,9 +2134,7 @@ public class NMSUtils {
         if (NMSUtils.isEmpty(stack)) return defaultValue;
         int result = defaultValue;
         try {
-            Object craft = getHandle(stack);
-            if (craft == null) return defaultValue;
-            Object tagObject = getTag(craft);
+            Object tagObject = getTag(stack);
             if (tagObject == null) return defaultValue;
             Integer value = getMetaInt(tagObject, tag);
             result = value == null ? defaultValue : value;
@@ -2311,9 +2313,7 @@ public class NMSUtils {
         if (NMSUtils.isEmpty(stack)) return null;
         String meta = null;
         try {
-            Object craft = getHandle(stack);
-            if (craft == null) return null;
-            Object tagObject = getTag(craft);
+            Object tagObject = getTag(stack);
             if (tagObject == null) return null;
             meta = (String)class_NBTTagCompound_getStringMethod.invoke(tagObject, tag);
         } catch (Throwable ex) {
@@ -2352,9 +2352,7 @@ public class NMSUtils {
         if (NMSUtils.isEmpty(stack)) return defaultValue;
         boolean result = defaultValue;
         try {
-            Object craft = getHandle(stack);
-            if (craft == null) return defaultValue;
-            Object tagObject = getTag(craft);
+            Object tagObject = getTag(stack);
             if (tagObject == null) return defaultValue;
             Boolean value = getMetaBoolean(tagObject, tag);
             result = value == null ? defaultValue : value;
@@ -2394,9 +2392,7 @@ public class NMSUtils {
         if (NMSUtils.isEmpty(stack)) return false;
         Boolean unbreakableFlag = null;
         try {
-            Object craft = getHandle(stack);
-            if (craft == null) return false;
-            Object tagObject = getTag(craft);
+            Object tagObject = getTag(stack);
             if (tagObject == null) return false;
             unbreakableFlag = getMetaBoolean(tagObject, "Unbreakable");
         } catch (Throwable ex) {
