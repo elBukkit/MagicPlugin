@@ -1842,6 +1842,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public void loadProperties() {
         super.loadProperties();
+        // Read path first since it can be used to override any other property
+        path = getString("path");
         locked = getBoolean("locked", locked);
         autoAbsorb = getBoolean("auto_absorb", false);
         lockedAllowUpgrades = getBoolean("locked_allow_upgrades", false);
@@ -2066,7 +2068,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ownerId = getString("owner_id");
         template = getString("template");
         upgradeTemplate = getString("upgrade_template");
-        path = getString("path");
 
         activeSpell = getString("active_spell");
         if (activeSpell != null && activeSpell.contains("|")) {
