@@ -39,5 +39,6 @@ master:
       - neutron
       - mob
       - sunstrike
+      - force
 
 

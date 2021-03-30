@@ -1,75 +1,74 @@
 force:
-    # Temporarily disabled pending re-work
-    enabled: false
-    icon: leather{CustomModelData:18001}
-    icon_disabled: leather{CustomModelData:18002}
-    legacy_icon: spell_icon:151
-    legacy_icon_disabled: spell_icon_disabled:151
-    icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
-    category: master
-    tags: noduel
-    class: ForceSpell
-    worth: 1000
-    effects:
-      cast:
-      - sound: block_bubble_column_whirlpool_inside
-        sound_pitch: 1.3
-        location: both
-      - class: EffectSingle
-        sound: magic.zap_big
-        location: origin
+  icon: leather{CustomModelData:18001}
+  icon_disabled: leather{CustomModelData:18002}
+  legacy_icon: spell_icon:151
+  legacy_icon_disabled: spell_icon_disabled:151
+  icon_url: http://textures.minecraft.net/texture/c7142a19d8c84389da74b69641542b8b2fafbed8f7515d1d36c63c96bd749
+  category: master
+  tags: noduel
+  worth: 2500
+  toggle: cancel
+  disable_mana_regeneration: true
+  actions:
+    cast:
+      - class: CustomProjectile
+        actions:
+          - class: CheckEntity
+            actions:
+              - class: PlayEffects
+                effects: selected
+              - class: Interval
+                actions:
+                  - class: Retarget
+                    range: 6
+                    allow_max_range: true
+                    target: block
+                    actions:
+                      - class: PlayEffects
+                        effects: targeting
+                      - class: ChangeContext
+                        swap_source_and_target: true
+                        actions:
+                          - class: ChangeContext
+                            use_parent_target_entity: true
+                            target_entity: true
+                            actions:
+                              - class: Velocity
+                                push: -1
+  effects:
+    cast:
+      - sound: magic.zap_big
+        sound_pitch: 2
+    targeting:
+      - location: target
+        particle: redstone
+        particle_offset: 0
+    projectile:
+      - effectlib:
+          class: Sphere
+          particles: 20
+          radius: 0.2
+          particle: spell_mob
+          duration: 2000
+    selected:
+      - location: target
         effectlib:
-           class: DnaEffect
-           particles_base: 0
-           particles_helix: 7
-           particle_helix: spell_mob
-           particle_base1: spell_mob
-           particle_base2: spell_mob
-           iterations: 10
-      target_selected:
-      - class: EffectSingle
-        location: both
-        sound: magic.hit
-        sound_volume: 0.5
-      - sound: entity_generic_small_fall
-        sound_pitch: 0.2
-        location: both
-      - sound: entity_item_pickup
-        sound_pitch: 0.2
-        location: both
-      - class: EffectSingle
-        location: target
-        use_hit_location: false
-        effectlib:
-          class: StarEffect
-          iterations: 4
-          particle: redstone
-          color: "222222"
-          spikeHeight: 1.2
-          innerRadius: 0.2
-      - class: EffectSingle
-        location: target
-        use_hit_location: false
-        source_location: eyes
-        color_override: color
-        effectlib:
-          class: IconEffect
-          iterations: 1000
-          particle: redstone
-          color: "222222"
-          period: 1
-          y_offset: 0
-          offset: 0,0.7,0
-      - class: EffectTrail
-        particle: spell_mob
-    parameters:
-        target_type: LivingEntity
-        target_breakables: 1
-        target: other_entity
-        range: 12
-        item_force: 1
-        entity_force: 4
-        bypass_backfire: true
-        cooldown: 3000
-    costs:
-        mana: 100
+          class: AnimatedBall
+          y_rotation: 10 degrees
+          duration: $duration
+          disappear_with_origin_entity: true
+          particle: spell_mob
+  parameters:
+    velocity: 10
+    range: 16
+    target_breakables: 2
+    living_entity_speed: 0.3
+    item_speed: 0.05
+    cancel_on_damage: 0.5
+    cooldown: 45000
+    duration: 15000
+  costs:
+    mana: 100
+  active_costs:
+    mana: 10
+

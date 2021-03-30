@@ -35,6 +35,7 @@
  - The Equip action can now be used on mobs
  - Cloak won't replace your helmet
  - Re-enabled Gather. If you have issues with it, I'm just going to tell you to disable it though!
+ - Re-enabled and re-made Force, hopefully less OP now but still fun and interesting, now available to Wizard rank
  - The Retarget action was re-written to allow it to change any targeting parameters, such as `target: block`
 
 ## Additions
