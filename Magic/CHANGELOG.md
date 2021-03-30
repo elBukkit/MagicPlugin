@@ -51,6 +51,7 @@
      for a new target.
    - TODO: line of sight checks
  - Add `permissions` mob parameter, currently only works for permission-based targeting checks via the above parameters
+ - Add some mob-specific disguise parameters, such as powered and ignited for creepers
 
 ## Fixes
 
@@ -59,6 +60,7 @@
  - Fix LibsDisguise integration on old legacy versions of LD
  - Fix using ThrownTrident, ThrownExpBottle and ShulkerBullet in Projectile action
  - Fix some cases of using but disabling the default configs
+
 
 ## EffectLib 9.0
 

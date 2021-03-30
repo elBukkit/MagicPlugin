@@ -23,6 +23,7 @@ import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.ArmorStandWatcher;
+import me.libraryaddict.disguise.disguisetypes.watchers.CreeperWatcher;
 import me.libraryaddict.disguise.disguisetypes.watchers.VillagerWatcher;
 import me.libraryaddict.disguise.utilities.DisguiseUtilities;
 
@@ -164,6 +165,13 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
                 if (configuration.getBoolean("sprinting", false)) watcher.setSprinting(true);
                 if (configuration.getBoolean("swimming", false)) watcher.setSwimming(true);
                 if (configuration.getBoolean("right_clicking", false)) watcher.setRightClicking(true);
+
+                // Mob-specific watchers
+                if (watcher instanceof CreeperWatcher) {
+                    CreeperWatcher creeper = (CreeperWatcher)watcher;
+                    creeper.setPowered(configuration.getBoolean("powered", false));
+                    creeper.setIgnited(configuration.getBoolean("ignited", false));
+                }
             } catch (Exception ex) {
                 controller.getLogger().log(Level.WARNING, "Error creating disguise", ex);
                 return false;
