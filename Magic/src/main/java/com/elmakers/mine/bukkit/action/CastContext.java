@@ -92,6 +92,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     private UndoableSpell undoSpell;
     private MaterialBrush brush;
     private CastContext base;
+    private CastContext parent;
     private MageClass mageClass;
     private ConfigurationSection variables;
     private MaterialSet destructible;
@@ -166,6 +167,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         {
             this.variables = ((CastContext)copy).variables;
             this.base = ((CastContext)copy).base;
+            this.parent = ((CastContext)copy);
             this.initialResult = ((CastContext)copy).initialResult;
             this.alternateResult = ((CastContext)copy).alternateResult;
             this.direction = ((CastContext)copy).direction;
@@ -179,6 +181,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         else
         {
             this.base = this;
+            this.parent = null;
         }
     }
 
@@ -1144,9 +1147,15 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     }
 
     @Override
-    public com.elmakers.mine.bukkit.api.action.CastContext getBaseContext()
+    public CastContext getBaseContext()
     {
         return base;
+    }
+
+    @Override
+    public CastContext getParent()
+    {
+        return parent;
     }
 
     @Nullable

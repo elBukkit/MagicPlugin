@@ -193,6 +193,7 @@ public interface CastContext extends MageContext {
     void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox);
     void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox, int yOffset, boolean targetSpaceRequired, int targetMinOffset);
     CastContext getBaseContext();
+    CastContext getParent();
     Set<UUID> getTargetMessagesSent();
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance);
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall);

@@ -27,6 +27,8 @@ public class ChangeContextAction extends CompoundAction {
     private boolean sourceIsCaster;
     private boolean targetCaster;
     private Boolean targetSelf;
+    private boolean useParentTargetEntity;
+    private boolean useParentSourceEntity;
     private boolean targetEntityLocation;
     private boolean sourceAtTarget;
     private boolean sourceIsTarget;
@@ -73,6 +75,8 @@ public class ChangeContextAction extends CompoundAction {
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
+        useParentTargetEntity = parameters.getBoolean("use_parent_target_entity", false);
+        useParentSourceEntity = parameters.getBoolean("use_parent_source_entity", false);
         useTargetMage = parameters.getBoolean("use_target_mage", false);
         targetEntityLocation = parameters.getBoolean("target_entity", false);
         targetCaster = parameters.getBoolean("target_caster", false);
@@ -375,6 +379,26 @@ public class ChangeContextAction extends CompoundAction {
             Location swapLocation = targetLocation;
             targetLocation = sourceLocation;
             sourceLocation = swapLocation;
+        }
+
+        if (useParentTargetEntity) {
+            CastContext parent = context.getParent();
+            Entity parentTargetEntity = null;
+            while (parentTargetEntity == null && parent != null) {
+                parentTargetEntity = parent.getTargetEntity();
+                parent = parent.getParent();
+            }
+            targetEntity = parentTargetEntity;
+        }
+
+        if (useParentSourceEntity) {
+            CastContext parent = context.getParent();
+            Entity parentSourceEntity = null;
+            while (parentSourceEntity == null && parent != null) {
+                parentSourceEntity = parent.getEntity();
+                parent = parent.getParent();
+            }
+            sourceEntity = parentSourceEntity;
         }
 
         direction = context.getDirection();
