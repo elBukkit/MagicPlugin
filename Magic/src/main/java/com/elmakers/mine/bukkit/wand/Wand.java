@@ -1619,8 +1619,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return createBrushItem(materialKey, controller, this, false);
     }
 
+
     @Nullable
     public static ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.magic.MageController controller, Wand wand, boolean isItem) {
+        return createBrushItem(materialKey, controller, wand, isItem, true);
+    }
+
+    @Nullable
+    public static ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.magic.MageController controller, Wand wand, boolean isItem, boolean useWandName) {
         MaterialBrush brushData = MaterialBrush.parseMaterialKey(materialKey);
         if (brushData == null) return null;
 
@@ -1631,7 +1637,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         InventoryUtils.makeUnbreakable(itemStack);
         InventoryUtils.hideFlags(itemStack, 63);
-        updateBrushItem(controller.getMessages(), itemStack, brushData, wand);
+        updateBrushItem(controller.getMessages(), itemStack, brushData, wand, useWandName);
         List<String> lore = new ArrayList<>();
         String keyMessage = wand != null ? wand.getMessage("brush.key") : controller.getMessages().get("brush.key");
         if (keyMessage != null && !keyMessage.isEmpty()) {
@@ -3251,11 +3257,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public static void updateBrushItem(Messages messages, ItemStack itemStack, String materialKey, Wand wand) {
-        updateBrushItem(messages, itemStack, MaterialBrush.parseMaterialKey(materialKey), wand);
+        updateBrushItem(messages, itemStack, MaterialBrush.parseMaterialKey(materialKey), wand, true);
     }
 
-    public static void updateBrushItem(Messages messages, ItemStack itemStack, MaterialBrush brush, Wand wand) {
-        updateBrushName(messages, itemStack, brush, wand);
+    public static void updateBrushItem(Messages messages, ItemStack itemStack, MaterialBrush brush, Wand wand, boolean useWandName) {
+        if (useWandName) {
+            updateBrushName(messages, itemStack, brush, wand);
+        }
         Object brushNode = CompatibilityUtils.createNode(itemStack, "brush");
         CompatibilityUtils.setMeta(brushNode, "key", brush.getKey());
     }

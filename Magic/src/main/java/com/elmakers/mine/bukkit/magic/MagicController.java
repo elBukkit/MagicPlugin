@@ -5357,7 +5357,7 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public ItemStack createBrushItem(String materialKey, com.elmakers.mine.bukkit.api.wand.Wand wand, boolean isItem) {
-        return Wand.createBrushItem(materialKey, this, (Wand) wand, isItem);
+        return Wand.createBrushItem(materialKey, this, (Wand) wand, isItem, false);
     }
 
     public boolean isSameItem(ItemStack first, ItemStack second) {
