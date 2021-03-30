@@ -52,10 +52,10 @@ engineer:
       - glowstone
       - stained_clay
       - stained_glass
-      - stained_glass_pane:*
+      - stained_glass_pane
 
       # 1.13
       - white_terracotta
       - white_stained_glass
-      - white_stained_glass_pane:*
+      - white_stained_glass_pane
 

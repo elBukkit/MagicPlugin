@@ -49,5 +49,5 @@ engineer:
       - glowstone
       - white_terracotta
       - white_stained_glass
-      - white_stained_glass_pane:*
+      - white_stained_glass_pane
 
