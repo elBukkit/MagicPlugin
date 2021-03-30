@@ -35,6 +35,7 @@
  - The Equip action can now be used on mobs
  - Cloak won't replace your helmet
  - Re-enabled Gather. If you have issues with it, I'm just going to tell you to disable it though!
+ - The Retarget action was re-written to allow it to change any targeting parameters, such as `target: block`
 
 ## Additions
 

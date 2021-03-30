@@ -3,39 +3,58 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.Targeting;
 
 public class RetargetAction extends CompoundAction {
+    private Targeting targeting;
     private double range;
-    private boolean useHitbox;
-    private double fov;
-    private double closeRange;
-    private double closeFOV;
+
+    @Override
+    public void initialize(Spell spell, ConfigurationSection baseParameters) {
+        super.initialize(spell, baseParameters);
+        targeting = new Targeting();
+    }
+
+    @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        targeting.start(context.getEyeLocation());
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        useHitbox = parameters.getBoolean("hitbox", true);
+        targeting.processParameters(parameters);
         range = parameters.getDouble("range", 32);
-        fov = parameters.getDouble("fov", 0.3);
-        closeRange = parameters.getDouble("close_range", 1);
-        closeFOV = parameters.getDouble("close_fov", 0.5);
     }
 
     @Override
     public SpellResult step(CastContext context) {
-        context.addWork((int)Math.ceil(range) + 100);
+        context.addWork(200);
+        Entity targetEntity = null;
+        Location targetLocation = null;
+
+        CastContext useContext = context;
         if (hasActions()) {
-            actionContext.retarget(range, fov, closeRange, closeFOV, useHitbox);
-        } else {
-            context.retarget(range, fov, closeRange, closeFOV, useHitbox);
+            useContext = actionContext;
         }
+        Target target = targeting.target(useContext, range);
+        if (target != null && target.isValid()) {
+            targetEntity = target.getEntity();
+            targetLocation = target.getLocation();
+        }
+        useContext.setTargetLocation(targetLocation);
+        useContext.setTargetEntity(targetEntity);
         return startActions();
     }
 
