@@ -201,9 +201,7 @@ public class EquipAction extends BaseSpellAction
         if (!CompatibilityUtils.isEmpty(existingItem) && !replaceItem) {
             if (NMSUtils.isTemporary(existingItem)) {
                 ItemStack replacement = NMSUtils.getReplacement(existingItem);
-                if (replacement != null) {
-                    existingItem = replacement;
-                }
+                existingItem = replacement;
             }
 
             // If we were equipping the wand, then just replace the main hand item.
@@ -211,7 +209,7 @@ public class EquipAction extends BaseSpellAction
             // the spell finished
             if (useItem) {
                 equipment.setItemInMainHand(existingItem);
-            } else {
+            } else if (existingItem != null) {
                 NMSUtils.setReplacement(equipItem, existingItem);
             }
         } else if (useItem) {
