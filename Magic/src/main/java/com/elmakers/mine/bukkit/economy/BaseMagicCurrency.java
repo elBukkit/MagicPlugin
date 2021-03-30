@@ -47,6 +47,19 @@ public abstract class BaseMagicCurrency implements Currency {
         }
     }
 
+    protected BaseMagicCurrency(String key, double worth) {
+        this.key = key;
+        this.worth = worth;
+        this.defaultValue = 0;
+        maxValue = null;
+        minValue = null;
+        name = null;
+        singularName = null;
+        shortName = null;
+        amountTemplate = null;
+        icon = null;
+    }
+
     @Override
     public String getKey() {
         return key;

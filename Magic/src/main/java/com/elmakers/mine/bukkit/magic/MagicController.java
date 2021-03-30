@@ -1056,12 +1056,12 @@ public class MagicController implements MageController {
 
     @Override
     public double getWorthXP() {
-        return getCurrency("xp").getWorth();
+        return getCurrency("xp", 1).getWorth();
     }
 
     @Override
     public double getWorthSkillPoints() {
-        return getCurrency("sp").getWorth();
+        return getCurrency("sp", 1).getWorth();
     }
 
     /*
@@ -1091,6 +1091,14 @@ public class MagicController implements MageController {
     @Nullable
     public Currency getCurrency(String key) {
         return currencies.get(key);
+    }
+
+    private Currency getCurrency(String key, double defaultWorth) {
+        Currency currency = currencies.get(key);
+        if (currency == null) {
+            currency = new CustomCurrency(key, defaultWorth);
+        }
+        return currency;
     }
 
     @Override

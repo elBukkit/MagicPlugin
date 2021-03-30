@@ -12,6 +12,10 @@ public class CustomCurrency extends BaseMagicCurrency {
         super(controller, key, configuration);
     }
 
+    public CustomCurrency(String key, double worth) {
+        super(key, worth);
+    }
+
     @Override
     public double getBalance(Mage mage, CasterProperties caster) {
         return mage.getCurrency(key);
