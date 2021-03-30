@@ -12,6 +12,17 @@
 ## Engineering Re-Work
 
  - Conduits now have Cost Reduction X, don't have to worry about mana
+ - Materia system, players can use their Materia balance to create blocks if they don't have the blocks
+ - Materia can be purchased in the enchantment table menu
+ - Materia can be obtained by converting blocks in your inventory, using the brush selector
+ - Materia is refunded on undo
+
+## Path Re-work
+
+ - Hotbar count and mana regeneration/max now follow path configs and can not be upgraded separately
+ - Paths can now have an `override_properties` section, with properties that will always override wand or class properties
+ - This allows you to tweak mana progression after players have already progressed without them getting stuck on the old values
+ - See migration log if you need to change this back
 
 ## Currency Improvements
 
@@ -26,8 +37,6 @@
 
  - Magic now loads at server startup, so world gen modifications to default worlds catch spawn chunks
  - Hotbar upgrades will now start out empty and not mess up the inventory pages
- - Hotbar count and mana regeneration/max now follow path configs and can not be upgraded separately
-   See migration log if you need to change this back
  - Turn off Magic.notify permission by default. Sorry if it was annoying ;()
  - Cloak now turns off when you cast another spell
  - Reworked the Stun spell
@@ -63,7 +72,6 @@
  - Fix LibsDisguise integration on old legacy versions of LD
  - Fix using ThrownTrident, ThrownExpBottle and ShulkerBullet in Projectile action
  - Fix some cases of using but disabling the default configs
-
 
 ## EffectLib 9.0
 
