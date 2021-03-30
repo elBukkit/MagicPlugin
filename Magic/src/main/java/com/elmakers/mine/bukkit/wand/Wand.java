@@ -4811,18 +4811,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String oldPath = this.path;
         this.path = path;
         setProperty("path", path);
-
-        // Handle the case of a path upgrade meaning there are suddenly more spells or brushes available
-        boolean updateInventory = limitBrushesToPath || limitSpellsToPath;
-        if (!oldPath.equals(path) && updateInventory) {
-            closeInventory();
-            if (limitSpellsToPath) {
-                loadSpells();
-            }
-            if (limitBrushesToPath) {
-                loadBrushes();
-            }
-            buildInventory();
+        if (!oldPath.equals(path)) {
+            updated();
         }
     }
 
