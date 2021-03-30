@@ -217,7 +217,7 @@ public class ConstructSpell extends BrushSpell
             batch.setPower(true);
         }
         boolean success = mage.addBatch(batch);
-        return success ? SpellResult.CAST : SpellResult.FAIL;
+        return success ? SpellResult.PENDING : SpellResult.FAIL;
     }
 
     @Override

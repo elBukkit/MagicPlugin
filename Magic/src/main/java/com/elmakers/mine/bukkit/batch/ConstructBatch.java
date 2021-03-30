@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MaterialMap;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.block.UndoList;
@@ -552,6 +553,7 @@ public class ConstructBatch extends BrushBatch {
             if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {
                 if (!mage.consumeBlock(brush, consumeVariants)) {
                     String requiresMessage = context.getMessage("insufficient_resources");
+                    context.addResult(SpellResult.INSUFFICIENT_RESOURCES);
                     context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", brush.getName()));
                     finish();
                     return;
@@ -591,6 +593,7 @@ public class ConstructBatch extends BrushBatch {
                 com.elmakers.mine.bukkit.api.block.BlockData blockData = UndoList.register(block);
                 blockData.commit();
             }
+            context.addResult(SpellResult.CAST);
         }
     }
 

@@ -96,7 +96,7 @@ public class FillSpell extends BrushSpell
                 return SpellResult.FAIL;
             }
             boolean success = mage.addBatch(batch);
-            return success ? SpellResult.CAST : SpellResult.FAIL;
+            return success ? SpellResult.PENDING : SpellResult.FAIL;
         }
         else
         {

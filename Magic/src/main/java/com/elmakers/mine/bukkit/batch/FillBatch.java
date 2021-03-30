@@ -8,6 +8,7 @@ import org.bukkit.block.BlockState;
 import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -105,6 +106,7 @@ public class FillBatch extends BrushBatch {
                     if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {
                         if (!mage.consumeBlock(brush, consumeVariants)) {
                             String requiresMessage = context.getMessage("insufficient_resources");
+                            context.addResult(SpellResult.INSUFFICIENT_RESOURCES);
                             context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", brush.getName()));
                             finish();
                             return workPerformed;
@@ -122,6 +124,7 @@ public class FillBatch extends BrushBatch {
                         FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
                         falling.setDropItem(false);
                     }
+                    context.addResult(SpellResult.CAST);
                 }
             }
 

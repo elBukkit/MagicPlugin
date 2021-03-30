@@ -2672,7 +2672,12 @@ public class BaseSpell implements MageSpell, Cloneable {
                 sendMessageKey("deactivate");
             }
             if (currentCast != null) {
-                currentCast.addResult(SpellResult.DEACTIVATE);
+                // this is skipped here to avoid default deactivation messaging,
+                // and in particular so it doesn't override any results published by Construct or Fill batches,
+                // since those spells activate and deactivate for selection.
+                if (!quiet) {
+                    currentCast.addResult(SpellResult.DEACTIVATE);
+                }
                 if (deactivateEffects) {
                     currentCast.cancelEffects();
                 }

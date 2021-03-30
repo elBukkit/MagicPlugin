@@ -9,9 +9,6 @@
 
 - TBW got back a ton of blocks somehow?
 - We got materia as items when not maxed out
-- wand appearance didn't update on rankup
-- wand properties didn't immediately take effect
-- hotbar updates stopped working at conduit
 - Tree spell allow using materia?
 - Doesn't seem like conversion rates work? Absorbed 15 obsidian but was able to place a lot more than that
 - building with water and lava doesn't seem to work
@@ -24,7 +21,6 @@
 # Engineering Improvements
 
  - Fill out worth values for all blocks (and items, for shops)
- - Fix gaining SP for cast failed due to not enough blocks
 
 ## Client Localization
 

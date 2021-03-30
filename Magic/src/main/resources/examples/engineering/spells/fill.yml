@@ -9,6 +9,7 @@ fill:
     class: FillSpell
     worth: 5000
     deactivate_effects: false
+    earns_sp: 2
     effects:
         cast:
           - sound: entity_illusioner_cast_spell
