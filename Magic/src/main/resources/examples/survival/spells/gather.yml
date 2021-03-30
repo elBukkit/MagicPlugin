@@ -1,5 +1,4 @@
 gather:
-  enabled: false
   icon: soul_lantern{CustomModelData:18001}
   icon_disabled: soul_lantern{CustomModelData:18002}
   legacy_icon: spell_icon:48
