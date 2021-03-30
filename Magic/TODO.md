@@ -1,5 +1,8 @@
 # TODO
 
+- Items worn on mobs lose their tags (sort of), turn into shallow bukkit copies which can't be identified
+  by the likes of isTemporary
+
 # Bugs from Club
 
 - undo bugs :( idk

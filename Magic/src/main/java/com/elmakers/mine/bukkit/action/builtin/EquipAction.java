@@ -45,6 +45,7 @@ public class EquipAction extends BaseSpellAction
     private boolean unbreakable = true;
     private boolean returnOnFinish = false;
     private boolean makeTemporary = true;
+    private boolean replaceItem = false;
     private WearUndoAction undoAction;
 
     @Override
@@ -197,7 +198,7 @@ public class EquipAction extends BaseSpellAction
         existingItem = mage.getItem(slotNumber);
 
         // Decide what to do with the item in the slot being replaced
-        if (!CompatibilityUtils.isEmpty(existingItem)) {
+        if (!CompatibilityUtils.isEmpty(existingItem) && !replaceItem) {
             if (NMSUtils.isTemporary(existingItem)) {
                 ItemStack replacement = NMSUtils.getReplacement(existingItem);
                 if (replacement != null) {
@@ -252,6 +253,7 @@ public class EquipAction extends BaseSpellAction
         unbreakable = parameters.getBoolean("unbreakable", true);
         returnOnFinish = parameters.getBoolean("return_on_finish", false);
         makeTemporary = parameters.getBoolean("temporary", true);
+        replaceItem = parameters.getBoolean("replace_item", false);
     }
 
     private static class WearUndoAction implements Runnable {
