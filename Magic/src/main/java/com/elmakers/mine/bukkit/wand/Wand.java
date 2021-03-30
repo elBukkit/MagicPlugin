@@ -2557,10 +2557,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         List<String> lore = new ArrayList<>();
         for (String line : loreTemplate) {
             if (line == null) line = "";
-            if (mage != null) {
-                line = mage.parameterizeMessage(line);
-                line = mage.parameterizeAttributes(line);
-            }
             if (line.startsWith("$")) {
                 switch (line) {
                     case "$description":
@@ -2616,9 +2612,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         }
                         break;
                     default:
+                        if (mage != null) {
+                            line = mage.parameterizeMessage(line);
+                            line = mage.parameterizeAttributes(line);
+                        }
                         lore.add(ChatColor.translateAlternateColorCodes('&', line));
                 }
             } else {
+                if (mage != null) {
+                    line = mage.parameterizeMessage(line);
+                    line = mage.parameterizeAttributes(line);
+                }
                 lore.add(ChatColor.translateAlternateColorCodes('&', line));
             }
         }
