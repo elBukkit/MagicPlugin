@@ -50,7 +50,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
         super.prepare(context, parameters);
         plugin = context.getPlugin();
         doVelocity = parameters.getBoolean("apply_velocity", true);
-        doTeleport = parameters.getBoolean("teleport", true);
+        doTeleport = parameters.getBoolean("teleport", false);
         noTarget = parameters.getBoolean("no_target", true);
         orient = parameters.getBoolean("orient", false);
         velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");
@@ -137,18 +137,18 @@ public class EntityProjectileAction extends CustomProjectileAction {
         // Note that in testing it somehow doesn't seem to matter if we adjust the location here
         // I really have no idea why, but it seems to work OK if we adjust it on spawn.
         Location target = adjustLocation(actionContext.getTargetLocation());
+        if (doTeleport) {
+            if (orient) {
+                target.setDirection(velocity);
+            }
+            entity.teleport(target);
+        }
         if (doVelocity) {
             Vector velocity = this.velocity.clone().multiply(distanceTravelledThisTick);
             if (velocityOffset != null) {
                 velocity = velocity.add(velocityOffset);
             }
             SafetyUtils.setVelocity(entity, velocity);
-        }
-        if (doTeleport) {
-            if (orient) {
-                target.setDirection(velocity);
-            }
-            entity.teleport(target);
         }
         return result;
     }

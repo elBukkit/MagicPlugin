@@ -12,6 +12,8 @@
  - Currencies were refactored:
    sp, xp and "currency" (item-based currency) configuration is now in a builtin_currency section
    sp localization is now in the currency section with the rest
+ - EntityProjectile and ArmorStandProjectile no longer teleport by default, since this can be glitchy in Paper
+   for some entity types. Add `teleport: true` to your spell parameters if you need this behavior back.
 
 # 8.4
 
