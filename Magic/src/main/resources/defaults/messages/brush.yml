@@ -6,3 +6,4 @@ brush:
   # Set this to see the brush key in lore
   # key: "&7$key"
   key: ""
+  block_data_description: "&7$data"

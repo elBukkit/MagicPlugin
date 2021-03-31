@@ -926,6 +926,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         if (extraLore != null) {
             lore.add(ChatColor.LIGHT_PURPLE + extraLore);
         }
+        if (blockData != null && !blockData.isEmpty()) {
+            ConfigurationUtils.addIfNotEmpty(messages.get("brush.block_data_description").replace("$data", blockData), lore);
+        }
         if (isItem) {
             ConfigurationUtils.addIfNotEmpty(messages.get("wand.brush_item_description"), lore);
         }

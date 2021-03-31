@@ -11,8 +11,6 @@
 
 # Engineering Improvements
 
-- building with water and lava doesn't seem to work
-
 - Fill out worth values for all blocks (and items, for shops)
 - Tree spell allow using materia?
 
