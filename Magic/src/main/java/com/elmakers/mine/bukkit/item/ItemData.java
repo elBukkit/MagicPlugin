@@ -322,7 +322,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     }
 
     @Nonnull
-    private ItemStack getOrCreateItemStack() {
+    public ItemStack getOrCreateItemStack() {
         if (item == null) {
             item = controller.createItem(materialKey, null, false, this);
             if (!loaded && InventoryUtils.isSkull(item)) {

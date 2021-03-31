@@ -66,7 +66,7 @@ public class ItemController {
             if (magicItem != null) {
                 itemKeys.add(itemKey);
                 items.put(itemKey, magicItem);
-                itemsByStack.put(magicItem.getItemStack(1), magicItem);
+                itemsByStack.put(magicItem.getOrCreateItemStack(), magicItem);
                 if (magicItem.isReplaceOnEquip()) {
                     Material type = magicItem.getType();
                     Map<Integer, ItemData> mapped = replaceOnEquip.get(type);
