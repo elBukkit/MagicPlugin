@@ -1003,7 +1003,7 @@ large_fern:
 lava:
   worth: 10
 lava_bucket:
-  worth: 10
+  worth: 25
 lead:
   worth: 12.91
 leather:
@@ -1161,7 +1161,7 @@ melon_slice:
 melon_stem:
   worth: 0
 milk_bucket:
-  worth: 3.64
+  worth: 20
 minecart:
   worth: 0
 mooshroom_spawn_egg:
@@ -1545,7 +1545,7 @@ prismarine_wall:
 pufferfish:
   worth: 35.71
 pufferfish_bucket:
-  worth: 0
+  worth: 20
 pufferfish_spawn_egg:
   worth: 500
 pumpkin:
@@ -1695,7 +1695,7 @@ saddle:
 salmon:
   worth: 18.13
 salmon_bucket:
-  worth: 0
+  worth: 20
 salmon_spawn_egg:
   worth: 500
 sand:
@@ -1959,7 +1959,7 @@ tripwire_hook:
 tropical_fish:
   worth: 24.73
 tropical_fish_bucket:
-  worth: 0
+  worth: 20
 tropical_fish_spawn_egg:
   worth: 500
 tube_coral:
@@ -2033,7 +2033,7 @@ warped_wart_block:
 water:
   worth: 5
 water_bucket:
-  worth: 5
+  worth: 20
 weeping_vines:
   worth: 0
 weeping_vines_plant:
