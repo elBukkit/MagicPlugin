@@ -65,7 +65,7 @@
    - TODO: line of sight checks
  - Add `permissions` mob parameter, currently only works for permission-based targeting checks via the above parameters
  - Add some mob-specific disguise parameters, such as powered and ignited for creepers
- - Added `clear_items` option to chest populator
+ - Added `clear_items` (true/false) and `remove_items` (list of materials) option to chest populator
 
 ## Fixes
 
