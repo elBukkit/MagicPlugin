@@ -94,7 +94,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     mage.activateGUI(this, displayInventory);
                     return;
                 } else if (set.equals("variants")) {
-                    MaterialAndData baseMaterial = new MaterialAndData(item);
+                    MaterialAndData baseMaterial = new MaterialAndData(InventoryUtils.getMetaString(item, "variant_key"));
                     String baseName = getBaseName(baseMaterial);
                     String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
                     Collection<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
@@ -230,7 +230,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         }
 
         for (Map.Entry<Material, Collection<ItemStack>> entry : variants.entrySet()) {
-            MaterialAndData material = new MaterialAndData(entry.getKey());
+            String key = entry.getKey().name();
+            MaterialBrush material = new MaterialBrush(key);
             Collection<ItemStack> items = entry.getValue();
             if (items.size() == 1) {
                 brushes.add(items.iterator().next());
@@ -238,7 +239,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
 
             String materialName = getBaseName(material);
-            ItemStack category = new ItemStack(material.getMaterial());
+            ItemStack category = material.getItem(context.getController(), false);
             category = CompatibilityUtils.makeReal(category);
             if (category == null) continue;
             ItemMeta meta = category.getItemMeta();
@@ -250,6 +251,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             meta.setLore(lore);
             category.setItemMeta(meta);
             InventoryUtils.setMeta(category, "brush_set", "variants");
+            InventoryUtils.setMeta(category, "variant_key", key);
             brushes.add(category);
         }
 
