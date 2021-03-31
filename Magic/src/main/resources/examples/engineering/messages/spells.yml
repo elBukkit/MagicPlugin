@@ -21,7 +21,7 @@ spells:
         description: Convert a large sphere of blocks
         usage: Cast twice to convert, shift-cast to match specific block data
         target_selected: Cast again to convert $target
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Converted @blocks blocks to $material
         upgrade_description: "Increased max radius"
     supercollapse:
@@ -29,14 +29,14 @@ spells:
         description: Collapse a large sphere of blocks
         usage: Cast twice to collapse
         target_selected: Cast again to collapse
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Collapsed @blocks blocks
     superblob:
         name: SuperBlob
         description: Create a large solid sphere
         usage: Cast twice to construct
         target_selected: Cast again to build sphere
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superhemisphere:
@@ -44,7 +44,7 @@ spells:
         description: Create a large solid half-sphere
         usage: Cast twice to construct
         target_selected: Cast again to build hemisphere
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     supercylinder:
@@ -52,7 +52,7 @@ spells:
         description: Create a large cylinder
         usage: Cast twice to construct
         target_selected: Cast again to build cylinder
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superwalls:
@@ -60,7 +60,7 @@ spells:
         description: Create a high walls around your area
         usage: Cast twice to construct
         target_selected: Cast again to build walls
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superrepair:
@@ -68,7 +68,7 @@ spells:
         description: Repairs a large area saved with Backup
         usage: Cast twice to repair
         target_selected: Cast again to repair
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Repaired @blocks blocks
     iterate:
         name: Iterate
@@ -123,14 +123,14 @@ spells:
         name: SuperBackup
         description: Save a large target area for Repair
         usage: Cast twice to save
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Backed up the selected area
         target_selected: Cast again to backup
     superemp:
         name: SuperEMP
         description: Electrify a large area
         usage: Cast twice to electrify
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Electrified @blocks blocks
         target_selected: Cast again to electrify sphere
     supershell:
@@ -138,7 +138,7 @@ spells:
         description: Create a large hollow sphere
         usage: Cast twice to construct
         target_selected: Cast again to build shell
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superdisc:
@@ -146,7 +146,7 @@ spells:
         description: Create a large circular disc
         usage: Cast twice to construct
         target_selected: Cast again to build disc
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superring:
@@ -154,7 +154,7 @@ spells:
         description: Create a large circular ring
         usage: Cast twice to construct
         target_selected: Cast again to build ring
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superdome:
@@ -162,7 +162,7 @@ spells:
         description: Create a very large dome
         usage: Cast twice to construct
         target_selected: Cast again to build dome
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superpyramid:
@@ -170,7 +170,7 @@ spells:
         description: Create a large hollow pyramid
         usage: Cast twice to construct
         target_selected: Cast again to build pyramid
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superbox:
@@ -178,7 +178,7 @@ spells:
         description: Create a large hollow box
         usage: Cast twice to construct
         target_selected: Cast again to build box
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     supercube:
@@ -186,7 +186,7 @@ spells:
         description: Create a large solid cube
         usage: Cast twice to construct
         target_selected: Cast again to build cube
-        fail: Too large!
+        fail: "a:&cToo large!"
         cast_finish: Filled @blocks blocks with $material
         upgrade_description: "Increased max radius"
     superblast:
@@ -306,3 +306,4 @@ spells:
         name: Materia Shop
         description: Exchange money for Spell Points
         title: "&3Materia &7(&a$balance&7)"
+        not_applicable: "&cYou are at the limit for &3Materia"
