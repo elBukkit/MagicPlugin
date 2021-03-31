@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.world.populator.builtin;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Random;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Chunk;
@@ -21,6 +22,7 @@ import com.elmakers.mine.bukkit.world.populator.MagicChunkPopulator;
 public class ChestPopulator extends MagicChunkPopulator {
     private final Deque<WeightedPair<Integer>> baseProbability = new ArrayDeque<>();
     private final Deque<WeightedPair<String>> itemProbability = new ArrayDeque<>();
+    private boolean clearItems = false;
     private int maxY = 255;
     private int minY = 0;
 
@@ -43,26 +45,34 @@ public class ChestPopulator extends MagicChunkPopulator {
         if (wands != null) {
             RandomUtils.populateStringProbabilityMap(itemProbability, wands);
         }
+        clearItems = config.getBoolean("clear_items", false);
 
-        return baseProbability.size() > 0 && itemProbability.size() > 0;
+        return clearItems || (baseProbability.size() > 0 && itemProbability.size() > 0);
     }
 
+    @Nullable
     protected String[] populateChest(Chest chest) {
-        // First determine how many wands to add
-        Integer wandCount = RandomUtils.weightedRandom(baseProbability);
-        String[] wandNames = new String[wandCount];
-        for (int i = 0; i < wandCount; i++) {
-            String wandName = RandomUtils.weightedRandom(itemProbability);
-            ItemStack item = controller.createItem(wandName);
-            if (item != null) {
-                chest.getInventory().addItem(item);
-            } else {
-                wandName = "*" + wandName;
+        if (clearItems) {
+            chest.getInventory().clear();
+        }
+        String[] itemsAdded = null;
+        if (!baseProbability.isEmpty()) {
+            // First determine how many items to add
+            Integer itemCount = RandomUtils.weightedRandom(baseProbability);
+            itemsAdded = new String[itemCount];
+            for (int i = 0; i < itemCount; i++) {
+                String wandName = RandomUtils.weightedRandom(itemProbability);
+                ItemStack item = controller.createItem(wandName);
+                if (item != null) {
+                    chest.getInventory().addItem(item);
+                } else {
+                    wandName = "*" + wandName;
+                }
+                itemsAdded[i] = wandName;
             }
-            wandNames[i] = wandName;
         }
 
-        return wandNames;
+        return itemsAdded;
     }
 
     public void setMaxY(int maxY) {
@@ -78,11 +88,16 @@ public class ChestPopulator extends MagicChunkPopulator {
 
             Chest chest = (Chest)block;
             if (block.getType() == Material.CHEST) {
-                String[] wandNames = populateChest(chest);
-                if (wandNames.length > 0 && controller != null) {
-                    Location location = block.getLocation();
-                    controller.info("Added items to chest: " + StringUtils.join(wandNames, ", ") + " at "
-                            + location.getWorld().getName() + "," + location.toVector());
+                String[] itemsAdded = populateChest(chest);
+                if (controller != null) {
+                    if (itemsAdded != null && itemsAdded.length > 0) {
+                        Location location = block.getLocation();
+                        controller.info("Added items to chest: " + StringUtils.join(itemsAdded, ", ") + " at "
+                                + location.getWorld().getName() + "," + location.toVector());
+                    } else if (clearItems) {
+                        Location location = block.getLocation();
+                        controller.info("Cleared chest at: " + location.getWorld().getName() + "," + location.toVector());
+                    }
                 }
             }
         }
