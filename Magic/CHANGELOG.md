@@ -74,6 +74,7 @@
  - Fix using ThrownTrident, ThrownExpBottle and ShulkerBullet in Projectile action
  - Fix some cases of using but disabling the default configs
  - Fix the "book:all" spell category book (also added "book:categories" since the 100-page limit breaks the all book)
+ - Fix the Growth spell not working on carrots
 
 ## EffectLib 9.0
 
