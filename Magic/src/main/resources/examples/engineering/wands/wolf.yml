@@ -24,7 +24,7 @@ wolf:
     - regeneration
   active_brush: erase
   active_spell: fling
-  hotbar_count: 5
+  hotbar_count: 4
   level_spells: true
   spells:
     # Hotbar 1, main
@@ -37,40 +37,51 @@ wolf:
     - testdummy
     - debugger
 
-    # Hotbar 2, engineering
+    # Hotbar 2, engineering/architect
     - place
     - paint
-    - bridge
     - pillar
-    - alter
-    - commit
-    - rollback
-
-    # Hotbar 3, brushes
-    - toggleair
-    - newpage
-
-    # Hotbar 4, architect
-    - absorb
+    - bridge
     - fill
     - superblob
     - superconvert
+    - rollback
+
+    # Hotbar 3, architect/engineering
+    - alter
     - supershell
     - superbox
     - superdisc
+    - superring
     - floodfill
+    - paste
+    - commit
 
-    # Hotbar 5, conduit
+    # Hotbar 4, brushes
+    - absorb
+    - toggleair
+    - newpage
+
+    # Page 1, conduit
     - backup
     - repair
     - superrepair
     - superbackup
-    - paste
     - portal
     - night
     - capture
+    - anvil
+    - forest
+    - weather
+    - wolfhouse
+    - workbench
+    - stash
+    - disposal
+    - pickpocket
+    - lockpick
+    - newpage
 
-    # Page 1, Engineering
+    # Page 2, Engineering
     - convert
     - recurse
     - toss
@@ -81,10 +92,9 @@ wolf:
     - flatten
     - tree
 
-    # Page 1.5, Architect
+    # Page 3, Architect
     - superdome
     - supercube
-    - superring
     - superpyramid
     - superwalls
     - supercylinder
@@ -93,27 +103,13 @@ wolf:
     - volley
     - light
 
-    - newpage
-
-    # Page 4, Conduit
-    - portal
-    - anvil
-    - forest
-    - weather
-    - wolfhouse
-    - workbench
-    - stash
-    - disposal
-    - pickpocket
-    - lockpick
-
   brushes:
-    - erase@9
-    - copy@10
-    - clone@11
-    - replicate@12
-    - map@13
-    - map:128@14
+    - erase@26
+    - copy@27
+    - clone@28
+    - replicate@29
+    - map@30
+    - map:128@31
 
     - barrier
     - stone
@@ -244,4 +240,3 @@ wolf:
     - schematic:beacon
     - schematic:flare_beacon
     - schematic:elder_tree
-

@@ -22,17 +22,18 @@ conduit:
         - rollback
 
         # Hotbar 2, brushes
+        - absorb
         - toggleair
         - newpage
 
         # Hotbar 3, architect
-        - absorb
         - fill
         - superblob
         - superconvert
         - supershell
         - superbox
         - superdisc
+        - superring
         - floodfill
 
         # Hotbar 4, conduit
@@ -63,7 +64,6 @@ conduit:
         # Page 2, Architect
         - superdome
         - supercube
-        - superring
         - superpyramid
         - superwalls
         - supercylinder
@@ -80,12 +80,12 @@ conduit:
         - forest
         - weather
     brushes:
-        - erase@9
-        - copy@10
-        - clone@11
-        - replicate@12
-        - map@13
-        - map:128@14
+        - erase@10
+        - copy@11
+        - clone@12
+        - replicate@13
+        - map@14
+        - map:128@15
 
         - stone
         - dirt

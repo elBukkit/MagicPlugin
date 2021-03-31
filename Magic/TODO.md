@@ -5,14 +5,6 @@
 - undo bugs :( idk
 - right-clicking an NPC with a wand casts your spell
 
-# Bugs from Video :(
-
-- TBW got back a ton of blocks somehow?
-- We got materia as items when not maxed out
-- Tree spell allow using materia?
-- Doesn't seem like conversion rates work? Absorbed 15 obsidian but was able to place a lot more than that
-- building with water and lava doesn't seem to work
-
 # Other Bugs... too many bugs .. crrryy
 
 - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
@@ -21,6 +13,12 @@
 # Engineering Improvements
 
  - Fill out worth values for all blocks (and items, for shops)
+ - Tree spell allow using materia?
+
+- TBW got back a ton of blocks somehow?
+- We got materia as items when not maxed out
+- Doesn't seem like conversion rates work? Absorbed 15 obsidian but was able to place a lot more than that
+- building with water and lava doesn't seem to work
 
 ## Client Localization
 
