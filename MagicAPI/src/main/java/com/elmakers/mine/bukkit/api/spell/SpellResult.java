@@ -51,7 +51,7 @@ public enum SpellResult {
     // The spell cast failed due to some internal issue. It's rare that an action would return this.
     FAIL(false, true, true),
     // The spell cast failed due to not having sufficient casting costs. Actions generally should not return this.
-    INSUFFICIENT_RESOURCES(false, true, true),
+    INSUFFICIENT_RESOURCES(false, true, true, false, true),
     // The spell cast failed due to no permissions (build, break, etc). Actions generally should not return this.
     INSUFFICIENT_PERMISSION(false, true, true),
 
