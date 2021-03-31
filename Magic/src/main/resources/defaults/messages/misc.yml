@@ -8,6 +8,9 @@ books:
         title: $category Spell Book
     all:
         title: The Master Spell Book
+    categories:
+      title: Spell Categories
+      category: "&n&l$category"
     spell:
         title: $spell Spell Book
     learnspell:

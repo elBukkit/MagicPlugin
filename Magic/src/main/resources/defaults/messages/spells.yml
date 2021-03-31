@@ -1,15 +1,15 @@
 spells:
     default:
-        fizzle: Your spell fizzled!
-        backfire: Your spell backfired!
+        fizzle: "a:&5Your spell fizzled!"
+        backfire: "a:&dYour spell backfired!"
         fail: "&cSomething went wrong!"
-        insufficient_permission: "&eYou can't do that right now."
+        insufficient_permission: "a:&eYou can't do that right now."
         cast_player_message: "a:&d&o$player &r&5cast &3&o$spell &r&5on you!"
         indirect_player_message: "a:&d&o$player &r&5cast &3&o$spell &r&5on you!"
         insufficient_resources: "a:&cNot enough &4$cost"
-        insufficient: "&cRequires &4$cost"
-        cooldown: You must wait $time.
-        cancelled: Your spell was cancelled!
+        insufficient: "a:&cRequires &4$cost"
+        cooldown: "a:&eYou must wait &6$time."
+        cancelled: "a:&eYour spell was cancelled!"
         cancel: ""
         cancel_selection: "a:&cCancelled &6$spell"
         entity_required: An entity is required.

@@ -1,5 +1,4 @@
 stoptest:
-    category: FireBending
     actions:
         cast:
         -   class: Parallel

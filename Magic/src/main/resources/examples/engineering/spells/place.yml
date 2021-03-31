@@ -8,7 +8,7 @@ place:
     category: engineering
     tags: noduel
     worth: 1000
-    earns_sp: 10
+    earns_sp: 5
     actions:
         cast:
         - class: ChangeContext

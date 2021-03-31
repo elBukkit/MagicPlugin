@@ -9,6 +9,7 @@ absorb:
     worth: 9999
     brush_selection: true
     upgrade_required_casts: 20
+    earns_sp: 50
     actions:
         cast:
         -  class: AbsorbAction
