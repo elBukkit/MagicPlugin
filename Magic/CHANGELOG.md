@@ -28,7 +28,7 @@
 
  - All currencies, builtin and custom, can be configured the same way
  - Physical items work for all currencies, not just Spell Points
- - "atm" spell added. a shop where players can withdraw money as physical items they can trade or give away
+ - "atm" spell and NPC mob added. A shop where players can withdraw money as physical items they can trade or give away
  - Note that all currency and spell point messaging was reorganized, see the migration log if you have
    custom messaging or localization.
  - Player shops can now set prices shop-wide using the shop tool

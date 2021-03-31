@@ -111,3 +111,5 @@ mobs:
     name: Ghost
   dailykit:
     name: Daily Rewards!
+  atm:
+    name: ATM

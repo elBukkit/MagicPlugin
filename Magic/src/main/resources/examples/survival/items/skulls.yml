@@ -262,3 +262,7 @@ skull_yoshi:
   worth: 200
   name: '&bYoshi'
 
+skull_computer:
+  item: skull:http://textures.minecraft.net/texture/71ead16d94045873da861abf94703e489f9cf498db5a2a33a41cabda93ae1825
+  worth: 200
+  name: '&bComputer'

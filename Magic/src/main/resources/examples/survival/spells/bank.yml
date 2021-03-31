@@ -46,6 +46,7 @@ atm:
   inherit: buyshop
   requires: Vault
   parameters:
+    remove_lore: true
     items:
       - item: currency:1
       - item: currency:10
