@@ -1647,7 +1647,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (brushData.getMode() == BrushMode.MATERIAL && !consumeFree) {
             Currency currency = controller.getBlockExchangeCurrency();
             if (currency != null) {
-                ItemStack worthItem = new ItemStack(itemStack.getType());
+                ItemStack worthItem = brushData.getItemStack(1);
                 Double itemWorth = controller.getWorth(worthItem, currency.getKey());
                 if (itemWorth != null && itemWorth > 0) {
                     String message = wand != null ? wand.getMessage("brush.consumes", controller.getMessages().get("brush.consumes")) : controller.getMessages().get("brush.consumes");
