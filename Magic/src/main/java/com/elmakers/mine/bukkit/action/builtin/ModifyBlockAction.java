@@ -132,7 +132,7 @@ public class ModifyBlockAction extends BaseSpellAction {
             if (!mage.consumeBlock(brush, consumeVariants)) {
                 String requiresMessage = context.getMessage("insufficient_resources");
                 context.sendMessageKey("insufficient_resources", requiresMessage.replace("$cost", brush.getName()));
-                return SpellResult.STOP;
+                return SpellResult.INSUFFICIENT_RESOURCES;
             }
         }
 
