@@ -1325,7 +1325,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         if (preCast.isCancelled()) {
             processResult(SpellResult.CANCELLED, workingParameters);
-            sendCastMessage(SpellResult.CANCELLED, " (no cast)");
+            sendCastDebugMessage(SpellResult.CANCELLED, " (no cast)");
             return false;
         }
 
@@ -1336,14 +1336,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (livingEntity != null && !mage.isSuperPowered()) {
             if (!bypassConfusion && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
                 processResult(SpellResult.CURSED, workingParameters);
-                sendCastMessage(SpellResult.CURSED, " (no cast)");
+                sendCastDebugMessage(SpellResult.CURSED, " (no cast)");
                 return false;
             }
 
             // Don't allow casting if the player is weakened
             if (!bypassWeakness && livingEntity.hasPotionEffect(PotionEffectType.WEAKNESS)) {
                 processResult(SpellResult.CURSED, workingParameters);
-                sendCastMessage(SpellResult.CURSED, " (no cast)");
+                sendCastDebugMessage(SpellResult.CURSED, " (no cast)");
                 return false;
             }
         }
@@ -1356,7 +1356,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 String creativeMessage = getMessage("creative_fail");
                 mage.sendMessage(creativeMessage);
             } else {
-                sendCastMessage(SpellResult.INSUFFICIENT_PERMISSION, " (no cast)");
+                sendCastDebugMessage(SpellResult.INSUFFICIENT_PERMISSION, " (no cast)");
             }
 
             if (mage.getDebugLevel() > 1) {
@@ -1427,9 +1427,9 @@ public class BaseSpell implements MageSpell, Cloneable {
         String timeDescription = "";
         if (cooldownRemaining > 0) {
             timeDescription = controller.getMessages().getTimeDescription(cooldownRemaining, "wait", "cooldown");
-            castMessageKey("cooldown", getMessage("cooldown").replace("$time", timeDescription));
+            sendMessageKey("cooldown", getMessage("cooldown").replace("$time", timeDescription));
             processResult(SpellResult.COOLDOWN, workingParameters);
-            sendCastMessage(SpellResult.COOLDOWN, " (no cast)");
+            sendCastDebugMessage(SpellResult.COOLDOWN, " (no cast)");
             return false;
         }
 
@@ -1439,7 +1439,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             String costDescription = required.getDescription(controller.getMessages(), mage);
             sendMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
             processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
-            sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
+            sendCastDebugMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
             return false;
         }
 
@@ -1449,7 +1449,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 double healthPercentage = 100 * li.getHealth() / CompatibilityUtils.getMaxHealth(li);
                 if (healthPercentage < requiredHealth) {
                     processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
-                    sendCastMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
+                    sendCastDebugMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
                     return false;
                 }
             }
@@ -1708,7 +1708,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         StartCastEvent castEvent = new StartCastEvent(mage, this, result, success);
         Bukkit.getPluginManager().callEvent(castEvent);
 
-        sendCastMessage(result, " (" + success + ")");
+        sendCastDebugMessage(result, " (" + success + ")");
         onFinalizeCast(result);
         return success;
     }
@@ -1733,7 +1733,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
     }
 
-    protected void sendCastMessage(SpellResult result, String message)
+    protected void sendCastDebugMessage(SpellResult result, String message)
     {
         Location source = getEyeLocation();
         if (mage == null || source == null) return;
