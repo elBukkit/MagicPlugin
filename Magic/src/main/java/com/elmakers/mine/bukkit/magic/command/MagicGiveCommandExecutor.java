@@ -181,6 +181,10 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             }
             addIfPermissible(sender, options, "Magic.create.", "recipe:*");
             addIfPermissible(sender, options, "Magic.create.", "recipes:*");
+            if (api.hasPermission(sender, "Magic.create.book")) {
+                options.add("book:all");
+                options.add("book:categories");
+            }
         }
         return options;
     }

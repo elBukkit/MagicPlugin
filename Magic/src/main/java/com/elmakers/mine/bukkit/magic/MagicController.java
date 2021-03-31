@@ -4923,6 +4923,28 @@ public class MagicController implements MageController {
         return lines;
     }
 
+    public ItemStack getSpellCategoriesBook(int count) {
+        List<String> categoryKeys = new ArrayList<>(categories.keySet());
+        Collections.sort(categoryKeys);
+
+        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
+        BookMeta book = (BookMeta) bookItem.getItemMeta();
+        book.setAuthor(messages.get("books.default.author"));
+        String title = messages.get("books.categories.title");
+        book.setTitle(title);
+        List<String> pages = new ArrayList<>();
+        for (String key : categoryKeys) {
+            com.elmakers.mine.bukkit.api.spell.SpellCategory category = getCategory(key);
+            String description = messages.get("books.categories.category").replace("$category", category.getName());
+            description += "\n\n" + ChatColor.RESET + category.getDescription();
+            pages.add(description);
+        }
+
+        book.setPages(pages);
+        bookItem.setItemMeta(book);
+        return bookItem;
+    }
+
     public ItemStack getLearnSpellBook(SpellTemplate spell, int amount) {
         ConfigurationSection wandConfiguration = ConfigurationUtils.newConfigurationSection();
         wandConfiguration.set("template", "learnspell");
@@ -5096,17 +5118,21 @@ public class MagicController implements MageController {
                 switch (itemKey) {
                     case "book": {
                         com.elmakers.mine.bukkit.api.spell.SpellCategory category = null;
-                        if (!itemData.isEmpty() && !itemData.equalsIgnoreCase("all")) {
-                            category = categories.get(itemData);
-                        }
-                        if (category != null) {
-                            itemStack = getSpellBook(category, amount);
+                        if (itemData.equals("categories")) {
+                            itemStack = getSpellCategoriesBook(amount);
                         } else {
-                            SpellTemplate spell = getSpellTemplate(itemData);
-                            if (spell != null) {
-                                itemStack = getSpellBook(spell, amount);
+                            if (!itemData.isEmpty() && !itemData.equalsIgnoreCase("all")) {
+                                category = categories.get(itemData);
+                            }
+                            if (category != null) {
+                                itemStack = getSpellBook(category, amount);
                             } else {
-                                itemStack = getSpellBook(amount);
+                                SpellTemplate spell = getSpellTemplate(itemData);
+                                if (spell != null) {
+                                    itemStack = getSpellBook(spell, amount);
+                                } else {
+                                    itemStack = getSpellBook(amount);
+                                }
                             }
                         }
                     }
