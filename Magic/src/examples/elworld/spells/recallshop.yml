@@ -7,6 +7,6 @@ recallshop:
     confirm_filler: stained_glass:3
     auto_close: true
     cost_override: currency
-    requirements:
-    - wand: wand
+    scale: 0.01
+    apply_to_caster: true
 

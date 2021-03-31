@@ -1741,6 +1741,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
         }
         String costType = defaultConfiguration.getCostType();
         com.elmakers.mine.bukkit.item.Cost cost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, 1);
+        if (defaultConfiguration.costOverride != null) {
+            cost.convert(context.getController(), defaultConfiguration.costOverride);
+        }
         cost.checkSupported(context.getController(), defaultConfiguration.getCostTypeFallbacks());
         cost.setAmount(cost.getBalance(mage, context.getWand()));
         return cost.getFullDescription(context.getController().getMessages());

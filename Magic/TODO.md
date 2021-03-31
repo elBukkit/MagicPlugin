@@ -1,21 +1,15 @@
 # TODO
 
-# Bugs from Club
+# Bugs
 
-- undo bugs :( idk
-
-# Other Bugs... too many bugs .. crrryy
-
+- Some undo bugs somewhere, blocks stay after blasting .. sometimes?
 - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
 - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
 
 # Engineering Improvements
 
-- Fill out worth values for all blocks (and items, for shops)
+- Fill out worth values for all blocks (and items, for shops) .. mostly done?
 - Tree spell allow using materia?
-
-- TBW got back a ton of blocks somehow?
-- Doesn't seem like conversion rates work? Absorbed 15 obsidian but was able to place a lot more than that
 
 ## Client Localization
 
@@ -26,12 +20,6 @@
  - Refactor, refactor, refactor ...
 
 ## Hot
-
- - Lots of issues with accursed pistons:
-   - need to catch BlockPistonExtendEvent ?
-   - need to catch BlockPistonRetractEvent
-   - need to
-
 
  - Improve mnpc describe, need to be able to describe sub-keys, with tab completion
  - Brooms should ignore half-blocks for takeoff
@@ -85,17 +73,6 @@
  - Magic mobs or automata fight without players around?
  - Direct damage option to Damage action
 
-## Kits
-
- - Add /mkit command (give yourself or others a kit .. save a kit from in-game?)
- - Add cooldowns
- - Add cooldown bypass permission
- - GiveKit action
-
-## lucky blocks example
-
- - Just finish it up?
-
 ## Editor
 
    - Gets confused by spaces, test out recipes
@@ -118,18 +95,10 @@
  - Undo on world save is flawed
    - Chunks save when unloaded
    - Do we need to auto-undo spells on chunk unload?
- - Path re-work
-   - Treat like another TemplatedProperties property holder
-   - Maybe use ParentedProperties and reconsider the way path inheritance works
-   - Allow specifying path as a storage location
-   - Change survival classes (or base class?) to get mana/regen from path
-   - Will need a customized data storage block for every mage/path
- - Boss bar support via optional class, using Bukkit API
  - Crafting recipe option to preserve enchantments, use for magic sword
    .. there was also that rando on discord who wanted to use this on a Geyser server to emulate a smithing table
       on bedrock
 
- - /mnpc select just doesn't work sometimes
  - Wands deactivate on TP (sometimes? cross-world? idk, can't reproduce)
  - Magic crossbow support: https://editor.elmakers.com/bz8e4d
 
@@ -151,17 +120,7 @@
  - Mage add brush tab-completion is dumb (or does this command not exist?)
  - Absorb should allow you to bypass restricted materials when you have bypass perms
 
-## Editor
-
- - Editor Doesn't suggest "cast" anymore under actions
- -   nor "actions" under cast - bleh
- - Biome list needs updating
- - Path hints would be nice
- - Special editor support for Effectlib rotation radians parameters
-
 ## Hot Issues
-
- - Get items when using erase brush? ... this would be really hard, undo would require having all of the blocks.
 
  - Can fly through glass panes on a broomstick
 
