@@ -455,17 +455,18 @@ public class PlayerController implements Listener {
         interactSpell = interactSpell != null && interactSpell.isEmpty() ? null : interactSpell;
         List<String> interactCommands = mob.getInteractCommands();
         interactCommands = interactCommands != null && interactCommands.isEmpty() ? null : interactCommands;
-        if (interactSpell == null && interactCommands == null) return;
 
-        Player player = event.getPlayer();
+        // This will be processed as a left-click via the animate event if we don't cancel it and set a cooldown
         event.setCancelled(true);
-
-        String permission = mob.getInteractPermission();
+        Player player = event.getPlayer();
         Mage playerMage = controller.getMage(player);
         playerMage.checkLastClick(0);
+
+        if (interactSpell == null && interactCommands == null) return;
         if (playerMage.getDebugLevel() >= DEBUG_LEVEL) {
             playerMage.sendDebugMessage("ENTITY AT INTERACT with: " + event.getHand() + " at " + entity + " : " + TextUtils.printVector(event.getClickedPosition()), DEBUG_LEVEL);
         }
+        String permission = mob.getInteractPermission();
         if (permission != null && !permission.isEmpty() && !player.hasPermission(permission)) {
             String message = controller.getMessages().get("npc.no_permission");
             playerMage.sendMessage(message);

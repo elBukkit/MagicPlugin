@@ -3,7 +3,6 @@
 # Bugs from Club
 
 - undo bugs :( idk
-- right-clicking an NPC with a wand casts your spell
 
 # Other Bugs... too many bugs .. crrryy
 
@@ -12,12 +11,13 @@
 
 # Engineering Improvements
 
+- building with water and lava doesn't seem to work
+
 - Fill out worth values for all blocks (and items, for shops)
 - Tree spell allow using materia?
 
 - TBW got back a ton of blocks somehow?
 - Doesn't seem like conversion rates work? Absorbed 15 obsidian but was able to place a lot more than that
-- building with water and lava doesn't seem to work
 
 ## Client Localization
 
