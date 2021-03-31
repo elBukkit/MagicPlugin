@@ -1,14 +1,13 @@
 firebending:
-    mana_regeneration: 4
-    mana_max: 20
-    max_mana: 200
-    max_mana_regeneration: 20
-    inherit: default
-    spells:
-      - fireball
-      - fire
-      - lava
-      - firestream
-      - combustion
-      - fire_dagger
+  inherit: default
+  override_properties:
+    mana_regeneration: 5
+    mana_max: 50
+  spells:
+    - fireball
+    - fire
+    - lava
+    - firestream
+    - combustion
+    - fire_dagger
 

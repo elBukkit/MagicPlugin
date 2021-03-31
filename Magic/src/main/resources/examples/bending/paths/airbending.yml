@@ -3,18 +3,17 @@
 #
 
 airbending:
-    mana_regeneration: 4
-    mana_max: 20
-    max_mana: 200
-    max_mana_regeneration: 20
-    inherit: default
-    spells:
-      - airblast
-      - suction
-      - airscooter
-      - breathofwind
-      - airbomb
-      - airshield
-      - enhancedspeed
-      - tornado
+  inherit: default
+  override_properties:
+    mana_regeneration: 5
+    mana_max: 50
+  spells:
+    - airblast
+    - suction
+    - airscooter
+    - breathofwind
+    - airbomb
+    - airshield
+    - enhancedspeed
+    - tornado
 

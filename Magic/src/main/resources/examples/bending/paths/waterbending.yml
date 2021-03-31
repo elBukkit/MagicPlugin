@@ -1,16 +1,15 @@
 waterbending:
-    mana_regeneration: 4
-    mana_max: 20
-    max_mana: 200
-    max_mana_regeneration: 20
-    inherit: default
-    spells:
-      - breathofice
-      - waterball
-      - waterjet
-      - heal
-      - cure
-      - bloodbending
-      - waterwhip
-      - iceshield
+  inherit: default
+  override_properties:
+    mana_regeneration: 5
+    mana_max: 50
+  spells:
+    - breathofice
+    - waterball
+    - waterjet
+    - heal
+    - cure
+    - bloodbending
+    - waterwhip
+    - iceshield
 

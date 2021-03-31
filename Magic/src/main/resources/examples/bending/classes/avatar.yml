@@ -1,10 +1,7 @@
 avatar:
+  parent: bender
   class_items: avatar
   path: avatar
-  mana_regeneration: 40
-  mana_max: 500
-  mana: 500
-  parent: bender
   locked: true
   limit_spells_to_path: false
   protection:
@@ -37,3 +34,7 @@ avatar:
     - earthline
     - airscooter
 
+  # This is here to support easily switching back to the old system
+  # via `/mconfig configure path default allow_property_overrides false`
+  mana_max: 500
+  mana_regeneration: 50

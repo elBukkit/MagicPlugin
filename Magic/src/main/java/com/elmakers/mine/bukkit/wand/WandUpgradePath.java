@@ -82,6 +82,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private ConfigurationSection properties;
 
     private boolean matchSpellMana = true;
+    private boolean allowPropertyOverrides = true;
 
     private int maxUses = 500;
     private int maxMaxMana = 0;
@@ -116,6 +117,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             this.maxMana = inherit.maxMana;
             this.manaRegeneration = inherit.manaRegeneration;
             this.upgradeBroadcast = inherit.upgradeBroadcast;
+            this.allowPropertyOverrides = inherit.allowPropertyOverrides;
             effects.putAll(inherit.effects);
             allRequiredSpells.addAll(inherit.allRequiredSpells);
             allSpells.addAll(inherit.allSpells);
@@ -145,6 +147,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     }
 
     protected void load(MageController controller, String key, ConfigurationSection template) {
+        // Parse override properties
+        properties = template.getConfigurationSection("override_properties");
+        allowPropertyOverrides = template.getBoolean("allow_property_overrides", allowPropertyOverrides);
+        if (!allowPropertyOverrides && properties != null) {
+            // Move override properties to main config, they will get applied to the caster
+            // on rankup (but can not be changed after that, for that player)
+            template = ConfigurationUtils.addConfigurations(template, properties, false);
+            properties = null;
+        }
+
         // Cache spells, mainly used for spellbooks
         Collection<PrerequisiteSpell> pathSpells = ConfigurationUtils.getPrerequisiteSpells(controller, template, "spells", "path " + key, true);
         for (PrerequisiteSpell prereq : pathSpells) {
@@ -296,8 +308,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             }
             levelMap.put(level, wandLevel);
         }
-
-        properties = template.getConfigurationSection("override_properties");
     }
 
     @Override

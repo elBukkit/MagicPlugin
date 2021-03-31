@@ -22,7 +22,7 @@
  - Hotbar count and mana regeneration/max now follow path configs and can not be upgraded separately
  - Paths can now have an `override_properties` section, with properties that will always override wand or class properties
  - This allows you to tweak mana progression after players have already progressed without them getting stuck on the old values
- - See migration log if you need to change this back
+ - See migration log if you need to change this back (basically `/mconfig configure path default allow_property_overrides false`)
 
 ## Currency Improvements
 
