@@ -846,10 +846,7 @@ spells:
         upgrade_description: "Greater damage, breaks blocks"
     force:
         name: Force
-        description: Use telekinesis
-        usage: Cast to select and throw an entity
-        cancel: Released target
-        target_selected: You captured $target
+        description: Use telekinesis to grab and manipulate mobs, or players
     dragonball:
         name: Dragon Ball
         description: Launch an ender dragon fireball.
