@@ -2508,7 +2508,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    @Deprecated
     public boolean isRestricted(Material material) {
         Player player = getPlayer();
         if (controller.hasBypassPermission(player)) return false;

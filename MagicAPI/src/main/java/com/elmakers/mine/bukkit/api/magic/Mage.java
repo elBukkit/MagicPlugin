@@ -442,7 +442,6 @@ public interface Mage extends CostReducer, CooldownReducer {
      */
     void onCast(Spell spell, SpellResult result);
 
-    @Deprecated
     boolean isRestricted(Material material);
     // Used for checking if a brush is restricted
     // TODO: Pass some kind of proper data class instead

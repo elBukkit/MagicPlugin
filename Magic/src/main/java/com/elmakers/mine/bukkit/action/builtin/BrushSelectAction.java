@@ -187,6 +187,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 continue;
             }
             if (brushItem != null) {
+                if (mage.isRestricted(brushItem.getType())) continue;
                 MaterialAndData material = new MaterialAndData(brushKey);
                 Material baseVariant = DefaultMaterials.getBaseColor(material.getMaterial());
                 if (baseVariant == null) {

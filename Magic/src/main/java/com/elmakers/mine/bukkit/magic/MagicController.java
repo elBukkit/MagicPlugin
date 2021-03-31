@@ -1171,7 +1171,6 @@ public class MagicController implements MageController {
         return undoableMaterials.testMaterial(material);
     }
 
-    @Deprecated // Material
     protected boolean isRestricted(Material material) {
         return restrictedMaterials.testMaterial(material);
     }

@@ -12,8 +12,8 @@
 
 # Engineering Improvements
 
- - Fill out worth values for all blocks (and items, for shops)
- - Tree spell allow using materia?
+- Fill out worth values for all blocks (and items, for shops)
+- Tree spell allow using materia?
 
 - TBW got back a ton of blocks somehow?
 - We got materia as items when not maxed out
