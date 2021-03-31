@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -39,7 +41,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
     private static int INVENTORY_ROWS = 6;
     private CastContext context;
     private List<ItemStack> schematics = new ArrayList<>();
-    private Map<Material, List<ItemStack>> variants = new HashMap<>();
+    private Map<Material, Collection<ItemStack>> variants = new HashMap<>();
     private int page = 1;
     private boolean allowAbsorbing = false;
 
@@ -95,7 +97,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     MaterialAndData baseMaterial = new MaterialAndData(item);
                     String baseName = getBaseName(baseMaterial);
                     String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
-                    List<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
+                    Collection<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
                     int invSize = ((variantList.size() + 9) / 9) * 9;
                     Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
                     for (ItemStack variantItem : variantList)
@@ -199,21 +201,21 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 
                 if (previous != null && material.getMaterial() == previous.getMaterial())
                 {
-                    List<ItemStack> variantList = variants.get(material.getMaterial());
+                    Collection<ItemStack> variantList = variants.get(material.getMaterial());
                     if (variantList == null)
                     {
                         ItemStack lastAdded = brushes.get(brushes.size() - 1);
-                        variantList = new ArrayList<>();
+                        variantList = new LinkedHashSet<>();
                         variantList.add(lastAdded);
                         brushes.remove(brushes.size() - 1);
                         variants.put(material.getMaterial(), variantList);
                     }
                     variantList.add(brushItem);
                 } else if (baseVariant != null) {
-                    List<ItemStack> variantList = variants.get(baseVariant);
+                    Collection<ItemStack> variantList = variants.get(baseVariant);
                     if (variantList == null)
                     {
-                        variantList = new ArrayList<>();
+                        variantList = new LinkedHashSet<>();
                         variants.put(baseVariant, variantList);
                     }
                     variantList.add(brushItem);
@@ -227,11 +229,11 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
         }
 
-        for (Map.Entry<Material, List<ItemStack>> entry : variants.entrySet()) {
+        for (Map.Entry<Material, Collection<ItemStack>> entry : variants.entrySet()) {
             MaterialAndData material = new MaterialAndData(entry.getKey());
-            List<ItemStack> items = entry.getValue();
+            Collection<ItemStack> items = entry.getValue();
             if (items.size() == 1) {
-                brushes.add(items.get(0));
+                brushes.add(items.iterator().next());
                 continue;
             }
 
