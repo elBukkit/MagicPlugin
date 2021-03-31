@@ -4744,6 +4744,10 @@ public class MagicController implements MageController {
         return activateHoloTextRange;
     }
 
+    public ItemStack getSpellBook(int count) {
+        return getSpellBook((SpellCategory)null, count);
+    }
+
     public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellCategory category, int count) {
         Map<String, List<SpellTemplate>> categories = new HashMap<>();
         Collection<SpellTemplate> spellVariants = spells.values();
@@ -5091,21 +5095,18 @@ public class MagicController implements MageController {
             try {
                 switch (itemKey) {
                     case "book": {
-                        com.elmakers.mine.bukkit.api.spell.SpellCategory category;
+                        com.elmakers.mine.bukkit.api.spell.SpellCategory category = null;
                         if (!itemData.isEmpty() && !itemData.equalsIgnoreCase("all")) {
                             category = categories.get(itemData);
-                            if (category == null) {
-                                SpellTemplate spell = getSpellTemplate(itemData);
-                                if (spell == null) {
-                                    if (callback != null) {
-                                        callback.updated(null);
-                                    }
-                                    return null;
-                                } else {
-                                    itemStack = getSpellBook(spell, amount);
-                                }
+                        }
+                        if (category != null) {
+                            itemStack = getSpellBook(category, amount);
+                        } else {
+                            SpellTemplate spell = getSpellTemplate(itemData);
+                            if (spell != null) {
+                                itemStack = getSpellBook(spell, amount);
                             } else {
-                                itemStack = getSpellBook(category, amount);
+                                itemStack = getSpellBook(amount);
                             }
                         }
                     }

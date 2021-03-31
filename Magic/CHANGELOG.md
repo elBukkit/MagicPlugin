@@ -72,6 +72,7 @@
  - Fix LibsDisguise integration on old legacy versions of LD
  - Fix using ThrownTrident, ThrownExpBottle and ShulkerBullet in Projectile action
  - Fix some cases of using but disabling the default configs
+ - Fix the "book:all" spell category book
 
 ## EffectLib 9.0
 
