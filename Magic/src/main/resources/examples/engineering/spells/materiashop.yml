@@ -6,7 +6,7 @@ materiashop:
   legacy_icon_disabled: spell_icon_disabled:119
   icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
   parameters:
-    apply_to_mage: true
+    apply_to_caster: true
     cost_type: sp
     remove_lore: true
     items:
