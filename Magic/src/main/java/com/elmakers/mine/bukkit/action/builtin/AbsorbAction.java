@@ -37,6 +37,9 @@ public class AbsorbAction extends BaseSpellAction
 
         MageController controller = context.getController();
         Material material = target.getType();
+        if (mage.isRestricted(material)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
 
         MaterialSet buildingMaterials = controller.getBuildingMaterialSet();
         MaterialSet restrictedMaterials = mage.getRestrictedMaterialSet();

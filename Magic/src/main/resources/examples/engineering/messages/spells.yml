@@ -260,6 +260,7 @@ spells:
         fail: This spell requires a wand
         cast: Absorbing some $material
         upgrade_description: "Sneak-cast to absorb a wildcard material\nThese can be used with SuperReplace to change stairs, fences or other complex blocks in-place"
+        insufficient_permission: "a:&cYou are not allowed to absorb that block"
     bridge:
         name: Bridge
         description: Extend the ground underneath you
