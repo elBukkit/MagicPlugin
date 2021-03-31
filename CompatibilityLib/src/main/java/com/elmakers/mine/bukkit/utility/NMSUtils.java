@@ -336,6 +336,7 @@ public class NMSUtils {
     protected static Method class_World_getChunkAtAsyncMethod;
     protected static Method class_NamespacedKey_getKeyMethod;
     protected static Method class_NamespacedKey_getNamespaceMethod;
+    protected static Method class_CraftMetaSkull_setProfileMethod;
 
     protected static boolean legacyMaps;
 
@@ -678,6 +679,13 @@ public class NMSUtils {
 
             // We don't want to consider new-ish builds as "legacy" and print a warning, so keep a separate flag
             boolean current = true;
+
+            try {
+                class_CraftMetaSkull_setProfileMethod = class_CraftMetaSkull.getDeclaredMethod("setProfile", class_GameProfile);
+                class_CraftMetaSkull_setProfileMethod.setAccessible(true);
+            } catch (Throwable ignore) {
+                getLogger().warning("Skull profile method not available, this is normal if you're on a legacy Minecraft version");
+            }
 
             try {
                 Class.forName("org.bukkit.event.player.PlayerStatisticIncrementEvent");

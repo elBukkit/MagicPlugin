@@ -515,7 +515,11 @@ public class InventoryUtils extends NMSUtils
     {
         try {
             if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return false;
-            class_CraftMetaSkull_profile.set(itemMeta, data);
+            if (class_CraftMetaSkull_setProfileMethod != null) {
+                class_CraftMetaSkull_setProfileMethod.invoke(itemMeta, data);
+            } else {
+                class_CraftMetaSkull_profile.set(itemMeta, data);
+            }
             return true;
         } catch (Exception ex) {
 
