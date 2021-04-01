@@ -1633,7 +1633,7 @@ spells:
     no_path_end: 你必须成为 $path&r!
     no_wand: 你必须手持法杖!
     confirm_title: 学习 $item
-    selected: "t:&d&o你学会了 \n&r&6$item\na:&r&d&o-&r&a$cost"
+    selected: "t:&d&o你学会了 \n&r&6$item"
     fail: ''
   engineershop:
     name: 工程师商店

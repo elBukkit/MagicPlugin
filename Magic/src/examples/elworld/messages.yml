@@ -12,18 +12,6 @@ worlds:
         name: The Overworld
 
 spells:
-  spellshop:
-    name: Learn Spells
-    title: "$path &rSpells ($balance&0)"
-    description: "Spend Spell Points to learn new spells.\nWhen you have learned all the required spells on your current path, you will rank up to the next path!"
-    no_items: There are no spells for you to buy here
-    no_path: You may not learn here.
-    no_upgrade: There is nothing more for you here.
-    no_required_path: "You must be at least $path&r!"
-    no_path_end: "You must be ready to advance from $path&r!"
-    no_wand: You must be holding a wand!
-    confirm_title: "Learn $item"
-    selected: "t:&r&6$item\n&d&oLearned\na:&r&d&o-&r&a$cost"
   othershop:
     name: Warrior Shop
     title: "Warrior Shop ($balance)"

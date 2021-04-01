@@ -1824,7 +1824,7 @@ spells:
     no_path_end: Usted debe estar listo para el avance de $path&r!
     no_wand: Debe ser la celebración de una varita mágica!
     confirm_title: Aprender $item
-    selected: "t:&d&oHas aprendido \n&r&6$item\na:&r&d&o-&r&a$cost"
+    selected: "t:&d&oHas aprendido \n&r&6$item"
     fail: ''
 ##################################################################################
   engineershop:

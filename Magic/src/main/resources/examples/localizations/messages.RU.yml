@@ -2883,7 +2883,7 @@ spells:
     no_path_end: Ты должен изучить все заклинания ранга $path&r!
     no_wand: Ты должен держать в руке палочку!
     confirm_title: Изучить $item
-    selected: "t:&d&oТы изучил \n&r&6$item\na:&r&d&o-&r&a$cost"
+    selected: "t:&d&oТы изучил \n&r&6$item"
     fail: ''
   engineershop:
     name: Магазин Инженера
