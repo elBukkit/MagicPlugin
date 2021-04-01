@@ -564,7 +564,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     // in which case we want to add a new hotbar inventory without re-arranging the main inventories
     // newly added hotbars will be empty, spells in removed hotbars will be added to the end of the inventories.
     protected void checkHotbarCount() {
-        if (!hasInventory) return;
+        if (!hasInventory || getHotbarCount() == 0) return;
         int hotbarCount = Math.max(1, getInt("hotbar_count", 1));
         if (hotbarCount != hotbars.size()) {
             while (hotbars.size() < hotbarCount) {
@@ -1419,6 +1419,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     setSpellLevel(spellKey.getBaseKey(), spellKey.getLevel());
                 }
                 if (slot == null) {
+                    slot = spellInventory.get(spellKey.getBaseKey());
+                }
+                if (slot == null) {
                     if (maxSlot < 0) {
                         maxSlot = getMaxSlot();
                     }
@@ -2255,6 +2258,31 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         limitSpellsToPath = getBoolean("limit_spells_to_path");
         limitBrushesToPath = getBoolean("limit_brushes_to_path");
         levelSpells = getBoolean("level_spells");
+
+        Object brushInventoryRaw = getObject("brush_inventory");
+        if (brushInventoryRaw != null) {
+            // Not sure this will ever appear as a Map, but just in case
+            if (brushInventoryRaw instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Integer> brushInventory = (Map<String, Integer>)brushInventoryRaw;
+                loadBrushInventory(brushInventory);
+            } else if (brushInventoryRaw instanceof ConfigurationSection) {
+                loadBrushInventory(NMSUtils.getMap((ConfigurationSection)brushInventoryRaw));
+            }
+        }
+
+        Object spellInventoryRaw = getObject("spell_inventory");
+        if (spellInventoryRaw != null) {
+            // Not sure this will ever appear as a Map, but just in case
+            if (spellInventoryRaw instanceof Map) {
+                @SuppressWarnings("unchecked")
+                Map<String, Integer> spellInventory = (Map<String, Integer>)spellInventoryRaw;
+                loadSpellInventory(spellInventory);
+            } else if (spellInventoryRaw instanceof ConfigurationSection) {
+                loadSpellInventory(NMSUtils.getMap((ConfigurationSection)spellInventoryRaw));
+            }
+        }
+
         loadSpells();
 
         // Load spell levels
@@ -2272,32 +2300,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         checkActiveSpell();
         loadBrushes();
 
-        Object brushInventoryRaw = getObject("brush_inventory");
-        if (brushInventoryRaw != null) {
-            // Not sure this will ever appear as a Map, but just in case
-            if (brushInventoryRaw instanceof Map) {
-                @SuppressWarnings("unchecked")
-                Map<String, Integer> brushInventory = (Map<String, Integer>)brushInventoryRaw;
-                loadBrushInventory(brushInventory);
-            } else if (brushInventoryRaw instanceof ConfigurationSection) {
-                loadBrushInventory(NMSUtils.getMap((ConfigurationSection)brushInventoryRaw));
-
-            }
-        }
-
-        Object spellInventoryRaw = getObject("spell_inventory");
-        if (spellInventoryRaw != null) {
-            // Not sure this will ever appear as a Map, but just in case
-            if (spellInventoryRaw instanceof Map) {
-                @SuppressWarnings("unchecked")
-                Map<String, Integer> spellInventory = (Map<String, Integer>)spellInventoryRaw;
-                loadSpellInventory(spellInventory);
-            } else if (spellInventoryRaw instanceof ConfigurationSection) {
-                loadSpellInventory(NMSUtils.getMap((ConfigurationSection)spellInventoryRaw));
-            }
-        }
-        else {
-            // Spells may have contained an inventory from migration or templates with a spell@slot format.
+        // Spells may have contained an inventory from migration or templates with a spell@slot format.
+        if (spellInventoryRaw == null) {
             updateSpellInventory();
         }
 
