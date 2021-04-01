@@ -3379,7 +3379,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private String getInventoryTitle() {
-        return getMessage("chest_inventory_title", "Wand");
+        return getMessage("chest_inventory_title", "$wand").replace("$wand", getName());
     }
 
     protected WandInventory getOpenInventory() {
