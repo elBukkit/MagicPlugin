@@ -287,6 +287,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         Entity entity = getEntity();
         if (entity != null) {
             entity.remove();
+            entityData.onDeath(entity);
         }
     }
 
