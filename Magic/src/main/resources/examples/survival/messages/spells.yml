@@ -1211,6 +1211,7 @@ spells:
       description: Withdraw money as physical cash
       cost_lore: "Withdraw $cost"
       deducted: "&d&oYou withdrew &r&a$cost"
+      title: "&5ATM &7(&2$balance&7)"
     spshop:
       name: SP Shop
       description: Exchange money for Spell Points
