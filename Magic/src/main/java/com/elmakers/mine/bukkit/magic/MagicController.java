@@ -645,7 +645,7 @@ public class MagicController implements MageController {
     }
 
     public boolean registerNMSBindings() {
-        if (!NMSUtils.initialize(getLogger())) {
+        if (!NMSUtils.initialize(getPlugin(), getLogger())) {
             return false;
         }
         SkinUtils.initialize(plugin);

@@ -20,7 +20,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
@@ -91,6 +90,7 @@ public class NMSUtils {
     protected static int FIREWORK_TYPE = 76;
 
     private static Logger logger;
+    protected static Plugin plugin;
 
     protected static Class<?> class_Block;
     protected static Class<?> class_BlockBase;
@@ -442,7 +442,8 @@ public class NMSUtils {
 
     protected static boolean chatPacketHasUUID = false;
 
-    public static boolean initialize(Logger logger) {
+    public static boolean initialize(Plugin plugin, Logger logger) {
+        NMSUtils.plugin = plugin;
         NMSUtils.logger = logger;
         // Find classes Bukkit hides from us. :-D
         // Much thanks to @DPOHVAR for sharing the PowerNBT code that powers the reflection approach.
