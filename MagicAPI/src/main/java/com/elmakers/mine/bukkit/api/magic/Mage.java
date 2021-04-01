@@ -563,7 +563,9 @@ public interface Mage extends CostReducer, CooldownReducer {
 
     double getCurrency(String type);
     void addCurrency(String type, double delta);
+    void addCurrency(String type, double delta, boolean quiet);
     void removeCurrency(String type, double delta);
+    void removeCurrency(String type, double delta, boolean quiet);
     void setCurrency(String type, double amount);
     boolean isAtMaxCurrency(String type);
 

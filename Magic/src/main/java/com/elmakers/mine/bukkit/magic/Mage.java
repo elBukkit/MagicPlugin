@@ -4326,6 +4326,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void addCurrency(String type, double delta) {
+        addCurrency(type, delta, false);
+    }
+
+    @Override
+    public void addCurrency(String type, double delta, boolean quiet) {
         boolean isFirstEarn = !data.contains(type);
         double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
@@ -4337,9 +4342,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
-        queueCurrencyMessage(type, delta);
+        if (!quiet) {
+            queueCurrencyMessage(type, delta);
+        }
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
-            if (isFirstEarn && currency != null) {
+            if (isFirstEarn && currency != null && !quiet) {
                 startInstructions();
                 String message = activeWand.getMessage(currency.getKey() + "_earn_instructions", activeWand.getMessage("earn_instructions"));
                 sendMessage(message.replace("$currency", currency.getName(controller.getMessages())));
@@ -4351,6 +4358,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void removeCurrency(String type, double delta) {
+        removeCurrency(type, delta, false);
+    }
+
+    @Override
+    public void removeCurrency(String type, double delta, boolean quiet) {
         double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
         if (currency instanceof CustomCurrency) {
@@ -4358,8 +4370,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         } else {
             currency.deduct(this, delta);
         }
-
-        queueCurrencyMessage(type, delta);
+        if (!quiet) {
+            queueCurrencyMessage(type, delta);
+        }
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
             activeWand.updateMana();
         }

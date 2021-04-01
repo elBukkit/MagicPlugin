@@ -759,7 +759,7 @@ public class PlayerController implements Listener {
                     limitMessage = limitMessage.replace("$type", currency.getName(messages));
                     mage.sendMessage(limitMessage);
                 } else {
-                    mage.addCurrency(currencyAmount.type, currencyAmount.amount);
+                    mage.addCurrency(currencyAmount.type, currencyAmount.amount, true);
                     player.getInventory().setItemInMainHand(null);
                     String balanceMessage = messages.get("currency." + currencyAmount.type + ".deposited", messages.get("currency.default.deposited"));
                     balanceMessage = balanceMessage.replace("$amount",  currency.formatAmount(currencyAmount.amount, messages));
