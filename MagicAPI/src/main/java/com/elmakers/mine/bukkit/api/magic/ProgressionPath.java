@@ -36,6 +36,7 @@ public interface ProgressionPath {
     boolean checkUpgradeRequirements(Wand wand, Mage mage);
     void upgrade(@Nonnull Mage mage, @Nullable Wand wand);
     ConfigurationSection getProperties();
+    boolean isAutomaticProgression();
 
     /**
      * Check to see if a specific spell is available on this exact path.

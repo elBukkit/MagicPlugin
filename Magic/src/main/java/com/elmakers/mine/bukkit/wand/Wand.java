@@ -1050,7 +1050,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 mage.sendMessage(message);
             }
             ProgressionPath nextPath = path.getNextPath();
-            if (nextPath != null) {
+            if (nextPath != null && path.isAutomaticProgression()) {
                 String message = getMessage("path_instructions", "").replace("$path", path.getName()).replace("$nextpath", nextPath.getName());
                 mage.sendMessage(message);
             }

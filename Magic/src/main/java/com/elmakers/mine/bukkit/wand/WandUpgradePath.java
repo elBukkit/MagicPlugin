@@ -890,4 +890,9 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     public boolean earnsSP() {
         return earnsSP;
     }
+
+    @Override
+    public boolean isAutomaticProgression() {
+        return requiredSpellKeys.isEmpty();
+    }
 }
