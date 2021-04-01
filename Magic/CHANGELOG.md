@@ -77,6 +77,7 @@
  - Fix the "book:all" spell category book (also added "book:categories" since the 100-page limit breaks the all book)
  - Fix the Growth spell not working on carrots and potatoes
  - Fix the spellbook hiding spells once it starts to get full
+ - Fix Hat spell disappearing your helmet if trying to wear some kind of invalid block
 
 ## EffectLib 9.0
 

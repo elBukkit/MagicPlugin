@@ -132,12 +132,19 @@ public class EquipAction extends BaseSpellAction
                     }
                 }
 
-                // If we didn't end up with a valid materia, exit
-                if (material == null || DefaultMaterials.isAir(material.getMaterial())) {
+                // If we didn't end up with a valid material, exit
+                if (material == null || DefaultMaterials.isAir(material.getMaterial()) || !material.isValid()) {
                     return SpellResult.NO_TARGET;
                 }
 
-                equipItem = material.getItemStack(1);
+                ItemStack itemStack = material.getItemStack(1);
+                // This forces coercion into an NMS stack, which will invalidate itself if it is something
+                // that won't really be represented as an item, like a wall_head
+                itemStack = CompatibilityUtils.makeReal(itemStack);
+                if (CompatibilityUtils.isEmpty(itemStack)) {
+                    return SpellResult.NO_TARGET;
+                }
+                equipItem = itemStack;
                 materialName = material.getName(context.getController().getMessages());
             }
 
