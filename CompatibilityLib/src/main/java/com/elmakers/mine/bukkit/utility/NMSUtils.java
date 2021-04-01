@@ -337,6 +337,8 @@ public class NMSUtils {
     protected static Method class_NamespacedKey_getKeyMethod;
     protected static Method class_NamespacedKey_getNamespaceMethod;
     protected static Method class_CraftMetaSkull_setProfileMethod;
+    protected static Method class_Entity_getPassengersMethod;
+    protected static Method class_Entity_addPassengerMethod;
 
     protected static boolean legacyMaps;
 
@@ -686,6 +688,15 @@ public class NMSUtils {
                 class_CraftMetaSkull_setProfileMethod.setAccessible(true);
             } catch (Throwable ignore) {
                 getLogger().warning("Skull profile method not available, this is normal if you're on a legacy Minecraft version");
+            }
+
+            try {
+                class_Entity_getPassengersMethod = Entity.class.getMethod("getPassengers");
+                class_Entity_addPassengerMethod = Entity.class.getMethod("addPassenger", Entity.class);
+            } catch (Throwable ex) {
+                class_Entity_getPassengersMethod = null;
+                class_Entity_addPassengerMethod = null;
+                getLogger().warning("Entity passengers method not available, this is normal if you're on a legacy Minecraft version");
             }
 
             try {

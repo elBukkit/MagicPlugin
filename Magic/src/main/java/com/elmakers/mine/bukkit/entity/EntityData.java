@@ -1231,17 +1231,16 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     private void removePassengers(Entity entity) {
-        // TODO: Use getPassengers
-        entity = DeprecatedUtils.getPassenger(entity);
-        if (entity != null) {
+        List<Entity> passengers = CompatibilityUtils.getPassengers(entity);
+        for (Entity passenger : passengers) {
             if (!removeMounts.contains("*")) {
-                com.elmakers.mine.bukkit.api.entity.EntityData entityType = controller.getMob(entity);
+                com.elmakers.mine.bukkit.api.entity.EntityData entityType = controller.getMob(passenger);
                 if (entityType == null || !removeMounts.contains(entityType.getKey())) {
-                    return;
+                    continue;
                 }
             }
-            removePassengers(entity);
-            entity.remove();
+            removePassengers(passenger);
+            passenger.remove();
         }
     }
 

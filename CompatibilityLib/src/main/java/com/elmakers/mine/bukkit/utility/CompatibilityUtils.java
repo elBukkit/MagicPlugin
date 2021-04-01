@@ -112,6 +112,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static final UUID emptyUUID = new UUID(0L, 0L);
     private static final Map<LoadingChunk, Integer> loadingChunks = new HashMap<>();
     private static boolean hasDumpedStack = false;
+    private static final List<Entity> passengerList = new ArrayList<>();
 
     static class LoadingChunk {
         private final String worldName;
