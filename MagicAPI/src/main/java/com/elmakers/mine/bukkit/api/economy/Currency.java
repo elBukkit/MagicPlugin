@@ -30,6 +30,7 @@ public interface Currency extends MagicProvider {
      * @return the amount of this cost type the Mage has.
      */
     double getBalance(Mage mage, CasterProperties caster);
+    default double getBalance(Mage mage) { return getBalance(mage, mage.getActiveProperties()); }
 
     /**
      * Whether or not a mage has at least a certain amount of this currency.
@@ -40,6 +41,7 @@ public interface Currency extends MagicProvider {
      * @return True if the mage has these costs.
      */
     boolean has(Mage mage, CasterProperties caster, double amount);
+    default boolean has(Mage mage, double amount) { return has(mage, mage.getActiveProperties(), amount); }
 
     /**
      * Deduct some currency from the specified Mage
@@ -49,6 +51,7 @@ public interface Currency extends MagicProvider {
      * @param amount The amount of currency to deduct.
      */
     void deduct(Mage mage, CasterProperties caster, double amount);
+    default void deduct(Mage mage, double amount) { deduct(mage, mage.getActiveProperties(), amount); }
 
     /**
      * Give some currency to the specified Mage
@@ -59,6 +62,7 @@ public interface Currency extends MagicProvider {
      * @return false if the costs could not be given (e.g. mage is at max already)
      */
     boolean give(Mage mage, CasterProperties caster, double amount);
+    default boolean give(Mage mage, double amount) { return give(mage, mage.getActiveProperties(), amount); }
 
     /**
      * Get the default value for this currency.

@@ -4302,7 +4302,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (currency instanceof CustomCurrency) {
             return data.getDouble(type, currency == null ? 0.0 : currency.getDefaultValue());
         }
-        return currency.getBalance(this, getActiveProperties());
+        return currency.getBalance(this);
     }
 
     private void queueCurrencyMessage(String currency, double amount) {
@@ -4332,7 +4332,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (currency instanceof CustomCurrency) {
             delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
         } else {
-            if (!currency.give(this, getActiveProperties(), delta)) {
+            if (!currency.give(this, delta)) {
                 return;
             }
         }
@@ -4356,7 +4356,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (currency instanceof CustomCurrency) {
             delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
         } else {
-            currency.deduct(this, getActiveProperties(), delta);
+            currency.deduct(this, delta);
         }
 
         queueCurrencyMessage(type, delta);
