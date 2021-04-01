@@ -544,7 +544,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (hasProperty("hotbar_inventory_count")) {
             hotbarCount = Math.max(1, getInt("hotbar_inventory_count", 1));
         } else {
-            hotbarCount = Math.max(1, getInt("hotbar_count", 1));
+            hotbarCount = getHotbarCount();
         }
         if (hotbarCount != hotbars.size()) {
             if (isInventoryOpen()) {
@@ -1127,7 +1127,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected List<WandInventory> getAllInventories() {
-        int hotbarCount = getHotbarCount();
+        int hotbarCount = hotbars.size();
         List<WandInventory> allInventories = new ArrayList<>(inventories.size() + hotbarCount);
         if (hotbarCount > 0) {
             allInventories.addAll(hotbars);
@@ -1236,7 +1236,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 fullSlot += slot;
                 break;
             }
-            fullSlot += inventory.getSize();
+            fullSlot += inventorySize;
         }
         if (!added) {
             fullSlot = getHotbarSize() + getInventorySize() * inventories.size();
@@ -1308,9 +1308,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         }
+        WandMode wandMode = getMode();
         WandMode brushMode = getBrushMode();
         for (String brushKey : brushes) {
-            boolean addToInventory = brushMode == WandMode.INVENTORY || (MaterialBrush.isSpecialMaterialKey(brushKey) && !MaterialBrush.isSchematic(brushKey));
+            boolean addToInventory = brushMode == WandMode.INVENTORY || (wandMode == WandMode.INVENTORY && MaterialBrush.isSpecialMaterialKey(brushKey) && !MaterialBrush.isSchematic(brushKey));
             if (addToInventory)
             {
                 ItemStack itemStack = createBrushIcon(brushKey);
@@ -1365,8 +1366,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         clearSpells();
         WandUpgradePath path = getPath();
         int maxSlot = -1;
-        int hotbarCount = getInt("hotbar_count");
+        int hotbarCount = getHotbarCount();
         int pageStart = hotbarCount * HOTBAR_INVENTORY_SIZE;
+        int inventorySize = getInventorySize();
         for (String spellName : spellKeys)
         {
             if (spellName.equalsIgnoreCase("none")) {
@@ -1383,7 +1385,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (maxSlot < pageStart) {
                     maxSlot = (((maxSlot + 1) / HOTBAR_INVENTORY_SIZE) + 1) * HOTBAR_INVENTORY_SIZE - 1;
                 } else {
-                    maxSlot = ((((maxSlot + 1) - pageStart) / INVENTORY_SIZE) + 1) * INVENTORY_SIZE + pageStart - 1;
+                    maxSlot = ((((maxSlot + 1) - pageStart) / inventorySize) + 1) * inventorySize + pageStart - 1;
                 }
                 continue;
             }
@@ -1421,8 +1423,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         maxSlot = getMaxSlot();
                     }
                     slot = maxSlot + 1;
-                    if (slot > pageStart && (slot - pageStart) % INVENTORY_SIZE > INVENTORY_SIZE - INVENTORY_ORGANIZE_BUFFER) {
-                        slot = (((slot - pageStart) / INVENTORY_SIZE) + 1) * INVENTORY_SIZE + pageStart;
+                    if (slot > pageStart && (slot - pageStart) % inventorySize > inventorySize - INVENTORY_ORGANIZE_BUFFER) {
+                        slot = (((slot - pageStart) / inventorySize) + 1) * inventorySize + pageStart;
                     }
                 }
                 maxSlot = Math.max(slot, maxSlot);
@@ -4762,7 +4764,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public int getHotbarCount() {
         if (getMode() != WandMode.INVENTORY) return 0;
-        return hotbars.size();
+        return Math.max(1, getInt("hotbar_count", 1));
     }
 
     public List<WandInventory> getHotbars() {

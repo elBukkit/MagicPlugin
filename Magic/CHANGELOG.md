@@ -76,6 +76,7 @@
  - Fix some cases of using but disabling the default configs
  - Fix the "book:all" spell category book (also added "book:categories" since the 100-page limit breaks the all book)
  - Fix the Growth spell not working on carrots and potatoes
+ - Fix the spellbook hiding spells once it starts to get full
 
 ## EffectLib 9.0
 
