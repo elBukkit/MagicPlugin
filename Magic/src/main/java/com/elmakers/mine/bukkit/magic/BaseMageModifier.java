@@ -36,6 +36,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     private boolean checkedAttributes = false;
     protected @Nullable
     Multimap<String, CustomTrigger> triggers;
+    protected final Multimap<String, TriggeredSpell> spellTriggers = ArrayListMultimap.create();
 
     protected final Mage mage;
 
@@ -215,7 +216,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     }
 
     protected void cancelTrigger(String triggerType) {
-        List<TriggeredSpell> triggers = getTriggers(triggerType);
+        Collection<TriggeredSpell> triggers = getTriggers(triggerType);
         if (triggers != null) {
             for (TriggeredSpell triggered : triggers) {
                 mage.cancelPending(triggered.getSpellKey());
@@ -231,7 +232,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     }
 
     public void trigger(String triggerType) {
-        List<TriggeredSpell> triggers = getTriggers(triggerType);
+        Collection<TriggeredSpell> triggers = getTriggers(triggerType);
         if (triggers != null) {
             for (TriggeredSpell triggered : triggers) {
                 if (triggered.getTrigger().isValid(mage)) {
@@ -253,23 +254,8 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     }
 
     @Nullable
-    protected List<TriggeredSpell> getTriggers(String triggerType) {
-        List<TriggeredSpell> triggers = null;
-        for (String spellKey : getSpells()) {
-            Spell spell = getSpell(spellKey);
-            if (spell == null) continue;
-            Collection<Trigger> spellTriggers = spell.getTriggers();
-            if (spellTriggers == null) continue;
-            for (Trigger trigger : spellTriggers) {
-                if (trigger.getTrigger().equalsIgnoreCase(triggerType)) {
-                    if (triggers == null) {
-                        triggers = new ArrayList<>();
-                    }
-                    triggers.add(new TriggeredSpell(spellKey, trigger));
-                }
-            }
-        }
-        return triggers;
+    protected Collection<TriggeredSpell> getTriggers(String triggerType) {
+        return spellTriggers.get(triggerType);
     }
 
     @Nullable
@@ -385,6 +371,38 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
             }
         } else {
             triggers = null;
+        }
+        updateSpellTriggers();
+    }
+
+    @Override
+    public boolean removeSpell(String spellKey) {
+        boolean result = super.removeSpell(spellKey);
+        if (result) {
+            updateSpellTriggers();
+        }
+        return result;
+    }
+
+    @Override
+    public boolean addSpell(String spellKey) {
+        boolean result = super.addSpell(spellKey);
+        if (result) {
+            updateSpellTriggers();
+        }
+        return result;
+    }
+
+    public void updateSpellTriggers() {
+        spellTriggers.clear();
+        for (String spellKey : getSpells()) {
+            Spell spell = getSpell(spellKey);
+            if (spell == null) continue;
+            Collection<Trigger> triggers = spell.getTriggers();
+            if (triggers == null) continue;
+            for (Trigger trigger : triggers) {
+                spellTriggers.put(trigger.getTrigger(), new TriggeredSpell(spellKey, trigger));
+            }
         }
     }
 
