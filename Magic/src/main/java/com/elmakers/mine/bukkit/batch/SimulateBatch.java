@@ -580,11 +580,11 @@ public class SimulateBatch extends SpellBatch {
                         this.blockLimit--;
                     }
                     if (!block.isDifferent()) {
+                        iterator.remove();
                         // This is really hacky but necessary to avoid CME
                         if (undoList instanceof com.elmakers.mine.bukkit.block.UndoList) {
                             ((com.elmakers.mine.bukkit.block.UndoList)undoList).removeFromMap(block);
                         }
-                        iterator.remove();
                     }
                 }
             }

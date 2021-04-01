@@ -948,8 +948,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         while (iterator.hasNext()) {
             BlockData block = iterator.next();
             if (!block.isDifferent()) {
-                removeFromMap(block);
                 iterator.remove();
+                removeFromMap(block);
             }
         }
         modifiedTime = System.currentTimeMillis();
