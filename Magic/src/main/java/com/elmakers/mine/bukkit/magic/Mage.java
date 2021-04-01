@@ -100,6 +100,7 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
+import com.elmakers.mine.bukkit.economy.CustomCurrency;
 import com.elmakers.mine.bukkit.effect.HoloUtils;
 import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.entity.EntityData;
@@ -4289,7 +4290,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     private Currency initCurrency(String type) {
         Currency currency = controller.getCurrency(type);
-        if (!data.contains(type)) {
+        if (currency instanceof CustomCurrency && !data.contains(type)) {
             data.set(type, currency == null ? 0.0 : currency.getDefaultValue());
         }
         return currency;
@@ -4298,7 +4299,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public double getCurrency(String type) {
         Currency currency = controller.getCurrency(type);
-        return data.getDouble(type, currency == null ? 0.0 : currency.getDefaultValue());
+        if (currency instanceof CustomCurrency) {
+            return data.getDouble(type, currency == null ? 0.0 : currency.getDefaultValue());
+        }
+        return currency.getBalance(this, getActiveProperties());
     }
 
     private void queueCurrencyMessage(String currency, double amount) {
@@ -4325,9 +4329,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         boolean isFirstEarn = !data.contains(type);
         double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
-        delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
+        if (currency instanceof CustomCurrency) {
+            delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
+        } else {
+            if (!currency.give(this, getActiveProperties(), delta)) {
+                return;
+            }
+        }
 
-        Messages messages = controller.getMessages();
         queueCurrencyMessage(type, delta);
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
             if (isFirstEarn && currency != null) {
@@ -4344,9 +4353,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void removeCurrency(String type, double delta) {
         double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
-        delta = doSetCurrency(currency, type, previousValue, previousValue - delta);
+        if (currency instanceof CustomCurrency) {
+            delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
+        } else {
+            currency.deduct(this, getActiveProperties(), delta);
+        }
 
-        Messages messages = controller.getMessages();
         queueCurrencyMessage(type, delta);
         if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
             activeWand.updateMana();
