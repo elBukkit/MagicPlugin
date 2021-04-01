@@ -5,6 +5,7 @@ atm:
   show_name: true
   invisible: true
   marker: true
+  remove_mounts: "*"
   mount:
     type: zombie
     name: "Grumm"
