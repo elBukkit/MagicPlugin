@@ -91,6 +91,7 @@
  - Added subEffectClass and subEffect parameters to all Effects, this lets you play an entire
    effect in place of single particles for a given effect
  - Optimizations
+ - Fix issues with concurrent uses of the same EquationEffect (technically effectlib 9.1 not yet released)
 
 # 8.4.3
 
