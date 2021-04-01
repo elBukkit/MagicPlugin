@@ -6,7 +6,7 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public class SpellPointCurrency extends BaseMagicCurrency {
+public class SpellPointCurrency extends CustomCurrency {
     private final boolean isValid;
 
     public SpellPointCurrency(MageController controller, ConfigurationSection configuration) {
