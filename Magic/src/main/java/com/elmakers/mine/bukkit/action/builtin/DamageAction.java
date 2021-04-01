@@ -41,11 +41,13 @@ public class DamageAction extends BaseSpellAction
     private SourceLocation damageSourceLocation;
     private double criticalProbability;
     private double criticalMultiplier;
+    private int noDamageTicks;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        noDamageTicks = parameters.getInt("no_damage_ticks", 0);
         double damage = parameters.getDouble("damage", 1);
         entityDamage = parameters.getDouble("entity_damage", damage);
         playerDamage = parameters.getDouble("player_damage", damage);
@@ -107,6 +109,10 @@ public class DamageAction extends BaseSpellAction
                 damage = elementalDamage;
                 controller.damageElemental(entity, damage * mage.getDamageMultiplier(), 0, mage.getCommandSender());
             } else {
+                if (targetEntity instanceof LivingEntity && noDamageTicks >= 0) {
+                    LivingEntity li = (LivingEntity)targetEntity;
+                    li.setMaximumNoDamageTicks(noDamageTicks);
+                }
                 if (percentage != null) {
                     damage = percentage * CompatibilityUtils.getMaxHealth(targetEntity);
                 } else if (targetEntity instanceof Player) {
