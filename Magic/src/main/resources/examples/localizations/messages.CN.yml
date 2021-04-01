@@ -2190,7 +2190,7 @@ wand:
   unmodifiable_prefix: '&6'
   spell_prefix: '&6'
   brush_prefix: '&7'
-  chest_inventory_title: 法杖
+  chest_inventory_title: '$wand'
 wands:
   testwand:
     name: 测试法杖

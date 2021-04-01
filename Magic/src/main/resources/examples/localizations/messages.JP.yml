@@ -2282,7 +2282,7 @@ wand:
   unmodifiable_prefix: '&6'
   spell_prefix: '&6'
   brush_prefix: '&7'
-  chest_inventory_title: 杖
+  chest_inventory_title: '$wand'
 wands:
   testwand:
     name: テスト用杖
