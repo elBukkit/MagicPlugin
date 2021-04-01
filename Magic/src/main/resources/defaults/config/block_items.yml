@@ -4,7 +4,7 @@ block_items:
   skull: skull_item
   wall_banner: banner
   standing_banner: banner
-  wooden-door: wood_door
+  wooden_door: wood_door
   iron_door_block: iron_door
   wall_sign: sign
   sign_post: sign
@@ -13,3 +13,10 @@ block_items:
   dark_oak_door: dark_oak_door_item
   birch_door: birch_door_item
   spruce_door: spruce_door_item
+  skeleton_wall_skull: skeleton_skull
+  wither_skeleton_wall_skull: wither_skeleton_skull
+  creeper_wall_head: creeper_head
+  dragon_wall_head: dragon_head
+  player_wall_head: player_head
+  zombie_wall_head: zombie_head
+
