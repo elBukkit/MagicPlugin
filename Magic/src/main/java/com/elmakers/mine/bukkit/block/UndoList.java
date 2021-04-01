@@ -388,8 +388,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         unregisterWatched();
         if (blockQueue == null) return;
 
-        for (BlockData block : blockQueue.values())
-        {
+        final List<BlockData> staticList = new ArrayList<>(blockQueue.values());
+        for (BlockData block : staticList) {
             commit(block);
         }
         clear();
