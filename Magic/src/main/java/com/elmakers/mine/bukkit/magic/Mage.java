@@ -4366,7 +4366,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
         if (currency instanceof CustomCurrency) {
-            delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
+            delta = doSetCurrency(currency, type, previousValue, previousValue - delta);
         } else {
             currency.deduct(this, delta);
         }
