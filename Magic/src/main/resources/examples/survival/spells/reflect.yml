@@ -69,7 +69,7 @@ reflect:
         bypass_confusion: true
         bypass_backfire: true
     costs:
-        mana: 40
+        mana: 10
 
 reflect|2:
     upgrade_required_path: student
@@ -79,8 +79,6 @@ reflect|2:
         undo: 900
         reflect_chance: 0.5
         breakable: 2
-    costs:
-        mana: 50
 
 reflect|3:
     upgrade_required_path: apprentice
@@ -91,7 +89,7 @@ reflect|3:
         reflect_chance: 0.75
         breakable: 1
     costs:
-        mana: 55
+        mana: 20
 
 reflect|4:
     parameters:
@@ -99,6 +97,4 @@ reflect|4:
         undo: 1100
         reflect_chance: 1
         breakable: 1
-    costs:
-        mana: 60
 
