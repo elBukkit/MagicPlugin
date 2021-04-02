@@ -2,7 +2,7 @@
 
 # Bugs
 
-- ATM goes wonky on server reload, not sure why (penguins are ok?)
+- Magic mobs should update on reload
 
 - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
 - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM

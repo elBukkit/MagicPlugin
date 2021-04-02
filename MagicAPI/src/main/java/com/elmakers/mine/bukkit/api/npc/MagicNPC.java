@@ -37,6 +37,7 @@ public interface MagicNPC extends Locatable {
     Integer getImportedId();
     @Nullable
     Entity getEntity();
+    boolean isEntity(Entity entity);
     @Nonnull
     UUID getId();
     @Nonnull

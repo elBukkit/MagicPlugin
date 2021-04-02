@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.npc;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -246,6 +247,25 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Nullable
     public Entity getEntity() {
         return entityId == null ? null : CompatibilityUtils.getEntity(location.getWorld(), entityId);
+    }
+
+    @Override
+    public boolean isEntity(Entity entity) {
+        if (entity == null || entityId == null) return false;
+        Entity vehicle = entity;
+        while (vehicle != null) {
+            if (vehicle.getUniqueId().equals(entityId)) return true;
+            vehicle = vehicle.getVehicle();
+        }
+        // This won't work for multi-passenger mobs
+        List<Entity> passengers = CompatibilityUtils.getPassengers(entity);
+        while (!passengers.isEmpty()) {
+            Entity passenger = passengers.get(0);
+            if (passenger.getUniqueId().equals(entityId)) return true;
+            passengers = CompatibilityUtils.getPassengers(passenger);
+        }
+
+        return false;
     }
 
     @Override
