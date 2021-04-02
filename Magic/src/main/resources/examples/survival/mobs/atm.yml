@@ -8,12 +8,13 @@ atm:
   invisible: true
   remove_mounts: "*"
   potion_effects: invisibility
+  interact_spell: atm
   mount:
     type: zombie
     show_name: false
-    name: Grumm
-    remove_mounts: "*"
+    name: "Grumm"
     interact_spell: atm
+    remove_mounts: "*"
     helmet: skull:http://textures.minecraft.net/texture/71ead16d94045873da861abf94703e489f9cf498db5a2a33a41cabda93ae1825
     baby: false
     ai: false
