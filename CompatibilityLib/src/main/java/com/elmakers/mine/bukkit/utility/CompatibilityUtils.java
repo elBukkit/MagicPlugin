@@ -2587,8 +2587,8 @@ public class CompatibilityUtils extends NMSUtils {
                 // TODO: If there is a player midway in a stack of mobs do the mobs need to wait... ?
                 // Might have to rig up something weird to test.
                 // Otherwise this seems like too complicated of an edge case to worry about
-                CompatibilityUtils.teleportVehicle(passenger, location);
-                CompatibilityUtils.addPassenger(vehicle, passenger);
+                teleportVehicle(passenger, location);
+                addPassenger(vehicle, passenger);
             }
         }
     }
