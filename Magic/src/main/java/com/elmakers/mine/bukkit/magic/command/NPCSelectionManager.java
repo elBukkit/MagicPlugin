@@ -31,6 +31,8 @@ public class NPCSelectionManager extends SelectionManager<MagicNPC> {
         targetingParameters.set("range", selectRange);
         targetingParameters.set("target", "other_entity");
         targetingParameters.set("ignore_blocks", true);
+        // This allows for NPCs using marker armor stands to still get selected
+        targetingParameters.set("hitbox", false);
         targeting.processParameters(targetingParameters);
     }
 
