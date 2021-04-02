@@ -50,6 +50,7 @@ brush:
   absorbed: '&aПоглощено &2$amount&ax  &6$type'
   no_absorbed: '&cНе найдено блоков типа $6$type $cв твоем инвентаре'
   key: ''
+  block_data_description: '&7$data'
 commands:
   no_permission: '&cУ тебя нет права на использование этой команды.'
   in_game: '&cЭта команда может быть использована только в игре.'
@@ -1534,11 +1535,14 @@ books:
     title: $category Книга Заклинаний
   all:
     title: Книга Заклинаний Мастера
+  categories:
+    title: Категори Заклинаний
+    category: '&n&l$category'
   spell:
     title: Информация - $spell
   learnspell:
-    name: '&eArcane Spellbook &7(&6$spell&7)'
-    description: Right-click to read about the spell, left-click to learn it
+    name: '&eЗагадочная Книга Заклинаний &7(&6$spell&7)'
+    description: ПКМ, чтобы узнать информацию о заклиинании; ЛКМ, чтобы изучить его
 material:
   wildcard: ' (Любой тип)'
 economy:
@@ -1718,7 +1722,7 @@ spells:
     insufficient_permission: У тебя нет прав использовать это сейчас.
     cast_player_message: a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!
     indirect_player_message: a:&d&o$player &r&5использует &3&o$spell &r&5на тебя!
-    insufficient_resources: 'a:&cТребуется &4$cost'
+    insufficient_resources: a:&cТребуется &4$cost
     insufficient: '&cТребуется &4$cost'
     cooldown: 'Перезарядка: $time.'
     cancelled: Твое заклинание было отменено
@@ -2653,7 +2657,7 @@ spells:
     cast: Прячься под стол!
     upgrade_description: Разрушает натуральные структуры
   masterattack:
-    name: Master Blast
+    name: Мастерский Удар
     description: Дальняя атака, работающая только если у тебя полное здоровье
     insufficient_resources: ''
     cooldown: ''
@@ -2998,10 +3002,12 @@ spells:
     description: Снять деньги со счета
     cost_lore: Вывести $cost
     deducted: '&d&oТы вывел &r&a$cost'
+    title: '&5Банкомат &7(&2$balance&7)'
+    selected: ''
   spshop:
     name: Магазин ОЗ
     description: Обменяй деньги на Очки Заклинаний
-    title: Spell Points
+    title: Очки Заклинаний
   lootshop:
     name: Продажа лута
     description: Получай деньги за лут с убитых мобов
@@ -3384,8 +3390,8 @@ spells:
     name: Откат
     description: Откатывает текущее заклинание
     usage: |-
-      Aim up to undo your most recent cast
-      Aim down to undo at your feet
+      Наведи прицел вверх и используй заклинание,
+       чтобы отменить твое прошлое заклинание
     cast: '&5Ты отменил заклинание &r&6$spell игрока &d&o$target'
     cast_player: '&5Ты отменил заклинание &r&6$spell игрока &d&o$target'
     alternate_up: '&5Ты отменил свое заклинание&r&6 $spell'
@@ -3565,6 +3571,7 @@ spells:
     upgrade_description: |-
       Используй заклинание с зажатым шифтом,
       Чтобы поглотить все вариации этого блока
+    insufficient_permission: a:&cТебе не разрешено поглощать этот блок
   bridge:
     name: Мост
     description: Создает мост из блоков
@@ -3612,9 +3619,10 @@ spells:
       Увеличена скорость.
       Теперь может быть использовано во премя полета на элитре
   materiashop:
-    name: Materia Shop
-    description: Exchange money for Spell Points
-    title: '&3Materia &7(&a$balance&7)'
+    name: Покупка Материи
+    description: Обмен ОЗ на Материю
+    title: '&3Материя &7(&a$balance&7)'
+    not_applicable: '&cТы достиг лимита &3Материи'
   simulate:
     name: Симуляция
     description: Игра «Жизнь» Дж. Конвея
@@ -3980,7 +3988,8 @@ wand:
   page_instructions: |-
     &8| &7> &a$wand&8 &fтеперь имеет несколько страниц заклинаний!
     &8| &7> &6Нажми &fза пределами рамки инвентаря, чтобы листать страницы
-  hotbar_instructions: '&8| &7> &fUse &6$cycle_hotbar &fto swap between your hotbars'
+  hotbar_instructions: |-
+    &8| &7> &fНажми &6$cycle_hotbar, &fчтобы менять хотбары
   hotbar_count_usage: |-
     &8| &7> &eУ тебя появился дополнительный хотбар!
     &8| &7> &fНажми &6$cycle_hotbar, &fчтобы менять хотбары
@@ -3995,7 +4004,8 @@ wand:
     &8| &7> &fНажми &6$toggle, &fчтобы открыть/закрыть &eинвентарь заклинаний
     &8| &7> &6Перетаскивай &fзаклинания в хотбар, чтобы их активировать
     &8| &7> &fИспользуй &6цифры на клавиатуре &fдля выбора нужного заклинания
-  cycle_instructions: '&8| &7> &fНажми &6$cycle&f, чтобы поменять активное заклинание'
+  cycle_instructions: |-
+    &8| &7> &fНажми &6$cycle&f, чтобы поменять активное заклинание
   brush_instructions: |-
     &8| &7> &6Кисти материи &fбыли добавлены к &a$wand
     &8| &7> &6Шифт+$toggle&f, чтобы выбрать кисть.
@@ -4009,13 +4019,15 @@ wand:
   unmodifiable_prefix: '&6'
   spell_prefix: '&6'
   brush_prefix: '&7'
-  chest_inventory_title: '$wand'
+  chest_inventory_title: $wand
   materia_earn_instructions: |-
-    &8| &7> &fYou have earned some &6Materia!
-    &8| &7> &fYour &6Materia &fare displayed above your mana bar
-    &8| &7> &6Materia &fmay be used to build blocks with magic
-    &8| &7> &6Materia &fcan be absorb by removing blocks with magic
-    &8| &7> &6Materia &fcan also be purchased at an enchanting table
+    &8| &7> &fТы получил немного &6Материи!
+    &8| &7> &fКоличество &6Материи &fотбражается над шкалой маны
+    &8| &7> &6Материя &fможет быть использована для постройки
+    &8| &7> &f при помощи заклинаний
+    &8| &7> &6Материя &fможет быть поглощена, убирая блоки
+    &8| &7> &f при помощи заклинаний
+    &8| &7> &6Материю &fтакже можно купить в столе зачарования
 wands:
   testwand:
     name: Тестовая палочка
@@ -4881,6 +4893,8 @@ mobs:
     name: Призрак
   dailykit:
     name: Ежедневный Бонус!
+  atm:
+    name: Банкомат
 modifiers:
   antiknockback:
     name: Анти-отбрасывание
