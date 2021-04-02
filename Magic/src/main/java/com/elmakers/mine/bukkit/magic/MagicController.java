@@ -6699,15 +6699,12 @@ public class MagicController implements MageController {
         return new ArrayList<>(npcs.values());
     }
 
-    @Override
-    public void removeNPC(com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
-        unregisterNPC(npc);
-        npc.remove();
-        npcs.remove(npc.getId());
-        npcsByEntity.remove(npc.getEntityId());
+    public void unregisterNPCEntity(UUID entityId) {
+        npcsByEntity.remove(entityId);
     }
 
     public void unregisterNPC(com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
+        unregisterNPCEntity(npc.getEntityId());
         String chunkId = getChunkKey(npc.getLocation());
         if (chunkId == null) return;
         List<MagicNPC> chunkNPCs = npcsByChunk.get(chunkId);
@@ -6721,6 +6718,27 @@ public class MagicController implements MageController {
                 break;
             }
         }
+    }
+    public void registerNPCEntity(MagicNPC npc) {
+        npcsByEntity.put(npc.getEntityId(), npc);
+    }
+
+    public boolean registerNPC(MagicNPC npc) {
+        Location location = npc.getLocation();
+        String chunkId = getChunkKey(location);
+        if (chunkId == null) {
+            return false;
+        }
+
+        List<MagicNPC> chunkNPCs = npcsByChunk.get(chunkId);
+        if (chunkNPCs == null) {
+            chunkNPCs = new ArrayList<>();
+            npcsByChunk.put(chunkId, chunkNPCs);
+        }
+        chunkNPCs.add(npc);
+        npcs.put(npc.getId(), npc);
+        registerNPCEntity(npc);
+        return true;
     }
 
     @Override
@@ -6739,22 +6757,11 @@ public class MagicController implements MageController {
         return npc;
     }
 
-    public boolean registerNPC(MagicNPC npc) {
-        Location location = npc.getLocation();
-        String chunkId = getChunkKey(location);
-        if (chunkId == null) {
-            return false;
-        }
-
-        List<MagicNPC> chunkNPCs = npcsByChunk.get(chunkId);
-        if (chunkNPCs == null) {
-            chunkNPCs = new ArrayList<>();
-            npcsByChunk.put(chunkId, chunkNPCs);
-        }
-        chunkNPCs.add(npc);
-        npcs.put(npc.getId(), npc);
-        activateNPC(npc);
-        return true;
+    @Override
+    public void removeNPC(com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
+        unregisterNPC(npc);
+        npc.remove();
+        npcs.remove(npc.getId());
     }
 
     @Override
@@ -6775,13 +6782,8 @@ public class MagicController implements MageController {
         if (chunkData != null) {
             for (MagicNPC npc : chunkData) {
                 npc.restore();
-                activateNPC(npc);
             }
         }
-    }
-
-    public void activateNPC(MagicNPC npc) {
-        npcsByEntity.put(npc.getEntityId(), npc);
     }
 
     @Override

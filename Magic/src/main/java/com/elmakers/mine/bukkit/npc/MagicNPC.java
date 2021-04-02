@@ -272,10 +272,10 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public void teleport(@Nonnull Location location) {
         controller.unregisterNPC(this);
         setLocation(location);
-        controller.registerNPC(this);
         if (CompatibilityUtils.isChunkLoaded(location)) {
             restore();
         }
+        controller.registerNPC(this);
         Entity entity = getEntity();
         CompatibilityUtils.teleportWithVehicle(entity, location);
     }
@@ -336,7 +336,14 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         if (entityData.useNPCName()) {
             entity.setCustomName(getName());
         }
+        boolean entityChanged = entityId == null || !entityId.equals(entity.getUniqueId());
+        if (entityChanged && entityId != null) {
+            controller.unregisterNPCEntity(entityId);
+        }
         this.entityId = entity.getUniqueId();
+        if (entityChanged) {
+            controller.registerNPCEntity(this);
+        }
         return entity;
     }
 
