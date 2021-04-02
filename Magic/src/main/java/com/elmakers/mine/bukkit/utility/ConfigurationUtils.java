@@ -500,7 +500,7 @@ public class ConfigurationUtils extends ConfigUtils {
             }
             if (value instanceof ConfigurationSection && (existingValue == null || existingValue instanceof ConfigurationSection)) {
                 ConfigurationSection addChild = (ConfigurationSection)value;
-                if (existingValue == null || !addChild.getBoolean("inherit", true)) {
+                if (existingValue == null || addChild.contains("inherit")) {
                     ConfigurationSection newChild = first.createSection(key);
                     addConfigurations(newChild, addChild, override);
                 } else {
