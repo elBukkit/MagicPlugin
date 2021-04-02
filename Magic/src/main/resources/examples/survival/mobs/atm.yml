@@ -2,18 +2,30 @@ atm:
   inherit: base_npc
   requires: Vault
   type: armor_stand
+  marker: true
+  baby: true
   show_name: true
   invisible: true
-  marker: true
   remove_mounts: "*"
+  potion_effects: invisibility
   mount:
     type: zombie
-    name: "Grumm"
-    interact_spell: atm
     show_name: false
+    name: Grumm
+    remove_mounts: "*"
+    interact_spell: atm
     helmet: skull:http://textures.minecraft.net/texture/71ead16d94045873da861abf94703e489f9cf498db5a2a33a41cabda93ae1825
+    baby: false
     ai: false
     silent: true
-    baby: false
-    potion_effects:
-      invisibility: 0
+    potion_effects: invisibility
+    mount:
+      type: zombie
+      name: "Grumm"
+      interact_spell: atm
+      show_name: false
+      baby: true
+      ai: false
+      silent: true
+      helmet: iron_block
+      potion_effects: invisibility
