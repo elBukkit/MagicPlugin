@@ -112,7 +112,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static final UUID emptyUUID = new UUID(0L, 0L);
     private static final Map<LoadingChunk, Integer> loadingChunks = new HashMap<>();
     private static boolean hasDumpedStack = false;
-    private static final List<Entity> passengerList = new ArrayList<>();
+    private static boolean teleporting = false;
 
     static class LoadingChunk {
         private final String worldName;
@@ -2570,15 +2570,15 @@ public class CompatibilityUtils extends NMSUtils {
                 getLogger().log(Level.WARNING, "Error getting entity passengers", ex);
             }
         }
-        passengerList.clear();
+        List<Entity> passengerList = new ArrayList<>();
         Entity passenger = DeprecatedUtils.getPassenger(entity);
-        if (passenger == null) {
+        if (passenger != null) {
             passengerList.add(passenger);
         }
         return passengerList;
     }
 
-    public static void teleportPassengers(Entity vehicle, Location location, Collection<Entity> passengers) {
+    protected static void teleportPassengers(Entity vehicle, Location location, Collection<Entity> passengers) {
         for (Entity passenger : passengers) {
             if (passenger instanceof Player) {
                 TeleportPassengerTask task = new TeleportPassengerTask(vehicle, passenger, location);
@@ -2594,16 +2594,29 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     protected static void teleportVehicle(Entity vehicle, Location location) {
-        final List<Entity> passengers = getPassengers(vehicle);
+        List<Entity> passengers = getPassengers(vehicle);
         vehicle.eject();
         vehicle.teleport(location);
-        teleportPassengers(vehicle, location, passengers);
+        // eject seems to just not work sometimes? (on chunk load, maybe)
+        // So let's try to avoid exponentially adding passengers.
+        List<Entity> newPassengers = getPassengers(vehicle);
+        if (newPassengers.isEmpty()) {
+            teleportPassengers(vehicle, location, passengers);
+        } else {
+            getLogger().warning("Entity.eject failed!");
+        }
     }
 
     public static void teleportWithVehicle(Entity entity, Location location) {
+        teleporting = true;
         if (entity != null && entity.isValid()) {
             final Entity vehicle = getRootVehicle(entity);
             teleportVehicle(vehicle, location);
         }
+        teleporting = false;
+    }
+
+    public static boolean isTeleporting() {
+        return teleporting;
     }
 }

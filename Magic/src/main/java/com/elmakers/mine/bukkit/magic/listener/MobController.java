@@ -353,6 +353,8 @@ public class MobController implements Listener, ChunkLoadListener {
 
     @EventHandler
     public void onEntityDismount(EntityDismountEvent event) {
+        if (CompatibilityUtils.isTeleporting()) return;
+
         EntityData entityData = getEntityData(event.getEntity());
         if (entityData != null && entityData.isPreventDismount()) {
             event.setCancelled(true);
