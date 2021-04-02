@@ -34,5 +34,7 @@ mastersword:
 magictorch:
   enabled: true
 
+rabbitboots:
+  enabled: true
 
 
