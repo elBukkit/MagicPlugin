@@ -308,7 +308,11 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             controller.getLogger().warning("Failed to restore NPC entity");
             return null;
         }
-        EntityMetadataUtils.instance().setString(entity, "npc_id", id.toString());
+        Entity vehicle = entity;
+        while (vehicle != null) {
+            EntityMetadataUtils.instance().setString(vehicle, "npc_id", id.toString());
+            vehicle = vehicle.getVehicle();
+        }
         if (entityData.useNPCName()) {
             entity.setCustomName(getName());
         }
