@@ -15,3 +15,4 @@ base_npc:
   dialog_interval: 3000
   dialog_range: 4
   cancel_interact: true
+  prevent_dismount: true
