@@ -1,6 +1,4 @@
 toggleair:
-  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
-  inherit: false
   icon: birch_door{CustomModelData:18001}
   icon_disabled: birch_door{CustomModelData:18002}
   quick_cast: true

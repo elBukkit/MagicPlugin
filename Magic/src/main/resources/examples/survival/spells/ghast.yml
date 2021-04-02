@@ -1,5 +1,4 @@
 ghast:
-    inherit: false
     icon: pufferfish{CustomModelData:18001}
     icon_disabled: pufferfish{CustomModelData:18002}
     legacy_icon: spell_icon:66

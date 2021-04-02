@@ -1,6 +1,4 @@
 boomstown:
-  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
-  inherit: false
   icon: firework_rocket{CustomModelData:18003}
   icon_disabled: firework_rocket{CustomModelData:18004}
   legacy_icon: spell_icon:196

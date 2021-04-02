@@ -1,5 +1,4 @@
 place:
-    inherit: false
     icon: kelp{CustomModelData:18001}
     icon_disabled: kelp{CustomModelData:18002}
     legacy_icon: spell_icon:89

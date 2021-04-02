@@ -89,7 +89,6 @@ mob:
         mana: 100
 
 mob|2:
-  inherit: false
   parameters:
         repeat: 15
         cooldown: 40000
@@ -108,7 +107,6 @@ mob|2:
     mana: 150
 
 mob|3:
-  inherit: false
   parameters:
         repeat: 20
         cooldown: 30000
