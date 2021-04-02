@@ -143,6 +143,11 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (subCommand.equalsIgnoreCase("update")) {
+            onUpdateNPC(mage, npc);
+            return true;
+        }
+
         if (subCommand.equalsIgnoreCase("costs")) {
             onNPCCost(mage, npc, parameters);
             return true;
@@ -477,6 +482,12 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         npc.configure("interact_costs", costSection);
         mage.sendMessage(ChatColor.GREEN + " Configured npc " + ChatColor.GOLD + npc.getName()
             + ChatColor.GREEN + " to cost " + ChatColor.WHITE + ((int)value) + ChatColor.YELLOW + " " + costType);
+    }
+
+    protected void onUpdateNPC(Mage mage, MagicNPC npc) {
+        npc.update();
+        selections.highlight(npc);
+        mage.sendMessage("NPC Updated");
     }
 
     protected void onConfigureNPC(Mage mage, MagicNPC npc, String[] parameters) {
