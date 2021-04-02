@@ -257,9 +257,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             restore();
         }
         Entity entity = getEntity();
-        if (entity != null && entity.isValid()) {
-            entity.teleport(location);
-        }
+        CompatibilityUtils.teleportWithVehicle(entity, location);
     }
 
     public void setLocation(Location location) {
@@ -304,7 +302,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             controller.setDisableSpawnReplacement(false);
         } else {
             entityData.modify(entity);
-            entity.teleport(location);
+            CompatibilityUtils.teleportWithVehicle(entity, location);
         }
         if (entity == null) {
             controller.getLogger().warning("Failed to restore NPC entity");

@@ -14,18 +14,22 @@ public abstract class BaseTeleportAction extends BaseSpellAction
 {
     protected int verticalSearchDistance;
     protected boolean safe = true;
+    protected boolean preventFall = true;
     private boolean requiresBuildPermission = false;
     private boolean requiresExitPermission = true;
     private boolean keepVelocity = false;
+    private boolean teleportVehicle = true;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         verticalSearchDistance = parameters.getInt("vertical_range", context.getVerticalSearchDistance());
         safe = parameters.getBoolean("safe", true);
+        preventFall = parameters.getBoolean("prevent_fall", safe);
         requiresBuildPermission = parameters.getBoolean("require_build", false);
         requiresExitPermission = parameters.getBoolean("require_exit", true);
         keepVelocity = parameters.getBoolean("keep_velocity", keepVelocity);
+        teleportVehicle = parameters.getBoolean("teleport_vehicle", true);
     }
 
     protected SpellResult teleport(CastContext context, Entity entity, Location targetLocation) {
@@ -44,8 +48,7 @@ public abstract class BaseTeleportAction extends BaseSpellAction
 
         Location sourceLocation = keepVelocity ? entity.getLocation() : null;
         Vector sourceVelocity = keepVelocity ? entity.getVelocity() : null;
-        boolean result = context.teleport(
-                entity, targetLocation, verticalSearchDistance, safe);
+        boolean result = context.teleport(entity, targetLocation, verticalSearchDistance, safe, preventFall, teleportVehicle);
         if (result && keepVelocity) {
             // Calculate how much we have rotated
             double deltaYaw = targetLocation.getYaw() - sourceLocation.getYaw();

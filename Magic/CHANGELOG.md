@@ -48,6 +48,7 @@
  - The Retarget action was re-written to allow it to change any targeting parameters, such as `target: block`
  - Most spell messages now go to the action bar, cooldown messages now shown for "quiet" wands (the default)
  - The Damage action now bypasses vanilla damage cooldowns. Use `no_damage_ticks: -1` to turn this off.
+ - Teleporting by any means will now teleport your vehicle with you. Use `teleport_vehicle: false` in the spell parameters to turn this off.
 
 ## Additions
 

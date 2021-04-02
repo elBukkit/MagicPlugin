@@ -1189,6 +1189,12 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Override
     public boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe)
     {
+        return teleport(entity, location, verticalSearchDistance, preventFall, safe, true);
+    }
+
+    @Override
+    public boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe, boolean teleportVehicle)
+    {
         Chunk chunk = location.getBlock().getChunk();
         if (!chunk.isLoaded()) {
             // We should check that it is loaded before we get here, ideally
@@ -1211,7 +1217,11 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
 
             // Hacky double-teleport to work-around vanilla suffocation checks
             boolean isWorldChange = !targetLocation.getWorld().equals(entity.getWorld());
-            entity.teleport(targetLocation);
+            if (teleportVehicle) {
+                CompatibilityUtils.teleportWithVehicle(entity, targetLocation);
+            } else {
+                entity.teleport(targetLocation);
+            }
             if (isWorldChange) {
                 entity.teleport(targetLocation);
             }

@@ -198,6 +198,7 @@ public interface CastContext extends MageContext {
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance);
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall);
     boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe);
+    boolean teleport(final Entity entity, final Location location, final int verticalSearchDistance, boolean preventFall, boolean safe, boolean teleportVehicle);
     @Deprecated
     boolean allowPassThrough(Material material);
     boolean allowPassThrough(Block block);

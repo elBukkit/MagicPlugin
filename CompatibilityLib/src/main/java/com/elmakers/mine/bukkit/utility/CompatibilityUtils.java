@@ -2536,4 +2536,74 @@ public class CompatibilityUtils extends NMSUtils {
             consumer.accept(chunk);
         }
     }
+
+    public static Entity getRootVehicle(Entity entity) {
+        if (entity == null) {
+            return null;
+        }
+        Entity vehicle = entity.getVehicle();
+        while (vehicle != null) {
+            entity = vehicle;
+            vehicle = entity.getVehicle();
+        }
+        return entity;
+    }
+
+    public static void addPassenger(Entity vehicle, Entity passenger) {
+        if (class_Entity_addPassengerMethod != null) {
+            try {
+                class_Entity_addPassengerMethod.invoke(vehicle, passenger);
+                return;
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error adding entity passenger", ex);
+            }
+        }
+        DeprecatedUtils.setPassenger(vehicle, passenger);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Entity> getPassengers(Entity entity) {
+        if (class_Entity_getPassengersMethod != null) {
+            try {
+                return (List<Entity>) class_Entity_getPassengersMethod.invoke(entity);
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error getting entity passengers", ex);
+            }
+        }
+        passengerList.clear();
+        Entity passenger = DeprecatedUtils.getPassenger(entity);
+        if (passenger == null) {
+            passengerList.add(passenger);
+        }
+        return passengerList;
+    }
+
+    public static void teleportPassengers(Entity vehicle, Location location, Collection<Entity> passengers) {
+        for (Entity passenger : passengers) {
+            if (passenger instanceof Player) {
+                TeleportPassengerTask task = new TeleportPassengerTask(vehicle, passenger, location);
+                plugin.getServer().getScheduler().runTaskLater(plugin, task, 2);
+            } else {
+                // TODO: If there is a player midway in a stack of mobs do the mobs need to wait... ?
+                // Might have to rig up something weird to test.
+                // Otherwise this seems like too complicated of an edge case to worry about
+                CompatibilityUtils.teleportVehicle(passenger, location);
+                CompatibilityUtils.addPassenger(vehicle, passenger);
+            }
+        }
+    }
+
+    protected static void teleportVehicle(Entity vehicle, Location location) {
+        final List<Entity> passengers = getPassengers(vehicle);
+        vehicle.eject();
+        vehicle.teleport(location);
+        teleportPassengers(vehicle, location, passengers);
+    }
+
+    public static void teleportWithVehicle(Entity entity, Location location) {
+        if (entity != null && entity.isValid()) {
+            final Entity vehicle = getRootVehicle(entity);
+            teleportVehicle(vehicle, location);
+        }
+    }
 }
