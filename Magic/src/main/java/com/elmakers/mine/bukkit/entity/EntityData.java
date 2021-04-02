@@ -151,6 +151,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isProjectile = false;
     protected boolean canPickupItems = false;
     protected boolean isSuperProtected = false;
+    protected boolean registerByName = false;
 
     protected ItemData itemInHand;
     protected ItemData itemInOffhand;
@@ -348,6 +349,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (name != null) {
             name = ChatColor.translateAlternateColorCodes('&', name);
         }
+        registerByName = true;
+        if (name != null && (name.equals("Grumm") || name.equals("Dinnerbone") || name.equals("jeb_"))) {
+            registerByName = false;
+        }
+        registerByName = parameters.getBoolean("register_by_name");
         isNPC = parameters.getBoolean("npc");
         useNPCName = parameters.getBoolean("use_npc_name", false);
         isHidden = parameters.getBoolean("hidden");
@@ -1194,6 +1200,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public String getName() {
         return name;
+    }
+
+    public boolean isRegisterByName() {
+        return registerByName;
     }
 
     @Override

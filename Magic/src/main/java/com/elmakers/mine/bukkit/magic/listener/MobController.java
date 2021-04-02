@@ -76,7 +76,7 @@ public class MobController implements Listener, ChunkLoadListener {
         mobs.put(mobKey, mob);
 
         String mobName = mob.getName();
-        if (mobName != null && !mobName.isEmpty()) {
+        if (mobName != null && !mobName.isEmpty() && mob.isRegisterByName()) {
             mobsByName.put(mobName, mob);
         }
     }
@@ -303,17 +303,7 @@ public class MobController implements Listener, ChunkLoadListener {
 
     @Nullable
     public EntityData getEntityData(Entity entity) {
-        EntityData entityData = activeMobs.get(entity);
-        if (entityData == null) {
-            String customName = entity.getCustomName();
-            if (customName != null) {
-                entityData = mobsByName.get(customName);
-            }
-            if (entityData == null) {
-                entityData = defaultMobs.get(entity.getType());
-            }
-        }
-        return entityData;
+        return activeMobs.get(entity);
     }
 
     @Nonnull
