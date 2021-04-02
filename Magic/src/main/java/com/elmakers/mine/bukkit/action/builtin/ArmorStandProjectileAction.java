@@ -99,9 +99,8 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         useWand = parameters.getBoolean("mount_wand", false);
 
         String wandSlotString = parameters.getString("wand_slot", "HELMET");
-        try {
-            wandSlot = InventorySlot.valueOf(wandSlotString.toUpperCase());
-        } catch (Exception ex) {
+        wandSlot = InventorySlot.parse(wandSlotString);
+        if (wandSlot == null) {
             context.getLogger().warning("Invalid wand slot: " + wandSlotString);
         }
 

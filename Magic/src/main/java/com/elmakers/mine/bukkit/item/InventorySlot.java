@@ -30,6 +30,21 @@ public enum InventorySlot {
         this.slot = slot;
     }
 
+    @Nullable
+    public static InventorySlot parse(String key) {
+        if (key.equalsIgnoreCase("mainhand")) {
+            key = "main_hand";
+        }
+        if (key.equalsIgnoreCase("offhand")) {
+            key = "off_hand";
+        }
+        try {
+            return InventorySlot.valueOf(key.toUpperCase());
+        } catch (Exception ignore) {
+        }
+        return null;
+    }
+
     public static InventorySlot getArmorSlot(int slot) {
         slot = Math.max(Math.min(slot, 3), 0);
         switch (slot) {

@@ -6146,12 +6146,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Collection<String> slots = getStringList("wearable");
         if (slots != null) {
             for (String slotKey : slots) {
-                try {
-                    InventorySlot slot = InventorySlot.valueOf(slotKey.toUpperCase());
+                InventorySlot slot = InventorySlot.parse(slotKey);
+                if (slot != null) {
                     if (slot.getSlot() == slotNumber) {
                         return true;
                     }
-                } catch (Exception ex) {
+                } else {
                     controller.getLogger().warning("Invalid wearable slot: " + slotKey);
                 }
             }
@@ -6175,10 +6175,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (slotList != null) {
             slots = new ArrayList<>();
             for (String slotKey : slotList) {
-                try {
-                    InventorySlot slot = InventorySlot.valueOf(slotKey.toUpperCase());
+                InventorySlot slot = InventorySlot.parse(slotKey);
+                if (slot != null) {
                     slots.add(slot.getSlot());
-                } catch (Exception ex) {
+                } else {
                     controller.getLogger().warning("Invalid wearable slot: " + slotKey);
                 }
             }

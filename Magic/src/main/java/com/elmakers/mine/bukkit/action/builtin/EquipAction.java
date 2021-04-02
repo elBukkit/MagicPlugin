@@ -245,9 +245,8 @@ public class EquipAction extends BaseSpellAction
         item = context.getController().createItem(parameters.getString("item"));
         String slotName = parameters.getString("slot");
         if (slotName != null && !slotName.isEmpty()) {
-            try {
-                slot = InventorySlot.valueOf(slotName.toUpperCase());
-            } catch (Exception ex) {
+            slot = InventorySlot.parse(slotName);
+            if (slot == null) {
                 context.getLogger().warning("Invalid slot in Wear action: " + slotName);
             }
         } else {

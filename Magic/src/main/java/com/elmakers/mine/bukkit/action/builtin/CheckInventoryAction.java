@@ -38,9 +38,8 @@ public class CheckInventoryAction extends CheckAction {
 
         String slotName = parameters.getString("slot");
         if (slotName != null && !slotName.isEmpty()) {
-            try {
-                slot = InventorySlot.valueOf(slotName.toUpperCase());
-            } catch (Exception ex) {
+            slot = InventorySlot.parse(slotName);
+            if (slot == null) {
                 context.getLogger().warning("Invalid slot in CheckInventory action: " + slotName);
             }
         }

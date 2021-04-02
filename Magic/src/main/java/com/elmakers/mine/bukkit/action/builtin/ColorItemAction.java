@@ -41,10 +41,10 @@ public class ColorItemAction extends BaseSpellAction {
         if (slots != null) {
             this.slots = new ArrayList<>();
             for (String slotKey : slots) {
-                try {
-                    InventorySlot inventorySlot = InventorySlot.valueOf(slotKey.toUpperCase());
+                InventorySlot inventorySlot = InventorySlot.parse(slotKey);
+                if (inventorySlot != null) {
                     this.slots.add(inventorySlot);
-                } catch (Exception ex) {
+                } else {
                     context.getLogger().warning("Invalid slot in ColorItem action: " + slotKey);
                 }
             }
