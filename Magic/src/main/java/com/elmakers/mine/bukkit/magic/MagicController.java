@@ -338,7 +338,6 @@ public class MagicController implements MageController {
     private final Set<EntityType> friendlyEntityTypes = new HashSet<>();
     private final Map<String, Currency> currencies = new HashMap<>();
     private final Map<String, List<MagicNPC>> npcsByChunk = new HashMap<>();
-    private final Map<UUID, MagicNPC> npcsByEntity = new HashMap<>();
     private final Map<UUID, MagicNPC> npcs = new HashMap<>();
     private final Map<String, Map<Long, Automaton>> automata = new HashMap<>();
     private final Map<Long, Automaton> activeAutomata = new HashMap<>();
@@ -3878,7 +3877,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isMagicNPC(Entity entity) {
-        return npcsByEntity.containsKey(entity.getUniqueId());
+        return EntityMetadataUtils.instance().getString(entity, "npc_id") != null;
     }
 
     @Override
@@ -6699,12 +6698,7 @@ public class MagicController implements MageController {
         return new ArrayList<>(npcs.values());
     }
 
-    public void unregisterNPCEntity(UUID entityId) {
-        npcsByEntity.remove(entityId);
-    }
-
     public void unregisterNPC(com.elmakers.mine.bukkit.api.npc.MagicNPC npc) {
-        unregisterNPCEntity(npc.getEntityId());
         String chunkId = getChunkKey(npc.getLocation());
         if (chunkId == null) return;
         List<MagicNPC> chunkNPCs = npcsByChunk.get(chunkId);
@@ -6718,9 +6712,6 @@ public class MagicController implements MageController {
                 break;
             }
         }
-    }
-    public void registerNPCEntity(MagicNPC npc) {
-        npcsByEntity.put(npc.getEntityId(), npc);
     }
 
     public boolean registerNPC(MagicNPC npc) {
@@ -6737,7 +6728,6 @@ public class MagicController implements MageController {
         }
         chunkNPCs.add(npc);
         npcs.put(npc.getId(), npc);
-        registerNPCEntity(npc);
         return true;
     }
 
@@ -6767,7 +6757,23 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public MagicNPC getNPC(@Nullable Entity entity) {
-        return npcsByEntity.get(entity.getUniqueId());
+        String npcId = EntityMetadataUtils.instance().getString(entity, "npc_id");
+        return getNPC(npcId);
+    }
+
+    @Override
+    @Nullable
+    public MagicNPC getNPC(String id) {
+        if (id == null) {
+            return null;
+        }
+        try {
+            UUID uuid = UUID.fromString(id);
+            return getNPC(uuid);
+        } catch (Exception ex) {
+            getLogger().warning("Invalid npc_id found on mob: " + id);
+        }
+        return null;
     }
 
     @Override

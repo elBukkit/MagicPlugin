@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
@@ -91,7 +90,7 @@ public class MobController implements Listener, ChunkLoadListener {
 
     public void checkNPC(Entity entity, String npcId) {
         try {
-            MagicNPC npc = controller.getNPC(UUID.fromString(npcId));
+            MagicNPC npc = controller.getNPC(npcId);
             if (npc == null || !npc.isEntity(entity)) {
                 Location location = entity.getLocation();
                 controller.getLogger().warning("Removing an invalid NPC (id=" + npcId + ") entity of type " + entity.getType() + " at ["
