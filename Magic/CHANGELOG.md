@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 8.6
+
+# 8.5.1
+
 # 8.5
 
 ## New Resource Pack
