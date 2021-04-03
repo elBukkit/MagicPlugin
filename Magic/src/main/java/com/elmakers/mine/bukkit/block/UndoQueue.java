@@ -323,6 +323,7 @@ public class UndoQueue implements com.elmakers.mine.bukkit.api.block.UndoQueue
         return true;
     }
 
+    @Override
     public boolean commitNext() {
         if (tail != null) {
             // Note that the list will remove itself and decrement size

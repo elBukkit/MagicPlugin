@@ -1458,10 +1458,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return isDocile;
     }
 
+    @Override
     public boolean hasPermission(String key) {
         return permissions != null && permissions.contains(key);
     }
 
+    @Override
     public boolean canTarget(Entity target) {
         if (target == null || mageData == null) return true;
         return mageData.canTarget(target);

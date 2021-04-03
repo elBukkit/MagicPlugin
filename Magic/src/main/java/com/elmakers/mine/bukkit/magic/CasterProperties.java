@@ -1096,6 +1096,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return super.hasOwnProperty(key);
     }
 
+    @Override
     public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
         super.describe(sender, ignoreProperties, overriddenProperties);
         ProgressionPath path = getPath();

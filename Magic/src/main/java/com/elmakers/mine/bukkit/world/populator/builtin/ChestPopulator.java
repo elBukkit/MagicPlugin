@@ -67,7 +67,6 @@ public class ChestPopulator extends MagicChunkPopulator {
         return clearItems || (baseProbability.size() > 0 && itemProbability.size() > 0) || !removeItems.isEmpty();
     }
 
-    @Nullable
     protected int clearChest(Chest chest) {
         int itemsRemoved = 0;
         if (clearItems) {

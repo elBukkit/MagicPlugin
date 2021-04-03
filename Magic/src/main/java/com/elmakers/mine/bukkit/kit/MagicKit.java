@@ -305,6 +305,7 @@ public class MagicKit implements Kit {
         return icon;
     }
 
+    @Override
     @Nullable
     public String getIconDisabledKey() {
         return iconDisabled;
