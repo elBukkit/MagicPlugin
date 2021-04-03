@@ -71,7 +71,6 @@ import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
@@ -1058,29 +1057,40 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (hasVelocity && velocity != null) {
             SafetyUtils.setVelocity(entity, velocity);
         }
-        if (mount != null || mountType != null) {
-            Entity current = entity.getVehicle();
-            // This prevents respawning mounts on chunk load for persistent mobs
-            if (current == null) {
-                mobStackSize++;
-                boolean allowMount = true;
-                if (mobStackSize > maxMobStackSize) {
-                    controller.getLogger().warning("Mob " + key + " has more than " + maxMobStackSize + " mounts");
-                    allowMount = false;
-                }
-                if (mount == null) {
-                    mount = (EntityData)controller.getMob(mountType);
-                    if (mount == null) {
-                        controller.getLogger().warning("Mob " + key + " has invalid mount: " + mountType);
-                        allowMount = false;
-                    }
-                }
-                if (allowMount) {
-                    Entity mountEntity = mount.spawn(entity.getLocation());
-                    DeprecatedUtils.setPassenger(mountEntity, entity);
-                }
-                mobStackSize--;
+        if (mount == null && mountType != null) {
+            mount = (EntityData)controller.getMob(mountType);
+            if (mount == null) {
+                controller.getLogger().warning("Mob " + key + " has invalid mount: " + mountType);
             }
+        }
+        if (mount != null) {
+            Entity mountEntity = entity.getVehicle();
+            mobStackSize++;
+            boolean allowMount = true;
+            if (mobStackSize > maxMobStackSize) {
+                controller.getLogger().warning("Mob " + key + " has more than " + maxMobStackSize + " mounts");
+                allowMount = false;
+            }
+            // This prevents respawning mounts on chunk load for persistent mobs
+            if (mountEntity == null) {
+                mountEntity = mount.spawn(entity.getLocation());
+            } else {
+                if (mountEntity.getType() == mount.getType()) {
+                    // Don't re-mount
+                    allowMount = false;
+                    // Update the mount in case the config was changed
+                    mount.modify(mountEntity);
+                } else {
+                    // Mount type has changed, now we need to respawn it
+                    mountEntity.remove();
+                    entity.eject();
+                    mountEntity = mount.spawn(entity.getLocation());
+                }
+            }
+            if (allowMount && mountEntity != null) {
+                CompatibilityUtils.addPassenger(mountEntity, entity);
+            }
+            mobStackSize--;
         }
         if (entity instanceof Painting) {
             Painting painting = (Painting) entity;
