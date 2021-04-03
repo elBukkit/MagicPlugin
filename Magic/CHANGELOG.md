@@ -11,6 +11,7 @@
 
 ## Engineering Re-Work
 
+ - See: https://www.youtube.com/watch?v=lqvFBlXcAXQ
  - Conduits now have Cost Reduction X, don't have to worry about mana
  - Materia system, players can use their Materia balance to create blocks if they don't have the blocks
  - Materia can be purchased in the enchantment table menu
@@ -83,6 +84,8 @@
  - Fix the spellbook hiding spells once it starts to get full
  - Fix Hat spell disappearing your helmet if trying to wear some kind of invalid block
  - Changes to mob and NPC configs will have an immediate affect on in-game mobs
+ - Fix Levitate not consuming mana if left on when relogging
+ - Fix Rollback+Chop/Mine exploits
 
 ## EffectLib 9.0
 
@@ -98,12 +101,6 @@
    effect in place of single particles for a given effect
  - Optimizations
  - Fix issues with concurrent uses of the same EquationEffect (technically effectlib 9.1 not yet released)
-
-# 8.4.3
-
- - Fix Levitate not consuming mana if left on when relogging
- - Fix Rollback+Chop/Mine exploits
- - Fix a specific case of players' items not dropping on death
 
 # 8.4.2
 
