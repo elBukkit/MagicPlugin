@@ -4456,6 +4456,9 @@ public class MagicController implements MageController {
             mobConfig = MagicConfiguration.getKeyed(this, mobConfig, "mob", key);
             mobs.load(key, mobConfig);
         }
+
+        // Update any currently loaded mobs
+        mobs.updateAllMobs();
     }
 
     public void loadWorlds(ConfigurationSection properties) {

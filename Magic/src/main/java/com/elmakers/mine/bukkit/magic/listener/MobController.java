@@ -88,6 +88,20 @@ public class MobController implements Listener, ChunkLoadListener {
         }
     }
 
+    public void updateAllMobs() {
+        // Not clearing the map, but hopefully everything in it will be replaced
+        Map<Entity, EntityData> currentMobs = new HashMap<>(activeMobs);
+        for (Map.Entry<Entity, EntityData> entry : currentMobs.entrySet()) {
+            EntityData mob = entry.getValue();
+            String key = mob.getKey();
+            if (key == null) continue;
+            mob = controller.getMob(key);
+            if (mob != null) {
+                mob.modify(entry.getKey());
+            }
+        }
+    }
+
     public void checkNPC(Entity entity, String npcId) {
         try {
             MagicNPC npc = controller.getNPC(npcId);
