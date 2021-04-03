@@ -29,18 +29,17 @@
  - All currencies, builtin and custom, can be configured the same way
  - Physical items work for all currencies, not just Spell Points
  - "atm" spell and NPC mob added. A shop where players can withdraw money as physical items they can trade or give away
- - Note that all currency and spell point messaging was reorganized, see the migration log if you have
-   custom messaging or localization.
+ - Note that all currency and spell point messaging was reorganized, see the migration log if you have custom messaging or localization.
  - Player shops can now set prices shop-wide using the shop tool
 
 ## Changes
 
  - Magic now loads at server startup, so world gen modifications to default worlds catch spawn chunks
  - Hotbar upgrades will now start out empty and not mess up the inventory pages
- - Turn off Magic.notify permission by default. Sorry if it was annoying ;()
+ - Turn off Magic.notify permission by default. Sorry if it was annoying ;(
  - Cloak now turns off when you cast another spell
  - Reworked the Stun spell
- - Console and command block casts now act "SuperPowered", can bypass indestructible materials. Is configurable.
+ - Console and command block casts now act "Superpowered", can bypass indestructible materials. Is configurable.
  - The Equip action can now be used on mobs
  - Cloak won't replace your helmet
  - Re-enabled Gather. If you have issues with it, I'm just going to tell you to disable it though!
@@ -49,12 +48,13 @@
  - Most spell messages now go to the action bar, cooldown messages now shown for "quiet" wands (the default)
  - The Damage action now bypasses vanilla damage cooldowns. Use `no_damage_ticks: -1` to turn this off.
  - Teleporting by any means will now teleport your vehicle with you. Use `teleport_vehicle: false` in the spell parameters to turn this off.
+ - Mage.giveItem method no longer aborbs an item if holding a wand. Use `apply_to_wand: true` or `apply_to_caster: true` in your Shop/Selector config if you want that behavior.
 
 ## Additions
 
  - Added builtin Japanese translation (JP) (Thank you, LazyGon!)
  - Added trailshop example, for players to unlock trail effects
- - Added "pi" attribute constant
+ - Added "pi" and "degrees" attribute constants
  - The SpawnEntity action can use $pn, $pd and other placeholders in the `name` parameter
  - Added `mage reward` command, for giving players rewards, replaced with some SP or money if they already have it
  - Add `kit` support to Selector action, see `kitshop` in elworld examples
@@ -71,6 +71,8 @@
 
 ## Fixes
 
+ - Fix some bugs that may have been causing players to lose items on death
+ - Fix another grindstone exploit
  - Re-arrange plugin load order to (possibly) fix issues in recent builds with custom
    integrations (such as external attribute registration)
  - Fix LibsDisguise integration on old legacy versions of LD

@@ -3868,14 +3868,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public boolean tryGiveItem(ItemStack itemStack) {
         if (InventoryUtils.isEmpty(itemStack)) return true;
 
-        // Check for wand upgrades if appropriate
-        Wand activeWand = getActiveWand();
-        if (activeWand != null) {
-            if (activeWand.addItem(itemStack)) {
-                 return true;
-            }
-        }
-
         Player player = getPlayer();
         // Should this return false ?
         // That'd be a change from previous behavior, giving items to mobs now means dropping items on the ground,
