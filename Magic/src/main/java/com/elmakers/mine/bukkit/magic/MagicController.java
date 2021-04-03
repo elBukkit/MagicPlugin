@@ -4459,6 +4459,11 @@ public class MagicController implements MageController {
 
         // Update any currently loaded mobs
         mobs.updateAllMobs();
+
+        // Update all NPCs, they will have a reference to a potentially-stale EntityData
+        for (MagicNPC npc : npcs.values()) {
+            npc.update();
+        }
     }
 
     public void loadWorlds(ConfigurationSection properties) {

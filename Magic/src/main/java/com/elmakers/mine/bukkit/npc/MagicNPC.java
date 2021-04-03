@@ -409,8 +409,19 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Override
     public void update() {
-        configureEntityData();
-        restore();
+        // In case entity data was reloaded
+        boolean updated = false;
+        if (mobKey != null) {
+            EntityData newEntityData = controller.getMob(mobKey);
+            if (newEntityData != null) {
+                setEntityData(newEntityData);
+                updated = true;
+            }
+        }
+        if (!updated) {
+            configureEntityData();
+        }
+        checkForRestore();
     }
 
     @Override

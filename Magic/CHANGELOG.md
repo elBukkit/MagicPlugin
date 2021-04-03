@@ -80,6 +80,7 @@
  - Fix the Growth spell not working on carrots and potatoes
  - Fix the spellbook hiding spells once it starts to get full
  - Fix Hat spell disappearing your helmet if trying to wear some kind of invalid block
+ - Changes to mob and NPC configs will have an immediate affect on in-game mobs
 
 ## EffectLib 9.0
 
