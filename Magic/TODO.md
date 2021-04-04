@@ -3,8 +3,6 @@
 
 # Bugs
 
-- Magic mobs should update on reload
-
 - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
 - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
 - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
