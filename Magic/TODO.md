@@ -26,6 +26,7 @@
 
  - Allow some custom variables in wand lore
  - To be able to show the result of equations in lore
+ - Shops should just hide invalid items (option to hide them, or just use show_unavailable)
 
 ## Client Localization
 
