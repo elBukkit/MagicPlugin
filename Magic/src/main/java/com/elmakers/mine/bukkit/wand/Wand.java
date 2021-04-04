@@ -1127,7 +1127,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected List<WandInventory> getAllInventories() {
-        int hotbarCount = hotbars.size();
+        int hotbarCount = getHotbarCount();
         List<WandInventory> allInventories = new ArrayList<>(inventories.size() + hotbarCount);
         if (hotbarCount > 0) {
             allInventories.addAll(hotbars);
