@@ -1,3 +1,5 @@
 items:
   emerald_sword:
     name: Emerald Sword
+  invisible_item_frame:
+    name: Invisible Item Frame
