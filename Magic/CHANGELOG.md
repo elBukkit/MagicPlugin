@@ -6,6 +6,7 @@
 
  - Fix spell damage causing players to take other damage much more rapidly than normal
  - Fix invisible item frames being visible after being destroyed and recreated by a spell
+ - Fix yet even more ways to get wands into the grindstone
 
 # 8.5
 

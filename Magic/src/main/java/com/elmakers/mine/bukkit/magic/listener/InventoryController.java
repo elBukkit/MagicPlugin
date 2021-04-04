@@ -98,11 +98,13 @@ public class InventoryController implements Listener {
             activeGUI.dragged(event);
             return;
         }
+        // Not sure this actually happens in a way we care about, the drag event only seems to fire
+        // on grindstones for inventory interaction, but just in case.
         if (event.getInventory().getType().name().equals("GRINDSTONE")) {
             ItemStack oldCursor = event.getOldCursor();
             oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
             if (Wand.isSpecial(oldCursor)) {
-                for (int slot : event.getInventorySlots()) {
+                for (int slot : event.getRawSlots()) {
                     if (slot == 1 || slot == 0) {
                         event.setCancelled(true);
                         return;
@@ -260,16 +262,34 @@ public class InventoryController implements Listener {
         // Look at the wand in hand
         ItemStack heldItem = event.getCursor();
         boolean heldWand = Wand.isWand(heldItem);
+        boolean clickedWand = Wand.isWand(clickedItem);
+
+        boolean isHotbar = action == InventoryAction.HOTBAR_SWAP || action == InventoryAction.HOTBAR_MOVE_AND_READD;
+
+        // I'm not sure why or how this happens, but sometimes we can get a hotbar event without a slot number?
+        int hotbarButton = event.getHotbarButton();
+        if (isHotbar && hotbarButton < 0) return;
 
         // Check for putting wands in a grindstone since they will re-apply their enchantments
-        if (inventoryType.name().equals("GRINDSTONE") && heldWand && (slot == 1 || slot == 0)) {
+        boolean isGrindstone = inventoryType.name().equals("GRINDSTONE");
+        if (isGrindstone && heldWand && (slot == 1 || slot == 0) && slotType == InventoryType.SlotType.CRAFTING) {
             event.setCancelled(true);
             return;
+        }
+        if (isGrindstone && clickedWand && action == InventoryAction.MOVE_TO_OTHER_INVENTORY && slotType != InventoryType.SlotType.CRAFTING) {
+            event.setCancelled(true);
+            return;
+        }
+        if (isGrindstone && isHotbar) {
+            ItemStack item =  mage.getPlayer().getInventory().getItem(hotbarButton);
+            if (Wand.isWand(item)) {
+                event.setCancelled(true);
+                return;
+            }
         }
 
         // Check for wearing spells or wands
         boolean heldSpell = Wand.isSpell(heldItem);
-        boolean clickedWand = Wand.isWand(clickedItem);
         if (slotType == InventoryType.SlotType.ARMOR)
         {
             if (heldSpell) {
@@ -324,14 +344,8 @@ public class InventoryController implements Listener {
             return;
         }
 
-        boolean isHotbar = event.getAction() == InventoryAction.HOTBAR_SWAP || event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
-
-        // I'm not sure why or how this happens, but sometimes we can get a hotbar event without a slot number?
-        if (isHotbar && event.getHotbarButton() < 0) return;
-
         if (isHotbar && slotType == InventoryType.SlotType.ARMOR)
         {
-            int hotbarButton = event.getHotbarButton();
             ItemStack item =  mage.getPlayer().getInventory().getItem(hotbarButton);
             if (item != null && Wand.isSpell(item))
             {
