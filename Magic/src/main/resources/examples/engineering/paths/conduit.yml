@@ -1,3 +1,10 @@
+#
+# The move from "architect" to conduit requires that players obtain the "backup"
+# spell.
+#
+# In this way, it is up to the server owner whether or not players get access to
+# this OP rank.
+#
 conduit:
     icon: blaze_rod{CustomModelData:18006}
     legacy_icon: wood_hoe:6

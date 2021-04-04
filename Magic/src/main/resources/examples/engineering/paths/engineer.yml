@@ -1,13 +1,3 @@
-#
-# The move from "master" to engineer requires the player to acquire some basic
-# engineering spells first.
-#
-# In this way, it is up to the server owner whether or not players get access to
-# engineering magic.
-#
-# Similarly, the move to "Architect" requires that the player acquire a few high-level
-# engineering spells first.
-#
 engineer:
     icon: blaze_rod{CustomModelData:18005}
     legacy_icon: wood_hoe:5
