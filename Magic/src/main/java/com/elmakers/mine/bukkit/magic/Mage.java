@@ -28,6 +28,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WorldBorder;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
@@ -4801,6 +4802,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case "health": {
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : living.getHealth();
+            }
+            case "armor": {
+                LivingEntity living = getLivingEntity();
+                return living == null ? null : living.getAttribute(Attribute.GENERIC_ARMOR).getValue();
             }
             case "health_max": {
                 LivingEntity living = getLivingEntity();

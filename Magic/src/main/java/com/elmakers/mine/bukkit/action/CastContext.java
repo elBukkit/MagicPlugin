@@ -23,6 +23,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -1514,6 +1515,10 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             case "target_hunger": {
                 Player player = getTargetPlayer();
                 return player == null ? null : (double)player.getFoodLevel();
+            }
+            case "target_armor": {
+                LivingEntity living = getTargetLivingEntity();
+                return living == null ? null : living.getAttribute(Attribute.GENERIC_ARMOR).getValue();
             }
             case "target_location_x": {
                 Location location = getTargetLocation();

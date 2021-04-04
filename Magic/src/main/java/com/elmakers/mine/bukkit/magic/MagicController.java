@@ -283,6 +283,7 @@ public class MagicController implements MageController {
     protected static Random random = new Random();
     private final Set<String> builtinMageAttributes = ImmutableSet.of(
             "health", "health_max", "target_health", "target_health_max",
+            "armor", "target_armor",
             "location_x", "location_y", "location_z",
             "target_location_x", "target_location_y", "target_location_z",
             "time", "moon",
