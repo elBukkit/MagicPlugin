@@ -111,7 +111,7 @@ public class DamageAction extends BaseSpellAction
             } else {
                 if (targetEntity instanceof LivingEntity && noDamageTicks >= 0) {
                     LivingEntity li = (LivingEntity)targetEntity;
-                    li.setMaximumNoDamageTicks(noDamageTicks);
+                    li.setNoDamageTicks(noDamageTicks);
                 }
                 if (percentage != null) {
                     damage = percentage * CompatibilityUtils.getMaxHealth(targetEntity);

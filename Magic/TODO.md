@@ -1,5 +1,6 @@
 # TODO
 
+
 # Bugs
 
 - Magic mobs should update on reload
@@ -12,6 +13,19 @@
 
 - Fill out worth values for all blocks (and items, for shops) .. mostly done?
 - Tree spell allow using materia?
+
+## RPG
+
+ - Make an "armor" attribute
+
+## ModelEngine
+
+ - Check in on Discord?
+
+## Suggestions
+
+ - Allow some custom variables in wand lore
+ - To be able to show the result of equations in lore
 
 ## Client Localization
 

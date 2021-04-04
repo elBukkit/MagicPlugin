@@ -4,6 +4,8 @@
 
 # 8.5.1
 
+ - Fix spell damage causing players to take other damage much more rapidly than normal
+
 # 8.5
 
 ## New Resource Pack
