@@ -878,6 +878,7 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static void configureMaxHeights(ConfigurationSection config) {
         maxHeights.clear();
+        if (config == null) return;
         Collection<String> keys = config.getKeys(false);
         for (String key : keys) {
             try {
