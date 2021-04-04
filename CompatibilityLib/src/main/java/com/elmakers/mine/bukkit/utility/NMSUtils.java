@@ -436,6 +436,7 @@ public class NMSUtils {
     protected static Field class_EntityHanging_blockPosition;
     protected static Field class_EntityHuman_spawnWorldField;
     protected static Field class_EntityPlayer_serverField;
+    protected static Field class_Entity_persistentInvisibilityField;
 
     protected static Object object_magicSource;
     protected static Object object_emptyChestLock;
@@ -742,6 +743,13 @@ public class NMSUtils {
                 getLogger().warning("Entity.setInvisible method not found, can't set every entity type invisible");
                 class_Entity_setInvisible = null;
                 class_Entity_isInvisible = null;
+            }
+
+            try {
+                class_Entity_persistentInvisibilityField = class_Entity.getDeclaredField("persistentInvisibility");
+            } catch (Throwable ignore) {
+                getLogger().warning("Entity.persistentInvisibility field not found, invisibility may not reliably restore");
+                class_Entity_persistentInvisibilityField = null;
             }
 
             try {

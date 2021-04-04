@@ -963,6 +963,9 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             Object handle = getHandle(entity);
             class_Entity_setInvisible.invoke(handle, invisible);
+            if (class_Entity_persistentInvisibilityField != null) {
+                class_Entity_persistentInvisibilityField.set(handle, invisible);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
