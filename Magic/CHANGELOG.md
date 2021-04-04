@@ -5,6 +5,7 @@
 # 8.5.1
 
  - Fix spell damage causing players to take other damage much more rapidly than normal
+ - Fix invisible item frames being visible after being destroyed and recreated by a spell
 
 # 8.5
 

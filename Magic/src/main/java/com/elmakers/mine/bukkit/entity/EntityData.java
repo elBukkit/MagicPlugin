@@ -1053,7 +1053,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (hasMoved && location != null && !location.equals(entity.getLocation())) {
             entity.teleport(location);
         }
-
         if (hasVelocity && velocity != null) {
             SafetyUtils.setVelocity(entity, velocity);
         }
@@ -1115,6 +1114,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         if (this.key != null) {
             EntityMetadataUtils.instance().setString(entity, "magicmob", this.key);
+        }
+        // Do this one last time again at the very end, it seems some other changes (like facing direction on an item frame
+        // can remove invisibility, somehow.
+        if (invisible != null) {
+            CompatibilityUtils.setInvisible(entity, invisible);
         }
         return true;
     }
