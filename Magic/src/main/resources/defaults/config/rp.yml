@@ -57,3 +57,5 @@ alternate_resource_packs:
   skulls:
     url: "http://rp.elmakers.com/Magic-skulls-RP-8.5-1.16.zip"
     url_icons_enabled: true
+  survival:
+    url: "http://rp.elmakers.com/Magic-RP-8.5-1.16.zip"
