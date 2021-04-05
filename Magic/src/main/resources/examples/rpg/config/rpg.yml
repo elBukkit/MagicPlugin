@@ -21,10 +21,11 @@ skip_inherited:
 # Default class
 default_mage_class: peasant
 
-# Turn off the enchant table
+# Turn off the enchant table, repurpose it for progressmenu
 disable_enchanting: true
-enchant_click: ""
+enchant_click: "progressmenu"
 enchant_sneak_click: ""
+enchant_click_requires_wand: false
 
 # Disable enchanting via the anvil
 disable_book_combining: true

@@ -78,6 +78,7 @@ public class PlayerController implements Listener {
     private MaterialAndData enchantBlockMaterial;
     private String enchantClickSpell = "spellshop";
     private String enchantSneakClickSpell = "upgrades";
+    private boolean enchantClickRequiresWand = true;
     private boolean cancelInteractOnLeftClick = true;
     private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
@@ -104,6 +105,7 @@ public class PlayerController implements Listener {
         cancelInteractOnRightClick = properties.getBoolean("cancel_interact_on_right_click", false);
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
         autoAbsorbSP = properties.getBoolean("auto_absorb_sp", true);
+        enchantClickRequiresWand = properties.getBoolean("enchant_click_requires_wand", false);
     }
 
     private void trigger(Player player, String trigger) {
@@ -815,27 +817,31 @@ public class PlayerController implements Listener {
             return;
         }
 
-        if (wand == null) return;
+        // Check for wand permission
+        // This is done this way for the enchant click below, which may be allowed without a wand
+        // After that we will break from this handler if there is no wand.
+        if (wand != null) {
+            Messages messages = controller.getMessages();
+            if (!controller.hasWandPermission(player))
+            {
+                return;
+            }
 
-        Messages messages = controller.getMessages();
-        if (!controller.hasWandPermission(player))
-        {
-            return;
-        }
-
-        // Check for region or wand-specific permissions
-        if (!controller.hasWandPermission(player, wand))
-        {
-            wand.deactivate();
-            mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
-            return;
+            // Check for region or wand-specific permissions
+            if (!controller.hasWandPermission(player, wand))
+            {
+                wand.deactivate();
+                mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
+                return;
+            }
         }
 
         // Check for enchantment table click
+        boolean allowsEnchantClicks = !enchantClickRequiresWand || (wand != null && wand.hasSpellProgression());
         Block clickedBlock = event.getClickedBlock();
         if (clickedBlock != null && clickedBlock.getType() != Material.AIR
             && enchantBlockMaterial != null && enchantBlockMaterial.is(clickedBlock)
-            && wand.hasSpellProgression())
+            && allowsEnchantClicks)
         {
             Spell spell = null;
             if (player.isSneaking())
@@ -853,6 +859,7 @@ public class PlayerController implements Listener {
             }
             return;
         }
+        if (wand == null) return;
 
         if (isRightClick && wand.performAction(wand.getRightClickAction()))
         {

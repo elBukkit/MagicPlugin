@@ -371,17 +371,6 @@ sp_earn_enabled: true
 # Set to false if you don't want SP items to automatically absorb on pickup
 auto_absorb_sp: true
 
-# This controls what players will see when interacting with an enchantment table
-# These spells must exit in your configuration for this to work, and "enchant_block" needs to be set.
-# enchant_click: progressmenu
-# enchant_sneak_click: spellshop
-enchant_click: ""
-enchant_sneak_click: ""
-
-# This can be used to set up a progression system based on clicking an enchant table with your wand.
-# enchant_block: enchantment_table
-enchant_block: ""
-
 # The default cast location if not holding a wand. Options are "mainhand", "offhand" and "eyes"
 default_cast_location: mainhand
 # This offsets left or right from the center of the body

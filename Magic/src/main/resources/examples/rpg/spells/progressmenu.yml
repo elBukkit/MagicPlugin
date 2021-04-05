@@ -1,0 +1,7 @@
+progressmenu:
+  parameters:
+    options:
+      - cast_spell: wandinstructions
+
+wandinstructions:
+  enabled: true
