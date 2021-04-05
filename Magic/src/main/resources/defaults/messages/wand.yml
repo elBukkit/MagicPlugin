@@ -120,7 +120,7 @@ wand:
       mending: Mending
       multishot: Multishot
       oxygen: Respiration $roman
-      protection_environmental: Environment Protection $roman
+      protection_environmental: Protection $roman
       protection_explosions: Blast Protection $roman
       protection_fall: Fall Protection $roman
       protection_fire: Fire Protection $roman
