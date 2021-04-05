@@ -64,8 +64,7 @@ critical:
     delay: 100
     target: damage_target
     probability: 0.2
-    # Note that this deals the original damage PLUS 50%, this is to work around Minecraft's damage immunity timeout
-    damage: "1 + damage_dealt * 1.5"
+    damage: "1 + damage_dealt * 0.5"
 
 critical|2:
   upgrade_required_casts: 100
