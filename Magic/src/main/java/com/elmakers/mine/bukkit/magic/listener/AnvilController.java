@@ -15,11 +15,11 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -27,6 +27,7 @@ public class AnvilController implements Listener {
     private final MagicController controller;
     private boolean bindingEnabled = false;
     private boolean combiningEnabled = false;
+    private boolean bookCombiningEnabled = false;
     private boolean organizingEnabled = false;
     private boolean clearDescriptionOnRename = false;
     private boolean enableRenaming = true;
@@ -41,6 +42,7 @@ public class AnvilController implements Listener {
         enableRenaming = properties.getBoolean("enable_wand_renaming", true);
         bindingEnabled = properties.getBoolean("enable_anvil_binding", bindingEnabled);
         combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
+        bookCombiningEnabled = properties.getBoolean("enable_book_combining", bookCombiningEnabled);
         organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
         clearDescriptionOnRename = properties.getBoolean("anvil_rename_clears_description", clearDescriptionOnRename);
     }
@@ -117,57 +119,30 @@ public class AnvilController implements Listener {
             );
 
             // Handle direct movement
+
+            // TODO: does this need a special handler? It needs to not block result-taking, at least
+
             if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
             {
                 if (!Wand.isWand(current)) return;
 
                 // Moving from anvil back to inventory
-                if (slotType == SlotType.CRAFTING && enableRenaming) {
+                if (slotType == SlotType.CRAFTING) {
                     Wand wand = controller.getWand(current);
                     wand.updateName(true);
-                } else if (slotType == SlotType.RESULT) {
-                    // Don't allow combining
-                    if (!combiningEnabled) {
-                        if (firstItem != null && secondItem != null) {
-                            event.setCancelled(true);
-                            return;
-                        }
-                    }
-                    // Taking from result slot
-                    ItemMeta meta = current.getItemMeta();
-                    String newName = meta.getDisplayName();
-
-                    Wand wand = controller.getWand(current);
-                    if (!wand.canUse(player)) {
-                        event.setCancelled(true);
-                        mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
-                        return;
-                    }
-                    if (!CompatibilityUtils.isEmpty(secondItem)) {
-                        event.setCancelled(true);
-                        return;
-                    }
-                    if (enableRenaming) {
-                        wand.setName(newName);
-                    }
-                    if (organizingEnabled) {
-                        wand.organizeInventory(controller.getMage(player));
-                    }
-                    if (bindingEnabled) {
-                        wand.tryToOwn(player);
-                    }
-                } else if (enableRenaming) {
+                    return;
+                } else if (slotType != SlotType.RESULT) {
                     // Moving from inventory to anvil
                     Wand wand = controller.getWand(current);
                     wand.updateName(false, false);
+                    return;
                 }
-                return;
             }
 
             // Set/unset active names when starting to craft
             if (slotType == SlotType.CRAFTING) {
                 // Putting a wand into the anvil's crafting slot
-                if (Wand.isWand(cursor) && enableRenaming) {
+                if (Wand.isWand(cursor)) {
                     Wand wand = controller.getWand(cursor);
                     wand.updateName(false, false);
                 }
@@ -177,9 +152,7 @@ public class AnvilController implements Listener {
                     if (clearDescriptionOnRename) {
                         wand.setDescription("");
                     }
-                    if (enableRenaming) {
-                        wand.updateName(true);
-                    }
+                    wand.updateName(true);
                     if (event.getWhoClicked() instanceof Player && bindingEnabled) {
                         wand.tryToOwn((Player)event.getWhoClicked());
                     }
@@ -190,7 +163,7 @@ public class AnvilController implements Listener {
 
             // Rename wand when taking from result slot
             if (slotType == SlotType.RESULT && Wand.isWand(current)) {
-                if (!combiningEnabled) {
+                if (!combiningEnabled && !bookCombiningEnabled) {
                     if (firstItem != null && secondItem != null) {
                         event.setCancelled(true);
                         return;
@@ -204,6 +177,17 @@ public class AnvilController implements Listener {
                     event.setCancelled(true);
                     mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
                     return;
+                }
+                if (bookCombiningEnabled) {
+                    ItemMeta secondMeta = secondItem.getItemMeta();
+                    if (secondMeta instanceof EnchantmentStorageMeta) {
+                        if (!wand.isEnchantable() || !wand.getEnchantments().isEmpty()) {
+                            event.setCancelled(true);
+                            return;
+                        }
+                        EnchantmentStorageMeta enchantmentStorage = (EnchantmentStorageMeta)secondMeta;
+                        wand.setEnchantments(enchantmentStorage.getStoredEnchants());
+                    }
                 }
                 if (enableRenaming) {
                     wand.setName(newName);

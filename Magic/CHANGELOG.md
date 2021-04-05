@@ -13,6 +13,7 @@
 ## Additions
 
  - Add `armor` and `target_armor` attributes
+ - Enchantable wands (like the wizard armor) can be combined with an enchanted book
 
 
 # 8.5.2

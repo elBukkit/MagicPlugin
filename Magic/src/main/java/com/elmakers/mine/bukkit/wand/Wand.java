@@ -6264,6 +6264,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    @Nonnull
+    public Map<Enchantment, Integer> getEnchantments() {
+        Map<Enchantment, Integer> enchantMap = new HashMap<>();
+        ConfigurationSection enchantConfig = getConfigurationSection("enchantments");
+        if (enchantConfig != null) {
+            Collection<String> enchantKeys = enchantConfig.getKeys(false);
+            for (String enchantKey : enchantKeys) {
+                try {
+                    Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                    enchantMap.put(enchantment, enchantConfig.getInt(enchantKey));
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid enchantment: " + enchantKey);
+                }
+            }
+        }
+        return enchantMap;
+    }
 
     @Override
     public boolean hasProperty(String key) {

@@ -3,3 +3,6 @@ disable_anvil: false
 
 # Turn off renaming wands on an anvil
 enable_wand_renaming: true
+
+# Allow combining enchanted books with an (unenchanted but enchantable) wand
+enable_book_combining: true
