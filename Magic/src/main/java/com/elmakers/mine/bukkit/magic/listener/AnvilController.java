@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
@@ -28,12 +29,16 @@ public class AnvilController implements Listener {
     private boolean combiningEnabled = false;
     private boolean organizingEnabled = false;
     private boolean clearDescriptionOnRename = false;
+    private boolean enableRenaming = true;
+    private boolean disableAnvil = false;
 
     public AnvilController(MagicController controller) {
         this.controller = controller;
     }
 
     public void load(ConfigurationSection properties) {
+        disableAnvil = properties.getBoolean("disable_anvil", false);
+        enableRenaming = properties.getBoolean("enable_wand_renaming", true);
         bindingEnabled = properties.getBoolean("enable_anvil_binding", bindingEnabled);
         combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
         organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
@@ -73,7 +78,13 @@ public class AnvilController implements Listener {
                 }
             }
         }
+    }
 
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        if (disableAnvil && event.getInventory().getType().equals(InventoryType.ANVIL)) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
@@ -109,8 +120,9 @@ public class AnvilController implements Listener {
             if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
             {
                 if (!Wand.isWand(current)) return;
+
                 // Moving from anvil back to inventory
-                if (slotType == SlotType.CRAFTING) {
+                if (slotType == SlotType.CRAFTING && enableRenaming) {
                     Wand wand = controller.getWand(current);
                     wand.updateName(true);
                 } else if (slotType == SlotType.RESULT) {
@@ -135,14 +147,16 @@ public class AnvilController implements Listener {
                         event.setCancelled(true);
                         return;
                     }
-                    wand.setName(newName);
+                    if (enableRenaming) {
+                        wand.setName(newName);
+                    }
                     if (organizingEnabled) {
                         wand.organizeInventory(controller.getMage(player));
                     }
                     if (bindingEnabled) {
                         wand.tryToOwn(player);
                     }
-                } else {
+                } else if (enableRenaming) {
                     // Moving from inventory to anvil
                     Wand wand = controller.getWand(current);
                     wand.updateName(false, false);
@@ -153,7 +167,7 @@ public class AnvilController implements Listener {
             // Set/unset active names when starting to craft
             if (slotType == SlotType.CRAFTING) {
                 // Putting a wand into the anvil's crafting slot
-                if (Wand.isWand(cursor)) {
+                if (Wand.isWand(cursor) && enableRenaming) {
                     Wand wand = controller.getWand(cursor);
                     wand.updateName(false, false);
                 }
@@ -163,7 +177,9 @@ public class AnvilController implements Listener {
                     if (clearDescriptionOnRename) {
                         wand.setDescription("");
                     }
-                    wand.updateName(true);
+                    if (enableRenaming) {
+                        wand.updateName(true);
+                    }
                     if (event.getWhoClicked() instanceof Player && bindingEnabled) {
                         wand.tryToOwn((Player)event.getWhoClicked());
                     }
@@ -189,7 +205,9 @@ public class AnvilController implements Listener {
                     mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
                     return;
                 }
-                wand.setName(newName);
+                if (enableRenaming) {
+                    wand.setName(newName);
+                }
                 if (organizingEnabled) {
                     wand.organizeInventory(controller.getMage(player));
                 }

@@ -2,6 +2,10 @@
 
 # 8.6
 
+## RPG Configs
+
+ - Added `disable_anvil` and `disable_enchanting`, turn off anvil and enchantment table completely
+
 ## Changes
 
  - The "drop" key is now bound to toggling the inventory by default (rather than cycling hotbars, use the swap keye for that)

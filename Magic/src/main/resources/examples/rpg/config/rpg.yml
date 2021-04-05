@@ -22,8 +22,12 @@ skip_inherited:
 default_mage_class: peasant
 
 # Turn off the enchant table
+disable_enchanting: true
 enchant_click: ""
 enchant_sneak_click: ""
+
+# Disable the anvil
+disable_anvil: true
 
 custom_currency:
  ap:

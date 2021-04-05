@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.ItemStack;
@@ -21,9 +23,15 @@ import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 public class EnchantingController implements Listener {
     private final MagicController controller;
     private boolean enchantingEnabled = false;
+    private boolean disableEnchanting = false;
 
     public EnchantingController(MagicController controller) {
         this.controller = controller;
+    }
+
+    public void load(ConfigurationSection properties) {
+        enchantingEnabled = properties.getBoolean("enable_enchanting", enchantingEnabled);
+        disableEnchanting = properties.getBoolean("disable_enchanting", disableEnchanting);
     }
 
     @EventHandler(priority = EventPriority.HIGH)
@@ -164,13 +172,15 @@ public class EnchantingController implements Listener {
         }
     }
 
+    @EventHandler
+    public void onInventoryOpen(InventoryOpenEvent event) {
+        if (disableEnchanting && event.getInventory().getType().equals(InventoryType.ENCHANTING)) {
+            event.setCancelled(true);
+        }
+    }
+
     public boolean isEnabled()
     {
         return enchantingEnabled;
-    }
-
-    public void setEnabled(boolean enabled)
-    {
-        this.enchantingEnabled = enabled;
     }
 }

@@ -1,0 +1,5 @@
+# This disables all interaction with an anvil
+disable_anvil: false
+
+# Turn off renaming wands on an anvil
+enable_wand_renaming: true

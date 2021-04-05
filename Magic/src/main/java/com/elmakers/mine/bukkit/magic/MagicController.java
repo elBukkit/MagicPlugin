@@ -7843,7 +7843,7 @@ public class MagicController implements MageController {
         Wand.EnchantableWandMaterial = ConfigurationUtils.getMaterial(properties, "wand_item_enchantable", Wand.EnchantableWandMaterial);
 
         // Load sub-controllers
-        enchanting.setEnabled(properties.getBoolean("enable_enchanting", enchanting.isEnabled()));
+        enchanting.load(properties);
         if (enchanting.isEnabled()) {
             log("Wand enchanting is enabled");
         }

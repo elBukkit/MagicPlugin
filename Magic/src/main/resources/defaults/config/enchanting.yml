@@ -1,0 +1,2 @@
+# This disables *all* enchanting, including vanilla
+disable_enchanting: false
