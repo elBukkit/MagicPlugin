@@ -41,6 +41,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -6253,12 +6254,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public void setEnchantments(Map<Enchantment, Integer> enchants) {
         if (enchants == null) {
             setProperty("enchantments", null);
+            if (item != null) {
+                ItemMeta meta = item.getItemMeta();
+                if (meta != null) {
+                    meta.getEnchants().clear();
+                    item.setItemMeta(meta);
+                }
+            }
         } else {
             ConfigurationSection enchantments = ConfigurationUtils.newConfigurationSection();
             for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
                 enchantments.set(entry.getKey().getName().toLowerCase(), entry.getValue());
             }
             setProperty("enchantments", enchantments);
+            if (item != null) {
+                InventoryUtils.applyEnchantments(item, enchantments);
+            }
             saveState();
             updateLore();
         }
