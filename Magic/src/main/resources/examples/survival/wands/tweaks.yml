@@ -38,7 +38,7 @@ mode_rightclick:
     legacy_icon: diamond_axe:211
     upgrade: true
     force: true
-    drop: cycle_hotbar
+    drop: toggle
     right_click: toggle
     left_click: cast
     swap: none

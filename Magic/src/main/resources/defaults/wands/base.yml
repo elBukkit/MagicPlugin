@@ -72,8 +72,8 @@ base_wand:
     hidden: true
     inherit: base_bound
     mode: inventory
-    drop: cycle_hotbar
     left_click: cast
+    drop: toggle
     right_click: toggle
     swap: cycle_hotbar
     quiet: 1

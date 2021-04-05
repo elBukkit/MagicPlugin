@@ -2,7 +2,16 @@
 
 # 8.6
 
+## Changes
+
+ - The "drop" key is now bound to toggling the inventory by default (rather than cycling hotbars, use the swap keye for that)
+
+## Additions
+
  - Add `armor` and `target_armor` attributes
+
+
+# 8.5.2
 
 # 8.5.1
 
