@@ -12,7 +12,7 @@
 
 ## Additions
 
- - Add `armor` and `target_armor`, `luck`, `target_luck` and `attack_damage` attributes
+ - Add attributes: `armor`, `target_armor`, `luck`, `target_luck`, `attack_damage`, `knockback_resistance`, `target_knockback_resistance`
  - Enchantable wands (like the wizard armor) can be combined with an enchanted book
 
 

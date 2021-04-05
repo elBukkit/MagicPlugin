@@ -285,6 +285,7 @@ public class MagicController implements MageController {
             "health", "health_max", "target_health", "target_health_max",
             "armor", "target_armor",
             "luck", "target_luck",
+            "knockback_resistance", "target_knockback_resistance",
             "attack_damage",
             "location_x", "location_y", "location_z",
             "target_location_x", "target_location_y", "target_location_z",
