@@ -118,10 +118,7 @@ public class AnvilController implements Listener {
                 80
             );
 
-            // Handle direct movement
-
-            // TODO: does this need a special handler? It needs to not block result-taking, at least
-
+            // Handle direct movement into the anvil inventory
             if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
             {
                 if (!Wand.isWand(current)) return;
@@ -134,7 +131,7 @@ public class AnvilController implements Listener {
                 } else if (slotType != SlotType.RESULT) {
                     // Moving from inventory to anvil
                     Wand wand = controller.getWand(current);
-                    wand.updateName(false, false);
+                    wand.updateName(false, true);
                     return;
                 }
             }
@@ -144,8 +141,9 @@ public class AnvilController implements Listener {
                 // Putting a wand into the anvil's crafting slot
                 if (Wand.isWand(cursor)) {
                     Wand wand = controller.getWand(cursor);
-                    wand.updateName(false, false);
+                    wand.updateName(false, true);
                 }
+
                 // Taking a wand out of the anvil's crafting slot
                 if (Wand.isWand(current)) {
                     Wand wand = controller.getWand(current);
@@ -157,6 +155,63 @@ public class AnvilController implements Listener {
                         wand.tryToOwn((Player)event.getWhoClicked());
                     }
                 }
+
+                // Check for combining a wand with something else
+                // Behave as if the item has already been placed
+                // This doesn't seem to do anything, I don't think you can set the result slot :\
+                /*
+                if (event.getSlot() == 0) {
+                    firstItem = cursor;
+                } else if (event.getSlot() == 1) {
+                    secondItem = cursor;
+                }
+                if (firstItem != null && secondItem != null && (Wand.isWand(firstItem) || Wand.isWand(secondItem))) {
+                    if (!combiningEnabled && !bookCombiningEnabled) {
+                        anvilInventory.setItem(2, null);
+                    } else if (Wand.isWand(firstItem)) {
+                        if (!combiningEnabled && Wand.isWand(secondItem)) {
+                            anvilInventory.setItem(2, null);
+                            return;
+                        }
+                        Wand wand = controller.getWand(firstItem);
+                        if (!wand.isEnchantable() || !wand.getEnchantments().isEmpty()) {
+                            anvilInventory.setItem(2, null);
+                            return;
+                        }
+                        ItemMeta meta = secondItem.getItemMeta();
+                        if (meta != null && meta instanceof EnchantmentStorageMeta) {
+                            EnchantmentStorageMeta enchantmentStorage = (EnchantmentStorageMeta)meta;
+                            ItemStack result = InventoryUtils.getCopy(firstItem);
+                            Wand resultWand = controller.getWand(result);
+                            resultWand.setEnchantments(enchantmentStorage.getStoredEnchants());
+                            anvilInventory.setItem(2, result);
+                        } else if (!combiningEnabled) {
+                            anvilInventory.setItem(2, null);
+                        }
+
+                    } else if (Wand.isWand(secondItem)) {
+                        if (!combiningEnabled && Wand.isWand(firstItem)) {
+                            anvilInventory.setItem(2, null);
+                            return;
+                        }
+                        Wand wand = controller.getWand(secondItem);
+                        if (!wand.isEnchantable() || !wand.getEnchantments().isEmpty()) {
+                            anvilInventory.setItem(2, null);
+                            return;
+                        }
+                        ItemMeta meta = firstItem.getItemMeta();
+                        if (meta != null && meta instanceof EnchantmentStorageMeta) {
+                            EnchantmentStorageMeta enchantmentStorage = (EnchantmentStorageMeta)meta;
+                            ItemStack result = InventoryUtils.getCopy(secondItem);
+                            Wand resultWand = controller.getWand(result);
+                            resultWand.setEnchantments(enchantmentStorage.getStoredEnchants());
+                            anvilInventory.setItem(2, result);
+                        } else if (!combiningEnabled) {
+                            anvilInventory.setItem(2, null);
+                        }
+                    }
+                }
+                */
 
                 return;
             }
@@ -178,9 +233,9 @@ public class AnvilController implements Listener {
                     mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
                     return;
                 }
-                if (bookCombiningEnabled) {
+                if (bookCombiningEnabled && secondItem != null) {
                     ItemMeta secondMeta = secondItem.getItemMeta();
-                    if (secondMeta instanceof EnchantmentStorageMeta) {
+                    if (secondMeta != null && secondMeta instanceof EnchantmentStorageMeta) {
                         if (!wand.isEnchantable() || !wand.getEnchantments().isEmpty()) {
                             event.setCancelled(true);
                             return;

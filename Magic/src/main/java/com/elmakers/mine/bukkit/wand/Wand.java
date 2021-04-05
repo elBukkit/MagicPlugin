@@ -2472,6 +2472,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             name = ChatColor.stripColor(name);
         }
         CompatibilityUtils.setDisplayName(item, name);
+
+        // This is a bit of a hack to make anvil+book combining show enchantments
+        int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
+        if (!stripColors) {
+            CompatibilityUtils.hideFlags(item, hideFlags);
+        } else if ((hideFlags & 1) == 1) {
+            CompatibilityUtils.hideFlags(item, hideFlags & ~1);
+        }
     }
 
     private void updateName() {
