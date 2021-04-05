@@ -26,8 +26,9 @@ disable_enchanting: true
 enchant_click: ""
 enchant_sneak_click: ""
 
-# Disable the anvil
-disable_anvil: true
+# Disable enchanting via the anvil
+disable_book_combining: true
+enable_wand_book_combining: false
 
 custom_currency:
  ap:

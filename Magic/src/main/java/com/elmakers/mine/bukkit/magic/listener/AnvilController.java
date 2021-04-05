@@ -27,7 +27,8 @@ public class AnvilController implements Listener {
     private final MagicController controller;
     private boolean bindingEnabled = false;
     private boolean combiningEnabled = false;
-    private boolean bookCombiningEnabled = false;
+    private boolean wandBookCombiningEnabled = true;
+    private boolean bookCombiningDisabled = false;
     private boolean organizingEnabled = false;
     private boolean clearDescriptionOnRename = false;
     private boolean enableRenaming = true;
@@ -39,10 +40,11 @@ public class AnvilController implements Listener {
 
     public void load(ConfigurationSection properties) {
         disableAnvil = properties.getBoolean("disable_anvil", false);
+        bookCombiningDisabled = properties.getBoolean("disable_book_combining", bookCombiningDisabled);
         enableRenaming = properties.getBoolean("enable_wand_renaming", true);
         bindingEnabled = properties.getBoolean("enable_anvil_binding", bindingEnabled);
         combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
-        bookCombiningEnabled = properties.getBoolean("enable_book_combining", bookCombiningEnabled);
+        wandBookCombiningEnabled = properties.getBoolean("enable_wand_book_combining", wandBookCombiningEnabled);
         organizingEnabled = properties.getBoolean("enable_organizing", organizingEnabled);
         clearDescriptionOnRename = properties.getBoolean("anvil_rename_clears_description", clearDescriptionOnRename);
     }
@@ -218,7 +220,7 @@ public class AnvilController implements Listener {
 
             // Rename wand when taking from result slot
             if (slotType == SlotType.RESULT && Wand.isWand(current)) {
-                if (!combiningEnabled && !bookCombiningEnabled) {
+                if (!combiningEnabled && !wandBookCombiningEnabled) {
                     if (firstItem != null && secondItem != null) {
                         event.setCancelled(true);
                         return;
@@ -233,7 +235,8 @@ public class AnvilController implements Listener {
                     mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));
                     return;
                 }
-                if (bookCombiningEnabled && secondItem != null) {
+                boolean combinedWandAndBook = false;
+                if (wandBookCombiningEnabled && secondItem != null) {
                     ItemMeta secondMeta = secondItem.getItemMeta();
                     if (secondMeta != null && secondMeta instanceof EnchantmentStorageMeta) {
                         if (!wand.isEnchantable() || !wand.getEnchantments().isEmpty()) {
@@ -242,7 +245,16 @@ public class AnvilController implements Listener {
                         }
                         EnchantmentStorageMeta enchantmentStorage = (EnchantmentStorageMeta)secondMeta;
                         wand.setEnchantments(enchantmentStorage.getStoredEnchants());
+                        combinedWandAndBook = true;
                     }
+                }
+                if (!combinedWandAndBook && bookCombiningDisabled && secondItem != null) {
+                    ItemMeta secondMeta = secondItem.getItemMeta();
+                    if (secondMeta != null && secondMeta instanceof EnchantmentStorageMeta) {
+                        event.setCancelled(true);
+                        return;
+                    }
+
                 }
                 if (enableRenaming) {
                     wand.setName(newName);

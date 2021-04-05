@@ -5,4 +5,7 @@ disable_anvil: false
 enable_wand_renaming: true
 
 # Allow combining enchanted books with an (unenchanted but enchantable) wand
-enable_book_combining: true
+enable_wand_book_combining: true
+
+# Disable book combining with vanilla items
+disable_book_combining: false
