@@ -4807,6 +4807,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : living.getAttribute(Attribute.GENERIC_ARMOR).getValue();
             }
+            case "attack_damage": {
+                LivingEntity living = getLivingEntity();
+                return living == null ? null : living.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue();
+            }
             case "health_max": {
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : CompatibilityUtils.getMaxHealth(living);

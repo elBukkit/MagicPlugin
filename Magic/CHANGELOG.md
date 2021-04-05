@@ -12,7 +12,7 @@
 
 ## Additions
 
- - Add `armor` and `target_armor` attributes
+ - Add `armor` and `target_armor` and `attack_damage` attributes
  - Enchantable wands (like the wizard armor) can be combined with an enchanted book
 
 
