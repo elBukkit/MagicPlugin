@@ -339,6 +339,7 @@ public class NMSUtils {
     protected static Method class_CraftMetaSkull_setProfileMethod;
     protected static Method class_Entity_getPassengersMethod;
     protected static Method class_Entity_addPassengerMethod;
+    protected static Method class_Player_openBookMethod;
 
     protected static boolean legacyMaps;
 
@@ -685,9 +686,14 @@ public class NMSUtils {
             boolean current = true;
 
             try {
+                class_Player_openBookMethod = Player.class.getMethod("openBook", ItemStack.class);
+            } catch (Throwable ignore) {
+                getLogger().warning("Player.openBook method not found, BookAction can't show virtual books");
+            }
+            try {
                 class_CraftMetaSkull_setProfileMethod = class_CraftMetaSkull.getDeclaredMethod("setProfile", class_GameProfile);
                 class_CraftMetaSkull_setProfileMethod.setAccessible(true);
-            } catch (Throwable ignore) {
+            } catch (Throwable ex) {
                 getLogger().warning("Skull profile method not available, this is normal if you're on a legacy Minecraft version");
             }
 

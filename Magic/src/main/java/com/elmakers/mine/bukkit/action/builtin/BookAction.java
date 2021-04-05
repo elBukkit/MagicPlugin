@@ -11,6 +11,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -23,6 +24,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class BookAction extends BaseSpellAction {
@@ -34,6 +36,7 @@ public class BookAction extends BaseSpellAction {
     @Nullable
     private ConfigurationSection pages;
     private boolean giveBook;
+    private boolean virtualBook;
 
     private ItemStack updateBook(CastContext context, Mage targetMage, ItemStack book) {
         BookMeta meta = (BookMeta) book.getItemMeta();
@@ -130,6 +133,7 @@ public class BookAction extends BaseSpellAction {
         author = messages.get(authorParam, ChatColor.translateAlternateColorCodes('&', authorParam));
         pages = parameters.getConfigurationSection("pages");
         giveBook = parameters.getBoolean("give_book", false);
+        virtualBook = parameters.getBoolean("virtual_book", false);
     }
 
     public SpellResult performGive(CastContext context) {
@@ -150,6 +154,23 @@ public class BookAction extends BaseSpellAction {
         return SpellResult.CAST;
     }
 
+    public SpellResult performVirtual(CastContext context) {
+        Entity target = context.getTargetEntity();
+        if (target == null) {
+            return SpellResult.NO_TARGET;
+        }
+        if (!(target instanceof Player)) {
+            return SpellResult.NO_TARGET;
+        }
+
+        Mage targetMage = context.getController().getMage(target);
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+        updateBook(context, targetMage, book);
+        boolean success = CompatibilityUtils.openBook((Player)target, book);
+
+        return success ? SpellResult.CAST : SpellResult.FAIL;
+    }
+
     @Override
     public SpellResult perform(CastContext context) {
         if (pages == null) {
@@ -157,6 +178,9 @@ public class BookAction extends BaseSpellAction {
         }
         if (giveBook) {
             return performGive(context);
+        }
+        if (virtualBook) {
+            return performVirtual(context);
         }
         Mage mage = context.getMage();
         Wand wand = context.getWand();

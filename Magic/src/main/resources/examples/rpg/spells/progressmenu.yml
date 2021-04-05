@@ -1,6 +1,9 @@
 progressmenu:
   parameters:
     options:
+      - cast_spell: playerstats
+        cast_spell_parameters:
+          virtual_book: true
       - cast_spell: wandinstructions
 
 wandinstructions:

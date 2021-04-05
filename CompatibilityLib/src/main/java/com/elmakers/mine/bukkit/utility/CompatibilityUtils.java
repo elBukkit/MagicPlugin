@@ -2623,4 +2623,17 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean isTeleporting() {
         return teleporting;
     }
+
+    public static boolean openBook(Player player, ItemStack itemStack) {
+        if (class_Player_openBookMethod == null) {
+            return false;
+        }
+        try {
+            class_Player_openBookMethod.invoke(player, itemStack);
+            return true;
+        } catch (Exception ex) {
+            getLogger().log(Level.SEVERE, "Unexpected error showing book", ex);
+        }
+        return false;
+    }
 }
