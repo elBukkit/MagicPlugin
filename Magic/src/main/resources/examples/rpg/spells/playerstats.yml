@@ -15,7 +15,7 @@ playerstats:
           - "&d&lDexterity: &5$dexterity"
           - "&d&lIntelligence: &5$intelligence"
           - "&d&lWisdom: &5$wisdom"
-          - "&d&lLuck: &5$luck"
+          - "&d&lInfluence: &5$influence"
         2:
           - "&2&lBalance"
           - "&d&lDollars: &5$currency"

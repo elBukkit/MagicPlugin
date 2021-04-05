@@ -14,6 +14,6 @@ attributes:
   wisdom:
     name: Wisdom
     description: Magical resistance and improved mana usage
-  luck:
-    name: Luck
+  influence:
+    name: Influence
     description: Better chances for success

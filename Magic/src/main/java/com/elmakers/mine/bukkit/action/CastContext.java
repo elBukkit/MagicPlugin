@@ -1520,6 +1520,10 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 LivingEntity living = getTargetLivingEntity();
                 return living == null ? null : living.getAttribute(Attribute.GENERIC_ARMOR).getValue();
             }
+            case "target_luck": {
+                LivingEntity living = getTargetLivingEntity();
+                return living == null ? null : living.getAttribute(Attribute.GENERIC_LUCK).getValue();
+            }
             case "target_location_x": {
                 Location location = getTargetLocation();
                 return location == null ? null : location.getX();

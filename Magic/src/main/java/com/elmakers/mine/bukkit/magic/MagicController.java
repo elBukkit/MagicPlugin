@@ -284,6 +284,7 @@ public class MagicController implements MageController {
     private final Set<String> builtinMageAttributes = ImmutableSet.of(
             "health", "health_max", "target_health", "target_health_max",
             "armor", "target_armor",
+            "luck", "target_luck",
             "attack_damage",
             "location_x", "location_y", "location_z",
             "target_location_x", "target_location_y", "target_location_z",

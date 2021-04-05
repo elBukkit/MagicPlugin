@@ -33,7 +33,7 @@ attributeselector:
       icon_disabled: spell_icon_disabled:252
       attribute_amount: 1
       cost: 1
-    - attribute: luck
+    - attribute: influence
       icon: spell_icon:252
       icon_disabled: spell_icon_disabled:252
       attribute_amount: 1
@@ -50,7 +50,7 @@ attributeselector:
     - attribute: constitution
     - attribute: dexterity
     - attribute: intelligence
-    - attribute: luck
+    - attribute: influence
     - attribute: wisdom
     - placeholder: true
     - placeholder: true
@@ -75,7 +75,7 @@ attributeselector:
       icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
       earn: 1
-    - attribute: luck
+    - attribute: influence
       icon: spell_icon:253
       icon_disabled: spell_icon_disabled:253
       attribute_amount: -1
