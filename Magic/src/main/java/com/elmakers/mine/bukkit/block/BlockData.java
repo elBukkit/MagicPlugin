@@ -248,6 +248,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             priorState = null;
         }
         removeFromList(null);
+        com.elmakers.mine.bukkit.block.UndoList.committed(this);
     }
 
     private void removeFromList(com.elmakers.mine.bukkit.api.block.BlockData priorState) {

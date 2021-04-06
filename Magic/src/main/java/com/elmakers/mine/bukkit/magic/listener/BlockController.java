@@ -159,7 +159,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                     }
                     block.setType(Material.AIR);
                 }
-                com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
+                modifiedBlock.commit();
             }
         }
     }
@@ -203,7 +203,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                     Plugin plugin = controller.getPlugin();
                     plugin.getServer().getScheduler().runTaskLater(plugin, new UndoBlockTask(modifiedBlock), 1);
                 } else {
-                    com.elmakers.mine.bukkit.block.UndoList.commit(modifiedBlock);
+                    modifiedBlock.commit();
                     // Prevent creating waterlogged blocks accidentally, since these can be exploited for water, even in the nether
                     if (event.getBlockReplacedState().getType() == Material.WATER) {
                         CompatibilityUtils.setWaterlogged(block, false);

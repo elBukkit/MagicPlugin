@@ -51,14 +51,13 @@ public class UndoRegistry {
         }
     }
 
-    public void commit(BlockData block)
+    protected void committed(BlockData block)
     {
         BlockData currentState = modified.get(block.getId());
         if (currentState == block)
         {
             modified.remove(block.getId());
         }
-        block.commit();
         reflective.remove(block.getId());
         breakable.remove(block.getId());
     }

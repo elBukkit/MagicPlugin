@@ -381,6 +381,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         watching.put(blockData.getId(), blockData);
     }
 
+    protected static void committed(com.elmakers.mine.bukkit.api.block.BlockData block) {
+        registry.committed(block);
+    }
+
     @Override
     public void commit()
     {
@@ -390,13 +394,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         final List<BlockData> staticList = new ArrayList<>(blockQueue.values());
         for (BlockData block : staticList) {
-            commit(block);
+            block.commit();
         }
         clear();
-    }
-
-    public static void commit(com.elmakers.mine.bukkit.api.block.BlockData block) {
-        registry.commit(block);
     }
 
     public static void commitAll()
@@ -413,7 +413,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
         BlockData block = removeFirst();
         if (block != null) {
-            commit(block);
+            block.commit();
         }
         return true;
     }
