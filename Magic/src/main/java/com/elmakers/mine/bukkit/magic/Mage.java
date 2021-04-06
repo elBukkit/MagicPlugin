@@ -29,6 +29,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WorldBorder;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.command.BlockCommandSender;
@@ -4808,20 +4809,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return living == null ? null : CompatibilityUtils.getMaxHealth(living);
             }
             case "armor": {
-                LivingEntity living = getLivingEntity();
-                return living == null ? null : living.getAttribute(Attribute.GENERIC_ARMOR).getValue();
+                return getVanillaAttribute(Attribute.GENERIC_ARMOR);
             }
             case "attack_damage": {
-                LivingEntity living = getLivingEntity();
-                return living == null ? null : living.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).getValue();
+                return getVanillaAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
             }
             case "luck": {
-                LivingEntity living = getLivingEntity();
-                return living == null ? null : living.getAttribute(Attribute.GENERIC_LUCK).getValue();
+                return getVanillaAttribute(Attribute.GENERIC_LUCK);
             }
             case "knockback_resistance": {
-                LivingEntity living = getLivingEntity();
-                return living == null ? null : living.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
+                return getVanillaAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
             }
             case "mana": {
                 return (double)getMana();
@@ -4879,6 +4876,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             default:
                 return null;
         }
+    }
+
+    @Nullable
+    private Double getVanillaAttribute(Attribute attribute) {
+        LivingEntity living = getLivingEntity();
+        if (living == null) {
+            return null;
+        }
+        AttributeInstance instance = living.getAttribute(Attribute.GENERIC_ARMOR);
+        return instance == null ? null : instance.getValue();
     }
 
     @Override
