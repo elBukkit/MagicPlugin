@@ -3,6 +3,10 @@
 
 # Bugs
 
+- check MobArea configuration
+- mob eggs broken
+- spell items can't be added to wands via dropping?
+
 - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
 - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
 - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
@@ -11,6 +15,8 @@
 
 - Fill out worth values for all blocks (and items, for shops) .. mostly done?
 - Tree spell allow using materia?
+
+- Can engineers copy containers? That should definitely be reserved for conduit...
 
 ## RPG
 
