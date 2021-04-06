@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
@@ -247,6 +248,12 @@ public class BlockController implements Listener, ChunkLoadListener {
     public void onPistonExtend(BlockPistonExtendEvent event) {
         Block piston = event.getBlock();
         Block block = piston.getRelative(event.getDirection());
+        // See if this block is going to get pushed or broken or what
+        PistonMoveReaction reaction = block.getPistonMoveReaction();
+        if (reaction == PistonMoveReaction.BLOCK) {
+            return;
+        }
+
         UndoList undoList = controller.getPendingUndo(block.getLocation());
         if (undoList == null) {
             undoList = controller.getPendingUndo(piston.getLocation());
@@ -254,17 +261,26 @@ public class BlockController implements Listener, ChunkLoadListener {
         if (undoList != null) {
             // This block stores the state of the piston, maybe
             undoList.add(piston);
-            // This block is about to become the piston head
-            undoList.add(block);
-            // Continue to look for more solid blocks we'll push
-            block = block.getRelative(event.getDirection());
-            undoList.add(block);
-            // We need to store the final air block since we'll be pushing a block into that
-            // But after that, we can quit
-            int maxBlocks = 14;
-            while (maxBlocks-- > 0 && !DefaultMaterials.isAir(block.getType())) {
+
+            if (reaction == PistonMoveReaction.BREAK) {
+                // This block is about to be broken, we will break it but avoid dropping an item.
+                undoList.add(block);
+                NMSUtils.clearItems(block.getLocation());
+                DeprecatedUtils.setTypeAndData(block, Material.AIR, (byte) 0, false);
+            } else {
+                // This block is about to become the piston head
+                undoList.add(block);
+
+                // Continue to look for more solid blocks we'll push
                 block = block.getRelative(event.getDirection());
                 undoList.add(block);
+                // We need to store the final air block since we'll be pushing a block into that
+                // But after that, we can quit
+                int maxBlocks = 14;
+                while (maxBlocks-- > 0 && !DefaultMaterials.isAir(block.getType())) {
+                    block = block.getRelative(event.getDirection());
+                    undoList.add(block);
+                }
             }
         }
     }

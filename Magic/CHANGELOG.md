@@ -19,6 +19,7 @@
 # 8.5.2
 
  - Fix shulker boxes being destructible (still)
+ - Fix another piston dupe exploit
 
 # 8.5.1
 
