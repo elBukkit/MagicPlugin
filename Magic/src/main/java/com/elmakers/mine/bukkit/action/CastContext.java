@@ -24,6 +24,7 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
@@ -1489,6 +1490,16 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     }
 
     @Nullable
+    private Double getVanillaAttribute(Attribute attribute) {
+        LivingEntity living = getTargetLivingEntity();
+        if (living == null) {
+            return null;
+        }
+        AttributeInstance instance = living.getAttribute(attribute);
+        return instance == null ? null : instance.getValue();
+    }
+
+    @Nullable
     @Override
     public Double getAttribute(String attributeKey) {
         Double value = baseSpell.getAttribute(attributeKey);
@@ -1516,18 +1527,9 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 Player player = getTargetPlayer();
                 return player == null ? null : (double)player.getFoodLevel();
             }
-            case "target_armor": {
-                LivingEntity living = getTargetLivingEntity();
-                return living == null ? null : living.getAttribute(Attribute.GENERIC_ARMOR).getValue();
-            }
-            case "target_luck": {
-                LivingEntity living = getTargetLivingEntity();
-                return living == null ? null : living.getAttribute(Attribute.GENERIC_LUCK).getValue();
-            }
-            case "target_knockback_resistance": {
-                LivingEntity living = getTargetLivingEntity();
-                return living == null ? null : living.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE).getValue();
-            }
+            case "target_armor": return getVanillaAttribute(Attribute.GENERIC_ARMOR);
+            case "target_luck": return getVanillaAttribute(Attribute.GENERIC_LUCK);
+            case "target_knockback_resistance": return getVanillaAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
             case "target_location_x": {
                 Location location = getTargetLocation();
                 return location == null ? null : location.getX();

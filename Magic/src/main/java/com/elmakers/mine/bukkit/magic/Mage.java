@@ -4808,30 +4808,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : CompatibilityUtils.getMaxHealth(living);
             }
-            case "armor": {
-                return getVanillaAttribute(Attribute.GENERIC_ARMOR);
-            }
-            case "attack_damage": {
-                return getVanillaAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
-            }
-            case "luck": {
-                return getVanillaAttribute(Attribute.GENERIC_LUCK);
-            }
-            case "knockback_resistance": {
-                return getVanillaAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
-            }
-            case "mana": {
-                return (double)getMana();
-            }
-            case "mana_max": {
-                return (double)getEffectiveManaMax();
-            }
-            case "xp": {
-                return (double)getExperience();
-            }
-            case "level": {
-                return (double)getLevel();
-            }
+            case "armor": return getVanillaAttribute(Attribute.GENERIC_ARMOR);
+            case "attack_damage":  return getVanillaAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
+            case "luck": return getVanillaAttribute(Attribute.GENERIC_LUCK);
+            case "knockback_resistance": return getVanillaAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+            case "mana": return (double)getMana();
+            case "mana_max": return (double)getEffectiveManaMax();
+            case "xp": return (double)getExperience();
+            case "level": return (double)getLevel();
             case "time": {
                 Location location = getLocation();
                 return location == null ? null : (double)location.getWorld().getTime();
@@ -4884,7 +4868,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (living == null) {
             return null;
         }
-        AttributeInstance instance = living.getAttribute(Attribute.GENERIC_ARMOR);
+        AttributeInstance instance = living.getAttribute(attribute);
         return instance == null ? null : instance.getValue();
     }
 
