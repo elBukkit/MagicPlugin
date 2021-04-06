@@ -445,7 +445,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (o instanceof BlockData)
         {
             BlockData block = (BlockData)o;
-            removeFromModified(block);
+            unregister(block, null);
         }
 
         return super.remove(o);
@@ -462,6 +462,40 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             modifiedEntities.remove(entityId);
         }
         modifiedTime = System.currentTimeMillis();
+    }
+
+    public boolean remove(BlockData blockData, BlockData prior) {
+        unregister(blockData, prior);
+        return super.remove(blockData);
+    }
+
+    private void unregister(BlockData block, BlockData prior) {
+        if (block == null) {
+            return;
+        }
+        if (prior == null) {
+            prior = block.getPriorState();
+        }
+        removeFromModified(block, prior);
+        // Continue watching this block until we completely finish the undo process
+        registerWatched(block);
+
+        // Clear damage
+        Double remainingDamage = registry.removeDamage(block);
+        if (remainingDamage != null) {
+            if (remainingDamage <= 0) {
+                CompatibilityUtils.clearBreaking(block.getBlock());
+            } else {
+                CompatibilityUtils.setBreaking(block.getBlock(), remainingDamage);
+            }
+        }
+
+        if (undoBreakable) {
+            registry.removeBreakable(block);
+        }
+        if (undoReflective) {
+            registry.removeReflective(block);
+        }
     }
 
     protected static void removeFromModified(BlockData block) {
@@ -493,57 +527,32 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             speed = 0;
             return null;
         }
-        BlockState currentState = block.getState();
         if (undo(blockData, applyPhysics)) {
-            Mage owner = getOwner();
-            if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
-                owner.refundBlock(new MaterialAndData(currentState.getType(), DeprecatedUtils.getRawData(currentState)));
-            }
-
-            CastContext context = getContext();
-            if (context != null && context.hasEffects("undo_block")) {
-                // Not sure if I really have to fetch the block again here, or if getType would just return the updated result?
-                block = blockData.getBlock();
-                if (block.getType() != currentState.getType()) {
-                    context.playEffects("undo_block", 1.0f, null, null, block.getLocation(), null, block);
-                }
-            }
-            removeFirst();
             return blockData;
         }
 
         return null;
     }
 
+    public void undone(BlockData blockData, BlockState currentState) {
+        Mage owner = getOwner();
+        if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
+            owner.refundBlock(new MaterialAndData(currentState.getType(), DeprecatedUtils.getRawData(currentState)));
+        }
+
+        CastContext context = getContext();
+        if (context != null && context.hasEffects("undo_block")) {
+            // Not sure if I really have to fetch the block again here, or if getType would just return the updated result?
+            Block block = blockData.getBlock();
+            if (block.getType() != currentState.getType()) {
+                context.playEffects("undo_block", 1.0f, null, null, block.getLocation(), null, block);
+            }
+        }
+    }
+
     private boolean undo(BlockData undoBlock, boolean applyPhysics)
     {
-        BlockData priorState = undoBlock.getPriorState();
-
-        // Remove any tagged metadata
-        if (undoBreakable) {
-            registry.removeBreakable(undoBlock);
-        }
-        if (undoReflective) {
-            registry.removeReflective(undoBlock);
-        }
-
-        if (undoBlock.undo(applyPhysics ? ModifyType.NORMAL : modifyType)) {
-            removeFromModified(undoBlock, priorState);
-            // Continue watching this block until we completely finish the undo process
-            registerWatched(undoBlock);
-
-            Double remainingDamage = registry.removeDamage(undoBlock);
-            if (remainingDamage != null) {
-                if (remainingDamage <= 0) {
-                    CompatibilityUtils.clearBreaking(undoBlock.getBlock());
-                } else {
-                    CompatibilityUtils.setBreaking(undoBlock.getBlock(), remainingDamage);
-                }
-            }
-            return true;
-        }
-
-        return false;
+        return undoBlock.undo(applyPhysics ? ModifyType.NORMAL : modifyType);
     }
 
     @Override
@@ -949,7 +958,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             BlockData block = iterator.next();
             if (!block.isDifferent()) {
                 iterator.remove();
-                removeFromMap(block);
+                remove(block);
             }
         }
         modifiedTime = System.currentTimeMillis();
@@ -1253,11 +1262,6 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void setConsumed(boolean consumed) {
         this.consumed = consumed;
-    }
-
-    public void removeFromMap(BlockData blockData) {
-        removeFromModified(blockData);
-        blockQueue.remove(blockData.getId());
     }
 
     @Override

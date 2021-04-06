@@ -13,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockVector;
@@ -172,7 +173,23 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     }
 
     @Override
-    public boolean undo(ModifyType modifyType)
+    public boolean undo(ModifyType modifyType) {
+        Block block = getBlock();
+        BlockState currentState = block.getState();
+        com.elmakers.mine.bukkit.api.block.BlockData priorState = getPriorState();
+        if (undoInner(modifyType)) {
+            unlink();
+            removeFromList(priorState);
+            com.elmakers.mine.bukkit.block.UndoList list = (com.elmakers.mine.bukkit.block.UndoList)undoList.get();
+            if (list != null) {
+                list.undone(this, currentState);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    private boolean undoInner(ModifyType modifyType)
     {
         Location location = getWorldLocation();
         if (location == null) {
@@ -196,7 +213,6 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
                 }
             }
             fakeSentToPlayers = null;
-            unlink();
             return true;
         }
 
@@ -211,8 +227,6 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
                 undoing = false;
             }
         }
-        unlink();
-
         return true;
     }
 
@@ -233,9 +247,13 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             priorState.commit();
             priorState = null;
         }
-        UndoList list = undoList.get();
+        removeFromList(null);
+    }
+
+    private void removeFromList(com.elmakers.mine.bukkit.api.block.BlockData priorState) {
+        com.elmakers.mine.bukkit.block.UndoList list = (com.elmakers.mine.bukkit.block.UndoList)undoList.get();
         if (list != null) {
-            list.remove(this);
+            list.remove(this, priorState);
         }
     }
 
