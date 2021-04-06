@@ -20,6 +20,7 @@
 
  - Fix shulker boxes being destructible (still)
  - Fix another piston dupe exploit
+ - Fix magic mob spawn eggs
 
 # 8.5.1
 

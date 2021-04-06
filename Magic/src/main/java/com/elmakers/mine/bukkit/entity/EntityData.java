@@ -352,7 +352,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (name != null && (name.equals("Grumm") || name.equals("Dinnerbone") || name.equals("jeb_"))) {
             registerByName = false;
         }
-        registerByName = parameters.getBoolean("register_by_name");
+        registerByName = parameters.getBoolean("register_by_name", registerByName);
         isNPC = parameters.getBoolean("npc");
         useNPCName = parameters.getBoolean("use_npc_name", false);
         isHidden = parameters.getBoolean("hidden");
