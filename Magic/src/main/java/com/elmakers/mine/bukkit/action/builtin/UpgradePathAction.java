@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.action.BaseSpellAction;
+import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
-public class UpgradePathAction extends BaseSpellAction {
+public class UpgradePathAction extends CompoundAction {
     private int upgradeLevels;
 
     @Override
@@ -25,7 +25,7 @@ public class UpgradePathAction extends BaseSpellAction {
     }
 
     @Override
-    public SpellResult perform(CastContext context) {
+    public SpellResult step(CastContext context) {
         Mage mage = context.getMage();
         Wand wand = mage.getActiveWand();
         CasterProperties caster = mage.getActiveProperties();
@@ -38,7 +38,7 @@ public class UpgradePathAction extends BaseSpellAction {
         ProgressionPath nextPath = path != null ? path.getNextPath() : null;
         if (nextPath != null && path.checkUpgradeRequirements(caster, true) && !path.canProgress(caster)) {
             path.upgrade(mage, wand);
-            return SpellResult.CAST;
+            return startActions();
         }
 
         return SpellResult.NO_TARGET;
