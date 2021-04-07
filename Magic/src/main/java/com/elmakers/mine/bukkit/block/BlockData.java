@@ -256,8 +256,11 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         if (list != null) {
             list.remove(this, priorState);
             // Continue watching this block until we completely finish the undo process
+            // If committing, we want to unregister it instead
             if (watch) {
                 list.registerWatched(this);
+            } else {
+                list.unregisterWatched(this);
             }
         }
     }

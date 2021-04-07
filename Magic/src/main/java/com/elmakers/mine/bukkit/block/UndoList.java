@@ -717,6 +717,14 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
     }
 
+    public void unregisterWatched(BlockData blockData)
+    {
+        if (watching != null) {
+            watching.remove(blockData.getId());
+        }
+        registry.removeFromWatched(blockData);
+    }
+
     public void finish() {
         finished = true;
     }
