@@ -147,7 +147,7 @@ public class ConfigurationLoadTask implements Runnable {
                 InputStream input = plugin.getResource(examplesFileName);
                 if (input != null)  {
                     try {
-                        exampleConfig = CompatibilityUtils.loadConfiguration(input);
+                        exampleConfig = CompatibilityUtils.loadConfiguration(input, examplesFileName);
                     } catch (Exception ex) {
                         getLogger().log(Level.SEVERE, "Error loading: " + examplesFileName + " from builtin resources", ex);
                     }
@@ -199,7 +199,7 @@ public class ConfigurationLoadTask implements Runnable {
         // Start with default configs
         YamlConfiguration config;
         try {
-            config = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
+            config = CompatibilityUtils.loadBuiltinConfiguration(defaultsFileName);
         } catch (Exception ex) {
             getLogger().severe("Error loading file: " + defaultsFileName);
             throw ex;
@@ -210,7 +210,7 @@ public class ConfigurationLoadTask implements Runnable {
         String listsFilename = "defaults/lists.defaults.yml";
         YamlConfiguration listConfig = null;
         try {
-            listConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(listsFilename));
+            listConfig = CompatibilityUtils.loadBuiltinConfiguration(listsFilename);
             ConfigurationUtils.addConfigurations(config, listConfig);
         } catch (Exception ex) {
             getLogger().severe("Error loading file: " + listsFilename);
@@ -390,7 +390,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         YamlConfiguration defaultConfig = null;
         try {
-            defaultConfig = CompatibilityUtils.loadConfiguration(plugin.getResource(defaultsFileName));
+            defaultConfig = CompatibilityUtils.loadBuiltinConfiguration(defaultsFileName);
         } catch (Exception ex) {
             getLogger().severe("Error loading file: " + defaultsFileName);
             throw ex;
@@ -505,7 +505,7 @@ public class ConfigurationLoadTask implements Runnable {
         InputStream versionInput = plugin.getResource(versionFileName);
         if (versionInput != null)  {
             try {
-                ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput);
+                ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput, versionFileName);
                 // Version patches will never add to configs, the top-level nodes they are modifying must exist.
                 // This allows them to tweak things from example configs but get safely ignored if not loading
                 // those examples.

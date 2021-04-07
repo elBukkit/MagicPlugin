@@ -114,43 +114,9 @@ public class CompatibilityUtils extends NMSUtils {
     private static boolean hasDumpedStack = false;
     private static boolean teleporting = false;
 
-    static class LoadingChunk {
-        private final String worldName;
-        private final int chunkX;
-        private final int chunkZ;
-
-        public LoadingChunk(Chunk chunk) {
-            this(chunk.getWorld().getName(), chunk.getX(), chunk.getX());
-        }
-
-        public LoadingChunk(World world, int chunkX, int chunkZ) {
-            this(world.getName(), chunkX, chunkZ);
-        }
-
-        public LoadingChunk(String worldName, int chunkX, int chunkZ) {
-            this.worldName = worldName;
-            this.chunkX = chunkX;
-            this.chunkZ = chunkZ;
-        }
-
-        @Override
-        public int hashCode() {
-            int worldHashCode = worldName.hashCode();
-            return ((worldHashCode & 0xFFF) << 48)
-                    | ((chunkX & 0xFFFFFF) << 24)
-                    | (chunkX & 0xFFFFFF);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof LoadingChunk)) return false;
-            LoadingChunk other = (LoadingChunk)o;;
-            return worldName.equals(other.worldName) && chunkX == other.chunkX && chunkZ == other.chunkZ;
-        }
-
-        @Override
-        public String toString() {
-            return worldName + ":" + chunkX + "," + chunkZ;
+    public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
+        for (PotionEffect effect : effects) {
+            applyPotionEffect(entity, effect);
         }
     }
 
@@ -160,10 +126,27 @@ public class CompatibilityUtils extends NMSUtils {
         return DAMAGING.isInside();
     }
 
-    public static void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
-        for (PotionEffect effect: effects) {
-            applyPotionEffect(entity, effect);
+    public static Inventory createInventory(InventoryHolder holder, int size, final String name) {
+        size = (int) (Math.ceil((double) size / 9) * 9);
+        size = Math.min(size, 54);
+
+        String shorterName = name;
+        if (shorterName.length() > 32) {
+            shorterName = shorterName.substring(0, 31);
         }
+        shorterName = ChatColor.translateAlternateColorCodes('&', shorterName);
+
+        // TODO: Is this even still necessary?
+        if (class_CraftInventoryCustom_constructor == null) {
+            return Bukkit.createInventory(holder, size, shorterName);
+        }
+        Inventory inventory = null;
+        try {
+            inventory = (Inventory) class_CraftInventoryCustom_constructor.newInstance(holder, size, shorterName);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return inventory;
     }
 
     public static boolean applyPotionEffect(LivingEntity entity, PotionEffect effect) {
@@ -213,27 +196,15 @@ public class CompatibilityUtils extends NMSUtils {
         return true;
     }
 
-    public static Inventory createInventory(InventoryHolder holder, int size, final String name) {
-        size = (int)(Math.ceil((double)size / 9) * 9);
-        size = Math.min(size, 54);
-
-        String shorterName = name;
-        if (shorterName.length() > 32) {
-            shorterName = shorterName.substring(0, 31);
-        }
-        shorterName = ChatColor.translateAlternateColorCodes('&', shorterName);
-
-        // TODO: Is this even still necessary?
-        if (class_CraftInventoryCustom_constructor == null) {
-            return Bukkit.createInventory(holder, size, shorterName);
-        }
-        Inventory inventory = null;
+    public static boolean isInvulnerable(Entity entity) {
+        if (class_Entity_invulnerableField == null) return false;
         try {
-            inventory = (Inventory)class_CraftInventoryCustom_constructor.newInstance(holder, size, shorterName);
-        } catch (Throwable ex) {
+            Object handle = getHandle(entity);
+            return (boolean) class_Entity_invulnerableField.get(handle);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-        return inventory;
+        return false;
     }
 
     public static void setInvulnerable(Entity entity) {
@@ -249,11 +220,11 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static boolean isInvulnerable(Entity entity) {
-        if (class_Entity_invulnerableField == null) return false;
+    public static boolean isSilent(Entity entity) {
+        if (class_Entity_isSilentMethod == null) return false;
         try {
             Object handle = getHandle(entity);
-            return (boolean)class_Entity_invulnerableField.get(handle);
+            return (boolean) class_Entity_isSilentMethod.invoke(handle);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -270,11 +241,11 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static boolean isSilent(Entity entity) {
-        if (class_Entity_isSilentMethod == null) return false;
+    public static boolean isPersist(Entity entity) {
+        if (class_Entity_persistField == null) return false;
         try {
             Object handle = getHandle(entity);
-            return (boolean)class_Entity_isSilentMethod.invoke(handle);
+            return (boolean) class_Entity_persistField.get(handle);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -301,11 +272,11 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static boolean isPersist(Entity entity) {
-        if (class_Entity_persistField == null) return false;
+    public static boolean isSitting(Entity entity) {
+        if (class_Sittable == null) return false;
+        if (!class_Sittable.isAssignableFrom(entity.getClass())) return false;
         try {
-            Object handle = getHandle(entity);
-            return (boolean)class_Entity_persistField.get(handle);
+            return (boolean) class_Sitting_isSittingMethod.invoke(entity);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -322,28 +293,7 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static boolean isSitting(Entity entity) {
-        if (class_Sittable == null) return false;
-        if (!class_Sittable.isAssignableFrom(entity.getClass())) return false;
-        try {
-            return (boolean)class_Sitting_isSittingMethod.invoke(entity);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    public static void setSilent(Object nmsEntity, boolean flag) {
-        if (class_Entity_setSilentMethod == null) return;
-        try {
-            class_Entity_setSilentMethod.invoke(nmsEntity, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public static Painting createPainting(Location location, BlockFace facing, Art art)
-    {
+    public static Painting createPainting(Location location, BlockFace facing, Art art) {
         Painting newPainting = null;
         try {
             Object worldHandle = getHandle(location.getWorld());
@@ -360,7 +310,7 @@ public class CompatibilityUtils extends NMSUtils {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
 
-                newPainting = (Painting)bukkitEntity;
+                newPainting = (Painting) bukkitEntity;
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -369,8 +319,16 @@ public class CompatibilityUtils extends NMSUtils {
         return newPainting;
     }
 
-    public static ItemFrame createItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item)
-    {
+    public static void setSilent(Object nmsEntity, boolean flag) {
+        if (class_Entity_setSilentMethod == null) return;
+        try {
+            class_Entity_setSilentMethod.invoke(nmsEntity, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static ItemFrame createItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item) {
         ItemFrame newItemFrame = null;
         try {
             Object worldHandle = getHandle(location.getWorld());
@@ -383,7 +341,7 @@ public class CompatibilityUtils extends NMSUtils {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
 
-                newItemFrame = (ItemFrame)bukkitEntity;
+                newItemFrame = (ItemFrame) bukkitEntity;
                 newItemFrame.setItem(getCopy(item));
                 newItemFrame.setRotation(rotation);
             }
@@ -393,13 +351,11 @@ public class CompatibilityUtils extends NMSUtils {
         return newItemFrame;
     }
 
-    public static ArmorStand createArmorStand(Location location)
-    {
-        return (ArmorStand)createEntity(location, EntityType.ARMOR_STAND);
+    public static ArmorStand createArmorStand(Location location) {
+        return (ArmorStand) createEntity(location, EntityType.ARMOR_STAND);
     }
 
-    public static Entity createEntity(Location location, EntityType entityType)
-    {
+    public static Entity createEntity(Location location, EntityType entityType) {
         Entity bukkitEntity = null;
         try {
             Class<? extends Entity> entityClass = entityType.getEntityClass();
@@ -414,8 +370,7 @@ public class CompatibilityUtils extends NMSUtils {
         return bukkitEntity;
     }
 
-    public static boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason)
-    {
+    public static boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason) {
         try {
             Object worldHandle = getHandle(world);
             Object entityHandle = getHandle(entity);
@@ -439,13 +394,13 @@ public class CompatibilityUtils extends NMSUtils {
 
             // The input entity is only used for equivalency testing, so this "null" should be ok.
             @SuppressWarnings("unchecked")
-            List<? extends Object> entityList = (List<? extends Object>)class_World_getEntitiesMethod.invoke(worldHandle, null, bb);
+            List<? extends Object> entityList = (List<? extends Object>) class_World_getEntitiesMethod.invoke(worldHandle, null, bb);
             List<Entity> bukkitEntityList = new java.util.ArrayList<>(entityList.size());
 
             for (Object entity : entityList) {
-                Entity bukkitEntity = (Entity)class_Entity_getBukkitEntityMethod.invoke(entity);
+                Entity bukkitEntity = (Entity) class_Entity_getBukkitEntityMethod.invoke(entity);
                 if (bukkitEntity instanceof ComplexLivingEntity) {
-                    ComplexLivingEntity complex = (ComplexLivingEntity)bukkitEntity;
+                    ComplexLivingEntity complex = (ComplexLivingEntity) bukkitEntity;
                     Set<ComplexEntityPart> parts = complex.getParts();
                     for (ComplexEntityPart part : parts) {
                         bukkitEntityList.add(part);
@@ -461,8 +416,7 @@ public class CompatibilityUtils extends NMSUtils {
         return null;
     }
 
-    public static Minecart spawnCustomMinecart(Location location, Material material, short data, int offset)
-    {
+    public static Minecart spawnCustomMinecart(Location location, Material material, short data, int offset) {
         Minecart newMinecart = null;
         try {
             Constructor<?> minecartConstructor = class_EntityMinecartRideable.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE);
@@ -492,7 +446,7 @@ public class CompatibilityUtils extends NMSUtils {
                 Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Minecart)) return null;
 
-                newMinecart = (Minecart)bukkitEntity;
+                newMinecart = (Minecart) bukkitEntity;
             }
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -506,7 +460,7 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             Method getTaskClassMethod = class_CraftTask.getDeclaredMethod("getTaskClass");
             getTaskClassMethod.setAccessible(true);
-            taskClass = (Class<? extends Runnable>)getTaskClassMethod.invoke(task);
+            taskClass = (Class<? extends Runnable>) getTaskClassMethod.invoke(task);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -519,7 +473,7 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             Field taskField = class_CraftTask.getDeclaredField("task");
             taskField.setAccessible(true);
-            runnable = (Runnable)taskField.get(task);
+            runnable = (Runnable) taskField.get(task);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -527,8 +481,7 @@ public class CompatibilityUtils extends NMSUtils {
         return runnable;
     }
 
-    public static void ageItem(Item item, int ticksToAge)
-    {
+    public static void ageItem(Item item, int ticksToAge) {
         try {
             Class<?> itemClass = fixBukkitClass("net.minecraft.server.EntityItem");
             Object handle = getHandle(item);
@@ -543,7 +496,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static void damage(Damageable target, double amount, Entity source) {
         if (target == null || target.isDead()) return;
         while (target instanceof ComplexEntityPart) {
-            target = ((ComplexEntityPart)target).getParent();
+            target = ((ComplexEntityPart) target).getParent();
         }
         if (USE_MAGIC_DAMAGE && target.getType() == EntityType.ENDER_DRAGON) {
             magicDamage(target, amount, source);
@@ -555,7 +508,7 @@ public class CompatibilityUtils extends NMSUtils {
             if (target instanceof ArmorStand) {
                 double newHealth = Math.max(0, target.getHealth() - amount);
                 if (newHealth <= 0) {
-                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand)target, new ArrayList<ItemStack>());
+                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, new ArrayList<ItemStack>());
                     Bukkit.getPluginManager().callEvent(deathEvent);
                     target.remove();
                 } else {
@@ -563,6 +516,66 @@ public class CompatibilityUtils extends NMSUtils {
                 }
             } else {
                 target.damage(amount, source);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void magicDamage(Damageable target, double amount, Entity source) {
+        try {
+            if (target == null || target.isDead()) return;
+
+            if (class_EntityLiving_damageEntityMethod == null || object_magicSource == null || class_DamageSource_getMagicSourceMethod == null) {
+                damage(target, amount, source);
+                return;
+            }
+
+            // Special-case for witches .. witches are immune to magic damage :\
+            // And endermen are immune to indirect damage .. or something.
+            // Also armor stands suck.
+            // Might need to config-drive this, or just go back to defaulting to normal damage
+            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || target instanceof ArmorStand || !(target instanceof LivingEntity)) {
+                damage(target, amount, source);
+                return;
+            }
+
+            Object targetHandle = getHandle(target);
+            if (targetHandle == null) return;
+
+            Object sourceHandle = getHandle(source);
+
+            // Bukkit won't allow magic damage from anything but a potion..
+            if (sourceHandle != null && source instanceof LivingEntity) {
+                Location location = target.getLocation();
+
+                ThrownPotion potion = getOrCreatePotionEntity(location);
+                potion.setShooter((LivingEntity) source);
+
+                Object potionHandle = getHandle(potion);
+                Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, potionHandle, sourceHandle);
+
+                // This is a bit of hack that lets us damage the ender dragon, who is a weird and annoying collection
+                // of various non-living entity pieces.
+                if (class_EntityDamageSource_setThornsMethod != null) {
+                    class_EntityDamageSource_setThornsMethod.invoke(damageSource);
+                }
+
+                try (Touchable damaging = DAMAGING.enter()) {
+                    damaging.touch();
+                    class_EntityLiving_damageEntityMethod.invoke(
+                            targetHandle,
+                            damageSource,
+                            (float) amount);
+                }
+            } else {
+                try (Touchable damaging = DAMAGING.enter()) {
+                    damaging.touch();
+                    class_EntityLiving_damageEntityMethod.invoke(
+                            targetHandle,
+                            object_magicSource,
+                            (float) amount);
+                }
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -597,65 +610,12 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    public static void magicDamage(Damageable target, double amount, Entity source) {
-        try {
-            if (target == null || target.isDead()) return;
-
-            if (class_EntityLiving_damageEntityMethod == null || object_magicSource == null || class_DamageSource_getMagicSourceMethod == null) {
-                damage(target, amount, source);
-                return;
-            }
-
-            // Special-case for witches .. witches are immune to magic damage :\
-            // And endermen are immune to indirect damage .. or something.
-            // Also armor stands suck.
-            // Might need to config-drive this, or just go back to defaulting to normal damage
-            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || target instanceof ArmorStand || !(target instanceof LivingEntity))
-            {
-                damage(target, amount, source);
-                return;
-            }
-
-            Object targetHandle = getHandle(target);
-            if (targetHandle == null) return;
-
-            Object sourceHandle = getHandle(source);
-
-            // Bukkit won't allow magic damage from anything but a potion..
-            if (sourceHandle != null && source instanceof LivingEntity) {
-                Location location = target.getLocation();
-
-                ThrownPotion potion = getOrCreatePotionEntity(location);
-                potion.setShooter((LivingEntity)source);
-
-                Object potionHandle = getHandle(potion);
-                Object damageSource = class_DamageSource_getMagicSourceMethod.invoke(null, potionHandle, sourceHandle);
-
-                // This is a bit of hack that lets us damage the ender dragon, who is a weird and annoying collection
-                // of various non-living entity pieces.
-                if (class_EntityDamageSource_setThornsMethod != null) {
-                    class_EntityDamageSource_setThornsMethod.invoke(damageSource);
-                }
-
-                try (Touchable damaging = DAMAGING.enter()) {
-                    damaging.touch();
-                    class_EntityLiving_damageEntityMethod.invoke(
-                            targetHandle,
-                            damageSource,
-                            (float) amount);
-                }
-            } else {
-                try (Touchable damaging = DAMAGING.enter()) {
-                    damaging.touch();
-                    class_EntityLiving_damageEntityMethod.invoke(
-                            targetHandle,
-                            object_magicSource,
-                            (float) amount);
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public static Location getEyeLocation(Entity entity) {
+        if (entity instanceof LivingEntity) {
+            return ((LivingEntity) entity).getEyeLocation();
         }
+
+        return entity.getLocation();
     }
 
     private static final Map<World, WeakReference<ThrownPotion>> POTION_PER_WORLD = new WeakHashMap<>();
@@ -690,18 +650,7 @@ public class CompatibilityUtils extends NMSUtils {
         return potion;
     }
 
-    public static Location getEyeLocation(Entity entity)
-    {
-        if (entity instanceof LivingEntity)
-        {
-            return ((LivingEntity)entity).getEyeLocation();
-        }
-
-        return entity.getLocation();
-    }
-
-    public static ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException
-    {
+    public static ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException {
         YamlConfiguration configuration = new YamlConfiguration();
         try {
             configuration.load(fileName);
@@ -711,15 +660,64 @@ public class CompatibilityUtils extends NMSUtils {
         return configuration;
     }
 
-    public static YamlConfiguration loadConfiguration(InputStream stream) throws IOException, InvalidConfigurationException
+    public static YamlConfiguration loadBuiltinConfiguration(String fileName) throws IOException, InvalidConfigurationException {
+        return loadConfiguration(plugin.getResource(fileName), fileName);
+    }
+
+    public static YamlConfiguration loadConfiguration(InputStream stream, String fileName) throws IOException, InvalidConfigurationException
     {
         YamlConfiguration configuration = new YamlConfiguration();
+        if (stream == null) {
+            getLogger().log(Level.SEVERE, "Could not find builtin configuration file '" + fileName + "'");
+            return configuration;
+        }
         try {
             configuration.load(new InputStreamReader(stream, "UTF-8"));
         } catch (FileNotFoundException fileNotFound) {
 
         }
         return configuration;
+    }
+
+    static class LoadingChunk {
+        private final String worldName;
+        private final int chunkX;
+        private final int chunkZ;
+
+        public LoadingChunk(Chunk chunk) {
+            this(chunk.getWorld().getName(), chunk.getX(), chunk.getX());
+        }
+
+        public LoadingChunk(World world, int chunkX, int chunkZ) {
+            this(world.getName(), chunkX, chunkZ);
+        }
+
+        public LoadingChunk(String worldName, int chunkX, int chunkZ) {
+            this.worldName = worldName;
+            this.chunkX = chunkX;
+            this.chunkZ = chunkZ;
+        }
+
+        @Override
+        public int hashCode() {
+            int worldHashCode = worldName.hashCode();
+            return ((worldHashCode & 0xFFF) << 48)
+                    | ((chunkX & 0xFFFFFF) << 24)
+                    | (chunkX & 0xFFFFFF);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (!(o instanceof LoadingChunk)) return false;
+            LoadingChunk other = (LoadingChunk) o;
+            ;
+            return worldName.equals(other.worldName) && chunkX == other.chunkX && chunkZ == other.chunkZ;
+        }
+
+        @Override
+        public String toString() {
+            return worldName + ":" + chunkX + "," + chunkZ;
+        }
     }
 
     public static ConfigurationSection loadConfiguration(File file) throws IOException, InvalidConfigurationException
