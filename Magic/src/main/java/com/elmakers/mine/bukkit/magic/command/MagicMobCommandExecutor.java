@@ -25,7 +25,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.BlockIterator;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -278,39 +277,12 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         }
 
         MageController controller = api.getController();
-        EntityData entityData = controller.getMob(mobType);
-        String customName = null;
-        EntityType entityType = null;
-        if (entityData == null) {
-            entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(mobType);
-        } else {
-            entityType = entityData.getType();
-            customName = entityData.getName();
-        }
-
-        if (entityType == null) {
+        ItemStack spawnEgg = controller.getSpawnEgg(mobType);
+        if (spawnEgg == null) {
             sender.sendMessage(ChatColor.RED + "Unknown mob type " + mobType);
+        } else {
+            controller.giveItemToPlayer((Player)sender, spawnEgg);
         }
-
-        Material eggMaterial = controller.getMobEgg(entityType);
-        if (eggMaterial == null) {
-            sender.sendMessage(ChatColor.YELLOW + "Could not get a mob egg for entity of type " + entityType);
-            return;
-        }
-
-        ItemStack spawnEgg = new ItemStack(eggMaterial);
-        if (customName != null && !customName.isEmpty()) {
-            ItemMeta meta = spawnEgg.getItemMeta();
-            String title = controller.getMessages().get("general.spawn_egg_title");
-            title = title.replace("$entity", customName);
-            meta.setDisplayName(title);
-            spawnEgg.setItemMeta(meta);
-
-            spawnEgg = InventoryUtils.makeReal(spawnEgg);
-            Object entityTag = InventoryUtils.createNode(spawnEgg, "EntityTag");
-            InventoryUtils.setMeta(entityTag, "CustomName", "{\"text\":\"" + customName + "\"}");
-        }
-        controller.giveItemToPlayer((Player)sender, spawnEgg);
     }
 
     protected void onClearMobs(CommandSender sender, String[] args) {

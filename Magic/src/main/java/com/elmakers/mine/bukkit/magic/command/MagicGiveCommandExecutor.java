@@ -12,6 +12,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -178,6 +179,14 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             Collection<String> classKeys = controller.getMageClassKeys();
             for (String magicClass : classKeys) {
                 addIfPermissible(sender, options, "Magic.create.", "recipes:" + magicClass);
+            }
+            Collection<String> mobKeys = controller.getMobKeys();
+            for (String mobKey : mobKeys) {
+                addIfPermissible(sender, options, "Magic.create.", "egg:" + mobKey);
+            }
+            for (EntityType entityType : EntityType.values()) {
+                String mobKey = entityType.name().toLowerCase();
+                addIfPermissible(sender, options, "Magic.create.", "egg:" + mobKey);
             }
             addIfPermissible(sender, options, "Magic.create.", "recipe:*");
             addIfPermissible(sender, options, "Magic.create.", "recipes:*");

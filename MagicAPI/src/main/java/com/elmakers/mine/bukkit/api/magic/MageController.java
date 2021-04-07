@@ -777,4 +777,6 @@ public interface MageController {
     Kit getKit(String key);
     @Nullable
     Currency getBlockExchangeCurrency();
+    @Nullable
+    ItemStack getSpawnEgg(String mobType);
 }

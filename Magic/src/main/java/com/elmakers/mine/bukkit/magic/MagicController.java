@@ -5127,6 +5127,10 @@ public class MagicController implements MageController {
             String itemData = pieces[1];
             try {
                 switch (itemKey) {
+                    case "egg": {
+                        itemStack = getSpawnEgg(itemData);
+                    }
+                    break;
                     case "book": {
                         com.elmakers.mine.bukkit.api.spell.SpellCategory category = null;
                         if (itemData.equals("categories")) {
@@ -5273,7 +5277,6 @@ public class MagicController implements MageController {
             }
         }
 
-
         // Final fallback, may be a plain item without any data, a
         // custom item key, or some form of MaterialAnData
         // also as some fallbacks for wands and classes wtihout a prefix
@@ -5330,6 +5333,40 @@ public class MagicController implements MageController {
             callback.updated(itemStack);
         }
         return itemStack;
+    }
+
+    @Nullable
+    public ItemStack getSpawnEgg(String mobType) {
+        EntityData entityData = getMob(mobType);
+        String customName = null;
+        EntityType entityType = null;
+        if (entityData == null) {
+            entityType = com.elmakers.mine.bukkit.entity.EntityData.parseEntityType(mobType);
+        } else {
+            entityType = entityData.getType();
+            customName = entityData.getName();
+        }
+
+        Material eggMaterial = getMobEgg(entityType);
+        if (eggMaterial == null) {
+            getLogger().warning("Could not get a mob egg for entity of type " + entityType);
+            return null;
+        }
+
+        ItemStack spawnEgg = new ItemStack(eggMaterial);
+        if (customName != null && !customName.isEmpty()) {
+            ItemMeta meta = spawnEgg.getItemMeta();
+            String title = getMessages().get("general.spawn_egg_title");
+            title = title.replace("$entity", customName);
+            meta.setDisplayName(title);
+            spawnEgg.setItemMeta(meta);
+
+            spawnEgg = InventoryUtils.makeReal(spawnEgg);
+            Object entityTag = InventoryUtils.createNode(spawnEgg, "EntityTag");
+            InventoryUtils.setMeta(entityTag, "CustomName", "{\"text\":\"" + customName + "\"}");
+        }
+
+        return spawnEgg;
     }
 
     @Nullable

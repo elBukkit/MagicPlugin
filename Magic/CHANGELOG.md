@@ -15,6 +15,7 @@
  - Add attributes: `armor`, `target_armor`, `luck`, `target_luck`, `attack_damage`, `knockback_resistance`, `target_knockback_resistance`
  - Enchantable wands (like the wizard armor) can be combined with an enchanted book
  - Add `virtual_book` parameter to Book action
+ - Add support for `/mgive egg:<mob>`, same result as `/mmob egg <mob>`
 
 # 8.5.2
 
