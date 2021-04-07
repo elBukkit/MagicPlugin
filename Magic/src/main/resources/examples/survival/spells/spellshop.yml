@@ -10,6 +10,12 @@ spellshop:
       cast:
       # Do this once at the start in case we need to force a level up
       - class: UpgradePath
+        actions:
+          # Let them bask in the warm glow of rankup for a moment
+          - class: Delay
+            delay: 3000
+          # Force the Shop action to reload so it sees any new spells
+          - class: UpdateParameters
       - class: Shop
         actions: addedspell
         addedspell:
