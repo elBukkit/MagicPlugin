@@ -12,6 +12,10 @@ public class UpdateParametersAction extends CompoundAction
 {
     @Override
     public SpellResult step(CastContext context) {
+        if (handlers.isEmpty()) {
+            context.getSpell().reloadParameters(context);
+            return SpellResult.CAST;
+        }
         ConfigurationSection parameters = context.getWorkingParameters();
         SpellParameters spellParameters = parameters instanceof SpellParameters ? (SpellParameters)parameters : null;
         CastContext originalContext = null;
