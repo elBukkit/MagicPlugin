@@ -471,7 +471,7 @@ public class ConfigurationLoadTask implements Runnable {
         if (!isMainConfig) {
             enableAll(overrides);
         }
-        ConfigurationUtils.addConfigurations(config, overrides);
+        ConfigurationUtils.addConfigurations(config, overrides, true, false, true);
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
@@ -601,7 +601,7 @@ public class ConfigurationLoadTask implements Runnable {
                         if (reenable) {
                             enableAll(fileOverrides);
                         }
-                        config = ConfigurationUtils.addConfigurations(config, fileOverrides);
+                        config = ConfigurationUtils.addConfigurations(config, fileOverrides, true, false, true);
                     } catch (Exception ex) {
                         getLogger().severe("Error loading: " + file.getName());
                         throw ex;
@@ -615,7 +615,7 @@ public class ConfigurationLoadTask implements Runnable {
                     if (reenable) {
                         enableAll(fileOverrides);
                     }
-                    config = ConfigurationUtils.addConfigurations(config, fileOverrides);
+                    config = ConfigurationUtils.addConfigurations(config, fileOverrides, true, false, true);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + file.getName());
                     throw ex;

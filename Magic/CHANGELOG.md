@@ -23,6 +23,7 @@
  - Fix another piston dupe exploit
  - Fix magic mob spawn eggs
  - Fix Growth not working on beetroots
+ - Fix progression to engineer rank
 
 # 8.5.1
 

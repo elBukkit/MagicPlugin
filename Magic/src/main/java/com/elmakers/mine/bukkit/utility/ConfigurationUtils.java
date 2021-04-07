@@ -474,10 +474,14 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override) {
-        return addConfigurations(first, second, override, false);
+        return addConfigurations(first, second, override, false, false);
     }
 
-    public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override, boolean requireExisting)
+    public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override, boolean requireExisting) {
+        return addConfigurations(first, second, override, requireExisting, false);
+    }
+
+    public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override, boolean requireExisting, boolean isUserConfig)
     {
         if (second == null) return first;
         override = override || second.getBoolean("override");
@@ -500,7 +504,8 @@ public class ConfigurationUtils extends ConfigUtils {
             }
             if (value instanceof ConfigurationSection && (existingValue == null || existingValue instanceof ConfigurationSection)) {
                 ConfigurationSection addChild = (ConfigurationSection)value;
-                if (existingValue == null || addChild.contains("inherit")) {
+                boolean skipMerge = isUserConfig ? addChild.contains("inherit") : !addChild.getBoolean("inherit", true);
+                if (existingValue == null || skipMerge) {
                     ConfigurationSection newChild = first.createSection(key);
                     addConfigurations(newChild, addChild, override);
                 } else {
