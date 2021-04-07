@@ -179,7 +179,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         com.elmakers.mine.bukkit.api.block.BlockData priorState = getPriorState();
         if (undoInner(modifyType)) {
             unlink();
-            removeFromList(priorState);
+            removeFromList(priorState, true);
             com.elmakers.mine.bukkit.block.UndoList list = (com.elmakers.mine.bukkit.block.UndoList)undoList.get();
             if (list != null) {
                 list.undone(this, currentState);
@@ -247,14 +247,18 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
             priorState.commit();
             priorState = null;
         }
-        removeFromList(null);
+        removeFromList(null, false);
         com.elmakers.mine.bukkit.block.UndoList.committed(this);
     }
 
-    private void removeFromList(com.elmakers.mine.bukkit.api.block.BlockData priorState) {
+    private void removeFromList(com.elmakers.mine.bukkit.api.block.BlockData priorState, boolean watch) {
         com.elmakers.mine.bukkit.block.UndoList list = (com.elmakers.mine.bukkit.block.UndoList)undoList.get();
         if (list != null) {
             list.remove(this, priorState);
+            // Continue watching this block until we completely finish the undo process
+            if (watch) {
+                list.registerWatched(this);
+            }
         }
     }
 
