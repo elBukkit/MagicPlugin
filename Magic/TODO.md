@@ -3,8 +3,15 @@
 
 # Bugs
 
-- check MobArea configuration
-- mob eggs broken
+- Opening a chest with a wand casts (?)
+- /mage upgrade not working
+
+- Henry: Hiya! We've been having this issue where our spell which puts an object
+  (in our case a diamond hoe) on a players head by using class: Wear.
+   It duplicates anything already in your hat slot if a player dies while using the spell,
+   including regular armour or forced tool/block hats (from plugins, like essentials, etc).
+- Dukx: why does the "mob" spell kill the mob caster?
+
 - spell items can't be added to wands via dropping?
 
 - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
