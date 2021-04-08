@@ -1794,6 +1794,9 @@ public class MagicController implements MageController {
         logger.setContext(null);
         log("Loaded " + getPathCount() + " progression paths");
 
+        // Integrate with any plugins that don't need to be done at startup
+        finalizeIntegrationPostLoad();
+
         // Notify plugins that we've finished loading.
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
@@ -7041,6 +7044,62 @@ public class MagicController implements MageController {
         logger.setContext("integration");
 
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
+
+        // Check for MobArena
+        Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");
+        if (mobArenaPlugin == null) {
+            getLogger().info("MobArena not found");
+        } else if (mobArenaConfiguration.getBoolean("enabled", true)) {
+            try {
+                mobArenaManager = new MobArenaManager(this, mobArenaPlugin, mobArenaConfiguration);
+                getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
+            } catch (Throwable ex) {
+                getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
+            }
+        } else {
+            getLogger().info("MobArena integration disabled");
+        }
+
+        // Check for LibsDisguise
+        Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
+        if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
+            getLogger().info("LibsDisguises not found, magic mob disguises will not be available");
+        } else if (libsDisguiseEnabled) {
+            if (!LibsDisguiseManager.isCurrentVersion()) {
+                getLogger().info("Using legacy LibsDisguise integration, please update");
+                libsDisguiseManager = new LegacyLibsDisguiseManager(getPlugin(), libsDisguisePlugin);
+            } else {
+                libsDisguiseManager = new ModernLibsDisguiseManager(this, libsDisguisePlugin);
+            }
+            if (libsDisguiseManager.initialize()) {
+                getLogger().info("LibsDisguises found, mob disguises and disguise_restricted features enabled");
+            } else {
+                getLogger().warning("LibsDisguises integration failed");
+            }
+        } else {
+            libsDisguiseManager = null;
+            getLogger().info("LibsDisguises integration disabled");
+        }
+
+        // Vault integration
+        if (!vaultEnabled) {
+            getLogger().info("Vault integration disabled");
+        } else {
+            Plugin vaultPlugin = pluginManager.getPlugin("Vault");
+            if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
+                getLogger().info("Vault not found, 'currency' cost types unavailable");
+            } else {
+                if (!VaultController.initialize(plugin, vaultPlugin)) {
+                    getLogger().warning("Vault integration failed");
+                }
+            }
+        }
+    }
+
+    public void finalizeIntegrationPostLoad() {
+        logger.setContext("integration");
+
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
         blockController.finalizeIntegration();
 
         // Check for SkillAPI
@@ -7102,61 +7161,11 @@ public class MagicController implements MageController {
             getLogger().warning(ex.getMessage());
         }
 
-        // Vault integration
-        if (!vaultEnabled) {
-            getLogger().info("Vault integration disabled");
-        } else {
-            Plugin vaultPlugin = pluginManager.getPlugin("Vault");
-            if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
-                getLogger().info("Vault not found, 'currency' cost types unavailable");
-            } else {
-                if (!VaultController.initialize(plugin, vaultPlugin)) {
-                    getLogger().warning("Vault integration failed");
-                }
-            }
-        }
-
         // Check for Minigames
         Plugin minigamesPlugin = pluginManager.getPlugin("Minigames");
         if (minigamesPlugin != null && minigamesPlugin.isEnabled()) {
             pluginManager.registerEvents(new MinigamesListener(this), plugin);
             getLogger().info("Minigames found, wands will deactivate before joining a minigame");
-        }
-
-        // Check for LibsDisguise
-        Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
-        if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
-            getLogger().info("LibsDisguises not found, magic mob disguises will not be available");
-        } else if (libsDisguiseEnabled) {
-            if (!LibsDisguiseManager.isCurrentVersion()) {
-                getLogger().info("Using legacy LibsDisguise integration, please update");
-                libsDisguiseManager = new LegacyLibsDisguiseManager(getPlugin(), libsDisguisePlugin);
-            } else {
-                libsDisguiseManager = new ModernLibsDisguiseManager(this, libsDisguisePlugin);
-            }
-            if (libsDisguiseManager.initialize()) {
-                getLogger().info("LibsDisguises found, mob disguises and disguise_restricted features enabled");
-            } else {
-                getLogger().warning("LibsDisguises integration failed");
-            }
-        } else {
-            libsDisguiseManager = null;
-            getLogger().info("LibsDisguises integration disabled");
-        }
-
-        // Check for MobArena
-        Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");
-        if (mobArenaPlugin == null) {
-            getLogger().info("MobArena not found");
-        } else if (mobArenaConfiguration.getBoolean("enabled", true)) {
-            try {
-                mobArenaManager = new MobArenaManager(this, mobArenaPlugin, mobArenaConfiguration);
-                getLogger().info("Integrated with MobArena, use \"magic:<itemkey>\" in arena configs for Magic items, magic mobs can be used in monster configurations");
-            } catch (Throwable ex) {
-                getLogger().warning("MobArena integration failed, you may need to update the MobArena plugin to use Magic items");
-            }
-        } else {
-            getLogger().info("MobArena integration disabled");
         }
 
         // Check for LogBlock
