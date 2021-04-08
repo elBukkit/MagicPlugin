@@ -24,6 +24,7 @@
  - Fix magic mob spawn eggs
  - Fix Growth not working on beetroots
  - Fix progression to engineer rank
+ - Fix Cloak making players permanently invisible under some conditions
 
 # 8.5.1
 

@@ -962,9 +962,6 @@ public class CompatibilityUtils extends NMSUtils {
         try {
             Object handle = getHandle(entity);
             class_Entity_setInvisible.invoke(handle, invisible);
-            if (class_Entity_persistentInvisibilityField != null) {
-                class_Entity_persistentInvisibilityField.set(handle, invisible);
-            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -979,6 +976,27 @@ public class CompatibilityUtils extends NMSUtils {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public static boolean isPersistentInvisible(Entity entity) {
+        if (class_Entity_persistentInvisibilityField == null) return false;
+        try {
+            Object handle = getHandle(entity);
+            return (boolean)class_Entity_persistentInvisibilityField.get(handle);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
+    public static void setPersistentInvisible(Entity entity, boolean invisible) {
+        if (class_Entity_persistentInvisibilityField == null) return;
+        try {
+            Object handle = getHandle(entity);
+            class_Entity_persistentInvisibilityField.set(handle, invisible);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     public static void setYawPitch(Entity entity, float yaw, float pitch) {

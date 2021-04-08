@@ -129,6 +129,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean useNPCName;
     protected boolean preventDismount;
     protected Boolean invisible = null;
+    protected Boolean persistentInvisible = null;
     protected Boolean persist = null;
     protected Boolean removeWhenFarAway = null;
     protected int fireTicks;
@@ -199,6 +200,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.fireTicks = entity.getFireTicks();
         this.isSilent = CompatibilityUtils.isSilent(entity);
         this.invisible = CompatibilityUtils.isInvisible(entity);
+        this.persistentInvisible = CompatibilityUtils.isPersistentInvisible(entity);
+
         // This will actually always be true so we need a better way to track this.
         // this.persist = CompatibilityUtils.isPersist(entity);
         this.canPickupItems = (entity instanceof Creature) ? ((Creature)entity).getCanPickupItems() : false;
@@ -375,6 +378,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         if (parameters.contains("invisible")) {
             invisible = parameters.getBoolean("invisible");
+            persistentInvisible = invisible;
         }
         isDocile = parameters.getBoolean("docile");
         transformable = parameters.getBoolean("transformable", true);
@@ -895,6 +899,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         if (invisible != null) {
             CompatibilityUtils.setInvisible(entity, invisible);
+        }
+        if (persistentInvisible != null) {
+            CompatibilityUtils.setPersistentInvisible(entity, persistentInvisible);
         }
         if (removeWhenFarAway != null) {
             CompatibilityUtils.setRemoveWhenFarAway(entity, removeWhenFarAway);
