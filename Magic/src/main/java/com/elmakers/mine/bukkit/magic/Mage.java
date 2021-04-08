@@ -142,6 +142,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
     public static boolean COMMAND_BLOCKS_SUPERPOWERED = true;
     public static boolean CONSOLE_SUPERPOWERED = true;
+    public static boolean ALLOW_PERSISTENT_INVISIBILITY = true;
     public static String DEFAULT_CLASS = "";
     private static String defaultMageName = "Mage";
 
@@ -996,6 +997,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (customName != null && customName.length() > 0) {
                     playerName = customName;
                 }
+            }
+            if (entity instanceof Player && !ALLOW_PERSISTENT_INVISIBILITY) {
+                CompatibilityUtils.setPersistentInvisible(entity, false);
             }
             this.entityRef = new WeakReference<>(entity);
             hasEntity = true;

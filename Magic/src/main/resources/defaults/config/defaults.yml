@@ -640,3 +640,7 @@ console_bypass_locked_wands: true
 # Set this to false to turn off all vanilla sounds by default
 # They can be turned on/off for each effect using enable_vanilla_sounds on the effect config as well
 enable_vanilla_sounds: true
+
+# Set this to false if you have players who are stuck invisible.
+# this may have been caused by a bug in previous versions of magic.
+allow_player_persistent_invisibility: true

@@ -25,6 +25,8 @@
  - Fix Growth not working on beetroots
  - Fix progression to engineer rank
  - Fix Cloak making players permanently invisible under some conditions
+   If you were hit by this bug you can use the following command to fix invisible players on login:
+   `mconfig configure config allow_player_persistent_invisibility false`
 
 # 8.5.1
 
