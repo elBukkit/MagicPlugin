@@ -719,7 +719,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             if (name.isEmpty() && warpKey != null) {
                 Warp warp = controller.getMagicWarp(warpKey);
-                name = warp.getName();
+                if (warp != null) {
+                    name = warp.getName();
+                }
             }
 
             if (name.isEmpty() && iconKey != null) {
@@ -756,7 +758,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     description = attribute.getDescription(controller.getMessages());
                 } else if (warpKey != null) {
                     Warp warp = controller.getMagicWarp(warpKey);
-                    description = warp.getDescription();
+                    if (warp != null) {
+                        description = warp.getDescription();
+                    }
                 } else if (kitKey != null) {
                     Kit kit = controller.getKit(kitKey);
                     if (kit != null) {
