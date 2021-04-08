@@ -16,6 +16,8 @@
  - Enchantable wands (like the wizard armor) can be combined with an enchanted book
  - Add `virtual_book` parameter to Book action
  - Add support for `/mgive egg:<mob>`, same result as `/mmob egg <mob>`
+ - Add option to fix invisible players on login if you have gotten some permanently invisible players:
+   `mconfig configure config allow_player_persistent_invisibility false`
 
 # 8.5.2
 
@@ -24,9 +26,6 @@
  - Fix magic mob spawn eggs
  - Fix Growth not working on beetroots
  - Fix progression to engineer rank
- - Fix Cloak making players permanently invisible under some conditions
-   If you were hit by this bug you can use the following command to fix invisible players on login:
-   `mconfig configure config allow_player_persistent_invisibility false`
 
 # 8.5.1
 
