@@ -1223,7 +1223,7 @@ public class ConfigurationUtils extends ConfigUtils {
          if (!configuration.getBoolean("enabled", true)) return false;
          String required = configuration.getString("requires");
          if (required != null && !required.isEmpty()) {
-             if (!Bukkit.getPluginManager().isPluginEnabled(required)) {
+             if (Bukkit.getPluginManager().getPlugin(required) == null) {
                  return false;
              }
          }
