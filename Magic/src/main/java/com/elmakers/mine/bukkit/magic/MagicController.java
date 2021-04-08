@@ -1758,8 +1758,8 @@ public class MagicController implements MageController {
         exampleKeyNames.clear();
         exampleKeyNames.putAll(loader.getExampleKeyNames());
 
-        registerHandlers(loader.getMainConfiguration());
         processConfigurations(loader, sender);
+        registerHandlers(loader.getMainConfiguration());
 
         // We'll need to delay everything else by one tick to let integrating plugins have a chance to load.
         if (!loaded) {
