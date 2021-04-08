@@ -1729,10 +1729,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void checkWandNextTick(boolean checkAll) {
+        if (!controller.getPlugin().isEnabled()) return;
         Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new CheckWandTask(this, checkAll));
     }
 
     public void checkWandNextTick() {
+        if (!controller.getPlugin().isEnabled()) return;
         Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), new CheckWandTask(this));
     }
 
