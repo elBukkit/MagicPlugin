@@ -1782,6 +1782,18 @@ public class MagicController implements MageController {
         // Register currencies and other preload integrations
         registerPreLoad(loader.getMainConfiguration());
 
+        // Load spells, which will throw errors and warnings if done before registering attributes
+        logger.setContext("spells");
+        loadSpells(sender, loader.getSpells());
+        logger.setContext(null);
+        log("Loaded " + spells.size() + " spells");
+
+        // Load paths, which will throw warnings if done before spells
+        logger.setContext("paths");
+        loadPaths(loader.getPaths());
+        logger.setContext(null);
+        log("Loaded " + getPathCount() + " progression paths");
+
         // Notify plugins that we've finished loading.
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
@@ -1833,11 +1845,6 @@ public class MagicController implements MageController {
         logger.setContext(null);
         log("Loaded " + getWandTemplates().size() + " wands");
 
-        logger.setContext("spells");
-        loadSpells(sender, loader.getSpells());
-        logger.setContext(null);
-        log("Loaded " + spells.size() + " spells");
-
         logger.setContext("kits");
         kitController.load(loader.getKits());
         logger.setContext(null);
@@ -1852,11 +1859,6 @@ public class MagicController implements MageController {
         loadModifiers(loader.getModifiers());
         logger.setContext(null);
         log("Loaded " + modifiers.size() + " classes");
-
-        logger.setContext("paths");
-        loadPaths(loader.getPaths());
-        logger.setContext(null);
-        log("Loaded " + getPathCount() + " progression paths");
 
         logger.setContext("mobs");
         loadMobs(loader.getMobs());
@@ -1980,9 +1982,6 @@ public class MagicController implements MageController {
         if (heroesManager != null) {
             attributeProviders.add(heroesManager);
         }
-
-        // We should be done adding attributes now
-        finalizeAttributes();
 
         // Requirements providers
         if (skillAPIManager != null) {
@@ -3225,6 +3224,9 @@ public class MagicController implements MageController {
         for (String key : keys) {
             addCurrency(new CustomCurrency(this, key, currencyConfiguration.getConfigurationSection(key)));
         }
+
+        // Finalize registration
+        finalizeAttributes();
 
         log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
