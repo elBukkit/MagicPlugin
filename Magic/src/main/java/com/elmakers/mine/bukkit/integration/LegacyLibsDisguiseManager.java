@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.integration;
 
-import java.util.UUID;
+import java.util.logging.Level;
 import javax.annotation.Nullable;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Villager;
 import org.bukkit.plugin.Plugin;
 
 import com.comphenix.protocol.wrappers.WrappedGameProfile;
@@ -14,62 +16,127 @@ import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
 import me.libraryaddict.disguise.disguisetypes.Disguise;
 import me.libraryaddict.disguise.disguisetypes.DisguiseType;
+import me.libraryaddict.disguise.disguisetypes.FlagWatcher;
+import me.libraryaddict.disguise.disguisetypes.MiscDisguise;
 import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
+import me.libraryaddict.disguise.disguisetypes.watchers.ArmorStandWatcher;
+import me.libraryaddict.disguise.disguisetypes.watchers.VillagerWatcher;
+import me.libraryaddict.disguise.utilities.DisguiseUtilities;
 
 public class LegacyLibsDisguiseManager implements LibsDisguiseManager {
-    private final Plugin plugin;
     private final Plugin disguisePlugin;
+    private final Plugin owningPlugin;
 
     public LegacyLibsDisguiseManager(Plugin owningPlugin, Plugin disguisePlugin) {
-        this.plugin = owningPlugin;
         this.disguisePlugin = disguisePlugin;
+        this.owningPlugin = owningPlugin;
     }
 
-    @Override
     public boolean initialize() {
         return (disguisePlugin != null && disguisePlugin instanceof LibsDisguises);
     }
 
-    @Override
     public boolean isDisguised(Entity entity) {
         return DisguiseAPI.isDisguised(entity);
     }
 
-    @Override
     public boolean disguise(Entity entity, ConfigurationSection configuration) {
+        if (configuration == null) {
+            DisguiseAPI.undisguiseToAll(entity);
+            return true;
+        }
         String disguiseName = configuration.getString("type");
         if (disguiseName == null || disguiseName.isEmpty()) {
             return false;
         }
+
         try {
             DisguiseType disguiseType = DisguiseType.valueOf(disguiseName.toUpperCase());
             Disguise disguise = null;
             switch (disguiseType) {
                 case PLAYER:
-                    PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("name"));
-                    String player = configuration.getString("player");
-                    String uuidString = configuration.getString("uuid");
-                    if (player != null && uuidString != null) {
-                        UUID uuid = UUID.fromString(uuidString);
-                        WrappedGameProfile profile = new WrappedGameProfile(uuid, player);
-                        playerDisguise.setSkin(profile);
+                    PlayerDisguise playerDisguise = new PlayerDisguise(configuration.getString("name", entity.getCustomName()));
+                    String skin = configuration.getString("skin");
+                    if (skin != null) {
+                        playerDisguise.setSkin(skin);
                     }
                     disguise = playerDisguise;
                     break;
+                case ARMOR_STAND:
+                    disguise = new MobDisguise(DisguiseType.ARMOR_STAND);
+                    ArmorStandWatcher watcher = (ArmorStandWatcher)disguise.getWatcher();
+                    watcher.setMarker(configuration.getBoolean("marker", false));
+                    watcher.setNoBasePlate(!configuration.getBoolean("baseplate", true));
+                    watcher.setSmall(configuration.getBoolean("small", false));
+                    watcher.setShowArms(configuration.getBoolean("arms", false));
+                    break;
+                case FALLING_BLOCK:
+                case DROPPED_ITEM:
+                    Material material = Material.valueOf(configuration.getString("material").toUpperCase());
+                    MiscDisguise itemDisguise = new MiscDisguise(disguiseType, material, configuration.getInt("data"));
+                    disguise = itemDisguise;
+                    break;
+                case SPLASH_POTION:
+                case PAINTING:
+                    MiscDisguise paintingDisguise = new MiscDisguise(disguiseType, configuration.getInt("data"));
+                    disguise = paintingDisguise;
+                    break;
+                case ARROW:
+                case SPECTRAL_ARROW:
+                case FIREBALL:
+                case SMALL_FIREBALL:
+                case DRAGON_FIREBALL:
+                case WITHER_SKULL:
+                case FISHING_HOOK:
+                    MiscDisguise miscDisguise = new MiscDisguise(disguiseType);
+                    disguise = miscDisguise;
+                    break;
+                case VILLAGER:
+                    disguise = new MobDisguise(DisguiseType.VILLAGER);
+                    String professionName = configuration.getString("profession");
+                    if (professionName != null && !professionName.isEmpty()) {
+                        try {
+                            Villager.Profession profession = Villager.Profession.valueOf(professionName.toUpperCase());
+                            VillagerWatcher villager = (VillagerWatcher)disguise.getWatcher();
+                            villager.setProfession(profession);
+                        } catch (Exception ex) {
+                            owningPlugin.getLogger().warning("Invalid villager profession in disguise config: " + professionName);
+                        }
+                    }
+                    break;
                 default:
-                    disguise = new MobDisguise(disguiseType);
+                    boolean isBaby = configuration.getBoolean("baby", false);
+                    disguise = new MobDisguise(disguiseType, !isBaby);
             }
+
+            FlagWatcher watcher = disguise.getWatcher();
+            String customName = configuration.getString("custom_name");
+            if (customName != null) {
+                watcher.setCustomName(customName);
+                watcher.setCustomNameVisible(configuration.getBoolean("custom_name_visible", true));
+            }
+            watcher.setInvisible(configuration.getBoolean("invisible", false));
+            watcher.setBurning(configuration.getBoolean("burning", false));
+            watcher.setGlowing(configuration.getBoolean("glowing", false));
+            watcher.setFlyingWithElytra(configuration.getBoolean("flying", false));
+            watcher.setSneaking(configuration.getBoolean("sneaking", false));
+            watcher.setAddEntityAnimations(configuration.getBoolean("animations", false));
+            watcher.setSprinting(configuration.getBoolean("sprinting", false));
             DisguiseAPI.disguiseEntity(entity, disguise);
         } catch (Exception ex) {
+            owningPlugin.getLogger().log(Level.WARNING, "Error creating disguise", ex);
             return false;
         }
         return true;
     }
 
-    @Override
     @Nullable
     public String getSkin(Player player) {
-        return null;
+        WrappedGameProfile profile = WrappedGameProfile.fromPlayer(player);
+        if (profile == null) {
+            return null;
+        }
+        return DisguiseUtilities.getGson().toJson(profile);
     }
 }
