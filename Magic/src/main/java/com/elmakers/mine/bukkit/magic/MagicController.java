@@ -222,7 +222,6 @@ import com.elmakers.mine.bukkit.tasks.ChangeServerTask;
 import com.elmakers.mine.bukkit.tasks.ConfigCheckTask;
 import com.elmakers.mine.bukkit.tasks.ConfigurationLoadTask;
 import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
-import com.elmakers.mine.bukkit.tasks.FinalizeIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.LoadDataTask;
 import com.elmakers.mine.bukkit.tasks.LogNotifyTask;
@@ -1759,9 +1758,48 @@ public class MagicController implements MageController {
         exampleKeyNames.clear();
         exampleKeyNames.putAll(loader.getExampleKeyNames());
 
-        // Process loaded data
+        registerHandlers(loader.getMainConfiguration());
+        processConfigurations(loader, sender);
+
+        // We'll need to delay everything else by one tick to let integrating plugins have a chance to load.
+        if (!loaded) {
+            // Some first-time registration that's safe to do at startup
+            activateMetrics();
+            registerListeners();
+            finalizeIntegration();
+
+            // Delay validation of configs or anything else that requires attributes or
+            // other external plugin registrations
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 2);
+        } else {
+            finalizePostStartupLoad(loader, sender);
+        }
+
+        finishLoad(sender);
+    }
+
+    public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
+        // Register currencies and other preload integrations
+        registerPreLoad(loader.getMainConfiguration());
+
+        // Notify plugins that we've finished loading.
+        LoadEvent loadEvent = new LoadEvent(this);
+        Bukkit.getPluginManager().callEvent(loadEvent);
+    }
+
+    public void processConfigurations(ConfigurationLoadTask loader, CommandSender sender) {
         exampleDefaults = loader.getExampleDefaults();
         addExamples = loader.getAddExamples();
+
+        // Load custom attributes, do this prior to loadAttributes
+        logger.setContext("attributes");
+        loadAttributes(loader.getAttributes());
+        logger.setContext(null);
+        log("Loaded " + attributes.size() + " attributes");
+
+        // Do this before spell loading in case of attribute or requirement providers
+        logger.setContext("integration");
+        registerManagers();
 
         // Main configuration
         logger.setContext("config");
@@ -1774,41 +1812,11 @@ public class MagicController implements MageController {
         logger.setContext("materials");
         loadMaterials(loader.getMaterials());
 
-        // Load worlds now, we're still in load=STARTUP time
+        // Load worlds
         logger.setContext("worlds");
         loadWorlds(loader.getWorlds());
         logger.setContext(null);
         log("Loaded " + worldController.getCount() + " customized worlds");
-
-        // We'll need to delay everything else by one tick to let integrating plugins have a chance to load.
-        if (!loaded) {
-            // Some first-time registration that's safe to do at startup
-            activateMetrics();
-            registerListeners();
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new FinalizeIntegrationTask(this), 1);
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 2);
-        } else {
-            finalizePostStartupLoad(loader, sender);
-        }
-    }
-
-    public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
-        // Finalize integrations, we only do this one time at startup.
-        logger.setContext("integration");
-
-        // Register currencies and other preload integrations
-        registerPreLoad(loader.getMainConfiguration());
-        log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
-
-        // Load custom attributes, do this prior to loadAttributes
-        logger.setContext("attributes");
-        loadAttributes(loader.getAttributes());
-        logger.setContext(null);
-        log("Loaded " + attributes.size() + " attributes");
-
-        // Do this before spell loading in case of attribute or requirement providers
-        logger.setContext("integration");
-        registerManagers();
 
         logger.setContext("effects");
         loadEffects(loader.getEffects());
@@ -1869,15 +1877,14 @@ public class MagicController implements MageController {
 
         logger.setContext(null);
         log("Loaded " + crafting.getCount() + " crafting recipes");
+    }
 
+    public void finishLoad(CommandSender sender) {
         if (!loaded) {
             postLoadIntegration();
         }
 
-        // Notify plugins that we've finished loading.
         logger.setContext(null);
-        LoadEvent loadEvent = new LoadEvent(this);
-        Bukkit.getPluginManager().callEvent(loadEvent);
         loaded = true;
         loading = false;
 
@@ -1907,7 +1914,7 @@ public class MagicController implements MageController {
             reloadingMage = null;
         }
 
-        if (showExampleInstructions) {
+        if (showExampleInstructions && sender != null) {
             showExampleInstructions = false;
             showExampleInstructions(sender);
         }
@@ -3104,7 +3111,6 @@ public class MagicController implements MageController {
     }
 
     protected void populateEntityTypes(Set<EntityType> entityTypes, ConfigurationSection configuration, String key) {
-
         entityTypes.clear();
         if (configuration.contains(key)) {
             Collection<String> typeStrings = ConfigurationUtils.getStringList(configuration, key);
@@ -3122,7 +3128,7 @@ public class MagicController implements MageController {
         currencies.put(currency.getKey(), currency);
     }
 
-    protected void registerPreLoad(ConfigurationSection configuration) {
+    protected void registerHandlers(ConfigurationSection configuration) {
         // Setup custom providers
         currencies.clear();
         attributeProviders.clear();
@@ -3137,19 +3143,6 @@ public class MagicController implements MageController {
         playerWarpManagers.clear();
         targetingProviders.clear();
         registeredAttributes.clear();
-
-        PreLoadEvent loadEvent = new PreLoadEvent(this);
-        Bukkit.getPluginManager().callEvent(loadEvent);
-
-        blockBreakManagers.addAll(loadEvent.getBlockBreakManagers());
-        blockBuildManagers.addAll(loadEvent.getBlockBuildManagers());
-        pvpManagers.addAll(loadEvent.getPVPManagers());
-        attributeProviders.addAll(loadEvent.getAttributeProviders());
-        teamProviders.addAll(loadEvent.getTeamProviders());
-        castManagers.addAll(loadEvent.getCastManagers());
-        targetingProviders.addAll(loadEvent.getTargetingManagers());
-        teamProviders.addAll(loadEvent.getTeamProviders());
-        playerWarpManagers.putAll(loadEvent.getWarpManagers());
 
         // Use legacy currency configs if present
         ConfigurationSection currencyConfiguration = configuration.getConfigurationSection("builtin_currency");
@@ -3202,6 +3195,24 @@ public class MagicController implements MageController {
         addCurrency(new LevelCurrency(this, currencyConfiguration.getConfigurationSection("levels")));
         addCurrency(new SpellPointCurrency(this, spSection));
         addCurrency(new VaultCurrency(this, currencyConfiguration.getConfigurationSection("currency")));
+    }
+
+    // Kind of a misnomer now, the whole notion of having plugins register in a "preload" event is flawed,
+    // since it requires those plugins to load before magic in order to register an event handler.
+    // Anyway, this is now done after loading is really finished.
+    protected void registerPreLoad(ConfigurationSection configuration) {
+        PreLoadEvent loadEvent = new PreLoadEvent(this);
+        Bukkit.getPluginManager().callEvent(loadEvent);
+
+        blockBreakManagers.addAll(loadEvent.getBlockBreakManagers());
+        blockBuildManagers.addAll(loadEvent.getBlockBuildManagers());
+        pvpManagers.addAll(loadEvent.getPVPManagers());
+        attributeProviders.addAll(loadEvent.getAttributeProviders());
+        teamProviders.addAll(loadEvent.getTeamProviders());
+        castManagers.addAll(loadEvent.getCastManagers());
+        targetingProviders.addAll(loadEvent.getTargetingManagers());
+        teamProviders.addAll(loadEvent.getTeamProviders());
+        playerWarpManagers.putAll(loadEvent.getWarpManagers());
 
         // Custom currencies can override the defaults
         for (Currency currency : loadEvent.getCurrencies()) {
@@ -3209,11 +3220,13 @@ public class MagicController implements MageController {
         }
 
         // Configured currencies override everything else
-        currencyConfiguration = configuration.getConfigurationSection("custom_currency");
+        ConfigurationSection currencyConfiguration = configuration.getConfigurationSection("custom_currency");
         Set<String> keys = currencyConfiguration.getKeys(false);
         for (String key : keys) {
             addCurrency(new CustomCurrency(this, key, currencyConfiguration.getConfigurationSection(key)));
         }
+
+        log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
 
         // Re-register any providers previously registered by external plugins via register()
         for (MagicProvider provider : externalProviders) {
@@ -5237,6 +5250,10 @@ public class MagicController implements MageController {
                         com.elmakers.mine.bukkit.api.block.MaterialAndData currencyIcon = currency == null ? null : currency.getIcon();
                         if (pieces.length > 1 && currencyIcon != null) {
                             itemStack = currencyIcon.getItemStack(1);
+                            if (CompatibilityUtils.isEmpty(itemStack)) {
+                                getLogger().warning("Trying to get a currency item for '" + itemKey + "', which an invalid icon defined");
+                                return null;
+                            }
                             ItemMeta meta = itemStack.getItemMeta();
                             String name = currency.getName(messages);
                             String itemName = messages.get("currency." + itemKey + ".item_name", messages.get("currency.default.item_name"));
@@ -7019,6 +7036,8 @@ public class MagicController implements MageController {
     }
 
     public void finalizeIntegration() {
+        logger.setContext("integration");
+
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
         blockController.finalizeIntegration();
 
