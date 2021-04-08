@@ -242,7 +242,7 @@ public class CraftingController implements Listener {
         if (isCraftable(item)) return;
 
         InventoryView view = event.getView();
-        for (Integer slot : event.getInventorySlots()) {
+        for (Integer slot : event.getRawSlots()) {
             if (slot != null && isCraftingSlot(view, slot)) {
                 event.setCancelled(true);
                 return;
