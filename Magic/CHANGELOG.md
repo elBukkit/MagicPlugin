@@ -19,6 +19,7 @@
  - Add support for `/mgive egg:<mob>`, same result as `/mmob egg <mob>`
  - Add option to fix invisible players on login if you have gotten some permanently invisible players:
    `mconfig configure config allow_player_persistent_invisibility false`
+ - Add ModifyAttribute action
 
 # 8.5.2
 

@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlay;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageContext;
@@ -253,4 +254,6 @@ public interface CastContext extends MageContext {
     Object getCastData(@Nonnull String key);
     void setDestructible(MaterialSet destructible);
     void setIndestructible(MaterialSet indestructible);
+    @Nullable
+    CasterProperties getCasterProperties(String propertyType);
 }

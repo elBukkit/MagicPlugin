@@ -1716,4 +1716,28 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     public String getName() {
         return spell.getName() + " of " + super.getName();
     }
+
+    @Nullable
+    public CasterProperties getCasterProperties(String propertyType) {
+        CasterProperties properties = null;
+        if (propertyType.equals("wand")) {
+            properties = getWand();
+        } else if (propertyType.equals("active_wand")) {
+            properties = checkWand();
+        } else if (propertyType.equals("player")) {
+            properties = mage.getProperties();
+        } else if (propertyType.equals("class")) {
+            properties = mage.getActiveClass();
+        } else if (propertyType.equals("active")) {
+            properties = mage.getActiveProperties();
+        } else {
+            properties = mage.getClass(propertyType);
+        }
+
+        // I am now wishing I hadn't made a base class called "mage" :(
+        if (properties == null && propertyType.equals("mage")) {
+            properties = mage.getProperties();
+        }
+        return properties;
+    }
 }

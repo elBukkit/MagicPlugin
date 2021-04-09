@@ -112,26 +112,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
         if (mage == null) {
             return SpellResult.NO_TARGET;
         }
-        CasterProperties properties = null;
-        if (modifyTarget.equals("wand")) {
-            properties = context.getWand();
-        } else if (modifyTarget.equals("active_wand")) {
-            properties = context.checkWand();
-        } else if (modifyTarget.equals("player")) {
-            properties = mage.getProperties();
-        } else if (modifyTarget.equals("class")) {
-            properties = mage.getActiveClass();
-        } else if (modifyTarget.equals("active")) {
-            properties = mage.getActiveProperties();
-        } else {
-            properties = mage.getClass(modifyTarget);
-        }
-
-        // I am now wishing I hadn't made a base class called "mage" :(
-        if (properties == null && modifyTarget.equals("mage")) {
-            properties = mage.getProperties();
-        }
-
+        CasterProperties properties = context.getCasterProperties(modifyTarget);
         if (properties == null) {
             return SpellResult.NO_TARGET;
         }
