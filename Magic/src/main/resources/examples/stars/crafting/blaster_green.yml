@@ -2,7 +2,7 @@ blaster_green:
   output: blaster_green
   output_type: wand
   materials:
-    p: wood
+    p: stick
     i: iron_ingot
     g: emerald
   row_1: "iig"

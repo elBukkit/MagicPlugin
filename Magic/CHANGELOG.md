@@ -8,7 +8,8 @@
 
 ## Changes
 
- - The "drop" key is now bound to toggling the inventory by default (rather than cycling hotbars, use the swap keye for that)
+ - The "drop" key is now bound to toggling the inventory by default (rather than cycling hotbars, use the swap key for that)
+ - The blaster recipes in the stars configs were changed to use sticks instead of oak wood planks
 
 ## Additions
 
