@@ -336,7 +336,6 @@ spells:
     phase:
         name: Phase
         description: Phase to another dimension
-        cancel: Phase interrupted!
         cast: ""
         teleport: You phase to $world_name
         teleport_failed: Can't phase to $world_name from here
@@ -756,7 +755,6 @@ spells:
         no_target_death: No recorded death location
     recall:
         name: Recall
-        cancel: Recall interrupted!
         description: Teleport to different locations.
         usage: Grants 5 seconds of protection on teleportation.
         teleport: ""
@@ -833,7 +831,7 @@ spells:
         name: Levitate
         description: Levitate yourself up into the air
         cast: You feel lighter
-        cancel: You feel heavier
+        cancel: "a:You feel heavier"
         upgrade_description: "Fly faster and higher, reduced cooldown"
         reactivate: Reactivating Levitate
     levitate|6:

@@ -258,6 +258,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private boolean toggleable                  = true;
     private boolean reactivate                  = false;
     private boolean isActive                    = false;
+    private boolean cancelled                   = false;
 
     protected ConfigurationSection progressLevels = null;
     protected ConfigurationSection progressLevelParameters = null;
@@ -2605,19 +2606,27 @@ public class BaseSpell implements MageSpell, Cloneable {
         boolean cancelled = onCancelSelection();
         if (cancelled) {
             sendMessageKey("cancel_selection");
-            cancel();
+            cancel(true);
         }
         return cancelled;
     }
 
     @Override
-    public boolean cancel()
+    public boolean cancel() {
+        return cancel(false);
+    }
+
+    private boolean cancel(boolean quiet)
     {
-        if (isActive() && isActive) {
+        if (isActive() && !cancelled) {
             // Avoid double-cancels because deactivate() will also chain to cancel()
-            isActive = false;
-            sendMessageKey("cancel");
+            cancelled = true;
+            if (!quiet) {
+                sendMessageKey("cancel");
+            }
             deactivate(false, false, true, true);
+            // this is not a persistent flag, it's really just here to prevent double-cancels
+            cancelled = false;
         }
         if (currentCast != null) {
             currentCast.cancelEffects();
