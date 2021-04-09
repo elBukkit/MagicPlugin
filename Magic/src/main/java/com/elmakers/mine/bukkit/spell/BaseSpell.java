@@ -2022,7 +2022,11 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (locationOverride != null) {
             location = locationOverride;
         }
-        cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
+        if (parameters.getBoolean("cancel_on_damage")) {
+            cancelOnDamage = 0.00001;
+        } else {
+            cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
+        }
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
         cancelOnDeath = parameters.getBoolean("cancel_on_death", false);
         cancelOnDeactivate = parameters.getBoolean("cancel_on_deactivate", true);
