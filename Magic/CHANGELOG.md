@@ -11,6 +11,7 @@
  - The "drop" key is now bound to toggling the inventory by default (rather than cycling hotbars, use the swap key for that)
  - The blaster recipes in the stars configs were changed to use sticks instead of oak wood planks
  - RecallAction won't apply protection until after teleporting, this fixes cancel_on_damage not working for recall
+ - Removed protection_duration from gather to avoid griefing
 
 ## Additions
 

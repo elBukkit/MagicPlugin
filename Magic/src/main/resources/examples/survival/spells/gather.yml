@@ -198,7 +198,6 @@ gather:
     allow_warp: false
     allow_regions: false
     allow_souls: false
-    protection_duration: 5000
 
   costs:
     mana: 50
