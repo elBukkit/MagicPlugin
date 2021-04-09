@@ -56,7 +56,7 @@ public class SpellParameters extends MageParameters {
     }
 
     @Override
-    protected double getParameter(String parameter) {
+    public double getParameter(String parameter) {
         if (castVariables != null && castVariables.contains(parameter)) {
             return castVariables.getDouble(parameter);
         }
@@ -71,7 +71,7 @@ public class SpellParameters extends MageParameters {
     }
 
     @Override
-    protected Set<String> getParameters() {
+    public Set<String> getParameters() {
         if (castVariables != null) {
             this.allParameters.addAll(castVariables.getKeys(false));
         }

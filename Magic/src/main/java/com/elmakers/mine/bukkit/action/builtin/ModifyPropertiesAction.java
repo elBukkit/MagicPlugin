@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -50,6 +51,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
 
     private List<ModifyProperty> modify;
     private String modifyTarget;
+    private SpellParameters extraParameters;
     private boolean upgrade;
     private boolean bypassUndo;
 
@@ -91,6 +93,9 @@ public class ModifyPropertiesAction extends BaseSpellAction
                 ModifyProperty property = new ModifyProperty(section);
                 modify.add(property);
             }
+        }
+        if (parameters instanceof SpellParameters) {
+            extraParameters = (SpellParameters)parameters;
         }
     }
 
@@ -136,7 +141,20 @@ public class ModifyPropertiesAction extends BaseSpellAction
             Object originalValue = properties.getProperty(property.path);
             Object newValue = property.value;
             if ((originalValue == null || originalValue instanceof Number) && property.value instanceof String) {
-                EquationTransform transform = EquationStore.getInstance().getTransform((String)property.value);
+                // Allow using attributes and variables here
+                EquationTransform transform = null;
+                if (extraParameters != null) {
+                    List<String> variables = new ArrayList<>(extraParameters.getParameters());
+                    variables.add("x");
+                    transform = new EquationTransform((String)property.value, variables);
+                    for (String parameterKey : variables) {
+                        transform.setVariable(parameterKey, extraParameters.getParameter(parameterKey));
+                    }
+                } else {
+                    // This probably won't happen anymore, but it *would* be more efficient
+                    transform = EquationStore.getInstance().getTransform((String)property.value);
+                }
+
                 originalValue = originalValue == null ? null : NumberConversions.toDouble(originalValue);
                 double defaultValue = property.defaultValue == null ? 0 : property.defaultValue;
                 if (transform.isValid()) {
