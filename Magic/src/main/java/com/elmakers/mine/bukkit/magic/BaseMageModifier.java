@@ -366,7 +366,12 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
         if (triggerKeys != null) {
             triggers = ArrayListMultimap.create();
             for (String triggerKey : triggerKeys) {
-                CustomTrigger trigger = new CustomTrigger(controller, triggerKey, triggerConfig.getConfigurationSection(triggerKey));
+                ConfigurationSection config = triggerConfig.getConfigurationSection(triggerKey);
+                if (triggerConfig == null) {
+                    controller.getLogger().warning("Invalid trigger specified in " + getKey() + ": " + triggerKey);
+                    continue;
+                }
+                CustomTrigger trigger = new CustomTrigger(controller, triggerKey, config);
                 triggers.put(trigger.getTrigger(), trigger);
             }
         } else {
