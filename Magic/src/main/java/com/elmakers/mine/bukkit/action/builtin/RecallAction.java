@@ -1196,7 +1196,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             targetLocation.setYaw(playerLocation.getYaw());
             targetLocation.setPitch(playerLocation.getPitch());
         }
-        mage.enableSuperProtection(protectionTime);
+        if (!teleport) {
+            mage.enableSuperProtection(protectionTime);
+        }
         context.setTargetLocation(targetLocation);
         selectedWaypoint = waypoint;
         return true;
@@ -1222,6 +1224,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             context.sendMessageKey("teleport_failed", selectedWaypoint.failMessage);
             return SpellResult.FAIL;
         }
+        mage.enableSuperProtection(protectionTime);
         return SpellResult.CAST;
     }
 
