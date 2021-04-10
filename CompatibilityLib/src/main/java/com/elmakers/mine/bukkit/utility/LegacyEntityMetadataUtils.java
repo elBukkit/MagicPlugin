@@ -74,4 +74,12 @@ public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
     public void setString(Entity entity, String key, String value) {
         setRawValue(entity, key, value);
     }
+
+    @Override
+    public void remove(Entity entity, String key) {
+        Map<String, Object> values = metadata.get(entity.getUniqueId().toString());
+        if (values != null) {
+            values.remove(key);
+        }
+    }
 }

@@ -36,7 +36,7 @@ public class ModifyEntityAction extends BaseSpellAction
 {
     private CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.EGG;
 
-    private boolean loot = false;
+    private boolean noDrops = false;
     private boolean force = false;
     private boolean tamed = false;
     private boolean setOwner = true;
@@ -50,7 +50,7 @@ public class ModifyEntityAction extends BaseSpellAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        loot = parameters.getBoolean("loot", false);
+        noDrops = parameters.getBoolean("no_drops", false);
         force = parameters.getBoolean("force", false);
         tamed = parameters.getBoolean("tamed", false);
         speed = parameters.getDouble("speed", 0);
@@ -100,21 +100,21 @@ public class ModifyEntityAction extends BaseSpellAction
     }
 
 
-    private SpellResult modify(CastContext context, Entity spawnedEntity) {
-        if (spawnedEntity == null) {
+    private SpellResult modify(CastContext context, Entity entity) {
+        if (entity == null) {
             return SpellResult.FAIL;
         }
 
         MageController controller = context.getController();
         // Special check to assign ownership
-        if (spawnedEntity instanceof AreaEffectCloud) {
-            ((AreaEffectCloud)spawnedEntity).setSource(context.getLivingEntity());
-        } else if (spawnedEntity instanceof Projectile) {
-            ((Projectile)spawnedEntity).setShooter(context.getLivingEntity());
+        if (entity instanceof AreaEffectCloud) {
+            ((AreaEffectCloud)entity).setSource(context.getLivingEntity());
+        } else if (entity instanceof Projectile) {
+            ((Projectile)entity).setShooter(context.getLivingEntity());
         }
 
-        if (!loot) {
-            EntityMetadataUtils.instance().setBoolean(spawnedEntity, "nodrops", true);
+        if (noDrops && ! (entity instanceof Player)) {
+            EntityMetadataUtils.instance().setBoolean(entity, "nodrops", true);
         }
         if (speed > 0)
         {
@@ -133,21 +133,21 @@ public class ModifyEntityAction extends BaseSpellAction
             }
             motion.normalize();
             motion.multiply(speed);
-            CompatibilityUtils.setEntityMotion(spawnedEntity, motion);
+            CompatibilityUtils.setEntityMotion(entity, motion);
         }
-        if (setOwner && spawnedEntity instanceof Creature) {
-            EntityMetadataUtils.instance().setString(spawnedEntity, "owner", context.getMage().getId());
+        if (setOwner && entity instanceof Creature) {
+            EntityMetadataUtils.instance().setString(entity, "owner", context.getMage().getId());
         }
         LivingEntity shooter = context.getLivingEntity();
         if (shooter != null) {
-            if (spawnedEntity instanceof Projectile) {
-                ((Projectile)spawnedEntity).setShooter(shooter);
-            } else if (spawnedEntity instanceof AreaEffectCloud) {
-                ((AreaEffectCloud)spawnedEntity).setSource(shooter);
+            if (entity instanceof Projectile) {
+                ((Projectile)entity).setShooter(shooter);
+            } else if (entity instanceof AreaEffectCloud) {
+                ((AreaEffectCloud)entity).setSource(shooter);
             }
         }
-        if (tamed && spawnedEntity instanceof Tameable) {
-            Tameable tameable = (Tameable)spawnedEntity;
+        if (tamed && entity instanceof Tameable) {
+            Tameable tameable = (Tameable)entity;
             tameable.setTamed(true);
             Player owner = context.getMage().getPlayer();
             if (owner != null) {

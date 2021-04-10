@@ -390,20 +390,20 @@ public class EntityController implements Listener {
                 automaton.onSpawnDeath();
             }
         }
-        if (EntityMetadataUtils.instance().getBoolean(entity, "nodrops")) {
-            event.setDroppedExp(0);
-            event.getDrops().clear();
-            if (isPlayer) {
-                controller.info("** Player had nodrops tag!", 5);
-            }
-        } else {
-            UndoList pendingUndo = controller.getEntityUndo(entity);
-            if (pendingUndo != null && pendingUndo.isUndoType(entity.getType())) {
+        // Just don't ever clear player death drops, for real
+        if (!isPlayer) {
+            if (EntityMetadataUtils.instance().getBoolean(entity, "nodrops")) {
+                event.setDroppedExp(0);
                 event.getDrops().clear();
-                if (isPlayer) {
-                    controller.info("** Player was in undoEntityTypes list on death!", 5);
+            } else {
+                UndoList pendingUndo = controller.getEntityUndo(entity);
+                if (pendingUndo != null && pendingUndo.isUndoType(entity.getType())) {
+                    event.getDrops().clear();
                 }
             }
+        } else {
+            // Clean up metadata that shouldn't be on players
+            EntityMetadataUtils.instance().remove(entity, "nodrops");
         }
         EntityDamageEvent damageEvent = event.getEntity().getLastDamageCause();
         if (damageEvent instanceof EntityDamageByEntityEvent) {

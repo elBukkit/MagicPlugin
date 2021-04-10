@@ -39,6 +39,8 @@ public abstract class EntityMetadataUtils {
         return metadataUtils;
     }
 
+    public abstract void remove(Entity entity, String key);
+
     public abstract boolean getBoolean(Entity entity, String key);
     public abstract Double getDouble(Entity entity, String key);
     public abstract Long getLong(Entity entity, String key);

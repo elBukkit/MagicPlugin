@@ -15,6 +15,11 @@ public class PersistentEntityMetadataUtils extends EntityMetadataUtils {
     }
 
     @Override
+    public void remove(Entity entity, String key) {
+        entity.getPersistentDataContainer().remove(getKey(key));
+    }
+
+    @Override
     public boolean getBoolean(Entity entity, String key) {
         Byte b = entity.getPersistentDataContainer().get(getKey(key), PersistentDataType.BYTE);
         return b != null && b != 0;
