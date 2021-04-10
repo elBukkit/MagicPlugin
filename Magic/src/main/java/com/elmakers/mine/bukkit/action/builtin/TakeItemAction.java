@@ -28,6 +28,7 @@ public class TakeItemAction extends BaseSpellAction
     private String displayName;
     private MaterialAndData itemType;
     private boolean giveToCaster;
+    private boolean fullStack;
 
     private static class TakeUndoAction implements Runnable {
         private final MageController controller;
@@ -87,6 +88,7 @@ public class TakeItemAction extends BaseSpellAction
             itemType = new MaterialAndData(itemKey);
         }
         giveToCaster = parameters.getBoolean("give_to_caster", giveToCaster);
+        fullStack = parameters.getBoolean("full_stack", true);
     }
 
     private boolean checkItem(ItemStack item) {
@@ -123,10 +125,17 @@ public class TakeItemAction extends BaseSpellAction
                 ItemStack inventoryItem = playerInventory.getItem(slotNumber);
                 if (InventoryUtils.isEmpty(inventoryItem)) continue;
                 if (checkItem(inventoryItem)) {
-                    TakeUndoAction undoAction = new TakeUndoAction(context.getController(), targetPlayer, inventoryItem, slotNumber);
+                    if (fullStack || inventoryItem.getAmount() == 1) {
+                        item = inventoryItem;
+                        inventoryItem = null;
+                    } else {
+                        item = InventoryUtils.getCopy(inventoryItem);
+                        item.setAmount(1);
+                        inventoryItem.setAmount(inventoryItem.getAmount() - 1);
+                    }
+                    TakeUndoAction undoAction = new TakeUndoAction(context.getController(), targetPlayer, item, slotNumber);
                     context.registerForUndo(undoAction);
-                    item = inventoryItem;
-                    playerInventory.setItem(slotNumber, null);
+                    playerInventory.setItem(slotNumber, inventoryItem);
                     Mage mage = context.getController().getRegisteredMage(targetPlayer);
                     if (mage != null && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                         ((com.elmakers.mine.bukkit.magic.Mage)mage).armorUpdated();
