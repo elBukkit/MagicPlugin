@@ -1787,6 +1787,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void tick() {
+        if (loading) return;
         triggeringSpells.clear();
         long now = System.currentTimeMillis();
         if (entityData != null) {
