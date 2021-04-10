@@ -345,8 +345,12 @@ public class EntityController implements Listener {
 
             // Remove temporary items from inventory and drops
             if (NMSUtils.isTemporary(itemStack)) {
+                ItemStack replacement = InventoryUtils.getReplacement(itemStack);
+                if (!CompatibilityUtils.isEmpty(replacement)) {
+                    drops.add(replacement);
+                }
                 drops.remove(itemStack);
-                controller.info("** Removing temporary item from drops: " + TextUtils.nameItem(itemStack) + ", drops now: " + drops.size(), 15);
+                controller.info("** Removing temporary item from drops: " + TextUtils.nameItem(itemStack) + " (replaced with " + TextUtils.nameItem(itemStack) + ") drops now: " + drops.size(), 15);
                 contents[index] = null;
                 continue;
             }
@@ -358,11 +362,11 @@ public class EntityController implements Listener {
                 mage.addToRespawnInventory(index, itemStack);
                 contents[index] = null;
                 drops.remove(itemStack);
-                controller.info("** Removing keep item from drops: " + TextUtils.nameItem(itemStack) + ", drops now: " + drops.size(), 15);
+                controller.info("** Removing keep item from drops: " + TextUtils.nameItem(itemStack) + "&r, drops now: " + drops.size(), 15);
             } else if (Wand.isSkill(itemStack)) {
                 drops.remove(itemStack);
                 contents[index] = null;
-                controller.info("** Removing skill item from drops: " + TextUtils.nameItem(itemStack) + ", drops now: " + drops.size(), 15);
+                controller.info("** Removing skill item from drops: " + TextUtils.nameItem(itemStack) + "&r, drops now: " + drops.size(), 15);
             }
         }
         inventory.setContents(contents);

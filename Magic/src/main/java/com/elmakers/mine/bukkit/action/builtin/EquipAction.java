@@ -274,7 +274,8 @@ public class EquipAction extends BaseSpellAction
             if (returned) return;
             returned = true;
             Mage mage = this.mage.get();
-            if (mage == null) return;
+            // If the player died, then the temporary items were converted into the replacements and dropped
+            if (mage == null || mage.isDead()) return;
 
             ItemStack currentItem = mage.getItem(slotNumber);
             if (NMSUtils.isTemporary(currentItem)) {

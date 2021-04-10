@@ -31,6 +31,7 @@
  - Fix magic mob spawn eggs
  - Fix Growth not working on beetroots
  - Fix progression to engineer rank
+ - Fix losing your helmet on death if you had used the Hat spell
  - Another possible death drop erasure fix
 
 # 8.5.1

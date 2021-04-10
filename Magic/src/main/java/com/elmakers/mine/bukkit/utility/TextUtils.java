@@ -177,7 +177,7 @@ public class TextUtils
 
     public static String nameItem(ItemStack itemStack) {
         if (itemStack == null) {
-            return "(Nothing)";
+            return "Nothing";
         }
         ItemMeta meta = itemStack.getItemMeta();
         if (meta != null && meta.hasDisplayName()) {
