@@ -139,7 +139,7 @@ public class CustomTrigger extends Trigger {
         }
         spell = mage.getSpell(castSpell);
         if (spell == null) {
-            mage.getController().getLogger().warning("Unknown spell in mob trigger: " + castSpell + " from mob " + mage.getName());
+            mage.getController().getLogger().warning("Unknown spell in trigger: " + castSpell + " from " + mage.getName());
             return;
         }
 
