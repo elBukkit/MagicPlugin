@@ -13,10 +13,12 @@ import org.bukkit.Material;
 import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
 
@@ -103,12 +105,20 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Usage: mwarp send <player> <warp>");
                 return true;
             }
-            Player sendPlayer = DeprecatedUtils.getPlayer(args[1]);
-            if (sendPlayer == null) {
-                sender.sendMessage(ChatColor.RED + "Can't find player: " + args[1]);
-                return true;
+            String playerSelector = args[1];
+            List<Entity> targets = NMSUtils.selectEntities(sender, playerSelector);
+            if (targets != null) {
+                for (Entity entity : targets) {
+                    onSendWarp(sender, entity, args[2]);
+                }
+            } else {
+                Player player = DeprecatedUtils.getPlayer(playerSelector);
+                if (player == null) {
+                    sender.sendMessage("No players matched: " + playerSelector);
+                    return true;
+                }
+                onSendWarp(sender, player, args[2]);
             }
-            onSendWarp(sender, sendPlayer, args[2]);
             return true;
         }
 
@@ -141,7 +151,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
         onSendWarp(player, player, warpName);
     }
 
-    private void onSendWarp(CommandSender sender, Player player, String warpName) {
+    private void onSendWarp(CommandSender sender, Entity entity, String warpName) {
         Location location = magicController.getWarp(warpName);
         if (location == null || location.getWorld() == null) {
             MagicWarp magicWarp = magicController.getWarps().getMagicWarp(warpName);
@@ -159,7 +169,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "The target location for warp: " + ChatColor.DARK_RED + warpName + ChatColor.RED + " is not available");
             return;
         }
-        player.teleport(location);
+        entity.teleport(location);
     }
 
     private void onAddWarp(Player player, String warpName, boolean overwrite) {
