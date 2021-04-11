@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -189,7 +190,7 @@ public class ProjectileAction  extends BaseProjectileAction
                     }
                 }
                 if (!breakBlocks) {
-                    EntityMetadataUtils.instance().setBoolean(projectile, "cancel_explosion_blocks", true);
+                    EntityMetadataUtils.instance().setBoolean(projectile, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS, true);
                 }
                 track(context, projectile);
             } catch (Exception ex) {

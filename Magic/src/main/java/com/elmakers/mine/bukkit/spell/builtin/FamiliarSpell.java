@@ -30,6 +30,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.spell.SpellEventType;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
@@ -224,7 +225,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                     }
                     if (!loot)
                     {
-                        EntityMetadataUtils.instance().setBoolean(entity, "nodrops", true);
+                        EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
                     }
                     if (spawnBaby && entity instanceof Ageable) {
                         Ageable ageable = (Ageable)entity;

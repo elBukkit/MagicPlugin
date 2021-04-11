@@ -6,7 +6,7 @@ import java.util.Map;
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
-public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
+final class LegacyEntityMetadataUtils extends EntityMetadataUtils {
     // This is leaky.
     // There does not seem to be a way to really track entities to clean up this map, other than periodic checks
     // which don't feel performant enough to be worth the small amount of memory leaked here.
@@ -17,66 +17,64 @@ public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
         super(plugin);
     }
 
-    protected Object getRawValue(Entity entity, String key) {
+    protected <T> T getRawValue(Entity entity, MetaKey<T> key) {
         Map<String, Object> data = metadata.get(entity.getUniqueId().toString());
-        return data == null ? null : data.get(key);
+        Object v = data == null ? null : data.get(key.getName());
+        return key.getType().isInstance(v) ? key.getType().cast(v) : null;
     }
 
     @Override
-    public boolean getBoolean(Entity entity, String key) {
-        Object value = getRawValue(entity, key);
-        return value == null || !(value instanceof Boolean) ? false : (Boolean)value;
+    public boolean getBoolean(Entity entity, MetaKey<Boolean> key) {
+        Boolean value = getRawValue(entity, key);
+        return value != null && value.booleanValue();
     }
 
     @Override
-    public Double getDouble(Entity entity, String key) {
-        Object value = getRawValue(entity, key);
-        return value == null || !(value instanceof Double) ? null : (Double)value;
+    public Double getDouble(Entity entity, MetaKey<Double> key) {
+        return getRawValue(entity, key);
     }
 
     @Override
-    public Long getLong(Entity entity, String key) {
-        Object value = getRawValue(entity, key);
-        return value == null || !(value instanceof Long) ? null : (Long)value;
+    public Long getLong(Entity entity, MetaKey<Long> key) {
+        return getRawValue(entity, key);
     }
 
     @Override
-    public String getString(Entity entity, String key) {
-        Object value = getRawValue(entity, key);
-        return value == null || !(value instanceof String) ? null : (String)value;
+    public String getString(Entity entity, MetaKey<String> key) {
+        return getRawValue(entity, key);
     }
 
-    protected void setRawValue(Entity entity, String key, Object value) {
+    protected <T> void setRawValue(Entity entity, MetaKey<T> key, T value) {
         Map<String, Object> values = metadata.get(entity.getUniqueId().toString());
         if (values == null) {
             values = new HashMap<>();
             metadata.put(entity.getUniqueId().toString(), values);
         }
-        values.put(key, value);
+        values.put(key.getName(), value);
     }
 
     @Override
-    public void setBoolean(Entity entity, String key, boolean value) {
+    public void setBoolean(Entity entity, MetaKey<Boolean> key, boolean value) {
         setRawValue(entity, key, value);
     }
 
     @Override
-    public void setDouble(Entity entity, String key, double value) {
+    public void setDouble(Entity entity, MetaKey<Double> key, double value) {
         setRawValue(entity, key, value);
     }
 
     @Override
-    public void setLong(Entity entity, String key, long value) {
+    public void setLong(Entity entity, MetaKey<Long> key, long value) {
         setRawValue(entity, key, value);
     }
 
     @Override
-    public void setString(Entity entity, String key, String value) {
+    public void setString(Entity entity, MetaKey<String> key, String value) {
         setRawValue(entity, key, value);
     }
 
     @Override
-    public void remove(Entity entity, String key) {
+    public void remove(Entity entity, MetaKey<?> key) {
         Map<String, Object> values = metadata.get(entity.getUniqueId().toString());
         if (values != null) {
             values.remove(key);

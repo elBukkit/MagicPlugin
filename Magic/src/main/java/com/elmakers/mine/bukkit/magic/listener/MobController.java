@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -122,12 +123,12 @@ public class MobController implements Listener, ChunkLoadListener {
     @Override
     public void onChunkLoad(Chunk chunk) {
         for (Entity entity : chunk.getEntities()) {
-            String magicMobKey = EntityMetadataUtils.instance().getString(entity, "magicmob");
+            String magicMobKey = EntityMetadataUtils.instance().getString(entity, MagicMetaKeys.MAGIC_MOB);
             if (magicMobKey != null) {
                 checkMagicMob(entity, magicMobKey);
             }
             // Check for disconnected NPCs, we don't want to leave invulnerable entities around
-            String npcId = EntityMetadataUtils.instance().getString(entity, "npc_id");
+            String npcId = EntityMetadataUtils.instance().getString(entity, MagicMetaKeys.NPC_ID);
             if (npcId != null) {
                 checkNPC(entity, npcId);
             } else if (REMOVE_INVULNERABLE && entity.getType() != EntityType.DROPPED_ITEM
@@ -219,7 +220,7 @@ public class MobController implements Listener, ChunkLoadListener {
 
         Entity target = event.getTarget();
         if (target != null) {
-            String ownerId = EntityMetadataUtils.instance().getString(source, "owner");
+            String ownerId = EntityMetadataUtils.instance().getString(source, MagicMetaKeys.OWNER);
             if (ownerId != null) {
                 Mage mageOwner = controller.getRegisteredMage(ownerId);
                 if (mageOwner != null && mageOwner.getEntity() == target) {
@@ -255,7 +256,7 @@ public class MobController implements Listener, ChunkLoadListener {
     @EventHandler
     public void onSlimeSplit(SlimeSplitEvent event) {
         Entity entity = event.getEntity();
-        if (EntityMetadataUtils.instance().getBoolean(entity, "nosplit")) {
+        if (EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.NOSPLIT)) {
             event.setCancelled(true);
         }
     }
@@ -284,9 +285,9 @@ public class MobController implements Listener, ChunkLoadListener {
 
         mob.onDeath(entity);
         if (!mob.isSplittable()) {
-            EntityMetadataUtils.instance().setBoolean(entity, "nosplit", true);
+            EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NOSPLIT, true);
         }
-        if (!EntityMetadataUtils.instance().getBoolean(entity, "nodrops")) {
+        if (!EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.NO_DROPS)) {
             mob.modifyDrops(event);
         }
     }

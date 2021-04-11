@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -122,7 +123,7 @@ public class ThrowItemAction extends BaseProjectileAction {
             return SpellResult.FAIL;
         }
         if (temporary) {
-            EntityMetadataUtils.instance().setBoolean(droppedItem, "temporary", true);
+            EntityMetadataUtils.instance().setBoolean(droppedItem, MagicMetaKeys.TEMPORARY, true);
         }
         if (ageItems > 0) {
             CompatibilityUtils.ageItem(droppedItem, ageItems);

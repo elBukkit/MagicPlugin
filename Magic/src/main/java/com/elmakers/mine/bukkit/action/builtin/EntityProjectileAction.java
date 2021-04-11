@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
@@ -81,7 +82,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     protected Entity setEntity(MageController controller, @Nonnull Entity entity) {
         this.entity = entity;
         if (noTarget) {
-            EntityMetadataUtils.instance().setBoolean(entity, "notarget", true);
+            EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_TARGET, true);
         }
         CompatibilityUtils.setPersist(entity, false);
 

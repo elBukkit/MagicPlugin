@@ -46,6 +46,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -204,7 +205,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         public void onHorseJump(HorseJumpEvent event)
         {
             Entity horse = ((EntityEvent)event).getEntity();
-            if (EntityMetadataUtils.instance().getBoolean(horse, "broom"))
+            if (EntityMetadataUtils.instance().getBoolean(horse, MagicMetaKeys.BROOM))
             {
                 Entity passenger = horse.getPassenger();
                 Mage mage = controller.getMage(passenger);
@@ -224,7 +225,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         {
             HumanEntity player = event.getPlayer();
             Entity mount = player.getVehicle();
-            if (mount != null && EntityMetadataUtils.instance().getBoolean(mount, "broom")) {
+            if (mount != null && EntityMetadataUtils.instance().getBoolean(mount, MagicMetaKeys.BROOM)) {
                 event.setCancelled(true);
             }
         }
@@ -233,7 +234,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
         public void onVehicleExit(VehicleExitEvent event)
         {
             Entity vehicle = event.getVehicle();
-            if (EntityMetadataUtils.instance().getBoolean(vehicle, "broom"))
+            if (EntityMetadataUtils.instance().getBoolean(vehicle, MagicMetaKeys.BROOM))
             {
                 event.setCancelled(true);
                 Entity passenger = vehicle.getPassenger();
@@ -891,8 +892,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     armorStand = CompatibilityUtils.createArmorStand(mage.getLocation());
                     configureArmorStand(armorStand);
                     armorStand.setPassenger(mountEntity);
-                    EntityMetadataUtils.instance().setBoolean(armorStand, "notarget", true);
-                    EntityMetadataUtils.instance().setBoolean(armorStand, "broom", true);
+                    EntityMetadataUtils.instance().setBoolean(armorStand, MagicMetaKeys.NO_TARGET, true);
+                    EntityMetadataUtils.instance().setBoolean(armorStand, MagicMetaKeys.BROOM, true);
                     controller.setForceSpawn(true);
                     try {
                         CompatibilityUtils.addToWorld(mage.getLocation().getWorld(), armorStand, mountSpawnReason);
@@ -905,8 +906,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
                 }
 
                 mountEntity.setPassenger(mage.getEntity());
-                EntityMetadataUtils.instance().setBoolean(mountEntity, "notarget", true);
-                EntityMetadataUtils.instance().setBoolean(mountEntity, "broom", true);
+                EntityMetadataUtils.instance().setBoolean(mountEntity, MagicMetaKeys.NO_DROPS, true);
+                EntityMetadataUtils.instance().setBoolean(mountEntity, MagicMetaKeys.BROOM, true);
 
                 if (listener == null) {
                     listener = new LevitateListener(controller);
@@ -963,8 +964,8 @@ public class LevitateSpell extends TargetingSpell implements Listener
         } else {
             armorStand.setItemInHand(heldItem);
         }
-        EntityMetadataUtils.instance().setBoolean(armorStand, "notarget", true);
-        EntityMetadataUtils.instance().setBoolean(armorStand, "broom", true);
+        EntityMetadataUtils.instance().setBoolean(armorStand, MagicMetaKeys.NO_TARGET, true);
+        EntityMetadataUtils.instance().setBoolean(armorStand, MagicMetaKeys.BROOM, true);
         if (mountInvisible) {
             CompatibilityUtils.setInvisible(armorStand, true);
         }

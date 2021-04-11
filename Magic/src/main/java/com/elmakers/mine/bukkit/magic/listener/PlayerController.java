@@ -60,6 +60,7 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.DropActionTask;
 import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -1019,7 +1020,7 @@ public class PlayerController implements Listener {
     {
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
-        if (NMSUtils.isTemporary(pickup) || EntityMetadataUtils.instance().getBoolean(item, "temporary"))
+        if (NMSUtils.isTemporary(pickup) || EntityMetadataUtils.instance().getBoolean(item, MagicMetaKeys.TEMPORARY))
         {
             item.remove();
             event.setCancelled(true);

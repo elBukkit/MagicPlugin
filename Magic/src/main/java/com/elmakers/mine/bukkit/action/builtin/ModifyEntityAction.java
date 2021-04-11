@@ -27,6 +27,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -114,7 +115,7 @@ public class ModifyEntityAction extends BaseSpellAction
         }
 
         if (noDrops && ! (entity instanceof Player)) {
-            EntityMetadataUtils.instance().setBoolean(entity, "nodrops", true);
+            EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
         }
         if (speed > 0)
         {
@@ -136,7 +137,7 @@ public class ModifyEntityAction extends BaseSpellAction
             CompatibilityUtils.setEntityMotion(entity, motion);
         }
         if (setOwner && entity instanceof Creature) {
-            EntityMetadataUtils.instance().setString(entity, "owner", context.getMage().getId());
+            EntityMetadataUtils.instance().setString(entity, MagicMetaKeys.OWNER, context.getMage().getId());
         }
         LivingEntity shooter = context.getLivingEntity();
         if (shooter != null) {

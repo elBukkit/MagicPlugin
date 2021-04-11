@@ -3899,7 +3899,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isMagicNPC(Entity entity) {
-        return EntityMetadataUtils.instance().getString(entity, "npc_id") != null;
+        return EntityMetadataUtils.instance().getString(entity, MagicMetaKeys.NPC_ID) != null;
     }
 
     @Override
@@ -6828,7 +6828,7 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public MagicNPC getNPC(@Nullable Entity entity) {
-        String npcId = EntityMetadataUtils.instance().getString(entity, "npc_id");
+        String npcId = EntityMetadataUtils.instance().getString(entity, MagicMetaKeys.NPC_ID);
         return getNPC(npcId);
     }
 

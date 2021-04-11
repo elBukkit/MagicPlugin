@@ -39,15 +39,15 @@ public abstract class EntityMetadataUtils {
         return metadataUtils;
     }
 
-    public abstract void remove(Entity entity, String key);
+    public abstract void remove(Entity entity, MetaKey<?> key);
 
-    public abstract boolean getBoolean(Entity entity, String key);
-    public abstract Double getDouble(Entity entity, String key);
-    public abstract Long getLong(Entity entity, String key);
-    public abstract String getString(Entity entity, String key);
+    public abstract boolean getBoolean(Entity entity, MetaKey<Boolean> key);
+    public abstract Double getDouble(Entity entity, MetaKey<Double> key);
+    public abstract Long getLong(Entity entity, MetaKey<Long> key);
+    public abstract String getString(Entity entity, MetaKey<String> key);
 
-    public abstract void setBoolean(Entity entity, String key, boolean value);
-    public abstract void setDouble(Entity entity, String key, double value);
-    public abstract void setLong(Entity entity, String key, long value);
-    public abstract void setString(Entity entity, String key, String value);
+    public abstract void setBoolean(Entity entity, MetaKey<Boolean> key, boolean value);
+    public abstract void setDouble(Entity entity, MetaKey<Double> key, double value);
+    public abstract void setLong(Entity entity, MetaKey<Long> key, long value);
+    public abstract void setString(Entity entity, MetaKey<String> key, String value);
 }

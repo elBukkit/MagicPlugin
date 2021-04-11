@@ -68,6 +68,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.item.Cost;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -190,9 +191,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.controller = controller;
         setEntity(entity);
         this.location = CompatibilityUtils.getHangingLocation(entity);
-        this.magicSpawned = EntityMetadataUtils.instance().getBoolean(entity, "magicspawned");
-        this.respawn = !EntityMetadataUtils.instance().getBoolean(entity, "norespawn");
-        this.cancelExplosion = EntityMetadataUtils.instance().getBoolean(entity, "cancel_explosion");
+        this.magicSpawned = EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED);
+        this.respawn = !EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.NO_RESPAWN);
+        this.cancelExplosion = EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION);
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
@@ -851,7 +852,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     respawned.put(uuid, new WeakReference<>(entity));
 
                     // Undo'ing an entity won't drop loot
-                    EntityMetadataUtils.instance().setBoolean(entity, "nodrops", true);
+                    EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
                 }
             }
             setEntity(entity);
@@ -1116,11 +1117,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
         if (cancelExplosion) {
-            EntityMetadataUtils.instance().setBoolean(entity, "cancel_explosion", true);
+            EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION, true);
         }
 
         if (this.key != null) {
-            EntityMetadataUtils.instance().setString(entity, "magicmob", this.key);
+            EntityMetadataUtils.instance().setString(entity, MagicMetaKeys.MAGIC_MOB, this.key);
         }
         // Do this one last time again at the very end, it seems some other changes (like facing direction on an item frame
         // can remove invisibility, somehow.
