@@ -7062,7 +7062,7 @@ public class MagicController implements MageController {
 
         // Check for LibsDisguise
         Plugin libsDisguisePlugin = pluginManager.getPlugin("LibsDisguises");
-        if (libsDisguisePlugin == null || !libsDisguisePlugin.isEnabled()) {
+        if (libsDisguisePlugin == null) {
             getLogger().info("LibsDisguises not found, magic mob disguises will not be available");
         } else if (libsDisguiseEnabled) {
             if (!LibsDisguiseManager.isCurrentVersion()) {
@@ -7086,7 +7086,7 @@ public class MagicController implements MageController {
             getLogger().info("Vault integration disabled");
         } else {
             Plugin vaultPlugin = pluginManager.getPlugin("Vault");
-            if (vaultPlugin == null || !vaultPlugin.isEnabled()) {
+            if (vaultPlugin == null) {
                 getLogger().info("Vault not found, 'currency' cost types unavailable");
             } else {
                 if (!VaultController.initialize(plugin, vaultPlugin)) {
