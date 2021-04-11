@@ -7,6 +7,8 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
+import com.google.common.base.Preconditions;
+
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
 
@@ -83,18 +85,30 @@ public class VaultController {
     }
 
     public boolean withdrawPlayer(OfflinePlayer player, double amount) {
+        Preconditions.checkArgument(
+                0 <= amount,
+                "Amount to withdraw must be non-negative, got: %s", amount);
         if (economy == null || player == null) {
             return false;
+        } else if (amount == 0) {
+            return true;
         }
-        EconomyResponse response  = economy.withdrawPlayer(player, amount);
+
+        EconomyResponse response = economy.withdrawPlayer(player, amount);
         return response.transactionSuccess();
     }
 
     public boolean depositPlayer(OfflinePlayer player, double amount) {
+        Preconditions.checkArgument(
+                0 <= amount,
+                "Amount to withdraw must be non-negative, got: %s", amount);
         if (economy == null || player == null) {
             return false;
+        } else if (amount == 0) {
+            return true;
         }
-        EconomyResponse response  = economy.depositPlayer(player, amount);
+
+        EconomyResponse response = economy.depositPlayer(player, amount);
         return response.transactionSuccess();
     }
 }
