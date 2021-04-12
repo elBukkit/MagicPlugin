@@ -103,7 +103,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isTemporary = false;
     protected boolean cancelExplosion = false;
     protected boolean magicSpawned = false;
-    private boolean respawn = false;
+    private boolean respawn = true;
     protected String name = null;
     protected Art art;
     protected BlockFace facing;
@@ -192,7 +192,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         setEntity(entity);
         this.location = CompatibilityUtils.getHangingLocation(entity);
         this.magicSpawned = EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED);
-        this.respawn = !EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.NO_RESPAWN);
         this.cancelExplosion = EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION);
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;

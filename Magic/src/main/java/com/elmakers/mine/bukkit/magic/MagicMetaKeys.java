@@ -52,9 +52,4 @@ public class MagicMetaKeys {
 
     public static final MetaKey<Boolean> NOSPLIT = new MetaKey<>(
             Boolean.class, "nosplit");
-
-    // NOTE: Not used
-    public static final MetaKey<Boolean> NO_RESPAWN = new MetaKey<>(
-            Boolean.class, "norespawn");
-
 }
