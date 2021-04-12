@@ -43,6 +43,7 @@ public class CitizensController implements NPCSupplier {
         citizensPlugin = (Citizens)plugin;
 
         if (enableTraits) {
+            controller.getLogger().info("Citizens found, enabling magic and command traits");
             CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(MagicCitizensTrait.class).withName("magic"));
             CitizensAPI.getTraitFactory().registerTrait(TraitInfo.create(CommandCitizensTrait.class).withName("command"));
         } else {

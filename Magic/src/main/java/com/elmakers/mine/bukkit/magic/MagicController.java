@@ -1770,7 +1770,7 @@ public class MagicController implements MageController {
 
             // Delay validation of configs or anything else that requires attributes or
             // other external plugin registrations
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 2);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 1);
         } else {
             finalizePostStartupLoad(loader, sender);
         }
