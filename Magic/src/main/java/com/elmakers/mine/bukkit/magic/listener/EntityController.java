@@ -45,6 +45,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
@@ -112,8 +113,8 @@ public class EntityController implements Listener {
         Item itemOne = event.getEntity();
         Item itemTwo = event.getTarget();
 
-        if (EntityMetadataUtils.instance().getBoolean(itemOne, "temporary")
-            || EntityMetadataUtils.instance().getBoolean(itemTwo, "temporary")) {
+        if (EntityMetadataUtils.instance().getBoolean(itemOne, MagicMetaKeys.TEMPORARY)
+            || EntityMetadataUtils.instance().getBoolean(itemTwo, MagicMetaKeys.TEMPORARY)) {
             event.setCancelled(true);
         }
     }
@@ -387,7 +388,7 @@ public class EntityController implements Listener {
                 + " from " + cause
                 + " with drops: " + event.getDrops().size(), 15);
         }
-        Long spawnerId = EntityMetadataUtils.instance().getLong(entity, "automaton");
+        Long spawnerId = EntityMetadataUtils.instance().getLong(entity, MagicMetaKeys.AUTOMATION);
         if (spawnerId != null) {
             Automaton automaton = controller.getActiveAutomaton(spawnerId);
             if (automaton != null) {
@@ -396,7 +397,7 @@ public class EntityController implements Listener {
         }
         // Just don't ever clear player death drops, for real
         if (!isPlayer) {
-            if (EntityMetadataUtils.instance().getBoolean(entity, "nodrops")) {
+            if (EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.NO_DROPS)) {
                 event.setDroppedExp(0);
                 event.getDrops().clear();
             } else {
@@ -407,7 +408,7 @@ public class EntityController implements Listener {
             }
         } else {
             // Clean up metadata that shouldn't be on players
-            EntityMetadataUtils.instance().remove(entity, "nodrops");
+            EntityMetadataUtils.instance().remove(entity, MagicMetaKeys.NO_DROPS);
         }
         EntityDamageEvent damageEvent = event.getEntity().getLastDamageCause();
         if (damageEvent instanceof EntityDamageByEntityEvent) {

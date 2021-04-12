@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
@@ -251,7 +252,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
             spawned = new ArrayList<>();
         }
         for (Entity entity : entities) {
-            EntityMetadataUtils.instance().setLong(entity, "automaton", getId());
+            EntityMetadataUtils.instance().setLong(entity, MagicMetaKeys.AUTOMATION, getId());
             spawned.add(new WeakReference<>(entity));
         }
     }

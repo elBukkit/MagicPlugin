@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.tasks.PlaySpellEffectsTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -372,7 +373,7 @@ public class TargetingSpell extends BaseSpell {
             mage.sendDebugMessage("Entity skipped, is tamed", 30);
             return false;
         }
-        if (EntityMetadataUtils.instance().getBoolean(entity, "notarget")) {
+        if (EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.NO_TARGET)) {
             mage.sendDebugMessage("Entity skipped, has notarget metadata", 30);
             return false;
         }

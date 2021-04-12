@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
@@ -329,7 +330,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         }
         Entity vehicle = entity;
         while (vehicle != null) {
-            EntityMetadataUtils.instance().setString(vehicle, "npc_id", id.toString());
+            EntityMetadataUtils.instance().setString(vehicle, MagicMetaKeys.NPC_ID, id.toString());
             vehicle = vehicle.getVehicle();
         }
         if (entityData.useNPCName()) {

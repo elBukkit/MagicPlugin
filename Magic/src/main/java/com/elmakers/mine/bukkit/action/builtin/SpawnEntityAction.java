@@ -37,6 +37,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -276,7 +277,7 @@ public class SpawnEntityAction extends CompoundAction
         }
 
         if (!loot) {
-            EntityMetadataUtils.instance().setBoolean(spawnedEntity, "nodrops", true);
+            EntityMetadataUtils.instance().setBoolean(spawnedEntity, MagicMetaKeys.NO_DROPS, true);
         }
         if (speed > 0)
         {
@@ -304,7 +305,7 @@ public class SpawnEntityAction extends CompoundAction
         }
         context.registerForUndo(spawnedEntity);
         if (setOwner && spawnedEntity instanceof Creature) {
-            EntityMetadataUtils.instance().setString(spawnedEntity, "owner", context.getMage().getId());
+            EntityMetadataUtils.instance().setString(spawnedEntity, MagicMetaKeys.OWNER, context.getMage().getId());
         }
         if (setTarget && !hasAnyActions)
         {
