@@ -5357,6 +5357,7 @@ public class MagicController implements MageController {
         return itemStack;
     }
 
+    @Override
     @Nullable
     public ItemStack getSpawnEgg(String mobType) {
         EntityData entityData = getMob(mobType);
