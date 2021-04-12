@@ -6283,6 +6283,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    @Override
     @Nonnull
     public Map<Enchantment, Integer> getEnchantments() {
         Map<Enchantment, Integer> enchantMap = new HashMap<>();

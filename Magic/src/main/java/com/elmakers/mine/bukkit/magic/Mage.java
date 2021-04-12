@@ -3013,6 +3013,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return properties;
     }
 
+    @Override
     @Nullable
     public CasterProperties getCasterProperties(String propertyType) {
         CasterProperties properties = null;

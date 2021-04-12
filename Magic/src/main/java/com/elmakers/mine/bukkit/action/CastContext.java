@@ -1717,6 +1717,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         return spell.getName() + " of " + super.getName();
     }
 
+    @Override
     @Nullable
     public CasterProperties getCasterProperties(String propertyType) {
         CasterProperties properties = null;
@@ -1730,6 +1731,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         return properties;
     }
 
+    @Override
     @Nullable
     public CasterProperties getTargetCasterProperties(String propertyType) {
         Entity targetEntity = getTargetEntity();

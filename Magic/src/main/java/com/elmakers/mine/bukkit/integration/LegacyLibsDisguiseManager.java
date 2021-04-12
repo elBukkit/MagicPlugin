@@ -33,14 +33,17 @@ public class LegacyLibsDisguiseManager implements LibsDisguiseManager {
         this.owningPlugin = owningPlugin;
     }
 
+    @Override
     public boolean initialize() {
         return (disguisePlugin != null && disguisePlugin instanceof LibsDisguises);
     }
 
+    @Override
     public boolean isDisguised(Entity entity) {
         return DisguiseAPI.isDisguised(entity);
     }
 
+    @Override
     public boolean disguise(Entity entity, ConfigurationSection configuration) {
         if (configuration == null) {
             DisguiseAPI.undisguiseToAll(entity);
@@ -131,6 +134,7 @@ public class LegacyLibsDisguiseManager implements LibsDisguiseManager {
         return true;
     }
 
+    @Override
     @Nullable
     public String getSkin(Player player) {
         WrappedGameProfile profile = WrappedGameProfile.fromPlayer(player);
