@@ -86,7 +86,7 @@ public class VaultController {
 
     public boolean withdrawPlayer(OfflinePlayer player, double amount) {
         Preconditions.checkArgument(
-                0 <= amount,
+                0 < amount,
                 "Amount to withdraw must be non-negative, got: %s", amount);
         if (economy == null || player == null) {
             return false;
@@ -100,7 +100,7 @@ public class VaultController {
 
     public boolean depositPlayer(OfflinePlayer player, double amount) {
         Preconditions.checkArgument(
-                0 <= amount,
+                0 < amount,
                 "Amount to withdraw must be non-negative, got: %s", amount);
         if (economy == null || player == null) {
             return false;
