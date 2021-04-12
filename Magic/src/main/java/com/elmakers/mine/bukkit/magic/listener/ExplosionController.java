@@ -74,7 +74,7 @@ public class ExplosionController implements Listener {
     public void onEntityPrime(ExplosionPrimeEvent event) {
         Entity explodingEntity = event.getEntity();
         if (explodingEntity == null) return;
-        if (EntityMetadataUtils.instance().getBoolean(explodingEntity, MagicMetaKeys.CANCEL_EXPLOSION)){
+        if (EntityMetadataUtils.instance().getBoolean(explodingEntity, MagicMetaKeys.CANCEL_EXPLOSION)) {
             event.setCancelled(true);
         }
     }
