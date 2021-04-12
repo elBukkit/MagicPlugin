@@ -7,13 +7,11 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 import org.bukkit.util.NumberConversions;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.configuration.SpellParameters;
@@ -105,14 +103,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
         if (modify == null) {
             return SpellResult.FAIL;
         }
-        Entity entity = context.getTargetEntity();
-        Mage mage = entity == null
-                ? null
-                : context.getController().getRegisteredMage(entity);
-        if (mage == null) {
-            return SpellResult.NO_TARGET;
-        }
-        CasterProperties properties = context.getCasterProperties(modifyTarget);
+        CasterProperties properties = context.getTargetCasterProperties(modifyTarget);
         if (properties == null) {
             return SpellResult.NO_TARGET;
         }

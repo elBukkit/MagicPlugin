@@ -798,4 +798,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     String parameterizeMessage(String command);
     String parameterize(String command, String prefix);
     ClientPlatform getClientPlatform();
+    @Nullable
+    CasterProperties getCasterProperties(String propertyType);
 }

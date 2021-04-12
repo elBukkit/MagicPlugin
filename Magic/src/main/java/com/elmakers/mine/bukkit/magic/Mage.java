@@ -3013,6 +3013,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return properties;
     }
 
+    @Nullable
+    public CasterProperties getCasterProperties(String propertyType) {
+        CasterProperties properties = null;
+        if (propertyType.equals("wand")) {
+            properties = getActiveWand();
+        } else if (propertyType.equals("active_wand")) {
+            properties = checkWand();
+        } else if (propertyType.equals("player")) {
+            properties = getProperties();
+        } else if (propertyType.equals("class")) {
+            properties = getActiveClass();
+        } else if (propertyType.equals("active")) {
+            properties = getActiveProperties();
+        } else {
+            properties = getClass(propertyType);
+        }
+
+        // I am now wishing I hadn't made a base class called "mage" :(
+        if (properties == null && propertyType.equals("mage")) {
+            properties = getProperties();
+        }
+        return properties;
+    }
+
     @Override
     public float getMana() {
         return getActiveProperties().getMana();

@@ -256,4 +256,6 @@ public interface CastContext extends MageContext {
     void setIndestructible(MaterialSet indestructible);
     @Nullable
     CasterProperties getCasterProperties(String propertyType);
+    @Nullable
+    CasterProperties getTargetCasterProperties(String propertyType);
 }
