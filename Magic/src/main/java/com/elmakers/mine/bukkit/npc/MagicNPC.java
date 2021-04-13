@@ -204,7 +204,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         setEntityData(newEntityData);
         this.mobKey = mobKey;
         remove();
-        checkForRestore();
+        restore();
         return true;
     }
 
@@ -217,12 +217,6 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         this.templateKey = templateKey;
         setType(mobKey);
         return true;
-    }
-
-    protected void checkForRestore() {
-        if (location != null && CompatibilityUtils.isChunkLoaded(location)) {
-            restore();
-        }
     }
 
     protected void setEntityData(EntityData templateData) {
@@ -311,6 +305,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Nullable
     public Entity restore() {
+        if (location == null || !CompatibilityUtils.isChunkLoaded(location)) {
+            return null;
+        }
         Entity entity = getEntity();
         if (entity == null || !entity.isValid()) {
             controller.setDisableSpawnReplacement(true);
@@ -376,7 +373,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     public void setName(@Nonnull String name) {
         this.name = name;
-        checkForRestore();
+        restore();
     }
 
     @Nonnull
@@ -422,7 +419,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         if (!updated) {
             configureEntityData();
         }
-        checkForRestore();
+        restore();
     }
 
     @Override
