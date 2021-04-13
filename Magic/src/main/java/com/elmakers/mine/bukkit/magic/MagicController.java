@@ -828,9 +828,6 @@ public class MagicController implements MageController {
             apiMage = mages.get(mageId);
             com.elmakers.mine.bukkit.magic.Mage mage = apiMage;
 
-            // In case of rapid relog, this mage may have been marked for removal already
-            mage.setUnloading(false);
-
             // Re-set mage properties
             mage.setName(mageName);
             mage.setCommandSender(commandSender);

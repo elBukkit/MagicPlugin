@@ -908,7 +908,9 @@ public class PlayerController implements Listener {
     {
         // Automatically re-activate mages.
         Player player = event.getPlayer();
-        controller.getMage(player);
+        Mage mage = controller.getMage(player);
+        // In case of rapid relog, this mage may have been marked for removal already
+        mage.setUnloading(false);
         controller.checkVanished(player);
         if (player.hasPermission("Magic.migrate")) {
            controller.checkForMigration(player);
