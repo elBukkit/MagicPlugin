@@ -24,6 +24,8 @@
  - Add ModifyAttribute action
  - Add full_stack parameter to TakeItem action, set to false to only take 1 item from a stack
 
+# 8.5.3
+
 # 8.5.2
 
  - Fix shulker boxes being destructible (still)
