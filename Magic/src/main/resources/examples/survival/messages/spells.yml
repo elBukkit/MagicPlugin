@@ -1488,3 +1488,12 @@ spells:
     dailykit:
         name: Daily Kit
         description: Gives some items once a day
+    rolldice:
+        name: Roll Dice
+        description: Test Your Luck!
+        rolled_1: You rolled a one!
+        rolled_2: You rolled a two!
+        rolled_3: You rolled a three!
+        rolled_4: You rolled a four!
+        rolled_5: You rolled a five!
+        rolled_6: You rolled a six!

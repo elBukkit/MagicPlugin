@@ -463,3 +463,6 @@ wands:
         name: Fox Helmet
     arcticfoxhelmet:
         name: Arctic Fox Helmet
+    dice:
+        name: Dice
+        description: Well, just one die, technically

@@ -1,0 +1,6 @@
+dice:
+  icon: skull_dice_1
+  mode: cast
+  left_click: cast
+  right_click: cast
+  active_spell: rolldice

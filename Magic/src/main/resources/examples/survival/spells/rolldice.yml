@@ -1,0 +1,49 @@
+rolldice:
+  icon: skull_dice_1
+  icon_url: http://textures.minecraft.net/texture/6e22c298e7c6336af17909ac1f1ee6834b58b1a3cc99aba255ca7eaeb476173
+  actions:
+    cast:
+      - class: StashWand
+      - class: Random
+        actions:
+
+          - class: ThrowItem
+            item: skull_dice_1
+            actions:
+              - class: Message
+                message_key: rolled_1
+
+          - class: ThrowItem
+            item: skull_dice_2
+            actions:
+              - class: Message
+                message_key: rolled_2
+
+          - class: ThrowItem
+            item: skull_dice_3
+            actions:
+              - class: Message
+                message_key: rolled_3
+
+          - class: ThrowItem
+            item: skull_dice_4
+            actions:
+              - class: Message
+                message_key: rolled_4
+
+          - class: ThrowItem
+            item: skull_dice_5
+            actions:
+              - class: Message
+                message_key: rolled_5
+
+          - class: ThrowItem
+            item: skull_dice_6
+            actions:
+              - class: Message
+                message_key: rolled_6
+  parameters:
+    target_self: true
+    message_target: false
+    return_on_finish: true
+    age_items: 5940
