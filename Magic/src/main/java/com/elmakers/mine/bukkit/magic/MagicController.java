@@ -1774,8 +1774,6 @@ public class MagicController implements MageController {
         } else {
             finalizePostStartupLoad(loader, sender);
         }
-
-        finishLoad(sender);
     }
 
     public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
@@ -1795,7 +1793,12 @@ public class MagicController implements MageController {
         log("Loaded " + getPathCount() + " progression paths");
 
         // Integrate with any plugins that don't need to be done at startup
-        finalizeIntegrationPostLoad();
+        if (!loaded) {
+            finalizeIntegrationPostLoad();
+        }
+
+        // Final loading tasks
+        finishLoad(sender);
 
         // Notify plugins that we've finished loading.
         LoadEvent loadEvent = new LoadEvent(this);
