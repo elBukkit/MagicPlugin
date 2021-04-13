@@ -10,6 +10,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
@@ -59,6 +60,7 @@ public class MagicRequirement {
     private @Nonnull String currencyType = "currency";
     private boolean requireWand = false;
     private boolean ignoreMissing = false;
+    private boolean indoors = false;
 
     public MagicRequirement(@Nonnull MageController controller, @Nonnull Requirement requirement) {
         this.controller = controller;
@@ -75,6 +77,7 @@ public class MagicRequirement {
         activeClass = ConfigurationUtils.getStringList(configuration, "active_class");
         wandTags = ConfigurationUtils.getStringList(configuration, "wand_tags");
         ignoreMissing = configuration.getBoolean("ignore_missing", false);
+        indoors = configuration.getBoolean("indoors", false);
         if (activeClass != null && mageClass == null) {
             mageClass = activeClass;
         }
@@ -190,6 +193,12 @@ public class MagicRequirement {
         }
 
         Location location = mage.getLocation();
+        if (indoors) {
+            Block highest = location.getWorld().getHighestBlockAt(location.getBlockX(), location.getBlockZ());
+            if (highest.getY() <= location.getBlockY()) {
+                return false;
+            }
+        }
 
         if (weather != null) {
             switch (weather) {
@@ -426,6 +435,12 @@ public class MagicRequirement {
         }
 
         Location location = mage.getLocation();
+        if (indoors) {
+            Block highest = location.getWorld().getHighestBlockAt(location.getBlockX(), location.getBlockZ());
+            if (highest.getY() <= location.getBlockY()) {
+                return getMessage(context, "no_indoors");
+            }
+        }
         if (weather != null) {
             switch (weather) {
                 case "storm":

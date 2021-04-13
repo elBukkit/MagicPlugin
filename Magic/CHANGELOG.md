@@ -21,8 +21,9 @@
  - Add support for `/mgive egg:<mob>`, same result as `/mmob egg <mob>`
  - Add option to fix invisible players on login if you have gotten some permanently invisible players:
    `mconfig configure config allow_player_persistent_invisibility false`
- - Add ModifyAttribute action
- - Add full_stack parameter to TakeItem action, set to false to only take 1 item from a stack
+ - Add `ModifyAttribute` action
+ - Add `full_stack` parameter to `TakeItem` action, set to false to only take 1 item from a stack
+ - Add `indoors` requirement
 
 # 8.5.3
 
