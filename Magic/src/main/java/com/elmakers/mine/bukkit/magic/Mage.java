@@ -3794,6 +3794,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void onRespawn() {
         restoreRespawnInventories();
         checkWand();
+        // Restore any temporary items that were supposed to return on death
+        Inventory inventory = getInventory();
+        for (int i = 0; i < inventory.getSize(); i++) {
+            ItemStack item = inventory.getItem(i);
+            if (CompatibilityUtils.isEmpty(item)) continue;
+            if (CompatibilityUtils.getMetaBoolean(item, "return_on_death", false)) {
+                ItemStack replacement = CompatibilityUtils.getReplacement(item);
+                controller.info("Replacing item on respawn: " + TextUtils.nameItem(item) + " with " + TextUtils.nameItem(replacement));
+                inventory.setItem(i, replacement);
+            }
+        }
         trigger("respawn");
     }
 

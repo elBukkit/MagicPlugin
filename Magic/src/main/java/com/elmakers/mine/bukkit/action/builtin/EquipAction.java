@@ -218,6 +218,9 @@ public class EquipAction extends BaseSpellAction
                 equipment.setItemInMainHand(existingItem);
             } else if (existingItem != null) {
                 NMSUtils.setReplacement(equipItem, existingItem);
+                if (returnOnFinish) {
+                    NMSUtils.setMetaBoolean(equipItem, "return_on_death", true);
+                }
             }
         } else if (useItem) {
             // If we didn't swap the wand out with the item in the target slot, we need to clear the main hand
