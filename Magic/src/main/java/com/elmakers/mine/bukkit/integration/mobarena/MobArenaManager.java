@@ -34,6 +34,7 @@ public class MobArenaManager implements Listener, BlockBreakManager, BlockBuildM
         if (plugin instanceof MobArena) {
             mobArena = (MobArena)plugin;
         }
+        loaded();
     }
 
     public void loaded() {

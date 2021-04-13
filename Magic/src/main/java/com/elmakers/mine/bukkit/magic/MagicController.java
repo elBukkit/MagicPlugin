@@ -1486,12 +1486,6 @@ public class MagicController implements MageController {
         resourcePacks.startResourcePackChecks();
     }
 
-    protected void postLoadIntegration() {
-        if (mobArenaManager != null) {
-            mobArenaManager.loaded();
-        }
-    }
-
     public void processUndo() {
         long now = System.currentTimeMillis();
         while (scheduledUndo.size() > 0) {
@@ -1888,10 +1882,6 @@ public class MagicController implements MageController {
     }
 
     public void finishLoad(CommandSender sender) {
-        if (!loaded) {
-            postLoadIntegration();
-        }
-
         logger.setContext(null);
         loaded = true;
         loading = false;
