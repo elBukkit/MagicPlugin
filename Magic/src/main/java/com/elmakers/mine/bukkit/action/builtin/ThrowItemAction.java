@@ -52,7 +52,7 @@ public class ThrowItemAction extends BaseProjectileAction {
 
         String itemName = parameters.getString("item");
         if (itemName != null && !itemName.isEmpty()) {
-            item = context.getController().getItem(itemName);
+            item = context.getController().getOrCreateItem(itemName);
         }
     }
 
@@ -97,17 +97,6 @@ public class ThrowItemAction extends BaseProjectileAction {
         }
         double itemSpeed = context.getRandom().nextDouble() * (itemSpeedMax - itemSpeedMin) + itemSpeedMin;
         Vector velocity = spawnLocation.getDirection().normalize().multiply(itemSpeed);
-        if (temporary) {
-            String removedMessage = context.getMessage("removed");
-            if (removedMessage != null) {
-                String name = context.getController().describeItem(itemStack);
-                if (name == null) {
-                    name = "";
-                }
-                removedMessage = removedMessage.replace("$material", name);
-            }
-            NMSUtils.makeTemporary(itemStack, removedMessage);
-        }
         if (unbreakable) {
             itemStack = InventoryUtils.makeReal(itemStack);
             InventoryUtils.makeUnbreakable(itemStack);
@@ -124,6 +113,21 @@ public class ThrowItemAction extends BaseProjectileAction {
         }
         if (temporary) {
             EntityMetadataUtils.instance().setBoolean(droppedItem, MagicMetaKeys.TEMPORARY, true);
+
+            // Make item temporary after spawning, otherwise the spawn will be cancelled
+            itemStack = droppedItem.getItemStack();
+            if (itemStack != null) {
+                String removedMessage = context.getMessage("removed");
+                if (removedMessage != null) {
+                    String name = context.getController().describeItem(itemStack);
+                    if (name == null) {
+                        name = "";
+                    }
+                    removedMessage = removedMessage.replace("$material", name);
+                }
+                NMSUtils.makeTemporary(itemStack, removedMessage);
+                droppedItem.setItemStack(itemStack);
+            }
         }
         if (ageItems > 0) {
             CompatibilityUtils.ageItem(droppedItem, ageItems);
