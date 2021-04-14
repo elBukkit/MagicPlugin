@@ -27,7 +27,11 @@
  - Add `dice` item
  - Support `target_<attribute>` in equations for all custom attributes
 
+## Fixes
+
 # 8.5.3
+
+ - Fix Mob, Monster (and other) spawns attacking the caster (again)
 
 # 8.5.2
 
