@@ -29,6 +29,8 @@
 
 ## Fixes
 
+ - War config spawner blocks fixed
+
 # 8.5.3
 
  - Fix Mob, Monster (and other) spawns attacking the caster (again)

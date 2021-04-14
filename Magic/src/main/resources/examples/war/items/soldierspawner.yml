@@ -4,7 +4,7 @@ soldierspawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Soldier Spawner
+        Name: "{\"text\":\"Soldier Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -13,9 +13,8 @@ soldierspawner:
         Delay: 100
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
-        RequiredPlayerRange: 32
-        EntityId: zombie
+        RequiredPlayerRange: 12
         SpawnData:
-          id: zombie
-          CustomName: Soldier
+          id: "minecraft:piglin"
+          CustomName: "{\"text\":\"Soldier\"}"
 

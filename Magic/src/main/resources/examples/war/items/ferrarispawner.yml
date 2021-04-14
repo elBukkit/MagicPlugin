@@ -4,7 +4,7 @@ ferrarispawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Ferrari Spawner
+        Name: "{\"text\":\"Ferrari Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -14,7 +14,6 @@ ferrarispawner:
         MinSpawnDelay: 300
         MaxSpawnDelay: 800
         RequiredPlayerRange: 32
-        EntityId: armor_stand
         SpawnData:
-          id: armor_stand
-          CustomName: Ferrari
+          id: "minecraft:armor_stand"
+          CustomName: "{\"text\":\"Ferrari\"}"

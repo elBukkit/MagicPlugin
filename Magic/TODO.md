@@ -10,7 +10,6 @@
   (in our case a diamond hoe) on a players head by using class: Wear.
    It duplicates anything already in your hat slot if a player dies while using the spell,
    including regular armour or forced tool/block hats (from plugins, like essentials, etc).
-- Dukx: why does the "mob" spell kill the mob caster?
 - Use ModifyProperties action to set an attribute based on the value of another attribute
 
 - spell items can't be added to wands via dropping?

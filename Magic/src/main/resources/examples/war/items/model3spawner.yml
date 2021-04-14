@@ -4,7 +4,7 @@ model3spawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Model 3 Spawner
+        Name: "{\"text\":\"Model 3 Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -16,6 +16,6 @@ model3spawner:
         RequiredPlayerRange: 32
         EntityId: armor_stand
         SpawnData:
-          id: armor_stand
-          CustomName: Model 3
+          id: "minecraft:armor_stand"
+          CustomName: "{\"text\":\"Model 3\"}"
 

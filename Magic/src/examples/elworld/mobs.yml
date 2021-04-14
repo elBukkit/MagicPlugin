@@ -112,12 +112,6 @@ blocky:
   material: glass
   gravity: false
 
-fbi:
-  type: husk
-
-soldier:
-  type: husk
-
 player:
   drops_require_player_killer: true
   drops:

@@ -4,7 +4,7 @@ fbispawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: FBI Spawner
+        Name: "{\"text\":\"FBI Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -14,8 +14,7 @@ fbispawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 32
-        EntityId: skeleton
         SpawnData:
-          id: skeleton
-          CustomName: FBI
+          id: "minecraft:skeleton"
+          CustomName: "{\"text\":\"FBI\"}"
 

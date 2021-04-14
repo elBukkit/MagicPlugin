@@ -4,7 +4,7 @@ riotpolicespawner:
     type: MOB_SPAWNER
     tags:
       display:
-        Name: Riot Police Spawner
+        Name: "{\"text\":\"Riot Police Spawner\"}"
       BlockEntityTag:
         SpawnPotentials: []
         SpawnCount: 1
@@ -14,8 +14,7 @@ riotpolicespawner:
         MinSpawnDelay: 200
         MaxSpawnDelay: 500
         RequiredPlayerRange: 32
-        EntityId: zombie_pigman
         SpawnData:
-          id: zombie_pigman
-          CustomName: Riot Police
+          id: "minecraft:piglin"
+          CustomName: "{\"text\":\"Riot Police\"}"
 
