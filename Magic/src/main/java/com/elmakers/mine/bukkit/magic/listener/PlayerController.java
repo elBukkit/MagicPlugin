@@ -647,10 +647,14 @@ public class PlayerController implements Listener {
         }
 
         Mage mage = controller.getMage(player);
-        mage.trigger("left_click");
         if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             mage.sendDebugMessage("ANIMATE: " + event.getAnimationType(), DEBUG_LEVEL);
         }
+
+        if (!mage.checkLastClick(clickCooldown)) {
+            return;
+        }
+        mage.trigger("left_click");
 
         Wand wand = mage.checkWand();
         if (wand == null) return;
@@ -666,10 +670,6 @@ public class PlayerController implements Listener {
         {
             wand.deactivate();
             mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
-            return;
-        }
-
-        if (!mage.checkLastClick(clickCooldown)) {
             return;
         }
 
