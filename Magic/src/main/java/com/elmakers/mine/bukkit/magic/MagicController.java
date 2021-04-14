@@ -1787,6 +1787,15 @@ public class MagicController implements MageController {
         logger.setContext(null);
         log("Loaded " + getPathCount() + " progression paths");
 
+        // Load recipes last, since we can craft most anything
+        logger.setContext("crafting");
+        crafting.load(loader.getCrafting());
+
+        // Register crafting recipes
+        crafting.register(this, plugin);
+        MagicRecipe.FIRST_REGISTER = false;
+        log("Loaded " + crafting.getCount() + " crafting recipes");
+
         // Integrate with any plugins that don't need to be done at startup
         if (!loaded) {
             finalizeIntegrationPostLoad();
@@ -1871,15 +1880,7 @@ public class MagicController implements MageController {
         logger.setContext(null);
         log("Loaded " + automatonTemplates.size() + " automata templates");
 
-        logger.setContext("crafting");
-        crafting.load(loader.getCrafting());
-
-        // Register crafting recipes
-        crafting.register(this, plugin);
-        MagicRecipe.FIRST_REGISTER = false;
-
         logger.setContext(null);
-        log("Loaded " + crafting.getCount() + " crafting recipes");
     }
 
     public void finishLoad(CommandSender sender) {
