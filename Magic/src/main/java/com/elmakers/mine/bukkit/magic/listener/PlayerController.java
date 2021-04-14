@@ -310,7 +310,7 @@ public class PlayerController implements Listener {
         if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             Item item = event.getItemDrop();
             ItemStack itemStack = item == null ? null : item.getItemStack();
-            mage.sendDebugMessage("DROP ITEM: " + (itemStack == null ? "(Nothing)" : itemStack.getType().name()), DEBUG_LEVEL);
+            mage.sendDebugMessage("DROP ITEM: " + (itemStack == null ? "(Nothing)" : itemStack.getType().name()) + " at " + System.currentTimeMillis(), DEBUG_LEVEL);
         }
 
         // As of 1.15 we will get an animation event right after the drop event.
@@ -648,7 +648,7 @@ public class PlayerController implements Listener {
 
         Mage mage = controller.getMage(player);
         if (mage.getDebugLevel() >= DEBUG_LEVEL) {
-            mage.sendDebugMessage("ANIMATE: " + event.getAnimationType(), DEBUG_LEVEL);
+            mage.sendDebugMessage("ANIMATE: " + event.getAnimationType() + " at " + System.currentTimeMillis(), DEBUG_LEVEL);
         }
 
         if (!mage.checkLastClick(clickCooldown)) {
@@ -705,7 +705,7 @@ public class PlayerController implements Listener {
             ItemStack item = event.getItem();
             Block block = event.getClickedBlock();
             mage.sendDebugMessage("INTERACT " + event.getAction()  + " with " + event.getHand() + " using: " + (item == null ? "(Nothing)" : item.getType().name())
-                + ", block: " + (block == null ? "(Nothing)" : block.getType().name()), DEBUG_LEVEL);
+                + ", block: " + (block == null ? "(Nothing)" : block.getType().name()) + " at " + System.currentTimeMillis(), DEBUG_LEVEL);
         }
 
         // Check for offhand casting
