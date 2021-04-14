@@ -132,14 +132,14 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Mage sourceMage, Entity sourceEntity, Location sourceLocation) {
         super(sourceMage, sourceMage.getActiveWand());
         this.location = sourceLocation == null ? null : sourceLocation.clone();
-        this.entity = sourceEntity == null ? null : new WeakReference<>(sourceEntity);
+        this.entity = new WeakReference<>(sourceEntity);
         copyFrom(copy);
     }
 
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity, Location sourceLocation) {
         super(copy.getMage(), copy.getWand());
         this.location = sourceLocation == null ? null : sourceLocation.clone();
-        this.entity = sourceEntity == null ? null : new WeakReference<>(sourceEntity);
+        this.entity = new WeakReference<>(sourceEntity);
         copyFrom(copy);
     }
 
