@@ -9,8 +9,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class MageParameters extends ParameterizedConfiguration {
     private static Set<String> attributes;
-    private final @Nullable
-    Mage mage;
+    private final @Nullable Mage mage;
 
     public MageParameters(Mage mage, String context) {
         super(context);

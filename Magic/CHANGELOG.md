@@ -25,6 +25,7 @@
  - Add `full_stack` parameter to `TakeItem` action, set to false to only take 1 item from a stack
  - Add `indoors` requirement
  - Add `dice` item
+ - Support `target_<attribute>` in equations for all custom attributes
 
 # 8.5.3
 

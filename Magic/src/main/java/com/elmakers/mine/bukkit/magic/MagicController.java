@@ -281,19 +281,23 @@ public class MagicController implements MageController {
     private static final int MAX_ERRORS = 10;
     protected static Random random = new Random();
     private final Set<String> builtinMageAttributes = ImmutableSet.of(
-            "health", "health_max", "target_health", "target_health_max",
-            "armor", "target_armor",
-            "luck", "target_luck",
-            "knockback_resistance", "target_knockback_resistance",
+            "health", "health_max",
+            "armor",  "luck",
+            "knockback_resistance",
             "attack_damage",
             "location_x", "location_y", "location_z",
-            "target_location_x", "target_location_y", "target_location_z",
             "time", "moon",
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
-            "target_mana", "target_mana_max",
             "fall_distance",
-            "air", "air_max", "target_air", "target_air_max",
-            "hunger", "target_hunger", "play_time"
+            "air", "air_max",
+            "hunger", "play_time"
+    );
+    private final Set<String> builtinTargetAttributes = ImmutableSet.of(
+            "target_health", "target_health_max",
+            "target_armor", "target_luck", "target_knockback_resistance",
+            "target_location_x", "target_location_y", "target_location_z",
+            "target_mana", "target_mana_max",
+            "target_air", "target_air_max", "target_hunger"
     );
     private final Set<String> builtinAttributes = ImmutableSet.of(
             "epoch",
@@ -3232,14 +3236,22 @@ public class MagicController implements MageController {
         checkMagicRequirements();
     }
 
+    private void registerPlayerAttributes(Collection<String> attributes) {
+        registeredAttributes.addAll(attributes);
+        for (String attribute : attributes) {
+            registeredAttributes.add("target_" + attribute);
+        }
+    }
+
     private void finalizeAttributes() {
         registeredAttributes.addAll(builtinMageAttributes);
         registeredAttributes.addAll(builtinAttributes);
-        registeredAttributes.addAll(this.attributes.keySet());
+        registeredAttributes.addAll(builtinTargetAttributes);
+        registerPlayerAttributes(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {
             Set<String> providerAttributes = provider.getAllAttributes();
             if (providerAttributes != null) {
-                registeredAttributes.addAll(providerAttributes);
+                registerPlayerAttributes(providerAttributes);
             }
         }
 
@@ -3269,7 +3281,7 @@ public class MagicController implements MageController {
             if (!loading) {
                 Set<String> providerAttributes = attributes.getAllAttributes();
                 if (providerAttributes != null) {
-                    registeredAttributes.addAll(providerAttributes);
+                    registerPlayerAttributes(providerAttributes);
                     MageParameters.initializeAttributes(registeredAttributes);
                     log("Registered additional attributes: " + providerAttributes);
                 }
