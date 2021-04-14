@@ -104,7 +104,7 @@ public class TargetingSpell extends BaseSpell {
         String message = super.getMessage(messageKey, def);
 
         // Escape targeting parameters, but don't stomp on variables
-        if (!getVariables().contains("target") && !mage.getVariables().contains("target")) {
+        if (!getVariables().contains("target") && !mage.getVariables().contains("target") && message.contains("$target")) {
             String useTargetName = null;
             if (currentCast != null) {
                 useTargetName = currentCast.getTargetName();
@@ -124,9 +124,9 @@ public class TargetingSpell extends BaseSpell {
                 }
             }
             if (useTargetName == null) {
-                message = message.replace("$target", "Nothing");
+                message = message.replaceAll("\\$target(?!_)", "Nothing");
             } else {
-                message = message.replace("$target", useTargetName);
+                message = message.replaceAll("\\$target(?!_)", useTargetName);
             }
         }
 
