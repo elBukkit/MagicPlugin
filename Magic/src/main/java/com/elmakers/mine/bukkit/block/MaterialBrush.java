@@ -967,4 +967,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
         commandMap.put(key,  command);
     }
+
+    @Override
+    protected boolean allowContainers() {
+        return mage == null ? super.allowContainers() : mage.allowContainerCopy();
+    }
 }

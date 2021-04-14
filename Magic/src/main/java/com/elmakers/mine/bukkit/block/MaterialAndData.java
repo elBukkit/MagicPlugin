@@ -598,7 +598,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 command.update();
             } else if (extraData != null && extraData instanceof BlockTileEntity) {
                 // Tile entity data overrides everything else, and may replace all of this in the future.
-                NMSUtils.setTileEntityData(block.getLocation(), ((BlockTileEntity) extraData).data);
+                if (allowContainers() || (material != Material.FLOWER_POT && !(blockState instanceof InventoryHolder))) {
+                    NMSUtils.setTileEntityData(block.getLocation(), ((BlockTileEntity) extraData).data);
+                }
             } else if (blockState != null && DefaultMaterials.isBanner(material) && extraData != null && extraData instanceof BlockBanner) {
                 if (blockState instanceof Banner) {
                     BlockBanner bannerData = (BlockBanner)extraData;
@@ -1034,5 +1036,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public String toString() {
         return (isValid() ? material + (data != null && data != 0 ? "@" + data : "") : "invalid");
+    }
+
+    protected boolean allowContainers() {
+        return true;
     }
 }

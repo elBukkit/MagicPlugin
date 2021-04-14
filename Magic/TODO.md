@@ -3,17 +3,6 @@
 
 # Bugs
 
-- Opening a chest with a wand casts (?)
-- /mage upgrade not working
-
-- Henry: Hiya! We've been having this issue where our spell which puts an object
-  (in our case a diamond hoe) on a players head by using class: Wear.
-   It duplicates anything already in your hat slot if a player dies while using the spell,
-   including regular armour or forced tool/block hats (from plugins, like essentials, etc).
-- Use ModifyProperties action to set an attribute based on the value of another attribute
-
-- spell items can't be added to wands via dropping?
-
 - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
 - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
 - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
@@ -23,11 +12,7 @@
 - Fill out worth values for all blocks (and items, for shops) .. mostly done?
 - Tree spell allow using materia?
 
-- Can engineers copy containers? That should definitely be reserved for conduit...
-
 ## RPG
-
- - Make an "armor" attribute
 
 ## ModelEngine
 
@@ -38,6 +23,10 @@
  - Allow some custom variables in wand lore
  - To be able to show the result of equations in lore
  - Shops should just hide invalid items (option to hide them, or just use show_unavailable)
+
+## Feature Requests
+
+ - Wands that apply a mage cooldown on activation
 
 ## Client Localization
 

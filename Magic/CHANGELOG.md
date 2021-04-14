@@ -12,6 +12,7 @@
  - The blaster recipes in the stars configs were changed to use sticks instead of oak wood planks
  - RecallAction won't apply protection until after teleporting, this fixes cancel_on_damage not working for recall
  - Removed protection_duration from gather to avoid griefing
+ - Copying/building container contents now restricted to Conduit path
 
 ## Additions
 

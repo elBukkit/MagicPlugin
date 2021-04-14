@@ -16,6 +16,7 @@ conduit:
       hotbar_count: 4
       consume_reduction: 1
       cost_reduction: 2
+      allow_container_copy: true
     spells:
       - portal
       - backup

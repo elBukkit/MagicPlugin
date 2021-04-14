@@ -800,4 +800,5 @@ public interface Mage extends CostReducer, CooldownReducer {
     ClientPlatform getClientPlatform();
     @Nullable
     CasterProperties getCasterProperties(String propertyType);
+    boolean allowContainerCopy();
 }

@@ -269,6 +269,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long fallProtectionCount = 1;
     private BaseSpell fallingSpell = null;
     private boolean isAutomaton = false;
+    private boolean allowContainerCopy = false;
 
     private boolean gaveWelcomeWand = false;
 
@@ -4054,6 +4055,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!ignoredByMobs && properties.getBoolean("ignored_by_mobs")) {
             ignoredByMobs = true;
         }
+        if (!allowContainerCopy && properties.getBoolean("allow_container_copy")) {
+            allowContainerCopy = true;
+        }
 
         // Add potion effects
         effectivePotionEffects.putAll(properties.getPotionEffects());
@@ -4143,6 +4147,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         superProtected = false;
         superPowered = false;
         ignoredByMobs = false;
+        allowContainerCopy = false;
 
         // Try to avoid constantly re-creating these, don't clear the whole map
         for (List<TriggeredSpell> triggerList : triggers.values()) {
@@ -4211,6 +4216,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (offhandWand != null) {
             offhandWand.passiveEffectsUpdated();
         }
+    }
+
+    @Override
+    public boolean allowContainerCopy() {
+        return allowContainerCopy;
     }
 
     public Collection<Wand> getActiveArmor()

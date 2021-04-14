@@ -9,6 +9,7 @@ wolf:
   cost_reduction: 2
   cooldown_reduction: 2
   consume_reduction: 1
+  allow_container_copy: true
   sp_multiplier: 0
   effect_color: 0,aa0000000000,cc0000000000
   effect_particle: ENCHANTMENT_TABLE
