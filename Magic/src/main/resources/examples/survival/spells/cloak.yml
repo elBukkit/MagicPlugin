@@ -13,7 +13,7 @@ cloak:
     cancel_on_cast_other: true
     quick_cast: true
     boss_bar:
-      title: "&7$spell"
+      bar_title: "&7$spell"
       bar_color: white
       bar_style: segmented_20
     actions:
