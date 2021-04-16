@@ -46,12 +46,16 @@ public class EntityProjectileAction extends CustomProjectileAction {
         projectileEffects = ConfigurationUtils.getPotionEffects(parameters, "projectile_potion_effects", Integer.MAX_VALUE);
     }
 
+    protected boolean teleportByDefault() {
+        return false;
+    }
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         plugin = context.getPlugin();
         doVelocity = parameters.getBoolean("apply_velocity", true);
-        doTeleport = parameters.getBoolean("teleport", false);
+        doTeleport = parameters.getBoolean("teleport", teleportByDefault());
         noTarget = parameters.getBoolean("no_target", true);
         orient = parameters.getBoolean("orient", false);
         velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");

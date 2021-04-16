@@ -82,6 +82,13 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     }
 
     @Override
+    protected boolean teleportByDefault() {
+        // Seems like some entities glitch out when being teleported in paper
+        // but velocity doens't work on armor stands here .. for some reason.
+        return true;
+    }
+
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         parameters.set("type", "armor_stand");
         super.prepare(context, parameters);

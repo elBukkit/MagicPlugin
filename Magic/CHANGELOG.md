@@ -31,6 +31,7 @@
 ## Fixes
 
  - War config spawner blocks fixed
+ - Fix armor stand projectiles not moving (maybe, sometimes)
 
 # 8.5.3
 
