@@ -198,7 +198,8 @@ public class BlockController implements Listener, ChunkLoadListener {
                 // Replacing a permanently-changed block will act as normal while silently
                 // committing the change.
                 // Replacing a temporarily-changed block will force the block to undo while preventing the place
-                if (modifiedBlock.getUndoList().isScheduled()) {
+                UndoList undoList = modifiedBlock.getUndoList();
+                if (undoList != null && undoList.isScheduled()) {
                     event.setCancelled(true);
                     Plugin plugin = controller.getPlugin();
                     plugin.getServer().getScheduler().runTaskLater(plugin, new UndoBlockTask(modifiedBlock), 1);
