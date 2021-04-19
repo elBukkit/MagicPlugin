@@ -125,6 +125,7 @@ ak47:
         spread_movement: 5
         magic_damage: false
         target_armor_stand: true
+        no_damage_ticks: 0
     costs:
       mana: 1
 

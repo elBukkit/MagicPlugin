@@ -125,6 +125,7 @@ pistol:
         spread_movement: 5
         spread_movement_max: 0.08
         spread: 0.05
+        no_damage_ticks: 0
     costs:
       mana: 1
 

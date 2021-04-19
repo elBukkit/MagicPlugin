@@ -47,7 +47,7 @@ public class DamageAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        noDamageTicks = parameters.getInt("no_damage_ticks", 0);
+        noDamageTicks = parameters.getInt("no_damage_ticks", -1);
         double damage = parameters.getDouble("damage", 1);
         entityDamage = parameters.getDouble("entity_damage", damage);
         playerDamage = parameters.getDouble("player_damage", damage);

@@ -120,7 +120,6 @@ sniper:
         hitbox: true
         entity_hit_count: 5
         block_hit_count: 4
-        hitbox: true
         player_damage: 5
         entity_damage: 7
         target_breakables: 1
@@ -131,5 +130,6 @@ sniper:
         target_armor_stand: true
         spread_movement_max: 0.2
         spread_movement: 5
+        no_damage_ticks: 0
     costs:
       mana: 1
