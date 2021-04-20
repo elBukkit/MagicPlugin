@@ -73,6 +73,13 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public static String SchematicCustomIcon;
     public static String DefaultBrushCustomIcon;
 
+    public static boolean EraseEnabled = true;
+    public static boolean CopyEnabled = true;
+    public static boolean CloneEnabled = true;
+    public static boolean ReplicateEnabled = true;
+    public static boolean MapEnabled = true;
+    public static boolean SchematicEnabled = true;
+
     public static final Material DEFAULT_MATERIAL = Material.DIRT;
     private static final Map<MaterialAndData, MaterialAndData> replacements = new HashMap<>();
 
@@ -314,6 +321,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     public void enableCloning() {
+        if (!CloneEnabled) {
+            isValid = false;
+            return;
+        }
         if (this.mode != BrushMode.CLONE) {
             fillWithAir = this.mode == BrushMode.ERASE;
             this.mode = BrushMode.CLONE;
@@ -321,6 +332,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     public void enableErase() {
+        if (!EraseEnabled) {
+            isValid = false;
+            return;
+        }
         if (this.mode != BrushMode.ERASE) {
             this.setMaterial(Material.AIR);
             this.mode = BrushMode.ERASE;
@@ -329,6 +344,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     public void enableMap(int size) {
+        if (!MapEnabled) {
+            isValid = false;
+            return;
+        }
         fillWithAir = false;
         if (size <= 0) {
             size = DEFAULT_MAP_SIZE;
@@ -342,6 +361,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     public void enableSchematic(String name) {
+        if (!SchematicEnabled) {
+            isValid = false;
+            return;
+        }
         if (this.mode != BrushMode.SCHEMATIC) {
             fillWithAir = this.mode == BrushMode.ERASE;
             this.mode = BrushMode.SCHEMATIC;
@@ -355,6 +378,10 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     }
 
     public void enableReplication() {
+        if (!ReplicateEnabled) {
+            isValid = false;
+            return;
+        }
         if (this.mode != BrushMode.REPLICATE) {
             fillWithAir = this.mode == BrushMode.ERASE;
             this.mode = BrushMode.REPLICATE;

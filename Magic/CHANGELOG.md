@@ -27,6 +27,7 @@
  - Add `indoors` requirement
  - Add `dice` item
  - Support `target_<attribute>` in equations for all custom attributes
+ - Allow disabling any of the special brushes (clone, replicate, erase, etc)
 
 ## Fixes
 

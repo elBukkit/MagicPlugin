@@ -180,6 +180,9 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         MaterialAndData previous = null;
         for (String brushKey : brushKeys) {
             ItemStack brushItem = controller.createBrushItem(brushKey, context.getWand(), false);
+            if (CompatibilityUtils.isEmpty(brushItem)) {
+                continue;
+            }
             if (MaterialBrush.isSchematic(brushKey)) {
                 schematics.add(brushItem);
                 continue;

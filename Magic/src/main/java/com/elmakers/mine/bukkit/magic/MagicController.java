@@ -7822,6 +7822,13 @@ public class MagicController implements MageController {
         MaterialBrush.MapCustomIcon = properties.getString("map_icon_url", MaterialBrush.MapCustomIcon);
         MaterialBrush.DefaultBrushCustomIcon = properties.getString("default_brush_icon_url", MaterialBrush.DefaultBrushCustomIcon);
 
+        MaterialBrush.CopyEnabled = properties.getBoolean("copy_brush_enabled", MaterialBrush.CopyEnabled);
+        MaterialBrush.EraseEnabled = properties.getBoolean("erase_brush_enabled", MaterialBrush.CopyEnabled);
+        MaterialBrush.CloneEnabled = properties.getBoolean("clone_brush_enabled", MaterialBrush.CopyEnabled);
+        MaterialBrush.ReplicateEnabled = properties.getBoolean("replicate_brush_enabled", MaterialBrush.CopyEnabled);
+        MaterialBrush.SchematicEnabled = properties.getBoolean("schematic_brush_enabled", MaterialBrush.CopyEnabled);
+        MaterialBrush.MapEnabled = properties.getBoolean("map_brush_enabled", MaterialBrush.CopyEnabled);
+
         BaseSpell.DEFAULT_DISABLED_ICON_URL = properties.getString("disabled_icon_url", BaseSpell.DEFAULT_DISABLED_ICON_URL);
 
         Wand.DEFAULT_CAST_OFFSET.setZ(properties.getDouble("wand_location_offset", Wand.DEFAULT_CAST_OFFSET.getZ()));
