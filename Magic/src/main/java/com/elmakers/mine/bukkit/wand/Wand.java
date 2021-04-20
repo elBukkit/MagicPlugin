@@ -1317,7 +1317,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             {
                 ItemStack itemStack = createBrushIcon(brushKey);
                 if (itemStack == null) {
-                    controller.getLogger().warning("Unable to create brush icon for key " + brushKey);
+                    controller.info("Unable to create brush icon for key " + brushKey, 5);
                     continue;
                 }
                 Integer slot = brushInventory.get(brushKey);
