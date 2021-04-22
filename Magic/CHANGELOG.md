@@ -13,6 +13,7 @@
  - RecallAction won't apply protection until after teleporting, this fixes cancel_on_damage not working for recall
  - Removed protection_duration from gather to avoid griefing
  - Copying/building container contents now restricted to Conduit path
+ - Skript cast effect can now work with entities, not just players
 
 ## Additions
 

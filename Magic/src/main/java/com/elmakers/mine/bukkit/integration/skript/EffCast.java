@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.integration.skript;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -18,10 +18,10 @@ import ch.njol.skript.lang.SkriptParser;
 import ch.njol.util.Kleenean;
 
 @Name("Cast")
-@Description("Cast a spell, from a player or the console")
-@Examples({"make player cast the spell \"fling\"", "cast \"day\""})
+@Description("Cast a spell, from an entity or the console")
+@Examples({"make entity cast the spell \"fling\"", "cast \"day\""})
 public class EffCast extends Effect {
-    private Expression<CommandSender> senders;
+    private Expression<Entity> entities;
     private Expression<String> spell;
     private Expression<String> arguments;
 
@@ -36,10 +36,10 @@ public class EffCast extends Effect {
         String spellKey = spell.getSingle(event);
         String parameterString = arguments == null ? null : arguments.getSingle(event);
         String[] parameters = parameterString == null ? null : StringUtils.split(parameterString, ' ');
-        if (senders != null) {
-            for (final CommandSender sender : senders.getArray(event)) {
-                if (sender != null) {
-                    Spell spell = MagicPlugin.getAPI().getController().getMage(sender).getSpell(spellKey);
+        if (entities != null) {
+            for (final Entity entity : entities.getArray(event)) {
+                if (entity != null) {
+                    Spell spell = MagicPlugin.getAPI().getController().getMage(entity).getSpell(spellKey);
                     if (spell != null) {
                         spell.cast(parameters);
                     }
@@ -59,7 +59,7 @@ public class EffCast extends Effect {
         if (arguments != null) {
             parameters = " with parameters " + arguments.toString(event, debug);
         }
-        return "make " + (senders != null ? senders.toString(event, debug) : "the console") + " cast the spell " + spell.toString(event, debug) + parameters;
+        return "make " + (entities != null ? entities.toString(event, debug) : "the console") + " cast the spell " + spell.toString(event, debug) + parameters;
     }
 
     @Override
@@ -67,9 +67,9 @@ public class EffCast extends Effect {
     public boolean init(Expression<?>[] vars, int matchedPattern, Kleenean isDelayed, SkriptParser.ParseResult parser) {
         if (matchedPattern == 0) {
             spell = (Expression<String>) vars[0];
-            senders = (Expression<CommandSender>) vars[1];
+            entities = (Expression<Entity>) vars[1];
         } else {
-            senders = (Expression<CommandSender>) vars[0];
+            entities = (Expression<Entity>) vars[0];
             spell = (Expression<String>) vars[1];
         }
         arguments = (Expression<String>) vars[2];
