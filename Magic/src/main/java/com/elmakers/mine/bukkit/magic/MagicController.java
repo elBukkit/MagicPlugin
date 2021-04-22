@@ -1753,6 +1753,8 @@ public class MagicController implements MageController {
         exampleKeyNames.clear();
         exampleKeyNames.putAll(loader.getExampleKeyNames());
 
+        // Some handlers get added in processConfigurations, clear them first
+        clearHandlers();
         processConfigurations(loader, sender);
         registerHandlers(loader.getMainConfiguration());
 
@@ -1821,11 +1823,11 @@ public class MagicController implements MageController {
 
         // Do this before spell loading in case of attribute or requirement providers
         logger.setContext("integration");
-        registerManagers();
 
         // Main configuration
         logger.setContext("config");
         loadProperties(sender, loader.getMainConfiguration());
+        registerManagers();
 
         // Configurations that don't rely on any external integrations
         logger.setContext("messages");
@@ -3125,7 +3127,7 @@ public class MagicController implements MageController {
         currencies.put(currency.getKey(), currency);
     }
 
-    protected void registerHandlers(ConfigurationSection configuration) {
+    protected void clearHandlers() {
         // Setup custom providers
         currencies.clear();
         attributeProviders.clear();
@@ -3140,7 +3142,9 @@ public class MagicController implements MageController {
         playerWarpManagers.clear();
         targetingProviders.clear();
         registeredAttributes.clear();
+    }
 
+    protected void registerHandlers(ConfigurationSection configuration) {
         // Use legacy currency configs if present
         ConfigurationSection currencyConfiguration = configuration.getConfigurationSection("builtin_currency");
         ConfigurationSection spSection = currencyConfiguration.getConfigurationSection("sp");
