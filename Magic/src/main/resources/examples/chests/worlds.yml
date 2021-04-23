@@ -38,3 +38,24 @@ nether_chests:
         sp|30: 30
         sp|25: 40
         sp|20: 50
+
+end_chests:
+  world: world_the_end
+  chunk_generate:
+    items:
+      class: MagicChestPopulator
+      base_probability:
+        0: 100
+        1: 80
+        2: 2
+      item_probability:
+        sp|200: 1
+        sp|150: 2
+        sp|100: 3
+        sp|75: 4
+        sp|50: 5
+        sp|45: 10
+        sp|40: 20
+        sp|30: 30
+        sp|25: 40
+        sp|20: 50
