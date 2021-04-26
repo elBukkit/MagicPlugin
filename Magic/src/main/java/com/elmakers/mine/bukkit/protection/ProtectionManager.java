@@ -42,7 +42,7 @@ public class ProtectionManager implements BlockBreakManager, BlockBuildManager {
     public void check() {
         for (String pluginName : pluginNames) {
             Plugin plugin = owningPlugin.getServer().getPluginManager().getPlugin(pluginName);
-            if (plugin != null && plugin.isEnabled()) {
+            if (plugin != null) {
                 plugins.add(plugin);
                 owningPlugin.getLogger().info("Integrating with " + pluginName + " using fake break/build events");
             }
