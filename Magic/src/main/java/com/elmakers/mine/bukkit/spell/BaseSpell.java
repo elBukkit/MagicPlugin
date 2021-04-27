@@ -222,6 +222,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean bypassPvpRestriction        = false;
     protected boolean bypassBuildRestriction    = false;
     protected boolean bypassBreakRestriction    = false;
+    protected boolean selfTargetingRequiresPvP  = false;
     protected boolean denyBreakPermission       = false;
     protected boolean denyBuildPermission       = false;
     protected boolean bypassProtection          = false;
@@ -1927,7 +1928,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (!bypassPvpRestriction && entity instanceof Player)
         {
             Player magePlayer = mage.getPlayer();
-            if (magePlayer != null && !magePlayer.hasPermission("Magic.bypass_pvp") && magePlayer != entity)
+            boolean checkPvP = selfTargetingRequiresPvP ? true : magePlayer != entity;
+            if (magePlayer != null && !magePlayer.hasPermission("Magic.bypass_pvp") && checkPvP)
             {
                 // Check that the other player does not have PVP disabled for fairness
                 if (!controller.isPVPAllowed((Player)entity, entity.getLocation())) {
@@ -2056,6 +2058,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassDeactivate = parameters.getBoolean("bypass_deactivate", false);
         quiet = parameters.getBoolean("quiet", false);
         loud = parameters.getBoolean("loud", false);
+        selfTargetingRequiresPvP = parameters.getBoolean("target_self_requires_pvp", false);
         targetSelf = parameters.getBoolean("target_self", false);
         messageTargets = parameters.getBoolean("message_targets", true);
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
