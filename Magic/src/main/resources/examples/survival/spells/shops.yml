@@ -256,28 +256,6 @@ clayshop:
         - stained_clay:14@16
         - stained_clay:15@16
 
-bannershop:
-    inherit: buyshop
-    parameters:
-        items:
-        - banner:15@1
-        - banner:14@1
-        - banner:13@1
-        - banner:12@1
-        - banner:11@1
-        - banner:10@1
-        - banner:9@1
-        - banner:8@1
-        - banner:7@1
-        - banner:6@1
-        - banner:5@1
-        - banner:4@1
-        - banner:3@1
-        - banner:2@1
-        - banner:1@1
-        - banner:0@1
-        - hylian_banner
-
 foodshop:
     inherit: buyshop
     parameters:

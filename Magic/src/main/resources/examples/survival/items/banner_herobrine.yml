@@ -1,0 +1,29 @@
+banner_herobrine:
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: WHITE_BANNER
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      display-name: '{"extra":[{"text":"Herobrine"}],"text":""}'
+      patterns:
+      - ==: Pattern
+        color: BLACK
+        pattern: ts
+      - ==: Pattern
+        color: BLACK
+        pattern: bs
+      - ==: Pattern
+        color: BLACK
+        pattern: ls
+      - ==: Pattern
+        color: BLACK
+        pattern: rs
+      - ==: Pattern
+        color: BLACK
+        pattern: mc
+      - ==: Pattern
+        color: BLACK
+        pattern: bt

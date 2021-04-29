@@ -1,0 +1,29 @@
+banner_saber_double_red:
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLACK_BANNER
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      display-name: '{"extra":[{"text":"Double Red Saber"}],"text":""}'
+      patterns:
+      - ==: Pattern
+        color: WHITE
+        pattern: cs
+      - ==: Pattern
+        color: RED
+        pattern: ss
+      - ==: Pattern
+        color: GRAY
+        pattern: mr
+      - ==: Pattern
+        color: LIGHT_GRAY
+        pattern: flo
+      - ==: Pattern
+        color: BLACK
+        pattern: ls
+      - ==: Pattern
+        color: BLACK
+        pattern: rs

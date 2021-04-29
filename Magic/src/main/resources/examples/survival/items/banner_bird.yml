@@ -1,0 +1,29 @@
+banner_bird:
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLACK_BANNER
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      display-name: '{"extra":[{"text":"Bird"}],"text":""}'
+      patterns:
+      - ==: Pattern
+        color: CYAN
+        pattern: cr
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: mr
+      - ==: Pattern
+        color: BLACK
+        pattern: drs
+      - ==: Pattern
+        color: BLACK
+        pattern: lud
+      - ==: Pattern
+        color: BLACK
+        pattern: mc
+      - ==: Pattern
+        color: BLACK
+        pattern: bo

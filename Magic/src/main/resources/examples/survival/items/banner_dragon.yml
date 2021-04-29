@@ -1,0 +1,29 @@
+banner_dragon:
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: GRAY_BANNER
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      display-name: '{"extra":[{"text":"Dragon"}],"text":""}'
+      patterns:
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: cbo
+      - ==: Pattern
+        color: GRAY
+        pattern: rs
+      - ==: Pattern
+        color: ORANGE
+        pattern: flo
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: ms
+      - ==: Pattern
+        color: GRAY
+        pattern: tt
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: moj

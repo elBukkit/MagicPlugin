@@ -1,0 +1,29 @@
+banner_enderman:
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLACK_BANNER
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      display-name: '{"extra":[{"text":"Enderman"}],"text":""}'
+      patterns:
+      - ==: Pattern
+        color: MAGENTA
+        pattern: sc
+      - ==: Pattern
+        color: PURPLE
+        pattern: sku
+      - ==: Pattern
+        color: BLACK
+        pattern: bs
+      - ==: Pattern
+        color: BLACK
+        pattern: cs
+      - ==: Pattern
+        color: BLACK
+        pattern: cre
+      - ==: Pattern
+        color: BLACK
+        pattern: tt

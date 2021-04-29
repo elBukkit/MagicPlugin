@@ -1,0 +1,29 @@
+banner_cat:
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: BLACK_BANNER
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      display-name: '{"extra":[{"text":"Cat"}],"text":""}'
+      patterns:
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: cbo
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: tts
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: bl
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: bs
+      - ==: Pattern
+        color: BLACK
+        pattern: moj
+      - ==: Pattern
+        color: LIGHT_BLUE
+        pattern: tl

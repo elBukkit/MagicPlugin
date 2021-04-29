@@ -1,0 +1,29 @@
+banner_taco:
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2586
+    type: PINK_BANNER
+    meta:
+      ==: ItemMeta
+      meta-type: BANNER
+      display-name: '{"extra":[{"text":"Taco"}],"text":""}'
+      patterns:
+      - ==: Pattern
+        color: RED
+        pattern: sku
+      - ==: Pattern
+        color: RED
+        pattern: cre
+      - ==: Pattern
+        color: LIME
+        pattern: flo
+      - ==: Pattern
+        color: YELLOW
+        pattern: moj
+      - ==: Pattern
+        color: YELLOW
+        pattern: mc
+      - ==: Pattern
+        color: PINK
+        pattern: hhb

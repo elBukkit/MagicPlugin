@@ -30,6 +30,7 @@
  - Support `target_<attribute>` in equations for all custom attributes
  - Allow disabling any of the special brushes (clone, replicate, erase, etc)
  - Add `target_self_requires_pvp` spell parameter, to restore old behavior of PvP/self-targeting interactions
+ - Updated `bannershop` with several custom banners by TheBugWhisperer
 
 ## Fixes
 
