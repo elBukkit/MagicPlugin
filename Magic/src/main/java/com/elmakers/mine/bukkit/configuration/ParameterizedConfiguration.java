@@ -10,8 +10,9 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
+import de.slikey.effectlib.math.EquationVariableProvider;
 
-public abstract class ParameterizedConfiguration extends ParameterizedConfigurationSection implements Configuration {
+public abstract class ParameterizedConfiguration extends ParameterizedConfigurationSection implements Configuration, EquationVariableProvider {
     private static class Options extends ConfigurationOptions {
         protected Options(Configuration configuration) {
             super(configuration);
@@ -20,6 +21,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
 
     private Options options;
     private String context;
+    private Set<String> workingParameters;
 
     protected ParameterizedConfiguration(String context) {
         this.context = context;
@@ -67,21 +69,24 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
 
     @Nullable
     protected Double evaluate(String expression) {
-        Set<String> parameters = getParameters();
-        if (parameters == null || parameters.isEmpty()) return null;
+        workingParameters = getParameters();
+        if (workingParameters == null || workingParameters.isEmpty()) return null;
 
-        EquationTransform transform = EquationStore.getInstance().getTransform(expression, parameters);
-        for (String parameter : transform.getParameters()) {
-            double value = getParameter(parameter);
-            transform.setVariable(parameter, value);
-        }
-
+        EquationTransform transform = EquationStore.getInstance().getTransform(expression, workingParameters);
+        transform.setVariableProvider(this);
         double value = transform.get();
+        transform.setVariableProvider(null);
         Exception ex = transform.getException();
         if (ex != null) {
             warn("Error evaluating transform in '" + context + "': '" + expression + "': " + ex.getMessage());
         }
         return Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
+    }
+
+    @Override
+    @Nullable
+    public Double getVariable(String variable) {
+        return workingParameters != null && workingParameters.contains(variable) ? getParameter(variable) : null;
     }
 
     protected abstract Set<String> getParameters();
