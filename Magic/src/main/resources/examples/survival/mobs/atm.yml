@@ -9,6 +9,7 @@ atm:
   remove_mounts: "*"
   potion_effects: invisibility
   interact_spell: atm
+  helmet: melon_seeds{18003}
   mount:
     type: zombie
     show_name: false
@@ -30,3 +31,4 @@ atm:
       silent: true
       helmet: iron_block
       potion_effects: invisibility
+

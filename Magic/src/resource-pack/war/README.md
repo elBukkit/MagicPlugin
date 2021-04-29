@@ -7,7 +7,7 @@ https://github.com/elBukkit/MagicPlugin/wiki
 ## RP Credits
 
 - 3D Artist: 
-  - realflamegirl (Discord flame#0464)
+  - RealFlamegirl (Discord flame#0464)
   - SOPhorrific
   - NavalClash (NavalClash.net)
   - Droobledore

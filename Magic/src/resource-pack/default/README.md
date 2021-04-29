@@ -7,7 +7,7 @@ https://github.com/elBukkit/MagicPlugin/wiki
 ## RP Credits
 
 - 3D Artists:
-  - realflamegirl (Discord flame#0464)
+  - RealFlamegirl (Discord flame#0464)
   - Dr00bles
   - Phantom
   - Night

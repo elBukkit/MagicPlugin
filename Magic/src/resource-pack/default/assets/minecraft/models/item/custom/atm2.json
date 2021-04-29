@@ -1,0 +1,10 @@
+{
+	"parent": "item/custom/atm",
+	"display": {
+		"head": {
+			"translation": [0, -73, -10],
+			"scale": [1.6, 1.6, 1.6],
+			"rotation": [0, 0, 0]
+		}
+	}
+}
