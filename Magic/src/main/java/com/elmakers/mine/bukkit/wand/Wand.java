@@ -358,10 +358,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         saveState();
     }
 
-    protected Wand(MagicController controller, String templateName) throws UnknownWandException {
+    protected Wand(MagicController controller, String templateName, Mage mage) throws UnknownWandException {
         this(controller);
 
         // Default to "default" wand
+        this.mage = mage;
         if (templateName == null || templateName.length() == 0)
         {
             templateName = DEFAULT_WAND_TEMPLATE;
@@ -418,6 +419,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateName();
         updateLore();
         saveState();
+        this.mage = null;
     }
 
     public Wand(MagicController controller, Material icon, short iconData) {
@@ -3597,11 +3599,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Nullable
     public static Wand createWand(MagicController controller, String templateName) {
+        return createWand(controller, templateName, null);
+    }
+
+    @Nullable
+    public static Wand createWand(MagicController controller, String templateName, Mage mage) {
         if (controller == null) return null;
 
         Wand wand = null;
         try {
-            wand = new Wand(controller, templateName);
+            wand = new Wand(controller, templateName, mage);
         } catch (UnknownWandException ignore) {
             // the Wand constructor throws an exception on an unknown template
         } catch (Exception ex) {

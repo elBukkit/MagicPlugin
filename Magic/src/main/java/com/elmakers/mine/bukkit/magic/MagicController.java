@@ -4280,6 +4280,11 @@ public class MagicController implements MageController {
         return Wand.createWand(this, wandKey);
     }
 
+    @Nullable
+    public Wand createWand(String wandKey, Mage mage) {
+        return Wand.createWand(this, wandKey, mage instanceof com.elmakers.mine.bukkit.magic.Mage ? (com.elmakers.mine.bukkit.magic.Mage)mage : null);
+    }
+
     @Override
     @Nonnull
     public Wand createWand(@Nonnull ItemStack itemStack) {
@@ -5234,14 +5239,14 @@ public class MagicController implements MageController {
                     }
                     break;
                     case "wand": {
-                        com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(itemData);
+                        com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(itemData, mage);
                         if (wand != null) {
                             itemStack = wand.getItem();
                         }
                     }
                     break;
                     case "upgrade": {
-                        com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(itemData);
+                        com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(itemData, mage);
                         if (wand != null) {
                             wand.makeUpgrade();
                             itemStack = wand.getItem();
@@ -5327,7 +5332,7 @@ public class MagicController implements MageController {
                 if (item.isValid()) {
                     return item.getItemStack(amount, callback);
                 }
-                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey);
+                com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey, mage);
                 if (wand != null) {
                     ItemStack wandItem = wand.getItem();
                     if (wandItem != null) {

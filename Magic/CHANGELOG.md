@@ -14,6 +14,7 @@
  - Removed protection_duration from gather to avoid griefing
  - Copying/building container contents now restricted to Conduit path
  - Skript cast effect can now work with entities, not just players
+ - Custom lore on wands will udpate when given, instead of having to be held first
 
 ## Additions
 
