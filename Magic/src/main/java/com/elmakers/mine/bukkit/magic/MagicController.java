@@ -1801,6 +1801,17 @@ public class MagicController implements MageController {
         // Integrate with any plugins that don't need to be done at startup
         if (!loaded) {
             finalizeIntegrationPostLoad();
+        } else {
+            // Update anything in the world that may have had its config changed
+            updateActiveAutomata();
+
+            // Update any currently loaded mobs
+            mobs.updateAllMobs();
+
+            // Update all NPCs, they will have a reference to a potentially-stale EntityData
+            for (MagicNPC npc : npcs.values()) {
+                npc.update();
+            }
         }
 
         // Final loading tasks
@@ -2089,7 +2100,9 @@ public class MagicController implements MageController {
             AutomatonTemplate template = new AutomatonTemplate(this, key, config);
             automatonTemplates.put(key, template);
         }
+    }
 
+    public void updateActiveAutomata() {
         // Update existing automata
         for (Automaton active : activeAutomata.values()) {
             active.pause();
@@ -4489,14 +4502,6 @@ public class MagicController implements MageController {
             ConfigurationSection mobConfig = resolveConfiguration(key, properties, templateConfigurations);
             mobConfig = MagicConfiguration.getKeyed(this, mobConfig, "mob", key);
             mobs.load(key, mobConfig);
-        }
-
-        // Update any currently loaded mobs
-        mobs.updateAllMobs();
-
-        // Update all NPCs, they will have a reference to a potentially-stale EntityData
-        for (MagicNPC npc : npcs.values()) {
-            npc.update();
         }
     }
 

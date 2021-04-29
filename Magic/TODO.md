@@ -1,10 +1,5 @@
 # TODO
 
-# Godforsaken startup load issues
-
- - Roll it all back ???
- - Make sure to undo changes to "requires" that don't check plugin enabled status
-
 # Exploits
 
  - Vanilla explosions can drop blocks, need to commit or remove them (could not reproduce, maybe fixed already?)
@@ -12,7 +7,6 @@
 
 # Bugs
 
- - Are lightsaber models broken?
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
@@ -30,8 +24,6 @@
 
 ## Suggestions
 
- - Update wand lore when giving to player
- - Add a way to disable special brushes
  - Allow some custom variables in wand lore
  - To be able to show the result of equations in lore
  - Shops should just hide invalid items (option to hide them, or just use show_unavailable)
