@@ -1,5 +1,5 @@
 {
-	"credit": "Made with Blockbench",
+	"credit": "Made with Blockbench by Phantom, used in the Magic plugin with permission",
 	"parent": "item/custom/lit",
 	"ambientocclusion": false,
 	"textures": {

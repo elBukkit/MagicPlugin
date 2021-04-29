@@ -7,12 +7,14 @@ https://github.com/elBukkit/MagicPlugin/wiki
 ## RP Credits
 
 - 3D Artist: 
+  - realflamegirl (Discord flame#0464)
   - SOPhorrific
   - NavalClash (NavalClash.net)
   - Droobledore
   - BlueYoshi68
   - NathanWolf (lolz)
 - 2D Artist: 
+  - realflamegirl (Discord flame#0464)
   - zeeroakari (https://shotbow.net/forum/threads/zees-realistic-128x-wasted-textures.249184/)
   - ticogamer2244 (Soldier skin)
   - Creep3rDan (Police skin)

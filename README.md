@@ -36,8 +36,10 @@ Requires recent Java 8 JDK. Import directly as Maven Project. Build against pare
   - Dr00bles
   - grisstyl
 
-Please see README.md in the resource pack zip for artist credits!
-  
+Please see README.md in the resource packs for artist credits!
+
+https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/resource-pack/default/README.md
+
 ## Notes on Spell Icons
 
 Some of the spell icons contained in this plugin are used with permission from eleazzaar's Painterly Spell Icons pack:

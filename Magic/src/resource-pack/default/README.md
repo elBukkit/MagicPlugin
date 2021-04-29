@@ -7,7 +7,7 @@ https://github.com/elBukkit/MagicPlugin/wiki
 ## RP Credits
 
 - 3D Artists:
-  - realflamegirl
+  - realflamegirl (Discord flame#0464)
   - Dr00bles
   - Phantom
   - Night
@@ -15,6 +15,7 @@ https://github.com/elBukkit/MagicPlugin/wiki
   - Lix3nn (https://sketchfab.com/Lix3nn/models)
   - VelVoxel Raptor (https://www.youtube.com/watch?v=5QId3rMv89o)
 - 2D Artists:
+  - realflamegirl (Discord flame#0464)
   - Dr00bles
   - eleazzaar
   - Claire Meyers (https://www.behance.net/gallery/18354273/D-D-Class-Icon-System)

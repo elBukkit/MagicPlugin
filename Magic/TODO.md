@@ -2,8 +2,8 @@
 
 # Godforsaken startup load issues
 
- - Roll it all back
- - Make sure to undo changes to "requires" that don't check plugin eenabled status
+ - Roll it all back ???
+ - Make sure to undo changes to "requires" that don't check plugin enabled status
 
 # Exploits
 
@@ -30,6 +30,7 @@
 
 ## Suggestions
 
+ - Update wand lore when giving to player
  - Add a way to disable special brushes
  - Allow some custom variables in wand lore
  - To be able to show the result of equations in lore
