@@ -8,11 +8,11 @@ testvariable:
         variable: armor
         # This makes the variable survive past the spell cast
         scope: spell
-        value: "%armor_durability_max_helmet%"
+        value: "%magic_mana%"
         # This will make it so the variable is only set once
         # overwrite: false
       - class: Message
-        message: "Your slot 1 armor is @armor"
+        message: "Your mana is @armor"
       - class: Repeat
         repeat: 3
         actions:

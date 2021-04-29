@@ -15,6 +15,7 @@
  - Copying/building container contents now restricted to Conduit path
  - Skript cast effect can now work with entities, not just players
  - Custom lore on wands will udpate when given, instead of having to be held first
+ - Optimize equation parsing, particularly for servers with a lot of custom attributes
 
 ## Additions
 
