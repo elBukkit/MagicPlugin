@@ -293,9 +293,16 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             mage.sendMessage(ChatColor.DARK_AQUA + "Cleared commands for npc " + ChatColor.GOLD);
             mage.sendMessage(ChatColor.AQUA + "Was: " + ChatColor.WHITE + previousCommand);
         } else {
-            currentParameters.set("interact_commands", parameters[0]);
+            String command;
+            if (parameters.length == 1) {
+                command = parameters[0];
+            } else {
+                command = StringUtils.join(Arrays.copyOfRange(parameters, 0, parameters.length), " ");
+            }
+
+            currentParameters.set("interact_commands", command);
             mage.sendMessage(ChatColor.GREEN + "Changed npc " + ChatColor.GOLD + npc.getName()
-                + ChatColor.GREEN + " to commands " + ChatColor.YELLOW + parameters[0]);
+                + ChatColor.GREEN + " commands to " + ChatColor.YELLOW + command);
         }
         npc.update();
     }
@@ -536,6 +543,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         if (args.length == 1) {
             options.add("add");
             options.add("configure");
+            options.add("command");
             options.add("list");
             options.add("name");
             options.add("describe");

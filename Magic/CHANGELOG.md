@@ -38,6 +38,7 @@
 
  - War config spawner blocks fixed
  - Fix armor stand projectiles not moving (maybe, sometimes)
+ - Fix the `/mnpc command` command to allow spaces in the command
 
 # 8.5.3
 
