@@ -152,6 +152,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
         while (it.hasPrevious()) {
             EntityAttributeModifier modifier = it.previous();
             AttributeInstance attribute = entity.getAttribute(modifier.attribute);
+            if (attribute == null) continue;
             if (modifier.modifier != null) {
                 attribute.removeModifier(modifier.modifier);
             }
