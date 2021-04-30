@@ -88,21 +88,21 @@ public class BossBarConfiguration {
     }
 
     public BossBar createBossBar(CastContext context) {
-        String title = context.parameterizeMessage(this.title);
+        String title = context.parameterize(this.title);
         BossBar bossBar = context.getPlugin().getServer().createBossBar(title, color, style, flags);
         bossBar.setVisible(true);
         return bossBar;
     }
 
     public BossBar createBossBar(Mage mage) {
-        String title = mage.parameterizeMessage(this.title);
+        String title = mage.parameterize(this.title);
         BossBar bossBar = mage.getController().getPlugin().getServer().createBossBar(title, color, style, flags);
         bossBar.setVisible(true);
         return bossBar;
     }
 
     public void updateTitle(BossBar bossBar, CastContext context) {
-        String title = context.parameterizeMessage(this.title);
+        String title = context.parameterize(this.title);
         bossBar.setTitle(title);
     }
 

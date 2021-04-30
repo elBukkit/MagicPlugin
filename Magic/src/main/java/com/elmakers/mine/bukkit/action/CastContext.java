@@ -1018,7 +1018,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         String playerMessage = getMessage(messageKey);
         if (playerMessage.length() > 0)
         {
-            playerMessage = parameterizeMessage(playerMessage);
+            playerMessage = parameterize(playerMessage);
             for (Entity target : targets)
             {
                 UUID targetUUID = target.getUniqueId();
@@ -1430,6 +1430,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     }
 
     @Override
+    @Deprecated
     public String parameterizeMessage(String message) {
         return parameterize(message);
     }

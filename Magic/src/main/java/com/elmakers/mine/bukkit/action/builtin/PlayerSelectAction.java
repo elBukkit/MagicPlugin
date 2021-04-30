@@ -156,7 +156,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
             if (targetPlayer == null) continue;
 
             Mage targetMage = controller.getMage(targetPlayer);
-            String displayName = targetMage.parameterize(nameTemplate, "@");
+            String displayName = targetMage.parameterize(nameTemplate);
 
             ItemStack playerItem = controller.getSkull(targetPlayer, displayName);
             displayInventory.setItem(entry.getKey(), playerItem);

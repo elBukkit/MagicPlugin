@@ -336,7 +336,7 @@ public class SpawnEntityAction extends CompoundAction
         if (parameterizeName) {
             String name = spawnedEntity.getCustomName();
             if (name != null) {
-                name = context.parameterizeMessage(name);
+                name = context.parameterize(name);
                 spawnedEntity.setCustomName(name);
             }
         }

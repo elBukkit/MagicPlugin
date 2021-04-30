@@ -37,7 +37,7 @@ public class CreateNPCAction extends BaseSpellAction {
     public SpellResult perform(CastContext context) {
         Mage owner = context.getMage();
         MageController controller = context.getController();
-        String escapedName = context.parameterizeMessage(name);
+        String escapedName = context.parameterize(name);
         MagicNPC npc = controller.addNPC(owner, escapedName);
         if (npcTemplate != null) {
             npc.setTemplate(npcTemplate);
@@ -78,7 +78,7 @@ public class CreateNPCAction extends BaseSpellAction {
     private String parameterize(CastContext context, String message, UUID id, String name) {
         message = message.replace("$npc_name", name);
         message = message.replace("$npc", id.toString());
-        message = context.parameterizeMessage(message);
+        message = context.parameterize(message);
         return message;
     }
 }

@@ -77,7 +77,7 @@ public class ModifyNPCAction extends BaseSpellAction {
     private String parameterize(CastContext context, String message, UUID id, String name) {
         message = message.replace("$npc_name", name);
         message = message.replace("$npc", id.toString());
-        message = context.parameterizeMessage(message);
+        message = context.parameterize(message);
         return message;
     }
 }

@@ -617,7 +617,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (!quiet && canSendMessage() && message != null && message.length() > 0)
         {
             if (currentCast != null) {
-                message = currentCast.parameterizeMessage(message);
+                message = currentCast.parameterize(message);
             }
             mage.castMessage(message);
             lastMessageSent = System.currentTimeMillis();
@@ -645,7 +645,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (!quiet && message != null && message.length() > 0)
         {
             if (currentCast != null) {
-                message = currentCast.parameterizeMessage(message);
+                message = currentCast.parameterize(message);
             }
             mage.sendMessage(message);
             lastMessageSent = System.currentTimeMillis();
