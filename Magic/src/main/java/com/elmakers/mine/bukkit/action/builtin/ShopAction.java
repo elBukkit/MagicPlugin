@@ -18,12 +18,14 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 
 public class ShopAction extends SelectorAction {
     private boolean showNoPermission;
+    private boolean checkLimits;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -33,6 +35,7 @@ public class ShopAction extends SelectorAction {
         boolean showFree = parameters.getBoolean("show_free", false);
         boolean addSellShop = parameters.getBoolean("add_sell_shop", false);
         showNoPermission = parameters.getBoolean("show_no_permission", false);
+        checkLimits = parameters.getBoolean("check_max_spells", true);
 
         // Don't load items as defaults
         Object itemDefaults = parameters.get("items");
@@ -114,6 +117,20 @@ public class ShopAction extends SelectorAction {
             buttonConfigs.add(sellShopConfig);
             loadOptions(buttonConfigs);
         }
+    }
+
+    @Override
+    public SpellResult start(CastContext context) {
+        if (checkLimits) {
+            Mage mage = context.getMage();
+            CasterProperties caster = mage.getActiveProperties();
+            int maxSpells = caster.getMaxSpells();
+            if (maxSpells > 0 && caster.getSpells().size() >= maxSpells) {
+                context.showMessage("max_spells", getDefaultMessage(context, "max_spells"));
+                return SpellResult.NO_TARGET;
+            }
+        }
+        return super.start(context);
     }
 
     protected void loadSpells(CastContext context, Collection<String> spellKeys, boolean showFree, boolean isExtra) {

@@ -5316,7 +5316,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean addSpell(String spellName) {
         if (!isModifiable()) return false;
-        return forceAddSpell(spellName);
+        return super.addSpell(spellName);
     }
 
     @Override

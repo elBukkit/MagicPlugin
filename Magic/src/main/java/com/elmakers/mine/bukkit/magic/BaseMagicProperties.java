@@ -35,7 +35,7 @@ public class BaseMagicProperties implements MagicProperties {
             "mana_regeneration_boost",
             "mana_per_damage", "reset_mana_on_activate",
             "consume_reduction", "cost_reduction", "cooldown_reduction",
-            "hotbar_count",
+            "hotbar_count", "max_spells",
             "icon", "overrides",
             "protection", "potion_effects",
             "brushes", "brush_inventory", "spells", "spell_inventory", "spell_levels",

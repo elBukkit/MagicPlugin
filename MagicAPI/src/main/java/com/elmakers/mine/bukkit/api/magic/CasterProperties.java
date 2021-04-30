@@ -18,6 +18,7 @@ public interface CasterProperties extends MagicConfigurable {
     Collection<String> getBrushes();
     boolean addSpell(String spellKey);
     boolean addBrush(String key);
+    int getMaxSpells();
     // Whoops
     @Deprecated
     boolean setSpelLLevel(String spellKey, int level);

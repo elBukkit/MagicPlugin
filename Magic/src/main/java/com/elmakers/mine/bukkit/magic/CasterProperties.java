@@ -255,9 +255,12 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return modified;
     }
 
-
     @Override
     public boolean addSpell(String spellKey) {
+        int maxSpells = getMaxSpells();
+        if (maxSpells > 0 && getSpells().size() >= maxSpells) {
+            return false;
+        }
         return forceAddSpell(spellKey);
     }
 
@@ -1114,5 +1117,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 }
             }
         }
+    }
+
+    @Override
+    public int getMaxSpells() {
+        return getInt("max_spells");
     }
 }

@@ -59,3 +59,4 @@ shops:
   nostock: "Sorry, that item is out of stock!"
   paid: "&7$owner thanks you for your business!"
   invalid_item: "&cUnknown or Invalid Item"
+  max_spells: "&cYou can not learn any more spells"

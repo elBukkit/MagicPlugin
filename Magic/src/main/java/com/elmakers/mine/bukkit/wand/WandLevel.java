@@ -172,8 +172,9 @@ public class WandLevel {
         boolean addedSpells = false;
         Deque<WeightedPair<String>> remainingSpells = getRemainingSpells(caster);
 
-        if (addSpells) {
-            if (remainingSpells.size() > 0) {
+        if (addSpells && remainingSpells.size() > 0) {
+            int maxSpells = caster.getMaxSpells();
+            if (maxSpells <= 0 || caster.getSpells().size() < maxSpells) {
                 Integer spellCount = RandomUtils.weightedRandom(spellCountProbability);
                 if (spellCount == null || spellCount == 0) {
                     spellCount = 1;

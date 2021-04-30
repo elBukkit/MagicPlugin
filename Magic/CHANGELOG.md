@@ -34,6 +34,7 @@
  - Add `target_self_requires_pvp` spell parameter, to restore old behavior of PvP/self-targeting interactions
  - Updated `bannershop` with several custom banners by TheBugWhisperer
  - Add `spell_blocks` config, a superset of the enchant table functionality. See RPG configs for examples.
+ - Add `max_spells` property to classes and wands, can be used to limit the number of spells a player may learn
 
 ## Fixes
 
