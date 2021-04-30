@@ -1,6 +1,17 @@
 # This disables *all* enchanting, including vanilla
 disable_enchanting: false
 
+# This can be used to set up special right-click behaviors, a more generic version
+# of the enchant_* configurations below.
+spell_blocks: {}
+
+# spell_blocks:
+#   enchantment_table:
+#     right_click: progressmenu
+#     right_click_sneak: upgrades
+#     requires_wand: true
+#     requires_spell_progression: true
+
 # This controls what players will see when interacting with an enchantment table
 # These spells must exit in your configuration for this to work, and "enchant_block" needs to be set.
 # enchant_click: progressmenu
@@ -12,3 +23,4 @@ enchant_click_requires_wand: true
 # This can be used to set up a progression system based on clicking an enchant table with your wand.
 # enchant_block: enchantment_table
 enchant_block: ""
+

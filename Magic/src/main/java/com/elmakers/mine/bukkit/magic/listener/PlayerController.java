@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -61,6 +63,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
+import com.elmakers.mine.bukkit.magic.SpellBlock;
 import com.elmakers.mine.bukkit.tasks.DropActionTask;
 import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
@@ -75,11 +78,8 @@ public class PlayerController implements Listener {
     private static final int DEBUG_LEVEL = 199;
 
     private final MagicController controller;
+    private final Map<Material, SpellBlock> spellBlocks = new HashMap<>();
     private int clickCooldown = 150;
-    private MaterialAndData enchantBlockMaterial;
-    private String enchantClickSpell = "spellshop";
-    private String enchantSneakClickSpell = "upgrades";
-    private boolean enchantClickRequiresWand = true;
     private boolean cancelInteractOnLeftClick = true;
     private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
@@ -95,18 +95,33 @@ public class PlayerController implements Listener {
         logoutDelay = properties.getInt("logout_delay", 0);
         clickCooldown = properties.getInt("click_cooldown", 0);
         String enchantBlockKey = properties.getString("enchant_block", "enchantment_table");
-        if (enchantBlockKey.isEmpty()) {
-            enchantBlockMaterial = null;
-        } else {
-            enchantBlockMaterial = new MaterialAndData(enchantBlockKey);
+        if (!enchantBlockKey.isEmpty()) {
+            MaterialAndData enchantBlockMaterial = new MaterialAndData(enchantBlockKey);
+            if (enchantBlockMaterial.isValid()) {
+                SpellBlock enchantBlock = new SpellBlock(
+                        properties.getString("enchant_click"),
+                        properties.getString("enchant_sneak_click"),
+                        properties.getBoolean("enchant_click_requires_wand", false)
+                );
+                spellBlocks.put(enchantBlockMaterial.getMaterial(), enchantBlock);
+            }
         }
-        enchantClickSpell = properties.getString("enchant_click");
-        enchantSneakClickSpell = properties.getString("enchant_sneak_click");
+        ConfigurationSection spellBlocks = properties.getConfigurationSection("spell_blocks");
+        if (spellBlocks != null) {
+            Collection<String> keys = spellBlocks.getKeys(false);
+            for (String key : keys) {
+                MaterialAndData blockMaterial = new MaterialAndData(key);
+                ConfigurationSection spellBlockConfiguration = spellBlocks.getConfigurationSection(key);
+                if (blockMaterial.isValid() && spellBlockConfiguration != null) {
+                    SpellBlock enchantBlock = new SpellBlock(spellBlockConfiguration);
+                    this.spellBlocks.put(blockMaterial.getMaterial(), enchantBlock);
+                }
+            }
+        }
         cancelInteractOnLeftClick = properties.getBoolean("cancel_interact_on_left_click", true);
         cancelInteractOnRightClick = properties.getBoolean("cancel_interact_on_right_click", false);
         allowOffhandCasting = properties.getBoolean("allow_offhand_casting", true);
         autoAbsorbSP = properties.getBoolean("auto_absorb_sp", true);
-        enchantClickRequiresWand = properties.getBoolean("enchant_click_requires_wand", false);
     }
 
     private void trigger(Player player, String trigger) {
@@ -838,25 +853,25 @@ public class PlayerController implements Listener {
         }
 
         // Check for enchantment table click
-        boolean allowsEnchantClicks = !enchantClickRequiresWand || (wand != null && wand.hasSpellProgression());
         Block clickedBlock = event.getClickedBlock();
-        if (clickedBlock != null && clickedBlock.getType() != Material.AIR
-            && enchantBlockMaterial != null && enchantBlockMaterial.is(clickedBlock)
-            && allowsEnchantClicks)
-        {
-            Spell spell = null;
-            if (player.isSneaking())
-            {
-                spell = enchantSneakClickSpell != null ? mage.getSpell(enchantSneakClickSpell) : null;
+        SpellBlock spellBlock = spellBlocks.get(clickedBlock.getType());
+        if (clickedBlock != null
+            && (wand != null || !spellBlock.requiresWand())
+            && (!spellBlock.requiresSpellProgression() || (wand != null && wand.hasSpellProgression()))
+        ) {
+            String spellKey = null;
+            if (player.isSneaking()) {
+                spellKey = spellBlock.getRightClickSneakSpell();
+            } else {
+                spellKey = spellBlock.getRightClickSpell();
             }
-            else
-            {
-                spell = enchantClickSpell != null ? mage.getSpell(enchantClickSpell) : null;
-            }
-            if (spell != null)
-            {
-                spell.cast();
-                event.setCancelled(true);
+
+            Spell spell = spellKey != null ? mage.getSpell(spellKey) : null;;
+            if (spell != null) {
+                boolean result = spell.cast();
+                if (spellBlock.isCancelClick() && result) {
+                    event.setCancelled(true);
+                }
             }
             return;
         }

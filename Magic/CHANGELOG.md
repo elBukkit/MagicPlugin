@@ -33,6 +33,7 @@
  - Allow disabling any of the special brushes (clone, replicate, erase, etc)
  - Add `target_self_requires_pvp` spell parameter, to restore old behavior of PvP/self-targeting interactions
  - Updated `bannershop` with several custom banners by TheBugWhisperer
+ - Add `spell_blocks` config, a superset of the enchant table functionality. See RPG configs for examples.
 
 ## Fixes
 
