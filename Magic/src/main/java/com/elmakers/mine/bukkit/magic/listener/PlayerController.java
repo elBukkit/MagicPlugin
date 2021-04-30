@@ -854,8 +854,8 @@ public class PlayerController implements Listener {
 
         // Check for enchantment table click
         Block clickedBlock = event.getClickedBlock();
-        SpellBlock spellBlock = spellBlocks.get(clickedBlock.getType());
-        if (clickedBlock != null
+        SpellBlock spellBlock = clickedBlock == null ? null : spellBlocks.get(clickedBlock.getType());
+        if (spellBlock != null
             && (wand != null || !spellBlock.requiresWand())
             && (!spellBlock.requiresSpellProgression() || (wand != null && wand.hasSpellProgression()))
         ) {

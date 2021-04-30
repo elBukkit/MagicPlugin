@@ -76,6 +76,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         .put("message", "messages")
         .put("modifier", "modifiers")
         .put("world", "worlds")
+        .put("config", "config")
         .build();
 
     private final MagicController magic;
