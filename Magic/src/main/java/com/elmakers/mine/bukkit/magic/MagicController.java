@@ -1798,6 +1798,9 @@ public class MagicController implements MageController {
         MagicRecipe.FIRST_REGISTER = false;
         log("Loaded " + crafting.getCount() + " crafting recipes");
 
+        // Create ItemStacks for all ItemData so we can do reverse-lookups
+        items.finalizeItems();
+
         // Integrate with any plugins that don't need to be done at startup
         if (!loaded) {
             finalizeIntegrationPostLoad();

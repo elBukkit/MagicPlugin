@@ -47,6 +47,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private String baseKey;
     private String materialKey;
     private ItemStack item;
+    private ConfigurationSection configuration;
     private double worth;
     private Double earns;
     private Set<String> categories = ImmutableSet.of();
@@ -77,8 +78,32 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         this.materialKey = materialKey;
     }
 
-    public ItemData(String key, ConfigurationSection configuration, MageController controller) throws InvalidMaterialException {
+    public ItemData(String key, ConfigurationSection configuration, MageController controller) {
         this.controller = controller;
+        this.configuration = configuration;
+        this.setKey(key);
+        this.materialKey = key;
+
+        worth = configuration.getDouble("worth", worth);
+        if (configuration.contains("earns")) {
+            earns = configuration.getDouble("earns");
+        } else {
+            earns = null;
+        }
+        creator = configuration.getString("creator");
+        creatorId = configuration.getString("creator_id");
+        locked = configuration.getBoolean("locked");
+        replaceOnEquip = configuration.getBoolean("replace_on_equip");
+
+        Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
+        if (categoriesList != null) {
+            categories = ImmutableSet.copyOf(categoriesList);
+        }
+    }
+
+    private void createItemFromConfiguration() throws InvalidMaterialException {
+        ConfigurationSection configuration = this.configuration;
+        this.configuration = null;
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");
         } else if (configuration.isConfigurationSection("item")) {
@@ -112,17 +137,6 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         if (item == null) {
             throw new InvalidMaterialException("Invalid item configuration: " + key);
         }
-        this.setKey(key);
-        this.materialKey = key;
-        worth = configuration.getDouble("worth", worth);
-        if (configuration.contains("earns")) {
-            earns = configuration.getDouble("earns");
-        } else {
-            earns = null;
-        }
-        creator = configuration.getString("creator");
-        creatorId = configuration.getString("creator_id");
-
         Collection<ConfigurationSection> attributes = ConfigurationUtils.getNodeList(configuration, "attributes");
         if (attributes != null && !attributes.isEmpty()) {
             item = InventoryUtils.makeReal(item);
@@ -199,22 +213,18 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                 leather.setColor(Color.fromRGB(red, green, blue));
                 item.setItemMeta(meta);
             }
-
-        }
-        locked = configuration.getBoolean("locked");
-        replaceOnEquip = configuration.getBoolean("replace_on_equip");
-
-        Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
-        if (categoriesList != null) {
-            categories = ImmutableSet.copyOf(categoriesList);
         }
     }
 
     private void setKey(String key) {
         this.key = key;
+        checkKey();
+    }
+
+    public void checkKey() {
         String[] pieces = StringUtils.split(key, "@", 2);
         baseKey = pieces[0];
-        if (pieces.length > 1) {
+        if (worth == 0 && pieces.length > 1) {
             try {
                 int amount = Integer.parseInt(pieces[1]);
                 if (amount > 1) {
@@ -324,14 +334,25 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     @Nonnull
     public ItemStack getOrCreateItemStack() {
         if (item == null) {
-            item = controller.createItem(materialKey, null, false, this);
-            if (!loaded && InventoryUtils.isSkull(item)) {
-                pending = new ArrayList<>();
+            if (configuration != null) {
+                try {
+                    createItemFromConfiguration();
+                } catch (InvalidMaterialException ex) {
+                    controller.info("Invalid item type '" + key + "', may not exist on your server version: " + ex.getMessage(), 2);
+                }
+                if (item == null) {
+                    item = new ItemStack(Material.AIR);
+                }
+            } else {
+                item = controller.createItem(materialKey, null, false, this);
+                if (!loaded && InventoryUtils.isSkull(item)) {
+                    pending = new ArrayList<>();
+                }
+                if (item == null) {
+                    controller.getLogger().warning("Invalid material key: " + materialKey);
+                    item = new ItemStack(Material.AIR);
+                }
             }
-        }
-        if (item == null) {
-            controller.getLogger().warning("Invalid material key: " + materialKey);
-            item = new ItemStack(Material.AIR);
         }
         return item;
     }

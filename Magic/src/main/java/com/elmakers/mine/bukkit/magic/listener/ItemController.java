@@ -14,7 +14,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.item.InvalidMaterialException;
 import com.elmakers.mine.bukkit.item.ItemData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
@@ -57,7 +56,6 @@ public class ItemController {
         ItemData magicItem = new ItemData(itemKey, material, controller);
         itemKeys.add(itemKey);
         items.put(itemKey, magicItem);
-        itemsByStack.put(magicItem.getItemStack(1), magicItem);
     }
 
     public void loadItem(String itemKey, ConfigurationSection configuration) {
@@ -66,7 +64,6 @@ public class ItemController {
             if (magicItem != null) {
                 itemKeys.add(itemKey);
                 items.put(itemKey, magicItem);
-                itemsByStack.put(magicItem.getOrCreateItemStack(), magicItem);
                 if (magicItem.isReplaceOnEquip()) {
                     Material type = magicItem.getType();
                     Map<Integer, ItemData> mapped = replaceOnEquip.get(type);
@@ -79,10 +76,15 @@ public class ItemController {
             } else {
                 controller.getLogger().warning("Could not create item with key " + itemKey);
             }
-        } catch (InvalidMaterialException ex) {
-            controller.info("Invalid item type '" + itemKey + "', may not exist on your server version: " + ex.getMessage(), 2);
         } catch (Throwable ex) {
             controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);
+        }
+    }
+
+    public void finalizeItems() {
+        for (ItemData magicItem : items.values()) {
+            magicItem.checkKey();
+            itemsByStack.put(magicItem.getOrCreateItemStack(), magicItem);
         }
     }
 
