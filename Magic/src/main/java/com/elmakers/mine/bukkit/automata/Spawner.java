@@ -44,6 +44,9 @@ public class Spawner {
     private final int limit;
     private final int limitRange;
     private final int verticalRange;
+    private final int checkRadius;
+    private final int verticalCheckRadius;
+    private final boolean checkFloor;
     private final double radius;
     private final double verticalRadius;
     private final int locationRetry;
@@ -103,6 +106,9 @@ public class Spawner {
         verticalRange = configuration.getInt("vertical_range", 0);
         radius = configuration.getDouble("radius");
         verticalRadius = configuration.getDouble("vertical_radius");
+        checkRadius = configuration.getInt("check_radius", 1);
+        verticalCheckRadius = configuration.getInt("vertical_check_radius", 1);
+        checkFloor = configuration.getBoolean("check_floor", true);
         locationRetry = configuration.getInt("retries", 4);
         passthrough = controller.getMaterialSetManager().getMaterialSet("passthrough");
         randomizePitch = configuration.getBoolean("randomize_pitch", false);
@@ -118,12 +124,23 @@ public class Spawner {
     }
 
     private boolean isSafe(Location location) {
-        Block inBlock = location.getBlock();
-        Block inBlock2 = location.getBlock().getRelative(BlockFace.UP);
-        Block onBlock = location.getBlock().getRelative(BlockFace.DOWN);
-
-        if (passthrough.testBlock(onBlock) || !passthrough.testBlock(inBlock) || !passthrough.testBlock(inBlock2)) {
-            return false;
+        if (checkRadius <= 0) return true;
+        int range = checkRadius - 1;
+        int verticalRange = verticalCheckRadius - 1;
+        Block block = location.getBlock();
+        for (int x = -range; x <= range; x++) {
+            for (int z = -range; z <= range; z++) {
+                for (int y = -verticalRange - 1; y <= verticalRange + 1; y++) {
+                    Block testBlock = block.getRelative(x, y, z);
+                    if (y < 0 && checkFloor) {
+                        if (passthrough.testBlock(testBlock)) {
+                            return false;
+                        }
+                    } else if (!passthrough.testBlock(testBlock)) {
+                        return false;
+                    }
+                }
+            }
         }
         return true;
     }

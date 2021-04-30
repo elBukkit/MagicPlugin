@@ -35,6 +35,8 @@
  - Updated `bannershop` with several custom banners by TheBugWhisperer
  - Add `spell_blocks` config, a superset of the enchant table functionality. See RPG configs for examples.
  - Add `max_spells` property to classes and wands, can be used to limit the number of spells a player may learn
+ - Add spawner properties: `check_radius`, `vertical_check_radius` and `check_floor`, for controlling
+   how spawners check for free space. May be needed if spawning ghasts, spiders or other large mobs.
 
 ## Fixes
 

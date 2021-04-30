@@ -38,7 +38,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         "spawn.vertical_radius", "spawn.retries", "min_players", "player_range",
         "min_time", "max_time", "min_moon_phase", "max_moon_phase", "moon_phase",
         "cast.spells", "cast.recast", "cast.undo_all", "spawn.count", "spawn.leash",
-        "spawn.interval", "spawn.parameters"
+        "spawn.interval", "spawn.parameters", "spawn.check_radius", "spawn.check_floor",
+        "spawn.vertical_check_radius"
     );
     private static final ImmutableSet<String> IGNORE_PROPERTIES = ImmutableSet.of("name", "description");
 
@@ -577,6 +578,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 case "cast.undo_all":
                 case "cast.leash":
                 case "cast.recast":
+                case "spawn.check_floor":
                     options.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
                     break;
                 case "spawn.interval":
@@ -617,6 +619,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 case "spawn.player_range":
                 case "spawn.retries":
                 case "spawn.min_players":
+                case "spawn.check_radius":
+                case "spawn.vertical_check_radius":
                 case "player_range":
                 case "min_players":
                     options.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
