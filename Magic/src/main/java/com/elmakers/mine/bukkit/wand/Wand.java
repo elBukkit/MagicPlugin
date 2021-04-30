@@ -2641,14 +2641,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     default:
                         if (mage != null) {
                             line = mage.parameterizeMessage(line);
-                            line = mage.parameterizeAttributes(line);
                         }
                         lore.add(ChatColor.translateAlternateColorCodes('&', line));
                 }
             } else {
-                if (mage != null && (line.contains("@") || line.contains("$"))) {
+                if (mage != null) {
                     line = mage.parameterizeMessage(line);
-                    line = mage.parameterizeAttributes(line);
                 }
                 lore.add(ChatColor.translateAlternateColorCodes('&', line));
             }

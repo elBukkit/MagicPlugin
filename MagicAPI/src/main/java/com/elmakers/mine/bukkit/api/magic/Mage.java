@@ -795,8 +795,12 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isUrlIconsEnabled();
     boolean canUse(ItemStack item);
     boolean canCraft(String recipeKey);
-    String parameterizeMessage(String command);
+
+    String parameterize(String text);
+    @Deprecated
     String parameterize(String command, String prefix);
+    @Deprecated
+    String parameterizeMessage(String command);
     ClientPlatform getClientPlatform();
     @Nullable
     CasterProperties getCasterProperties(String propertyType);

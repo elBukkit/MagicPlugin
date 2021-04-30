@@ -16,6 +16,9 @@
  - Skript cast effect can now work with entities, not just players
  - Custom lore on wands will udpate when given, instead of having to be held first
  - Optimize equation parsing, particularly for servers with a lot of custom attributes
+ - Optimize message and command replacement. This may have changed behavior slightly, in particular
+   if you have replacements up against text such as "$target_manaMP" you may need to change it to "$target_mana$MP",
+   the underscore will be removed.
 
 ## Additions
 

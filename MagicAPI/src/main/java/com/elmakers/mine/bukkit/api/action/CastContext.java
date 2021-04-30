@@ -225,6 +225,7 @@ public interface CastContext extends MageContext {
     boolean canContinue(Location location);
     boolean canCast(Location location);
     String parameterize(String command);
+    @Deprecated
     String parameterizeMessage(String message);
     boolean isConsumeFree();
     void addHandler(ActionHandler handler);

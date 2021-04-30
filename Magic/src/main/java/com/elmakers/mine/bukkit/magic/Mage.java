@@ -7,7 +7,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -123,6 +122,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -132,7 +132,7 @@ import com.google.common.collect.ImmutableList;
 
 import de.slikey.effectlib.util.VectorUtils;
 
-public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage {
+public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage, Replacer {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
     public static int CHANGE_WORLD_EQUIP_COOLDOWN = 1000;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
@@ -5459,44 +5459,51 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return false;
     }
 
+    @Nullable
     @Override
+    public String getReplacement(String symbol, boolean integerValues) {
+        switch (symbol) {
+            case "_": return " ";
+            case "pd": return getDisplayName();
+            case "pn":
+            case "p":
+                return getName();
+            case "uuid": return getId();
+            default:
+                Double value = getAttribute(symbol);
+                if (value != null) {
+                    if (integerValues) {
+                        return Integer.toString((int)(double)value);
+                    } else {
+                        return Double.toString(value);
+                    }
+                }
+        }
+        return null;
+    }
+
+    @Override
+    @Deprecated
     public String parameterizeMessage(String message) {
-        return parameterize(message, "$");
-    }
-
-    /**
-     * This is separate from parameterize() because CastContext.parameterize calls down here,
-     * but is responsible for handling attributes and we don't want to loop them twice.
-     */
-    public String parameterizeAttributes(String message) {
-        List<String> attributes = new ArrayList<>(controller.getAttributes());
-        Collections.sort(attributes, (o1, o2) -> o2.length() - o1.length());
-        for (String attribute : attributes) {
-            Double value = getAttribute(attribute);
-            message = message.replace("$" + attribute, value == null ? "?" : Double.toString(value));
-        }
-        for (String attribute : attributes) {
-            Double value = getAttribute(attribute);
-            message = message.replace("@" + attribute, value == null ? "?" : Integer.toString((int)(double)value));
-        }
-        return message;
+        return parameterize(message);
     }
 
     @Override
+    @Deprecated
     public String parameterize(String command, String prefix) {
+        return parameterize(command);
+    }
+
+    @Override
+    public String parameterize(String text) {
+        // These should be the only two characters used as prefixes!
+        if (!text.contains("@") && !text.contains("$")) return text;
+
         Player player = getPlayer();
         if (player != null) {
-            command = controller.setPlaceholders(player, command);
+            text = controller.setPlaceholders(player, text);
         }
-
-        command = command
-                .replace(prefix + "_", " ")
-                .replace(prefix + "pd", getDisplayName())
-                .replace(prefix + "pn", getName())
-                .replace(prefix + "uuid", getId())
-                .replace(prefix + "p", getName());
-
-        return command;
+        return TextUtils.parameterize(text, this);
     }
 
     public void discoverRecipes(Collection<String> recipes) {

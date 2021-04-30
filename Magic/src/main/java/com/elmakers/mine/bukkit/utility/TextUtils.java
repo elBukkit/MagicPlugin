@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.utility;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -23,6 +25,7 @@ public class TextUtils
         new DecimalFormat("#0.00"),
         new DecimalFormat("#0.000")
     };
+    private static final Pattern replacePattern = Pattern.compile("([$@][\\w_]+)([$@]?)");
 
     enum Numeral {
         I(1), IV(4), V(5), IX(9), X(10), XL(40), L(50), XC(90), C(100), CD(400), D(500), CM(900), M(1000);
@@ -102,15 +105,24 @@ public class TextUtils
     }
 
     public static String parameterize(String command, Location location, Player player) {
-        return command
-            .replace("@pd", player.getDisplayName())
-            .replace("@pn", player.getName())
-            .replace("@p", player.getName())
-            .replace("@uuid", player.getUniqueId().toString())
-            .replace("@world", location.getWorld().getName())
-            .replace("@x", Double.toString(location.getX()))
-            .replace("@y", Double.toString(location.getY()))
-            .replace("@z", Double.toString(location.getZ()));
+        return parameterize(command, new BasicReplacer(location, player));
+    }
+
+    public static String parameterize(String text, Replacer replacer) {
+        StringBuffer parameterized = new StringBuffer();
+        Matcher m = replacePattern.matcher(text);
+        while (m.find()) {
+            String symbol = m.group(1);
+            if (symbol.length() < 2) continue;
+            char prefix = symbol.charAt(0);
+            boolean integerValue = prefix == '@';
+            symbol = symbol.substring(1);
+            String repString = replacer.getReplacement(symbol, integerValue);
+            if (repString != null)
+                m.appendReplacement(parameterized, repString);
+        }
+        m.appendTail(parameterized);
+        return parameterized.toString();
     }
 
     public static void sendMessage(CommandSender target, String message) {

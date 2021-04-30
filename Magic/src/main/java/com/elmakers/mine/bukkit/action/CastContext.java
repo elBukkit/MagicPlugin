@@ -5,7 +5,6 @@ import static com.google.common.base.Verify.verifyNotNull;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -61,9 +60,11 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.Replacer;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.google.common.base.Preconditions;
 
-public class CastContext extends WandContext implements com.elmakers.mine.bukkit.api.action.CastContext {
+public class CastContext extends WandContext implements com.elmakers.mine.bukkit.api.action.CastContext, Replacer {
     protected static Random random;
 
     private final WeakReference<Entity> entity;
@@ -1383,92 +1384,61 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterBreaking(block);
     }
 
+    @Nullable
+    @Override
+    public String getReplacement(String symbol, boolean integerValues) {
+        Location location = getLocation();
+        Location targetLocation = getTargetLocation();
+        Entity targetEntity = getTargetEntity();
+        Mage targetMage = targetEntity == null ? null : controller.getRegisteredMage(targetEntity);
+        switch (symbol) {
+            case "spell": return getSpell().getName();
+            case "world": return location == null ? null : location.getWorld().getName();
+            case "x": return location == null ? null : (integerValues ? Integer.toString(location.getBlockX()) : Double.toString(location.getX()));
+            case "y": return location == null ? null : (integerValues ? Integer.toString(location.getBlockY()) : Double.toString(location.getY()));
+            case "z": return location == null ? null : (integerValues ? Integer.toString(location.getBlockZ()) : Double.toString(location.getZ()));
+            case "tworld": return targetLocation == null ? null : targetLocation.getWorld().getName();
+            case "tx": return targetLocation == null ? null : (integerValues ? Integer.toString(targetLocation.getBlockX()) : Double.toString(targetLocation.getX()));
+            case "ty": return targetLocation == null ? null : (integerValues ? Integer.toString(targetLocation.getBlockY()) : Double.toString(targetLocation.getY()));
+            case "tz": return targetLocation == null ? null : (integerValues ? Integer.toString(targetLocation.getBlockZ()) : Double.toString(targetLocation.getZ()));
+            case "td": return targetMage != null ? targetMage.getDisplayName() : (targetEntity == null ? null : controller.getEntityDisplayName(targetEntity));
+            case "tn":
+            case "t":
+                return targetMage != null ? targetMage.getName() : (targetEntity == null ? null : controller.getEntityName(targetEntity));
+            case "tuuid": return targetMage != null ? targetMage.getId() : (targetEntity == null ? null : targetEntity.getUniqueId().toString());
+            default:
+                ConfigurationSection variables = getAllVariables();
+                if (variables.contains(symbol)) {
+                    if (integerValues) {
+                        return Integer.toString(variables.getInt(symbol));
+                    } else {
+                        return variables.getString(symbol);
+                    }
+                }
+                Double attribute = getAttribute(symbol);
+                if (attribute != null) {
+                    if (integerValues) {
+                        return Integer.toString((int)(double)attribute);
+                    } else {
+                        return Double.toString(attribute);
+                    }
+                }
+                String messageParameter = messageParameters.get(symbol);
+                if (messageParameter != null) return messageParameter;
+        }
+        return ((Replacer)getMage()).getReplacement(symbol, integerValues);
+    }
+
     @Override
     public String parameterizeMessage(String message) {
-        return parameterize(message, "$");
+        return parameterize(message);
     }
 
     @Override
-    public String parameterize(String command) {
-        return parameterize(command, "@");
-    }
-
-    private String parameterize(String command, String prefix) {
-        if (command == null || command.isEmpty()) return "";
-        Location location = getLocation();
-        Mage mage = getMage();
-        MageController controller = getController();
-
-        ConfigurationSection variables = getAllVariables();
-        List<String> keys = new ArrayList<>(variables.getKeys(false));
-        Collections.sort(keys, (o1, o2) -> o2.length() - o1.length());
-        for (String key : keys) {
-            command = command.replace("$" + key, variables.getString(key));
-        }
-        for (String key : keys) {
-            command = command.replace("@" + key, Integer.toString(variables.getInt(key)));
-        }
-
-        List<String> attributes = new ArrayList<>(controller.getAttributes());
-        Collections.sort(attributes, (o1, o2) -> o2.length() - o1.length());
-        for (String attribute : attributes) {
-            Double value = getAttribute(attribute);
-            command = command.replace("$" + attribute, value == null ? "?" : Double.toString(value));
-        }
-        for (String attribute : attributes) {
-            Double value = getAttribute(attribute);
-            command = command.replace("@" + attribute, value == null ? "?" : Integer.toString((int)(double)value));
-        }
-
-        for (Map.Entry<String, String> entry : messageParameters.entrySet()) {
-            command = command.replace(prefix + entry.getKey(), entry.getValue());
-        }
-
-        command = mage.parameterize(command, prefix);
-        command = command.replace(prefix + "spell", getSpell().getName());
-
-        if (location != null) {
-            command = command
-                    .replace(prefix + "world", location.getWorld().getName())
-                    .replace("$x", Double.toString(location.getX()))
-                    .replace("$y", Double.toString(location.getY()))
-                    .replace("$z", Double.toString(location.getZ()))
-                    .replace("@x", Integer.toString(location.getBlockX()))
-                    .replace("@y", Integer.toString(location.getBlockY()))
-                    .replace("@z", Integer.toString(location.getBlockZ()));
-        }
-
-        Location targetLocation = getTargetLocation();
-        if (targetLocation != null) {
-            command = command
-                    .replace(prefix + "tworld", targetLocation.getWorld().getName())
-                    .replace("$tx", Double.toString(targetLocation.getX()))
-                    .replace("$ty", Double.toString(targetLocation.getY()))
-                    .replace("$tz", Double.toString(targetLocation.getZ()))
-                    .replace("@tx", Integer.toString(targetLocation.getBlockX()))
-                    .replace("@ty", Integer.toString(targetLocation.getBlockY()))
-                    .replace("@tz", Integer.toString(targetLocation.getBlockZ()));
-        }
-
-        Entity targetEntity = getTargetEntity();
-        if (targetEntity != null) {
-            if (controller.isMage(targetEntity)) {
-                Mage targetMage = controller.getMage(targetEntity);
-                command = command
-                        .replace(prefix + "td", targetMage.getDisplayName())
-                        .replace(prefix + "tn", targetMage.getName())
-                        .replace(prefix + "tuuid", targetMage.getId())
-                        .replace(prefix + "t", targetMage.getName());
-            } else {
-                command = command
-                        .replace(prefix + "td", controller.getEntityDisplayName(targetEntity))
-                        .replace(prefix + "tn", controller.getEntityName(targetEntity))
-                        .replace(prefix + "tuuid", targetEntity.getUniqueId().toString())
-                        .replace(prefix + "t", controller.getEntityName(targetEntity));
-            }
-        }
-
-        return ChatColor.translateAlternateColorCodes('&', command);
+    public String parameterize(String text) {
+        if (text == null || text.isEmpty()) return "";
+        text = TextUtils.parameterize(text, this);
+        return ChatColor.translateAlternateColorCodes('&', text);
     }
 
     @Nullable

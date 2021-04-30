@@ -5,34 +5,31 @@ testvariable:
   actions:
     cast:
       - class: ModifyVariable
-        variable: armor
-        # This makes the variable survive past the spell cast
+        variable: manaamount
         scope: spell
-        value: "%magic_mana%"
-        # This will make it so the variable is only set once
-        # overwrite: false
+        value: '%magic_mana%'
       - class: Message
-        message: "Your mana is @armor"
+        message: Your mana is @manaamount@MP
       - class: Repeat
         repeat: 3
         actions:
-        - class: ModifyVariable
-          variable: count
-          scope: spell
-          default: 10
-          value: "count + 1"
-        - class: Message
-          message: "Variable count = $count"
+          - class: ModifyVariable
+            variable: count
+            scope: spell
+            default: 10
+            value: count + 1
+          - class: Message
+            message: Variable count = $count
       - class: CheckRequirements
         requirements:
           - variables:
-            - variable: count
-              min: 10
+              - variable: count
+                min: 10
         actions:
           - class: Message
-            message: "STAHP IT'S TOO MUCH"
+            message: STAHP IT'S TOO MUCH
           - class: Damage
-            damage: "count / 4"
+            damage: count / 4
       - class: CheckRequirements
         requirements:
           - variables:
@@ -40,6 +37,6 @@ testvariable:
                 min: 20
         actions:
           - class: Message
-            message: "OK FOR REAL THOUGH"
+            message: OK FOR REAL THOUGH
           - class: Command
             command: give @p rotten_flesh @count

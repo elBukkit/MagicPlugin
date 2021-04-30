@@ -27,11 +27,12 @@
  - Allow some custom variables in wand lore
  - To be able to show the result of equations in lore
  - Shops should just hide invalid items (option to hide them, or just use show_unavailable)
- - use hitbox of disguised mob
-
-## Feature Requests
-
+ - Use hitbox of disguised mob
  - Wands that apply a mage cooldown on activation
+ - Selector/Shop `layout` parameter to allow making specific layouts easier
+   This got a little complicated, but I think we need to put a "symbol" parameter on 
+   each item, or ideally support a map of symbol to option/item
+   Then layout is a list of rows of strings of symbols
 
 ## Client Localization
 
