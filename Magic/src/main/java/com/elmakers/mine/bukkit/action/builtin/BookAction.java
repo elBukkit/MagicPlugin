@@ -34,6 +34,7 @@ public class BookAction extends BaseSpellAction {
     @Nonnull
     private String author = "";
     @Nullable
+    private String bookItem;
     private ConfigurationSection pages;
     private boolean giveBook;
     private boolean virtualBook;
@@ -133,7 +134,25 @@ public class BookAction extends BaseSpellAction {
         author = messages.get(authorParam, ChatColor.translateAlternateColorCodes('&', authorParam));
         pages = parameters.getConfigurationSection("pages");
         giveBook = parameters.getBoolean("give_book", false);
-        virtualBook = parameters.getBoolean("virtual_book", false);
+        bookItem = parameters.getString("book_item");
+        virtualBook = parameters.getBoolean("virtual_book", !giveBook && bookItem != null);
+    }
+
+    @Nullable
+    private ItemStack getBook(CastContext context, Mage targetMage) {
+        if (bookItem != null) {
+            return context.getController().createItem(bookItem, targetMage);
+        }
+        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
+        updateBook(context, targetMage, book);
+        return book;
+    }
+
+    private boolean checkBook(ItemStack book) {
+        if (CompatibilityUtils.isEmpty(book)) {
+            return false;
+        }
+        return book.getType() == Material.WRITTEN_BOOK;
     }
 
     public SpellResult performGive(CastContext context) {
@@ -146,9 +165,10 @@ public class BookAction extends BaseSpellAction {
         }
 
         Mage targetMage = context.getController().getMage(target);
-        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
-        updateBook(context, targetMage, book);
-
+        ItemStack book = getBook(context, targetMage);
+        if (!checkBook(book)) {
+            return SpellResult.FAIL;
+        }
         targetMage.giveItem(book);
 
         return SpellResult.CAST;
@@ -164,8 +184,10 @@ public class BookAction extends BaseSpellAction {
         }
 
         Mage targetMage = context.getController().getMage(target);
-        ItemStack book = new ItemStack(Material.WRITTEN_BOOK);
-        updateBook(context, targetMage, book);
+        ItemStack book = getBook(context, targetMage);
+        if (!checkBook(book)) {
+            return SpellResult.FAIL;
+        }
         boolean success = CompatibilityUtils.openBook((Player)target, book);
 
         return success ? SpellResult.CAST : SpellResult.FAIL;
@@ -173,7 +195,7 @@ public class BookAction extends BaseSpellAction {
 
     @Override
     public SpellResult perform(CastContext context) {
-        if (pages == null) {
+        if (pages == null && bookItem == null) {
             return SpellResult.FAIL;
         }
         if (giveBook) {

@@ -35,7 +35,6 @@
    This got a little complicated, but I think we need to put a "symbol" parameter on 
    each item, or ideally support a map of symbol to option/item
    Then layout is a list of rows of strings of symbols
- - BookAction able to show a book from a saved item
  - Custom wand name formatting
  - Per-wand flag for allowing offhand casting
 

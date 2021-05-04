@@ -116,6 +116,8 @@ public interface MageController {
     @Nullable
     ItemStack createItem(String magicItemKey);
     @Nullable
+    ItemStack createItem(String magicItemKey, Mage mage);
+    @Nullable
     ItemStack createItem(String magicItemKey, boolean brief);
     @Nullable
     ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback);

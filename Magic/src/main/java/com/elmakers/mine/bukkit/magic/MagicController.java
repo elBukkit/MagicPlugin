@@ -5114,6 +5114,12 @@ public class MagicController implements MageController {
 
     @Nullable
     @Override
+    public ItemStack createItem(String magicItemKey, Mage mage) {
+        return createItem(magicItemKey, mage, false, null);
+    }
+
+    @Nullable
+    @Override
     public ItemStack createItem(String magicItemKey) {
         return createItem(magicItemKey, false);
     }
