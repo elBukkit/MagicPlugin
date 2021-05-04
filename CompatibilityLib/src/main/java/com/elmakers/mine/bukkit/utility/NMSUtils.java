@@ -340,6 +340,7 @@ public class NMSUtils {
     protected static Method class_Entity_getPassengersMethod;
     protected static Method class_Entity_addPassengerMethod;
     protected static Method class_Player_openBookMethod;
+    protected static Method class_Player_isHandRaisedMethod;
 
     protected static boolean legacyMaps;
 
@@ -689,6 +690,11 @@ public class NMSUtils {
                 class_Player_openBookMethod = Player.class.getMethod("openBook", ItemStack.class);
             } catch (Throwable ignore) {
                 getLogger().warning("Player.openBook method not found, BookAction can't show virtual books");
+            }
+            try {
+                class_Player_isHandRaisedMethod = Player.class.getMethod("isHandRaised");
+            } catch (Throwable ignore) {
+                getLogger().warning("Player.isHandRaised method not found, block triggers will be delayed");
             }
             try {
                 class_CraftMetaSkull_setProfileMethod = class_CraftMetaSkull.getDeclaredMethod("setProfile", class_GameProfile);

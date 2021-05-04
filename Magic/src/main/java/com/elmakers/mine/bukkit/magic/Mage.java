@@ -1759,7 +1759,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     private void updateBlocking(Player player) {
-        boolean currentlyBlocking = player.isBlocking();
+        boolean currentlyBlocking = player.isBlocking() || CompatibilityUtils.isHandRaised(player);
         if (currentlyBlocking != isBlocking) {
             isBlocking = currentlyBlocking;
             if (isBlocking) {

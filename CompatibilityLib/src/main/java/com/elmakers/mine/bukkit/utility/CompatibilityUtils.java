@@ -2652,4 +2652,14 @@ public class CompatibilityUtils extends NMSUtils {
         }
         return false;
     }
+
+    public static boolean isHandRaised(Player player) {
+        if (class_Player_isHandRaisedMethod == null) return false;
+        try {
+            return (boolean)class_Player_isHandRaisedMethod.invoke(player);
+        } catch (Exception ex) {
+            getLogger().log(Level.SEVERE, "Unexpected error checking block status", ex);
+        }
+        return false;
+    }
 }
