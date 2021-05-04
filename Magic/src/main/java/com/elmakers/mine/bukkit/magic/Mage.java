@@ -231,6 +231,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected boolean superPowered;
     protected boolean ignoredByMobs;
     private boolean isInAir = false;
+    private boolean isBlocking = false;
     private double lastFallDistance;
 
     private Map<Integer, Wand> activeArmor = new HashMap<>();
@@ -1757,6 +1758,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    private void updateBlocking(Player player) {
+        boolean currentlyBlocking = player.isBlocking();
+        if (currentlyBlocking != isBlocking) {
+            isBlocking = currentlyBlocking;
+            if (isBlocking) {
+                trigger("block");
+            } else {
+                trigger("stop_block");
+            }
+        }
+    }
+
     @Override
     public void removed() {
         if (bossBar != null) {
@@ -1812,6 +1825,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Player player = getPlayer();
         if (player != null && player.isOnline()) {
             checkWand();
+            updateBlocking(player);
             if (activeWand != null) {
                 activeWand.tick();
             } else if (virtualExperience) {
