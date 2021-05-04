@@ -482,8 +482,17 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         int cleared = 0;
         Mage mage = controller.getMage(player);
-        mage.deactivate();;
-        Inventory inventory = player.getInventory();
+        mage.deactivate();
+        cleared += clearWands(player.getInventory(), type);
+        cleared += clearWands(player.getEnderChest(), type);
+        mage.checkWand();
+        sender.sendMessage(ChatColor.AQUA + "Cleared " + ChatColor.WHITE + cleared + " " + ChatColor.DARK_AQUA + type
+            + ChatColor.AQUA + " items from inventory of " + ChatColor.GOLD + player.getName());
+        return true;
+    }
+
+    private int clearWands(Inventory inventory, String type) {
+        int cleared = 0;
         for (int i = 0; i < inventory.getSize(); i++) {
             if (type.equalsIgnoreCase("all")) {
                 inventory.setItem(i, null);
@@ -493,17 +502,14 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             if (CompatibilityUtils.isEmpty(item)) continue;
 
             if ((type.equalsIgnoreCase("wands") && controller.isWand(item))
-            || (type.equalsIgnoreCase("skills") && controller.isSkill(item))
-            || (type.equalsIgnoreCase("magic") && controller.isMagic(item))) {
+                    || (type.equalsIgnoreCase("skills") && controller.isSkill(item))
+                    || (type.equalsIgnoreCase("magic") && controller.isMagic(item))) {
                 inventory.setItem(i, null);
                 cleared++;
                 continue;
             }
         }
-        mage.checkWand();
-        sender.sendMessage(ChatColor.AQUA + "Cleared " + ChatColor.WHITE + cleared + " " + ChatColor.DARK_AQUA + type
-            + ChatColor.AQUA + " items from inventory of " + ChatColor.GOLD + player.getName());
-        return true;
+        return cleared;
     }
 
     public boolean onMageCheck(CommandSender sender, Player player, String[] args)

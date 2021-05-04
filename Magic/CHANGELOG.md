@@ -19,6 +19,7 @@
  - Optimize message and command replacement. This may have changed behavior slightly, in particular
    if you have replacements up against text such as "$target_manaMP" you may need to change it to "$target_mana$MP",
    the underscore will be removed.
+ - The `/mage clear` command will now also remove wands from a player's ender chest
 
 ## Additions
 
