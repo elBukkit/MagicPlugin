@@ -10,6 +10,9 @@
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
+ - Reduce push + pull particle FX, maybe brooms too?
+ - Swapping wand between main/off hand restores mana (? @sogn)
+ - Unstashable wands can be put in:  Blast furnace, Smoker, Ender chest
 
 # Engineering Improvements
 
@@ -33,6 +36,10 @@
    This got a little complicated, but I think we need to put a "symbol" parameter on 
    each item, or ideally support a map of symbol to option/item
    Then layout is a list of rows of strings of symbols
+ - Add start/stop blocking triggers (DictatorPhil)
+ - BookAction able to show a book from a saved item
+ - Custom wand name formatting
+ - Per-wand flag for allowing offhand casting
 
 ## Client Localization
 

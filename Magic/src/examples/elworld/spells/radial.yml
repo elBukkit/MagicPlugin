@@ -1,0 +1,29 @@
+radial:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Radial
+  description: Bwowowwoowowwwwwww
+  icon: stick
+  actions:
+    cast:
+    - class: AreaOfEffect
+      actions:
+        - class: Damage
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Modified
+        parameters:
+          radius: "(t/i) * 32"
+          particles: "16 + (t/i)*128"
+        effect:
+          class: Circle
+          whole_circle: true
+          enable_rotation: false
+          particle: end_rod
+    - sound: magic.zap
+  parameters:
+    range: 32
+    damage: 1
+    radius: 32
