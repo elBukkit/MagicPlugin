@@ -163,27 +163,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Map<String, Long> lastTriggers = new HashMap<>();
     private final Map<String, MageKit> kits = new HashMap<>();
     private final Map<String, CurrencyMessage> currencyMessages = new HashMap<>();
-
-    public void sendCurrencyMessage(String type, double amount) {
-        Messages messages = controller.getMessages();
-        Currency currency = controller.getCurrency(type);
-        if (currency != null) {
-            if (amount > 0) {
-                String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.default.earned"));
-                if (earnMessage != null && !earnMessage.isEmpty()) {
-                    String amountString = currency.formatAmount(amount, messages);
-                    sendMessage(earnMessage.replace("$amount", amountString));
-                }
-            } else if (amount < 0) {
-                String spendMessage = messages.get("currency." + type + ".spent", messages.get("currency.default.spent"));
-                if (spendMessage != null && !spendMessage.isEmpty()) {
-                    String amountString = currency.formatAmount(Math.abs(amount), messages);
-                    sendMessage(spendMessage.replace("$amount", amountString));
-                }
-            }
-        }
-        currencyMessages.remove(type);
-    }
     protected ConfigurationSection data = ConfigurationUtils.newConfigurationSection();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> playerRef;
@@ -5573,5 +5552,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return ClientPlatform.JAVA;
         }
         return controller.getClientPlatform(player);
+    }
+
+    public void sendCurrencyMessage(String type, double amount) {
+        Messages messages = controller.getMessages();
+        Currency currency = controller.getCurrency(type);
+        if (currency != null) {
+            if (amount > 0) {
+                String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.default.earned"));
+                if (earnMessage != null && !earnMessage.isEmpty()) {
+                    String amountString = currency.formatAmount(amount, messages);
+                    sendMessage(earnMessage.replace("$amount", amountString));
+                }
+            } else if (amount < 0) {
+                String spendMessage = messages.get("currency." + type + ".spent", messages.get("currency.default.spent"));
+                if (spendMessage != null && !spendMessage.isEmpty()) {
+                    String amountString = currency.formatAmount(Math.abs(amount), messages);
+                    sendMessage(spendMessage.replace("$amount", amountString));
+                }
+            }
+        }
+        currencyMessages.remove(type);
     }
 }
