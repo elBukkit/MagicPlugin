@@ -30,6 +30,7 @@ rocketlauncher:
         tick:
         - location: target
           particle: smoke_large
+          relative_target_offset: -1.75,0,0
           particle_count: 4
           particle_offset_x: 0.2
           particle_offset_y: 0.2
