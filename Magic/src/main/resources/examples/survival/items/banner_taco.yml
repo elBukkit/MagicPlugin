@@ -2,7 +2,7 @@ banner_taco:
   worth: 100.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2586
+    v: 0
     type: PINK_BANNER
     meta:
       ==: ItemMeta

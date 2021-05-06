@@ -1,7 +1,7 @@
 bigdragonwingleftred:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -11,7 +11,7 @@ bigdragonwingleftred:
 bigdragonbodyred:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -21,7 +21,7 @@ bigdragonbodyred:
 bigdragonwingrightred:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -31,7 +31,7 @@ bigdragonwingrightred:
 bigdragonwingleftblue:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -41,7 +41,7 @@ bigdragonwingleftblue:
 bigdragonbodyblue:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -51,7 +51,7 @@ bigdragonbodyblue:
 bigdragonwingrightblue:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -61,7 +61,7 @@ bigdragonwingrightblue:
 bigdragonwingleftgreen:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -71,7 +71,7 @@ bigdragonwingleftgreen:
 bigdragonbodygreen:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -81,7 +81,7 @@ bigdragonbodygreen:
 bigdragonwingrightgreen:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -91,7 +91,7 @@ bigdragonwingrightgreen:
 bigdragonwingleftgrey:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -101,7 +101,7 @@ bigdragonwingleftgrey:
 bigdragonbodygrey:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -111,7 +111,7 @@ bigdragonbodygrey:
 bigdragonwingrightgrey:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -121,7 +121,7 @@ bigdragonwingrightgrey:
 bigdragonwingleftpurple:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -131,7 +131,7 @@ bigdragonwingleftpurple:
 bigdragonbodypurple:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
@@ -141,7 +141,7 @@ bigdragonbodypurple:
 bigdragonwingrightpurple:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta

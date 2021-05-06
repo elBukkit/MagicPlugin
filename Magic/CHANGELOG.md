@@ -49,9 +49,7 @@
  - War config spawner blocks fixed
  - Fix armor stand projectiles not moving (maybe, sometimes)
  - Fix the `/mnpc command` command to allow spaces in the command
-
-# 8.5.3
-
+ - Fix errors loading saved items on older versions of Spigot
  - Fix Mob, Monster (and other) spawns attacking the caster (again)
  - The Damage action `no_damage_ticks` parameter now defaults to off, war configs turn it back on
 

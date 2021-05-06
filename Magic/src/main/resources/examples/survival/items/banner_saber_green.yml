@@ -2,7 +2,7 @@ banner_saber_green:
   worth: 100.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2586
+    v: 0
     type: WHITE_BANNER
     meta:
       ==: ItemMeta

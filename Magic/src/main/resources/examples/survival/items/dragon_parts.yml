@@ -358,7 +358,7 @@ dragonwingrightyellow:
 thorns:
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2230
+    v: 0
     type: FEATHER
     meta:
       ==: ItemMeta
