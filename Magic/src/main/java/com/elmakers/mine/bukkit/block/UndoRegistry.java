@@ -171,6 +171,12 @@ public class UndoRegistry {
         return null;
     }
 
+    @Nullable
+    public BlockData getModifiedBlock(Location location) {
+        long blockId = com.elmakers.mine.bukkit.block.BlockData.getBlockId(location.getBlock());
+        return modified.get(blockId);
+    }
+
     public boolean isReflective(Block block) {
         return block != null && reflective.containsKey(com.elmakers.mine.bukkit.block.BlockData.getBlockId(block));
     }

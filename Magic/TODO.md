@@ -9,7 +9,7 @@
 
  - Check wand particle FX for TPS drop (only in WG region.. maybe?)
  - PW having inventory loss issues (spells go into normal inventory)
- - Swapping wand between main/off hand restores mana (? @sogn)
+ - Swapping wand between main/off hand restores mana (? @sogn) 
  - Unstashable wands can be put in:  Blast furnace, Smoker, Ender chest
   
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?

@@ -1171,6 +1171,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         return registry.getBlockData(location);
     }
 
+    @Nullable
+    public static BlockData getModified(Location location) {
+        return registry.getModifiedBlock(location);
+    }
+
     public static UndoRegistry getRegistry() {
         return registry;
     }

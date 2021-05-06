@@ -103,7 +103,7 @@ public class DropAction extends BaseSpellAction {
         if (!undoList.bypass()) {
             // This prevents dupe/exploit issues by dropping some magically-created blocks and then
             // undo'ing the original cast
-            BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
+            BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getModified(block.getLocation());
             if (modifiedBlock != null) {
                 modifiedBlock.commit();
             }

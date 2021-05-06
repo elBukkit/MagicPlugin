@@ -131,7 +131,7 @@ public class BlockController implements Listener, ChunkLoadListener {
             event.setCancelled(true);
             return;
         }
-        com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
+        com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getModified(block.getLocation());
         if (modifiedBlock != null) {
             UndoList undoList = modifiedBlock.getUndoList();
             if (undoList != null) {
@@ -193,7 +193,7 @@ public class BlockController implements Listener, ChunkLoadListener {
 
         if (!event.isCancelled()) {
             Block block = event.getBlock();
-            com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getBlockData(block.getLocation());
+            com.elmakers.mine.bukkit.api.block.BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getModified(block.getLocation());
             if (modifiedBlock != null) {
                 // Replacing a permanently-changed block will act as normal while silently
                 // committing the change.
