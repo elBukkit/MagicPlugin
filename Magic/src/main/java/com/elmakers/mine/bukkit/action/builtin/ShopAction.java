@@ -35,7 +35,7 @@ public class ShopAction extends SelectorAction {
         boolean showFree = parameters.getBoolean("show_free", false);
         boolean addSellShop = parameters.getBoolean("add_sell_shop", false);
         showNoPermission = parameters.getBoolean("show_no_permission", false);
-        checkLimits = parameters.getBoolean("check_max_spells", true);
+        checkLimits = parameters.getBoolean("check_max_spells", showPath);
 
         // Don't load items as defaults
         Object itemDefaults = parameters.get("items");
