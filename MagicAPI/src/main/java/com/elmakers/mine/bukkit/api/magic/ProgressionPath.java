@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,6 +38,9 @@ public interface ProgressionPath {
     void upgrade(@Nonnull Mage mage, @Nullable Wand wand);
     ConfigurationSection getProperties();
     boolean isAutomaticProgression();
+
+    @Nullable
+    List<? extends ProgressionLevel> getLevels();
 
     /**
      * Check to see if a specific spell is available on this exact path.

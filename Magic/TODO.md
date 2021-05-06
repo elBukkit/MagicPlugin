@@ -7,6 +7,7 @@
 
 # Bugs
 
+ - Air glider looks broken when flying on it
  - PW says wands to restore aren't getting saved
  - PW also having inventory loss issues (spells go into normal inventory)
  - Check 1.14 compatibility, zakataoao https://prnt.sc/12khzee

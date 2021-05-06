@@ -523,6 +523,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
+    public int getLevel() {
+        return getInt("level", 1);
+    }
+
+    @Override
     public boolean canProgress() {
         ProgressionPath path = getPath();
         return (path != null && path.canProgress(this));

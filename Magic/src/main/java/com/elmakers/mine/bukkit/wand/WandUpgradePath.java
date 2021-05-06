@@ -40,6 +40,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.progression.ProgressionLevel;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -54,6 +55,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private static Map<String, WandUpgradePath> paths = new HashMap<>();
 
     private TreeMap<Integer, WandLevel> levelMap = null;
+    private List<ProgressionLevel> progressionLevels = null;
     private Map<String, Collection<EffectPlayer>> effects = new HashMap<>();
     private List<String> upgradeCommands;
     private String upgradeBroadcast;
@@ -104,6 +106,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.key = key;
         if (inherit != null) {
             this.levels = inherit.levels;
+            this.progressionLevels = inherit.progressionLevels;
             this.maxMaxMana = inherit.maxMaxMana;
             this.maxManaRegeneration = inherit.maxManaRegeneration;
             this.maxProperties.putAll(inherit.maxProperties);
@@ -264,7 +267,33 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         if (levelMap == null) {
             levelMap = new TreeMap<>();
         }
-        if (template.contains("levels")) {
+
+        ConfigurationSection levelConfig = template.getConfigurationSection("levels");
+        Set<String> levelKeys = levelConfig == null ? null : levelConfig.getKeys(false);
+        if (levelKeys != null && !levelKeys.isEmpty()) {
+            progressionLevels = new ArrayList<>();
+            for (String levelKey : levelKeys) {
+                try {
+                    int level = Integer.parseInt(levelKey);
+                    int maxLevel = progressionLevels.size();
+                    ConfigurationSection thisConfig = levelConfig.getConfigurationSection(levelKey);
+                    ProgressionLevel progressionLevel = new ProgressionLevel(controller, level, thisConfig);
+                    if (progressionLevels.isEmpty()) {
+                        progressionLevels.add(new ProgressionLevel(controller, 1, thisConfig));
+                    }
+                    ProgressionLevel previousLevel = progressionLevels.get(progressionLevels.size() - 1);
+                    ProgressionLevel newLevel = previousLevel;
+                    while (newLevel.getLevel() < level - 1) {
+                        int newLevelNumber = newLevel.getLevel() + 1;
+                        newLevel = new ProgressionLevel(newLevelNumber, previousLevel, progressionLevel);
+                        progressionLevels.add(newLevel);
+                    }
+                    progressionLevels.add(progressionLevel);
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid level number in path " + getKey() + ": " + levelKey);
+                }
+            }
+        } else if (template.contains("levels")) {
             String[] levelStrings = StringUtils.split(template.getString("levels"), ',');
             levels = new int[levelStrings.length];
             for (int i = 0; i < levels.length; i++) {
@@ -416,15 +445,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     }
 
     @Nullable
-    public Set<Integer> getLevels() {
-        if (levelMap == null) return null;
-        Set<Integer> filteredLevels = new HashSet<>();
-        for (Integer level :  levelMap.keySet()) {
-            if (level >= minLevel && level <= maxLevel) {
-                filteredLevels.add(level);
-            }
-        }
-        return filteredLevels;
+    public List<ProgressionLevel> getLevels() {
+        return progressionLevels;
     }
 
     public int getMaxUses() {
