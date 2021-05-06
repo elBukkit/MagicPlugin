@@ -52,6 +52,7 @@
  - Fix errors loading saved items on older versions of Spigot
  - Fix Mob, Monster (and other) spawns attacking the caster (again)
  - The Damage action `no_damage_ticks` parameter now defaults to off, war configs turn it back on
+ - Fix obtaining damaged legacy items, fixes air glider appearance while gliding
 
 # 8.5.2
 

@@ -271,7 +271,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                                     material = Material.getMaterial("LEGACY_" + materialKey.toUpperCase());
                                     if (material != null) {
                                         material = CompatibilityUtils.migrateMaterial(material, legacyData);
-                                        pieces = Arrays.copyOfRange(pieces, 0, 1);
+                                        if (material.getMaxDurability() == 0) {
+                                            pieces = Arrays.copyOfRange(pieces, 0, 1);
+                                        }
                                     }
                                 }
 

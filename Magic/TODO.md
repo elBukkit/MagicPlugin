@@ -7,10 +7,9 @@
 
 # Bugs
 
- - Air glider looks broken when flying on it
+ - Check wand particle FX for TPS drop (only in WG region.. maybe?)
  - PW says wands to restore aren't getting saved
  - PW also having inventory loss issues (spells go into normal inventory)
- - Check 1.14 compatibility, zakataoao https://prnt.sc/12khzee
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
