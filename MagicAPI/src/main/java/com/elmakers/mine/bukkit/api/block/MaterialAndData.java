@@ -66,6 +66,7 @@ public interface MaterialAndData {
     String getBaseName();
     boolean is(Block block);
     boolean isDifferent(Block block);
+    boolean isDifferent(Material material);
     boolean isDifferent(ItemStack itemStack);
     @Nullable
     ItemStack getItemStack(int amount);

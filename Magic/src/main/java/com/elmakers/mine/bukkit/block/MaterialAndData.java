@@ -750,6 +750,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     @Override
+    public boolean isDifferent(Material blockMaterial) {
+        return (material != null && blockMaterial != material);
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
     public boolean isDifferent(Block block) {
         Material blockMaterial = block.getType();

@@ -182,7 +182,6 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
 
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(player);
-
         if (mage.getBlockPlaceTimeout() > System.currentTimeMillis()) {
             event.setCancelled(true);
         }
@@ -200,7 +199,10 @@ public class BlockController implements Listener, ChunkLoadListener {
                 // Replacing a temporarily-changed block will force the block to undo while preventing the place
                 UndoList undoList = modifiedBlock.getUndoList();
                 if (undoList != null && undoList.isScheduled()) {
-                    event.setCancelled(true);
+                    // Need to check against previous block state
+                    if (modifiedBlock.isDifferent(event.getBlockReplacedState().getType())) {
+                        event.setCancelled(true);
+                    }
                     Plugin plugin = controller.getPlugin();
                     plugin.getServer().getScheduler().runTaskLater(plugin, new UndoBlockTask(modifiedBlock), 1);
                 } else {
