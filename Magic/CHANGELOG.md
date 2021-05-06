@@ -53,6 +53,7 @@
  - Fix Mob, Monster (and other) spawns attacking the caster (again)
  - The Damage action `no_damage_ticks` parameter now defaults to off, war configs turn it back on
  - Fix obtaining damaged legacy items, fixes air glider appearance while gliding
+ - Fix bound wand data (for /wand restore) getting lost on logout
 
 # 8.5.2
 

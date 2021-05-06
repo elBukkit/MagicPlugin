@@ -8,14 +8,14 @@
 # Bugs
 
  - Check wand particle FX for TPS drop (only in WG region.. maybe?)
- - PW says wands to restore aren't getting saved
- - PW also having inventory loss issues (spells go into normal inventory)
+ - PW having inventory loss issues (spells go into normal inventory)
+ - Swapping wand between main/off hand restores mana (? @sogn)
+ - Unstashable wands can be put in:  Blast furnace, Smoker, Ender chest
+  
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
  - Reduce push + pull particle FX, maybe brooms too?
- - Swapping wand between main/off hand restores mana (? @sogn)
- - Unstashable wands can be put in:  Blast furnace, Smoker, Ender chest
 
 # Engineering Improvements
 

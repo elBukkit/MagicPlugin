@@ -806,6 +806,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void setActiveWand(Wand activeWand) {
+        if (this.activeWand != null && this.activeWand.isBound()) {
+            addBound(this.activeWand);
+        }
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
         if (this.activeWand == activeWand) return;
         this.activeWand = activeWand;
@@ -852,7 +855,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (template != null && template.isRestorable()) {
             String templateKey = template.getKey();
             if (templateKey != null && !templateKey.isEmpty()) {
-                boundWands.put(templateKey, wand);
+                boundWands.put(templateKey, (Wand)wand.duplicate());
             }
         }
     }
@@ -1503,8 +1506,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         wand.setItem(item);
                         wand.updateItemIcon();
                         wand.saveState();
-                        wandItems.put(wandEntry.getKey(), wand.getItem());
                     }
+                    wandItems.put(wandEntry.getKey(), item);
                 }
                 data.setBoundWands(wandItems);
             }
