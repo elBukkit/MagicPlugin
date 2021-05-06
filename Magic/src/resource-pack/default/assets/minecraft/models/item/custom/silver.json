@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench, by realflamegirl- Do not use without permission. Discord is flame#0464",
 	"texture_size": [32, 32],
 	"textures": {
-		"3": "item/spikeymagic/silver",
-		"particle": "item/spikeymagic/silver"
+		"3": "item/custom/silver",
+		"particle": "item/custom/silver"
 	},
 	"elements": [
 		{

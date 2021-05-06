@@ -28,7 +28,7 @@
     {"predicate": {"damaged": 0, "damage": 0.0140845070423}, "model": "item/custom/glock"},
     {"predicate": {"damaged": 0, "damage": 0.0147247119078}, "model": "item/custom/sawedoff"},
     {"predicate": {"damaged": 0, "damage": 0.0153649167734}, "model": "item/custom/shotgun2"},
-    {"predicate": {"damaged": 0, "damage": 0.0160051216389}, "model": "item/custom/ak47"},
+    {"predicate": {"damaged": 0, "damage": 0.0160051216389}, "model": "item/custom/m4"},
     {"predicate": {"damaged": 0, "damage": 0.0166453265045}, "model": "item/custom/ak47"},
     {"predicate": {"damaged": 0, "damage": 0.01728553137}, "model": "item/custom/ak47"},
     {"predicate": {"damaged": 0, "damage": 0.0179257362356}, "model": "item/custom/ak47"},
