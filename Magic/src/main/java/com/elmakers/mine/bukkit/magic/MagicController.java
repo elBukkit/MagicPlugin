@@ -5569,6 +5569,9 @@ public class MagicController implements MageController {
             return null;
         }
         if (itemSection.contains("wand")) {
+            if (InventoryUtils.isEmpty(item)) {
+                item.setType(Wand.DefaultWandMaterial);
+            }
             item = InventoryUtils.makeReal(item);
             Wand.configToItem(itemSection, item);
         } else if (itemSection.contains("spell")) {
