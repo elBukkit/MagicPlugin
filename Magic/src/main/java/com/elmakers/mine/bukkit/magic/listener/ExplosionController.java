@@ -8,6 +8,7 @@ import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.bukkit.Chunk;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -18,6 +19,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
 
+import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -79,13 +81,30 @@ public class ExplosionController implements Listener {
         }
     }
 
+    public void onNonMagicalExplosion(EntityExplodeEvent event) {
+        Iterator<Block> blockIterator = event.blockList().iterator();
+        while (blockIterator.hasNext()) {
+            Block block = blockIterator.next();
+            BlockData modifiedBlock = com.elmakers.mine.bukkit.block.UndoList.getModified(block.getLocation());
+            UndoList undoList = modifiedBlock == null ? null : modifiedBlock.getUndoList();
+            if (undoList != null && undoList.isScheduled()) {
+                blockIterator.remove();
+                CompatibilityUtils.clearItems(block.getLocation());
+                block.setType(Material.AIR);
+            }
+        }
+    }
+
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
+        boolean cancel = event.isCancelled();
         Entity explodingEntity = event.getEntity();
-        if (explodingEntity == null) return;
+        if (explodingEntity == null && !cancel) {
+            onNonMagicalExplosion(event);
+            return;
+        }
 
         UndoList blockList = getExplosionUndo(explodingEntity);
-        boolean cancel = event.isCancelled();
         cancel = cancel || EntityMetadataUtils.instance().getBoolean(explodingEntity, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS);
         if (blockList != null && !cancel)
         {
@@ -99,6 +118,8 @@ public class ExplosionController implements Listener {
                     }
                 }
             }
+        } else if (!cancel) {
+            onNonMagicalExplosion(event);
         }
         if (cancel) {
             event.setCancelled(true);
