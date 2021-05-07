@@ -2,10 +2,6 @@
 
 # 8.6
 
-## RPG Configs
-
- - Added `disable_anvil` and `disable_enchanting`, turn off anvil and enchantment table completely
-
 ## Changes
 
  - The "drop" key is now bound to toggling the inventory by default (rather than cycling hotbars, use the swap key for that)
@@ -23,6 +19,7 @@
 
 ## Additions
 
+ - Added `disable_anvil` and `disable_enchanting`, turn off anvil and enchantment table completely
  - Add attributes: `armor`, `target_armor`, `luck`, `target_luck`, `attack_damage`, `knockback_resistance`, `target_knockback_resistance`
  - Enchantable wands (like the wizard armor) can be combined with an enchanted book
  - Add `virtual_book` parameter to Book action

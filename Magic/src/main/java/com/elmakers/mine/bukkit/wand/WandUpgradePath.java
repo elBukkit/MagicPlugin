@@ -444,6 +444,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         return Math.min(levels[levels.length - 1], maxLevel);
     }
 
+    @Override
     @Nullable
     public List<ProgressionLevel> getLevels() {
         return progressionLevels;
