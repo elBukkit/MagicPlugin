@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 8.6.1
+
 # 8.6
 
 ## Changes
@@ -13,8 +15,8 @@
  - Custom lore on wands will udpate when given, instead of having to be held first
  - Optimize equation parsing, particularly for servers with a lot of custom attributes
  - Optimize message and command replacement. This may have changed behavior slightly, in particular
-   if you have replacements up against text such as "$target_manaMP" you may need to change it to "$target_mana$MP",
-   the underscore will be removed.
+   if you have replacements up against text such as "$target_manaMP" you may need to change it to "$target_mana$MP"
+   (enclose the placeholder
  - The `/mage clear` command will now also remove wands from a player's ender chest
 
 ## Additions
@@ -53,7 +55,7 @@
  - Fix obtaining damaged legacy items, fixes air glider appearance while gliding
  - Fix bound wand data (for /wand restore) getting lost on logout
  - Fix magical blocks dropping when exploded via vanilla TNT
- - Fix being able to stash unstashable wands in smokers and blast furances (now configurable)
+ - Fix being able to stash unstashable wands in smokers and blast furnaces (now configurable)
 
 # 8.5.2
 

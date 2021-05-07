@@ -1,5 +1,11 @@
 # Migration Notes
 
+# 8.6
+
+ - Builtin placeholder replacement was optimized.
+   This may have changed behavior slightly, in particular if you have replacements up against text such as "$target_manaMP" 
+   you may need to change it to "$target_mana$MP" (enclose the placeholder)
+
 # 8.5
 
  - Mana and hotbar count are now read from paths directly and not stored on classes.
