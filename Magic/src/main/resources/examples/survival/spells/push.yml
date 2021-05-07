@@ -41,18 +41,6 @@ push:
                  particle_helix: spell
                  particle_base1: spell
                  particle_base2: spell
-        - location: target
-          effectlib:
-            class: Sphere
-            particle: spell
-            particles: 2
-            period: 4
-            duration: 500
-            particle_count: 10
-            particle_offset_x: 0.5
-            particle_offset_y: 0.5
-            particle_offset_z: 0.5
-            radius: 1.5
         iterate:
         - class: EffectSingle
           location: origin
@@ -68,18 +56,6 @@ push:
                  particle_helix: spell
                  particle_base1: spell
                  particle_base2: spell
-        - location: target
-          effectlib:
-            class: Sphere
-            particle: spell
-            particles: 2
-            period: 4
-            duration: 500
-            particle_count: 10
-            particle_offset_x: 0.5
-            particle_offset_y: 0.5
-            particle_offset_z: 0.5
-            radius: 1.5
     parameters:
         target_type: Entity
         range: 8

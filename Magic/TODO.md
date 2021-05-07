@@ -14,7 +14,6 @@
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
- - Reduce push + pull particle FX, maybe brooms too?
 
 # Engineering Improvements
 
@@ -39,6 +38,7 @@
    Then layout is a list of rows of strings of symbols
  - Custom wand name formatting
  - Per-wand flag for allowing offhand casting
+ - Sound override (works like particle override) for wands
 
 ## Client Localization
 
