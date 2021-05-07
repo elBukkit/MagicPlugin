@@ -2,15 +2,7 @@ teleporter:
   earns_sp: 0
   inherit: recall
   hidden: true
-  actions:
-      cast:
-      - class: Message
-      alternate_down:
-      alternate_up:
-      alternate_sneak:
   parameters:
-      message_target: false
-      message: "&cFizzle... pop... grind .. crrrrunnnccccccch ... &4(X_X)"
       warmup: 500
       cooldown: 5000
       allow_marker: false
