@@ -5493,7 +5493,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public String parameterize(String text) {
         // These should be the only two characters used as prefixes!
-        if (!text.contains("@") && !text.contains("$")) return text;
+        // .. and also placeholders
+        if (!text.contains("@") && !text.contains("$") && !text.contains("%")) return text;
 
         Player player = getPlayer();
         if (player != null) {

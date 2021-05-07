@@ -48,7 +48,7 @@
 ## Fixes
 
  - War config spawner blocks fixed
- - Fix armor stand projectiles not moving (maybe, sometimes)
+ - Fix armor stand projectiles not moving (maybe, sometimes), as in Chop and Mine
  - Fix the `/mnpc command` command to allow spaces in the command
  - Fix errors loading saved items on older versions of Spigot
  - Fix Mob, Monster (and other) spawns attacking the caster (again)

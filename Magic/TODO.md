@@ -7,7 +7,8 @@
 
 # Bugs
 
- - Check wand particle FX for TPS drop (only in WG region.. maybe?)
+ - Check wand particle FX for TPS drop (only in WG region.. maybe?) (could not reproduce)
+   
  - PW having inventory loss issues (spells go into normal inventory)
  - Swapping wand between main/off hand restores mana (? @sogn)  (could not reproduce)
   
@@ -39,6 +40,8 @@
  - Custom wand name formatting
  - Per-wand flag for allowing offhand casting
  - Sound override (works like particle override) for wands
+ - Ability to open an editor session on behalf of another player
+ - Allow multiple slugs to /mconfig apply/load to load multiple configs at once
 
 ## Client Localization
 
