@@ -1,0 +1,13 @@
+# What container types wands can not be put in.
+# Note that these refer to Bukkit API InventoryType enums, not necessarily the same as a block or Material name.
+# If you don't want players to be able to put wands in their ender chest, you can add ender_chest to this list.
+unstashable_containers:
+  - chest
+  - furnace
+  - hopper
+  - dispenser
+  - dropper
+  - shulker_box
+  - barrel
+  - smoker
+  - blast_furance

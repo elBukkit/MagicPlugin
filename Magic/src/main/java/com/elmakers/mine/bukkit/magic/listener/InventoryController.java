@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,6 +54,7 @@ public class InventoryController implements Listener {
     private long openCooldown = 0;
     private boolean enableInventoryCasting = true;
     private boolean enableInventorySelection = true;
+    private Set<InventoryType> unstashableTypes = new HashSet<>();
 
     // offhand, helmet, chestplate, leggings, boots
     private static final Integer[] armorSlotList = new Integer[] {39,38,37,36};
@@ -69,6 +71,18 @@ public class InventoryController implements Listener {
         enableInventoryCasting = properties.getBoolean("allow_inventory_casting", true);
         enableInventorySelection = properties.getBoolean("allow_inventory_selection", true);
         openCooldown = properties.getInt("open_cooldown", 0);
+        List<String> unstashableTypeKeys = properties.getStringList("unstashable_containers");
+        unstashableTypes.clear();
+        if (unstashableTypeKeys != null) {
+            for (String typeKey : unstashableTypeKeys) {
+                try {
+                    InventoryType type = InventoryType.valueOf(typeKey.toUpperCase());
+                    unstashableTypes.add(type);
+                } catch (Exception ex) {
+                    controller.getLogger().info("Unknown container type in unstashable_containers list: " + typeKey);
+                }
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -367,12 +381,10 @@ public class InventoryController implements Listener {
         }
 
         boolean isFurnace = inventoryType == InventoryType.FURNACE;
-        boolean isChest = inventoryType == InventoryType.CHEST || inventoryType == InventoryType.HOPPER || inventoryType == InventoryType.DISPENSER || inventoryType == InventoryType.DROPPER;
-
-        // TODO: use enum when dropping backwards compat
-        if (!isChest) isChest = inventoryType.name().equals("SHULKER_BOX");
-        if (!isChest) isChest = inventoryType.name().equals("BARREL");
-        boolean isContainerSlot = event.getSlot() == event.getRawSlot();
+        boolean isContainer = unstashableTypes.contains(inventoryType);
+        boolean isChest = inventoryType == InventoryType.CHEST;
+        boolean isContainerSlot = isChest && event.getSlot() == event.getRawSlot();
+        boolean isWatchedSlot = !isChest || isContainerSlot;
 
         if (isWandInventoryOpen)
         {
@@ -428,7 +440,7 @@ public class InventoryController implements Listener {
                 }
             } else {
                 // Prevent moving items into the skill inventory via the hotbar buttons
-                if (isHotbar && isContainerSlot && !CompatibilityUtils.isEmpty(player.getInventory().getItem(event.getHotbarButton()))) {
+                if (isHotbar && isWatchedSlot && !CompatibilityUtils.isEmpty(player.getInventory().getItem(event.getHotbarButton()))) {
                     event.setCancelled(true);
                     return;
                 }
@@ -463,14 +475,14 @@ public class InventoryController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            if (isChest && InventoryUtils.getMetaBoolean(destinationItem, "unstashable", false) && !player.hasPermission("Magic.wand.override_stash")) {
+            if (isContainer && InventoryUtils.getMetaBoolean(destinationItem, "unstashable", false) && !player.hasPermission("Magic.wand.override_stash")) {
                 event.setCancelled(true);
                 return;
             }
         }
 
         // Check for unstashable wands
-        if (isChest && !isContainerSlot && !player.hasPermission("Magic.wand.override_stash")) {
+        if (isContainer && !isContainerSlot && !player.hasPermission("Magic.wand.override_stash")) {
             if (InventoryUtils.getMetaBoolean(clickedItem, "unstashable", false)) {
                 event.setCancelled(true);
                 return;
@@ -478,7 +490,7 @@ public class InventoryController implements Listener {
         }
 
         // Check for taking bound wands out of chests
-        if (isChest && isContainerSlot && Wand.isBound(clickedItem)) {
+        if (isContainer && isWatchedSlot && Wand.isBound(clickedItem)) {
             Wand testWand = controller.getWand(clickedItem);
             if (!testWand.canUse(player)) {
                 event.setCancelled(true);
@@ -608,7 +620,7 @@ public class InventoryController implements Listener {
                     }
 
                     // Prevent putting any non-skill item back into a skill inventory
-                    if (wandMode == WandMode.SKILLS && isContainerSlot
+                    if (wandMode == WandMode.SKILLS && isWatchedSlot
                         && !CompatibilityUtils.isEmpty(heldItem) && !Wand.isSkill(heldItem)) {
                         event.setCancelled(true);
                     }

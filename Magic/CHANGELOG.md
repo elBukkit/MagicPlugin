@@ -55,6 +55,7 @@
  - Fix obtaining damaged legacy items, fixes air glider appearance while gliding
  - Fix bound wand data (for /wand restore) getting lost on logout
  - Fix magical blocks dropping when exploded via vanilla TNT
+ - Fix being able to stash unstashable wands in smokers and blast furances (now configurable)
 
 # 8.5.2
 
