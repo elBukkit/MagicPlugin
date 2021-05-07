@@ -202,9 +202,11 @@ public class BlockController implements Listener, ChunkLoadListener {
                     // Need to check against previous block state
                     if (modifiedBlock.isDifferent(event.getBlockReplacedState().getType())) {
                         event.setCancelled(true);
+                        Plugin plugin = controller.getPlugin();
+                        plugin.getServer().getScheduler().runTaskLater(plugin, new UndoBlockTask(modifiedBlock), 1);
+                    } else {
+                        modifiedBlock.commit();
                     }
-                    Plugin plugin = controller.getPlugin();
-                    plugin.getServer().getScheduler().runTaskLater(plugin, new UndoBlockTask(modifiedBlock), 1);
                 } else {
                     modifiedBlock.commit();
                     // Prevent creating waterlogged blocks accidentally, since these can be exploited for water, even in the nether
