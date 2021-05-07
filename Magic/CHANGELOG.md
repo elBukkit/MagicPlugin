@@ -43,6 +43,7 @@
    how spawners check for free space. May be needed if spawning ghasts, spiders or other large mobs.
  - Add `block` and `stop_block` triggers, for blocking with a shield
  - Add `book_item` parameter to `Book` action, for showing a specific saved book
+ - Add `clear_target` parameter to `MoveBlock` action, so it can be used to copy blocks
 
 ## Fixes
 

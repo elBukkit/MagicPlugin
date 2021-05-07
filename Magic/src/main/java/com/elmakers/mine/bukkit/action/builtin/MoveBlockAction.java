@@ -17,12 +17,14 @@ public class MoveBlockAction extends BaseSpellAction
 {
     private Vector offset;
     private boolean setTarget;
+    private boolean clearTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         offset = ConfigurationUtils.getVector(parameters, "offset");
         setTarget = parameters.getBoolean("set_target", false);
+        clearTarget = parameters.getBoolean("clear_target", true);
     }
 
     @Override
@@ -55,7 +57,9 @@ public class MoveBlockAction extends BaseSpellAction
         }
 
         MaterialAndData blockState = new MaterialAndData(targetBlock);
-        context.registerForUndo(targetBlock);
+        if (clearTarget) {
+            context.registerForUndo(targetBlock);
+        }
         context.registerForUndo(moveToBlock);
 
         if (setTarget) {
@@ -71,7 +75,9 @@ public class MoveBlockAction extends BaseSpellAction
             context.setTargetLocation(targetLocation);
         }
 
-        targetBlock.setType(Material.AIR);
+        if (clearTarget) {
+            targetBlock.setType(Material.AIR);
+        }
         blockState.modify(moveToBlock);
         context.registerBreakable(moveToBlock, 1);
 
