@@ -7,6 +7,7 @@
 
 # Bugs
 
+ - Need to remove books from a Lectern when destroying it
  - Check wand particle FX for TPS drop (only in WG region.. maybe?) (could not reproduce)
    
  - PW having inventory loss issues (spells go into normal inventory)
@@ -29,6 +30,7 @@
 
 ## Suggestions
 
+ - Allow stacking enchants on wands with enchanted books?
  - Allow some custom variables in wand lore, to be able to show the result of equations in lore
  - Shops should just hide invalid items (option to hide them, or just use show_unavailable)
  - Use hitbox of disguised mob
