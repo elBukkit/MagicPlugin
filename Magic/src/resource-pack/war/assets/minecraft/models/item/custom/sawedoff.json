@@ -2,8 +2,8 @@
 	"credit": "Made with Blockbench by Phantom",
 	"texture_size": [32, 32],
 	"textures": {
-		"0": "item/custom/sawedoff",
-		"particle": "item/custom/sawedoff"
+		"0": "item/custom/shotgun",
+		"particle": "item/custom/shotgun"
 	},
 	"elements": [
 		{
