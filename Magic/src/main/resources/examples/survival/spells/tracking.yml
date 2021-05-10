@@ -47,6 +47,7 @@ tracking:
         bypass_pvp: true
         effect_glowing: 1
         duration: 10000
+        target_invisible: true
     costs:
         mana: 20
 
