@@ -35,12 +35,8 @@ public class MobTargeting {
     }
 
     public boolean canTarget(Entity target) {
-        if (deniedPermissions != null) {
-            for (String permission : deniedPermissions) {
-                if (controller.hasPermission(target, permission)) {
-                    return false;
-                }
-            }
+        if (isFriendly(target)) {
+            return false;
         }
         if (requiredParameters != null) {
             boolean hasAny = false;
@@ -55,6 +51,17 @@ public class MobTargeting {
             }
         }
         return true;
+    }
+
+    public boolean isFriendly(Entity target) {
+        if (deniedPermissions != null) {
+            for (String permission : deniedPermissions) {
+                if (controller.hasPermission(target, permission)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public void tick(Mage mage) {

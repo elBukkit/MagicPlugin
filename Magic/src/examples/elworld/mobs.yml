@@ -280,3 +280,40 @@ superfox:
     baby: true
   protection:
     all: 2
+
+teams:
+  inherit: false
+  show_name: true
+  name: Teamers
+  type: zombie
+  item: diamond_sword
+  helmet: diamond_helmet
+  chestplate: diamond_chestplate
+  leggings: iron_leggings
+  boots: iron_boots
+  health: 75
+  default_drops: false
+  permissions: magic.team.mobs
+  targeting:
+    denied_permissions: magic.team.mobs
+  interval: 5000
+  triggers:
+    interval:
+      cast:
+        curse|2: 25
+        missile|4: 15
+        stun|3: 15
+        petrify|3: 10
+        gatling|2: 10
+        anvil: 15
+        none: 10
+  drops:
+    - currency:10
+    - currency:15
+    - currency:20
+    - sp:10
+    - sp:15
+    - sp:20
+  potion_effects:
+    - type: speed
+      amplifier: 1

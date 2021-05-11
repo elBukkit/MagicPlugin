@@ -1,11 +1,12 @@
 # TODO
 
-# Exploits
-
- - Vanilla explosions can drop blocks, need to commit or remove them (could not reproduce, maybe fixed already?)
-   https://www.youtube.com/watch?v=ZpwhUhhNnRc
 
 # Bugs
+
+ - Mobs that are friendly *and* happen to hit each other shouldn't force-target
+   (could not find this, doesn't seem like a get a targeting event.. is magic forcing them? Can't find that either)
+
+ - Kit cooldowns not working?
 
  - Need to remove books from a Lectern when destroying it
  - Check wand particle FX for TPS drop (only in WG region.. maybe?) (could not reproduce)

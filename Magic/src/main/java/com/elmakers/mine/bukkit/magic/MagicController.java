@@ -4171,6 +4171,11 @@ public class MagicController implements MageController {
             }
         }
 
+        EntityData mob = getMob(attacker);
+        if (mob != null && mob.isFriendly(entity)) {
+            return true;
+        }
+
         if (friendlyByDefault) {
             // Mobs can always target players, just to avoid any confusion there.
             if (!(attacker instanceof Player)) return true;

@@ -227,4 +227,9 @@ public class EntityMageData {
         if (target == null || targeting == null) return true;
         return targeting.canTarget(target);
     }
+
+    public boolean isFriendly(Entity target) {
+        if (target == null || targeting == null) return true;
+        return targeting.isFriendly(target);
+    }
 }

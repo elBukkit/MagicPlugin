@@ -51,6 +51,7 @@ public interface EntityData extends Cloneable {
     boolean isHidden();
     boolean isSuperProtected();
     boolean canTarget(Entity other);
+    boolean isFriendly(Entity other);
     boolean hasPermission(String node);
     @Nullable
     Entity spawn();
