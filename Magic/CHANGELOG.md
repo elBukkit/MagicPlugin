@@ -2,6 +2,8 @@
 
 # 8.7
 
+# 8.6.2
+
 # 8.6.1
 
  - Fix Skript, GriefPrevention, PreciousStones, RedProtect, Heroes, SkillAPI and possibly other plugin integrations
