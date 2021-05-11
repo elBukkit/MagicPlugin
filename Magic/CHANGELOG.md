@@ -4,6 +4,8 @@
 
 # 8.6.1
 
+ - Fix Skript integration
+
 # 8.6
 
 ## Changes

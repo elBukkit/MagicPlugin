@@ -7124,6 +7124,19 @@ public class MagicController implements MageController {
                 }
             }
         }
+
+        // Skript
+        if (skriptEnabled) {
+            if (pluginManager.getPlugin("Skript") != null) {
+                try {
+                    new SkriptManager(this);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with Skript", ex);
+                }
+            }
+        } else {
+            getLogger().info("Skript integration disabled.");
+        }
     }
 
     public void finalizeIntegrationPostLoad() {
@@ -7404,19 +7417,6 @@ public class MagicController implements MageController {
             } catch (Throwable ex) {
                 getLogger().log(Level.WARNING, "Error integrating with Geyser", ex);
             }
-        }
-
-        // Skript
-        if (skriptEnabled) {
-            if (pluginManager.isPluginEnabled("Skript")) {
-                try {
-                    new SkriptManager(this);
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with Skript", ex);
-                }
-            }
-        } else {
-            getLogger().info("Skript integration disabled.");
         }
 
         // ajParkour
