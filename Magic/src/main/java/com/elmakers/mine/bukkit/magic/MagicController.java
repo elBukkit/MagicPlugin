@@ -1820,6 +1820,9 @@ public class MagicController implements MageController {
         // Final loading tasks
         finishLoad(sender);
 
+        // Register managers from other plugins
+        registerManagers();
+
         // Notify plugins that we've finished loading.
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
@@ -1841,7 +1844,7 @@ public class MagicController implements MageController {
         // Main configuration
         logger.setContext("config");
         loadProperties(sender, loader.getMainConfiguration());
-        registerManagers();
+        registerProviders();
 
         // Configurations that don't rely on any external integrations
         logger.setContext("messages");
@@ -1989,19 +1992,6 @@ public class MagicController implements MageController {
         if (residenceManager != null) blockBreakManagers.add(residenceManager);
         if (redProtectManager != null) blockBreakManagers.add(redProtectManager);
 
-        // Attribute providers
-        if (skillAPIManager != null) {
-            attributeProviders.add(skillAPIManager);
-        }
-        if (heroesManager != null) {
-            attributeProviders.add(heroesManager);
-        }
-
-        // Requirements providers
-        if (skillAPIManager != null) {
-            requirementProcessors.put("skillapi", skillAPIManager);
-        }
-
         // Team providers
         if (heroesManager != null && useHeroesParties) {
             teamProviders.add(heroesManager);
@@ -2031,6 +2021,21 @@ public class MagicController implements MageController {
         }
         if (residenceManager != null) {
             playerWarpManagers.put("residence", residenceManager);
+        }
+    }
+
+    private void registerProviders() {
+        // Attribute providers
+        if (skillAPIManager != null) {
+            attributeProviders.add(skillAPIManager);
+        }
+        if (heroesManager != null) {
+            attributeProviders.add(heroesManager);
+        }
+
+        // Requirements providers
+        if (skillAPIManager != null) {
+            requirementProcessors.put("skillapi", skillAPIManager);
         }
 
         Runnable genericIntegrationTask = new FinishGenericIntegrationTask(this);
@@ -7137,13 +7142,18 @@ public class MagicController implements MageController {
         } else {
             getLogger().info("Skript integration disabled.");
         }
-    }
 
-    public void finalizeIntegrationPostLoad() {
-        logger.setContext("integration");
-
-        final PluginManager pluginManager = plugin.getServer().getPluginManager();
-        blockController.finalizeIntegration();
+        // Try to link to Heroes:
+        try {
+            Plugin heroesPlugin = pluginManager.getPlugin("Heroes");
+            if (heroesPlugin != null) {
+                heroesManager = new HeroesManager(plugin, heroesPlugin);
+            } else {
+                heroesManager = null;
+            }
+        } catch (Throwable ex) {
+            getLogger().warning(ex.getMessage());
+        }
 
         // Check for SkillAPI
         Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
@@ -7165,6 +7175,13 @@ public class MagicController implements MageController {
             skillAPIManager = null;
             getLogger().info("SkillAPI integration disabled");
         }
+    }
+
+    public void finalizeIntegrationPostLoad() {
+        logger.setContext("integration");
+
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
+        blockController.finalizeIntegration();
 
         // Check for BattleArenas
         Plugin battleArenaPlugin = pluginManager.getPlugin("BattleArena");
@@ -7190,18 +7207,6 @@ public class MagicController implements MageController {
             } else {
                 getLogger().info("Wild Stacker found, but integration disabled");
             }
-        }
-
-        // Try to link to Heroes:
-        try {
-            Plugin heroesPlugin = pluginManager.getPlugin("Heroes");
-            if (heroesPlugin != null) {
-                heroesManager = new HeroesManager(plugin, heroesPlugin);
-            } else {
-                heroesManager = null;
-            }
-        } catch (Throwable ex) {
-            getLogger().warning(ex.getMessage());
         }
 
         // Check for Minigames
