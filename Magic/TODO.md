@@ -3,10 +3,8 @@
 
 # Bugs
 
- - Mobs that are friendly *and* happen to hit each other shouldn't force-target
-   (could not find this, doesn't seem like a get a targeting event.. is magic forcing them? Can't find that either)
-
- - Kit cooldowns not working?
+ - Dieing while cloaked keeps you invisible again (could not reproduce)
+ - Factions integration not working? (seems to be fine)
 
  - Need to remove books from a Lectern when destroying it
  - Check wand particle FX for TPS drop (only in WG region.. maybe?) (could not reproduce)
@@ -17,6 +15,9 @@
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
+
+ - Mobs that are friendly *and* happen to hit each other shouldn't force-target
+   (could not find this, doesn't seem like a get a targeting event.. is magic forcing them? Can't find that either)
 
 # Engineering Improvements
 
