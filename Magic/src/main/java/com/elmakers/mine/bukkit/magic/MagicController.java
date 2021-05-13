@@ -1846,6 +1846,10 @@ public class MagicController implements MageController {
         loadProperties(sender, loader.getMainConfiguration());
         registerProviders();
 
+        // We need to do this here so global attributes are available to configs.
+        // Attribute providers added after this will be finalized by the register() method.
+        finalizeAttributes();
+
         // Configurations that don't rely on any external integrations
         logger.setContext("messages");
         messages.load(loader.getMessages());
@@ -3229,7 +3233,6 @@ public class MagicController implements MageController {
         blockBreakManagers.addAll(loadEvent.getBlockBreakManagers());
         blockBuildManagers.addAll(loadEvent.getBlockBuildManagers());
         pvpManagers.addAll(loadEvent.getPVPManagers());
-        attributeProviders.addAll(loadEvent.getAttributeProviders());
         teamProviders.addAll(loadEvent.getTeamProviders());
         castManagers.addAll(loadEvent.getCastManagers());
         targetingProviders.addAll(loadEvent.getTargetingManagers());
@@ -3248,10 +3251,12 @@ public class MagicController implements MageController {
             addCurrency(new CustomCurrency(this, key, currencyConfiguration.getConfigurationSection(key)));
         }
 
-        // Finalize registration
-        finalizeAttributes();
-
         log("Registered currencies: " + StringUtils.join(currencies.keySet(), ","));
+
+        // Register any attribute providers that were in the PreLoadEvent.
+        for (AttributeProvider provider : loadEvent.getAttributeProviders()) {
+            register(provider);
+        }
 
         // Re-register any providers previously registered by external plugins via register()
         for (MagicProvider provider : externalProviders) {

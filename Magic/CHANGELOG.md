@@ -4,6 +4,8 @@
 
 # 8.6.2
 
+ - Fix processing attributes at config load time, in particular this fixes the daily kit cooldown
+
 # 8.6.1
 
  - Fix Skript, GriefPrevention, PreciousStones, RedProtect, Heroes, SkillAPI and possibly other plugin integrations
