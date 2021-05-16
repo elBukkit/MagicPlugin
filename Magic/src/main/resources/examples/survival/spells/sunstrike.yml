@@ -14,6 +14,10 @@ sunstrike:
   actions:
     cast:
      - class: CheckRequirements
+       requirements:
+        - time:
+            min: 0
+            max: 12000
        actions:
         - class: Delay
         - class: ChangeContext
