@@ -5,6 +5,7 @@
 # 8.6.2
 
  - Fix processing attributes at config load time, in particular this fixes the daily kit cooldown
+ - Fix placeholder support in Message and Command actions
 
 # 8.6.1
 
