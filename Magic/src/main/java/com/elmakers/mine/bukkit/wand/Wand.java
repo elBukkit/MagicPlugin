@@ -1354,6 +1354,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         spells.clear();
     }
 
+    private int getNextFreeSlot(int minSlot) {
+        int hotbarCount = getHotbarCount();
+        int pageStart = hotbarCount * HOTBAR_INVENTORY_SIZE;
+        int inventorySize = getInventorySize();
+        Set<Integer> used = new HashSet<>();
+        used.addAll(brushInventory.values());
+        used.addAll(spellInventory.values());
+        int slot = minSlot;
+        while (true) {
+            if (slot > pageStart && (slot - pageStart) % inventorySize > inventorySize - getOrganizeBuffer()) {
+                slot = (((slot - pageStart) / inventorySize) + 1) * inventorySize + pageStart;
+            }
+            if (!used.contains(slot)) return slot;
+            slot++;
+        }
+    }
+
     private int getMaxSlot() {
         int maxSlot = -1;
         for (Map.Entry<String, Integer> brush : brushInventory.entrySet()) {
@@ -1369,6 +1386,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         clearSpells();
         WandUpgradePath path = getPath();
         int maxSlot = -1;
+        int nextFreeSlot = 0;
         int hotbarCount = getHotbarCount();
         int pageStart = hotbarCount * HOTBAR_INVENTORY_SIZE;
         int inventorySize = getInventorySize();
@@ -1425,13 +1443,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     slot = spellInventory.get(spellKey.getBaseKey());
                 }
                 if (slot == null) {
-                    if (maxSlot < 0) {
-                        maxSlot = getMaxSlot();
+                    if (maxSlot > nextFreeSlot) {
+                        nextFreeSlot = maxSlot + 1;
                     }
-                    slot = maxSlot + 1;
-                    if (slot > pageStart && (slot - pageStart) % inventorySize > inventorySize - INVENTORY_ORGANIZE_BUFFER) {
-                        slot = (((slot - pageStart) / inventorySize) + 1) * inventorySize + pageStart;
-                    }
+                    slot = getNextFreeSlot(nextFreeSlot);
+                    nextFreeSlot = slot + 1;
                 }
                 maxSlot = Math.max(slot, maxSlot);
                 spellInventory.put(spellKey.getBaseKey(), slot);

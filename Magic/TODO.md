@@ -3,6 +3,14 @@
 
 # Bugs
 
+ - Mars automata doesn't seem to auto-activate 
+ - Lots of item errors in 1.12: https://hastebin.com/ibodipalad.properties
+
+ - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
+   .. try Pushing' blocks thrown with Blast?
+
+ - Need an easier way to set prices that works with wands, too
+
  - Dieing while cloaked keeps you invisible again (could not reproduce)
  - Factions integration not working? (seems to be fine)
 
@@ -12,7 +20,6 @@
  - PW having inventory loss issues (spells go into normal inventory)
  - Swapping wand between main/off hand restores mana (? @sogn)  (could not reproduce)
   
- - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
 
@@ -32,6 +39,8 @@
 
 ## Suggestions
 
+ - CheckInventory needs an option to just compare material
+ - KingdomsX support (currency, protection?) https://github.com/CryptoMorin/KingdomsX/wiki/API
  - Allow stacking enchants on wands with enchanted books?
  - Allow some custom variables in wand lore, to be able to show the result of equations in lore
  - Shops should just hide invalid items (option to hide them, or just use show_unavailable)
