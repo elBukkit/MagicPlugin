@@ -229,7 +229,7 @@ public class EntityMageData {
     }
 
     public boolean isFriendly(Entity target) {
-        if (target == null || targeting == null) return true;
+        if (target == null || targeting == null) return false;
         return targeting.isFriendly(target);
     }
 }

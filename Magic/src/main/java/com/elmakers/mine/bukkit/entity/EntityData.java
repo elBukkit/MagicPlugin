@@ -1482,7 +1482,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public boolean isFriendly(Entity target) {
-        if (target == null || mageData == null) return true;
+        if (target == null || mageData == null) return false;
         return mageData.isFriendly(target);
     }
 
