@@ -2472,7 +2472,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (offhandCast && offhandWand != null) {
             return offhandWand.getEffectColor();
         }
-        return getActiveProperties().getEffectColor();
+        Color color = getActiveProperties().getEffectColor();
+        if (color == null) {
+            MageClass activeClass = getActiveClass();
+            color = activeClass.getEffectColor();
+        }
+        return color;
     }
 
     @Nullable
@@ -2481,7 +2486,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (offhandCast && offhandWand != null) {
             return offhandWand.getEffectParticleName();
         }
-        return getActiveProperties().getEffectParticleName();
+
+        String particleName = getActiveProperties().getEffectParticleName();
+        if (particleName == null) {
+            MageClass activeClass = getActiveClass();
+            particleName = activeClass.getEffectParticleName();
+        }
+        return particleName;
     }
 
     @Override

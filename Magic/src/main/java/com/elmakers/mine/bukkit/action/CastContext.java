@@ -629,7 +629,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Override
     @Nullable
     public Color getEffectColor() {
-        Color color = wand == null ? null : wand.getEffectColor();
+        Color color = mage.getEffectColor();
         if (color == null) {
             color = spell.getEffectColor();
         }
@@ -639,7 +639,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Override
     @Nullable
     public String getEffectParticle() {
-        String particle = wand == null ? null : wand.getEffectParticleName();
+        String particle = mage.getEffectParticleName();
         if (particle == null) {
             particle = spell.getEffectParticle();
         }
