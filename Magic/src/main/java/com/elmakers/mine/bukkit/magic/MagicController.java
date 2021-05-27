@@ -3255,12 +3255,12 @@ public class MagicController implements MageController {
 
         // Register any attribute providers that were in the PreLoadEvent.
         for (AttributeProvider provider : loadEvent.getAttributeProviders()) {
-            register(provider);
+            externalProviders.add(provider);
         }
 
         // Re-register any providers previously registered by external plugins via register()
         for (MagicProvider provider : externalProviders) {
-            register(provider);
+            registerAndUpdate(provider);
         }
 
         // Don't allow overriding Magic requirements
@@ -3298,8 +3298,16 @@ public class MagicController implements MageController {
         requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
     }
 
+    private boolean registerAndUpdate(MagicProvider provider) {
+        return register(provider, true);
+    }
+
     @Override
     public boolean register(MagicProvider provider) {
+        return register(provider, !loading);
+    }
+
+    private boolean register(MagicProvider provider, boolean update) {
         boolean added = false;
         if (provider instanceof EntityTargetingManager) {
             added = true;
@@ -3309,7 +3317,7 @@ public class MagicController implements MageController {
             added = true;
             AttributeProvider attributes = (AttributeProvider) provider;
             attributeProviders.add(attributes);
-            if (!loading) {
+            if (update) {
                 Set<String> providerAttributes = attributes.getAllAttributes();
                 if (providerAttributes != null) {
                     registerPlayerAttributes(providerAttributes);
