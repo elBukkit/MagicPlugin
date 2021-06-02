@@ -1194,12 +1194,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 allAssigned = assignedClasses.containsAll(classes.keySet());
             }
 
+            // Load activeClass
+            setActiveClass(data.getActiveClass());
+
             // Re-activate unlocked classes
             activateClasses();
             activateModifiers();
-
-            // Load activeClass
-            setActiveClass(data.getActiveClass());
 
             // Restore saved health, which may have gotten lowered when we deactivated classes
             double health = data.getHealth();
