@@ -55,6 +55,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private String creator;
     private boolean locked;
     private boolean loaded;
+    private boolean exactIngredient;
     private boolean replaceOnEquip;
     private List<PendingUpdate> pending = null;
 
@@ -94,6 +95,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         creatorId = configuration.getString("creator_id");
         locked = configuration.getBoolean("locked");
         replaceOnEquip = configuration.getBoolean("replace_on_equip");
+        exactIngredient = configuration.getBoolean("exact_ingredient");
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
         if (categoriesList != null) {
@@ -411,6 +413,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     @Override
     public boolean isLocked() {
         return this.locked;
+    }
+
+    @Override
+    public boolean isExactIngredient() {
+        return exactIngredient;
     }
 
     public boolean isReplaceOnEquip() {

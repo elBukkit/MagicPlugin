@@ -30,6 +30,7 @@ public interface ItemData {
     @Nullable
     MaterialAndData getMaterialAndData();
     boolean isLocked();
+    boolean isExactIngredient();
     int getDurability();
     int getAmount();
 

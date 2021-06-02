@@ -3,6 +3,8 @@
 
 # Bugs
 
+ - Need to be able to override default_earn_scale per-shop (for making exchange shops)
+ - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
  - Need to show spell name on cycle-mode wands (seems tow ork for me?)
  - Right-click doesn't work when looking at a mob (fixed, look out for spells casting when right-clicking NPCs though)
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?

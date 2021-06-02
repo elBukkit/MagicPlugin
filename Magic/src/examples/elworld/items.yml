@@ -87,3 +87,21 @@ testlore:
       lore:
       - "Something random"
       - "§o§3+2 §4Damage"
+
+ruby:
+    name: Ruby
+    item: diamond{18001}
+    exact_ingredient: true
+
+sapphire:
+    name: Sapphire
+    item: diamond{18003}
+    exact_ingredient: true
+
+rubysword:
+    name: Ruby Sword
+    item: diamond_sword{18001}
+
+sapphiresword:
+    name: Sapphire Sword
+    item: diamond_sword{18003}

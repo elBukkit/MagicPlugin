@@ -28,6 +28,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.CraftWandEvent;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -159,39 +160,50 @@ public class CraftingController implements Listener {
         if (result == null) return;
         Material resultType = result.getType();
         List<MagicRecipe> candidates = recipes.get(resultType);
-        if (candidates == null || candidates.size() == 0) return;
-
         MagicRecipe.MatchType matchType = MagicRecipe.MatchType.NONE;
-        for (MagicRecipe candidate : candidates) {
-            matchType = candidate.getMatchType(recipe, contents);
-            Material substitute = candidate.getSubstitute();
-            if (matchType != MagicRecipe.MatchType.NONE) {
-                for (HumanEntity human : event.getViewers()) {
-                    if (human instanceof Player && !hasCraftPermission((Player) human, candidate)) {
-                        inventory.setResult(new ItemStack(Material.AIR));
-                        return;
-                    }
-                }
-
-                if (matchType == MagicRecipe.MatchType.PARTIAL) {
-                    continue;
-                } else if (matchType == MagicRecipe.MatchType.MATCH) {
-                    ItemStack crafted = candidate.craft();
-                    inventory.setResult(crafted);
+        if (candidates != null && !candidates.isEmpty()) {
+            for (MagicRecipe candidate : candidates) {
+                matchType = candidate.getMatchType(recipe, contents);
+                Material substitute = candidate.getSubstitute();
+                if (matchType != MagicRecipe.MatchType.NONE) {
                     for (HumanEntity human : event.getViewers()) {
-                        candidate.crafted(human, controller);
+                        if (human instanceof Player && !hasCraftPermission((Player) human, candidate)) {
+                            inventory.setResult(new ItemStack(Material.AIR));
+                            return;
+                        }
                     }
+
+                    if (matchType == MagicRecipe.MatchType.PARTIAL) {
+                        continue;
+                    } else if (matchType == MagicRecipe.MatchType.MATCH) {
+                        ItemStack crafted = candidate.craft();
+                        inventory.setResult(crafted);
+                        for (HumanEntity human : event.getViewers()) {
+                            candidate.crafted(human, controller);
+                        }
+                    }
+                    break;
+                } else if (substitute != null) {
+                    inventory.setResult(new ItemStack(substitute, 1));
                 }
-                break;
-            } else if (substitute != null) {
-                inventory.setResult(new ItemStack(substitute, 1));
+            }
+        }
+
+        // We may need to prevent magic items from being used as ingredients if this did not match
+        boolean preventCrafting = matchType == MagicRecipe.MatchType.PARTIAL;
+        if (!preventCrafting && matchType == MagicRecipe.MatchType.NONE) {
+            for (ItemStack item : contents) {
+                ItemData itemData = controller.getItem(item);
+                if (itemData != null && itemData.isExactIngredient()) {
+                    preventCrafting = true;
+                    break;
+                }
             }
         }
 
         // Force-prevent crafting if we got a partial match
-        if (matchType == MagicRecipe.MatchType.PARTIAL) {
+        if (preventCrafting) {
             inventory.setResult(new ItemStack(Material.AIR));
-            return;
         }
     }
 

@@ -37,4 +37,25 @@ magictorch:
 rabbitboots:
   enabled: true
 
+ruby_sword:
+  output: ruby_sword
+
+  materials:
+    o: stick
+    i: ruby
+
+  row_1: i
+  row_2: i
+  row_3: o
+
+sapphire_sword:
+  output: sapphire_sword
+
+  materials:
+    o: stick
+    i: sapphire
+
+  row_1: i
+  row_2: i
+  row_3: o
 
