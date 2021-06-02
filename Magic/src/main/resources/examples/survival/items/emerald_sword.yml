@@ -17,7 +17,7 @@ emerald_sword:
       operation: 0
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: GOLD_SWORD
+    type: DIAMOND_SWORD
     meta:
       ==: ItemMeta
       meta-type: UNSPECIFIC
