@@ -2,6 +2,9 @@
 
 # 8.7
 
+ - Added `pride` example for Pride Month- thanks to cornelia! 
+   Use `/mconfig example fetch pride` if you'd like to give your players unique ways to express themselves.
+
 # 8.6.2
 
  - Fix processing attributes at config load time, in particular this fixes the daily kit cooldown
