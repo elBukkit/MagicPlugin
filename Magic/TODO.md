@@ -3,15 +3,13 @@
 
 # Bugs
 
- - Need to show spell name on cycle-mode wands
- - Right-click doesn't work when looking at a mob
+ - Need to show spell name on cycle-mode wands (seems tow ork for me?)
+ - Right-click doesn't work when looking at a mob (fixed, look out for spells casting when right-clicking NPCs though)
  - Some undo bugs somewhere, blocks stay after blasting .. sometimes?
    .. try Pushing' blocks thrown with Blast?
- - Titles don't seem to escape color codes, see shutdown spell  
 
  - Mars automata doesn't seem to auto-activate 
  - Lots of item errors in 1.12: https://hastebin.com/ibodipalad.properties
-
 
  - Need an easier way to set prices that works with wands, too
 

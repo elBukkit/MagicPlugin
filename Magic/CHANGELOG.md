@@ -4,6 +4,7 @@
 
  - Added `pride` example for Pride Month- thanks to cornelia! 
    Use `/mconfig example fetch pride` if you'd like to give your players unique ways to express themselves.
+ - The emerald sword is now based on diamond sword, so it has higher durability
 
 # 8.6.2
 
