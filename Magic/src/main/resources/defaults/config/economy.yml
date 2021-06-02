@@ -76,6 +76,7 @@ builtin_currency:
   currency:
     icon: skull:http://textures.minecraft.net/texture/de89b3131c1e346f44ae4779188984625486eea1c0ba8b69513aa92625557
     worth: 1
+    has_decimals: true
   levels:
     icon: skull:http://textures.minecraft.net/texture/ce6ed0a5f7e23bc3d34d73baa0b9c3f838e85014d2ff290801dc7486dd4da6
     worth: 100

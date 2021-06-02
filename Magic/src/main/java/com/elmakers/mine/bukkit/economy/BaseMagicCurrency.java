@@ -20,6 +20,7 @@ public abstract class BaseMagicCurrency implements Currency {
     protected final double defaultValue;
     protected final Double maxValue;
     protected final Double minValue;
+    protected final Boolean hasDecimals;
     protected final String name;
     protected final String singularName;
     protected final String shortName;
@@ -35,6 +36,7 @@ public abstract class BaseMagicCurrency implements Currency {
         amountTemplate = controller.getMessages().get("currency." + key + ".amount", "$amount " + shortName);
         defaultValue = configuration.getDouble("default", 0);
         icon = ConfigurationUtils.getMaterialAndData(configuration, "icon");
+        hasDecimals = configuration.contains("decimals") ? configuration.getBoolean("decimals") : null;
         if (configuration.contains("max")) {
             maxValue = configuration.getDouble("max");
         } else {
@@ -51,6 +53,7 @@ public abstract class BaseMagicCurrency implements Currency {
         this.key = key;
         this.worth = worth;
         this.defaultValue = 0;
+        this.hasDecimals = null;
         maxValue = null;
         minValue = null;
         name = null;
@@ -126,7 +129,8 @@ public abstract class BaseMagicCurrency implements Currency {
 
     @Override
     public String formatAmount(double amount, Messages messages) {
-        String amountString = hasDecimals()
+        boolean hasDecimals = this.hasDecimals == null ? hasDecimals() : this.hasDecimals;
+        String amountString = hasDecimals
                 ? formatter.format(amount)
                 : intFormatter.format(getRoundedAmount(amount));
         return amountTemplate.replace("$amount", amountString);

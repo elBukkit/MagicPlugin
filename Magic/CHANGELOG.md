@@ -6,6 +6,7 @@
    Use `/mconfig example fetch pride` if you'd like to give your players unique ways to express themselves.
  - The emerald sword is now based on diamond sword, so it has higher durability
  - Add `exact_ingredient` option to items, to prevent them being used in recipes unintentionally (WIP)
+ - Add `has_decimals` base_currency option to override currency formatting
 
 # 8.6.2
 
