@@ -389,6 +389,12 @@
             <version>b17</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.ticxo.modelengine</groupId>
+            <artifactId>api</artifactId>
+            <version>R2.1.5</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -414,6 +420,11 @@
         <repository>
             <id>Central</id>
             <url>https://repo1.maven.org/maven2/</url>
+        </repository>
+        <repository>
+            <id>nexus</id>
+            <name>Lumine Releases</name>
+            <url>http://mvn.lumine.io/repository/maven-releases/</url>
         </repository>
         <repository>
             <id>dynmap</id>

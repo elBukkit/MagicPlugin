@@ -38,6 +38,7 @@ softdepend:
   - ajParkour
   - WildStacker
   - SilkSpawners
+  - ModelEngine
 loadbefore:
   - Scavenger
   - Quests

@@ -317,3 +317,8 @@ teams:
   potion_effects:
     - type: speed
       amplifier: 1
+
+kindletron:
+    type: zombie
+    name: Kindle Jr
+    model: kindletronjr

@@ -179,6 +179,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected List<String> interactCommands;
     protected boolean cancelInteract;
     protected ConfigurationSection disguise;
+    protected ConfigurationSection model;
     protected BossBarConfiguration bossBar;
 
     protected EntityMageData mageData;
@@ -429,6 +430,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
+        model = ConfigurationUtils.getConfigurationSection(parameters, "model");
+        if (model == null) {
+            String modelId = parameters.getString("model");
+            if (modelId != null && !modelId.isEmpty()) {
+                model = ConfigurationUtils.newConfigurationSection();
+                model.set("id", modelId);
+            }
+        }
 
         isTamed = parameters.getBoolean("tamed", false);
         isSitting = parameters.getBoolean("sitting", false);
@@ -1015,6 +1024,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             redisguise = disguise.getInt("redisguise", redisguise);
             if (redisguise > 0) {
                 Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new DisguiseTask(controller, entity, disguise), redisguise);
+            }
+        }
+
+        if (model != null) {
+            if (!controller.applyModel(entity, model)) {
+                controller.getLogger().warning("Invalid model config in mob " + getName() + " (" + getKey() + ")");
             }
         }
 

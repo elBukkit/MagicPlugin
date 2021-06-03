@@ -161,6 +161,7 @@ import com.elmakers.mine.bukkit.integration.LegacyLibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
 import com.elmakers.mine.bukkit.integration.LogBlockManager;
+import com.elmakers.mine.bukkit.integration.ModelEngineManager;
 import com.elmakers.mine.bukkit.integration.ModernLibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.NPCSupplierSet;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
@@ -565,6 +566,7 @@ public class MagicController implements MageController {
     private RequirementsController requirementsController = null;
     private HeroesManager heroesManager = null;
     private LibsDisguiseManager libsDisguiseManager = null;
+    private ModelEngineManager modelEngineManager = null;
     private SkillAPIManager skillAPIManager = null;
     private BattleArenaManager battleArenaManager = null;
     private PlaceholderAPIManager placeholderAPIManager = null;
@@ -5734,6 +5736,13 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public boolean applyModel(Entity entity, ConfigurationSection configuration) {
+        if (modelEngineManager == null || entity == null) {
+            return false;
+        }
+        return modelEngineManager.applyModel(entity, configuration);
+    }
+    @Override
     public boolean isPathUpgradingEnabled() {
         return autoPathUpgradesEnabled;
     }
@@ -7132,6 +7141,17 @@ public class MagicController implements MageController {
         } else {
             libsDisguiseManager = null;
             getLogger().info("LibsDisguises integration disabled");
+        }
+
+        // Check for ModelEngine
+        Plugin modelEnginePlugin = pluginManager.getPlugin("ModelEngine");
+        if (modelEnginePlugin != null) {
+            modelEngineManager = new ModelEngineManager(plugin, modelEnginePlugin);
+            if (modelEngineManager.isValid()) {
+                getLogger().info("ModelEngine found, model magic mob configuration available");
+            } else {
+                getLogger().warning("ModelEngine found but integration failed");
+            }
         }
 
         // Vault integration

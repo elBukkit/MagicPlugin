@@ -555,6 +555,11 @@ public interface MageController {
     @Nullable
     Double getEarns(ItemStack item, String currency);
     boolean disguise(Entity entity, ConfigurationSection configuration);
+
+    /**
+     * configuration must contain an "id" property
+     */
+    boolean applyModel(Entity entity, ConfigurationSection configuration);
     void managePlayerData(boolean external, boolean backupInventories);
     String getDefaultWandTemplate();
     String getHeroesSkillPrefix();
