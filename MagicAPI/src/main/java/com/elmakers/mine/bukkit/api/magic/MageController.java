@@ -371,6 +371,7 @@ public interface MageController {
     boolean isPet(Entity entity);
     boolean isMagicNPC(Entity entity);
     boolean isVanished(Entity entity);
+    void disableDrops(Entity entity);
 
     /**
      * Damage the Elemental represented by the given Entity.

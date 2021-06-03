@@ -3962,6 +3962,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public void disableDrops(Entity entity) {
+        EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
+    }
+
+    @Override
     public void updateBlock(Block block) {
         updateBlock(block.getWorld().getName(), block.getX(), block.getY(), block.getZ());
     }
