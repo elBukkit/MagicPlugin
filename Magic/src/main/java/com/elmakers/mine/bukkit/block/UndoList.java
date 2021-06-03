@@ -764,7 +764,11 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void watch(Entity entity)
     {
         if (entity == null) return;
-        setUndoList(entity, this);
+        // we don't want to ever replace the original spawning undo list here
+        com.elmakers.mine.bukkit.api.block.UndoList list = watchedEntities.get(entity);
+        if (list == null) {
+            setUndoList(entity, this);
+        }
         modifiedTime = System.currentTimeMillis();
     }
 

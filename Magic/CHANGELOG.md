@@ -8,6 +8,7 @@
  - Add `exact_ingredient` option to items, to prevent them being used in recipes unintentionally (WIP)
  - Add `has_decimals` builtin_currency option to override currency formatting
  - Add `custom_formatting` option to builtin_currency.currency to turn off using Vault formatting (which is now again the default)
+ - Fix an issue where hitting a magically-spawned falling block with another spell before it lands could make it stay permanently
 
 # 8.6.2
 
