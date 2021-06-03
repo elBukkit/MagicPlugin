@@ -3,7 +3,7 @@ currency:
     item_name: "&e$amount &6$type"
     description: "Right-click to deposit"
     limit: "a:&eThe limit for &6$type &eis &c$amount"
-    deposited: "a:&aDeposited &2$amount &6$type&a, balance: &2$balance"
+    deposited: "a:&aDeposited &2$amount&a, balance: &2$balance"
     earned: "a:&a+&2$amount"
     spent: "a:&c-&4$amount"
   sp:
