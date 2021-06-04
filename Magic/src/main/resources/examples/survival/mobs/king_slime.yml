@@ -2,6 +2,7 @@ kingslime:
   type: slime
   size: 18
   interval: 3000
+  split: false
   cast_requires_target: false
   health: 75
   triggers:
