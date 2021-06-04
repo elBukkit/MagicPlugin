@@ -1449,7 +1449,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     slot = getNextFreeSlot(nextFreeSlot);
                     nextFreeSlot = slot + 1;
                 }
-                maxSlot = Math.max(slot, maxSlot);
                 spellInventory.put(spellKey.getBaseKey(), slot);
                 spells.add(spellKey.getBaseKey());
                 if (activeSpell == null || activeSpell.length() == 0)
