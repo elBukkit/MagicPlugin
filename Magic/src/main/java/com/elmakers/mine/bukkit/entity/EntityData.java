@@ -1345,6 +1345,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public String getKey() {
+        if (key == null) {
+            return type.name().toLowerCase();
+        }
         return key;
     }
 
