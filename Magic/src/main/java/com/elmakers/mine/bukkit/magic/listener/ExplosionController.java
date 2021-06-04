@@ -62,7 +62,8 @@ public class ExplosionController implements Listener {
         if (blockList != null && blockList.isUndone()) {
             blockList = null;
         }
-        if (blockList == null && autoRollbackDuration > 0 && rollbackExplosions.contains(explodingEntity.getType())) {
+        boolean isUndoing = blockList != null && blockList.isScheduled();
+        if (!isUndoing && autoRollbackDuration > 0 && rollbackExplosions.contains(explodingEntity.getType())) {
             Mage mage = controller.getMage(explodingEntity);
             blockList = new com.elmakers.mine.bukkit.block.UndoList(mage, "Explosion (" + explodingEntity.getType().name() + ")");
             blockList.setScheduleUndo(autoRollbackDuration);

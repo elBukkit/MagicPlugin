@@ -9,6 +9,7 @@
  - Add `has_decimals` builtin_currency option to override currency formatting
  - Add `custom_formatting` option to builtin_currency.currency to turn off using Vault formatting (which is now again the default)
  - Fix an issue where hitting a magically-spawned falling block with another spell before it lands could make it stay permanently
+ - Fix a similar issue where auto explosion rollback fails if the exploding mob was affected by a spell
  - Add `model` config option to mobs, for ModelEngine support
  - Add `combustible` mob tag, several `fireproof_` mobs to survival configs
 
