@@ -320,5 +320,5 @@ teams:
 
 kindletron:
     type: zombie
-    name: Kindle Jr
-    model: kindletronjr
+    name: Kindle Sr
+    model: kindletronsr
