@@ -734,12 +734,6 @@ public class PlayerController implements Listener {
             return;
         }
 
-        // Check for offhand items
-        ItemStack offhandItem = player.getInventory().getItemInOffHand();
-        if (controller.isOffhandMaterial(offhandItem)) {
-            return;
-        }
-
         if (!mage.canUse(itemInHand)) {
             mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
             event.setCancelled(true);
@@ -876,6 +870,13 @@ public class PlayerController implements Listener {
             }
             return;
         }
+
+        // Check for offhand items
+        ItemStack offhandItem = player.getInventory().getItemInOffHand();
+        if (controller.isOffhandMaterial(offhandItem)) {
+            return;
+        }
+
         if (wand == null) return;
 
         if (isRightClick && wand.performAction(wand.getRightClickAction()))
