@@ -121,7 +121,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean hasAI = true;
     protected boolean hasGravity = true;
     protected boolean isDocile;
-    protected boolean transformable;
+    protected boolean transformable = true;
+    protected boolean combustible = true;
     protected boolean preventProjectiles;
     protected boolean preventMelee;
     protected boolean nameVisible;
@@ -383,6 +384,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         isDocile = parameters.getBoolean("docile");
         transformable = parameters.getBoolean("transformable", true);
+        combustible = parameters.getBoolean("combustible", true);
         preventProjectiles = parameters.getBoolean("prevent_projectiles", false);
         preventMelee = parameters.getBoolean("prevent_melee", false);
         bossBar = BossBarConfiguration.parse(controller, parameters, "$pn");
@@ -1504,6 +1506,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public boolean isTransformable() {
         return transformable;
+    }
+
+    @Override
+    public boolean isCombustible() {
+        return combustible;
     }
 
     @Nullable

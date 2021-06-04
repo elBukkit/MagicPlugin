@@ -1,0 +1,16 @@
+fireproof_zombie:
+  type: zombie
+  combustible: false
+
+fireproof_drowned:
+  type: drowned
+  combustible: false
+
+fireproof_stray:
+  type: stray
+  combustible: false
+
+fireproof_skeleton:
+  type: skeleton
+  combustible: false
+  item: bow

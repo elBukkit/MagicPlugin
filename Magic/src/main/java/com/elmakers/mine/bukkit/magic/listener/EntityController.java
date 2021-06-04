@@ -147,6 +147,10 @@ public class EntityController implements Listener {
             event.setCancelled(true);
             return;
         }
+        com.elmakers.mine.bukkit.api.entity.EntityData entityData = controller.getMob(entity);
+        if (entityData != null && !entityData.isCombustible()) {
+            event.setCancelled(true);
+        }
 
         if (!event.isCancelled())
         {

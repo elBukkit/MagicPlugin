@@ -10,6 +10,7 @@
  - Add `custom_formatting` option to builtin_currency.currency to turn off using Vault formatting (which is now again the default)
  - Fix an issue where hitting a magically-spawned falling block with another spell before it lands could make it stay permanently
  - Add `model` config option to mobs, for ModelEngine support
+ - Add `combustible` mob tag, several `fireproof_` mobs to survival configs
 
 # 8.6.2
 
