@@ -1,10 +1,11 @@
 # CHANGELOG
 
+# 8.7.1
+
 # 8.7
 
  - Added `pride` example for Pride Month- thanks to cornelia! 
    Use `/mconfig example fetch pride` if you'd like to give your players unique ways to express themselves.
- - The emerald sword is now based on diamond sword, so it has higher durability
  - Add `exact_ingredient` option to items, to prevent them being used in recipes unintentionally (WIP)
  - Add `has_decimals` builtin_currency option to override currency formatting
  - Add `custom_formatting` option to builtin_currency.currency to turn off using Vault formatting (which is now again the default)
