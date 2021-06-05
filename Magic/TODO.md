@@ -1,6 +1,18 @@
 # TODO
 
 
+# Recent issues
+
+
+ - Spellbook should toggle on left-click
+ - Prevent enderman teleporting
+ - Prevent spiders climbing?
+ - Some timeout or something, a way to advance to next if mobs get stuck
+ - Prevent players teleporting into an areaa
+   - Or at least teleporting to a player in an arena?
+   - And don't save their death location
+ - Emerald swords OP?
+
 # Bugs
 
  - Effects on Repair/SuperRepair broken?

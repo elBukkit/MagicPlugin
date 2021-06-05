@@ -12,6 +12,7 @@
  - Fix a similar issue where auto explosion rollback fails if the exploding mob was affected by a spell
  - Add `model` config option to mobs, for ModelEngine support
  - Add `combustible` mob tag, several `fireproof_` mobs to survival configs
+ - Increase durability but reduce damage of emerald sword
 
 # 8.6.2
 

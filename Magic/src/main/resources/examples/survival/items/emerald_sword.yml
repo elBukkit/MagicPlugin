@@ -4,7 +4,7 @@ emerald_sword:
   worth: 1000.0
   attributes:
     - type: GENERIC_ATTACK_DAMAGE
-      amount: 8.0
+      amount: 5.0
       name: Equipment Modifier
       slot: HAND
       uuid: be7c088e-291d-4497-b54d-5b1b15979cd1
