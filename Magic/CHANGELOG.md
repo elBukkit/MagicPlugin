@@ -14,6 +14,7 @@
  - Add `combustible` mob tag, several `fireproof_` mobs to survival configs
  - Increase durability but reduce damage of emerald sword
  - Fix a wand dupe issue involving spell items and containers
+ - Added new `banners` example with a custom banner shop (1.14+)
 
 # 8.6.2
 

@@ -1,0 +1,5 @@
+bannershop:
+  inherit: base_npc
+  interact_spell: bannershop
+  villager_profession: librarian
+  name: Banner Shop

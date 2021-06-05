@@ -1,0 +1,11 @@
+examples:
+  banners:
+    instructions: |-
+      &8| &3&nBANNERS&r
+      &8|   &fUse &6/mnpc add bannershop &fto allow &r
+      &8|   &fplayers to buy custom banners &r
+
+spells:
+  bannershop:
+    name: Banners!
+    title: "Banners ($balance&r)"

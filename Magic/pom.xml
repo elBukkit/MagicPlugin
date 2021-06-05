@@ -822,6 +822,14 @@
                                     </fileset>
                                 </concat>
 
+                                <!-- Banner configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/banners/items.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/banners/items">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
                                 <!-- Potter configs -->
 
                                 <concat destfile="${project.build.directory}/classes/examples/potter/classes.yml" overwrite="yes" fixlastline="yes">

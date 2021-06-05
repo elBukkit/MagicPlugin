@@ -1497,6 +1497,3 @@ spells:
         rolled_4: You rolled a four!
         rolled_5: You rolled a five!
         rolled_6: You rolled a six!
-    bannershop:
-        name: Banners!
-        title: "Banners ($balance&r)"
