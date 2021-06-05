@@ -3,8 +3,6 @@
 
 # Recent issues
 
-
- - Spellbook should toggle on left-click
  - Prevent enderman teleporting
  - Prevent spiders climbing?
  - Some timeout or something, a way to advance to next if mobs get stuck

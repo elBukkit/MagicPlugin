@@ -4,6 +4,7 @@ spellbook:
     legacy_icon: wand_icon:31
     indestructible: true
     drop: toggle
+    left_click: toggle
     right_click: toggle
     undroppable: true
     keep: true
