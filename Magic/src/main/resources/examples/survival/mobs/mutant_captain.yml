@@ -1,11 +1,11 @@
 mutant_captain:
-  type: piglin
+  type: zombified_piglin
   item: iron_sword
   chestplate: gold_chestplate
   leggings: gold_leggings
   helmet: gold_helmet
   boots: gold_boots
-  health: 40
+  health: 30
   default_drops: false
   transformable: false
   drops:
@@ -16,4 +16,4 @@ mutant_captain:
     amplifier: 0
   entity_attributes:
     generic_knockback_resistance: 1
-    generic_attack_speed: 5
+    generic_attack_speed: 3

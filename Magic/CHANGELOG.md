@@ -3,6 +3,7 @@
 # 8.8
 
  - Add `prevent_teleport` mob option, and a `contained_enderman` mob for arena battles
+ - Nerf mutant mobs a bit
 
 # 8.7.1
 

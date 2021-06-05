@@ -1,5 +1,5 @@
 mutant:
-  type: piglin
+  type: zombified_piglin
   item: iron_sword
   chestplate: iron_chestplate
   leggings: iron_leggings
