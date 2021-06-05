@@ -13,6 +13,7 @@
  - Add `model` config option to mobs, for ModelEngine support
  - Add `combustible` mob tag, several `fireproof_` mobs to survival configs
  - Increase durability but reduce damage of emerald sword
+ - Fix a wand dupe issue involving spell items and containers
 
 # 8.6.2
 

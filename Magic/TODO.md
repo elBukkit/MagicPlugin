@@ -9,12 +9,10 @@
  - Prevent players teleporting into an areaa
    - Or at least teleporting to a player in an arena?
    - And don't save their death location
- - Emerald swords OP?
 
 # Bugs
 
  - Effects on Repair/SuperRepair broken?
- - Does push'ing a creeper cause it's auto-undo to not work?
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)
  - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
  - Need to show spell name on cycle-mode wands (seems tow ork for me?)

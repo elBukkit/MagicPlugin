@@ -629,7 +629,7 @@ public class InventoryController implements Listener {
         }
 
         // Check for dropping upgrades onto a wand
-        if (!isWandInventoryOpen && clickedWand && (Wand.isUpgrade(heldItem)
+        if (!isWandInventoryOpen && clickedWand && !isContainer && (Wand.isUpgrade(heldItem)
             || Wand.isSpell(heldItem) || Wand.isSP(heldItem) || Wand.isBrush(heldItem))) {
             if (activeWand != null) {
                 activeWand.deactivate();
