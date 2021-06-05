@@ -46,6 +46,7 @@ public interface EntityData extends Cloneable {
     boolean isPreventProjectiles();
     boolean isPreventMelee();
     boolean isPreventDismount();
+    boolean isPreventTeleport();
     boolean isTransformable();
     boolean isCombustible();
     boolean isNPC();

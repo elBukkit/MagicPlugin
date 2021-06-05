@@ -27,6 +27,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
+import org.bukkit.event.entity.EntityTeleportEvent;
 import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
@@ -362,6 +363,14 @@ public class MobController implements Listener, ChunkLoadListener {
 
         EntityData entityData = getEntityData(event.getEntity());
         if (entityData != null && entityData.isPreventDismount()) {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityTeleport(EntityTeleportEvent event) {
+        EntityData entityData = getEntityData(event.getEntity());
+        if (entityData != null && entityData.isPreventTeleport()) {
             event.setCancelled(true);
         }
     }

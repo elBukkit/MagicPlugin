@@ -130,6 +130,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isHidden;
     protected boolean useNPCName;
     protected boolean preventDismount;
+    protected boolean preventTeleport;
     protected Boolean invisible = null;
     protected Boolean persistentInvisible = null;
     protected Boolean persist = null;
@@ -389,6 +390,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         preventMelee = parameters.getBoolean("prevent_melee", false);
         bossBar = BossBarConfiguration.parse(controller, parameters, "$pn");
         preventDismount = parameters.getBoolean("prevent_dismount", false);
+        preventTeleport = parameters.getBoolean("prevent_teleport", false);
         cancelExplosion = parameters.getBoolean("cancel_explosion", false);
         List<String> permissionsList = ConfigurationUtils.getStringList(parameters, "permissions");
         if (permissionsList != null && !permissionsList.isEmpty()) {
@@ -1566,6 +1568,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public boolean isPreventDismount() {
         return preventDismount;
+    }
+
+    @Override
+    public boolean isPreventTeleport() {
+        return preventTeleport;
     }
 
     @Nullable

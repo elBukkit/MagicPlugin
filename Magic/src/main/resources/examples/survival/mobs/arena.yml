@@ -5,6 +5,12 @@ fireproof_zombie:
 fireproof_drowned:
   type: drowned
   combustible: false
+  item: fishing_rod
+
+trident_drowned:
+  type: drowned
+  combustible: false
+  item: trident
 
 fireproof_stray:
   type: stray
@@ -14,3 +20,11 @@ fireproof_skeleton:
   type: skeleton
   combustible: false
   item: bow
+
+contained_enderman:
+  type: enderman
+  prevent_teleport: true
+
+armed_wither_skeleton:
+  type: wither_skeleton
+  item: stone_sword
