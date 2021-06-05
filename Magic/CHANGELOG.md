@@ -15,9 +15,6 @@
  - Increase durability but reduce damage of emerald sword
  - Fix a wand dupe issue involving spell items and containers
  - Added new `banners` example with a custom banner shop (1.14+)
-
-# 8.6.2
-
  - Fix processing attributes at config load time, in particular this fixes the daily kit cooldown
  - Fix placeholder support in Message and Command actions
 
