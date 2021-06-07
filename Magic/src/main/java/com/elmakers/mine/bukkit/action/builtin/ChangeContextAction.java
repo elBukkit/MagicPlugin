@@ -29,6 +29,8 @@ public class ChangeContextAction extends CompoundAction {
     private Boolean targetSelf;
     private boolean useParentTargetEntity;
     private boolean useParentSourceEntity;
+    private boolean useParentTargetLocation;
+    private boolean useParentSourceLocation;
     private boolean targetEntityLocation;
     private boolean sourceAtTarget;
     private boolean sourceIsTarget;
@@ -77,6 +79,8 @@ public class ChangeContextAction extends CompoundAction {
         super.prepare(context, parameters);
         useParentTargetEntity = parameters.getBoolean("use_parent_target_entity", false);
         useParentSourceEntity = parameters.getBoolean("use_parent_source_entity", false);
+        useParentTargetLocation = parameters.getBoolean("use_parent_target_location", false);
+        useParentSourceLocation = parameters.getBoolean("use_parent_source_location", false);
         useTargetMage = parameters.getBoolean("use_target_mage", false);
         targetEntityLocation = parameters.getBoolean("target_entity", false);
         targetCaster = parameters.getBoolean("target_caster", false);
@@ -399,6 +403,26 @@ public class ChangeContextAction extends CompoundAction {
                 parent = parent.getParent();
             }
             sourceEntity = parentSourceEntity;
+        }
+
+        if (useParentTargetLocation) {
+            CastContext parent = context.getParent();
+            Location parentTargetLocation = null;
+            while (parentTargetLocation == null && parent != null) {
+                parentTargetLocation = parent.getTargetLocation();
+                parent = parent.getParent();
+            }
+            targetLocation = parentTargetLocation;
+        }
+
+        if (useParentSourceLocation) {
+            CastContext parent = context.getParent();
+            Location parentSourceLocation = null;
+            while (parentSourceLocation == null && parent != null) {
+                parentSourceLocation = parent.getLocation();
+                parent = parent.getParent();
+            }
+            sourceLocation = parentSourceLocation;
         }
 
         direction = context.getDirection();
