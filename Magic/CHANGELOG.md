@@ -7,6 +7,8 @@
 
 # 8.7.1
 
+ - Fix an error when not using a class system
+
 # 8.7
 
  - Added `pride` example for Pride Month- thanks to cornelia! 

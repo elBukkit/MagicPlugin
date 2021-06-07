@@ -2475,7 +2475,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Color color = getActiveProperties().getEffectColor();
         if (color == null) {
             MageClass activeClass = getActiveClass();
-            color = activeClass.getEffectColor();
+            if (activeClass != null) {
+                color = activeClass.getEffectColor();
+            }
         }
         return color;
     }
