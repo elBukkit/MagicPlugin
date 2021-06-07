@@ -65,7 +65,8 @@ public class MageProperties extends CasterProperties {
                 return mage.getActiveWand();
             case CLASS:
             case SUBCLASS:
-                return mage.getActiveClass().getStorage(propertyType);
+                MageClass activeClass = mage.getActiveClass();
+                return activeClass == null ? null : activeClass.getStorage(propertyType);
             case MAGE:
                 return this;
             default:
