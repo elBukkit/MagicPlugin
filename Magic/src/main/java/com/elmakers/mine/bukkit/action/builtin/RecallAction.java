@@ -998,6 +998,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         int invSize = (int)Math.ceil(markerCount / 9.0f) * 9;
         Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         MaterialAndData iconType = getIcon(context, parameters, "icon_move_marker");
+        if (iconType == null) {
+            iconType = new MaterialAndData(Material.STICK);
+        }
         int startIndex = 0;
         if (markerCount < 8) {
             startIndex = (9 - markerCount) / 2;
