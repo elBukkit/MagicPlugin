@@ -2492,7 +2492,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         String particleName = getActiveProperties().getEffectParticleName();
         if (particleName == null) {
             MageClass activeClass = getActiveClass();
-            particleName = activeClass.getEffectParticleName();
+            if (activeClass != null) {
+                particleName = activeClass.getEffectParticleName();
+            }
         }
         return particleName;
     }
@@ -5432,7 +5434,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return true;
         }
         MageClass activeClass = getActiveClass();
-        if (activeClass.canUse(lockKey)) {
+        if (activeClass != null && activeClass.canUse(lockKey)) {
             return true;
         }
         for (MageClass passiveClass : classes.values()) {
@@ -5451,7 +5453,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean canCraft(String recipeKey) {
         MageClass activeClass = getActiveClass();
-        if (activeClass.canCraft(recipeKey)) {
+        if (activeClass != null && activeClass.canCraft(recipeKey)) {
             return true;
         }
         for (MageClass passiveClass : classes.values()) {
