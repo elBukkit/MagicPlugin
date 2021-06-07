@@ -4,6 +4,7 @@
 
  - Add `prevent_teleport` mob option, and a `contained_enderman` mob for arena battles
  - Add `use_parent_target_location` and `use_parent_source_location` ChangeContext options
+ - Add `teleport_target` Recall option  
  - Nerf mutant mobs a bit
 
 # 8.7.1

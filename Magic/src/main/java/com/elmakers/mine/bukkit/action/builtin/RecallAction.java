@@ -63,6 +63,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private int markerCount = 1;
     private int delay = 0;
     private boolean teleport = true;
+    private boolean teleportTarget = false;
     private String titleKey = null;
 
     private boolean isActive = false;
@@ -469,6 +470,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.protectionTime = parameters.getInt("protection_duration", 0);
         this.markerCount = parameters.getInt("marker_count", 1);
         this.teleport = parameters.getBoolean("teleport", true);
+        this.teleportTarget = parameters.getBoolean("teleport_target", false);
         this.delay = parameters.getInt("delay", 0);
         this.delay = parameters.getInt("warmup", this.delay);
         titleKey = parameters.getString("title_key", "title");
@@ -1208,8 +1210,18 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     }
 
     protected SpellResult doTeleport() {
-        Mage mage = context.getMage();
-        Player player = mage.getPlayer();
+        Entity targetEntity;
+        Mage mage;
+        if (teleportTarget) {
+            targetEntity = context.getTargetEntity();
+            mage = context.getController().getRegisteredMage(targetEntity);
+        } else {
+            mage = context.getMage();
+            targetEntity = mage.getPlayer();
+        }
+        if (targetEntity == null) {
+            return SpellResult.NO_TARGET;
+        }
         Location targetLocation = context.getTargetLocation();
         if (!CompatibilityUtils.checkChunk(targetLocation)) {
             pendingTeleport = targetLocation;
@@ -1221,13 +1233,15 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return SpellResult.FAIL;
         }
         context.playEffects("teleporting");
-        if (context.teleport(player, targetLocation, verticalSearchDistance, selectedWaypoint.safe, selectedWaypoint.safe)) {
+        if (context.teleport(targetEntity, targetLocation, verticalSearchDistance, selectedWaypoint.safe, selectedWaypoint.safe)) {
             context.castMessageKey("teleport", selectedWaypoint.message);
         } else {
             context.sendMessageKey("teleport_failed", selectedWaypoint.failMessage);
             return SpellResult.FAIL;
         }
-        mage.enableSuperProtection(protectionTime);
+        if (mage != null) {
+            mage.enableSuperProtection(protectionTime);
+        }
         return SpellResult.CAST;
     }
 
