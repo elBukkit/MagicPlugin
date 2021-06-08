@@ -12,6 +12,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.elmakers.mine.bukkit.api.event.MagicErrorEvent;
+import com.elmakers.mine.bukkit.api.event.MagicWarningEvent;
+
 public class MagicLogger extends ColoredLogger {
 
     private String context = null;
@@ -30,29 +33,32 @@ public class MagicLogger extends ColoredLogger {
 
     @Override
     public void log(LogRecord record) {
-        if (capture) {
-            boolean logged = false;
-            // Always log if there's an exception attached
-            if (record.getThrown() != null) {
-                logged = true;
-                super.log(record);
-            }
-            if (record.getLevel().equals(Level.WARNING)) {
-                warnings.add(new LogMessage(context, record.getMessage().replace("[Magic] ", "")));
-            } else if (record.getLevel().equals(Level.SEVERE)) {
-                errors.add(new LogMessage(context, record.getMessage().replace("[Magic] ", "")));
-            } else if (!logged) {
-                // Don't want to eat any info or debug messages- I guess?
-                // I'm going to try to avoid these when doing a "quiet" config load.
-                super.log(record);
-            }
-        } else {
-            if (record.getLevel().equals(Level.WARNING)) {
+        if (!capture || (!record.getLevel().equals(Level.WARNING) && !record.getLevel().equals(Level.SEVERE)) || record.getThrown() != null) {
+            super.log(record);
+        }
+
+        LogMessage logMessage = new LogMessage(context, record.getMessage().replace("[Magic] ", ""));
+        if (record.getLevel().equals(Level.WARNING)) {
+            if (!capture) {
                 pendingWarningCount++;
-            } else if (record.getLevel().equals(Level.SEVERE)) {
+            }
+            if (warnings.size() == 50) {
+                warnings.remove(warnings.iterator().next());
+            }
+
+            warnings.add(logMessage);
+            Bukkit.getPluginManager().callEvent(new MagicWarningEvent(record, context, pendingWarningCount, capture));
+        }
+        else if (record.getLevel().equals(Level.SEVERE)) {
+            if (!capture) {
                 pendingErrorCount++;
             }
-            super.log(record);
+            if (errors.size() == 50) {
+                errors.remove(errors.iterator().next());
+            }
+
+            errors.add(logMessage);
+            Bukkit.getPluginManager().callEvent(new MagicErrorEvent(record, context, pendingErrorCount, capture));
         }
     }
 
@@ -103,6 +109,7 @@ public class MagicLogger extends ColoredLogger {
     public void checkNotify(Messages messages) {
         if (pendingErrorCount == 0 && pendingWarningCount == 0) return;
         boolean sent = false;
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (player.hasPermission("Magic.notify")) {
                 notify(messages, player);
