@@ -165,6 +165,9 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
                 if (configuration.getBoolean("sprinting", false)) watcher.setSprinting(true);
                 if (configuration.getBoolean("swimming", false)) watcher.setSwimming(true);
                 if (configuration.getBoolean("right_clicking", false)) watcher.setRightClicking(true);
+                if (configuration.contains("burning")) {
+                    watcher.setBurning(configuration.getBoolean("burning"));
+                }
 
                 // Mob-specific watchers
                 if (watcher instanceof CreeperWatcher) {

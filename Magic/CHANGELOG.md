@@ -6,6 +6,7 @@
  - Add `use_parent_target_location` and `use_parent_source_location` ChangeContext options
  - Add `teleport_target` Recall option  
  - Nerf mutant mobs a bit
+ - Add `burning` flag to disguises
 
 # 8.7.1
 
