@@ -55,6 +55,8 @@ import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
+import com.elmakers.mine.bukkit.utility.LogMessage;
+import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
@@ -280,6 +282,60 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             }
             runningTask = new WandCleanupRunnable(api, world, owner, check);
             runningTask.runTaskTimer(api.getPlugin(), 5, 5);
+
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("errors") && controller instanceof MagicController) {
+
+            MagicLogger magicLogger = ((MagicController) api.getController()).getLogger();
+            List<LogMessage> errors = magicLogger.getErrors();
+
+            if (errors.isEmpty()) {
+                sender.sendMessage("There have been no errors since the config has loaded");
+                return true;
+            }
+
+            sender.sendMessage(ChatColor.AQUA + "There are " + errors.size() + "/50 errors from Magic:");
+            for (LogMessage logMessage : errors) {
+                sender.sendMessage(logMessage.getMessage());
+            }
+
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("warnings") && controller instanceof MagicController) {
+
+            MagicLogger magicLogger = ((MagicController) api.getController()).getLogger();
+            List<LogMessage> warnings = magicLogger.getWarnings();
+
+            if (warnings.isEmpty()) {
+                sender.sendMessage("There have been no warnings since the config has loaded");
+                return true;
+            }
+
+            sender.sendMessage(ChatColor.AQUA + "There are " + warnings.size() + "/50 warnings from Magic:");
+            for (LogMessage logMessage : warnings) {
+                sender.sendMessage(logMessage.getMessage());
+            }
+
+            return true;
+        }
+        if (subCommand.equalsIgnoreCase("logs") && controller instanceof MagicController) {
+
+            MagicLogger magicLogger = ((MagicController) api.getController()).getLogger();
+
+            List<LogMessage> logs = new ArrayList<>();
+            logs.addAll(magicLogger.getWarnings());
+            logs.addAll(magicLogger.getErrors());
+
+            if (logs.isEmpty()) {
+                sender.sendMessage("There have been no logs since the config has loaded");
+                return true;
+            }
+
+            sender.sendMessage(ChatColor.AQUA + "There are " + logs.size() + " logs from Magic:");
+            for (LogMessage logMessage : logs) {
+                sender.sendMessage(logMessage.getMessage());
+            }
 
             return true;
         }
