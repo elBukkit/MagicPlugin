@@ -66,6 +66,7 @@ public class TargetingSpell extends BaseSpell {
     private boolean                                targetInvisible            = true;
     private boolean                                targetVanished            = false;
     private boolean                                targetUnknown            = true;
+    private String                                 targetPermission         = null;
     private Set<GameMode>                       targetGameModes         = null;
     private boolean                             targetTamed             = true;
     private boolean                             targetMount             = false;
@@ -397,6 +398,10 @@ public class TargetingSpell extends BaseSpell {
             mage.sendDebugMessage("Entity is not the specific display name we're looking for", 30);
             return false;
         }
+        if (targetPermission != null && !controller.hasPermission(entity, targetPermission)) {
+            mage.sendDebugMessage("Entity does not have specific permission required", 30);
+            return false;
+        }
         if (targetPotionEffectTypes != null) {
             if (!(entity instanceof LivingEntity)) {
                 mage.sendDebugMessage("Entity not a living entity and looking for potion effects", 30);
@@ -667,6 +672,7 @@ public class TargetingSpell extends BaseSpell {
         targetUnknown = parameters.getBoolean("target_unknown", true);
         targetTamed = parameters.getBoolean("target_tamed", true);
         targetMount = parameters.getBoolean("target_mount", false);
+        targetPermission = parameters.getString("target_permission");
         targetGameModes = defaultTargetGameModes;
         List<String> gameModes = ConfigurationUtils.getStringList(parameters, "target_game_modes");
         if (gameModes != null && !gameModes.isEmpty()) {
