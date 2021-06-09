@@ -105,7 +105,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("describe")) {
+        if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc")) {
             onDescribeAutomata(sender, selection);
             return true;
         }
@@ -551,6 +551,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             options.add("select");
             options.add("configure");
             options.add("describe");
+            options.add("desc");
             options.add("name");
             options.add("tp");
             options.add("move");

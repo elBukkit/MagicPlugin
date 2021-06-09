@@ -149,6 +149,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "combine");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "upgrade");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "describe");
+            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "desc");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "enchant");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "create");
             addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "destroy");
@@ -185,7 +186,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                 addIfPermissible(sender, options, subCommandPNode, "brush", true);
             }
 
-            if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("upgrade")) {
+            if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc") || subCommand.equalsIgnoreCase("upgrade")) {
                 com.elmakers.mine.bukkit.wand.Wand.addParameterKeys(api.getController(), options);
             }
 
@@ -440,7 +441,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             onWandCombine(sender, player, args2);
             return true;
         }
-        if (subCommand.equalsIgnoreCase("describe"))
+        if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc"))
         {
             if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
 

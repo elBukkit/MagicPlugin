@@ -121,6 +121,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.mitem.", "name");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "configure");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "describe");
+            addIfPermissible(sender, options, "Magic.commands.mitem.", "desc");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "duplicate");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "save");
             addIfPermissible(sender, options, "Magic.commands.mitem.", "delete");
@@ -311,7 +312,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         {
             return onItemSave(sender, player, item, args);
         }
-        else if (subCommand.equalsIgnoreCase("describe"))
+        else if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc"))
         {
             return onItemDescribe(sender, player, item, args);
         }

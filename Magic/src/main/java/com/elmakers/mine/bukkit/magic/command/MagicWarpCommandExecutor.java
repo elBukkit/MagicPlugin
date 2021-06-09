@@ -95,7 +95,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("describe")) {
+        if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc")) {
             onDescribeWarp(sender, warpName);
             return true;
         }
