@@ -285,54 +285,29 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
             return true;
         }
-        if (subCommand.equalsIgnoreCase("errors") && controller instanceof MagicController) {
-
-            MagicLogger magicLogger = ((MagicController) api.getController()).getLogger();
-            List<LogMessage> errors = magicLogger.getErrors();
-
-            if (errors.isEmpty()) {
-                sender.sendMessage("There have been no errors since the config has loaded");
-                return true;
-            }
-
-            sender.sendMessage(ChatColor.AQUA + "There are " + errors.size() + "/50 errors from Magic:");
-            for (LogMessage logMessage : errors) {
-                sender.sendMessage(logMessage.getMessage());
-            }
-
-            return true;
-        }
-        if (subCommand.equalsIgnoreCase("warnings") && controller instanceof MagicController) {
-
-            MagicLogger magicLogger = ((MagicController) api.getController()).getLogger();
-            List<LogMessage> warnings = magicLogger.getWarnings();
-
-            if (warnings.isEmpty()) {
-                sender.sendMessage("There have been no warnings since the config has loaded");
-                return true;
-            }
-
-            sender.sendMessage(ChatColor.AQUA + "There are " + warnings.size() + "/50 warnings from Magic:");
-            for (LogMessage logMessage : warnings) {
-                sender.sendMessage(logMessage.getMessage());
-            }
-
-            return true;
-        }
         if (subCommand.equalsIgnoreCase("logs") && controller instanceof MagicController) {
 
             MagicLogger magicLogger = ((MagicController) api.getController()).getLogger();
 
             List<LogMessage> logs = new ArrayList<>();
-            logs.addAll(magicLogger.getWarnings());
-            logs.addAll(magicLogger.getErrors());
+            String type = args.length >= 2 ? args[1] : subCommand.toLowerCase();
+            if (type.equalsIgnoreCase("errors")) {
+                logs.addAll(magicLogger.getErrors());
+            }
+            else if (type.equalsIgnoreCase("warnings")) {
+                logs.addAll(magicLogger.getWarnings());
+            }
+            else {
+                logs.addAll(magicLogger.getErrors());
+                logs.addAll(magicLogger.getWarnings());
+            }
 
             if (logs.isEmpty()) {
                 sender.sendMessage("There have been no logs since the config has loaded");
                 return true;
             }
 
-            sender.sendMessage(ChatColor.AQUA + "There are " + logs.size() + " logs from Magic:");
+            sender.sendMessage(ChatColor.AQUA + "There are " + logs.size() + " " + type.toLowerCase() + " from Magic:");
             for (LogMessage logMessage : logs) {
                 sender.sendMessage(logMessage.getMessage());
             }
