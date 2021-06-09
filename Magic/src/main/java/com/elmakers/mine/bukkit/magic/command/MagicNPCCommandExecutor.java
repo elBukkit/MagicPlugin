@@ -153,7 +153,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (subCommand.equalsIgnoreCase("describe")) {
+        if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc")) {
             onDescribeNPC(mage, npc);
             return true;
         }
@@ -547,6 +547,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("list");
             options.add("name");
             options.add("describe");
+            options.add("desc");
             options.add("type");
             options.add("remove");
             options.add("tp");

@@ -922,7 +922,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 } else if (args[1].equalsIgnoreCase("material")) {
                     options.addAll(api.getBrushes());
                 }
-            } else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe")) {
+            } else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe") || args[0].equalsIgnoreCase("desc")) {
                 Player player = DeprecatedUtils.getPlayer(args[1]);
                 if (player != null) {
                     Mage mage = controller.getMage(player);

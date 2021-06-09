@@ -187,7 +187,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 onMagePromote(sender, player, args2);
                 handled = true;
             }
-            if (subCommand.equalsIgnoreCase("describe"))
+            if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc"))
             {
                 onMageDescribe(sender, player, args2);
                 handled = true;
@@ -270,6 +270,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "remove");
             addIfPermissible(sender, options, "Magic.commands.mage.", "configure");
             addIfPermissible(sender, options, "Magic.commands.mage.", "describe");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "desc");
             addIfPermissible(sender, options, "Magic.commands.mage.", "upgrade");
             addIfPermissible(sender, options, "Magic.commands.mage.", "modifier");
             addIfPermissible(sender, options, "Magic.commands.mage.", "getdata");
