@@ -16,6 +16,7 @@ import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -30,6 +31,7 @@ import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPistonRetractEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
+import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.event.world.WorldInitEvent;
@@ -446,6 +448,22 @@ public class BlockController implements Listener, ChunkLoadListener {
                     }
                 }
             }
+        }
+    }
+
+    @EventHandler
+    public void onPaintingBreak(HangingBreakByEntityEvent event) {
+        if (controller.canWandsBreakPainting() || !(event.getEntity() instanceof Painting) || !(event.getRemover() instanceof Player)) {
+            return;
+        }
+
+        Player player = (Player) event.getRemover();
+        ItemStack item = player.getInventory().getItemInMainHand();
+        if (item == null || item.getType() == Material.AIR) {
+            return;
+        }
+        else if (controller.isWand(item)) {
+            event.setCancelled(true);
         }
     }
 
