@@ -10,11 +10,13 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Painting;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.hanging.HangingBreakByEntityEvent;
 import org.bukkit.event.hanging.HangingBreakEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -84,6 +86,14 @@ public class HangingController implements Listener {
     public void onHangingBreakByEntity(HangingBreakByEntityEvent event) {
         Entity breakingEntity = event.getRemover();
         if (breakingEntity == null) return;
+
+        if (!controller.canWandsBreakHanging() && breakingEntity instanceof Player) {
+            ItemStack item = ((Player)breakingEntity).getInventory().getItemInMainHand();
+            if (controller.isWand(item)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
 
         Hanging entity = event.getEntity();
         UndoList undoList = controller.getEntityUndo(breakingEntity);

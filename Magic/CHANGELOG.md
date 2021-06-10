@@ -8,6 +8,7 @@
  - Nerf mutant mobs a bit
  - Add `burning` flag to disguises
  - The `/mgive` command will drop item on the ground if the player's inventory is full
+ - Add `wands_break_hanging` config option, so you can disable paintings and item frames breaking while holding a wand
 
 # 8.7.1
 

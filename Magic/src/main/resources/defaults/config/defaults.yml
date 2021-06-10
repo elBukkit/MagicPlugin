@@ -644,3 +644,6 @@ enable_vanilla_sounds: true
 # Set this to false if you have players who are stuck invisible.
 # this may have been caused by a bug in previous versions of magic.
 allow_player_persistent_invisibility: true
+
+# Set this to false to prevent breaking paintings and item frames while holding a wand
+wands_break_hanging: true
