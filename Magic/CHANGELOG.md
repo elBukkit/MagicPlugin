@@ -7,6 +7,7 @@
  - Add `teleport_target` Recall option  
  - Nerf mutant mobs a bit
  - Add `burning` flag to disguises
+ - The `/mgive` command will drop item on the ground if the player's inventory is full
 
 # 8.7.1
 

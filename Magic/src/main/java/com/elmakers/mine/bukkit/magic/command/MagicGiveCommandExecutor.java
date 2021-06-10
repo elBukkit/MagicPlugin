@@ -134,7 +134,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
                         itemStack.setAmount(itemCount);
                         String displayName = api.describeItem(itemStack);
                         sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + itemCount + " " + ChatColor.LIGHT_PURPLE + displayName + ChatColor.AQUA + " to " + ChatColor.GOLD + mage.getName());
-                        mage.giveItem(itemStack);
+                        mage.giveItem(itemStack, true, true);
                     }
                 });
             }
