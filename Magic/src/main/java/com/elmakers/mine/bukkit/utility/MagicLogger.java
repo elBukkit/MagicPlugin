@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.LogRecord;
@@ -17,10 +19,21 @@ import com.elmakers.mine.bukkit.api.event.MagicWarningEvent;
 
 public class MagicLogger extends ColoredLogger {
 
+    private static int MAX_ERRORS = 50;
     private String context = null;
     private boolean capture = false;
-    private final Set<LogMessage> warnings = new LinkedHashSet<>();
-    private final Set<LogMessage> errors = new LinkedHashSet<>();
+    private final Set<LogMessage> warnings = Collections.newSetFromMap(new LinkedHashMap<LogMessage, Boolean>() {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<LogMessage, Boolean> eldest) {
+            return size() > MAX_ERRORS;
+        }
+    });
+    private final Set<LogMessage> errors = Collections.newSetFromMap(new LinkedHashMap<LogMessage, Boolean>() {
+        @Override
+        protected boolean removeEldestEntry(Map.Entry<LogMessage, Boolean> eldest) {
+            return size() > MAX_ERRORS;
+        }
+    });
 
     private int pendingWarningCount = 0;
     private int pendingErrorCount = 0;
@@ -39,24 +52,9 @@ public class MagicLogger extends ColoredLogger {
 
         LogMessage logMessage = new LogMessage(context, record.getMessage().replace("[Magic] ", ""));
         if (record.getLevel().equals(Level.WARNING)) {
-            if (!capture) {
-                pendingWarningCount++;
-            }
-            if (warnings.size() == 50) {
-                warnings.remove(warnings.iterator().next());
-            }
-
             warnings.add(logMessage);
             Bukkit.getPluginManager().callEvent(new MagicWarningEvent(record, context, pendingWarningCount, capture));
-        }
-        else if (record.getLevel().equals(Level.SEVERE)) {
-            if (!capture) {
-                pendingErrorCount++;
-            }
-            if (errors.size() == 50) {
-                errors.remove(errors.iterator().next());
-            }
-
+        } else if (record.getLevel().equals(Level.SEVERE)) {
             errors.add(logMessage);
             Bukkit.getPluginManager().callEvent(new MagicErrorEvent(record, context, pendingErrorCount, capture));
         }
@@ -65,6 +63,8 @@ public class MagicLogger extends ColoredLogger {
     public void enableCapture(boolean enable) {
         this.capture = enable;
         this.context = null;
+        this.pendingErrorCount = 0;
+        this.pendingWarningCount = 0;
         this.warnings.clear();
         this.errors.clear();
     }
