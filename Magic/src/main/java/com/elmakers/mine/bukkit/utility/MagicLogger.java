@@ -52,9 +52,11 @@ public class MagicLogger extends ColoredLogger {
 
         LogMessage logMessage = new LogMessage(context, record.getMessage().replace("[Magic] ", ""));
         if (record.getLevel().equals(Level.WARNING)) {
+            pendingWarningCount++;
             warnings.add(logMessage);
             Bukkit.getPluginManager().callEvent(new MagicWarningEvent(record, context, pendingWarningCount, capture));
         } else if (record.getLevel().equals(Level.SEVERE)) {
+            pendingErrorCount++;
             errors.add(logMessage);
             Bukkit.getPluginManager().callEvent(new MagicErrorEvent(record, context, pendingErrorCount, capture));
         }
