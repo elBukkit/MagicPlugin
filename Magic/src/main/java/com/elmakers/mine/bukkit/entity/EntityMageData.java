@@ -99,7 +99,7 @@ public class EntityMageData {
         if (triggers != null && tickInterval <= 0 && triggers.containsKey(TriggerType.INTERVAL.name().toLowerCase())) {
             tickInterval = 1000;
         }
-        if (tickInterval < lifetime / 2) {
+        if (tickInterval > lifetime / 2) {
             tickInterval = lifetime / 2;
         }
 
