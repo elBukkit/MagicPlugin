@@ -2102,6 +2102,11 @@ public class MagicController implements MageController {
         attributes.clear();
         for (String key : keys) {
             logger.setContext("attribute." + key);
+            if (!attributeConfiguration.isConfigurationSection(key)) {
+                logger.warning("attribute." + key + " does not have the proper parameters. It will not be loaded.");
+                continue;
+            }
+
             MagicAttribute attribute = new MagicAttribute(key, attributeConfiguration.getConfigurationSection(key));
             attributes.put(key, attribute);
         }
