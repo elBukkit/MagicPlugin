@@ -10,6 +10,7 @@
  - The `/mgive` command will drop item on the ground if the player's inventory is full
  - Add `wands_break_hanging` config option, so you can disable paintings and item frames breaking while holding a wand
  - Add `target_permission` parameter, requiring a player/entity to have a specific permission in order to target them
+ - Enchanting wands with books follows vanilla rules, allows multiple enchantments
 
 # 8.7.1
 

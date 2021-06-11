@@ -697,6 +697,34 @@ public class InventoryUtils extends NMSUtils
         }
     }
 
+    public static boolean addEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
+        if (item == null) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+
+        boolean addedAny = false;
+        if (enchantConfig != null) {
+            Collection<String> enchantKeys = enchantConfig.getKeys(false);
+            for (String enchantKey : enchantKeys) {
+                try {
+                    Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                    int level = enchantConfig.getInt(enchantKey);
+                    if (meta.hasConflictingEnchant(enchantment)) continue;
+                    if (meta.getEnchantLevel(enchantment) >= level) continue;
+                    if (meta.addEnchant(enchantment, level, false)) {
+                        addedAny = true;
+                    }
+                } catch (Exception ex) {
+                    getLogger().warning("Invalid enchantment: " + enchantKey);
+                }
+            }
+        }
+        if (addedAny) {
+            item.setItemMeta(meta);
+        }
+        return addedAny;
+    }
+
     public static String describeProperty(Object property) {
         return describeProperty(property, 0);
     }

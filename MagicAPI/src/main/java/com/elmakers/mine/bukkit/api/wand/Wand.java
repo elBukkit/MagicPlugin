@@ -277,6 +277,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     MageContext getContext();
     boolean isEnchantable();
     void setEnchantments(Map<Enchantment, Integer> enchants);
+    boolean addEnchantments(Map<Enchantment, Integer> enchants);
     @Nonnull
     Map<Enchantment, Integer> getEnchantments();
     void showInstructions();

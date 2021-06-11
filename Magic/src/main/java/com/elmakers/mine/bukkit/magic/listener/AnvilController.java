@@ -239,12 +239,16 @@ public class AnvilController implements Listener {
                 if (wandBookCombiningEnabled && secondItem != null) {
                     ItemMeta secondMeta = secondItem.getItemMeta();
                     if (secondMeta != null && secondMeta instanceof EnchantmentStorageMeta) {
-                        if (!wand.isEnchantable() || !wand.getEnchantments().isEmpty()) {
+                        if (!wand.isEnchantable()) {
                             event.setCancelled(true);
                             return;
                         }
                         EnchantmentStorageMeta enchantmentStorage = (EnchantmentStorageMeta)secondMeta;
-                        wand.setEnchantments(enchantmentStorage.getStoredEnchants());
+                        if (!wand.addEnchantments(enchantmentStorage.getStoredEnchants())) {
+                            event.setCancelled(true);
+                            return;
+                        }
+
                         combinedWandAndBook = true;
                     }
                 }
