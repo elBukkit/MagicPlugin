@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public class MountArmorStandAction extends RideEntityAction
 {
@@ -88,7 +88,7 @@ public class MountArmorStandAction extends RideEntityAction
         if (itemType != null) {
             helmetItem = itemType.getItemStack(1);
             if (helmetItem != null) {
-                InventoryUtils.makeUnbreakable(InventoryUtils.makeReal(helmetItem));
+                ItemUtils.makeUnbreakable(ItemUtils.makeReal(helmetItem));
             }
         }
     }

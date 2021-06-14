@@ -36,7 +36,6 @@ import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandLevel;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
@@ -720,7 +719,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (brushInventoryRaw instanceof Map) {
                 brushInventory = (Map<String, ? extends Object>)brushInventoryRaw;
             } else if (brushInventoryRaw instanceof ConfigurationSection) {
-                brushInventory = NMSUtils.getMap((ConfigurationSection)brushInventoryRaw);
+                brushInventory = CompatibilityUtils.getMap((ConfigurationSection)brushInventoryRaw);
             }
             if (brushInventory != null) {
                 for (Map.Entry<String, ? extends Object> brushEntry : brushInventory.entrySet()) {

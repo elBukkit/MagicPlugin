@@ -19,8 +19,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 
@@ -336,8 +336,8 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         short durability = NMSUtils.isCurrentVersion() ? 0 : (short)mapId;
         ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
         if (NMSUtils.isCurrentVersion()) {
-            mapItem = CompatibilityUtils.makeReal(mapItem);
-            InventoryUtils.setMetaInt(mapItem, "map", mapId);
+            mapItem = ItemUtils.makeReal(mapItem);
+            NBTUtils.setMetaInt(mapItem, "map", mapId);
         }
         return mapItem;
     }

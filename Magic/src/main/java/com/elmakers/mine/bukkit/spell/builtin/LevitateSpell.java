@@ -820,7 +820,7 @@ public class LevitateSpell extends TargetingSpell implements Listener
                     Constructor<? extends Object> constructor = mountClass.getConstructor(worldClass);
                     Object nmsWorld = NMSUtils.getHandle(world);
                     Object nmsEntity = constructor.newInstance(nmsWorld);
-                    entity = NMSUtils.getBukkitEntity(nmsEntity);
+                    entity = CompatibilityUtils.getBukkitEntity(nmsEntity);
                     if (entity != null) {
                         if (entity instanceof LivingEntity && mountInvisible) {
                             ((LivingEntity)entity).addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, 2 << 24, 0));

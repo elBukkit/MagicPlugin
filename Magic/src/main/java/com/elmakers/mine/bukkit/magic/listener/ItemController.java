@@ -15,8 +15,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.item.ItemData;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 
 public class ItemController {
     private MageController controller;
@@ -143,10 +143,10 @@ public class ItemController {
     }
 
     public void updateOnEquip(ItemStack itemStack) {
-        if (CompatibilityUtils.isEmpty(itemStack)) return;
+        if (ItemUtils.isEmpty(itemStack)) return;
         Map<Integer, ItemData> mapped = replaceOnEquip.get(itemStack.getType());
         if (mapped == null) return;
-        int customData = InventoryUtils.getMetaInt(itemStack, "CustomModelData", 0);
+        int customData = NBTUtils.getMetaInt(itemStack, "CustomModelData", 0);
         ItemData replacement = mapped.get(customData);
         if (replacement != null) {
             ItemMeta meta = replacement.getItemMeta();

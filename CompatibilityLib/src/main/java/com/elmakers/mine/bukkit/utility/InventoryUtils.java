@@ -33,19 +33,19 @@ import com.google.common.collect.Multimap;
 public class InventoryUtils extends NMSUtils
 {
     public static CurrencyAmount getCurrency(ItemStack item) {
-        if (isEmpty(item)) return null;
+        if (ItemUtils.isEmpty(item)) return null;
 
-        Object currency = InventoryUtils.getNode(item, "currency");
+        Object currency = NBTUtils.getNode(item, "currency");
         if (currency != null) {
-            String currencyType = InventoryUtils.getMetaString(currency, "type");
+            String currencyType = NBTUtils.getMetaString(currency, "type");
             if (currencyType != null) {
-                return new CurrencyAmount(currencyType, InventoryUtils.getMetaInt(currency, "amount"));
+                return new CurrencyAmount(currencyType, NBTUtils.getMetaInt(currency, "amount"));
             }
             return null;
         }
 
         // Support for legacy SP items
-        int spAmount = InventoryUtils.getMetaInt(item, "sp", 0);
+        int spAmount = NBTUtils.getMetaInt(item, "sp", 0);
         if (spAmount > 0) {
             return new CurrencyAmount("sp", spAmount);
         }
@@ -57,19 +57,19 @@ public class InventoryUtils extends NMSUtils
 
     public static boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
     {
-        Object handle = getHandle(item);
+        Object handle = ItemUtils.getHandle(item);
         if (handle == null) return false;
-        Object tag = getTag(handle);
+        Object tag = ItemUtils.getTag(handle);
         if (tag == null) return false;
 
-        return addTagsToNBT(getMap(tags), tag);
+        return addTagsToNBT(CompatibilityUtils.getMap(tags), tag);
     }
 
     public static boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
     {
-        Object handle = getHandle(item);
+        Object handle = ItemUtils.getHandle(item);
         if (handle == null) return false;
-        Object tag = getTag(handle);
+        Object tag = ItemUtils.getTag(handle);
         if (tag == null) return false;
 
         return addTagsToNBT(tags, tag);
@@ -77,30 +77,30 @@ public class InventoryUtils extends NMSUtils
 
     public static boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
         if (skillItem == null) return false;
-        Object handle = getHandle(skillItem);
+        Object handle = ItemUtils.getHandle(skillItem);
         if (handle == null) return false;
-        Object tag = getTag(handle);
+        Object tag = ItemUtils.getTag(handle);
         if (tag == null) return false;
 
-        setMetaBoolean(tag, "skill", true);
+        NBTUtils.setMetaBoolean(tag, "skill", true);
 
-        Object spellNode = InventoryUtils.getNode(skillItem, "spell");
+        Object spellNode = NBTUtils.getNode(skillItem, "spell");
         if (skillClass != null && spellNode != null) {
-            InventoryUtils.setMeta(spellNode, "class", skillClass);
+            NBTUtils.setMeta(spellNode, "class", skillClass);
         }
         if (skillConfig == null) {
             return true;
         }
 
         if (skillConfig.getBoolean("undroppable", false)) {
-            setMetaBoolean(tag, "undroppable", true);
+            NBTUtils.setMetaBoolean(tag, "undroppable", true);
         }
         if (skillConfig.getBoolean("keep", false)) {
-            setMetaBoolean(tag, "keep", true);
+            NBTUtils.setMetaBoolean(tag, "keep", true);
         }
         boolean quickCast = skillConfig.getBoolean("quick_cast", true);
         if (!quickCast && spellNode != null) {
-            InventoryUtils.setMetaBoolean(spellNode, "quick_cast", false);
+            NBTUtils.setMetaBoolean(spellNode, "quick_cast", false);
         }
 
         return true;
@@ -113,7 +113,7 @@ public class InventoryUtils extends NMSUtils
 
     public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames)
     {
-        return saveTagsToNBT(getMap(tags), node, tagNames);
+        return saveTagsToNBT(CompatibilityUtils.getMap(tags), node, tagNames);
     }
 
     public static boolean addTagsToNBT(Map<String, Object> tags, Object node)
@@ -181,7 +181,7 @@ public class InventoryUtils extends NMSUtils
         // Finish removing any remaining properties
         if (currentTags != null) {
             for (String currentTag : currentTags) {
-                removeMeta(node, currentTag);
+                NBTUtils.removeMeta(node, currentTag);
             }
         }
 
@@ -244,7 +244,7 @@ public class InventoryUtils extends NMSUtils
             if (wrappedValue == null) {
                 for (Object item : list) {
                     if (item != null) {
-                        addToList(listMeta, wrapInTag(item));
+                        NBTUtils.addToList(listMeta, wrapInTag(item));
                     }
                 }
                 wrappedValue = listMeta;
@@ -413,7 +413,7 @@ public class InventoryUtils extends NMSUtils
             Method getResultsMethod = inventory.getClass().getMethod("getResultInventory");
             Object inv = getResultsMethod.invoke(inventory);
             Method setItemMethod = inv.getClass().getMethod("setItem", Integer.TYPE, class_ItemStack);
-            setItemMethod.invoke(inv, 0, getHandle(item));
+            setItemMethod.invoke(inv, 0, ItemUtils.getHandle(item));
             return true;
         } catch(Throwable ex) {
             ex.printStackTrace();
@@ -433,9 +433,9 @@ public class InventoryUtils extends NMSUtils
 
     public static ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
         try {
-            itemStack = makeReal(itemStack);
-            Object skullOwner = createNode(itemStack, "SkullOwner");
-            setMeta(skullOwner, "Name", ownerName);
+            itemStack = ItemUtils.makeReal(itemStack);
+            Object skullOwner = NBTUtils.createNode(itemStack, "SkullOwner");
+            NBTUtils.setMeta(skullOwner, "Name", ownerName);
             return setSkullURL(itemStack, url, id);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -452,7 +452,7 @@ public class InventoryUtils extends NMSUtils
 
     public static ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String name) {
         try {
-            if (CompatibilityUtils.isEmpty(itemStack)) {
+            if (ItemUtils.isEmpty(itemStack)) {
                 return itemStack;
             }
 
@@ -462,8 +462,8 @@ public class InventoryUtils extends NMSUtils
             if (properties == null) {
                 return itemStack;
             }
-            itemStack = makeReal(itemStack);
-            if (CompatibilityUtils.isEmpty(itemStack)) {
+            itemStack = ItemUtils.makeReal(itemStack);
+            if (ItemUtils.isEmpty(itemStack)) {
                 return itemStack;
             }
 
@@ -613,7 +613,7 @@ public class InventoryUtils extends NMSUtils
 
     public static void openSign(Player player, Location signBlock) {
         try {
-            Object tileEntity = getTileEntity(signBlock);
+            Object tileEntity = CompatibilityUtils.getTileEntity(signBlock);
             Object playerHandle = getHandle(player);
             if (tileEntity != null && playerHandle != null) {
                 class_EntityPlayer_openSignMethod.invoke(playerHandle, tileEntity);
@@ -624,11 +624,11 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static void makeKeep(ItemStack itemStack) {
-        setMetaBoolean(itemStack, "keep", true);
+        NBTUtils.setMetaBoolean(itemStack, "keep", true);
     }
 
     public static boolean isKeep(ItemStack itemStack) {
-        return hasMeta(itemStack, "keep");
+        return NBTUtils.hasMeta(itemStack, "keep");
     }
     
     public static void applyAttributes(ItemStack item, ConfigurationSection attributeConfig, String slot) {
@@ -761,7 +761,7 @@ public class InventoryUtils extends NMSUtils
 
     public static int getMapId(ItemStack mapItem) {
         if (isCurrentVersion()) {
-            return getMetaInt(mapItem, "map", 0);
+            return NBTUtils.getMetaInt(mapItem, "map", 0);
         }
 
         return mapItem.getDurability();
@@ -769,7 +769,7 @@ public class InventoryUtils extends NMSUtils
 
     public static void setMapId(ItemStack mapItem, int id) {
         if (isCurrentVersion()) {
-            setMetaInt(mapItem, "map", id);
+            NBTUtils.setMetaInt(mapItem, "map", id);
         } else {
             mapItem.setDurability((short)id);
         }

@@ -25,7 +25,8 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.google.common.collect.ImmutableSet;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback {
@@ -61,7 +62,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     public ItemData(ItemStack itemStack, MageController controller) {
         this.controller = controller;
-        this.item = NMSUtils.getCopy(itemStack);
+        this.item = ItemUtils.getCopy(itemStack);
         String itemKey = itemStack.getType().toString();
         if (itemStack.getAmount() > 1) {
             itemKey += "@" + itemStack.getAmount();
@@ -122,7 +123,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
             ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
             if (tagSection != null) {
-                item = CompatibilityUtils.makeReal(item);
+                item = ItemUtils.makeReal(item);
                 InventoryUtils.saveTagsToItem(tagSection, item);
             }
         } else {
@@ -141,7 +142,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
         Collection<ConfigurationSection> attributes = ConfigurationUtils.getNodeList(configuration, "attributes");
         if (attributes != null && !attributes.isEmpty()) {
-            item = InventoryUtils.makeReal(item);
+            item = ItemUtils.makeReal(item);
             for (ConfigurationSection attributeConfig : attributes) {
                 String attributeKey = attributeConfig.getString("type");
                 attributeKey = attributeConfig.getString("attribute", attributeKey);
@@ -180,7 +181,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         // Convenience methods for top-level name, lore and tags
         ConfigurationSection tagSection = configuration.getConfigurationSection("tags");
         if (tagSection != null) {
-            item = CompatibilityUtils.makeReal(item);
+            item = ItemUtils.makeReal(item);
             InventoryUtils.saveTagsToItem(tagSection, item);
         }
         String customName = configuration.getString("name");
@@ -315,7 +316,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     @Nullable
     private ItemStack getItemStack(Integer amount, ItemUpdatedCallback callback) {
-        ItemStack newItem = InventoryUtils.getCopy(getOrCreateItemStack());
+        ItemStack newItem = ItemUtils.getCopy(getOrCreateItemStack());
         if (newItem == null) {
             if (callback != null) {
                 callback.updated(null);
@@ -375,7 +376,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     }
 
     public int getCustomModelData() {
-        return InventoryUtils.getMetaInt(getOrCreateItemStack(), "CustomModelData", 0);
+        return NBTUtils.getMetaInt(getOrCreateItemStack(), "CustomModelData", 0);
     }
 
     @Nullable

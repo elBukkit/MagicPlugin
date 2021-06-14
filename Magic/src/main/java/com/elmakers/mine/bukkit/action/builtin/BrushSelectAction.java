@@ -35,6 +35,8 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 
 public class BrushSelectAction extends BaseSpellAction implements GUIAction
 {
@@ -80,7 +82,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
 
             ItemStack item = event.getCurrentItem();
-            String set = InventoryUtils.getMetaString(item, "brush_set", null);
+            String set = NBTUtils.getMetaString(item, "brush_set", null);
             if (set != null) {
                 if (set.equals("schematics")) {
                     String inventoryTitle = context.getMessage("schematics_title", "Schematics");
@@ -94,7 +96,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     mage.activateGUI(this, displayInventory);
                     return;
                 } else if (set.equals("variants")) {
-                    MaterialAndData baseMaterial = new MaterialAndData(InventoryUtils.getMetaString(item, "variant_key"));
+                    MaterialAndData baseMaterial = new MaterialAndData(NBTUtils.getMetaString(item, "variant_key"));
                     String baseName = getBaseName(baseMaterial);
                     String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
                     Collection<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
@@ -112,7 +114,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 
             mage.deactivateGUI();
             Currency blockCurrency = context.getController().getBlockExchangeCurrency();
-            if (event.isRightClick() && blockCurrency != null && InventoryUtils.getMetaBoolean(item, "absorb", false) && !mage.isDead()) {
+            if (event.isRightClick() && blockCurrency != null && NBTUtils.getMetaBoolean(item, "absorb", false) && !mage.isDead()) {
                 Messages messages = context.getController().getMessages();
                 if (mage.isAtMaxCurrency(blockCurrency.getKey())) {
                     String limitMessage = messages.get("currency." + blockCurrency.getKey() + ".limit", messages.get("currency.default.limit"));
@@ -127,7 +129,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 for (int i = 0; i < contents.length; i++) {
                     if (blockCurrency == null || mage.isAtMaxCurrency(blockCurrency.getKey())) break;
                     ItemStack itemStack = contents[i];
-                    if (CompatibilityUtils.isEmpty(itemStack)) continue;
+                    if (ItemUtils.isEmpty(itemStack)) continue;
                     if (itemStack.hasItemMeta()) continue;
                     if (itemStack.getType() != item.getType()) continue;
                     Double worth = context.getController().getWorth(itemStack, blockCurrency.getKey());
@@ -180,7 +182,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         MaterialAndData previous = null;
         for (String brushKey : brushKeys) {
             ItemStack brushItem = controller.createBrushItem(brushKey, context.getWand(), false);
-            if (CompatibilityUtils.isEmpty(brushItem)) {
+            if (ItemUtils.isEmpty(brushItem)) {
                 continue;
             }
             if (MaterialBrush.isSchematic(brushKey)) {
@@ -243,7 +245,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 
             String materialName = getBaseName(material);
             ItemStack category = material.getItem(context.getController(), false);
-            category = CompatibilityUtils.makeReal(category);
+            category = ItemUtils.makeReal(category);
             if (category == null) continue;
             ItemMeta meta = category.getItemMeta();
             String name = context.getMessage("variant_name", "" + ChatColor.AQUA + "$variant");
@@ -253,8 +255,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             lore.add(description.replace("$variant", materialName));
             meta.setLore(lore);
             category.setItemMeta(meta);
-            InventoryUtils.setMeta(category, "brush_set", "variants");
-            InventoryUtils.setMeta(category, "variant_key", key);
+            NBTUtils.setMeta(category, "brush_set", "variants");
+            NBTUtils.setMeta(category, "variant_key", key);
             brushes.add(category);
         }
 
@@ -271,14 +273,14 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         if (schematics.size() == 1) {
             schematicItem = schematics.get(0);
         } else if (schematics.size() > 0) {
-            schematicItem = InventoryUtils.getCopy(schematics.get(0));
+            schematicItem = ItemUtils.getCopy(schematics.get(0));
             ItemMeta meta = schematicItem.getItemMeta();
             meta.setDisplayName(context.getMessage("schematics_name", "" + ChatColor.AQUA + "Schematics"));
             List<String> lore = new ArrayList<>();
             lore.add(context.getMessage("schematics_description", "Choose a schematic"));
             meta.setLore(lore);
             schematicItem.setItemMeta(meta);
-            InventoryUtils.setMeta(schematicItem, "brush_set", "schematics");
+            NBTUtils.setMeta(schematicItem, "brush_set", "schematics");
         }
         if (schematicItem != null) {
             brushes.add(schematicItem);
@@ -337,7 +339,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         InventoryUtils.wrapText(message, lore);
         meta.setLore(lore);
         itemStack.setItemMeta(meta);
-        InventoryUtils.setMetaBoolean(itemStack, "absorb", true);
+        NBTUtils.setMetaBoolean(itemStack, "absorb", true);
     }
 
     private String getBaseName(MaterialAndData material) {

@@ -40,6 +40,8 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 
 @Deprecated
 public abstract class BaseShopAction extends BaseSpellAction implements GUIAction
@@ -293,7 +295,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             int amount = (int)Math.ceil(worth);
             ItemStack worthItem = getWorthItem(controller);
             while (amount > 0) {
-                worthItem = InventoryUtils.getCopy(worthItem);
+                worthItem = ItemUtils.getCopy(worthItem);
                 worthItem.setAmount(Math.min(amount, 64));
                 amount -= worthItem.getAmount();
                 mage.giveItem(worthItem);
@@ -346,14 +348,14 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
-        if (item == null || !InventoryUtils.hasMeta(item, "shop")) {
+        if (item == null || !NBTUtils.hasMeta(item, "shop")) {
             if (!autoClose) {
                 mage.deactivateGUI();
             }
             return;
         }
 
-        int slotIndex = Integer.parseInt(InventoryUtils.getMetaString(item, "shop"));
+        int slotIndex = Integer.parseInt(NBTUtils.getMetaString(item, "shop"));
         MageController controller = context.getController();
         Wand wand = mage.getActiveWand();
 
@@ -361,7 +363,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (shopItem == null) {
             return;
         }
-        String unpurchasableMessage = InventoryUtils.getMetaString(shopItem.getItem(), "unpurchasable");
+        String unpurchasableMessage = NBTUtils.getMetaString(shopItem.getItem(), "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
             mage.deactivateGUI();
@@ -378,10 +380,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             context.showMessage(costString);
         } else {
             String itemName = formatItemAmount(controller, item, item.getAmount());
-            if (InventoryUtils.hasMeta(item, "confirm")) {
+            if (NBTUtils.hasMeta(item, "confirm")) {
                 String inventoryTitle = context.getMessage("confirm_title", getDefaultMessage(context, "confirm_title")).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
-                InventoryUtils.removeMeta(item, "confirm");
+                NBTUtils.removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
                 {
                     if (i != 4) {
@@ -450,7 +452,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     return;
                 }
                 if (!castsSpells && !applyToWand && !applyToCaster) {
-                    ItemStack copy = InventoryUtils.getCopy(item);
+                    ItemStack copy = ItemUtils.getCopy(item);
                     if (filterBound && com.elmakers.mine.bukkit.wand.Wand.isBound(copy)) {
                         Wand bindWand = controller.getWand(copy);
                         mage.tryToOwn(bindWand);
@@ -614,7 +616,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 itemStacks.add(new ItemStack(Material.AIR));
                 continue;
             }
-            ItemStack item = InventoryUtils.getCopy(shopItem.getItem());
+            ItemStack item = ItemUtils.getCopy(shopItem.getItem());
             if (item == null) continue;
 
             String permission = shopItem.getPermission();
@@ -641,10 +643,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
             meta.setLore(lore);
             item.setItemMeta(meta);
-            item = InventoryUtils.makeReal(item);
-            InventoryUtils.setMeta(item, "shop", Integer.toString(currentSlot));
+            item = ItemUtils.makeReal(item);
+            NBTUtils.setMeta(item, "shop", Integer.toString(currentSlot));
             if (showConfirmation) {
-                InventoryUtils.setMeta(item, "confirm", "true");
+                NBTUtils.setMeta(item, "confirm", "true");
             }
             this.showingItems.put(currentSlot, shopItem);
             itemStacks.add(item);

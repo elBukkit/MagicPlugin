@@ -81,7 +81,7 @@ public class DeprecatedUtils {
     public static MapView getMap(int id) {
         // @deprecated Magic value
         // TODO: Replace this with an API call in future versions.
-        return NMSUtils.getMapById(id);
+        return CompatibilityUtils.getMapById(id);
     }
 
     public static short getMapId(MapView mapView) {

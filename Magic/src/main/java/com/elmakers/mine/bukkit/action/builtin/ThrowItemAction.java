@@ -23,8 +23,7 @@ import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
 public class ThrowItemAction extends BaseProjectileAction {
@@ -73,7 +72,7 @@ public class ThrowItemAction extends BaseProjectileAction {
             wand.deactivate();
 
             itemStack = wand.getItem();
-            if (CompatibilityUtils.isEmpty(itemStack))
+            if (ItemUtils.isEmpty(itemStack))
             {
                 return SpellResult.FAIL;
             }
@@ -98,8 +97,8 @@ public class ThrowItemAction extends BaseProjectileAction {
         double itemSpeed = context.getRandom().nextDouble() * (itemSpeedMax - itemSpeedMin) + itemSpeedMin;
         Vector velocity = spawnLocation.getDirection().normalize().multiply(itemSpeed);
         if (unbreakable) {
-            itemStack = InventoryUtils.makeReal(itemStack);
-            InventoryUtils.makeUnbreakable(itemStack);
+            itemStack = ItemUtils.makeReal(itemStack);
+            ItemUtils.makeUnbreakable(itemStack);
         }
         Item droppedItem = null;
         try {
@@ -125,7 +124,7 @@ public class ThrowItemAction extends BaseProjectileAction {
                     }
                     removedMessage = removedMessage.replace("$material", name);
                 }
-                NMSUtils.makeTemporary(itemStack, removedMessage);
+                ItemUtils.makeTemporary(itemStack, removedMessage);
                 droppedItem.setItemStack(itemStack);
             }
         }

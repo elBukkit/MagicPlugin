@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public class RemoveWandAction extends BaseSpellAction
 {
@@ -39,7 +39,7 @@ public class RemoveWandAction extends BaseSpellAction
             activeItem = player.getInventory().getItemInMainHand();
         }
 
-        if (InventoryUtils.isEmpty(activeItem))
+        if (ItemUtils.isEmpty(activeItem))
         {
             return SpellResult.FAIL;
         }

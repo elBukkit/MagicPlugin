@@ -21,8 +21,8 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.item.ItemData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class MagicGiveCommandExecutor extends MagicTabExecutor {
     public MagicGiveCommandExecutor(MagicAPI api) {
@@ -82,7 +82,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
 
         List<Player> players = new ArrayList<>();
         if (playerName != null && sender.hasPermission("Magic.commands.mgive.others")) {
-            List<Entity> targets = NMSUtils.selectEntities(sender, playerName);
+            List<Entity> targets = CompatibilityUtils.selectEntities(sender, playerName);
             if (targets != null) {
                 for (Entity entity : targets) {
                     if (entity instanceof Player) {

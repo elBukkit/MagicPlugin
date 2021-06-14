@@ -14,8 +14,8 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.kit.Kit;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class MagicKitCommandExecutor extends MagicTabExecutor {
     public MagicKitCommandExecutor(MagicAPI api) {
@@ -58,7 +58,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
 
         List<Player> players = new ArrayList<>();
         if (playerName != null && sender.hasPermission("Magic.commands.mkit.others")) {
-            List<Entity> targets = NMSUtils.selectEntities(sender, playerName);
+            List<Entity> targets = CompatibilityUtils.selectEntities(sender, playerName);
             if (targets != null) {
                 for (Entity entity : targets) {
                     if (entity instanceof Player) {

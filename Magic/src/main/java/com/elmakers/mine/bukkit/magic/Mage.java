@@ -122,6 +122,8 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -1498,11 +1500,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 for (Map.Entry<String, Wand> wandEntry : boundWands.entrySet()) {
                     Wand wand = wandEntry.getValue();
                     ItemStack item = wand.getItem();
-                    if (CompatibilityUtils.isEmpty(item)) {
+                    if (ItemUtils.isEmpty(item)) {
                         // This makes sure bound wands get saved as valid items even if vanilla did something
                         // ugly like turn their items to air.
                         item = new ItemStack(wand.getIcon().getMaterial());
-                        item = CompatibilityUtils.makeReal(item);
+                        item = ItemUtils.makeReal(item);
                         wand.setItem(item);
                         wand.updateItemIcon();
                         wand.saveState();
@@ -2679,7 +2681,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean setItem(int slotIndex, ItemStack item) {
         Player player = getPlayer();
-        if (player != null && player.isDead() && !CompatibilityUtils.isEmpty(item)) {
+        if (player != null && player.isDead() && !ItemUtils.isEmpty(item)) {
             controller.info("** Giving item while dead (slot " + slotIndex + "): " + TextUtils.nameItem(item));
             addToRespawnInventory(slotIndex, item);
             return true;
@@ -3736,12 +3738,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             ItemStack[] armor = inventory.getArmorContents();
             for (Map.Entry<Integer, ItemStack> entry : respawnArmor.entrySet()) {
                 ItemStack item = entry.getValue();
-                if (CompatibilityUtils.isEmpty(item)) {
+                if (ItemUtils.isEmpty(item)) {
                     continue;
                 }
                 int index = entry.getKey();
                 ItemStack existing = armor[index];
-                if (!CompatibilityUtils.isEmpty(existing)) {
+                if (!ItemUtils.isEmpty(existing)) {
                     controller.info("*** Restoring armor " + TextUtils.nameItem(item)
                         + " in slot " + index + " but found item " + TextUtils.nameItem(existing), 18);
                     if (addToInventory == null) {
@@ -3768,12 +3770,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     addToInventory.add(item);
                     continue;
                 }
-                if (CompatibilityUtils.isEmpty(item)) {
+                if (ItemUtils.isEmpty(item)) {
                     continue;
                 }
                 updated = true;
                 ItemStack existing = inventory.getItem(slot);
-                if (!CompatibilityUtils.isEmpty(existing)) {
+                if (!ItemUtils.isEmpty(existing)) {
                     controller.info("*** Restoring item " + TextUtils.nameItem(item)
                         + " in slot " + slot + " but found item " + TextUtils.nameItem(existing), 18);
                     if (addToInventory == null) {
@@ -3786,7 +3788,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         if (addToInventory != null) {
             for (ItemStack item : addToInventory) {
-                if (CompatibilityUtils.isEmpty(item)) {
+                if (ItemUtils.isEmpty(item)) {
                     continue;
                 }
                 Map<Integer, ItemStack> returned = inventory.addItem(item);
@@ -3810,9 +3812,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Inventory inventory = getInventory();
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack item = inventory.getItem(i);
-            if (CompatibilityUtils.isEmpty(item)) continue;
-            if (CompatibilityUtils.getMetaBoolean(item, "return_on_death", false)) {
-                ItemStack replacement = CompatibilityUtils.getReplacement(item);
+            if (ItemUtils.isEmpty(item)) continue;
+            if (NBTUtils.getMetaBoolean(item, "return_on_death", false)) {
+                ItemStack replacement = ItemUtils.getReplacement(item);
                 controller.info("Replacing item on respawn: " + TextUtils.nameItem(item) + " with " + TextUtils.nameItem(replacement));
                 inventory.setItem(i, replacement);
             }
@@ -3866,7 +3868,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean giveItem(ItemStack itemStack, boolean putInHand, boolean allowDropping) {
         if (!tryGiveItem(itemStack, putInHand)) {
-            if (!allowDropping || InventoryUtils.getMetaBoolean(itemStack, "undroppable", false)) {
+            if (!allowDropping || NBTUtils.getMetaBoolean(itemStack, "undroppable", false)) {
                 return false;
             }
             Entity entity = getEntity();
@@ -3905,9 +3907,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             PlayerInventory inventory = player.getInventory();
             ItemStack inHand = inventory.getItemInMainHand();
             Integer freeSlot = null;
-            if (InventoryUtils.isEmpty(inHand)) {
+            if (ItemUtils.isEmpty(inHand)) {
                 for (int i = 0; i < inventory.getSize() && freeSlot == null; i++) {
-                    if (i != inventory.getHeldItemSlot() && InventoryUtils.isEmpty(inventory.getItem(i))) {
+                    if (i != inventory.getHeldItemSlot() && ItemUtils.isEmpty(inventory.getItem(i))) {
                         freeSlot = i;
                     }
                 }
@@ -3923,7 +3925,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean tryGiveItem(ItemStack itemStack) {
-        if (InventoryUtils.isEmpty(itemStack)) return true;
+        if (ItemUtils.isEmpty(itemStack)) return true;
 
         Player player = getPlayer();
         // Should this return false ?
@@ -3981,7 +3983,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             ItemStack[] armor = player.getInventory().getArmorContents();
             for (int index = 0; index < armor.length; index++) {
                 ItemStack armorItem = armor[index];
-                if (InventoryUtils.isEmpty(armorItem)) continue;
+                if (ItemUtils.isEmpty(armorItem)) continue;
 
                 // Check for locked items
                 if (!canUse(armorItem)) {
@@ -4308,7 +4310,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (int index = 0; index < contents.length; index++)
         {
             ItemStack item = contents[index];
-            if (item != null && item.getType() != Material.AIR && InventoryUtils.hasMeta(item, tag))
+            if (item != null && item.getType() != Material.AIR && NBTUtils.hasMeta(item, tag))
             {
                 inventory.setItem(index, null);
             }
@@ -4319,7 +4321,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (int index = 0; index < armor.length; index++)
         {
             ItemStack item = armor[index];
-            if (item != null && item.getType() != Material.AIR && InventoryUtils.hasMeta(item, tag))
+            if (item != null && item.getType() != Material.AIR && NBTUtils.hasMeta(item, tag))
             {
                 modified = true;
                 armor[index] = null;

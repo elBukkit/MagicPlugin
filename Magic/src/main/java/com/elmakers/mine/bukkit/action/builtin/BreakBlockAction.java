@@ -17,7 +17,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class BreakBlockAction extends ModifyBlockAction {
     private int durabilityAmount;
@@ -62,7 +61,7 @@ public class BreakBlockAction extends ModifyBlockAction {
             CompatibilityUtils.clearBreaking(block);
             BlockState blockState = block.getState();
             if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
-                NMSUtils.clearItems(blockState.getLocation());
+                CompatibilityUtils.clearItems(blockState.getLocation());
             }
             MaterialBrush brush = context.getBrush();
             if (brush == null) {

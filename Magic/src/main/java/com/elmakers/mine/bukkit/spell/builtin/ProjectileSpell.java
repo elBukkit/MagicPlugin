@@ -22,6 +22,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 @Deprecated
@@ -159,7 +160,7 @@ public class ProjectileSpell extends UndoableSpell
                     shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
                 }
 
-                Entity entity = NMSUtils.getBukkitEntity(nmsProjectile);
+                Entity entity = CompatibilityUtils.getBukkitEntity(nmsProjectile);
                 if (entity == null || !(entity instanceof Projectile)) {
                     throw new Exception("Got invalid bukkit entity from projectile of class " + projectileTypeName);
                 }

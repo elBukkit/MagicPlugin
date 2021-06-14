@@ -37,6 +37,8 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
@@ -151,8 +153,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         // TODO: Could/should this store ALL custom tag data?
         if (item.hasItemMeta()) {
-            item = InventoryUtils.makeReal(item);
-            int customModelData = InventoryUtils.getMetaInt(item, "CustomModelData", 0);
+            item = ItemUtils.makeReal(item);
+            int customModelData = NBTUtils.getMetaInt(item, "CustomModelData", 0);
             if (customModelData > 0) {
                 tags = new HashMap<>();
                 tags.put("CustomModelData", customModelData);
@@ -475,7 +477,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         try {
             BlockState blockState = block.getState();
             if (material == Material.FLOWER_POT || blockState instanceof InventoryHolder || blockState instanceof Sign) {
-                extraData = new BlockTileEntity(NMSUtils.getTileEntityData(block.getLocation()));
+                extraData = new BlockTileEntity(CompatibilityUtils.getTileEntityData(block.getLocation()));
             } else if (blockState instanceof CommandBlock) {
                 // This seems to occasionally throw exceptions...
                 CommandBlock command = (CommandBlock)blockState;
@@ -516,7 +518,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public static void clearItems(BlockState block) {
         if (block != null && (block instanceof InventoryHolder || block.getType() == Material.FLOWER_POT)) {
-            NMSUtils.clearItems(block.getLocation());
+            CompatibilityUtils.clearItems(block.getLocation());
         }
     }
 
@@ -601,7 +603,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (extraData != null && extraData instanceof BlockTileEntity) {
                 // Tile entity data overrides everything else, and may replace all of this in the future.
                 if (allowContainers() || (material != Material.FLOWER_POT && !(blockState instanceof InventoryHolder))) {
-                    NMSUtils.setTileEntityData(block.getLocation(), ((BlockTileEntity) extraData).data);
+                    CompatibilityUtils.setTileEntityData(block.getLocation(), ((BlockTileEntity) extraData).data);
                 }
             } else if (blockState != null && DefaultMaterials.isBanner(material) && extraData != null && extraData instanceof BlockBanner) {
                 if (blockState instanceof Banner) {
@@ -792,7 +794,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (getData() != itemStack.getDurability()) return true;
         if (tags != null) {
             Object customModelData = tags.get("CustomModelData");
-            int itemModelData = InventoryUtils.getMetaInt(itemStack, "CustomModelData", 0);
+            int itemModelData = NBTUtils.getMetaInt(itemStack, "CustomModelData", 0);
             if (customModelData == null && itemModelData != 0) return true;
             if (customModelData != null && customModelData instanceof Integer && itemModelData != (Integer)customModelData) return true;
         }
@@ -845,7 +847,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             stack.setDurability(data);
         }
         if (tags != null) {
-            stack = InventoryUtils.makeReal(stack);
+            stack = ItemUtils.makeReal(stack);
             InventoryUtils.saveTagsToItem(tags, stack);
         }
         if (DefaultMaterials.isPlayerSkull(this))

@@ -12,7 +12,8 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 
 public class CaptureAction extends BaseSpellAction {
     private double minHealth;
@@ -67,21 +68,21 @@ public class CaptureAction extends BaseSpellAction {
             meta.setDisplayName(title);
             spawnEgg.setItemMeta(meta);
         }
-        spawnEgg = InventoryUtils.makeReal(spawnEgg);
+        spawnEgg = ItemUtils.makeReal(spawnEgg);
 
         // Add entity type attribute
-        CompatibilityUtils.setMeta(savedEntity, "id", entityTypeString);
+        NBTUtils.setMeta(savedEntity, "id", entityTypeString);
 
         // Remove instance-specific attributes
-        CompatibilityUtils.removeMeta(savedEntity, "Pos");
-        CompatibilityUtils.removeMeta(savedEntity, "Motion");
-        CompatibilityUtils.removeMeta(savedEntity, "Rotation");
-        CompatibilityUtils.removeMeta(savedEntity, "FallDistance");
-        CompatibilityUtils.removeMeta(savedEntity, "Dimension");
-        CompatibilityUtils.removeMeta(savedEntity, "UUID");
-        CompatibilityUtils.removeMeta(savedEntity, "PortalCooldown");
+        NBTUtils.removeMeta(savedEntity, "Pos");
+        NBTUtils.removeMeta(savedEntity, "Motion");
+        NBTUtils.removeMeta(savedEntity, "Rotation");
+        NBTUtils.removeMeta(savedEntity, "FallDistance");
+        NBTUtils.removeMeta(savedEntity, "Dimension");
+        NBTUtils.removeMeta(savedEntity, "UUID");
+        NBTUtils.removeMeta(savedEntity, "PortalCooldown");
 
-        if (!CompatibilityUtils.setMetaNode(spawnEgg, "EntityTag", savedEntity)) {
+        if (!NBTUtils.setMetaNode(spawnEgg, "EntityTag", savedEntity)) {
             return SpellResult.FAIL;
         }
         targetEntity.getWorld().dropItemNaturally(targetEntity.getLocation(), spawnEgg);

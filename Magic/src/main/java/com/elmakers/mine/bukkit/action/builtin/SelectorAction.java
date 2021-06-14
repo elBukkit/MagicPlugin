@@ -56,6 +56,8 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -779,9 +781,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (icon == null) {
                 this.icon = new ItemStack(Material.AIR);
             } else {
-                icon = InventoryUtils.makeReal(icon);
-                InventoryUtils.makeUnbreakable(icon);
-                InventoryUtils.hideFlags(icon, 63);
+                icon = ItemUtils.makeReal(icon);
+                ItemUtils.makeUnbreakable(icon);
+                ItemUtils.hideFlags(icon, 63);
                 ItemMeta meta = icon.getItemMeta();
                 meta.setDisplayName(" ");
                 icon.setItemMeta(meta);
@@ -888,7 +890,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             // Choose icon if none was set in config
             if (icon == null && items != null) {
-                icon = InventoryUtils.getCopy(items.get(0));
+                icon = ItemUtils.getCopy(items.get(0));
                 // This prevents getting two copies of the lore
                 // Only do this if lore was actually provided, since this setting is on by default for the Shop action
                 if (applyLoreToItem && this.lore != null && !this.lore.isEmpty()) {
@@ -1014,7 +1016,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             if (icon == null && defaults.icon != null) {
-                this.icon = InventoryUtils.getCopy(defaults.icon);
+                this.icon = ItemUtils.getCopy(defaults.icon);
             }
 
             ItemMeta meta = icon == null ? null : icon.getItemMeta();
@@ -1059,14 +1061,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 meta.setLore(itemLore);
             }
             icon.setItemMeta(meta);
-            icon = InventoryUtils.makeReal(icon);
+            icon = ItemUtils.makeReal(icon);
 
-            InventoryUtils.makeUnbreakable(icon);
-            InventoryUtils.hideFlags(icon, 63);
+            ItemUtils.makeUnbreakable(icon);
+            ItemUtils.hideFlags(icon, 63);
 
             if (unavailable) {
                 if (unavailableMessage != null && !unavailableMessage.isEmpty()) {
-                    InventoryUtils.setMeta(icon, "unpurchasable", unavailableMessage);
+                    NBTUtils.setMeta(icon, "unpurchasable", unavailableMessage);
                 } else {
                     // We're not going to show unavailable items without a reason.
                     showUnavailable = false;
@@ -1074,7 +1076,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             if (showConfirmation) {
-                InventoryUtils.setMeta(icon, "confirm", "true");
+                NBTUtils.setMeta(icon, "confirm", "true");
             }
         }
 
@@ -1228,7 +1230,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
                             option.updateIcon(context);
                             ItemStack icon = option.getIcon();
-                            InventoryUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
+                            NBTUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
                             displayInventory.setItem(entry.getKey(), icon);
                         }
                     }
@@ -1295,7 +1297,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (items != null && caster == null) {
                 boolean gave = false;
                 for (ItemStack item : items) {
-                    ItemStack copy = InventoryUtils.getCopy(item);
+                    ItemStack copy = ItemUtils.getCopy(item);
                     if (allowDroppedItems) {
                         mage.giveItem(copy, putInHand);
                         gave = true;
@@ -1388,7 +1390,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (state instanceof Container) {
                 Container container = (Container)state;
                 ItemStack containerItem = container.getInventory().getItem(slot);
-                if (InventoryUtils.isEmpty(containerItem)) return false;
+                if (ItemUtils.isEmpty(containerItem)) return false;
                 ItemStack giveItem = items.get(0);
                 if (giveItem.getAmount() != containerItem.getAmount()) return false;
                 if (context.getController().itemsAreEqual(giveItem, containerItem)) {
@@ -1522,14 +1524,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
-        if (item == null || !InventoryUtils.hasMeta(item, "slot")) {
+        if (item == null || !NBTUtils.hasMeta(item, "slot")) {
             if (defaultConfiguration.autoClose) {
                 mage.deactivateGUI();
             }
             return;
         }
 
-        int slotIndex = Integer.parseInt(InventoryUtils.getMetaString(item, "slot"));
+        int slotIndex = Integer.parseInt(NBTUtils.getMetaString(item, "slot"));
         MageController controller = context.getController();
 
         SelectorOption option = showingItems.get(slotIndex);
@@ -1537,7 +1539,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             return;
         }
 
-        String unpurchasableMessage = InventoryUtils.getMetaString(item, "unpurchasable");
+        String unpurchasableMessage = NBTUtils.getMetaString(item, "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
             if (option.autoClose) {
@@ -1563,10 +1565,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
             context.showMessage(costDescription);
         } else {
             String itemName = option.getName();
-            if (InventoryUtils.hasMeta(item, "confirm")) {
+            if (NBTUtils.hasMeta(item, "confirm")) {
                 String inventoryTitle = getConfirmTitle(option).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
-                InventoryUtils.removeMeta(item, "confirm");
+                NBTUtils.removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
                 {
                     if (i != 4) {
@@ -1658,7 +1660,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 List<ConfigurationSection> items = new ArrayList<>();
                 for (ItemStack item : container.getInventory()) {
                     ConfigurationSection itemConfig = ConfigurationUtils.newConfigurationSection();
-                    if (CompatibilityUtils.isEmpty(item)) {
+                    if (ItemUtils.isEmpty(item)) {
                         itemConfig.set("placeholder", true);
                     } else {
                         String key = context.getController().getItemKey(item);
@@ -1771,7 +1773,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
         for (Map.Entry<Integer, SelectorOption> entry : showingItems.entrySet()) {
             ItemStack icon = entry.getValue().getIcon();
-            InventoryUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
+            NBTUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
             displayInventory.setItem(entry.getKey(), icon);
         }
 

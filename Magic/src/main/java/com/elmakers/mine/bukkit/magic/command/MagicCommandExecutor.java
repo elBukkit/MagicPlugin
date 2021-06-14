@@ -668,7 +668,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                             Constructor<? extends Object> constructor = entityClass.getConstructor(worldClass);
                             Object nmsWorld = NMSUtils.getHandle(world);
                             Object nmsEntity = constructor.newInstance(nmsWorld);
-                            testEntity = NMSUtils.getBukkitEntity(nmsEntity);
+                            testEntity = CompatibilityUtils.getBukkitEntity(nmsEntity);
                             if (testEntity == null) {
                                 errorMessage = "Failed to get Bukkit entity for class " + entityName;
                             }

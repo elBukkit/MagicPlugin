@@ -49,8 +49,8 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -349,9 +349,9 @@ public class EntityController implements Listener {
             if (itemStack == null || itemStack.getType() == Material.AIR) continue;
 
             // Remove temporary items from inventory and drops
-            if (NMSUtils.isTemporary(itemStack)) {
-                ItemStack replacement = InventoryUtils.getReplacement(itemStack);
-                if (!CompatibilityUtils.isEmpty(replacement)) {
+            if (ItemUtils.isTemporary(itemStack)) {
+                ItemStack replacement = ItemUtils.getReplacement(itemStack);
+                if (!ItemUtils.isEmpty(replacement)) {
                     drops.add(replacement);
                 }
                 drops.remove(itemStack);
@@ -361,7 +361,7 @@ public class EntityController implements Listener {
             }
 
             // Save "keep" items to return on respawn
-            boolean keepItem = InventoryUtils.getMetaBoolean(itemStack, "keep", false);
+            boolean keepItem = NBTUtils.getMetaBoolean(itemStack, "keep", false);
             if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
             if (keepItem) {
                 mage.addToRespawnInventory(index, itemStack);
@@ -471,7 +471,7 @@ public class EntityController implements Listener {
 
         Item itemEntity = event.getEntity();
         ItemStack spawnedItem = itemEntity.getItemStack();
-        if (InventoryUtils.isTemporary(spawnedItem)) {
+        if (ItemUtils.isTemporary(spawnedItem)) {
             controller.info("*** Trying to drop a temporary item: " + TextUtils.nameItem(event.getEntity().getItemStack()), 18);
             event.setCancelled(true);
             return;

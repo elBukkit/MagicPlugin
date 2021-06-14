@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
@@ -146,7 +147,7 @@ public class ShrinkSpell extends BlockSpell
         controller.getSkull(entity, itemName, new ItemUpdatedCallback() {
             @Override
             public void updated(@Nullable ItemStack itemStack) {
-                if (!CompatibilityUtils.isEmpty(itemStack)) {
+                if (!ItemUtils.isEmpty(itemStack)) {
                     Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
                     location.getWorld().dropItemNaturally(location, itemStack);
                 }
@@ -158,7 +159,7 @@ public class ShrinkSpell extends BlockSpell
         controller.getSkull(ownerName, itemName, new ItemUpdatedCallback() {
             @Override
             public void updated(@Nullable ItemStack itemStack) {
-                if (!CompatibilityUtils.isEmpty(itemStack)) {
+                if (!ItemUtils.isEmpty(itemStack)) {
                     location.setX(location.getX() + 0.5);
                     location.setY(location.getY() + 0.5);
                     location.setZ(location.getZ() + 0.5);

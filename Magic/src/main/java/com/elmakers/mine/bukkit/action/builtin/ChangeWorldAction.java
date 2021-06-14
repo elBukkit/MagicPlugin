@@ -19,8 +19,8 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ChangeWorldAction extends BaseTeleportAction
 {
@@ -86,7 +86,7 @@ public class ChangeWorldAction extends BaseTeleportAction
                 if (envName != null && !envName.isEmpty()) {
                     try {
                         World.Environment env = World.Environment.valueOf(envName.toUpperCase());
-                        NMSUtils.setEnvironment(targetWorld, env);
+                        CompatibilityUtils.setEnvironment(targetWorld, env);
                     } catch (Exception ex) {
                         context.getLogger().warning("Unknown environment type: " + envName);
                     }

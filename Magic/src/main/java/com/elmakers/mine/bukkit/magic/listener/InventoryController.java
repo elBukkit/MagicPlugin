@@ -35,11 +35,10 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.WandCastTask;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandInventory;
@@ -116,7 +115,7 @@ public class InventoryController implements Listener {
         // on grindstones for inventory interaction, but just in case.
         if (event.getInventory().getType().name().equals("GRINDSTONE")) {
             ItemStack oldCursor = event.getOldCursor();
-            oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
+            oldCursor = oldCursor.hasItemMeta() ? ItemUtils.makeReal(oldCursor) : oldCursor;
             if (Wand.isSpecial(oldCursor)) {
                 for (int slot : event.getRawSlots()) {
                     if (slot == 1 || slot == 0) {
@@ -132,7 +131,7 @@ public class InventoryController implements Listener {
         if (isSkillInventory) {
             // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
             ItemStack oldCursor = event.getOldCursor();
-            oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
+            oldCursor = oldCursor.hasItemMeta() ? ItemUtils.makeReal(oldCursor) : oldCursor;
             boolean isSpell = Wand.isSpell(oldCursor);
             boolean isSpellInventory = false;
             Set<Integer> slots = event.getRawSlots();
@@ -156,7 +155,7 @@ public class InventoryController implements Listener {
         if (isArmorSlot || isOffhandSlot || isHeldSlot) {
             // This is intentionally copied from above to avoid doing it if we don't need to
             ItemStack oldCursor = event.getOldCursor();
-            oldCursor = oldCursor.hasItemMeta() ? InventoryUtils.makeReal(oldCursor) : oldCursor;
+            oldCursor = oldCursor.hasItemMeta() ? ItemUtils.makeReal(oldCursor) : oldCursor;
 
             // Prevent wearing spells
             if (isArmorSlot && Wand.isSpell(oldCursor)) {
@@ -257,18 +256,18 @@ public class InventoryController implements Listener {
             return;
         }
 
-        if (clickedItem != null && NMSUtils.isTemporary(clickedItem)) {
-            String message = NMSUtils.getTemporaryMessage(clickedItem);
+        if (clickedItem != null && ItemUtils.isTemporary(clickedItem)) {
+            String message = ItemUtils.getTemporaryMessage(clickedItem);
             if (message != null && message.length() > 1) {
                 mage.sendMessage(message);
             }
-            ItemStack replacement = NMSUtils.getReplacement(clickedItem);
+            ItemStack replacement = ItemUtils.getReplacement(clickedItem);
             event.setCurrentItem(replacement);
             event.setCancelled(true);
             mage.armorUpdated();
             return;
         }
-        if (InventoryUtils.getMetaBoolean(clickedItem, "unmoveable", false)) {
+        if (NBTUtils.getMetaBoolean(clickedItem, "unmoveable", false)) {
             event.setCancelled(true);
             return;
         }
@@ -440,7 +439,7 @@ public class InventoryController implements Listener {
                 }
             } else {
                 // Prevent moving items into the skill inventory via the hotbar buttons
-                if (isHotbar && isWatchedSlot && !CompatibilityUtils.isEmpty(player.getInventory().getItem(event.getHotbarButton()))) {
+                if (isHotbar && isWatchedSlot && !ItemUtils.isEmpty(player.getInventory().getItem(event.getHotbarButton()))) {
                     event.setCancelled(true);
                     return;
                 }
@@ -471,11 +470,11 @@ public class InventoryController implements Listener {
 
         if (isHotbar) {
             ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
-            if (InventoryUtils.getMetaBoolean(destinationItem, "unmoveable", false)) {
+            if (NBTUtils.getMetaBoolean(destinationItem, "unmoveable", false)) {
                 event.setCancelled(true);
                 return;
             }
-            if (isContainer && InventoryUtils.getMetaBoolean(destinationItem, "unstashable", false) && !player.hasPermission("Magic.wand.override_stash")) {
+            if (isContainer && NBTUtils.getMetaBoolean(destinationItem, "unstashable", false) && !player.hasPermission("Magic.wand.override_stash")) {
                 event.setCancelled(true);
                 return;
             }
@@ -483,7 +482,7 @@ public class InventoryController implements Listener {
 
         // Check for unstashable wands
         if (isContainer && !isContainerSlot && !player.hasPermission("Magic.wand.override_stash")) {
-            if (InventoryUtils.getMetaBoolean(clickedItem, "unstashable", false)) {
+            if (NBTUtils.getMetaBoolean(clickedItem, "unstashable", false)) {
                 event.setCancelled(true);
                 return;
             }
@@ -509,7 +508,7 @@ public class InventoryController implements Listener {
         // Check for dropping items out of a wand's inventory
         // or dropping undroppable wands
         if (isDrop) {
-            if (InventoryUtils.getMetaBoolean(clickedItem, "undroppable", false)) {
+            if (NBTUtils.getMetaBoolean(clickedItem, "undroppable", false)) {
                 event.setCancelled(true);
                 if (activeWand != null) {
                     if (activeWand.getHotbarCount() > 1) {
@@ -621,7 +620,7 @@ public class InventoryController implements Listener {
 
                     // Prevent putting any non-skill item back into a skill inventory
                     if (wandMode == WandMode.SKILLS && isWatchedSlot
-                        && !CompatibilityUtils.isEmpty(heldItem) && !Wand.isSkill(heldItem)) {
+                        && !ItemUtils.isEmpty(heldItem) && !Wand.isSkill(heldItem)) {
                         event.setCancelled(true);
                     }
                 }

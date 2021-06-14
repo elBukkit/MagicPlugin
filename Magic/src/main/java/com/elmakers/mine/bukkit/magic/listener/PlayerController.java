@@ -66,11 +66,11 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.magic.SpellBlock;
 import com.elmakers.mine.bukkit.tasks.DropActionTask;
 import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -191,8 +191,8 @@ public class PlayerController implements Listener {
 
         // Immovable items don't disappear when equipped, this is to match with click behavior
         // Also allows temporary items to be held, like with the broom handle
-        if (NMSUtils.isTemporary(next) && !InventoryUtils.getMetaBoolean(next, "unmoveable", false)) {
-            ItemStack replacement = NMSUtils.getReplacement(next);
+        if (ItemUtils.isTemporary(next) && !NBTUtils.getMetaBoolean(next, "unmoveable", false)) {
+            ItemStack replacement = ItemUtils.getReplacement(next);
             inventory.setItem(event.getNewSlot(), replacement);
             mage.checkWand();
             return;
@@ -272,7 +272,7 @@ public class PlayerController implements Listener {
             mage.sendDebugMessage("SWAP ITEM: " + (main == null ? "(Nothing)" : main.getType().name())
                 + " with " + (offhand == null ? "(Nothing)" : offhand.getType().name()), DEBUG_LEVEL);
         }
-        if (InventoryUtils.getMetaBoolean(offhand, "unswappable", false) || InventoryUtils.getMetaBoolean(main, "unswappable", false)) {
+        if (NBTUtils.getMetaBoolean(offhand, "unswappable", false) || NBTUtils.getMetaBoolean(main, "unswappable", false)) {
             event.setCancelled(true);
         }
         mage.trigger("swap");
@@ -398,7 +398,7 @@ public class PlayerController implements Listener {
             }
         }
         if (!cancelEvent) {
-            cancelEvent = InventoryUtils.getMetaBoolean(droppedItem, "undroppable", false);
+            cancelEvent = NBTUtils.getMetaBoolean(droppedItem, "undroppable", false);
         }
         if (cancelEvent) {
             // Work around a Spigot bug that would make the item disappear if the player's inventory is full
@@ -406,7 +406,7 @@ public class PlayerController implements Listener {
                 boolean isFull = true;
                 ItemStack[] items = player.getInventory().getStorageContents();
                 for (int i = items.length - 1; i >= 0; i--) {
-                    if (CompatibilityUtils.isEmpty(items[i])) {
+                    if (ItemUtils.isEmpty(items[i])) {
                         isFull = false;
                         break;
                     }
@@ -449,8 +449,8 @@ public class PlayerController implements Listener {
         } else {
             ItemStack mainHand = player.getInventory().getItemInMainHand();
             ItemStack offhand = player.getInventory().getItemInOffHand();
-            if (InventoryUtils.getMetaBoolean(mainHand, "undroppable", false)
-                || (InventoryUtils.isEmpty(mainHand) && InventoryUtils.getMetaBoolean(offhand, "undroppable", false))) {
+            if (NBTUtils.getMetaBoolean(mainHand, "undroppable", false)
+                || (ItemUtils.isEmpty(mainHand) && NBTUtils.getMetaBoolean(offhand, "undroppable", false))) {
                 event.setCancelled(true);
                 return;
             }
@@ -625,8 +625,8 @@ public class PlayerController implements Listener {
             } else {
                 ItemStack mainHand = player.getInventory().getItemInMainHand();
                 ItemStack offhand = player.getInventory().getItemInOffHand();
-                if (InventoryUtils.getMetaBoolean(mainHand, "undroppable", false)
-                    || (InventoryUtils.isEmpty(mainHand) && InventoryUtils.getMetaBoolean(offhand, "undroppable", false))) {
+                if (NBTUtils.getMetaBoolean(mainHand, "undroppable", false)
+                    || (ItemUtils.isEmpty(mainHand) && NBTUtils.getMetaBoolean(offhand, "undroppable", false))) {
                     event.setCancelled(true);
                     return;
                 }
@@ -965,8 +965,8 @@ public class PlayerController implements Listener {
         ItemStack[] armor = player.getInventory().getArmorContents();
         for (int i = 0; i < armor.length; i++) {
             ItemStack currentItem = armor[i];
-            if (NMSUtils.isTemporary(currentItem)) {
-                ItemStack replacement = NMSUtils.getReplacement(currentItem);
+            if (ItemUtils.isTemporary(currentItem)) {
+                ItemStack replacement = ItemUtils.getReplacement(currentItem);
                 armor[i] = replacement;
                 player.getInventory().setArmorContents(armor);
             }
@@ -1039,7 +1039,7 @@ public class PlayerController implements Listener {
     {
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
-        if (NMSUtils.isTemporary(pickup) || EntityMetadataUtils.instance().getBoolean(item, MagicMetaKeys.TEMPORARY))
+        if (ItemUtils.isTemporary(pickup) || EntityMetadataUtils.instance().getBoolean(item, MagicMetaKeys.TEMPORARY))
         {
             item.remove();
             event.setCancelled(true);
@@ -1107,7 +1107,7 @@ public class PlayerController implements Listener {
         if (!item.hasItemMeta()) return;
 
         // The item we get passed in this event is a shallow bukkit copy.
-        item = CompatibilityUtils.makeReal(item);
+        item = ItemUtils.makeReal(item);
 
         String consumeSpell = controller.getWandProperty(item, "consume_spell", "");
         if (!consumeSpell.isEmpty()) {

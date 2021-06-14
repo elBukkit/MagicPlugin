@@ -7,7 +7,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public enum InventorySlot {
     HELMET(39), CHESTPLATE(38), LEGGINGS(37), BOOTS(36),
@@ -82,7 +82,7 @@ public enum InventorySlot {
             case FREE:
                 Inventory inventory = mage.getInventory();
                 for (int i = 0; i < inventory.getSize(); i++) {
-                    if (CompatibilityUtils.isEmpty(inventory.getItem(i))) {
+                    if (ItemUtils.isEmpty(inventory.getItem(i))) {
                         return i;
                     }
                 }

@@ -21,8 +21,10 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
@@ -56,6 +58,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
@@ -171,14 +174,14 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static boolean setDisplayNameRaw(ItemStack itemStack, String displayName) {
-        Object handle = getHandle(itemStack);
+        Object handle = ItemUtils.getHandle(itemStack);
         if (handle == null) return false;
-        Object tag = getTag(handle);
+        Object tag = ItemUtils.getTag(handle);
         if (tag == null) return false;
 
-        Object displayNode = createNode(tag, "display");
+        Object displayNode = NBTUtils.createNode(tag, "display");
         if (displayNode == null) return false;
-        setMeta(displayNode, "Name", displayName);
+        NBTUtils.setMeta(displayNode, "Name", displayName);
         return true;
     }
 
@@ -342,7 +345,7 @@ public class CompatibilityUtils extends NMSUtils {
                 if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
 
                 newItemFrame = (ItemFrame) bukkitEntity;
-                newItemFrame.setItem(getCopy(item));
+                newItemFrame.setItem(ItemUtils.getCopy(item));
                 newItemFrame.setRotation(rotation);
             }
         } catch (Throwable ex) {
@@ -677,6 +680,294 @@ public class CompatibilityUtils extends NMSUtils {
 
         }
         return configuration;
+    }
+
+    // Here to support older versions of MagicWorlds
+    @Deprecated
+    public static boolean isDone(Chunk chunk) {
+        return isReady(chunk);
+    }
+
+    public static boolean isReady(Chunk chunk) {
+        if (class_Chunk_isReadyMethod == null) return true;
+
+        Object chunkHandle = getHandle(chunk);
+        boolean ready = true;
+        try {
+            ready = (Boolean)class_Chunk_isReadyMethod.invoke(chunkHandle);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return ready;
+    }
+
+    public static boolean createExplosion(Entity entity, World world, double x, double y, double z, float power, boolean setFire, boolean breakBlocks) {
+        boolean result = false;
+        if (world == null) return false;
+        if (class_World_explodeMethod == null) {
+            return world.createExplosion(x, y, z, power, setFire, breakBlocks);
+        }
+        try {
+            Object worldHandle = getHandle(world);
+            if (worldHandle == null) return false;
+            Object entityHandle = entity == null ? null : getHandle(entity);
+
+            Object explosion = class_EnumExplosionEffect != null ?
+                    class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks ? enum_ExplosionEffect_BREAK : enum_ExplosionEffect_NONE) :
+                    class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
+            Field cancelledField = explosion.getClass().getDeclaredField("wasCanceled");
+            result = (Boolean)cancelledField.get(explosion);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            result = false;
+        }
+        return result;
+    }
+
+    public static Object getTileEntityData(Location location) {
+       if (class_TileEntity_saveMethod == null) return null;
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return null;
+        Object data = null;
+        try {
+            data = class_NBTTagCompound_constructor.newInstance();
+            class_TileEntity_saveMethod.invoke(tileEntity, data);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return data;
+    }
+
+    public static Object getTileEntity(Location location) {
+        if (class_World_getTileEntityMethod != null) {
+            Object tileEntity = null;
+            try {
+                World world = location.getWorld();
+                Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
+                tileEntity = class_World_getTileEntityMethod.invoke(getHandle(world), blockLocation);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            return tileEntity;
+        }
+
+        if (class_CraftWorld_getTileEntityAtMethod == null) return null;
+        Object tileEntity = null;
+        try {
+            World world = location.getWorld();
+            tileEntity = class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return tileEntity;
+    }
+
+    public static void clearItems(Location location) {
+        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null || class_TileEntity_saveMethod == null) return;
+        if (location == null) return;
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return;
+        try {
+            Object entityData = class_NBTTagCompound_constructor.newInstance();
+            class_TileEntity_saveMethod.invoke(tileEntity, entityData);
+            Object itemList = class_NBTTagCompound_getListMethod.invoke(entityData, "Items", NBT_TYPE_COMPOUND);
+            if (itemList != null) {
+                List<?> items = (List<?>)class_NBTTagList_list.get(itemList);
+                items.clear();
+            }
+            class_NBTTagCompound_removeMethod.invoke(entityData,"Item");
+            if (class_IBlockData != null) {
+                Object worldHandle = getHandle(location.getWorld());
+                Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+                Object blockType = class_World_getTypeMethod.invoke(worldHandle, blockLocation);
+                class_TileEntity_loadMethod.invoke(tileEntity, blockType, entityData);
+            } else {
+                class_TileEntity_loadMethod.invoke(tileEntity, entityData);
+            }
+            class_TileEntity_updateMethod.invoke(tileEntity);
+
+            if (class_Lootable_setLootTableMethod != null && class_Lootable != null) {
+                Block block = location.getBlock();
+                BlockState blockState = block.getState();
+                if (class_Lootable.isAssignableFrom(blockState.getClass())) {
+                    class_Lootable_setLootTableMethod.invoke(blockState, new Object[]{ null });
+                    blockState.update();
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setTileEntityData(Location location, Object data) {
+        if (class_TileEntity_loadMethod == null || class_TileEntity_updateMethod == null) return;
+        if (location == null || data == null) return;
+        Object tileEntity = getTileEntity(location);
+        if (tileEntity == null) return;
+        try {
+            class_NBTTagCompound_setIntMethod.invoke(data, "x", location.getBlockX());
+            class_NBTTagCompound_setIntMethod.invoke(data, "y", location.getBlockY());
+            class_NBTTagCompound_setIntMethod.invoke(data, "z", location.getBlockZ());
+
+            if (class_IBlockData != null) {
+                Object worldHandle = getHandle(location.getWorld());
+                Object blockLocation = class_BlockPosition_Constructor.newInstance(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+                Object blockType = class_World_getTypeMethod.invoke(worldHandle, blockLocation);
+                class_TileEntity_loadMethod.invoke(tileEntity, blockType, data);
+            } else {
+                class_TileEntity_loadMethod.invoke(tileEntity, data);
+            }
+            class_TileEntity_updateMethod.invoke(tileEntity);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void setEnvironment(World world, World.Environment environment) {
+        try {
+            class_CraftWorld_environmentField.set(world, environment);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public static void playCustomSound(Player player, Location location, String sound, float volume, float pitch)
+    {
+        if (class_PacketPlayOutCustomSoundEffect_Constructor == null || sound == null) return;
+        try {
+            Object packet = null;
+            if (class_MinecraftKey_constructor != null) {
+                Object key = class_MinecraftKey_constructor.newInstance(sound);
+                Object vec = class_Vec3D_constructor.newInstance(location.getX(), location.getY(), location.getZ());
+                packet = class_PacketPlayOutCustomSoundEffect_Constructor.newInstance(key, enum_SoundCategory_PLAYERS, vec, volume, pitch);
+            } else {
+                packet = class_PacketPlayOutCustomSoundEffect_Constructor.newInstance(sound, enum_SoundCategory_PLAYERS, location.getX(), location.getY(), location.getZ(), volume, pitch);
+            }
+            sendPacket(player, packet);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    public static List<Entity> selectEntities(CommandSender sender, String selector) {
+        if (class_Bukkit_selectEntitiesMethod == null) return null;
+        if (!selector.startsWith("@")) return null;
+        try {
+            return (List<Entity>)class_Bukkit_selectEntitiesMethod.invoke(null, sender, selector);
+        } catch (Throwable ex) {
+            getLogger().warning("Invalid selector: " + ex.getMessage());
+        }
+        return null;
+    }
+
+    public static int getFacing(BlockFace direction)
+    {
+        int dir;
+        switch (direction) {
+        case SOUTH:
+        default:
+            dir = 0;
+            break;
+        case WEST:
+            dir = 1;
+            break;
+        case NORTH:
+            dir = 2;
+            break;
+        case EAST:
+            dir = 3;
+            break;
+        }
+
+        return dir;
+    }
+
+    public static Entity getBukkitEntity(Object entity)
+    {
+        if (entity == null) return null;
+        try {
+            Method getMethod = entity.getClass().getMethod("getBukkitEntity");
+            Object bukkitEntity = getMethod.invoke(entity);
+            if (!(bukkitEntity instanceof Entity)) return null;
+            return (Entity)bukkitEntity;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
+    }
+
+    public static byte getBlockData(FallingBlock falling) {
+        // @deprecated Magic value
+        byte data = 0;
+        try {
+            if (class_FallingBlock_getBlockDataMethod != null) {
+                data = (byte)class_FallingBlock_getBlockDataMethod.invoke(falling);
+            }
+        } catch (Exception ignore) {
+
+        }
+        return data;
+    }
+
+    public static MapView getMapById(int id) {
+        if (class_Bukkit_getMapMethod == null) return null;
+        try {
+            if (legacyMaps) {
+                return (MapView)class_Bukkit_getMapMethod.invoke(null, (short)id);
+            }
+            return (MapView)class_Bukkit_getMapMethod.invoke(null, (short)id);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    public static Map<String, Object> getMap(ConfigurationSection section) {
+        return getTypedMap(section);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Map<String, T> getTypedMap(ConfigurationSection section)
+    {
+        if (section == null) return null;
+        if (section instanceof MemorySection && class_MemorySection_mapField != null)
+        {
+            try {
+                Object mapObject = class_MemorySection_mapField.get(section);
+                if (mapObject instanceof Map) {
+                    return (Map<String, T>)mapObject;
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+        }
+
+        // Do it the slow way
+        Map<String, T> map = new HashMap<>();
+        Set<String> keys = section.getKeys(false);
+        for (String key : keys) {
+            map.put(key, (T)section.get(key));
+        }
+
+        return map;
+    }
+
+    public static boolean setMap(ConfigurationSection section, Map<String, Object> map)
+    {
+        if (section == null || class_MemorySection_mapField == null) return false;
+        if (section instanceof MemorySection)
+        {
+            try {
+                class_MemorySection_mapField.set(section, map);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                return false;
+            }
+        }
+
+        return true;
     }
 
     static class LoadingChunk {
@@ -1110,7 +1401,7 @@ public class CompatibilityUtils extends NMSUtils {
                 shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
             }
 
-            Entity entity = NMSUtils.getBukkitEntity(nmsProjectile);
+            Entity entity = getBukkitEntity(nmsProjectile);
             if (entity == null || !(entity instanceof Projectile)) {
                 throw new Exception("Got invalid bukkit entity from projectile of class " + projectileType.getName());
             }
@@ -1221,23 +1512,23 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean removeItemAttribute(ItemStack item, Attribute attribute) {
         try {
-            Object handle = getHandle(item);
+            Object handle = ItemUtils.getHandle(item);
             if (handle == null) return false;
-            Object tag = getTag(handle);
+            Object tag = ItemUtils.getTag(handle);
             if (tag == null) return false;
 
             String attributeName = toMinecraftAttribute(attribute);
-            Object attributesNode = getNode(tag, "AttributeModifiers");
+            Object attributesNode = NBTUtils.getNode(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
             }
             int size = (Integer)class_NBTTagList_sizeMethod.invoke(attributesNode);
             for (int i = 0; i < size; i++) {
                 Object candidate = class_NBTTagList_getMethod.invoke(attributesNode, i);
-                String key = getMetaString(candidate, "AttributeName");
+                String key = NBTUtils.getMetaString(candidate, "AttributeName");
                 if (key.equals(attributeName)) {
                     if (size == 1) {
-                        removeMeta(tag, "AttributeModifiers");
+                        NBTUtils.removeMeta(tag, "AttributeModifiers");
                     } else {
                         class_NBTTagList_removeMethod.invoke(attributesNode, i);
                     }
@@ -1253,16 +1544,16 @@ public class CompatibilityUtils extends NMSUtils {
 
     public static boolean removeItemAttributes(ItemStack item) {
         try {
-            Object handle = getHandle(item);
+            Object handle = ItemUtils.getHandle(item);
             if (handle == null) return false;
-            Object tag = getTag(handle);
+            Object tag = ItemUtils.getTag(handle);
             if (tag == null) return false;
 
-            Object attributesNode = getNode(tag, "AttributeModifiers");
+            Object attributesNode = NBTUtils.getNode(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
             }
-            removeMeta(tag, "AttributeModifiers");
+            NBTUtils.removeMeta(tag, "AttributeModifiers");
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -1315,14 +1606,14 @@ public class CompatibilityUtils extends NMSUtils {
             return true;
         }
         try {
-            Object handle = getHandle(item);
+            Object handle = ItemUtils.getHandle(item);
             if (handle == null) {
                 return false;
             }
-            Object tag = getTag(handle);
+            Object tag = ItemUtils.getTag(handle);
             if (tag == null) return false;
             
-            Object attributesNode = getNode(tag, "AttributeModifiers");
+            Object attributesNode = NBTUtils.getNode(tag, "AttributeModifiers");
             Object attributeNode = null;
 
             String attributeName = toMinecraftAttribute(attribute);
@@ -1333,7 +1624,7 @@ public class CompatibilityUtils extends NMSUtils {
                 int size = (Integer)class_NBTTagList_sizeMethod.invoke(attributesNode);
                 for (int i = 0; i < size; i++) {
                     Object candidate = class_NBTTagList_getMethod.invoke(attributesNode, i);
-                    String key = getMetaString(candidate, "AttributeName");
+                    String key = NBTUtils.getMetaString(candidate, "AttributeName");
                     if (key.equals(attributeName)) {
                         attributeNode = candidate;
                         break;
@@ -1342,18 +1633,18 @@ public class CompatibilityUtils extends NMSUtils {
             }
             if (attributeNode == null) {
                 attributeNode = class_NBTTagCompound_constructor.newInstance();
-                setMeta(attributeNode, "AttributeName", attributeName);
-                setMeta(attributeNode, "Name", "Equipment Modifier");
-                setMetaInt(attributeNode, "Operation", attributeOperation);
-                setMetaLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
-                setMetaLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
+                NBTUtils.setMeta(attributeNode, "AttributeName", attributeName);
+                NBTUtils.setMeta(attributeNode, "Name", "Equipment Modifier");
+                NBTUtils.setMetaInt(attributeNode, "Operation", attributeOperation);
+                NBTUtils.setMetaLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
+                NBTUtils.setMetaLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
                 if (slot != null) {
-                    setMeta(attributeNode, "Slot", slot);
+                    NBTUtils.setMeta(attributeNode, "Slot", slot);
                 }
 
-                addToList(attributesNode, attributeNode);
+                NBTUtils.addToList(attributesNode, attributeNode);
             }
-            setMetaDouble(attributeNode, "Amount", value);
+            NBTUtils.setMetaDouble(attributeNode, "Amount", value);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -1402,9 +1693,9 @@ public class CompatibilityUtils extends NMSUtils {
     
     public static void applyItemData(ItemStack item, Block block) {
         try {
-            Object entityDataTag = getNode(item, "BlockEntityTag");
+            Object entityDataTag = NBTUtils.getNode(item, "BlockEntityTag");
             if (entityDataTag == null) return;
-            NMSUtils.setTileEntityData(block.getLocation(), entityDataTag);
+            setTileEntityData(block.getLocation(), entityDataTag);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1911,13 +2202,13 @@ public class CompatibilityUtils extends NMSUtils {
 
         if (dummyItem == null) {
              dummyItem = new ItemStack(Material.DIRT, 64);
-             dummyItem = makeReal(dummyItem);
+             dummyItem = ItemUtils.makeReal(dummyItem);
         }
         dummyItem.setAmount(64);
 
         try {
             Object world = getHandle(location.getWorld());
-            Object itemStack = getHandle(dummyItem);
+            Object itemStack = ItemUtils.getHandle(dummyItem);
             Object blockPosition = class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             Object result = class_ItemDye_bonemealMethod.invoke(null, itemStack, world, blockPosition);
             return (Boolean)result;
@@ -2395,7 +2686,7 @@ public class CompatibilityUtils extends NMSUtils {
             ItemStack blockItem = new ItemStack(block.getType());
             Object originatorHandle = getHandle(originator);
             Object world = getHandle(block.getWorld());
-            Object item = getHandle(makeReal(blockItem));
+            Object item = ItemUtils.getHandle(ItemUtils.makeReal(blockItem));
             if (originatorHandle == null || world == null || item == null) {
                 return false;
             }

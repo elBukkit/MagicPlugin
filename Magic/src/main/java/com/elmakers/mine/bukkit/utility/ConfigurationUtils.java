@@ -331,7 +331,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (item == null) {
             return false;
         }
-        Object tag = NMSUtils.getTag(item);
+        Object tag = ItemUtils.getTag(item);
         if (tag == null) return false;
 
         return loadAllTagsFromNBT(tags, tag);
@@ -447,7 +447,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (configuration == null) return null;
 
         ConfigurationSection replaced = ConfigurationUtils.newConfigurationSection();
-        Map<String, Object> map = NMSUtils.getMap(configuration);
+        Map<String, Object> map = CompatibilityUtils.getMap(configuration);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();
             if (value == null) continue;
@@ -485,7 +485,7 @@ public class ConfigurationUtils extends ConfigUtils {
     {
         if (second == null) return first;
         override = override || second.getBoolean("override");
-        Map<String, Object> map = NMSUtils.getMap(second);
+        Map<String, Object> map = CompatibilityUtils.getMap(second);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();
             if (value == null) continue;
@@ -522,7 +522,7 @@ public class ConfigurationUtils extends ConfigUtils {
     public static ConfigurationSection replaceConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         if (second == null) return first;
-        Map<String, Object> map = NMSUtils.getMap(second);
+        Map<String, Object> map = CompatibilityUtils.getMap(second);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             first.set(entry.getKey(), entry.getValue());
         }
@@ -905,7 +905,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static String getParameters(ConfigurationSection parameters) {
         Collection<String> parameterStrings = new ArrayList<>();
-        Map<String, Object> map = NMSUtils.getMap(parameters);
+        Map<String, Object> map = CompatibilityUtils.getMap(parameters);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             parameterStrings.add(entry.getKey());
             parameterStrings.add(entry.getValue().toString());

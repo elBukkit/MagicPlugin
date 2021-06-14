@@ -30,10 +30,9 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 
 public class EquipAction extends BaseSpellAction
 {
@@ -115,7 +114,7 @@ public class EquipAction extends BaseSpellAction
 
             // Create an item as a copy of an existing template
             if (item != null) {
-                equipItem = InventoryUtils.getCopy(item);
+                equipItem = ItemUtils.getCopy(item);
                 materialName = context.getController().describeItem(equipItem);
             } else {
                 // Otherwise create a new item from a material name, falling back to the brush
@@ -140,8 +139,8 @@ public class EquipAction extends BaseSpellAction
                 ItemStack itemStack = material.getItemStack(1);
                 // This forces coercion into an NMS stack, which will invalidate itself if it is something
                 // that won't really be represented as an item, like a wall_head
-                itemStack = CompatibilityUtils.makeReal(itemStack);
-                if (CompatibilityUtils.isEmpty(itemStack)) {
+                itemStack = ItemUtils.makeReal(itemStack);
+                if (ItemUtils.isEmpty(itemStack)) {
                     return SpellResult.NO_TARGET;
                 }
                 equipItem = itemStack;
@@ -172,15 +171,15 @@ public class EquipAction extends BaseSpellAction
             lore.add(loreLine);
             meta.setLore(lore);
             equipItem.setItemMeta(meta);
-            equipItem = InventoryUtils.makeReal(equipItem);
+            equipItem = ItemUtils.makeReal(equipItem);
             if (makeTemporary) {
-                NMSUtils.makeTemporary(equipItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
+                ItemUtils.makeTemporary(equipItem, context.getMessage("removed").replace("$hat", materialName).replace("$item", materialName));
             }
             if (enchantments != null) {
                 equipItem.addUnsafeEnchantments(enchantments);
             }
             if (unbreakable) {
-                CompatibilityUtils.makeUnbreakable(equipItem);
+                ItemUtils.makeUnbreakable(equipItem);
             }
         }
 
@@ -205,9 +204,9 @@ public class EquipAction extends BaseSpellAction
         existingItem = mage.getItem(slotNumber);
 
         // Decide what to do with the item in the slot being replaced
-        if (!CompatibilityUtils.isEmpty(existingItem) && !replaceItem) {
-            if (NMSUtils.isTemporary(existingItem)) {
-                ItemStack replacement = NMSUtils.getReplacement(existingItem);
+        if (!ItemUtils.isEmpty(existingItem) && !replaceItem) {
+            if (ItemUtils.isTemporary(existingItem)) {
+                ItemStack replacement = ItemUtils.getReplacement(existingItem);
                 existingItem = replacement;
             }
 
@@ -217,9 +216,9 @@ public class EquipAction extends BaseSpellAction
             if (useItem) {
                 equipment.setItemInMainHand(existingItem);
             } else if (existingItem != null) {
-                NMSUtils.setReplacement(equipItem, existingItem);
+                ItemUtils.setReplacement(equipItem, existingItem);
                 if (returnOnFinish) {
-                    NMSUtils.setMetaBoolean(equipItem, "return_on_death", true);
+                    NBTUtils.setMetaBoolean(equipItem, "return_on_death", true);
                 }
             }
         } else if (useItem) {
@@ -281,8 +280,8 @@ public class EquipAction extends BaseSpellAction
             if (mage == null || mage.isDead()) return;
 
             ItemStack currentItem = mage.getItem(slotNumber);
-            if (NMSUtils.isTemporary(currentItem)) {
-                ItemStack replacement = NMSUtils.getReplacement(currentItem);
+            if (ItemUtils.isTemporary(currentItem)) {
+                ItemStack replacement = ItemUtils.getReplacement(currentItem);
                 mage.setItem(slotNumber, replacement);
             }
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {

@@ -29,6 +29,8 @@ import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 
 public class MagicNPCCommandExecutor extends MagicTabExecutor {
     private final NPCSelectionManager selections;
@@ -381,7 +383,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         ItemStack item = mage.getPlayer().getInventory().getItemInMainHand();
-        if (InventoryUtils.hasMeta(item, "npc")) {
+        if (NBTUtils.hasMeta(item, "npc")) {
             BookMeta meta = (BookMeta)item.getItemMeta();
             List<String> pages = meta.getPages();
             boolean isEmpty = true;
@@ -427,8 +429,8 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         meta.setPages(pages);
         selections.highlight(npc);
         book.setItemMeta(meta);
-        book = InventoryUtils.makeReal(book);
-        InventoryUtils.setMeta(book, "npc", npc.getId().toString());
+        book = ItemUtils.makeReal(book);
+        NBTUtils.setMeta(book, "npc", npc.getId().toString());
         mage.giveItem(book);
         mage.sendMessage(ChatColor.GREEN + "Edit the script book and use this command again while holding the book to set the NPC's chat dialog");
     }

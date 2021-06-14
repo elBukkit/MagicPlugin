@@ -9,8 +9,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class EntityFallingBlockData extends EntityExtraData {
     @Nullable
@@ -29,7 +29,7 @@ public class EntityFallingBlockData extends EntityExtraData {
     }
 
     public EntityFallingBlockData(FallingBlock fallingBlock) {
-        byte data = NMSUtils.getBlockData(fallingBlock);
+        byte data = CompatibilityUtils.getBlockData(fallingBlock);
         material = new com.elmakers.mine.bukkit.block.MaterialAndData(fallingBlock.getMaterial(), data);
         fallingBlock.setDropItem(dropItems);
         fallingBlock.setHurtEntities(hurtEntities);

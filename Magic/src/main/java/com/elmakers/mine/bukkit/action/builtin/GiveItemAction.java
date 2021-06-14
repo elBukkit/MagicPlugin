@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public class GiveItemAction extends BaseSpellAction
 {
@@ -103,7 +103,7 @@ public class GiveItemAction extends BaseSpellAction
         }
 
         Mage mage = controller.getMage(player);
-        ItemStack itemCopy = InventoryUtils.getCopy(item);
+        ItemStack itemCopy = ItemUtils.getCopy(item);
         int setAmount = itemCount;
         if (maxItemCount > 0) {
             int currentCount = mage.getItemCount(item);
@@ -131,7 +131,7 @@ public class GiveItemAction extends BaseSpellAction
                 mage.giveItem(itemCopy);
                 setAmount -= giveAmount;
                 if (setAmount > 0) {
-                    itemCopy = InventoryUtils.getCopy(itemCopy);
+                    itemCopy = ItemUtils.getCopy(itemCopy);
                 }
             }
         } else {

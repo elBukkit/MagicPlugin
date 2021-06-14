@@ -44,7 +44,8 @@ import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 
 public class MagicItemCommandExecutor extends MagicTabExecutor {
 
@@ -344,23 +345,23 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         String tag = args[0];
         String[] path = StringUtils.split(tag, '.');
-        ItemStack newItem = CompatibilityUtils.makeReal(item);
-        Object node = InventoryUtils.getTag(item);
+        ItemStack newItem = ItemUtils.makeReal(item);
+        Object node = ItemUtils.getTag(item);
         if (args.length == 1) {
             int i = 0;
             while (node != null && i < path.length - 1) {
-                node = CompatibilityUtils.getNode(node, path[i]);
+                node = NBTUtils.getNode(node, path[i]);
                 i++;
             }
             if (node == null) {
                 sender.sendMessage(ChatColor.RED + "Item does not have path: " + ChatColor.DARK_RED + tag);
                 return true;
             }
-            if (!CompatibilityUtils.containsNode(node, path[path.length - 1])) {
+            if (!NBTUtils.containsNode(node, path[path.length - 1])) {
                 sender.sendMessage(ChatColor.RED + "Item does not have tag: " + ChatColor.DARK_RED + tag);
                 return true;
             }
-            CompatibilityUtils.removeMeta(node, path[path.length - 1]);
+            NBTUtils.removeMeta(node, path[path.length - 1]);
             item.setItemMeta(newItem.getItemMeta());
             sender.sendMessage(ChatColor.GREEN + "Removed: " + ChatColor.DARK_GREEN + tag);
             return true;
@@ -373,9 +374,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             if (i < path.length - 1) {
-                node = InventoryUtils.createNode(node, key);
+                node = NBTUtils.createNode(node, key);
             } else {
-                InventoryUtils.setMetaTyped(node, key, value);
+                NBTUtils.setMetaTyped(node, key, value);
             }
         }
         item.setItemMeta(newItem.getItemMeta());
@@ -542,7 +543,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public boolean onItemDuplicate(CommandSender sender, Player player, ItemStack item)
     {
-        ItemStack newItem = InventoryUtils.getCopy(item);
+        ItemStack newItem = ItemUtils.getCopy(item);
         api.giveItemToPlayer(player, newItem);
 
         sender.sendMessage(api.getMessages().get("item.duplicated"));
@@ -574,7 +575,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             }
             String url = decoded.replace("\"", "").replace("{textures:{SKIN:{url:", "").replace("}}}", "").trim();
             skullItem = controller.getURLSkull(url);
-            if (InventoryUtils.isEmpty(skullItem)) {
+            if (ItemUtils.isEmpty(skullItem)) {
                 sender.sendMessage(api.getMessages().get("item.skull_invalid_book"));
                 return true;
             }
@@ -950,7 +951,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        ItemStack newItem = CompatibilityUtils.makeReal(item);
+        ItemStack newItem = ItemUtils.makeReal(item);
         CompatibilityUtils.removeItemAttribute(newItem, attribute);
         if (CompatibilityUtils.setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal())) {
             if (attributeSlot == null) {
@@ -993,11 +994,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public boolean onItemAddUnplaceable(CommandSender sender, Player player, ItemStack item)
     {
-        if (InventoryUtils.isUnplaceable(item)) {
+        if (ItemUtils.isUnplaceable(item)) {
             sender.sendMessage(api.getMessages().get("item.already_unplaceable"));
         } else {
-            ItemStack newItem = InventoryUtils.makeReal(item);
-            InventoryUtils.makeUnplaceable(newItem);
+            ItemStack newItem = ItemUtils.makeReal(item);
+            ItemUtils.makeUnplaceable(newItem);
             item.setItemMeta(newItem.getItemMeta());
             sender.sendMessage(api.getMessages().get("item.add_unplaceable"));
         }
@@ -1007,10 +1008,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public boolean onItemRemoveUnplaceable(CommandSender sender, Player player, ItemStack item)
     {
-        if (!InventoryUtils.isUnplaceable(item)) {
+        if (!ItemUtils.isUnplaceable(item)) {
             sender.sendMessage(api.getMessages().get("item.not_unplaceable"));
         } else {
-            InventoryUtils.removeUnplaceable(item);
+            ItemUtils.removeUnplaceable(item);
             sender.sendMessage(api.getMessages().get("item.remove_unplaceable"));
         }
 
@@ -1019,12 +1020,12 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public boolean onItemAddUnbreakable(CommandSender sender, Player player, ItemStack item)
     {
-        if (InventoryUtils.isUnbreakable(item)) {
+        if (ItemUtils.isUnbreakable(item)) {
             sender.sendMessage(api.getMessages().get("item.already_unbreakable"));
         } else {
             // Need API!
-            ItemStack newItem = InventoryUtils.makeReal(item);
-            InventoryUtils.makeUnbreakable(newItem);
+            ItemStack newItem = ItemUtils.makeReal(item);
+            ItemUtils.makeUnbreakable(newItem);
             item.setItemMeta(newItem.getItemMeta());
             sender.sendMessage(api.getMessages().get("item.add_unbreakable"));
         }
@@ -1034,10 +1035,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     public boolean onItemRemoveUnbreakable(CommandSender sender, Player player, ItemStack item)
     {
-        if (!InventoryUtils.isUnbreakable(item)) {
+        if (!ItemUtils.isUnbreakable(item)) {
             sender.sendMessage(api.getMessages().get("item.not_unbreakable"));
         } else {
-            InventoryUtils.removeUnbreakable(item);
+            ItemUtils.removeUnbreakable(item);
             sender.sendMessage(api.getMessages().get("item.remove_unbreakable"));
         }
 

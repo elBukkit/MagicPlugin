@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public class BookAction extends BaseSpellAction {
 
@@ -149,7 +150,7 @@ public class BookAction extends BaseSpellAction {
     }
 
     private boolean checkBook(ItemStack book) {
-        if (CompatibilityUtils.isEmpty(book)) {
+        if (ItemUtils.isEmpty(book)) {
             return false;
         }
         return book.getType() == Material.WRITTEN_BOOK;

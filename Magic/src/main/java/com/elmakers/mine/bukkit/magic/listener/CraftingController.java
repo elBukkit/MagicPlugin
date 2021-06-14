@@ -34,7 +34,8 @@ import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicRecipe;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class CraftingController implements Listener {
@@ -212,7 +213,7 @@ public class CraftingController implements Listener {
             if (!allowWandsAsIngredients) {
                 return false;
             }
-            return InventoryUtils.getMetaBoolean(item, "craftable", false);
+            return NBTUtils.getMetaBoolean(item, "craftable", false);
         }
         return true;
     }
@@ -250,7 +251,7 @@ public class CraftingController implements Listener {
         if (event.isCancelled()) return;
         ItemStack item = event.getOldCursor();
         // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
-        item = item.hasItemMeta() ? InventoryUtils.makeReal(item) : item;
+        item = item.hasItemMeta() ? ItemUtils.makeReal(item) : item;
         if (isCraftable(item)) return;
 
         InventoryView view = event.getView();

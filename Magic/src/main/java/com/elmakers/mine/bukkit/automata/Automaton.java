@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automata.Automaton {
     @Nonnull
@@ -433,7 +434,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
         if (dropWhenRemoved != null && !dropWhenRemoved.isEmpty() && location != null) {
             ItemData item = controller.getOrCreateItem(dropWhenRemoved);
             ItemStack stack = item == null ? null : item.getItemStack();
-            if (CompatibilityUtils.isEmpty(stack)) {
+            if (ItemUtils.isEmpty(stack)) {
                 controller.getLogger().warning("Invalid item dropped in automaton " + template.getKey() + ": " + dropWhenRemoved);
             } else {
                 location.getWorld().dropItemNaturally(location, stack);

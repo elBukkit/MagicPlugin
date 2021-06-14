@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class EffectUtils extends NMSUtils {
@@ -52,7 +53,7 @@ public class EffectUtils extends NMSUtils {
             meta.setPower(power);
             itemStack.setItemMeta(meta);
 
-            Object item = getHandle(makeReal(itemStack));
+            Object item = ItemUtils.getHandle(ItemUtils.makeReal(itemStack));
             final Object fireworkHandle = class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
             CompatibilityUtils.setSilent(fireworkHandle, silent);
 

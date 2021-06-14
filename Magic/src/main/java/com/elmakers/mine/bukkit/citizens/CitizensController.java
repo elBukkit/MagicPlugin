@@ -23,8 +23,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.integration.NPCSupplier;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.npc.MagicNPC;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;
@@ -144,7 +144,7 @@ public class CitizensController implements NPCSupplier {
                     Map<Equipment.EquipmentSlot, ItemStack> items = equipment.getEquipmentBySlot();
                     for (Equipment.EquipmentSlot slot : Equipment.EquipmentSlot.values()) {
                         ItemStack item = items.get(slot);
-                        if (CompatibilityUtils.isEmpty(item)) continue;
+                        if (ItemUtils.isEmpty(item)) continue;
                         String key = null;
                         switch (slot) {
                             case HAND:
@@ -203,7 +203,7 @@ public class CitizensController implements NPCSupplier {
                         parameters.set("potion_effects", potionEffects);
                     }
                     ItemStack hat = base.getHat();
-                    if (!CompatibilityUtils.isEmpty(hat)) {
+                    if (!ItemUtils.isEmpty(hat)) {
                         parameters.set("helmet", controller.getItemKey(hat));
                     }
                     if (base.getCost() > 0) {

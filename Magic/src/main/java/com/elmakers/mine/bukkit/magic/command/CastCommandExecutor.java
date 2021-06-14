@@ -24,7 +24,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class CastCommandExecutor extends MagicTabExecutor {
 
@@ -46,7 +45,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             String playerName = args[0];
-            List<Entity> targets = NMSUtils.selectEntities(sender, playerName);
+            List<Entity> targets = CompatibilityUtils.selectEntities(sender, playerName);
             List<Mage> mages = new ArrayList<>();
             if (targets != null) {
                 MageController controller = api.getController();

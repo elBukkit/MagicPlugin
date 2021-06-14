@@ -7,7 +7,7 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated
@@ -29,7 +29,7 @@ public class BoomSpell extends BlockSpell {
         Entity entity = mage.getEntity();
         Location l = block.getLocation();
         prepareForUndo();
-        NMSUtils.createExplosion(entity, target.getWorld(), l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
+        CompatibilityUtils.createExplosion(entity, target.getWorld(), l.getX(), l.getY(), l.getZ(), size, incendiary, breakBlocks);
         controller.updateBlock(block);
         registerForUndo();
         return SpellResult.CAST;

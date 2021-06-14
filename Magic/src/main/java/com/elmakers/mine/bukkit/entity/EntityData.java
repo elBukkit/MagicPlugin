@@ -73,6 +73,7 @@ import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -749,7 +750,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                         spawned = CompatibilityUtils.createItemFrame(location, facing, rotation, item);
                         break;
                     case DROPPED_ITEM:
-                        if (CompatibilityUtils.isEmpty(item)) return null;
+                        if (ItemUtils.isEmpty(item)) return null;
                         spawned = location.getWorld().dropItem(location, item);
                         addedToWorld = true;
                         break;

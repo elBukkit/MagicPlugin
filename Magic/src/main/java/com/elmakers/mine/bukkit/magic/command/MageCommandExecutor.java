@@ -37,7 +37,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -71,7 +71,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         List<Player> players = new ArrayList<>();
         String playerName = args.length > 1 ? args[1] : null;
         if (playerName != null && sender.hasPermission("Magic.commands.mage.others")) {
-            List<Entity> targets = NMSUtils.selectEntities(sender, playerName);
+            List<Entity> targets = CompatibilityUtils.selectEntities(sender, playerName);
             if (targets != null) {
                 argStart = 2;
                 for (Entity entity : targets) {
@@ -500,7 +500,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 continue;
             }
             ItemStack item = inventory.getItem(i);
-            if (CompatibilityUtils.isEmpty(item)) continue;
+            if (ItemUtils.isEmpty(item)) continue;
 
             if ((type.equalsIgnoreCase("wands") && controller.isWand(item))
                     || (type.equalsIgnoreCase("skills") && controller.isSkill(item))
@@ -1072,7 +1072,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         String itemName = parameters[0];
         ItemStack item = controller.createItem(itemName);
-        if (CompatibilityUtils.isEmpty(item)) {
+        if (ItemUtils.isEmpty(item)) {
             sender.sendMessage("Invalid item: " + itemName);
             return true;
         }

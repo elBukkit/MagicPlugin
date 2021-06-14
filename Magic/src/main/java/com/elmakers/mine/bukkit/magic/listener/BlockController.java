@@ -53,7 +53,7 @@ import com.elmakers.mine.bukkit.tasks.UndoBlockTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 
@@ -152,7 +152,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                     if (items != null) {
                         Location location = block.getLocation();
                         for (ItemStack item : items) {
-                            if (!CompatibilityUtils.isEmpty(item)) {
+                            if (!ItemUtils.isEmpty(item)) {
                                 location.getWorld().dropItemNaturally(location, item);
                             }
                         }
@@ -170,13 +170,13 @@ public class BlockController implements Listener, ChunkLoadListener {
         Player player = event.getPlayer();
         ItemStack itemStack = event.getItemInHand();
 
-        if (NMSUtils.isTemporary(itemStack)) {
+        if (ItemUtils.isTemporary(itemStack)) {
             event.setCancelled(true);
             player.getInventory().setItemInMainHand(null);
             return;
         }
 
-        if (NMSUtils.isUnplaceable(itemStack) || Wand.isSpecial(itemStack)) {
+        if (ItemUtils.isUnplaceable(itemStack) || Wand.isSpecial(itemStack)) {
             event.setCancelled(true);
             return;
         }
@@ -270,7 +270,7 @@ public class BlockController implements Listener, ChunkLoadListener {
             if (reaction == PistonMoveReaction.BREAK) {
                 // This block is about to be broken, we will break it but avoid dropping an item.
                 undoList.add(block);
-                NMSUtils.clearItems(block.getLocation());
+                CompatibilityUtils.clearItems(block.getLocation());
                 DeprecatedUtils.setTypeAndData(block, Material.AIR, (byte) 0, false);
             } else {
                 // This block is about to become the piston head
@@ -329,7 +329,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                 }
             }
             if (!CompatibilityUtils.isWaterLoggable(targetBlock)) {
-                NMSUtils.clearItems(targetBlock.getLocation());
+                CompatibilityUtils.clearItems(targetBlock.getLocation());
                 DeprecatedUtils.setTypeAndData(targetBlock, Material.AIR, (byte) 0, false);
             }
             event.setCancelled(true);
@@ -440,7 +440,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                         blockList.convert(entity, block);
                         if (!blockList.getApplyPhysics()) {
                             FallingBlock falling = (FallingBlock)entity;
-                            DeprecatedUtils.setTypeAndData(block, falling.getMaterial(), NMSUtils.getBlockData(falling), false);
+                            DeprecatedUtils.setTypeAndData(block, falling.getMaterial(), CompatibilityUtils.getBlockData(falling), false);
                             event.setCancelled(true);
                         }
                     }

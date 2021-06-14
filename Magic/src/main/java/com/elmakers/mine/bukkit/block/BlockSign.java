@@ -5,7 +5,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -21,7 +21,7 @@ public class BlockSign extends MaterialExtraData {
 
     public BlockSign(Object tag) {
         for (int i = 0; i < 4; ++i) {
-            String line = InventoryUtils.getMetaString(tag, "Text" + (i + 1));
+            String line = NBTUtils.getMetaString(tag, "Text" + (i + 1));
             if (line != null && !line.startsWith("{")) {
                 try {
                     if (gson == null) {

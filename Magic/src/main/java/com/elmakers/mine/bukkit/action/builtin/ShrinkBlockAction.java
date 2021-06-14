@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public class ShrinkBlockAction extends BaseSpellAction
 {
@@ -47,7 +47,7 @@ public class ShrinkBlockAction extends BaseSpellAction
         controller.getSkull(ownerName, itemName, new ItemUpdatedCallback() {
             @Override
             public void updated(@Nullable ItemStack itemStack) {
-                if (!CompatibilityUtils.isEmpty(itemStack)) {
+                if (!ItemUtils.isEmpty(itemStack)) {
                     location.setX(location.getX() + 0.5);
                     location.setY(location.getY() + 0.5);
                     location.setZ(location.getZ() + 0.5);

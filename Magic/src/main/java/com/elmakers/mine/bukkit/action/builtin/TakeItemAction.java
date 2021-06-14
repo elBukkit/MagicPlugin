@@ -20,8 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public class TakeItemAction extends BaseSpellAction
 {
@@ -55,7 +54,7 @@ public class TakeItemAction extends BaseSpellAction
 
             PlayerInventory playerInventory = player.getInventory();
             ItemStack currentItem = playerInventory.getItem(slotNumber);
-            if (CompatibilityUtils.isEmpty(currentItem)) {
+            if (ItemUtils.isEmpty(currentItem)) {
                 playerInventory.setItem(slotNumber, item);
             } else {
                 controller.giveItemToPlayer(player, item);
@@ -123,13 +122,13 @@ public class TakeItemAction extends BaseSpellAction
             int slotNumber = 0;
             for (; slotNumber < playerInventory.getSize(); slotNumber++) {
                 ItemStack inventoryItem = playerInventory.getItem(slotNumber);
-                if (InventoryUtils.isEmpty(inventoryItem)) continue;
+                if (ItemUtils.isEmpty(inventoryItem)) continue;
                 if (checkItem(inventoryItem)) {
                     if (fullStack || inventoryItem.getAmount() == 1) {
                         item = inventoryItem;
                         inventoryItem = null;
                     } else {
-                        item = InventoryUtils.getCopy(inventoryItem);
+                        item = ItemUtils.getCopy(inventoryItem);
                         item.setAmount(1);
                         inventoryItem.setAmount(inventoryItem.getAmount() - 1);
                     }
@@ -180,7 +179,7 @@ public class TakeItemAction extends BaseSpellAction
             }
         }
 
-        if (InventoryUtils.isEmpty(item)) {
+        if (ItemUtils.isEmpty(item)) {
             return SpellResult.NO_TARGET;
         }
 

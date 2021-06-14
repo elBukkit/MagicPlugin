@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.ItemUtils;
 
 public class StashWandAction extends BaseSpellAction
 {
@@ -55,13 +55,13 @@ public class StashWandAction extends BaseSpellAction
         } else {
             if (isOffhand) {
                 ItemStack existing = player.getInventory().getItemInOffHand();
-                if (InventoryUtils.isEmpty(existing)) {
+                if (ItemUtils.isEmpty(existing)) {
                     player.getInventory().setItemInOffHand(stashedItem);
                     gave = true;
                 }
             } else {
                 ItemStack existing = player.getInventory().getItem(slotNumber);
-                if (InventoryUtils.isEmpty(existing)) {
+                if (ItemUtils.isEmpty(existing)) {
                     player.getInventory().setItem(slotNumber, stashedItem);
                     gave = true;
                 }
@@ -114,7 +114,7 @@ public class StashWandAction extends BaseSpellAction
             activeItem = player.getInventory().getItemInMainHand();
         }
 
-        if (InventoryUtils.isEmpty(activeItem))
+        if (ItemUtils.isEmpty(activeItem))
         {
             return SpellResult.FAIL;
         }

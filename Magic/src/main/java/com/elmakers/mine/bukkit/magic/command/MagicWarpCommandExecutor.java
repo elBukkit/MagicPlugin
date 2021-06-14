@@ -17,8 +17,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
 
@@ -106,7 +106,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             String playerSelector = args[1];
-            List<Entity> targets = NMSUtils.selectEntities(sender, playerSelector);
+            List<Entity> targets = CompatibilityUtils.selectEntities(sender, playerSelector);
             if (targets != null) {
                 for (Entity entity : targets) {
                     onSendWarp(sender, entity, args[2]);
