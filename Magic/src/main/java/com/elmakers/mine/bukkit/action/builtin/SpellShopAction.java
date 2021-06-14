@@ -30,7 +30,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 @Deprecated
 public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAction
@@ -330,7 +329,7 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
             meta.setLore(lore);
             spellItem.setItemMeta(meta);
 
-            if (unpurchasableMessage != null) NBTUtils.setMeta(spellItem, "unpurchasable", unpurchasableMessage);
+            if (unpurchasableMessage != null) CompatibilityLib.getNBTUtils().setMeta(spellItem, "unpurchasable", unpurchasableMessage);
         }
 
         return new ShopItem(spellItem, worth);

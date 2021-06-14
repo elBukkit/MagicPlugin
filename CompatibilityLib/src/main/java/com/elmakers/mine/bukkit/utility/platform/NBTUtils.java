@@ -7,17 +7,18 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class NBTUtils {
-    public static String getMetaString(ItemStack stack, String tag, String defaultValue) {
-        String result = getMetaString(stack, tag);
+
+    public String getMetaString(ItemStack stack, String tag, String defaultValue) {
+        String result = NBTUtils.this.getMetaString(stack, tag);
         return result == null ? defaultValue : result;
     }
 
-    public static boolean hasMeta(ItemStack stack, String tag) {
+    public boolean hasMeta(ItemStack stack, String tag) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return false;
-        return getNode(stack, tag) != null;
+        return NBTUtils.this.getNode(stack, tag) != null;
     }
 
-    public static Object getNode(ItemStack stack, String tag) {
+    public Object getNode(ItemStack stack, String tag) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return null;
         Object meta = null;
         try {
@@ -30,7 +31,7 @@ public class NBTUtils {
         return meta;
     }
 
-    public static boolean containsNode(Object nbtBase, String tag) {
+    public boolean containsNode(Object nbtBase, String tag) {
         if (nbtBase == null) return false;
         Boolean result = false;
         try {
@@ -41,7 +42,7 @@ public class NBTUtils {
         return result;
     }
 
-    public static Object getNode(Object nbtBase, String tag) {
+    public Object getNode(Object nbtBase, String tag) {
         if (nbtBase == null) return null;
         Object meta = null;
         try {
@@ -52,7 +53,7 @@ public class NBTUtils {
         return meta;
     }
 
-    public static Object createNode(Object nbtBase, String tag) {
+    public Object createNode(Object nbtBase, String tag) {
         if (nbtBase == null) return null;
         Object meta = null;
         try {
@@ -64,9 +65,9 @@ public class NBTUtils {
         return meta;
     }
 
-    public static Object createNode(ItemStack stack, String tag) {
+    public Object createNode(ItemStack stack, String tag) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return null;
-        Object outputObject = getNode(stack, tag);
+        Object outputObject = NBTUtils.this.getNode(stack, tag);
         if (outputObject == null) {
             try {
                 Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
@@ -85,12 +86,12 @@ public class NBTUtils {
         return outputObject;
     }
 
-    public static String getMetaString(Object node, String tag, String defaultValue) {
-        String meta = getMetaString(node, tag);
+    public String getMetaString(Object node, String tag, String defaultValue) {
+        String meta = NBTUtils.this.getMetaString(node, tag);
         return meta == null || meta.length() == 0 ? defaultValue : meta;
     }
 
-    public static String getMetaString(Object node, String tag) {
+    public String getMetaString(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         String meta = null;
         try {
@@ -101,7 +102,7 @@ public class NBTUtils {
         return meta;
     }
 
-    public static String getMeta(Object node, String tag) {
+    public String getMeta(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         String meta = null;
         try {
@@ -112,7 +113,7 @@ public class NBTUtils {
         return meta;
     }
 
-    public static Byte getMetaByte(Object node, String tag) {
+    public Byte getMetaByte(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Byte meta = null;
         try {
@@ -123,7 +124,7 @@ public class NBTUtils {
         return meta;
     }
 
-    public static Integer getMetaInt(Object node, String tag) {
+    public Integer getMetaInt(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Integer meta = null;
         try {
@@ -134,13 +135,13 @@ public class NBTUtils {
         return meta;
     }
 
-    public static int getMetaInt(ItemStack stack, String tag, int defaultValue) {
+    public int getMetaInt(ItemStack stack, String tag, int defaultValue) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return defaultValue;
         int result = defaultValue;
         try {
             Object tagObject = CompatibilityLib.getItemUtils().getTag(stack);
             if (tagObject == null) return defaultValue;
-            Integer value = getMetaInt(tagObject, tag);
+            Integer value = NBTUtils.this.getMetaInt(tagObject, tag);
             result = value == null ? defaultValue : value;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -148,7 +149,7 @@ public class NBTUtils {
         return result;
     }
 
-    public static Double getMetaDouble(Object node, String tag) {
+    public Double getMetaDouble(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Double meta = null;
         try {
@@ -159,7 +160,7 @@ public class NBTUtils {
         return meta;
     }
 
-    public static Boolean getMetaBoolean(Object node, String tag) {
+    public Boolean getMetaBoolean(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Boolean meta = null;
         try {
@@ -170,7 +171,7 @@ public class NBTUtils {
         return meta;
     }
 
-    public static void setMeta(Object node, String tag, String value) {
+    public void setMeta(Object node, String tag, String value) {
         if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             if (value == null || value.length() == 0) {
@@ -183,7 +184,7 @@ public class NBTUtils {
         }
     }
 
-    public static void setMetaLong(Object node, String tag, long value) {
+    public void setMetaLong(Object node, String tag, long value) {
         if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setLongMethod.invoke(node, tag, value);
@@ -192,7 +193,7 @@ public class NBTUtils {
         }
     }
 
-    public static void setMetaBoolean(Object node, String tag, boolean value) {
+    public void setMetaBoolean(Object node, String tag, boolean value) {
         if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setBooleanMethod.invoke(node, tag, value);
@@ -201,7 +202,7 @@ public class NBTUtils {
         }
     }
 
-    public static void setMetaDouble(Object node, String tag, double value) {
+    public void setMetaDouble(Object node, String tag, double value) {
         if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setDoubleMethod.invoke(node, tag, value);
@@ -210,7 +211,7 @@ public class NBTUtils {
         }
     }
 
-    public static void setMetaInt(Object node, String tag, int value) {
+    public void setMetaInt(Object node, String tag, int value) {
         if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setIntMethod.invoke(node, tag, value);
@@ -219,20 +220,20 @@ public class NBTUtils {
         }
     }
 
-    public static void setMetaInt(ItemStack stack, String tag, int value) {
+    public void setMetaInt(ItemStack stack, String tag, int value) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return;
         try {
             Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
             if (craft == null) return;
             Object tagObject = CompatibilityLib.getItemUtils().getTag(craft);
             if (tagObject == null) return;
-            setMetaInt(tagObject, tag, value);
+            NBTUtils.this.setMetaInt(tagObject, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
     }
 
-    public static void removeMeta(Object node, String tag) {
+    public void removeMeta(Object node, String tag) {
         if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_removeMethod.invoke(node, tag);
@@ -241,7 +242,7 @@ public class NBTUtils {
         }
     }
 
-    public static void removeMeta(ItemStack stack, String tag) {
+    public void removeMeta(ItemStack stack, String tag) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return;
 
         try {
@@ -249,38 +250,38 @@ public class NBTUtils {
             if (craft == null) return;
             Object tagObject = CompatibilityLib.getItemUtils().getTag(craft);
             if (tagObject == null) return;
-            removeMeta(tagObject, tag);
+            NBTUtils.this.removeMeta(tagObject, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
     }
 
-    public static void setMetaTyped(Object node, String tag, String value) {
+    public void setMetaTyped(Object node, String tag, String value) {
         if (value == null) {
-            removeMeta(node, tag);
+            NBTUtils.this.removeMeta(node, tag);
             return;
         }
 
         boolean isTrue = value.equals("true");
         boolean isFalse = value.equals("false");
         if (isTrue || isFalse) {
-            setMetaBoolean(node, tag, isTrue);
+            NBTUtils.this.setMetaBoolean(node, tag, isTrue);
         } else {
             try {
                 Integer i = Integer.parseInt(value);
-                setMetaInt(node, tag, i);
+                NBTUtils.this.setMetaInt(node, tag, i);
             } catch (Exception ex) {
                 try {
                     Double d = Double.parseDouble(value);
-                    setMetaDouble(node, tag, d);
+                    NBTUtils.this.setMetaDouble(node, tag, d);
                 } catch (Exception ex2) {
-                    setMeta(node, tag, value);
+                    NBTUtils.this.setMeta(node, tag, value);
                 }
             }
         }
     }
 
-    public static void setMetaNode(Object node, String tag, Object child) {
+    public void setMetaNode(Object node, String tag, Object child) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             if (child == null) {
@@ -293,7 +294,7 @@ public class NBTUtils {
         }
     }
 
-    public static boolean setMetaNode(ItemStack stack, String tag, Object child) {
+    public boolean setMetaNode(ItemStack stack, String tag, Object child) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return false;
         try {
             Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
@@ -313,7 +314,7 @@ public class NBTUtils {
         return true;
     }
 
-    public static String getMetaString(ItemStack stack, String tag) {
+    public String getMetaString(ItemStack stack, String tag) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return null;
         String meta = null;
         try {
@@ -326,7 +327,7 @@ public class NBTUtils {
         return meta;
     }
 
-    public static void setMeta(ItemStack stack, String tag, String value) {
+    public void setMeta(ItemStack stack, String tag, String value) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return;
         try {
             Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
@@ -339,26 +340,26 @@ public class NBTUtils {
         }
     }
 
-    public static void setMetaBoolean(ItemStack stack, String tag, boolean value) {
+    public void setMetaBoolean(ItemStack stack, String tag, boolean value) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return;
         try {
             Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
             if (craft == null) return;
             Object tagObject = CompatibilityLib.getItemUtils().getTag(craft);
             if (tagObject == null) return;
-            setMetaBoolean(tagObject, tag, value);
+            NBTUtils.this.setMetaBoolean(tagObject, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
     }
 
-    public static boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue) {
+    public boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue) {
         if (CompatibilityLib.getItemUtils().isEmpty(stack)) return defaultValue;
         boolean result = defaultValue;
         try {
             Object tagObject = CompatibilityLib.getItemUtils().getTag(stack);
             if (tagObject == null) return defaultValue;
-            Boolean value = getMetaBoolean(tagObject, tag);
+            Boolean value = NBTUtils.this.getMetaBoolean(tagObject, tag);
             result = value == null ? defaultValue : value;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -366,7 +367,7 @@ public class NBTUtils {
         return result;
     }
 
-    protected static void addToList(Object listObject, Object node) throws InvocationTargetException, IllegalAccessException {
+    protected void addToList(Object listObject, Object node) throws InvocationTargetException, IllegalAccessException {
         if (NMSUtils.isCurrentVersion) {
             int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(listObject);
             NMSUtils.class_NBTTagList_addMethod.invoke(listObject, size, node);

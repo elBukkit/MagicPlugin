@@ -36,7 +36,6 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.google.common.base.Objects;
 import com.google.gson.Gson;
@@ -150,7 +149,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         // TODO: Could/should this store ALL custom tag data?
         if (item.hasItemMeta()) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            int customModelData = NBTUtils.getMetaInt(item, "CustomModelData", 0);
+            int customModelData = CompatibilityLib.getNBTUtils().getMetaInt(item, "CustomModelData", 0);
             if (customModelData > 0) {
                 tags = new HashMap<>();
                 tags.put("CustomModelData", customModelData);
@@ -790,7 +789,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (getData() != itemStack.getDurability()) return true;
         if (tags != null) {
             Object customModelData = tags.get("CustomModelData");
-            int itemModelData = NBTUtils.getMetaInt(itemStack, "CustomModelData", 0);
+            int itemModelData = CompatibilityLib.getNBTUtils().getMetaInt(itemStack, "CustomModelData", 0);
             if (customModelData == null && itemModelData != 0) return true;
             if (customModelData != null && customModelData instanceof Integer && itemModelData != (Integer)customModelData) return true;
         }

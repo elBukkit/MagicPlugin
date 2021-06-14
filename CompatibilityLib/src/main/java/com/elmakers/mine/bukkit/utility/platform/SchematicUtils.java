@@ -16,7 +16,11 @@ import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 @SuppressWarnings("unchecked")
 public class SchematicUtils {
 
-    public static boolean loadSchematic(InputStream input, LoadableSchematic schematic, Logger log) {
+    public static SchematicUtils getInstance() {
+        return instance;
+    }
+
+    public boolean loadSchematic(InputStream input, LoadableSchematic schematic, Logger log) {
         if (input == null || schematic == null || NMSUtils.class_NBTCompressedStreamTools_loadFileMethod == null) return false;
 
         try {
@@ -108,7 +112,7 @@ public class SchematicUtils {
         return true;
     }
 
-    public static boolean loadLegacySchematic(InputStream input, LoadableSchematic schematic) {
+    public boolean loadLegacySchematic(InputStream input, LoadableSchematic schematic) {
         if (input == null || schematic == null || NMSUtils.class_NBTCompressedStreamTools_loadFileMethod == null) return false;
 
         try {

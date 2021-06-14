@@ -50,7 +50,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class EntityController implements Listener {
@@ -359,7 +358,7 @@ public class EntityController implements Listener {
             }
 
             // Save "keep" items to return on respawn
-            boolean keepItem = NBTUtils.getMetaBoolean(itemStack, "keep", false);
+            boolean keepItem = CompatibilityLib.getNBTUtils().getMetaBoolean(itemStack, "keep", false);
             if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
             if (keepItem) {
                 mage.addToRespawnInventory(index, itemStack);

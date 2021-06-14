@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
 
@@ -425,14 +424,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return;
         }
         ItemStack item = event.getCurrentItem();
-        if (NBTUtils.hasMeta(item, "placeholder") || NBTUtils.hasMeta(item, "unavailable"))
+        if (CompatibilityLib.getNBTUtils().hasMeta(item, "placeholder") || CompatibilityLib.getNBTUtils().hasMeta(item, "unavailable"))
         {
             context.getMage().deactivateGUI();
             return;
         }
-        if (NBTUtils.hasMeta(item, "move_marker"))
+        if (CompatibilityLib.getNBTUtils().hasMeta(item, "move_marker"))
         {
-            int markerNumber = NBTUtils.getMetaInt(item, "move_marker", 1);
+            int markerNumber = CompatibilityLib.getNBTUtils().getMetaInt(item, "move_marker", 1);
             if (placeMarker(context.getLocation().getBlock(), markerNumber))
             {
                 context.sendMessageKey("target_selected");
@@ -974,13 +973,13 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 waypointItem.setItemMeta(meta);
                 waypointItem = CompatibilityLib.getItemUtils().makeReal(waypointItem);
                 CompatibilityLib.getItemUtils().hideFlags(waypointItem, 63);
-                NBTUtils.setMeta(waypointItem, "waypoint", "true");
+                CompatibilityLib.getNBTUtils().setMeta(waypointItem, "waypoint", "true");
                 CompatibilityLib.getItemUtils().makeUnbreakable(waypointItem);
                 if (isPlaceholder) {
-                    NBTUtils.setMetaBoolean(waypointItem, "placeholder", true);
+                    CompatibilityLib.getNBTUtils().setMetaBoolean(waypointItem, "placeholder", true);
                 }
                 if (isUnavailable) {
-                    NBTUtils.setMetaBoolean(waypointItem, "unavailable", true);
+                    CompatibilityLib.getNBTUtils().setMetaBoolean(waypointItem, "unavailable", true);
                 }
             }
             displayInventory.setItem(index, waypointItem);
@@ -1021,7 +1020,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             markerItem.setItemMeta(meta);
             markerItem = CompatibilityLib.getItemUtils().makeReal(markerItem);
             CompatibilityLib.getItemUtils().hideFlags(markerItem, 63);
-            NBTUtils.setMetaInt(markerItem, "move_marker", marker);
+            CompatibilityLib.getNBTUtils().setMetaInt(markerItem, "move_marker", marker);
 
             displayInventory.setItem(inventoryIndex, markerItem);
             context.getMage().activateGUI(this, displayInventory);

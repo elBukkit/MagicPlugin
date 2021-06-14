@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
-import com.elmakers.mine.bukkit.utility.platform.NMSUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 public class CompatibilityLib {
@@ -22,6 +22,7 @@ public class CompatibilityLib {
     private static DeprecatedUtils deprecatedUtils;
     private static InventoryUtils inventoryUtils;
     private static ItemUtils itemUtils;
+    private static NBTUtils nbtUtils;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
         CompatibilityLib.plugin = plugin;
@@ -31,6 +32,7 @@ public class CompatibilityLib {
         deprecatedUtils = platform.getDeprecatedUtils();
         inventoryUtils = platform.getInventoryUtils();
         itemUtils = platform.getItemUtils();
+        nbtUtils = platform.getNBTUtils();
         return platform.isValid();
     }
 
@@ -122,5 +124,12 @@ public class CompatibilityLib {
             throw new IllegalStateException("ItemUtils used before being initialized");
         }
         return itemUtils;
+    }
+
+    public static NBTUtils getNBTUtils() {
+        if (nbtUtils == null) {
+            throw new IllegalStateException("NBTUtils used before being initialized");
+        }
+        return nbtUtils;
     }
 }

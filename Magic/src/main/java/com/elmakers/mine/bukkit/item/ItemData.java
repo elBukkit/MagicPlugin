@@ -24,7 +24,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.google.common.collect.ImmutableSet;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback {
@@ -374,7 +373,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     }
 
     public int getCustomModelData() {
-        return NBTUtils.getMetaInt(getOrCreateItemStack(), "CustomModelData", 0);
+        return CompatibilityLib.getNBTUtils().getMetaInt(getOrCreateItemStack(), "CustomModelData", 0);
     }
 
     @Nullable

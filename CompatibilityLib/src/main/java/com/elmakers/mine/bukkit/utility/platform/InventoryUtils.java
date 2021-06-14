@@ -37,17 +37,17 @@ public class InventoryUtils {
     public CurrencyAmount getCurrency(ItemStack item) {
         if (CompatibilityLib.getItemUtils().isEmpty(item)) return null;
 
-        Object currency = NBTUtils.getNode(item, "currency");
+        Object currency = CompatibilityLib.getNBTUtils().getNode(item, "currency");
         if (currency != null) {
-            String currencyType = NBTUtils.getMetaString(currency, "type");
+            String currencyType = CompatibilityLib.getNBTUtils().getMetaString(currency, "type");
             if (currencyType != null) {
-                return new CurrencyAmount(currencyType, NBTUtils.getMetaInt(currency, "amount"));
+                return new CurrencyAmount(currencyType, CompatibilityLib.getNBTUtils().getMetaInt(currency, "amount"));
             }
             return null;
         }
 
         // Support for legacy SP items
-        int spAmount = NBTUtils.getMetaInt(item, "sp", 0);
+        int spAmount = CompatibilityLib.getNBTUtils().getMetaInt(item, "sp", 0);
         if (spAmount > 0) {
             return new CurrencyAmount("sp", spAmount);
         }
@@ -84,25 +84,25 @@ public class InventoryUtils {
         Object tag = CompatibilityLib.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
-        NBTUtils.setMetaBoolean(tag, "skill", true);
+        CompatibilityLib.getNBTUtils().setMetaBoolean(tag, "skill", true);
 
-        Object spellNode = NBTUtils.getNode(skillItem, "spell");
+        Object spellNode = CompatibilityLib.getNBTUtils().getNode(skillItem, "spell");
         if (skillClass != null && spellNode != null) {
-            NBTUtils.setMeta(spellNode, "class", skillClass);
+            CompatibilityLib.getNBTUtils().setMeta(spellNode, "class", skillClass);
         }
         if (skillConfig == null) {
             return true;
         }
 
         if (skillConfig.getBoolean("undroppable", false)) {
-            NBTUtils.setMetaBoolean(tag, "undroppable", true);
+            CompatibilityLib.getNBTUtils().setMetaBoolean(tag, "undroppable", true);
         }
         if (skillConfig.getBoolean("keep", false)) {
-            NBTUtils.setMetaBoolean(tag, "keep", true);
+            CompatibilityLib.getNBTUtils().setMetaBoolean(tag, "keep", true);
         }
         boolean quickCast = skillConfig.getBoolean("quick_cast", true);
         if (!quickCast && spellNode != null) {
-            NBTUtils.setMetaBoolean(spellNode, "quick_cast", false);
+            CompatibilityLib.getNBTUtils().setMetaBoolean(spellNode, "quick_cast", false);
         }
 
         return true;
@@ -183,7 +183,7 @@ public class InventoryUtils {
         // Finish removing any remaining properties
         if (currentTags != null) {
             for (String currentTag : currentTags) {
-                NBTUtils.removeMeta(node, currentTag);
+                CompatibilityLib.getNBTUtils().removeMeta(node, currentTag);
             }
         }
 
@@ -246,7 +246,7 @@ public class InventoryUtils {
             if (wrappedValue == null) {
                 for (Object item : list) {
                     if (item != null) {
-                        NBTUtils.addToList(listMeta, InventoryUtils.this.wrapInTag(item));
+                        CompatibilityLib.getNBTUtils().addToList(listMeta, InventoryUtils.this.wrapInTag(item));
                     }
                 }
                 wrappedValue = listMeta;
@@ -436,8 +436,8 @@ public class InventoryUtils {
     public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
         try {
             itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
-            Object skullOwner = NBTUtils.createNode(itemStack, "SkullOwner");
-            NBTUtils.setMeta(skullOwner, "Name", ownerName);
+            Object skullOwner = CompatibilityLib.getNBTUtils().createNode(itemStack, "SkullOwner");
+            CompatibilityLib.getNBTUtils().setMeta(skullOwner, "Name", ownerName);
             return InventoryUtils.this.setSkullURL(itemStack, url, id);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -626,11 +626,11 @@ public class InventoryUtils {
     }
 
     public void makeKeep(ItemStack itemStack) {
-        NBTUtils.setMetaBoolean(itemStack, "keep", true);
+        CompatibilityLib.getNBTUtils().setMetaBoolean(itemStack, "keep", true);
     }
 
     public boolean isKeep(ItemStack itemStack) {
-        return NBTUtils.hasMeta(itemStack, "keep");
+        return CompatibilityLib.getNBTUtils().hasMeta(itemStack, "keep");
     }
     
     public void applyAttributes(ItemStack item, ConfigurationSection attributeConfig, String slot) {
@@ -763,7 +763,7 @@ public class InventoryUtils {
 
     public int getMapId(ItemStack mapItem) {
         if (CompatibilityLib.isCurrentVersion()) {
-            return NBTUtils.getMetaInt(mapItem, "map", 0);
+            return CompatibilityLib.getNBTUtils().getMetaInt(mapItem, "map", 0);
         }
 
         return mapItem.getDurability();
@@ -771,7 +771,7 @@ public class InventoryUtils {
 
     public void setMapId(ItemStack mapItem, int id) {
         if (CompatibilityLib.isCurrentVersion()) {
-            NBTUtils.setMetaInt(mapItem, "map", id);
+            CompatibilityLib.getNBTUtils().setMetaInt(mapItem, "map", id);
         } else {
             mapItem.setDurability((short)id);
         }

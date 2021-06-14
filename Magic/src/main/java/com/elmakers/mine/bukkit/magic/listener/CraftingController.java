@@ -35,7 +35,6 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicRecipe;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class CraftingController implements Listener {
@@ -213,7 +212,7 @@ public class CraftingController implements Listener {
             if (!allowWandsAsIngredients) {
                 return false;
             }
-            return NBTUtils.getMetaBoolean(item, "craftable", false);
+            return CompatibilityLib.getNBTUtils().getMetaBoolean(item, "craftable", false);
         }
         return true;
     }

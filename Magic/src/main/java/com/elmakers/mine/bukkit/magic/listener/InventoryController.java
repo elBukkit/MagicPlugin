@@ -38,7 +38,6 @@ import com.elmakers.mine.bukkit.tasks.WandCastTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandInventory;
 import com.elmakers.mine.bukkit.wand.WandMode;
@@ -266,7 +265,7 @@ public class InventoryController implements Listener {
             mage.armorUpdated();
             return;
         }
-        if (NBTUtils.getMetaBoolean(clickedItem, "unmoveable", false)) {
+        if (CompatibilityLib.getNBTUtils().getMetaBoolean(clickedItem, "unmoveable", false)) {
             event.setCancelled(true);
             return;
         }
@@ -469,11 +468,11 @@ public class InventoryController implements Listener {
 
         if (isHotbar) {
             ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
-            if (NBTUtils.getMetaBoolean(destinationItem, "unmoveable", false)) {
+            if (CompatibilityLib.getNBTUtils().getMetaBoolean(destinationItem, "unmoveable", false)) {
                 event.setCancelled(true);
                 return;
             }
-            if (isContainer && NBTUtils.getMetaBoolean(destinationItem, "unstashable", false) && !player.hasPermission("Magic.wand.override_stash")) {
+            if (isContainer && CompatibilityLib.getNBTUtils().getMetaBoolean(destinationItem, "unstashable", false) && !player.hasPermission("Magic.wand.override_stash")) {
                 event.setCancelled(true);
                 return;
             }
@@ -481,7 +480,7 @@ public class InventoryController implements Listener {
 
         // Check for unstashable wands
         if (isContainer && !isContainerSlot && !player.hasPermission("Magic.wand.override_stash")) {
-            if (NBTUtils.getMetaBoolean(clickedItem, "unstashable", false)) {
+            if (CompatibilityLib.getNBTUtils().getMetaBoolean(clickedItem, "unstashable", false)) {
                 event.setCancelled(true);
                 return;
             }
@@ -507,7 +506,7 @@ public class InventoryController implements Listener {
         // Check for dropping items out of a wand's inventory
         // or dropping undroppable wands
         if (isDrop) {
-            if (NBTUtils.getMetaBoolean(clickedItem, "undroppable", false)) {
+            if (CompatibilityLib.getNBTUtils().getMetaBoolean(clickedItem, "undroppable", false)) {
                 event.setCancelled(true);
                 if (activeWand != null) {
                     if (activeWand.getHotbarCount() > 1) {

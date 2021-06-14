@@ -20,7 +20,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
@@ -336,7 +335,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
         if (CompatibilityLib.isCurrentVersion()) {
             mapItem = CompatibilityLib.getItemUtils().makeReal(mapItem);
-            NBTUtils.setMetaInt(mapItem, "map", mapId);
+            CompatibilityLib.getNBTUtils().setMetaInt(mapItem, "map", mapId);
         }
         return mapItem;
     }

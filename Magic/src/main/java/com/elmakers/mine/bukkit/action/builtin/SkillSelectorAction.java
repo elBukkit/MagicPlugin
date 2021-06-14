@@ -35,7 +35,6 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
@@ -235,7 +234,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
                 String spellName = skill.spell != null ? skill.spell.getName() : skill.heroesSkill;
                 CompatibilityLib.getCompatibilityUtils().setDisplayName(skillItem, nameTemplate.replace("$skill", spellName));
-                NBTUtils.setMetaBoolean(skillItem, "unavailable", true);
+                CompatibilityLib.getNBTUtils().setMetaBoolean(skillItem, "unavailable", true);
                 if (skill.spell != null) {
                     MaterialAndData disabledIcon = skill.spell.getDisabledIcon();
                     if (disabledIcon != null) {
@@ -272,7 +271,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         }
 
         ItemStack clickedItem = event.getCurrentItem();
-        if (clickedItem != null && NBTUtils.getMetaBoolean(clickedItem, "unavailable", false)) {
+        if (clickedItem != null && CompatibilityLib.getNBTUtils().getMetaBoolean(clickedItem, "unavailable", false)) {
             event.setCancelled(true);
             return;
         }
@@ -284,7 +283,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         boolean isDrop = action == InventoryAction.DROP_ALL_CURSOR || action == InventoryAction.DROP_ALL_SLOT
                 || action == InventoryAction.DROP_ONE_CURSOR || action == InventoryAction.DROP_ONE_SLOT;
 
-        if (!isContainerSlot && isDrop && controller.isSkill(clickedItem) && !NBTUtils.getMetaBoolean(clickedItem, "undroppable", false)) {
+        if (!isContainerSlot && isDrop && controller.isSkill(clickedItem) && !CompatibilityLib.getNBTUtils().getMetaBoolean(clickedItem, "undroppable", false)) {
             inventory.setItem(event.getSlot(), null);
             return;
         }

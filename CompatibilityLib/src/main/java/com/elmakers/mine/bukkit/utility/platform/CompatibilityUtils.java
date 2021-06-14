@@ -187,9 +187,9 @@ public class CompatibilityUtils {
         Object tag = CompatibilityLib.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
-        Object displayNode = NBTUtils.createNode(tag, "display");
+        Object displayNode = CompatibilityLib.getNBTUtils().createNode(tag, "display");
         if (displayNode == null) return false;
-        NBTUtils.setMeta(displayNode, "Name", displayName);
+        CompatibilityLib.getNBTUtils().setMeta(displayNode, "Name", displayName);
         return true;
     }
 
@@ -1555,17 +1555,17 @@ public class CompatibilityUtils {
             if (tag == null) return false;
 
             String attributeName = CompatibilityUtils.this.toMinecraftAttribute(attribute);
-            Object attributesNode = NBTUtils.getNode(tag, "AttributeModifiers");
+            Object attributesNode = CompatibilityLib.getNBTUtils().getNode(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
             }
             int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(attributesNode);
             for (int i = 0; i < size; i++) {
                 Object candidate = NMSUtils.class_NBTTagList_getMethod.invoke(attributesNode, i);
-                String key = NBTUtils.getMetaString(candidate, "AttributeName");
+                String key = CompatibilityLib.getNBTUtils().getMetaString(candidate, "AttributeName");
                 if (key.equals(attributeName)) {
                     if (size == 1) {
-                        NBTUtils.removeMeta(tag, "AttributeModifiers");
+                        CompatibilityLib.getNBTUtils().removeMeta(tag, "AttributeModifiers");
                     } else {
                         NMSUtils.class_NBTTagList_removeMethod.invoke(attributesNode, i);
                     }
@@ -1586,11 +1586,11 @@ public class CompatibilityUtils {
             Object tag = CompatibilityLib.getItemUtils().getTag(handle);
             if (tag == null) return false;
 
-            Object attributesNode = NBTUtils.getNode(tag, "AttributeModifiers");
+            Object attributesNode = CompatibilityLib.getNBTUtils().getNode(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
             }
-            NBTUtils.removeMeta(tag, "AttributeModifiers");
+            CompatibilityLib.getNBTUtils().removeMeta(tag, "AttributeModifiers");
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -1650,7 +1650,7 @@ public class CompatibilityUtils {
             Object tag = CompatibilityLib.getItemUtils().getTag(handle);
             if (tag == null) return false;
             
-            Object attributesNode = NBTUtils.getNode(tag, "AttributeModifiers");
+            Object attributesNode = CompatibilityLib.getNBTUtils().getNode(tag, "AttributeModifiers");
             Object attributeNode = null;
 
             String attributeName = CompatibilityUtils.this.toMinecraftAttribute(attribute);
@@ -1661,7 +1661,7 @@ public class CompatibilityUtils {
                 int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(attributesNode);
                 for (int i = 0; i < size; i++) {
                     Object candidate = NMSUtils.class_NBTTagList_getMethod.invoke(attributesNode, i);
-                    String key = NBTUtils.getMetaString(candidate, "AttributeName");
+                    String key = CompatibilityLib.getNBTUtils().getMetaString(candidate, "AttributeName");
                     if (key.equals(attributeName)) {
                         attributeNode = candidate;
                         break;
@@ -1670,18 +1670,18 @@ public class CompatibilityUtils {
             }
             if (attributeNode == null) {
                 attributeNode = NMSUtils.class_NBTTagCompound_constructor.newInstance();
-                NBTUtils.setMeta(attributeNode, "AttributeName", attributeName);
-                NBTUtils.setMeta(attributeNode, "Name", "Equipment Modifier");
-                NBTUtils.setMetaInt(attributeNode, "Operation", attributeOperation);
-                NBTUtils.setMetaLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
-                NBTUtils.setMetaLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
+                CompatibilityLib.getNBTUtils().setMeta(attributeNode, "AttributeName", attributeName);
+                CompatibilityLib.getNBTUtils().setMeta(attributeNode, "Name", "Equipment Modifier");
+                CompatibilityLib.getNBTUtils().setMetaInt(attributeNode, "Operation", attributeOperation);
+                CompatibilityLib.getNBTUtils().setMetaLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
+                CompatibilityLib.getNBTUtils().setMetaLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
                 if (slot != null) {
-                    NBTUtils.setMeta(attributeNode, "Slot", slot);
+                    CompatibilityLib.getNBTUtils().setMeta(attributeNode, "Slot", slot);
                 }
 
-                NBTUtils.addToList(attributesNode, attributeNode);
+                CompatibilityLib.getNBTUtils().addToList(attributesNode, attributeNode);
             }
-            NBTUtils.setMetaDouble(attributeNode, "Amount", value);
+            CompatibilityLib.getNBTUtils().setMetaDouble(attributeNode, "Amount", value);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
@@ -1730,7 +1730,7 @@ public class CompatibilityUtils {
     
     public void applyItemData(ItemStack item, Block block) {
         try {
-            Object entityDataTag = NBTUtils.getNode(item, "BlockEntityTag");
+            Object entityDataTag = CompatibilityLib.getNBTUtils().getNode(item, "BlockEntityTag");
             if (entityDataTag == null) return;
             CompatibilityUtils.this.setTileEntityData(block.getLocation(), entityDataTag);
         } catch (Exception ex) {

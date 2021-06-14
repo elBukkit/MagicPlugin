@@ -19,7 +19,6 @@ import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public abstract class AbstractSchematic implements Schematic {
     private final MageController controller;
@@ -47,9 +46,9 @@ public abstract class AbstractSchematic implements Schematic {
         for (Object tileEntity : tileEntityData)
         {
             try {
-                Integer x = NBTUtils.getMetaInt(tileEntity, "x");
-                Integer y = NBTUtils.getMetaInt(tileEntity, "y");
-                Integer z = NBTUtils.getMetaInt(tileEntity, "z");
+                Integer x = CompatibilityLib.getNBTUtils().getMetaInt(tileEntity, "x");
+                Integer y = CompatibilityLib.getNBTUtils().getMetaInt(tileEntity, "y");
+                Integer z = CompatibilityLib.getNBTUtils().getMetaInt(tileEntity, "z");
 
                 if (x == null || y == null || z == null) continue;
 
@@ -74,11 +73,11 @@ public abstract class AbstractSchematic implements Schematic {
             }
             try {
                 if (DefaultMaterials.isCommand(block.getMaterial())) {
-                    String customName = NBTUtils.getMetaString(tileEntity, "CustomName");
+                    String customName = CompatibilityLib.getNBTUtils().getMetaString(tileEntity, "CustomName");
                     if (!customName.isEmpty()) {
                         block.setCustomName(customName);
                     }
-                    block.setCommandLine(NBTUtils.getMetaString(tileEntity, "Command"));
+                    block.setCommandLine(CompatibilityLib.getNBTUtils().getMetaString(tileEntity, "Command"));
                 } else {
                     block.setRawData(tileEntity);
                 }
@@ -92,9 +91,9 @@ public abstract class AbstractSchematic implements Schematic {
     protected void loadEntities(Collection<Object> entityData, Vector origin) {
         if (entityData == null || entityData.isEmpty()) return;
         for (Object entity : entityData) {
-            String type = NBTUtils.getMetaString(entity, "id");
+            String type = CompatibilityLib.getNBTUtils().getMetaString(entity, "id");
             if (type == null || type.isEmpty()) {
-                type =  NBTUtils.getMetaString(entity, "Id");
+                type =  CompatibilityLib.getNBTUtils().getMetaString(entity, "Id");
             }
             Vector position = CompatibilityLib.getCompatibilityUtils().getPosition(entity, "Pos");
             if (position == null) continue;
@@ -105,7 +104,7 @@ public abstract class AbstractSchematic implements Schematic {
 
             // Only doing paintings and item frames for now.
             if (type.equalsIgnoreCase("Painting")) {
-                String motive = NBTUtils.getMetaString(entity, "Motive");
+                String motive = CompatibilityLib.getNBTUtils().getMetaString(entity, "Motive");
                 motive = motive.replace("minecraft:", "");
                 motive = motive.replace("_", "");
                 motive = motive.toLowerCase();
@@ -117,18 +116,18 @@ public abstract class AbstractSchematic implements Schematic {
                     }
                 }
 
-                byte facingData = NBTUtils.getMetaByte(entity, "Facing");
+                byte facingData = CompatibilityLib.getNBTUtils().getMetaByte(entity, "Facing");
                 BlockFace facing = getFacing(facingData);
                 EntityData painting = com.elmakers.mine.bukkit.entity.EntityData.loadPainting(controller, position, art, facing);
                 entities.add(painting);
             } else if (type.equalsIgnoreCase("ItemFrame")) {
-                byte facing = NBTUtils.getMetaByte(entity, "Facing");
-                byte rotation = NBTUtils.getMetaByte(entity, "ItemRotation");
+                byte facing = CompatibilityLib.getNBTUtils().getMetaByte(entity, "Facing");
+                byte rotation = CompatibilityLib.getNBTUtils().getMetaByte(entity, "ItemRotation");
                 Rotation rot = Rotation.NONE;
                 if (rotation < Rotation.values().length) {
                     rot = Rotation.values()[rotation];
                 }
-                ItemStack item = CompatibilityLib.getItemUtils().getItem(NBTUtils.getNode(entity, "Item"));
+                ItemStack item = CompatibilityLib.getItemUtils().getItem(CompatibilityLib.getNBTUtils().getNode(entity, "Item"));
                 EntityData itemFrame = com.elmakers.mine.bukkit.entity.EntityData.loadItemFrame(controller, position, item, getFacing(facing), rot);
                 entities.add(itemFrame);
             }

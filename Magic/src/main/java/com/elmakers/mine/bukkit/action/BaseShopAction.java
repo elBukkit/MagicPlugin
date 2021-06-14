@@ -39,7 +39,6 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 @Deprecated
 public abstract class BaseShopAction extends BaseSpellAction implements GUIAction
@@ -346,14 +345,14 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
-        if (item == null || !NBTUtils.hasMeta(item, "shop")) {
+        if (item == null || !CompatibilityLib.getNBTUtils().hasMeta(item, "shop")) {
             if (!autoClose) {
                 mage.deactivateGUI();
             }
             return;
         }
 
-        int slotIndex = Integer.parseInt(NBTUtils.getMetaString(item, "shop"));
+        int slotIndex = Integer.parseInt(CompatibilityLib.getNBTUtils().getMetaString(item, "shop"));
         MageController controller = context.getController();
         Wand wand = mage.getActiveWand();
 
@@ -361,7 +360,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (shopItem == null) {
             return;
         }
-        String unpurchasableMessage = NBTUtils.getMetaString(shopItem.getItem(), "unpurchasable");
+        String unpurchasableMessage = CompatibilityLib.getNBTUtils().getMetaString(shopItem.getItem(), "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
             mage.deactivateGUI();
@@ -378,10 +377,10 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             context.showMessage(costString);
         } else {
             String itemName = formatItemAmount(controller, item, item.getAmount());
-            if (NBTUtils.hasMeta(item, "confirm")) {
+            if (CompatibilityLib.getNBTUtils().hasMeta(item, "confirm")) {
                 String inventoryTitle = context.getMessage("confirm_title", getDefaultMessage(context, "confirm_title")).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, 9, inventoryTitle);
-                NBTUtils.removeMeta(item, "confirm");
+                CompatibilityLib.getNBTUtils().removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
                 {
                     if (i != 4) {
@@ -642,9 +641,9 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             meta.setLore(lore);
             item.setItemMeta(meta);
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            NBTUtils.setMeta(item, "shop", Integer.toString(currentSlot));
+            CompatibilityLib.getNBTUtils().setMeta(item, "shop", Integer.toString(currentSlot));
             if (showConfirmation) {
-                NBTUtils.setMeta(item, "confirm", "true");
+                CompatibilityLib.getNBTUtils().setMeta(item, "confirm", "true");
             }
             this.showingItems.put(currentSlot, shopItem);
             itemStacks.add(item);

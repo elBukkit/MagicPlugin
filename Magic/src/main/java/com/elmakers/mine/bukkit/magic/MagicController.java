@@ -247,7 +247,6 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
@@ -1327,7 +1326,7 @@ public class MagicController implements MageController {
                 schematics.put(schematicName, new WeakReference<>(schematic));
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     try {
-                        SchematicUtils.loadSchematic(inputSchematic, schematic, getLogger());
+                        SchematicUtils.getInstance().loadSchematic(inputSchematic, schematic, getLogger());
                         info("Finished loading schematic");
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -1347,7 +1346,7 @@ public class MagicController implements MageController {
         schematics.put(schematicName, new WeakReference<>(schematic));
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                SchematicUtils.loadLegacySchematic(legacySchematic, schematic);
+                SchematicUtils.getInstance().loadLegacySchematic(legacySchematic, schematic);
                 info("Finished loading schematic");
             } catch (Exception ex) {
                 ex.printStackTrace();
@@ -4005,18 +4004,18 @@ public class MagicController implements MageController {
 
     @Override
     public void cleanItem(ItemStack item) {
-        NBTUtils.removeMeta(item, Wand.WAND_KEY);
-        NBTUtils.removeMeta(item, Wand.UPGRADE_KEY);
-        NBTUtils.removeMeta(item, "spell");
-        NBTUtils.removeMeta(item, "skill");
-        NBTUtils.removeMeta(item, "brush");
-        NBTUtils.removeMeta(item, "sp");
-        NBTUtils.removeMeta(item, "keep");
-        NBTUtils.removeMeta(item, "temporary");
-        NBTUtils.removeMeta(item, "undroppable");
-        NBTUtils.removeMeta(item, "unplaceable");
-        NBTUtils.removeMeta(item, "unstashable");
-        NBTUtils.removeMeta(item, "unmoveable");
+        CompatibilityLib.getNBTUtils().removeMeta(item, Wand.WAND_KEY);
+        CompatibilityLib.getNBTUtils().removeMeta(item, Wand.UPGRADE_KEY);
+        CompatibilityLib.getNBTUtils().removeMeta(item, "spell");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "skill");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "brush");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "sp");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "keep");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "temporary");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "undroppable");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "unplaceable");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "unstashable");
+        CompatibilityLib.getNBTUtils().removeMeta(item, "unmoveable");
     }
 
     @Override
@@ -5159,7 +5158,7 @@ public class MagicController implements MageController {
         if (magicItemKey.contains("skill:")) {
             String spellKey = magicItemKey.substring(6);
             itemStack = Wand.createSpellItem(spellKey, this, mage, null, false);
-            NBTUtils.setMeta(itemStack, "skill", "true");
+            CompatibilityLib.getNBTUtils().setMeta(itemStack, "skill", "true");
             if (callback != null) {
                 callback.updated(itemStack);
             }
@@ -5329,9 +5328,9 @@ public class MagicController implements MageController {
                             itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
                             CompatibilityLib.getItemUtils().makeUnbreakable(itemStack);
                             CompatibilityLib.getItemUtils().hideFlags(itemStack, 63);
-                            Object currencyNode = NBTUtils.createNode(itemStack, "currency");
-                            NBTUtils.setMetaInt(currencyNode, "amount", intAmount);
-                            NBTUtils.setMeta(currencyNode, "type", itemKey);
+                            Object currencyNode = CompatibilityLib.getNBTUtils().createNode(itemStack, "currency");
+                            CompatibilityLib.getNBTUtils().setMetaInt(currencyNode, "amount", intAmount);
+                            CompatibilityLib.getNBTUtils().setMeta(currencyNode, "type", itemKey);
                         }
                     }
                 }
@@ -5426,8 +5425,8 @@ public class MagicController implements MageController {
             spawnEgg.setItemMeta(meta);
 
             spawnEgg = CompatibilityLib.getItemUtils().makeReal(spawnEgg);
-            Object entityTag = NBTUtils.createNode(spawnEgg, "EntityTag");
-            NBTUtils.setMeta(entityTag, "CustomName", "{\"text\":\"" + customName + "\"}");
+            Object entityTag = CompatibilityLib.getNBTUtils().createNode(spawnEgg, "EntityTag");
+            CompatibilityLib.getNBTUtils().setMeta(entityTag, "CustomName", "{\"text\":\"" + customName + "\"}");
         }
 
         return spawnEgg;
@@ -5591,14 +5590,14 @@ public class MagicController implements MageController {
             Wand.configToItem(itemSection, item);
         } else if (itemSection.contains("spell")) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            Object spellNode = NBTUtils.createNode(item, "spell");
-            NBTUtils.setMeta(spellNode, "key", itemSection.getString("spell"));
+            Object spellNode = CompatibilityLib.getNBTUtils().createNode(item, "spell");
+            CompatibilityLib.getNBTUtils().setMeta(spellNode, "key", itemSection.getString("spell"));
             if (itemSection.contains("skill")) {
-                NBTUtils.setMeta(item, "skill", "true");
+                CompatibilityLib.getNBTUtils().setMeta(item, "skill", "true");
             }
         } else if (itemSection.contains("brush")) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            NBTUtils.setMeta(item, "brush", itemSection.getString("brush"));
+            CompatibilityLib.getNBTUtils().setMeta(item, "brush", itemSection.getString("brush"));
         }
         return item;
     }
@@ -6379,7 +6378,7 @@ public class MagicController implements MageController {
         ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
         if (CompatibilityLib.isCurrentVersion()) {
             mapItem = CompatibilityLib.getItemUtils().makeReal(mapItem);
-            NBTUtils.setMetaInt(mapItem, "map", mapId);
+            CompatibilityLib.getNBTUtils().setMetaInt(mapItem, "map", mapId);
         }
         return mapItem;
     }
@@ -6405,11 +6404,11 @@ public class MagicController implements MageController {
     public Object getWandProperty(ItemStack item, String key) {
         Preconditions.checkNotNull(key, "key");
         if (CompatibilityLib.getItemUtils().isEmpty(item)) return null;
-        Object wandNode = NBTUtils.getNode(item, Wand.WAND_KEY);
+        Object wandNode = CompatibilityLib.getNBTUtils().getNode(item, Wand.WAND_KEY);
         if (wandNode == null) return null;
         Object value = CompatibilityLib.getInventoryUtils().getMetaObject(wandNode, key);
         if (value == null) {
-            WandTemplate template = getWandTemplate(NBTUtils.getMetaString(wandNode, "template"));
+            WandTemplate template = getWandTemplate(CompatibilityLib.getNBTUtils().getMetaString(wandNode, "template"));
             if (template != null) {
                 value = template.getProperty(key);
             }
@@ -6427,7 +6426,7 @@ public class MagicController implements MageController {
             return defaultValue;
         }
 
-        Object wandNode = NBTUtils.getNode(item, Wand.WAND_KEY);
+        Object wandNode = CompatibilityLib.getNBTUtils().getNode(item, Wand.WAND_KEY);
         if (wandNode == null) {
             return defaultValue;
         }
@@ -6447,7 +6446,7 @@ public class MagicController implements MageController {
             return defaultValue;
         }
 
-        String tplName = NBTUtils.getMetaString(wandNode, "template");
+        String tplName = CompatibilityLib.getNBTUtils().getMetaString(wandNode, "template");
         WandTemplate template = getWandTemplate(tplName);
         if (template != null) {
             return template.getProperty(key, defaultValue);

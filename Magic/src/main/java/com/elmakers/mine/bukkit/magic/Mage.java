@@ -121,7 +121,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
@@ -3782,7 +3781,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (int i = 0; i < inventory.getSize(); i++) {
             ItemStack item = inventory.getItem(i);
             if (CompatibilityLib.getItemUtils().isEmpty(item)) continue;
-            if (NBTUtils.getMetaBoolean(item, "return_on_death", false)) {
+            if (CompatibilityLib.getNBTUtils().getMetaBoolean(item, "return_on_death", false)) {
                 ItemStack replacement = CompatibilityLib.getItemUtils().getReplacement(item);
                 controller.info("Replacing item on respawn: " + TextUtils.nameItem(item) + " with " + TextUtils.nameItem(replacement));
                 inventory.setItem(i, replacement);
@@ -3837,7 +3836,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean giveItem(ItemStack itemStack, boolean putInHand, boolean allowDropping) {
         if (!tryGiveItem(itemStack, putInHand)) {
-            if (!allowDropping || NBTUtils.getMetaBoolean(itemStack, "undroppable", false)) {
+            if (!allowDropping || CompatibilityLib.getNBTUtils().getMetaBoolean(itemStack, "undroppable", false)) {
                 return false;
             }
             Entity entity = getEntity();
@@ -4279,7 +4278,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (int index = 0; index < contents.length; index++)
         {
             ItemStack item = contents[index];
-            if (item != null && item.getType() != Material.AIR && NBTUtils.hasMeta(item, tag))
+            if (item != null && item.getType() != Material.AIR && CompatibilityLib.getNBTUtils().hasMeta(item, tag))
             {
                 inventory.setItem(index, null);
             }
@@ -4290,7 +4289,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (int index = 0; index < armor.length; index++)
         {
             ItemStack item = armor[index];
-            if (item != null && item.getType() != Material.AIR && NBTUtils.hasMeta(item, tag))
+            if (item != null && item.getType() != Material.AIR && CompatibilityLib.getNBTUtils().hasMeta(item, tag))
             {
                 modified = true;
                 armor[index] = null;

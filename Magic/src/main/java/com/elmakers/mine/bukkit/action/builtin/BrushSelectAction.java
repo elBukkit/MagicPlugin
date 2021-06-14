@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public class BrushSelectAction extends BaseSpellAction implements GUIAction
 {
@@ -80,7 +79,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
 
             ItemStack item = event.getCurrentItem();
-            String set = NBTUtils.getMetaString(item, "brush_set", null);
+            String set = CompatibilityLib.getNBTUtils().getMetaString(item, "brush_set", null);
             if (set != null) {
                 if (set.equals("schematics")) {
                     String inventoryTitle = context.getMessage("schematics_title", "Schematics");
@@ -94,7 +93,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     mage.activateGUI(this, displayInventory);
                     return;
                 } else if (set.equals("variants")) {
-                    MaterialAndData baseMaterial = new MaterialAndData(NBTUtils.getMetaString(item, "variant_key"));
+                    MaterialAndData baseMaterial = new MaterialAndData(CompatibilityLib.getNBTUtils().getMetaString(item, "variant_key"));
                     String baseName = getBaseName(baseMaterial);
                     String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
                     Collection<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
@@ -112,7 +111,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 
             mage.deactivateGUI();
             Currency blockCurrency = context.getController().getBlockExchangeCurrency();
-            if (event.isRightClick() && blockCurrency != null && NBTUtils.getMetaBoolean(item, "absorb", false) && !mage.isDead()) {
+            if (event.isRightClick() && blockCurrency != null && CompatibilityLib.getNBTUtils().getMetaBoolean(item, "absorb", false) && !mage.isDead()) {
                 Messages messages = context.getController().getMessages();
                 if (mage.isAtMaxCurrency(blockCurrency.getKey())) {
                     String limitMessage = messages.get("currency." + blockCurrency.getKey() + ".limit", messages.get("currency.default.limit"));
@@ -253,8 +252,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             lore.add(description.replace("$variant", materialName));
             meta.setLore(lore);
             category.setItemMeta(meta);
-            NBTUtils.setMeta(category, "brush_set", "variants");
-            NBTUtils.setMeta(category, "variant_key", key);
+            CompatibilityLib.getNBTUtils().setMeta(category, "brush_set", "variants");
+            CompatibilityLib.getNBTUtils().setMeta(category, "variant_key", key);
             brushes.add(category);
         }
 
@@ -278,7 +277,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             lore.add(context.getMessage("schematics_description", "Choose a schematic"));
             meta.setLore(lore);
             schematicItem.setItemMeta(meta);
-            NBTUtils.setMeta(schematicItem, "brush_set", "schematics");
+            CompatibilityLib.getNBTUtils().setMeta(schematicItem, "brush_set", "schematics");
         }
         if (schematicItem != null) {
             brushes.add(schematicItem);
@@ -337,7 +336,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         CompatibilityLib.getInventoryUtils().wrapText(message, lore);
         meta.setLore(lore);
         itemStack.setItemMeta(meta);
-        NBTUtils.setMetaBoolean(itemStack, "absorb", true);
+        CompatibilityLib.getNBTUtils().setMetaBoolean(itemStack, "absorb", true);
     }
 
     private String getBaseName(MaterialAndData material) {

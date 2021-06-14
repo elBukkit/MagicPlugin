@@ -71,7 +71,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
@@ -191,7 +190,7 @@ public class PlayerController implements Listener {
 
         // Immovable items don't disappear when equipped, this is to match with click behavior
         // Also allows temporary items to be held, like with the broom handle
-        if (CompatibilityLib.getItemUtils().isTemporary(next) && !NBTUtils.getMetaBoolean(next, "unmoveable", false)) {
+        if (CompatibilityLib.getItemUtils().isTemporary(next) && !CompatibilityLib.getNBTUtils().getMetaBoolean(next, "unmoveable", false)) {
             ItemStack replacement = CompatibilityLib.getItemUtils().getReplacement(next);
             inventory.setItem(event.getNewSlot(), replacement);
             mage.checkWand();
@@ -272,7 +271,7 @@ public class PlayerController implements Listener {
             mage.sendDebugMessage("SWAP ITEM: " + (main == null ? "(Nothing)" : main.getType().name())
                 + " with " + (offhand == null ? "(Nothing)" : offhand.getType().name()), DEBUG_LEVEL);
         }
-        if (NBTUtils.getMetaBoolean(offhand, "unswappable", false) || NBTUtils.getMetaBoolean(main, "unswappable", false)) {
+        if (CompatibilityLib.getNBTUtils().getMetaBoolean(offhand, "unswappable", false) || CompatibilityLib.getNBTUtils().getMetaBoolean(main, "unswappable", false)) {
             event.setCancelled(true);
         }
         mage.trigger("swap");
@@ -398,7 +397,7 @@ public class PlayerController implements Listener {
             }
         }
         if (!cancelEvent) {
-            cancelEvent = NBTUtils.getMetaBoolean(droppedItem, "undroppable", false);
+            cancelEvent = CompatibilityLib.getNBTUtils().getMetaBoolean(droppedItem, "undroppable", false);
         }
         if (cancelEvent) {
             // Work around a Spigot bug that would make the item disappear if the player's inventory is full
@@ -449,8 +448,8 @@ public class PlayerController implements Listener {
         } else {
             ItemStack mainHand = player.getInventory().getItemInMainHand();
             ItemStack offhand = player.getInventory().getItemInOffHand();
-            if (NBTUtils.getMetaBoolean(mainHand, "undroppable", false)
-                || (CompatibilityLib.getItemUtils().isEmpty(mainHand) && NBTUtils.getMetaBoolean(offhand, "undroppable", false))) {
+            if (CompatibilityLib.getNBTUtils().getMetaBoolean(mainHand, "undroppable", false)
+                || (CompatibilityLib.getItemUtils().isEmpty(mainHand) && CompatibilityLib.getNBTUtils().getMetaBoolean(offhand, "undroppable", false))) {
                 event.setCancelled(true);
                 return;
             }
@@ -625,8 +624,8 @@ public class PlayerController implements Listener {
             } else {
                 ItemStack mainHand = player.getInventory().getItemInMainHand();
                 ItemStack offhand = player.getInventory().getItemInOffHand();
-                if (NBTUtils.getMetaBoolean(mainHand, "undroppable", false)
-                    || (CompatibilityLib.getItemUtils().isEmpty(mainHand) && NBTUtils.getMetaBoolean(offhand, "undroppable", false))) {
+                if (CompatibilityLib.getNBTUtils().getMetaBoolean(mainHand, "undroppable", false)
+                    || (CompatibilityLib.getItemUtils().isEmpty(mainHand) && CompatibilityLib.getNBTUtils().getMetaBoolean(offhand, "undroppable", false))) {
                     event.setCancelled(true);
                     return;
                 }

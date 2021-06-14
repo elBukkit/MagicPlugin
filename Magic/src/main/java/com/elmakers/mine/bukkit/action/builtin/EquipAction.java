@@ -32,7 +32,6 @@ import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public class EquipAction extends BaseSpellAction
 {
@@ -218,7 +217,7 @@ public class EquipAction extends BaseSpellAction
             } else if (existingItem != null) {
                 CompatibilityLib.getItemUtils().setReplacement(equipItem, existingItem);
                 if (returnOnFinish) {
-                    NBTUtils.setMetaBoolean(equipItem, "return_on_death", true);
+                    CompatibilityLib.getNBTUtils().setMetaBoolean(equipItem, "return_on_death", true);
                 }
             }
         } else if (useItem) {

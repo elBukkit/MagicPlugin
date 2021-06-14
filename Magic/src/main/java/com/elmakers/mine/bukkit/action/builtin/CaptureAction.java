@@ -12,7 +12,6 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public class CaptureAction extends BaseSpellAction {
     private double minHealth;
@@ -70,18 +69,18 @@ public class CaptureAction extends BaseSpellAction {
         spawnEgg = CompatibilityLib.getItemUtils().makeReal(spawnEgg);
 
         // Add entity type attribute
-        NBTUtils.setMeta(savedEntity, "id", entityTypeString);
+        CompatibilityLib.getNBTUtils().setMeta(savedEntity, "id", entityTypeString);
 
         // Remove instance-specific attributes
-        NBTUtils.removeMeta(savedEntity, "Pos");
-        NBTUtils.removeMeta(savedEntity, "Motion");
-        NBTUtils.removeMeta(savedEntity, "Rotation");
-        NBTUtils.removeMeta(savedEntity, "FallDistance");
-        NBTUtils.removeMeta(savedEntity, "Dimension");
-        NBTUtils.removeMeta(savedEntity, "UUID");
-        NBTUtils.removeMeta(savedEntity, "PortalCooldown");
+        CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "Pos");
+        CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "Motion");
+        CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "Rotation");
+        CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "FallDistance");
+        CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "Dimension");
+        CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "UUID");
+        CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "PortalCooldown");
 
-        if (!NBTUtils.setMetaNode(spawnEgg, "EntityTag", savedEntity)) {
+        if (!CompatibilityLib.getNBTUtils().setMetaNode(spawnEgg, "EntityTag", savedEntity)) {
             return SpellResult.FAIL;
         }
         targetEntity.getWorld().dropItemNaturally(targetEntity.getLocation(), spawnEgg);

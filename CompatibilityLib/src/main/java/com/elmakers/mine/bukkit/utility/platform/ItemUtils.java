@@ -8,6 +8,8 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+
 public class ItemUtils {
 
     public Object getHandle(org.bukkit.inventory.ItemStack stack) {
@@ -127,7 +129,7 @@ public class ItemUtils {
         try {
             Object tagObject = ItemUtils.this.getTag(stack);
             if (tagObject == null) return false;
-            unbreakableFlag = NBTUtils.getMetaBoolean(tagObject, "Unbreakable");
+            unbreakableFlag = CompatibilityLib.getNBTUtils().getMetaBoolean(tagObject, "Unbreakable");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -153,7 +155,7 @@ public class ItemUtils {
     }
 
     public void removeUnbreakable(ItemStack stack) {
-        NBTUtils.removeMeta(stack, "Unbreakable");
+        CompatibilityLib.getNBTUtils().removeMeta(stack, "Unbreakable");
     }
 
     public void hideFlags(ItemStack stack, int flags) {
@@ -174,37 +176,37 @@ public class ItemUtils {
     }
 
     public void makeTemporary(ItemStack itemStack, String message) {
-        NBTUtils.setMeta(itemStack, "temporary", message);
+        CompatibilityLib.getNBTUtils().setMeta(itemStack, "temporary", message);
     }
 
     public boolean isTemporary(ItemStack itemStack) {
-        return NBTUtils.hasMeta(itemStack, "temporary");
+        return CompatibilityLib.getNBTUtils().hasMeta(itemStack, "temporary");
     }
 
     public void makeUnplaceable(ItemStack itemStack) {
-        NBTUtils.setMeta(itemStack, "unplaceable", "true");
+        CompatibilityLib.getNBTUtils().setMeta(itemStack, "unplaceable", "true");
     }
 
     public void removeUnplaceable(ItemStack itemStack) {
-        NBTUtils.removeMeta(itemStack, "unplaceable");
+        CompatibilityLib.getNBTUtils().removeMeta(itemStack, "unplaceable");
     }
 
     public boolean isUnplaceable(ItemStack itemStack) {
-        return NBTUtils.hasMeta(itemStack, "unplaceable");
+        return CompatibilityLib.getNBTUtils().hasMeta(itemStack, "unplaceable");
     }
 
     public String getTemporaryMessage(ItemStack itemStack) {
-        return NBTUtils.getMetaString(itemStack, "temporary");
+        return CompatibilityLib.getNBTUtils().getMetaString(itemStack, "temporary");
     }
 
     public void setReplacement(ItemStack itemStack, ItemStack replacement) {
         YamlConfiguration configuration = new YamlConfiguration();
         configuration.set("item", replacement);
-        NBTUtils.setMeta(itemStack, "replacement", configuration.saveToString());
+        CompatibilityLib.getNBTUtils().setMeta(itemStack, "replacement", configuration.saveToString());
     }
 
     public ItemStack getReplacement(ItemStack itemStack) {
-        String serialized = NBTUtils.getMetaString(itemStack, "replacement");
+        String serialized = CompatibilityLib.getNBTUtils().getMetaString(itemStack, "replacement");
         if (serialized == null || serialized.isEmpty()) {
             return null;
         }
@@ -250,7 +252,7 @@ public class ItemUtils {
 
             for (String value : values) {
                 Object nbtString = ItemUtils.this.getTagString(value);
-                NBTUtils.addToList(listMeta, nbtString);
+                CompatibilityLib.getNBTUtils().addToList(listMeta, nbtString);
             }
 
             NMSUtils.class_NBTTagCompound_setMethod.invoke(nbtBase, tag, listMeta);

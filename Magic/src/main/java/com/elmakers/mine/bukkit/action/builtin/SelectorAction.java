@@ -55,7 +55,6 @@ import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -1066,7 +1065,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             if (unavailable) {
                 if (unavailableMessage != null && !unavailableMessage.isEmpty()) {
-                    NBTUtils.setMeta(icon, "unpurchasable", unavailableMessage);
+                    CompatibilityLib.getNBTUtils().setMeta(icon, "unpurchasable", unavailableMessage);
                 } else {
                     // We're not going to show unavailable items without a reason.
                     showUnavailable = false;
@@ -1074,7 +1073,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             if (showConfirmation) {
-                NBTUtils.setMeta(icon, "confirm", "true");
+                CompatibilityLib.getNBTUtils().setMeta(icon, "confirm", "true");
             }
         }
 
@@ -1228,7 +1227,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
                             option.updateIcon(context);
                             ItemStack icon = option.getIcon();
-                            NBTUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
+                            CompatibilityLib.getNBTUtils().setMeta(icon, "slot", Integer.toString(entry.getKey()));
                             displayInventory.setItem(entry.getKey(), icon);
                         }
                     }
@@ -1522,14 +1521,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
-        if (item == null || !NBTUtils.hasMeta(item, "slot")) {
+        if (item == null || !CompatibilityLib.getNBTUtils().hasMeta(item, "slot")) {
             if (defaultConfiguration.autoClose) {
                 mage.deactivateGUI();
             }
             return;
         }
 
-        int slotIndex = Integer.parseInt(NBTUtils.getMetaString(item, "slot"));
+        int slotIndex = Integer.parseInt(CompatibilityLib.getNBTUtils().getMetaString(item, "slot"));
         MageController controller = context.getController();
 
         SelectorOption option = showingItems.get(slotIndex);
@@ -1537,7 +1536,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             return;
         }
 
-        String unpurchasableMessage = NBTUtils.getMetaString(item, "unpurchasable");
+        String unpurchasableMessage = CompatibilityLib.getNBTUtils().getMetaString(item, "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
             if (option.autoClose) {
@@ -1563,10 +1562,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
             context.showMessage(costDescription);
         } else {
             String itemName = option.getName();
-            if (NBTUtils.hasMeta(item, "confirm")) {
+            if (CompatibilityLib.getNBTUtils().hasMeta(item, "confirm")) {
                 String inventoryTitle = getConfirmTitle(option).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, 9, inventoryTitle);
-                NBTUtils.removeMeta(item, "confirm");
+                CompatibilityLib.getNBTUtils().removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
                 {
                     if (i != 4) {
@@ -1771,7 +1770,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         for (Map.Entry<Integer, SelectorOption> entry : showingItems.entrySet()) {
             ItemStack icon = entry.getValue().getIcon();
-            NBTUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));
+            CompatibilityLib.getNBTUtils().setMeta(icon, "slot", Integer.toString(entry.getKey()));
             displayInventory.setItem(entry.getKey(), icon);
         }
 

@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public class MagicItemCommandExecutor extends MagicTabExecutor {
 
@@ -348,18 +347,18 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         if (args.length == 1) {
             int i = 0;
             while (node != null && i < path.length - 1) {
-                node = NBTUtils.getNode(node, path[i]);
+                node = CompatibilityLib.getNBTUtils().getNode(node, path[i]);
                 i++;
             }
             if (node == null) {
                 sender.sendMessage(ChatColor.RED + "Item does not have path: " + ChatColor.DARK_RED + tag);
                 return true;
             }
-            if (!NBTUtils.containsNode(node, path[path.length - 1])) {
+            if (!CompatibilityLib.getNBTUtils().containsNode(node, path[path.length - 1])) {
                 sender.sendMessage(ChatColor.RED + "Item does not have tag: " + ChatColor.DARK_RED + tag);
                 return true;
             }
-            NBTUtils.removeMeta(node, path[path.length - 1]);
+            CompatibilityLib.getNBTUtils().removeMeta(node, path[path.length - 1]);
             item.setItemMeta(newItem.getItemMeta());
             sender.sendMessage(ChatColor.GREEN + "Removed: " + ChatColor.DARK_GREEN + tag);
             return true;
@@ -372,9 +371,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             if (i < path.length - 1) {
-                node = NBTUtils.createNode(node, key);
+                node = CompatibilityLib.getNBTUtils().createNode(node, key);
             } else {
-                NBTUtils.setMetaTyped(node, key, value);
+                CompatibilityLib.getNBTUtils().setMetaTyped(node, key, value);
             }
         }
         item.setItemMeta(newItem.getItemMeta());
