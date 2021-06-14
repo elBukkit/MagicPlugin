@@ -32,8 +32,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.google.common.collect.Multimap;
 
 @SuppressWarnings("deprecation")
-public class InventoryUtils extends NMSUtils
-{
+public class InventoryUtils {
     public static CurrencyAmount getCurrency(ItemStack item) {
         if (ItemUtils.isEmpty(item)) return null;
 
@@ -121,11 +120,11 @@ public class InventoryUtils extends NMSUtils
     public static boolean addTagsToNBT(Map<String, Object> tags, Object node)
     {
         if (node == null) {
-            getLogger().warning("Trying to save tags to a null node");
+            NMSUtils.getLogger().warning("Trying to save tags to a null node");
             return false;
         }
-        if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            getLogger().warning("Trying to save tags to a non-CompoundTag");
+        if (!NMSUtils.class_NBTTagCompound.isAssignableFrom(node.getClass())) {
+            NMSUtils.getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
 
@@ -134,9 +133,9 @@ public class InventoryUtils extends NMSUtils
             try {
                 Object wrappedTag = wrapInTag(value);
                 if (wrappedTag == null) continue;
-                class_NBTTagCompound_setMethod.invoke(node, tag.getKey(), wrappedTag);
+                NMSUtils.class_NBTTagCompound_setMethod.invoke(node, tag.getKey(), wrappedTag);
             } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Error saving item data tag " + tag.getKey(), ex);
+                NMSUtils.getLogger().log(Level.WARNING, "Error saving item data tag " + tag.getKey(), ex);
             }
         }
 
@@ -146,11 +145,11 @@ public class InventoryUtils extends NMSUtils
     public static boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
     {
         if (node == null) {
-            getLogger().warning("Trying to save tags to a null node");
+            NMSUtils.getLogger().warning("Trying to save tags to a null node");
             return false;
         }
-        if (!class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            getLogger().warning("Trying to save tags to a non-CompoundTag");
+        if (!NMSUtils.class_NBTTagCompound.isAssignableFrom(node.getClass())) {
+            NMSUtils.getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
         
@@ -174,9 +173,9 @@ public class InventoryUtils extends NMSUtils
             try {
                 Object wrappedTag = wrapInTag(value);
                 if (wrappedTag == null) continue;
-                class_NBTTagCompound_setMethod.invoke(node, tagName, wrappedTag);
+                NMSUtils.class_NBTTagCompound_setMethod.invoke(node, tagName, wrappedTag);
             } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Error saving item data tag " + tagName, ex);
+                NMSUtils.getLogger().log(Level.WARNING, "Error saving item data tag " + tagName, ex);
             }
         }
 
@@ -195,27 +194,27 @@ public class InventoryUtils extends NMSUtils
         if (value == null) return null;
         Object wrappedValue = null;
         if (value instanceof Boolean) {
-            wrappedValue = class_NBTTagByte_constructor.newInstance((byte)((boolean)value ? 1 : 0));
+            wrappedValue = NMSUtils.class_NBTTagByte_constructor.newInstance((byte)((boolean)value ? 1 : 0));
         } else if (value instanceof Double) {
-            wrappedValue = class_NBTTagDouble_constructor.newInstance((Double)value);
+            wrappedValue = NMSUtils.class_NBTTagDouble_constructor.newInstance((Double)value);
         } else if (value instanceof Float) {
-            wrappedValue = class_NBTTagFloat_constructor.newInstance((Float)value);
+            wrappedValue = NMSUtils.class_NBTTagFloat_constructor.newInstance((Float)value);
         } else if (value instanceof Integer) {
-            wrappedValue = class_NBTTagInt_constructor.newInstance((Integer)value);
+            wrappedValue = NMSUtils.class_NBTTagInt_constructor.newInstance((Integer)value);
         } else if (value instanceof Long) {
-            wrappedValue = class_NBTTagLong_constructor.newInstance((Long)value);
+            wrappedValue = NMSUtils.class_NBTTagLong_constructor.newInstance((Long)value);
         } else if (value instanceof ConfigurationSection) {
-            wrappedValue = class_NBTTagCompound_constructor.newInstance();
+            wrappedValue = NMSUtils.class_NBTTagCompound_constructor.newInstance();
             saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);
         } else if (value instanceof Map) {
-            wrappedValue = class_NBTTagCompound_constructor.newInstance();
+            wrappedValue = NMSUtils.class_NBTTagCompound_constructor.newInstance();
             @SuppressWarnings("unchecked")
             Map<String, Object> valueMap = (Map<String, Object>)value;
             addTagsToNBT(valueMap, wrappedValue);
         } else if (value instanceof Collection) {
             @SuppressWarnings("unchecked")
             Collection<Object> list = (Collection<Object>)value;
-            Object listMeta = class_NBTTagList_constructor.newInstance();
+            Object listMeta = NMSUtils.class_NBTTagList_constructor.newInstance();
             if (list.size() > 1 && list instanceof List) {
                 @SuppressWarnings("unchecked")
                 List<Object> checkList = (List<Object>)value;
@@ -235,11 +234,11 @@ public class InventoryUtils extends NMSUtils
                         }
                     }
                     if (first.equals("B")) {
-                        wrappedValue = class_NBTTagByteArray_constructor.newInstance(makeByteArray((List<Object>)list));
-                    } else if (first.equals("I") || class_NBTTagLongArray_constructor == null) {
-                        wrappedValue = class_NBTTagIntArray_constructor.newInstance(makeIntArray((List<Object>)list));
+                        wrappedValue = NMSUtils.class_NBTTagByteArray_constructor.newInstance(makeByteArray((List<Object>)list));
+                    } else if (first.equals("I") || NMSUtils.class_NBTTagLongArray_constructor == null) {
+                        wrappedValue = NMSUtils.class_NBTTagIntArray_constructor.newInstance(makeIntArray((List<Object>)list));
                     } else if (first.equals("L")) {
-                        wrappedValue = class_NBTTagLongArray_constructor.newInstance(makeLongArray((List<Object>)list));
+                        wrappedValue = NMSUtils.class_NBTTagLongArray_constructor.newInstance(makeLongArray((List<Object>)list));
                     }
                 }
             }
@@ -252,7 +251,7 @@ public class InventoryUtils extends NMSUtils
                 wrappedValue = listMeta;
             }
         } else {
-            wrappedValue = class_NBTTagString_consructor.newInstance(value.toString());
+            wrappedValue = NMSUtils.class_NBTTagString_consructor.newInstance(value.toString());
         }
 
         return wrappedValue;
@@ -328,12 +327,12 @@ public class InventoryUtils extends NMSUtils
 
     @SuppressWarnings("unchecked")
     public static Set<String> getTagKeys(Object tag) {
-        if (tag == null || class_NBTTagCompound_getKeysMethod == null) {
+        if (tag == null || NMSUtils.class_NBTTagCompound_getKeysMethod == null) {
             return null;
         }
 
         try {
-            return (Set<String>) class_NBTTagCompound_getKeysMethod.invoke(tag);
+            return (Set<String>) NMSUtils.class_NBTTagCompound_getKeysMethod.invoke(tag);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -342,7 +341,7 @@ public class InventoryUtils extends NMSUtils
 
     public static Object getMetaObject(Object tag, String key) {
         try {
-            Object metaBase = class_NBTTagCompound_getMethod.invoke(tag, key);
+            Object metaBase = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, key);
             return getTagValue(metaBase);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -353,26 +352,26 @@ public class InventoryUtils extends NMSUtils
     public static Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
         if (tag == null) return null;
         Object value = null;
-        if (class_NBTTagDouble.isAssignableFrom(tag.getClass())) {
-            value = class_NBTTagDouble_dataField.get(tag);
-        } else if (class_NBTTagInt.isAssignableFrom(tag.getClass())) {
-            value = class_NBTTagInt_dataField.get(tag);
-        } else if (class_NBTTagLong.isAssignableFrom(tag.getClass())) {
-            value = class_NBTTagLong_dataField.get(tag);
-        } else if (class_NBTTagFloat.isAssignableFrom(tag.getClass())) {
-            value = class_NBTTagFloat_dataField.get(tag);
-        } else if (class_NBTTagShort.isAssignableFrom(tag.getClass())) {
-            value = class_NBTTagShort_dataField.get(tag);
-        } else if (class_NBTTagByte.isAssignableFrom(tag.getClass())) {
+        if (NMSUtils.class_NBTTagDouble.isAssignableFrom(tag.getClass())) {
+            value = NMSUtils.class_NBTTagDouble_dataField.get(tag);
+        } else if (NMSUtils.class_NBTTagInt.isAssignableFrom(tag.getClass())) {
+            value = NMSUtils.class_NBTTagInt_dataField.get(tag);
+        } else if (NMSUtils.class_NBTTagLong.isAssignableFrom(tag.getClass())) {
+            value = NMSUtils.class_NBTTagLong_dataField.get(tag);
+        } else if (NMSUtils.class_NBTTagFloat.isAssignableFrom(tag.getClass())) {
+            value = NMSUtils.class_NBTTagFloat_dataField.get(tag);
+        } else if (NMSUtils.class_NBTTagShort.isAssignableFrom(tag.getClass())) {
+            value = NMSUtils.class_NBTTagShort_dataField.get(tag);
+        } else if (NMSUtils.class_NBTTagByte.isAssignableFrom(tag.getClass())) {
             // This is kind of nasty. Really need a type-juggling container class for config properties.
-            value = class_NBTTagByte_dataField.get(tag);
+            value = NMSUtils.class_NBTTagByte_dataField.get(tag);
             if (value != null && value.equals((byte)0)) {
                 value = false;
             } else if (value != null && value.equals((byte)1)) {
                 value = true;
             }
-        } else if (class_NBTTagList.isAssignableFrom(tag.getClass())) {
-            List<?> items = (List<?>)class_NBTTagList_list.get(tag);
+        } else if (NMSUtils.class_NBTTagList.isAssignableFrom(tag.getClass())) {
+            List<?> items = (List<?>) NMSUtils.class_NBTTagList_list.get(tag);
             List<Object> converted = new ArrayList<>();
             for (Object baseTag : items) {
                 Object convertedBase = getTagValue(baseTag);
@@ -381,13 +380,13 @@ public class InventoryUtils extends NMSUtils
                 }
             }
             value = converted;
-        } else if (class_NBTTagString.isAssignableFrom(tag.getClass())) {
-            value = class_NBTTagString_dataField.get(tag);
-        } else if (class_NBTTagCompound.isAssignableFrom(tag.getClass())) {
+        } else if (NMSUtils.class_NBTTagString.isAssignableFrom(tag.getClass())) {
+            value = NMSUtils.class_NBTTagString_dataField.get(tag);
+        } else if (NMSUtils.class_NBTTagCompound.isAssignableFrom(tag.getClass())) {
             Map<String, Object> compoundMap = new HashMap<>();
             Set<String> keys = getTagKeys(tag);
             for (String key : keys) {
-                Object baseTag = class_NBTTagCompound_getMethod.invoke(tag, key);
+                Object baseTag = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, key);
                 Object convertedBase = getTagValue(baseTag);
                 if (convertedBase != null) {
                     compoundMap.put(key, convertedBase);
@@ -401,7 +400,7 @@ public class InventoryUtils extends NMSUtils
 
     public static boolean inventorySetItem(Inventory inventory, int index, ItemStack item) {
         try {
-            Method setItemMethod = class_CraftInventoryCustom.getMethod("setItem", Integer.TYPE, ItemStack.class);
+            Method setItemMethod = NMSUtils.class_CraftInventoryCustom.getMethod("setItem", Integer.TYPE, ItemStack.class);
             setItemMethod.invoke(inventory, index, item);
             return true;
         } catch(Throwable ex) {
@@ -414,7 +413,7 @@ public class InventoryUtils extends NMSUtils
         try {
             Method getResultsMethod = inventory.getClass().getMethod("getResultInventory");
             Object inv = getResultsMethod.invoke(inventory);
-            Method setItemMethod = inv.getClass().getMethod("setItem", Integer.TYPE, class_ItemStack);
+            Method setItemMethod = inv.getClass().getMethod("setItem", Integer.TYPE, NMSUtils.class_ItemStack);
             setItemMethod.invoke(inv, 0, ItemUtils.getHandle(item));
             return true;
         } catch(Throwable ex) {
@@ -428,7 +427,7 @@ public class InventoryUtils extends NMSUtils
             // Using a fixed non-random UUID here so skulls of the same type can stack
             return setSkullURL(itemStack, new URL(url), SKULL_UUID);
         } catch (MalformedURLException e) {
-            getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
+            NMSUtils.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
         return itemStack;
     }
@@ -458,9 +457,9 @@ public class InventoryUtils extends NMSUtils
                 return itemStack;
             }
 
-            Object gameProfile = class_GameProfile_constructor.newInstance(id, name);
+            Object gameProfile = NMSUtils.class_GameProfile_constructor.newInstance(id, name);
             @SuppressWarnings("unchecked")
-            Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(gameProfile);
+            Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(gameProfile);
             if (properties == null) {
                 return itemStack;
             }
@@ -472,7 +471,7 @@ public class InventoryUtils extends NMSUtils
             String textureJSON = "{textures:{SKIN:{url:\"" + url + "\"}}}";
             String encoded = Base64Coder.encodeString(textureJSON);
 
-            properties.put("textures", class_GameProfileProperty_noSignatureConstructor.newInstance("textures", encoded));
+            properties.put("textures", NMSUtils.class_GameProfileProperty_noSignatureConstructor.newInstance("textures", encoded));
 
             ItemMeta skullMeta = itemStack.getItemMeta();
             setSkullProfile(skullMeta, gameProfile);
@@ -498,15 +497,15 @@ public class InventoryUtils extends NMSUtils
         if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
-        return class_CraftMetaSkull.isInstance(meta);
+        return NMSUtils.class_CraftMetaSkull.isInstance(meta);
     }
 
     public static Object getSkullProfile(ItemMeta itemMeta)
     {
         Object profile = null;
         try {
-            if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return null;
-            profile = class_CraftMetaSkull_profile.get(itemMeta);
+            if (itemMeta == null || !NMSUtils.class_CraftMetaSkull.isInstance(itemMeta)) return null;
+            profile = NMSUtils.class_CraftMetaSkull_profile.get(itemMeta);
         } catch (Exception ex) {
 
         }
@@ -516,11 +515,11 @@ public class InventoryUtils extends NMSUtils
     public static boolean setSkullProfile(ItemMeta itemMeta, Object data)
     {
         try {
-            if (itemMeta == null || !class_CraftMetaSkull.isInstance(itemMeta)) return false;
-            if (class_CraftMetaSkull_setProfileMethod != null) {
-                class_CraftMetaSkull_setProfileMethod.invoke(itemMeta, data);
+            if (itemMeta == null || !NMSUtils.class_CraftMetaSkull.isInstance(itemMeta)) return false;
+            if (NMSUtils.class_CraftMetaSkull_setProfileMethod != null) {
+                NMSUtils.class_CraftMetaSkull_setProfileMethod.invoke(itemMeta, data);
             } else {
-                class_CraftMetaSkull_profile.set(itemMeta, data);
+                NMSUtils.class_CraftMetaSkull_profile.set(itemMeta, data);
             }
             return true;
         } catch (Exception ex) {
@@ -533,8 +532,8 @@ public class InventoryUtils extends NMSUtils
     {
         Object profile = null;
         try {
-            if (state == null || !class_CraftSkull.isInstance(state)) return false;
-            profile = class_CraftSkull_profile.get(state);
+            if (state == null || !NMSUtils.class_CraftSkull.isInstance(state)) return false;
+            profile = NMSUtils.class_CraftSkull_profile.get(state);
         } catch (Exception ex) {
 
         }
@@ -544,8 +543,8 @@ public class InventoryUtils extends NMSUtils
     public static boolean setSkullProfile(Skull state, Object data)
     {
         try {
-            if (state == null || !class_CraftSkull.isInstance(state)) return false;
-            class_CraftSkull_profile.set(state, data);
+            if (state == null || !NMSUtils.class_CraftSkull.isInstance(state)) return false;
+            NMSUtils.class_CraftSkull_profile.set(state, data);
             return true;
         } catch (Exception ex) {
 
@@ -616,9 +615,9 @@ public class InventoryUtils extends NMSUtils
     public static void openSign(Player player, Location signBlock) {
         try {
             Object tileEntity = CompatibilityUtils.getTileEntity(signBlock);
-            Object playerHandle = getHandle(player);
+            Object playerHandle = NMSUtils.getHandle(player);
             if (tileEntity != null && playerHandle != null) {
-                class_EntityPlayer_openSignMethod.invoke(playerHandle, tileEntity);
+                NMSUtils.class_EntityPlayer_openSignMethod.invoke(playerHandle, tileEntity);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -657,7 +656,7 @@ public class InventoryUtils extends NMSUtils
                             AttributeModifier.Operation eOperation = AttributeModifier.Operation.valueOf(operationKey.toUpperCase());
                             operation = eOperation.ordinal();
                         } catch (Exception ex) {
-                            getLogger().warning("Invalid operation " + operationKey);
+                            NMSUtils.getLogger().warning("Invalid operation " + operationKey);
                         }
                     }
                 } else {
@@ -665,10 +664,10 @@ public class InventoryUtils extends NMSUtils
                 }
                 Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                 if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot, operation)) {
-                    getLogger().warning("Failed to set attribute: " + attributeKey);
+                    NMSUtils.getLogger().warning("Failed to set attribute: " + attributeKey);
                 }
             } catch (Exception ex) {
-                getLogger().warning("Invalid attribute: " + attributeKey);
+                NMSUtils.getLogger().warning("Invalid attribute: " + attributeKey);
             }
         }
     }
@@ -687,7 +686,7 @@ public class InventoryUtils extends NMSUtils
                     item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
                     keep.add(enchantment);
                 } catch (Exception ex) {
-                    getLogger().warning("Invalid enchantment: " + enchantKey);
+                    NMSUtils.getLogger().warning("Invalid enchantment: " + enchantKey);
                 }
             }
         }
@@ -717,7 +716,7 @@ public class InventoryUtils extends NMSUtils
                         addedAny = true;
                     }
                 } catch (Exception ex) {
-                    getLogger().warning("Invalid enchantment: " + enchantKey);
+                    NMSUtils.getLogger().warning("Invalid enchantment: " + enchantKey);
                 }
             }
         }

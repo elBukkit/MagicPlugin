@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class SkinUtils extends NMSUtils {
+public class SkinUtils {
     public static boolean DEBUG = false;
 
     private static Plugin plugin;
@@ -38,7 +38,7 @@ public class SkinUtils extends NMSUtils {
     private static final Map<String, UUID> uuidCache = new HashMap<>();
     private static final Map<String, Object> loadingUUIDs = new HashMap<>();
     private static final Map<UUID, Object> loadingProfiles = new HashMap<>();
-    
+
     public static class ProfileResponse {
         private final UUID uuid;
         private final String playerName;
@@ -67,21 +67,21 @@ public class SkinUtils extends NMSUtils {
                 JsonObject profileObject = (JsonObject)profileJson;
                 try {
                     @SuppressWarnings("unchecked")
-                    Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(gameProfile);
+                    Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(gameProfile);
                     JsonArray propertiesArray = new JsonArray();
 
                     for (Map.Entry<String, Object> entry : properties.entries()) {
                         JsonObject newObject = new JsonObject();
                         newObject.addProperty("name", entry.getKey());
-                        String value = (String)class_GameProfileProperty_value.get(entry.getValue());
+                        String value = (String) NMSUtils.class_GameProfileProperty_value.get(entry.getValue());
                         newObject.addProperty("value", value);
-                        String signature = (String)class_GameProfileProperty_signature.get(entry.getValue());
+                        String signature = (String) NMSUtils.class_GameProfileProperty_signature.get(entry.getValue());
                         newObject.addProperty("signature", signature);
                         propertiesArray.add(newObject);
                     }
                     profileObject.add("properties", propertiesArray);
                 } catch (Exception ex) {
-                    getLogger().log(Level.WARNING, "Error serializing profile for " + onlinePlayer.getName(), ex);
+                    NMSUtils.getLogger().log(Level.WARNING, "Error serializing profile for " + onlinePlayer.getName(), ex);
                 }
             }
 
@@ -112,9 +112,9 @@ public class SkinUtils extends NMSUtils {
         public Object getGameProfile() {
             Object gameProfile = null;
             try {
-                gameProfile = class_GameProfile_constructor.newInstance(uuid, playerName);
+                gameProfile = NMSUtils.class_GameProfile_constructor.newInstance(uuid, playerName);
                 @SuppressWarnings("unchecked")
-                Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(gameProfile);
+                Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(gameProfile);
                 JsonElement json = new JsonParser().parse(profileJSON);
                 if (json != null && json.isJsonObject()) {
                     JsonObject profile = json.getAsJsonObject();
@@ -126,18 +126,18 @@ public class SkinUtils extends NMSUtils {
                                 String name = property.get("name").getAsString();
                                 String value = property.get("value").getAsString();
                                 String signature = property.has("signature") ? property.get("signature").getAsString() : null;
-                                Object newProperty = class_GameProfileProperty_constructor.newInstance(name, value, signature);
+                                Object newProperty = NMSUtils.class_GameProfileProperty_constructor.newInstance(name, value, signature);
                                 properties.put(name, newProperty);
                             }
                         }
                     }
                 }
             } catch (Exception ex) {
-                getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
+                NMSUtils.getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
             }
             if (DEBUG) {
-                getLogger().info("Got profile: " + gameProfile);
-                getLogger().info(getProfileURL(gameProfile));
+                NMSUtils.getLogger().info("Got profile: " + gameProfile);
+                NMSUtils.getLogger().info(getProfileURL(gameProfile));
             }
             return gameProfile;
         }
@@ -186,12 +186,12 @@ public class SkinUtils extends NMSUtils {
         }
         try {
             @SuppressWarnings("unchecked")
-            Multimap<String, Object> properties = (Multimap<String, Object>)class_GameProfile_properties.get(profile);
+            Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(profile);
             Collection<Object> textures = properties.get("textures");
             if (textures != null && textures.size() > 0)
             {
                 Object textureProperty = textures.iterator().next();
-                String texture = (String)class_GameProfileProperty_value.get(textureProperty);
+                String texture = (String) NMSUtils.class_GameProfileProperty_value.get(textureProperty);
                 String decoded = Base64Coder.decodeString(texture);
                 url = getTextureURL(decoded);
             }
@@ -202,9 +202,9 @@ public class SkinUtils extends NMSUtils {
     }
 
     private static Object getProfile(Player player) {
-        if (class_CraftPlayer_getProfileMethod == null) return null;
+        if (NMSUtils.class_CraftPlayer_getProfileMethod == null) return null;
         try {
-            return class_CraftPlayer_getProfileMethod.invoke(player);
+            return NMSUtils.class_CraftPlayer_getProfileMethod.invoke(player);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -298,7 +298,7 @@ public class SkinUtils extends NMSUtils {
                             config.set("uuid", uuid.toString());
                             config.save(playerCache);
                         } catch (IOException ex) {
-                            getLogger().log(Level.WARNING, "Error saving to player UUID cache", ex);
+                            NMSUtils.getLogger().log(Level.WARNING, "Error saving to player UUID cache", ex);
                         }
                     }
                 });
@@ -349,7 +349,7 @@ public class SkinUtils extends NMSUtils {
                         } else {
                             String uuidJSON = fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
                             if (uuidJSON.isEmpty()) {
-                                if (DEBUG) getLogger().warning("Got empty UUID JSON for " + playerName);
+                                if (DEBUG) NMSUtils.getLogger().warning("Got empty UUID JSON for " + playerName);
                                 synchronizeCallbackUUID(callback, null);
                                 return;
                             }
@@ -361,11 +361,11 @@ public class SkinUtils extends NMSUtils {
                             }
                             if (uuidString == null) {
                                 engageHoldoff();
-                                if (DEBUG) getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
+                                if (DEBUG) NMSUtils.getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
                                 synchronizeCallbackUUID(callback, null);
                                 return;
                             }
-                            if (DEBUG) getLogger().info("Got UUID: " + uuidString + " for " + playerName);
+                            if (DEBUG) NMSUtils.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
                             uuid = UUID.fromString(addDashes(uuidString));
 
                             YamlConfiguration config = new YamlConfiguration();
@@ -378,9 +378,9 @@ public class SkinUtils extends NMSUtils {
                         }
                     } catch (Exception ex) {
                         if (DEBUG) {
-                            getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes", ex);
+                            NMSUtils.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes", ex);
                         } else {
-                            getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes");
+                            NMSUtils.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes");
                         }
                         engageHoldoff();
                         uuid = null;
@@ -438,7 +438,7 @@ public class SkinUtils extends NMSUtils {
                             response.save(config);
                             config.save(playerCache);
                         } catch (IOException ex) {
-                            getLogger().log(Level.WARNING, "Error saving to player profile cache", ex);
+                            NMSUtils.getLogger().log(Level.WARNING, "Error saving to player profile cache", ex);
                         }
                     }
                 });
@@ -491,22 +491,22 @@ public class SkinUtils extends NMSUtils {
                     }
 
                     if (DEBUG) {
-                        getLogger().info("Fetching profile for " + uuid);
+                        NMSUtils.getLogger().info("Fetching profile for " + uuid);
                     }
                     try {
                         String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
                         if (profileJSON.isEmpty()) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
+                            if (DEBUG) NMSUtils.getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
-                        if (DEBUG) getLogger().info("Got profile: " + profileJSON);
+                        if (DEBUG) NMSUtils.getLogger().info("Got profile: " + profileJSON);
                         JsonElement element = new JsonParser().parse(profileJSON);
                         if (element == null || !element.isJsonObject()) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
+                            if (DEBUG) NMSUtils.getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
 
@@ -529,15 +529,15 @@ public class SkinUtils extends NMSUtils {
                         if (encodedTextures == null) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (DEBUG) getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
+                            if (DEBUG) NMSUtils.getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
                             return;
                         }
                         String decodedTextures = Base64Coder.decodeString(encodedTextures);
-                        if (DEBUG) getLogger().info("Decoded textures: " + decodedTextures);
+                        if (DEBUG) NMSUtils.getLogger().info("Decoded textures: " + decodedTextures);
                         String skinURL = getTextureURL(decodedTextures);
 
                         // A null skin URL here is normal if the player has no skin.
-                        if (DEBUG) getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
+                        if (DEBUG) NMSUtils.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
                         ProfileResponse response = new ProfileResponse(uuid, profileJson.get("name").getAsString(), skinURL, profileJSON);
                         synchronized (responseCache) {
                             responseCache.put(uuid, response);
@@ -549,9 +549,9 @@ public class SkinUtils extends NMSUtils {
                         holdoff = 0;
                     } catch (Exception ex) {
                         if (DEBUG) {
-                            getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes", ex);
+                            NMSUtils.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes", ex);
                         } else {
-                            getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes");
+                            NMSUtils.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes");
                         }
                         engageHoldoff();
                         synchronizeCallbackProfile(callback, null);
