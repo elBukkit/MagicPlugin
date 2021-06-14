@@ -6,9 +6,9 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
 
-public class Platform extends PlatformBase {
+public class LegacyPlatform extends PlatformBase {
 
-    public Platform(Plugin plugin, Logger logger) {
+    public LegacyPlatform(Plugin plugin, Logger logger) {
         super(plugin, logger);
         valid = NMSUtils.initialize(this);
         compatibilityUtils = new CompatibilityUtils(this);

@@ -433,7 +433,7 @@ public class NMSUtils {
 
     protected static boolean chatPacketHasUUID = false;
 
-    public static boolean initialize(Platform platform) {
+    public static boolean initialize(LegacyPlatform platform) {
         Logger logger = platform.getLogger();
         versionPrefix = CompatibilityConstants.getVersionPrefix();
         try {

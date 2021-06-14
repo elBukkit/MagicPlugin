@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.lang.reflect.Constructor;
 import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -15,15 +17,41 @@ import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
+import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.legacy.Platform;
+import com.elmakers.mine.bukkit.utility.platform.legacy.LegacyPlatform;
 
 public class CompatibilityLib {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
-        platform = new Platform(plugin, logger);
+        int[] version = getServerVersion();
+        String versionDescription = StringUtils.join(ArrayUtils.toObject(version), ".");
+        if (version.length < 2 || version[0] != 1) {
+            logger.severe("Could not parse server version: " + versionDescription);
+            return false;
+        }
+        int minorVersion = version[1];
+        if (minorVersion < 9) {
+            logger.severe("Not compatible with version: " + versionDescription);
+            return false;
+        }
+        if (minorVersion > 16) {
+            logger.info("Loading modern compatibility layer for server version " + versionDescription);
+            try {
+                String versionPackage = StringUtils.join(ArrayUtils.toObject(version), "_");
+                Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
+                Constructor<?> platformConstructor = platformClass.getConstructor(Plugin.class, Logger.class);
+                platform = (Platform)platformConstructor.newInstance(plugin, logger);
+            } catch (Exception ex) {
+                logger.severe("Failed to load compatibility layer, the plugin may need to be updated to work with your server version");
+                return false;
+            }
+        } else {
+            logger.info("Loading legacy compatibility layer for server version " + versionDescription);
+            platform = new LegacyPlatform(plugin, logger);
+        }
         EntityMetadataUtils.initialize(plugin);
         return platform.isValid();
     }
@@ -122,7 +150,7 @@ public class CompatibilityLib {
     }
 
     public static int[] getServerVersion() {
-        int[] version = new int[2];
+        int[] version = new int[3];
         String versionString = CompatibilityConstants.getVersionPrefix();
         if (versionString == null || versionString.isEmpty()) {
             return version;
@@ -136,6 +164,9 @@ public class CompatibilityLib {
             }
             if (pieces.length > 1) {
                 version[1] = Integer.parseInt(pieces[1]);
+            }
+            if (pieces.length > 2) {
+                version[2] = Integer.parseInt(pieces[2]);
             }
         } catch (Exception ex) {
 
