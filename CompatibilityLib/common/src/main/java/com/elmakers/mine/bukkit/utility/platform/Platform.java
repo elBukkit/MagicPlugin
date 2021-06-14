@@ -19,10 +19,6 @@ public interface Platform {
 
     boolean hasTimeSkipEvent();
 
-    String getVersionPrefix();
-
-    int[] getServerVersion();
-
     boolean isValid();
 
     CompatibilityUtils getCompatibilityUtils();

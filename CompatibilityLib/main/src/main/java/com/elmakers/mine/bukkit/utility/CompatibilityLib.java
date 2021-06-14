@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javax.annotation.Nonnull;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
@@ -45,10 +46,6 @@ public class CompatibilityLib {
 
     public static boolean hasTimeSkipEvent() {
         return platform == null ? true : platform.hasTimeSkipEvent();
-    }
-
-    public static int[] getServerVersion() {
-        return platform == null ? new int[2] : platform.getServerVersion();
     }
 
     // This is here as a bit of a hack, MaterialAndData needs to know how to parse materials, but this is used
@@ -122,5 +119,27 @@ public class CompatibilityLib {
             throw new IllegalStateException("SkinUtils used before being initialized");
         }
         return platform.getSkinUtils();
+    }
+
+    public static int[] getServerVersion() {
+        int[] version = new int[2];
+        String versionString = CompatibilityConstants.getVersionPrefix();
+        if (versionString == null || versionString.isEmpty()) {
+            return version;
+        }
+        // Format:  v1_12_R1
+        versionString = versionString.substring(1);
+        try {
+            String[] pieces = StringUtils.split(versionString, '_');
+            if (pieces.length > 0) {
+                version[0] = Integer.parseInt(pieces[0]);
+            }
+            if (pieces.length > 1) {
+                version[1] = Integer.parseInt(pieces[1]);
+            }
+        } catch (Exception ex) {
+
+        }
+        return version;
     }
 }

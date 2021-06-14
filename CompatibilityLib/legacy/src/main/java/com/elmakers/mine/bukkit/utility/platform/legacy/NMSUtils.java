@@ -45,6 +45,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.google.common.base.CaseFormat;
 
 /**
@@ -434,7 +435,7 @@ public class NMSUtils {
 
     public static boolean initialize(Platform platform) {
         Logger logger = platform.getLogger();
-        versionPrefix = platform.getVersionPrefix();
+        versionPrefix = CompatibilityConstants.getVersionPrefix();
         try {
             class_Block = fixBukkitClass("net.minecraft.server.Block");
             class_Entity = fixBukkitClass("net.minecraft.server.Entity");
