@@ -397,12 +397,17 @@ public class NBTUtilsBase implements NBTUtils {
         return result;
     }
 
-    protected void addToList(Object listObject, Object node) throws InvocationTargetException, IllegalAccessException {
-        if (NMSUtils.isCurrentVersion) {
-            int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(listObject);
-            NMSUtils.class_NBTTagList_addMethod.invoke(listObject, size, node);
-        } else {
-            NMSUtils.class_NBTTagList_addMethod.invoke(listObject, node);
+    @Override
+    public void addToList(Object listObject, Object node) {
+        try {
+            if (NMSUtils.isCurrentVersion) {
+                int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(listObject);
+                NMSUtils.class_NBTTagList_addMethod.invoke(listObject, size, node);
+            } else {
+                NMSUtils.class_NBTTagList_addMethod.invoke(listObject, node);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
     }
 }

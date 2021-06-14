@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
+import java.lang.reflect.InvocationTargetException;
+
 import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {
@@ -62,4 +64,6 @@ public interface NBTUtils {
     void setMetaBoolean(ItemStack stack, String tag, boolean value);
 
     boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue);
+
+    void addToList(Object listObject, Object node);
 }

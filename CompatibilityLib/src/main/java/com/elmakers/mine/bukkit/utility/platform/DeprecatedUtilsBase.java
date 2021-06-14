@@ -24,6 +24,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 
 /**
@@ -165,7 +166,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
     public void setSkullOwner(final ItemStack itemStack, String ownerName, final SkullLoadedCallback callback) {
         CompatibilityLib.getSkinUtils().fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
             @Override
-            public void result(SkinUtils.ProfileResponse response) {
+            public void result(ProfileResponse response) {
                 if (response != null) {
                     Object gameProfile = response.getGameProfile();
                     ItemMeta meta = itemStack.getItemMeta();
@@ -185,7 +186,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
     public void setSkullOwner(final ItemStack itemStack, UUID ownerUUID, final SkullLoadedCallback callback) {
         CompatibilityLib.getSkinUtils().fetchProfile(ownerUUID, new SkinUtils.ProfileCallback() {
             @Override
-            public void result(SkinUtils.ProfileResponse response) {
+            public void result(ProfileResponse response) {
                 if (response != null) {
                     Object gameProfile = response.getGameProfile();
                     ItemMeta meta = itemStack.getItemMeta();
@@ -205,7 +206,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
     public void setOwner(final Skull skull, UUID uuid) {
         CompatibilityLib.getSkinUtils().fetchProfile(uuid, new SkinUtils.ProfileCallback() {
             @Override
-            public void result(SkinUtils.ProfileResponse response) {
+            public void result(ProfileResponse response) {
                 if (response != null) {
                     Object gameProfile = response.getGameProfile();
                     CompatibilityLib.getInventoryUtils().setSkullProfile(skull, gameProfile);
@@ -219,7 +220,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
     public void setOwner(final Skull skull, String ownerName) {
         CompatibilityLib.getSkinUtils().fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
             @Override
-            public void result(SkinUtils.ProfileResponse response) {
+            public void result(ProfileResponse response) {
                 if (response != null) {
                     Object gameProfile = response.getGameProfile();
                     CompatibilityLib.getInventoryUtils().setSkullProfile(skull, gameProfile);

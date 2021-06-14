@@ -36,6 +36,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
 public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.maps.URLMap {
@@ -453,7 +454,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                 loading = true;
                 CompatibilityLib.getSkinUtils().fetchProfile(playerName, new SkinUtils.ProfileCallback() {
                     @Override
-                    public void result(SkinUtils.ProfileResponse response) {
+                    public void result(ProfileResponse response) {
                         url = response == null ? null : response.getSkinURL();
                         if (url == null) {
                             enabled = false;

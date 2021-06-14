@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -10,7 +11,6 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -40,110 +40,6 @@ public class SkinUtils {
     private static final Map<String, Object> loadingUUIDs = new HashMap<>();
     private static final Map<UUID, Object> loadingProfiles = new HashMap<>();
 
-    public static class ProfileResponse {
-        private final UUID uuid;
-        private final String playerName;
-        private final String skinURL;
-        private final String profileJSON;
-
-        private ProfileResponse(UUID uuid, String playerName, String skinURL, String profileJSON) {
-            this.uuid = uuid;
-            this.playerName = playerName;
-            this.skinURL = skinURL;
-            this.profileJSON = profileJSON;
-        }
-
-        private ProfileResponse(ConfigurationSection configuration) {
-            this.uuid = UUID.fromString(configuration.getString("uuid"));
-            this.playerName = configuration.getString("name");
-            this.skinURL = configuration.getString("skin");
-            this.profileJSON = configuration.getString("profile");
-        }
-
-        private ProfileResponse(Player onlinePlayer) {
-            this.uuid = onlinePlayer.getUniqueId();
-            Object gameProfile = CompatibilityLib.getSkinUtils().getProfile(onlinePlayer);
-            JsonElement profileJson = CompatibilityLib.getSkinUtils().getGson().toJsonTree(gameProfile);
-            if (profileJson.isJsonObject()) {
-                JsonObject profileObject = (JsonObject)profileJson;
-                try {
-                    @SuppressWarnings("unchecked")
-                    Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(gameProfile);
-                    JsonArray propertiesArray = new JsonArray();
-
-                    for (Map.Entry<String, Object> entry : properties.entries()) {
-                        JsonObject newObject = new JsonObject();
-                        newObject.addProperty("name", entry.getKey());
-                        String value = (String) NMSUtils.class_GameProfileProperty_value.get(entry.getValue());
-                        newObject.addProperty("value", value);
-                        String signature = (String) NMSUtils.class_GameProfileProperty_signature.get(entry.getValue());
-                        newObject.addProperty("signature", signature);
-                        propertiesArray.add(newObject);
-                    }
-                    profileObject.add("properties", propertiesArray);
-                } catch (Exception ex) {
-                    CompatibilityLib.getLogger().log(Level.WARNING, "Error serializing profile for " + onlinePlayer.getName(), ex);
-                }
-            }
-
-            this.profileJSON = CompatibilityLib.getSkinUtils().getGson().toJson(profileJson);
-            this.skinURL = CompatibilityLib.getSkinUtils().getProfileURL(gameProfile);
-            this.playerName = onlinePlayer.getName();
-        }
-
-        private void save(ConfigurationSection configuration) {
-            configuration.set("uuid", uuid.toString());
-            configuration.set("skin", skinURL);
-            configuration.set("profile", profileJSON);
-            configuration.set("name", playerName);
-        }
-
-        public UUID getUUID() {
-            return uuid;
-        }
-
-        public String getSkinURL() {
-            return skinURL;
-        }
-
-        public String getProfileJSON() {
-            return profileJSON;
-        }
-
-        public Object getGameProfile() {
-            Object gameProfile = null;
-            try {
-                gameProfile = NMSUtils.class_GameProfile_constructor.newInstance(uuid, playerName);
-                @SuppressWarnings("unchecked")
-                Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(gameProfile);
-                JsonElement json = new JsonParser().parse(profileJSON);
-                if (json != null && json.isJsonObject()) {
-                    JsonObject profile = json.getAsJsonObject();
-                    if (profile.has("properties")) {
-                        JsonArray propertiesJson = profile.getAsJsonArray("properties");
-                        for (int i = 0; i < propertiesJson.size(); i++) {
-                            JsonObject property = propertiesJson.get(i).getAsJsonObject();
-                            if (property != null && property.has("name") && property.has("value")) {
-                                String name = property.get("name").getAsString();
-                                String value = property.get("value").getAsString();
-                                String signature = property.has("signature") ? property.get("signature").getAsString() : null;
-                                Object newProperty = NMSUtils.class_GameProfileProperty_constructor.newInstance(name, value, signature);
-                                properties.put(name, newProperty);
-                            }
-                        }
-                    }
-                }
-            } catch (Exception ex) {
-                CompatibilityLib.getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
-            }
-            if (CompatibilityLib.getSkinUtils().DEBUG) {
-                CompatibilityLib.getLogger().info("Got profile: " + gameProfile);
-                CompatibilityLib.getLogger().info(CompatibilityLib.getSkinUtils().getProfileURL(gameProfile));
-            }
-            return gameProfile;
-        }
-    }
-    
     public interface ProfileCallback {
         void result(ProfileResponse response);
     }
@@ -156,11 +52,11 @@ public class SkinUtils {
         SkinUtils.this.plugin = owner;
     }
 
-    private Gson getGson() {
-        if (SkinUtils.this.gson == null) {
-            SkinUtils.this.gson = new Gson();
+    public Gson getGson() {
+        if (gson == null) {
+            gson = new Gson();
         }
-        return SkinUtils.this.gson;
+        return gson;
     }
 
     public String getTextureURL(String texturesJson) {
@@ -202,7 +98,7 @@ public class SkinUtils {
         return url;
     }
 
-    private Object getProfile(Player player) {
+    public Object getProfile(Player player) {
         if (NMSUtils.class_CraftPlayer_getProfileMethod == null) return null;
         try {
             return NMSUtils.class_CraftPlayer_getProfileMethod.invoke(player);
@@ -210,6 +106,28 @@ public class SkinUtils {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    public JsonElement getProfileJson(Object gameProfile) throws IllegalAccessException {
+        JsonElement profileJson = getGson().toJsonTree(gameProfile);
+        if (profileJson.isJsonObject()) {
+            JsonObject profileObject = (JsonObject) profileJson;
+            @SuppressWarnings("unchecked")
+            Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(gameProfile);
+            JsonArray propertiesArray = new JsonArray();
+
+            for (Map.Entry<String, Object> entry : properties.entries()) {
+                JsonObject newObject = new JsonObject();
+                newObject.addProperty("name", entry.getKey());
+                String value = (String) NMSUtils.class_GameProfileProperty_value.get(entry.getValue());
+                newObject.addProperty("value", value);
+                String signature = (String) NMSUtils.class_GameProfileProperty_signature.get(entry.getValue());
+                newObject.addProperty("signature", signature);
+                propertiesArray.add(newObject);
+            }
+            profileObject.add("properties", propertiesArray);
+        }
+        return profileJson;
     }
 
     public String getOnlineSkinURL(Player player) {
@@ -560,5 +478,38 @@ public class SkinUtils {
                 }
             }
         }, SkinUtils.this.holdoff / 50);
+    }
+
+    public Object getGameProfile(UUID uuid, String playerName, String profileJSON) {
+        Object gameProfile = null;
+        try {
+            gameProfile = NMSUtils.class_GameProfile_constructor.newInstance(uuid, playerName);
+            @SuppressWarnings("unchecked")
+            Multimap<String, Object> properties = (Multimap<String, Object>) NMSUtils.class_GameProfile_properties.get(gameProfile);
+            JsonElement json = new JsonParser().parse(profileJSON);
+            if (json != null && json.isJsonObject()) {
+                JsonObject profile = json.getAsJsonObject();
+                if (profile.has("properties")) {
+                    JsonArray propertiesJson = profile.getAsJsonArray("properties");
+                    for (int i = 0; i < propertiesJson.size(); i++) {
+                        JsonObject property = propertiesJson.get(i).getAsJsonObject();
+                        if (property != null && property.has("name") && property.has("value")) {
+                            String name = property.get("name").getAsString();
+                            String value = property.get("value").getAsString();
+                            String signature = property.has("signature") ? property.get("signature").getAsString() : null;
+                            Object newProperty = NMSUtils.class_GameProfileProperty_constructor.newInstance(name, value, signature);
+                            properties.put(name, newProperty);
+                        }
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            CompatibilityLib.getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
+        }
+        if (DEBUG) {
+            CompatibilityLib.getLogger().info("Got profile: " + gameProfile);
+            CompatibilityLib.getLogger().info(CompatibilityLib.getSkinUtils().getProfileURL(gameProfile));
+        }
+        return gameProfile;
     }
 }
