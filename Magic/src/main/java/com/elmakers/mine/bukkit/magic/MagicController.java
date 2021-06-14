@@ -244,7 +244,6 @@ import com.elmakers.mine.bukkit.utility.LogMessage;
 import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
@@ -252,6 +251,7 @@ import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
+import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -7664,7 +7664,7 @@ public class MagicController implements MageController {
             HitboxUtils.configureHeadSizes(properties.getConfigurationSection("head_sizes"));
         }
         if (properties.contains("max_height")) {
-            HitboxUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
+            CompatibilityUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
         }
 
         // These were changed from set values to multipliers, we're going to translate for backwards compatibility.

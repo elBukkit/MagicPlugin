@@ -16,7 +16,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
-public class HitboxUtils extends CompatibilityUtils {
+public class HitboxUtils {
     private static final Map<EntityType, BoundingBox> hitboxes = new HashMap<>();
     private static final Map<EntityType, Double> headSizes = new HashMap<>();
     private static double hitboxScale = 1.0;
@@ -45,31 +45,13 @@ public class HitboxUtils extends CompatibilityUtils {
         {
             return hitbox.center(entity.getLocation().toVector());
         }
-
-        if (class_Entity_getBoundingBox != null) {
-            try {
-                Object entityHandle = getHandle(entity);
-                Object aabb = class_Entity_getBoundingBox.invoke(entityHandle);
-                if (aabb == null) {
-                    return defaultHitbox.center(entity.getLocation().toVector());
-                }
-
-                double scaleY = hitboxScaleY;
-                if (entity instanceof Player && ((Player)entity).isSneaking()) {
-                    scaleY = hitboxSneakScaleY;
-                }
-                return new BoundingBox(
-                        class_AxisAlignedBB_minXField.getDouble(aabb),
-                        class_AxisAlignedBB_maxXField.getDouble(aabb),
-                        class_AxisAlignedBB_minYField.getDouble(aabb),
-                        class_AxisAlignedBB_maxYField.getDouble(aabb),
-                        class_AxisAlignedBB_minZField.getDouble(aabb),
-                        class_AxisAlignedBB_maxZField.getDouble(aabb)
-                ).scaleFromBase(hitboxScale, scaleY);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
+        hitbox = CompatibilityUtils.getHitbox(entity);
+        if (hitbox != null) {
+            double scaleY = hitboxScaleY;
+            if (entity instanceof Player && ((Player)entity).isSneaking()) {
+                scaleY = hitboxSneakScaleY;
             }
+            return hitbox.scaleFromBase(hitboxScale, scaleY);
         }
         return defaultHitbox.center(entity.getLocation().toVector());
     }
