@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+
 public class Platform {
     private final boolean valid;
 
@@ -60,6 +62,6 @@ public class Platform {
     }
 
     public SkinUtils getSkinUtils() {
-        return new SkinUtils();
+        return new SkinUtilsBase(CompatibilityLib.getPlugin());
     }
 }
