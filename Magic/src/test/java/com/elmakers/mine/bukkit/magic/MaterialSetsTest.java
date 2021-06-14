@@ -30,7 +30,7 @@ public class MaterialSetsTest {
     @SuppressWarnings("deprecation")
     @Test
     public void testFromConfig() {
-        MaterialAndData value = ConfigurationUtils.toMaterialAndData("stone|2");
+        MaterialAndData value = ConfigurationUtils.toMaterialAndData("obsidian");
         MaterialSet set = MaterialSets.unionBuilder()
                 .add(value)
                 .build();
@@ -38,8 +38,7 @@ public class MaterialSetsTest {
         assertFalse(set.testBlock(stone()));
         assertFalse(set.testBlock(dirt()));
 
-        Block correct = stone();
-        Mockito.when(correct.getData()).thenReturn((byte) 2);
+        Block correct = obsidian();
         assertTrue(set.testBlock(correct));
     }
 
@@ -108,8 +107,14 @@ public class MaterialSetsTest {
     }
 
     private Block stone() {
-        Block dirt = Mockito.mock(Block.class);
-        Mockito.when(dirt.getType()).thenReturn(Material.STONE);
-        return dirt;
+        Block stone = Mockito.mock(Block.class);
+        Mockito.when(stone.getType()).thenReturn(Material.STONE);
+        return stone;
+    }
+
+    private Block obsidian() {
+        Block stone = Mockito.mock(Block.class);
+        Mockito.when(stone.getType()).thenReturn(Material.OBSIDIAN);
+        return stone;
     }
 }
