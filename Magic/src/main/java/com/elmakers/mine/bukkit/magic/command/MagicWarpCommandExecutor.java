@@ -111,7 +111,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                     onSendWarp(sender, entity, args[2]);
                 }
             } else {
-                Player player = CompatibilityLib.getInstance().getPlayer(playerSelector);
+                Player player = CompatibilityLib.getDeprecatedUtils().getPlayer(playerSelector);
                 if (player == null) {
                     sender.sendMessage("No players matched: " + playerSelector);
                     return true;

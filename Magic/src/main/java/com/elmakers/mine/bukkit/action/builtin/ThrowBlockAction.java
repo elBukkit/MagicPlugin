@@ -86,7 +86,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         double speed = context.getRandom().nextDouble() * (speedMax - speedMin) + speedMin;
         direction.normalize().multiply(speed);
 
-        FallingBlock falling = CompatibilityLib.getInstance().spawnFallingBlock(location, material, data);
+        FallingBlock falling = CompatibilityLib.getDeprecatedUtils().spawnFallingBlock(location, material, data);
         if (falling == null)
         {
             return SpellResult.FAIL;

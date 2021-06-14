@@ -209,7 +209,7 @@ public class SimulateBatch extends SpellBatch {
         if (modifyType == ModifyType.FAST) {
             CompatibilityLib.getCompatibilityUtils().setBlockFast(block, deathMaterial, 0);
         } else {
-            CompatibilityLib.getInstance().setTypeAndData(block, deathMaterial, (byte)0, false);
+            CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, deathMaterial, (byte)0, false);
         }
         if (reflectChance > 0) {
             com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(block);

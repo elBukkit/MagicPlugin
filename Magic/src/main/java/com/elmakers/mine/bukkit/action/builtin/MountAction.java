@@ -48,17 +48,17 @@ public class MountAction extends BaseSpellAction {
         while (targetEntity instanceof ComplexEntityPart) {
             targetEntity = ((ComplexEntityPart)targetEntity).getParent();
         }
-        Entity passenger = CompatibilityLib.getInstance().getPassenger(targetEntity);
+        Entity passenger = CompatibilityLib.getDeprecatedUtils().getPassenger(targetEntity);
         while (passenger != null) {
             targetEntity = passenger;
-            passenger = CompatibilityLib.getInstance().getPassenger(targetEntity);
+            passenger = CompatibilityLib.getDeprecatedUtils().getPassenger(targetEntity);
         }
 
-        if (targetEntity == CompatibilityLib.getInstance().getPassenger(source)
-            || source == CompatibilityLib.getInstance().getPassenger(targetEntity)) {
+        if (targetEntity == CompatibilityLib.getDeprecatedUtils().getPassenger(source)
+            || source == CompatibilityLib.getDeprecatedUtils().getPassenger(targetEntity)) {
             return SpellResult.NO_TARGET;
         }
-        CompatibilityLib.getInstance().setPassenger(targetEntity, source);
+        CompatibilityLib.getDeprecatedUtils().setPassenger(targetEntity, source);
 
         return SpellResult.CAST;
     }

@@ -562,7 +562,7 @@ public class EntityController implements Listener {
         }
         else
         {
-            Entity passenger = CompatibilityLib.getInstance().getPassenger(entity);
+            Entity passenger = CompatibilityLib.getDeprecatedUtils().getPassenger(entity);
             com.elmakers.mine.bukkit.magic.Mage mountMage = passenger == null ? null : controller.getRegisteredMage(passenger);
             if (mountMage != null) {
                 mountMage.onDamage(event);

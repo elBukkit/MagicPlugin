@@ -128,7 +128,7 @@ public class GotoSpell extends UndoableSpell
         }
         playerIndex++;
 
-        Player targetPlayer = CompatibilityLib.getInstance().getPlayer(playerName);
+        Player targetPlayer = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
         if (targetPlayer == null) return SpellResult.NO_TARGET;
 
         selectTarget(targetPlayer);

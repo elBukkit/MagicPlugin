@@ -128,7 +128,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (meta != null && meta instanceof BannerMeta)
             {
                 BannerMeta banner = (BannerMeta)meta;
-                extraData = new BlockBanner(banner.getPatterns(), CompatibilityLib.getInstance().getBaseColor(banner));
+                extraData = new BlockBanner(banner.getPatterns(), CompatibilityLib.getDeprecatedUtils().getBaseColor(banner));
             }
         } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
                 || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS
@@ -568,7 +568,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 // Clear chests and flower pots so they don't dump their contents.
                 clearItems(blockState);
 
-                CompatibilityLib.getInstance().setTypeAndData(block, material, blockData, applyPhysics);
+                CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, material, blockData, applyPhysics);
                 if (extendedBlockData != null) {
                     if (currentMaterial != material) {
                         String currentBlockData =  CompatibilityLib.getCompatibilityUtils().getBlockData(block);
@@ -631,7 +631,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     InventoryUtils.setSkullProfile(skull, skullData.profile);
                     skull.update(true, false);
                 } else if (skullData.playerName != null) {
-                    CompatibilityLib.getInstance().setOwner(skull, skullData.playerName);
+                    CompatibilityLib.getDeprecatedUtils().setOwner(skull, skullData.playerName);
                 }
             } else if (blockState != null && blockState instanceof CreatureSpawner && extraData != null && extraData instanceof BlockMobSpawner) {
                 BlockMobSpawner spawnerData = (BlockMobSpawner)extraData;
@@ -869,7 +869,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             }
                         };
                     }
-                    CompatibilityLib.getInstance().setSkullOwner(stack, skullData.playerName, skullCallback);
+                    CompatibilityLib.getDeprecatedUtils().setSkullOwner(stack, skullData.playerName, skullCallback);
                 }
             }
         } else if (DefaultMaterials.isBanner(material)) {
@@ -884,7 +884,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
                 if (bannerData.baseColor != null)
                 {
-                    CompatibilityLib.getInstance().setBaseColor(banner, bannerData.baseColor);
+                    CompatibilityLib.getDeprecatedUtils().setBaseColor(banner, bannerData.baseColor);
                 }
                 stack.setItemMeta(meta);
             }

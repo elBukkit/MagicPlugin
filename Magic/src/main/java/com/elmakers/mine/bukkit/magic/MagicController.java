@@ -6224,12 +6224,12 @@ public class MagicController implements MageController {
 
     @Override
     public void setSkullOwner(Skull skull, String ownerName) {
-        CompatibilityLib.getInstance().setOwner(skull, ownerName);
+        CompatibilityLib.getDeprecatedUtils().setOwner(skull, ownerName);
     }
 
     @Override
     public void setSkullOwner(Skull skull, UUID uuid) {
-        CompatibilityLib.getInstance().setOwner(skull, uuid);
+        CompatibilityLib.getDeprecatedUtils().setOwner(skull, uuid);
     }
 
     @Override
@@ -6265,7 +6265,7 @@ public class MagicController implements MageController {
                 }
             };
         }
-        CompatibilityLib.getInstance().setSkullOwner(skull, ownerName, skullCallback);
+        CompatibilityLib.getDeprecatedUtils().setSkullOwner(skull, ownerName, skullCallback);
         return skull;
     }
 
@@ -6292,7 +6292,7 @@ public class MagicController implements MageController {
                 }
             };
         }
-        CompatibilityLib.getInstance().setSkullOwner(skull, uuid, skullCallback);
+        CompatibilityLib.getDeprecatedUtils().setSkullOwner(skull, uuid, skullCallback);
         return skull;
     }
 
@@ -6309,7 +6309,7 @@ public class MagicController implements MageController {
             meta.setDisplayName(itemName);
         }
         skull.setItemMeta(meta);
-        CompatibilityLib.getInstance().setSkullOwner(skull, player.getName(), null);
+        CompatibilityLib.getDeprecatedUtils().setSkullOwner(skull, player.getName(), null);
         return skull;
     }
 
@@ -6365,7 +6365,7 @@ public class MagicController implements MageController {
                     callback.updated(skull);
                 }
             } else {
-                CompatibilityLib.getInstance().setSkullOwner(skull, ownerName, skullCallback);
+                CompatibilityLib.getDeprecatedUtils().setSkullOwner(skull, ownerName, skullCallback);
             }
         } else if (callback != null) {
             callback.updated(skull);
@@ -6790,7 +6790,7 @@ public class MagicController implements MageController {
     public void checkVanished(Player player) {
         for (Mage mage : mages.values()) {
             if (mage.isVanished()) {
-                CompatibilityLib.getInstance().hidePlayer(plugin, player, mage.getPlayer());
+                CompatibilityLib.getDeprecatedUtils().hidePlayer(plugin, player, mage.getPlayer());
             }
         }
     }

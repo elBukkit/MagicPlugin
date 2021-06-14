@@ -647,7 +647,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     online = (Player)sourceEntity;
                 }
             } else {
-               online = CompatibilityLib.getInstance().getPlayer(friendName);
+               online = CompatibilityLib.getDeprecatedUtils().getPlayer(friendName);
             }
             if (online == null)
             {
@@ -673,7 +673,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         if (parameters.contains("removefriend"))
         {
             String friendName = parameters.getString("removefriend");
-            Player online = CompatibilityLib.getInstance().getPlayer(friendName);
+            Player online = CompatibilityLib.getDeprecatedUtils().getPlayer(friendName);
             if (online == null)
             {
                 return SpellResult.FAIL;

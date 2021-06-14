@@ -137,7 +137,7 @@ public class GiveItemAction extends BaseSpellAction
         } else {
             mage.giveItem(itemCopy);
         }
-        CompatibilityLib.getInstance().updateInventory(player);
+        CompatibilityLib.getDeprecatedUtils().updateInventory(player);
         return SpellResult.CAST;
     }
 

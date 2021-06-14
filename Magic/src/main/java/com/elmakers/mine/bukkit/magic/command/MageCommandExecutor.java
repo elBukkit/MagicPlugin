@@ -79,7 +79,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     }
                 }
             } else {
-                Player player = CompatibilityLib.getInstance().getPlayer(playerName);
+                Player player = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
                 if (player != null) {
                     argStart = 2;
                     players.add(player);
@@ -96,7 +96,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                         return true;
                     } catch (Exception ignore) {
                     }
-                    OfflinePlayer offlinePlayer = CompatibilityLib.getInstance().getOfflinePlayer(playerName);
+                    OfflinePlayer offlinePlayer = CompatibilityLib.getDeprecatedUtils().getOfflinePlayer(playerName);
                     if (offlinePlayer != null) {
                         api.getController().deleteMage(offlinePlayer.getUniqueId().toString());
                         sender.sendMessage(ChatColor.RED + "Reset offline player "
@@ -297,7 +297,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             String subCommand = args[0];
             args = Arrays.copyOfRange(args, 1, args.length);
             if (args.length > 1) {
-                Player targetPlayer = CompatibilityLib.getInstance().getPlayer(args[0]);
+                Player targetPlayer = CompatibilityLib.getDeprecatedUtils().getPlayer(args[0]);
                 if (targetPlayer != null) {
                     target = targetPlayer;
                     args = Arrays.copyOfRange(args, 1, args.length);

@@ -68,7 +68,7 @@ public class ShrinkSpell extends BlockSpell
 
             LivingEntity li = (LivingEntity)targetEntity;
             boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
-            String itemName = CompatibilityLib.getInstance().getDisplayName(li) + " Head";;
+            String itemName = CompatibilityLib.getDeprecatedUtils().getDisplayName(li) + " Head";;
 
             if (li instanceof Player)
             {

@@ -89,7 +89,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                     mage = controller.getMage(mageId, mageName);
                 }
 
-                Player player = CompatibilityLib.getInstance().getPlayer(playerName);
+                Player player = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
                 if (mage == null && player == null && playerName.contains("-")) {
                     try {
                         Entity entity = CompatibilityLib.getCompatibilityUtils().getEntity(UUID.fromString(playerName));

@@ -37,7 +37,7 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        player = CompatibilityLib.getInstance().getPlayer(args[0]);
+        player = CompatibilityLib.getDeprecatedUtils().getPlayer(args[0]);
         if (player == null) {
             return false;
         }

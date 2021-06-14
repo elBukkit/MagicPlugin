@@ -582,7 +582,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         if (mode == BrushMode.MAP && mapId >= 0) {
             if (mapCanvas == null) {
                 try {
-                    MapView mapView = CompatibilityLib.getInstance().getMap(mapId);
+                    MapView mapView = CompatibilityLib.getDeprecatedUtils().getMap(mapId);
                     if (mapView != null) {
                         Player player = fromMage != null ? fromMage.getPlayer() : null;
                         List<MapRenderer> renderers = mapView.getRenderers();

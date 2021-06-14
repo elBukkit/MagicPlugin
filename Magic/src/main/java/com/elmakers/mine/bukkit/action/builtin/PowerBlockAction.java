@@ -91,7 +91,7 @@ public class PowerBlockAction extends BaseSpellAction {
                 if (modifyData != 0) {
                     dataValue = (byte)((data.getData() & 0x3) | modifyWith.getData());
                 }
-                CompatibilityLib.getInstance().setTypeAndData(block, modifyWith.getMaterial(), dataValue, true);
+                CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, modifyWith.getMaterial(), dataValue, true);
             }
         }
         if (updateBlockState) {

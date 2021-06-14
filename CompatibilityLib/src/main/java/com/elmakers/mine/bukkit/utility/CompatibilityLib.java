@@ -97,7 +97,7 @@ public class CompatibilityLib {
         return compatibilityUtils;
     }
 
-    public static DeprecatedUtils getInstance() {
+    public static DeprecatedUtils getDeprecatedUtils() {
         if (deprecatedUtils == null) {
             throw new IllegalStateException("DeprecatedUtils used before being initialized");
         }

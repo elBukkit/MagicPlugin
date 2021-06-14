@@ -60,7 +60,7 @@ public class ShrinkEntityAction extends DamageAction
 
         LivingEntity li = (LivingEntity)targetEntity;
         boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
-        String itemName = CompatibilityLib.getInstance().getDisplayName(li) + " Head";
+        String itemName = CompatibilityLib.getDeprecatedUtils().getDisplayName(li) + " Head";
         EntityType replaceType = null;
 
         boolean handled = true;

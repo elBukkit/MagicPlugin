@@ -3312,7 +3312,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (wandMode == WandMode.INVENTORY) {
             PlayerInventory inventory = player.getInventory();
             updateHotbar(inventory);
-            CompatibilityLib.getInstance().updateInventory(player);
+            CompatibilityLib.getDeprecatedUtils().updateInventory(player);
         }
     }
 
@@ -3862,7 +3862,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
                     mage.playSoundEffect(inventoryCycleSound);
                 }
-                CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
+                CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
             }
         }
     }
@@ -3886,7 +3886,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             sendMessage("hotbar_changed");
             updateHotbarStatus();
-            CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
+            CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
         }
     }
 
@@ -3968,28 +3968,28 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 ItemStack testItem = inventory.getHelmet();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setHelmet(new ItemStack(Material.AIR));
-                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
+                    CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getBoots();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setBoots(new ItemStack(Material.AIR));
-                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
+                    CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getLeggings();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setLeggings(new ItemStack(Material.AIR));
-                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
+                    CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getChestplate();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setChestplate(new ItemStack(Material.AIR));
-                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
+                    CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
                 }
                 // This is kind of a hack :(
                 testItem = inventory.getItemInOffHand();
                 if ((isSpell(testItem) && !isSkill(testItem)) || isBrush(testItem)) {
                     inventory.setItemInOffHand(new ItemStack(Material.AIR));
-                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
+                    CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
                 }
             }
         } catch (Throwable ex) {
@@ -4617,7 +4617,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         usesRemaining = false;
                         theMage.sendMessage(getMessage("used"));
                     }
-                    CompatibilityLib.getInstance().updateInventory(player);
+                    CompatibilityLib.getDeprecatedUtils().updateInventory(player);
                 }
                 setProperty("uses", uses);
                 saveState();
@@ -5122,7 +5122,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         lastParticleEffect = 0;
         lastSpellCast = 0;
         if (forceUpdate) {
-            CompatibilityLib.getInstance().updateInventory(player);
+            CompatibilityLib.getDeprecatedUtils().updateInventory(player);
         }
 
         return true;

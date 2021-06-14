@@ -31,7 +31,7 @@ public class MountSpell extends TargetingSpell {
             return SpellResult.NO_TARGET;
         }
 
-        CompatibilityLib.getInstance().setPassenger(targetEntity, player);
+        CompatibilityLib.getDeprecatedUtils().setPassenger(targetEntity, player);
 
         return SpellResult.CAST;
     }

@@ -90,9 +90,9 @@ public class FakeBlockAction extends BaseSpellAction {
             if (brushData != null) {
                 data = (byte)(short)brushData;
             } else {
-                data = CompatibilityLib.getInstance().getData(block);
+                data = CompatibilityLib.getDeprecatedUtils().getData(block);
             }
-            CompatibilityLib.getInstance().sendBlockChange(player, block.getLocation(), brush.getMaterial(), data);
+            CompatibilityLib.getDeprecatedUtils().sendBlockChange(player, block.getLocation(), brush.getMaterial(), data);
         }
 
         return SpellResult.CAST;

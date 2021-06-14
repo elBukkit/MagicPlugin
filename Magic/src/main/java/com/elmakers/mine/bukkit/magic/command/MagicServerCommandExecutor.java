@@ -37,7 +37,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
         } else {
             targets = CompatibilityLib.getCompatibilityUtils().selectEntities(sender, args[0]);
             if (targets == null) {
-                Player findPlayer = CompatibilityLib.getInstance().getPlayer(args[0]);
+                Player findPlayer = CompatibilityLib.getDeprecatedUtils().getPlayer(args[0]);
                 if (findPlayer != null) {
                     targets = new ArrayList<>();
                     targets.add(findPlayer);

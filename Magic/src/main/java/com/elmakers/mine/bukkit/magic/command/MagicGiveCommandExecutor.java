@@ -54,7 +54,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             countString = args[2];
         } else {
             playerName = args[0];
-            Player testPlayer = CompatibilityLib.getInstance().getPlayer(playerName);
+            Player testPlayer = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
             if (testPlayer == null && !playerName.startsWith("@")) {
                 itemName = args[0];
                 countString = args[1];
@@ -89,7 +89,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
                     }
                 }
             } else {
-                Player player = CompatibilityLib.getInstance().getPlayer(playerName);
+                Player player = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
                 if (player == null) {
                     sender.sendMessage("No players matched: " + playerName);
                     return true;

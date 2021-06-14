@@ -146,7 +146,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             if (sender instanceof Player) {
                 if (args.length > 1)
                 {
-                    player = CompatibilityLib.getInstance().getPlayer(args[1]);
+                    player = CompatibilityLib.getDeprecatedUtils().getPlayer(args[1]);
                 }
                 if (player == null)
                 {
@@ -162,7 +162,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     return true;
                 }
                 argStart = 2;
-                player = CompatibilityLib.getInstance().getPlayer(args[1]);
+                player = CompatibilityLib.getDeprecatedUtils().getPlayer(args[1]);
                 if (player == null) {
                     sender.sendMessage("Can't find player " + args[1]);
                     return true;
@@ -849,7 +849,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     options.addAll(api.getBrushes());
                 }
             } else if (args[0].equalsIgnoreCase("configure") || args[0].equalsIgnoreCase("describe") || args[0].equalsIgnoreCase("desc")) {
-                Player player = CompatibilityLib.getInstance().getPlayer(args[1]);
+                Player player = CompatibilityLib.getDeprecatedUtils().getPlayer(args[1]);
                 if (player != null) {
                     Mage mage = controller.getMage(player);
                     ConfigurationSection data = mage.getData();

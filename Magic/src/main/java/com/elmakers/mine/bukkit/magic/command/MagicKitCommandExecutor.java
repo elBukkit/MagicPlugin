@@ -40,7 +40,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
             kitName = args[0];
         } else {
             playerName = args[0];
-            Player testPlayer = CompatibilityLib.getInstance().getPlayer(playerName);
+            Player testPlayer = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
             if (testPlayer == null && !playerName.startsWith("@")) {
                 kitName = args[0];
                 playerName = null;
@@ -65,7 +65,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
                     }
                 }
             } else {
-                Player player = CompatibilityLib.getInstance().getPlayer(playerName);
+                Player player = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
                 if (player == null) {
                     sender.sendMessage(controller.getMessages().get("commands.mkit.console_usage").replace("$player", playerName));
                     return true;

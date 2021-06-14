@@ -212,7 +212,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
         BlockPlaceEvent event = new BlockPlaceEvent(targetBlock,
                 targetBlock.getState(),
                 targetBlock.getRelative(BlockFace.DOWN),
-                new ItemStack(targetBlock.getType(), CompatibilityLib.getInstance().getData(targetBlock)),
+                new ItemStack(targetBlock.getType(), CompatibilityLib.getDeprecatedUtils().getData(targetBlock)),
                 player, true, EquipmentSlot.HAND);
 
         manager.add(location.getBlock(), player, event);

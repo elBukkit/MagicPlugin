@@ -161,7 +161,7 @@ public class TorchSpell extends BlockSpell
         }
 
         registerForUndo(target);
-        CompatibilityLib.getInstance().setTypeAndData(target, targetMaterial, data, false);
+        CompatibilityLib.getDeprecatedUtils().setTypeAndData(target, targetMaterial, data, false);
         registerForUndo();
         controller.updateBlock(target);
 

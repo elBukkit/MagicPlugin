@@ -63,7 +63,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                 }
                 return true;
             }
-            Player player = CompatibilityLib.getInstance().getPlayer(playerName);
+            Player player = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
             if (player == null) {
                 sender.sendMessage("Can't find player " + playerName);
                 return true;
@@ -126,7 +126,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         {
             permissionKey = "wandp";
             if (args.length > 0) {
-                player = CompatibilityLib.getInstance().getPlayer(args[0]);
+                player = CompatibilityLib.getDeprecatedUtils().getPlayer(args[0]);
             }
             if (args.length == 1) {
                 options.addAll(api.getPlayerNames());

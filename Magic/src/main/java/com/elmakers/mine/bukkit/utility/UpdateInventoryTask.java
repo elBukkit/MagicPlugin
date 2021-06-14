@@ -12,6 +12,6 @@ public class UpdateInventoryTask extends BukkitRunnable {
 
     @Override
     public void run() {
-        CompatibilityLib.getInstance().updateInventory(player);
+        CompatibilityLib.getDeprecatedUtils().updateInventory(player);
     }
 }

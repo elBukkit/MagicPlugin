@@ -99,7 +99,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             }
             else if (args.length > 2)
             {
-                recipient = CompatibilityLib.getInstance().getPlayer(args[1]);
+                recipient = CompatibilityLib.getDeprecatedUtils().getPlayer(args[1]);
             }
 
             if (recipient == null)

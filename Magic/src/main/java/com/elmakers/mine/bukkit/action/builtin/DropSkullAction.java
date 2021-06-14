@@ -49,7 +49,7 @@ public class DropSkullAction extends BaseSpellAction
         }
 
         LivingEntity li = (LivingEntity)targetEntity;
-        String itemName = CompatibilityLib.getInstance().getDisplayName(li) + " Head";
+        String itemName = CompatibilityLib.getDeprecatedUtils().getDisplayName(li) + " Head";
         EntityType replaceType = null;
 
         Location targetLocation = targetEntity.getLocation();

@@ -270,7 +270,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                 // This block is about to be broken, we will break it but avoid dropping an item.
                 undoList.add(block);
                 CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
-                CompatibilityLib.getInstance().setTypeAndData(block, Material.AIR, (byte) 0, false);
+                CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte) 0, false);
             } else {
                 // This block is about to become the piston head
                 undoList.add(block);
@@ -316,20 +316,20 @@ public class BlockController implements Listener, ChunkLoadListener {
                 Block upBlock = targetBlock.getRelative(BlockFace.UP);
                 while (doubles.testBlock(upBlock)) {
                     undoList.add(upBlock);
-                    CompatibilityLib.getInstance().setTypeAndData(upBlock, Material.AIR, (byte) 0, false);
+                    CompatibilityLib.getDeprecatedUtils().setTypeAndData(upBlock, Material.AIR, (byte) 0, false);
                     upBlock = upBlock.getRelative(BlockFace.UP);
                 }
 
                 Block downBlock = targetBlock.getRelative(BlockFace.DOWN);
                 while (doubles.testBlock(downBlock)) {
                     undoList.add(downBlock);
-                    CompatibilityLib.getInstance().setTypeAndData(downBlock, Material.AIR, (byte) 0, false);
+                    CompatibilityLib.getDeprecatedUtils().setTypeAndData(downBlock, Material.AIR, (byte) 0, false);
                     downBlock = downBlock.getRelative(BlockFace.DOWN);
                 }
             }
             if (!CompatibilityLib.getCompatibilityUtils().isWaterLoggable(targetBlock)) {
                 CompatibilityLib.getCompatibilityUtils().clearItems(targetBlock.getLocation());
-                CompatibilityLib.getInstance().setTypeAndData(targetBlock, Material.AIR, (byte) 0, false);
+                CompatibilityLib.getDeprecatedUtils().setTypeAndData(targetBlock, Material.AIR, (byte) 0, false);
             }
             event.setCancelled(true);
         }
@@ -439,7 +439,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                         blockList.convert(entity, block);
                         if (!blockList.getApplyPhysics()) {
                             FallingBlock falling = (FallingBlock)entity;
-                            CompatibilityLib.getInstance().setTypeAndData(block, falling.getMaterial(), CompatibilityLib.getCompatibilityUtils().getBlockData(falling), false);
+                            CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, falling.getMaterial(), CompatibilityLib.getCompatibilityUtils().getBlockData(falling), false);
                             event.setCancelled(true);
                         }
                     }

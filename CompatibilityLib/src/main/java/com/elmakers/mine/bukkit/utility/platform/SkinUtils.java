@@ -219,7 +219,7 @@ public class SkinUtils {
 
     public static String getOnlineSkinURL(String playerName) {
         if (playerName.startsWith("http")) return playerName;
-        Player player = CompatibilityLib.getInstance().getPlayerExact(playerName);
+        Player player = CompatibilityLib.getDeprecatedUtils().getPlayerExact(playerName);
         String url = null;
         if (player != null) {
             url = getOnlineSkinURL(player);
@@ -274,7 +274,7 @@ public class SkinUtils {
     }
 
     public static void fetchUUID(final String playerName, final UUIDCallback callback) {
-        final Player onlinePlayer = CompatibilityLib.getInstance().getPlayerExact(playerName);
+        final Player onlinePlayer = CompatibilityLib.getDeprecatedUtils().getPlayerExact(playerName);
         if (onlinePlayer != null) {
             final UUID uuid = onlinePlayer.getUniqueId();
             boolean contains;

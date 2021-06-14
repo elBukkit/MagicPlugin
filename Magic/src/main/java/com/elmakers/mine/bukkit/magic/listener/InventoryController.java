@@ -573,7 +573,7 @@ public class InventoryController implements Listener {
                     if (hotbar != null && slot != null && mage.getActiveGUI() == null)
                     {
                         player.getInventory().setItem(event.getSlot(), droppedItem);
-                        CompatibilityLib.getInstance().updateInventory(player);
+                        CompatibilityLib.getDeprecatedUtils().updateInventory(player);
                     }
 
                     return;

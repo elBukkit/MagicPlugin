@@ -58,10 +58,10 @@ public class CycleEntityAction extends BaseSpellAction {
                 }
                 int mapId = InventoryUtils.getMapId(frameItem);
                 mapId++;
-                MapView mapView = CompatibilityLib.getInstance().getMap(mapId);
+                MapView mapView = CompatibilityLib.getDeprecatedUtils().getMap(mapId);
                 if (mapView == null) {
                     mapId = 0;
-                    mapView = CompatibilityLib.getInstance().getMap(mapId);
+                    mapView = CompatibilityLib.getDeprecatedUtils().getMap(mapId);
                     if (mapView == null) {
                         return SpellResult.NO_TARGET;
                     }

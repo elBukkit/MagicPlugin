@@ -125,7 +125,7 @@ public class EnchantingController implements Listener {
             int minLevel = path.getMinLevel();
             int maxLevel = path.getMaxLevel();
             int levelRange = maxLevel - minLevel;
-            int[] offered = CompatibilityLib.getInstance().getExpLevelCostsOffered(event);
+            int[] offered = CompatibilityLib.getDeprecatedUtils().getExpLevelCostsOffered(event);
 
             float bonusLevelMultiplier = path.getBonusLevelMultiplier();
             int bonusLevels = event.getEnchantmentBonus();

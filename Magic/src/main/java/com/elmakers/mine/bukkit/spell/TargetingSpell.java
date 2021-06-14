@@ -362,7 +362,7 @@ public class TargetingSpell extends BaseSpell {
             return false;
         }
         if (!targetMount) {
-            Entity mounted = CompatibilityLib.getInstance().getPassenger(entity);
+            Entity mounted = CompatibilityLib.getDeprecatedUtils().getPassenger(entity);
             Entity mageEntity = mage.getEntity();
             if (mounted != null && mageEntity != null && mounted.equals(mageEntity)) {
                 mage.sendDebugMessage("Entity skipped, can't target your own mount", 30);
@@ -749,7 +749,7 @@ public class TargetingSpell extends BaseSpell {
                 targetEntity = entity;
             }
         } else if (!playerName.isEmpty()) {
-            Player player = CompatibilityLib.getInstance().getPlayer(playerName);
+            Player player = CompatibilityLib.getDeprecatedUtils().getPlayer(playerName);
             if (player != null) {
                 targetLocation = player.getLocation();
                 targetEntity = player;

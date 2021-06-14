@@ -799,7 +799,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         } else {
             activeWand.setActiveSpell("");
         }
-        CompatibilityLib.getInstance().updateInventory(getPlayer());
+        CompatibilityLib.getDeprecatedUtils().updateInventory(getPlayer());
     }
 
     public void setActiveWand(Wand activeWand) {
@@ -3463,7 +3463,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         gui = null;
         Player player = getPlayer();
         if (player != null) {
-            CompatibilityLib.getInstance().updateInventory(player);
+            CompatibilityLib.getDeprecatedUtils().updateInventory(player);
         }
 
         if (previousGUI != null)
@@ -4693,9 +4693,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (thisPlayer != null && isVanished != vanished) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 if (vanished) {
-                    CompatibilityLib.getInstance().hidePlayer(controller.getPlugin(), player, thisPlayer);
+                    CompatibilityLib.getDeprecatedUtils().hidePlayer(controller.getPlugin(), player, thisPlayer);
                 } else {
-                    CompatibilityLib.getInstance().showPlayer(controller.getPlugin(), player, thisPlayer);
+                    CompatibilityLib.getDeprecatedUtils().showPlayer(controller.getPlugin(), player, thisPlayer);
                 }
             }
         }

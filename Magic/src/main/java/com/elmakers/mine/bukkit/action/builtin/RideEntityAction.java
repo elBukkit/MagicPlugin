@@ -226,7 +226,7 @@ public class RideEntityAction extends BaseSpellAction
         {
             return SpellResult.ENTITY_REQUIRED;
         }
-        Entity currentMount = isPassenger ? CompatibilityLib.getInstance().getPassenger(mounted) : mounted.getVehicle();
+        Entity currentMount = isPassenger ? CompatibilityLib.getDeprecatedUtils().getPassenger(mounted) : mounted.getVehicle();
         if (currentMount == null) {
             return SpellResult.CAST;
         }
@@ -242,9 +242,9 @@ public class RideEntityAction extends BaseSpellAction
                 return SpellResult.CAST;
             }
             if (isPassenger) {
-                CompatibilityLib.getInstance().setPassenger(mounted, mount);
+                CompatibilityLib.getDeprecatedUtils().setPassenger(mounted, mount);
             } else {
-                CompatibilityLib.getInstance().setPassenger(mount, mounted);
+                CompatibilityLib.getDeprecatedUtils().setPassenger(mount, mounted);
             }
         }
 
@@ -556,9 +556,9 @@ public class RideEntityAction extends BaseSpellAction
             EntityMetadataUtils.instance().setBoolean(mount, MagicMetaKeys.NO_TARGET, true);
         }
         if (isPassenger) {
-            CompatibilityLib.getInstance().setPassenger(entity, mount);
+            CompatibilityLib.getDeprecatedUtils().setPassenger(entity, mount);
         } else {
-            CompatibilityLib.getInstance().setPassenger(mount, entity);
+            CompatibilityLib.getDeprecatedUtils().setPassenger(mount, entity);
         }
         direction = mount.getLocation().getDirection();
         adjustHeading(context);
