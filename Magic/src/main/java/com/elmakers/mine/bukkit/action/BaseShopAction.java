@@ -39,7 +39,6 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
@@ -635,7 +634,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
 
             if (!costHeading.isEmpty()) {
-                InventoryUtils.wrapText(costHeading, lore);
+                CompatibilityLib.getInventoryUtils().wrapText(costHeading, lore);
             }
             String costs = costString.replace("$cost", getItemCost(context, shopItem));
             if (!costs.isEmpty()) {

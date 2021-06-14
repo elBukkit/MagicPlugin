@@ -638,7 +638,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
         Mage mage = getMage();
         if (mage != null) {
-            InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(item);
+            InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(item);
             if (currency != null && !mage.isAtMaxCurrency(currency.type)) {
                 int amount = (int)Math.floor(mage.getEarnMultiplier(currency.type) * currency.amount * item.getAmount());
                 mage.addCurrency(currency.type, amount);

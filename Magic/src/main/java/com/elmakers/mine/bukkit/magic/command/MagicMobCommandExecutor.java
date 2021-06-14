@@ -31,8 +31,8 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -180,7 +180,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 JsonReader reader = new JsonReader(new StringReader(json));
                 reader.setLenient(true);
                 Map<String, Object> tags = getGson().fromJson(reader, Map.class);
-                InventoryUtils.convertIntegers(tags);
+                CompatibilityLib.getInventoryUtils().convertIntegers(tags);
                 ConfigurationSection mobConfig = ConfigurationUtils.newConfigurationSection();
                 mobConfig.set("type", mobKey);
                 for (Map.Entry<String, Object> entry : tags.entrySet()) {

@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
@@ -336,7 +335,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         if (lore == null) {
             lore = new ArrayList<>();
         }
-        InventoryUtils.wrapText(message, lore);
+        CompatibilityLib.getInventoryUtils().wrapText(message, lore);
         meta.setLore(lore);
         itemStack.setItemMeta(meta);
         NBTUtils.setMetaBoolean(itemStack, "absorb", true);

@@ -26,7 +26,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     private static final String DEFAULT_NPC_KEY = "base_npc";
@@ -458,7 +457,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
                 if (this.parameters.contains(key)) {
                     propertyColor = ChatColor.DARK_AQUA;
                 }
-                sender.sendMessage(propertyColor.toString() + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
+                sender.sendMessage(propertyColor.toString() + key + ChatColor.GRAY + ": " + ChatColor.WHITE + CompatibilityLib.getInventoryUtils().describeProperty(value, CompatibilityLib.getInventoryUtils().MAX_PROPERTY_DISPLAY_LENGTH));
             }
         }
     }

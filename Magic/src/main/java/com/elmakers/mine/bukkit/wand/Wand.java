@@ -1631,7 +1631,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (wand != null && wand.getMode() == WandMode.SKILLS && !isItem) {
             String mageClassKey = wand.getMageClassKey();
             ConfigurationSection skillsConfig = wand.getConfigurationSection("skills");
-            InventoryUtils.configureSkillItem(itemStack, mageClassKey, skillsConfig);
+            CompatibilityLib.getInventoryUtils().configureSkillItem(itemStack, mageClassKey, skillsConfig);
         }
 
         return itemStack;
@@ -1667,7 +1667,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         String keyMessage = wand != null ? wand.getMessage("brush.key") : controller.getMessages().get("brush.key");
         if (keyMessage != null && !keyMessage.isEmpty()) {
-            InventoryUtils.wrapText(keyMessage.replace("$key", materialKey), lore);
+            CompatibilityLib.getInventoryUtils().wrapText(keyMessage.replace("$key", materialKey), lore);
         }
         boolean consumeFree = wand == null ? false : wand.isConsumeFree();
         if (brushData.getMode() == BrushMode.MATERIAL && !consumeFree) {
@@ -1692,14 +1692,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             Player player = mage.getPlayer();
             if (player != null) {
                 ItemStack itemInHand = player.getInventory().getItemInMainHand();
-                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item)
+                if (itemInHand != null && !CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)
                     && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
                     isInOffhand = false;
                     return true;
                 }
                 itemInHand = player.getInventory().getItemInOffHand();
-                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item)
+                if (itemInHand != null && !CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)
                     && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
                     isInOffhand = true;
@@ -1707,7 +1707,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
 
                 itemInHand = player.getInventory().getItem(heldSlot);
-                if (itemInHand != null && !InventoryUtils.isSameInstance(itemInHand, item)
+                if (itemInHand != null && !CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)
                     && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
                     isInOffhand = true;
@@ -1742,7 +1742,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             controller.getLogger().warning("Failed to save wand state for wand to : " + item + ownerMessage);
         } else {
-            InventoryUtils.saveTagsToNBT(getConfiguration(), wandNode);
+            CompatibilityLib.getInventoryUtils().saveTagsToNBT(getConfiguration(), wandNode);
         }
     }
 
@@ -1766,7 +1766,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ConfigurationSection stateNode = itemSection.getConfigurationSection("wand");
         Object wandNode = NBTUtils.createNode(item, Wand.WAND_KEY);
         if (wandNode != null) {
-            InventoryUtils.saveTagsToNBT(stateNode, wandNode);
+            CompatibilityLib.getInventoryUtils().saveTagsToNBT(stateNode, wandNode);
         }
     }
 
@@ -2246,7 +2246,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         }
-        InventoryUtils.applyEnchantments(item, enchantments);
+        CompatibilityLib.getInventoryUtils().applyEnchantments(item, enchantments);
 
         // Add enchantment glow
         if (enchantments == null || enchantments.getKeys(false).isEmpty()) {
@@ -2671,7 +2671,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     protected void addDescriptionLore(List<String> lore) {
         String description = getAndUpdateDescription();
-        InventoryUtils.wrapText(description, lore);
+        CompatibilityLib.getInventoryUtils().wrapText(description, lore);
     }
 
     protected String getAndUpdateDescription() {
@@ -2770,12 +2770,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 String randomDescription = getMessage("randomized_lore");
                 String randomTemplate = controller.getMessages().get(getMessageKey("randomized_description"), "");
                 if (randomDescription.length() > 0 && !randomTemplate.isEmpty()) {
-                    InventoryUtils.wrapText(randomTemplate.replace("$description", randomDescription), lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(randomTemplate.replace("$description", randomDescription), lore);
                     return lore;
                 }
             }
             String description = getAndUpdateDescription();
-            InventoryUtils.wrapText(description, lore);
+            CompatibilityLib.getInventoryUtils().wrapText(description, lore);
         }
         String pathTemplate = getMessage("path_lore", "");
         if (pathName != null && !pathTemplate.isEmpty()) {
@@ -4095,7 +4095,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (mageClassKeys != null && !mageClassKeys.isEmpty() && mage == null) {
             return false;
         }
-        InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(item);
+        InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(item);
         boolean isUpgrade = isUpgrade(item);
         if (!isModifiable() && !isUpgrade && currency == null) return false;
         if (isUpgrade) {
@@ -4989,7 +4989,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Add vanilla attributes
         // This is done here instead of in the Wand constructor because it will modify the ItemStack
-        InventoryUtils.applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
+        CompatibilityLib.getInventoryUtils().applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
 
         mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
 
@@ -6296,7 +6296,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             setProperty("enchantments", enchantments);
             if (item != null) {
-                InventoryUtils.applyEnchantments(item, enchantments);
+                CompatibilityLib.getInventoryUtils().applyEnchantments(item, enchantments);
             }
             saveState();
             updateLore();
@@ -6313,7 +6313,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
             enchantments.set(entry.getKey().getName().toLowerCase(), entry.getValue());
         }
-        if (InventoryUtils.addEnchantments(item, enchantments)) {
+        if (CompatibilityLib.getInventoryUtils().addEnchantments(item, enchantments)) {
             enchantments = ConfigurationUtils.newConfigurationSection();
             Map<Enchantment, Integer> newEnchants = item.getItemMeta().getEnchants();
             for (Map.Entry<Enchantment, Integer> entry : newEnchants.entrySet()) {

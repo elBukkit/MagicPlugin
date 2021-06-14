@@ -150,7 +150,7 @@ public class DeprecatedUtils {
                     Object gameProfile = response.getGameProfile();
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        InventoryUtils.setSkullProfile(meta, gameProfile);
+                        CompatibilityLib.getInventoryUtils().setSkullProfile(meta, gameProfile);
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -169,7 +169,7 @@ public class DeprecatedUtils {
                     Object gameProfile = response.getGameProfile();
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        InventoryUtils.setSkullProfile(meta, gameProfile);
+                        CompatibilityLib.getInventoryUtils().setSkullProfile(meta, gameProfile);
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -186,7 +186,7 @@ public class DeprecatedUtils {
             public void result(SkinUtils.ProfileResponse response) {
                 if (response != null) {
                     Object gameProfile = response.getGameProfile();
-                    InventoryUtils.setSkullProfile(skull, gameProfile);
+                    CompatibilityLib.getInventoryUtils().setSkullProfile(skull, gameProfile);
                 }
                 skull.update(true, false);
             }
@@ -199,7 +199,7 @@ public class DeprecatedUtils {
             public void result(SkinUtils.ProfileResponse response) {
                 if (response != null) {
                     Object gameProfile = response.getGameProfile();
-                    InventoryUtils.setSkullProfile(skull, gameProfile);
+                    CompatibilityLib.getInventoryUtils().setSkullProfile(skull, gameProfile);
                 }
                 skull.update(true, false);
             }

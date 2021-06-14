@@ -32,7 +32,6 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 @Deprecated
 public class AlterSpell extends BlockSpell
@@ -169,7 +168,7 @@ public class AlterSpell extends BlockSpell
                 if (frameItem == null || !DefaultMaterials.isFilledMap(frameItem.getType())) {
                     return SpellResult.NO_TARGET;
                 }
-                int mapId = InventoryUtils.getMapId(frameItem);
+                int mapId = CompatibilityLib.getInventoryUtils().getMapId(frameItem);
                 mapId++;
                 MapView mapView = CompatibilityLib.getDeprecatedUtils().getMap(mapId);
                 if (mapView == null) {
@@ -180,7 +179,7 @@ public class AlterSpell extends BlockSpell
                     }
                 }
                 registerModified(entity);
-                InventoryUtils.setMapId(frameItem, mapId);
+                CompatibilityLib.getInventoryUtils().setMapId(frameItem, mapId);
                 itemFrame.setItem(frameItem);
                 break;
             case HORSE:

@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class LockAction extends BaseSpellAction
@@ -93,7 +92,7 @@ public class LockAction extends BaseSpellAction
                     context.sendMessageKey("already");
                     return SpellResult.NO_TARGET;
                 }
-                if (!override && !InventoryUtils.hasItem(mage.getInventory(), lock))
+                if (!override && !CompatibilityLib.getInventoryUtils().hasItem(mage.getInventory(), lock))
                 {
                     // Check for old alternate keys
                     boolean isAlternate = false;
@@ -119,7 +118,7 @@ public class LockAction extends BaseSpellAction
             {
                 return SpellResult.FAIL;
             }
-            if (!keyName.equals(lock) && !override && !InventoryUtils.hasItem(mage.getInventory(), lock))
+            if (!keyName.equals(lock) && !override && !CompatibilityLib.getInventoryUtils().hasItem(mage.getInventory(), lock))
             {
                 return SpellResult.FAIL;
             }
@@ -133,11 +132,11 @@ public class LockAction extends BaseSpellAction
     }
 
     protected boolean hasKey(Mage mage, String keyName) {
-        return InventoryUtils.hasItem(mage.getInventory(), keyName);
+        return CompatibilityLib.getInventoryUtils().hasItem(mage.getInventory(), keyName);
     }
 
     protected ItemStack giveKey(Mage mage, String keyName, String keyDescription) {
-        ItemStack itemStack = InventoryUtils.getItem(mage.getInventory(), keyName);
+        ItemStack itemStack = CompatibilityLib.getInventoryUtils().getItem(mage.getInventory(), keyName);
         if (itemStack != null) {
             return itemStack;
         }
@@ -158,7 +157,7 @@ public class LockAction extends BaseSpellAction
         keyItem.setItemMeta(meta);
         keyItem = ItemUtils.makeReal(keyItem);
         ItemUtils.makeUnplaceable(keyItem);
-        InventoryUtils.makeKeep(keyItem);
+        CompatibilityLib.getInventoryUtils().makeKeep(keyItem);
         mage.giveItem(keyItem);
         return keyItem;
     }

@@ -18,8 +18,8 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 
@@ -311,7 +311,7 @@ public class BaseMagicProperties implements MagicProperties {
     }
 
     public static String describeProperty(Object property) {
-        return InventoryUtils.describeProperty(property, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH);
+        return CompatibilityLib.getInventoryUtils().describeProperty(property, CompatibilityLib.getInventoryUtils().MAX_PROPERTY_DISPLAY_LENGTH);
     }
 
     public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {

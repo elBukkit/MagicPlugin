@@ -9,6 +9,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.NMSUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
@@ -18,6 +19,7 @@ public class CompatibilityLib {
     private static Plugin plugin;
     private static CompatibilityUtils compatibilityUtils;
     private static DeprecatedUtils deprecatedUtils;
+    private static InventoryUtils inventoryUtils;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
         CompatibilityLib.plugin = plugin;
@@ -25,6 +27,7 @@ public class CompatibilityLib {
         platform = new Platform();
         compatibilityUtils = platform.getCompatibilityUtils();
         deprecatedUtils = platform.getDeprecatedUtils();
+        inventoryUtils = platform.getInventoryUtils();
         return platform.isValid();
     }
 
@@ -102,5 +105,12 @@ public class CompatibilityLib {
             throw new IllegalStateException("DeprecatedUtils used before being initialized");
         }
         return deprecatedUtils;
+    }
+
+    public static InventoryUtils getInventoryUtils() {
+        if (inventoryUtils == null) {
+            throw new IllegalStateException("InventoryUtils used before being initialized");
+        }
+        return inventoryUtils;
     }
 }

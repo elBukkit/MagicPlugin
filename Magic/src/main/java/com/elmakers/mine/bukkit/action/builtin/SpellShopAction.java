@@ -28,8 +28,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 @Deprecated
@@ -263,7 +263,7 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
             }
             String upgradeDescription = spell.getUpgradeDescription();
             if (showUpgrades && upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                InventoryUtils.wrapText(upgradeDescription, controller.getMessages().get("spell.upgrade_description_prefix"), lore);
+                CompatibilityLib.getInventoryUtils().wrapText(upgradeDescription, controller.getMessages().get("spell.upgrade_description_prefix"), lore);
             }
 
             String unpurchasableMessage = null;
@@ -272,7 +272,7 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
             String requirementMissing = controller.checkRequirements(context, requirements);
             if (requirementMissing != null) {
                 unpurchasableMessage = requirementMissing;
-                InventoryUtils.wrapText(unpurchasableMessage, lore);
+                CompatibilityLib.getInventoryUtils().wrapText(unpurchasableMessage, lore);
             }
 
             if ((requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
@@ -289,19 +289,19 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
                     com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                     if (upgradePath != null) {
                         unpurchasableMessage = context.getMessage("level_requirement", getDefaultMessage(context, "level_requirement")).replace("$path", upgradePath.getName());
-                        InventoryUtils.wrapText(unpurchasableMessage, lore);
+                        CompatibilityLib.getInventoryUtils().wrapText(unpurchasableMessage, lore);
                     }
                 } else if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                     Set<String> tags = currentPath.getMissingTags(requiredPathTags);
                     unpurchasableMessage = context.getMessage("tags_requirement", getDefaultMessage(context, "tags_requirement")).replace("$tags", controller.getMessages().formatList("tags", tags, "name"));
-                    InventoryUtils.wrapText(unpurchasableMessage, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(unpurchasableMessage, lore);
                 }
 
                 if (requiresCastCounts && requiredCastCount > 0 && castCount < requiredCastCount) {
                     unpurchasableMessage = ChatColor.RED + context.getMessage("cast_requirement", getDefaultMessage(context, "cast_requirement"))
                             .replace("$current", Long.toString(castCount))
                             .replace("$required", Long.toString(requiredCastCount));
-                    InventoryUtils.wrapText(unpurchasableMessage, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(unpurchasableMessage, lore);
                 }
 
                 if (!missingSpells.isEmpty()) {
@@ -320,7 +320,7 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
                     }
                     unpurchasableMessage = ChatColor.RED + context.getMessage("required_spells", getDefaultMessage(context, "required_spells"))
                             .replace("$spells", StringUtils.join(spells, ", "));
-                    InventoryUtils.wrapText(ChatColor.GOLD + unpurchasableMessage, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(ChatColor.GOLD + unpurchasableMessage, lore);
                 }
             }
 

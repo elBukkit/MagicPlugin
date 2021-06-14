@@ -20,7 +20,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class CycleEntityAction extends BaseSpellAction {
 
@@ -56,7 +55,7 @@ public class CycleEntityAction extends BaseSpellAction {
                 if (frameItem == null || !DefaultMaterials.isFilledMap(frameItem.getType())) {
                     return SpellResult.NO_TARGET;
                 }
-                int mapId = InventoryUtils.getMapId(frameItem);
+                int mapId = CompatibilityLib.getInventoryUtils().getMapId(frameItem);
                 mapId++;
                 MapView mapView = CompatibilityLib.getDeprecatedUtils().getMap(mapId);
                 if (mapView == null) {
@@ -67,7 +66,7 @@ public class CycleEntityAction extends BaseSpellAction {
                     }
                 }
                 context.registerModified(entity);
-                InventoryUtils.setMapId(frameItem, mapId);
+                CompatibilityLib.getInventoryUtils().setMapId(frameItem, mapId);
                 itemFrame.setItem(frameItem);
                 break;
             case HORSE:

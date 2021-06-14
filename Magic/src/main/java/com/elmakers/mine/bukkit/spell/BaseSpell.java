@@ -85,7 +85,6 @@ import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -2953,23 +2952,23 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (levelDescription != null && levelDescription.length() > 0) {
             String descriptionTemplate = messages.get("spell.level_lore", "");
             if (!descriptionTemplate.isEmpty()) {
-                InventoryUtils.wrapText(descriptionTemplate.replace("$level", levelDescription), lore);
+                CompatibilityLib.getInventoryUtils().wrapText(descriptionTemplate.replace("$level", levelDescription), lore);
             }
         }
         if (description != null && description.length() > 0) {
             String descriptionTemplate = messages.get("spell.description_lore", "");
             if (!descriptionTemplate.isEmpty()) {
-                InventoryUtils.wrapText(descriptionTemplate.replace("$description", description), lore);
+                CompatibilityLib.getInventoryUtils().wrapText(descriptionTemplate.replace("$description", description), lore);
             }
         }
         if (creatorName != null && !creatorName.isEmpty()) {
             String creatorTemplate = messages.get("spell.creator", "");
             if (!creatorTemplate.isEmpty()) {
-                InventoryUtils.wrapText(creatorTemplate.replace("$name", creatorName), lore);
+                CompatibilityLib.getInventoryUtils().wrapText(creatorTemplate.replace("$name", creatorName), lore);
             }
         }
         if (usage != null && usage.length() > 0) {
-            InventoryUtils.wrapText(usage, lore);
+            CompatibilityLib.getInventoryUtils().wrapText(usage, lore);
         }
         if (category != null) {
             String categoryLore = messages.get("spell.category", "");
@@ -3078,7 +3077,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         if (controller.isSpellProgressionEnabled() && progressDescription != null
                 && progressDescription.length() > 0 && maxLevels > 0 && template != null) {
-            InventoryUtils.wrapText(progressDescription
+            CompatibilityLib.getInventoryUtils().wrapText(progressDescription
                     .replace("$level", Long.toString(Math.max(0, getProgressLevel())))
                     .replace("$max_level", Long.toString(maxLevels)),
                     lore);

@@ -17,9 +17,9 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.DirectionUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class SignSpell extends BlockSpell
 {
@@ -112,7 +112,7 @@ public class SignSpell extends BlockSpell
 
                 if (editSign && sourceEntity instanceof Player) {
                     Player player = (Player)sourceEntity;
-                    InventoryUtils.openSign(player, targetBlock.getLocation());
+                    CompatibilityLib.getInventoryUtils().openSign(player, targetBlock.getLocation());
                 }
 
                 return SpellResult.CAST;

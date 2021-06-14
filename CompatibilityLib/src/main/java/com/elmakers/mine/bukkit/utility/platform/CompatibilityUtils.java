@@ -3053,7 +3053,7 @@ public class CompatibilityUtils {
     public boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
     {
         try {
-            Set<String> keys = InventoryUtils.getTagKeys(tag);
+            Set<String> keys = CompatibilityLib.getInventoryUtils().getTagKeys(tag);
             if (keys == null) return false;
 
             for (String tagName : keys) {
@@ -3063,7 +3063,7 @@ public class CompatibilityUtils {
                         ConfigurationSection newSection = tags.createSection(tagName);
                         CompatibilityUtils.this.loadAllTagsFromNBT(newSection, metaBase);
                     } else {
-                        tags.set(tagName, InventoryUtils.getTagValue(metaBase));
+                        tags.set(tagName, CompatibilityLib.getInventoryUtils().getTagValue(metaBase));
                     }
                 }
             }

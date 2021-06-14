@@ -20,6 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
@@ -265,7 +266,7 @@ public class ShopAction extends SelectorAction {
                         }
                     }
                     ConfigurationSection costSection = itemConfig.createSection("costs");
-                    InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(item);
+                    InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(item);
                     if (currency != null) {
                         costSection.set(currency.type, currency.amount);
                     } else {

@@ -22,9 +22,9 @@ import com.elmakers.mine.bukkit.automata.AutomatonTemplate;
 import com.elmakers.mine.bukkit.automata.Nearby;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.google.common.collect.ImmutableSet;
 
 public class MagicAutomataCommandExecutor extends MagicTabExecutor {
@@ -376,7 +376,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 Object property = parameters.get(key);
                 if (!(property instanceof ConfigurationSection)) {
                     sender.sendMessage(ChatColor.AQUA + key + ChatColor.GRAY + ": "
-                        + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
+                        + ChatColor.DARK_AQUA + CompatibilityLib.getInventoryUtils().describeProperty(property));
                 }
             }
         }
@@ -390,7 +390,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 Object property = templateParameters.get(key);
                 if (!(property instanceof ConfigurationSection)) {
                     sender.sendMessage(ChatColor.GRAY + key + ChatColor.DARK_GRAY + ": "
-                        + ChatColor.DARK_AQUA + InventoryUtils.describeProperty(property));
+                        + ChatColor.DARK_AQUA + CompatibilityLib.getInventoryUtils().describeProperty(property));
                 }
             }
         }
@@ -455,7 +455,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             Object value = parameters.get(key);
             automaton.setParameters(parameters);
             sender.sendMessage(ChatColor.DARK_AQUA + "Set property: " + ChatColor.AQUA + key
-                + ChatColor.DARK_AQUA + " to " + ChatColor.WHITE + InventoryUtils.describeProperty(value));
+                + ChatColor.DARK_AQUA + " to " + ChatColor.WHITE + CompatibilityLib.getInventoryUtils().describeProperty(value));
         }
 
         automaton.reload();

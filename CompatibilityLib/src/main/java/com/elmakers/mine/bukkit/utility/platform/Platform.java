@@ -42,4 +42,8 @@ public class Platform {
     public DeprecatedUtils getDeprecatedUtils() {
         return new DeprecatedUtils();
     }
+
+    public InventoryUtils getInventoryUtils() {
+        return new InventoryUtils();
+    }
 }

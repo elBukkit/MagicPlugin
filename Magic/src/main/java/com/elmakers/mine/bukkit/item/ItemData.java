@@ -24,7 +24,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.google.common.collect.ImmutableSet;
@@ -124,7 +123,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
             if (tagSection != null) {
                 item = ItemUtils.makeReal(item);
-                InventoryUtils.saveTagsToItem(tagSection, item);
+                CompatibilityLib.getInventoryUtils().saveTagsToItem(tagSection, item);
             }
         } else {
             String materialKey = configuration.getString("item", key);
@@ -174,7 +173,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         } else {
             ConfigurationSection simpleAttributes = configuration.getConfigurationSection("attributes");
             if (simpleAttributes != null) {
-                InventoryUtils.applyAttributes(item, simpleAttributes, configuration.getString("attribute_slot"));
+                CompatibilityLib.getInventoryUtils().applyAttributes(item, simpleAttributes, configuration.getString("attribute_slot"));
             }
         }
 
@@ -182,7 +181,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         ConfigurationSection tagSection = configuration.getConfigurationSection("tags");
         if (tagSection != null) {
             item = ItemUtils.makeReal(item);
-            InventoryUtils.saveTagsToItem(tagSection, item);
+            CompatibilityLib.getInventoryUtils().saveTagsToItem(tagSection, item);
         }
         String customName = configuration.getString("name");
         if (customName == null) {
@@ -348,7 +347,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                 }
             } else {
                 item = controller.createItem(materialKey, null, false, this);
-                if (!loaded && InventoryUtils.isSkull(item)) {
+                if (!loaded && CompatibilityLib.getInventoryUtils().isSkull(item)) {
                     pending = new ArrayList<>();
                 }
                 if (item == null) {
@@ -431,13 +430,13 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         if (pending != null && itemStack != null) {
             this.item = itemStack;
             ItemMeta populatedMeta = itemStack.getItemMeta();
-            Object profile = InventoryUtils.getSkullProfile(populatedMeta);
+            Object profile = CompatibilityLib.getInventoryUtils().getSkullProfile(populatedMeta);
             for (PendingUpdate update : pending) {
                 // We're assuming the only thing that changes here is skull profile
                 if (profile != null) {
                     ItemStack item = update.item;
                     ItemMeta meta = item.getItemMeta();
-                    InventoryUtils.setSkullProfile(meta, profile);
+                    CompatibilityLib.getInventoryUtils().setSkullProfile(meta, profile);
                     item.setItemMeta(meta);
                 }
                 if (update.callback != null) {

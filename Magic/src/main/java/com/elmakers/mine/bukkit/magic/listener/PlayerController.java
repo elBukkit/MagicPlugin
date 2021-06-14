@@ -66,6 +66,7 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.magic.SpellBlock;
 import com.elmakers.mine.bukkit.tasks.DropActionTask;
 import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
@@ -256,7 +257,7 @@ public class PlayerController implements Listener {
         activeWand = mage.getActiveWand();
         if (activeWand == null && next != null) {
             if (DefaultMaterials.isFilledMap(next.getType())) {
-                mage.setLastHeldMapId(InventoryUtils.getMapId(next));
+                mage.setLastHeldMapId(CompatibilityLib.getInventoryUtils().getMapId(next));
             }
         }
     }
@@ -761,7 +762,7 @@ public class PlayerController implements Listener {
 
         // Check for right-clicking SP or currency items
         if (isRightClick) {
-            InventoryUtils.CurrencyAmount currencyAmount = InventoryUtils.getCurrency(itemInHand);
+            InventoryUtils.CurrencyAmount currencyAmount = CompatibilityLib.getInventoryUtils().getCurrency(itemInHand);
             Currency currency = currencyAmount == null ? null : controller.getCurrency(currencyAmount.type);
             if (currency != null) {
                 Messages messages = controller.getMessages();

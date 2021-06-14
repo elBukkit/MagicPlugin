@@ -35,7 +35,6 @@ import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -230,7 +229,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         {
             ItemStack skillItem = controller.getAPI().createItem(skill.getSkillKey(), mage);
             if (skillItem == null) continue;
-            InventoryUtils.configureSkillItem(skillItem, classKey, skillsConfig);
+            CompatibilityLib.getInventoryUtils().configureSkillItem(skillItem, classKey, skillsConfig);
             if (skill.isHeroes() && heroes != null && !heroes.canUseSkill(player, skill.heroesSkill))
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
@@ -244,7 +243,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
                     } else {
                         String disabledIconURL = skill.spell.getDisabledIconURL();
                         if (disabledIconURL != null && !disabledIconURL.isEmpty()) {
-                            InventoryUtils.setSkullURL(skillItem, disabledIconURL);
+                            CompatibilityLib.getInventoryUtils().setSkullURL(skillItem, disabledIconURL);
                         }
                     }
                 }

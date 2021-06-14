@@ -27,7 +27,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class SpellProgressAction extends BaseSpellAction implements GUIAction
 {
@@ -99,28 +98,28 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
                     lore.add(levelDescription);
                     String upgradeDescription = upgradeSpell.getUpgradeDescription();
                     if (upgradeDescription != null && !upgradeDescription.isEmpty()) {
-                        InventoryUtils.wrapText(upgradeDescription, context.getController().getMessages().get("spell.upgrade_description_prefix"), lore);
+                        CompatibilityLib.getInventoryUtils().wrapText(upgradeDescription, context.getController().getMessages().get("spell.upgrade_description_prefix"), lore);
                     }
                     if (requiredPathKey != null && currentPath == null) {
                         continue;
                     }
                     if (!upgradeSpell.getName().equals(spell.getName())) {
-                        InventoryUtils.wrapText(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", spell.getName()), lore);
+                        CompatibilityLib.getInventoryUtils().wrapText(context.getMessage("upgrade_name_change", "&r&4Upgrades: &r$name").replace("$name", spell.getName()), lore);
                     }
                     if (requiredPathKey != null && !currentPath.hasPath(requiredPathKey))
                     {
                         requiredPathKey = currentPath.translatePath(requiredPathKey);
                         com.elmakers.mine.bukkit.wand.WandUpgradePath upgradePath = com.elmakers.mine.bukkit.wand.WandUpgradePath.getPath(requiredPathKey);
                         if (upgradePath == null) continue;
-                        InventoryUtils.wrapText(context.getMessage("level_requirement").replace("$path", upgradePath.getName()), lore);
+                        CompatibilityLib.getInventoryUtils().wrapText(context.getMessage("level_requirement").replace("$path", upgradePath.getName()), lore);
                     }
                     if (requiredPathTags != null && !requiredPathTags.isEmpty() && !currentPath.hasAllTags(requiredPathTags)) {
                         Set<String> tags = currentPath.getMissingTags(requiredPathTags);
-                        InventoryUtils.wrapText(context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name")), lore);
+                        CompatibilityLib.getInventoryUtils().wrapText(context.getMessage("tags_requirement").replace("$tags", messages.formatList("tags", tags, "name")), lore);
                     }
                     long castCount = Math.min(spell.getCastCount(), requiredCastCount);
                     ChatColor prefixColor = castCount == requiredCastCount ? ChatColor.GREEN : ChatColor.RED;
-                    InventoryUtils.wrapText(prefixColor + context.getMessage("cast_requirement")
+                    CompatibilityLib.getInventoryUtils().wrapText(prefixColor + context.getMessage("cast_requirement")
                             .replace("$current", Long.toString(castCount))
                             .replace("$required", Long.toString(requiredCastCount)), lore);
 

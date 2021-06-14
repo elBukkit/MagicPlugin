@@ -5323,7 +5323,7 @@ public class MagicController implements MageController {
                                 currencyDescription = currencyDescription.replace("$type", name);
                                 currencyDescription = currencyDescription.replace("$amount", itemData);
                                 List<String> lore = new ArrayList<>();
-                                InventoryUtils.wrapText(ChatColor.translateAlternateColorCodes('&', currencyDescription), lore);
+                                CompatibilityLib.getInventoryUtils().wrapText(ChatColor.translateAlternateColorCodes('&', currencyDescription), lore);
                                 meta.setLore(lore);
                             }
                             itemStack.setItemMeta(meta);
@@ -6089,7 +6089,7 @@ public class MagicController implements MageController {
         if (configuredItem == null) {
             Wand wand = getIfWand(item);
             if (wand == null) {
-                InventoryUtils.CurrencyAmount currencyAmount = InventoryUtils.getCurrency(item);
+                InventoryUtils.CurrencyAmount currencyAmount = CompatibilityLib.getInventoryUtils().getCurrency(item);
                 Currency currency = currencyAmount == null ? null : getCurrency(currencyAmount.type);
                 if (currency != null) {
                     return currency.getWorth() * currencyAmount.amount * item.getAmount() / toCurrency.getWorth();
@@ -6203,7 +6203,7 @@ public class MagicController implements MageController {
     @Nonnull
     public ItemStack getURLSkull(String url) {
         try {
-            ItemStack stack = getURLSkull(new URL(url), InventoryUtils.SKULL_UUID);
+            ItemStack stack = getURLSkull(new URL(url), CompatibilityLib.getInventoryUtils().SKULL_UUID);
             return stack == null ? new ItemStack(Material.AIR) : stack;
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
@@ -6219,7 +6219,7 @@ public class MagicController implements MageController {
             return new ItemStack(Material.AIR);
         }
         ItemStack skull = skullType.getItemStack(1);
-        return InventoryUtils.setSkullURL(skull, url, id);
+        return CompatibilityLib.getInventoryUtils().setSkullURL(skull, url, id);
     }
 
     @Override
@@ -6360,7 +6360,7 @@ public class MagicController implements MageController {
                 };
             }
             if (ownerName.startsWith("http")) {
-                skull = InventoryUtils.setSkullURL(skull, ownerName);
+                skull = CompatibilityLib.getInventoryUtils().setSkullURL(skull, ownerName);
                 if (callback != null) {
                     callback.updated(skull);
                 }
@@ -6408,7 +6408,7 @@ public class MagicController implements MageController {
         if (ItemUtils.isEmpty(item)) return null;
         Object wandNode = NBTUtils.getNode(item, Wand.WAND_KEY);
         if (wandNode == null) return null;
-        Object value = InventoryUtils.getMetaObject(wandNode, key);
+        Object value = CompatibilityLib.getInventoryUtils().getMetaObject(wandNode, key);
         if (value == null) {
             WandTemplate template = getWandTemplate(NBTUtils.getMetaString(wandNode, "template"));
             if (template != null) {
@@ -6439,7 +6439,7 @@ public class MagicController implements MageController {
         Class<? extends T> clazz = (Class<? extends T>) defaultValue.getClass();
 
         // Value directly stored on wand
-        Object value = InventoryUtils.getMetaObject(wandNode, key);
+        Object value = CompatibilityLib.getInventoryUtils().getMetaObject(wandNode, key);
         if (value != null) {
             if (clazz.isInstance(value)) {
                 return clazz.cast(value);
@@ -7694,7 +7694,7 @@ public class MagicController implements MageController {
         defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
         skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
         skillsSpell = properties.getString("mskills_spell", skillsSpell);
-        InventoryUtils.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", InventoryUtils.MAX_LORE_LENGTH);
+        CompatibilityLib.getInventoryUtils().MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", CompatibilityLib.getInventoryUtils().MAX_LORE_LENGTH);
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);

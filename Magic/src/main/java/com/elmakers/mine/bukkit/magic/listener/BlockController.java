@@ -51,7 +51,6 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.UndoBlockTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.world.MagicWorld;
@@ -114,7 +113,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                 if (mage != null) {
                     inventory = mage.getInventory();
                 }
-                if (!InventoryUtils.hasItem(inventory, lockKey)) {
+                if (!CompatibilityLib.getInventoryUtils().hasItem(inventory, lockKey)) {
                     String message = controller.getMessages().get("general.locked_chest");
                     if (mage != null) {
                         mage.sendMessage(message);

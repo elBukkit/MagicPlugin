@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
@@ -954,7 +953,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 if (waypoint.description != null && waypoint.description.length() > 0)
                 {
                     List<String> lore = new ArrayList<>();
-                    InventoryUtils.wrapText(waypoint.description, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(waypoint.description, lore);
                     meta.setLore(lore);
                 }
                 String invalidMessage = context.getMessage("invalid_description");
@@ -963,14 +962,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     if (lore == null) {
                         lore = new ArrayList<>();
                     }
-                    InventoryUtils.wrapText(invalidMessage, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(invalidMessage, lore);
                     meta.setLore(lore);
                 } else if (isUnavailable && waypoint.unavailableMessage != null && waypoint.unavailableMessage.length() > 0) {
                     List<String> lore = meta.getLore();
                     if (lore == null) {
                         lore = new ArrayList<>();
                     }
-                    InventoryUtils.wrapText(waypoint.unavailableMessage, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(waypoint.unavailableMessage, lore);
                     meta.setLore(lore);
                 }
                 waypointItem.setItemMeta(meta);

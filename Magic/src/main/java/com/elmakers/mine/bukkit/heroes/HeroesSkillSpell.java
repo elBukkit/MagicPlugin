@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.CastingCost;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
@@ -96,7 +96,7 @@ public class HeroesSkillSpell extends BaseSpell {
         }
 
         if (description != null && description.length() > 0) {
-            InventoryUtils.wrapText(description, lore);
+            CompatibilityLib.getInventoryUtils().wrapText(description, lore);
         }
 
         int cooldown = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN, 0, true);

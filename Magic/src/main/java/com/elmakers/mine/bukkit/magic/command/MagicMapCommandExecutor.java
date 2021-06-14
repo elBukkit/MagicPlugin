@@ -30,7 +30,6 @@ import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class MagicMapCommandExecutor extends MagicMapExecutor {
     public MagicMapCommandExecutor(MagicAPI api) {
@@ -293,7 +292,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("Failed to load map: " + url);
             return;
         }
-        int mapId = InventoryUtils.getMapId(item);
+        int mapId = CompatibilityLib.getInventoryUtils().getMapId(item);
         sender.sendMessage("Loaded map id " + mapId);
         if (sender instanceof Player)
         {
@@ -311,7 +310,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("Failed to load player skin: " + playerName);
             return;
         }
-        int mapId = InventoryUtils.getMapId(item);
+        int mapId = CompatibilityLib.getInventoryUtils().getMapId(item);
         sender.sendMessage("Loaded map id " + mapId + " as player " + playerName);
         if (sender instanceof Player)
         {
@@ -437,7 +436,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             sender.sendMessage("You must be holding a map");
             return;
         }
-        int mapId = InventoryUtils.getMapId(currentMap);
+        int mapId = CompatibilityLib.getInventoryUtils().getMapId(currentMap);
         MapController mapController = api.getController().getMaps();
         URLMap map = mapController.getMap((short)mapId);
         if (map == null) {

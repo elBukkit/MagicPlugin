@@ -33,7 +33,8 @@ import com.google.common.collect.Multimap;
 
 @SuppressWarnings("deprecation")
 public class InventoryUtils {
-    public static CurrencyAmount getCurrency(ItemStack item) {
+
+    public CurrencyAmount getCurrency(ItemStack item) {
         if (ItemUtils.isEmpty(item)) return null;
 
         Object currency = NBTUtils.getNode(item, "currency");
@@ -52,31 +53,31 @@ public class InventoryUtils {
         }
         return null;
     }
-    public static int MAX_LORE_LENGTH = 24;
-    public static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
-    public static UUID SKULL_UUID = UUID.fromString("3f599490-ca3e-49b5-8e75-78181ebf4232");
+    public int MAX_LORE_LENGTH = 24;
+    public int MAX_PROPERTY_DISPLAY_LENGTH = 50;
+    public UUID SKULL_UUID = UUID.fromString("3f599490-ca3e-49b5-8e75-78181ebf4232");
 
-    public static boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
+    public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
     {
         Object handle = ItemUtils.getHandle(item);
         if (handle == null) return false;
         Object tag = ItemUtils.getTag(handle);
         if (tag == null) return false;
 
-        return addTagsToNBT(CompatibilityLib.getCompatibilityUtils().getMap(tags), tag);
+        return InventoryUtils.this.addTagsToNBT(CompatibilityLib.getCompatibilityUtils().getMap(tags), tag);
     }
 
-    public static boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
+    public boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
     {
         Object handle = ItemUtils.getHandle(item);
         if (handle == null) return false;
         Object tag = ItemUtils.getTag(handle);
         if (tag == null) return false;
 
-        return addTagsToNBT(tags, tag);
+        return InventoryUtils.this.addTagsToNBT(tags, tag);
     }
 
-    public static boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
+    public boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
         if (skillItem == null) return false;
         Object handle = ItemUtils.getHandle(skillItem);
         if (handle == null) return false;
@@ -107,17 +108,17 @@ public class InventoryUtils {
         return true;
     }
 
-    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node)
+    public boolean saveTagsToNBT(ConfigurationSection tags, Object node)
     {
-        return saveTagsToNBT(tags, node, null);
+        return InventoryUtils.this.saveTagsToNBT(tags, node, null);
     }
 
-    public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames)
+    public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames)
     {
-        return saveTagsToNBT(CompatibilityLib.getCompatibilityUtils().getMap(tags), node, tagNames);
+        return InventoryUtils.this.saveTagsToNBT(CompatibilityLib.getCompatibilityUtils().getMap(tags), node, tagNames);
     }
 
-    public static boolean addTagsToNBT(Map<String, Object> tags, Object node)
+    public boolean addTagsToNBT(Map<String, Object> tags, Object node)
     {
         if (node == null) {
             CompatibilityLib.getLogger().warning("Trying to save tags to a null node");
@@ -131,7 +132,7 @@ public class InventoryUtils {
         for (Map.Entry<String, Object> tag : tags.entrySet()) {
             Object value = tag.getValue();
             try {
-                Object wrappedTag = wrapInTag(value);
+                Object wrappedTag = InventoryUtils.this.wrapInTag(value);
                 if (wrappedTag == null) continue;
                 NMSUtils.class_NBTTagCompound_setMethod.invoke(node, tag.getKey(), wrappedTag);
             } catch (Exception ex) {
@@ -142,7 +143,7 @@ public class InventoryUtils {
         return true;
     }
     
-    public static boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
+    public boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
     {
         if (node == null) {
             CompatibilityLib.getLogger().warning("Trying to save tags to a null node");
@@ -158,7 +159,7 @@ public class InventoryUtils {
         }
 
         // Remove tags that were not included
-        Set<String> currentTags = getTagKeys(node);
+        Set<String> currentTags = InventoryUtils.this.getTagKeys(node);
         if (currentTags != null && !tagNames.containsAll(currentTags)) {
             // Need to copy this, getKeys returns a live list and bad things can happen.
             currentTags = new HashSet<>(currentTags);
@@ -171,7 +172,7 @@ public class InventoryUtils {
             if (currentTags != null) currentTags.remove(tagName);
             Object value = tags.get(tagName);
             try {
-                Object wrappedTag = wrapInTag(value);
+                Object wrappedTag = InventoryUtils.this.wrapInTag(value);
                 if (wrappedTag == null) continue;
                 NMSUtils.class_NBTTagCompound_setMethod.invoke(node, tagName, wrappedTag);
             } catch (Exception ex) {
@@ -189,7 +190,7 @@ public class InventoryUtils {
         return true;
     }
 
-    public static Object wrapInTag(Object value)
+    public Object wrapInTag(Object value)
         throws IllegalAccessException, InvocationTargetException, InstantiationException {
         if (value == null) return null;
         Object wrappedValue = null;
@@ -205,12 +206,12 @@ public class InventoryUtils {
             wrappedValue = NMSUtils.class_NBTTagLong_constructor.newInstance((Long)value);
         } else if (value instanceof ConfigurationSection) {
             wrappedValue = NMSUtils.class_NBTTagCompound_constructor.newInstance();
-            saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);
+            InventoryUtils.this.saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);
         } else if (value instanceof Map) {
             wrappedValue = NMSUtils.class_NBTTagCompound_constructor.newInstance();
             @SuppressWarnings("unchecked")
             Map<String, Object> valueMap = (Map<String, Object>)value;
-            addTagsToNBT(valueMap, wrappedValue);
+            InventoryUtils.this.addTagsToNBT(valueMap, wrappedValue);
         } else if (value instanceof Collection) {
             @SuppressWarnings("unchecked")
             Collection<Object> list = (Collection<Object>)value;
@@ -224,28 +225,28 @@ public class InventoryUtils {
                     list = new ArrayList<>();
                     for (int i = 1; i < checkList.size(); i++) {
                         if (first.equals("I")) {
-                            list.add(convertToInteger(checkList.get(i)));
+                            list.add(InventoryUtils.this.convertToInteger(checkList.get(i)));
                         } else if (first.equals("L")) {
-                            list.add(convertToLong(checkList.get(i)));
+                            list.add(InventoryUtils.this.convertToLong(checkList.get(i)));
                         } else if (first.equals("B")) {
-                            list.add(convertToByte(checkList.get(i)));
+                            list.add(InventoryUtils.this.convertToByte(checkList.get(i)));
                         } else {
                             list.add(checkList.get(i));
                         }
                     }
                     if (first.equals("B")) {
-                        wrappedValue = NMSUtils.class_NBTTagByteArray_constructor.newInstance(makeByteArray((List<Object>)list));
+                        wrappedValue = NMSUtils.class_NBTTagByteArray_constructor.newInstance(InventoryUtils.this.makeByteArray((List<Object>)list));
                     } else if (first.equals("I") || NMSUtils.class_NBTTagLongArray_constructor == null) {
-                        wrappedValue = NMSUtils.class_NBTTagIntArray_constructor.newInstance(makeIntArray((List<Object>)list));
+                        wrappedValue = NMSUtils.class_NBTTagIntArray_constructor.newInstance(InventoryUtils.this.makeIntArray((List<Object>)list));
                     } else if (first.equals("L")) {
-                        wrappedValue = NMSUtils.class_NBTTagLongArray_constructor.newInstance(makeLongArray((List<Object>)list));
+                        wrappedValue = NMSUtils.class_NBTTagLongArray_constructor.newInstance(InventoryUtils.this.makeLongArray((List<Object>)list));
                     }
                 }
             }
             if (wrappedValue == null) {
                 for (Object item : list) {
                     if (item != null) {
-                        NBTUtils.addToList(listMeta, wrapInTag(item));
+                        NBTUtils.addToList(listMeta, InventoryUtils.this.wrapInTag(item));
                     }
                 }
                 wrappedValue = listMeta;
@@ -257,7 +258,7 @@ public class InventoryUtils {
         return wrappedValue;
     }
 
-    protected static byte[] makeByteArray(List<Object> list) {
+    protected byte[] makeByteArray(List<Object> list) {
         byte[] a = new byte[list.size()];
 
         for (int i = 0; i < list.size(); ++i) {
@@ -268,7 +269,7 @@ public class InventoryUtils {
         return a;
     }
 
-    protected static int[] makeIntArray(List<Object> list) {
+    protected int[] makeIntArray(List<Object> list) {
         int[] a = new int[list.size()];
 
         for (int i = 0; i < list.size(); ++i) {
@@ -279,7 +280,7 @@ public class InventoryUtils {
         return a;
     }
 
-    protected static long[]  makeLongArray(List<Object> list) {
+    protected long[]  makeLongArray(List<Object> list) {
         long[] a = new long[list.size()];
 
         for (int i = 0; i < list.size(); ++i) {
@@ -290,7 +291,7 @@ public class InventoryUtils {
         return a;
     }
 
-    protected static Long convertToLong(Object o) {
+    protected Long convertToLong(Object o) {
         if (o == null) return null;
         if (o instanceof Long) return (Long)o;
         if (o instanceof Integer) return (long)(int)(Integer)o;
@@ -300,22 +301,22 @@ public class InventoryUtils {
         return null;
     }
 
-    protected static Integer convertToInteger(Object o) {
-        Long intVal = convertToLong(o);
+    protected Integer convertToInteger(Object o) {
+        Long intVal = InventoryUtils.this.convertToLong(o);
         return intVal == null ? null : (int)(long)intVal;
     }
 
-    protected static Byte convertToByte(Object o) {
-        Long intVal = convertToLong(o);
+    protected Byte convertToByte(Object o) {
+        Long intVal = InventoryUtils.this.convertToLong(o);
         return intVal == null ? null : (byte)(long)intVal;
     }
 
-    protected static Short convertToShort(Object o) {
-        Long intVal = convertToLong(o);
+    protected Short convertToShort(Object o) {
+        Long intVal = InventoryUtils.this.convertToLong(o);
         return intVal == null ? null : (short)(long)intVal;
     }
 
-    protected static Double convertToDouble(Object o) {
+    protected Double convertToDouble(Object o) {
         if (o == null) return null;
         if (o instanceof Double) return (Double)o;
         if (o instanceof Integer) return (double)(Integer)o;
@@ -326,7 +327,7 @@ public class InventoryUtils {
     }
 
     @SuppressWarnings("unchecked")
-    public static Set<String> getTagKeys(Object tag) {
+    public Set<String> getTagKeys(Object tag) {
         if (tag == null || NMSUtils.class_NBTTagCompound_getKeysMethod == null) {
             return null;
         }
@@ -339,17 +340,17 @@ public class InventoryUtils {
         return null;
     }
 
-    public static Object getMetaObject(Object tag, String key) {
+    public Object getMetaObject(Object tag, String key) {
         try {
             Object metaBase = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, key);
-            return getTagValue(metaBase);
+            return InventoryUtils.this.getTagValue(metaBase);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;
     }
 
-    public static Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
+    public Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
         if (tag == null) return null;
         Object value = null;
         if (NMSUtils.class_NBTTagDouble.isAssignableFrom(tag.getClass())) {
@@ -374,7 +375,7 @@ public class InventoryUtils {
             List<?> items = (List<?>) NMSUtils.class_NBTTagList_list.get(tag);
             List<Object> converted = new ArrayList<>();
             for (Object baseTag : items) {
-                Object convertedBase = getTagValue(baseTag);
+                Object convertedBase = InventoryUtils.this.getTagValue(baseTag);
                 if (convertedBase != null) {
                     converted.add(convertedBase);
                 }
@@ -384,10 +385,10 @@ public class InventoryUtils {
             value = NMSUtils.class_NBTTagString_dataField.get(tag);
         } else if (NMSUtils.class_NBTTagCompound.isAssignableFrom(tag.getClass())) {
             Map<String, Object> compoundMap = new HashMap<>();
-            Set<String> keys = getTagKeys(tag);
+            Set<String> keys = InventoryUtils.this.getTagKeys(tag);
             for (String key : keys) {
                 Object baseTag = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, key);
-                Object convertedBase = getTagValue(baseTag);
+                Object convertedBase = InventoryUtils.this.getTagValue(baseTag);
                 if (convertedBase != null) {
                     compoundMap.put(key, convertedBase);
                 }
@@ -398,7 +399,7 @@ public class InventoryUtils {
         return value;
     }
 
-    public static boolean inventorySetItem(Inventory inventory, int index, ItemStack item) {
+    public boolean inventorySetItem(Inventory inventory, int index, ItemStack item) {
         try {
             Method setItemMethod = NMSUtils.class_CraftInventoryCustom.getMethod("setItem", Integer.TYPE, ItemStack.class);
             setItemMethod.invoke(inventory, index, item);
@@ -409,7 +410,7 @@ public class InventoryUtils {
         return false;
     }
 
-    public static boolean setInventoryResults(Inventory inventory, ItemStack item) {
+    public boolean setInventoryResults(Inventory inventory, ItemStack item) {
         try {
             Method getResultsMethod = inventory.getClass().getMethod("getResultInventory");
             Object inv = getResultsMethod.invoke(inventory);
@@ -422,22 +423,22 @@ public class InventoryUtils {
         return false;
     }
 
-    public static ItemStack setSkullURL(ItemStack itemStack, String url) {
+    public ItemStack setSkullURL(ItemStack itemStack, String url) {
         try {
             // Using a fixed non-random UUID here so skulls of the same type can stack
-            return setSkullURL(itemStack, new URL(url), SKULL_UUID);
+            return InventoryUtils.this.setSkullURL(itemStack, new URL(url), InventoryUtils.this.SKULL_UUID);
         } catch (MalformedURLException e) {
             CompatibilityLib.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
         return itemStack;
     }
 
-    public static ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
+    public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
         try {
             itemStack = ItemUtils.makeReal(itemStack);
             Object skullOwner = NBTUtils.createNode(itemStack, "SkullOwner");
             NBTUtils.setMeta(skullOwner, "Name", ownerName);
-            return setSkullURL(itemStack, url, id);
+            return InventoryUtils.this.setSkullURL(itemStack, url, id);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -445,13 +446,13 @@ public class InventoryUtils {
         return itemStack;
     }
 
-    public static ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
+    public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
         // Old versions of Bukkit would NPE trying to save a skull without an owner name
         // So we'll use MHF_Question, why not.
-        return setSkullURL(itemStack, url, id, "MHF_Question");
+        return InventoryUtils.this.setSkullURL(itemStack, url, id, "MHF_Question");
     }
 
-    public static ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String name) {
+    public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String name) {
         try {
             if (ItemUtils.isEmpty(itemStack)) {
                 return itemStack;
@@ -474,7 +475,7 @@ public class InventoryUtils {
             properties.put("textures", NMSUtils.class_GameProfileProperty_noSignatureConstructor.newInstance("textures", encoded));
 
             ItemMeta skullMeta = itemStack.getItemMeta();
-            setSkullProfile(skullMeta, gameProfile);
+            InventoryUtils.this.setSkullProfile(skullMeta, gameProfile);
 
             itemStack.setItemMeta(skullMeta);
         } catch (Exception ex) {
@@ -483,24 +484,24 @@ public class InventoryUtils {
         return itemStack;
     }
 
-    public static String getSkullURL(ItemStack skull) {
-        return SkinUtils.getProfileURL(getSkullProfile(skull.getItemMeta()));
+    public String getSkullURL(ItemStack skull) {
+        return SkinUtils.getProfileURL(InventoryUtils.this.getSkullProfile(skull.getItemMeta()));
     }
     
     @Deprecated
-    public static String getPlayerSkullURL(String playerName)
+    public String getPlayerSkullURL(String playerName)
     {
         return SkinUtils.getOnlineSkinURL(playerName);
     }
 
-    public static boolean isSkull(ItemStack item) {
+    public boolean isSkull(ItemStack item) {
         if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
         return NMSUtils.class_CraftMetaSkull.isInstance(meta);
     }
 
-    public static Object getSkullProfile(ItemMeta itemMeta)
+    public Object getSkullProfile(ItemMeta itemMeta)
     {
         Object profile = null;
         try {
@@ -512,7 +513,7 @@ public class InventoryUtils {
         return profile;
     }
 
-    public static boolean setSkullProfile(ItemMeta itemMeta, Object data)
+    public boolean setSkullProfile(ItemMeta itemMeta, Object data)
     {
         try {
             if (itemMeta == null || !NMSUtils.class_CraftMetaSkull.isInstance(itemMeta)) return false;
@@ -528,7 +529,7 @@ public class InventoryUtils {
         return false;
     }
 
-    public static Object getSkullProfile(Skull state)
+    public Object getSkullProfile(Skull state)
     {
         Object profile = null;
         try {
@@ -540,7 +541,7 @@ public class InventoryUtils {
         return profile;
     }
 
-    public static boolean setSkullProfile(Skull state, Object data)
+    public boolean setSkullProfile(Skull state, Object data)
     {
         try {
             if (state == null || !NMSUtils.class_CraftSkull.isInstance(state)) return false;
@@ -553,22 +554,22 @@ public class InventoryUtils {
         return false;
     }
 
-    public static void wrapText(String text, Collection<String> list)
+    public void wrapText(String text, Collection<String> list)
     {
-        wrapText(text, MAX_LORE_LENGTH, list);
+        InventoryUtils.this.wrapText(text, InventoryUtils.this.MAX_LORE_LENGTH, list);
     }
 
-    public static void wrapText(String text, String prefix, Collection<String> list)
+    public void wrapText(String text, String prefix, Collection<String> list)
     {
-        wrapText(text, prefix, MAX_LORE_LENGTH, list);
+        InventoryUtils.this.wrapText(text, prefix, InventoryUtils.this.MAX_LORE_LENGTH, list);
     }
 
-    public static void wrapText(String text, int maxLength, Collection<String> list)
+    public void wrapText(String text, int maxLength, Collection<String> list)
     {
-        wrapText(text, "", maxLength, list);
+        InventoryUtils.this.wrapText(text, "", maxLength, list);
     }
 
-    public static void wrapText(String text, String prefix, int maxLength, Collection<String> list)
+    public void wrapText(String text, String prefix, int maxLength, Collection<String> list)
     {
         String colorPrefix = "";
         String[] lines = StringUtils.split(text, "\n\r");
@@ -591,12 +592,12 @@ public class InventoryUtils {
         }
     }
 
-    public static boolean hasItem(Inventory inventory, String itemName) {
-        ItemStack itemStack = getItem(inventory, itemName);
+    public boolean hasItem(Inventory inventory, String itemName) {
+        ItemStack itemStack = InventoryUtils.this.getItem(inventory, itemName);
         return itemStack != null;
     }
 
-    public static ItemStack getItem(Inventory inventory, String itemName) {
+    public ItemStack getItem(Inventory inventory, String itemName) {
         if (inventory == null) {
             return null;
         }
@@ -612,7 +613,7 @@ public class InventoryUtils {
         return null;
     }
 
-    public static void openSign(Player player, Location signBlock) {
+    public void openSign(Player player, Location signBlock) {
         try {
             Object tileEntity = CompatibilityLib.getCompatibilityUtils().getTileEntity(signBlock);
             Object playerHandle = NMSUtils.getHandle(player);
@@ -624,15 +625,15 @@ public class InventoryUtils {
         }
     }
 
-    public static void makeKeep(ItemStack itemStack) {
+    public void makeKeep(ItemStack itemStack) {
         NBTUtils.setMetaBoolean(itemStack, "keep", true);
     }
 
-    public static boolean isKeep(ItemStack itemStack) {
+    public boolean isKeep(ItemStack itemStack) {
         return NBTUtils.hasMeta(itemStack, "keep");
     }
     
-    public static void applyAttributes(ItemStack item, ConfigurationSection attributeConfig, String slot) {
+    public void applyAttributes(ItemStack item, ConfigurationSection attributeConfig, String slot) {
         if (item == null) return;
         CompatibilityLib.getCompatibilityUtils().removeItemAttributes(item);
         if (attributeConfig == null) return;
@@ -672,7 +673,7 @@ public class InventoryUtils {
         }
     }
     
-    public static void applyEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
+    public void applyEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
         if (item == null) return;
 
         Set<Enchantment> keep = null;
@@ -698,7 +699,7 @@ public class InventoryUtils {
         }
     }
 
-    public static boolean addEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
+    public boolean addEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
         if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
         if (meta == null) return false;
@@ -726,11 +727,11 @@ public class InventoryUtils {
         return addedAny;
     }
 
-    public static String describeProperty(Object property) {
-        return describeProperty(property, 0);
+    public String describeProperty(Object property) {
+        return InventoryUtils.this.describeProperty(property, 0);
     }
 
-    public static String describeProperty(Object property, int maxLength) {
+    public String describeProperty(Object property, int maxLength) {
         if (property == null) return "(Empty)";
         String propertyString;
         if (property instanceof ConfigurationSection) {
@@ -743,7 +744,7 @@ public class InventoryUtils {
                     full.append(',');
                 }
                 first = false;
-                full.append(key).append(':').append(describeProperty(section.get(key)));
+                full.append(key).append(':').append(InventoryUtils.this.describeProperty(section.get(key)));
             }
             propertyString = full.append('}').toString();
         } else {
@@ -756,11 +757,11 @@ public class InventoryUtils {
     }
 
     @SuppressWarnings("EqualsReference")
-    public static boolean isSameInstance(ItemStack one, ItemStack two) {
+    public boolean isSameInstance(ItemStack one, ItemStack two) {
         return one == two;
     }
 
-    public static int getMapId(ItemStack mapItem) {
+    public int getMapId(ItemStack mapItem) {
         if (CompatibilityLib.isCurrentVersion()) {
             return NBTUtils.getMetaInt(mapItem, "map", 0);
         }
@@ -768,7 +769,7 @@ public class InventoryUtils {
         return mapItem.getDurability();
     }
 
-    public static void setMapId(ItemStack mapItem, int id) {
+    public void setMapId(ItemStack mapItem, int id) {
         if (CompatibilityLib.isCurrentVersion()) {
             NBTUtils.setMetaInt(mapItem, "map", id);
         } else {
@@ -776,7 +777,7 @@ public class InventoryUtils {
         }
     }
 
-    public static void convertIntegers(Map<String, Object> m) {
+    public void convertIntegers(Map<String, Object> m) {
         for (Map.Entry<String, Object> entry : m.entrySet()) {
             Object value = entry.getValue();
             if (value != null && value instanceof Double) {
@@ -792,7 +793,7 @@ public class InventoryUtils {
             } else if (value != null && value instanceof Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>)value;
-                convertIntegers(map);
+                InventoryUtils.this.convertIntegers(map);
             }
         }
     }

@@ -1595,7 +1595,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         ItemStack activeWandItem = activeWand != null ? activeWand.getItem() : null;
-        if (InventoryUtils.isSameInstance(activeWandItem, itemInHand)) return activeWand;
+        if (CompatibilityLib.getInventoryUtils().isSameInstance(activeWandItem, itemInHand)) return activeWand;
 
         // Allow moving the spell book around while the inventory is open
         if (activeWand != null && activeWand.getMode() == WandMode.SKILLS && activeWand.isInventoryOpen()) {
@@ -1691,7 +1691,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         ItemStack offhandWandItem = offhandWand != null ? offhandWand.getItem() : null;
-        if (InventoryUtils.isSameInstance(offhandWandItem, itemInHand)) return offhandWand;
+        if (CompatibilityLib.getInventoryUtils().isSameInstance(offhandWandItem, itemInHand)) return offhandWand;
 
         if (!isWand) itemInHand = null;
 
@@ -2706,7 +2706,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int removeItem(ItemStack itemStack, boolean allowVariants) {
         if (!isPlayer()) return 0;
-        InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(itemStack);
+        InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(itemStack);
         if (currency != null) {
             currency.amount *= itemStack.getAmount();
             removeCurrency(currency.type, currency.amount);
@@ -2811,7 +2811,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean hasItem(ItemStack itemStack, boolean allowVariants) {
         if (!isPlayer()) return false;
-        InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(itemStack);
+        InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(itemStack);
         if (currency != null) {
             return getCurrency(currency.type) >= currency.amount * itemStack.getAmount();
         }
@@ -2887,7 +2887,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int getItemCount(ItemStack itemStack, boolean allowDamaged) {
         if (!isPlayer()) return 0;
-        InventoryUtils.CurrencyAmount currency = InventoryUtils.getCurrency(itemStack);
+        InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(itemStack);
         if (currency != null) {
             int amount = currency.amount <= 0 ? 1 : currency.amount;
             return (int)Math.ceil(getCurrency(currency.type) / amount);
@@ -3934,7 +3934,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 checkWand();
             } else {
                 if (DefaultMaterials.isFilledMap(itemStack.getType())) {
-                    setLastHeldMapId(InventoryUtils.getMapId(itemStack));
+                    setLastHeldMapId(CompatibilityLib.getInventoryUtils().getMapId(itemStack));
                 }
             }
         } else {
@@ -4584,10 +4584,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                 }
                             }
                         } else if (usingURLIcon && disabledUrlIcon != null && !disabledUrlIcon.isEmpty() && DefaultMaterials.isSkull(spellItem.getType())) {
-                            String currentURL = InventoryUtils.getSkullURL(spellItem);
+                            String currentURL = CompatibilityLib.getInventoryUtils().getSkullURL(spellItem);
                             if (!canCast) {
                                 if (!disabledUrlIcon.equals(currentURL)) {
-                                    spellItem = InventoryUtils.setSkullURL(spellItem, disabledUrlIcon);
+                                    spellItem = CompatibilityLib.getInventoryUtils().setSkullURL(spellItem, disabledUrlIcon);
                                     player.getInventory().setItem(i, spellItem);
                                 }
                                 if (!canCastSpell) {
@@ -4598,7 +4598,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                 }
                             } else {
                                 if (!urlIcon.equals(currentURL)) {
-                                    spellItem = InventoryUtils.setSkullURL(spellItem, urlIcon);
+                                    spellItem = CompatibilityLib.getInventoryUtils().setSkullURL(spellItem, urlIcon);
                                     player.getInventory().setItem(i, spellItem);
                                 }
                             }

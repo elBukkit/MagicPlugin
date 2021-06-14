@@ -35,7 +35,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 import de.slikey.effectlib.math.EquationStore;
@@ -1023,7 +1022,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 for (String key : keys) {
                     Object value = variables.get(key);
                     if (value != null) {
-                        sender.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
+                        sender.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + CompatibilityLib.getInventoryUtils().describeProperty(value, CompatibilityLib.getInventoryUtils().MAX_PROPERTY_DISPLAY_LENGTH));
                     }
                 }
             }
@@ -1048,7 +1047,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             if (property == null) {
                 sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.RED + "(Not Set)");
             } else {
-                sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(property));
+                sender.sendMessage(ChatColor.DARK_AQUA + parameters[0] + ChatColor.GRAY + ": " + ChatColor.WHITE + CompatibilityLib.getInventoryUtils().describeProperty(property));
             }
         }
 

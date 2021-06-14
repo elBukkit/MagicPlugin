@@ -27,8 +27,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
@@ -261,7 +261,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             mage.sendMessage(ChatColor.DARK_AQUA + "Cleared spell cast for npc " + ChatColor.GOLD);
             mage.sendMessage(ChatColor.AQUA + "Was: " + ChatColor.WHITE + previousSpell);
             if (previousParameters != null) {
-                mage.sendMessage(InventoryUtils.describeProperty(previousParameters));
+                mage.sendMessage(CompatibilityLib.getInventoryUtils().describeProperty(previousParameters));
             }
         } else {
             currentParameters.set("interact_spell", parameters[0]);
@@ -276,7 +276,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
                 Set<String> keys = spellParameters.getKeys(false);
                 for (String key : keys) {
                     Object value = spellParameters.get(key);
-                    mage.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + InventoryUtils.describeProperty(value, InventoryUtils.MAX_PROPERTY_DISPLAY_LENGTH));
+                    mage.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + CompatibilityLib.getInventoryUtils().describeProperty(value, CompatibilityLib.getInventoryUtils().MAX_PROPERTY_DISPLAY_LENGTH));
                 }
             }
         }

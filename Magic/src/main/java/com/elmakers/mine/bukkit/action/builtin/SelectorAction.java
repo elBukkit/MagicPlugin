@@ -55,7 +55,6 @@ import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
@@ -807,7 +806,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             if (description != null && !description.isEmpty()) {
-                InventoryUtils.wrapText(description, lore);
+                CompatibilityLib.getInventoryUtils().wrapText(description, lore);
             }
 
             boolean unlocked = false;
@@ -819,7 +818,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     costs = null;
                     showConfirmation = false;
                     String unlockedMessage = getMessage("unlocked_lore");
-                    InventoryUtils.wrapText(unlockedMessage, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(unlockedMessage, lore);
                 }
             }
 
@@ -830,7 +829,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     unavailable = true;
                     unavailableMessage = check.message;
                     if (unavailableMessage != null && !unavailableMessage.isEmpty()) {
-                        InventoryUtils.wrapText(check.message, lore);
+                        CompatibilityLib.getInventoryUtils().wrapText(check.message, lore);
                     }
                 }
             }
@@ -839,7 +838,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (costs != null && !unavailable) {
                 String costHeading = getMessage("cost_heading");
                 if (!costHeading.isEmpty()) {
-                    InventoryUtils.wrapText(costHeading, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(costHeading, lore);
                 }
 
                 String costKey = unlockKey != null && !unlockKey.isEmpty() ? "unlock_cost_lore" : "cost_lore";
@@ -855,13 +854,13 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
                     String costDescription = cost.has(context.getMage(), context.getWand()) ? costString : requiredCostString;
                     costDescription = costDescription.replace("$cost", cost.getFullDescription(context.getController().getMessages()));
-                    InventoryUtils.wrapText(costDescription, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(costDescription, lore);
                 }
             } else if (unlockKey != null && !unlockKey.isEmpty() && !unlocked) {
                 unavailable = true;
                 String lockedMessage = getMessage("locked");
                 if (!lockedMessage.isEmpty()) {
-                    InventoryUtils.wrapText(lockedMessage, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(lockedMessage, lore);
                     if (unavailableMessage == null) {
                         unavailableMessage = lockedMessage;
                     }
@@ -872,7 +871,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (earns != null) {
                 String costHeading = getMessage("earn_heading");
                 if (!costHeading.isEmpty()) {
-                    InventoryUtils.wrapText(costHeading, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(costHeading, lore);
                 }
 
                 String earnString = getMessage("earn_lore");
@@ -884,7 +883,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     }
 
                     earnString = earnString.replace("$earn", earn.getFullDescription(context.getController().getMessages()));
-                    InventoryUtils.wrapText(earnString, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(earnString, lore);
                 }
             }
 
