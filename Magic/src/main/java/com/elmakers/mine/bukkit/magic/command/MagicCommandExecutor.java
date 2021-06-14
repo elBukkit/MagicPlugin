@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.magic.command;
 
 import java.io.File;
 import java.io.InputStream;
-import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.security.CodeSource;
 import java.text.DecimalFormat;
@@ -28,13 +27,10 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Ageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Slime;
-import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
@@ -57,7 +53,6 @@ import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.LogMessage;
 import com.elmakers.mine.bukkit.utility.MagicLogger;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
@@ -618,6 +613,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
 
         if (listCommand.equalsIgnoreCase("entities")) {
             World world = Bukkit.getWorlds().get(0);
+            if (sender instanceof Player) {
+                world = ((Player)sender).getLocation().getWorld();
+            }
             NumberFormat formatter = new DecimalFormat("#0.0");
             List<EntityType> types = Arrays.asList(EntityType.values());
             Collections.sort(types, new Comparator<EntityType>() {
@@ -632,111 +630,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 showEntityInfo(sender, player, EntityType.PLAYER.name() + ChatColor.GRAY + " (" + player.getName() + " [" + (player.isSneaking() ? "sneaking" : "standing") + "])", formatter);
                 break;
             }
-
-            final Class<?> worldClass = NMSUtils.getBukkitClass("net.minecraft.server.World");
-            for (EntityType entityType : types)
-            {
-                if (entityType.isSpawnable())
-                {
-                    Entity testEntity = null;
-                    String errorMessage = null;
-                    String entityName = "Entity" + entityType.getEntityClass().getSimpleName();
-                    // A few hacky special cases :(
-                    // Still better than actually adding all of these entities to the world!
-                    if (entityName.equals("EntityGiant")) {
-                        entityName = "EntityGiantZombie";
-                    } else if (entityName.equals("EntityLeashHitch")) {
-                        entityName = "EntityLeash";
-                    } else if (entityName.equals("EntityStorageMinecart")) {
-                        entityName = "EntityMinecartChest";
-                    } else if (entityName.equals("EntitySpawnerMinecart")) {
-                        entityName = "EntityMinecartMobSpawner";
-                    } else if (entityName.equals("EntityCommandMinecart")) {
-                        entityName = "EntityMinecartCommandBlock";
-                    } else if (entityName.equals("EntityPoweredMinecart")) {
-                        entityName = "EntityMinecartFurnace";
-                    } else if (entityName.equals("EntityExplosiveMinecart")) {
-                        entityName = "EntityMinecartTNT";
-                    } else if (entityName.contains("Minecart")) {
-                        entityName = entityType.getEntityClass().getSimpleName();
-                        entityName = entityName.replace("Minecart", "");
-                        entityName = "EntityMinecart" + entityName;
-                    }
-                    try {
-                        Class<?> entityClass = NMSUtils.getBukkitClass("net.minecraft.server." + entityName);
-                        if (entityClass != null) {
-                            Constructor<? extends Object> constructor = entityClass.getConstructor(worldClass);
-                            Object nmsWorld = NMSUtils.getHandle(world);
-                            Object nmsEntity = constructor.newInstance(nmsWorld);
-                            testEntity = CompatibilityUtils.getBukkitEntity(nmsEntity);
-                            if (testEntity == null) {
-                                errorMessage = "Failed to get Bukkit entity for class " + entityName;
-                            }
-                        } else {
-                            errorMessage = "Could not load class " + entityName;
-                        }
-                    } catch (Exception ex) {
-                        testEntity = null;
-                        errorMessage = ex.getClass().getSimpleName() + " [" + entityName + "]";
-                        String message = ex.getMessage();
-                        if (message != null && !message.isEmpty()) {
-                            errorMessage += ": " + message;
-                        }
-                    }
-                    if (testEntity == null) {
-                        sender.sendMessage(ChatColor.BLACK + entityType.name() + ": " + ChatColor.RED + "Spawning error " + ChatColor.DARK_RED + "(" + errorMessage + ")");
-                        continue;
-                    }
-                    String label = entityType.name();
-
-                    Ageable ageable = (testEntity instanceof Ageable) ? (Ageable)testEntity : null;
-                    Zombie zombie = (testEntity instanceof Zombie) ? (Zombie)testEntity : null;
-                    Slime slime = (testEntity instanceof Slime) ? (Slime)testEntity : null;
-                    if (ageable != null)
-                    {
-                        label = label + ChatColor.GRAY + " (Adult)";
-                        ageable.setAdult();
-                    }
-                    else if (zombie != null)
-                    {
-                        label = label + ChatColor.GRAY + " (Adult)";
-                        zombie.setBaby(false);
-                    }
-                    else if (slime != null)
-                    {
-                        label = label + ChatColor.GRAY + " (Size 1)";
-                        slime.setSize(1);
-                    }
-
-                    showEntityInfo(sender, testEntity, label, formatter);
-                    if (ageable != null)
-                    {
-                        label = entityType.name() + ChatColor.GRAY + " (Baby)";
-                        ageable.setBaby();
-                        showEntityInfo(sender, testEntity, label, formatter);
-                    }
-                    else if (zombie != null)
-                    {
-                        label = entityType.name() + ChatColor.GRAY + " (Baby)";
-                        zombie.setBaby(true);
-                        showEntityInfo(sender, testEntity, label, formatter);
-                    }
-                    else if (slime != null)
-                    {
-                        label = entityType.name() + ChatColor.GRAY + " (Size 2)";
-                        slime.setSize(2);
-                        showEntityInfo(sender, testEntity, label, formatter);
-                        label = entityType.name() + ChatColor.GRAY + " (Size 4)";
-                        slime.setSize(4);
-                        showEntityInfo(sender, testEntity, label, formatter);
-                        label = entityType.name() + ChatColor.GRAY + " (Size 8)";
-                        slime.setSize(8);
-                        showEntityInfo(sender, testEntity, label, formatter);
-                        label = entityType.name() + ChatColor.GRAY + " (Size 16)";
-                        slime.setSize(16);
-                        showEntityInfo(sender, testEntity, label, formatter);
-                    }
-                }
+            Collection<? extends Entity> entities = world.getEntities();
+            for (Entity entity : entities) {
+                showEntityInfo(sender, entity, entity.getType().name(), formatter);
             }
             return true;
         }
