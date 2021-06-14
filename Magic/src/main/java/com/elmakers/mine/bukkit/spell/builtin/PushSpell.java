@@ -12,9 +12,9 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 @Deprecated
 public class PushSpell extends UndoableSpell
@@ -143,7 +143,7 @@ public class PushSpell extends UndoableSpell
             LivingEntity li = (LivingEntity)target;
             registerModified(li);
             if (damage > 0) {
-                CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
+                CompatibilityLib.getCompatibilityUtils().magicDamage(li, damage, mage.getEntity());
             }
         }
 

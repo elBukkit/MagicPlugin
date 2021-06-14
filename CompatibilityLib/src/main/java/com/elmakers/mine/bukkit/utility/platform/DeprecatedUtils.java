@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 
 /**
@@ -83,7 +84,7 @@ public class DeprecatedUtils {
     public static MapView getMap(int id) {
         // @deprecated Magic value
         // TODO: Replace this with an API call in future versions.
-        return CompatibilityUtils.getMapById(id);
+        return CompatibilityLib.getCompatibilityUtils().getMapById(id);
     }
 
     public static short getMapId(MapView mapView) {

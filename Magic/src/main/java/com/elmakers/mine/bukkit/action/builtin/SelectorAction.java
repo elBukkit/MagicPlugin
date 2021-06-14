@@ -53,8 +53,8 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.warp.Warp;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -1567,7 +1567,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             String itemName = option.getName();
             if (NBTUtils.hasMeta(item, "confirm")) {
                 String inventoryTitle = getConfirmTitle(option).replace("$item", itemName);
-                Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
+                Inventory confirmInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, 9, inventoryTitle);
                 NBTUtils.removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
                 {
@@ -1770,7 +1770,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         inventoryTitle = inventoryTitle.replace("$path", pathName);
 
         int invSize = (int)Math.ceil(numSlots / 9.0f) * 9;
-        displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         for (Map.Entry<Integer, SelectorOption> entry : showingItems.entrySet()) {
             ItemStack icon = entry.getValue().getIcon();
             NBTUtils.setMeta(icon, "slot", Integer.toString(entry.getKey()));

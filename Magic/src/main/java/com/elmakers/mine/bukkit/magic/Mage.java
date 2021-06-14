@@ -116,10 +116,10 @@ import com.elmakers.mine.bukkit.tasks.CheckWandTask;
 import com.elmakers.mine.bukkit.tasks.MageLoadTask;
 import com.elmakers.mine.bukkit.tasks.SendCurrencyMessageTask;
 import com.elmakers.mine.bukkit.tasks.TeleportTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
@@ -502,7 +502,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void damagedBy(@Nonnull Entity damager, double damage) {
         lastDamage = damage;
-        damager = CompatibilityUtils.getSource(damager);
+        damager = CompatibilityLib.getCompatibilityUtils().getSource(damager);
 
         // Don't count self-attacks
         if (damager == null || damager == getEntity()) return;
@@ -574,7 +574,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     double scale = 1;
                     LivingEntity li = getLivingEntity();
                     if (li != null) {
-                        scale = event.getDamage() / CompatibilityUtils.getMaxHealth(li);
+                        scale = event.getDamage() / CompatibilityLib.getCompatibilityUtils().getMaxHealth(li);
                     }
                     fallingSpell.playEffects("land", (float)scale, getLocation().getBlock().getRelative(BlockFace.DOWN));
                 }
@@ -981,7 +981,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             if (entity instanceof Player && !ALLOW_PERSISTENT_INVISIBILITY) {
-                CompatibilityUtils.setPersistentInvisible(entity, false);
+                CompatibilityLib.getCompatibilityUtils().setPersistentInvisible(entity, false);
             }
             this.entityRef = new WeakReference<>(entity);
             hasEntity = true;
@@ -1203,7 +1203,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             double health = data.getHealth();
             LivingEntity li = getLivingEntity();
             if (health > 0 && li != null) {
-                health = Math.min(health, CompatibilityUtils.getMaxHealth(li));
+                health = Math.min(health, CompatibilityLib.getCompatibilityUtils().getMaxHealth(li));
                 li.setHealth(health);
             }
 
@@ -1656,7 +1656,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
                     // Don't swing arm is cast is from right-click
                     if (castingWand.getRightClickAction() != WandAction.CAST) {
-                        CompatibilityUtils.swingOffhand(player, OFFHAND_CAST_RANGE);
+                        CompatibilityLib.getCompatibilityUtils().swingOffhand(player, OFFHAND_CAST_RANGE);
                     }
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.WARNING, "Error casting from offhand wand", ex);
@@ -1760,7 +1760,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     private void updateBlocking(Player player) {
-        boolean currentlyBlocking = player.isBlocking() || CompatibilityUtils.isHandRaised(player);
+        boolean currentlyBlocking = player.isBlocking() || CompatibilityLib.getCompatibilityUtils().isHandRaised(player);
         if (currentlyBlocking != isBlocking) {
             isBlocking = currentlyBlocking;
             if (isBlocking) {
@@ -2048,7 +2048,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Location getEyeLocation() {
         Entity entity = getEntity();
         if (entity != null) {
-            return CompatibilityUtils.getEyeLocation(entity);
+            return CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         }
 
         return getLocation();
@@ -3163,7 +3163,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (virtualExperience && exp == virtualExperienceProgress && level == virtualExperienceLevel) return;
         Player player = getPlayer();
         if (player != null) {
-            CompatibilityUtils.sendExperienceUpdate(player, exp, level);
+            CompatibilityLib.getCompatibilityUtils().sendExperienceUpdate(player, exp, level);
             virtualExperience = true;
             virtualExperienceProgress = exp;
             virtualExperienceLevel = level;
@@ -3173,7 +3173,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void resetSentExperience() {
         Player player = getPlayer();
         if (player != null) {
-            CompatibilityUtils.sendExperienceUpdate(player, player.getExp(), player.getLevel());
+            CompatibilityLib.getCompatibilityUtils().sendExperienceUpdate(player, player.getExp(), player.getLevel());
         }
         virtualExperience = false;
     }
@@ -4188,7 +4188,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             for (Map.Entry<PotionEffectType, Integer> effects : effectivePotionEffects.entrySet()) {
                 PotionEffect effect = new PotionEffect(effects.getKey(), Integer.MAX_VALUE, effects.getValue(), true, false);
-                CompatibilityUtils.applyPotionEffect(entity, effect);
+                CompatibilityLib.getCompatibilityUtils().applyPotionEffect(entity, effect);
             }
         }
 
@@ -4671,21 +4671,21 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public double getVehicleMovementDirection() {
         LivingEntity li = getLivingEntity();
         if (li == null) return 0.0f;
-        return CompatibilityUtils.getForwardMovement(li);
+        return CompatibilityLib.getCompatibilityUtils().getForwardMovement(li);
     }
 
     @Override
     public double getVehicleStrafeDirection() {
         LivingEntity li = getLivingEntity();
         if (li == null) return 0.0f;
-        return CompatibilityUtils.getStrafeMovement(li);
+        return CompatibilityLib.getCompatibilityUtils().getStrafeMovement(li);
     }
 
     @Override
     public boolean isVehicleJumping() {
         LivingEntity li = getLivingEntity();
         if (li == null) return false;
-        return CompatibilityUtils.isJumping(li);
+        return CompatibilityLib.getCompatibilityUtils().isJumping(li);
     }
 
     @Override
@@ -4843,7 +4843,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             case "health_max": {
                 LivingEntity living = getLivingEntity();
-                return living == null ? null : CompatibilityUtils.getMaxHealth(living);
+                return living == null ? null : CompatibilityLib.getCompatibilityUtils().getMaxHealth(living);
             }
             case "armor": return getVanillaAttribute(Attribute.GENERIC_ARMOR);
             case "attack_damage":  return getVanillaAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
@@ -5130,7 +5130,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public double getMaxHealth() {
         LivingEntity li = getLivingEntity();
-        return li == null ? 0 : CompatibilityUtils.getMaxHealth(li);
+        return li == null ? 0 : CompatibilityLib.getCompatibilityUtils().getMaxHealth(li);
     }
 
     public boolean isCancelLaunch() {
@@ -5498,7 +5498,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null && controller.hasPermission(player, "Magic.wand.craft")) {
             for (String recipe : recipes) {
                 if (controller.hasPermission(player, "Magic.craft." + recipe)) {
-                    CompatibilityUtils.discoverRecipe(player, controller.getPlugin(), recipe);
+                    CompatibilityLib.getCompatibilityUtils().discoverRecipe(player, controller.getPlugin(), recipe);
                 }
             }
         }

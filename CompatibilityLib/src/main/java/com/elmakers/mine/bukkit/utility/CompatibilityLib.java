@@ -3,15 +3,20 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.logging.Logger;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 public class CompatibilityLib {
     private static Platform platform;
+    private static CompatibilityUtils compatibilityUtils;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
         platform = new Platform(plugin, logger);
+        compatibilityUtils = platform.getCompatibilityUtils();
         return platform.isValid();
     }
 
@@ -55,5 +60,25 @@ public class CompatibilityLib {
 
         }
         return version;
+    }
+
+    // This is here as a bit of a hack, MaterialAndData needs to know how to parse materials, but this is used
+    // by the MaterialSetTest test framework, where we don't actually have a server and can't really
+    // initialize CompatibilityLib.
+    // Kind of ugly, but this sidesteps the problem.
+    public static boolean isLegacy(Material material) {
+        return compatibilityUtils == null ? false : compatibilityUtils.isLegacy(material);
+    }
+
+    public static boolean hasLegacyMaterials() {
+        return compatibilityUtils == null ? false : compatibilityUtils.hasLegacyMaterials();
+    }
+
+    public static CompatibilityUtils getCompatibilityUtils() {
+        if (compatibilityUtils == null) {
+            Bukkit.getLogger().info("Warning: CompatibilityUtils used before being initialized");
+            compatibilityUtils = new CompatibilityUtils();
+        }
+        return compatibilityUtils;
     }
 }

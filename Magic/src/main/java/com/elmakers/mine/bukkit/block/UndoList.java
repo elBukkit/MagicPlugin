@@ -48,9 +48,9 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.entity.SpawnedEntity;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.google.common.base.Preconditions;
 
@@ -330,7 +330,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         // This may cause an occasional missed attachment for super large constructions,
         // but the alternative is either very complicated or very inefficient
         boolean isDifferentChunk = baseBlock.getX() >> 4 != testBlock.getX() >> 4 || baseBlock.getZ() >> 4 != testBlock.getZ() >> 4;
-        if (isDifferentChunk && !CompatibilityUtils.isChunkLoaded(testBlock.getLocation())) {
+        if (isDifferentChunk && !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(testBlock.getLocation())) {
             return false;
         }
 
@@ -483,9 +483,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         Double remainingDamage = registry.removeDamage(block);
         if (remainingDamage != null) {
             if (remainingDamage <= 0) {
-                CompatibilityUtils.clearBreaking(block.getBlock());
+                CompatibilityLib.getCompatibilityUtils().clearBreaking(block.getBlock());
             } else {
-                CompatibilityUtils.setBreaking(block.getBlock(), remainingDamage);
+                CompatibilityLib.getCompatibilityUtils().setBreaking(block.getBlock(), remainingDamage);
             }
         }
 
@@ -519,9 +519,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
         BlockData blockData = getFirst();
         Block block = blockData.getBlock();
-        if (forceSynchronous && !CompatibilityUtils.isChunkLoaded(block)) {
+        if (forceSynchronous && !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) {
             block.getChunk().load();
-        } else if (!CompatibilityUtils.checkChunk(blockData.getWorldLocation())) {
+        } else if (!CompatibilityLib.getCompatibilityUtils().checkChunk(blockData.getWorldLocation())) {
             // Skip through this undo if we need to start loading chunks
             speed = 0;
             return null;

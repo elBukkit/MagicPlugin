@@ -24,8 +24,8 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class ExplosionController implements Listener {
     private final MagicController controller;
@@ -90,7 +90,7 @@ public class ExplosionController implements Listener {
             UndoList undoList = modifiedBlock == null ? null : modifiedBlock.getUndoList();
             if (undoList != null && undoList.isScheduled()) {
                 blockIterator.remove();
-                CompatibilityUtils.clearItems(block.getLocation());
+                CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
                 block.setType(Material.AIR);
             }
         }
@@ -126,7 +126,7 @@ public class ExplosionController implements Listener {
             event.setCancelled(true);
         }
         if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
-            if (!CompatibilityUtils.isChunkLoaded(explodingEntity.getLocation())) return;
+            if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(explodingEntity.getLocation())) return;
             Chunk chunk = explodingEntity.getLocation().getChunk();
             if (chunk == null || !chunk.isLoaded()) return;
 

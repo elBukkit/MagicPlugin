@@ -36,7 +36,6 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
@@ -142,7 +141,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } else if (this.material == Material.POTION) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof PotionMeta) {
-                extraData = new PotionData(CompatibilityUtils.getColor((PotionMeta)meta));
+                extraData = new PotionData(CompatibilityLib.getCompatibilityUtils().getColor((PotionMeta)meta));
             }
         } else if (this.material == Material.WRITTEN_BOOK) {
             ItemMeta meta = item.getItemMeta();
@@ -256,7 +255,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         // Legacy material id loading
                         try {
                             Integer id = Integer.parseInt(materialKey);
-                            material = CompatibilityUtils.getMaterial(id);
+                            material = CompatibilityLib.getCompatibilityUtils().getMaterial(id);
                         } catch (Exception ex) {
                             materialKey = materialKey.toUpperCase();
                             material = Material.getMaterial(materialKey);
@@ -272,7 +271,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                                 if (legacyData > 0) {
                                     material = Material.getMaterial("LEGACY_" + materialKey.toUpperCase());
                                     if (material != null) {
-                                        material = CompatibilityUtils.migrateMaterial(material, legacyData);
+                                        material = CompatibilityLib.getCompatibilityUtils().migrateMaterial(material, legacyData);
                                         if (material.getMaxDurability() == 0) {
                                             pieces = Arrays.copyOfRange(pieces, 0, 1);
                                         }
@@ -280,7 +279,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                                 }
 
                                 if (material == null) {
-                                    material = CompatibilityUtils.getLegacyMaterial(materialKey);
+                                    material = CompatibilityLib.getCompatibilityUtils().getLegacyMaterial(materialKey);
                                 }
                             }
                         }
@@ -432,11 +431,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
         extraData = null;
         blockData = null;
-        if (material != null && CompatibilityUtils.isLegacy(material)) {
+        if (material != null && CompatibilityLib.isLegacy(material)) {
             short convertData = (this.data == null ? 0 : this.data);
-            material = CompatibilityUtils.migrateMaterial(material, (byte)convertData);
+            material = CompatibilityLib.getCompatibilityUtils().migrateMaterial(material, (byte)convertData);
             this.material = material;
-        } else if (material != null && data != null && CompatibilityUtils.hasLegacyMaterials() && material.getMaxDurability() == 0) {
+        } else if (material != null && data != null && CompatibilityLib.hasLegacyMaterials() && material.getMaxDurability() == 0) {
             this.data = 0;
         }
 
@@ -450,7 +449,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     }
 
     public void setMaterialId(int id) {
-        this.material = CompatibilityUtils.getMaterial(id);
+        this.material = CompatibilityLib.getCompatibilityUtils().getMaterial(id);
     }
 
     @SuppressWarnings("deprecation")
@@ -459,7 +458,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             isValid = false;
             return;
         }
-        if (!CompatibilityUtils.checkChunk(block.getLocation())) {
+        if (!CompatibilityLib.getCompatibilityUtils().checkChunk(block.getLocation())) {
             return;
         }
 
@@ -477,7 +476,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         try {
             BlockState blockState = block.getState();
             if (material == Material.FLOWER_POT || blockState instanceof InventoryHolder || blockState instanceof Sign) {
-                extraData = new BlockTileEntity(CompatibilityUtils.getTileEntityData(block.getLocation()));
+                extraData = new BlockTileEntity(CompatibilityLib.getCompatibilityUtils().getTileEntityData(block.getLocation()));
             } else if (blockState instanceof CommandBlock) {
                 // This seems to occasionally throw exceptions...
                 CommandBlock command = (CommandBlock)blockState;
@@ -501,7 +500,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        blockData = CompatibilityUtils.getBlockData(block);
+        blockData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
         if (blockData != null) {
             // If we have block data, the data byte is no longer relevant
             data = 0;
@@ -518,7 +517,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public static void clearItems(BlockState block) {
         if (block != null && (block instanceof InventoryHolder || block.getType() == Material.FLOWER_POT)) {
-            CompatibilityUtils.clearItems(block.getLocation());
+            CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
         }
     }
 
@@ -527,7 +526,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         Material material = this.material == null ? block.getType() : this.material;
         int data = this.data == null ? block.getData() : this.data;
         if (material != block.getType() || data != block.getData()) {
-            CompatibilityUtils.setBlockFast(block, material, data);
+            CompatibilityLib.getCompatibilityUtils().setBlockFast(block, material, data);
         }
     }
 
@@ -564,7 +563,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
                 String extendedBlockData = this.blockData;
                 if (data == null && extendedBlockData == null) {
-                    extendedBlockData = CompatibilityUtils.getBlockData(block);
+                    extendedBlockData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
                 }
 
                 // Clear chests and flower pots so they don't dump their contents.
@@ -573,7 +572,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 DeprecatedUtils.setTypeAndData(block, material, blockData, applyPhysics);
                 if (extendedBlockData != null) {
                     if (currentMaterial != material) {
-                        String currentBlockData =  CompatibilityUtils.getBlockData(block);
+                        String currentBlockData =  CompatibilityLib.getCompatibilityUtils().getBlockData(block);
                         if (currentBlockData != null) {
                             // Hacky, yes... is there a better way?
                             // Is this going to cause some real strange behavior?
@@ -585,7 +584,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         }
                     }
 
-                    CompatibilityUtils.setBlockData(Bukkit.getServer(), block, extendedBlockData);
+                    CompatibilityLib.getCompatibilityUtils().setBlockData(Bukkit.getServer(), block, extendedBlockData);
                 }
                 blockState = block.getState();
             }
@@ -603,7 +602,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (extraData != null && extraData instanceof BlockTileEntity) {
                 // Tile entity data overrides everything else, and may replace all of this in the future.
                 if (allowContainers() || (material != Material.FLOWER_POT && !(blockState instanceof InventoryHolder))) {
-                    CompatibilityUtils.setTileEntityData(block.getLocation(), ((BlockTileEntity) extraData).data);
+                    CompatibilityLib.getCompatibilityUtils().setTileEntityData(block.getLocation(), ((BlockTileEntity) extraData).data);
                 }
             } else if (blockState != null && DefaultMaterials.isBanner(material) && extraData != null && extraData instanceof BlockBanner) {
                 if (blockState instanceof Banner) {
@@ -775,7 +774,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             return true;
         }
         if (blockData != null) {
-            String currentData = CompatibilityUtils.getBlockData(block);
+            String currentData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
             if (currentData == null || !blockData.equals(currentData)) {
                 return true;
             }
@@ -901,7 +900,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } else if (this.material == Material.POTION) {
             ItemMeta meta = stack.getItemMeta();
             if (extraData != null && extraData instanceof PotionData && meta != null && meta instanceof PotionMeta) {
-                CompatibilityUtils.setColor((PotionMeta)meta, ((PotionData)extraData).getColor());
+                CompatibilityLib.getCompatibilityUtils().setColor((PotionMeta)meta, ((PotionData)extraData).getColor());
                 stack.setItemMeta(meta);
             }
         } else if (this.material == Material.WRITTEN_BOOK) {

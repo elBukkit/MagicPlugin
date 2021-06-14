@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class MessageAction extends BaseSpellAction
 {
@@ -96,13 +96,13 @@ public class MessageAction extends BaseSpellAction
                     return SpellResult.PLAYER_REQUIRED;
                 }
                 String subMessage = context.parameterize(context.getMessage(this.subMessage, this.subMessage));
-                CompatibilityUtils.sendTitle(player, message, subMessage, fadeIn, stay, fadeOut);
+                CompatibilityLib.getCompatibilityUtils().sendTitle(player, message, subMessage, fadeIn, stay, fadeOut);
                 break;
             case ACTION_BAR:
                 if (player == null) {
                     return SpellResult.PLAYER_REQUIRED;
                 }
-                if (!CompatibilityUtils.sendActionBar(player, message)) {
+                if (!CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message)) {
                     player.sendMessage(message);
                 }
                 break;

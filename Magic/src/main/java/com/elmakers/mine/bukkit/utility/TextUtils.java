@@ -17,8 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
-
 public class TextUtils
 {
     private static final NumberFormat[] formatters = {
@@ -163,7 +161,7 @@ public class TextUtils
         if (isTitle && player != null) {
             String fullMessage = prefix + messages[0];
             String subtitle = messages.length > 1 ? prefix + messages[1] : null;
-            CompatibilityUtils.sendTitle(player, fullMessage, subtitle, -1, -1, -1);
+            CompatibilityLib.getCompatibilityUtils().sendTitle(player, fullMessage, subtitle, -1, -1, -1);
             if (messages.length > 2) {
                 messages = Arrays.copyOfRange(messages, 2, messages.length);
             } else {
@@ -182,7 +180,7 @@ public class TextUtils
             isActionBar = false;
             String fullMessage = prefix + line;
             if (lineIsActionBar && player != null) {
-                CompatibilityUtils.sendActionBar(player, fullMessage);
+                CompatibilityLib.getCompatibilityUtils().sendActionBar(player, fullMessage);
             } else {
                 sender.sendMessage(fullMessage);
             }

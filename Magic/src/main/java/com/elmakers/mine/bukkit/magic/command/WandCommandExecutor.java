@@ -30,8 +30,8 @@ import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
@@ -55,7 +55,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             }
             String[] args2 = Arrays.copyOfRange(args, 1, args.length);
             String playerName = args[0];
-            List<Entity> targets = CompatibilityUtils.selectEntities(sender, playerName);
+            List<Entity> targets = CompatibilityLib.getCompatibilityUtils().selectEntities(sender, playerName);
             if (targets != null) {
                 for (Entity target : targets) {
                     if (target instanceof Player) {

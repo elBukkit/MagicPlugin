@@ -33,7 +33,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -87,7 +87,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 if (set.equals("schematics")) {
                     String inventoryTitle = context.getMessage("schematics_title", "Schematics");
                     int invSize = ((schematics.size() + 9) / 9) * 9;
-                    Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+                    Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
                     for (ItemStack schematicItem : schematics)
                     {
                         displayInventory.addItem(schematicItem);
@@ -101,7 +101,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
                     Collection<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
                     int invSize = ((variantList.size() + 9) / 9) * 9;
-                    Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+                    Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
                     for (ItemStack variantItem : variantList)
                     {
                         displayInventory.addItem(variantItem);
@@ -310,7 +310,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             inventoryTitle += " (" + page + "/" + numPages + ")";
         }
         int invSize = (int)Math.ceil(showBrushes.size() / 9.0f) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         for (ItemStack brush : showBrushes)
         {
             displayInventory.addItem(brush);

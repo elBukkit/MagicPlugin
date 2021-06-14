@@ -21,9 +21,9 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class ModifyBlockAction extends BaseSpellAction {
     private boolean spawnFallingBlocks;
@@ -79,7 +79,7 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.FAIL;
         }
 
-        if (checkChunk && !CompatibilityUtils.checkChunk(context.getTargetLocation())) {
+        if (checkChunk && !CompatibilityLib.getCompatibilityUtils().checkChunk(context.getTargetLocation())) {
             context.addWork(100);
             return SpellResult.PENDING;
         }
@@ -159,7 +159,7 @@ public class ModifyBlockAction extends BaseSpellAction {
             if (direction == BlockFace.SELF) {
                 direction = BlockFace.UP;
             }
-            CompatibilityUtils.setAutoBlockState(block, targetLocation, direction, applyPhysics, context.getMage().getPlayer());
+            CompatibilityLib.getCompatibilityUtils().setAutoBlockState(block, targetLocation, direction, applyPhysics, context.getMage().getPlayer());
             /*
             BlockFace[] neighbors = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.DOWN};
             for (BlockFace blockFace : neighbors) {
@@ -204,7 +204,7 @@ public class ModifyBlockAction extends BaseSpellAction {
                     SafetyUtils.setVelocity(falling, fallingBlockVelocity);
                 }
                 if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
-                    CompatibilityUtils.setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
+                    CompatibilityLib.getCompatibilityUtils().setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
                 } else {
                     falling.setHurtEntities(fallingBlocksHurt);
                 }

@@ -32,7 +32,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class EntitySelectAction extends CompoundAction implements GUIAction
@@ -135,7 +135,7 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
 
         String inventoryTitle = context.getMessage("title", "Select Target");
         int invSize = ((entities.size() + 9) / 9) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         for (Map.Entry<Integer, WeakReference<Entity>> entry : entities.entrySet())
         {
             Entity targetEntity = entry.getValue().get();

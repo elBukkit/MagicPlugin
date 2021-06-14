@@ -14,8 +14,6 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
-
 public class HitboxUtils {
     private static final Map<EntityType, BoundingBox> hitboxes = new HashMap<>();
     private static final Map<EntityType, Double> headSizes = new HashMap<>();
@@ -45,7 +43,7 @@ public class HitboxUtils {
         {
             return hitbox.center(entity.getLocation().toVector());
         }
-        hitbox = CompatibilityUtils.getHitbox(entity);
+        hitbox = CompatibilityLib.getCompatibilityUtils().getHitbox(entity);
         if (hitbox != null) {
             double scaleY = hitboxScaleY;
             if (entity instanceof Player && ((Player)entity).isSneaking()) {

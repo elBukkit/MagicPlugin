@@ -42,9 +42,9 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class MobController implements Listener, ChunkLoadListener {
     public static boolean REMOVE_INVULNERABLE = false;
@@ -133,7 +133,7 @@ public class MobController implements Listener, ChunkLoadListener {
             if (npcId != null) {
                 checkNPC(entity, npcId);
             } else if (REMOVE_INVULNERABLE && entity.getType() != EntityType.DROPPED_ITEM
-                && CompatibilityUtils.isInvulnerable(entity)) {
+                && CompatibilityLib.getCompatibilityUtils().isInvulnerable(entity)) {
                 // Don't remove invulnerable items since those could be dropped wands
                 Location location = entity.getLocation();
                 controller.getLogger().warning("Removing an invulnerable entity of type " + entity.getType() + " at ["
@@ -359,7 +359,7 @@ public class MobController implements Listener, ChunkLoadListener {
 
     @EventHandler
     public void onEntityDismount(EntityDismountEvent event) {
-        if (CompatibilityUtils.isTeleporting()) return;
+        if (CompatibilityLib.getCompatibilityUtils().isTeleporting()) return;
 
         EntityData entityData = getEntityData(event.getEntity());
         if (entityData != null && entityData.isPreventDismount()) {

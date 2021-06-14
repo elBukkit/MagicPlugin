@@ -48,11 +48,11 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.LogMessage;
 import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
@@ -488,7 +488,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                     taskCounts.put(pluginName, pluginTaskCounts);
                 }
                 String className = "(Unknown)";
-                Runnable taskRunnable = CompatibilityUtils.getTaskRunnable(task);
+                Runnable taskRunnable = CompatibilityLib.getCompatibilityUtils().getTaskRunnable(task);
                 if (taskRunnable != null) {
                     Class<? extends Runnable> taskClass = taskRunnable.getClass();
                     className = taskClass.getName();
@@ -653,7 +653,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
         if (entity instanceof LivingEntity)
         {
             LivingEntity li = (LivingEntity)entity;
-            message += ChatColor.DARK_GRAY + ", " + ChatColor.GREEN + ((int)CompatibilityUtils.getMaxHealth(li)) + "hp";
+            message += ChatColor.DARK_GRAY + ", " + ChatColor.GREEN + ((int) CompatibilityLib.getCompatibilityUtils().getMaxHealth(li)) + "hp";
         }
         sender.sendMessage(message);
     }

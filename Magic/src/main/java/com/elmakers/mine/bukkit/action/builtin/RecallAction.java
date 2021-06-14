@@ -41,8 +41,8 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
@@ -329,7 +329,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 defaultIcon = getIcon(context, parameters, "icon_town");
                 break;
             case HOME:
-                Location bedLocation = CompatibilityUtils.getBedSpawnLocation(player);
+                Location bedLocation = CompatibilityLib.getCompatibilityUtils().getBedSpawnLocation(player);
                 if (bedLocation != null) {
                     bedLocation = bedLocation.clone();
                     bedLocation.setX(bedLocation.getX() + 0.5);
@@ -891,7 +891,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         String inventoryTitle = context.getMessage(titleKey, "Recall");
         int invSize = (int)Math.ceil(options.size() / 9.0f) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         int index = 0;
         for (Waypoint waypoint : options)
         {
@@ -1000,7 +1000,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         options.clear();
         String inventoryTitle = context.getMessage("move_marker_title", "Move Marker");
         int invSize = (int)Math.ceil(markerCount / 9.0f) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         MaterialAndData iconType = getIcon(context, parameters, "icon_move_marker");
         if (iconType == null) {
             iconType = new MaterialAndData(Material.STICK);
@@ -1225,7 +1225,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return SpellResult.NO_TARGET;
         }
         Location targetLocation = context.getTargetLocation();
-        if (!CompatibilityUtils.checkChunk(targetLocation)) {
+        if (!CompatibilityLib.getCompatibilityUtils().checkChunk(targetLocation)) {
             pendingTeleport = targetLocation;
             return SpellResult.PENDING;
         }

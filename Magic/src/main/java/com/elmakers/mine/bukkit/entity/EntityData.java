@@ -70,12 +70,12 @@ import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 /**
@@ -194,7 +194,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public EntityData(MageController controller, Entity entity) {
         this.controller = controller;
         setEntity(entity);
-        this.location = CompatibilityUtils.getHangingLocation(entity);
+        this.location = CompatibilityLib.getCompatibilityUtils().getHangingLocation(entity);
         this.magicSpawned = EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED);
         this.cancelExplosion = EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION);
         this.isLiving = entity instanceof LivingEntity;
@@ -202,16 +202,16 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.isProjectile = entity instanceof Projectile;
         this.type = entity.getType();
         this.fireTicks = entity.getFireTicks();
-        this.isSilent = CompatibilityUtils.isSilent(entity);
-        this.invisible = CompatibilityUtils.isInvisible(entity);
-        this.persistentInvisible = CompatibilityUtils.isPersistentInvisible(entity);
+        this.isSilent = CompatibilityLib.getCompatibilityUtils().isSilent(entity);
+        this.invisible = CompatibilityLib.getCompatibilityUtils().isInvisible(entity);
+        this.persistentInvisible = CompatibilityLib.getCompatibilityUtils().isPersistentInvisible(entity);
 
         // This will actually always be true so we need a better way to track this.
         // this.persist = CompatibilityUtils.isPersist(entity);
         this.canPickupItems = (entity instanceof Creature) ? ((Creature)entity).getCanPickupItems() : false;
         name = entity.getCustomName();
         nameVisible = entity.isCustomNameVisible();
-        tags = CompatibilityUtils.getTags(entity);
+        tags = CompatibilityLib.getCompatibilityUtils().getTags(entity);
 
         // This can sometimes throw an exception on an invalid
         // entity velocity!
@@ -235,7 +235,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.health = li.getHealth();
             this.potionEffects = li.getActivePotionEffects();
             this.airLevel = li.getRemainingAir();
-            this.maxHealth = CompatibilityUtils.getMaxHealth(li);
+            this.maxHealth = CompatibilityLib.getCompatibilityUtils().getMaxHealth(li);
             this.hasAI = li.hasAI();
 
             itemInHand = getItem(li.getEquipment().getItemInMainHand());
@@ -249,8 +249,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entity instanceof Tameable) {
             isTamed = ((Tameable)entity).isTamed();
         }
-        isSitting = CompatibilityUtils.isSitting(entity);
-        isInvulnerable = CompatibilityUtils.isInvulnerable(entity);
+        isSitting = CompatibilityLib.getCompatibilityUtils().isSitting(entity);
+        isInvulnerable = CompatibilityLib.getCompatibilityUtils().isInvulnerable(entity);
 
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
@@ -744,10 +744,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             try {
                 switch (type) {
                     case PAINTING:
-                        spawned = CompatibilityUtils.createPainting(location, facing, art);
+                        spawned = CompatibilityLib.getCompatibilityUtils().createPainting(location, facing, art);
                         break;
                     case ITEM_FRAME:
-                        spawned = CompatibilityUtils.createItemFrame(location, facing, rotation, item);
+                        spawned = CompatibilityLib.getCompatibilityUtils().createItemFrame(location, facing, rotation, item);
                         break;
                     case DROPPED_ITEM:
                         if (ItemUtils.isEmpty(item)) return null;
@@ -769,7 +769,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                         addedToWorld = true;
                         break;
                     default:
-                        spawned = CompatibilityUtils.createEntity(location, type);
+                        spawned = CompatibilityLib.getCompatibilityUtils().createEntity(location, type);
                     }
             } catch (Exception ex) {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity type " + getType() + " at " + getLocation(), ex);
@@ -781,7 +781,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 if (!addedToWorld) {
                     isSpawning = true;
                     reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
-                    CompatibilityUtils.addToWorld(location.getWorld(), spawned, reason);
+                    CompatibilityLib.getCompatibilityUtils().addToWorld(location.getWorld(), spawned, reason);
                     isSpawning = false;
                 }
                 modifyPostSpawn(spawned);
@@ -909,18 +909,18 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         if (persist != null) {
-            CompatibilityUtils.setPersist(entity, persist);
+            CompatibilityLib.getCompatibilityUtils().setPersist(entity, persist);
         }
         if (invisible != null) {
-            CompatibilityUtils.setInvisible(entity, invisible);
+            CompatibilityLib.getCompatibilityUtils().setInvisible(entity, invisible);
         }
         if (persistentInvisible != null) {
-            CompatibilityUtils.setPersistentInvisible(entity, persistentInvisible);
+            CompatibilityLib.getCompatibilityUtils().setPersistentInvisible(entity, persistentInvisible);
         }
         if (removeWhenFarAway != null) {
-            CompatibilityUtils.setRemoveWhenFarAway(entity, removeWhenFarAway);
+            CompatibilityLib.getCompatibilityUtils().setRemoveWhenFarAway(entity, removeWhenFarAway);
         }
-        CompatibilityUtils.setSilent(entity, isSilent);
+        CompatibilityLib.getCompatibilityUtils().setSilent(entity, isSilent);
         entity.setFireTicks(fireTicks);
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
@@ -933,8 +933,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entity instanceof Tameable) {
             ((Tameable)entity).setTamed(isTamed);
         }
-        CompatibilityUtils.setSitting(entity, isSitting);
-        CompatibilityUtils.setInvulnerable(entity, isInvulnerable);
+        CompatibilityLib.getCompatibilityUtils().setSitting(entity, isSitting);
+        CompatibilityLib.getCompatibilityUtils().setInvulnerable(entity, isInvulnerable);
 
         if (entity instanceof Colorable && dyeColor != null) {
             Colorable colorable = (Colorable)entity;
@@ -942,7 +942,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         if (tags != null && !tags.isEmpty()) {
-            Set<String> entityTags = CompatibilityUtils.getTags(entity);
+            Set<String> entityTags = CompatibilityLib.getCompatibilityUtils().getTags(entity);
             if (entityTags != null) {
                 entityTags.addAll(tags);
             }
@@ -962,7 +962,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
         // Armor stands handle gravity themselves, for now
         if (!hasGravity && !(entity instanceof ArmorStand)) {
-            CompatibilityUtils.setGravity(entity, hasGravity);
+            CompatibilityLib.getCompatibilityUtils().setGravity(entity, hasGravity);
         }
 
         if (entity instanceof LivingEntity) {
@@ -998,11 +998,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     applyAttributes(li);
                     copyEquipmentTo(li);
                     if (maxHealth != null) {
-                        CompatibilityUtils.setMaxHealth(li, maxHealth);
+                        CompatibilityLib.getCompatibilityUtils().setMaxHealth(li, maxHealth);
                     }
                 }
                 if (health != null && hasChangedHealth) {
-                    li.setHealth(Math.min(health, CompatibilityUtils.getMaxHealth(li)));
+                    li.setHealth(Math.min(health, CompatibilityLib.getCompatibilityUtils().getMaxHealth(li)));
                 }
                 if (airLevel != null) {
                     li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));
@@ -1114,7 +1114,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
             }
             if (allowMount && mountEntity != null) {
-                CompatibilityUtils.addPassenger(mountEntity, entity);
+                CompatibilityLib.getCompatibilityUtils().addPassenger(mountEntity, entity);
             }
             mobStackSize--;
         }
@@ -1145,7 +1145,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         // Do this one last time again at the very end, it seems some other changes (like facing direction on an item frame
         // can remove invisibility, somehow.
         if (invisible != null) {
-            CompatibilityUtils.setInvisible(entity, invisible);
+            CompatibilityLib.getCompatibilityUtils().setInvisible(entity, invisible);
         }
         return true;
     }
@@ -1282,7 +1282,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     private void removePassengers(Entity entity) {
-        List<Entity> passengers = CompatibilityUtils.getPassengers(entity);
+        List<Entity> passengers = CompatibilityLib.getCompatibilityUtils().getPassengers(entity);
         for (Entity passenger : passengers) {
             if (!removeMounts.contains("*")) {
                 com.elmakers.mine.bukkit.api.entity.EntityData entityType = controller.getMob(passenger);
@@ -1316,7 +1316,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
             if (!(lastDamage instanceof EntityDamageByEntityEvent)) return;
             Entity damager = ((EntityDamageByEntityEvent)lastDamage).getDamager();
-            damager = CompatibilityUtils.getSource(damager);
+            damager = CompatibilityLib.getCompatibilityUtils().getSource(damager);
             if (!(damager instanceof Player) || damager == event.getEntity()) return;
         }
 

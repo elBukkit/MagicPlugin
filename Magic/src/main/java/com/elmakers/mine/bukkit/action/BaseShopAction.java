@@ -37,8 +37,8 @@ import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -382,7 +382,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             String itemName = formatItemAmount(controller, item, item.getAmount());
             if (NBTUtils.hasMeta(item, "confirm")) {
                 String inventoryTitle = context.getMessage("confirm_title", getDefaultMessage(context, "confirm_title")).replace("$item", itemName);
-                Inventory confirmInventory = CompatibilityUtils.createInventory(null, 9, inventoryTitle);
+                Inventory confirmInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, 9, inventoryTitle);
                 NBTUtils.removeMeta(item, "confirm");
                 for (int i = 0; i < 9; i++)
                 {
@@ -685,7 +685,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
 
         int invSize = itemStacks == null ? 0 : itemStacks.size();
         invSize = (int)Math.ceil(invSize / 9.0f) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         if (itemStacks != null)
         {
             int slot = 0;

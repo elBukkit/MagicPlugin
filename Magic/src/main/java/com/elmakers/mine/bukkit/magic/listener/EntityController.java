@@ -46,10 +46,10 @@ import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -128,7 +128,7 @@ public class EntityController implements Listener {
         // This is here to register misses, mainly.
 
         // TODO: use event.getBlock in newer API.
-        Targeting.checkTracking(projectile, null, CompatibilityUtils.getHitBlock(event));
+        Targeting.checkTracking(projectile, null, CompatibilityLib.getCompatibilityUtils().getHitBlock(event));
     }
 
     @EventHandler
@@ -196,7 +196,7 @@ public class EntityController implements Listener {
 
         // Make sure to resolve the source after getting the undo list, since the undo
         // list is attached to the projectile.
-        damager = CompatibilityUtils.getSource(damager);
+        damager = CompatibilityLib.getCompatibilityUtils().getSource(damager);
         Mage mage = controller.getRegisteredMage(damager);
         if (mage != null && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             ((com.elmakers.mine.bukkit.magic.Mage)mage).onDamageDealt(event);
@@ -252,7 +252,7 @@ public class EntityController implements Listener {
         if (damager instanceof Player) {
             Mage damagerMage = controller.getRegisteredMage(damager);
             com.elmakers.mine.bukkit.api.wand.Wand activeWand = null;
-            boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityUtils.isDamaging();
+            boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityLib.getCompatibilityUtils().isDamaging();
 
             if (isMelee && meleeDamageReduction > 0) {
                 if (meleeDamageReduction >= 1) {
@@ -526,7 +526,7 @@ public class EntityController implements Listener {
         {
             boolean invulnerable = controller.getWandProperty(spawnedItem, "invulnerable", false);
             if (invulnerable) {
-                CompatibilityUtils.setInvulnerable(event.getEntity());
+                CompatibilityLib.getCompatibilityUtils().setInvulnerable(event.getEntity());
             }
             boolean trackWand = controller.getWandProperty(spawnedItem, "track", false);
             if (trackWand) {
@@ -540,7 +540,7 @@ public class EntityController implements Listener {
             if (ageDroppedItems > 0) {
                 int ticks = ageDroppedItems * 20 / 1000;
                 Item item = event.getEntity();
-                CompatibilityUtils.ageItem(item, ticks);
+                CompatibilityLib.getCompatibilityUtils().ageItem(item, ticks);
             }
         }
     }

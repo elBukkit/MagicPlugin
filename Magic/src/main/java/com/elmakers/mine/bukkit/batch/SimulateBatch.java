@@ -31,9 +31,9 @@ import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class SimulateBatch extends SpellBatch {
@@ -204,11 +204,11 @@ public class SimulateBatch extends SpellBatch {
         if (breaking != null) {
             breakingBlocks += breaking;
             UndoList.getRegistry().unregisterBreaking(block);
-            CompatibilityUtils.clearBreaking(block);
+            CompatibilityLib.getCompatibilityUtils().clearBreaking(block);
         }
         registerForUndo(block);
         if (modifyType == ModifyType.FAST) {
-            CompatibilityUtils.setBlockFast(block, deathMaterial, 0);
+            CompatibilityLib.getCompatibilityUtils().setBlockFast(block, deathMaterial, 0);
         } else {
             DeprecatedUtils.setTypeAndData(block, deathMaterial, (byte)0, false);
         }
@@ -233,7 +233,7 @@ public class SimulateBatch extends SpellBatch {
         if (breakingBlocks > 0) {
             double breaking = Math.min(breakingBlocks, MAX_BREAKING);
             double blockBreaking = UndoList.getRegistry().registerBreaking(block, breaking);
-            CompatibilityUtils.setBreaking(block, blockBreaking);
+            CompatibilityLib.getCompatibilityUtils().setBreaking(block, blockBreaking);
 
             breakingBlocks -= breaking;
         }
@@ -258,7 +258,7 @@ public class SimulateBatch extends SpellBatch {
         int y = center.getBlockY() + dy;
         int z = center.getBlockZ() + dz;
         Block block = world.getBlockAt(x, y, z);
-        if (!CompatibilityUtils.isChunkLoaded(block)) {
+        if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) {
             return false;
         }
         if (!context.hasBuildPermission(block)) return true;
@@ -357,7 +357,7 @@ public class SimulateBatch extends SpellBatch {
 
                 // We are going to rely on the block toggling to kick this back to life when the chunk
                 // reloads, so for now just bail and hope the timing works out.
-                if (heartBlock == null || !CompatibilityUtils.isChunkLoaded(heartBlock)) {
+                if (heartBlock == null || !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(heartBlock)) {
                     finish();
                     return processedBlocks;
                 }
@@ -410,7 +410,7 @@ public class SimulateBatch extends SpellBatch {
             int deadIndex = updatingIndex;
             if (deadIndex >= 0 && deadIndex < deadBlocks.size()) {
                 Block killBlock = deadBlocks.get(deadIndex);
-                if (!CompatibilityUtils.isChunkLoaded(killBlock)) {
+                if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(killBlock)) {
                     finish();
                     return processedBlocks;
                 }
@@ -433,7 +433,7 @@ public class SimulateBatch extends SpellBatch {
             int bornIndex = updatingIndex - deadBlocks.size();
             if (bornIndex >= 0 && bornIndex < bornBlocks.size()) {
                 Block birthBlock = bornBlocks.get(bornIndex);
-                if (!CompatibilityUtils.isChunkLoaded(birthBlock)) {
+                if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(birthBlock)) {
                     finish();
                     return processedBlocks;
                 }
@@ -507,7 +507,7 @@ public class SimulateBatch extends SpellBatch {
         if (state == SimulationState.HEART_UPDATE) {
             if (isAutomata) {
                 if (heartTargetBlock != null) {
-                    if (!CompatibilityUtils.isChunkLoaded(heartTargetBlock)) {
+                    if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(heartTargetBlock)) {
                         finish();
                         return processedBlocks;
                     }
@@ -570,7 +570,7 @@ public class SimulateBatch extends SpellBatch {
                 while (iterator.hasNext()) {
                     BlockData block = iterator.next();
                     long blockId = block.getId();
-                    if (!CompatibilityUtils.isChunkLoaded(block.getWorldLocation())) {
+                    if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block.getWorldLocation())) {
                         finish();
                         return processedBlocks;
                     }
@@ -667,7 +667,7 @@ public class SimulateBatch extends SpellBatch {
             reverseTargetDistanceScore = true;
             if (targetType == TargetType.ANY || targetType == TargetType.MOB)
             {
-                List<Entity> entities = CompatibilityUtils.getNearbyEntities(center, huntMaxRange, huntMaxRange, huntMaxRange);
+                List<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(center, huntMaxRange, huntMaxRange, huntMaxRange);
                 for (Entity entity : entities)
                 {
                     // We'll get the players from the Mages list
@@ -790,7 +790,7 @@ public class SimulateBatch extends SpellBatch {
         BlockFace[] faces = yRadius > 0 ? POWER_FACES : MAIN_FACES;
         for (BlockFace face : faces) {
             Block faceBlock = block.getRelative(face);
-            if (!CompatibilityUtils.isChunkLoaded(faceBlock)) continue;
+            if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(faceBlock)) continue;
             if (liveMaterial.is(faceBlock)) {
                 liveCount++;
             }
@@ -802,7 +802,7 @@ public class SimulateBatch extends SpellBatch {
         int liveCount = 0;
         for (BlockFace face : DIAGONAL_FACES) {
             Block faceBlock = block.getRelative(face);
-            if (!CompatibilityUtils.isChunkLoaded(faceBlock)) continue;
+            if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(faceBlock)) continue;
             if (liveMaterial.is(faceBlock)) {
                 liveCount++;
             }
@@ -812,7 +812,7 @@ public class SimulateBatch extends SpellBatch {
             Block upBlock = block.getRelative(BlockFace.UP);
             for (BlockFace face : NEIGHBOR_FACES) {
                 Block faceBlock = upBlock.getRelative(face);
-                if (!CompatibilityUtils.isChunkLoaded(faceBlock)) continue;
+                if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(faceBlock)) continue;
                 if (liveMaterial.is(faceBlock)) {
                     liveCount++;
                 }
@@ -821,7 +821,7 @@ public class SimulateBatch extends SpellBatch {
             Block downBlock = block.getRelative(BlockFace.DOWN);
             for (BlockFace face : NEIGHBOR_FACES) {
                 Block faceBlock = downBlock.getRelative(face);
-                if (!CompatibilityUtils.isChunkLoaded(faceBlock)) continue;
+                if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(faceBlock)) continue;
                 if (liveMaterial.is(faceBlock)) {
                     liveCount++;
                 }

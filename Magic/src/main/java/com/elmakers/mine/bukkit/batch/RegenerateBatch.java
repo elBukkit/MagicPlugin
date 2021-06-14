@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class RegenerateBatch extends SpellBatch {
     private static final BlockData[] template = new BlockData[0];
@@ -95,7 +95,7 @@ public class RegenerateBatch extends SpellBatch {
                 while (processedBlocks <= maxBlocks && blockY < 256) {
                     int chunkX = x + ix * dx;
                     int chunkZ = z + iz * dz;
-                    if (!CompatibilityUtils.checkChunk(world, chunkX, chunkZ)) {
+                    if (!CompatibilityLib.getCompatibilityUtils().checkChunk(world, chunkX, chunkZ)) {
                         return processedBlocks;
                     }
                     Chunk chunk = world.getChunkAt(chunkX, chunkZ);
@@ -146,7 +146,7 @@ public class RegenerateBatch extends SpellBatch {
             while (processedBlocks <= maxBlocks && ix < absx) {
                 int chunkX = x + ix * dx;
                 int chunkZ = z + iz * dz;
-                if (!CompatibilityUtils.checkChunk(world, chunkX, chunkZ)) {
+                if (!CompatibilityLib.getCompatibilityUtils().checkChunk(world, chunkX, chunkZ)) {
                     return processedBlocks;
                 }
                 Chunk chunk = world.getChunkAt(chunkX, chunkZ);

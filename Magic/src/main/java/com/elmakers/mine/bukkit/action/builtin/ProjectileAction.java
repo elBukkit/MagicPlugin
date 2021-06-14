@@ -29,8 +29,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class ProjectileAction  extends BaseProjectileAction
 {
@@ -109,7 +109,7 @@ public class ProjectileAction  extends BaseProjectileAction
         }
         Random random = context.getRandom();
 
-        Class<?> projectileType = CompatibilityUtils.getProjectileClass(projectileTypeName);
+        Class<?> projectileType = CompatibilityLib.getCompatibilityUtils().getProjectileClass(projectileTypeName);
         if (projectileType == null) {
             controller.getLogger().warning("Bad projectile class: " + projectileTypeName);
             return SpellResult.FAIL;
@@ -137,7 +137,7 @@ public class ProjectileAction  extends BaseProjectileAction
         for (int i = 0; i < count; i++) {
             try {
                 // Spawn a new projectile
-                Projectile projectile = CompatibilityUtils.spawnProjectile(projectileType, location, direction, source, speed, spread, i > 0 ? spread : 0, random);
+                Projectile projectile = CompatibilityLib.getCompatibilityUtils().spawnProjectile(projectileType, location, direction, source, speed, spread, i > 0 ? spread : 0, random);
                 if (projectile == null) {
                     return SpellResult.FAIL;
                 }
@@ -159,7 +159,7 @@ public class ProjectileAction  extends BaseProjectileAction
                         ItemStack itemStack = new ItemStack(Material.SPLASH_POTION);
                         ItemMeta meta = itemStack.getItemMeta();
                         if (meta != null && meta instanceof PotionMeta) {
-                            CompatibilityUtils.setColor((PotionMeta)meta, potionColor);
+                            CompatibilityLib.getCompatibilityUtils().setColor((PotionMeta)meta, potionColor);
                             itemStack.setItemMeta(meta);
                             potion.setItem(itemStack);
                         }
@@ -179,13 +179,13 @@ public class ProjectileAction  extends BaseProjectileAction
                     }
 
                     if (damage > 0) {
-                        CompatibilityUtils.setDamage(projectile, damage);
+                        CompatibilityLib.getCompatibilityUtils().setDamage(projectile, damage);
                     }
                     if (tickIncrease > 0) {
-                        CompatibilityUtils.decreaseLifespan(projectile, tickIncrease);
+                        CompatibilityLib.getCompatibilityUtils().decreaseLifespan(projectile, tickIncrease);
                     }
                     if (pickupStatus != null && !pickupStatus.isEmpty()) {
-                        CompatibilityUtils.setPickupStatus(arrow, pickupStatus);
+                        CompatibilityLib.getCompatibilityUtils().setPickupStatus(arrow, pickupStatus);
                     }
                 }
                 if (!breakBlocks) {

@@ -16,8 +16,8 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class VolumeAction extends CompoundAction
 {
@@ -440,7 +440,7 @@ public class VolumeAction extends CompoundAction
         validBlock = validBlock && (probability >= 1 || context.getRandom().nextDouble() <= probability);
         if (validBlock)
         {
-            if (checkChunk && !CompatibilityUtils.checkChunk(context.getTargetLocation())) {
+            if (checkChunk && !CompatibilityLib.getCompatibilityUtils().checkChunk(context.getTargetLocation())) {
                 context.addWork(100);
                 return SpellResult.PENDING;
             }

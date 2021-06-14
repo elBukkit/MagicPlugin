@@ -30,7 +30,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class PlayerSelectAction extends CompoundAction implements GUIAction
 {
@@ -149,7 +149,7 @@ public class PlayerSelectAction extends CompoundAction implements GUIAction
 
         String inventoryTitle = context.getMessage(titleKey, "Select Player");
         int invSize = ((players.size() + 9) / 9) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         for (Map.Entry<Integer, WeakReference<Player>> entry : players.entrySet())
         {
             Player targetPlayer = entry.getValue().get();

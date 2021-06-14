@@ -22,8 +22,8 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -164,7 +164,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                         uuid = UUID.randomUUID();
                     }
                     int operation = attributeConfig.getInt("operation", 0);
-                    if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot, operation, uuid)) {
+                    if (!CompatibilityLib.getCompatibilityUtils().setItemAttribute(item, attribute, value, slot, operation, uuid)) {
                         Bukkit.getLogger().warning("Failed to set attribute: " + attributeKey);
                     }
                 } catch (Exception ex) {

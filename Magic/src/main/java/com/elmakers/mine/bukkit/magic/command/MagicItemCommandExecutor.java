@@ -41,8 +41,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -629,7 +629,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
         Location location = null;
         if (args.length == 2) {
-            Entity target = CompatibilityUtils.getEntity(UUID.fromString(args[1]));
+            Entity target = CompatibilityLib.getCompatibilityUtils().getEntity(UUID.fromString(args[1]));
             if (target == null) {
                 sender.sendMessage(ChatColor.RED + "Could not find entity with UUID: " + ChatColor.WHITE + args[1]);
                 return true;
@@ -952,8 +952,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
 
         ItemStack newItem = ItemUtils.makeReal(item);
-        CompatibilityUtils.removeItemAttribute(newItem, attribute);
-        if (CompatibilityUtils.setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal())) {
+        CompatibilityLib.getCompatibilityUtils().removeItemAttribute(newItem, attribute);
+        if (CompatibilityLib.getCompatibilityUtils().setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal())) {
             if (attributeSlot == null) {
                 attributeSlot = "(All Slots)";
             }
@@ -983,7 +983,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        if (!CompatibilityUtils.removeItemAttribute(item, attribute)) {
+        if (!CompatibilityLib.getCompatibilityUtils().removeItemAttribute(item, attribute)) {
             sender.sendMessage(api.getMessages().get("item.no_attribute").replace("$attribute", attribute.name()));
         } else {
             sender.sendMessage(api.getMessages().get("item.attribute_removed").replace("$attribute", attribute.name()));

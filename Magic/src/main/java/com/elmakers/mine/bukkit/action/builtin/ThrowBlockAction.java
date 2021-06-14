@@ -19,8 +19,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class ThrowBlockAction extends BaseProjectileAction
@@ -98,7 +98,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         }
         SafetyUtils.setVelocity(falling, direction);
         if (maxDamage > 0 && fallDamage > 0) {
-            CompatibilityUtils.setFallingBlockDamage(falling, fallDamage, maxDamage);
+            CompatibilityLib.getCompatibilityUtils().setFallingBlockDamage(falling, fallDamage, maxDamage);
         } else {
             falling.setHurtEntities(hurts);
         }

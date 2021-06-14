@@ -19,8 +19,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
@@ -78,14 +78,14 @@ public class LockAction extends BaseSpellAction
 
         // The isLocked check here is a work-around for re-securing chests
         // Since locked chests are normally indestructible!
-        if (!context.isDestructible(targetBlock) && !CompatibilityUtils.isLocked(targetBlock))
+        if (!context.isDestructible(targetBlock) && !CompatibilityLib.getCompatibilityUtils().isLocked(targetBlock))
         {
             mage.sendDebugMessage("Destructible fallback, can't lock " + targetBlock.getType());
             return SpellResult.NO_TARGET;
         }
 
         if (actionType == LockActionType.LOCK) {
-            String lock = CompatibilityUtils.getLock(targetBlock);
+            String lock = CompatibilityLib.getCompatibilityUtils().getLock(targetBlock);
             if (lock != null && !lock.isEmpty())
             {
                 if (lock.equals(keyName))
@@ -112,9 +112,9 @@ public class LockAction extends BaseSpellAction
                 context.sendMessageKey("acquire");
             }
             ItemStack keyItem = giveKey(mage, keyName, keyDescription);
-            result = CompatibilityUtils.setLock(targetBlock, keyItem.getItemMeta().getDisplayName());
+            result = CompatibilityLib.getCompatibilityUtils().setLock(targetBlock, keyItem.getItemMeta().getDisplayName());
         } else {
-            String lock = CompatibilityUtils.getLock(targetBlock);
+            String lock = CompatibilityLib.getCompatibilityUtils().getLock(targetBlock);
             if (lock == null || lock.isEmpty())
             {
                 return SpellResult.FAIL;
@@ -123,7 +123,7 @@ public class LockAction extends BaseSpellAction
             {
                 return SpellResult.FAIL;
             }
-            result = CompatibilityUtils.clearLock(targetBlock);
+            result = CompatibilityLib.getCompatibilityUtils().clearLock(targetBlock);
         }
 
         if (!result) {

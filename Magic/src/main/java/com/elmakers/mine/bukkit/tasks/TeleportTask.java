@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class TeleportTask implements Runnable {
     protected static final int TELEPORT_RETRY_COUNT = 8;
@@ -37,7 +37,7 @@ public class TeleportTask implements Runnable {
 
     @Override
     public void run() {
-        if (CompatibilityUtils.checkChunk(location)) {
+        if (CompatibilityLib.getCompatibilityUtils().checkChunk(location)) {
             if (retryCount > 0) {
                 retryCount--;
                 Plugin plugin = controller.getPlugin();

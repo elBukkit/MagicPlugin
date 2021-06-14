@@ -33,8 +33,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
@@ -71,7 +71,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         List<Player> players = new ArrayList<>();
         String playerName = args.length > 1 ? args[1] : null;
         if (playerName != null && sender.hasPermission("Magic.commands.mage.others")) {
-            List<Entity> targets = CompatibilityUtils.selectEntities(sender, playerName);
+            List<Entity> targets = CompatibilityLib.getCompatibilityUtils().selectEntities(sender, playerName);
             if (targets != null) {
                 argStart = 2;
                 for (Entity entity : targets) {
@@ -460,7 +460,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     {
         int count = 0;
         for (String recipeKey : controller.getRecipeKeys()) {
-            if (CompatibilityUtils.undiscoverRecipe(player, controller.getPlugin(), recipeKey)) {
+            if (CompatibilityLib.getCompatibilityUtils().undiscoverRecipe(player, controller.getPlugin(), recipeKey)) {
                 count++;
             }
         }

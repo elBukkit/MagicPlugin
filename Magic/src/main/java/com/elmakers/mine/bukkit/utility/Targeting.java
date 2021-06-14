@@ -404,7 +404,7 @@ public class Targeting {
 
     protected void findTargetBlock(MageContext context, double range)
     {
-        if (source == null || !CompatibilityUtils.isChunkLoaded(source))
+        if (source == null || !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(source))
         {
             return;
         }
@@ -498,7 +498,7 @@ public class Targeting {
                 sourceLocation = source;
             }
 
-            entities = CompatibilityUtils.getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
+            entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(sourceLocation, queryRange.getX() / 2, queryRange.getY() / 2, queryRange.getZ() / 2);
             if (mage.getDebugLevel() > 16) {
                 mage.sendDebugMessage(ChatColor.GREEN + "Targeting " + ChatColor.GOLD + entities.size() + ChatColor.GREEN + " entities from "
                         + ChatColor.GRAY + source.getBlockX()

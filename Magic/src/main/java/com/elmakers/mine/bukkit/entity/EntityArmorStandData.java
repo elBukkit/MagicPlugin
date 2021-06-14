@@ -6,7 +6,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class EntityArmorStandData extends EntityExtraData {
     public ItemStack itemInHand;
@@ -55,7 +55,7 @@ public class EntityArmorStandData extends EntityExtraData {
         isSmall = armorStand.isSmall();
         hasBasePlate = armorStand.hasBasePlate();
         isMarker = armorStand.isMarker();
-        disabledSlots = CompatibilityUtils.getDisabledSlots(armorStand);
+        disabledSlots = CompatibilityLib.getCompatibilityUtils().getDisabledSlots(armorStand);
     }
 
     public EntityArmorStandData(ConfigurationSection parameters) {
@@ -90,6 +90,6 @@ public class EntityArmorStandData extends EntityExtraData {
         armorStand.setSmall(isSmall);
         armorStand.setBasePlate(hasBasePlate);
         armorStand.setMarker(isMarker);
-        CompatibilityUtils.setDisabledSlots(armorStand, disabledSlots);
+        CompatibilityLib.getCompatibilityUtils().setDisabledSlots(armorStand, disabledSlots);
     }
 }

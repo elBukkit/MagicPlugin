@@ -83,8 +83,8 @@ import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MageClass;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 import de.slikey.effectlib.math.EquationStore;
@@ -326,7 +326,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean allowPassThrough(Block block) {
-        if (!CompatibilityUtils.isChunkLoaded(block)) return false;
+        if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) return false;
         if (mage != null && mage.isSuperPowered()) {
             return true;
         }
@@ -345,7 +345,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean isPassthrough(Block block) {
-        if (!CompatibilityUtils.isChunkLoaded(block)) return false;
+        if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) return false;
         return passthroughMaterials != null
                 && passthroughMaterials.testBlock(block);
     }
@@ -363,7 +363,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean isOkToStandIn(Block block) {
-        if (!CompatibilityUtils.isChunkLoaded(block)) return false;
+        if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) return false;
         if (isHalfBlock(block.getType())) {
             return false;
         }
@@ -378,7 +378,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isOkToStandOn(Block block)
     {
-        if (!CompatibilityUtils.isChunkLoaded(block)) return false;
+        if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) return false;
         return isOkToStandOn(block.getType());
     }
 
@@ -397,7 +397,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public boolean isSafeLocation(Block block)
     {
-        if (!CompatibilityUtils.isChunkLoaded(block)) {
+        if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) {
             return false;
         }
 
@@ -446,7 +446,7 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Nullable
     public Location findPlaceToStand(Location targetLoc, int maxDownDelta, int maxUpDelta) {
-        if (!CompatibilityUtils.isChunkLoaded(targetLoc)) return null;
+        if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(targetLoc)) return null;
         int minY = controller.getMinHeight(targetLoc.getWorld());
         int maxY = controller.getMaxHeight(targetLoc.getWorld());
 
@@ -534,7 +534,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         Block downBlock = location.getBlock().getRelative(BlockFace.DOWN);
         Material material = downBlock.getType();
         if (isHalfBlock(material)) {
-            if (!CompatibilityUtils.isTopBlock(downBlock)) {
+            if (!CompatibilityLib.getCompatibilityUtils().isTopBlock(downBlock)) {
                 // Drop down to half-steps
                 location.setY(location.getY() - 0.5);
             }
@@ -552,7 +552,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public Block getPlayerBlock() {
         Location location = getLocation();
         if (location == null) return null;
-        if (!CompatibilityUtils.isChunkLoaded(location)) return null;
+        if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(location)) return null;
         return location.getBlock().getRelative(BlockFace.DOWN);
     }
 
@@ -1448,7 +1448,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (requiredHealth > 0) {
             LivingEntity li = mage.getLivingEntity();
             if (li != null) {
-                double healthPercentage = 100 * li.getHealth() / CompatibilityUtils.getMaxHealth(li);
+                double healthPercentage = 100 * li.getHealth() / CompatibilityLib.getCompatibilityUtils().getMaxHealth(li);
                 if (healthPercentage < requiredHealth) {
                     processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
                     sendCastDebugMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");

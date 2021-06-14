@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class HangingController implements Listener {
     private final MagicController controller;
@@ -38,12 +38,12 @@ public class HangingController implements Listener {
         try {
             final BlockFace attachedFace = entity.getAttachedFace();
             if (entity instanceof Painting) {
-                Location location = CompatibilityUtils.getHangingLocation(entity);
+                Location location = CompatibilityLib.getCompatibilityUtils().getHangingLocation(entity);
                 Location attachedLocation = location.getBlock().getRelative(attachedFace).getLocation();
                 Painting painting = (Painting)entity;
                 int width = painting.getArt().getBlockWidth();
                 int height = painting.getArt().getBlockHeight();
-                BlockFace sideways = CompatibilityUtils.getCCW(painting.getFacing());
+                BlockFace sideways = CompatibilityLib.getCompatibilityUtils().getCCW(painting.getFacing());
                 Block attached = attachedLocation.getBlock();
                 Block block = location.getBlock();
 

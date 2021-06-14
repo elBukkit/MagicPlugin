@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public abstract class BaseTeleportAction extends BaseSpellAction
 {
@@ -33,7 +33,7 @@ public abstract class BaseTeleportAction extends BaseSpellAction
     }
 
     protected SpellResult teleport(CastContext context, Entity entity, Location targetLocation) {
-        if (!CompatibilityUtils.checkChunk(targetLocation)) {
+        if (!CompatibilityLib.getCompatibilityUtils().checkChunk(targetLocation)) {
             return SpellResult.PENDING;
         }
         if (requiresBuildPermission && !context.hasBuildPermission(targetLocation.getBlock())) {

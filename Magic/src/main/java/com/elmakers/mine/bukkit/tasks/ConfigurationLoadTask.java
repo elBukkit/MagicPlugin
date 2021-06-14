@@ -28,7 +28,6 @@ import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.google.common.collect.ImmutableSet;
 
 public class ConfigurationLoadTask implements Runnable {
@@ -112,7 +111,7 @@ public class ConfigurationLoadTask implements Runnable {
             File externalFile = new File(plugin.getDataFolder(), examplesFileName);
             if (externalFile.exists()) {
                 try {
-                    exampleConfig = CompatibilityUtils.loadConfiguration(externalFile);
+                    exampleConfig = CompatibilityLib.getCompatibilityUtils().loadConfiguration(externalFile);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + examplesFileName);
                 }
@@ -148,7 +147,7 @@ public class ConfigurationLoadTask implements Runnable {
                 InputStream input = plugin.getResource(examplesFileName);
                 if (input != null)  {
                     try {
-                        exampleConfig = CompatibilityUtils.loadConfiguration(input, examplesFileName);
+                        exampleConfig = CompatibilityLib.getCompatibilityUtils().loadConfiguration(input, examplesFileName);
                     } catch (Exception ex) {
                         getLogger().log(Level.SEVERE, "Error loading: " + examplesFileName + " from builtin resources", ex);
                     }
@@ -200,7 +199,7 @@ public class ConfigurationLoadTask implements Runnable {
         // Start with default configs
         YamlConfiguration config;
         try {
-            config = CompatibilityUtils.loadBuiltinConfiguration(defaultsFileName);
+            config = CompatibilityLib.getCompatibilityUtils().loadBuiltinConfiguration(defaultsFileName);
         } catch (Exception ex) {
             getLogger().severe("Error loading file: " + defaultsFileName);
             throw ex;
@@ -211,7 +210,7 @@ public class ConfigurationLoadTask implements Runnable {
         String listsFilename = "defaults/lists.defaults.yml";
         YamlConfiguration listConfig = null;
         try {
-            listConfig = CompatibilityUtils.loadBuiltinConfiguration(listsFilename);
+            listConfig = CompatibilityLib.getCompatibilityUtils().loadBuiltinConfiguration(listsFilename);
             ConfigurationUtils.addConfigurations(config, listConfig);
         } catch (Exception ex) {
             getLogger().severe("Error loading file: " + listsFilename);
@@ -359,7 +358,7 @@ public class ConfigurationLoadTask implements Runnable {
         info("Loading " + configFile.getName());
         ConfigurationSection results;
         try {
-            results = CompatibilityUtils.loadConfiguration(configFile);
+            results = CompatibilityLib.getCompatibilityUtils().loadConfiguration(configFile);
         } catch (Exception ex) {
             getLogger().severe("Error loading: " + configFileName);
             throw ex;
@@ -391,7 +390,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         YamlConfiguration defaultConfig = null;
         try {
-            defaultConfig = CompatibilityUtils.loadBuiltinConfiguration(defaultsFileName);
+            defaultConfig = CompatibilityLib.getCompatibilityUtils().loadBuiltinConfiguration(defaultsFileName);
         } catch (Exception ex) {
             getLogger().severe("Error loading file: " + defaultsFileName);
             throw ex;
@@ -506,7 +505,7 @@ public class ConfigurationLoadTask implements Runnable {
         InputStream versionInput = plugin.getResource(versionFileName);
         if (versionInput != null)  {
             try {
-                ConfigurationSection versionConfig = CompatibilityUtils.loadConfiguration(versionInput, versionFileName);
+                ConfigurationSection versionConfig = CompatibilityLib.getCompatibilityUtils().loadConfiguration(versionInput, versionFileName);
                 // Version patches will never add to configs, the top-level nodes they are modifying must exist.
                 // This allows them to tweak things from example configs but get safely ignored if not loading
                 // those examples.
@@ -597,7 +596,7 @@ public class ConfigurationLoadTask implements Runnable {
                         continue;
                     }
                     try {
-                        ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
+                        ConfigurationSection fileOverrides = CompatibilityLib.getCompatibilityUtils().loadConfiguration(file);
                         info(" Loading " + file.getName());
                         if (reenable) {
                             enableAll(fileOverrides);
@@ -611,7 +610,7 @@ public class ConfigurationLoadTask implements Runnable {
             }
             for (File file : priorityFiles) {
                 try {
-                    ConfigurationSection fileOverrides = CompatibilityUtils.loadConfiguration(file);
+                    ConfigurationSection fileOverrides = CompatibilityLib.getCompatibilityUtils().loadConfiguration(file);
                     info(" Loading " + file.getName());
                     if (reenable) {
                         enableAll(fileOverrides);

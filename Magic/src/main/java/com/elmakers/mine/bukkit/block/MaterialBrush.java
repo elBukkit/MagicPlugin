@@ -38,8 +38,8 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
@@ -431,7 +431,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     public boolean isReady() {
         if ((mode == BrushMode.CLONE || mode == BrushMode.REPLICATE) && materialTarget != null) {
             Block block = materialTarget.getBlock();
-            return CompatibilityUtils.isChunkLoaded(block);
+            return CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block);
         } else if (mode == BrushMode.SCHEMATIC) {
             return checkSchematic();
         }
@@ -547,7 +547,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 isTargetValid = false;
             } else {
                 Block block = materialTarget.getBlock();
-                if (!CompatibilityUtils.isChunkLoaded(block)) return false;
+                if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) return false;
 
                 updateFromBlock(block, fromMage.getRestrictedMaterialSet());
                 isTargetValid = fillWithAir || material != Material.AIR;
@@ -657,7 +657,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
     @Override
     public void prepare() {
         if (materialTarget != null) {
-            CompatibilityUtils.checkChunk(materialTarget);
+            CompatibilityLib.getCompatibilityUtils().checkChunk(materialTarget);
         }
     }
 

@@ -6,7 +6,7 @@ import org.bukkit.block.Block;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class BonemealAction extends BaseSpellAction {
     @Override
@@ -20,7 +20,7 @@ public class BonemealAction extends BaseSpellAction {
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
         context.registerForUndo(targetBlock);
-        if (!CompatibilityUtils.applyBonemeal(target)) {
+        if (!CompatibilityLib.getCompatibilityUtils().applyBonemeal(target)) {
             return SpellResult.NO_TARGET;
         }
 

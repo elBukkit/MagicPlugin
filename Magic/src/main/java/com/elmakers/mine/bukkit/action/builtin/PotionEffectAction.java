@@ -19,8 +19,8 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class PotionEffectAction extends BaseSpellAction
 {
@@ -142,7 +142,7 @@ public class PotionEffectAction extends BaseSpellAction
         {
             effected = true;
             for (PotionEffect effect : addEffects) {
-                if (CompatibilityUtils.applyPotionEffect(targetEntity, effect)) {
+                if (CompatibilityLib.getCompatibilityUtils().applyPotionEffect(targetEntity, effect)) {
                     context.registerPotionEffectForRemoval(targetEntity, effect.getType());
                 }
             }

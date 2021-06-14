@@ -11,7 +11,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
@@ -45,17 +45,17 @@ public class CaptureAction extends BaseSpellAction {
         if (eggMaterial == null) {
             return SpellResult.NO_TARGET;
         }
-        String entityTypeString = CompatibilityUtils.getEntityType(targetEntity);
+        String entityTypeString = CompatibilityLib.getCompatibilityUtils().getEntityType(targetEntity);
         if (entityTypeString == null) {
             return SpellResult.FAIL;
         }
-        Object savedEntity = CompatibilityUtils.getEntityData(targetEntity);
+        Object savedEntity = CompatibilityLib.getCompatibilityUtils().getEntityData(targetEntity);
         if (savedEntity == null) {
             return SpellResult.FAIL;
         }
         if (targetEntity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)targetEntity;
-            li.setHealth(CompatibilityUtils.getMaxHealth(li));
+            li.setHealth(CompatibilityLib.getCompatibilityUtils().getMaxHealth(li));
         }
         targetEntity.remove();
         ItemStack spawnEgg = new ItemStack(eggMaterial);

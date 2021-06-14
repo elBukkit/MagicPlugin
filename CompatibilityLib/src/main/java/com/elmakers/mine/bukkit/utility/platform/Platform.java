@@ -38,4 +38,8 @@ public class Platform {
     public boolean isValid() {
         return valid;
     }
+
+    public CompatibilityUtils getCompatibilityUtils() {
+        return new CompatibilityUtils();
+    }
 }

@@ -19,10 +19,10 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class EntityProjectileAction extends CustomProjectileAction {
     private boolean noTarget = true;
@@ -88,15 +88,15 @@ public class EntityProjectileAction extends CustomProjectileAction {
         if (noTarget) {
             EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_TARGET, true);
         }
-        CompatibilityUtils.setPersist(entity, false);
+        CompatibilityLib.getCompatibilityUtils().setPersist(entity, false);
 
         if (entity instanceof LivingEntity) {
-            CompatibilityUtils.setMaxHealth(((LivingEntity) entity), 1000.0);
+            CompatibilityLib.getCompatibilityUtils().setMaxHealth(((LivingEntity) entity), 1000.0);
             ((LivingEntity) entity).setHealth(1000.0);
         }
 
         if (projectileEffects != null && entity instanceof LivingEntity) {
-            CompatibilityUtils.applyPotionEffects((LivingEntity)entity, projectileEffects);
+            CompatibilityLib.getCompatibilityUtils().applyPotionEffects((LivingEntity)entity, projectileEffects);
         }
         targeting.ignoreEntity(entity);
         return entity;

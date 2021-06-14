@@ -13,8 +13,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 @Deprecated
 public class PhaseSpell extends TargetingSpell
@@ -127,7 +127,7 @@ public class PhaseSpell extends TargetingSpell
     }
 
     protected void tryPhase(final LivingEntity entity, final Location targetLocation) {
-        if (!CompatibilityUtils.checkChunk(targetLocation)) {
+        if (!CompatibilityLib.getCompatibilityUtils().checkChunk(targetLocation)) {
             if (retryCount < MAX_RETRY_COUNT) {
                 Plugin plugin = controller.getPlugin();
                 final PhaseSpell me = this;

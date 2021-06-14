@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;
@@ -148,7 +148,7 @@ public class MagicWorld {
             }
         }
         if (world != null && appearanceEnvironment != null) {
-            CompatibilityUtils.setEnvironment(world, appearanceEnvironment);
+            CompatibilityLib.getCompatibilityUtils().setEnvironment(world, appearanceEnvironment);
             controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
         }
     }
@@ -211,7 +211,7 @@ public class MagicWorld {
            if (world == null) {
                controller.getLogger().warning("Failed to create world: " + worldName);
            } else if (appearanceEnvironment != null) {
-               CompatibilityUtils.setEnvironment(world, appearanceEnvironment);
+               CompatibilityLib.getCompatibilityUtils().setEnvironment(world, appearanceEnvironment);
                controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
            }
         }

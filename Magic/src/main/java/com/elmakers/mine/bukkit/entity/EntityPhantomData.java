@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.entity;
 
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class EntityPhantomData extends EntityExtraData {
     public int size;
@@ -12,12 +12,12 @@ public class EntityPhantomData extends EntityExtraData {
     }
 
     public EntityPhantomData(Entity entity) {
-       size = CompatibilityUtils.getPhantomSize(entity);
+       size = CompatibilityLib.getCompatibilityUtils().getPhantomSize(entity);
     }
 
     @Override
     public void apply(Entity entity) {
-        CompatibilityUtils.setPhantomSize(entity, size);
+        CompatibilityLib.getCompatibilityUtils().setPhantomSize(entity, size);
     }
 
     public void setSize(int size) {

@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class MountArmorStandAction extends RideEntityAction
@@ -188,12 +188,12 @@ public class MountArmorStandAction extends RideEntityAction
     protected boolean mountNewArmorStand(CastContext context) {
         Mage mage = context.getMage();
         Entity entity = context.getEntity();
-        ArmorStand armorStand = CompatibilityUtils.createArmorStand(mage.getLocation());
+        ArmorStand armorStand = CompatibilityLib.getCompatibilityUtils().createArmorStand(mage.getLocation());
 
         armorStand.setHealth(armorStandHealth);
-        CompatibilityUtils.setMaxHealth(armorStand, armorStandHealth);
+        CompatibilityLib.getCompatibilityUtils().setMaxHealth(armorStand, armorStandHealth);
         if (armorStandInvisible) {
-            CompatibilityUtils.setInvisible(armorStand, true);
+            CompatibilityLib.getCompatibilityUtils().setInvisible(armorStand, true);
         }
         if (armorStandMarker) {
             armorStand.setMarker(true);
@@ -201,16 +201,16 @@ public class MountArmorStandAction extends RideEntityAction
         if (!armorStandGravity) {
             armorStand.setGravity(false);
         }
-        CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
+        CompatibilityLib.getCompatibilityUtils().setDisabledSlots(armorStand, 2039552);
         if (armorStandSmall) {
             armorStand.setSmall(true);
         }
-        CompatibilityUtils.setPersist(armorStand, false);
+        CompatibilityLib.getCompatibilityUtils().setPersist(armorStand, false);
 
         MageController controller = context.getController();
         controller.setForceSpawn(true);
         try {
-            CompatibilityUtils.addToWorld(entity.getWorld(), armorStand, armorStandSpawnReason);
+            CompatibilityLib.getCompatibilityUtils().addToWorld(entity.getWorld(), armorStand, armorStandSpawnReason);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

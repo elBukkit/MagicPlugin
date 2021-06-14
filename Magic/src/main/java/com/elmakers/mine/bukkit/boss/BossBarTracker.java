@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class BossBarTracker {
     private static final Random random = new Random();
@@ -53,7 +53,7 @@ public class BossBarTracker {
     }
 
     private void updateVisibility() {
-        List<Entity> entities = CompatibilityUtils.getNearbyEntities(mage.getLocation(), radius, radius, radius);
+        List<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(mage.getLocation(), radius, radius, radius);
         processing.addAll(visibleTo);
         visibleTo.clear();
 

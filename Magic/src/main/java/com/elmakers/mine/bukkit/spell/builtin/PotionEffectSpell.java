@@ -17,8 +17,8 @@ import org.bukkit.potion.PotionEffectType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 @Deprecated
 public class PotionEffectSpell extends UndoableSpell
@@ -49,7 +49,7 @@ public class PotionEffectSpell extends UndoableSpell
         radius = (int)(mage.getRadiusMultiplier() * radius);
 
         if (radius > 0) {
-            List<Entity> entities = CompatibilityUtils.getNearbyEntities(target.getLocation(), radius, radius, radius);
+            List<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(target.getLocation(), radius, radius, radius);
             for (Entity entity : entities) {
                 if (entity instanceof LivingEntity && entity != targetedEntity && entity != mage.getEntity()) {
                     targetEntities.add((LivingEntity)entity);
@@ -100,14 +100,14 @@ public class PotionEffectSpell extends UndoableSpell
             if (parameters.contains("heal")) {
                 registerModified(targetEntity);
                 double health = targetEntity.getHealth() + parameters.getDouble("heal");
-                targetEntity.setHealth(Math.min(health, CompatibilityUtils.getMaxHealth(targetEntity)));
+                targetEntity.setHealth(Math.min(health, CompatibilityLib.getCompatibilityUtils().getMaxHealth(targetEntity)));
             } else if (parameters.contains("heal_percentage")) {
                 registerModified(targetEntity);
-                double health = targetEntity.getHealth() + CompatibilityUtils.getMaxHealth(targetEntity) * parameters.getDouble("heal_percentage");
-                targetEntity.setHealth(Math.min(health, CompatibilityUtils.getMaxHealth(targetEntity)));
+                double health = targetEntity.getHealth() + CompatibilityLib.getCompatibilityUtils().getMaxHealth(targetEntity) * parameters.getDouble("heal_percentage");
+                targetEntity.setHealth(Math.min(health, CompatibilityLib.getCompatibilityUtils().getMaxHealth(targetEntity)));
             } else if (parameters.contains("damage")) {
                 registerModified(targetEntity);
-                CompatibilityUtils.magicDamage(targetEntity, parameters.getDouble("damage") * mage.getDamageMultiplier(), mage.getEntity());
+                CompatibilityLib.getCompatibilityUtils().magicDamage(targetEntity, parameters.getDouble("damage") * mage.getDamageMultiplier(), mage.getEntity());
             } else {
                 registerPotionEffects(targetEntity);
             }
@@ -117,7 +117,7 @@ public class PotionEffectSpell extends UndoableSpell
                 targetEntity.setFireTicks(parameters.getInt("fire"));
             }
 
-            CompatibilityUtils.applyPotionEffects(targetEntity, effects);
+            CompatibilityLib.getCompatibilityUtils().applyPotionEffects(targetEntity, effects);
 
             if (parameters.contains("remove_effects")) {
                 List<String> removeKeys = parameters.getStringList("remove_effects");

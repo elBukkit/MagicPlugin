@@ -83,8 +83,8 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.tasks.ApplyWandIconTask;
 import com.elmakers.mine.bukkit.tasks.CancelEffectsContextTask;
 import com.elmakers.mine.bukkit.tasks.OpenWandTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
@@ -500,7 +500,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (spellInventoryRaw instanceof Map) {
                     spellInventory = (Map<String, ? extends Object>)spellInventoryRaw;
                 } else if (spellInventoryRaw instanceof ConfigurationSection) {
-                    spellInventory = CompatibilityUtils.getMap((ConfigurationSection)spellInventoryRaw);
+                    spellInventory = CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)spellInventoryRaw);
                 }
                 if (spellInventory != null) {
                     for (Map.Entry<String, ? extends Object> spellEntry : spellInventory.entrySet()) {
@@ -1684,7 +1684,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         }
-        CompatibilityUtils.setLore(itemStack, lore);
+        CompatibilityLib.getCompatibilityUtils().setLore(itemStack, lore);
         return itemStack;
     }
 
@@ -2286,7 +2286,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Map<String, Integer> brushInventory = (Map<String, Integer>)brushInventoryRaw;
                 loadBrushInventory(brushInventory);
             } else if (brushInventoryRaw instanceof ConfigurationSection) {
-                loadBrushInventory(CompatibilityUtils.getMap((ConfigurationSection)brushInventoryRaw));
+                loadBrushInventory(CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)brushInventoryRaw));
             }
         }
 
@@ -2298,7 +2298,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Map<String, Integer> spellInventory = (Map<String, Integer>)spellInventoryRaw;
                 loadSpellInventory(spellInventory);
             } else if (spellInventoryRaw instanceof ConfigurationSection) {
-                loadSpellInventory(CompatibilityUtils.getMap((ConfigurationSection)spellInventoryRaw));
+                loadSpellInventory(CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)spellInventoryRaw));
             }
         }
 
@@ -2313,7 +2313,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Map<String, Integer> spellLevels = (Map<String, Integer>)spellLevelsRaw;
                 loadSpellLevels(spellLevels);
             } else if (spellLevelsRaw instanceof ConfigurationSection) {
-                loadSpellLevels(CompatibilityUtils.getMap((ConfigurationSection)spellLevelsRaw));
+                loadSpellLevels(CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)spellLevelsRaw));
             }
         }
         checkActiveSpell();
@@ -2489,7 +2489,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (stripColors) {
             name = ChatColor.stripColor(name);
         }
-        CompatibilityUtils.setDisplayName(item, name);
+        CompatibilityLib.getCompatibilityUtils().setDisplayName(item, name);
 
         // This is a bit of a hack to make anvil+book combining show enchantments
         int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
@@ -2879,7 +2879,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void updateLore() {
-        CompatibilityUtils.setLore(item, getLore());
+        CompatibilityLib.getCompatibilityUtils().setLore(item, getLore());
     }
 
     public int getRemainingUses() {
@@ -3252,7 +3252,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (isItem) {
             ConfigurationUtils.addIfNotEmpty(messages.get("wand.spell_item_description"), lore);
         }
-        CompatibilityUtils.setLore(itemStack, lore);
+        CompatibilityLib.getCompatibilityUtils().setLore(itemStack, lore);
         Object spellNode = NBTUtils.createNode(itemStack, "spell");
         NBTUtils.setMeta(spellNode, "key", spell.getKey());
         NBTUtils.setMeta(spellNode, "args", args);
@@ -3268,7 +3268,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else {
             displayName = getSpellDisplayName(messages, spell, MaterialBrush.parseMaterialKey(activeMaterial));
         }
-        CompatibilityUtils.setDisplayName(itemStack, displayName);
+        CompatibilityLib.getCompatibilityUtils().setDisplayName(itemStack, displayName);
     }
 
     public static void updateBrushName(Messages messages, ItemStack itemStack, String materialKey, Wand wand) {
@@ -3287,7 +3287,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else {
             displayName = brush.getName(messages);
         }
-        CompatibilityUtils.setDisplayName(itemStack, displayName);
+        CompatibilityLib.getCompatibilityUtils().setDisplayName(itemStack, displayName);
     }
 
     public static void updateBrushItem(Messages messages, ItemStack itemStack, String materialKey, Wand wand) {
@@ -3422,7 +3422,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     protected Inventory getDisplayInventory() {
         if (displayInventory == null || displayInventory.getSize() != getInventorySize()) {
-            displayInventory = CompatibilityUtils.createInventory(null, getInventorySize(), getInventoryTitle());
+            displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, getInventorySize(), getInventoryTitle());
         }
 
         return displayInventory;
@@ -5740,7 +5740,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return false;
         }
         PlayerInventory inventory = player.getInventory();
-        storedInventory = CompatibilityUtils.createInventory(null, PLAYER_INVENTORY_SIZE, "Stored Inventory");
+        storedInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, PLAYER_INVENTORY_SIZE, "Stored Inventory");
         for (int i = 0; i < PLAYER_INVENTORY_SIZE; i++) {
             ItemStack item = inventory.getItem(i);
             storedInventory.setItem(i, item);

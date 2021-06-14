@@ -39,11 +39,11 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class SpawnEntityAction extends CompoundAction
@@ -297,7 +297,7 @@ public class SpawnEntityAction extends CompoundAction
             }
             motion.normalize();
             motion.multiply(speed);
-            CompatibilityUtils.setEntityMotion(spawnedEntity, motion);
+            CompatibilityLib.getCompatibilityUtils().setEntityMotion(spawnedEntity, motion);
         }
 
         Collection<EffectPlayer> entityEffects = context.getEffects("spawned");

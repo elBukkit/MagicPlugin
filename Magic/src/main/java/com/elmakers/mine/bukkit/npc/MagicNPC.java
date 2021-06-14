@@ -22,10 +22,10 @@ import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
@@ -241,7 +241,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     @Nullable
     public Entity getEntity() {
-        return entityId == null ? null : CompatibilityUtils.getEntity(location.getWorld(), entityId);
+        return entityId == null ? null : CompatibilityLib.getCompatibilityUtils().getEntity(location.getWorld(), entityId);
     }
 
     @Override
@@ -253,11 +253,11 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             vehicle = vehicle.getVehicle();
         }
         // This won't work for multi-passenger mobs
-        List<Entity> passengers = CompatibilityUtils.getPassengers(entity);
+        List<Entity> passengers = CompatibilityLib.getCompatibilityUtils().getPassengers(entity);
         while (!passengers.isEmpty()) {
             Entity passenger = passengers.get(0);
             if (passenger.getUniqueId().equals(entityId)) return true;
-            passengers = CompatibilityUtils.getPassengers(passenger);
+            passengers = CompatibilityLib.getCompatibilityUtils().getPassengers(passenger);
         }
 
         return false;
@@ -267,7 +267,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public void teleport(@Nonnull Location location) {
         controller.unregisterNPC(this);
         setLocation(location);
-        if (CompatibilityUtils.isChunkLoaded(location)) {
+        if (CompatibilityLib.getCompatibilityUtils().isChunkLoaded(location)) {
             // restore will teleport the mob, so no need to teleport separately
             restore();
         }
@@ -305,7 +305,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Nullable
     public Entity restore() {
-        if (location == null || !CompatibilityUtils.isChunkLoaded(location)) {
+        if (location == null || !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(location)) {
             return null;
         }
         Entity entity = getEntity();
@@ -319,7 +319,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             controller.setDisableSpawnReplacement(false);
         } else {
             entityData.modify(entity);
-            CompatibilityUtils.teleportWithVehicle(entity, location);
+            CompatibilityLib.getCompatibilityUtils().teleportWithVehicle(entity, location);
         }
         if (entity == null) {
             controller.getLogger().warning("Failed to restore NPC entity");

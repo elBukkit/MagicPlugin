@@ -63,7 +63,7 @@ public class InventoryUtils {
         Object tag = ItemUtils.getTag(handle);
         if (tag == null) return false;
 
-        return addTagsToNBT(CompatibilityUtils.getMap(tags), tag);
+        return addTagsToNBT(CompatibilityLib.getCompatibilityUtils().getMap(tags), tag);
     }
 
     public static boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
@@ -114,7 +114,7 @@ public class InventoryUtils {
 
     public static boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames)
     {
-        return saveTagsToNBT(CompatibilityUtils.getMap(tags), node, tagNames);
+        return saveTagsToNBT(CompatibilityLib.getCompatibilityUtils().getMap(tags), node, tagNames);
     }
 
     public static boolean addTagsToNBT(Map<String, Object> tags, Object node)
@@ -614,7 +614,7 @@ public class InventoryUtils {
 
     public static void openSign(Player player, Location signBlock) {
         try {
-            Object tileEntity = CompatibilityUtils.getTileEntity(signBlock);
+            Object tileEntity = CompatibilityLib.getCompatibilityUtils().getTileEntity(signBlock);
             Object playerHandle = NMSUtils.getHandle(player);
             if (tileEntity != null && playerHandle != null) {
                 NMSUtils.class_EntityPlayer_openSignMethod.invoke(playerHandle, tileEntity);
@@ -634,7 +634,7 @@ public class InventoryUtils {
     
     public static void applyAttributes(ItemStack item, ConfigurationSection attributeConfig, String slot) {
         if (item == null) return;
-        CompatibilityUtils.removeItemAttributes(item);
+        CompatibilityLib.getCompatibilityUtils().removeItemAttributes(item);
         if (attributeConfig == null) return;
         Collection<String> attributeKeys = attributeConfig.getKeys(false);
         for (String attributeKey : attributeKeys)
@@ -663,7 +663,7 @@ public class InventoryUtils {
                     value = attributeConfig.getDouble(attributeKey);
                 }
                 Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
-                if (!CompatibilityUtils.setItemAttribute(item, attribute, value, slot, operation)) {
+                if (!CompatibilityLib.getCompatibilityUtils().setItemAttribute(item, attribute, value, slot, operation)) {
                     NMSUtils.getLogger().warning("Failed to set attribute: " + attributeKey);
                 }
             } catch (Exception ex) {

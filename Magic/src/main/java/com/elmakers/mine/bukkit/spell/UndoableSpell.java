@@ -16,8 +16,8 @@ import org.bukkit.potion.PotionEffect;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class UndoableSpell extends TargetingSpell {
     private boolean         undoEntityEffects        = false;
@@ -179,7 +179,7 @@ public class UndoableSpell extends TargetingSpell {
         if (potionEffects == null || radius <= 0 || potionEffects.size() == 0) return;
 
         int radiusSquared = radius * 2;
-        List<Entity> entities = CompatibilityUtils.getNearbyEntities(location, radius, radius, radius);
+        List<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(location, radius, radius, radius);
         for (Entity entity : entities) {
             if (entity instanceof LivingEntity) {
                 Mage targetMage = null;
@@ -196,7 +196,7 @@ public class UndoableSpell extends TargetingSpell {
 
                 if (entity.getLocation().distanceSquared(location) < radiusSquared) {
                     registerPotionEffects(entity);
-                    CompatibilityUtils.applyPotionEffects((LivingEntity)entity, potionEffects);
+                    CompatibilityLib.getCompatibilityUtils().applyPotionEffects((LivingEntity)entity, potionEffects);
 
                     if (targetMage != null) {
                         String playerMessage = getMessage("cast_player_message");

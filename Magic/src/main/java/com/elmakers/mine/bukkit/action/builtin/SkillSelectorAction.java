@@ -34,7 +34,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -225,7 +225,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         title = title
                 .replace("$pages", Integer.toString(numPages))
                 .replace("$page", Integer.toString(page));
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, title);
+        Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, title);
         for (SkillDescription skill : skills)
         {
             ItemStack skillItem = controller.getAPI().createItem(skill.getSkillKey(), mage);
@@ -235,7 +235,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");
                 String spellName = skill.spell != null ? skill.spell.getName() : skill.heroesSkill;
-                CompatibilityUtils.setDisplayName(skillItem, nameTemplate.replace("$skill", spellName));
+                CompatibilityLib.getCompatibilityUtils().setDisplayName(skillItem, nameTemplate.replace("$skill", spellName));
                 NBTUtils.setMetaBoolean(skillItem, "unavailable", true);
                 if (skill.spell != null) {
                     MaterialAndData disabledIcon = skill.spell.getDisabledIcon();

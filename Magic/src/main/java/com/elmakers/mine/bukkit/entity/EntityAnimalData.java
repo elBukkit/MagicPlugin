@@ -12,7 +12,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Tameable;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class EntityAnimalData extends EntityExtraData {
     private UUID owner;
@@ -46,7 +46,7 @@ public class EntityAnimalData extends EntityExtraData {
             }
             this.tamed = tameable.isTamed();
         }
-        this.sitting = CompatibilityUtils.isSitting(entity);
+        this.sitting = CompatibilityLib.getCompatibilityUtils().isSitting(entity);
     }
 
     @Override
@@ -61,6 +61,6 @@ public class EntityAnimalData extends EntityExtraData {
             }
             tameable.setTamed(tamed);
         }
-        CompatibilityUtils.setSitting(entity, sitting);
+        CompatibilityLib.getCompatibilityUtils().setSitting(entity, sitting);
     }
 }

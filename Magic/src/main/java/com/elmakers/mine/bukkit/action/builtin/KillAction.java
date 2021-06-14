@@ -12,7 +12,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class KillAction extends BaseSpellAction
 {
@@ -39,9 +39,9 @@ public class KillAction extends BaseSpellAction
         // Overkill to bypass protection
         context.registerModified(targetEntity);
         if (magicDamage) {
-            CompatibilityUtils.magicDamage(targetEntity, CompatibilityUtils.getMaxHealth(targetEntity) * 100, context.getEntity());
+            CompatibilityLib.getCompatibilityUtils().magicDamage(targetEntity, CompatibilityLib.getCompatibilityUtils().getMaxHealth(targetEntity) * 100, context.getEntity());
         } else {
-            targetEntity.damage(CompatibilityUtils.getMaxHealth(targetEntity) * 100);
+            targetEntity.damage(CompatibilityLib.getCompatibilityUtils().getMaxHealth(targetEntity) * 100);
         }
         return SpellResult.CAST;
     }

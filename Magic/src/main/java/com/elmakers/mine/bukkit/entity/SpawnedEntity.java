@@ -12,7 +12,7 @@ import org.bukkit.util.BlockVector;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class SpawnedEntity {
     private final String worldName;
@@ -54,16 +54,16 @@ public class SpawnedEntity {
                 return;
             }
             Location entityLocation = new Location(world, location.getX(), location.getY(), location.getZ());
-            if (!CompatibilityUtils.isChunkLoaded(entityLocation)) {
-                CompatibilityUtils.loadChunk(entityLocation, false, chunk -> {
-                    Entity removeEntity = CompatibilityUtils.getEntity(world, id);
+            if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(entityLocation)) {
+                CompatibilityLib.getCompatibilityUtils().loadChunk(entityLocation, false, chunk -> {
+                    Entity removeEntity = CompatibilityLib.getCompatibilityUtils().getEntity(world, id);
                     if (removeEntity != null) {
                         UndoList.setUndoList(removeEntity, null);
                         removeEntity.remove();
                     }
                 });
             } else {
-                entity = CompatibilityUtils.getEntity(world, id);
+                entity = CompatibilityLib.getCompatibilityUtils().getEntity(world, id);
             }
         }
         if (entity != null && entity.isValid()) {

@@ -50,7 +50,7 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.UndoBlockTask;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
@@ -108,7 +108,7 @@ public class BlockController implements Listener, ChunkLoadListener {
             }
         }
         if (controller.areLocksProtected() && controller.isContainer(block) && !controller.hasBypassPermission(event.getPlayer())) {
-            String lockKey = CompatibilityUtils.getLock(block);
+            String lockKey = CompatibilityLib.getCompatibilityUtils().getLock(block);
             if (lockKey != null && !lockKey.isEmpty()) {
                 Inventory inventory = player.getInventory();
                 Mage mage = controller.getRegisteredMage(event.getPlayer());
@@ -211,12 +211,12 @@ public class BlockController implements Listener, ChunkLoadListener {
                     modifiedBlock.commit();
                     // Prevent creating waterlogged blocks accidentally, since these can be exploited for water, even in the nether
                     if (event.getBlockReplacedState().getType() == Material.WATER) {
-                        CompatibilityUtils.setWaterlogged(block, false);
+                        CompatibilityLib.getCompatibilityUtils().setWaterlogged(block, false);
                     }
                 }
             }
             if (!event.isCancelled() && applySpawnerData && DefaultMaterials.isMobSpawner(block.getType()) && event.getItemInHand() != null && DefaultMaterials.isMobSpawner(event.getItemInHand().getType()) && player.hasPermission("Magic.spawners")) {
-                CompatibilityUtils.applyItemData(event.getItemInHand(), block);
+                CompatibilityLib.getCompatibilityUtils().applyItemData(event.getItemInHand(), block);
             }
         }
     }
@@ -270,7 +270,7 @@ public class BlockController implements Listener, ChunkLoadListener {
             if (reaction == PistonMoveReaction.BREAK) {
                 // This block is about to be broken, we will break it but avoid dropping an item.
                 undoList.add(block);
-                CompatibilityUtils.clearItems(block.getLocation());
+                CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
                 DeprecatedUtils.setTypeAndData(block, Material.AIR, (byte) 0, false);
             } else {
                 // This block is about to become the piston head
@@ -328,8 +328,8 @@ public class BlockController implements Listener, ChunkLoadListener {
                     downBlock = downBlock.getRelative(BlockFace.DOWN);
                 }
             }
-            if (!CompatibilityUtils.isWaterLoggable(targetBlock)) {
-                CompatibilityUtils.clearItems(targetBlock.getLocation());
+            if (!CompatibilityLib.getCompatibilityUtils().isWaterLoggable(targetBlock)) {
+                CompatibilityLib.getCompatibilityUtils().clearItems(targetBlock.getLocation());
                 DeprecatedUtils.setTypeAndData(targetBlock, Material.AIR, (byte) 0, false);
             }
             event.setCancelled(true);
@@ -440,7 +440,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                         blockList.convert(entity, block);
                         if (!blockList.getApplyPhysics()) {
                             FallingBlock falling = (FallingBlock)entity;
-                            DeprecatedUtils.setTypeAndData(block, falling.getMaterial(), CompatibilityUtils.getBlockData(falling), false);
+                            DeprecatedUtils.setTypeAndData(block, falling.getMaterial(), CompatibilityLib.getCompatibilityUtils().getBlockData(falling), false);
                             event.setCancelled(true);
                         }
                     }

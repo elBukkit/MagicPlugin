@@ -47,7 +47,6 @@ import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfiguration;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 import de.slikey.effectlib.util.ConfigUtils;
@@ -275,7 +274,7 @@ public class ConfigurationUtils extends ConfigUtils {
             String matName = (String)o;
             try {
                 int value = Integer.parseInt(matName);
-                return CompatibilityUtils.getMaterial(value);
+                return CompatibilityLib.getCompatibilityUtils().getMaterial(value);
             } catch (NumberFormatException ignored) {
             }
 
@@ -299,7 +298,7 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     public static boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag) {
-        return CompatibilityUtils.loadAllTagsFromNBT(tags, tag);
+        return CompatibilityLib.getCompatibilityUtils().loadAllTagsFromNBT(tags, tag);
     }
 
     public static boolean loadAllTagsFromNBT(ConfigurationSection tags, ItemStack item) {
@@ -422,7 +421,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (configuration == null) return null;
 
         ConfigurationSection replaced = ConfigurationUtils.newConfigurationSection();
-        Map<String, Object> map = CompatibilityUtils.getMap(configuration);
+        Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(configuration);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();
             if (value == null) continue;
@@ -460,7 +459,7 @@ public class ConfigurationUtils extends ConfigUtils {
     {
         if (second == null) return first;
         override = override || second.getBoolean("override");
-        Map<String, Object> map = CompatibilityUtils.getMap(second);
+        Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(second);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();
             if (value == null) continue;
@@ -497,7 +496,7 @@ public class ConfigurationUtils extends ConfigUtils {
     public static ConfigurationSection replaceConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         if (second == null) return first;
-        Map<String, Object> map = CompatibilityUtils.getMap(second);
+        Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(second);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             first.set(entry.getKey(), entry.getValue());
         }
@@ -880,7 +879,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static String getParameters(ConfigurationSection parameters) {
         Collection<String> parameterStrings = new ArrayList<>();
-        Map<String, Object> map = CompatibilityUtils.getMap(parameters);
+        Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(parameters);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             parameterStrings.add(entry.getKey());
             parameterStrings.add(entry.getValue().toString());

@@ -6,7 +6,7 @@ import org.bukkit.entity.LivingEntity;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class HealthCurrency extends BaseMagicCurrency {
     public HealthCurrency(MageController controller, ConfigurationSection configuration) {
@@ -41,7 +41,7 @@ public class HealthCurrency extends BaseMagicCurrency {
     public boolean give(Mage mage, CasterProperties caster, double amount) {
         LivingEntity living = mage.getLivingEntity();
         if (living != null) {
-            double maxHealth = CompatibilityUtils.getMaxHealth(living);
+            double maxHealth = CompatibilityLib.getCompatibilityUtils().getMaxHealth(living);
             if (living.getHealth() >= maxHealth) {
                 return false;
             }

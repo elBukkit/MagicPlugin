@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class BlockSpell extends UndoableSpell {
 
@@ -46,7 +46,7 @@ public class BlockSpell extends UndoableSpell {
 
         if (!checkDestructible) return true;
         if (destructibleOverride != null && destructibleOverride.testBlock(block)) return true;
-        if (destructibleDurability > 0 && CompatibilityUtils.getDurability(block.getType()) > destructibleDurability) return false;
+        if (destructibleDurability > 0 && CompatibilityLib.getCompatibilityUtils().getDurability(block.getType()) > destructibleDurability) return false;
         if (targetBreakables > 0 && currentCast.isBreakable(block)) return true;
         if (destructible == null) {
             return mage.isDestructible(block);

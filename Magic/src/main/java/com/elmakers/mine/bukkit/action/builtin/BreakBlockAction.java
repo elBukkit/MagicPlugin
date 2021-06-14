@@ -16,7 +16,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class BreakBlockAction extends ModifyBlockAction {
     private int durabilityAmount;
@@ -58,10 +58,10 @@ public class BreakBlockAction extends ModifyBlockAction {
 
         if (breakAmount >= 1 && context.hasBreakPermission(block)) {
             context.playEffects("break");
-            CompatibilityUtils.clearBreaking(block);
+            CompatibilityLib.getCompatibilityUtils().clearBreaking(block);
             BlockState blockState = block.getState();
             if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
-                CompatibilityUtils.clearItems(blockState.getLocation());
+                CompatibilityLib.getCompatibilityUtils().clearItems(blockState.getLocation());
             }
             MaterialBrush brush = context.getBrush();
             if (brush == null) {
@@ -73,7 +73,7 @@ public class BreakBlockAction extends ModifyBlockAction {
             super.perform(context);
             context.unregisterBreaking(block);
         } else {
-            CompatibilityUtils.setBreaking(block, breakAmount);
+            CompatibilityLib.getCompatibilityUtils().setBreaking(block, breakAmount);
         }
         return SpellResult.CAST;
     }

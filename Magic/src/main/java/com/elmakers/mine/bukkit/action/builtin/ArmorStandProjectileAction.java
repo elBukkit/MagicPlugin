@@ -19,8 +19,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.item.InventorySlot;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 import de.slikey.effectlib.math.VectorTransform;
@@ -123,17 +123,17 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     public SpellResult start(CastContext context) {
         MageController controller = context.getController();
         Location location = adjustLocation(sourceLocation.getLocation(context));
-        ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityUtils.createArmorStand(location));
+        ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityLib.getCompatibilityUtils().createArmorStand(location));
         armorStand.setMarker(armorStandMarker);
         armorStand.setVisible(!armorStandInvisible);
         armorStand.setBasePlate(showArmorStandBaseplate);
         armorStand.setGravity(armorStandGravity);
         armorStand.setSmall(smallArmorStand);
         armorStand.setArms(showArmorStandArms);
-        CompatibilityUtils.setSilent(armorStand, true);
-        CompatibilityUtils.setDisabledSlots(armorStand, 2039552);
+        CompatibilityLib.getCompatibilityUtils().setSilent(armorStand, true);
+        CompatibilityLib.getCompatibilityUtils().setDisabledSlots(armorStand, 2039552);
         update(armorStand);
-        CompatibilityUtils.addToWorld(location.getWorld(), armorStand, spawnReason);
+        CompatibilityLib.getCompatibilityUtils().addToWorld(location.getWorld(), armorStand, spawnReason);
 
         return super.start(context);
     }

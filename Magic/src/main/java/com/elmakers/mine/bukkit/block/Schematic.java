@@ -9,7 +9,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 
 public class Schematic extends AbstractSchematic implements LoadableSchematic {
@@ -22,7 +22,7 @@ public class Schematic extends AbstractSchematic implements LoadableSchematic {
         Map<Integer, MaterialAndData> palette = new HashMap<>();
         for (Map.Entry<Integer, String> entry : rawPallete.entrySet()) {
             String blockData = entry.getValue();
-            Material material = CompatibilityUtils.getMaterial(blockData);
+            Material material = CompatibilityLib.getCompatibilityUtils().getMaterial(blockData);
             if (material != null) {
                 palette.put(entry.getKey(), new MaterialAndData(material, blockData));
             }
@@ -59,7 +59,7 @@ public class Schematic extends AbstractSchematic implements LoadableSchematic {
         for (Object tileEntity : tileEntityData)
         {
             try {
-                BlockVector position = CompatibilityUtils.getBlockVector(tileEntity, "Pos");
+                BlockVector position = CompatibilityLib.getCompatibilityUtils().getBlockVector(tileEntity, "Pos");
                 if (position == null) continue;
                 tileEntities.put(position, tileEntity);
             } catch (Exception ex) {

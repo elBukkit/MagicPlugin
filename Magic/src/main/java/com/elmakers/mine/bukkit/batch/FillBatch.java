@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.BoundingBox;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class FillBatch extends BrushBatch {
     private final MaterialBrush brush;
@@ -85,7 +85,7 @@ public class FillBatch extends BrushBatch {
 
         while (workPerformed <= maxWork && ix < absx) {
             Location location = new Location(world, x + ix * dx, y + iy * dy, z + iz * dz);
-            if (!CompatibilityUtils.checkChunk(location)) {
+            if (!CompatibilityLib.getCompatibilityUtils().checkChunk(location)) {
                 return workPerformed + 20;
             }
             Block block = location.getBlock();

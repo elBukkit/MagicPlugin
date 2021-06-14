@@ -58,10 +58,10 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.google.common.base.Preconditions;
 
 public class CastContext extends WandContext implements com.elmakers.mine.bukkit.api.action.CastContext, Replacer {
@@ -1221,7 +1221,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             // Hacky double-teleport to work-around vanilla suffocation checks
             boolean isWorldChange = !targetLocation.getWorld().equals(entity.getWorld());
             if (teleportVehicle) {
-                CompatibilityUtils.teleportWithVehicle(entity, targetLocation);
+                CompatibilityLib.getCompatibilityUtils().teleportWithVehicle(entity, targetLocation);
             } else {
                 entity.teleport(targetLocation);
             }
@@ -1492,7 +1492,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             }
             case "target_health_max": {
                 LivingEntity living = getTargetLivingEntity();
-                return living == null ? null : CompatibilityUtils.getMaxHealth(living);
+                return living == null ? null : CompatibilityLib.getCompatibilityUtils().getMaxHealth(living);
             }
             case "target_air": {
                 LivingEntity living = getTargetLivingEntity();

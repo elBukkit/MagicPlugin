@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 @Deprecated
 public class DisintegrateSpell extends BlockSpell
@@ -42,12 +42,12 @@ public class DisintegrateSpell extends BlockSpell
                 if (targetEntity instanceof Player)
                 {
                     Player player = (Player)targetEntity;
-                    CompatibilityUtils.magicDamage(player, mage.getDamageMultiplier() * playerDamage, mage.getEntity());
+                    CompatibilityLib.getCompatibilityUtils().magicDamage(player, mage.getDamageMultiplier() * playerDamage, mage.getEntity());
                 }
                 else  if (targetEntity instanceof LivingEntity)
                 {
                     LivingEntity li = (LivingEntity)targetEntity;
-                    CompatibilityUtils.magicDamage(li, mage.getDamageMultiplier() * entityDamage, mage.getEntity());
+                    CompatibilityLib.getCompatibilityUtils().magicDamage(li, mage.getDamageMultiplier() * entityDamage, mage.getEntity());
                 }
                 else
                 {

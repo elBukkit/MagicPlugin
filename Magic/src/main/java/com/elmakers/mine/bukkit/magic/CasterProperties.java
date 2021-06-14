@@ -33,8 +33,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.ColorHD;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandLevel;
@@ -719,14 +719,14 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (brushInventoryRaw instanceof Map) {
                 brushInventory = (Map<String, ? extends Object>)brushInventoryRaw;
             } else if (brushInventoryRaw instanceof ConfigurationSection) {
-                brushInventory = CompatibilityUtils.getMap((ConfigurationSection)brushInventoryRaw);
+                brushInventory = CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)brushInventoryRaw);
             }
             if (brushInventory != null) {
                 for (Map.Entry<String, ? extends Object> brushEntry : brushInventory.entrySet()) {
                     Object slot = brushEntry.getValue();
                     if (slot != null && slot instanceof Integer) {
                         String materialKey = brushEntry.getKey();
-                        materialKey = CompatibilityUtils.migrateMaterial(materialKey);
+                        materialKey = CompatibilityLib.getCompatibilityUtils().migrateMaterial(materialKey);
                         newBrushInventory.put(materialKey, (Integer)slot);
                     }
                 }

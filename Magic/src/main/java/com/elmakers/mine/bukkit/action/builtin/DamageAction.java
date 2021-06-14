@@ -21,7 +21,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class DamageAction extends BaseSpellAction
 {
@@ -114,7 +114,7 @@ public class DamageAction extends BaseSpellAction
                     li.setNoDamageTicks(noDamageTicks);
                 }
                 if (percentage != null) {
-                    damage = percentage * CompatibilityUtils.getMaxHealth(targetEntity);
+                    damage = percentage * CompatibilityLib.getCompatibilityUtils().getMaxHealth(targetEntity);
                 } else if (targetEntity instanceof Player) {
                     damage = playerDamage;
                 } else {
@@ -165,16 +165,16 @@ public class DamageAction extends BaseSpellAction
                     // Have to do magic damage to preserve the source, it seems like this is only important for player
                     // mages since other plugins may be tracking kills.
                     if (mage.isPlayer() && controller.getDamageTypes().contains(damageType)) {
-                        CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
+                        CompatibilityLib.getCompatibilityUtils().magicDamage(targetEntity, damage, mage.getEntity());
                     } else {
-                        CompatibilityUtils.damage(targetEntity, damage, mage.getEntity(), damageType);
+                        CompatibilityLib.getCompatibilityUtils().damage(targetEntity, damage, mage.getEntity(), damageType);
                     }
                 } else if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
                     mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) x " +  ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
-                    CompatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
+                    CompatibilityLib.getCompatibilityUtils().magicDamage(targetEntity, damage, mage.getEntity());
                 } else {
                     mage.sendDebugMessage(ChatColor.RED + "Damaging x " + ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
-                    CompatibilityUtils.damage(targetEntity, damage, mage.getEntity());
+                    CompatibilityLib.getCompatibilityUtils().damage(targetEntity, damage, mage.getEntity());
                 }
                 if (damageType != null && !damageType.isEmpty()) {
                     String typeDescription = context.getController().getMessages().get("damage_types." + damageType, damageType);

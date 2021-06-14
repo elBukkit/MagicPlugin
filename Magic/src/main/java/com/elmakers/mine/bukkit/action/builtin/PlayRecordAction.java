@@ -10,7 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.google.common.collect.Iterables;
 
 public class PlayRecordAction extends BaseSpellAction
@@ -39,7 +39,7 @@ public class PlayRecordAction extends BaseSpellAction
         Material record = Iterables.get(records, random.nextInt(records.size()));
 
         Location location = context.getTargetLocation();
-        CompatibilityUtils.playRecord(location, record);
+        CompatibilityLib.getCompatibilityUtils().playRecord(location, record);
 
         return SpellResult.CAST;
     }

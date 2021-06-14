@@ -19,7 +19,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class PowerBlockAction extends BaseSpellAction {
@@ -48,9 +48,9 @@ public class PowerBlockAction extends BaseSpellAction {
         org.bukkit.material.MaterialData data = blockState.getData();
         MageController controller = context.getController();
         boolean updateBlockState = false;
-        if (CompatibilityUtils.isPowerable(block)) {
+        if (CompatibilityLib.getCompatibilityUtils().isPowerable(block)) {
             context.registerForUndo(block);
-            CompatibilityUtils.setPowered(block, !CompatibilityUtils.isPowered(block));
+            CompatibilityLib.getCompatibilityUtils().setPowered(block, !CompatibilityLib.getCompatibilityUtils().isPowered(block));
         } else if (data instanceof RedstoneWire) {
             RedstoneWire wireData = (RedstoneWire)data;
             context.registerForUndo(block);

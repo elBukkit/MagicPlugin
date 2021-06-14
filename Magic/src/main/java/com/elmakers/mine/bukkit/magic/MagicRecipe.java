@@ -20,8 +20,8 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 /**
@@ -115,7 +115,7 @@ public class MagicRecipe {
                 Recipe recipe = recipes.get(0);
                 if (recipe instanceof ShapedRecipe) {
                     ShapedRecipe copyRecipe = (ShapedRecipe)recipe;
-                    this.recipe = CompatibilityUtils.createShapedRecipe(controller.getPlugin(), key, item);
+                    this.recipe = CompatibilityLib.getCompatibilityUtils().createShapedRecipe(controller.getPlugin(), key, item);
                     this.recipe.shape(copyRecipe.getShape());
                     for (Map.Entry<Character, ItemStack> entry : copyRecipe.getIngredientMap().entrySet()) {
                         char ingredientKey = entry.getKey();
@@ -125,7 +125,7 @@ public class MagicRecipe {
                         }
                         ItemData ingredient = controller.createItemData(input);
                         ingredients.put(ingredientKey, ingredient);
-                        if (!CompatibilityUtils.setRecipeIngredient(this.recipe, ingredientKey, ingredient.getItemStack(1), ignoreDamage)) {
+                        if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(this.recipe, ingredientKey, ingredient.getItemStack(1), ignoreDamage)) {
                             outputType = null;
                             controller.getLogger().warning("Unable to set recipe ingredient from vanilla ingredient: " + input);
                             return false;
@@ -139,7 +139,7 @@ public class MagicRecipe {
             }
         } else {
             outputType = item.getType();
-            ShapedRecipe shaped = CompatibilityUtils.createShapedRecipe(controller.getPlugin(), key, item);
+            ShapedRecipe shaped = CompatibilityLib.getCompatibilityUtils().createShapedRecipe(controller.getPlugin(), key, item);
             List<String> rows = new ArrayList<>();
             for (int i = 1; i <= 3; i++) {
                 String recipeRow = configuration.getString("row_" + i, "");
@@ -162,7 +162,7 @@ public class MagicRecipe {
                         controller.getLogger().warning("Invalid recipe ingredient " + materialKey);
                         return false;
                     }
-                    if (!CompatibilityUtils.setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1), ignoreDamage)) {
+                    if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1), ignoreDamage)) {
                         outputType = null;
                         controller.getLogger().warning("Unable to set recipe ingredient " + materialKey);
                         return false;
@@ -174,26 +174,26 @@ public class MagicRecipe {
             }
         }
         if (recipe != null && group != null && !group.isEmpty()) {
-            CompatibilityUtils.setRecipeGroup(recipe, group);
+            CompatibilityLib.getCompatibilityUtils().setRecipeGroup(recipe, group);
         }
         return outputType != null;
     }
 
     public void unregister(Plugin plugin) {
         // Remove this recipe
-        boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
+        boolean canRemoveRecipes = CompatibilityLib.getCompatibilityUtils().canRemoveRecipes();
         if (recipe != null && !FIRST_REGISTER && canRemoveRecipes) {
-            CompatibilityUtils.removeRecipe(plugin, key);
+            CompatibilityLib.getCompatibilityUtils().removeRecipe(plugin, key);
         }
     }
 
     public void preregister(Plugin plugin) {
-        boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
+        boolean canRemoveRecipes = CompatibilityLib.getCompatibilityUtils().canRemoveRecipes();
         if (disableDefaultRecipe && canRemoveRecipes) {
             int disabled = 0;
             List<Recipe> existing = plugin.getServer().getRecipesFor(new ItemStack(outputType));
             for (Recipe recipe : existing) {
-                CompatibilityUtils.removeRecipe(plugin, recipe);
+                CompatibilityLib.getCompatibilityUtils().removeRecipe(plugin, recipe);
                 disabled++;
             }
             if (disabled > 0) {
@@ -204,7 +204,7 @@ public class MagicRecipe {
 
     public void register(MagicController controller, Plugin plugin)
     {
-        boolean canRemoveRecipes = CompatibilityUtils.canRemoveRecipes();
+        boolean canRemoveRecipes = CompatibilityLib.getCompatibilityUtils().canRemoveRecipes();
         // Add our custom recipe if crafting is enabled
         if (recipe != null)
         {
@@ -266,7 +266,7 @@ public class MagicRecipe {
     }
 
     public boolean isSameRecipe(Recipe matchRecipe) {
-        return CompatibilityUtils.isSameKey(controller.getPlugin(), getKey(), matchRecipe);
+        return CompatibilityLib.getCompatibilityUtils().isSameKey(controller.getPlugin(), getKey(), matchRecipe);
     }
 
     @SuppressWarnings("deprecation")
@@ -277,7 +277,7 @@ public class MagicRecipe {
         // so we can leave the ingredient matching up to vanilla code.
         // The complicated matrix matching code here is flawed, for instance it does not
         // account for vanilla recipes being mirrorable.
-        if (!CompatibilityUtils.isLegacyRecipes()) {
+        if (!CompatibilityLib.getCompatibilityUtils().isLegacyRecipes()) {
             return isSameRecipe(matchRecipe) ? MatchType.MATCH : MatchType.NONE;
         }
         int height = (int)Math.sqrt(matrix.length);
@@ -363,7 +363,7 @@ public class MagicRecipe {
         if (discover == null) return;
         for (String key : discover) {
             if (controller.hasPermission(entity, "Magic.craft." + key)) {
-                CompatibilityUtils.discoverRecipe(entity, controller.getPlugin(), key);
+                CompatibilityLib.getCompatibilityUtils().discoverRecipe(entity, controller.getPlugin(), key);
             }
         }
     }

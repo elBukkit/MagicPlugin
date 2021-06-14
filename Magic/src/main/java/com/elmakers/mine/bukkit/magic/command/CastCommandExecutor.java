@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class CastCommandExecutor extends MagicTabExecutor {
@@ -45,7 +45,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             String playerName = args[0];
-            List<Entity> targets = CompatibilityUtils.selectEntities(sender, playerName);
+            List<Entity> targets = CompatibilityLib.getCompatibilityUtils().selectEntities(sender, playerName);
             List<Mage> mages = new ArrayList<>();
             if (targets != null) {
                 MageController controller = api.getController();
@@ -61,7 +61,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                     if (idPieces.length == 4 || idPieces.length == 2) {
                         try {
                             String entityId = idPieces[idPieces.length - 1];
-                            Entity entity = CompatibilityUtils.getEntity(UUID.fromString(entityId));
+                            Entity entity = CompatibilityLib.getCompatibilityUtils().getEntity(UUID.fromString(entityId));
                             if (entity == null) {
                                 if (sender != null) sender.sendMessage("Entity not found with id " + entityId);
                                 return false;
@@ -93,7 +93,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                 Player player = DeprecatedUtils.getPlayer(playerName);
                 if (mage == null && player == null && playerName.contains("-")) {
                     try {
-                        Entity entity = CompatibilityUtils.getEntity(UUID.fromString(playerName));
+                        Entity entity = CompatibilityLib.getCompatibilityUtils().getEntity(UUID.fromString(playerName));
                         if (entity != null) {
                             mage = api.getController().getMage(entity);
 

@@ -29,9 +29,9 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class ModifyEntityAction extends BaseSpellAction
 {
@@ -134,7 +134,7 @@ public class ModifyEntityAction extends BaseSpellAction
             }
             motion.normalize();
             motion.multiply(speed);
-            CompatibilityUtils.setEntityMotion(entity, motion);
+            CompatibilityLib.getCompatibilityUtils().setEntityMotion(entity, motion);
         }
         if (setOwner && entity instanceof Creature) {
             EntityMetadataUtils.instance().setString(entity, MagicMetaKeys.OWNER, context.getMage().getId());

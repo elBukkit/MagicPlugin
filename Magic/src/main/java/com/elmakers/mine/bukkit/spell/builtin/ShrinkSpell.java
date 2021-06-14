@@ -21,8 +21,8 @@ import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
@@ -78,7 +78,7 @@ public class ShrinkSpell extends BlockSpell
 
             Location targetLocation = targetEntity.getLocation();
             if (li instanceof Player) {
-                CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
+                CompatibilityLib.getCompatibilityUtils().magicDamage(li, damage, mage.getEntity());
                 if (li.isDead() && !alreadyDead) {
                     dropHead(controller, targetEntity, itemName);
                 }
@@ -110,7 +110,7 @@ public class ShrinkSpell extends BlockSpell
                 Slime slime = (Slime)li;
                 slime.setSize(slime.getSize() - 1);
             } else {
-                CompatibilityUtils.magicDamage(li, damage, mage.getEntity());
+                CompatibilityLib.getCompatibilityUtils().magicDamage(li, damage, mage.getEntity());
                 if ((li.isDead() || li.getHealth() == 0) && !alreadyDead) {
                     dropHead(controller, targetEntity, itemName);
                 }

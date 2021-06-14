@@ -24,8 +24,8 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class BookAction extends BaseSpellAction {
@@ -189,7 +189,7 @@ public class BookAction extends BaseSpellAction {
         if (!checkBook(book)) {
             return SpellResult.FAIL;
         }
-        boolean success = CompatibilityUtils.openBook((Player)target, book);
+        boolean success = CompatibilityLib.getCompatibilityUtils().openBook((Player)target, book);
 
         return success ? SpellResult.CAST : SpellResult.FAIL;
     }

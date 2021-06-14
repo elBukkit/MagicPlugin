@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class CheckHealthAction extends CheckAction {
     private Double minHealth;
@@ -39,9 +39,9 @@ public class CheckHealthAction extends CheckAction {
         if (targetEntity == null || !(targetEntity instanceof Damageable)) return false;
         Damageable damageable = (Damageable)targetEntity;
         double health = damageable.getHealth();
-        if (fullHealth && health < CompatibilityUtils.getMaxHealth(damageable)) return false;
+        if (fullHealth && health < CompatibilityLib.getCompatibilityUtils().getMaxHealth(damageable)) return false;
         if (percentages) {
-            health = 100.0 * health / CompatibilityUtils.getMaxHealth(damageable);
+            health = 100.0 * health / CompatibilityLib.getCompatibilityUtils().getMaxHealth(damageable);
         }
         if (minHealth != null && health < minHealth) return false;
         if (maxHealth != null && health > maxHealth) return false;

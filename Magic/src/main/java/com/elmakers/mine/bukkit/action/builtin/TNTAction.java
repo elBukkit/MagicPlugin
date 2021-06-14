@@ -19,9 +19,9 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class TNTAction extends BaseProjectileAction
 {
@@ -73,7 +73,7 @@ public class TNTAction extends BaseProjectileAction
                 return SpellResult.FAIL;
             }
             if (living != null) {
-                CompatibilityUtils.setTNTSource(grenade, living);
+                CompatibilityLib.getCompatibilityUtils().setTNTSource(grenade, living);
             }
             if (velocity > 0) {
                 Vector aim = context.getDirection();

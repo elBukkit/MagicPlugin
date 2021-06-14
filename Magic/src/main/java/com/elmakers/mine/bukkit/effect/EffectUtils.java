@@ -13,7 +13,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class EffectUtils {
     public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power) {
@@ -31,7 +31,7 @@ public class EffectUtils {
 
     @Nullable
     public static Entity spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown, boolean silent) {
-        return CompatibilityUtils.spawnFireworkEffect(DefaultMaterials.getFirework(), server, location, effect, power, direction, expectedLifespan, ticksFlown, silent);
+        return CompatibilityLib.getCompatibilityUtils().spawnFireworkEffect(DefaultMaterials.getFirework(), server, location, effect, power, direction, expectedLifespan, ticksFlown, silent);
     }
 
     public static FireworkEffect getFireworkEffect(CastContext context, Color color1, Color color2, org.bukkit.FireworkEffect.Type fireworkType, Boolean flicker, Boolean trail) {

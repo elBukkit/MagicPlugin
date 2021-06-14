@@ -40,11 +40,11 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.tasks.PlaySpellEffectsTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class TargetingSpell extends BaseSpell {
@@ -744,7 +744,7 @@ public class TargetingSpell extends BaseSpell {
         String uuid = parameters.getString("entity", "");
         String playerName = parameters.getString("player", "");
         if (!uuid.isEmpty()) {
-            Entity entity = CompatibilityUtils.getEntity(UUID.fromString(uuid));
+            Entity entity = CompatibilityLib.getCompatibilityUtils().getEntity(UUID.fromString(uuid));
             if (entity != null) {
                 targetLocation = entity.getLocation();
                 targetEntity = entity;
@@ -838,7 +838,7 @@ public class TargetingSpell extends BaseSpell {
         Target target = targeting.getTarget();
         if (target != null && target.isValid()) {
             Block block = target.getBlock();
-            if (!CompatibilityUtils.isChunkLoaded(block)) {
+            if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) {
                 return super.getEffectMaterial();
             }
             MaterialAndData targetMaterial = new MaterialAndData(block);

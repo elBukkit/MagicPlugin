@@ -24,10 +24,10 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 import de.slikey.effectlib.util.VectorUtils;
@@ -298,13 +298,13 @@ public class RideEntityAction extends BaseSpellAction
                 if (crashEntityDamage > 0 && entity instanceof Damageable) {
                     Damageable damageable = (Damageable)entity;
                     double crashDamage = maxSpeed > 0 ? crashEntityDamage * speed / maxSpeed : crashEntityDamage;
-                    CompatibilityUtils.damage(damageable, crashDamage, mounted);
+                    CompatibilityLib.getCompatibilityUtils().damage(damageable, crashDamage, mounted);
                 }
                 SafetyUtils.setVelocity(entity, velocity);
                 speed = Math.max(0, speed - crashBraking);
                 if (mount instanceof Damageable && crashEntityVehicleDamage > 0) {
                     double crashDamage = maxSpeed > 0 ? crashEntityVehicleDamage * speed / maxSpeed : crashEntityVehicleDamage;
-                    CompatibilityUtils.damage((Damageable)mount, crashDamage, mounted);
+                    CompatibilityLib.getCompatibilityUtils().damage((Damageable)mount, crashDamage, mounted);
                 }
                 context.playEffects("crash_entity", 1.0f, null, mounted, null, entity);
             }
@@ -399,7 +399,7 @@ public class RideEntityAction extends BaseSpellAction
         }
 
         targetLocation.setDirection(direction);
-        CompatibilityUtils.setYawPitch(mount, targetLocation.getYaw() + (float)yawOffset, targetLocation.getPitch());
+        CompatibilityLib.getCompatibilityUtils().setYawPitch(mount, targetLocation.getYaw() + (float)yawOffset, targetLocation.getPitch());
     }
 
     protected void applyThrust(CastContext context) {
@@ -407,7 +407,7 @@ public class RideEntityAction extends BaseSpellAction
         if (duration > 0) {
             long flightTime = System.currentTimeMillis() - liftoffTime;
             if (!warningEffectsApplied && warningEffects != null && mountedEntity instanceof LivingEntity && durationWarning > 0 && flightTime > duration - durationWarning) {
-                CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, warningEffects);
+                CompatibilityLib.getCompatibilityUtils().applyPotionEffects((LivingEntity)mountedEntity, warningEffects);
                 warningEffectsApplied = true;
             }
 
@@ -576,7 +576,7 @@ public class RideEntityAction extends BaseSpellAction
             EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_TARGET, true);
         }
         if (ridingEffects != null && entity instanceof LivingEntity) {
-            CompatibilityUtils.applyPotionEffects((LivingEntity)entity, ridingEffects);
+            CompatibilityLib.getCompatibilityUtils().applyPotionEffects((LivingEntity)entity, ridingEffects);
         }
 
         return SpellResult.PENDING;
@@ -615,13 +615,13 @@ public class RideEntityAction extends BaseSpellAction
         if (crashDamage > 0) {
             double damage = maxSpeed > 0 ? crashDamage * speed / maxSpeed : crashDamage;
             if (mountedEntity.isValid() && mountedEntity instanceof Damageable) {
-                CompatibilityUtils.damage((Damageable)mountedEntity, damage, mount);
+                CompatibilityLib.getCompatibilityUtils().damage((Damageable)mountedEntity, damage, mount);
             }
         }
         if (crashVehicleDamage > 0) {
             double damage = maxSpeed > 0 ? crashVehicleDamage * speed / maxSpeed : crashVehicleDamage;
             if (mount != null && mount.isValid() && mount instanceof Damageable) {
-                CompatibilityUtils.damage((Damageable)mount, damage, mountedEntity);
+                CompatibilityLib.getCompatibilityUtils().damage((Damageable)mount, damage, mountedEntity);
             }
         }
         boolean dismount = (speed >= crashDismountSpeed);
@@ -636,7 +636,7 @@ public class RideEntityAction extends BaseSpellAction
                 SafetyUtils.setVelocity(mountedEntity, velocity);
             }
             if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
-                CompatibilityUtils.applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
+                CompatibilityLib.getCompatibilityUtils().applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
             }
             warningEffectsApplied = false;
         }

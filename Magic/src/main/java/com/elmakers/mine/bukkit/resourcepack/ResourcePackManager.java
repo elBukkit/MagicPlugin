@@ -21,8 +21,8 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class ResourcePackManager {
     private static final String RP_FILE = "resourcepack";
@@ -198,7 +198,7 @@ public class ResourcePackManager {
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
             @Override
             public void run() {
-                CompatibilityUtils.setResourcePack(player, url, hash);
+                CompatibilityLib.getCompatibilityUtils().setResourcePack(player, url, hash);
             }
         }, resourcePackDelay * 20 / 1000);
 
@@ -276,7 +276,7 @@ public class ResourcePackManager {
             return false;
         }
 
-        String serverResourcePack = CompatibilityUtils.getResourcePack(server);
+        String serverResourcePack = CompatibilityLib.getCompatibilityUtils().getResourcePack(server);
         if (serverResourcePack != null) serverResourcePack = serverResourcePack.trim();
 
         if (serverResourcePack != null && !serverResourcePack.isEmpty()) {

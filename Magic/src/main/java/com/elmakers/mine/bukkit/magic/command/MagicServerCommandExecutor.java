@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class MagicServerCommandExecutor extends MagicTabExecutor {
@@ -36,7 +36,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
             targets = new ArrayList<>();
             targets.add(player);
         } else {
-            targets = CompatibilityUtils.selectEntities(sender, args[0]);
+            targets = CompatibilityLib.getCompatibilityUtils().selectEntities(sender, args[0]);
             if (targets == null) {
                 Player findPlayer = DeprecatedUtils.getPlayer(args[0]);
                 if (findPlayer != null) {

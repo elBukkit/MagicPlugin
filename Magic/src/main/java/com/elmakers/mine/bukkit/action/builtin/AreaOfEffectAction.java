@@ -17,8 +17,8 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class AreaOfEffectAction extends CompoundEntityAction
 {
@@ -62,7 +62,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
                     + ChatColor.GRAY + " self? " + ChatColor.DARK_GRAY + context.getTargetsCaster(), 14
             );
         }
-        List<Entity> candidates = CompatibilityUtils.getNearbyEntities(sourceLocation, radius, yRadius, radius);
+        List<Entity> candidates = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(sourceLocation, radius, yRadius, radius);
         Entity targetEntity = context.getTargetEntity();
         if (targetCount > 0)
         {

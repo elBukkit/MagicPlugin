@@ -21,8 +21,8 @@ import org.bukkit.util.BlockVector;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 /**
@@ -195,7 +195,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         if (location == null) {
             return true;
         }
-        if (!CompatibilityUtils.checkChunk(location)) {
+        if (!CompatibilityLib.getCompatibilityUtils().checkChunk(location)) {
             return false;
         }
         Block block = getBlock();

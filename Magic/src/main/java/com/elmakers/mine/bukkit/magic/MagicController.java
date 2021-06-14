@@ -246,7 +246,6 @@ import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
@@ -1327,7 +1326,7 @@ public class MagicController implements MageController {
         }
 
         // Look for new schematic format first
-        if (CompatibilityUtils.hasBlockDataSupport()) {
+        if (CompatibilityLib.getCompatibilityUtils().hasBlockDataSupport()) {
             final InputStream inputSchematic = findSchematic(schematicName, "schem");
             if (inputSchematic != null) {
                 com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
@@ -3774,7 +3773,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isLocked(Block block) {
-        return protectLocked && containerMaterials.testBlock(block) && CompatibilityUtils.isLocked(block);
+        return protectLocked && containerMaterials.testBlock(block) && CompatibilityLib.getCompatibilityUtils().isLocked(block);
     }
 
     protected boolean addLostWandMarker(LostWand lostWand) {
@@ -5250,29 +5249,29 @@ public class MagicController implements MageController {
                     }
                     break;
                     case "recipe": {
-                        itemStack = CompatibilityUtils.getKnowledgeBook();
+                        itemStack = CompatibilityLib.getCompatibilityUtils().getKnowledgeBook();
                         if (itemStack != null) {
                             if (itemData.equals("*")) {
                                 Collection<String> keys = crafting.getRecipeKeys();
                                 for (String key : keys) {
-                                    CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                                    CompatibilityLib.getCompatibilityUtils().addRecipeToBook(itemStack, plugin, key);
                                 }
                             } else {
                                 String[] recipeKeys = StringUtils.split(itemData, ",");
                                 for (String recipe : recipeKeys) {
-                                    CompatibilityUtils.addRecipeToBook(itemStack, plugin, recipe);
+                                    CompatibilityLib.getCompatibilityUtils().addRecipeToBook(itemStack, plugin, recipe);
                                 }
                             }
                         }
                     }
                     break;
                     case "recipes": {
-                        itemStack = CompatibilityUtils.getKnowledgeBook();
+                        itemStack = CompatibilityLib.getCompatibilityUtils().getKnowledgeBook();
                         if (itemStack != null) {
                             if (itemData.equals("*")) {
                                 Collection<String> keys = crafting.getRecipeKeys();
                                 for (String key : keys) {
-                                    CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                                    CompatibilityLib.getCompatibilityUtils().addRecipeToBook(itemStack, plugin, key);
                                 }
                             } else {
                                 String[] recipeKeys = StringUtils.split(itemData, ",");
@@ -5280,7 +5279,7 @@ public class MagicController implements MageController {
                                     MageClassTemplate mageClass = getMageClassTemplate(recipe);
                                     if (mageClass != null) {
                                         for (String key : mageClass.getRecipies()) {
-                                            CompatibilityUtils.addRecipeToBook(itemStack, plugin, key);
+                                            CompatibilityLib.getCompatibilityUtils().addRecipeToBook(itemStack, plugin, key);
                                         }
                                     }
                                 }
@@ -5381,9 +5380,9 @@ public class MagicController implements MageController {
                     return itemStack;
                 }
                 MaterialAndData item = new MaterialAndData(magicItemKey);
-                if (item.isValid() && CompatibilityUtils.isLegacy(item.getMaterial())) {
+                if (item.isValid() && CompatibilityLib.getCompatibilityUtils().isLegacy(item.getMaterial())) {
                     short convertData = (item.getData() == null ? 0 : item.getData());
-                    item = new MaterialAndData(CompatibilityUtils.migrateMaterial(item.getMaterial(), (byte) convertData));
+                    item = new MaterialAndData(CompatibilityLib.getCompatibilityUtils().migrateMaterial(item.getMaterial(), (byte) convertData));
                 }
                 if (item.isValid()) {
                     return item.getItemStack(amount, callback);
@@ -5692,7 +5691,7 @@ public class MagicController implements MageController {
     @Override
     public void addFlightExemption(Player player, int duration) {
         ncpManager.addFlightExemption(player, duration);
-        CompatibilityUtils.addFlightExemption(player, duration * 20 / 1000);
+        CompatibilityLib.getCompatibilityUtils().addFlightExemption(player, duration * 20 / 1000);
     }
 
     @Override
@@ -6751,7 +6750,7 @@ public class MagicController implements MageController {
 
     @Override
     public double getBlockDurability(@Nonnull Block block) {
-        double durability = CompatibilityUtils.getDurability(block.getType());
+        double durability = CompatibilityLib.getCompatibilityUtils().getDurability(block.getType());
         if (citadelManager != null) {
             Integer reinforcement = citadelManager.getDurability(block.getLocation());
             if (reinforcement != null) {
@@ -6968,7 +6967,7 @@ public class MagicController implements MageController {
         Integer locked = lockedChunks.get(chunk);
         if (locked == null) {
             lockedChunks.put(chunk, 1);
-            CompatibilityUtils.lockChunk(chunk, plugin);
+            CompatibilityLib.getCompatibilityUtils().lockChunk(chunk, plugin);
         } else {
             lockedChunks.put(chunk, locked + 1);
         }
@@ -6979,7 +6978,7 @@ public class MagicController implements MageController {
         Integer locked = lockedChunks.get(chunk);
         if (locked == null || locked <= 1) {
             lockedChunks.remove(chunk);
-            CompatibilityUtils.unlockChunk(chunk, plugin);
+            CompatibilityLib.getCompatibilityUtils().unlockChunk(chunk, plugin);
         } else {
             lockedChunks.put(chunk, locked - 1);
         }
@@ -7077,7 +7076,7 @@ public class MagicController implements MageController {
     @Override
     public int getMaxHeight(World world) {
         MagicWorld magicWorld = getMagicWorld(world.getName());
-        int maxHeight = CompatibilityUtils.getMaxHeight(world);
+        int maxHeight = CompatibilityLib.getCompatibilityUtils().getMaxHeight(world);
         if (magicWorld != null) {
             maxHeight = magicWorld.getMaxHeight(maxHeight);
         }
@@ -7087,7 +7086,7 @@ public class MagicController implements MageController {
     @Override
     public int getMinHeight(World world) {
         MagicWorld magicWorld = getMagicWorld(world.getName());
-        int minHeight = CompatibilityUtils.getMinHeight(world);
+        int minHeight = CompatibilityLib.getCompatibilityUtils().getMinHeight(world);
         if (magicWorld != null) {
             minHeight = magicWorld.getMinHeight(minHeight);
         }
@@ -7584,7 +7583,7 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
         boolean effectLibStackTraces = properties.getBoolean("debug_effects_stack_traces", false);
         com.elmakers.mine.bukkit.effect.EffectPlayer.showStackTraces(effectLibStackTraces);
-        CompatibilityUtils.USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityUtils.USE_MAGIC_DAMAGE);
+        CompatibilityLib.getCompatibilityUtils().USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityLib.getCompatibilityUtils().USE_MAGIC_DAMAGE);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
         showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
@@ -7664,7 +7663,7 @@ public class MagicController implements MageController {
             HitboxUtils.configureHeadSizes(properties.getConfigurationSection("head_sizes"));
         }
         if (properties.contains("max_height")) {
-            CompatibilityUtils.configureMaxHeights(properties.getConfigurationSection("max_height"));
+            CompatibilityLib.getCompatibilityUtils().configureMaxHeights(properties.getConfigurationSection("max_height"));
         }
 
         // These were changed from set values to multipliers, we're going to translate for backwards compatibility.

@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 /**
  * TODO: Abstract a lot of this into a common class for ConstructBatch
@@ -198,7 +198,7 @@ public class ShapeBatch extends BrushBatch {
 
         // Make sure the block is loaded.
         Location location = new Location(center.getWorld(), x, y, z);
-        if (!CompatibilityUtils.checkChunk(location)) {
+        if (!CompatibilityLib.getCompatibilityUtils().checkChunk(location)) {
             return false;
         }
         Block block = location.getBlock();
@@ -223,7 +223,7 @@ public class ShapeBatch extends BrushBatch {
         Location loc = center.clone();
         Vector direction = block.getLocation().toVector().subtract(center.toVector()).normalize();
         loc.setDirection(direction);
-        Minecart minecart = CompatibilityUtils.spawnCustomMinecart(loc, brush.getMaterial(), brush.getData(), radius * 16);
+        Minecart minecart = CompatibilityLib.getCompatibilityUtils().spawnCustomMinecart(loc, brush.getMaterial(), brush.getData(), radius * 16);
         registerForUndo(minecart);
         return true;
     }

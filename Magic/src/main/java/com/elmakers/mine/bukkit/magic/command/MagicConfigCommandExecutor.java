@@ -47,7 +47,6 @@ import com.elmakers.mine.bukkit.magic.command.config.NewSessionRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.Session;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -1292,11 +1291,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             if (!(defaultValue instanceof ConfigurationSection) && !(defaultValue instanceof Map)) return true;
 
             Map<String, Object> configMap = configValue instanceof ConfigurationSection
-                    ? CompatibilityUtils.getMap((ConfigurationSection)configValue)
+                    ? CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)configValue)
                     : (Map<String, Object>)configValue;
 
             Map<String, Object> defaultMap = defaultValue instanceof ConfigurationSection
-                    ? CompatibilityUtils.getMap((ConfigurationSection)defaultValue)
+                    ? CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)defaultValue)
                     : (Map<String, Object>)defaultValue;
 
             return !configMap.equals(defaultMap);

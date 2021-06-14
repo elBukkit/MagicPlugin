@@ -8,7 +8,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 
 public class LegacySchematic extends AbstractSchematic implements LoadableSchematic {
@@ -28,12 +28,12 @@ public class LegacySchematic extends AbstractSchematic implements LoadableSchema
                 for (int x = 0; x < width; x++) {
                     int index = x + (y * length + z) * width;
 
-                    Material material = CompatibilityUtils.getMaterial(blockTypes[index], data[index]);
+                    Material material = CompatibilityLib.getCompatibilityUtils().getMaterial(blockTypes[index], data[index]);
                     if (material != null)
                     {
                         MaterialAndData block = null;
                         // For 1.13 we're going to use BlockData here.
-                        String blockData = CompatibilityUtils.getBlockData(material, data[index]);
+                        String blockData = CompatibilityLib.getCompatibilityUtils().getBlockData(material, data[index]);
                         if (blockData != null) {
                             block = new MaterialAndData(material, blockData);
                         } else {

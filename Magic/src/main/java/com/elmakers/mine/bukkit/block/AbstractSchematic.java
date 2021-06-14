@@ -18,7 +18,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
@@ -97,7 +97,7 @@ public abstract class AbstractSchematic implements Schematic {
             if (type == null || type.isEmpty()) {
                 type =  NBTUtils.getMetaString(entity, "Id");
             }
-            Vector position = CompatibilityUtils.getPosition(entity, "Pos");
+            Vector position = CompatibilityLib.getCompatibilityUtils().getPosition(entity, "Pos");
             if (position == null) continue;
             position = position.subtract(origin).subtract(center);
 

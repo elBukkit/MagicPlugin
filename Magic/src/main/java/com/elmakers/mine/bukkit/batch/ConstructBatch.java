@@ -33,8 +33,8 @@ import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class ConstructBatch extends BrushBatch {
@@ -179,7 +179,7 @@ public class ConstructBatch extends BrushBatch {
                 finish();
             } else while (!deferred.isEmpty() && workPerformed < workAllowed && !finished) {
                 com.elmakers.mine.bukkit.api.block.BlockData delayed = deferred.pop();
-                if (checkChunks && !CompatibilityUtils.checkChunk(delayed.getWorldLocation())) {
+                if (checkChunks && !CompatibilityLib.getCompatibilityUtils().checkChunk(delayed.getWorldLocation())) {
                     return workPerformed + 20;
                 }
                 Block block = delayed.getBlock();
@@ -189,7 +189,7 @@ public class ConstructBatch extends BrushBatch {
                 }
 
                 workPerformed += 5;
-                CompatibilityUtils.applyPhysics(block);
+                CompatibilityLib.getCompatibilityUtils().applyPhysics(block);
             }
         } else if (finishedAttached) {
             if (delayedBlockIndex >= delayedBlocks.size()) {
@@ -201,7 +201,7 @@ public class ConstructBatch extends BrushBatch {
                 }
             } else while (delayedBlockIndex < delayedBlocks.size() && workPerformed < workAllowed && !finished) {
                 BlockData delayed = delayedBlocks.get(delayedBlockIndex);
-                if (checkChunks && !CompatibilityUtils.checkChunk(delayed.getWorldLocation())) {
+                if (checkChunks && !CompatibilityLib.getCompatibilityUtils().checkChunk(delayed.getWorldLocation())) {
                     return workPerformed + 20;
                 }
                 Block block = delayed.getBlock();
@@ -213,7 +213,7 @@ public class ConstructBatch extends BrushBatch {
         } else if (finishedNonAttached) {
             while (attachedBlockIndex < attachedBlockList.size() && workPerformed < workAllowed && !finished) {
                 BlockData attach = attachedBlockList.get(attachedBlockIndex);
-                if (checkChunks && !CompatibilityUtils.checkChunk(attach.getWorldLocation())) {
+                if (checkChunks && !CompatibilityLib.getCompatibilityUtils().checkChunk(attach.getWorldLocation())) {
                     return workPerformed + 20;
                 }
                 Block block = attach.getBlock();
@@ -421,7 +421,7 @@ public class ConstructBatch extends BrushBatch {
 
         // Make sure the block is loaded.
         Location location = new Location(center.getWorld(), x, y, z);
-        if (checkChunks && !CompatibilityUtils.checkChunk(location)) {
+        if (checkChunks && !CompatibilityLib.getCompatibilityUtils().checkChunk(location)) {
             return false;
         }
         Block block = location.getBlock();

@@ -13,7 +13,6 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class Target implements Comparable<Target>
 {
@@ -118,7 +117,7 @@ public class Target implements Comparable<Target>
         this.maxDistanceSquared = range * range;
         this.source = sourceLocation;
         this.entityRef = new WeakReference<>(entity);
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         calculateScore();
     }
 
@@ -129,7 +128,7 @@ public class Target implements Comparable<Target>
         this.useHitbox = hitbox;
         this.hitboxPadding = hitboxPadding;
         this.entityRef = new WeakReference<>(entity);
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         calculateScore();
     }
 
@@ -139,7 +138,7 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.source = sourceLocation;
         this.entityRef = new WeakReference<>(entity);
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         calculateScore();
     }
 
@@ -159,7 +158,7 @@ public class Target implements Comparable<Target>
         this.playerWeight = playerWeight;
         this.livingEntityWeight = livingEntityWeight;
 
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         calculateScore();
     }
 
@@ -171,7 +170,7 @@ public class Target implements Comparable<Target>
         this.maxAngle = angle;
         this.source = sourceLocation;
         this.entityRef = new WeakReference<>(entity);
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         calculateScore();
     }
 
@@ -182,7 +181,7 @@ public class Target implements Comparable<Target>
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
         this.entityRef = new WeakReference<>(entity);
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         calculateScore();
     }
 
@@ -194,7 +193,7 @@ public class Target implements Comparable<Target>
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
         this.entityRef = new WeakReference<>(entity);
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         calculateScore();
     }
 
@@ -207,7 +206,7 @@ public class Target implements Comparable<Target>
         this.playerWeight = playerWeight;
         this.source = sourceLocation;
         this.entityRef = new WeakReference<>(entity);
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         calculateScore();
     }
 
@@ -247,7 +246,7 @@ public class Target implements Comparable<Target>
         this.maxDistanceSquared = 0;
         this.source = sourceLocation;
         this.entityRef = new WeakReference<>(entity);
-        if (entity != null) this.location = CompatibilityUtils.getEyeLocation(entity);
+        if (entity != null) this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
     }
 
     public Target(Location sourceLocation, Entity entity, Block block)
@@ -258,7 +257,7 @@ public class Target implements Comparable<Target>
         if (block != null) {
             this.setBlock(block);
         } else if (entity != null) {
-            this.location = CompatibilityUtils.getEyeLocation(entity);
+            this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         }
     }
 

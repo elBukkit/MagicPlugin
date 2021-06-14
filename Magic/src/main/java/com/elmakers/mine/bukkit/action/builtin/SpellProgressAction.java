@@ -26,7 +26,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class SpellProgressAction extends BaseSpellAction implements GUIAction
@@ -133,7 +133,7 @@ public class SpellProgressAction extends BaseSpellAction implements GUIAction
 
         String inventoryTitle = context.getMessage("title", "Spell Upgrades");
         int invSize = ((upgrades.size() + 9) / 9) * 9;
-        Inventory displayInventory = CompatibilityUtils.createInventory(null, invSize, inventoryTitle);
+        Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         for (ItemStack item : upgrades)
         {
             displayInventory.addItem(item);
