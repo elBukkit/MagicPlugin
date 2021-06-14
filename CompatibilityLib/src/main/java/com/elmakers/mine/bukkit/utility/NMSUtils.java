@@ -1900,22 +1900,6 @@ public class NMSUtils {
         sendPacketMethod.invoke(connection, packet);
     }
 
-    public static Vector getPosition(Object entityData, String tag) {
-        if (class_NBTTagList_getDoubleMethod == null) return null;
-        try {
-            Object posList = class_NBTTagCompound_getListMethod.invoke(entityData, tag, NBT_TYPE_DOUBLE);
-            Double x = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 0);
-            Double y = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 1);
-            Double z = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 2);
-            if (x != null && y != null && z != null) {
-                return new Vector(x, y, z);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
     public static BlockVector getBlockVector(Object entityData, String tag) {
         if (class_NBTTagCompound_getIntArrayMethod == null) return null;
         try {

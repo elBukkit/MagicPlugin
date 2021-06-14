@@ -31,7 +31,6 @@ import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public class ProjectileAction  extends BaseProjectileAction
 {
@@ -110,8 +109,8 @@ public class ProjectileAction  extends BaseProjectileAction
         }
         Random random = context.getRandom();
 
-        Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
-        if (!CompatibilityUtils.isValidProjectileClass(projectileType)) {
+        Class<?> projectileType = CompatibilityUtils.getProjectileClass(projectileTypeName);
+        if (projectileType == null) {
             controller.getLogger().warning("Bad projectile class: " + projectileTypeName);
             return SpellResult.FAIL;
         }

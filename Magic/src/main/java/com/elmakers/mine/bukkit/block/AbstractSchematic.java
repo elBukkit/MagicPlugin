@@ -18,9 +18,9 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.utility.NBTUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
 public abstract class AbstractSchematic implements Schematic {
     private final MageController controller;
@@ -97,7 +97,7 @@ public abstract class AbstractSchematic implements Schematic {
             if (type == null || type.isEmpty()) {
                 type =  NBTUtils.getMetaString(entity, "Id");
             }
-            Vector position = NMSUtils.getPosition(entity, "Pos");
+            Vector position = CompatibilityUtils.getPosition(entity, "Pos");
             if (position == null) continue;
             position = position.subtract(origin).subtract(center);
 

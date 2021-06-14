@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
+import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Rotation;
@@ -968,6 +969,22 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return true;
+    }
+
+    public static Vector getPosition(Object entityData, String tag) {
+        if (class_NBTTagList_getDoubleMethod == null) return null;
+        try {
+            Object posList = class_NBTTagCompound_getListMethod.invoke(entityData, tag, NBT_TYPE_DOUBLE);
+            Double x = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 0);
+            Double y = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 1);
+            Double z = (Double)class_NBTTagList_getDoubleMethod.invoke(posList, 2);
+            if (x != null && y != null && z != null) {
+                return new Vector(x, y, z);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     static class LoadingChunk {
@@ -2952,5 +2969,22 @@ public class CompatibilityUtils extends NMSUtils {
             getLogger().log(Level.SEVERE, "Unexpected error checking block status", ex);
         }
         return false;
+    }
+
+    public static void playRecord(Location location, Material record) {
+        if (NMSUtils.isLegacy()) {
+            location.getWorld().playEffect(location, Effect.RECORD_PLAY,
+                    DeprecatedUtils.getId(record));
+        } else {
+            location.getWorld().playEffect(location, Effect.RECORD_PLAY, record);
+        }
+    }
+
+    public static Class<?> getProjectileClass(String projectileTypeName) {
+        Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
+        if (!CompatibilityUtils.isValidProjectileClass(projectileType)) {
+            return null;
+        }
+        return projectileType;
     }
 }
