@@ -46,6 +46,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.google.common.base.CaseFormat;
 
 /**
@@ -78,9 +79,6 @@ public class NMSUtils {
 
     protected static int WITHER_SKULL_TYPE = 66;
     protected static int FIREWORK_TYPE = 76;
-
-    private static Logger logger;
-    protected static Plugin plugin;
 
     protected static Class<?> class_Block;
     protected static Class<?> class_BlockBase;
@@ -437,9 +435,7 @@ public class NMSUtils {
 
     protected static boolean chatPacketHasUUID = false;
 
-    public static boolean initialize(Plugin plugin, Logger logger) {
-        NMSUtils.plugin = plugin;
-        NMSUtils.logger = logger;
+    public static boolean initialize() {
         // Find classes Bukkit hides from us. :-D
         // Much thanks to @DPOHVAR for sharing the PowerNBT code that powers the reflection approach.
         String className = Bukkit.getServer().getClass().getName();
@@ -679,18 +675,18 @@ public class NMSUtils {
             try {
                 class_Player_openBookMethod = Player.class.getMethod("openBook", ItemStack.class);
             } catch (Throwable ignore) {
-                getLogger().warning("Player.openBook method not found, BookAction can't show virtual books");
+                CompatibilityLib.getLogger().warning("Player.openBook method not found, BookAction can't show virtual books");
             }
             try {
                 class_Player_isHandRaisedMethod = Player.class.getMethod("isHandRaised");
             } catch (Throwable ignore) {
-                getLogger().warning("Player.isHandRaised method not found, block triggers will be delayed");
+                CompatibilityLib.getLogger().warning("Player.isHandRaised method not found, block triggers will be delayed");
             }
             try {
                 class_CraftMetaSkull_setProfileMethod = class_CraftMetaSkull.getDeclaredMethod("setProfile", class_GameProfile);
                 class_CraftMetaSkull_setProfileMethod.setAccessible(true);
             } catch (Throwable ex) {
-                getLogger().warning("Skull profile method not available, this is normal if you're on a legacy Minecraft version");
+                CompatibilityLib.getLogger().warning("Skull profile method not available, this is normal if you're on a legacy Minecraft version");
             }
 
             try {
@@ -699,7 +695,7 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 class_Entity_getPassengersMethod = null;
                 class_Entity_addPassengerMethod = null;
-                getLogger().warning("Entity passengers method not available, this is normal if you're on a legacy Minecraft version");
+                CompatibilityLib.getLogger().warning("Entity passengers method not available, this is normal if you're on a legacy Minecraft version");
             }
 
             try {
@@ -707,7 +703,7 @@ public class NMSUtils {
                 hasStatistics = true;
             } catch (Throwable ex) {
                 hasStatistics = false;
-                getLogger().warning("Statistics not available, jump trigger will not work");
+                CompatibilityLib.getLogger().warning("Statistics not available, jump trigger will not work");
             }
 
             try {
@@ -720,7 +716,7 @@ public class NMSUtils {
                 hasEntityTransformEvent = true;
             } catch (Throwable ex) {
                 hasEntityTransformEvent = false;
-                getLogger().warning("EntityTransformEvent not found, can't prevent mobs naturally transforming");
+                CompatibilityLib.getLogger().warning("EntityTransformEvent not found, can't prevent mobs naturally transforming");
             }
 
             try {
@@ -728,12 +724,12 @@ public class NMSUtils {
                 hasTimeSkipEvent = true;
             } catch (Throwable ex) {
                 hasTimeSkipEvent = false;
-                getLogger().warning("TimeSkipEvent not found, can't synchronize time between worlds");
+                CompatibilityLib.getLogger().warning("TimeSkipEvent not found, can't synchronize time between worlds");
             }
 
             try {
                 class_World_getChunkAtAsyncMethod = World.class.getMethod("getChunkAtAsync", Integer.TYPE, Integer.TYPE, Boolean.TYPE, Consumer.class);
-                logger.info("Async chunk loading API found");
+                CompatibilityLib.getLogger().info("Async chunk loading API found");
             } catch (Throwable ignore) {
                 class_World_getChunkAtAsyncMethod = null;
             }
@@ -742,7 +738,7 @@ public class NMSUtils {
                 class_Entity_setInvisible = class_Entity.getDeclaredMethod("setInvisible", Boolean.TYPE);
                 class_Entity_isInvisible = class_Entity.getDeclaredMethod("isInvisible");
             } catch (Throwable ignore) {
-                getLogger().warning("Entity.setInvisible method not found, can't set every entity type invisible");
+                CompatibilityLib.getLogger().warning("Entity.setInvisible method not found, can't set every entity type invisible");
                 class_Entity_setInvisible = null;
                 class_Entity_isInvisible = null;
             }
@@ -750,7 +746,7 @@ public class NMSUtils {
             try {
                 class_Entity_persistentInvisibilityField = class_Entity.getDeclaredField("persistentInvisibility");
             } catch (Throwable ignore) {
-                getLogger().warning("Entity.persistentInvisibility field not found, invisibility may not reliably restore");
+                CompatibilityLib.getLogger().warning("Entity.persistentInvisibility field not found, invisibility may not reliably restore");
                 class_Entity_persistentInvisibilityField = null;
             }
 
@@ -764,7 +760,7 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 class_Recipe_setGroupMethod = null;
                 class_RecipeChoice_ExactChoice = null;
-                getLogger().warning("Use an updated version of Spigot for better knowledge book recipes");
+                CompatibilityLib.getLogger().warning("Use an updated version of Spigot for better knowledge book recipes");
             }
 
             try {
@@ -783,14 +779,14 @@ public class NMSUtils {
                 class_EntityPainting_art = null;
                 class_CraftArt_NotchToBukkitMethod = null;
                 class_EntityHanging_blockPosition = null;
-                getLogger().warning("Could not bind to painting art fields, restoring paintings may not work");
+                CompatibilityLib.getLogger().warning("Could not bind to painting art fields, restoring paintings may not work");
             }
 
             try {
                 class_Chunk_addPluginChunkTicketMethod = Chunk.class.getMethod("addPluginChunkTicket", Plugin.class);
                 class_Chunk_removePluginChunkTicketMethod = Chunk.class.getMethod("removePluginChunkTicket", Plugin.class);
             } catch (Throwable ex) {
-                getLogger().warning("Could not bind to chunk ticket API, chunk locking will not work");
+                CompatibilityLib.getLogger().warning("Could not bind to chunk ticket API, chunk locking will not work");
                 class_Chunk_addPluginChunkTicketMethod = null;
                 class_Chunk_removePluginChunkTicketMethod = null;
             }
@@ -800,7 +796,7 @@ public class NMSUtils {
                 class_Phantom_getSizeMethod = class_Phantom.getMethod("getSize");
                 class_Phantom_setSizeMethod = class_Phantom.getMethod("setSize", Integer.TYPE);
             } catch (Throwable ex) {
-                getLogger().warning("No phantoms on this version");
+                CompatibilityLib.getLogger().warning("No phantoms on this version");
                 class_Phantom = null;
             }
 
@@ -819,7 +815,7 @@ public class NMSUtils {
                 class_LivingEntity_setRemoveWhenFarAway = LivingEntity.class.getMethod("setRemoveWhenFarAway", Boolean.TYPE);
             } catch (Throwable ex) {
                 class_Entity_persistField = null;
-                getLogger().warning("Could not bind to persist entity tag, can't make mobs persistent");
+                CompatibilityLib.getLogger().warning("Could not bind to persist entity tag, can't make mobs persistent");
             }
 
             try {
@@ -828,7 +824,7 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 class_Player_stopSoundMethod = null;
                 class_Player_stopSoundStringMethod = null;
-                getLogger().warning("Could not bind to stopSound method, StopSound action will not work.");
+                CompatibilityLib.getLogger().warning("Could not bind to stopSound method, StopSound action will not work.");
             }
 
             try {
@@ -837,7 +833,7 @@ public class NMSUtils {
                 class_Sitting_setSittingMethod = class_Sittable.getMethod("setSitting", Boolean.TYPE);
             } catch (Throwable ex) {
                 class_Sittable = null;
-                getLogger().warning("Could not bind to Sittable interface, can't make mobs sit/stand");
+                CompatibilityLib.getLogger().warning("Could not bind to Sittable interface, can't make mobs sit/stand");
             }
 
             // 1.13 Support
@@ -875,14 +871,14 @@ public class NMSUtils {
                     class_Bukkit_getMapMethod = org.bukkit.Bukkit.class.getMethod("getMap", Short.TYPE);
                     legacyMaps = true;
                 } catch (Exception ex) {
-                    getLogger().warning("Could not bind to getMap method, magic maps will not work");
+                    CompatibilityLib.getLogger().warning("Could not bind to getMap method, magic maps will not work");
                     class_Bukkit_getMapMethod = null;
                 }
             }
             try {
                 class_Bukkit_selectEntitiesMethod = org.bukkit.Bukkit.class.getMethod("selectEntities", CommandSender.class, String.class);
             } catch (Throwable not13) {
-                getLogger().warning("Could not bind to selectEntities method, command target selectors may not work");
+                CompatibilityLib.getLogger().warning("Could not bind to selectEntities method, command target selectors may not work");
                 class_Bukkit_selectEntitiesMethod = null;
             }
             try {
@@ -927,7 +923,7 @@ public class NMSUtils {
                 try {
                     class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, Boolean.TYPE);
                 } catch (Throwable ex) {
-                    getLogger().warning("Could not bind to createExplosion method, magic explosions will not be attributed to the caster");
+                    CompatibilityLib.getLogger().warning("Could not bind to createExplosion method, magic explosions will not be attributed to the caster");
                     class_World_explodeMethod = null;
                 }
             }
@@ -961,7 +957,7 @@ public class NMSUtils {
                         }
                     }
                 } catch (Throwable not14) {
-                    getLogger().warning("Could not bind to entity types, projectile launches will not work");
+                    CompatibilityLib.getLogger().warning("Could not bind to entity types, projectile launches will not work");
                 }
             }
 
@@ -977,7 +973,7 @@ public class NMSUtils {
                     class_Entity_motZField = class_Entity.getDeclaredField("motZ");
                     class_Entity_motZField.setAccessible(true);
                 } catch (Throwable ex) {
-                    getLogger().warning("Could not bind to motion setters, some things may be broken");
+                    CompatibilityLib.getLogger().warning("Could not bind to motion setters, some things may be broken");
                 }
             }
             try {
@@ -1003,7 +999,7 @@ public class NMSUtils {
                     class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("maxY");
                     class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("maxZ");
                 } catch (Throwable ex) {
-                     getLogger().warning("Could not bind to AABB methods, vanilla hitboxes aren't readable");
+                     CompatibilityLib.getLogger().warning("Could not bind to AABB methods, vanilla hitboxes aren't readable");
                      class_Entity_getBoundingBox = null;
                 }
             }
@@ -1023,7 +1019,7 @@ public class NMSUtils {
                     class_PacketPlayOutCustomSoundEffect_Constructor = class_PacketPlayOutCustomSoundEffect.getConstructor(String.class, class_EnumSoundCategory, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
                 }
             } catch (Throwable ex) {
-                 getLogger().warning("Could not bind to custom effect method, custom sound effects will not work");
+                 CompatibilityLib.getLogger().warning("Could not bind to custom effect method, custom sound effects will not work");
             }
 
             try {
@@ -1035,7 +1031,7 @@ public class NMSUtils {
                     class_ItemDye_bonemealMethod = class_ItemDye.getMethod("a", class_ItemStack, class_World, class_BlockPosition);
                 } catch (Throwable ex) {
                     class_ItemDye_bonemealMethod = null;
-                    getLogger().info("Couldn't bind to ItemDye bonemeal method, Bonemeal action will not work");
+                    CompatibilityLib.getLogger().info("Couldn't bind to ItemDye bonemeal method, Bonemeal action will not work");
                 }
             }
 
@@ -1044,7 +1040,7 @@ public class NMSUtils {
                 class_NBTTagCompound_getIntArrayMethod = class_NBTTagCompound.getMethod("getIntArray", String.class);
             } catch (Throwable ex) {
                 class_NBTTagCompound_getIntArrayMethod = null;
-                getLogger().info("Couldn't bind to NBT getIntArray method, pasting tile entities from schematics may not work");
+                CompatibilityLib.getLogger().info("Couldn't bind to NBT getIntArray method, pasting tile entities from schematics may not work");
             }
 
             try {
@@ -1076,7 +1072,7 @@ public class NMSUtils {
                     }
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred while registering NBTTagList.getDouble, loading entities from schematics will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering NBTTagList.getDouble, loading entities from schematics will not work", ex);
                 class_NBTTagList_getDoubleMethod = null;
             }
             try {
@@ -1084,7 +1080,7 @@ public class NMSUtils {
                 class_World_getTypeMethod = class_World.getMethod("getType", class_BlockPosition);
                 class_World_setTypeAndDataMethod = class_World.getMethod("setTypeAndData", class_BlockPosition, class_IBlockData, Integer.TYPE);
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred while registering World.setTypeAndData, Deferred physics updates will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering World.setTypeAndData, Deferred physics updates will not work", ex);
                 class_World_setTypeAndDataMethod = null;
             }
 
@@ -1098,7 +1094,7 @@ public class NMSUtils {
                 Field damageSource_MagicField = class_DamageSource.getField("MAGIC");
                 object_magicSource = damageSource_MagicField.get(null);
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, magic damage will not work, using normal damage instead", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, magic damage will not work, using normal damage instead", ex);
                 class_EntityLiving_damageEntityMethod = null;
                 class_DamageSource_getMagicSourceMethod = null;
                 object_magicSource = null;
@@ -1118,7 +1114,7 @@ public class NMSUtils {
                 }
             } catch (Throwable ex) {
                 class_EntityHuman_getBedMethod = null;
-                getLogger().log(Level.WARNING, "An error occurred, could not get bed location directly, will use API", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, could not get bed location directly, will use API", ex);
             }
 
             try {
@@ -1133,13 +1129,13 @@ public class NMSUtils {
                 class_PotionMeta_getColorMethod = PotionMeta.class.getMethod("getColor");
                 class_PotionMeta_setColorMethod = PotionMeta.class.getMethod("setColor", Color.class);
             } catch (Throwable ex) {
-                 getLogger().warning("Could not bind to PotionMeta color methods, Custom colored potions will not work.");
+                 CompatibilityLib.getLogger().warning("Could not bind to PotionMeta color methods, Custom colored potions will not work.");
             }
             try {
                 class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
             } catch (Throwable ex) {
                 if (!isModernVersion) {
-                    getLogger().warning("Could not bind to setTypeIdAndData, Magic will have issues modifying blocks");
+                    CompatibilityLib.getLogger().warning("Could not bind to setTypeIdAndData, Magic will have issues modifying blocks");
                 }
             }
             try {
@@ -1148,7 +1144,7 @@ public class NMSUtils {
                 class_Chunk_setBlockMethod = class_Chunk.getMethod("a", class_BlockPosition, class_IBlockData);
             } catch (Throwable ex) {
                 if (!isModernVersion) {
-                    getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work.");
+                    CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering Block.fromLegacyData, setting fast blocks will not work.");
                 }
             }
 
@@ -1157,7 +1153,7 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 class_Chunk_isReadyMethod = null;
                 if (!isCurrentVersion) {
-                    getLogger().warning("Couldn't bind to Chunk.isReady, building in ungenerated chunks may be glitchy.");
+                    CompatibilityLib.getLogger().warning("Couldn't bind to Chunk.isReady, building in ungenerated chunks may be glitchy.");
                 }
             }
 
@@ -1173,7 +1169,7 @@ public class NMSUtils {
                 class_NamespacedKey = null;
                 class_NamespacedKey_constructor = null;
                 class_ShapedRecipe_constructor = null;
-                getLogger().warning("Couldn't find NamespacedKey for registering recipes. This is normal for legacy Minecraft versions.");
+                CompatibilityLib.getLogger().warning("Couldn't find NamespacedKey for registering recipes. This is normal for legacy Minecraft versions.");
             }
 
             if (class_NamespacedKey != null) {
@@ -1181,7 +1177,7 @@ public class NMSUtils {
                     class_Server_removeRecipeMethod = Server.class.getMethod("removeRecipe", class_NamespacedKey);
                 } catch (Throwable ex) {
                     class_Server_removeRecipeMethod = null;
-                    getLogger().warning("Couldn't find recipe removal method, this is odd since we did find NamespacedKey");
+                    CompatibilityLib.getLogger().warning("Couldn't find recipe removal method, this is odd since we did find NamespacedKey");
                 }
                 try {
                     class_HumanEntity_discoverRecipeMethod = HumanEntity.class.getMethod("discoverRecipe", class_NamespacedKey);
@@ -1189,7 +1185,7 @@ public class NMSUtils {
                 } catch (Throwable ex) {
                     class_HumanEntity_discoverRecipeMethod = null;
                     class_HumanEntity_undiscoverRecipeMethod = null;
-                    getLogger().warning("Couldn't find recipe discover method, this is odd since we did find NamespacedKey");
+                    CompatibilityLib.getLogger().warning("Couldn't find recipe discover method, this is odd since we did find NamespacedKey");
                 }
             }
 
@@ -1201,7 +1197,7 @@ public class NMSUtils {
                 } catch (Throwable ex) {
                     class_KnowledgeBookMeta = null;
                     class_KnowledgeBookMeta_addRecipeMethod = null;
-                    getLogger().warning("Couldn't register knowledge book methods, recipe books unavailable. This is normal for pre-1.13 Minecraft versions.");
+                    CompatibilityLib.getLogger().warning("Couldn't register knowledge book methods, recipe books unavailable. This is normal for pre-1.13 Minecraft versions.");
                 }
             }
 
@@ -1209,13 +1205,13 @@ public class NMSUtils {
                 class_Server_getEntityMethod = Server.class.getMethod("getEntity", UUID.class);
             } catch (Throwable ex) {
                 class_Server_getEntityMethod = null;
-                getLogger().warning("Could not register Server.getEntity, entity lookups will be slightly less optimal");
+                CompatibilityLib.getLogger().warning("Could not register Server.getEntity, entity lookups will be slightly less optimal");
             }
             try {
                 class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");
             } catch (Throwable ex) {
                 class_ProjectileHitEvent_getHitBlockMethod = null;
-                getLogger().warning("Could not register ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy");
+                CompatibilityLib.getLogger().warning("Could not register ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy");
             }
             try {
                 class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.AbstractArrow$PickupStatus");
@@ -1228,14 +1224,14 @@ public class NMSUtils {
                 } catch (Throwable ex) {
                     class_PickupStatus = null;
                     class_Arrow_setPickupStatusMethod = null;
-                    getLogger().warning("Could not register Arrow.PickupStatus, arrows can not be made to be picked up");
+                    CompatibilityLib.getLogger().warning("Could not register Arrow.PickupStatus, arrows can not be made to be picked up");
                 }
             }
             try {
                 class_CraftPlayer_getProfileMethod = class_CraftPlayer.getMethod("getProfile");
             } catch (Throwable ex) {
                 class_CraftPlayer_getProfileMethod = null;
-                getLogger().log(Level.WARNING, "An error occurred while registering Player.getProfile, player portrait maps may not work as well", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering Player.getProfile, player portrait maps may not work as well", ex);
             }
 
             try {
@@ -1340,7 +1336,7 @@ public class NMSUtils {
                     }
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred while registering entity movement accessors, vehicle control will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering entity movement accessors, vehicle control will not work", ex);
                 class_Entity_jumpingField = null;
                 class_Entity_moveStrafingField = null;
                 class_Entity_moveForwardField = null;
@@ -1357,7 +1353,7 @@ public class NMSUtils {
                     Class<?> craftMagicNumbers = fixBukkitClass("org.bukkit.craftbukkit.util.CraftMagicNumbers");
                     class_CraftMagicNumbers_getBlockMethod = craftMagicNumbers.getMethod("getBlock", Material.class);
                 } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "An error occurred while registering block durability accessor, durability-based block checks will not work", ex);
+                    CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering block durability accessor, durability-based block checks will not work", ex);
                     class_Block_durabilityField = null;
                     class_CraftMagicNumbers_getBlockMethod = null;
                 }
@@ -1367,7 +1363,7 @@ public class NMSUtils {
                 Class<?> craftMagicNumbers = fixBukkitClass("org.bukkit.craftbukkit.util.CraftMagicNumbers");
                 class_CraftMagicNumbers_getBlockMethod = craftMagicNumbers.getMethod("getBlock", Material.class);
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred while registering block accessor, durability-based block checks will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering block accessor, durability-based block checks will not work", ex);
                 class_CraftMagicNumbers_getBlockMethod = null;
             }
 
@@ -1399,7 +1395,7 @@ public class NMSUtils {
                     class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, Byte.TYPE);
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred while registering action bar methods, action bar messages will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering action bar methods, action bar messages will not work", ex);
                 class_PacketPlayOutChat = null;
             }
 
@@ -1416,7 +1412,7 @@ public class NMSUtils {
                     class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred while registering custom spawn method, spawn reasons will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred while registering custom spawn method, spawn reasons will not work", ex);
                 class_CraftWorld_spawnMethod = null;
                 class_Consumer = null;
             }
@@ -1445,7 +1441,7 @@ public class NMSUtils {
                 class_TileEntity_updateMethod = class_TileEntity.getMethod("update");
                 class_TileEntity_saveMethod = class_TileEntity.getMethod("save", class_NBTTagCompound);
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, handling of tile entities may not work well", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, handling of tile entities may not work well", ex);
                 class_TileEntity_loadMethod = null;
                 class_TileEntity_updateMethod = null;
                 class_TileEntity_saveMethod = null;
@@ -1454,7 +1450,7 @@ public class NMSUtils {
             try {
                 class_NBTCompressedStreamTools_loadFileMethod = class_NBTCompressedStreamTools.getMethod("a", InputStream.class);
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, schematics will not load", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, schematics will not load", ex);
             }
 
             try {
@@ -1467,7 +1463,7 @@ public class NMSUtils {
                 }
             } catch (Throwable ex) {
                 damageSources = null;
-                getLogger().log(Level.WARNING, "An error occurred, using specific damage types will not work, will use normal damage instead", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, using specific damage types will not work, will use normal damage instead", ex);
             }
             try {
                 class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("disabledSlots");
@@ -1516,7 +1512,7 @@ public class NMSUtils {
                         }
                     }
                 } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "An error occurred, armor stand slots cannot be locked", ex);
+                    CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, armor stand slots cannot be locked", ex);
                     class_EntityArmorStand_disabledSlotsField = null;
                 }
             }
@@ -1537,7 +1533,7 @@ public class NMSUtils {
                     if (class_ChestLock.isAssignableFrom(class_ChestLock_defaultField.getType())) {
                         object_emptyChestLock = class_ChestLock_defaultField.get(null);
                     } else {
-                        getLogger().log(Level.WARNING, "An error occurred, chest unlocking will not work");
+                        CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, chest unlocking will not work");
                     }
                 } catch (Throwable not14) {
                     try {
@@ -1561,7 +1557,7 @@ public class NMSUtils {
                     }
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, chest locking and unlocking will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, chest locking and unlocking will not work", ex);
                 class_TileEntityContainer_setLock = null;
                 class_TileEntityContainer_getLock = null;
             }
@@ -1579,7 +1575,7 @@ public class NMSUtils {
                     class_PlayerConnection_floatCountField.setAccessible(true);
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, player flight exemption will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, player flight exemption will not work", ex);
                 class_PlayerConnection_floatCountField = null;
             }
 
@@ -1608,7 +1604,7 @@ public class NMSUtils {
                     }
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "Could not find arrow lifetime field, setting arrow lifespan will not work");
+                CompatibilityLib.getLogger().log(Level.WARNING, "Could not find arrow lifetime field, setting arrow lifespan will not work");
                 class_EntityArrow_lifeField = null;
             }
             if (class_EntityArrow_lifeField != null)
@@ -1631,7 +1627,7 @@ public class NMSUtils {
                     }
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, thorn damage override to hurt ender dragon will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, thorn damage override to hurt ender dragon will not work", ex);
                 class_EntityDamageSource_setThornsMethod = null;
             }
 
@@ -1652,7 +1648,7 @@ public class NMSUtils {
                     class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, saving entities to spawn eggs will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, saving entities to spawn eggs will not work", ex);
                 class_Entity_getTypeMethod = null;
                 class_Entity_saveMethod = null;
             }
@@ -1671,7 +1667,7 @@ public class NMSUtils {
                     class_ItemStack_createStackMethod = class_ItemStack.getMethod("createStack", class_NBTTagCompound);
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, restoring inventories from schematics will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, restoring inventories from schematics will not work", ex);
                 class_ItemStack_createStackMethod = null;
             }
 
@@ -1679,7 +1675,7 @@ public class NMSUtils {
                 class_EntityArrow_damageField = class_EntityArrow.getDeclaredField("damage");
                 class_EntityArrow_damageField.setAccessible(true);
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, setting arrow damage will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, setting arrow damage will not work", ex);
                 class_EntityArrow_damageField = null;
             }
 
@@ -1696,7 +1692,7 @@ public class NMSUtils {
                     class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("ad");
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, silent entities will not work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, silent entities will not work", ex);
                 class_Entity_setSilentMethod = null;
                 class_Entity_isSilentMethod = null;
             }
@@ -1713,7 +1709,7 @@ public class NMSUtils {
                     class_ArmorStand_setGravity = class_EntityArmorStand.getDeclaredMethod("setGravity", Boolean.TYPE);
                 }
             } catch (Throwable ex) {
-                getLogger().log(Level.WARNING, "An error occurred, hacky no-gravity armor stands won't work", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "An error occurred, hacky no-gravity armor stands won't work", ex);
                 class_Entity_setNoGravity = null;
                 class_ArmorStand_setGravity = null;
             }
@@ -1747,12 +1743,12 @@ public class NMSUtils {
                 class_nms_Block_getBlockDataMethod = class_Block.getMethod("getBlockData");
             } catch (Throwable ex) {
                 class_CraftBlock = null;
-                getLogger().log(Level.WARNING, "Could not bind to auto block state methods");
+                CompatibilityLib.getLogger().log(Level.WARNING, "Could not bind to auto block state methods");
             }
         }
         catch (Throwable ex) {
             failed = true;
-            getLogger().log(Level.SEVERE, "An unexpected error occurred initializing Magic", ex);
+            CompatibilityLib.getLogger().log(Level.SEVERE, "An unexpected error occurred initializing Magic", ex);
         }
 
         return !failed;
@@ -1894,8 +1890,5 @@ public class NMSUtils {
         return Modifier.isPublic(modifiers);
     }
 
-    protected static Logger getLogger() {
-        return logger == null ? Bukkit.getLogger() : logger;
-    }
 }
 

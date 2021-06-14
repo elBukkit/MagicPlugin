@@ -672,14 +672,15 @@ public class CompatibilityUtils {
     }
 
     public YamlConfiguration loadBuiltinConfiguration(String fileName) throws IOException, InvalidConfigurationException {
-        return CompatibilityUtils.this.loadConfiguration(NMSUtils.plugin.getResource(fileName), fileName);
+        Plugin plugin = CompatibilityLib.getPlugin();
+        return CompatibilityUtils.this.loadConfiguration(plugin.getResource(fileName), fileName);
     }
 
     public YamlConfiguration loadConfiguration(InputStream stream, String fileName) throws IOException, InvalidConfigurationException
     {
         YamlConfiguration configuration = new YamlConfiguration();
         if (stream == null) {
-            NMSUtils.getLogger().log(Level.SEVERE, "Could not find builtin configuration file '" + fileName + "'");
+            CompatibilityLib.getLogger().log(Level.SEVERE, "Could not find builtin configuration file '" + fileName + "'");
             return configuration;
         }
         try {
@@ -864,7 +865,7 @@ public class CompatibilityUtils {
         try {
             return (List<Entity>) NMSUtils.class_Bukkit_selectEntitiesMethod.invoke(null, sender, selector);
         } catch (Throwable ex) {
-            NMSUtils.getLogger().warning("Invalid selector: " + ex.getMessage());
+            CompatibilityLib.getLogger().warning("Invalid selector: " + ex.getMessage());
         }
         return null;
     }
@@ -1055,7 +1056,7 @@ public class CompatibilityUtils {
         } catch (FileNotFoundException fileNotFound) {
 
         } catch (Throwable ex) {
-            NMSUtils.getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
+            CompatibilityLib.getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
             throw ex;
         }
         return configuration;
@@ -1068,7 +1069,7 @@ public class CompatibilityUtils {
             Object sourceHandle = NMSUtils.getHandle(source);
             NMSUtils.class_EntityTNTPrimed_source.set(tntHandle, sourceHandle);
         } catch (Exception ex) {
-            NMSUtils.getLogger().log(Level.WARNING, "Unable to set TNT source", ex);
+            CompatibilityLib.getLogger().log(Level.WARNING, "Unable to set TNT source", ex);
         }
     }
 
@@ -1210,7 +1211,7 @@ public class CompatibilityUtils {
                 World.Environment worldType = World.Environment.valueOf(key.toUpperCase());
                 maxHeights.put(worldType, config.getInt(key));
             } catch (Exception ex) {
-                NMSUtils.getLogger().log(Level.WARNING, "Invalid environment type: " + key, ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "Invalid environment type: " + key, ex);
             }
         }
     }
@@ -1404,7 +1405,7 @@ public class CompatibilityUtils {
                 nmsProjectile = entityType == null ? constructor.newInstance(nmsWorld) : constructor.newInstance(entityType, nmsWorld);
             } catch (Exception ex) {
                 nmsProjectile = null;
-                NMSUtils.getLogger().log(Level.WARNING, "Error spawning projectile of class " + projectileType.getName(), ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "Error spawning projectile of class " + projectileType.getName(), ex);
             }
 
             if (nmsProjectile == null) {
@@ -1608,7 +1609,7 @@ public class CompatibilityUtils {
                 try {
                      operation = AttributeModifier.Operation.values()[attributeOperation];
                 } catch (Throwable ex) {
-                    NMSUtils.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
+                    CompatibilityLib.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
                     return false;
                 }
                 ItemMeta meta = item.getItemMeta();
@@ -1624,7 +1625,7 @@ public class CompatibilityUtils {
                             equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase());
                         }
                     } catch (Throwable ex) {
-                        NMSUtils.getLogger().warning("[Magic] invalid attribute slot: " + slot);
+                        CompatibilityLib.getLogger().warning("[Magic] invalid attribute slot: " + slot);
                         return false;
                     }
 
@@ -2566,7 +2567,7 @@ public class CompatibilityUtils {
     public boolean lockChunk(Chunk chunk, Plugin plugin) {
         if (!plugin.isEnabled()) return false;
         if (!chunk.isLoaded()) {
-            NMSUtils.getLogger().info("Locking unloaded chunk");
+            CompatibilityLib.getLogger().info("Locking unloaded chunk");
         }
         if (NMSUtils.class_Chunk_addPluginChunkTicketMethod == null) return false;
         try {
@@ -2823,7 +2824,7 @@ public class CompatibilityUtils {
         if (requestCount != null) {
             requestCount++;
             if (requestCount > MAX_CHUNK_LOAD_TRY) {
-                NMSUtils.getLogger().warning("Exceeded retry count for asynchronous chunk load, loading synchronously");
+                CompatibilityLib.getLogger().warning("Exceeded retry count for asynchronous chunk load, loading synchronously");
                 if (!CompatibilityUtils.this.hasDumpedStack) {
                     CompatibilityUtils.this.hasDumpedStack = true;
                     Thread.dumpStack();
@@ -2850,7 +2851,7 @@ public class CompatibilityUtils {
                 });
                 return;
             } catch (Exception ex) {
-                NMSUtils.getLogger().log(Level.WARNING, "Error loading chunk asynchronously", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "Error loading chunk asynchronously", ex);
                 loadingChunks.remove(loading);
             }
         }
@@ -2880,7 +2881,7 @@ public class CompatibilityUtils {
                 NMSUtils.class_Entity_addPassengerMethod.invoke(vehicle, passenger);
                 return;
             } catch (Exception ex) {
-                NMSUtils.getLogger().log(Level.WARNING, "Error adding entity passenger", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "Error adding entity passenger", ex);
             }
         }
         DeprecatedUtils.setPassenger(vehicle, passenger);
@@ -2892,7 +2893,7 @@ public class CompatibilityUtils {
             try {
                 return (List<Entity>) NMSUtils.class_Entity_getPassengersMethod.invoke(entity);
             } catch (Exception ex) {
-                NMSUtils.getLogger().log(Level.WARNING, "Error getting entity passengers", ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "Error getting entity passengers", ex);
             }
         }
         List<Entity> passengerList = new ArrayList<>();
@@ -2907,7 +2908,8 @@ public class CompatibilityUtils {
         for (Entity passenger : passengers) {
             if (passenger instanceof Player) {
                 TeleportPassengerTask task = new TeleportPassengerTask(vehicle, passenger, location);
-                NMSUtils.plugin.getServer().getScheduler().runTaskLater(NMSUtils.plugin, task, 2);
+                Plugin plugin = CompatibilityLib.getPlugin();
+                plugin.getServer().getScheduler().runTaskLater(plugin, task, 2);
             } else {
                 // TODO: If there is a player midway in a stack of mobs do the mobs need to wait... ?
                 // Might have to rig up something weird to test.
@@ -2928,7 +2930,7 @@ public class CompatibilityUtils {
         if (newPassengers.isEmpty()) {
             CompatibilityUtils.this.teleportPassengers(vehicle, location, passengers);
         } else {
-            NMSUtils.getLogger().warning("Entity.eject failed!");
+            CompatibilityLib.getLogger().warning("Entity.eject failed!");
         }
     }
 
@@ -2953,7 +2955,7 @@ public class CompatibilityUtils {
             NMSUtils.class_Player_openBookMethod.invoke(player, itemStack);
             return true;
         } catch (Exception ex) {
-            NMSUtils.getLogger().log(Level.SEVERE, "Unexpected error showing book", ex);
+            CompatibilityLib.getLogger().log(Level.SEVERE, "Unexpected error showing book", ex);
         }
         return false;
     }
@@ -2963,7 +2965,7 @@ public class CompatibilityUtils {
         try {
             return (boolean) NMSUtils.class_Player_isHandRaisedMethod.invoke(player);
         } catch (Exception ex) {
-            NMSUtils.getLogger().log(Level.SEVERE, "Unexpected error checking block status", ex);
+            CompatibilityLib.getLogger().log(Level.SEVERE, "Unexpected error checking block status", ex);
         }
         return false;
     }

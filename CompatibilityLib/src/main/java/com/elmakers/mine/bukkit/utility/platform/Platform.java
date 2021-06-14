@@ -7,8 +7,8 @@ import org.bukkit.plugin.Plugin;
 public class Platform {
     private final boolean valid;
 
-    public Platform(Plugin plugin, Logger logger) {
-        valid = NMSUtils.initialize(plugin, logger);
+    public Platform() {
+        valid = NMSUtils.initialize();
     }
 
     public boolean isLegacy() {

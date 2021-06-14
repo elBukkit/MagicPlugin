@@ -8,14 +8,19 @@ import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.NMSUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 public class CompatibilityLib {
     private static Platform platform;
+    private static Logger logger;
+    private static Plugin plugin;
     private static CompatibilityUtils compatibilityUtils;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
-        platform = new Platform(plugin, logger);
+        CompatibilityLib.plugin = plugin;
+        CompatibilityLib.logger = logger;
+        platform = new Platform();
         compatibilityUtils = platform.getCompatibilityUtils();
         return platform.isValid();
     }
@@ -80,5 +85,13 @@ public class CompatibilityLib {
             compatibilityUtils = new CompatibilityUtils();
         }
         return compatibilityUtils;
+    }
+
+    public static Logger getLogger() {
+        return logger == null ? Bukkit.getLogger() : logger;
+    }
+
+    public static Plugin getPlugin() {
+        return plugin;
     }
 }

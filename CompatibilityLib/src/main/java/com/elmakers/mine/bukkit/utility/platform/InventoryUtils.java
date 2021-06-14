@@ -120,11 +120,11 @@ public class InventoryUtils {
     public static boolean addTagsToNBT(Map<String, Object> tags, Object node)
     {
         if (node == null) {
-            NMSUtils.getLogger().warning("Trying to save tags to a null node");
+            CompatibilityLib.getLogger().warning("Trying to save tags to a null node");
             return false;
         }
         if (!NMSUtils.class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            NMSUtils.getLogger().warning("Trying to save tags to a non-CompoundTag");
+            CompatibilityLib.getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
 
@@ -135,7 +135,7 @@ public class InventoryUtils {
                 if (wrappedTag == null) continue;
                 NMSUtils.class_NBTTagCompound_setMethod.invoke(node, tag.getKey(), wrappedTag);
             } catch (Exception ex) {
-                NMSUtils.getLogger().log(Level.WARNING, "Error saving item data tag " + tag.getKey(), ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "Error saving item data tag " + tag.getKey(), ex);
             }
         }
 
@@ -145,11 +145,11 @@ public class InventoryUtils {
     public static boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
     {
         if (node == null) {
-            NMSUtils.getLogger().warning("Trying to save tags to a null node");
+            CompatibilityLib.getLogger().warning("Trying to save tags to a null node");
             return false;
         }
         if (!NMSUtils.class_NBTTagCompound.isAssignableFrom(node.getClass())) {
-            NMSUtils.getLogger().warning("Trying to save tags to a non-CompoundTag");
+            CompatibilityLib.getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
         
@@ -175,7 +175,7 @@ public class InventoryUtils {
                 if (wrappedTag == null) continue;
                 NMSUtils.class_NBTTagCompound_setMethod.invoke(node, tagName, wrappedTag);
             } catch (Exception ex) {
-                NMSUtils.getLogger().log(Level.WARNING, "Error saving item data tag " + tagName, ex);
+                CompatibilityLib.getLogger().log(Level.WARNING, "Error saving item data tag " + tagName, ex);
             }
         }
 
@@ -427,7 +427,7 @@ public class InventoryUtils {
             // Using a fixed non-random UUID here so skulls of the same type can stack
             return setSkullURL(itemStack, new URL(url), SKULL_UUID);
         } catch (MalformedURLException e) {
-            NMSUtils.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
+            CompatibilityLib.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
         return itemStack;
     }
@@ -656,7 +656,7 @@ public class InventoryUtils {
                             AttributeModifier.Operation eOperation = AttributeModifier.Operation.valueOf(operationKey.toUpperCase());
                             operation = eOperation.ordinal();
                         } catch (Exception ex) {
-                            NMSUtils.getLogger().warning("Invalid operation " + operationKey);
+                            CompatibilityLib.getLogger().warning("Invalid operation " + operationKey);
                         }
                     }
                 } else {
@@ -664,10 +664,10 @@ public class InventoryUtils {
                 }
                 Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
                 if (!CompatibilityLib.getCompatibilityUtils().setItemAttribute(item, attribute, value, slot, operation)) {
-                    NMSUtils.getLogger().warning("Failed to set attribute: " + attributeKey);
+                    CompatibilityLib.getLogger().warning("Failed to set attribute: " + attributeKey);
                 }
             } catch (Exception ex) {
-                NMSUtils.getLogger().warning("Invalid attribute: " + attributeKey);
+                CompatibilityLib.getLogger().warning("Invalid attribute: " + attributeKey);
             }
         }
     }
@@ -686,7 +686,7 @@ public class InventoryUtils {
                     item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
                     keep.add(enchantment);
                 } catch (Exception ex) {
-                    NMSUtils.getLogger().warning("Invalid enchantment: " + enchantKey);
+                    CompatibilityLib.getLogger().warning("Invalid enchantment: " + enchantKey);
                 }
             }
         }
@@ -716,7 +716,7 @@ public class InventoryUtils {
                         addedAny = true;
                     }
                 } catch (Exception ex) {
-                    NMSUtils.getLogger().warning("Invalid enchantment: " + enchantKey);
+                    CompatibilityLib.getLogger().warning("Invalid enchantment: " + enchantKey);
                 }
             }
         }
