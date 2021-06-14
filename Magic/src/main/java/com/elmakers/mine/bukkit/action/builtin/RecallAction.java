@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
 
 public class RecallAction extends BaseTeleportAction implements GUIAction
@@ -1036,7 +1035,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String castMessage = context.getMessage("cast_friend").replace("$name", playerName);
         String failMessage = context.getMessage("no_target_friend").replace("$name", playerName);
         String title = context.getMessage("title_friend", "$name").replace("$name", playerName);
-        String iconURL = SkinUtils.getOnlineSkinURL(onlinePlayer);
+        String iconURL = CompatibilityLib.getSkinUtils().getOnlineSkinURL(onlinePlayer);
 
         return new Waypoint(RecallType.FRIENDS, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
     }
@@ -1051,7 +1050,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         String castMessage = context.getMessage("cast_remove_friend").replace("$name", playerName);
         String failMessage = context.getMessage("no_target_remove_friend").replace("$name", playerName);
         String title = context.getMessage("title_remove_friend", "$name").replace("$name", playerName);
-        String iconURL = SkinUtils.getOnlineSkinURL(onlinePlayer);
+        String iconURL = CompatibilityLib.getSkinUtils().getOnlineSkinURL(onlinePlayer);
 
         Waypoint removeWaypoint = new Waypoint(RecallType.REMOVE_FRIENDS, onlinePlayer.getLocation(), title, castMessage, failMessage, "", null, iconURL);
         removeWaypoint.friendId = playerId;

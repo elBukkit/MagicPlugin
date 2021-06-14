@@ -485,13 +485,13 @@ public class InventoryUtils {
     }
 
     public String getSkullURL(ItemStack skull) {
-        return SkinUtils.getProfileURL(InventoryUtils.this.getSkullProfile(skull.getItemMeta()));
+        return CompatibilityLib.getSkinUtils().getProfileURL(InventoryUtils.this.getSkullProfile(skull.getItemMeta()));
     }
     
     @Deprecated
     public String getPlayerSkullURL(String playerName)
     {
-        return SkinUtils.getOnlineSkinURL(playerName);
+        return CompatibilityLib.getSkinUtils().getOnlineSkinURL(playerName);
     }
 
     public boolean isSkull(ItemStack item) {

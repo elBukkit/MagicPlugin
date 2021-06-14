@@ -451,7 +451,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         if (url == null) {
             if (playerName != null) {
                 loading = true;
-                SkinUtils.fetchProfile(playerName, new SkinUtils.ProfileCallback() {
+                CompatibilityLib.getSkinUtils().fetchProfile(playerName, new SkinUtils.ProfileCallback() {
                     @Override
                     public void result(SkinUtils.ProfileResponse response) {
                         url = response == null ? null : response.getSkinURL();

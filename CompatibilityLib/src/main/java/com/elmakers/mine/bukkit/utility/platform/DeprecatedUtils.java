@@ -143,7 +143,7 @@ public class DeprecatedUtils {
     }
 
     public void setSkullOwner(final ItemStack itemStack, String ownerName, final SkullLoadedCallback callback) {
-        SkinUtils.fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
+        CompatibilityLib.getSkinUtils().fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
             @Override
             public void result(SkinUtils.ProfileResponse response) {
                 if (response != null) {
@@ -162,7 +162,7 @@ public class DeprecatedUtils {
     }
 
     public void setSkullOwner(final ItemStack itemStack, UUID ownerUUID, final SkullLoadedCallback callback) {
-        SkinUtils.fetchProfile(ownerUUID, new SkinUtils.ProfileCallback() {
+        CompatibilityLib.getSkinUtils().fetchProfile(ownerUUID, new SkinUtils.ProfileCallback() {
             @Override
             public void result(SkinUtils.ProfileResponse response) {
                 if (response != null) {
@@ -181,7 +181,7 @@ public class DeprecatedUtils {
     }
 
     public void setOwner(final Skull skull, UUID uuid) {
-        SkinUtils.fetchProfile(uuid, new SkinUtils.ProfileCallback() {
+        CompatibilityLib.getSkinUtils().fetchProfile(uuid, new SkinUtils.ProfileCallback() {
             @Override
             public void result(SkinUtils.ProfileResponse response) {
                 if (response != null) {
@@ -194,7 +194,7 @@ public class DeprecatedUtils {
     }
 
     public void setOwner(final Skull skull, String ownerName) {
-        SkinUtils.fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
+        CompatibilityLib.getSkinUtils().fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
             @Override
             public void result(SkinUtils.ProfileResponse response) {
                 if (response != null) {

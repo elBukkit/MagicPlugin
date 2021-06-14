@@ -30,11 +30,11 @@ import java.util.UUID;
 import java.util.logging.Level;
 
 public class SkinUtils {
-    public static boolean DEBUG = false;
+    public boolean DEBUG = false;
 
-    private static Plugin plugin;
-    private static Gson gson;
-    private static long holdoff = 0;
+    private Plugin plugin;
+    private Gson gson;
+    private long holdoff = 0;
     private static final Map<UUID, ProfileResponse> responseCache = new HashMap<>();
     private static final Map<String, UUID> uuidCache = new HashMap<>();
     private static final Map<String, Object> loadingUUIDs = new HashMap<>();
@@ -62,8 +62,8 @@ public class SkinUtils {
 
         private ProfileResponse(Player onlinePlayer) {
             this.uuid = onlinePlayer.getUniqueId();
-            Object gameProfile = getProfile(onlinePlayer);
-            JsonElement profileJson = getGson().toJsonTree(gameProfile);
+            Object gameProfile = CompatibilityLib.getSkinUtils().getProfile(onlinePlayer);
+            JsonElement profileJson = CompatibilityLib.getSkinUtils().getGson().toJsonTree(gameProfile);
             if (profileJson.isJsonObject()) {
                 JsonObject profileObject = (JsonObject)profileJson;
                 try {
@@ -86,8 +86,8 @@ public class SkinUtils {
                 }
             }
 
-            this.profileJSON = getGson().toJson(profileJson);
-            this.skinURL = getProfileURL(gameProfile);
+            this.profileJSON = CompatibilityLib.getSkinUtils().getGson().toJson(profileJson);
+            this.skinURL = CompatibilityLib.getSkinUtils().getProfileURL(gameProfile);
             this.playerName = onlinePlayer.getName();
         }
 
@@ -136,9 +136,9 @@ public class SkinUtils {
             } catch (Exception ex) {
                 CompatibilityLib.getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
             }
-            if (DEBUG) {
+            if (CompatibilityLib.getSkinUtils().DEBUG) {
                 CompatibilityLib.getLogger().info("Got profile: " + gameProfile);
-                CompatibilityLib.getLogger().info(getProfileURL(gameProfile));
+                CompatibilityLib.getLogger().info(CompatibilityLib.getSkinUtils().getProfileURL(gameProfile));
             }
             return gameProfile;
         }
@@ -152,18 +152,18 @@ public class SkinUtils {
         void result(UUID response);
     }
 
-    public static void initialize(Plugin owner) {
-        plugin = owner;
+    public void initialize(Plugin owner) {
+        SkinUtils.this.plugin = owner;
     }
 
-    private static Gson getGson() {
-        if (gson == null) {
-            gson = new Gson();
+    private Gson getGson() {
+        if (SkinUtils.this.gson == null) {
+            SkinUtils.this.gson = new Gson();
         }
-        return gson;
+        return SkinUtils.this.gson;
     }
 
-    public static String getTextureURL(String texturesJson) {
+    public String getTextureURL(String texturesJson) {
         String url = null;
         JsonElement element = new JsonParser().parse(texturesJson);
         if (element != null && element.isJsonObject()) {
@@ -179,7 +179,7 @@ public class SkinUtils {
         return url;
     }
     
-    public static String getProfileURL(Object profile)
+    public String getProfileURL(Object profile)
     {
         String url = null;
         if (profile == null) {
@@ -194,7 +194,7 @@ public class SkinUtils {
                 Object textureProperty = textures.iterator().next();
                 String texture = (String) NMSUtils.class_GameProfileProperty_value.get(textureProperty);
                 String decoded = Base64Coder.decodeString(texture);
-                url = getTextureURL(decoded);
+                url = SkinUtils.this.getTextureURL(decoded);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -202,7 +202,7 @@ public class SkinUtils {
         return url;
     }
 
-    private static Object getProfile(Player player) {
+    private Object getProfile(Player player) {
         if (NMSUtils.class_CraftPlayer_getProfileMethod == null) return null;
         try {
             return NMSUtils.class_CraftPlayer_getProfileMethod.invoke(player);
@@ -212,22 +212,22 @@ public class SkinUtils {
         return null;
     }
 
-    public static String getOnlineSkinURL(Player player) {
-        Object profile = getProfile(player);
-        return profile == null ? null : getProfileURL(profile);
+    public String getOnlineSkinURL(Player player) {
+        Object profile = SkinUtils.this.getProfile(player);
+        return profile == null ? null : SkinUtils.this.getProfileURL(profile);
     }
 
-    public static String getOnlineSkinURL(String playerName) {
+    public String getOnlineSkinURL(String playerName) {
         if (playerName.startsWith("http")) return playerName;
         Player player = CompatibilityLib.getDeprecatedUtils().getPlayerExact(playerName);
         String url = null;
         if (player != null) {
-            url = getOnlineSkinURL(player);
+            url = SkinUtils.this.getOnlineSkinURL(player);
         }
         return url;
     }
     
-    private static String fetchURL(String urlString) throws IOException {
+    private String fetchURL(String urlString) throws IOException {
         StringBuffer response = new StringBuffer();
         URL url = new URL(urlString);
         HttpURLConnection conn = (HttpURLConnection)url.openConnection();
@@ -251,12 +251,12 @@ public class SkinUtils {
         return response.toString();
     }
     
-    private static void engageHoldoff() {
-        holdoff = 10 * 60000;
+    private void engageHoldoff() {
+        SkinUtils.this.holdoff = 10 * 60000;
     }
 
-    private static void synchronizeCallbackUUID(final UUIDCallback callback, final UUID uuid) {
-        Bukkit.getScheduler().runTask(plugin, new Runnable() {
+    private void synchronizeCallbackUUID(final UUIDCallback callback, final UUID uuid) {
+        Bukkit.getScheduler().runTask(SkinUtils.this.plugin, new Runnable() {
             @Override
             public void run() {
                 callback.result(uuid);
@@ -264,8 +264,8 @@ public class SkinUtils {
         });
     }
 
-    private static void synchronizeCallbackProfile(final ProfileCallback callback, final ProfileResponse response) {
-        Bukkit.getScheduler().runTask(plugin, new Runnable() {
+    private void synchronizeCallbackProfile(final ProfileCallback callback, final ProfileResponse response) {
+        Bukkit.getScheduler().runTask(SkinUtils.this.plugin, new Runnable() {
             @Override
             public void run() {
                 callback.result(response);
@@ -273,7 +273,7 @@ public class SkinUtils {
         });
     }
 
-    public static void fetchUUID(final String playerName, final UUIDCallback callback) {
+    public void fetchUUID(final String playerName, final UUIDCallback callback) {
         final Player onlinePlayer = CompatibilityLib.getDeprecatedUtils().getPlayerExact(playerName);
         if (onlinePlayer != null) {
             final UUID uuid = onlinePlayer.getUniqueId();
@@ -285,10 +285,10 @@ public class SkinUtils {
                 }
             }
             if (!contains) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                Bukkit.getScheduler().runTaskAsynchronously(SkinUtils.this.plugin, new Runnable() {
                     @Override
                     public void run() {
-                        File cacheFolder = new File(plugin.getDataFolder(), "data/profiles");
+                        File cacheFolder = new File(SkinUtils.this.plugin.getDataFolder(), "data/profiles");
                         if (!cacheFolder.exists()) {
                             cacheFolder.mkdirs();
                         }
@@ -316,7 +316,7 @@ public class SkinUtils {
             callback.result(cached);
             return;
         }
-        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(SkinUtils.this.plugin, new Runnable() {
             @Override
             public void run() {
                 Object lock;
@@ -336,7 +336,7 @@ public class SkinUtils {
                         callback.result(cached);
                         return;
                     }
-                    File cacheFolder = new File(plugin.getDataFolder(), "data/profiles");
+                    File cacheFolder = new File(SkinUtils.this.plugin.getDataFolder(), "data/profiles");
                     if (!cacheFolder.exists()) {
                         cacheFolder.mkdirs();
                     }
@@ -348,10 +348,10 @@ public class SkinUtils {
                             YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
                             uuid = UUID.fromString(config.getString("uuid"));
                         } else {
-                            String uuidJSON = fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
+                            String uuidJSON = SkinUtils.this.fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
                             if (uuidJSON.isEmpty()) {
-                                if (DEBUG) CompatibilityLib.getLogger().warning("Got empty UUID JSON for " + playerName);
-                                synchronizeCallbackUUID(callback, null);
+                                if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().warning("Got empty UUID JSON for " + playerName);
+                                SkinUtils.this.synchronizeCallbackUUID(callback, null);
                                 return;
                             }
 
@@ -361,13 +361,13 @@ public class SkinUtils {
                                 uuidString = element.getAsJsonObject().get("id").getAsString();
                             }
                             if (uuidString == null) {
-                                engageHoldoff();
-                                if (DEBUG) CompatibilityLib.getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
-                                synchronizeCallbackUUID(callback, null);
+                                SkinUtils.this.engageHoldoff();
+                                if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
+                                SkinUtils.this.synchronizeCallbackUUID(callback, null);
                                 return;
                             }
-                            if (DEBUG) CompatibilityLib.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
-                            uuid = UUID.fromString(addDashes(uuidString));
+                            if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
+                            uuid = UUID.fromString(SkinUtils.this.addDashes(uuidString));
 
                             YamlConfiguration config = new YamlConfiguration();
                             config.set("uuid", uuid.toString());
@@ -378,34 +378,34 @@ public class SkinUtils {
                             uuidCache.put(playerName, uuid);
                         }
                     } catch (Exception ex) {
-                        if (DEBUG) {
+                        if (SkinUtils.this.DEBUG) {
                             CompatibilityLib.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes", ex);
                         } else {
                             CompatibilityLib.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes");
                         }
-                        engageHoldoff();
+                        SkinUtils.this.engageHoldoff();
                         uuid = null;
                     }
 
-                    synchronizeCallbackUUID(callback, uuid);
+                    SkinUtils.this.synchronizeCallbackUUID(callback, uuid);
                 }
             }
-         }, holdoff / 50);
+         }, SkinUtils.this.holdoff / 50);
     }
 
-    private static String addDashes(String uuidString) {
+    private String addDashes(String uuidString) {
         StringBuilder builder = new StringBuilder(uuidString);
         for(int i=8, j=0; i<=20; i+=4, j++)
             builder.insert(i+j, '-');
         return builder.toString();
     }
 
-    public static void fetchProfile(final String playerName, final ProfileCallback callback) {
-        fetchUUID(playerName, new UUIDCallback() {
+    public void fetchProfile(final String playerName, final ProfileCallback callback) {
+        SkinUtils.this.fetchUUID(playerName, new UUIDCallback() {
             @Override
             public void result(UUID uuid) {
                 if (uuid != null) {
-                    fetchProfile(uuid, callback);
+                    SkinUtils.this.fetchProfile(uuid, callback);
                 } else {
                     callback.result(null);
                 }
@@ -413,7 +413,7 @@ public class SkinUtils {
         });
     }
     
-    public static void fetchProfile(final UUID uuid, final ProfileCallback callback) {
+    public void fetchProfile(final UUID uuid, final ProfileCallback callback) {
         final Player onlinePlayer = Bukkit.getPlayer(uuid);
         if (onlinePlayer != null) {
             boolean contains;
@@ -425,10 +425,10 @@ public class SkinUtils {
                 }
             }
             if (!contains) {
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+                Bukkit.getScheduler().runTaskAsynchronously(SkinUtils.this.plugin, new Runnable() {
                     @Override
                     public void run() {
-                        File cacheFolder = new File(plugin.getDataFolder(), "data/profiles");
+                        File cacheFolder = new File(SkinUtils.this.plugin.getDataFolder(), "data/profiles");
                         if (!cacheFolder.exists()) {
                             cacheFolder.mkdirs();
                         }
@@ -456,7 +456,7 @@ public class SkinUtils {
             callback.result(cached);
             return;
         }
-        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
+        Bukkit.getScheduler().runTaskLaterAsynchronously(SkinUtils.this.plugin, new Runnable() {
             @Override
             public void run() {
                 Object lock;
@@ -476,7 +476,7 @@ public class SkinUtils {
                         callback.result(cached);
                         return;
                     }
-                    File cacheFolder = new File(plugin.getDataFolder(), "data/profiles");
+                    File cacheFolder = new File(SkinUtils.this.plugin.getDataFolder(), "data/profiles");
                     if (!cacheFolder.exists()) {
                         cacheFolder.mkdirs();
                     }
@@ -487,27 +487,27 @@ public class SkinUtils {
                         synchronized (responseCache) {
                             responseCache.put(uuid, fromCache);
                         }
-                        synchronizeCallbackProfile(callback, fromCache);
+                        SkinUtils.this.synchronizeCallbackProfile(callback, fromCache);
                         return;
                     }
 
-                    if (DEBUG) {
+                    if (SkinUtils.this.DEBUG) {
                         CompatibilityLib.getLogger().info("Fetching profile for " + uuid);
                     }
                     try {
-                        String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
+                        String profileJSON = SkinUtils.this.fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
                         if (profileJSON.isEmpty()) {
-                            synchronizeCallbackProfile(callback, null);
-                            engageHoldoff();
-                            if (DEBUG) CompatibilityLib.getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
+                            SkinUtils.this.synchronizeCallbackProfile(callback, null);
+                            SkinUtils.this.engageHoldoff();
+                            if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
-                        if (DEBUG) CompatibilityLib.getLogger().info("Got profile: " + profileJSON);
+                        if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().info("Got profile: " + profileJSON);
                         JsonElement element = new JsonParser().parse(profileJSON);
                         if (element == null || !element.isJsonObject()) {
-                            synchronizeCallbackProfile(callback, null);
-                            engageHoldoff();
-                            if (DEBUG) CompatibilityLib.getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
+                            SkinUtils.this.synchronizeCallbackProfile(callback, null);
+                            SkinUtils.this.engageHoldoff();
+                            if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
 
@@ -528,17 +528,17 @@ public class SkinUtils {
                         }
 
                         if (encodedTextures == null) {
-                            synchronizeCallbackProfile(callback, null);
-                            engageHoldoff();
-                            if (DEBUG) CompatibilityLib.getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
+                            SkinUtils.this.synchronizeCallbackProfile(callback, null);
+                            SkinUtils.this.engageHoldoff();
+                            if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
                             return;
                         }
                         String decodedTextures = Base64Coder.decodeString(encodedTextures);
-                        if (DEBUG) CompatibilityLib.getLogger().info("Decoded textures: " + decodedTextures);
-                        String skinURL = getTextureURL(decodedTextures);
+                        if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().info("Decoded textures: " + decodedTextures);
+                        String skinURL = SkinUtils.this.getTextureURL(decodedTextures);
 
                         // A null skin URL here is normal if the player has no skin.
-                        if (DEBUG) CompatibilityLib.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
+                        if (SkinUtils.this.DEBUG) CompatibilityLib.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
                         ProfileResponse response = new ProfileResponse(uuid, profileJson.get("name").getAsString(), skinURL, profileJSON);
                         synchronized (responseCache) {
                             responseCache.put(uuid, response);
@@ -546,19 +546,19 @@ public class SkinUtils {
                         YamlConfiguration saveToCache = new YamlConfiguration();
                         response.save(saveToCache);
                         saveToCache.save(playerCache);
-                        synchronizeCallbackProfile(callback, response);
-                        holdoff = 0;
+                        SkinUtils.this.synchronizeCallbackProfile(callback, response);
+                        SkinUtils.this.holdoff = 0;
                     } catch (Exception ex) {
-                        if (DEBUG) {
+                        if (SkinUtils.this.DEBUG) {
                             CompatibilityLib.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes", ex);
                         } else {
                             CompatibilityLib.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes");
                         }
-                        engageHoldoff();
-                        synchronizeCallbackProfile(callback, null);
+                        SkinUtils.this.engageHoldoff();
+                        SkinUtils.this.synchronizeCallbackProfile(callback, null);
                     }
                 }
             }
-        }, holdoff / 50);
+        }, SkinUtils.this.holdoff / 50);
     }
 }

@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.magic.command.config;
 
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class Session {
     protected String type;
@@ -73,6 +73,6 @@ public class Session {
         player = new PlayerInformation();
         player.id = bukkitPlayer.getUniqueId().toString();
         player.name = bukkitPlayer.getName();
-        player.skinUrl = SkinUtils.getOnlineSkinURL(player.name);
+        player.skinUrl = CompatibilityLib.getSkinUtils().getOnlineSkinURL(player.name);
     }
 }

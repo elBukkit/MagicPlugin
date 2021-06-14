@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class RegisterTask implements Runnable {
     private static final Object registerLock = new Object();
@@ -28,7 +28,7 @@ public class RegisterTask implements Runnable {
 
         playerId = player.getUniqueId().toString();
         playerName = player.getName();
-        skinURL = SkinUtils.getOnlineSkinURL(playerName);
+        skinURL = CompatibilityLib.getSkinUtils().getOnlineSkinURL(playerName);
         this.code = code;
     }
 

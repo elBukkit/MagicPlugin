@@ -20,7 +20,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
     private final File configurationFile;
@@ -264,7 +263,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     @Override
     public ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoLabel) {
         photoLabel = photoLabel == null ? playerName : photoLabel;
-        String url = SkinUtils.getOnlineSkinURL(playerName);
+        String url = CompatibilityLib.getSkinUtils().getOnlineSkinURL(playerName);
         if (url != null) {
             MapView mapView = getURL(worldName, url, photoLabel, 8, 8, 40, 8, 8, 8, priority, playerName);
             return getMapItem(photoLabel, mapView);
@@ -367,7 +366,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      */
     @Override
     public void forceReloadPlayerPortrait(String worldName, String playerName) {
-        String url = SkinUtils.getOnlineSkinURL(playerName);
+        String url = CompatibilityLib.getSkinUtils().getOnlineSkinURL(playerName);
         if (url != null) {
             forceReload(worldName, url, 8, 8, 8, 8);
         }

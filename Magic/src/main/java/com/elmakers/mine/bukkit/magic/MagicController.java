@@ -247,7 +247,6 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -650,7 +649,7 @@ public class MagicController implements MageController {
         if (!CompatibilityLib.initialize(getPlugin(), getLogger())) {
             return false;
         }
-        SkinUtils.initialize(plugin);
+        CompatibilityLib.getSkinUtils().initialize(plugin);
         EntityMetadataUtils.initialize(plugin);
         return true;
     }
@@ -7533,7 +7532,7 @@ public class MagicController implements MageController {
         resourcePacks.load(properties, sender, !loaded);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
-        SkinUtils.DEBUG = logVerbosity >= 5;
+        CompatibilityLib.getSkinUtils().DEBUG = logVerbosity >= 5;
         LOG_WATCHDOG_TIMEOUT = properties.getInt("load_watchdog_timeout", 30000);
         logger.setColorize(properties.getBoolean("colored_logs", true));
 

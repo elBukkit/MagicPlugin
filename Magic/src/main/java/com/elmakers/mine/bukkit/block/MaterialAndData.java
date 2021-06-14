@@ -36,7 +36,6 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
-import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -684,7 +683,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 if (skullData.playerName != null) {
                     materialKey += ":" + skullData.playerName;
                 } else {
-                    String profileURL = SkinUtils.getProfileURL(skullData.profile);
+                    String profileURL = CompatibilityLib.getSkinUtils().getProfileURL(skullData.profile);
                     if (profileURL != null) {
                         materialKey += ":" + profileURL;
                     }

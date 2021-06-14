@@ -58,4 +58,8 @@ public class Platform {
     public SchematicUtils getSchematicUtils() {
         return new SchematicUtils();
     }
+
+    public SkinUtils getSkinUtils() {
+        return new SkinUtils();
+    }
 }
