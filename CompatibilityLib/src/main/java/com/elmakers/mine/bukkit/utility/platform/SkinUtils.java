@@ -2,7 +2,9 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
+import com.elmakers.mine.bukkit.utility.UUIDCallback;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -39,14 +41,6 @@ public class SkinUtils {
     private static final Map<String, UUID> uuidCache = new HashMap<>();
     private static final Map<String, Object> loadingUUIDs = new HashMap<>();
     private static final Map<UUID, Object> loadingProfiles = new HashMap<>();
-
-    public interface ProfileCallback {
-        void result(ProfileResponse response);
-    }
-
-    public interface UUIDCallback {
-        void result(UUID response);
-    }
 
     public void initialize(Plugin owner) {
         SkinUtils.this.plugin = owner;

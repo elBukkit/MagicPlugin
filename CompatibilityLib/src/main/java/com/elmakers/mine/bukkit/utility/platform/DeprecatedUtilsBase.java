@@ -24,6 +24,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 
@@ -164,7 +165,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public void setSkullOwner(final ItemStack itemStack, String ownerName, final SkullLoadedCallback callback) {
-        CompatibilityLib.getSkinUtils().fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
+        CompatibilityLib.getSkinUtils().fetchProfile(ownerName, new ProfileCallback() {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
@@ -184,7 +185,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public void setSkullOwner(final ItemStack itemStack, UUID ownerUUID, final SkullLoadedCallback callback) {
-        CompatibilityLib.getSkinUtils().fetchProfile(ownerUUID, new SkinUtils.ProfileCallback() {
+        CompatibilityLib.getSkinUtils().fetchProfile(ownerUUID, new ProfileCallback() {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
@@ -204,7 +205,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public void setOwner(final Skull skull, UUID uuid) {
-        CompatibilityLib.getSkinUtils().fetchProfile(uuid, new SkinUtils.ProfileCallback() {
+        CompatibilityLib.getSkinUtils().fetchProfile(uuid, new ProfileCallback() {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
@@ -218,7 +219,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public void setOwner(final Skull skull, String ownerName) {
-        CompatibilityLib.getSkinUtils().fetchProfile(ownerName, new SkinUtils.ProfileCallback() {
+        CompatibilityLib.getSkinUtils().fetchProfile(ownerName, new ProfileCallback() {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
