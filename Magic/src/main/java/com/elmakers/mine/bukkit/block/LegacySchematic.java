@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.util.Collection;
+import java.util.Map;
 
 import org.bukkit.Material;
 import org.bukkit.util.BlockVector;
@@ -8,14 +9,16 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 
-public class LegacySchematic extends AbstractSchematic {
+public class LegacySchematic extends AbstractSchematic implements LoadableSchematic {
 
     public LegacySchematic(MageController controller) {
         super(controller);
     }
 
-    public void load(short width, short height, short length, short[] blockTypes, byte[] data, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin, Vector offset) {
+    @Override
+    public void load(short width, short height, short length, int[] blockTypes, byte[] data, Map<Integer, String> palette, Collection<Object> tileEntityData, Collection<Object> entityData, Vector origin) {
         initialize(width, height, length);
         loadEntities(entityData, origin);
         loadTileEntities(tileEntityData);
