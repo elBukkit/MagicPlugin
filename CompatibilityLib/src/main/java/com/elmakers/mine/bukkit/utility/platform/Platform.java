@@ -36,7 +36,7 @@ public class Platform {
     }
 
     public CompatibilityUtils getCompatibilityUtils() {
-        return new CompatibilityUtils();
+        return new CompatibilityUtilsBase();
     }
 
     public DeprecatedUtils getDeprecatedUtils() {

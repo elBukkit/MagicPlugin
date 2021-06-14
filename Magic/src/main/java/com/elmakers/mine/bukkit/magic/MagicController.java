@@ -7554,7 +7554,7 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.effect.EffectPlayer.debugEffects(debugEffectLib);
         boolean effectLibStackTraces = properties.getBoolean("debug_effects_stack_traces", false);
         com.elmakers.mine.bukkit.effect.EffectPlayer.showStackTraces(effectLibStackTraces);
-        CompatibilityLib.getCompatibilityUtils().USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityLib.getCompatibilityUtils().USE_MAGIC_DAMAGE);
+        CompatibilityLib.getCompatibilityUtils().load(properties);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);

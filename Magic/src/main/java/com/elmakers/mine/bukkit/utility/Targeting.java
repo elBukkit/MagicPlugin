@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class Targeting {
     private static final Set<UUID> EMPTY_IGNORE_SET = Collections.emptySet();
@@ -469,7 +468,7 @@ public class Targeting {
 
         // A fuzzy optimization range-check. A hard range limit is enforced in the final target consolidator
         double rangePadded = (range + hitboxPadding + rangeQueryPadding);
-        rangePadded = Math.min(rangePadded, CompatibilityUtils.MAX_ENTITY_RANGE);
+        rangePadded = Math.min(rangePadded, CompatibilityLib.getCompatibilityUtils().getMaxEntityRange());
         double rangeSquaredPadded = rangePadded * rangePadded;
 
         List<Entity> entities = null;
@@ -485,7 +484,7 @@ public class Targeting {
             Vector queryRange = null;
             Location sourceLocation = source;
             if (useHitbox) {
-                range = Math.min(range, CompatibilityUtils.MAX_ENTITY_RANGE);
+                range = Math.min(range, CompatibilityLib.getCompatibilityUtils().getMaxEntityRange());
                 Vector direction = source.getDirection();
                 Location targetLocation = source.clone().add(direction.multiply(range));
                 BoundingBox bounds = new BoundingBox(source.toVector(), targetLocation.toVector());
