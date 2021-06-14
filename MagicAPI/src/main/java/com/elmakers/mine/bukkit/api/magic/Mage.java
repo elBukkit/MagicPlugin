@@ -537,6 +537,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     void deactivateGUI();
     void playSoundEffect(SoundEffect sound);
 
+    @Deprecated
     void showHoloText(Location location, String text, int duration);
     int getDebugLevel();
     void setDebugLevel(int level);

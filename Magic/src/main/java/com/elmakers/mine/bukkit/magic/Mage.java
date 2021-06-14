@@ -102,8 +102,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.economy.CustomCurrency;
-import com.elmakers.mine.bukkit.effect.HoloUtils;
-import com.elmakers.mine.bukkit.effect.Hologram;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
@@ -257,8 +255,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private GUIAction gui = null;
 
-    private Hologram hologram;
-    private boolean hologramIsVisible = false;
     private boolean isNPC = false;
 
     private List<ItemStack> respawnItems;
@@ -3286,33 +3282,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    @Deprecated
     public void showHoloText(Location location, String text, int duration) {
-        // TODO: Broadcast
-        if (!isPlayer()) return;
-        final Player player = getPlayer();
-
-        if (hologram == null) {
-            hologram = HoloUtils.createHoloText(location, text);
-        } else {
-            if (hologramIsVisible) {
-                hologram.hide(player);
-            }
-            hologram.teleport(location);
-            hologram.setLabel(text);
-        }
-
-        hologram.show(player);
-
-        BukkitScheduler scheduler = Bukkit.getScheduler();
-        if (duration > 0) {
-            scheduler.scheduleSyncDelayedTask(controller.getPlugin(), new Runnable() {
-                @Override
-                public void run() {
-                    hologram.hide(player);
-                    hologramIsVisible = false;
-                }
-            }, duration);
-        }
     }
 
     @Override
