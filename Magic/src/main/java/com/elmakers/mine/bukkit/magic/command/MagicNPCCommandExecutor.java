@@ -29,7 +29,6 @@ import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public class MagicNPCCommandExecutor extends MagicTabExecutor {
@@ -429,7 +428,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         meta.setPages(pages);
         selections.highlight(npc);
         book.setItemMeta(meta);
-        book = ItemUtils.makeReal(book);
+        book = CompatibilityLib.getItemUtils().makeReal(book);
         NBTUtils.setMeta(book, "npc", npc.getId().toString());
         mage.giveItem(book);
         mage.sendMessage(ChatColor.GREEN + "Edit the script book and use this command again while holding the book to set the NPC's chat dialog");

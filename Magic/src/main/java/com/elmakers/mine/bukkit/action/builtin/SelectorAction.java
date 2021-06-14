@@ -55,7 +55,6 @@ import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 import de.slikey.effectlib.math.EquationStore;
@@ -780,9 +779,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (icon == null) {
                 this.icon = new ItemStack(Material.AIR);
             } else {
-                icon = ItemUtils.makeReal(icon);
-                ItemUtils.makeUnbreakable(icon);
-                ItemUtils.hideFlags(icon, 63);
+                icon = CompatibilityLib.getItemUtils().makeReal(icon);
+                CompatibilityLib.getItemUtils().makeUnbreakable(icon);
+                CompatibilityLib.getItemUtils().hideFlags(icon, 63);
                 ItemMeta meta = icon.getItemMeta();
                 meta.setDisplayName(" ");
                 icon.setItemMeta(meta);
@@ -889,7 +888,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             // Choose icon if none was set in config
             if (icon == null && items != null) {
-                icon = ItemUtils.getCopy(items.get(0));
+                icon = CompatibilityLib.getItemUtils().getCopy(items.get(0));
                 // This prevents getting two copies of the lore
                 // Only do this if lore was actually provided, since this setting is on by default for the Shop action
                 if (applyLoreToItem && this.lore != null && !this.lore.isEmpty()) {
@@ -1015,7 +1014,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             if (icon == null && defaults.icon != null) {
-                this.icon = ItemUtils.getCopy(defaults.icon);
+                this.icon = CompatibilityLib.getItemUtils().getCopy(defaults.icon);
             }
 
             ItemMeta meta = icon == null ? null : icon.getItemMeta();
@@ -1060,10 +1059,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 meta.setLore(itemLore);
             }
             icon.setItemMeta(meta);
-            icon = ItemUtils.makeReal(icon);
+            icon = CompatibilityLib.getItemUtils().makeReal(icon);
 
-            ItemUtils.makeUnbreakable(icon);
-            ItemUtils.hideFlags(icon, 63);
+            CompatibilityLib.getItemUtils().makeUnbreakable(icon);
+            CompatibilityLib.getItemUtils().hideFlags(icon, 63);
 
             if (unavailable) {
                 if (unavailableMessage != null && !unavailableMessage.isEmpty()) {
@@ -1296,7 +1295,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (items != null && caster == null) {
                 boolean gave = false;
                 for (ItemStack item : items) {
-                    ItemStack copy = ItemUtils.getCopy(item);
+                    ItemStack copy = CompatibilityLib.getItemUtils().getCopy(item);
                     if (allowDroppedItems) {
                         mage.giveItem(copy, putInHand);
                         gave = true;
@@ -1389,7 +1388,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (state instanceof Container) {
                 Container container = (Container)state;
                 ItemStack containerItem = container.getInventory().getItem(slot);
-                if (ItemUtils.isEmpty(containerItem)) return false;
+                if (CompatibilityLib.getItemUtils().isEmpty(containerItem)) return false;
                 ItemStack giveItem = items.get(0);
                 if (giveItem.getAmount() != containerItem.getAmount()) return false;
                 if (context.getController().itemsAreEqual(giveItem, containerItem)) {
@@ -1659,7 +1658,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 List<ConfigurationSection> items = new ArrayList<>();
                 for (ItemStack item : container.getInventory()) {
                     ConfigurationSection itemConfig = ConfigurationUtils.newConfigurationSection();
-                    if (ItemUtils.isEmpty(item)) {
+                    if (CompatibilityLib.getItemUtils().isEmpty(item)) {
                         itemConfig.set("placeholder", true);
                     } else {
                         String key = context.getController().getItemKey(item);

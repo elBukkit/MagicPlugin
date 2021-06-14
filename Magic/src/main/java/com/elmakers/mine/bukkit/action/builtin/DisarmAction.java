@@ -29,8 +29,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class DisarmAction extends BaseSpellAction
 {
@@ -110,7 +110,7 @@ public class DisarmAction extends BaseSpellAction
             PlayerInventory playerInventory = ((Player)entity).getInventory();
             for (originalSlot = 0; originalSlot < playerInventory.getSize(); originalSlot++) {
                 ItemStack item = playerInventory.getItem(originalSlot);
-                if (ItemUtils.isEmpty(item)) continue;
+                if (CompatibilityLib.getItemUtils().isEmpty(item)) continue;
 
                 ItemMeta meta = item.getItemMeta();
                 if (meta == null || !meta.hasDisplayName()) continue;
@@ -122,7 +122,7 @@ public class DisarmAction extends BaseSpellAction
             }
         }
 
-        if (ItemUtils.isEmpty(stack))
+        if (CompatibilityLib.getItemUtils().isEmpty(stack))
         {
             return SpellResult.NO_TARGET;
         }

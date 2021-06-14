@@ -38,7 +38,6 @@ import com.elmakers.mine.bukkit.tasks.WandCastTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandInventory;
@@ -115,7 +114,7 @@ public class InventoryController implements Listener {
         // on grindstones for inventory interaction, but just in case.
         if (event.getInventory().getType().name().equals("GRINDSTONE")) {
             ItemStack oldCursor = event.getOldCursor();
-            oldCursor = oldCursor.hasItemMeta() ? ItemUtils.makeReal(oldCursor) : oldCursor;
+            oldCursor = oldCursor.hasItemMeta() ? CompatibilityLib.getItemUtils().makeReal(oldCursor) : oldCursor;
             if (Wand.isSpecial(oldCursor)) {
                 for (int slot : event.getRawSlots()) {
                     if (slot == 1 || slot == 0) {
@@ -131,7 +130,7 @@ public class InventoryController implements Listener {
         if (isSkillInventory) {
             // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
             ItemStack oldCursor = event.getOldCursor();
-            oldCursor = oldCursor.hasItemMeta() ? ItemUtils.makeReal(oldCursor) : oldCursor;
+            oldCursor = oldCursor.hasItemMeta() ? CompatibilityLib.getItemUtils().makeReal(oldCursor) : oldCursor;
             boolean isSpell = Wand.isSpell(oldCursor);
             boolean isSpellInventory = false;
             Set<Integer> slots = event.getRawSlots();
@@ -155,7 +154,7 @@ public class InventoryController implements Listener {
         if (isArmorSlot || isOffhandSlot || isHeldSlot) {
             // This is intentionally copied from above to avoid doing it if we don't need to
             ItemStack oldCursor = event.getOldCursor();
-            oldCursor = oldCursor.hasItemMeta() ? ItemUtils.makeReal(oldCursor) : oldCursor;
+            oldCursor = oldCursor.hasItemMeta() ? CompatibilityLib.getItemUtils().makeReal(oldCursor) : oldCursor;
 
             // Prevent wearing spells
             if (isArmorSlot && Wand.isSpell(oldCursor)) {
@@ -256,12 +255,12 @@ public class InventoryController implements Listener {
             return;
         }
 
-        if (clickedItem != null && ItemUtils.isTemporary(clickedItem)) {
-            String message = ItemUtils.getTemporaryMessage(clickedItem);
+        if (clickedItem != null && CompatibilityLib.getItemUtils().isTemporary(clickedItem)) {
+            String message = CompatibilityLib.getItemUtils().getTemporaryMessage(clickedItem);
             if (message != null && message.length() > 1) {
                 mage.sendMessage(message);
             }
-            ItemStack replacement = ItemUtils.getReplacement(clickedItem);
+            ItemStack replacement = CompatibilityLib.getItemUtils().getReplacement(clickedItem);
             event.setCurrentItem(replacement);
             event.setCancelled(true);
             mage.armorUpdated();
@@ -439,7 +438,7 @@ public class InventoryController implements Listener {
                 }
             } else {
                 // Prevent moving items into the skill inventory via the hotbar buttons
-                if (isHotbar && isWatchedSlot && !ItemUtils.isEmpty(player.getInventory().getItem(event.getHotbarButton()))) {
+                if (isHotbar && isWatchedSlot && !CompatibilityLib.getItemUtils().isEmpty(player.getInventory().getItem(event.getHotbarButton()))) {
                     event.setCancelled(true);
                     return;
                 }
@@ -620,7 +619,7 @@ public class InventoryController implements Listener {
 
                     // Prevent putting any non-skill item back into a skill inventory
                     if (wandMode == WandMode.SKILLS && isWatchedSlot
-                        && !ItemUtils.isEmpty(heldItem) && !Wand.isSkill(heldItem)) {
+                        && !CompatibilityLib.getItemUtils().isEmpty(heldItem) && !Wand.isSkill(heldItem)) {
                         event.setCancelled(true);
                     }
                 }

@@ -19,8 +19,8 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.utility.ColorHD;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class ColorItemAction extends BaseSpellAction {
     private List<InventorySlot> slots;
@@ -104,7 +104,7 @@ public class ColorItemAction extends BaseSpellAction {
     }
 
     protected boolean color(CastContext context, ItemStack itemStack) {
-        if (ItemUtils.isEmpty(itemStack)) {
+        if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) {
             return false;
         }
         ItemMeta meta = itemStack.getItemMeta();

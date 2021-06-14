@@ -16,7 +16,6 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 
@@ -78,7 +77,7 @@ public class EnchantingController implements Listener {
 
     @EventHandler
     public void onPrepareEnchantItem(PrepareItemEnchantEvent event) {
-        Wand wand = controller.getIfWand(ItemUtils.getCopy(event.getItem()));
+        Wand wand = controller.getIfWand(CompatibilityLib.getItemUtils().getCopy(event.getItem()));
         if (wand == null) return;
 
         // In this context we do not want to do anything special for enchantable wands

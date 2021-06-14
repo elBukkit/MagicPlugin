@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class LockAction extends BaseSpellAction
 {
@@ -155,8 +154,8 @@ public class LockAction extends BaseSpellAction
         }
         meta.setDisplayName(keyName);
         keyItem.setItemMeta(meta);
-        keyItem = ItemUtils.makeReal(keyItem);
-        ItemUtils.makeUnplaceable(keyItem);
+        keyItem = CompatibilityLib.getItemUtils().makeReal(keyItem);
+        CompatibilityLib.getItemUtils().makeUnplaceable(keyItem);
         CompatibilityLib.getInventoryUtils().makeKeep(keyItem);
         mage.giveItem(keyItem);
         return keyItem;

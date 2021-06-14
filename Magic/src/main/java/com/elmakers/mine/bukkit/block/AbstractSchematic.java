@@ -19,7 +19,6 @@ import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public abstract class AbstractSchematic implements Schematic {
@@ -129,7 +128,7 @@ public abstract class AbstractSchematic implements Schematic {
                 if (rotation < Rotation.values().length) {
                     rot = Rotation.values()[rotation];
                 }
-                ItemStack item = ItemUtils.getItem(NBTUtils.getNode(entity, "Item"));
+                ItemStack item = CompatibilityLib.getItemUtils().getItem(NBTUtils.getNode(entity, "Item"));
                 EntityData itemFrame = com.elmakers.mine.bukkit.entity.EntityData.loadItemFrame(controller, position, item, getFacing(facing), rot);
                 entities.add(itemFrame);
             }

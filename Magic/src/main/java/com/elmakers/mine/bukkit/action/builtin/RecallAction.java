@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
@@ -973,10 +972,10 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     meta.setLore(lore);
                 }
                 waypointItem.setItemMeta(meta);
-                waypointItem = ItemUtils.makeReal(waypointItem);
-                ItemUtils.hideFlags(waypointItem, 63);
+                waypointItem = CompatibilityLib.getItemUtils().makeReal(waypointItem);
+                CompatibilityLib.getItemUtils().hideFlags(waypointItem, 63);
                 NBTUtils.setMeta(waypointItem, "waypoint", "true");
-                ItemUtils.makeUnbreakable(waypointItem);
+                CompatibilityLib.getItemUtils().makeUnbreakable(waypointItem);
                 if (isPlaceholder) {
                     NBTUtils.setMetaBoolean(waypointItem, "placeholder", true);
                 }
@@ -1020,8 +1019,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 meta.setLore(lore);
             }
             markerItem.setItemMeta(meta);
-            markerItem = ItemUtils.makeReal(markerItem);
-            ItemUtils.hideFlags(markerItem, 63);
+            markerItem = CompatibilityLib.getItemUtils().makeReal(markerItem);
+            CompatibilityLib.getItemUtils().hideFlags(markerItem, 63);
             NBTUtils.setMetaInt(markerItem, "move_marker", marker);
 
             displayInventory.setItem(inventoryIndex, markerItem);

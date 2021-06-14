@@ -12,7 +12,6 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public class CaptureAction extends BaseSpellAction {
@@ -68,7 +67,7 @@ public class CaptureAction extends BaseSpellAction {
             meta.setDisplayName(title);
             spawnEgg.setItemMeta(meta);
         }
-        spawnEgg = ItemUtils.makeReal(spawnEgg);
+        spawnEgg = CompatibilityLib.getItemUtils().makeReal(spawnEgg);
 
         // Add entity type attribute
         NBTUtils.setMeta(savedEntity, "id", entityTypeString);

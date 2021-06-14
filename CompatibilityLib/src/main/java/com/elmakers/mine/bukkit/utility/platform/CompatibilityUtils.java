@@ -182,9 +182,9 @@ public class CompatibilityUtils {
     }
 
     public boolean setDisplayNameRaw(ItemStack itemStack, String displayName) {
-        Object handle = ItemUtils.getHandle(itemStack);
+        Object handle = CompatibilityLib.getItemUtils().getHandle(itemStack);
         if (handle == null) return false;
-        Object tag = ItemUtils.getTag(handle);
+        Object tag = CompatibilityLib.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
         Object displayNode = NBTUtils.createNode(tag, "display");
@@ -353,7 +353,7 @@ public class CompatibilityUtils {
                 if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
 
                 newItemFrame = (ItemFrame) bukkitEntity;
-                newItemFrame.setItem(ItemUtils.getCopy(item));
+                newItemFrame.setItem(CompatibilityLib.getItemUtils().getCopy(item));
                 newItemFrame.setRotation(rotation);
             }
         } catch (Throwable ex) {
@@ -1549,9 +1549,9 @@ public class CompatibilityUtils {
 
     public boolean removeItemAttribute(ItemStack item, Attribute attribute) {
         try {
-            Object handle = ItemUtils.getHandle(item);
+            Object handle = CompatibilityLib.getItemUtils().getHandle(item);
             if (handle == null) return false;
-            Object tag = ItemUtils.getTag(handle);
+            Object tag = CompatibilityLib.getItemUtils().getTag(handle);
             if (tag == null) return false;
 
             String attributeName = CompatibilityUtils.this.toMinecraftAttribute(attribute);
@@ -1581,9 +1581,9 @@ public class CompatibilityUtils {
 
     public boolean removeItemAttributes(ItemStack item) {
         try {
-            Object handle = ItemUtils.getHandle(item);
+            Object handle = CompatibilityLib.getItemUtils().getHandle(item);
             if (handle == null) return false;
-            Object tag = ItemUtils.getTag(handle);
+            Object tag = CompatibilityLib.getItemUtils().getTag(handle);
             if (tag == null) return false;
 
             Object attributesNode = NBTUtils.getNode(tag, "AttributeModifiers");
@@ -1643,11 +1643,11 @@ public class CompatibilityUtils {
             return true;
         }
         try {
-            Object handle = ItemUtils.getHandle(item);
+            Object handle = CompatibilityLib.getItemUtils().getHandle(item);
             if (handle == null) {
                 return false;
             }
-            Object tag = ItemUtils.getTag(handle);
+            Object tag = CompatibilityLib.getItemUtils().getTag(handle);
             if (tag == null) return false;
             
             Object attributesNode = NBTUtils.getNode(tag, "AttributeModifiers");
@@ -2239,13 +2239,13 @@ public class CompatibilityUtils {
 
         if (CompatibilityUtils.this.dummyItem == null) {
              CompatibilityUtils.this.dummyItem = new ItemStack(Material.DIRT, 64);
-             CompatibilityUtils.this.dummyItem = ItemUtils.makeReal(CompatibilityUtils.this.dummyItem);
+             CompatibilityUtils.this.dummyItem = CompatibilityLib.getItemUtils().makeReal(CompatibilityUtils.this.dummyItem);
         }
         CompatibilityUtils.this.dummyItem.setAmount(64);
 
         try {
             Object world = NMSUtils.getHandle(location.getWorld());
-            Object itemStack = ItemUtils.getHandle(CompatibilityUtils.this.dummyItem);
+            Object itemStack = CompatibilityLib.getItemUtils().getHandle(CompatibilityUtils.this.dummyItem);
             Object blockPosition = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             Object result = NMSUtils.class_ItemDye_bonemealMethod.invoke(null, itemStack, world, blockPosition);
             return (Boolean)result;
@@ -2701,7 +2701,7 @@ public class CompatibilityUtils {
             ItemStack blockItem = new ItemStack(block.getType());
             Object originatorHandle = NMSUtils.getHandle(originator);
             Object world = NMSUtils.getHandle(block.getWorld());
-            Object item = ItemUtils.getHandle(ItemUtils.makeReal(blockItem));
+            Object item = CompatibilityLib.getItemUtils().getHandle(CompatibilityLib.getItemUtils().makeReal(blockItem));
             if (originatorHandle == null || world == null || item == null) {
                 return false;
             }
@@ -3000,7 +3000,7 @@ public class CompatibilityUtils {
             meta.setPower(power);
             itemStack.setItemMeta(meta);
 
-            Object item = ItemUtils.getHandle(ItemUtils.makeReal(itemStack));
+            Object item = CompatibilityLib.getItemUtils().getHandle(CompatibilityLib.getItemUtils().makeReal(itemStack));
             final Object fireworkHandle = NMSUtils.class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
             CompatibilityUtils.this.setSilent(fireworkHandle, silent);
 

@@ -36,7 +36,6 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.google.common.base.Objects;
@@ -150,7 +149,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         // TODO: Could/should this store ALL custom tag data?
         if (item.hasItemMeta()) {
-            item = ItemUtils.makeReal(item);
+            item = CompatibilityLib.getItemUtils().makeReal(item);
             int customModelData = NBTUtils.getMetaInt(item, "CustomModelData", 0);
             if (customModelData > 0) {
                 tags = new HashMap<>();
@@ -844,7 +843,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             stack.setDurability(data);
         }
         if (tags != null) {
-            stack = ItemUtils.makeReal(stack);
+            stack = CompatibilityLib.getItemUtils().makeReal(stack);
             CompatibilityLib.getInventoryUtils().saveTagsToItem(tags, stack);
         }
         if (DefaultMaterials.isPlayerSkull(this))

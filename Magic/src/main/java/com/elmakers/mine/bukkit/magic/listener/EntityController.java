@@ -50,7 +50,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -348,9 +347,9 @@ public class EntityController implements Listener {
             if (itemStack == null || itemStack.getType() == Material.AIR) continue;
 
             // Remove temporary items from inventory and drops
-            if (ItemUtils.isTemporary(itemStack)) {
-                ItemStack replacement = ItemUtils.getReplacement(itemStack);
-                if (!ItemUtils.isEmpty(replacement)) {
+            if (CompatibilityLib.getItemUtils().isTemporary(itemStack)) {
+                ItemStack replacement = CompatibilityLib.getItemUtils().getReplacement(itemStack);
+                if (!CompatibilityLib.getItemUtils().isEmpty(replacement)) {
                     drops.add(replacement);
                 }
                 drops.remove(itemStack);
@@ -470,7 +469,7 @@ public class EntityController implements Listener {
 
         Item itemEntity = event.getEntity();
         ItemStack spawnedItem = itemEntity.getItemStack();
-        if (ItemUtils.isTemporary(spawnedItem)) {
+        if (CompatibilityLib.getItemUtils().isTemporary(spawnedItem)) {
             controller.info("*** Trying to drop a temporary item: " + TextUtils.nameItem(event.getEntity().getItemStack()), 18);
             event.setCancelled(true);
             return;

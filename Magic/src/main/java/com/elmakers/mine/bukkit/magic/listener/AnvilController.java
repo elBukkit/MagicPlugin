@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class AnvilController implements Listener {
@@ -56,12 +56,12 @@ public class AnvilController implements Listener {
 
         // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
         ItemStack oldCursor = event.getOldCursor();
-        oldCursor = oldCursor.hasItemMeta() ? ItemUtils.makeReal(oldCursor) : oldCursor;
+        oldCursor = oldCursor.hasItemMeta() ? CompatibilityLib.getItemUtils().makeReal(oldCursor) : oldCursor;
 
         if (Wand.isWand(oldCursor)) {
             ItemStack item = event.getNewItems().get(0);
             if (item != null && item.hasItemMeta()) {
-                item = ItemUtils.makeReal(item);
+                item = CompatibilityLib.getItemUtils().makeReal(item);
                 if (Wand.isWand(item)) {
                     Wand wand = controller.getWand(item);
                     wand.updateName(false, false);

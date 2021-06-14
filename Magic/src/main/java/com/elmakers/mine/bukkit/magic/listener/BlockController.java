@@ -51,7 +51,6 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.UndoBlockTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 
@@ -150,7 +149,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                     if (items != null) {
                         Location location = block.getLocation();
                         for (ItemStack item : items) {
-                            if (!ItemUtils.isEmpty(item)) {
+                            if (!CompatibilityLib.getItemUtils().isEmpty(item)) {
                                 location.getWorld().dropItemNaturally(location, item);
                             }
                         }
@@ -168,13 +167,13 @@ public class BlockController implements Listener, ChunkLoadListener {
         Player player = event.getPlayer();
         ItemStack itemStack = event.getItemInHand();
 
-        if (ItemUtils.isTemporary(itemStack)) {
+        if (CompatibilityLib.getItemUtils().isTemporary(itemStack)) {
             event.setCancelled(true);
             player.getInventory().setItemInMainHand(null);
             return;
         }
 
-        if (ItemUtils.isUnplaceable(itemStack) || Wand.isSpecial(itemStack)) {
+        if (CompatibilityLib.getItemUtils().isUnplaceable(itemStack) || Wand.isSpecial(itemStack)) {
             event.setCancelled(true);
             return;
         }

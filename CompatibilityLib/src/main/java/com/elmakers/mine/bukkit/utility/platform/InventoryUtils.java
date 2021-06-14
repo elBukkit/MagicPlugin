@@ -35,7 +35,7 @@ import com.google.common.collect.Multimap;
 public class InventoryUtils {
 
     public CurrencyAmount getCurrency(ItemStack item) {
-        if (ItemUtils.isEmpty(item)) return null;
+        if (CompatibilityLib.getItemUtils().isEmpty(item)) return null;
 
         Object currency = NBTUtils.getNode(item, "currency");
         if (currency != null) {
@@ -59,9 +59,9 @@ public class InventoryUtils {
 
     public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item)
     {
-        Object handle = ItemUtils.getHandle(item);
+        Object handle = CompatibilityLib.getItemUtils().getHandle(item);
         if (handle == null) return false;
-        Object tag = ItemUtils.getTag(handle);
+        Object tag = CompatibilityLib.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
         return InventoryUtils.this.addTagsToNBT(CompatibilityLib.getCompatibilityUtils().getMap(tags), tag);
@@ -69,9 +69,9 @@ public class InventoryUtils {
 
     public boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
     {
-        Object handle = ItemUtils.getHandle(item);
+        Object handle = CompatibilityLib.getItemUtils().getHandle(item);
         if (handle == null) return false;
-        Object tag = ItemUtils.getTag(handle);
+        Object tag = CompatibilityLib.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
         return InventoryUtils.this.addTagsToNBT(tags, tag);
@@ -79,9 +79,9 @@ public class InventoryUtils {
 
     public boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
         if (skillItem == null) return false;
-        Object handle = ItemUtils.getHandle(skillItem);
+        Object handle = CompatibilityLib.getItemUtils().getHandle(skillItem);
         if (handle == null) return false;
-        Object tag = ItemUtils.getTag(handle);
+        Object tag = CompatibilityLib.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
         NBTUtils.setMetaBoolean(tag, "skill", true);
@@ -415,7 +415,7 @@ public class InventoryUtils {
             Method getResultsMethod = inventory.getClass().getMethod("getResultInventory");
             Object inv = getResultsMethod.invoke(inventory);
             Method setItemMethod = inv.getClass().getMethod("setItem", Integer.TYPE, NMSUtils.class_ItemStack);
-            setItemMethod.invoke(inv, 0, ItemUtils.getHandle(item));
+            setItemMethod.invoke(inv, 0, CompatibilityLib.getItemUtils().getHandle(item));
             return true;
         } catch(Throwable ex) {
             ex.printStackTrace();
@@ -435,7 +435,7 @@ public class InventoryUtils {
 
     public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
         try {
-            itemStack = ItemUtils.makeReal(itemStack);
+            itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
             Object skullOwner = NBTUtils.createNode(itemStack, "SkullOwner");
             NBTUtils.setMeta(skullOwner, "Name", ownerName);
             return InventoryUtils.this.setSkullURL(itemStack, url, id);
@@ -454,7 +454,7 @@ public class InventoryUtils {
 
     public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String name) {
         try {
-            if (ItemUtils.isEmpty(itemStack)) {
+            if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) {
                 return itemStack;
             }
 
@@ -464,8 +464,8 @@ public class InventoryUtils {
             if (properties == null) {
                 return itemStack;
             }
-            itemStack = ItemUtils.makeReal(itemStack);
-            if (ItemUtils.isEmpty(itemStack)) {
+            itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
+            if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) {
                 return itemStack;
             }
 

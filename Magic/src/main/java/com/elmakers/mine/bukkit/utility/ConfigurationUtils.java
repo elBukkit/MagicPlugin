@@ -47,7 +47,6 @@ import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfiguration;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 import de.slikey.effectlib.util.ConfigUtils;
 
@@ -305,7 +304,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (item == null) {
             return false;
         }
-        Object tag = ItemUtils.getTag(item);
+        Object tag = CompatibilityLib.getItemUtils().getTag(item);
         if (tag == null) return false;
 
         return loadAllTagsFromNBT(tags, tag);

@@ -247,7 +247,6 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
@@ -2991,7 +2990,7 @@ public class MagicController implements MageController {
     }
 
     public boolean isOffhandMaterial(ItemStack itemStack) {
-        return (!ItemUtils.isEmpty(itemStack) && offhandMaterials.testItem(itemStack));
+        return (!CompatibilityLib.getItemUtils().isEmpty(itemStack) && offhandMaterials.testItem(itemStack));
     }
 
     public boolean hasAddedExamples() {
@@ -5297,7 +5296,7 @@ public class MagicController implements MageController {
                         com.elmakers.mine.bukkit.api.block.MaterialAndData currencyIcon = currency == null ? null : currency.getIcon();
                         if (pieces.length > 1 && currencyIcon != null) {
                             itemStack = currencyIcon.getItemStack(1);
-                            if (ItemUtils.isEmpty(itemStack)) {
+                            if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) {
                                 getLogger().warning("Trying to get a currency item for '" + itemKey + "', which an invalid icon defined");
                                 return null;
                             }
@@ -5327,9 +5326,9 @@ public class MagicController implements MageController {
                                 meta.setLore(lore);
                             }
                             itemStack.setItemMeta(meta);
-                            itemStack = ItemUtils.makeReal(itemStack);
-                            ItemUtils.makeUnbreakable(itemStack);
-                            ItemUtils.hideFlags(itemStack, 63);
+                            itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
+                            CompatibilityLib.getItemUtils().makeUnbreakable(itemStack);
+                            CompatibilityLib.getItemUtils().hideFlags(itemStack, 63);
                             Object currencyNode = NBTUtils.createNode(itemStack, "currency");
                             NBTUtils.setMetaInt(currencyNode, "amount", intAmount);
                             NBTUtils.setMeta(currencyNode, "type", itemKey);
@@ -5426,7 +5425,7 @@ public class MagicController implements MageController {
             meta.setDisplayName(title);
             spawnEgg.setItemMeta(meta);
 
-            spawnEgg = ItemUtils.makeReal(spawnEgg);
+            spawnEgg = CompatibilityLib.getItemUtils().makeReal(spawnEgg);
             Object entityTag = NBTUtils.createNode(spawnEgg, "EntityTag");
             NBTUtils.setMeta(entityTag, "CustomName", "{\"text\":\"" + customName + "\"}");
         }
@@ -5514,8 +5513,8 @@ public class MagicController implements MageController {
 
     @Override
     public boolean itemsAreEqual(ItemStack first, ItemStack second, boolean ignoreDamage) {
-        boolean firstIsEmpty = ItemUtils.isEmpty(first);
-        boolean secondIsEmpty = ItemUtils.isEmpty(second);
+        boolean firstIsEmpty = CompatibilityLib.getItemUtils().isEmpty(first);
+        boolean secondIsEmpty = CompatibilityLib.getItemUtils().isEmpty(second);
         if (secondIsEmpty && firstIsEmpty) return true;
         if (secondIsEmpty || firstIsEmpty) return false;
         if (first.getType() != second.getType()) return false;
@@ -5525,8 +5524,8 @@ public class MagicController implements MageController {
         boolean secondIsWand = Wand.isWandOrUpgrade(second);
         if (firstIsWand || secondIsWand) {
             if (!firstIsWand || !secondIsWand) return false;
-            Wand firstWand = getWand(ItemUtils.getCopy(first));
-            Wand secondWand = getWand(ItemUtils.getCopy(second));
+            Wand firstWand = getWand(CompatibilityLib.getItemUtils().getCopy(first));
+            Wand secondWand = getWand(CompatibilityLib.getItemUtils().getCopy(second));
             String firstTemplate = firstWand.getTemplateKey();
             String secondTemplate = secondWand.getTemplateKey();
             if (firstTemplate == null || secondTemplate == null) return false;
@@ -5585,20 +5584,20 @@ public class MagicController implements MageController {
             return null;
         }
         if (itemSection.contains("wand")) {
-            if (ItemUtils.isEmpty(item)) {
+            if (CompatibilityLib.getItemUtils().isEmpty(item)) {
                 item.setType(Wand.DefaultWandMaterial);
             }
-            item = ItemUtils.makeReal(item);
+            item = CompatibilityLib.getItemUtils().makeReal(item);
             Wand.configToItem(itemSection, item);
         } else if (itemSection.contains("spell")) {
-            item = ItemUtils.makeReal(item);
+            item = CompatibilityLib.getItemUtils().makeReal(item);
             Object spellNode = NBTUtils.createNode(item, "spell");
             NBTUtils.setMeta(spellNode, "key", itemSection.getString("spell"));
             if (itemSection.contains("skill")) {
                 NBTUtils.setMeta(item, "skill", "true");
             }
         } else if (itemSection.contains("brush")) {
-            item = ItemUtils.makeReal(item);
+            item = CompatibilityLib.getItemUtils().makeReal(item);
             NBTUtils.setMeta(item, "brush", itemSection.getString("brush"));
         }
         return item;
@@ -6379,7 +6378,7 @@ public class MagicController implements MageController {
         short durability = CompatibilityLib.isCurrentVersion() ? 0 : (short) mapId;
         ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
         if (CompatibilityLib.isCurrentVersion()) {
-            mapItem = ItemUtils.makeReal(mapItem);
+            mapItem = CompatibilityLib.getItemUtils().makeReal(mapItem);
             NBTUtils.setMetaInt(mapItem, "map", mapId);
         }
         return mapItem;
@@ -6405,7 +6404,7 @@ public class MagicController implements MageController {
     @Override
     public Object getWandProperty(ItemStack item, String key) {
         Preconditions.checkNotNull(key, "key");
-        if (ItemUtils.isEmpty(item)) return null;
+        if (CompatibilityLib.getItemUtils().isEmpty(item)) return null;
         Object wandNode = NBTUtils.getNode(item, Wand.WAND_KEY);
         if (wandNode == null) return null;
         Object value = CompatibilityLib.getInventoryUtils().getMetaObject(wandNode, key);
@@ -6424,7 +6423,7 @@ public class MagicController implements MageController {
         Preconditions.checkNotNull(key, "key");
         Preconditions.checkNotNull(defaultValue, "defaultValue");
 
-        if (ItemUtils.isEmpty(item)) {
+        if (CompatibilityLib.getItemUtils().isEmpty(item)) {
             return defaultValue;
         }
 

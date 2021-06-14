@@ -4,6 +4,8 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+
 public class NBTUtils {
     public static String getMetaString(ItemStack stack, String tag, String defaultValue) {
         String result = getMetaString(stack, tag);
@@ -11,15 +13,15 @@ public class NBTUtils {
     }
 
     public static boolean hasMeta(ItemStack stack, String tag) {
-        if (ItemUtils.isEmpty(stack)) return false;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return false;
         return getNode(stack, tag) != null;
     }
 
     public static Object getNode(ItemStack stack, String tag) {
-        if (ItemUtils.isEmpty(stack)) return null;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return null;
         Object meta = null;
         try {
-            Object tagObject = ItemUtils.getTag(stack);
+            Object tagObject = CompatibilityLib.getItemUtils().getTag(stack);
             if (tagObject == null) return null;
             meta = NMSUtils.class_NBTTagCompound_getMethod.invoke(tagObject, tag);
         } catch (Throwable ex) {
@@ -63,13 +65,13 @@ public class NBTUtils {
     }
 
     public static Object createNode(ItemStack stack, String tag) {
-        if (ItemUtils.isEmpty(stack)) return null;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return null;
         Object outputObject = getNode(stack, tag);
         if (outputObject == null) {
             try {
-                Object craft = ItemUtils.getHandle(stack);
+                Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
                 if (craft == null) return null;
-                Object tagObject = ItemUtils.getTag(craft);
+                Object tagObject = CompatibilityLib.getItemUtils().getTag(craft);
                 if (tagObject == null) {
                     tagObject = NMSUtils.class_NBTTagCompound_constructor.newInstance();
                     NMSUtils.class_ItemStack_tagField.set(craft, tagObject);
@@ -133,10 +135,10 @@ public class NBTUtils {
     }
 
     public static int getMetaInt(ItemStack stack, String tag, int defaultValue) {
-        if (ItemUtils.isEmpty(stack)) return defaultValue;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return defaultValue;
         int result = defaultValue;
         try {
-            Object tagObject = ItemUtils.getTag(stack);
+            Object tagObject = CompatibilityLib.getItemUtils().getTag(stack);
             if (tagObject == null) return defaultValue;
             Integer value = getMetaInt(tagObject, tag);
             result = value == null ? defaultValue : value;
@@ -218,11 +220,11 @@ public class NBTUtils {
     }
 
     public static void setMetaInt(ItemStack stack, String tag, int value) {
-        if (ItemUtils.isEmpty(stack)) return;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return;
         try {
-            Object craft = ItemUtils.getHandle(stack);
+            Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
             if (craft == null) return;
-            Object tagObject = ItemUtils.getTag(craft);
+            Object tagObject = CompatibilityLib.getItemUtils().getTag(craft);
             if (tagObject == null) return;
             setMetaInt(tagObject, tag, value);
         } catch (Throwable ex) {
@@ -240,12 +242,12 @@ public class NBTUtils {
     }
 
     public static void removeMeta(ItemStack stack, String tag) {
-        if (ItemUtils.isEmpty(stack)) return;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return;
 
         try {
-            Object craft = ItemUtils.getHandle(stack);
+            Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
             if (craft == null) return;
-            Object tagObject = ItemUtils.getTag(craft);
+            Object tagObject = CompatibilityLib.getItemUtils().getTag(craft);
             if (tagObject == null) return;
             removeMeta(tagObject, tag);
         } catch (Throwable ex) {
@@ -292,11 +294,11 @@ public class NBTUtils {
     }
 
     public static boolean setMetaNode(ItemStack stack, String tag, Object child) {
-        if (ItemUtils.isEmpty(stack)) return false;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return false;
         try {
-            Object craft = ItemUtils.getHandle(stack);
+            Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
             if (craft == null) return false;
-            Object node = ItemUtils.getTag(craft);
+            Object node = CompatibilityLib.getItemUtils().getTag(craft);
             if (node == null) return false;
             if (child == null) {
                 NMSUtils.class_NBTTagCompound_removeMethod.invoke(node, tag);
@@ -312,10 +314,10 @@ public class NBTUtils {
     }
 
     public static String getMetaString(ItemStack stack, String tag) {
-        if (ItemUtils.isEmpty(stack)) return null;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return null;
         String meta = null;
         try {
-            Object tagObject = ItemUtils.getTag(stack);
+            Object tagObject = CompatibilityLib.getItemUtils().getTag(stack);
             if (tagObject == null) return null;
             meta = (String) NMSUtils.class_NBTTagCompound_getStringMethod.invoke(tagObject, tag);
         } catch (Throwable ex) {
@@ -325,11 +327,11 @@ public class NBTUtils {
     }
 
     public static void setMeta(ItemStack stack, String tag, String value) {
-        if (ItemUtils.isEmpty(stack)) return;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return;
         try {
-            Object craft = ItemUtils.getHandle(stack);
+            Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
             if (craft == null) return;
-            Object tagObject = ItemUtils.getTag(craft);
+            Object tagObject = CompatibilityLib.getItemUtils().getTag(craft);
             if (tagObject == null) return;
             NMSUtils.class_NBTTagCompound_setStringMethod.invoke(tagObject, tag, value);
         } catch (Throwable ex) {
@@ -338,11 +340,11 @@ public class NBTUtils {
     }
 
     public static void setMetaBoolean(ItemStack stack, String tag, boolean value) {
-        if (ItemUtils.isEmpty(stack)) return;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return;
         try {
-            Object craft = ItemUtils.getHandle(stack);
+            Object craft = CompatibilityLib.getItemUtils().getHandle(stack);
             if (craft == null) return;
-            Object tagObject = ItemUtils.getTag(craft);
+            Object tagObject = CompatibilityLib.getItemUtils().getTag(craft);
             if (tagObject == null) return;
             setMetaBoolean(tagObject, tag, value);
         } catch (Throwable ex) {
@@ -351,10 +353,10 @@ public class NBTUtils {
     }
 
     public static boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue) {
-        if (ItemUtils.isEmpty(stack)) return defaultValue;
+        if (CompatibilityLib.getItemUtils().isEmpty(stack)) return defaultValue;
         boolean result = defaultValue;
         try {
-            Object tagObject = ItemUtils.getTag(stack);
+            Object tagObject = CompatibilityLib.getItemUtils().getTag(stack);
             if (tagObject == null) return defaultValue;
             Boolean value = getMetaBoolean(tagObject, tag);
             result = value == null ? defaultValue : value;

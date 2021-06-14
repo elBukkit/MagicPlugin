@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 @Deprecated
 public class HatSpell extends TargetingSpell
@@ -45,10 +45,10 @@ public class HatSpell extends TargetingSpell
         lore.add(getMessage("hat_lore"));
         meta.setLore(lore);
         hatItem.setItemMeta(meta);
-        hatItem = ItemUtils.makeReal(hatItem);
-        ItemUtils.makeTemporary(hatItem, getMessage("removed").replace("$material", material.getName()));
+        hatItem = CompatibilityLib.getItemUtils().makeReal(hatItem);
+        CompatibilityLib.getItemUtils().makeTemporary(hatItem, getMessage("removed").replace("$material", material.getName()));
         player.getInventory().setHelmet(hatItem);
-        if (itemStack != null && itemStack.getType() != Material.AIR && !ItemUtils.isTemporary(itemStack)) {
+        if (itemStack != null && itemStack.getType() != Material.AIR && !CompatibilityLib.getItemUtils().isTemporary(itemStack)) {
             player.getWorld().dropItemNaturally(player.getLocation(), itemStack);
         }
         return SpellResult.CAST;

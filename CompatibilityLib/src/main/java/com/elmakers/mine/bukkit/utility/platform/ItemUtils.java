@@ -9,7 +9,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ItemUtils {
-    public static Object getHandle(org.bukkit.inventory.ItemStack stack) {
+
+    public Object getHandle(org.bukkit.inventory.ItemStack stack) {
         Object handle = null;
         try {
             handle = NMSUtils.class_CraftItemStack_getHandleField.get(stack);
@@ -19,7 +20,7 @@ public class ItemUtils {
         return handle;
     }
 
-    public static Object getTag(Object mcItemStack) {
+    public Object getTag(Object mcItemStack) {
         Object tag = null;
         try {
             tag = NMSUtils.class_ItemStack_tagField.get(mcItemStack);
@@ -29,14 +30,14 @@ public class ItemUtils {
         return tag;
     }
 
-    public static Object getTag(ItemStack itemStack) {
+    public Object getTag(ItemStack itemStack) {
         Object tag = null;
         try {
-            Object mcItemStack = getHandle(itemStack);
+            Object mcItemStack = ItemUtils.this.getHandle(itemStack);
             if (mcItemStack == null) {
                 if (itemStack.hasItemMeta()) {
-                    itemStack = makeReal(itemStack);
-                    mcItemStack = getHandle(itemStack);
+                    itemStack = ItemUtils.this.makeReal(itemStack);
+                    mcItemStack = ItemUtils.this.getHandle(itemStack);
                 }
             }
             if (mcItemStack == null) return null;
@@ -47,7 +48,7 @@ public class ItemUtils {
         return tag;
     }
 
-    protected static Object getNMSCopy(ItemStack stack) {
+    protected Object getNMSCopy(ItemStack stack) {
         Object nms = null;
         try {
             nms = NMSUtils.class_CraftItemStack_copyMethod.invoke(null, stack);
@@ -57,12 +58,12 @@ public class ItemUtils {
         return nms;
     }
 
-    public static ItemStack getCopy(ItemStack stack) {
+    public ItemStack getCopy(ItemStack stack) {
         if (stack == null) return null;
         if (NMSUtils.class_CraftItemStack_mirrorMethod == null) return stack;
 
         try {
-            Object craft = getNMSCopy(stack);
+            Object craft = ItemUtils.this.getNMSCopy(stack);
             stack = (ItemStack) NMSUtils.class_CraftItemStack_mirrorMethod.invoke(null, craft);
         } catch (Throwable ex) {
             stack = null;
@@ -71,12 +72,12 @@ public class ItemUtils {
         return stack;
     }
 
-    public static ItemStack makeReal(ItemStack stack) {
+    public ItemStack makeReal(ItemStack stack) {
         if (stack == null) return null;
-        Object nmsStack = getHandle(stack);
+        Object nmsStack = ItemUtils.this.getHandle(stack);
         if (nmsStack == null) {
-            stack = getCopy(stack);
-            nmsStack = getHandle(stack);
+            stack = ItemUtils.this.getCopy(stack);
+            nmsStack = ItemUtils.this.getHandle(stack);
         }
         if (nmsStack == null) {
             return null;
@@ -94,8 +95,8 @@ public class ItemUtils {
         return stack;
     }
 
-    public static void addGlow(ItemStack stack) {
-        if (isEmpty(stack)) return;
+    public void addGlow(ItemStack stack) {
+        if (ItemUtils.this.isEmpty(stack)) return;
 
         try {
             ItemMeta meta = stack.getItemMeta();
@@ -106,8 +107,8 @@ public class ItemUtils {
         }
     }
 
-    public static void removeGlow(ItemStack stack) {
-        if (isEmpty(stack)) return;
+    public void removeGlow(ItemStack stack) {
+        if (ItemUtils.this.isEmpty(stack)) return;
 
         try {
             ItemMeta meta = stack.getItemMeta();
@@ -120,11 +121,11 @@ public class ItemUtils {
         }
     }
 
-    public static boolean isUnbreakable(ItemStack stack) {
-        if (isEmpty(stack)) return false;
+    public boolean isUnbreakable(ItemStack stack) {
+        if (ItemUtils.this.isEmpty(stack)) return false;
         Boolean unbreakableFlag = null;
         try {
-            Object tagObject = getTag(stack);
+            Object tagObject = ItemUtils.this.getTag(stack);
             if (tagObject == null) return false;
             unbreakableFlag = NBTUtils.getMetaBoolean(tagObject, "Unbreakable");
         } catch (Throwable ex) {
@@ -134,13 +135,13 @@ public class ItemUtils {
         return unbreakableFlag != null && unbreakableFlag;
     }
 
-    public static void makeUnbreakable(ItemStack stack) {
-        if (isEmpty(stack)) return;
+    public void makeUnbreakable(ItemStack stack) {
+        if (ItemUtils.this.isEmpty(stack)) return;
 
         try {
-            Object craft = getHandle(stack);
+            Object craft = ItemUtils.this.getHandle(stack);
             if (craft == null) return;
-            Object tagObject = getTag(craft);
+            Object tagObject = ItemUtils.this.getTag(craft);
             if (tagObject == null) return;
 
             Object unbreakableFlag = null;
@@ -151,17 +152,17 @@ public class ItemUtils {
         }
     }
 
-    public static void removeUnbreakable(ItemStack stack) {
+    public void removeUnbreakable(ItemStack stack) {
         NBTUtils.removeMeta(stack, "Unbreakable");
     }
 
-    public static void hideFlags(ItemStack stack, int flags) {
-        if (isEmpty(stack)) return;
+    public void hideFlags(ItemStack stack, int flags) {
+        if (ItemUtils.this.isEmpty(stack)) return;
 
         try {
-            Object craft = getHandle(stack);
+            Object craft = ItemUtils.this.getHandle(stack);
             if (craft == null) return;
-            Object tagObject = getTag(craft);
+            Object tagObject = ItemUtils.this.getTag(craft);
             if (tagObject == null) return;
 
             Object hideFlag = null;
@@ -172,37 +173,37 @@ public class ItemUtils {
         }
     }
 
-    public static void makeTemporary(ItemStack itemStack, String message) {
+    public void makeTemporary(ItemStack itemStack, String message) {
         NBTUtils.setMeta(itemStack, "temporary", message);
     }
 
-    public static boolean isTemporary(ItemStack itemStack) {
+    public boolean isTemporary(ItemStack itemStack) {
         return NBTUtils.hasMeta(itemStack, "temporary");
     }
 
-    public static void makeUnplaceable(ItemStack itemStack) {
+    public void makeUnplaceable(ItemStack itemStack) {
         NBTUtils.setMeta(itemStack, "unplaceable", "true");
     }
 
-    public static void removeUnplaceable(ItemStack itemStack) {
+    public void removeUnplaceable(ItemStack itemStack) {
         NBTUtils.removeMeta(itemStack, "unplaceable");
     }
 
-    public static boolean isUnplaceable(ItemStack itemStack) {
+    public boolean isUnplaceable(ItemStack itemStack) {
         return NBTUtils.hasMeta(itemStack, "unplaceable");
     }
 
-    public static String getTemporaryMessage(ItemStack itemStack) {
+    public String getTemporaryMessage(ItemStack itemStack) {
         return NBTUtils.getMetaString(itemStack, "temporary");
     }
 
-    public static void setReplacement(ItemStack itemStack, ItemStack replacement) {
+    public void setReplacement(ItemStack itemStack, ItemStack replacement) {
         YamlConfiguration configuration = new YamlConfiguration();
         configuration.set("item", replacement);
         NBTUtils.setMeta(itemStack, "replacement", configuration.saveToString());
     }
 
-    public static ItemStack getReplacement(ItemStack itemStack) {
+    public ItemStack getReplacement(ItemStack itemStack) {
         String serialized = NBTUtils.getMetaString(itemStack, "replacement");
         if (serialized == null || serialized.isEmpty()) {
             return null;
@@ -218,11 +219,11 @@ public class ItemUtils {
         return replacement;
     }
 
-    public static boolean isEmpty(ItemStack itemStack) {
+    public boolean isEmpty(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) return true;
         if (NMSUtils.class_ItemStack_isEmptyMethod == null) return false;
         try {
-            Object handle = getHandle(itemStack);
+            Object handle = ItemUtils.this.getHandle(itemStack);
             if (handle == null) return false;
             return (Boolean) NMSUtils.class_ItemStack_isEmptyMethod.invoke(handle);
         } catch (Throwable ex) {
@@ -231,7 +232,7 @@ public class ItemUtils {
         return false;
     }
 
-    protected static Object getTagString(String value) {
+    protected Object getTagString(String value) {
         try {
             return NMSUtils.class_NBTTagString_consructor.newInstance(value);
         } catch (Exception ex) {
@@ -241,14 +242,14 @@ public class ItemUtils {
         return null;
     }
 
-    public static Object setStringList(Object nbtBase, String tag, Collection<String> values) {
+    public Object setStringList(Object nbtBase, String tag, Collection<String> values) {
         if (nbtBase == null) return null;
         Object listMeta = null;
         try {
             listMeta = NMSUtils.class_NBTTagList_constructor.newInstance();
 
             for (String value : values) {
-                Object nbtString = getTagString(value);
+                Object nbtString = ItemUtils.this.getTagString(value);
                 NBTUtils.addToList(listMeta, nbtString);
             }
 
@@ -260,7 +261,7 @@ public class ItemUtils {
         return listMeta;
     }
 
-    public static ItemStack getItem(Object itemTag) {
+    public ItemStack getItem(Object itemTag) {
         if (itemTag == null) return null;
         ItemStack item = null;
         try {
@@ -277,7 +278,7 @@ public class ItemUtils {
         return item;
     }
 
-    public static ItemStack[] getItems(Object rootTag, String tagName) {
+    public ItemStack[] getItems(Object rootTag, String tagName) {
         try {
             Object itemList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(rootTag, tagName, NMSUtils.NBT_TYPE_COMPOUND);
             Integer size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(itemList);
@@ -286,7 +287,7 @@ public class ItemUtils {
                 try {
                     Object itemData = NMSUtils.class_NBTTagList_getMethod.invoke(itemList, i);
                     if (itemData != null) {
-                        items[i] = getItem(itemData);
+                        items[i] = ItemUtils.this.getItem(itemData);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();

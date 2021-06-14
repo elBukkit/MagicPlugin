@@ -39,7 +39,6 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 @Deprecated
@@ -294,7 +293,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             int amount = (int)Math.ceil(worth);
             ItemStack worthItem = getWorthItem(controller);
             while (amount > 0) {
-                worthItem = ItemUtils.getCopy(worthItem);
+                worthItem = CompatibilityLib.getItemUtils().getCopy(worthItem);
                 worthItem.setAmount(Math.min(amount, 64));
                 amount -= worthItem.getAmount();
                 mage.giveItem(worthItem);
@@ -451,7 +450,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                     return;
                 }
                 if (!castsSpells && !applyToWand && !applyToCaster) {
-                    ItemStack copy = ItemUtils.getCopy(item);
+                    ItemStack copy = CompatibilityLib.getItemUtils().getCopy(item);
                     if (filterBound && com.elmakers.mine.bukkit.wand.Wand.isBound(copy)) {
                         Wand bindWand = controller.getWand(copy);
                         mage.tryToOwn(bindWand);
@@ -615,7 +614,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
                 itemStacks.add(new ItemStack(Material.AIR));
                 continue;
             }
-            ItemStack item = ItemUtils.getCopy(shopItem.getItem());
+            ItemStack item = CompatibilityLib.getItemUtils().getCopy(shopItem.getItem());
             if (item == null) continue;
 
             String permission = shopItem.getPermission();
@@ -642,7 +641,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             }
             meta.setLore(lore);
             item.setItemMeta(meta);
-            item = ItemUtils.makeReal(item);
+            item = CompatibilityLib.getItemUtils().makeReal(item);
             NBTUtils.setMeta(item, "shop", Integer.toString(currentSlot));
             if (showConfirmation) {
                 NBTUtils.setMeta(item, "confirm", "true");

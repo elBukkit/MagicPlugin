@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 import de.slikey.effectlib.math.VectorTransform;
 
@@ -241,7 +240,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         if (itemData != null) {
             itemStack = itemData.getItemStack(1);
             if (itemStack != null && unbreakableItems) {
-                ItemUtils.makeUnbreakable(ItemUtils.makeReal(itemStack));
+                CompatibilityLib.getItemUtils().makeUnbreakable(CompatibilityLib.getItemUtils().makeReal(itemStack));
             }
         }
         return itemStack;

@@ -40,7 +40,6 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
 
@@ -932,14 +931,14 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
         if (itemStack == null) {
             itemStack = icon.getItemStack(1);
-            itemStack = ItemUtils.makeReal(itemStack);
+            itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
             if (itemStack == null) {
                 if (DefaultBrushCustomIcon != null && !DefaultBrushCustomIcon.isEmpty() && urlIcons) {
                     itemStack = controller.getURLSkull(DefaultBrushCustomIcon);
                 }
                 if (itemStack == null) {
                     itemStack = DefaultBrushMaterial.getItemStack(1);
-                    itemStack = ItemUtils.makeReal(itemStack);
+                    itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
                     if (itemStack == null) {
                         return itemStack;
                     }

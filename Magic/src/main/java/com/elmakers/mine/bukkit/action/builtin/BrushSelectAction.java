@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public class BrushSelectAction extends BaseSpellAction implements GUIAction
@@ -128,7 +127,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 for (int i = 0; i < contents.length; i++) {
                     if (blockCurrency == null || mage.isAtMaxCurrency(blockCurrency.getKey())) break;
                     ItemStack itemStack = contents[i];
-                    if (ItemUtils.isEmpty(itemStack)) continue;
+                    if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) continue;
                     if (itemStack.hasItemMeta()) continue;
                     if (itemStack.getType() != item.getType()) continue;
                     Double worth = context.getController().getWorth(itemStack, blockCurrency.getKey());
@@ -181,7 +180,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         MaterialAndData previous = null;
         for (String brushKey : brushKeys) {
             ItemStack brushItem = controller.createBrushItem(brushKey, context.getWand(), false);
-            if (ItemUtils.isEmpty(brushItem)) {
+            if (CompatibilityLib.getItemUtils().isEmpty(brushItem)) {
                 continue;
             }
             if (MaterialBrush.isSchematic(brushKey)) {
@@ -244,7 +243,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 
             String materialName = getBaseName(material);
             ItemStack category = material.getItem(context.getController(), false);
-            category = ItemUtils.makeReal(category);
+            category = CompatibilityLib.getItemUtils().makeReal(category);
             if (category == null) continue;
             ItemMeta meta = category.getItemMeta();
             String name = context.getMessage("variant_name", "" + ChatColor.AQUA + "$variant");
@@ -272,7 +271,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         if (schematics.size() == 1) {
             schematicItem = schematics.get(0);
         } else if (schematics.size() > 0) {
-            schematicItem = ItemUtils.getCopy(schematics.get(0));
+            schematicItem = CompatibilityLib.getItemUtils().getCopy(schematics.get(0));
             ItemMeta meta = schematicItem.getItemMeta();
             meta.setDisplayName(context.getMessage("schematics_name", "" + ChatColor.AQUA + "Schematics"));
             List<String> lore = new ArrayList<>();

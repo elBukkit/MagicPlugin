@@ -22,7 +22,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 /**
  * Represents a crafting recipe which will make a wand item.
@@ -120,7 +119,7 @@ public class MagicRecipe {
                     for (Map.Entry<Character, ItemStack> entry : copyRecipe.getIngredientMap().entrySet()) {
                         char ingredientKey = entry.getKey();
                         ItemStack input = entry.getValue();
-                        if (ItemUtils.isEmpty(input)) {
+                        if (CompatibilityLib.getItemUtils().isEmpty(input)) {
                             input = new ItemStack(Material.AIR);
                         }
                         ItemData ingredient = controller.createItemData(input);

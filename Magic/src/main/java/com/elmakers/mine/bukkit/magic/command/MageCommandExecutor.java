@@ -35,7 +35,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -498,7 +497,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 continue;
             }
             ItemStack item = inventory.getItem(i);
-            if (ItemUtils.isEmpty(item)) continue;
+            if (CompatibilityLib.getItemUtils().isEmpty(item)) continue;
 
             if ((type.equalsIgnoreCase("wands") && controller.isWand(item))
                     || (type.equalsIgnoreCase("skills") && controller.isSkill(item))
@@ -1070,7 +1069,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         String itemName = parameters[0];
         ItemStack item = controller.createItem(itemName);
-        if (ItemUtils.isEmpty(item)) {
+        if (CompatibilityLib.getItemUtils().isEmpty(item)) {
             sender.sendMessage("Invalid item: " + itemName);
             return true;
         }

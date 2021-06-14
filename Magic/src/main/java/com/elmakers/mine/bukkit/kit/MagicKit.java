@@ -16,8 +16,8 @@ import com.elmakers.mine.bukkit.api.kit.Kit;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class MagicKit implements Kit {
     private final MagicController controller;
@@ -202,14 +202,14 @@ public class MagicKit implements Kit {
                 int slot = slotItem.getKey();
                 ItemData itemData = slotItem.getValue();
                 ItemStack itemStack = itemData.getItemStack();
-                if (ItemUtils.isEmpty(itemStack)) continue;
+                if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) continue;
                 if (onlyIfMissing) {
                     itemStack = checkGiveIfMissing(itemData.getBaseKey(), itemStack, mage, useKit, givenKit);
                     if (itemStack == null) continue;
                 }
                 ItemStack existingSlot = mage.getItem(slot);
                 mage.gaveItemFromKit(key, itemData.getBaseKey(), itemStack.getAmount());
-                if (ItemUtils.isEmpty(existingSlot)) {
+                if (CompatibilityLib.getItemUtils().isEmpty(existingSlot)) {
                     mage.setItem(slot, itemStack);
                     gave = true;
                 } else {
@@ -229,7 +229,7 @@ public class MagicKit implements Kit {
         if (items != null) {
             for (ItemData itemData : items) {
                 ItemStack itemStack = itemData.getItemStack();
-                if (ItemUtils.isEmpty(itemStack)) continue;
+                if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) continue;
                 if (onlyIfMissing) {
                     itemStack = checkGiveIfMissing(itemData.getBaseKey(), itemStack, mage, useKit, givenKit);
                     if (itemStack == null) continue;

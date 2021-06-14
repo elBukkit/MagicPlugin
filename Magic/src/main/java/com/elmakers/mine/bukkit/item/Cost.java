@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     protected Currency currency;
@@ -303,7 +303,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
     @Override
     public ItemStack getItemStack()
     {
-        ItemStack item = ItemUtils.getCopy(this.item);
+        ItemStack item = CompatibilityLib.getItemUtils().getCopy(this.item);
         if (item != null) {
             item.setAmount((int)Math.max(1, Math.ceil(amount)));
         }
@@ -312,7 +312,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     protected ItemStack getItemStack(CostReducer reducer)
     {
-        ItemStack item = ItemUtils.getCopy(this.item);
+        ItemStack item = CompatibilityLib.getItemUtils().getCopy(this.item);
         if (item != null) {
             item.setAmount(Math.max(1, getRoundedCost(amount, reducer)));
         }
