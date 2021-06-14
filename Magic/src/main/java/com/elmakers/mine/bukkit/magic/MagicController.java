@@ -472,10 +472,6 @@ public class MagicController implements MageController {
     private int undoFrequency = 10;
     private int workPerUpdate = 5000;
     private int logVerbosity = 0;
-    private boolean showCastHoloText = false;
-    private boolean showActivateHoloText = false;
-    private int castHoloTextRange = 0;
-    private int activateHoloTextRange = 0;
     private boolean urlIconsEnabled = true;
     private boolean legacyIconsEnabled = false;
     private boolean autoSpellUpgradesEnabled = true;
@@ -3890,10 +3886,6 @@ public class MagicController implements MageController {
             }
             dynmap.showCastMarker(mage, spell, result);
         }
-
-        if (result.isSuccess() && getShowCastHoloText()) {
-            mage.showHoloText(mage.getEyeLocation(), spell.getName(), 10000);
-        }
     }
 
     @Override
@@ -4815,22 +4807,6 @@ public class MagicController implements MageController {
             return localizedName;
         }
         return target.getType().name().toLowerCase().replace('_', ' ');
-    }
-
-    public boolean getShowCastHoloText() {
-        return showCastHoloText;
-    }
-
-    public boolean getShowActivateHoloText() {
-        return showActivateHoloText;
-    }
-
-    public int getCastHoloTextRange() {
-        return castHoloTextRange;
-    }
-
-    public int getActiveHoloTextRange() {
-        return activateHoloTextRange;
     }
 
     public ItemStack getSpellBook(int count) {
@@ -7585,10 +7561,6 @@ public class MagicController implements MageController {
         CompatibilityLib.getCompatibilityUtils().USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", CompatibilityLib.getCompatibilityUtils().USE_MAGIC_DAMAGE);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
-        showCastHoloText = properties.getBoolean("show_cast_holotext", showCastHoloText);
-        showActivateHoloText = properties.getBoolean("show_activate_holotext", showCastHoloText);
-        castHoloTextRange = properties.getInt("cast_holotext_range", castHoloTextRange);
-        activateHoloTextRange = properties.getInt("activate_holotext_range", activateHoloTextRange);
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         legacyIconsEnabled = properties.getBoolean("legacy_icons_enabled", legacyIconsEnabled);
         spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);

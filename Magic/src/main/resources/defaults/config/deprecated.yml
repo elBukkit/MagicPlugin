@@ -1,15 +1,3 @@
-## Work-in-Progress or not-fully-functional options
-
-# Whether or not to show (or broadcast) cast messages as holotext
-# (This feature was WIP and never really worked)
-show_cast_holotext: false
-cast_holotext_range: 0
-
-# Whether or not to show (or broadcast) spell activate holotext
-# (This feature was WIP and never really worked)
-show_activate_holotext: false
-activate_holotext_range: 0
-
 ## Deprecated configuration options
 
 # These hacks should not be required in 1.8 and up
