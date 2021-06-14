@@ -237,6 +237,7 @@ import com.elmakers.mine.bukkit.tasks.SaveMageDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageTask;
 import com.elmakers.mine.bukkit.tasks.UndoUpdateTask;
 import com.elmakers.mine.bukkit.tasks.ValidateSpellsTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
@@ -649,8 +650,6 @@ public class MagicController implements MageController {
         if (!CompatibilityLib.initialize(getPlugin(), getLogger())) {
             return false;
         }
-        CompatibilityLib.getSkinUtils().initialize(plugin);
-        EntityMetadataUtils.initialize(plugin);
         return true;
     }
 
@@ -6199,7 +6198,7 @@ public class MagicController implements MageController {
     @Nonnull
     public ItemStack getURLSkull(String url) {
         try {
-            ItemStack stack = getURLSkull(new URL(url), CompatibilityLib.getInventoryUtils().SKULL_UUID);
+            ItemStack stack = getURLSkull(new URL(url), CompatibilityConstants.SKULL_UUID);
             return stack == null ? new ItemStack(Material.AIR) : stack;
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
@@ -7532,7 +7531,7 @@ public class MagicController implements MageController {
         resourcePacks.load(properties, sender, !loaded);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
-        CompatibilityLib.getSkinUtils().DEBUG = logVerbosity >= 5;
+        CompatibilityConstants.DEBUG = logVerbosity >= 5;
         LOG_WATCHDOG_TIMEOUT = properties.getInt("load_watchdog_timeout", 30000);
         logger.setColorize(properties.getBoolean("colored_logs", true));
 
@@ -7690,7 +7689,7 @@ public class MagicController implements MageController {
         defaultSkillIcon = properties.getString("default_skill_icon", defaultSkillIcon);
         skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
         skillsSpell = properties.getString("mskills_spell", skillsSpell);
-        CompatibilityLib.getInventoryUtils().MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", CompatibilityLib.getInventoryUtils().MAX_LORE_LENGTH);
+        CompatibilityConstants.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", CompatibilityConstants.MAX_LORE_LENGTH);
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);

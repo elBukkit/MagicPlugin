@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -1021,7 +1022,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 for (String key : keys) {
                     Object value = variables.get(key);
                     if (value != null) {
-                        sender.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + CompatibilityLib.getInventoryUtils().describeProperty(value, CompatibilityLib.getInventoryUtils().MAX_PROPERTY_DISPLAY_LENGTH));
+                        sender.sendMessage(ChatColor.DARK_AQUA + key + ChatColor.GRAY + ": " + ChatColor.WHITE + CompatibilityLib.getInventoryUtils().describeProperty(value, CompatibilityConstants.MAX_PROPERTY_DISPLAY_LENGTH));
                     }
                 }
             }

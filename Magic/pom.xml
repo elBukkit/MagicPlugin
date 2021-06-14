@@ -45,6 +45,12 @@
             <version>1.9-1.1.17-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>com.elmakers.mine.bukkit</groupId>
+            <artifactId>CompatibilityLib-common</artifactId>
+            <version>1.9-1.1.17-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
 
         <!-- Effect library (shaded) -->
         <dependency>
