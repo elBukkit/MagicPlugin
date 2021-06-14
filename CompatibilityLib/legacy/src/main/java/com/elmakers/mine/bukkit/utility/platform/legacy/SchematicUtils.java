@@ -12,15 +12,13 @@ import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.SchematicUtilsBase;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 
 @SuppressWarnings("unchecked")
-public class SchematicUtilsBase implements SchematicUtils {
-    private final Platform platform;
-
-    public SchematicUtilsBase(Platform platform) {
-        this.platform = platform;
+public class SchematicUtils extends SchematicUtilsBase {
+    public SchematicUtils(Platform platform) {
+        super(platform);
     }
 
     @Override

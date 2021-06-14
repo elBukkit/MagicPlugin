@@ -5,8 +5,8 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
 
 import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
-import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 import com.google.common.io.BaseEncoding;
 
 import org.apache.commons.lang.StringUtils;
@@ -110,9 +110,7 @@ import java.util.logging.Level;
  * official release.
  */
 @SuppressWarnings("deprecation")
-public class CompatibilityUtilsBase implements CompatibilityUtils {
-    private final Platform platform;
-
+public class CompatibilityUtils extends CompatibilityUtilsBase {
     // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
     // (for instance when undoing a spell in an unloaded chunk that threw a ton of different falling blocks)
     // So putting some lower number on this will trigger a lot of false-positives.
@@ -128,14 +126,14 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     private boolean hasDumpedStack = false;
     private boolean teleporting = false;
 
-    public CompatibilityUtilsBase(Platform platform) {
-        this.platform = platform;
+    public CompatibilityUtils(Platform platform) {
+        super(platform);
     }
 
     @Override
     public void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
         for (PotionEffect effect : effects) {
-            CompatibilityUtilsBase.this.applyPotionEffect(entity, effect);
+            CompatibilityUtils.this.applyPotionEffect(entity, effect);
         }
     }
 
@@ -235,7 +233,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public void setInvulnerable(Entity entity) {
-        CompatibilityUtilsBase.this.setInvulnerable(entity, true);
+        CompatibilityUtils.this.setInvulnerable(entity, true);
     }
 
     @Override
@@ -343,7 +341,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                     Object notchArt = NMSUtils.class_CraftArt_NotchToBukkitMethod.invoke(null, art);
                     NMSUtils.class_EntityPainting_art.set(newEntity, notchArt);
                 }
-                Entity bukkitEntity = CompatibilityUtilsBase.this.getBukkitEntity(newEntity);
+                Entity bukkitEntity = CompatibilityUtils.this.getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
 
                 newPainting = (Painting) bukkitEntity;
@@ -376,7 +374,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             newEntity = NMSUtils.class_EntityItemFrameConstructor.newInstance(worldHandle, blockLocation, directionEnum);
             if (newEntity != null) {
-                Entity bukkitEntity = CompatibilityUtilsBase.this.getBukkitEntity(newEntity);
+                Entity bukkitEntity = CompatibilityUtils.this.getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
 
                 newItemFrame = (ItemFrame) bukkitEntity;
@@ -391,7 +389,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public ArmorStand createArmorStand(Location location) {
-        return (ArmorStand) CompatibilityUtilsBase.this.createEntity(location, EntityType.ARMOR_STAND);
+        return (ArmorStand) CompatibilityUtils.this.createEntity(location, EntityType.ARMOR_STAND);
     }
 
     @Override
@@ -401,7 +399,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             Class<? extends Entity> entityClass = entityType.getEntityClass();
             Object newEntity = NMSUtils.class_CraftWorld_createEntityMethod.invoke(location.getWorld(), location, entityClass);
             if (newEntity != null) {
-                bukkitEntity = CompatibilityUtilsBase.this.getBukkitEntity(newEntity);
+                bukkitEntity = CompatibilityUtils.this.getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !entityClass.isAssignableFrom(bukkitEntity.getClass())) return null;
             }
         } catch (Throwable ex) {
@@ -429,8 +427,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         if (location == null) return null;
         Object worldHandle = NMSUtils.getHandle(location.getWorld());
         try {
-            x = Math.min(x, CompatibilityUtilsBase.MAX_ENTITY_RANGE);
-            z = Math.min(z, CompatibilityUtilsBase.MAX_ENTITY_RANGE);
+            x = Math.min(x, CompatibilityUtils.MAX_ENTITY_RANGE);
+            z = Math.min(z, CompatibilityUtils.MAX_ENTITY_RANGE);
             Object bb = NMSUtils.class_AxisAlignedBB_Constructor.newInstance(location.getX() - x, location.getY() - y, location.getZ() - z,
                     location.getX() + x, location.getY() + y, location.getZ() + z);
 
@@ -486,7 +484,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                 */
 
                 addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
-                Entity bukkitEntity = CompatibilityUtilsBase.this.getBukkitEntity(newEntity);
+                Entity bukkitEntity = CompatibilityUtils.this.getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Minecart)) return null;
 
                 newMinecart = (Minecart) bukkitEntity;
@@ -545,8 +543,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         while (target instanceof ComplexEntityPart) {
             target = ((ComplexEntityPart) target).getParent();
         }
-        if (CompatibilityUtilsBase.this.USE_MAGIC_DAMAGE && target.getType() == EntityType.ENDER_DRAGON) {
-            CompatibilityUtilsBase.this.magicDamage(target, amount, source);
+        if (CompatibilityUtils.this.USE_MAGIC_DAMAGE && target.getType() == EntityType.ENDER_DRAGON) {
+            CompatibilityUtils.this.magicDamage(target, amount, source);
             return;
         }
 
@@ -575,7 +573,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             if (target == null || target.isDead()) return;
 
             if (NMSUtils.class_EntityLiving_damageEntityMethod == null || NMSUtils.object_magicSource == null || NMSUtils.class_DamageSource_getMagicSourceMethod == null) {
-                CompatibilityUtilsBase.this.damage(target, amount, source);
+                CompatibilityUtils.this.damage(target, amount, source);
                 return;
             }
 
@@ -583,8 +581,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             // And endermen are immune to indirect damage .. or something.
             // Also armor stands suck.
             // Might need to config-drive this, or just go back to defaulting to normal damage
-            if (!CompatibilityUtilsBase.this.USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || target instanceof ArmorStand || !(target instanceof LivingEntity)) {
-                CompatibilityUtilsBase.this.damage(target, amount, source);
+            if (!CompatibilityUtils.this.USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || target instanceof ArmorStand || !(target instanceof LivingEntity)) {
+                CompatibilityUtils.this.damage(target, amount, source);
                 return;
             }
 
@@ -597,7 +595,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             if (sourceHandle != null && source instanceof LivingEntity) {
                 Location location = target.getLocation();
 
-                ThrownPotion potion = CompatibilityUtilsBase.this.getOrCreatePotionEntity(location);
+                ThrownPotion potion = CompatibilityUtils.this.getOrCreatePotionEntity(location);
                 potion.setShooter((LivingEntity) source);
 
                 Object potionHandle = NMSUtils.getHandle(potion);
@@ -639,12 +637,12 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             return;
         }
         if (damageType.equalsIgnoreCase("magic")) {
-            CompatibilityUtilsBase.this.magicDamage(target, amount, source);
+            CompatibilityUtils.this.magicDamage(target, amount, source);
             return;
         }
         Object damageSource = (NMSUtils.damageSources == null) ? null : NMSUtils.damageSources.get(damageType.toUpperCase());
         if (damageSource == null || NMSUtils.class_EntityLiving_damageEntityMethod == null) {
-            CompatibilityUtilsBase.this.magicDamage(target, amount, source);
+            CompatibilityUtils.this.magicDamage(target, amount, source);
             return;
         }
 
@@ -714,7 +712,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public YamlConfiguration loadBuiltinConfiguration(String fileName) throws IOException, InvalidConfigurationException {
         Plugin plugin = platform.getPlugin();
-        return CompatibilityUtilsBase.this.loadConfiguration(plugin.getResource(fileName), fileName);
+        return CompatibilityUtils.this.loadConfiguration(plugin.getResource(fileName), fileName);
     }
 
     @Override
@@ -737,7 +735,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     @Deprecated
     public boolean isDone(Chunk chunk) {
-        return CompatibilityUtilsBase.this.isReady(chunk);
+        return CompatibilityUtils.this.isReady(chunk);
     }
 
     @Override
@@ -781,7 +779,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public Object getTileEntityData(Location location) {
        if (NMSUtils.class_TileEntity_saveMethod == null) return null;
-        Object tileEntity = CompatibilityUtilsBase.this.getTileEntity(location);
+        Object tileEntity = CompatibilityUtils.this.getTileEntity(location);
         if (tileEntity == null) return null;
         Object data = null;
         try {
@@ -822,7 +820,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     public void clearItems(Location location) {
         if (NMSUtils.class_TileEntity_loadMethod == null || NMSUtils.class_TileEntity_updateMethod == null || NMSUtils.class_TileEntity_saveMethod == null) return;
         if (location == null) return;
-        Object tileEntity = CompatibilityUtilsBase.this.getTileEntity(location);
+        Object tileEntity = CompatibilityUtils.this.getTileEntity(location);
         if (tileEntity == null) return;
         try {
             Object entityData = NMSUtils.class_NBTTagCompound_constructor.newInstance();
@@ -860,7 +858,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     public void setTileEntityData(Location location, Object data) {
         if (NMSUtils.class_TileEntity_loadMethod == null || NMSUtils.class_TileEntity_updateMethod == null) return;
         if (location == null || data == null) return;
-        Object tileEntity = CompatibilityUtilsBase.this.getTileEntity(location);
+        Object tileEntity = CompatibilityUtils.this.getTileEntity(location);
         if (tileEntity == null) return;
         try {
             NMSUtils.class_NBTTagCompound_setIntMethod.invoke(data, "x", location.getBlockX());
@@ -991,7 +989,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public Map<String, Object> getMap(ConfigurationSection section) {
-        return CompatibilityUtilsBase.this.getTypedMap(section);
+        return CompatibilityUtils.this.getTypedMap(section);
     }
 
     @Override
@@ -1176,7 +1174,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     {
         if (NMSUtils.class_ChestLock_Constructor == null) return false;
         if (NMSUtils.class_TileEntityContainer_setLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = CompatibilityUtilsBase.this.getTileEntity(block.getLocation());
+        Object tileEntity = CompatibilityUtils.this.getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
@@ -1198,7 +1196,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     public boolean clearLock(Block block)
     {
         if (NMSUtils.class_TileEntityContainer_setLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = CompatibilityUtilsBase.this.getTileEntity(block.getLocation());
+        Object tileEntity = CompatibilityUtils.this.getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
@@ -1222,7 +1220,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     public boolean isLocked(Block block)
     {
         if (NMSUtils.class_TileEntityContainer_getLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = CompatibilityUtilsBase.this.getTileEntity(block.getLocation());
+        Object tileEntity = CompatibilityUtils.this.getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
@@ -1243,7 +1241,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     {
         if (NMSUtils.class_ChestLock_getString == null && NMSUtils.class_ChestLock_key == null) return null;
         if (NMSUtils.class_TileEntityContainer_getLock == null && NMSUtils.class_TileEntityContainer_lock == null) return null;
-        Object tileEntity = CompatibilityUtilsBase.this.getTileEntity(block.getLocation());
+        Object tileEntity = CompatibilityUtils.this.getTileEntity(block.getLocation());
         if (tileEntity == null) return null;
         if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return null;
         try {
@@ -1525,7 +1523,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                 shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
             }
 
-            Entity entity = CompatibilityUtilsBase.this.getBukkitEntity(nmsProjectile);
+            Entity entity = CompatibilityUtils.this.getBukkitEntity(nmsProjectile);
             if (entity == null || !(entity instanceof Projectile)) {
                 throw new Exception("Got invalid bukkit entity from projectile of class " + projectileType.getName());
             }
@@ -1647,7 +1645,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             Object tag = platform.getItemUtils().getTag(handle);
             if (tag == null) return false;
 
-            String attributeName = CompatibilityUtilsBase.this.toMinecraftAttribute(attribute);
+            String attributeName = CompatibilityUtils.this.toMinecraftAttribute(attribute);
             Object attributesNode = platform.getNBTUtils().getNode(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
@@ -1694,7 +1692,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
-        return CompatibilityUtilsBase.this.setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
+        return CompatibilityUtils.this.setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
     }
     
     @Override
@@ -1749,7 +1747,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             Object attributesNode = platform.getNBTUtils().getNode(tag, "AttributeModifiers");
             Object attributeNode = null;
 
-            String attributeName = CompatibilityUtilsBase.this.toMinecraftAttribute(attribute);
+            String attributeName = CompatibilityUtils.this.toMinecraftAttribute(attribute);
             if (attributesNode == null) {
                 attributesNode = NMSUtils.class_NBTTagList_constructor.newInstance();
                 NMSUtils.class_NBTTagCompound_setMethod.invoke(tag, "AttributeModifiers", attributesNode);
@@ -1832,7 +1830,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         try {
             Object entityDataTag = platform.getNBTUtils().getNode(item, "BlockEntityTag");
             if (entityDataTag == null) return;
-            CompatibilityUtilsBase.this.setTileEntityData(block.getLocation(), entityDataTag);
+            CompatibilityUtils.this.setTileEntityData(block.getLocation(), entityDataTag);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1847,7 +1845,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > rangeSquared) {
                 continue;
             }
-            CompatibilityUtilsBase.this.swingOffhand(player, entity);
+            CompatibilityUtils.this.swingOffhand(player, entity);
         }
     }
     
@@ -1923,19 +1921,19 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public void clearBreaking(Block block) {
-        CompatibilityUtilsBase.this.setBreaking(block, 10, CompatibilityUtilsBase.this.BLOCK_BREAK_RANGE);
+        CompatibilityUtils.this.setBreaking(block, 10, CompatibilityUtils.this.BLOCK_BREAK_RANGE);
     }
 
     @Override
     public void setBreaking(Block block, double percentage) {
         // Block break states are 0 - 9
         int breakState = (int)Math.ceil(9 * percentage);
-        CompatibilityUtilsBase.this.setBreaking(block, breakState, CompatibilityUtilsBase.this.BLOCK_BREAK_RANGE);
+        CompatibilityUtils.this.setBreaking(block, breakState, CompatibilityUtils.this.BLOCK_BREAK_RANGE);
     }
 
     @Override
     public void setBreaking(Block block, int breakAmount) {
-        CompatibilityUtilsBase.this.setBreaking(block, breakAmount, CompatibilityUtilsBase.this.BLOCK_BREAK_RANGE);
+        CompatibilityUtils.this.setBreaking(block, breakAmount, CompatibilityUtils.this.BLOCK_BREAK_RANGE);
     }
 
     @Override
@@ -1947,7 +1945,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(location) > rangeSquared) {
                 continue;
             }
-            CompatibilityUtilsBase.this.sendBreaking(player, CompatibilityUtilsBase.this.getBlockEntityId(block), location, breakAmount);
+            CompatibilityUtils.this.sendBreaking(player, CompatibilityUtils.this.getBlockEntityId(block), location, breakAmount);
         }
     }
 
@@ -1992,7 +1990,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean setBlockFast(Block block, Material material, int data) {
-        return CompatibilityUtilsBase.this.setBlockFast(block.getChunk(), block.getX(), block.getY(), block.getZ(), material, data);
+        return CompatibilityUtils.this.setBlockFast(block.getChunk(), block.getX(), block.getY(), block.getZ(), material, data);
     }
 
     @Override
@@ -2049,7 +2047,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             if (entityMap != null) {
                 Object nmsEntity = entityMap.get(uuid);
                 if (nmsEntity != null) {
-                    return CompatibilityUtilsBase.this.getBukkitEntity(nmsEntity);
+                    return CompatibilityUtils.this.getBukkitEntity(nmsEntity);
                 }
             }
         } catch (Exception ex) {
@@ -2069,7 +2067,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         }
 
         for (World world : Bukkit.getWorlds()) {
-            Entity found = CompatibilityUtilsBase.this.getEntity(world, uuid);
+            Entity found = CompatibilityUtils.this.getEntity(world, uuid);
             if (found != null) {
                 return found;
             }
@@ -2204,10 +2202,10 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     @SuppressWarnings("deprecation")
     public Material getMaterial(int id, byte data) {
-        Material material = CompatibilityUtilsBase.this.getMaterial(id);
+        Material material = CompatibilityUtils.this.getMaterial(id);
         if (NMSUtils.class_UnsafeValues_fromLegacyDataMethod != null) {
             if (material != null) {
-                material = CompatibilityUtilsBase.this.fromLegacy(new org.bukkit.material.MaterialData(material, data));
+                material = CompatibilityUtils.this.fromLegacy(new org.bukkit.material.MaterialData(material, data));
             }
         }
         if (material == null) {
@@ -2219,18 +2217,18 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     @SuppressWarnings("deprecation")
     public Material getMaterial(int id) {
-        if (CompatibilityUtilsBase.this.materialIdMap == null) {
-            CompatibilityUtilsBase.this.materialIdMap = new HashMap<>();
+        if (CompatibilityUtils.this.materialIdMap == null) {
+            CompatibilityUtils.this.materialIdMap = new HashMap<>();
 
             Object[] allMaterials = Material.AIR.getDeclaringClass().getEnumConstants();
             for (Object o : allMaterials) {
                 Material material = (Material)o;
-                if (!CompatibilityUtilsBase.this.hasLegacyMaterials() || CompatibilityUtilsBase.this.isLegacy(material)) {
-                    CompatibilityUtilsBase.this.materialIdMap.put(material.getId(), material);
+                if (!CompatibilityUtils.this.hasLegacyMaterials() || CompatibilityUtils.this.isLegacy(material)) {
+                    CompatibilityUtils.this.materialIdMap.put(material.getId(), material);
                 }
             }
         }
-        return CompatibilityUtilsBase.this.materialIdMap.get(id);
+        return CompatibilityUtils.this.materialIdMap.get(id);
     }
 
     @Override
@@ -2286,7 +2284,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     @SuppressWarnings("deprecation")
     public Material migrateMaterial(Material material, byte data) {
-        return CompatibilityUtilsBase.this.fromLegacy(new org.bukkit.material.MaterialData(material, data));
+        return CompatibilityUtils.this.fromLegacy(new org.bukkit.material.MaterialData(material, data));
     }
 
     @Override
@@ -2311,10 +2309,10 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             return material.name().toLowerCase();
         }
 
-        Material legacyMaterial = data == 0 ? CompatibilityUtilsBase.this.getLegacyMaterial(materialName) : Material.getMaterial("LEGACY_" + materialName);
+        Material legacyMaterial = data == 0 ? CompatibilityUtils.this.getLegacyMaterial(materialName) : Material.getMaterial("LEGACY_" + materialName);
         if (legacyMaterial != null) {
             org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
-            legacyMaterial = CompatibilityUtilsBase.this.fromLegacy(materialData);
+            legacyMaterial = CompatibilityUtils.this.fromLegacy(materialData);
             if (legacyMaterial != null) {
                 material = legacyMaterial;
             }
@@ -2332,7 +2330,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean isChunkLoaded(Block block) {
-        return CompatibilityUtilsBase.this.isChunkLoaded(block.getLocation());
+        return CompatibilityUtils.this.isChunkLoaded(block.getLocation());
     }
 
     @Override
@@ -2345,7 +2343,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean checkChunk(Location location) {
-        return CompatibilityUtilsBase.this.checkChunk(location, true);
+        return CompatibilityUtils.this.checkChunk(location, true);
     }
 
     /**
@@ -2356,12 +2354,12 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
         int chunkX = location.getBlockX() >> 4;
         int chunkZ = location.getBlockZ() >> 4;
         World world = location.getWorld();
-        return CompatibilityUtilsBase.this.checkChunk(world, chunkX, chunkZ, generate);
+        return CompatibilityUtils.this.checkChunk(world, chunkX, chunkZ, generate);
     }
 
     @Override
     public boolean checkChunk(World world, int chunkX, int chunkZ) {
-        return CompatibilityUtilsBase.this.checkChunk(world, chunkX, chunkZ, true);
+        return CompatibilityUtils.this.checkChunk(world, chunkX, chunkZ, true);
     }
 
     /**
@@ -2370,25 +2368,25 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean checkChunk(World world, int chunkX, int chunkZ, boolean generate) {
         if (!world.isChunkLoaded(chunkX, chunkZ)) {
-            CompatibilityUtilsBase.this.loadChunk(world, chunkX, chunkZ, generate);
+            CompatibilityUtils.this.loadChunk(world, chunkX, chunkZ, generate);
             return false;
         }
-        return CompatibilityUtilsBase.this.isReady(world.getChunkAt(chunkX, chunkZ));
+        return CompatibilityUtils.this.isReady(world.getChunkAt(chunkX, chunkZ));
     }
 
     @Override
     public boolean applyBonemeal(Location location) {
         if (NMSUtils.class_ItemDye_bonemealMethod == null) return false;
 
-        if (CompatibilityUtilsBase.this.dummyItem == null) {
-             CompatibilityUtilsBase.this.dummyItem = new ItemStack(Material.DIRT, 64);
-             CompatibilityUtilsBase.this.dummyItem = platform.getItemUtils().makeReal(CompatibilityUtilsBase.this.dummyItem);
+        if (CompatibilityUtils.this.dummyItem == null) {
+             CompatibilityUtils.this.dummyItem = new ItemStack(Material.DIRT, 64);
+             CompatibilityUtils.this.dummyItem = platform.getItemUtils().makeReal(CompatibilityUtils.this.dummyItem);
         }
-        CompatibilityUtilsBase.this.dummyItem.setAmount(64);
+        CompatibilityUtils.this.dummyItem.setAmount(64);
 
         try {
             Object world = NMSUtils.getHandle(location.getWorld());
-            Object itemStack = platform.getItemUtils().getHandle(CompatibilityUtilsBase.this.dummyItem);
+            Object itemStack = platform.getItemUtils().getHandle(CompatibilityUtils.this.dummyItem);
             Object blockPosition = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             Object result = NMSUtils.class_ItemDye_bonemealMethod.invoke(null, itemStack, world, blockPosition);
             return (Boolean)result;
@@ -2446,7 +2444,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean isTopBlock(Block block) {
         // Yes this is an ugly way to do it.
-        String blockData = CompatibilityUtilsBase.this.getBlockData(block);
+        String blockData = CompatibilityUtils.this.getBlockData(block);
         return blockData != null && blockData.contains("type=top");
     }
 
@@ -2485,7 +2483,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             Object worldHandle = NMSUtils.getHandle(block.getWorld());
             Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
             Object blockType = NMSUtils.class_World_getTypeMethod.invoke(worldHandle, blockLocation);
-            CompatibilityUtilsBase.this.clearItems(block.getLocation());
+            CompatibilityUtils.this.clearItems(block.getLocation());
             platform.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte)0, false);
             return (boolean) NMSUtils.class_World_setTypeAndDataMethod.invoke(worldHandle, blockLocation, blockType, 3);
         } catch (Exception ex) {
@@ -2528,7 +2526,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean isPowerable(Block block) {
         if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return CompatibilityUtilsBase.this.isPowerableLegacy(block);
+            return CompatibilityUtils.this.isPowerableLegacy(block);
         }
         try {
             Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
@@ -2551,7 +2549,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean isPowered(Block block) {
         if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return CompatibilityUtilsBase.this.isPoweredLegacy(block);
+            return CompatibilityUtils.this.isPoweredLegacy(block);
         }
         try {
             Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
@@ -2587,7 +2585,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     public boolean setPowered(Block block, boolean powered) {
         if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null
                 || NMSUtils.class_Block_setBlockDataMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return CompatibilityUtilsBase.this.setPoweredLegacy(block, powered);
+            return CompatibilityUtils.this.setPoweredLegacy(block, powered);
         }
 
         try {
@@ -2670,7 +2668,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean setTopHalf(Block block) {
         if (NMSUtils.class_Bisected == null) {
-            return CompatibilityUtilsBase.this.setTopHalfLegacy(block);
+            return CompatibilityUtils.this.setTopHalfLegacy(block);
         }
         try {
             Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
@@ -2981,12 +2979,12 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public void loadChunk(Location location, boolean generate, Consumer<Chunk> consumer) {
-        CompatibilityUtilsBase.this.loadChunk(location.getWorld(), location.getBlockX() >> 4, location.getBlockZ() >> 4, generate, consumer);
+        CompatibilityUtils.this.loadChunk(location.getWorld(), location.getBlockX() >> 4, location.getBlockZ() >> 4, generate, consumer);
     }
 
     @Override
     public void loadChunk(World world, int x, int z, boolean generate) {
-        CompatibilityUtilsBase.this.loadChunk(world, x, z, generate, null);
+        CompatibilityUtils.this.loadChunk(world, x, z, generate, null);
     }
 
     /**
@@ -3003,8 +3001,8 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
             requestCount++;
             if (requestCount > MAX_CHUNK_LOAD_TRY) {
                 platform.getLogger().warning("Exceeded retry count for asynchronous chunk load, loading synchronously");
-                if (!CompatibilityUtilsBase.this.hasDumpedStack) {
-                    CompatibilityUtilsBase.this.hasDumpedStack = true;
+                if (!CompatibilityUtils.this.hasDumpedStack) {
+                    CompatibilityUtils.this.hasDumpedStack = true;
                     Thread.dumpStack();
                 }
                 Chunk chunk = world.getChunkAt(x, z);
@@ -3095,22 +3093,22 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                 // TODO: If there is a player midway in a stack of mobs do the mobs need to wait... ?
                 // Might have to rig up something weird to test.
                 // Otherwise this seems like too complicated of an edge case to worry about
-                CompatibilityUtilsBase.this.teleportVehicle(passenger, location);
-                CompatibilityUtilsBase.this.addPassenger(vehicle, passenger);
+                CompatibilityUtils.this.teleportVehicle(passenger, location);
+                CompatibilityUtils.this.addPassenger(vehicle, passenger);
             }
         }
     }
 
     @Override
     public void teleportVehicle(Entity vehicle, Location location) {
-        List<Entity> passengers = CompatibilityUtilsBase.this.getPassengers(vehicle);
+        List<Entity> passengers = CompatibilityUtils.this.getPassengers(vehicle);
         vehicle.eject();
         vehicle.teleport(location);
         // eject seems to just not work sometimes? (on chunk load, maybe)
         // So let's try to avoid exponentially adding passengers.
-        List<Entity> newPassengers = CompatibilityUtilsBase.this.getPassengers(vehicle);
+        List<Entity> newPassengers = CompatibilityUtils.this.getPassengers(vehicle);
         if (newPassengers.isEmpty()) {
-            CompatibilityUtilsBase.this.teleportPassengers(vehicle, location, passengers);
+            CompatibilityUtils.this.teleportPassengers(vehicle, location, passengers);
         } else {
             platform.getLogger().warning("Entity.eject failed!");
         }
@@ -3118,17 +3116,17 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public void teleportWithVehicle(Entity entity, Location location) {
-        CompatibilityUtilsBase.this.teleporting = true;
+        CompatibilityUtils.this.teleporting = true;
         if (entity != null && entity.isValid()) {
-            final Entity vehicle = CompatibilityUtilsBase.this.getRootVehicle(entity);
-            CompatibilityUtilsBase.this.teleportVehicle(vehicle, location);
+            final Entity vehicle = CompatibilityUtils.this.getRootVehicle(entity);
+            CompatibilityUtils.this.teleportVehicle(vehicle, location);
         }
-        CompatibilityUtilsBase.this.teleporting = false;
+        CompatibilityUtils.this.teleporting = false;
     }
 
     @Override
     public boolean isTeleporting() {
-        return CompatibilityUtilsBase.this.teleporting;
+        return CompatibilityUtils.this.teleporting;
     }
 
     @Override
@@ -3169,7 +3167,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public Class<?> getProjectileClass(String projectileTypeName) {
         Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
-        if (!CompatibilityUtilsBase.this.isValidProjectileClass(projectileType)) {
+        if (!CompatibilityUtils.this.isValidProjectileClass(projectileType)) {
             return null;
         }
         return projectileType;
@@ -3191,7 +3189,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
 
             Object item = platform.getItemUtils().getHandle(platform.getItemUtils().makeReal(itemStack));
             final Object fireworkHandle = NMSUtils.class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
-            CompatibilityUtilsBase.this.setSilent(fireworkHandle, silent);
+            CompatibilityUtils.this.setSilent(fireworkHandle, silent);
 
             if (direction != null) {
                 if (NMSUtils.class_Entity_motField != null) {
@@ -3251,7 +3249,7 @@ public class CompatibilityUtilsBase implements CompatibilityUtils {
                 if (metaBase != null) {
                     if (NMSUtils.class_NBTTagCompound.isAssignableFrom(metaBase.getClass())) {
                         ConfigurationSection newSection = tags.createSection(tagName);
-                        CompatibilityUtilsBase.this.loadAllTagsFromNBT(newSection, metaBase);
+                        CompatibilityUtils.this.loadAllTagsFromNBT(newSection, metaBase);
                     } else {
                         tags.set(tagName, platform.getInventoryUtils().getTagValue(metaBase));
                     }

@@ -6,7 +6,7 @@ import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.UUIDCallback;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.SkinUtilsBase;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
@@ -32,8 +32,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
-public class SkinUtilsBase implements SkinUtils {
-    private final Platform platform;
+public class SkinUtils extends SkinUtilsBase {
     private Gson gson;
     private long holdoff = 0;
     private static final Map<UUID, ProfileResponse> responseCache = new HashMap<>();
@@ -41,8 +40,8 @@ public class SkinUtilsBase implements SkinUtils {
     private static final Map<String, Object> loadingUUIDs = new HashMap<>();
     private static final Map<UUID, Object> loadingProfiles = new HashMap<>();
 
-    public SkinUtilsBase(Platform platform) {
-        this.platform = platform;
+    public SkinUtils(Platform platform) {
+        super(platform);
     }
 
     @Override
@@ -86,7 +85,7 @@ public class SkinUtilsBase implements SkinUtils {
                 Object textureProperty = textures.iterator().next();
                 String texture = (String) NMSUtils.class_GameProfileProperty_value.get(textureProperty);
                 String decoded = Base64Coder.decodeString(texture);
-                url = SkinUtilsBase.this.getTextureURL(decoded);
+                url = SkinUtils.this.getTextureURL(decoded);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -130,8 +129,8 @@ public class SkinUtilsBase implements SkinUtils {
 
     @Override
     public String getOnlineSkinURL(Player player) {
-        Object profile = SkinUtilsBase.this.getProfile(player);
-        return profile == null ? null : SkinUtilsBase.this.getProfileURL(profile);
+        Object profile = SkinUtils.this.getProfile(player);
+        return profile == null ? null : SkinUtils.this.getProfileURL(profile);
     }
 
     @Override
@@ -140,7 +139,7 @@ public class SkinUtilsBase implements SkinUtils {
         Player player = platform.getDeprecatedUtils().getPlayerExact(playerName);
         String url = null;
         if (player != null) {
-            url = SkinUtilsBase.this.getOnlineSkinURL(player);
+            url = SkinUtils.this.getOnlineSkinURL(player);
         }
         return url;
     }
@@ -170,7 +169,7 @@ public class SkinUtilsBase implements SkinUtils {
     }
     
     private void engageHoldoff() {
-        SkinUtilsBase.this.holdoff = 10 * 60000;
+        SkinUtils.this.holdoff = 10 * 60000;
     }
 
     private void synchronizeCallbackUUID(final UUIDCallback callback, final UUID uuid) {
@@ -267,10 +266,10 @@ public class SkinUtilsBase implements SkinUtils {
                             YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
                             uuid = UUID.fromString(config.getString("uuid"));
                         } else {
-                            String uuidJSON = SkinUtilsBase.this.fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
+                            String uuidJSON = SkinUtils.this.fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
                             if (uuidJSON.isEmpty()) {
                                 if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Got empty UUID JSON for " + playerName);
-                                SkinUtilsBase.this.synchronizeCallbackUUID(callback, null);
+                                SkinUtils.this.synchronizeCallbackUUID(callback, null);
                                 return;
                             }
 
@@ -280,13 +279,13 @@ public class SkinUtilsBase implements SkinUtils {
                                 uuidString = element.getAsJsonObject().get("id").getAsString();
                             }
                             if (uuidString == null) {
-                                SkinUtilsBase.this.engageHoldoff();
+                                SkinUtils.this.engageHoldoff();
                                 if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
-                                SkinUtilsBase.this.synchronizeCallbackUUID(callback, null);
+                                SkinUtils.this.synchronizeCallbackUUID(callback, null);
                                 return;
                             }
                             if (CompatibilityConstants.DEBUG) platform.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
-                            uuid = UUID.fromString(SkinUtilsBase.this.addDashes(uuidString));
+                            uuid = UUID.fromString(SkinUtils.this.addDashes(uuidString));
 
                             YamlConfiguration config = new YamlConfiguration();
                             config.set("uuid", uuid.toString());
@@ -302,14 +301,14 @@ public class SkinUtilsBase implements SkinUtils {
                         } else {
                             platform.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes");
                         }
-                        SkinUtilsBase.this.engageHoldoff();
+                        SkinUtils.this.engageHoldoff();
                         uuid = null;
                     }
 
-                    SkinUtilsBase.this.synchronizeCallbackUUID(callback, uuid);
+                    SkinUtils.this.synchronizeCallbackUUID(callback, uuid);
                 }
             }
-         }, SkinUtilsBase.this.holdoff / 50);
+         }, SkinUtils.this.holdoff / 50);
     }
 
     private String addDashes(String uuidString) {
@@ -321,11 +320,11 @@ public class SkinUtilsBase implements SkinUtils {
 
     @Override
     public void fetchProfile(final String playerName, final ProfileCallback callback) {
-        SkinUtilsBase.this.fetchUUID(playerName, new UUIDCallback() {
+        SkinUtils.this.fetchUUID(playerName, new UUIDCallback() {
             @Override
             public void result(UUID uuid) {
                 if (uuid != null) {
-                    SkinUtilsBase.this.fetchProfile(uuid, callback);
+                    SkinUtils.this.fetchProfile(uuid, callback);
                 } else {
                     callback.result(null);
                 }
@@ -377,7 +376,7 @@ public class SkinUtilsBase implements SkinUtils {
             callback.result(cached);
             return;
         }
-        final SkinUtils skinUtils = this;
+        final com.elmakers.mine.bukkit.utility.platform.SkinUtils skinUtils = this;
         Bukkit.getScheduler().runTaskLaterAsynchronously(platform.getPlugin(), new Runnable() {
             @Override
             public void run() {
@@ -409,7 +408,7 @@ public class SkinUtilsBase implements SkinUtils {
                         synchronized (responseCache) {
                             responseCache.put(uuid, fromCache);
                         }
-                        SkinUtilsBase.this.synchronizeCallbackProfile(callback, fromCache);
+                        SkinUtils.this.synchronizeCallbackProfile(callback, fromCache);
                         return;
                     }
 
@@ -417,18 +416,18 @@ public class SkinUtilsBase implements SkinUtils {
                         platform.getLogger().info("Fetching profile for " + uuid);
                     }
                     try {
-                        String profileJSON = SkinUtilsBase.this.fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
+                        String profileJSON = SkinUtils.this.fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
                         if (profileJSON.isEmpty()) {
-                            SkinUtilsBase.this.synchronizeCallbackProfile(callback, null);
-                            SkinUtilsBase.this.engageHoldoff();
+                            SkinUtils.this.synchronizeCallbackProfile(callback, null);
+                            SkinUtils.this.engageHoldoff();
                             if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
                         if (CompatibilityConstants.DEBUG) platform.getLogger().info("Got profile: " + profileJSON);
                         JsonElement element = new JsonParser().parse(profileJSON);
                         if (element == null || !element.isJsonObject()) {
-                            SkinUtilsBase.this.synchronizeCallbackProfile(callback, null);
-                            SkinUtilsBase.this.engageHoldoff();
+                            SkinUtils.this.synchronizeCallbackProfile(callback, null);
+                            SkinUtils.this.engageHoldoff();
                             if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
@@ -450,14 +449,14 @@ public class SkinUtilsBase implements SkinUtils {
                         }
 
                         if (encodedTextures == null) {
-                            SkinUtilsBase.this.synchronizeCallbackProfile(callback, null);
-                            SkinUtilsBase.this.engageHoldoff();
+                            SkinUtils.this.synchronizeCallbackProfile(callback, null);
+                            SkinUtils.this.engageHoldoff();
                             if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
                             return;
                         }
                         String decodedTextures = Base64Coder.decodeString(encodedTextures);
                         if (CompatibilityConstants.DEBUG) platform.getLogger().info("Decoded textures: " + decodedTextures);
-                        String skinURL = SkinUtilsBase.this.getTextureURL(decodedTextures);
+                        String skinURL = SkinUtils.this.getTextureURL(decodedTextures);
 
                         // A null skin URL here is normal if the player has no skin.
                         if (CompatibilityConstants.DEBUG) platform.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
@@ -468,20 +467,20 @@ public class SkinUtilsBase implements SkinUtils {
                         YamlConfiguration saveToCache = new YamlConfiguration();
                         response.save(saveToCache);
                         saveToCache.save(playerCache);
-                        SkinUtilsBase.this.synchronizeCallbackProfile(callback, response);
-                        SkinUtilsBase.this.holdoff = 0;
+                        SkinUtils.this.synchronizeCallbackProfile(callback, response);
+                        SkinUtils.this.holdoff = 0;
                     } catch (Exception ex) {
                         if (CompatibilityConstants.DEBUG) {
                             platform.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes", ex);
                         } else {
                             platform.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes");
                         }
-                        SkinUtilsBase.this.engageHoldoff();
-                        SkinUtilsBase.this.synchronizeCallbackProfile(callback, null);
+                        SkinUtils.this.engageHoldoff();
+                        SkinUtils.this.synchronizeCallbackProfile(callback, null);
                     }
                 }
             }
-        }, SkinUtilsBase.this.holdoff / 50);
+        }, SkinUtils.this.holdoff / 50);
     }
 
     @Override

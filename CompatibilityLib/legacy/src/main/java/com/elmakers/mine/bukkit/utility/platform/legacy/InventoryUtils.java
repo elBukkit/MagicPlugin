@@ -30,16 +30,14 @@ import java.util.logging.Level;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
 import com.google.common.collect.Multimap;
 
 @SuppressWarnings("deprecation")
-public class InventoryUtilsBase implements InventoryUtils {
-    private final Platform platform;
-    
-    public InventoryUtilsBase(Platform platform) {
-        this.platform = platform;
+public class InventoryUtils extends InventoryUtilsBase {
+    public InventoryUtils(Platform platform) {
+        super(platform);
     }
 
     @Override
@@ -71,7 +69,7 @@ public class InventoryUtilsBase implements InventoryUtils {
         Object tag = platform.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
-        return InventoryUtilsBase.this.addTagsToNBT(platform.getCompatibilityUtils().getMap(tags), tag);
+        return InventoryUtils.this.addTagsToNBT(platform.getCompatibilityUtils().getMap(tags), tag);
     }
 
     @Override
@@ -82,7 +80,7 @@ public class InventoryUtilsBase implements InventoryUtils {
         Object tag = platform.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
-        return InventoryUtilsBase.this.addTagsToNBT(tags, tag);
+        return InventoryUtils.this.addTagsToNBT(tags, tag);
     }
 
     @Override
@@ -120,13 +118,13 @@ public class InventoryUtilsBase implements InventoryUtils {
     @Override
     public boolean saveTagsToNBT(ConfigurationSection tags, Object node)
     {
-        return InventoryUtilsBase.this.saveTagsToNBT(tags, node, null);
+        return InventoryUtils.this.saveTagsToNBT(tags, node, null);
     }
 
     @Override
     public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames)
     {
-        return InventoryUtilsBase.this.saveTagsToNBT(platform.getCompatibilityUtils().getMap(tags), node, tagNames);
+        return InventoryUtils.this.saveTagsToNBT(platform.getCompatibilityUtils().getMap(tags), node, tagNames);
     }
 
     @Override
@@ -144,7 +142,7 @@ public class InventoryUtilsBase implements InventoryUtils {
         for (Map.Entry<String, Object> tag : tags.entrySet()) {
             Object value = tag.getValue();
             try {
-                Object wrappedTag = InventoryUtilsBase.this.wrapInTag(value);
+                Object wrappedTag = InventoryUtils.this.wrapInTag(value);
                 if (wrappedTag == null) continue;
                 NMSUtils.class_NBTTagCompound_setMethod.invoke(node, tag.getKey(), wrappedTag);
             } catch (Exception ex) {
@@ -172,7 +170,7 @@ public class InventoryUtilsBase implements InventoryUtils {
         }
 
         // Remove tags that were not included
-        Set<String> currentTags = InventoryUtilsBase.this.getTagKeys(node);
+        Set<String> currentTags = InventoryUtils.this.getTagKeys(node);
         if (currentTags != null && !tagNames.containsAll(currentTags)) {
             // Need to copy this, getKeys returns a live list and bad things can happen.
             currentTags = new HashSet<>(currentTags);
@@ -185,7 +183,7 @@ public class InventoryUtilsBase implements InventoryUtils {
             if (currentTags != null) currentTags.remove(tagName);
             Object value = tags.get(tagName);
             try {
-                Object wrappedTag = InventoryUtilsBase.this.wrapInTag(value);
+                Object wrappedTag = InventoryUtils.this.wrapInTag(value);
                 if (wrappedTag == null) continue;
                 NMSUtils.class_NBTTagCompound_setMethod.invoke(node, tagName, wrappedTag);
             } catch (Exception ex) {
@@ -220,12 +218,12 @@ public class InventoryUtilsBase implements InventoryUtils {
             wrappedValue = NMSUtils.class_NBTTagLong_constructor.newInstance((Long)value);
         } else if (value instanceof ConfigurationSection) {
             wrappedValue = NMSUtils.class_NBTTagCompound_constructor.newInstance();
-            InventoryUtilsBase.this.saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);
+            InventoryUtils.this.saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);
         } else if (value instanceof Map) {
             wrappedValue = NMSUtils.class_NBTTagCompound_constructor.newInstance();
             @SuppressWarnings("unchecked")
             Map<String, Object> valueMap = (Map<String, Object>)value;
-            InventoryUtilsBase.this.addTagsToNBT(valueMap, wrappedValue);
+            InventoryUtils.this.addTagsToNBT(valueMap, wrappedValue);
         } else if (value instanceof Collection) {
             @SuppressWarnings("unchecked")
             Collection<Object> list = (Collection<Object>)value;
@@ -239,28 +237,28 @@ public class InventoryUtilsBase implements InventoryUtils {
                     list = new ArrayList<>();
                     for (int i = 1; i < checkList.size(); i++) {
                         if (first.equals("I")) {
-                            list.add(InventoryUtilsBase.this.convertToInteger(checkList.get(i)));
+                            list.add(InventoryUtils.this.convertToInteger(checkList.get(i)));
                         } else if (first.equals("L")) {
-                            list.add(InventoryUtilsBase.this.convertToLong(checkList.get(i)));
+                            list.add(InventoryUtils.this.convertToLong(checkList.get(i)));
                         } else if (first.equals("B")) {
-                            list.add(InventoryUtilsBase.this.convertToByte(checkList.get(i)));
+                            list.add(InventoryUtils.this.convertToByte(checkList.get(i)));
                         } else {
                             list.add(checkList.get(i));
                         }
                     }
                     if (first.equals("B")) {
-                        wrappedValue = NMSUtils.class_NBTTagByteArray_constructor.newInstance(InventoryUtilsBase.this.makeByteArray((List<Object>)list));
+                        wrappedValue = NMSUtils.class_NBTTagByteArray_constructor.newInstance(InventoryUtils.this.makeByteArray((List<Object>)list));
                     } else if (first.equals("I") || NMSUtils.class_NBTTagLongArray_constructor == null) {
-                        wrappedValue = NMSUtils.class_NBTTagIntArray_constructor.newInstance(InventoryUtilsBase.this.makeIntArray((List<Object>)list));
+                        wrappedValue = NMSUtils.class_NBTTagIntArray_constructor.newInstance(InventoryUtils.this.makeIntArray((List<Object>)list));
                     } else if (first.equals("L")) {
-                        wrappedValue = NMSUtils.class_NBTTagLongArray_constructor.newInstance(InventoryUtilsBase.this.makeLongArray((List<Object>)list));
+                        wrappedValue = NMSUtils.class_NBTTagLongArray_constructor.newInstance(InventoryUtils.this.makeLongArray((List<Object>)list));
                     }
                 }
             }
             if (wrappedValue == null) {
                 for (Object item : list) {
                     if (item != null) {
-                        platform.getNBTUtils().addToList(listMeta, InventoryUtilsBase.this.wrapInTag(item));
+                        platform.getNBTUtils().addToList(listMeta, InventoryUtils.this.wrapInTag(item));
                     }
                 }
                 wrappedValue = listMeta;
@@ -316,17 +314,17 @@ public class InventoryUtilsBase implements InventoryUtils {
     }
 
     protected Integer convertToInteger(Object o) {
-        Long intVal = InventoryUtilsBase.this.convertToLong(o);
+        Long intVal = InventoryUtils.this.convertToLong(o);
         return intVal == null ? null : (int)(long)intVal;
     }
 
     protected Byte convertToByte(Object o) {
-        Long intVal = InventoryUtilsBase.this.convertToLong(o);
+        Long intVal = InventoryUtils.this.convertToLong(o);
         return intVal == null ? null : (byte)(long)intVal;
     }
 
     protected Short convertToShort(Object o) {
-        Long intVal = InventoryUtilsBase.this.convertToLong(o);
+        Long intVal = InventoryUtils.this.convertToLong(o);
         return intVal == null ? null : (short)(long)intVal;
     }
 
@@ -359,7 +357,7 @@ public class InventoryUtilsBase implements InventoryUtils {
     public Object getMetaObject(Object tag, String key) {
         try {
             Object metaBase = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, key);
-            return InventoryUtilsBase.this.getTagValue(metaBase);
+            return InventoryUtils.this.getTagValue(metaBase);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -392,7 +390,7 @@ public class InventoryUtilsBase implements InventoryUtils {
             List<?> items = (List<?>) NMSUtils.class_NBTTagList_list.get(tag);
             List<Object> converted = new ArrayList<>();
             for (Object baseTag : items) {
-                Object convertedBase = InventoryUtilsBase.this.getTagValue(baseTag);
+                Object convertedBase = InventoryUtils.this.getTagValue(baseTag);
                 if (convertedBase != null) {
                     converted.add(convertedBase);
                 }
@@ -402,10 +400,10 @@ public class InventoryUtilsBase implements InventoryUtils {
             value = NMSUtils.class_NBTTagString_dataField.get(tag);
         } else if (NMSUtils.class_NBTTagCompound.isAssignableFrom(tag.getClass())) {
             Map<String, Object> compoundMap = new HashMap<>();
-            Set<String> keys = InventoryUtilsBase.this.getTagKeys(tag);
+            Set<String> keys = InventoryUtils.this.getTagKeys(tag);
             for (String key : keys) {
                 Object baseTag = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, key);
-                Object convertedBase = InventoryUtilsBase.this.getTagValue(baseTag);
+                Object convertedBase = InventoryUtils.this.getTagValue(baseTag);
                 if (convertedBase != null) {
                     compoundMap.put(key, convertedBase);
                 }
@@ -446,7 +444,7 @@ public class InventoryUtilsBase implements InventoryUtils {
     public ItemStack setSkullURL(ItemStack itemStack, String url) {
         try {
             // Using a fixed non-random UUID here so skulls of the same type can stack
-            return InventoryUtilsBase.this.setSkullURL(itemStack, new URL(url), CompatibilityConstants.SKULL_UUID);
+            return InventoryUtils.this.setSkullURL(itemStack, new URL(url), CompatibilityConstants.SKULL_UUID);
         } catch (MalformedURLException e) {
             platform.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
@@ -459,7 +457,7 @@ public class InventoryUtilsBase implements InventoryUtils {
             itemStack = platform.getItemUtils().makeReal(itemStack);
             Object skullOwner = platform.getNBTUtils().createNode(itemStack, "SkullOwner");
             platform.getNBTUtils().setMeta(skullOwner, "Name", ownerName);
-            return InventoryUtilsBase.this.setSkullURL(itemStack, url, id);
+            return InventoryUtils.this.setSkullURL(itemStack, url, id);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -471,7 +469,7 @@ public class InventoryUtilsBase implements InventoryUtils {
     public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
         // Old versions of Bukkit would NPE trying to save a skull without an owner name
         // So we'll use MHF_Question, why not.
-        return InventoryUtilsBase.this.setSkullURL(itemStack, url, id, "MHF_Question");
+        return InventoryUtils.this.setSkullURL(itemStack, url, id, "MHF_Question");
     }
 
     @Override
@@ -498,7 +496,7 @@ public class InventoryUtilsBase implements InventoryUtils {
             properties.put("textures", NMSUtils.class_GameProfileProperty_noSignatureConstructor.newInstance("textures", encoded));
 
             ItemMeta skullMeta = itemStack.getItemMeta();
-            InventoryUtilsBase.this.setSkullProfile(skullMeta, gameProfile);
+            InventoryUtils.this.setSkullProfile(skullMeta, gameProfile);
 
             itemStack.setItemMeta(skullMeta);
         } catch (Exception ex) {
@@ -509,7 +507,7 @@ public class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public String getSkullURL(ItemStack skull) {
-        return platform.getSkinUtils().getProfileURL(InventoryUtilsBase.this.getSkullProfile(skull.getItemMeta()));
+        return platform.getSkinUtils().getProfileURL(InventoryUtils.this.getSkullProfile(skull.getItemMeta()));
     }
     
     @Override
@@ -587,19 +585,19 @@ public class InventoryUtilsBase implements InventoryUtils {
     @Override
     public void wrapText(String text, Collection<String> list)
     {
-        InventoryUtilsBase.this.wrapText(text, CompatibilityConstants.MAX_LORE_LENGTH, list);
+        InventoryUtils.this.wrapText(text, CompatibilityConstants.MAX_LORE_LENGTH, list);
     }
 
     @Override
     public void wrapText(String text, String prefix, Collection<String> list)
     {
-        InventoryUtilsBase.this.wrapText(text, prefix, CompatibilityConstants.MAX_LORE_LENGTH, list);
+        InventoryUtils.this.wrapText(text, prefix, CompatibilityConstants.MAX_LORE_LENGTH, list);
     }
 
     @Override
     public void wrapText(String text, int maxLength, Collection<String> list)
     {
-        InventoryUtilsBase.this.wrapText(text, "", maxLength, list);
+        InventoryUtils.this.wrapText(text, "", maxLength, list);
     }
 
     @Override
@@ -628,7 +626,7 @@ public class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public boolean hasItem(Inventory inventory, String itemName) {
-        ItemStack itemStack = InventoryUtilsBase.this.getItem(inventory, itemName);
+        ItemStack itemStack = InventoryUtils.this.getItem(inventory, itemName);
         return itemStack != null;
     }
 
@@ -771,7 +769,7 @@ public class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public String describeProperty(Object property) {
-        return InventoryUtilsBase.this.describeProperty(property, 0);
+        return InventoryUtils.this.describeProperty(property, 0);
     }
 
     @Override
@@ -788,7 +786,7 @@ public class InventoryUtilsBase implements InventoryUtils {
                     full.append(',');
                 }
                 first = false;
-                full.append(key).append(':').append(InventoryUtilsBase.this.describeProperty(section.get(key)));
+                full.append(key).append(':').append(InventoryUtils.this.describeProperty(section.get(key)));
             }
             propertyString = full.append('}').toString();
         } else {
@@ -841,7 +839,7 @@ public class InventoryUtilsBase implements InventoryUtils {
             } else if (value != null && value instanceof Map) {
                 @SuppressWarnings("unchecked")
                 Map<String, Object> map = (Map<String, Object>)value;
-                InventoryUtilsBase.this.convertIntegers(map);
+                InventoryUtils.this.convertIntegers(map);
             }
         }
     }

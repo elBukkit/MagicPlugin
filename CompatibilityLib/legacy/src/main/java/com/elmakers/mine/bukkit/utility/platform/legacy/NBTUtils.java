@@ -2,26 +2,24 @@ package com.elmakers.mine.bukkit.utility.platform.legacy;
 
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
 
-public class NBTUtilsBase implements NBTUtils {
-    private final Platform platform;
-
-    public NBTUtilsBase(Platform platform) {
-        this.platform = platform;
+public class NBTUtils extends NBTUtilsBase {
+    public NBTUtils(Platform platform) {
+        super(platform);
     }
 
     @Override
     public String getMetaString(ItemStack stack, String tag, String defaultValue) {
-        String result = NBTUtilsBase.this.getMetaString(stack, tag);
+        String result = NBTUtils.this.getMetaString(stack, tag);
         return result == null ? defaultValue : result;
     }
 
     @Override
     public boolean hasMeta(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return false;
-        return NBTUtilsBase.this.getNode(stack, tag) != null;
+        return NBTUtils.this.getNode(stack, tag) != null;
     }
 
     @Override
@@ -78,7 +76,7 @@ public class NBTUtilsBase implements NBTUtils {
     @Override
     public Object createNode(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
-        Object outputObject = NBTUtilsBase.this.getNode(stack, tag);
+        Object outputObject = NBTUtils.this.getNode(stack, tag);
         if (outputObject == null) {
             try {
                 Object craft = platform.getItemUtils().getHandle(stack);
@@ -99,7 +97,7 @@ public class NBTUtilsBase implements NBTUtils {
 
     @Override
     public String getMetaString(Object node, String tag, String defaultValue) {
-        String meta = NBTUtilsBase.this.getMetaString(node, tag);
+        String meta = NBTUtils.this.getMetaString(node, tag);
         return meta == null || meta.length() == 0 ? defaultValue : meta;
     }
 
@@ -158,7 +156,7 @@ public class NBTUtilsBase implements NBTUtils {
         try {
             Object tagObject = platform.getItemUtils().getTag(stack);
             if (tagObject == null) return defaultValue;
-            Integer value = NBTUtilsBase.this.getMetaInt(tagObject, tag);
+            Integer value = NBTUtils.this.getMetaInt(tagObject, tag);
             result = value == null ? defaultValue : value;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -252,7 +250,7 @@ public class NBTUtilsBase implements NBTUtils {
             if (craft == null) return;
             Object tagObject = platform.getItemUtils().getTag(craft);
             if (tagObject == null) return;
-            NBTUtilsBase.this.setMetaInt(tagObject, tag, value);
+            NBTUtils.this.setMetaInt(tagObject, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -277,7 +275,7 @@ public class NBTUtilsBase implements NBTUtils {
             if (craft == null) return;
             Object tagObject = platform.getItemUtils().getTag(craft);
             if (tagObject == null) return;
-            NBTUtilsBase.this.removeMeta(tagObject, tag);
+            NBTUtils.this.removeMeta(tagObject, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -286,24 +284,24 @@ public class NBTUtilsBase implements NBTUtils {
     @Override
     public void setMetaTyped(Object node, String tag, String value) {
         if (value == null) {
-            NBTUtilsBase.this.removeMeta(node, tag);
+            NBTUtils.this.removeMeta(node, tag);
             return;
         }
 
         boolean isTrue = value.equals("true");
         boolean isFalse = value.equals("false");
         if (isTrue || isFalse) {
-            NBTUtilsBase.this.setMetaBoolean(node, tag, isTrue);
+            NBTUtils.this.setMetaBoolean(node, tag, isTrue);
         } else {
             try {
                 Integer i = Integer.parseInt(value);
-                NBTUtilsBase.this.setMetaInt(node, tag, i);
+                NBTUtils.this.setMetaInt(node, tag, i);
             } catch (Exception ex) {
                 try {
                     Double d = Double.parseDouble(value);
-                    NBTUtilsBase.this.setMetaDouble(node, tag, d);
+                    NBTUtils.this.setMetaDouble(node, tag, d);
                 } catch (Exception ex2) {
-                    NBTUtilsBase.this.setMeta(node, tag, value);
+                    NBTUtils.this.setMeta(node, tag, value);
                 }
             }
         }
@@ -380,7 +378,7 @@ public class NBTUtilsBase implements NBTUtils {
             if (craft == null) return;
             Object tagObject = platform.getItemUtils().getTag(craft);
             if (tagObject == null) return;
-            NBTUtilsBase.this.setMetaBoolean(tagObject, tag, value);
+            NBTUtils.this.setMetaBoolean(tagObject, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -393,7 +391,7 @@ public class NBTUtilsBase implements NBTUtils {
         try {
             Object tagObject = platform.getItemUtils().getTag(stack);
             if (tagObject == null) return defaultValue;
-            Boolean value = NBTUtilsBase.this.getMetaBoolean(tagObject, tag);
+            Boolean value = NBTUtils.this.getMetaBoolean(tagObject, tag);
             result = value == null ? defaultValue : value;
         } catch (Throwable ex) {
             ex.printStackTrace();

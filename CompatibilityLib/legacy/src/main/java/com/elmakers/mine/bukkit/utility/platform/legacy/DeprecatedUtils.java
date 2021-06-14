@@ -26,8 +26,8 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtilsBase;
 
 /**
  * Makes deprecation warnings useful again by suppressing all bukkit 'magic
@@ -35,11 +35,9 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
  *
  */
 @SuppressWarnings("deprecation")
-public class DeprecatedUtilsBase implements DeprecatedUtils {
-    private final Platform platform;
-
-    public DeprecatedUtilsBase(Platform platform) {
-        this.platform = platform;
+public class DeprecatedUtils extends DeprecatedUtilsBase {
+    public DeprecatedUtils(Platform platform) {
+        super(platform);
     }
 
     @Override
@@ -126,7 +124,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
         if (customName != null && !customName.isEmpty()) {
             return customName;
         }
-        return DeprecatedUtilsBase.this.getName(entity.getType());
+        return DeprecatedUtils.this.getName(entity.getType());
     }
 
     @Override
