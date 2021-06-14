@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.PlatformBase;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
@@ -31,7 +32,7 @@ public class CompatibilityLib {
     public static boolean initialize(Plugin plugin, Logger logger) {
         CompatibilityLib.plugin = plugin;
         CompatibilityLib.logger = logger;
-        platform = new Platform();
+        platform = new PlatformBase();
         compatibilityUtils = platform.getCompatibilityUtils();
         deprecatedUtils = platform.getDeprecatedUtils();
         inventoryUtils = platform.getInventoryUtils();

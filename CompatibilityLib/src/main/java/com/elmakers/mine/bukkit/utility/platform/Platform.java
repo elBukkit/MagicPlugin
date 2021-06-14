@@ -1,67 +1,31 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+public interface Platform {
+    boolean isLegacy();
 
-public class Platform {
-    private final boolean valid;
+    boolean isCurrentVersion();
 
-    public Platform() {
-        valid = NMSUtils.initialize();
-    }
+    boolean hasStatistics();
 
-    public boolean isLegacy() {
-        return NMSUtils.legacy;
-    }
+    boolean hasEntityTransformEvent();
 
-    public boolean isCurrentVersion() {
-        return NMSUtils.isModernVersion;
-    }
+    boolean hasTimeSkipEvent();
 
-    public boolean hasStatistics() {
-        return NMSUtils.hasStatistics;
-    }
+    String getVersionPrefix();
 
-    public boolean hasEntityTransformEvent() {
-        return NMSUtils.hasEntityTransformEvent;
-    }
+    boolean isValid();
 
-    public boolean hasTimeSkipEvent() {
-        return NMSUtils.hasTimeSkipEvent;
-    }
+    CompatibilityUtils getCompatibilityUtils();
 
-    public String getVersionPrefix() {
-        return NMSUtils.versionPrefix;
-    }
+    DeprecatedUtils getDeprecatedUtils();
 
-    public boolean isValid() {
-        return valid;
-    }
+    InventoryUtils getInventoryUtils();
 
-    public CompatibilityUtils getCompatibilityUtils() {
-        return new CompatibilityUtilsBase();
-    }
+    ItemUtils getItemUtils();
 
-    public DeprecatedUtils getDeprecatedUtils() {
-        return new DeprecatedUtilsBase();
-    }
+    NBTUtils getNBTUtils();
 
-    public InventoryUtils getInventoryUtils() {
-        return new InventoryUtilsBase();
-    }
+    SchematicUtils getSchematicUtils();
 
-    public ItemUtils getItemUtils() {
-        return new ItemUtilsBase();
-    }
-
-    public NBTUtils getNBTUtils() {
-        return new NBTUtilsBase();
-    }
-
-    public SchematicUtils getSchematicUtils() {
-        return new SchematicUtilsBase();
-    }
-
-    public SkinUtils getSkinUtils() {
-        return new SkinUtilsBase(CompatibilityLib.getPlugin());
-    }
+    SkinUtils getSkinUtils();
 }
