@@ -32,6 +32,13 @@
         </dependency>
         <dependency>
             <groupId>com.elmakers.mine.bukkit</groupId>
+            <artifactId>CompatibilityLib-base</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.elmakers.mine.bukkit</groupId>
             <artifactId>CompatibilityLib-legacy</artifactId>
             <version>${project.version}</version>
             <type>jar</type>

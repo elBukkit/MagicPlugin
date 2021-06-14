@@ -21,6 +21,8 @@ public interface Platform {
 
     String getVersionPrefix();
 
+    int[] getServerVersion();
+
     boolean isValid();
 
     CompatibilityUtils getCompatibilityUtils();

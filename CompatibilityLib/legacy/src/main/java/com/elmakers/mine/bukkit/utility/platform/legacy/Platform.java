@@ -4,11 +4,13 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.Plugin;
 
-public class Platform extends base.PlatformBase {
+import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
+
+public class Platform extends PlatformBase {
 
     public Platform(Plugin plugin, Logger logger) {
         super(plugin, logger);
-        valid = NMSUtils.initialize(logger);
+        valid = NMSUtils.initialize(this);
         compatibilityUtils = new CompatibilityUtils(this);
         deprecatedUtils = new DeprecatedUtils(this);
         inventoryUtils = new InventoryUtils(this);
@@ -41,10 +43,5 @@ public class Platform extends base.PlatformBase {
     @Override
     public boolean hasTimeSkipEvent() {
         return NMSUtils.hasTimeSkipEvent;
-    }
-
-    @Override
-    public String getVersionPrefix() {
-        return NMSUtils.versionPrefix;
     }
 }

@@ -15,7 +15,6 @@ import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -59,6 +58,7 @@ import com.google.common.base.CaseFormat;
  */
 @SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
 public class NMSUtils {
+    protected static String versionPrefix;
     protected static boolean failed = false;
     protected static boolean legacy = false;
     protected static boolean isModernVersion = false;
@@ -66,8 +66,6 @@ public class NMSUtils {
     protected static boolean hasStatistics = false;
     protected static boolean hasEntityTransformEvent = false;
     protected static boolean hasTimeSkipEvent = false;
-
-    protected static String versionPrefix = "";
 
     protected final static int NBT_TYPE_COMPOUND = 10;
     protected final static int NBT_TYPE_INT_ARRAY= 11;
@@ -434,15 +432,9 @@ public class NMSUtils {
 
     protected static boolean chatPacketHasUUID = false;
 
-    public static boolean initialize(Logger logger) {
-        // Find classes Bukkit hides from us. :-D
-        // Much thanks to @DPOHVAR for sharing the PowerNBT code that powers the reflection approach.
-        String className = Bukkit.getServer().getClass().getName();
-        String[] packages = StringUtils.split(className, '.');
-        if (packages.length == 5) {
-            versionPrefix = packages[3] + ".";
-        }
-
+    public static boolean initialize(Platform platform) {
+        Logger logger = platform.getLogger();
+        versionPrefix = platform.getVersionPrefix();
         try {
             class_Block = fixBukkitClass("net.minecraft.server.Block");
             class_Entity = fixBukkitClass("net.minecraft.server.Entity");
