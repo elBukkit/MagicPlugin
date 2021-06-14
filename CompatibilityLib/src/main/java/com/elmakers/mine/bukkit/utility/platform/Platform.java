@@ -52,7 +52,7 @@ public class Platform {
     }
 
     public NBTUtils getNBTUtils() {
-        return new NBTUtils();
+        return new NBTUtilsBase();
     }
 
     public SchematicUtils getSchematicUtils() {
