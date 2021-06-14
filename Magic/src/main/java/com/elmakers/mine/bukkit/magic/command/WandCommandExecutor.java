@@ -32,7 +32,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
@@ -64,7 +63,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                 }
                 return true;
             }
-            Player player = DeprecatedUtils.getPlayer(playerName);
+            Player player = CompatibilityLib.getInstance().getPlayer(playerName);
             if (player == null) {
                 sender.sendMessage("Can't find player " + playerName);
                 return true;
@@ -127,7 +126,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         {
             permissionKey = "wandp";
             if (args.length > 0) {
-                player = DeprecatedUtils.getPlayer(args[0]);
+                player = CompatibilityLib.getInstance().getPlayer(args[0]);
             }
             if (args.length == 1) {
                 options.addAll(api.getPlayerNames());

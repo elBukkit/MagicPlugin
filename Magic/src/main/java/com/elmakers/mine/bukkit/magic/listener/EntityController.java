@@ -50,7 +50,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -563,7 +562,7 @@ public class EntityController implements Listener {
         }
         else
         {
-            Entity passenger = DeprecatedUtils.getPassenger(entity);
+            Entity passenger = CompatibilityLib.getInstance().getPassenger(entity);
             com.elmakers.mine.bukkit.magic.Mage mountMage = passenger == null ? null : controller.getRegisteredMage(passenger);
             if (mountMage != null) {
                 mountMage.onDamage(event);

@@ -34,7 +34,6 @@ import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class SimulateBatch extends SpellBatch {
     private static BlockFace[] NEIGHBOR_FACES = { BlockFace.NORTH, BlockFace.NORTH_EAST,
@@ -210,7 +209,7 @@ public class SimulateBatch extends SpellBatch {
         if (modifyType == ModifyType.FAST) {
             CompatibilityLib.getCompatibilityUtils().setBlockFast(block, deathMaterial, 0);
         } else {
-            DeprecatedUtils.setTypeAndData(block, deathMaterial, (byte)0, false);
+            CompatibilityLib.getInstance().setTypeAndData(block, deathMaterial, (byte)0, false);
         }
         if (reflectChance > 0) {
             com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(block);

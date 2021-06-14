@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.NMSUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
@@ -16,12 +17,14 @@ public class CompatibilityLib {
     private static Logger logger;
     private static Plugin plugin;
     private static CompatibilityUtils compatibilityUtils;
+    private static DeprecatedUtils deprecatedUtils;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
         CompatibilityLib.plugin = plugin;
         CompatibilityLib.logger = logger;
         platform = new Platform();
         compatibilityUtils = platform.getCompatibilityUtils();
+        deprecatedUtils = platform.getDeprecatedUtils();
         return platform.isValid();
     }
 
@@ -79,19 +82,25 @@ public class CompatibilityLib {
         return compatibilityUtils == null ? false : compatibilityUtils.hasLegacyMaterials();
     }
 
-    public static CompatibilityUtils getCompatibilityUtils() {
-        if (compatibilityUtils == null) {
-            Bukkit.getLogger().info("Warning: CompatibilityUtils used before being initialized");
-            compatibilityUtils = new CompatibilityUtils();
-        }
-        return compatibilityUtils;
-    }
-
     public static Logger getLogger() {
         return logger == null ? Bukkit.getLogger() : logger;
     }
 
     public static Plugin getPlugin() {
         return plugin;
+    }
+
+    public static CompatibilityUtils getCompatibilityUtils() {
+        if (compatibilityUtils == null) {
+            throw new IllegalStateException("CompatibilityUtils used before being initialized");
+        }
+        return compatibilityUtils;
+    }
+
+    public static DeprecatedUtils getInstance() {
+        if (deprecatedUtils == null) {
+            throw new IllegalStateException("DeprecatedUtils used before being initialized");
+        }
+        return deprecatedUtils;
     }
 }

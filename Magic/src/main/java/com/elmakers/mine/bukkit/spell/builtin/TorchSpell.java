@@ -9,7 +9,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 @Deprecated
 public class TorchSpell extends BlockSpell
@@ -161,7 +161,7 @@ public class TorchSpell extends BlockSpell
         }
 
         registerForUndo(target);
-        DeprecatedUtils.setTypeAndData(target, targetMaterial, data, false);
+        CompatibilityLib.getInstance().setTypeAndData(target, targetMaterial, data, false);
         registerForUndo();
         controller.updateBlock(target);
 

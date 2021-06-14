@@ -1883,7 +1883,7 @@ public class CompatibilityUtils {
 
     public boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
         if (NMSUtils.class_Block_fromLegacyData == null || NMSUtils.class_CraftMagicNumbers_getBlockMethod == null || NMSUtils.class_Chunk_setBlockMethod == null || NMSUtils.class_BlockPosition_Constructor == null) {
-            DeprecatedUtils.setTypeAndData(chunk.getWorld().getBlockAt(x, y, z), material, (byte)data, false);
+            CompatibilityLib.getInstance().setTypeAndData(chunk.getWorld().getBlockAt(x, y, z), material, (byte)data, false);
             return true;
         }
         try {
@@ -2049,10 +2049,10 @@ public class CompatibilityUtils {
     public Material fromLegacy(org.bukkit.material.MaterialData materialData) {
         if (NMSUtils.class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
-                Material converted = (Material) NMSUtils.class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
+                Material converted = (Material) NMSUtils.class_UnsafeValues_fromLegacyDataMethod.invoke(CompatibilityLib.getInstance().getUnsafe(), materialData);
                 if (converted == Material.AIR) {
                     materialData.setData((byte)0);
-                    converted = (Material) NMSUtils.class_UnsafeValues_fromLegacyDataMethod.invoke(DeprecatedUtils.getUnsafe(), materialData);
+                    converted = (Material) NMSUtils.class_UnsafeValues_fromLegacyDataMethod.invoke(CompatibilityLib.getInstance().getUnsafe(), materialData);
                 }
                 // Converting legacy signs doesn't seem to work
                 // This fixes them, but the direction is wrong, and restoring text causes internal errors
@@ -2282,7 +2282,7 @@ public class CompatibilityUtils {
     public String getBlockData(Material material, byte data) {
         if (NMSUtils.class_UnsafeValues_fromLegacyMethod == null) return null;
         try {
-            Object blockData = NMSUtils.class_UnsafeValues_fromLegacyMethod.invoke(DeprecatedUtils.getUnsafe(), material, data);
+            Object blockData = NMSUtils.class_UnsafeValues_fromLegacyMethod.invoke(CompatibilityLib.getInstance().getUnsafe(), material, data);
             if (blockData != null) {
                 return (String) NMSUtils.class_BlockData_getAsStringMethod.invoke(blockData);
             }
@@ -2335,7 +2335,7 @@ public class CompatibilityUtils {
             Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
             Object blockType = NMSUtils.class_World_getTypeMethod.invoke(worldHandle, blockLocation);
             CompatibilityUtils.this.clearItems(block.getLocation());
-            DeprecatedUtils.setTypeAndData(block, Material.AIR, (byte)0, false);
+            CompatibilityLib.getInstance().setTypeAndData(block, Material.AIR, (byte)0, false);
             return (boolean) NMSUtils.class_World_setTypeAndDataMethod.invoke(worldHandle, blockLocation, blockType, 3);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2526,8 +2526,8 @@ public class CompatibilityUtils {
     }
 
     protected boolean setTopHalfLegacy(Block block) {
-        byte data = DeprecatedUtils.getData(block);
-        DeprecatedUtils.setTypeAndData(block, block.getType(), (byte)(data | 8), false);
+        byte data = CompatibilityLib.getInstance().getData(block);
+        CompatibilityLib.getInstance().setTypeAndData(block, block.getType(), (byte)(data | 8), false);
         return true;
     }
 
@@ -2884,7 +2884,7 @@ public class CompatibilityUtils {
                 CompatibilityLib.getLogger().log(Level.WARNING, "Error adding entity passenger", ex);
             }
         }
-        DeprecatedUtils.setPassenger(vehicle, passenger);
+        CompatibilityLib.getInstance().setPassenger(vehicle, passenger);
     }
 
     @SuppressWarnings("unchecked")
@@ -2897,7 +2897,7 @@ public class CompatibilityUtils {
             }
         }
         List<Entity> passengerList = new ArrayList<>();
-        Entity passenger = DeprecatedUtils.getPassenger(entity);
+        Entity passenger = CompatibilityLib.getInstance().getPassenger(entity);
         if (passenger != null) {
             passengerList.add(passenger);
         }
@@ -2973,7 +2973,7 @@ public class CompatibilityUtils {
     public void playRecord(Location location, Material record) {
         if (CompatibilityLib.isLegacy()) {
             location.getWorld().playEffect(location, Effect.RECORD_PLAY,
-                    DeprecatedUtils.getId(record));
+                    CompatibilityLib.getInstance().getId(record));
         } else {
             location.getWorld().playEffect(location, Effect.RECORD_PLAY, record);
         }

@@ -14,7 +14,7 @@ import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class MagicSaveCommandExecutor extends MagicTabExecutor {
     public MagicSaveCommandExecutor(MagicAPI api) {
@@ -37,7 +37,7 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        player = DeprecatedUtils.getPlayer(args[0]);
+        player = CompatibilityLib.getInstance().getPlayer(args[0]);
         if (player == null) {
             return false;
         }

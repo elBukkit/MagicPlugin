@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.
@@ -208,7 +207,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
                 for (WeakReference<Player> playerRef : fakeSentToPlayers) {
                     Player player = playerRef.get();
                     if (player != null) {
-                        DeprecatedUtils.sendBlockChange(player, block);
+                        CompatibilityLib.getInstance().sendBlockChange(player, block);
                     }
                 }
             }

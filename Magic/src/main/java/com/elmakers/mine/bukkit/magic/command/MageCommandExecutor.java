@@ -35,7 +35,6 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
@@ -80,7 +79,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     }
                 }
             } else {
-                Player player = DeprecatedUtils.getPlayer(playerName);
+                Player player = CompatibilityLib.getInstance().getPlayer(playerName);
                 if (player != null) {
                     argStart = 2;
                     players.add(player);
@@ -97,7 +96,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                         return true;
                     } catch (Exception ignore) {
                     }
-                    OfflinePlayer offlinePlayer = DeprecatedUtils.getOfflinePlayer(playerName);
+                    OfflinePlayer offlinePlayer = CompatibilityLib.getInstance().getOfflinePlayer(playerName);
                     if (offlinePlayer != null) {
                         api.getController().deleteMage(offlinePlayer.getUniqueId().toString());
                         sender.sendMessage(ChatColor.RED + "Reset offline player "
@@ -298,7 +297,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             String subCommand = args[0];
             args = Arrays.copyOfRange(args, 1, args.length);
             if (args.length > 1) {
-                Player targetPlayer = DeprecatedUtils.getPlayer(args[0]);
+                Player targetPlayer = CompatibilityLib.getInstance().getPlayer(args[0]);
                 if (targetPlayer != null) {
                     target = targetPlayer;
                     args = Arrays.copyOfRange(args, 1, args.length);

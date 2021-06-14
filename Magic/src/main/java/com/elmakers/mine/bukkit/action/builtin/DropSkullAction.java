@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class DropSkullAction extends BaseSpellAction
@@ -49,7 +49,7 @@ public class DropSkullAction extends BaseSpellAction
         }
 
         LivingEntity li = (LivingEntity)targetEntity;
-        String itemName = DeprecatedUtils.getDisplayName(li) + " Head";
+        String itemName = CompatibilityLib.getInstance().getDisplayName(li) + " Head";
         EntityType replaceType = null;
 
         Location targetLocation = targetEntity.getLocation();

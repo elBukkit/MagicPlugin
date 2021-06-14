@@ -8,7 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class MountAction extends BaseSpellAction {
     private boolean eject = false;
@@ -48,17 +48,17 @@ public class MountAction extends BaseSpellAction {
         while (targetEntity instanceof ComplexEntityPart) {
             targetEntity = ((ComplexEntityPart)targetEntity).getParent();
         }
-        Entity passenger = DeprecatedUtils.getPassenger(targetEntity);
+        Entity passenger = CompatibilityLib.getInstance().getPassenger(targetEntity);
         while (passenger != null) {
             targetEntity = passenger;
-            passenger = DeprecatedUtils.getPassenger(targetEntity);
+            passenger = CompatibilityLib.getInstance().getPassenger(targetEntity);
         }
 
-        if (targetEntity == DeprecatedUtils.getPassenger(source)
-            || source == DeprecatedUtils.getPassenger(targetEntity)) {
+        if (targetEntity == CompatibilityLib.getInstance().getPassenger(source)
+            || source == CompatibilityLib.getInstance().getPassenger(targetEntity)) {
             return SpellResult.NO_TARGET;
         }
-        DeprecatedUtils.setPassenger(targetEntity, source);
+        CompatibilityLib.getInstance().setPassenger(targetEntity, source);
 
         return SpellResult.CAST;
     }

@@ -19,8 +19,8 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class GiveItemAction extends BaseSpellAction
@@ -137,7 +137,7 @@ public class GiveItemAction extends BaseSpellAction
         } else {
             mage.giveItem(itemCopy);
         }
-        DeprecatedUtils.updateInventory(player);
+        CompatibilityLib.getInstance().updateInventory(player);
         return SpellResult.CAST;
     }
 

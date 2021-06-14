@@ -51,7 +51,6 @@ import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.google.common.base.Preconditions;
 
 /**
@@ -218,7 +217,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         }
         add(testBlock);
         MaterialAndData.clearItems(testBlock.getState());
-        DeprecatedUtils.setTypeAndData(testBlock, Material.AIR, (byte)0, false);
+        CompatibilityLib.getInstance().setTypeAndData(testBlock, Material.AIR, (byte)0, false);
         if (direction == BlockFace.DOWN || direction == BlockFace.UP) {
             clearAttachables(testBlock, direction, materials);
         }
@@ -536,7 +535,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void undone(BlockData blockData, BlockState currentState) {
         Mage owner = getOwner();
         if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
-            owner.refundBlock(new MaterialAndData(currentState.getType(), DeprecatedUtils.getRawData(currentState)));
+            owner.refundBlock(new MaterialAndData(currentState.getType(), CompatibilityLib.getInstance().getRawData(currentState)));
         }
 
         CastContext context = getContext();

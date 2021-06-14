@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
@@ -91,7 +90,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         String[] args2 = Arrays.copyOfRange(args, 1, args.length);
         Player player = sender instanceof Player ? (Player)sender : null;
         if (args2.length > 0) {
-            Player findPlayer = DeprecatedUtils.getPlayer(args2[0]);
+            Player findPlayer = CompatibilityLib.getInstance().getPlayer(args2[0]);
             if (findPlayer != null) {
                 player = findPlayer;
                 args2 = Arrays.copyOfRange(args2, 1, args2.length);

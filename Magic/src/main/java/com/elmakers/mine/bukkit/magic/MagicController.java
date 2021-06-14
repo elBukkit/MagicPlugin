@@ -246,7 +246,6 @@ import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -6249,12 +6248,12 @@ public class MagicController implements MageController {
 
     @Override
     public void setSkullOwner(Skull skull, String ownerName) {
-        DeprecatedUtils.setOwner(skull, ownerName);
+        CompatibilityLib.getInstance().setOwner(skull, ownerName);
     }
 
     @Override
     public void setSkullOwner(Skull skull, UUID uuid) {
-        DeprecatedUtils.setOwner(skull, uuid);
+        CompatibilityLib.getInstance().setOwner(skull, uuid);
     }
 
     @Override
@@ -6290,7 +6289,7 @@ public class MagicController implements MageController {
                 }
             };
         }
-        DeprecatedUtils.setSkullOwner(skull, ownerName, skullCallback);
+        CompatibilityLib.getInstance().setSkullOwner(skull, ownerName, skullCallback);
         return skull;
     }
 
@@ -6317,7 +6316,7 @@ public class MagicController implements MageController {
                 }
             };
         }
-        DeprecatedUtils.setSkullOwner(skull, uuid, skullCallback);
+        CompatibilityLib.getInstance().setSkullOwner(skull, uuid, skullCallback);
         return skull;
     }
 
@@ -6334,7 +6333,7 @@ public class MagicController implements MageController {
             meta.setDisplayName(itemName);
         }
         skull.setItemMeta(meta);
-        DeprecatedUtils.setSkullOwner(skull, player.getName(), null);
+        CompatibilityLib.getInstance().setSkullOwner(skull, player.getName(), null);
         return skull;
     }
 
@@ -6390,7 +6389,7 @@ public class MagicController implements MageController {
                     callback.updated(skull);
                 }
             } else {
-                DeprecatedUtils.setSkullOwner(skull, ownerName, skullCallback);
+                CompatibilityLib.getInstance().setSkullOwner(skull, ownerName, skullCallback);
             }
         } else if (callback != null) {
             callback.updated(skull);
@@ -6815,7 +6814,7 @@ public class MagicController implements MageController {
     public void checkVanished(Player player) {
         for (Mage mage : mages.values()) {
             if (mage.isVanished()) {
-                DeprecatedUtils.hidePlayer(plugin, player, mage.getPlayer());
+                CompatibilityLib.getInstance().hidePlayer(plugin, player, mage.getPlayer());
             }
         }
     }

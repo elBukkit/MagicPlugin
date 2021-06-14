@@ -15,7 +15,6 @@ import com.elmakers.mine.bukkit.api.kit.Kit;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class MagicKitCommandExecutor extends MagicTabExecutor {
     public MagicKitCommandExecutor(MagicAPI api) {
@@ -41,7 +40,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
             kitName = args[0];
         } else {
             playerName = args[0];
-            Player testPlayer = DeprecatedUtils.getPlayer(playerName);
+            Player testPlayer = CompatibilityLib.getInstance().getPlayer(playerName);
             if (testPlayer == null && !playerName.startsWith("@")) {
                 kitName = args[0];
                 playerName = null;
@@ -66,7 +65,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
                     }
                 }
             } else {
-                Player player = DeprecatedUtils.getPlayer(playerName);
+                Player player = CompatibilityLib.getInstance().getPlayer(playerName);
                 if (player == null) {
                     sender.sendMessage(controller.getMessages().get("commands.mkit.console_usage").replace("$player", playerName));
                     return true;

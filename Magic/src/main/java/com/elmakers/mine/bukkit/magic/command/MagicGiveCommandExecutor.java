@@ -22,7 +22,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.item.ItemData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class MagicGiveCommandExecutor extends MagicTabExecutor {
     public MagicGiveCommandExecutor(MagicAPI api) {
@@ -55,7 +54,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             countString = args[2];
         } else {
             playerName = args[0];
-            Player testPlayer = DeprecatedUtils.getPlayer(playerName);
+            Player testPlayer = CompatibilityLib.getInstance().getPlayer(playerName);
             if (testPlayer == null && !playerName.startsWith("@")) {
                 itemName = args[0];
                 countString = args[1];
@@ -90,7 +89,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
                     }
                 }
             } else {
-                Player player = DeprecatedUtils.getPlayer(playerName);
+                Player player = CompatibilityLib.getInstance().getPlayer(playerName);
                 if (player == null) {
                     sender.sendMessage("No players matched: " + playerName);
                     return true;

@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class ThrowBlockAction extends BaseProjectileAction
 {
@@ -87,7 +86,7 @@ public class ThrowBlockAction extends BaseProjectileAction
         double speed = context.getRandom().nextDouble() * (speedMax - speedMin) + speedMin;
         direction.normalize().multiply(speed);
 
-        FallingBlock falling = DeprecatedUtils.spawnFallingBlock(location, material, data);
+        FallingBlock falling = CompatibilityLib.getInstance().spawnFallingBlock(location, material, data);
         if (falling == null)
         {
             return SpellResult.FAIL;

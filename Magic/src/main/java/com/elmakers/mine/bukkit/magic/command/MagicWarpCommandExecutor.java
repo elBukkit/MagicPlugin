@@ -19,7 +19,6 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
 
 public class MagicWarpCommandExecutor extends MagicTabExecutor {
@@ -112,7 +111,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                     onSendWarp(sender, entity, args[2]);
                 }
             } else {
-                Player player = DeprecatedUtils.getPlayer(playerSelector);
+                Player player = CompatibilityLib.getInstance().getPlayer(playerSelector);
                 if (player == null) {
                     sender.sendMessage("No players matched: " + playerSelector);
                     return true;

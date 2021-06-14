@@ -20,7 +20,6 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class PowerBlockAction extends BaseSpellAction {
     private boolean applyPhysics = false;
@@ -92,7 +91,7 @@ public class PowerBlockAction extends BaseSpellAction {
                 if (modifyData != 0) {
                     dataValue = (byte)((data.getData() & 0x3) | modifyWith.getData());
                 }
-                DeprecatedUtils.setTypeAndData(block, modifyWith.getMaterial(), dataValue, true);
+                CompatibilityLib.getInstance().setTypeAndData(block, modifyWith.getMaterial(), dataValue, true);
             }
         }
         if (updateBlockState) {

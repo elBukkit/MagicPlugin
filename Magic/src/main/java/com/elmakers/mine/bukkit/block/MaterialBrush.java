@@ -40,7 +40,6 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
@@ -583,7 +582,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         if (mode == BrushMode.MAP && mapId >= 0) {
             if (mapCanvas == null) {
                 try {
-                    MapView mapView = DeprecatedUtils.getMap(mapId);
+                    MapView mapView = CompatibilityLib.getInstance().getMap(mapId);
                     if (mapView != null) {
                         Player player = fromMage != null ? fromMage.getPlayer() : null;
                         List<MapRenderer> renderers = mapView.getRenderers();

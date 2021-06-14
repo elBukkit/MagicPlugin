@@ -15,7 +15,7 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
@@ -125,7 +125,7 @@ public class EnchantingController implements Listener {
             int minLevel = path.getMinLevel();
             int maxLevel = path.getMaxLevel();
             int levelRange = maxLevel - minLevel;
-            int[] offered = DeprecatedUtils.getExpLevelCostsOffered(event);
+            int[] offered = CompatibilityLib.getInstance().getExpLevelCostsOffered(event);
 
             float bonusLevelMultiplier = path.getBonusLevelMultiplier();
             int bonusLevels = event.getEnchantmentBonus();

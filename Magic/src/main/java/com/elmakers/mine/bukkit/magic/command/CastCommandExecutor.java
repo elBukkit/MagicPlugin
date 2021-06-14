@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class CastCommandExecutor extends MagicTabExecutor {
 
@@ -90,7 +89,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
                     mage = controller.getMage(mageId, mageName);
                 }
 
-                Player player = DeprecatedUtils.getPlayer(playerName);
+                Player player = CompatibilityLib.getInstance().getPlayer(playerName);
                 if (mage == null && player == null && playerName.contains("-")) {
                     try {
                         Entity entity = CompatibilityLib.getCompatibilityUtils().getEntity(UUID.fromString(playerName));

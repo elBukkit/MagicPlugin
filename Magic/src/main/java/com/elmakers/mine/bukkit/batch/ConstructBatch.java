@@ -35,7 +35,6 @@ import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class ConstructBatch extends BrushBatch {
     private final Location center;
@@ -535,7 +534,7 @@ public class ConstructBatch extends BrushBatch {
 
     protected void modifyWith(Block block, MaterialAndData brush) {
         Material previousMaterial = block.getType();
-        byte previousData = DeprecatedUtils.getData(block);
+        byte previousData = CompatibilityLib.getInstance().getData(block);
         touch(block);
 
         boolean isDifferent = false;
@@ -579,7 +578,7 @@ public class ConstructBatch extends BrushBatch {
                 context.registerReflective(block, backfireChance);
             }
             if (spawnFallingBlocks) {
-                FallingBlock falling = DeprecatedUtils.spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+                FallingBlock falling = CompatibilityLib.getInstance().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
                 falling.setDropItem(false);
                 if (fallingBlockSpeed != 0) {
                     Vector direction = this.fallingDirection != null ? this.fallingDirection :

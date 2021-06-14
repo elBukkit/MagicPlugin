@@ -45,7 +45,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class TargetingSpell extends BaseSpell {
     // This differs from CompatibilityUtils.MAX_ENTITY_RANGE,
@@ -363,7 +362,7 @@ public class TargetingSpell extends BaseSpell {
             return false;
         }
         if (!targetMount) {
-            Entity mounted = DeprecatedUtils.getPassenger(entity);
+            Entity mounted = CompatibilityLib.getInstance().getPassenger(entity);
             Entity mageEntity = mage.getEntity();
             if (mounted != null && mageEntity != null && mounted.equals(mageEntity)) {
                 mage.sendDebugMessage("Entity skipped, can't target your own mount", 30);
@@ -750,7 +749,7 @@ public class TargetingSpell extends BaseSpell {
                 targetEntity = entity;
             }
         } else if (!playerName.isEmpty()) {
-            Player player = DeprecatedUtils.getPlayer(playerName);
+            Player player = CompatibilityLib.getInstance().getPlayer(playerName);
             if (player != null) {
                 targetLocation = player.getLocation();
                 targetEntity = player;

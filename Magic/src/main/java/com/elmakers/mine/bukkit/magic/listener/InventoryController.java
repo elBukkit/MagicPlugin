@@ -35,9 +35,9 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.WandCastTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -573,7 +573,7 @@ public class InventoryController implements Listener {
                     if (hotbar != null && slot != null && mage.getActiveGUI() == null)
                     {
                         player.getInventory().setItem(event.getSlot(), droppedItem);
-                        DeprecatedUtils.updateInventory(player);
+                        CompatibilityLib.getInstance().updateInventory(player);
                     }
 
                     return;

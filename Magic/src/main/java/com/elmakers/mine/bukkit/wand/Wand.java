@@ -85,7 +85,6 @@ import com.elmakers.mine.bukkit.tasks.CancelEffectsContextTask;
 import com.elmakers.mine.bukkit.tasks.OpenWandTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -3313,7 +3312,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (wandMode == WandMode.INVENTORY) {
             PlayerInventory inventory = player.getInventory();
             updateHotbar(inventory);
-            DeprecatedUtils.updateInventory(player);
+            CompatibilityLib.getInstance().updateInventory(player);
         }
     }
 
@@ -3863,7 +3862,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
                     mage.playSoundEffect(inventoryCycleSound);
                 }
-                DeprecatedUtils.updateInventory(mage.getPlayer());
+                CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
             }
         }
     }
@@ -3887,7 +3886,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             sendMessage("hotbar_changed");
             updateHotbarStatus();
-            DeprecatedUtils.updateInventory(mage.getPlayer());
+            CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
         }
     }
 
@@ -3969,28 +3968,28 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 ItemStack testItem = inventory.getHelmet();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setHelmet(new ItemStack(Material.AIR));
-                    DeprecatedUtils.updateInventory(mage.getPlayer());
+                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getBoots();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setBoots(new ItemStack(Material.AIR));
-                    DeprecatedUtils.updateInventory(mage.getPlayer());
+                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getLeggings();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setLeggings(new ItemStack(Material.AIR));
-                    DeprecatedUtils.updateInventory(mage.getPlayer());
+                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
                 }
                 testItem = inventory.getChestplate();
                 if (isSpell(testItem) || isBrush(testItem)) {
                     inventory.setChestplate(new ItemStack(Material.AIR));
-                    DeprecatedUtils.updateInventory(mage.getPlayer());
+                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
                 }
                 // This is kind of a hack :(
                 testItem = inventory.getItemInOffHand();
                 if ((isSpell(testItem) && !isSkill(testItem)) || isBrush(testItem)) {
                     inventory.setItemInOffHand(new ItemStack(Material.AIR));
-                    DeprecatedUtils.updateInventory(mage.getPlayer());
+                    CompatibilityLib.getInstance().updateInventory(mage.getPlayer());
                 }
             }
         } catch (Throwable ex) {
@@ -4618,7 +4617,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         usesRemaining = false;
                         theMage.sendMessage(getMessage("used"));
                     }
-                    DeprecatedUtils.updateInventory(player);
+                    CompatibilityLib.getInstance().updateInventory(player);
                 }
                 setProperty("uses", uses);
                 saveState();
@@ -5123,7 +5122,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         lastParticleEffect = 0;
         lastSpellCast = 0;
         if (forceUpdate) {
-            DeprecatedUtils.updateInventory(player);
+            CompatibilityLib.getInstance().updateInventory(player);
         }
 
         return true;

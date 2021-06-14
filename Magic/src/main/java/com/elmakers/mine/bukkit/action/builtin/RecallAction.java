@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -648,7 +647,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     online = (Player)sourceEntity;
                 }
             } else {
-               online = DeprecatedUtils.getPlayer(friendName);
+               online = CompatibilityLib.getInstance().getPlayer(friendName);
             }
             if (online == null)
             {
@@ -674,7 +673,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         if (parameters.contains("removefriend"))
         {
             String friendName = parameters.getString("removefriend");
-            Player online = DeprecatedUtils.getPlayer(friendName);
+            Player online = CompatibilityLib.getInstance().getPlayer(friendName);
             if (online == null)
             {
                 return SpellResult.FAIL;

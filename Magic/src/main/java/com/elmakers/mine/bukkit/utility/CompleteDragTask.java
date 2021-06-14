@@ -5,8 +5,6 @@ import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
-
 public class CompleteDragTask extends BukkitRunnable {
     private final Player player;
     private final int itemSlot;
@@ -23,6 +21,6 @@ public class CompleteDragTask extends BukkitRunnable {
         ItemStack heldItem = player.getItemOnCursor();
         view.setItem(itemSlot, heldItem);
         player.setItemOnCursor(null);
-        DeprecatedUtils.updateInventory(player);
+        CompatibilityLib.getInstance().updateInventory(player);
     }
 }

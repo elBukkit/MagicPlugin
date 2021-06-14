@@ -29,7 +29,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class MagicMapCommandExecutor extends MagicMapExecutor {
@@ -99,7 +99,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             }
             else if (args.length > 2)
             {
-                recipient = DeprecatedUtils.getPlayer(args[1]);
+                recipient = CompatibilityLib.getInstance().getPlayer(args[1]);
             }
 
             if (recipient == null)

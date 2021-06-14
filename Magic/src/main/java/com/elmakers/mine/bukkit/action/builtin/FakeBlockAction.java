@@ -17,7 +17,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class FakeBlockAction extends BaseSpellAction {
     private double radius = 0;
@@ -90,9 +90,9 @@ public class FakeBlockAction extends BaseSpellAction {
             if (brushData != null) {
                 data = (byte)(short)brushData;
             } else {
-                data = DeprecatedUtils.getData(block);
+                data = CompatibilityLib.getInstance().getData(block);
             }
-            DeprecatedUtils.sendBlockChange(player, block.getLocation(), brush.getMaterial(), data);
+            CompatibilityLib.getInstance().sendBlockChange(player, block.getLocation(), brush.getMaterial(), data);
         }
 
         return SpellResult.CAST;

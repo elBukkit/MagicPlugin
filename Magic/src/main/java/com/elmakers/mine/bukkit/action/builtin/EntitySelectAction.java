@@ -33,7 +33,6 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class EntitySelectAction extends CompoundAction implements GUIAction
 {
@@ -141,7 +140,7 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
             Entity targetEntity = entry.getValue().get();
             if (targetEntity == null) continue;
 
-            String displayName = DeprecatedUtils.getDisplayName(targetEntity);
+            String displayName = CompatibilityLib.getInstance().getDisplayName(targetEntity);
             final Integer slot = entry.getKey();
             controller.getSkull(targetEntity, displayName, new ItemUpdatedCallback() {
                 @Override

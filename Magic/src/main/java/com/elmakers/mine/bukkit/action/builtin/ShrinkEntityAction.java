@@ -25,7 +25,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class ShrinkEntityAction extends DamageAction
 {
@@ -60,7 +60,7 @@ public class ShrinkEntityAction extends DamageAction
 
         LivingEntity li = (LivingEntity)targetEntity;
         boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
-        String itemName = DeprecatedUtils.getDisplayName(li) + " Head";
+        String itemName = CompatibilityLib.getInstance().getDisplayName(li) + " Head";
         EntityType replaceType = null;
 
         boolean handled = true;

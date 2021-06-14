@@ -15,8 +15,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class GotoSpell extends UndoableSpell
 {
@@ -128,7 +128,7 @@ public class GotoSpell extends UndoableSpell
         }
         playerIndex++;
 
-        Player targetPlayer = DeprecatedUtils.getPlayer(playerName);
+        Player targetPlayer = CompatibilityLib.getInstance().getPlayer(playerName);
         if (targetPlayer == null) return SpellResult.NO_TARGET;
 
         selectTarget(targetPlayer);

@@ -1,9 +1,5 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
-import java.util.logging.Logger;
-
-import org.bukkit.plugin.Plugin;
-
 public class Platform {
     private final boolean valid;
 
@@ -41,5 +37,9 @@ public class Platform {
 
     public CompatibilityUtils getCompatibilityUtils() {
         return new CompatibilityUtils();
+    }
+
+    public DeprecatedUtils getDeprecatedUtils() {
+        return new DeprecatedUtils();
     }
 }

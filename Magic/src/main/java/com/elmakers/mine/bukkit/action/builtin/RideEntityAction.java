@@ -28,7 +28,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 import de.slikey.effectlib.util.VectorUtils;
 
@@ -227,7 +226,7 @@ public class RideEntityAction extends BaseSpellAction
         {
             return SpellResult.ENTITY_REQUIRED;
         }
-        Entity currentMount = isPassenger ? DeprecatedUtils.getPassenger(mounted) : mounted.getVehicle();
+        Entity currentMount = isPassenger ? CompatibilityLib.getInstance().getPassenger(mounted) : mounted.getVehicle();
         if (currentMount == null) {
             return SpellResult.CAST;
         }
@@ -243,9 +242,9 @@ public class RideEntityAction extends BaseSpellAction
                 return SpellResult.CAST;
             }
             if (isPassenger) {
-                DeprecatedUtils.setPassenger(mounted, mount);
+                CompatibilityLib.getInstance().setPassenger(mounted, mount);
             } else {
-                DeprecatedUtils.setPassenger(mount, mounted);
+                CompatibilityLib.getInstance().setPassenger(mount, mounted);
             }
         }
 
@@ -557,9 +556,9 @@ public class RideEntityAction extends BaseSpellAction
             EntityMetadataUtils.instance().setBoolean(mount, MagicMetaKeys.NO_TARGET, true);
         }
         if (isPassenger) {
-            DeprecatedUtils.setPassenger(entity, mount);
+            CompatibilityLib.getInstance().setPassenger(entity, mount);
         } else {
-            DeprecatedUtils.setPassenger(mount, entity);
+            CompatibilityLib.getInstance().setPassenger(mount, entity);
         }
         direction = mount.getLocation().getDirection();
         adjustHeading(context);

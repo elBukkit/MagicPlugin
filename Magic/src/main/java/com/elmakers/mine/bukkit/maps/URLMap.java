@@ -35,7 +35,7 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
 public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.maps.URLMap {
@@ -249,7 +249,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     public boolean fix(World world, int maxIds) {
         if (enabled) return true;
 
-        MapView mapView = DeprecatedUtils.getMap(id);
+        MapView mapView = CompatibilityLib.getInstance().getMap(id);
         if (mapView != null) {
             enabled = true;
             return true;
@@ -258,7 +258,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         boolean matched = false;
         while (!matched && retry < maxIds) {
             MapView newView = Bukkit.createMap(world);
-            short newId = DeprecatedUtils.getMapId(newView);
+            short newId = CompatibilityLib.getInstance().getMapId(newView);
             matched = newId == id;
             if (newId < 0 || newId > id) break;
             retry++;
@@ -279,7 +279,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         if (!enabled) {
             return null;
         }
-        MapView mapView = DeprecatedUtils.getMap(id);
+        MapView mapView = CompatibilityLib.getInstance().getMap(id);
         if (mapView == null) {
             enabled = false;
             controller.warning("Failed to get map id " + id + " for key " + getKey() + ", disabled, use 'mmap fix' to re-enable");

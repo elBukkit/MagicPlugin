@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
-import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 @Deprecated
@@ -69,7 +68,7 @@ public class ShrinkSpell extends BlockSpell
 
             LivingEntity li = (LivingEntity)targetEntity;
             boolean alreadyDead = li.isDead() || li.getHealth() <= 0;
-            String itemName = DeprecatedUtils.getDisplayName(li) + " Head";;
+            String itemName = CompatibilityLib.getInstance().getDisplayName(li) + " Head";;
 
             if (li instanceof Player)
             {
