@@ -44,7 +44,7 @@ public class Platform {
     }
 
     public InventoryUtils getInventoryUtils() {
-        return new InventoryUtils();
+        return new InventoryUtilsBase();
     }
 
     public ItemUtils getItemUtils() {
