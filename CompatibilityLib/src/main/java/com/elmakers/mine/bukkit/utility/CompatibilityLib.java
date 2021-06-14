@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 
 public class CompatibilityLib {
     private static Platform platform;
@@ -23,6 +24,7 @@ public class CompatibilityLib {
     private static InventoryUtils inventoryUtils;
     private static ItemUtils itemUtils;
     private static NBTUtils nbtUtils;
+    private static SchematicUtils schematicUtils;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
         CompatibilityLib.plugin = plugin;
@@ -33,6 +35,7 @@ public class CompatibilityLib {
         inventoryUtils = platform.getInventoryUtils();
         itemUtils = platform.getItemUtils();
         nbtUtils = platform.getNBTUtils();
+        schematicUtils = platform.getSchematicUtils();
         return platform.isValid();
     }
 
@@ -131,5 +134,12 @@ public class CompatibilityLib {
             throw new IllegalStateException("NBTUtils used before being initialized");
         }
         return nbtUtils;
+    }
+
+    public static SchematicUtils getSchematicUtils() {
+        if (schematicUtils == null) {
+            throw new IllegalStateException("SchematicUtils used before being initialized");
+        }
+        return schematicUtils;
     }
 }

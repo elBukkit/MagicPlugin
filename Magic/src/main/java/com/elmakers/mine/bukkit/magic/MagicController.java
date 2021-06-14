@@ -247,7 +247,6 @@ import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -1326,7 +1325,7 @@ public class MagicController implements MageController {
                 schematics.put(schematicName, new WeakReference<>(schematic));
                 Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
                     try {
-                        SchematicUtils.getInstance().loadSchematic(inputSchematic, schematic, getLogger());
+                        CompatibilityLib.getSchematicUtils().loadSchematic(inputSchematic, schematic, getLogger());
                         info("Finished loading schematic");
                     } catch (Exception ex) {
                         ex.printStackTrace();
@@ -1346,7 +1345,7 @@ public class MagicController implements MageController {
         schematics.put(schematicName, new WeakReference<>(schematic));
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
             try {
-                SchematicUtils.getInstance().loadLegacySchematic(legacySchematic, schematic);
+                CompatibilityLib.getSchematicUtils().loadLegacySchematic(legacySchematic, schematic);
                 info("Finished loading schematic");
             } catch (Exception ex) {
                 ex.printStackTrace();
