@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 
 public class ShopAction extends SelectorAction {
     private boolean showNoPermission;
@@ -266,9 +266,9 @@ public class ShopAction extends SelectorAction {
                         }
                     }
                     ConfigurationSection costSection = itemConfig.createSection("costs");
-                    InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(item);
+                    CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
                     if (currency != null) {
-                        costSection.set(currency.type, currency.amount);
+                        costSection.set(currency.getType(), currency.getAmount());
                     } else {
                         costSection.set(itemName, item.getAmount());
                     }

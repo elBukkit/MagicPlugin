@@ -29,12 +29,13 @@ import java.util.logging.Level;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.google.common.collect.Multimap;
 
 @SuppressWarnings("deprecation")
 public class InventoryUtils {
 
-    public CurrencyAmount getCurrency(ItemStack item) {
+    public CurrencyAmount getCurrencyAmount(ItemStack item) {
         if (CompatibilityLib.getItemUtils().isEmpty(item)) return null;
 
         Object currency = CompatibilityLib.getNBTUtils().getNode(item, "currency");
@@ -798,13 +799,4 @@ public class InventoryUtils {
         }
     }
 
-    public static class CurrencyAmount {
-        public String type;
-        public int amount;
-
-        public CurrencyAmount(String type, int amount) {
-            this.type = type;
-            this.amount = amount;
-        }
-    }
 }

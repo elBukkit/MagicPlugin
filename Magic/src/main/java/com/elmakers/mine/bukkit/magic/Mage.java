@@ -118,9 +118,9 @@ import com.elmakers.mine.bukkit.tasks.SendCurrencyMessageTask;
 import com.elmakers.mine.bukkit.tasks.TeleportTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
@@ -2704,11 +2704,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int removeItem(ItemStack itemStack, boolean allowVariants) {
         if (!isPlayer()) return 0;
-        InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(itemStack);
+        CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(itemStack);
         if (currency != null) {
-            currency.amount *= itemStack.getAmount();
-            removeCurrency(currency.type, currency.amount);
-            return currency.amount;
+            currency.scale(itemStack.getAmount());
+            removeCurrency(currency.getType(), currency.getAmount());
+            return currency.getAmount();
         }
         int amount = itemStack == null ? 0 : itemStack.getAmount();
         Inventory inventory = getInventory();
@@ -2809,9 +2809,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean hasItem(ItemStack itemStack, boolean allowVariants) {
         if (!isPlayer()) return false;
-        InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(itemStack);
+        CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(itemStack);
         if (currency != null) {
-            return getCurrency(currency.type) >= currency.amount * itemStack.getAmount();
+            return getCurrency(currency.getType()) >= currency.getAmount() * itemStack.getAmount();
         }
 
         int amount = itemStack == null ? 0 : itemStack.getAmount();
@@ -2885,10 +2885,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public int getItemCount(ItemStack itemStack, boolean allowDamaged) {
         if (!isPlayer()) return 0;
-        InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(itemStack);
+        CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(itemStack);
         if (currency != null) {
-            int amount = currency.amount <= 0 ? 1 : currency.amount;
-            return (int)Math.ceil(getCurrency(currency.type) / amount);
+            int amount = currency.getAmount() <= 0 ? 1 : currency.getAmount();
+            return (int)Math.ceil(getCurrency(currency.getType()) / amount);
         }
 
         int amount = 0;

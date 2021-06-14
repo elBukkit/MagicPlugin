@@ -68,9 +68,9 @@ import com.elmakers.mine.bukkit.tasks.DropActionTask;
 import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
@@ -760,21 +760,21 @@ public class PlayerController implements Listener {
 
         // Check for right-clicking SP or currency items
         if (isRightClick) {
-            InventoryUtils.CurrencyAmount currencyAmount = CompatibilityLib.getInventoryUtils().getCurrency(itemInHand);
-            Currency currency = currencyAmount == null ? null : controller.getCurrency(currencyAmount.type);
+            CurrencyAmount currencyAmount = CompatibilityLib.getInventoryUtils().getCurrencyAmount(itemInHand);
+            Currency currency = currencyAmount == null ? null : controller.getCurrency(currencyAmount.getType());
             if (currency != null) {
                 Messages messages = controller.getMessages();
-                currencyAmount.amount *= itemInHand.getAmount();
-                if (mage.isAtMaxCurrency(currencyAmount.type)) {
-                    String limitMessage = messages.get("currency." + currencyAmount.type + ".limit", messages.get("currency.default.limit"));
+                currencyAmount.scale(itemInHand.getAmount());
+                if (mage.isAtMaxCurrency(currencyAmount.getType())) {
+                    String limitMessage = messages.get("currency." + currencyAmount.getType() + ".limit", messages.get("currency.default.limit"));
                     limitMessage = limitMessage.replace("$amount", currency.formatAmount(currency.getMaxValue(), messages));
                     limitMessage = limitMessage.replace("$type", currency.getName(messages));
                     mage.sendMessage(limitMessage);
                 } else {
-                    mage.addCurrency(currencyAmount.type, currencyAmount.amount, true);
+                    mage.addCurrency(currencyAmount.getType(), currencyAmount.getAmount(), true);
                     player.getInventory().setItemInMainHand(null);
-                    String balanceMessage = messages.get("currency." + currencyAmount.type + ".deposited", messages.get("currency.default.deposited"));
-                    balanceMessage = balanceMessage.replace("$amount",  currency.formatAmount(currencyAmount.amount, messages));
+                    String balanceMessage = messages.get("currency." + currencyAmount.getType() + ".deposited", messages.get("currency.default.deposited"));
+                    balanceMessage = balanceMessage.replace("$amount",  currency.formatAmount(currencyAmount.getAmount(), messages));
                     balanceMessage = balanceMessage.replace("$balance", currency.formatAmount(currency.getBalance(mage), messages));
                     balanceMessage = balanceMessage.replace("$type", currency.getName(messages));
                     mage.sendMessage(balanceMessage);

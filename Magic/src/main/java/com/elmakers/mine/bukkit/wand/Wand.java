@@ -85,7 +85,7 @@ import com.elmakers.mine.bukkit.tasks.CancelEffectsContextTask;
 import com.elmakers.mine.bukkit.tasks.OpenWandTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
     public static final int OFFHAND_SLOT = 40;
@@ -4093,7 +4093,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (mageClassKeys != null && !mageClassKeys.isEmpty() && mage == null) {
             return false;
         }
-        InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(item);
+        CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
         boolean isUpgrade = isUpgrade(item);
         if (!isModifiable() && !isUpgrade && currency == null) return false;
         if (isUpgrade) {

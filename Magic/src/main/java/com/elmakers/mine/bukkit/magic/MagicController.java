@@ -239,6 +239,7 @@ import com.elmakers.mine.bukkit.tasks.UndoUpdateTask;
 import com.elmakers.mine.bukkit.tasks.ValidateSpellsTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.LogMessage;
 import com.elmakers.mine.bukkit.utility.MagicLogger;
@@ -246,7 +247,6 @@ import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -6085,10 +6085,10 @@ public class MagicController implements MageController {
         if (configuredItem == null) {
             Wand wand = getIfWand(item);
             if (wand == null) {
-                InventoryUtils.CurrencyAmount currencyAmount = CompatibilityLib.getInventoryUtils().getCurrency(item);
-                Currency currency = currencyAmount == null ? null : getCurrency(currencyAmount.type);
+                CurrencyAmount currencyAmount = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
+                Currency currency = currencyAmount == null ? null : getCurrency(currencyAmount.getType());
                 if (currency != null) {
-                    return currency.getWorth() * currencyAmount.amount * item.getAmount() / toCurrency.getWorth();
+                    return currency.getWorth() * currencyAmount.getAmount() * item.getAmount() / toCurrency.getWorth();
                 }
                 return null;
             }

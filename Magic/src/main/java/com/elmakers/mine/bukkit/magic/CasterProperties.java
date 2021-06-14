@@ -35,7 +35,7 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandLevel;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
@@ -638,10 +638,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
         Mage mage = getMage();
         if (mage != null) {
-            InventoryUtils.CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrency(item);
-            if (currency != null && !mage.isAtMaxCurrency(currency.type)) {
-                int amount = (int)Math.floor(mage.getEarnMultiplier(currency.type) * currency.amount * item.getAmount());
-                mage.addCurrency(currency.type, amount);
+            CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
+            if (currency != null && !mage.isAtMaxCurrency(currency.getType())) {
+                int amount = (int)Math.floor(mage.getEarnMultiplier(currency.getType()) * currency.getAmount() * item.getAmount());
+                mage.addCurrency(currency.getType(), amount);
                 return true;
             }
         }
