@@ -16,8 +16,8 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.world.listener.TimeListener;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
 import com.elmakers.mine.bukkit.world.listener.WorldSpawnListener;
@@ -33,7 +33,7 @@ public class WorldController implements Listener {
         this.controller = controller;
         playerListener = new WorldPlayerListener(this);
         spawnListener = new WorldSpawnListener(this);
-        if (NMSUtils.hasTimeSkipEvent()) {
+        if (CompatibilityLib.hasTimeSkipEvent()) {
             timeListener = new TimeListener(this);
         } else {
             timeListener = null;

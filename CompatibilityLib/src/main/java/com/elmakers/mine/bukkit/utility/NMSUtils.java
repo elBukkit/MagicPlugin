@@ -1,5 +1,20 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
@@ -13,10 +28,7 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Entity;
@@ -32,27 +44,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.BlockVector;
-import org.bukkit.util.Vector;
-
-import java.io.InputStream;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Consumer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import com.google.common.base.CaseFormat;
 
@@ -1774,14 +1766,6 @@ public class NMSUtils {
         legacy = true;
         // Thread.dumpStack();
     }
-    
-    public static boolean isLegacy() {
-        return legacy;
-    }
-
-    public static boolean isCurrentVersion() {
-        return isModernVersion;
-    }
 
     public static Class<?> getClass(String className) {
         Class<?> result = null;
@@ -1900,18 +1884,6 @@ public class NMSUtils {
         sendPacketMethod.invoke(connection, packet);
     }
 
-    public static BlockVector getBlockVector(Object entityData, String tag) {
-        if (class_NBTTagCompound_getIntArrayMethod == null) return null;
-        try {
-            int[] coords = (int[])class_NBTTagCompound_getIntArrayMethod.invoke(entityData, tag);
-            if (coords == null || coords.length < 3) return null;
-            return new BlockVector(coords[0], coords[1], coords[2]);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
-
     public static String getVersionPrefix() {
         return versionPrefix;
     }
@@ -1920,18 +1892,6 @@ public class NMSUtils {
         if (field == null) return false;
         int modifiers = field.getModifiers();
         return Modifier.isPublic(modifiers);
-    }
-
-    public static boolean hasStatistics() {
-        return hasStatistics;
-    }
-
-    public static boolean hasEntityTransformEvent() {
-        return hasEntityTransformEvent;
-    }
-
-    public static boolean hasTimeSkipEvent() {
-        return hasTimeSkipEvent;
     }
 
     protected static Logger getLogger() {

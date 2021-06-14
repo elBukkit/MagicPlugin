@@ -66,6 +66,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import java.io.File;
@@ -989,6 +990,18 @@ public class CompatibilityUtils extends NMSUtils {
         return null;
     }
 
+    public static BlockVector getBlockVector(Object entityData, String tag) {
+        if (class_NBTTagCompound_getIntArrayMethod == null) return null;
+        try {
+            int[] coords = (int[])class_NBTTagCompound_getIntArrayMethod.invoke(entityData, tag);
+            if (coords == null || coords.length < 3) return null;
+            return new BlockVector(coords[0], coords[1], coords[2]);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
     static class LoadingChunk {
         private final String worldName;
         private final int chunkX;
@@ -1199,7 +1212,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static int getMinHeight(World world) {
-        if (!NMSUtils.isCurrentVersion()) {
+        if (!CompatibilityLib.isCurrentVersion()) {
             return 0;
         }
         return -64;
@@ -2662,7 +2675,7 @@ public class CompatibilityUtils extends NMSUtils {
     public static boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage) {
         if (ingredient == null) return false;
         if (class_RecipeChoice_ExactChoice == null) {
-            if (isLegacy()) {
+            if (CompatibilityLib.isLegacy()) {
                 @SuppressWarnings("deprecation")
                 org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getData();
                 if (material == null) {
@@ -2974,7 +2987,7 @@ public class CompatibilityUtils extends NMSUtils {
     }
 
     public static void playRecord(Location location, Material record) {
-        if (NMSUtils.isLegacy()) {
+        if (CompatibilityLib.isLegacy()) {
             location.getWorld().playEffect(location, Effect.RECORD_PLAY,
                     DeprecatedUtils.getId(record));
         } else {
@@ -3051,5 +3064,30 @@ public class CompatibilityUtils extends NMSUtils {
         }
 
         return entity;
+    }
+
+    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
+    {
+        try {
+            Set<String> keys = InventoryUtils.getTagKeys(tag);
+            if (keys == null) return false;
+
+            for (String tagName : keys) {
+                Object metaBase = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, tagName);
+                if (metaBase != null) {
+                    if (NMSUtils.class_NBTTagCompound.isAssignableFrom(metaBase.getClass())) {
+                        ConfigurationSection newSection = tags.createSection(tagName);
+                        loadAllTagsFromNBT(newSection, metaBase);
+                    } else {
+                        tags.set(tagName, InventoryUtils.getTagValue(metaBase));
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+
+        return true;
     }
 }

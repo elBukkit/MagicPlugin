@@ -14,9 +14,8 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 
-public class EffectUtils extends NMSUtils {
+public class EffectUtils {
     public static void spawnFireworkEffect(Server server, Location location, FireworkEffect effect, int power) {
         spawnFireworkEffect(server, location, effect, power, null, 2, 1);
     }

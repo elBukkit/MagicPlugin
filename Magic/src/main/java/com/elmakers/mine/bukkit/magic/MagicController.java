@@ -237,6 +237,7 @@ import com.elmakers.mine.bukkit.tasks.SaveMageDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageTask;
 import com.elmakers.mine.bukkit.tasks.UndoUpdateTask;
 import com.elmakers.mine.bukkit.tasks.ValidateSpellsTask;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
@@ -248,7 +249,6 @@ import com.elmakers.mine.bukkit.utility.LogMessage;
 import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.NBTUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
@@ -656,7 +656,7 @@ public class MagicController implements MageController {
     }
 
     public boolean registerNMSBindings() {
-        if (!NMSUtils.initialize(getPlugin(), getLogger())) {
+        if (!CompatibilityLib.initialize(getPlugin(), getLogger())) {
             return false;
         }
         SkinUtils.initialize(plugin);
@@ -1459,10 +1459,10 @@ public class MagicController implements MageController {
         explosionController = new ExplosionController(this);
         requirementsController = new RequirementsController(this);
         worldController = new WorldController(this);
-        if (NMSUtils.hasStatistics()) {
+        if (CompatibilityLib.hasStatistics()) {
             jumpController = new JumpController(this);
         }
-        if (NMSUtils.hasEntityTransformEvent()) {
+        if (CompatibilityLib.hasEntityTransformEvent()) {
             mobs2 = new MobController2(this);
         }
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
@@ -6402,9 +6402,9 @@ public class MagicController implements MageController {
     @Nonnull
     @Override
     public ItemStack getMap(int mapId) {
-        short durability = NMSUtils.isCurrentVersion() ? 0 : (short) mapId;
+        short durability = CompatibilityLib.isCurrentVersion() ? 0 : (short) mapId;
         ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
-        if (NMSUtils.isCurrentVersion()) {
+        if (CompatibilityLib.isCurrentVersion()) {
             mapItem = ItemUtils.makeReal(mapItem);
             NBTUtils.setMetaInt(mapItem, "map", mapId);
         }

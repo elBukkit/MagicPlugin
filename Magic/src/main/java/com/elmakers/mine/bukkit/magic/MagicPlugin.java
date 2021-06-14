@@ -41,8 +41,8 @@ import com.elmakers.mine.bukkit.magic.command.MagicWarpCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.RPCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 /*! \mainpage Magic Bukkit Plugin
@@ -169,10 +169,10 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
             Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Magic] Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
         } else {
             Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-            if (NMSUtils.isLegacy()) {
+            if (CompatibilityLib.isLegacy()) {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Magic] Using backwards-compatibility layer. It is highly recommended that you update to the latest Spigot version and/or the latest Magic version.");
             }
-            if (!NMSUtils.isCurrentVersion()) {
+            if (!CompatibilityLib.isCurrentVersion()) {
                 CasterProperties.setLegacyVersion();
             }
             initialize();

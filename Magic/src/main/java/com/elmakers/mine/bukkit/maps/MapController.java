@@ -19,9 +19,9 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.utility.NBTUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
@@ -333,9 +333,9 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     // This is copied from MagicController, which I'm still trying to keep out of this class. Shrug?
     public ItemStack createMap(int mapId) {
-        short durability = NMSUtils.isCurrentVersion() ? 0 : (short)mapId;
+        short durability = CompatibilityLib.isCurrentVersion() ? 0 : (short)mapId;
         ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
-        if (NMSUtils.isCurrentVersion()) {
+        if (CompatibilityLib.isCurrentVersion()) {
             mapItem = ItemUtils.makeReal(mapItem);
             NBTUtils.setMetaInt(mapItem, "map", mapId);
         }

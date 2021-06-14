@@ -8,7 +8,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 
 public class Schematic  extends AbstractSchematic {
     public Schematic(MageController controller) {
@@ -47,7 +47,7 @@ public class Schematic  extends AbstractSchematic {
         for (Object tileEntity : tileEntityData)
         {
             try {
-                BlockVector position = NMSUtils.getBlockVector(tileEntity, "Pos");
+                BlockVector position = CompatibilityUtils.getBlockVector(tileEntity, "Pos");
                 if (position == null) continue;
                 tileEntities.put(position, tileEntity);
             } catch (Exception ex) {

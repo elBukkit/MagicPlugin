@@ -760,7 +760,7 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static int getMapId(ItemStack mapItem) {
-        if (isCurrentVersion()) {
+        if (CompatibilityLib.isCurrentVersion()) {
             return NBTUtils.getMetaInt(mapItem, "map", 0);
         }
 
@@ -768,7 +768,7 @@ public class InventoryUtils extends NMSUtils
     }
 
     public static void setMapId(ItemStack mapItem, int id) {
-        if (isCurrentVersion()) {
+        if (CompatibilityLib.isCurrentVersion()) {
             NBTUtils.setMetaInt(mapItem, "map", id);
         } else {
             mapItem.setDurability((short)id);

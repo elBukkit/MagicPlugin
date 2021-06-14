@@ -296,38 +296,11 @@ public class ConfigurationUtils extends ConfigUtils {
         return null;
     }
 
-    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
-    {
-        try {
-            Set<String> keys = InventoryUtils.getTagKeys(tag);
-            if (keys == null) return false;
-
-            for (String tagName : keys) {
-                Object metaBase = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, tagName);
-                if (metaBase != null) {
-                    if (NMSUtils.class_NBTTagCompound.isAssignableFrom(metaBase.getClass())) {
-                        ConfigurationSection newSection = tags.createSection(tagName);
-                        loadAllTagsFromNBT(newSection, metaBase);
-                    } else if (NMSUtils.class_NBTTagString.isAssignableFrom(metaBase.getClass())) {
-                        // Special conversion case here... not sure if this is still a good idea
-                        // But there would be downstream effects.
-                        // TODO: Look closer.
-                        set(tags, tagName, NMSUtils.class_NBTTagString_dataField.get(metaBase));
-                    } else {
-                        tags.set(tagName, InventoryUtils.getTagValue(metaBase));
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
-        return true;
+    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag) {
+        return CompatibilityUtils.loadAllTagsFromNBT(tags, tag);
     }
 
-    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, ItemStack item)
-    {
+    public static boolean loadAllTagsFromNBT(ConfigurationSection tags, ItemStack item) {
         if (item == null) {
             return false;
         }

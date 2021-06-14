@@ -33,13 +33,13 @@ import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.utility.NBTUtils;
-import com.elmakers.mine.bukkit.utility.NMSUtils;
 import com.elmakers.mine.bukkit.utility.SkinUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.google.common.base.Objects;
@@ -484,7 +484,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 extraData = new BlockCommand(command.getCommand(), command.getName());
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
-                if (!NMSUtils.isCurrentVersion()) {
+                if (!CompatibilityLib.isCurrentVersion()) {
                     data = (short)skull.getSkullType().ordinal();
                 }
                 extraData = new BlockSkull(InventoryUtils.getSkullProfile(skull), skull.getRotation());
@@ -623,7 +623,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 Skull skull = (Skull)blockState;
                 BlockSkull skullData = (BlockSkull)extraData;
                 // Don't do this in 1.13
-                if (data != null && data != 0 && !NMSUtils.isCurrentVersion()) {
+                if (data != null && data != 0 && !CompatibilityLib.isCurrentVersion()) {
                     skull.setSkullType(SkullType.values()[data]);
                 }
                 if (skullData.rotation != null && skullData.rotation != org.bukkit.block.BlockFace.SELF) {
@@ -745,7 +745,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     @SuppressWarnings("deprecation")
     public boolean is(Block block) {
-        if (NMSUtils.isCurrentVersion()) {
+        if (CompatibilityLib.isCurrentVersion()) {
             return material == block.getType();
         }
         return material == block.getType() && data == block.getData();
@@ -763,7 +763,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (material != null && blockMaterial != material) {
             return true;
         }
-        if (!NMSUtils.isCurrentVersion()) {
+        if (!CompatibilityLib.isCurrentVersion()) {
             byte blockData = block.getData();
             if (data != null && blockData != data) {
                 return true;
