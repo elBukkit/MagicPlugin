@@ -21,10 +21,10 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.ItemUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class ThrowItemAction extends BaseProjectileAction {
     private double itemSpeedMin;

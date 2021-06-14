@@ -7,7 +7,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class LegacySchematic extends AbstractSchematic {
 

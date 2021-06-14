@@ -35,8 +35,8 @@ import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
-import com.elmakers.mine.bukkit.utility.SkinUtils;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
 public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.maps.URLMap {
 

@@ -15,8 +15,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.util.NumberConversions;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class TranslatingConfigurationSection extends MemorySection {
     private static Logger logger;

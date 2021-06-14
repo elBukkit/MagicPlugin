@@ -15,8 +15,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class GotoSpell extends UndoableSpell
 {

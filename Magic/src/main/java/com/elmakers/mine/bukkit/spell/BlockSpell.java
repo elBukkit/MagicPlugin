@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class BlockSpell extends UndoableSpell {
 

@@ -6,7 +6,7 @@ import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class MountSpell extends TargetingSpell {
 

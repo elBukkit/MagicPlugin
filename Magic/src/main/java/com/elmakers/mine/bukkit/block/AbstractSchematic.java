@@ -18,9 +18,9 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.ItemUtils;
-import com.elmakers.mine.bukkit.utility.NBTUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public abstract class AbstractSchematic implements Schematic {
     private final MageController controller;

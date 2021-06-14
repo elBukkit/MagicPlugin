@@ -22,11 +22,11 @@ import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 
 public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     private static final String DEFAULT_NPC_KEY = "base_npc";

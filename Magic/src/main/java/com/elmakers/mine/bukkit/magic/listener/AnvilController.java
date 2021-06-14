@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class AnvilController implements Listener {

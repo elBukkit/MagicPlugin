@@ -9,7 +9,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class TeleportTask implements Runnable {
     protected static final int TELEPORT_RETRY_COUNT = 8;

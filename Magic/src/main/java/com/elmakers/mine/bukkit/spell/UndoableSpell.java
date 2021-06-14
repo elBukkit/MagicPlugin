@@ -16,8 +16,8 @@ import org.bukkit.potion.PotionEffect;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class UndoableSpell extends TargetingSpell {
     private boolean         undoEntityEffects        = false;

@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
-import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 public class StashWandAction extends BaseSpellAction
 {

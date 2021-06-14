@@ -32,8 +32,8 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.tasks.PlayEffectTask;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 import de.slikey.effectlib.util.DynamicLocation;
 

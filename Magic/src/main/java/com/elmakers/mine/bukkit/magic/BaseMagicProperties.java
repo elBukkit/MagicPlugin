@@ -19,7 +19,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableSet;
 

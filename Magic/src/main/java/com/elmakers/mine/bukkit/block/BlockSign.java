@@ -5,7 +5,7 @@ import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 
-import com.elmakers.mine.bukkit.utility.NBTUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 

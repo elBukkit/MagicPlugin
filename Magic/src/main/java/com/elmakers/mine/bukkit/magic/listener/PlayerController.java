@@ -67,11 +67,11 @@ import com.elmakers.mine.bukkit.magic.SpellBlock;
 import com.elmakers.mine.bukkit.tasks.DropActionTask;
 import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.InventoryUtils;
-import com.elmakers.mine.bukkit.utility.ItemUtils;
-import com.elmakers.mine.bukkit.utility.NBTUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.platform;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -27,6 +27,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import com.elmakers.mine.bukkit.utility.Base64Coder;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.google.common.collect.Multimap;
 
 @SuppressWarnings("deprecation")

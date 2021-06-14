@@ -31,8 +31,8 @@ import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.ItemUtils;
-import com.elmakers.mine.bukkit.utility.NBTUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 
 public class EquipAction extends BaseSpellAction
 {

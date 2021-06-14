@@ -26,8 +26,9 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.google.common.collect.ImmutableSet;
 
 public class ConfigurationLoadTask implements Runnable {
@@ -497,7 +498,7 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private void addVersionConfigs(ConfigurationSection config, String fileName) throws InvalidConfigurationException, IOException {
-        int[] serverVersion = CompatibilityUtils.getServerVersion();
+        int[] serverVersion = CompatibilityLib.getServerVersion();
         int majorVersion = serverVersion[0];
         int minorVersion = serverVersion[1];
         String versionExample = majorVersion + "." + minorVersion;

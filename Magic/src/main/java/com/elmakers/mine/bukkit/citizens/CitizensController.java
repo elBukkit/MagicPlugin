@@ -24,7 +24,7 @@ import com.elmakers.mine.bukkit.integration.NPCSupplier;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.npc.MagicNPC;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 import net.citizensnpcs.Citizens;
 import net.citizensnpcs.api.CitizensAPI;

@@ -9,8 +9,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class EntityFallingBlockData extends EntityExtraData {
     @Nullable

@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.utility;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+
 public class UpdateInventoryTask extends BukkitRunnable {
     private final Player player;
 

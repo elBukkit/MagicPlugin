@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.platform;
 
 import java.io.InputStream;
 import java.lang.reflect.Array;

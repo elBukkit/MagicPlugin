@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.magic.command.config;
 
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.utility.SkinUtils;
+import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
 public class Session {
     protected String type;

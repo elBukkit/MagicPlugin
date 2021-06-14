@@ -13,7 +13,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
-import com.elmakers.mine.bukkit.utility.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 @Deprecated
 public class HatSpell extends TargetingSpell

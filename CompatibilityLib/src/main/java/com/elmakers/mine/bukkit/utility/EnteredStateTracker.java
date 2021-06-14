@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 /**
  * Tracks whether or not a certain code block has been entered or note.
  */
-final class EnteredStateTracker {
+public final class EnteredStateTracker {
     public class Touchable implements AutoCloseable {
         @Override
         public void close() {

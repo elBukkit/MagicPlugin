@@ -14,6 +14,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+
 public class HitboxUtils extends CompatibilityUtils {
     private static final Map<EntityType, BoundingBox> hitboxes = new HashMap<>();
     private static final Map<EntityType, Double> headSizes = new HashMap<>();

@@ -1,5 +1,6 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.platform;
 
+import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;

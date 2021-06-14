@@ -12,8 +12,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class WandCleanupRunnable extends RunnableJob {
     private final Deque<LostWand> lostWands = new ArrayDeque<>();

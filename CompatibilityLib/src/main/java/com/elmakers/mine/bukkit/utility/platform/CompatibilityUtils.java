@@ -1,7 +1,10 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.platform;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
 
+import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
 import com.google.common.io.BaseEncoding;
 
 import org.apache.commons.lang.StringUtils;
@@ -2250,28 +2253,6 @@ public class CompatibilityUtils extends NMSUtils {
         return false;
     }
 
-    public static int[] getServerVersion() {
-        String versionString = getVersionPrefix();
-        int[] version = new int[2];
-        if (versionString.isEmpty()) {
-            return version;
-        }
-        // Format:  v1_12_R1
-        versionString = versionString.substring(1);
-        try {
-            String[] pieces = StringUtils.split(versionString, '_');
-            if (pieces.length > 0) {
-                version[0] = Integer.parseInt(pieces[0]);
-            }
-            if (pieces.length > 1) {
-                version[1] = Integer.parseInt(pieces[1]);
-            }
-        } catch (Exception ex) {
-
-        }
-        return version;
-    }
-
     public static Color getColor(PotionMeta meta) {
         Color color = Color.BLACK;
         if (class_PotionMeta_getColorMethod != null) {
@@ -2936,7 +2917,7 @@ public class CompatibilityUtils extends NMSUtils {
         }
     }
 
-    protected static void teleportVehicle(Entity vehicle, Location location) {
+    public static void teleportVehicle(Entity vehicle, Location location) {
         List<Entity> passengers = getPassengers(vehicle);
         vehicle.eject();
         vehicle.teleport(location);

@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.utility;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+
 public class TeleportPassengerTask implements Runnable {
     private final Entity vehicle;
     private final Entity passenger;

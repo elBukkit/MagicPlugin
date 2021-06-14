@@ -8,7 +8,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.ConstructionType;
 import com.elmakers.mine.bukkit.spell.BrushSpell;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 /**
  * TODO: Abstract a lot of this into a common class for ConstructBatch

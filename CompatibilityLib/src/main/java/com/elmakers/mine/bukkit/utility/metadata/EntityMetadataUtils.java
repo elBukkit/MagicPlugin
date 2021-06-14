@@ -1,7 +1,10 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.metadata;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.MetaKey;
 
 public abstract class EntityMetadataUtils {
     public static EntityMetadataUtils metadataUtils;
@@ -14,7 +17,7 @@ public abstract class EntityMetadataUtils {
 
     protected static boolean hasPersistentMetadata() {
         // Unfortunately this API is bugged prior to 1.16, it does not work for dropped items so we can not use it.
-        int[] version = CompatibilityUtils.getServerVersion();
+        int[] version = CompatibilityLib.getServerVersion();
         if (version[0] <= 1 && version[1] < 16) return false;
 
         try {

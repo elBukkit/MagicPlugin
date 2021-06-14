@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.entity;
 
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class EntityPhantomData extends EntityExtraData {
     public int size;

@@ -42,9 +42,9 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class MobController implements Listener, ChunkLoadListener {
     public static boolean REMOVE_INVULNERABLE = false;

@@ -8,7 +8,7 @@ import org.bukkit.entity.LivingEntity;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.utility.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class MountAction extends BaseSpellAction {
     private boolean eject = false;

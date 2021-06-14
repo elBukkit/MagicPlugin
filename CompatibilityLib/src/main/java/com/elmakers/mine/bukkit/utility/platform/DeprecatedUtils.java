@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.UUID;
 
@@ -22,6 +22,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 
 /**
  * Makes deprecation warnings useful again by suppressing all bukkit 'magic

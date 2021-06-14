@@ -9,7 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.utility.SkinUtils;
+import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
 public class RegisterTask implements Runnable {
     private static final Object registerLock = new Object();

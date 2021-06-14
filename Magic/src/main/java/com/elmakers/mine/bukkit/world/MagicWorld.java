@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkHandler;
 import com.elmakers.mine.bukkit.world.spawn.MagicSpawnHandler;

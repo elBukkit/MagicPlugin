@@ -45,8 +45,9 @@ import com.elmakers.mine.bukkit.magic.command.config.NewSessionCallback;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionRequest;
 import com.elmakers.mine.bukkit.magic.command.config.NewSessionRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.Session;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -488,7 +489,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         newSession.setLegacyIcons(magic.isLegacyIconsEnabled());
         newSession.setMagicVersion(getMagicVersion());
-        newSession.setMinecraftVersion(CompatibilityUtils.getServerVersion());
+        newSession.setMinecraftVersion(CompatibilityLib.getServerVersion());
 
         if ((editorType.equals("config") || editorType.equals("messages")) && parameters.length == 1) {
             File pluginFolder = api.getPlugin().getDataFolder();

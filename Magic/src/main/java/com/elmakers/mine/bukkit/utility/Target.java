@@ -13,6 +13,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class Target implements Comparable<Target>
 {

@@ -12,8 +12,8 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
-import com.elmakers.mine.bukkit.utility.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 @Deprecated
 public class GrenadeSpell extends BlockSpell

@@ -15,6 +15,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.block.LegacySchematic;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.Schematic;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 @SuppressWarnings("unchecked")
 public class SchematicUtils extends CompatibilityUtils {

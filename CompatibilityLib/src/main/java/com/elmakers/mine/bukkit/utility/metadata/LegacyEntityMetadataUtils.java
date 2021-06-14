@@ -1,10 +1,12 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.metadata;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
+
+import com.elmakers.mine.bukkit.utility.MetaKey;
 
 final class LegacyEntityMetadataUtils extends EntityMetadataUtils {
     // This is leaky.

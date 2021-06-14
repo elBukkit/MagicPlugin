@@ -21,8 +21,8 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
-import com.elmakers.mine.bukkit.utility.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class ResourcePackManager {
     private static final String RP_FILE = "resourcepack";

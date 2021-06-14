@@ -17,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+
 public class TextUtils
 {
     private static final NumberFormat[] formatters = {
