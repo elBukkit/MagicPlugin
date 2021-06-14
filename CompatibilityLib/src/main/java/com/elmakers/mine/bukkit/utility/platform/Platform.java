@@ -48,7 +48,7 @@ public class Platform {
     }
 
     public ItemUtils getItemUtils() {
-        return new ItemUtils();
+        return new ItemUtilsBase();
     }
 
     public NBTUtils getNBTUtils() {
