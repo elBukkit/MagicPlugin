@@ -1,0 +1,49 @@
+warphole:
+  parameters:
+    marker_key: warphole
+    allow_marker: true
+    confirm_marker: false
+    target_self: true
+    teleport_target: true
+  actions:
+    alternate_sneak:
+    - class: Recall
+      type: place
+    cast:
+    - class: CustomProjectile
+      target: block
+      range: 7
+      actions:
+      - class: Repeat
+        repeat: 30
+        actions:
+        - class: AreaOfEffect
+          radius: 1
+          y_radius: 2
+          target_count: 1
+          actions:
+          - class: Recall
+            type: marker
+        - class: Delay
+          delay: 500
+  effects:
+    hit:
+    - sound: block_beacon_deactivate
+      sound_pitch: 1.8
+      sound_volume: 1.2
+      location: both
+    - location: target
+      effectlib:
+        class: Sphere
+        particle: redstone
+        iterations: 1
+        particles: 100
+        particle_count: 4
+        particle_offset_x: 0
+        particle_offset_y: 0
+        particle_offset_z: 0
+        color: "#800080"
+        offset: 0,1,0
+        radius: 1
+        duration: 15000
+        orient: true
