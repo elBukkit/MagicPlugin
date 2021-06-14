@@ -1,5 +1,10 @@
 # CHANGELOG
 
+# 9.0
+
+ - LevitateSpell and ProjectileSpell removed
+ - Non-functionality hologram functionality removed
+
 # 8.8
 
  - Add `prevent_teleport` mob option, and a `contained_enderman` mob for arena battles
