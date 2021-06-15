@@ -133,7 +133,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
     public static int CHANGE_WORLD_EQUIP_COOLDOWN = 1000;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
-    public static int OFFHAND_CAST_RANGE = 32;
     public static int OFFHAND_CAST_COOLDOWN = 500;
     public static int CURRENCY_MESSAGE_DELAY = 1000;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
@@ -1653,7 +1652,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
                     // Don't swing arm is cast is from right-click
                     if (castingWand.getRightClickAction() != WandAction.CAST) {
-                        CompatibilityLib.getCompatibilityUtils().swingOffhand(player, OFFHAND_CAST_RANGE);
+                        CompatibilityLib.getCompatibilityUtils().swingOffhand(player);
                     }
                 } catch (Exception ex) {
                     controller.getLogger().log(Level.WARNING, "Error casting from offhand wand", ex);
@@ -5495,7 +5494,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null && controller.hasPermission(player, "Magic.wand.craft")) {
             for (String recipe : recipes) {
                 if (controller.hasPermission(player, "Magic.craft." + recipe)) {
-                    CompatibilityLib.getCompatibilityUtils().discoverRecipe(player, controller.getPlugin(), recipe);
+                    CompatibilityLib.getCompatibilityUtils().discoverRecipe(player,  recipe);
                 }
             }
         }

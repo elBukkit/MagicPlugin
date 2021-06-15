@@ -1,21 +1,26 @@
 package com.elmakers.mine.bukkit.utility.platform.legacy;
 
-import com.elmakers.mine.bukkit.utility.BoundingBox;
-import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
-import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
+import java.lang.reflect.Array;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Consumer;
+import java.util.logging.Level;
 
-import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
-import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
-import com.google.common.io.BaseEncoding;
-
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
-import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,9 +35,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemorySection;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ComplexEntityPart;
@@ -47,7 +50,6 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -55,7 +57,6 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
@@ -68,34 +69,18 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
-import java.util.UUID;
-import java.util.WeakHashMap;
-import java.util.function.Consumer;
-import java.util.logging.Level;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
+import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
+import com.elmakers.mine.bukkit.utility.LoadingChunk;
+import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
+import com.google.common.io.BaseEncoding;
 
 /**
  * A generic place to put compatibility-based utilities.
@@ -111,37 +96,10 @@ import java.util.logging.Level;
  */
 @SuppressWarnings("deprecation")
 public class CompatibilityUtils extends CompatibilityUtilsBase {
-    // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
-    // (for instance when undoing a spell in an unloaded chunk that threw a ton of different falling blocks)
-    // So putting some lower number on this will trigger a lot of false-positives.
-    public static final int MAX_CHUNK_LOAD_TRY = 10000;
-    public boolean USE_MAGIC_DAMAGE = true;
-    public int BLOCK_BREAK_RANGE = 64;
-    public final static int MAX_ENTITY_RANGE = 72;
-    private final static Map<World.Environment, Integer> maxHeights = new HashMap<>();
-    public Map<Integer, Material> materialIdMap;
-    private ItemStack dummyItem;
-    public static final UUID emptyUUID = new UUID(0L, 0L);
-    private static final Map<LoadingChunk, Integer> loadingChunks = new HashMap<>();
-    private boolean hasDumpedStack = false;
-    private boolean teleporting = false;
+    public static int OFFHAND_BROADCAST_RANGE = 32;
 
     public CompatibilityUtils(Platform platform) {
         super(platform);
-    }
-
-    @Override
-    public void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects) {
-        for (PotionEffect effect : effects) {
-            CompatibilityUtils.this.applyPotionEffect(entity, effect);
-        }
-    }
-
-    private static final EnteredStateTracker DAMAGING = new EnteredStateTracker();
-
-    @Override
-    public boolean isDamaging() {
-        return DAMAGING.isInside();
     }
 
     @Override
@@ -169,57 +127,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean applyPotionEffect(LivingEntity entity, PotionEffect effect) {
-        // Avoid nerfing existing effects
-        boolean applyEffect = true;
-        Collection<PotionEffect> currentEffects = entity.getActivePotionEffects();
-        for (PotionEffect currentEffect : currentEffects) {
-            if (currentEffect.getType().equals(effect.getType())) {
-                if (effect.getAmplifier() < 0) {
-                    applyEffect = false;
-                    break;
-                } else if (currentEffect.getAmplifier() > effect.getAmplifier() || effect.getDuration() > Integer.MAX_VALUE / 4) {
-                    applyEffect = false;
-                    break;
-                }
-            }
-        }
-        if (applyEffect) {
-            entity.addPotionEffect(effect, true);
-        }
-        return applyEffect;
-    }
-
-    @Override
-    public boolean setDisplayNameRaw(ItemStack itemStack, String displayName) {
-        Object handle = platform.getItemUtils().getHandle(itemStack);
-        if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
-        if (tag == null) return false;
-
-        Object displayNode = platform.getNBTUtils().createNode(tag, "display");
-        if (displayNode == null) return false;
-        platform.getNBTUtils().setMeta(displayNode, "Name", displayName);
-        return true;
-    }
-
-    @Override
-    public boolean setDisplayName(ItemStack itemStack, String displayName) {
-        ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(displayName);
-        itemStack.setItemMeta(meta);
-        return true;
-    }
-
-    @Override
-    public boolean setLore(ItemStack itemStack, List<String> lore) {
-        ItemMeta meta = itemStack.getItemMeta();
-        meta.setLore(lore);
-        itemStack.setItemMeta(meta);
-        return true;
-    }
-
-    @Override
     public boolean isInvulnerable(Entity entity) {
         if (NMSUtils.class_Entity_invulnerableField == null) return false;
         try {
@@ -229,11 +136,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             ex.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public void setInvulnerable(Entity entity) {
-        CompatibilityUtils.this.setInvulnerable(entity, true);
     }
 
     @Override
@@ -341,7 +243,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                     Object notchArt = NMSUtils.class_CraftArt_NotchToBukkitMethod.invoke(null, art);
                     NMSUtils.class_EntityPainting_art.set(newEntity, notchArt);
                 }
-                Entity bukkitEntity = CompatibilityUtils.this.getBukkitEntity(newEntity);
+                Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
 
                 newPainting = (Painting) bukkitEntity;
@@ -351,16 +253,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             newPainting = null;
         }
         return newPainting;
-    }
-
-    @Override
-    public void setSilent(Object nmsEntity, boolean flag) {
-        if (NMSUtils.class_Entity_setSilentMethod == null) return;
-        try {
-            NMSUtils.class_Entity_setSilentMethod.invoke(nmsEntity, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override
@@ -374,7 +266,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             newEntity = NMSUtils.class_EntityItemFrameConstructor.newInstance(worldHandle, blockLocation, directionEnum);
             if (newEntity != null) {
-                Entity bukkitEntity = CompatibilityUtils.this.getBukkitEntity(newEntity);
+                Entity bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
 
                 newItemFrame = (ItemFrame) bukkitEntity;
@@ -388,18 +280,13 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public ArmorStand createArmorStand(Location location) {
-        return (ArmorStand) CompatibilityUtils.this.createEntity(location, EntityType.ARMOR_STAND);
-    }
-
-    @Override
     public Entity createEntity(Location location, EntityType entityType) {
         Entity bukkitEntity = null;
         try {
             Class<? extends Entity> entityClass = entityType.getEntityClass();
             Object newEntity = NMSUtils.class_CraftWorld_createEntityMethod.invoke(location.getWorld(), location, entityClass);
             if (newEntity != null) {
-                bukkitEntity = CompatibilityUtils.this.getBukkitEntity(newEntity);
+                bukkitEntity = getBukkitEntity(newEntity);
                 if (bukkitEntity == null || !entityClass.isAssignableFrom(bukkitEntity.getClass())) return null;
             }
         } catch (Throwable ex) {
@@ -423,12 +310,12 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public List<Entity> getNearbyEntities(Location location, double x, double y, double z) {
+    public Collection<Entity> getNearbyEntities(Location location, double x, double y, double z) {
         if (location == null) return null;
         Object worldHandle = NMSUtils.getHandle(location.getWorld());
         try {
-            x = Math.min(x, CompatibilityUtils.MAX_ENTITY_RANGE);
-            z = Math.min(z, CompatibilityUtils.MAX_ENTITY_RANGE);
+            x = Math.min(x, MAX_ENTITY_RANGE);
+            z = Math.min(z, MAX_ENTITY_RANGE);
             Object bb = NMSUtils.class_AxisAlignedBB_Constructor.newInstance(location.getX() - x, location.getY() - y, location.getZ() - z,
                     location.getX() + x, location.getY() + y, location.getZ() + z);
 
@@ -454,60 +341,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public Minecart spawnCustomMinecart(Location location, Material material, short data, int offset) {
-        Minecart newMinecart = null;
-        try {
-            Constructor<?> minecartConstructor = NMSUtils.class_EntityMinecartRideable.getConstructor(NMSUtils.class_World, Double.TYPE, Double.TYPE, Double.TYPE);
-            Method addEntity = NMSUtils.class_World.getMethod("addEntity", NMSUtils.class_Entity, CreatureSpawnEvent.SpawnReason.class);
-            Method setPositionRotationMethod = NMSUtils.class_Entity.getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
-
-            Object worldHandle = NMSUtils.getHandle(location.getWorld());
-            Object newEntity = minecartConstructor.newInstance(worldHandle, location.getX(), location.getY(), location.getZ());
-            if (newEntity != null) {
-                // Set initial rotation
-                setPositionRotationMethod.invoke(newEntity, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
-
-                // Set tile material id, pack into NMS 3-byte format
-                // TODO: Unbreak this maybe one day?
-                /*
-                int materialId = (display.getMaterial().getId() & 0xFFFF) | (display.getData() << 16);
-                watch(newEntity, 20, materialId);
-
-                // Set the tile offset
-                watch(newEntity, 21, offset);
-
-                // Finalize custom display tile
-                watch(newEntity, 22, (byte)1);
-                */
-
-                addEntity.invoke(worldHandle, newEntity, CreatureSpawnEvent.SpawnReason.CUSTOM);
-                Entity bukkitEntity = CompatibilityUtils.this.getBukkitEntity(newEntity);
-                if (bukkitEntity == null || !(bukkitEntity instanceof Minecart)) return null;
-
-                newMinecart = (Minecart) bukkitEntity;
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return newMinecart;
-    }
-
-    @Override
-    @SuppressWarnings("unchecked")
-    public Class<? extends Runnable> getTaskClass(BukkitTask task) {
-        Class<? extends Runnable> taskClass = null;
-        try {
-            Method getTaskClassMethod = NMSUtils.class_CraftTask.getDeclaredMethod("getTaskClass");
-            getTaskClassMethod.setAccessible(true);
-            taskClass = (Class<? extends Runnable>) getTaskClassMethod.invoke(task);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-
-        return taskClass;
     }
 
     @Override
@@ -538,42 +371,12 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public void damage(Damageable target, double amount, Entity source) {
-        if (target == null || target.isDead()) return;
-        while (target instanceof ComplexEntityPart) {
-            target = ((ComplexEntityPart) target).getParent();
-        }
-        if (CompatibilityUtils.this.USE_MAGIC_DAMAGE && target.getType() == EntityType.ENDER_DRAGON) {
-            CompatibilityUtils.this.magicDamage(target, amount, source);
-            return;
-        }
-
-        try (Touchable damaging = DAMAGING.enter()) {
-            damaging.touch();
-            if (target instanceof ArmorStand) {
-                double newHealth = Math.max(0, target.getHealth() - amount);
-                if (newHealth <= 0) {
-                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, new ArrayList<ItemStack>());
-                    Bukkit.getPluginManager().callEvent(deathEvent);
-                    target.remove();
-                } else {
-                    target.setHealth(newHealth);
-                }
-            } else {
-                target.damage(amount, source);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
     public void magicDamage(Damageable target, double amount, Entity source) {
         try {
             if (target == null || target.isDead()) return;
 
             if (NMSUtils.class_EntityLiving_damageEntityMethod == null || NMSUtils.object_magicSource == null || NMSUtils.class_DamageSource_getMagicSourceMethod == null) {
-                CompatibilityUtils.this.damage(target, amount, source);
+                damage(target, amount, source);
                 return;
             }
 
@@ -581,8 +384,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             // And endermen are immune to indirect damage .. or something.
             // Also armor stands suck.
             // Might need to config-drive this, or just go back to defaulting to normal damage
-            if (!CompatibilityUtils.this.USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || target instanceof ArmorStand || !(target instanceof LivingEntity)) {
-                CompatibilityUtils.this.damage(target, amount, source);
+            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || target instanceof ArmorStand || !(target instanceof LivingEntity)) {
+                damage(target, amount, source);
                 return;
             }
 
@@ -595,7 +398,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             if (sourceHandle != null && source instanceof LivingEntity) {
                 Location location = target.getLocation();
 
-                ThrownPotion potion = CompatibilityUtils.this.getOrCreatePotionEntity(location);
+                ThrownPotion potion = getOrCreatePotionEntity(location);
                 potion.setShooter((LivingEntity) source);
 
                 Object potionHandle = NMSUtils.getHandle(potion);
@@ -637,12 +440,12 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             return;
         }
         if (damageType.equalsIgnoreCase("magic")) {
-            CompatibilityUtils.this.magicDamage(target, amount, source);
+            magicDamage(target, amount, source);
             return;
         }
         Object damageSource = (NMSUtils.damageSources == null) ? null : NMSUtils.damageSources.get(damageType.toUpperCase());
         if (damageSource == null || NMSUtils.class_EntityLiving_damageEntityMethod == null) {
-            CompatibilityUtils.this.magicDamage(target, amount, source);
+            magicDamage(target, amount, source);
             return;
         }
 
@@ -655,87 +458,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    @Override
-    public Location getEyeLocation(Entity entity) {
-        if (entity instanceof LivingEntity) {
-            return ((LivingEntity) entity).getEyeLocation();
-        }
-
-        return entity.getLocation();
-    }
-
-    private static final Map<World, WeakReference<ThrownPotion>> POTION_PER_WORLD = new WeakHashMap<>();
-
-    /**
-     * Lazily creates potion entities that can be used when damaging players.
-     *
-     * @param location The location the potion should be placed at.
-     * @return A potion entity placed ad the given location.
-     */
-    private ThrownPotion getOrCreatePotionEntity(Location location) {
-        World world = location.getWorld();
-
-        // Maintain a separate potion entity for every world so that
-        // potion.getWorld() reports the correct result.
-        WeakReference<ThrownPotion> ref = POTION_PER_WORLD.get(world);
-        ThrownPotion potion = ref == null ? null : ref.get();
-
-        if (potion == null) {
-            potion = (ThrownPotion) world.spawnEntity(
-                    location,
-                    EntityType.SPLASH_POTION);
-            potion.remove();
-
-            ref = new WeakReference<>(potion);
-            POTION_PER_WORLD.put(world, ref);
-        } else {
-            // TODO: Make sure this actually works?
-            potion.teleport(location);
-        }
-
-        return potion;
-    }
-
-    @Override
-    public ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException {
-        YamlConfiguration configuration = new YamlConfiguration();
-        try {
-            configuration.load(fileName);
-        } catch (FileNotFoundException fileNotFound) {
-
-        }
-        return configuration;
-    }
-
-    @Override
-    public YamlConfiguration loadBuiltinConfiguration(String fileName) throws IOException, InvalidConfigurationException {
-        Plugin plugin = platform.getPlugin();
-        return CompatibilityUtils.this.loadConfiguration(plugin.getResource(fileName), fileName);
-    }
-
-    @Override
-    public YamlConfiguration loadConfiguration(InputStream stream, String fileName) throws IOException, InvalidConfigurationException
-    {
-        YamlConfiguration configuration = new YamlConfiguration();
-        if (stream == null) {
-            platform.getLogger().log(Level.SEVERE, "Could not find builtin configuration file '" + fileName + "'");
-            return configuration;
-        }
-        try {
-            configuration.load(new InputStreamReader(stream, "UTF-8"));
-        } catch (FileNotFoundException fileNotFound) {
-
-        }
-        return configuration;
-    }
-
-    // Here to support older versions of MagicWorlds
-    @Override
-    @Deprecated
-    public boolean isDone(Chunk chunk) {
-        return CompatibilityUtils.this.isReady(chunk);
     }
 
     @Override
@@ -779,7 +501,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public Object getTileEntityData(Location location) {
        if (NMSUtils.class_TileEntity_saveMethod == null) return null;
-        Object tileEntity = CompatibilityUtils.this.getTileEntity(location);
+        Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return null;
         Object data = null;
         try {
@@ -820,12 +542,12 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void clearItems(Location location) {
         if (NMSUtils.class_TileEntity_loadMethod == null || NMSUtils.class_TileEntity_updateMethod == null || NMSUtils.class_TileEntity_saveMethod == null) return;
         if (location == null) return;
-        Object tileEntity = CompatibilityUtils.this.getTileEntity(location);
+        Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return;
         try {
             Object entityData = NMSUtils.class_NBTTagCompound_constructor.newInstance();
             NMSUtils.class_TileEntity_saveMethod.invoke(tileEntity, entityData);
-            Object itemList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(entityData, "Items", NMSUtils.NBT_TYPE_COMPOUND);
+            Object itemList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(entityData, "Items", CompatibilityConstants.NBT_TYPE_COMPOUND);
             if (itemList != null) {
                 List<?> items = (List<?>) NMSUtils.class_NBTTagList_list.get(itemList);
                 items.clear();
@@ -858,7 +580,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void setTileEntityData(Location location, Object data) {
         if (NMSUtils.class_TileEntity_loadMethod == null || NMSUtils.class_TileEntity_updateMethod == null) return;
         if (location == null || data == null) return;
-        Object tileEntity = CompatibilityUtils.this.getTileEntity(location);
+        Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return;
         try {
             NMSUtils.class_NBTTagCompound_setIntMethod.invoke(data, "x", location.getBlockX());
@@ -920,31 +642,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return null;
     }
 
-    @Override
-    public int getFacing(BlockFace direction)
-    {
-        int dir;
-        switch (direction) {
-        case SOUTH:
-        default:
-            dir = 0;
-            break;
-        case WEST:
-            dir = 1;
-            break;
-        case NORTH:
-            dir = 2;
-            break;
-        case EAST:
-            dir = 3;
-            break;
-        }
-
-        return dir;
-    }
-
-    @Override
-    public Entity getBukkitEntity(Object entity)
+    protected Entity getBukkitEntity(Object entity)
     {
         if (entity == null) return null;
         try {
@@ -985,11 +683,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public Map<String, Object> getMap(ConfigurationSection section) {
-        return CompatibilityUtils.this.getTypedMap(section);
     }
 
     @Override
@@ -1040,7 +733,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public Vector getPosition(Object entityData, String tag) {
         if (NMSUtils.class_NBTTagList_getDoubleMethod == null) return null;
         try {
-            Object posList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(entityData, tag, NMSUtils.NBT_TYPE_DOUBLE);
+            Object posList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(entityData, tag, CompatibilityConstants.NBT_TYPE_DOUBLE);
             Double x = (Double) NMSUtils.class_NBTTagList_getDoubleMethod.invoke(posList, 0);
             Double y = (Double) NMSUtils.class_NBTTagList_getDoubleMethod.invoke(posList, 1);
             Double z = (Double) NMSUtils.class_NBTTagList_getDoubleMethod.invoke(posList, 2);
@@ -1064,62 +757,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    static class LoadingChunk {
-        private final String worldName;
-        private final int chunkX;
-        private final int chunkZ;
-
-        public LoadingChunk(Chunk chunk) {
-            this(chunk.getWorld().getName(), chunk.getX(), chunk.getX());
-        }
-
-        public LoadingChunk(World world, int chunkX, int chunkZ) {
-            this(world.getName(), chunkX, chunkZ);
-        }
-
-        public LoadingChunk(String worldName, int chunkX, int chunkZ) {
-            this.worldName = worldName;
-            this.chunkX = chunkX;
-            this.chunkZ = chunkZ;
-        }
-
-        @Override
-        public int hashCode() {
-            int worldHashCode = worldName.hashCode();
-            return ((worldHashCode & 0xFFF) << 48)
-                    | ((chunkX & 0xFFFFFF) << 24)
-                    | (chunkX & 0xFFFFFF);
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (!(o instanceof LoadingChunk)) return false;
-            LoadingChunk other = (LoadingChunk) o;
-            ;
-            return worldName.equals(other.worldName) && chunkX == other.chunkX && chunkZ == other.chunkZ;
-        }
-
-        @Override
-        public String toString() {
-            return worldName + ":" + chunkX + "," + chunkZ;
-        }
-    }
-
-    @Override
-    public ConfigurationSection loadConfiguration(File file) throws IOException, InvalidConfigurationException
-    {
-        YamlConfiguration configuration = new YamlConfiguration();
-        try {
-            configuration.load(file);
-        } catch (FileNotFoundException fileNotFound) {
-
-        } catch (Throwable ex) {
-            platform.getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
-            throw ex;
-        }
-        return configuration;
     }
 
     @Override
@@ -1152,29 +789,11 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public Vector getNormal(Block block, Location intersection)
-    {
-        double x = intersection.getX() - (block.getX() + 0.5);
-        double y = intersection.getY() - (block.getY() + 0.5);
-        double z = intersection.getZ() - (block.getZ() + 0.5);
-        double ax = Math.abs(x);
-        double ay = Math.abs(y);
-        double az = Math.abs(z);
-        if (ax > ay && ax > az) {
-            return new Vector(Math.signum(x), 0, 0);
-        } else if (ay > ax && ay > az) {
-            return new Vector(0, Math.signum(y), 0);
-        }
-
-        return new Vector(0, 0, Math.signum(z));
-    }
-
-    @Override
     public boolean setLock(Block block, String lockName)
     {
         if (NMSUtils.class_ChestLock_Constructor == null) return false;
         if (NMSUtils.class_TileEntityContainer_setLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = CompatibilityUtils.this.getTileEntity(block.getLocation());
+        Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
@@ -1196,7 +815,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public boolean clearLock(Block block)
     {
         if (NMSUtils.class_TileEntityContainer_setLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = CompatibilityUtils.this.getTileEntity(block.getLocation());
+        Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
@@ -1220,7 +839,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public boolean isLocked(Block block)
     {
         if (NMSUtils.class_TileEntityContainer_getLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = CompatibilityUtils.this.getTileEntity(block.getLocation());
+        Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return false;
         if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
         try {
@@ -1241,7 +860,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     {
         if (NMSUtils.class_ChestLock_getString == null && NMSUtils.class_ChestLock_key == null) return null;
         if (NMSUtils.class_TileEntityContainer_getLock == null && NMSUtils.class_TileEntityContainer_lock == null) return null;
-        Object tileEntity = CompatibilityUtils.this.getTileEntity(block.getLocation());
+        Object tileEntity = getTileEntity(block.getLocation());
         if (tileEntity == null) return null;
         if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return null;
         try {
@@ -1268,38 +887,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    @Override
-    public void configureMaxHeights(ConfigurationSection config) {
-        maxHeights.clear();
-        if (config == null) return;
-        Collection<String> keys = config.getKeys(false);
-        for (String key : keys) {
-            try {
-                World.Environment worldType = World.Environment.valueOf(key.toUpperCase());
-                maxHeights.put(worldType, config.getInt(key));
-            } catch (Exception ex) {
-                platform.getLogger().log(Level.WARNING, "Invalid environment type: " + key, ex);
-            }
-        }
-    }
-
-    @Override
-    public int getMinHeight(World world) {
-        if (!platform.isCurrentVersion()) {
-            return 0;
-        }
-        return -64;
-    }
-
-    @Override
-    public int getMaxHeight(World world) {
-        Integer maxHeight = maxHeights.get(world.getEnvironment());
-        if (maxHeight == null) {
-            maxHeight = world.getMaxHeight();
-        }
-        return maxHeight;
     }
 
     @Override
@@ -1523,7 +1110,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
             }
 
-            Entity entity = CompatibilityUtils.this.getBukkitEntity(nmsProjectile);
+            Entity entity = getBukkitEntity(nmsProjectile);
             if (entity == null || !(entity instanceof Projectile)) {
                 throw new Exception("Got invalid bukkit entity from projectile of class " + projectileType.getName());
             }
@@ -1591,14 +1178,14 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
         return entity;
     }
-    
+
     @Override
     public String getResourcePack(Server server) {
         String rp = null;
         try {
             Object minecraftServer = NMSUtils.getHandle(server);
             if (minecraftServer != null) {
-                rp = (String) NMSUtils.class_MinecraftServer_getResourcePackMethod.invoke(minecraftServer);   
+                rp = (String) NMSUtils.class_MinecraftServer_getResourcePackMethod.invoke(minecraftServer);
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1619,24 +1206,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return true;
     }
 
-
-    // Taken from CraftBukkit code.
-    private String toMinecraftAttribute(Attribute attribute) {
-        String bukkit = attribute.name();
-        int first = bukkit.indexOf('_');
-        int second = bukkit.indexOf('_', first + 1);
-
-        StringBuilder sb = new StringBuilder(bukkit.toLowerCase(java.util.Locale.ENGLISH));
-
-        sb.setCharAt(first, '.');
-        if (second != -1) {
-            sb.deleteCharAt(second);
-            sb.setCharAt(second, bukkit.charAt(second + 1));
-        }
-
-        return sb.toString();
-    }
-
     @Override
     public boolean removeItemAttribute(ItemStack item, Attribute attribute) {
         try {
@@ -1645,7 +1214,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             Object tag = platform.getItemUtils().getTag(handle);
             if (tag == null) return false;
 
-            String attributeName = CompatibilityUtils.this.toMinecraftAttribute(attribute);
+            String attributeName = toMinecraftAttribute(attribute);
             Object attributesNode = platform.getNBTUtils().getNode(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
@@ -1690,11 +1259,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return true;
     }
 
-    @Override
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
-        return CompatibilityUtils.this.setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
-    }
-    
     @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
         if (NMSUtils.class_ItemMeta_addAttributeModifierMethod != null) {
@@ -1743,11 +1307,11 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
             Object tag = platform.getItemUtils().getTag(handle);
             if (tag == null) return false;
-            
+
             Object attributesNode = platform.getNBTUtils().getNode(tag, "AttributeModifiers");
             Object attributeNode = null;
 
-            String attributeName = CompatibilityUtils.this.toMinecraftAttribute(attribute);
+            String attributeName = toMinecraftAttribute(attribute);
             if (attributesNode == null) {
                 attributesNode = NMSUtils.class_NBTTagList_constructor.newInstance();
                 NMSUtils.class_NBTTagCompound_setMethod.invoke(tag, "AttributeModifiers", attributesNode);
@@ -1782,7 +1346,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
         return true;
     }
-    
+
     @Override
     public void sendExperienceUpdate(Player player, float experience, int level) {
         try {
@@ -1796,7 +1360,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public Object getEntityData(Entity entity) {
         if (NMSUtils.class_Entity_saveMethod == null) return null;
-        
+
         Object data = null;
         try {
             Object nmsEntity = NMSUtils.getHandle(entity);
@@ -1809,7 +1373,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
         return data;
     }
-    
+
     @Override
     public String getEntityType(Entity entity) {
         if (NMSUtils.class_Entity_getTypeMethod == null) return null;
@@ -1824,33 +1388,21 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
         return entityType;
     }
-    
+
     @Override
-    public void applyItemData(ItemStack item, Block block) {
-        try {
-            Object entityDataTag = platform.getNBTUtils().getNode(item, "BlockEntityTag");
-            if (entityDataTag == null) return;
-            CompatibilityUtils.this.setTileEntityData(block.getLocation(), entityDataTag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-    
-    @Override
-    public void swingOffhand(Entity entity, int range) {
-        int rangeSquared = range * range;
+    public void swingOffhand(Entity entity) {
+        int rangeSquared = OFFHAND_BROADCAST_RANGE * OFFHAND_BROADCAST_RANGE;
         String worldName = entity.getWorld().getName();
         Location center = entity.getLocation();
         for (Player player : Bukkit.getOnlinePlayers()) {
             if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > rangeSquared) {
                 continue;
             }
-            CompatibilityUtils.this.swingOffhand(player, entity);
+            swingOffhand(player, entity);
         }
     }
-    
-    @Override
-    public void swingOffhand(Player sendToPlayer, Entity entity) {
+
+    private void swingOffhand(Player sendToPlayer, Entity entity) {
         try {
             Object packet = NMSUtils.class_PacketPlayOutAnimation_Constructor.newInstance(NMSUtils.getHandle(entity), 3);
             NMSUtils.sendPacket(sendToPlayer, packet);
@@ -1902,50 +1454,14 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return 0.0f;
     }
 
-    private void sendBreaking(Player player, long id, Location location, int breakAmount) {
+    @Override
+    public void sendBreaking(Player player, long id, Location location, int breakAmount) {
         try {
             Object blockPosition = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             Object packet = NMSUtils.class_PacketPlayOutBlockBreakAnimation_Constructor.newInstance((int)id, blockPosition, breakAmount);
             NMSUtils.sendPacket(player, packet);
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-    }
-
-    private int getBlockEntityId(Block block) {
-        // There will be some overlap here, but these effects are very localized so it should be OK.
-        return   ((block.getX() & 0xFFF) << 20)
-               | ((block.getZ() & 0xFFF) << 8)
-               | (block.getY() & 0xFF);
-    }
-
-    @Override
-    public void clearBreaking(Block block) {
-        CompatibilityUtils.this.setBreaking(block, 10, CompatibilityUtils.this.BLOCK_BREAK_RANGE);
-    }
-
-    @Override
-    public void setBreaking(Block block, double percentage) {
-        // Block break states are 0 - 9
-        int breakState = (int)Math.ceil(9 * percentage);
-        CompatibilityUtils.this.setBreaking(block, breakState, CompatibilityUtils.this.BLOCK_BREAK_RANGE);
-    }
-
-    @Override
-    public void setBreaking(Block block, int breakAmount) {
-        CompatibilityUtils.this.setBreaking(block, breakAmount, CompatibilityUtils.this.BLOCK_BREAK_RANGE);
-    }
-
-    @Override
-    public void setBreaking(Block block, int breakAmount, int range) {
-        String worldName = block.getWorld().getName();
-        Location location = block.getLocation();
-        int rangeSquared = range * range;
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(location) > rangeSquared) {
-                continue;
-            }
-            CompatibilityUtils.this.sendBreaking(player, CompatibilityUtils.this.getBlockEntityId(block), location, breakAmount);
         }
     }
 
@@ -1986,11 +1502,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             ex.printStackTrace();
         }
         return 0.0f;
-    }
-
-    @Override
-    public boolean setBlockFast(Block block, Material material, int data) {
-        return CompatibilityUtils.this.setBlockFast(block.getChunk(), block.getX(), block.getY(), block.getZ(), material, data);
     }
 
     @Override
@@ -2047,7 +1558,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             if (entityMap != null) {
                 Object nmsEntity = entityMap.get(uuid);
                 if (nmsEntity != null) {
-                    return CompatibilityUtils.this.getBukkitEntity(nmsEntity);
+                    return getBukkitEntity(nmsEntity);
                 }
             }
         } catch (Exception ex) {
@@ -2067,7 +1578,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
 
         for (World world : Bukkit.getWorlds()) {
-            Entity found = CompatibilityUtils.this.getEntity(world, uuid);
+            Entity found = getEntity(world, uuid);
             if (found != null) {
                 return found;
             }
@@ -2082,7 +1593,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean removeRecipe(Plugin plugin, Recipe recipe) {
+    public boolean removeRecipe(Recipe recipe) {
         if (NMSUtils.class_Keyed == null || NMSUtils.class_Keyed_getKeyMethod == null || NMSUtils.class_Server_removeRecipeMethod == null) {
             return false;
         }
@@ -2091,7 +1602,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
         try {
             Object namespacedKey = NMSUtils.class_Keyed_getKeyMethod.invoke(recipe);
-            return (boolean) NMSUtils.class_Server_removeRecipeMethod.invoke(plugin.getServer(), namespacedKey);
+            return (boolean) NMSUtils.class_Server_removeRecipeMethod.invoke(platform.getPlugin().getServer(), namespacedKey);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -2099,14 +1610,14 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean removeRecipe(Plugin plugin, String key) {
+    public boolean removeRecipe(String key) {
         if (NMSUtils.class_NamespacedKey == null || NMSUtils.class_Server_removeRecipeMethod == null) {
             return false;
         }
 
         try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(plugin, key.toLowerCase());
-            return (boolean) NMSUtils.class_Server_removeRecipeMethod.invoke(plugin.getServer(), namespacedKey);
+            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(platform.getPlugin(), key.toLowerCase());
+            return (boolean) NMSUtils.class_Server_removeRecipeMethod.invoke(platform.getPlugin().getServer(), namespacedKey);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -2114,13 +1625,13 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public ShapedRecipe createShapedRecipe(Plugin plugin, String key, ItemStack item) {
+    public ShapedRecipe createShapedRecipe(String key, ItemStack item) {
         if (NMSUtils.class_NamespacedKey == null) {
             return new ShapedRecipe(item);
         }
 
         try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(plugin, key.toLowerCase());
+            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(platform.getPlugin(), key.toLowerCase());
             return (ShapedRecipe) NMSUtils.class_ShapedRecipe_constructor.newInstance(namespacedKey, item);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2129,13 +1640,13 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean discoverRecipe(HumanEntity entity, Plugin plugin, String key) {
+    public boolean discoverRecipe(HumanEntity entity, String key) {
         if (NMSUtils.class_NamespacedKey == null || NMSUtils.class_HumanEntity_discoverRecipeMethod == null) {
             return false;
         }
 
         try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(plugin, key.toLowerCase());
+            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(platform.getPlugin(), key.toLowerCase());
             return (boolean) NMSUtils.class_HumanEntity_discoverRecipeMethod.invoke(entity, namespacedKey);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2144,13 +1655,13 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean undiscoverRecipe(HumanEntity entity, Plugin plugin, String key) {
+    public boolean undiscoverRecipe(HumanEntity entity, String key) {
         if (NMSUtils.class_NamespacedKey == null || NMSUtils.class_HumanEntity_undiscoverRecipeMethod == null) {
             return false;
         }
 
         try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(plugin, key.toLowerCase());
+            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(platform.getPlugin(), key.toLowerCase());
             return (boolean) NMSUtils.class_HumanEntity_undiscoverRecipeMethod.invoke(entity, namespacedKey);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -2200,58 +1711,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public Material getMaterial(int id, byte data) {
-        Material material = CompatibilityUtils.this.getMaterial(id);
-        if (NMSUtils.class_UnsafeValues_fromLegacyDataMethod != null) {
-            if (material != null) {
-                material = CompatibilityUtils.this.fromLegacy(new org.bukkit.material.MaterialData(material, data));
-            }
-        }
-        if (material == null) {
-            material = Material.AIR;
-        }
-        return material;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public Material getMaterial(int id) {
-        if (CompatibilityUtils.this.materialIdMap == null) {
-            CompatibilityUtils.this.materialIdMap = new HashMap<>();
-
-            Object[] allMaterials = Material.AIR.getDeclaringClass().getEnumConstants();
-            for (Object o : allMaterials) {
-                Material material = (Material)o;
-                if (!CompatibilityUtils.this.hasLegacyMaterials() || CompatibilityUtils.this.isLegacy(material)) {
-                    CompatibilityUtils.this.materialIdMap.put(material.getId(), material);
-                }
-            }
-        }
-        return CompatibilityUtils.this.materialIdMap.get(id);
-    }
-
-    @Override
-    public Material getMaterial(String blockData) {
-        String[] pieces = StringUtils.split(blockData, "[", 2);
-        if (pieces.length == 0) return null;
-        pieces = StringUtils.split(pieces[0], ":", 2);
-        if (pieces.length == 0) return null;
-        String materialKey = "";
-        if (pieces.length == 2) {
-            if (!pieces[0].equals("minecraft")) return null;
-            materialKey = pieces[1];
-        } else {
-            materialKey = pieces[0];
-        }
-        try {
-            return Material.valueOf(materialKey.toUpperCase());
-        } catch (Exception ignore) {
-        }
-        return null;
-    }
-
-    @Override
     public boolean hasLegacyMaterials() {
         return NMSUtils.class_Material_isLegacyMethod != null;
     }
@@ -2282,111 +1741,18 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public Material migrateMaterial(Material material, byte data) {
-        return CompatibilityUtils.this.fromLegacy(new org.bukkit.material.MaterialData(material, data));
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public String migrateMaterial(String materialKey) {
-        if (materialKey == null || materialKey.isEmpty()) return materialKey;
-        byte data = 0;
-        String[] pieces = StringUtils.split(materialKey, ':');
-        String textData = "";
-        if (pieces.length > 1) {
-            textData = pieces[1];
-            try {
-                data = Byte.parseByte(pieces[1]);
-                textData = "";
-            } catch (Exception ex) {
-            }
-        }
-
-        String materialName = pieces[0].toUpperCase();
-        Material material = Material.getMaterial(materialName);
-        if (material != null && data == 0) {
-            return material.name().toLowerCase();
-        }
-
-        Material legacyMaterial = data == 0 ? CompatibilityUtils.this.getLegacyMaterial(materialName) : Material.getMaterial("LEGACY_" + materialName);
-        if (legacyMaterial != null) {
-            org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
-            legacyMaterial = CompatibilityUtils.this.fromLegacy(materialData);
-            if (legacyMaterial != null) {
-                material = legacyMaterial;
-            }
-        }
-
-        if (material != null) {
-            materialKey = material.name().toLowerCase();;
-            // This mainly covers player skulls, but .. maybe other things? Maps?
-            if (!textData.isEmpty()) {
-                materialKey += ":" + textData;
-            }
-        }
-        return materialKey;
-    }
-
-    @Override
-    public boolean isChunkLoaded(Block block) {
-        return CompatibilityUtils.this.isChunkLoaded(block.getLocation());
-    }
-
-    @Override
-    public boolean isChunkLoaded(Location location) {
-        int chunkX = location.getBlockX() >> 4;
-        int chunkZ = location.getBlockZ() >> 4;
-        World world = location.getWorld();
-        return world.isChunkLoaded(chunkX, chunkZ);
-    }
-
-    @Override
-    public boolean checkChunk(Location location) {
-        return CompatibilityUtils.this.checkChunk(location, true);
-    }
-
-    /**
-     * Take care if setting generate to false, the chunk will load but not show as loaded
-     */
-    @Override
-    public boolean checkChunk(Location location, boolean generate) {
-        int chunkX = location.getBlockX() >> 4;
-        int chunkZ = location.getBlockZ() >> 4;
-        World world = location.getWorld();
-        return CompatibilityUtils.this.checkChunk(world, chunkX, chunkZ, generate);
-    }
-
-    @Override
-    public boolean checkChunk(World world, int chunkX, int chunkZ) {
-        return CompatibilityUtils.this.checkChunk(world, chunkX, chunkZ, true);
-    }
-
-    /**
-     * Take care if setting generate to false, the chunk will load but not show as loaded
-     */
-    @Override
-    public boolean checkChunk(World world, int chunkX, int chunkZ, boolean generate) {
-        if (!world.isChunkLoaded(chunkX, chunkZ)) {
-            CompatibilityUtils.this.loadChunk(world, chunkX, chunkZ, generate);
-            return false;
-        }
-        return CompatibilityUtils.this.isReady(world.getChunkAt(chunkX, chunkZ));
-    }
-
-    @Override
     public boolean applyBonemeal(Location location) {
         if (NMSUtils.class_ItemDye_bonemealMethod == null) return false;
 
-        if (CompatibilityUtils.this.dummyItem == null) {
-             CompatibilityUtils.this.dummyItem = new ItemStack(Material.DIRT, 64);
-             CompatibilityUtils.this.dummyItem = platform.getItemUtils().makeReal(CompatibilityUtils.this.dummyItem);
+        if (dummyItem == null) {
+             dummyItem = new ItemStack(Material.DIRT, 64);
+             dummyItem = platform.getItemUtils().makeReal(dummyItem);
         }
-        CompatibilityUtils.this.dummyItem.setAmount(64);
+        dummyItem.setAmount(64);
 
         try {
             Object world = NMSUtils.getHandle(location.getWorld());
-            Object itemStack = platform.getItemUtils().getHandle(CompatibilityUtils.this.dummyItem);
+            Object itemStack = platform.getItemUtils().getHandle(dummyItem);
             Object blockPosition = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
             Object result = NMSUtils.class_ItemDye_bonemealMethod.invoke(null, itemStack, world, blockPosition);
             return (Boolean)result;
@@ -2442,13 +1808,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean isTopBlock(Block block) {
-        // Yes this is an ugly way to do it.
-        String blockData = CompatibilityUtils.this.getBlockData(block);
-        return blockData != null && blockData.contains("type=top");
-    }
-
-    @Override
     public String getBlockData(Block block) {
         if (NMSUtils.class_Block_getBlockDataMethod == null) return null;
         try {
@@ -2464,10 +1823,10 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean setBlockData(Server server, Block block, String data) {
+    public boolean setBlockData(Block block, String data) {
         if (NMSUtils.class_Block_getBlockDataMethod == null) return false;
         try {
-            Object blockData = NMSUtils.class_Server_createBlockDataMethod.invoke(server, data);
+            Object blockData = NMSUtils.class_Server_createBlockDataMethod.invoke(platform.getPlugin().getServer(), data);
             NMSUtils.class_Block_setBlockDataMethod.invoke(block, blockData, false);
             return true;
         } catch (Exception ignore) {
@@ -2483,25 +1842,13 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             Object worldHandle = NMSUtils.getHandle(block.getWorld());
             Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
             Object blockType = NMSUtils.class_World_getTypeMethod.invoke(worldHandle, blockLocation);
-            CompatibilityUtils.this.clearItems(block.getLocation());
+            clearItems(block.getLocation());
             platform.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte)0, false);
             return (boolean) NMSUtils.class_World_setTypeAndDataMethod.invoke(worldHandle, blockLocation, blockType, 3);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public ItemStack getKnowledgeBook() {
-        ItemStack book = null;
-        try {
-            Material bookMaterial = Material.valueOf("KNOWLEDGE_BOOK");
-            book = new ItemStack(bookMaterial);
-        } catch (Exception ignore) {
-
-        }
-        return book;
     }
 
     @Override
@@ -2526,7 +1873,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public boolean isPowerable(Block block) {
         if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return CompatibilityUtils.this.isPowerableLegacy(block);
+            return isPowerableLegacy(block);
         }
         try {
             Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
@@ -2549,7 +1896,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public boolean isPowered(Block block) {
         if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return CompatibilityUtils.this.isPoweredLegacy(block);
+            return isPoweredLegacy(block);
         }
         try {
             Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
@@ -2585,7 +1932,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public boolean setPowered(Block block, boolean powered) {
         if (NMSUtils.class_Powerable == null || NMSUtils.class_Powerable_setPoweredMethod == null
                 || NMSUtils.class_Block_setBlockDataMethod == null || NMSUtils.class_Block_getBlockDataMethod == null) {
-            return CompatibilityUtils.this.setPoweredLegacy(block, powered);
+            return setPoweredLegacy(block, powered);
         }
 
         try {
@@ -2644,19 +1991,19 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         boolean powerBlock = false;
         if (data instanceof org.bukkit.material.Button) {
             org.bukkit.material.Button powerData = (org.bukkit.material.Button)data;
-            powerData.setPowered(!powerData.isPowered());
+            powerData.setPowered(powered);
             powerBlock = true;
         } else if (data instanceof org.bukkit.material.Lever) {
             org.bukkit.material.Lever powerData = (org.bukkit.material.Lever)data;
-            powerData.setPowered(!powerData.isPowered());
+            powerData.setPowered(powered);
             powerBlock = true;
         } else if (data instanceof org.bukkit.material.PistonBaseMaterial) {
             org.bukkit.material.PistonBaseMaterial powerData = (org.bukkit.material.PistonBaseMaterial)data;
-            powerData.setPowered(!powerData.isPowered());
+            powerData.setPowered(powered);
             powerBlock = true;
         } else if (data instanceof org.bukkit.material.PoweredRail) {
             org.bukkit.material.PoweredRail powerData = (org.bukkit.material.PoweredRail)data;
-            powerData.setPowered(!powerData.isPowered());
+            powerData.setPowered(powered);
             powerBlock = true;
         }
         if (powerBlock) {
@@ -2668,7 +2015,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public boolean setTopHalf(Block block) {
         if (NMSUtils.class_Bisected == null) {
-            return CompatibilityUtils.this.setTopHalfLegacy(block);
+            return setTopHalfLegacy(block);
         }
         try {
             Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
@@ -2686,18 +2033,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         byte data = platform.getDeprecatedUtils().getData(block);
         platform.getDeprecatedUtils().setTypeAndData(block, block.getType(), (byte)(data | 8), false);
         return true;
-    }
-
-    @Override
-    public Entity getSource(Entity entity) {
-        if (entity instanceof Projectile) {
-            ProjectileSource source = ((Projectile)entity).getShooter();
-            if (source instanceof Entity) {
-                entity = (Entity)source;
-            }
-        }
-
-        return entity;
     }
 
     @Override
@@ -2725,14 +2060,14 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean lockChunk(Chunk chunk, Plugin plugin) {
-        if (!plugin.isEnabled()) return false;
+    public boolean lockChunk(Chunk chunk) {
+        if (!platform.getPlugin().isEnabled()) return false;
         if (!chunk.isLoaded()) {
             platform.getLogger().info("Locking unloaded chunk");
         }
         if (NMSUtils.class_Chunk_addPluginChunkTicketMethod == null) return false;
         try {
-            NMSUtils.class_Chunk_addPluginChunkTicketMethod.invoke(chunk, plugin);
+            NMSUtils.class_Chunk_addPluginChunkTicketMethod.invoke(chunk, platform.getPlugin());
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -2741,11 +2076,11 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean unlockChunk(Chunk chunk, Plugin plugin) {
-        if (!plugin.isEnabled()) return false;
+    public boolean unlockChunk(Chunk chunk) {
+        if (!platform.getPlugin().isEnabled()) return false;
         if (NMSUtils.class_Chunk_removePluginChunkTicketMethod == null) return false;
         try {
-            NMSUtils.class_Chunk_removePluginChunkTicketMethod.invoke(chunk, plugin);
+            NMSUtils.class_Chunk_removePluginChunkTicketMethod.invoke(chunk, platform.getPlugin());
             return true;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -2769,22 +2104,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             e.printStackTrace();
         }
         return location;
-    }
-
-    @Override
-    public BlockFace getCCW(BlockFace face) {
-        switch (face) {
-            case NORTH:
-                return BlockFace.WEST;
-            case SOUTH:
-                return BlockFace.EAST;
-            case WEST:
-                return BlockFace.SOUTH;
-            case EAST:
-                return BlockFace.NORTH;
-            default:
-                throw new IllegalStateException("Unable to get CCW facing of " + face);
-        }
     }
 
     @Override
@@ -2977,16 +2296,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return player.getBedSpawnLocation();
     }
 
-    @Override
-    public void loadChunk(Location location, boolean generate, Consumer<Chunk> consumer) {
-        CompatibilityUtils.this.loadChunk(location.getWorld(), location.getBlockX() >> 4, location.getBlockZ() >> 4, generate, consumer);
-    }
-
-    @Override
-    public void loadChunk(World world, int x, int z, boolean generate) {
-        CompatibilityUtils.this.loadChunk(world, x, z, generate, null);
-    }
-
     /**
      * This will load chunks asynchronously if possible.
      *
@@ -3001,8 +2310,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             requestCount++;
             if (requestCount > MAX_CHUNK_LOAD_TRY) {
                 platform.getLogger().warning("Exceeded retry count for asynchronous chunk load, loading synchronously");
-                if (!CompatibilityUtils.this.hasDumpedStack) {
-                    CompatibilityUtils.this.hasDumpedStack = true;
+                if (!hasDumpedStack) {
+                    hasDumpedStack = true;
                     Thread.dumpStack();
                 }
                 Chunk chunk = world.getChunkAt(x, z);
@@ -3040,19 +2349,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public Entity getRootVehicle(Entity entity) {
-        if (entity == null) {
-            return null;
-        }
-        Entity vehicle = entity.getVehicle();
-        while (vehicle != null) {
-            entity = vehicle;
-            vehicle = entity.getVehicle();
-        }
-        return entity;
-    }
-
-    @Override
     public void addPassenger(Entity vehicle, Entity passenger) {
         if (NMSUtils.class_Entity_addPassengerMethod != null) {
             try {
@@ -3083,52 +2379,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         return passengerList;
     }
 
-    protected void teleportPassengers(Entity vehicle, Location location, Collection<Entity> passengers) {
-        for (Entity passenger : passengers) {
-            if (passenger instanceof Player) {
-                TeleportPassengerTask task = new TeleportPassengerTask(this, vehicle, passenger, location);
-                Plugin plugin = platform.getPlugin();
-                plugin.getServer().getScheduler().runTaskLater(plugin, task, 2);
-            } else {
-                // TODO: If there is a player midway in a stack of mobs do the mobs need to wait... ?
-                // Might have to rig up something weird to test.
-                // Otherwise this seems like too complicated of an edge case to worry about
-                CompatibilityUtils.this.teleportVehicle(passenger, location);
-                CompatibilityUtils.this.addPassenger(vehicle, passenger);
-            }
-        }
-    }
-
-    @Override
-    public void teleportVehicle(Entity vehicle, Location location) {
-        List<Entity> passengers = CompatibilityUtils.this.getPassengers(vehicle);
-        vehicle.eject();
-        vehicle.teleport(location);
-        // eject seems to just not work sometimes? (on chunk load, maybe)
-        // So let's try to avoid exponentially adding passengers.
-        List<Entity> newPassengers = CompatibilityUtils.this.getPassengers(vehicle);
-        if (newPassengers.isEmpty()) {
-            CompatibilityUtils.this.teleportPassengers(vehicle, location, passengers);
-        } else {
-            platform.getLogger().warning("Entity.eject failed!");
-        }
-    }
-
-    @Override
-    public void teleportWithVehicle(Entity entity, Location location) {
-        CompatibilityUtils.this.teleporting = true;
-        if (entity != null && entity.isValid()) {
-            final Entity vehicle = CompatibilityUtils.this.getRootVehicle(entity);
-            CompatibilityUtils.this.teleportVehicle(vehicle, location);
-        }
-        CompatibilityUtils.this.teleporting = false;
-    }
-
-    @Override
-    public boolean isTeleporting() {
-        return CompatibilityUtils.this.teleporting;
-    }
-
     @Override
     public boolean openBook(Player player, ItemStack itemStack) {
         if (NMSUtils.class_Player_openBookMethod == null) {
@@ -3155,22 +2405,21 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public void playRecord(Location location, Material record) {
-        if (platform.isLegacy()) {
-            location.getWorld().playEffect(location, Effect.RECORD_PLAY,
-                    platform.getDeprecatedUtils().getId(record));
-        } else {
-            location.getWorld().playEffect(location, Effect.RECORD_PLAY, record);
-        }
-    }
-
-    @Override
     public Class<?> getProjectileClass(String projectileTypeName) {
         Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
-        if (!CompatibilityUtils.this.isValidProjectileClass(projectileType)) {
+        if (!isValidProjectileClass(projectileType)) {
             return null;
         }
         return projectileType;
+    }
+
+    private void setSilent(Object nmsEntity, boolean flag) {
+        if (NMSUtils.class_Entity_setSilentMethod == null) return;
+        try {
+            NMSUtils.class_Entity_setSilentMethod.invoke(nmsEntity, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     @Override
@@ -3189,7 +2438,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
             Object item = platform.getItemUtils().getHandle(platform.getItemUtils().makeReal(itemStack));
             final Object fireworkHandle = NMSUtils.class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
-            CompatibilityUtils.this.setSilent(fireworkHandle, silent);
+            setSilent(fireworkHandle, silent);
 
             if (direction != null) {
                 if (NMSUtils.class_Entity_motField != null) {
@@ -3211,7 +2460,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
             if (direction == null)
             {
-                Object fireworkPacket = NMSUtils.class_PacketSpawnEntityConstructor.newInstance(fireworkHandle, NMSUtils.FIREWORK_TYPE);
+                Object fireworkPacket = NMSUtils.class_PacketSpawnEntityConstructor.newInstance(fireworkHandle, CompatibilityConstants.FIREWORK_TYPE);
                 Object fireworkId = NMSUtils.class_Entity_getIdMethod.invoke(fireworkHandle);
                 Object watcher = NMSUtils.class_Entity_getDataWatcherMethod.invoke(fireworkHandle);
                 Object metadataPacket = NMSUtils.class_PacketPlayOutEntityMetadata_Constructor.newInstance(fireworkId, watcher, true);
@@ -3249,7 +2498,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 if (metaBase != null) {
                     if (NMSUtils.class_NBTTagCompound.isAssignableFrom(metaBase.getClass())) {
                         ConfigurationSection newSection = tags.createSection(tagName);
-                        CompatibilityUtils.this.loadAllTagsFromNBT(newSection, metaBase);
+                        loadAllTagsFromNBT(newSection, metaBase);
                     } else {
                         tags.set(tagName, platform.getInventoryUtils().getTagValue(metaBase));
                     }
@@ -3286,15 +2535,5 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
         }
         return null;
-    }
-
-    @Override
-    public int getMaxEntityRange() {
-        return MAX_ENTITY_RANGE;
-    }
-
-    @Override
-    public void load(ConfigurationSection properties) {
-        USE_MAGIC_DAMAGE = properties.getBoolean("use_magic_damage", USE_MAGIC_DAMAGE);
     }
 }

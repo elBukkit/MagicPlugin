@@ -114,7 +114,7 @@ public class MagicRecipe {
                 Recipe recipe = recipes.get(0);
                 if (recipe instanceof ShapedRecipe) {
                     ShapedRecipe copyRecipe = (ShapedRecipe)recipe;
-                    this.recipe = CompatibilityLib.getCompatibilityUtils().createShapedRecipe(controller.getPlugin(), key, item);
+                    this.recipe = CompatibilityLib.getCompatibilityUtils().createShapedRecipe(key, item);
                     this.recipe.shape(copyRecipe.getShape());
                     for (Map.Entry<Character, ItemStack> entry : copyRecipe.getIngredientMap().entrySet()) {
                         char ingredientKey = entry.getKey();
@@ -138,7 +138,7 @@ public class MagicRecipe {
             }
         } else {
             outputType = item.getType();
-            ShapedRecipe shaped = CompatibilityLib.getCompatibilityUtils().createShapedRecipe(controller.getPlugin(), key, item);
+            ShapedRecipe shaped = CompatibilityLib.getCompatibilityUtils().createShapedRecipe(key, item);
             List<String> rows = new ArrayList<>();
             for (int i = 1; i <= 3; i++) {
                 String recipeRow = configuration.getString("row_" + i, "");
@@ -182,7 +182,7 @@ public class MagicRecipe {
         // Remove this recipe
         boolean canRemoveRecipes = CompatibilityLib.getCompatibilityUtils().canRemoveRecipes();
         if (recipe != null && !FIRST_REGISTER && canRemoveRecipes) {
-            CompatibilityLib.getCompatibilityUtils().removeRecipe(plugin, key);
+            CompatibilityLib.getCompatibilityUtils().removeRecipe(key);
         }
     }
 
@@ -192,7 +192,7 @@ public class MagicRecipe {
             int disabled = 0;
             List<Recipe> existing = plugin.getServer().getRecipesFor(new ItemStack(outputType));
             for (Recipe recipe : existing) {
-                CompatibilityLib.getCompatibilityUtils().removeRecipe(plugin, recipe);
+                CompatibilityLib.getCompatibilityUtils().removeRecipe(recipe);
                 disabled++;
             }
             if (disabled > 0) {
@@ -362,7 +362,7 @@ public class MagicRecipe {
         if (discover == null) return;
         for (String key : discover) {
             if (controller.hasPermission(entity, "Magic.craft." + key)) {
-                CompatibilityLib.getCompatibilityUtils().discoverRecipe(entity, controller.getPlugin(), key);
+                CompatibilityLib.getCompatibilityUtils().discoverRecipe(entity, key);
             }
         }
     }

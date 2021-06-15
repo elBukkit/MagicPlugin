@@ -6937,7 +6937,7 @@ public class MagicController implements MageController {
         Integer locked = lockedChunks.get(chunk);
         if (locked == null) {
             lockedChunks.put(chunk, 1);
-            CompatibilityLib.getCompatibilityUtils().lockChunk(chunk, plugin);
+            CompatibilityLib.getCompatibilityUtils().lockChunk(chunk);
         } else {
             lockedChunks.put(chunk, locked + 1);
         }
@@ -6948,7 +6948,7 @@ public class MagicController implements MageController {
         Integer locked = lockedChunks.get(chunk);
         if (locked == null || locked <= 1) {
             lockedChunks.remove(chunk);
-            CompatibilityLib.getCompatibilityUtils().unlockChunk(chunk, plugin);
+            CompatibilityLib.getCompatibilityUtils().unlockChunk(chunk);
         } else {
             lockedChunks.put(chunk, locked - 1);
         }

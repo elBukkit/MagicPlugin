@@ -579,7 +579,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         }
                     }
 
-                    CompatibilityLib.getCompatibilityUtils().setBlockData(Bukkit.getServer(), block, extendedBlockData);
+                    CompatibilityLib.getCompatibilityUtils().setBlockData(block, extendedBlockData);
                 }
                 blockState = block.getState();
             }

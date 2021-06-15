@@ -38,7 +38,6 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Minecart;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -58,6 +57,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 
@@ -98,8 +98,6 @@ public interface CompatibilityUtils {
 
     Painting createPainting(Location location, BlockFace facing, Art art);
 
-    void setSilent(Object nmsEntity, boolean flag);
-
     ItemFrame createItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item);
 
     ArmorStand createArmorStand(Location location);
@@ -108,12 +106,7 @@ public interface CompatibilityUtils {
 
     boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason);
 
-    List<Entity> getNearbyEntities(Location location, double x, double y, double z);
-
-    Minecart spawnCustomMinecart(Location location, Material material, short data, int offset);
-
-    @SuppressWarnings("unchecked")
-    Class<? extends Runnable> getTaskClass(BukkitTask task);
+    Collection<Entity> getNearbyEntities(Location location, double x, double y, double z);
 
     Runnable getTaskRunnable(BukkitTask task);
 
@@ -132,10 +125,6 @@ public interface CompatibilityUtils {
     YamlConfiguration loadBuiltinConfiguration(String fileName) throws IOException, InvalidConfigurationException;
 
     YamlConfiguration loadConfiguration(InputStream stream, String fileName) throws IOException, InvalidConfigurationException;
-
-    // Here to support older versions of MagicWorlds
-    @Deprecated
-    boolean isDone(Chunk chunk);
 
     boolean isReady(Chunk chunk);
 
@@ -157,8 +146,6 @@ public interface CompatibilityUtils {
     List<Entity> selectEntities(CommandSender sender, String selector);
 
     int getFacing(BlockFace direction);
-
-    Entity getBukkitEntity(Object entity);
 
     byte getBlockData(FallingBlock falling);
 
@@ -253,9 +240,7 @@ public interface CompatibilityUtils {
 
     void applyItemData(ItemStack item, Block block);
 
-    void swingOffhand(Entity entity, int range);
-
-    void swingOffhand(Player sendToPlayer, Entity entity);
+    void swingOffhand(Entity entity);
 
     @SuppressWarnings("deprecation")
     void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut);
@@ -263,6 +248,8 @@ public interface CompatibilityUtils {
     boolean sendActionBar(Player player, String message);
 
     float getDurability(Material material);
+
+    void sendBreaking(Player player, long id, Location location, int breakAmount);
 
     void clearBreaking(Block block);
 
@@ -296,15 +283,15 @@ public interface CompatibilityUtils {
 
     boolean canRemoveRecipes();
 
-    boolean removeRecipe(Plugin plugin, Recipe recipe);
+    boolean removeRecipe(Recipe recipe);
 
-    boolean removeRecipe(Plugin plugin, String key);
+    boolean removeRecipe(String key);
 
-    ShapedRecipe createShapedRecipe(Plugin plugin, String key, ItemStack item);
+    ShapedRecipe createShapedRecipe(String key, ItemStack item);
 
-    boolean discoverRecipe(HumanEntity entity, Plugin plugin, String key);
+    boolean discoverRecipe(HumanEntity entity, String key);
 
-    boolean undiscoverRecipe(HumanEntity entity, Plugin plugin, String key);
+    boolean undiscoverRecipe(HumanEntity entity, String key);
 
     double getMaxHealth(Damageable li);
 
@@ -359,7 +346,7 @@ public interface CompatibilityUtils {
 
     String getBlockData(Block block);
 
-    boolean setBlockData(Server server, Block block, String data);
+    boolean setBlockData(Block block, String data);
 
     boolean applyPhysics(Block block);
 
@@ -385,9 +372,9 @@ public interface CompatibilityUtils {
 
     boolean stopSound(Player player, String sound);
 
-    boolean lockChunk(Chunk chunk, Plugin plugin);
+    boolean lockChunk(Chunk chunk);
 
-    boolean unlockChunk(Chunk chunk, Plugin plugin);
+    boolean unlockChunk(Chunk chunk);
 
     Location getHangingLocation(Entity entity);
 
@@ -448,4 +435,6 @@ public interface CompatibilityUtils {
     int getMaxEntityRange();
 
     void load(ConfigurationSection configuration);
+
+    void cancelDismount(EntityDismountEvent event);
 }

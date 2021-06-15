@@ -458,7 +458,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     {
         int count = 0;
         for (String recipeKey : controller.getRecipeKeys()) {
-            if (CompatibilityLib.getCompatibilityUtils().undiscoverRecipe(player, controller.getPlugin(), recipeKey)) {
+            if (CompatibilityLib.getCompatibilityUtils().undiscoverRecipe(player, recipeKey)) {
                 count++;
             }
         }
