@@ -122,7 +122,7 @@ public class AlterSpell extends BlockSpell
     {
         registerForUndo(block);
         try {
-            block.setData(dataValue);
+            CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, block.getType(), dataValue, false);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Failed to alter block state: " + ex.getMessage());
         }
