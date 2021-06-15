@@ -11,6 +11,7 @@ public class Platform extends PlatformBase {
     public Platform(Plugin plugin, Logger logger) {
         super(plugin, logger);
         compatibilityUtils = new CompatibilityUtils(this);
+        deprecatedUtils = new DeprecatedUtils(this);
 
         // valid = true;
     }
