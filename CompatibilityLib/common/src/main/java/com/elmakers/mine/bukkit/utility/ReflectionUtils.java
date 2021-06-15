@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -24,6 +25,18 @@ public class ReflectionUtils {
             return true;
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Error getting private member of " + o.getClass().getName() + "." + field, ex);
+        }
+        return false;
+    }
+
+    public static boolean callPrivate(Logger logger, Object o, Class<?> c, String field, Class<?>[] parameters, Object[] values) {
+        try {
+            Method method = c.getDeclaredMethod(field, parameters);
+            method.setAccessible(true);
+            method.invoke(o, values);
+            return true;
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Error calling private method of " + o.getClass().getName() + "." + field, ex);
         }
         return false;
     }

@@ -44,10 +44,6 @@ public interface InventoryUtils {
 
     Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException;
 
-    boolean inventorySetItem(Inventory inventory, int index, ItemStack item);
-
-    boolean setInventoryResults(Inventory inventory, ItemStack item);
-
     ItemStack setSkullURL(ItemStack itemStack, String url);
 
     ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id);
