@@ -7,30 +7,13 @@
         <artifactId>CompatibilityLib-parent</artifactId>
         <version>1.9-1.1.17-SNAPSHOT</version>
     </parent>
-    <artifactId>CompatibilityLib-modern</artifactId>
-
-    <properties>
-        <bukkit.version>1.16.1-R0.1-SNAPSHOT</bukkit.version>
-    </properties>
+    <artifactId>CompatibilityLib-paper</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
-            <version>${bukkit.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.spigotmc</groupId>
-            <artifactId>spigot</artifactId>
-            <version>1.17-R0.1-SNAPSHOT</version>
-            <classifier>remapped-mojang</classifier>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.elmakers.mine.bukkit</groupId>
-            <artifactId>CompatibilityLib-base</artifactId>
-            <version>${project.version}</version>
+            <groupId>com.destroystokyo.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.16.5-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -40,4 +23,11 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>papermc</id>
+            <url>https://papermc.io/repo/repository/maven-public/</url>
+        </repository>
+    </repositories>
 </project>

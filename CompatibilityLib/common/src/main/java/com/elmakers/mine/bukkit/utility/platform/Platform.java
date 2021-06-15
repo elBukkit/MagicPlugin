@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.logging.Logger;
 
+import javax.annotation.Nullable;
+
 import org.bukkit.plugin.Plugin;
 
 public interface Platform {
@@ -34,4 +36,7 @@ public interface Platform {
     SchematicUtils getSchematicUtils();
 
     SkinUtils getSkinUtils();
+
+    @Nullable
+    PaperUtils getPaperUtils();
 }
