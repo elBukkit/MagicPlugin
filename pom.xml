@@ -14,9 +14,9 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.java>8</version.java>
+        <version.java>16</version.java>
         <findbugs.version>1.3.9</findbugs.version>
-        <bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.16.5-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <modules>
@@ -74,8 +74,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.3</version>
                 <configuration>
-                    <compilerId>javac-with-errorprone</compilerId>
-                    <forceJavacCompilerUse>true</forceJavacCompilerUse>
                     <!-- The name is confusing, but this actually prevents Maven from recompiling every single source file when only one has changed -->
                     <useIncrementalCompilation>false</useIncrementalCompilation>
 
@@ -84,27 +82,10 @@
 
                     <compilerArgs>
                         <arg>-Xlint:all,-serial,-fallthrough</arg>
-                        <!-- <arg>-Xep:FieldMissingNullable:ERROR</arg>  -->
-                        <arg>-Xep:ReturnMissingNullable:ERROR</arg>
-                        <arg>-Xep:RemoveUnusedImports:ERROR</arg>
-                        <arg>-Xep:CatchAndPrintStackTrace:OFF</arg>
                     </compilerArgs>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                 </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.codehaus.plexus</groupId>
-                        <artifactId>plexus-compiler-javac-errorprone</artifactId>
-                        <version>2.8.3</version>
-                    </dependency>
-                    <!-- Get a more recent errorprone version -->
-                    <dependency>
-                        <groupId>com.google.errorprone</groupId>
-                        <artifactId>error_prone_core</artifactId>
-                        <version>2.3.2</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <!-- Checkstyle -->
