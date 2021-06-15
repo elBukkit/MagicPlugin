@@ -630,8 +630,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax) {
         entity.setHurtEntities(true);
         FallingBlockEntity nms = (FallingBlockEntity)((CraftEntity)entity).getHandle();
-        ReflectionUtils.setPrivate(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamagePerDistance", fallHurtAmount);
-        ReflectionUtils.setPrivate(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamageMax", fallHurtMax);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamagePerDistance", fallHurtAmount);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamageMax", fallHurtMax);
     }
 
     @Override
@@ -704,7 +704,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public void addFlightExemption(Player player, int ticks) {
         ServerPlayer nms = ((CraftPlayer)player).getHandle();
-        ReflectionUtils.setPrivate(platform.getLogger(), nms.connection, ServerGamePacketListenerImpl.class, "aboveGroundTickCount", -ticks);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms.connection, ServerGamePacketListenerImpl.class, "aboveGroundTickCount", -ticks);
     }
 
     @Override
@@ -992,7 +992,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public boolean isJumping(LivingEntity entity) {
         net.minecraft.world.entity.LivingEntity living = ((CraftLivingEntity)entity).getHandle();
-        return (boolean)ReflectionUtils.getPrivate(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping");
+        return (boolean)ReflectionUtils.getPrivateNeedsFixing(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping");
     }
 
     @Override
@@ -1526,7 +1526,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
 
             if (ticksFlown != null) {
-                ReflectionUtils.setPrivate(platform.getLogger(), fireworkHandle, FireworkRocketEntity.class, "life", ticksFlown);
+                ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), fireworkHandle, FireworkRocketEntity.class, "life", ticksFlown);
             }
             if (expectedLifespan != null) {
                 fireworkHandle.lifetime = expectedLifespan;

@@ -17,6 +17,15 @@ public class ReflectionUtils {
         return null;
     }
 
+    public static boolean setPrivateNeedsFixing(Logger logger, Object o, Class<?> c, String field, Object value) {
+        return false;
+    }
+
+    public static Object getPrivateNeedsFixing(Logger logger, Object o, Class<?> c, String field) {
+        // probs should return null but oh well
+        return false;
+    }
+
     public static boolean setPrivate(Logger logger, Object o, Class<?> c, String field, Object value) {
         try {
             Field access = c.getDeclaredField(field);
