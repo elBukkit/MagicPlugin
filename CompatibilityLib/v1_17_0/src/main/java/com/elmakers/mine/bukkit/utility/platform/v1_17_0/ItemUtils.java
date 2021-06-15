@@ -24,7 +24,7 @@ public class ItemUtils extends ItemUtilsBase {
 
     @Override
     public Object getHandle(org.bukkit.inventory.ItemStack stack) {
-        if (stack == null) {
+        if (stack == null || !(stack instanceof CraftItemStack)) {
             return null;
         }
         // This may be a performance issue

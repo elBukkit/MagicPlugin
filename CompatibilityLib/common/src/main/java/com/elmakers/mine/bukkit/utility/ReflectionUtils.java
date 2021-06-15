@@ -24,7 +24,7 @@ public class ReflectionUtils {
             access.set(o, value);
             return true;
         } catch (Exception ex) {
-            logger.log(Level.SEVERE, "Error getting private member of " + o.getClass().getName() + "." + field, ex);
+            logger.log(Level.SEVERE, "Error setting private member of " + o.getClass().getName() + "." + field, ex);
         }
         return false;
     }
