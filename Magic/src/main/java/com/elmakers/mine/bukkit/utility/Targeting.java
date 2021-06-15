@@ -471,7 +471,7 @@ public class Targeting {
         rangePadded = Math.min(rangePadded, CompatibilityLib.getCompatibilityUtils().getMaxEntityRange());
         double rangeSquaredPadded = rangePadded * rangePadded;
 
-        List<Entity> entities = null;
+        Collection<Entity> entities = null;
         boolean debugMessage = true;
         if (source == null && sourceEntity != null) {
             if (sourceEntity instanceof LivingEntity) {

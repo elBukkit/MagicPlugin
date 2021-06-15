@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.boss;
 
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -53,7 +53,7 @@ public class BossBarTracker {
     }
 
     private void updateVisibility() {
-        List<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(mage.getLocation(), radius, radius, radius);
+        Collection<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(mage.getLocation(), radius, radius, radius);
         processing.addAll(visibleTo);
         visibleTo.clear();
 

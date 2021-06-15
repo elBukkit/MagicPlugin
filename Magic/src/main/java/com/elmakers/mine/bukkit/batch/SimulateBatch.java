@@ -666,7 +666,7 @@ public class SimulateBatch extends SpellBatch {
             reverseTargetDistanceScore = true;
             if (targetType == TargetType.ANY || targetType == TargetType.MOB)
             {
-                List<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(center, huntMaxRange, huntMaxRange, huntMaxRange);
+                Collection<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(center, huntMaxRange, huntMaxRange, huntMaxRange);
                 for (Entity entity : entities)
                 {
                     // We'll get the players from the Mages list
