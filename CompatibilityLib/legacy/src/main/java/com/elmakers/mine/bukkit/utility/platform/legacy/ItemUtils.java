@@ -3,10 +3,7 @@ package com.elmakers.mine.bukkit.utility.platform.legacy;
 import java.util.Collection;
 
 import org.bukkit.Material;
-import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
@@ -43,11 +40,11 @@ public class ItemUtils extends ItemUtilsBase {
     public Object getTag(ItemStack itemStack) {
         Object tag = null;
         try {
-            Object mcItemStack = ItemUtils.this.getHandle(itemStack);
+            Object mcItemStack = getHandle(itemStack);
             if (mcItemStack == null) {
                 if (itemStack.hasItemMeta()) {
-                    itemStack = ItemUtils.this.makeReal(itemStack);
-                    mcItemStack = ItemUtils.this.getHandle(itemStack);
+                    itemStack = makeReal(itemStack);
+                    mcItemStack = getHandle(itemStack);
                 }
             }
             if (mcItemStack == null) return null;
@@ -74,7 +71,7 @@ public class ItemUtils extends ItemUtilsBase {
         if (NMSUtils.class_CraftItemStack_mirrorMethod == null) return stack;
 
         try {
-            Object craft = ItemUtils.this.getNMSCopy(stack);
+            Object craft = getNMSCopy(stack);
             stack = (ItemStack) NMSUtils.class_CraftItemStack_mirrorMethod.invoke(null, craft);
         } catch (Throwable ex) {
             stack = null;
@@ -86,10 +83,10 @@ public class ItemUtils extends ItemUtilsBase {
     @Override
     public ItemStack makeReal(ItemStack stack) {
         if (stack == null) return null;
-        Object nmsStack = ItemUtils.this.getHandle(stack);
+        Object nmsStack = getHandle(stack);
         if (nmsStack == null) {
-            stack = ItemUtils.this.getCopy(stack);
-            nmsStack = ItemUtils.this.getHandle(stack);
+            stack = getCopy(stack);
+            nmsStack = getHandle(stack);
         }
         if (nmsStack == null) {
             return null;
@@ -108,39 +105,11 @@ public class ItemUtils extends ItemUtilsBase {
     }
 
     @Override
-    public void addGlow(ItemStack stack) {
-        if (ItemUtils.this.isEmpty(stack)) return;
-
-        try {
-            ItemMeta meta = stack.getItemMeta();
-            meta.addEnchant(Enchantment.LUCK, 1, true);
-            stack.setItemMeta(meta);
-       } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public void removeGlow(ItemStack stack) {
-        if (ItemUtils.this.isEmpty(stack)) return;
-
-        try {
-            ItemMeta meta = stack.getItemMeta();
-            if (meta.hasEnchant(Enchantment.LUCK)) {
-                meta.removeEnchant(Enchantment.LUCK);
-                stack.setItemMeta(meta);
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
     public boolean isUnbreakable(ItemStack stack) {
-        if (ItemUtils.this.isEmpty(stack)) return false;
+        if (isEmpty(stack)) return false;
         Boolean unbreakableFlag = null;
         try {
-            Object tagObject = ItemUtils.this.getTag(stack);
+            Object tagObject = getTag(stack);
             if (tagObject == null) return false;
             unbreakableFlag = platform.getNBTUtils().getMetaBoolean(tagObject, "Unbreakable");
         } catch (Throwable ex) {
@@ -152,12 +121,12 @@ public class ItemUtils extends ItemUtilsBase {
 
     @Override
     public void makeUnbreakable(ItemStack stack) {
-        if (ItemUtils.this.isEmpty(stack)) return;
+        if (isEmpty(stack)) return;
 
         try {
-            Object craft = ItemUtils.this.getHandle(stack);
+            Object craft = getHandle(stack);
             if (craft == null) return;
-            Object tagObject = ItemUtils.this.getTag(craft);
+            Object tagObject = getTag(craft);
             if (tagObject == null) return;
 
             Object unbreakableFlag = null;
@@ -175,12 +144,12 @@ public class ItemUtils extends ItemUtilsBase {
 
     @Override
     public void hideFlags(ItemStack stack, int flags) {
-        if (ItemUtils.this.isEmpty(stack)) return;
+        if (isEmpty(stack)) return;
 
         try {
-            Object craft = ItemUtils.this.getHandle(stack);
+            Object craft = getHandle(stack);
             if (craft == null) return;
-            Object tagObject = ItemUtils.this.getTag(craft);
+            Object tagObject = getTag(craft);
             if (tagObject == null) return;
 
             Object hideFlag = null;
@@ -192,65 +161,11 @@ public class ItemUtils extends ItemUtilsBase {
     }
 
     @Override
-    public void makeTemporary(ItemStack itemStack, String message) {
-        platform.getNBTUtils().setMeta(itemStack, "temporary", message);
-    }
-
-    @Override
-    public boolean isTemporary(ItemStack itemStack) {
-        return platform.getNBTUtils().hasMeta(itemStack, "temporary");
-    }
-
-    @Override
-    public void makeUnplaceable(ItemStack itemStack) {
-        platform.getNBTUtils().setMeta(itemStack, "unplaceable", "true");
-    }
-
-    @Override
-    public void removeUnplaceable(ItemStack itemStack) {
-        platform.getNBTUtils().removeMeta(itemStack, "unplaceable");
-    }
-
-    @Override
-    public boolean isUnplaceable(ItemStack itemStack) {
-        return platform.getNBTUtils().hasMeta(itemStack, "unplaceable");
-    }
-
-    @Override
-    public String getTemporaryMessage(ItemStack itemStack) {
-        return platform.getNBTUtils().getMetaString(itemStack, "temporary");
-    }
-
-    @Override
-    public void setReplacement(ItemStack itemStack, ItemStack replacement) {
-        YamlConfiguration configuration = new YamlConfiguration();
-        configuration.set("item", replacement);
-        platform.getNBTUtils().setMeta(itemStack, "replacement", configuration.saveToString());
-    }
-
-    @Override
-    public ItemStack getReplacement(ItemStack itemStack) {
-        String serialized = platform.getNBTUtils().getMetaString(itemStack, "replacement");
-        if (serialized == null || serialized.isEmpty()) {
-            return null;
-        }
-        YamlConfiguration configuration = new YamlConfiguration();
-        ItemStack replacement = null;
-        try {
-            configuration.loadFromString(serialized);
-            replacement = configuration.getItemStack("item");
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return replacement;
-    }
-
-    @Override
     public boolean isEmpty(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) return true;
         if (NMSUtils.class_ItemStack_isEmptyMethod == null) return false;
         try {
-            Object handle = ItemUtils.this.getHandle(itemStack);
+            Object handle = getHandle(itemStack);
             if (handle == null) return false;
             return (Boolean) NMSUtils.class_ItemStack_isEmptyMethod.invoke(handle);
         } catch (Throwable ex) {
@@ -277,7 +192,7 @@ public class ItemUtils extends ItemUtilsBase {
             listMeta = NMSUtils.class_NBTTagList_constructor.newInstance();
 
             for (String value : values) {
-                Object nbtString = ItemUtils.this.getTagString(value);
+                Object nbtString = getTagString(value);
                 platform.getNBTUtils().addToList(listMeta, nbtString);
             }
 
@@ -317,7 +232,7 @@ public class ItemUtils extends ItemUtilsBase {
                 try {
                     Object itemData = NMSUtils.class_NBTTagList_getMethod.invoke(itemList, i);
                     if (itemData != null) {
-                        items[i] = ItemUtils.this.getItem(itemData);
+                        items[i] = getItem(itemData);
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
