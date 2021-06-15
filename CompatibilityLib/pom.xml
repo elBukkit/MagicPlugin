@@ -50,11 +50,17 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
+                <version>3.8.1</version>
                 <configuration>
+                    <!-- The name is confusing, but this actually prevents Maven from recompiling every single source file when only one has changed -->
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+
                     <source>${version.java}</source>
                     <target>${version.java}</target>
-                    <compilerArgument>-Xlint:all,-serial,-fallthrough</compilerArgument>
+
+                    <compilerArgs>
+                        <arg>-Xlint:all,-serial,-fallthrough</arg>
+                    </compilerArgs>
                     <showWarnings>true</showWarnings>
                     <showDeprecation>true</showDeprecation>
                 </configuration>

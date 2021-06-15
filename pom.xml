@@ -72,7 +72,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
+                <version>3.8.1</version>
                 <configuration>
                     <!-- The name is confusing, but this actually prevents Maven from recompiling every single source file when only one has changed -->
                     <useIncrementalCompilation>false</useIncrementalCompilation>
