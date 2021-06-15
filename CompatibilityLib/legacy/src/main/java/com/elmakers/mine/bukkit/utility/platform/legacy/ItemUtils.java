@@ -8,6 +8,7 @@ import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
 
@@ -309,7 +310,7 @@ public class ItemUtils extends ItemUtilsBase {
     @Override
     public ItemStack[] getItems(Object rootTag, String tagName) {
         try {
-            Object itemList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(rootTag, tagName, NMSUtils.NBT_TYPE_COMPOUND);
+            Object itemList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(rootTag, tagName, CompatibilityConstants.NBT_TYPE_COMPOUND);
             Integer size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(itemList);
             ItemStack[] items = new ItemStack[size];
             for (int i = 0; i < size; i++) {

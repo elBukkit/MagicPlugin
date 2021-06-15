@@ -68,16 +68,6 @@ public class NMSUtils {
     protected static boolean hasEntityTransformEvent = false;
     protected static boolean hasTimeSkipEvent = false;
 
-    protected final static int NBT_TYPE_COMPOUND = 10;
-    protected final static int NBT_TYPE_INT_ARRAY= 11;
-    protected final static int NBT_TYPE_INTEGER = 3;
-    protected final static int NBT_TYPE_FLOAT = 5;
-    protected final static int NBT_TYPE_DOUBLE = 6;
-    protected final static int NBT_TYPE_STRING = 8;
-
-    protected static int WITHER_SKULL_TYPE = 66;
-    protected static int FIREWORK_TYPE = 76;
-
     protected static Class<?> class_Block;
     protected static Class<?> class_BlockBase;
     protected static Class<?> class_ItemStack;
@@ -532,7 +522,7 @@ public class NMSUtils {
             class_Entity_setLocationMethod = class_Entity.getMethod("setLocation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
             class_Entity_getIdMethod = class_Entity.getMethod("getId");
             class_Entity_getDataWatcherMethod = class_Entity.getMethod("getDataWatcher");
-            class_ArmorStand_setInvisible = class_EntityArmorStand.getDeclaredMethod("setInvisible", Boolean.TYPE);
+            class_ArmorStand_setInvisible = class_EntityArmorStand.getDeclaredMethod("sclass_CraftItemStack_getHandleFieldetInvisible", Boolean.TYPE);
             class_CraftPlayer_getHandleMethod = class_CraftPlayer.getMethod("getHandle");
             class_CraftChunk_getHandleMethod = class_CraftChunk.getMethod("getHandle");
             class_CraftEntity_getHandleMethod = class_CraftEntity.getMethod("getHandle");
@@ -1184,7 +1174,7 @@ public class NMSUtils {
             if (class_NamespacedKey != null) {
                 try {
                     class_KnowledgeBookMeta = Class.forName("org.bukkit.inventory.meta.KnowledgeBookMeta");
-                    Class<?> keyArray = Array.newInstance(class_NamespacedKey, 0).getClass();
+                    Class<?> keyArray = Array.class.getDeclaredConstructor().newInstance(class_NamespacedKey, 0).getClass();
                     class_KnowledgeBookMeta_addRecipeMethod = class_KnowledgeBookMeta.getMethod("addRecipe", keyArray);
                 } catch (Throwable ex) {
                     class_KnowledgeBookMeta = null;

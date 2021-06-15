@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.SchematicUtilsBase;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
@@ -75,12 +76,12 @@ public class SchematicUtils extends SchematicUtilsBase {
             Collection<Object> tileEntityData = new ArrayList<>();
             Collection<Object> entityData = new ArrayList<>();
 
-            Object entityList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", NMSUtils.NBT_TYPE_COMPOUND);
+            Object entityList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", CompatibilityConstants.NBT_TYPE_COMPOUND);
             Object tileEntityList = null;
             if ((boolean) NMSUtils.class_NBTTagCompound_hasKeyMethod.invoke(nbtData, "BlockEntities")) {
-                tileEntityList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "BlockEntities", NMSUtils.NBT_TYPE_COMPOUND);
+                tileEntityList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "BlockEntities", CompatibilityConstants.NBT_TYPE_COMPOUND);
             } else {
-                NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", NMSUtils.NBT_TYPE_COMPOUND);
+                NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", CompatibilityConstants.NBT_TYPE_COMPOUND);
             }
 
             if (entityList != null) {
@@ -161,8 +162,8 @@ public class SchematicUtils extends SchematicUtilsBase {
             Collection<Object> tileEntityData = new ArrayList<>();
             Collection<Object> entityData = new ArrayList<>();
 
-            Object entityList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", NMSUtils.NBT_TYPE_COMPOUND);
-            Object tileEntityList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", NMSUtils.NBT_TYPE_COMPOUND);
+            Object entityList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "Entities", CompatibilityConstants.NBT_TYPE_COMPOUND);
+            Object tileEntityList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtData, "TileEntities", CompatibilityConstants.NBT_TYPE_COMPOUND);
 
             if (entityList != null) {
                 int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(entityList);
