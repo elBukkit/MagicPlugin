@@ -1174,7 +1174,7 @@ public class NMSUtils {
             if (class_NamespacedKey != null) {
                 try {
                     class_KnowledgeBookMeta = Class.forName("org.bukkit.inventory.meta.KnowledgeBookMeta");
-                    Class<?> keyArray = Array.class.getDeclaredConstructor().newInstance(class_NamespacedKey, 0).getClass();
+                    Class<?> keyArray = Array.newInstance(class_NamespacedKey, 0).getClass();
                     class_KnowledgeBookMeta_addRecipeMethod = class_KnowledgeBookMeta.getMethod("addRecipe", keyArray);
                 } catch (Throwable ex) {
                     class_KnowledgeBookMeta = null;
