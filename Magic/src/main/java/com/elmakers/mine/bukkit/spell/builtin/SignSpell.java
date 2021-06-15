@@ -44,7 +44,7 @@ public class SignSpell extends BlockSpell
                 return SpellResult.PLAYER_REQUIRED;
             }
             castMessageKey("cast_give");
-            controller.giveItemToPlayer(player, new ItemStack(Material.SIGN, 4));
+            controller.giveItemToPlayer(player, new ItemStack(DefaultMaterials.getGroundSignBlock(), 4));
             return SpellResult.CAST;
         }
 
@@ -62,7 +62,7 @@ public class SignSpell extends BlockSpell
             BlockState blockState = null;
             if (targetBlock.getRelative(BlockFace.DOWN).getType() == Material.AIR)
             {
-                targetBlock.setType(Material.WALL_SIGN);
+                targetBlock.setType(DefaultMaterials.getWallSignBlock());
                 blockState = targetBlock.getState();
                 Object data = blockState.getData();
                 if (data instanceof org.bukkit.material.Sign) {

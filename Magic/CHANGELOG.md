@@ -2,8 +2,12 @@
 
 # 9.0
 
- - LevitateSpell and ProjectileSpell removed
- - Non-functionality hologram functionality removed
+ - Deprecated spell classes removed:
+   - LevitateSpell 
+   - ProjectileSpell
+   - ShapeSpell
+   - AlterSpell
+ - Non-functional hologram functionality removed
 
 # 8.8
 
