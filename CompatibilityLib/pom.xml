@@ -9,7 +9,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.java>8</version.java>
+        <version.java>16</version.java>
         <findbugs.version>1.3.9</findbugs.version>
         <project.version>1.9-1.1.17-SNAPSHOT</project.version>
     </properties>
@@ -39,8 +39,8 @@
     <modules>
         <module>common</module>
         <module>base</module>
+        <module>paper</module>
         <module>legacy</module>
-        <module>modern</module>
         <module>v1_17_0</module>
         <module>main</module>
     </modules>

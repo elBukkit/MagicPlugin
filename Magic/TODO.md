@@ -1,5 +1,8 @@
 # TODO
 
+# 1.17
+
+ - May need to convert Projectiles to API? See modern.getProjectileClass.. not possible anymore?
 
 # Recent issues
 
