@@ -13,7 +13,9 @@ public class Platform extends PlatformBase {
         compatibilityUtils = new CompatibilityUtils(this);
         deprecatedUtils = new DeprecatedUtils(this);
         inventoryUtils = new InventoryUtils(this);
+        itemUtils = new ItemUtils(this);
         nbtUtils = new NBTUtils(this);
+        schematicUtils = new SchematicUtils(this);
 
         // valid = true;
     }
