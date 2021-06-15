@@ -2,6 +2,7 @@
 
 # 9.0
 
+ - 1.17 Support
  - Deprecated spell classes removed:
    - LevitateSpell 
    - ProjectileSpell
@@ -9,8 +10,9 @@
    - AlterSpell
  - Non-functional hologram functionality removed
 
-# 8.8
+## Changes originally slated for 8.8 or 8.7.1 but not included in latest 8.7 release:
 
+ - Fix an error when not using a class system
  - Add `prevent_teleport` mob option, and a `contained_enderman` mob for arena battles
  - Add `use_parent_target_location` and `use_parent_source_location` ChangeContext options
  - Add `teleport_target` Recall option  
@@ -20,10 +22,6 @@
  - Add `wands_break_hanging` config option, so you can disable paintings and item frames breaking while holding a wand
  - Add `target_permission` parameter, requiring a player/entity to have a specific permission in order to target them
  - Enchanting wands with books follows vanilla rules, allows multiple enchantments
-
-# 8.7.1
-
- - Fix an error when not using a class system
 
 # 8.7
 

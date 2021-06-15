@@ -16,7 +16,7 @@ public class Platform extends PlatformBase {
         itemUtils = new ItemUtils(this);
         nbtUtils = new NBTUtils(this);
         schematicUtils = new SchematicUtils(this);
-
-        // valid = true;
+        skinUtils = new SkinUtils(this);
+        valid = true;
     }
 }
