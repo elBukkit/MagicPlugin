@@ -87,10 +87,14 @@ public class MagicLogger extends ColoredLogger {
     public void enableCapture(boolean enable) {
         this.capture = enable;
         this.context = null;
-        this.pendingErrorCount = 0;
-        this.pendingWarningCount = 0;
-        this.warnings.clear();
-        this.errors.clear();
+        synchronized (errors) {
+            this.pendingErrorCount = 0;
+            this.errors.clear();
+        }
+        synchronized (warnings) {
+            this.pendingWarningCount = 0;
+            this.warnings.clear();
+        }
     }
 
     public void setContext(String context) {
@@ -98,11 +102,19 @@ public class MagicLogger extends ColoredLogger {
     }
 
     public List<LogMessage> getErrors() {
-        return new ArrayList<>(errors);
+        List<LogMessage> copy;
+        synchronized (errors) {
+            copy = new ArrayList<>(errors);
+        }
+        return copy;
     }
 
     public List<LogMessage> getWarnings() {
-        return new ArrayList<>(warnings);
+        List<LogMessage> copy;
+        synchronized (warnings) {
+            copy = new ArrayList<>(warnings);
+        }
+        return copy;
     }
 
     public boolean isCapturing() {
