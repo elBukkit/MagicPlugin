@@ -4333,7 +4333,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     private void queueCurrencyMessage(String currency, double amount) {
-        if (CURRENCY_MESSAGE_DELAY <= 0) {
+        if (CURRENCY_MESSAGE_DELAY <= 0 || !controller.getPlugin().isEnabled()) {
             sendCurrencyMessage(currency, amount);
             return;
         }
