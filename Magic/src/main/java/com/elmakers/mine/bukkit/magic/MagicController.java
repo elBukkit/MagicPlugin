@@ -8099,4 +8099,14 @@ public class MagicController implements MageController {
     public ClientPlatform getClientPlatform(Player player) {
         return geyserManager != null && geyserManager.isBedrock(player.getUniqueId()) ? ClientPlatform.BEDROCk : ClientPlatform.JAVA;
     }
+
+    @Override
+    public Entity getDamageSource(Entity entity) {
+        return CompatibilityLib.getCompatibilityUtils().getSource(entity);
+    }
+
+    @Override
+    public boolean isDamaging() {
+        return CompatibilityLib.getCompatibilityUtils().isDamaging();
+    }
 }

@@ -787,4 +787,6 @@ public interface MageController {
     Currency getBlockExchangeCurrency();
     @Nullable
     ItemStack getSpawnEgg(String mobType);
+    Entity getDamageSource(Entity entity);
+    boolean isDamaging();
 }
