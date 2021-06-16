@@ -53,7 +53,6 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftHanging;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftItem;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftProjectile;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
@@ -821,7 +820,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public void setDamage(Projectile projectile, double damage) {
-        net.minecraft.world.entity.projectile.Projectile nms = ((CraftProjectile)projectile).getHandle();
+        net.minecraft.world.entity.Entity nms = ((CraftEntity)projectile).getHandle();
         if (!(nms instanceof net.minecraft.world.entity.projectile.Arrow)) {
             return;
         }
@@ -831,7 +830,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public void decreaseLifespan(Projectile projectile, int ticks) {
-        net.minecraft.world.entity.projectile.Projectile nms = ((CraftProjectile)projectile).getHandle();
+        net.minecraft.world.entity.Entity nms = ((CraftEntity)projectile).getHandle();
         if (!(nms instanceof net.minecraft.world.entity.projectile.Arrow)) {
             return;
         }
