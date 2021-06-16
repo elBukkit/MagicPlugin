@@ -424,27 +424,27 @@
         <repository>
             <id>nexus</id>
             <name>Lumine Releases</name>
-            <url>http://mvn.lumine.io/repository/maven-releases/</url>
+            <url>https://mvn.lumine.io/repository/maven-releases/</url>
         </repository>
         <repository>
             <id>dynmap</id>
-            <url>http://repo.mikeprimm.com/</url>
+            <url>https://repo.mikeprimm.com/</url>
         </repository>
         <repository>
             <id>MultiverseCore</id>
-            <url>http://repo.onarandombox.com/content/groups/public/</url>
+            <url>https://repo.onarandombox.com/content/groups/public/</url>
         </repository>
         <repository>
             <id>md5</id>
-            <url>http://repo.md-5.net/content/groups/public</url>
+            <url>https://repo.md-5.net/content/groups/public</url>
         </repository>
         <repository>
             <id>placeholderapi</id>
-            <url>http://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
         <repository>
             <id>njol-repo</id>
-            <url>http://maven.njol.ch/repo/</url>
+            <url>https://maven.njol.ch/repo/</url>
         </repository>
         <repository>
             <id>redprotect-repo</id>
