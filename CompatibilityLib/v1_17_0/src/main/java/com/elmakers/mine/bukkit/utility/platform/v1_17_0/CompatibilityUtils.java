@@ -132,6 +132,7 @@ import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Motive;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.BoneMealItem;
@@ -163,9 +164,9 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         addProjectileClass("tipped_arrow", net.minecraft.world.entity.projectile.Arrow.class, net.minecraft.world.entity.EntityType.ARROW);
         addProjectileClass("dragonfireball", net.minecraft.world.entity.projectile.DragonFireball.class, net.minecraft.world.entity.EntityType.DRAGON_FIREBALL);
         addProjectileClass("dragon_fireball", net.minecraft.world.entity.projectile.DragonFireball.class, net.minecraft.world.entity.EntityType.DRAGON_FIREBALL);
-        addProjectileClass("fireball", net.minecraft.world.entity.projectile.Fireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
-        addProjectileClass("largefireball", net.minecraft.world.entity.projectile.Fireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
-        addProjectileClass("large_fireball", net.minecraft.world.entity.projectile.Fireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
+        addProjectileClass("fireball", net.minecraft.world.entity.projectile.LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
+        addProjectileClass("largefireball", net.minecraft.world.entity.projectile.LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
+        addProjectileClass("large_fireball", net.minecraft.world.entity.projectile.LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
         addProjectileClass("smallfireball", net.minecraft.world.entity.projectile.SmallFireball.class, net.minecraft.world.entity.EntityType.SMALL_FIREBALL);
         addProjectileClass("small_fireball", net.minecraft.world.entity.projectile.SmallFireball.class, net.minecraft.world.entity.EntityType.SMALL_FIREBALL);
         addProjectileClass("fireworks", net.minecraft.world.entity.projectile.FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
@@ -730,12 +731,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public Projectile spawnProjectile(Class<?> projectileType, Location location, Vector direction, ProjectileSource source, float speed, float spread, float spreadLocations, Random random) {
         Constructor<? extends Object> constructor = null;
-        Method shootMethod = null;
-        Method setPositionRotationMethod = null;
-        Field projectileSourceField = null;
-        Field dirXField = null;
-        Field dirYField = null;
-        Field dirZField = null;
         ServerLevel nmsWorld = ((CraftWorld)location.getWorld()).getHandle();
         Projectile projectile = null;
         try {
@@ -745,19 +740,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             if (entityType == null) {
                 throw new Exception("Failed to find entity type for projectile class " + projectileType.getName());
             }
-
-            if (Fireball.class.isAssignableFrom(projectileType)) {
-                dirXField = projectileType.getField("dirX");
-                dirYField = projectileType.getField("dirY");
-                dirZField = projectileType.getField("dirZ");
-            }
-
-            if (net.minecraft.world.entity.projectile.Projectile.class.isAssignableFrom(projectileType)) {
-                shootMethod = projectileType.getMethod("shoot", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
-            }
-
-            setPositionRotationMethod = projectileType.getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
-            projectileSourceField = projectileType.getField("projectileSource");
 
             Object nmsProjectile = null;
             try {
@@ -773,7 +755,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
             // Set position and rotation, and potentially velocity (direction)
             // Velocity must be set manually- EntityFireball.setDirection applies a crazy-wide gaussian distribution!
-            if (dirXField != null && dirYField != null && dirZField != null) {
+            if (nmsProjectile instanceof AbstractHurtingProjectile) {
+                AbstractHurtingProjectile fireballIsh = (AbstractHurtingProjectile)nmsProjectile;
                 // Taken from EntityArrow
                 double spreadWeight = Math.min(0.4f,  spread * 0.007499999832361937D);
 
@@ -781,23 +764,25 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 double dy = speed * (direction.getY() + (random.nextGaussian() * spreadWeight));
                 double dz = speed * (direction.getZ() + (random.nextGaussian() * spreadWeight));
 
-                dirXField.set(nmsProjectile, dx * 0.1D);
-                dirYField.set(nmsProjectile, dy * 0.1D);
-                dirZField.set(nmsProjectile, dz * 0.1D);
+                fireballIsh.xPower = dx * 0.1D;
+                fireballIsh.yPower = dy * 0.1D;
+                fireballIsh.zPower = dz * 0.1D;
             }
+
+            net.minecraft.world.entity.Entity nmsEntity = ((net.minecraft.world.entity.Entity)nmsProjectile);
             Vector modifiedLocation = location.toVector().clone();
             if (Fireball.class.isAssignableFrom(projectileType) && spreadLocations > 0) {
                 modifiedLocation.setX(modifiedLocation.getX() + direction.getX() + (random.nextGaussian() * spread / 5));
                 modifiedLocation.setY(modifiedLocation.getY() + direction.getY() + (random.nextGaussian() * spread / 5));
                 modifiedLocation.setZ(modifiedLocation.getZ() + direction.getZ() + (random.nextGaussian() * spread / 5));
             }
-            setPositionRotationMethod.invoke(nmsProjectile, modifiedLocation.getX(), modifiedLocation.getY(), modifiedLocation.getZ(), location.getYaw(), location.getPitch());
+            nmsEntity.moveTo(modifiedLocation.getX(), modifiedLocation.getY(), modifiedLocation.getZ(), location.getYaw(), location.getPitch());
 
-            if (shootMethod != null) {
-                shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
+            if (nmsEntity instanceof net.minecraft.world.entity.projectile.Projectile) {
+                net.minecraft.world.entity.projectile.Projectile nms = (net.minecraft.world.entity.projectile.Projectile)nmsEntity;
+                nms.shoot(direction.getX(), direction.getY(), direction.getZ(), speed, spread);
             }
 
-            net.minecraft.world.entity.Entity nmsEntity = ((net.minecraft.world.entity.Entity)nmsProjectile);
             Entity entity = nmsEntity.getBukkitEntity();
             if (entity == null || !(entity instanceof Projectile)) {
                 throw new Exception("Got invalid bukkit entity from projectile of class " + projectileType.getName());
@@ -806,7 +791,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             projectile = (Projectile)entity;
             if (source != null) {
                 projectile.setShooter(source);
-                projectileSourceField.set(nmsProjectile, source);
+                nmsEntity.projectileSource = source;
             }
 
             nmsWorld.addEntity(nmsEntity, CreatureSpawnEvent.SpawnReason.DEFAULT);

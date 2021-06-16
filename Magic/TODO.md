@@ -2,7 +2,7 @@
 
 # 1.17
 
- - May need to convert Projectiles to API? See modern.getProjectileClass.. not possible anymore?
+ - test, test, test
 
 # Recent issues
 
