@@ -12,6 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.metadata.LegacyEntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.metadata.PersistentEntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
@@ -24,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.platform.legacy.LegacyPlatform;
 
 public class CompatibilityLib {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
+    private static EntityMetadataUtils metadataUtils;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
         int[] version = getServerVersion();
@@ -52,7 +55,12 @@ public class CompatibilityLib {
             logger.info("Loading legacy compatibility layer for server version " + versionDescription);
             platform = new LegacyPlatform(plugin, logger);
         }
-        EntityMetadataUtils.initialize(plugin);
+        if (hasPersistentMetadata()) {
+            metadataUtils = new PersistentEntityMetadataUtils(plugin);
+        } else {
+            plugin.getLogger().info("Persistent metadata is not available, will rely on custom names to restore persistent magic mobs");
+            metadataUtils = new LegacyEntityMetadataUtils(plugin);
+        }
         return platform.isValid();
     }
 
@@ -153,6 +161,10 @@ public class CompatibilityLib {
         return platform.getSkinUtils();
     }
 
+    public static EntityMetadataUtils getEntityMetadataUtils() {
+        return metadataUtils;
+    }
+
     public static int[] getServerVersion() {
         int[] version = new int[3];
         String versionString = CompatibilityConstants.getVersionPrefix();
@@ -176,5 +188,19 @@ public class CompatibilityLib {
 
         }
         return version;
+    }
+
+    protected static boolean hasPersistentMetadata() {
+        // Unfortunately this API is bugged prior to 1.16, it does not work for dropped items so we can not use it.
+        int[] version = getServerVersion();
+        if (version[0] <= 1 && version[1] < 16) return false;
+
+        try {
+            Class.forName("org.bukkit.persistence.PersistentDataContainer");
+            return true;
+        } catch (Exception noPersistence) {
+
+        }
+        return false;
     }
 }

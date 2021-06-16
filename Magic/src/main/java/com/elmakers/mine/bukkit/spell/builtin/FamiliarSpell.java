@@ -32,10 +32,10 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.UndoableSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class FamiliarSpell extends UndoableSpell implements Listener
 {
@@ -225,7 +225,7 @@ public class FamiliarSpell extends UndoableSpell implements Listener
                     }
                     if (!loot)
                     {
-                        EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
+                        CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
                     }
                     if (spawnBaby && entity instanceof Ageable) {
                         Ageable ageable = (Ageable)entity;

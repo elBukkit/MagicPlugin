@@ -8,14 +8,14 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.MetaKey;
 
-final class LegacyEntityMetadataUtils extends EntityMetadataUtils {
+public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
     // This is leaky.
     // There does not seem to be a way to really track entities to clean up this map, other than periodic checks
     // which don't feel performant enough to be worth the small amount of memory leaked here.
     // Modern MC versions will use the persistent metadata system instead.
     private final Map<String, Map<String, Object>> metadata = new HashMap<>();
 
-    protected LegacyEntityMetadataUtils(Plugin plugin) {
+    public LegacyEntityMetadataUtils(Plugin plugin) {
         super(plugin);
     }
 

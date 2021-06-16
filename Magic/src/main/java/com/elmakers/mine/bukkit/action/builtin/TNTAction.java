@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class TNTAction extends BaseProjectileAction
 {
@@ -83,7 +82,7 @@ public class TNTAction extends BaseProjectileAction
             grenade.setFuseTicks(fuse);
             grenade.setIsIncendiary(useFire);
             if (!breakBlocks) {
-                EntityMetadataUtils.instance().setBoolean(grenade, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS, true);
+                CompatibilityLib.getEntityMetadataUtils().setBoolean(grenade, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS, true);
             }
             track(context, grenade);
         }

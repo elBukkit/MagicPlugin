@@ -12,8 +12,8 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 @Deprecated
 public class GrenadeSpell extends BlockSpell
@@ -57,7 +57,7 @@ public class GrenadeSpell extends BlockSpell
             grenade.setIsIncendiary(useFire);
             registerForUndo(grenade);
             if (!breakBlocks) {
-                EntityMetadataUtils.instance().setBoolean(grenade, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS, true);
+                CompatibilityLib.getEntityMetadataUtils().setBoolean(grenade, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS, true);
             }
         }
 

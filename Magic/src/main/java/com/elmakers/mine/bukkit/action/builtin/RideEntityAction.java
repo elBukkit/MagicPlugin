@@ -27,7 +27,6 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 import de.slikey.effectlib.util.VectorUtils;
 
@@ -553,7 +552,7 @@ public class RideEntityAction extends BaseSpellAction
             return SpellResult.NO_TARGET;
         }
         if (noTarget) {
-            EntityMetadataUtils.instance().setBoolean(mount, MagicMetaKeys.NO_TARGET, true);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(mount, MagicMetaKeys.NO_TARGET, true);
         }
         if (isPassenger) {
             CompatibilityLib.getDeprecatedUtils().setPassenger(entity, mount);
@@ -572,7 +571,7 @@ public class RideEntityAction extends BaseSpellAction
             nextSoundPlay = System.currentTimeMillis();
         }
         if (noTargetPlayer) {
-            EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_TARGET, true);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NO_TARGET, true);
         }
         if (ridingEffects != null && entity instanceof LivingEntity) {
             CompatibilityLib.getCompatibilityUtils().applyPotionEffects((LivingEntity)entity, ridingEffects);
@@ -584,7 +583,7 @@ public class RideEntityAction extends BaseSpellAction
     @Override
     public void finish(CastContext context) {
         if (noTarget && mount != null) {
-            EntityMetadataUtils.instance().setBoolean(mount, MagicMetaKeys.NO_TARGET, false);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(mount, MagicMetaKeys.NO_TARGET, false);
         }
         if (mount != null) {
             mount.eject();
@@ -592,7 +591,7 @@ public class RideEntityAction extends BaseSpellAction
         }
         Entity mountedEntity = context.getEntity();
         if (noTargetPlayer && mountedEntity != null) {
-            EntityMetadataUtils.instance().setBoolean(mountedEntity, MagicMetaKeys.NO_TARGET, false);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(mountedEntity, MagicMetaKeys.NO_TARGET, false);
         }
         if (warningEffectsApplied && warningEffects != null && mountedEntity != null && mountedEntity instanceof LivingEntity) {
             for (PotionEffect effect : warningEffects) {

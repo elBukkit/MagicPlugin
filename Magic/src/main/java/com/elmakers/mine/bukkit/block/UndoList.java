@@ -50,7 +50,6 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.google.common.base.Preconditions;
 
 /**
@@ -286,7 +285,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         spawnedEntities.put(entity.getUniqueId(), new SpawnedEntity(entity));
         if (this.isScheduled()) {
-            EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED, true);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED, true);
         }
         watch(entity);
         contain(entity.getLocation());
@@ -775,7 +774,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public EntityData modify(Entity entity) {
         EntityData entityData = null;
-        if (entity == null || EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.NO_TARGET)) return entityData;
+        if (entity == null || CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.NO_TARGET)) return entityData;
 
         // Check to see if this is something we spawned, and has now been destroyed
         UUID entityId = entity.getUniqueId();

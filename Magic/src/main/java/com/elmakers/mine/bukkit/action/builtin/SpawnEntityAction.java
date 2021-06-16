@@ -43,7 +43,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class SpawnEntityAction extends CompoundAction
 {
@@ -277,7 +276,7 @@ public class SpawnEntityAction extends CompoundAction
         }
 
         if (!loot) {
-            EntityMetadataUtils.instance().setBoolean(spawnedEntity, MagicMetaKeys.NO_DROPS, true);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(spawnedEntity, MagicMetaKeys.NO_DROPS, true);
         }
         if (speed > 0)
         {
@@ -305,7 +304,7 @@ public class SpawnEntityAction extends CompoundAction
         }
         context.registerForUndo(spawnedEntity);
         if (setOwner && spawnedEntity instanceof Creature) {
-            EntityMetadataUtils.instance().setString(spawnedEntity, MagicMetaKeys.OWNER, context.getMage().getId());
+            CompatibilityLib.getEntityMetadataUtils().setString(spawnedEntity, MagicMetaKeys.OWNER, context.getMage().getId());
         }
         if (setTarget && !hasAnyActions)
         {

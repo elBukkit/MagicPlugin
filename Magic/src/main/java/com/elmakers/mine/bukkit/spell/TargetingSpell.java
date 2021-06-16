@@ -44,7 +44,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 import com.elmakers.mine.bukkit.utility.Targeting;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class TargetingSpell extends BaseSpell {
     // This differs from CompatibilityUtils.MAX_ENTITY_RANGE,
@@ -373,7 +372,7 @@ public class TargetingSpell extends BaseSpell {
             mage.sendDebugMessage("Entity skipped, is tamed", 30);
             return false;
         }
-        if (EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.NO_TARGET)) {
+        if (CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.NO_TARGET)) {
             mage.sendDebugMessage("Entity skipped, has notarget metadata", 30);
             return false;
         }

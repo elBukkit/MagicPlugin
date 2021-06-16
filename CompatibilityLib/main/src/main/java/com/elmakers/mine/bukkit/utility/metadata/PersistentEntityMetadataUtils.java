@@ -7,8 +7,8 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.MetaKey;
 
-final class PersistentEntityMetadataUtils extends EntityMetadataUtils {
-    protected PersistentEntityMetadataUtils(Plugin plugin) {
+public class PersistentEntityMetadataUtils extends EntityMetadataUtils {
+    public PersistentEntityMetadataUtils(Plugin plugin) {
         super(plugin);
     }
 

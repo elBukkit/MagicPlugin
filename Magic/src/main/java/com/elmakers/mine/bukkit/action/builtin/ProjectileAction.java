@@ -30,7 +30,6 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class ProjectileAction  extends BaseProjectileAction
 {
@@ -189,7 +188,7 @@ public class ProjectileAction  extends BaseProjectileAction
                     }
                 }
                 if (!breakBlocks) {
-                    EntityMetadataUtils.instance().setBoolean(projectile, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS, true);
+                    CompatibilityLib.getEntityMetadataUtils().setBoolean(projectile, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS, true);
                 }
                 track(context, projectile);
             } catch (Exception ex) {

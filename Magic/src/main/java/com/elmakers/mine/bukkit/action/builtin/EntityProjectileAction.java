@@ -22,7 +22,6 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class EntityProjectileAction extends CustomProjectileAction {
     private boolean noTarget = true;
@@ -86,7 +85,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     protected Entity setEntity(MageController controller, @Nonnull Entity entity) {
         this.entity = entity;
         if (noTarget) {
-            EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_TARGET, true);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NO_TARGET, true);
         }
         CompatibilityLib.getCompatibilityUtils().setPersist(entity, false);
 

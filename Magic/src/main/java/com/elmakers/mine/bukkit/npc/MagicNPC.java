@@ -26,7 +26,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     private static final String DEFAULT_NPC_KEY = "base_npc";
@@ -327,7 +326,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         }
         Entity vehicle = entity;
         while (vehicle != null) {
-            EntityMetadataUtils.instance().setString(vehicle, MagicMetaKeys.NPC_ID, id.toString());
+            CompatibilityLib.getEntityMetadataUtils().setString(vehicle, MagicMetaKeys.NPC_ID, id.toString());
             vehicle = vehicle.getVehicle();
         }
         if (entityData.useNPCName()) {

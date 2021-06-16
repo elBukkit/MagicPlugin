@@ -33,7 +33,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class Targeting {
     private static final Set<UUID> EMPTY_IGNORE_SET = Collections.emptySet();
@@ -684,11 +683,11 @@ public class Targeting {
     }
 
     public static void track(Entity tracked) {
-        EntityMetadataUtils.instance().setBoolean(tracked, MagicMetaKeys.TRACKING, true);
+        CompatibilityLib.getEntityMetadataUtils().setBoolean(tracked, MagicMetaKeys.TRACKING, true);
     }
 
     public static boolean checkTracking(Entity tracked, Entity target, Block block) {
-        if (tracked == null || !EntityMetadataUtils.instance().getBoolean(tracked, MagicMetaKeys.TRACKING)) {
+        if (tracked == null || !CompatibilityLib.getEntityMetadataUtils().getBoolean(tracked, MagicMetaKeys.TRACKING)) {
             return false;
         }
         if (target != null) {

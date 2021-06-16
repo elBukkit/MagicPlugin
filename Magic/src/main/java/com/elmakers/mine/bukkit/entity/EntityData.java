@@ -75,7 +75,6 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 /**
  * This class stores information about an Entity.
@@ -194,8 +193,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.controller = controller;
         setEntity(entity);
         this.location = CompatibilityLib.getCompatibilityUtils().getHangingLocation(entity);
-        this.magicSpawned = EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED);
-        this.cancelExplosion = EntityMetadataUtils.instance().getBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION);
+        this.magicSpawned = CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED);
+        this.cancelExplosion = CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION);
         this.isLiving = entity instanceof LivingEntity;
         this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
@@ -864,7 +863,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     respawned.put(uuid, new WeakReference<>(entity));
 
                     // Undo'ing an entity won't drop loot
-                    EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
+                    CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
                 }
             }
             setEntity(entity);
@@ -1135,11 +1134,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
         if (cancelExplosion) {
-            EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION, true);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION, true);
         }
 
         if (this.key != null) {
-            EntityMetadataUtils.instance().setString(entity, MagicMetaKeys.MAGIC_MOB, this.key);
+            CompatibilityLib.getEntityMetadataUtils().setString(entity, MagicMetaKeys.MAGIC_MOB, this.key);
         }
         // Do this one last time again at the very end, it seems some other changes (like facing direction on an item frame
         // can remove invisibility, somehow.

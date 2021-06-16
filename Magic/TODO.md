@@ -2,7 +2,7 @@
 
 # 1.17
 
- - Camera is broken (seems specific to getting online player skins)
+ - NPC dialog not activating
 
 # Recent issues
 

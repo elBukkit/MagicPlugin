@@ -70,7 +70,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
 public class PlayerController implements Listener {
@@ -1038,7 +1037,7 @@ public class PlayerController implements Listener {
     {
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
-        if (CompatibilityLib.getItemUtils().isTemporary(pickup) || EntityMetadataUtils.instance().getBoolean(item, MagicMetaKeys.TEMPORARY))
+        if (CompatibilityLib.getItemUtils().isTemporary(pickup) || CompatibilityLib.getEntityMetadataUtils().getBoolean(item, MagicMetaKeys.TEMPORARY))
         {
             item.remove();
             event.setCancelled(true);

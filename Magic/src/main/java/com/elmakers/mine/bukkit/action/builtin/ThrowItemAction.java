@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 
 public class ThrowItemAction extends BaseProjectileAction {
     private double itemSpeedMin;
@@ -110,7 +109,7 @@ public class ThrowItemAction extends BaseProjectileAction {
             return SpellResult.FAIL;
         }
         if (temporary) {
-            EntityMetadataUtils.instance().setBoolean(droppedItem, MagicMetaKeys.TEMPORARY, true);
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(droppedItem, MagicMetaKeys.TEMPORARY, true);
 
             // Make item temporary after spawning, otherwise the spawn will be cancelled
             itemStack = droppedItem.getItemStack();

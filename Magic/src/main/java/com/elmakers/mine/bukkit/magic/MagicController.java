@@ -247,7 +247,6 @@ import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
-import com.elmakers.mine.bukkit.utility.metadata.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -3939,7 +3938,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isMagicNPC(Entity entity) {
-        return EntityMetadataUtils.instance().getString(entity, MagicMetaKeys.NPC_ID) != null;
+        return CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID) != null;
     }
 
     @Override
@@ -3960,7 +3959,7 @@ public class MagicController implements MageController {
 
     @Override
     public void disableDrops(Entity entity) {
-        EntityMetadataUtils.instance().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
+        CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
     }
 
     @Override
@@ -6876,7 +6875,7 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public MagicNPC getNPC(@Nullable Entity entity) {
-        String npcId = EntityMetadataUtils.instance().getString(entity, MagicMetaKeys.NPC_ID);
+        String npcId = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID);
         return getNPC(npcId);
     }
 
