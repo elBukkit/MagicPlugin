@@ -56,7 +56,7 @@ public class MagicLogger extends ColoredLogger {
             super.log(record);
         }
 
-        CompatibilityUtils compatibility = CompatibilityLib.getCompatibilityUtils();
+        CompatibilityUtils compatibility = CompatibilityLib.isInitialized() ? CompatibilityLib.getCompatibilityUtils() : null;
         LogMessage logMessage = new LogMessage(context, record.getMessage().replace("[Magic] ", ""));
         if (record.getLevel().equals(Level.WARNING)) {
             synchronized (warnings) {

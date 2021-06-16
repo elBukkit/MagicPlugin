@@ -56,6 +56,10 @@ public class CompatibilityLib {
         return platform.isValid();
     }
 
+    public static boolean isInitialized() {
+        return platform != null;
+    }
+
     public static boolean isLegacy() {
         return platform == null ? false : platform.isLegacy();
     }
