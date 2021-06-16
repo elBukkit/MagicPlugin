@@ -1599,4 +1599,9 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 aabb.maxZ
         );
     }
+
+    @Override
+    public boolean isPrimaryThread() {
+        return Bukkit.isPrimaryThread();
+    }
 }

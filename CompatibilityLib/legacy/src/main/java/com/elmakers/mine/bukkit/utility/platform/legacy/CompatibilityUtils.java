@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility.platform.legacy;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
@@ -97,9 +98,11 @@ import com.google.common.io.BaseEncoding;
 @SuppressWarnings("deprecation")
 public class CompatibilityUtils extends CompatibilityUtilsBase {
     public static int OFFHAND_BROADCAST_RANGE = 32;
+    private final WeakReference<Thread> primaryThread;
 
     public CompatibilityUtils(Platform platform) {
         super(platform);
+        primaryThread = new WeakReference<>(Thread.currentThread());
     }
 
     @Override
@@ -2535,5 +2538,10 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean isPrimaryThread() {
+        return primaryThread.get() == Thread.currentThread();
     }
 }

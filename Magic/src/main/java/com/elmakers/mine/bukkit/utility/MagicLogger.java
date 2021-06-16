@@ -19,6 +19,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.event.MagicErrorEvent;
 import com.elmakers.mine.bukkit.api.event.MagicWarningEvent;
 import com.elmakers.mine.bukkit.tasks.CallEventTask;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class MagicLogger extends ColoredLogger {
 
@@ -42,13 +43,11 @@ public class MagicLogger extends ColoredLogger {
     private int pendingWarningCount = 0;
     private int pendingErrorCount = 0;
     private long lastMessageSent;
-    private final WeakReference<Thread> primaryThread;
 
     public MagicLogger(Plugin plugin, Logger delegate) {
         super(delegate);
         this.plugin = plugin;
         lastMessageSent = System.currentTimeMillis();
-        primaryThread = new WeakReference<>(Thread.currentThread());
     }
 
     @Override
@@ -57,13 +56,14 @@ public class MagicLogger extends ColoredLogger {
             super.log(record);
         }
 
+        CompatibilityUtils compatibility = CompatibilityLib.getCompatibilityUtils();
         LogMessage logMessage = new LogMessage(context, record.getMessage().replace("[Magic] ", ""));
         if (record.getLevel().equals(Level.WARNING)) {
             synchronized (warnings) {
                 pendingWarningCount++;
                 warnings.add(logMessage);
                 MagicWarningEvent event = new MagicWarningEvent(record, context, pendingWarningCount, capture);
-                if (isPrimaryThread()) {
+                if (compatibility != null && compatibility.isPrimaryThread()) {
                     Bukkit.getPluginManager().callEvent(event);
                 } else if (plugin != null) {
                     Bukkit.getScheduler().runTask(plugin, new CallEventTask(event));
@@ -75,17 +75,13 @@ public class MagicLogger extends ColoredLogger {
                 errors.add(logMessage);
                 MagicErrorEvent event = new MagicErrorEvent(record, context, pendingErrorCount, capture);
 
-                if (isPrimaryThread()) {
+                if (compatibility != null && compatibility.isPrimaryThread()) {
                     Bukkit.getPluginManager().callEvent(event);
                 } else if (plugin != null) {
                     Bukkit.getScheduler().runTask(plugin, new CallEventTask(event));
                 }
             }
         }
-    }
-
-    private boolean isPrimaryThread() {
-        return primaryThread.get() == Thread.currentThread();
     }
 
     public void enableCapture(boolean enable) {

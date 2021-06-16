@@ -437,4 +437,6 @@ public interface CompatibilityUtils {
     void load(ConfigurationSection configuration);
 
     void cancelDismount(EntityDismountEvent event);
+
+    boolean isPrimaryThread();
 }
