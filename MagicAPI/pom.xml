@@ -28,7 +28,7 @@
             <plugin>
                 <groupId>org.revapi</groupId>
                 <artifactId>revapi-maven-plugin</artifactId>
-                <version>0.8.2</version>
+                <version>0.14.3</version>
                 <configuration>
                     <oldArtifacts>
                         <oldArtifact>com.elmakers.mine.bukkit:MagicAPI:7.6</oldArtifact>
@@ -50,7 +50,7 @@
                     <dependency>
                         <groupId>org.revapi</groupId>
                         <artifactId>revapi-java</artifactId>
-                        <version>0.13.2</version>
+                        <version>0.24.2</version>
                     </dependency>
                 </dependencies>
                 <executions>
