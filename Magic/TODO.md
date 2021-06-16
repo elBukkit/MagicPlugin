@@ -2,7 +2,7 @@
 
 # 1.17
 
- - test, test, test
+ - Camera is broken (seems specific to getting online player skins)
 
 # Recent issues
 

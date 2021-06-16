@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -13,13 +14,16 @@ import java.util.logging.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.MagicErrorEvent;
 import com.elmakers.mine.bukkit.api.event.MagicWarningEvent;
+import com.elmakers.mine.bukkit.tasks.CallEventTask;
 
 public class MagicLogger extends ColoredLogger {
 
     private static int MAX_ERRORS = 50;
+    private Plugin plugin;
     private String context = null;
     private boolean capture = false;
     private final Set<LogMessage> warnings = Collections.newSetFromMap(new LinkedHashMap<LogMessage, Boolean>() {
@@ -38,10 +42,13 @@ public class MagicLogger extends ColoredLogger {
     private int pendingWarningCount = 0;
     private int pendingErrorCount = 0;
     private long lastMessageSent;
+    private final WeakReference<Thread> primaryThread;
 
-    public MagicLogger(Logger delegate) {
+    public MagicLogger(Plugin plugin, Logger delegate) {
         super(delegate);
+        this.plugin = plugin;
         lastMessageSent = System.currentTimeMillis();
+        primaryThread = new WeakReference<>(Thread.currentThread());
     }
 
     @Override
@@ -52,14 +59,33 @@ public class MagicLogger extends ColoredLogger {
 
         LogMessage logMessage = new LogMessage(context, record.getMessage().replace("[Magic] ", ""));
         if (record.getLevel().equals(Level.WARNING)) {
-            pendingWarningCount++;
-            warnings.add(logMessage);
-            Bukkit.getPluginManager().callEvent(new MagicWarningEvent(record, context, pendingWarningCount, capture));
+            synchronized (warnings) {
+                pendingWarningCount++;
+                warnings.add(logMessage);
+                MagicWarningEvent event = new MagicWarningEvent(record, context, pendingWarningCount, capture);
+                if (isPrimaryThread()) {
+                    Bukkit.getPluginManager().callEvent(event);
+                } else if (plugin != null) {
+                    Bukkit.getScheduler().runTask(plugin, new CallEventTask(event));
+                }
+            }
         } else if (record.getLevel().equals(Level.SEVERE)) {
-            pendingErrorCount++;
-            errors.add(logMessage);
-            Bukkit.getPluginManager().callEvent(new MagicErrorEvent(record, context, pendingErrorCount, capture));
+            synchronized (errors) {
+                pendingErrorCount++;
+                errors.add(logMessage);
+                MagicErrorEvent event = new MagicErrorEvent(record, context, pendingErrorCount, capture);
+
+                if (isPrimaryThread()) {
+                    Bukkit.getPluginManager().callEvent(event);
+                } else if (plugin != null) {
+                    Bukkit.getScheduler().runTask(plugin, new CallEventTask(event));
+                }
+            }
         }
+    }
+
+    private boolean isPrimaryThread() {
+        return primaryThread.get() == Thread.currentThread();
     }
 
     public void enableCapture(boolean enable) {

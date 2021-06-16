@@ -583,13 +583,13 @@ public class MagicController implements MageController {
         configFolder = null;
         dataFolder = null;
         defaultsFolder = null;
-        this.logger = new MagicLogger(Logger.getLogger("Magic"));
+        this.logger = new MagicLogger(null, Logger.getLogger("Magic"));
         this.materialSetManager.setLogger(logger);
     }
 
     public MagicController(final MagicPlugin plugin) {
         this.plugin = plugin;
-        this.logger = new MagicLogger(plugin.getLogger());
+        this.logger = new MagicLogger(plugin, plugin.getLogger());
         resourcePacks = new ResourcePackManager(this);
 
         configFolder = plugin.getDataFolder();
