@@ -455,5 +455,37 @@
     }
   },
   "7.6+": {
+    "differences": [
+      {
+        "ignore": true,
+        "code": "java.method.returnTypeChangedCovariantly",
+        "old": "method java.lang.Object java.lang.Object::clone() throws java.lang.CloneNotSupportedException @ com.elmakers.mine.bukkit.api.entity.EntityData",
+        "new": "method com.elmakers.mine.bukkit.api.entity.EntityData com.elmakers.mine.bukkit.api.entity.EntityData::clone()",
+        "justification": "EntityData is no longer cloneable"
+      },
+      {
+        "ignore": true,
+        "code": "java.method.exception.checkedRemoved",
+        "old": "method java.lang.Object java.lang.Object::clone() throws java.lang.CloneNotSupportedException @ com.elmakers.mine.bukkit.api.entity.EntityData",
+        "new": "method com.elmakers.mine.bukkit.api.entity.EntityData com.elmakers.mine.bukkit.api.entity.EntityData::clone()",
+        "exception": "java.lang.CloneNotSupportedException",
+        "justification": "EntityData is no longer cloneable"
+      },
+      {
+        "ignore": true,
+        "code": "java.method.nowAbstract",
+        "old": "method java.lang.Object java.lang.Object::clone() throws java.lang.CloneNotSupportedException @ com.elmakers.mine.bukkit.api.entity.EntityData",
+        "new": "method com.elmakers.mine.bukkit.api.entity.EntityData com.elmakers.mine.bukkit.api.entity.EntityData::clone()",
+        "justification": "EntityData is no longer cloneable"
+      },
+      {
+        "ignore": true,
+        "code": "java.annotation.removed",
+        "old": "method java.lang.Object java.lang.Object::clone() throws java.lang.CloneNotSupportedException @ com.elmakers.mine.bukkit.api.entity.EntityData",
+        "new": "method com.elmakers.mine.bukkit.api.entity.EntityData com.elmakers.mine.bukkit.api.entity.EntityData::clone()",
+        "annotation": "@jdk.internal.vm.annotation.IntrinsicCandidate",
+        "justification": "EntityData is no longer cloneable"
+      }
+    ]
   }
 }
