@@ -95,7 +95,7 @@ public class MobController implements Listener, ChunkLoadListener {
         for (Map.Entry<Entity, EntityData> entry : currentMobs.entrySet()) {
             EntityData mob = entry.getValue();
             String key = mob.getKey();
-            if (key == null) continue;
+            if (key == null || key.isEmpty()) continue;
             mob = controller.getMob(key);
             if (mob != null) {
                 mob.modify(entry.getKey());
