@@ -18,6 +18,10 @@
          backwards compatibility alltogether.
  - Hex color support in all messages in-game using an `#AA22FF` format
 
+## Fixes
+
+ - Fix integration with some economy plugins by delaying registration a bit
+
 ## General Changes and Additions
  
  - The `spawn` mob trigger now only fires on initial spawn. Persistent mobs can look for `respawn`.

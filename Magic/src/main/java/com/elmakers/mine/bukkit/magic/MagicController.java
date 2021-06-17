@@ -1771,6 +1771,10 @@ public class MagicController implements MageController {
     }
 
     public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
+        if (!loaded) {
+            finalizeIntegrationPreLoad();
+        }
+
         // Register currencies and other preload integrations
         registerPreLoad(loader.getMainConfiguration());
 
@@ -3222,7 +3226,6 @@ public class MagicController implements MageController {
         addCurrency(new HungerCurrency(this, currencyConfiguration.getConfigurationSection("hunger")));
         addCurrency(new LevelCurrency(this, currencyConfiguration.getConfigurationSection("levels")));
         addCurrency(new SpellPointCurrency(this, spSection));
-        addCurrency(new VaultCurrency(this, currencyConfiguration.getConfigurationSection("currency")));
     }
 
     // Kind of a misnomer now, the whole notion of having plugins register in a "preload" event is flawed,
@@ -3241,13 +3244,17 @@ public class MagicController implements MageController {
         teamProviders.addAll(loadEvent.getTeamProviders());
         playerWarpManagers.putAll(loadEvent.getWarpManagers());
 
+        // Vault currency must be registered after VaultController initialization
+        ConfigurationSection currencyConfiguration = configuration.getConfigurationSection("builtin_currency");
+        addCurrency(new VaultCurrency(this, currencyConfiguration.getConfigurationSection("currency")));
+
         // Custom currencies can override the defaults
         for (Currency currency : loadEvent.getCurrencies()) {
             addCurrency(currency);
         }
 
         // Configured currencies override everything else
-        ConfigurationSection currencyConfiguration = configuration.getConfigurationSection("custom_currency");
+        currencyConfiguration = configuration.getConfigurationSection("custom_currency");
         Set<String> keys = currencyConfiguration.getKeys(false);
         for (String key : keys) {
             addCurrency(new CustomCurrency(this, key, currencyConfiguration.getConfigurationSection(key)));
@@ -7139,20 +7146,6 @@ public class MagicController implements MageController {
             }
         }
 
-        // Vault integration
-        if (!vaultEnabled) {
-            getLogger().info("Vault integration disabled");
-        } else {
-            Plugin vaultPlugin = pluginManager.getPlugin("Vault");
-            if (vaultPlugin == null) {
-                getLogger().info("Vault not found, 'currency' cost types unavailable");
-            } else {
-                if (!VaultController.initialize(plugin, vaultPlugin)) {
-                    getLogger().warning("Vault integration failed");
-                }
-            }
-        }
-
         // Skript
         if (skriptEnabled) {
             if (pluginManager.getPlugin("Skript") != null) {
@@ -7197,6 +7190,25 @@ public class MagicController implements MageController {
         } else if (!skillAPIEnabled) {
             skillAPIManager = null;
             getLogger().info("SkillAPI integration disabled");
+        }
+    }
+
+    private void finalizeIntegrationPreLoad() {
+        logger.setContext("integration");
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
+
+        // Vault integration
+        if (!vaultEnabled) {
+            getLogger().info("Vault integration disabled");
+        } else {
+            Plugin vaultPlugin = pluginManager.getPlugin("Vault");
+            if (vaultPlugin == null) {
+                getLogger().info("Vault not found, 'currency' cost types unavailable");
+            } else {
+                if (!VaultController.initialize(plugin, vaultPlugin)) {
+                    getLogger().warning("Vault integration failed");
+                }
+            }
         }
     }
 
