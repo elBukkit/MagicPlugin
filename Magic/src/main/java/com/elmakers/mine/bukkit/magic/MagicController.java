@@ -1807,14 +1807,26 @@ public class MagicController implements MageController {
             finalizeIntegrationPostLoad();
         } else {
             // Update anything in the world that may have had its config changed
-            updateActiveAutomata();
+            try {
+                updateActiveAutomata();
+            } catch (Exception ex) {
+                getLogger().log(Level.SEVERE, "Error updating automata", ex);
+            }
 
             // Update any currently loaded mobs
-            mobs.updateAllMobs();
+            try {
+                mobs.updateAllMobs();
+            } catch (Exception ex) {
+                getLogger().log(Level.SEVERE, "Error updating mobs", ex);
+            }
 
             // Update all NPCs, they will have a reference to a potentially-stale EntityData
             for (MagicNPC npc : npcs.values()) {
-                npc.update();
+                try {
+                    npc.update();
+                } catch (Exception ex) {
+                    getLogger().log(Level.SEVERE, "Error updating npc " + npc.getName(), ex);
+                }
             }
         }
 
