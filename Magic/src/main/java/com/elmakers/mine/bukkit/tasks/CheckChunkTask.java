@@ -16,7 +16,10 @@ public class CheckChunkTask implements Runnable {
 
     @Override
     public void run() {
-        listener.onChunkLoad(this.chunk);
+        // Ignore the event if the chunk already unloaded
+        if (this.chunk.isLoaded()) {
+            listener.onChunkLoad(this.chunk);
+        }
     }
 
     public static void defer(Plugin plugin, ChunkLoadListener listener, Chunk chunk) {
