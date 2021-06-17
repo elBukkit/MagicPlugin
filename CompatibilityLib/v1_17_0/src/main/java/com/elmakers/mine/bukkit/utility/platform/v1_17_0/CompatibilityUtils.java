@@ -204,13 +204,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public Inventory createInventory(InventoryHolder holder, int size, final String name) {
         size = (int) (Math.ceil((double) size / 9) * 9);
         size = Math.min(size, 54);
-
-        String shorterName = name;
-        if (shorterName.length() > 32) {
-            shorterName = shorterName.substring(0, 31);
-        }
-        shorterName = translateColors(shorterName);
-        return Bukkit.createInventory(holder, size, shorterName);
+        String translatedName = translateColors(name);
+        return Bukkit.createInventory(holder, size, translatedName);
     }
 
     @Override
