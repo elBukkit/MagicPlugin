@@ -18,6 +18,7 @@
          backwards compatibility alltogether.
  - Hex color support in all messages in-game using an `&#AA22FF` format
  - Add `save` spell to engineering configs (unobtainable), for saving schematics) [WIP]
+ - Add `geode` schematic to engineering configs
 
 ## Fixes
 

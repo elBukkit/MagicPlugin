@@ -7,6 +7,7 @@
 
 # Recent issues
 
+ - Selector cost at top-level (default cost) doesn't work
  - Prevent spiders climbing?
  - Prevent players teleporting into an areaa
    - Or at least teleporting to a player in an arena?
