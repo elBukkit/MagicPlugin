@@ -1,0 +1,54 @@
+save:
+    icon: spruce_sign{CustomModelData:18001}
+    icon_disabled: spruce_sign{CustomModelData:18002}
+    legacy_icon: spell_icon:101
+    legacy_icon_disabled: spell_icon_disabled:101
+    icon_url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
+    category: engineering
+    tags: noduel
+    class: SaveSchematicSpell
+    worth: 5000
+    deactivate_effects: false
+    effects:
+        cast:
+          - sound: entity_illusioner_cast_spell
+            sound_pitch: 0.3
+          - location: selection_to_target
+            effectlib:
+              class: Cuboid
+              duration: 500
+              particle: end_rod
+              block_snap: true
+              padding: 0.1
+              particles: 10
+              particle_count: 4
+              particle_offset_x: 0.02
+              particle_offset_y: 0.02
+              particle_offset_z: 0.02
+          - location: selection_to_target
+            effectlib:
+               padding: 0.2
+               block_snap: true
+               class: Cuboid
+               duration: 1500
+               particle: block_crack
+               particles: 10
+               particle_count: 4
+               particle_offset_x: 0.01
+               particle_offset_y: 0.01
+               particle_offset_z: 0.01
+    parameters:
+        select_self: false
+        allow_max_range: false
+        target: select
+        range: 64
+        max_dimension: 64
+        check_destructible: false
+        transparent: transparent_to_construction
+        consume: true
+        ignore_region_overrides: true
+        ignore: bedrock,barrier
+        loud: true
+    costs:
+        mana: 100
+

@@ -1,11 +1,15 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_0;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
@@ -15,8 +19,12 @@ import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.SchematicUtilsBase;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
+import com.google.common.primitives.Bytes;
+import com.google.common.primitives.Ints;
 
+import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
 
@@ -115,6 +123,71 @@ public class SchematicUtils extends SchematicUtilsBase {
             ex.printStackTrace();
             return false;
         }
+        return true;
+    }
+
+    @Override
+    public boolean saveSchematic(OutputStream output, String[][][] blockData) {
+        if (output == null || blockData == null || blockData.length == 0 || blockData[0].length == 0 || blockData[0][0].length == 0) {
+            return false;
+        }
+
+        CompoundTag nbtData = new CompoundTag();
+        int width = blockData.length;
+        int height = blockData[0].length;
+        int length = blockData[0][0].length;
+        nbtData.putShort("Width", (short)width);
+        nbtData.putShort("Height", (short)height);
+        nbtData.putShort("Length", (short)length);
+
+        // Iterate through blocks and build varint data list and block palette
+        Map<String, Integer> paletteLookup = new HashMap<>();
+        List<Byte> blockList = new ArrayList<>();
+        int currentId = 0;
+        for (int y = 0; y < height; y++) {
+            for (int z = 0; z < length; z++) {
+                for (int x = 0; x < width; x++) {
+                    String block = blockData[x][y][z];
+                    Integer paletteIndex = paletteLookup.get(block);
+                    if (paletteIndex == null) {
+                        paletteIndex = currentId++;
+                        paletteLookup.put(block, paletteIndex);
+                    }
+                    while (paletteIndex > 128) {
+                        // This is probably wrong ...
+                        // TODO: test with a variety of blocks in a schematic!
+                        blockList.add((byte)((paletteIndex & 127) | 128));
+                        paletteIndex >>= 7;
+                    }
+                    blockList.add((byte)(int)paletteIndex);
+                }
+            }
+        }
+
+        // Save palette to NBT
+        CompoundTag palette = new CompoundTag();
+        for (Map.Entry<String, Integer> entry : paletteLookup.entrySet()) {
+            palette.putInt(entry.getKey(), entry.getValue());
+        }
+        nbtData.put("Palette", palette);
+
+        // Save block list to NBT
+        byte[] blockArray = Bytes.toArray(blockList);
+        nbtData.put("BlockData", new ByteArrayTag(blockArray));
+
+        // Add empty lists so they exist
+        nbtData.put("Entities", new ListTag());
+        nbtData.put("BlockEntities", new ListTag());
+        int[] offset = {0, 0, 0};
+        nbtData.put("Offset", new IntArrayTag(offset));
+
+        try {
+            NbtIo.writeCompressed(nbtData, output);
+        } catch (IOException ex) {
+            platform.getLogger().log(Level.WARNING, "Error writing schematic", ex);
+            return false;
+        }
+
         return true;
     }
 

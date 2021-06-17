@@ -17,6 +17,7 @@
          Minecraft 1.17 and up. This is a trade-off for now, to avoid dropping
          backwards compatibility alltogether.
  - Hex color support in all messages in-game using an `&#AA22FF` format
+ - Add `save` spell to engineering configs (unobtainable), for saving schematics) [WIP]
 
 ## Fixes
 
