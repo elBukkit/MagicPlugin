@@ -22,6 +22,7 @@
  - Add `target_permission` parameter, requiring a player/entity to have a specific permission in order to target them
  - Enchanting wands with books follows vanilla rules, allows multiple enchantments
  - Nerf mutant mobs a bit
+ - Add `/mnpc clean` command for cleaning up unkillable mobs orphaned from their NPC
 
 # 8.7.1
 

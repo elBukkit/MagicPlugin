@@ -8,11 +8,15 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
@@ -27,9 +31,11 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.citizens.CitizensController;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class MagicNPCCommandExecutor extends MagicTabExecutor {
     private final NPCSelectionManager selections;
@@ -82,6 +88,11 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
                 targetName = StringUtils.join(parameters, " ");
             }
             onSelectNPC(mage, targetName);
+            return true;
+        }
+
+        if (subCommand.equalsIgnoreCase("clean")) {
+            onNPCClean(mage);
             return true;
         }
 
@@ -331,6 +342,30 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         return null;
     }
 
+    protected void onNPCClean(Mage mage) {
+        int removed = 0;
+        for (World world : Bukkit.getWorlds()) {
+            for (Entity entity : world.getEntities()) {
+                String npcId = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID);
+                if (npcId == null) continue;
+
+                MagicNPC npc = controller.getNPC(npcId);
+                if (npc == null || !npc.isEntity(entity)) {
+                    Location location = entity.getLocation();
+                    mage.sendMessage(ChatColor.YELLOW + "Removing an invalid NPC entity of type "
+                            + ChatColor.AQUA + entity.getType() + ChatColor.YELLOW + " at "
+                            + TextUtils.printBlockLocation(location)
+                            + ChatColor.YELLOW + " in " + ChatColor.DARK_AQUA
+                            + location.getWorld().getName()
+                    );
+                    entity.remove();
+                    removed++;
+                }
+            }
+        }
+        mage.sendMessage(ChatColor.YELLOW + "Removed " + ChatColor.RED + removed + ChatColor.YELLOW + " orphaned NPC entities");
+    }
+
     protected void onSelectNPC(Mage mage, String name) {
         MagicNPC npc = null;
         List<MagicNPC> list = selections.getList(mage.getCommandSender());
@@ -560,6 +595,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("player");
             options.add("dialog");
             options.add("template");
+            options.add("clean");
         } else if (args.length == 2 && args[0].equals("type")) {
             options.addAll(controller.getMobKeys());
             for (EntityType entityType : EntityType.values()) {

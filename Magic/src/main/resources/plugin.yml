@@ -798,6 +798,7 @@ commands:
         /mnpc import                      Import Citizens NPCs
         /mnpc tp                          Teleport to the selected NPC
         /mnpc move                        Moves the selected NPC to your location
+        /mnpc clean                       Remove any orphaned NPC entities in the world
         /mnpc update                      Force-update an NPC in case some config changes haven't taken
   mmap:
     description: Create and manage Magic image maps
