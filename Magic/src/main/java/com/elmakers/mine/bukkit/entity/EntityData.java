@@ -293,6 +293,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityFallingBlockData((FallingBlock)entity);
         } else if (entity.getType().name().equals("PARROT")) {
             extraData = new EntityParrotData(entity);
+        } else if (entity.getType().name().equals("GOAT")) {
+            extraData = new EntityGoatData(entity);
         } else if (entity instanceof EnderDragon) {
             extraData = new EntityEnderDragonData(entity);
         } else if (entity instanceof Creeper) {
@@ -581,6 +583,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 extraData = new EntityFallingBlockData(parameters);
             } else if (type != null && type.name().equals("PARROT")) {
                 extraData = new EntityParrotData(parameters, controller);
+            } else if (type != null && type.name().equals("GOAT")) {
+                extraData = new EntityGoatData(parameters, controller);
             } else if (type == EntityType.ENDER_DRAGON) {
                 extraData = new EntityEnderDragonData(parameters, controller);
             } else if (type == EntityType.CREEPER) {
