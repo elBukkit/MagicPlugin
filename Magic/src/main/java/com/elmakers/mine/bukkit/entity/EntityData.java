@@ -75,6 +75,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 
 /**
  * This class stores information about an Entity.
@@ -309,6 +310,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             extraData = new EntityCatData(entity);
         } else if (entity.getType().name().equals("PHANTOM")) {
             extraData = new EntityPhantomData(entity);
+        }
+
+        ItemUtils itemUtils = CompatibilityLib.getItemUtils();
+        if (!itemUtils.isEmpty(item)) {
+            item = itemUtils.getCopy(item);
         }
     }
 
@@ -969,10 +975,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             creature.setCanPickupItems(canPickupItems);
         }
 
-        if (entity instanceof Item) {
+        if (entity instanceof Item && !CompatibilityLib.getItemUtils().isEmpty(item)) {
             Item droppedItem = (Item)entity;
             droppedItem.setItemStack(item);
-        } else if (entity instanceof ExperienceOrb && xp != null) {
+        }
+        if (entity instanceof ExperienceOrb && xp != null) {
             ((ExperienceOrb)entity).setExperience(xp);
         }
 
@@ -1154,7 +1161,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         } else if (entity instanceof ItemFrame) {
             ItemFrame itemFrame = (ItemFrame)entity;
-            if (item != null) {
+            if (!CompatibilityLib.getItemUtils().isEmpty(item)) {
                 itemFrame.setItem(item);
             }
             if (facing != null) {
