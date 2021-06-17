@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_0;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +15,6 @@ import java.util.logging.Level;
 
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
@@ -104,7 +101,6 @@ import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
-import com.google.common.base.CaseFormat;
 import com.google.common.collect.Multimap;
 
 import net.md_5.bungee.api.ChatMessageType;
@@ -544,11 +540,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public byte getBlockData(FallingBlock falling) {
-        return 0;
-    }
-
-    @Override
     @SuppressWarnings("deprecation")
     public MapView getMapById(int id) {
         return Bukkit.getMap(id);
@@ -652,11 +643,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public void setInvisible(ArmorStand armorStand, boolean invisible) {
-        armorStand.setInvisible(invisible);
-    }
-
-    @Override
     public void setGravity(ArmorStand armorStand, boolean gravity) {
         // I think the NMS method may be slightly different, so if things go wrong we'll have to dig deeper
         armorStand.setGravity(gravity);
@@ -677,6 +663,11 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public int getDisabledSlots(ArmorStand armorStand) {
         net.minecraft.world.entity.decoration.ArmorStand nms = ((CraftArmorStand)armorStand).getHandle();
         return nms.disabledSlots;
+    }
+
+    @Override
+    public void setInvisible(ArmorStand armorStand, boolean invisible) {
+        armorStand.setInvisible(invisible);
     }
 
     @Override
@@ -1113,14 +1104,14 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         // Converting legacy signs doesn't seem to work
         // This fixes them, but the direction is wrong, and restoring text causes internal errors
         // So I guess it's best to just let signs be broken for now.
-            /*
-            if (converted == Material.AIR) {
-                String typeKey = materialData.getItemType().name();
-                if (typeKey.equals("LEGACY_WALL_SIGN")) return Material.WALL_SIGN;
-                if (typeKey.equals("LEGACY_SIGN_POST")) return Material.SIGN_POST;
-                if (typeKey.equals("LEGACY_SIGN")) return Material.SIGN;
-            }
-            */
+        /*
+        if (converted == Material.AIR) {
+            String typeKey = materialData.getItemType().name();
+            if (typeKey.equals("LEGACY_WALL_SIGN")) return Material.WALL_SIGN;
+            if (typeKey.equals("LEGACY_SIGN_POST")) return Material.SIGN_POST;
+            if (typeKey.equals("LEGACY_SIGN")) return Material.SIGN;
+        }
+        */
         return converted;
     }
 
@@ -1165,14 +1156,19 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public String getBlockData(Material material, byte data) {
-        BlockData blockData = platform.getDeprecatedUtils().getUnsafe().fromLegacy(material, data);
-        return blockData == null ? null : blockData.getAsString();
+    public boolean hasBlockDataSupport() {
+        return true;
     }
 
     @Override
-    public boolean hasBlockDataSupport() {
-        return true;
+    public byte getBlockData(FallingBlock falling) {
+        return 0;
+    }
+
+    @Override
+    public String getBlockData(Material material, byte data) {
+        BlockData blockData = platform.getDeprecatedUtils().getUnsafe().fromLegacy(material, data);
+        return blockData == null ? null : blockData.getAsString();
     }
 
     @Override
@@ -1331,7 +1327,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             short maxDurability = ingredient.getType().getMaxDurability();
             if (ignoreDamage && maxDurability > 0) {
                 List<ItemStack> damaged = new ArrayList<>();
-                for (short damage = 0 ; damage < maxDurability; damage++) {
+                for (short damage = 0; damage < maxDurability; damage++) {
                     ingredient = ingredient.clone();
                     ItemMeta meta = ingredient.getItemMeta();
                     if (meta == null || !(meta instanceof org.bukkit.inventory.meta.Damageable))  break;
@@ -1432,7 +1428,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     /**
      * This will load chunks asynchronously if possible.
      *
-     * But note that it will never be truly asynchronous, it is important not to call this in a tight retry loop,
+     * <p>But note that it will never be truly asynchronous, it is important not to call this in a tight retry loop,
      * the main server thread needs to free up to actually process the async chunk loads.
      */
     @Override

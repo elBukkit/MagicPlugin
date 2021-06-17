@@ -312,16 +312,16 @@ public class InventoryUtils extends InventoryUtilsBase {
     }
 
     @Override
+    public Object getSkullProfile(Skull state) {
+        return ReflectionUtils.getPrivate(platform.getLogger(), state, state.getClass(), "profile");
+    }
+
+    @Override
     public boolean setSkullProfile(ItemMeta itemMeta, Object data) {
         if (itemMeta == null || !(itemMeta instanceof SkullMeta)) return false;
         Class<?>[] parameters = {GameProfile.class};
         Object[] values = {data};
         return ReflectionUtils.callPrivate(platform.getLogger(), itemMeta, itemMeta.getClass(), "setProfile", parameters, values);
-    }
-
-    @Override
-    public Object getSkullProfile(Skull state) {
-        return ReflectionUtils.getPrivate(platform.getLogger(), state, state.getClass(), "profile");
     }
 
     @Override

@@ -152,7 +152,7 @@ public class ItemUtils extends ItemUtilsBase {
     @Override
     public Object setStringList(Object nbtBase, String tag, Collection<String> values) {
         if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return null;
-        CompoundTag compoundTag = (CompoundTag)nbtBase ;
+        CompoundTag compoundTag = (CompoundTag)nbtBase;
         ListTag listMeta = new ListTag();
 
         for (String value : values) {

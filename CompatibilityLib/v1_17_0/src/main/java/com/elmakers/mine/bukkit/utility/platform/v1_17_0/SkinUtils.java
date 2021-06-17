@@ -57,7 +57,7 @@ public class SkinUtils extends SkinUtilsBase {
     }
 
     @Override
-    public JsonElement getProfileJson(Object profile){
+    public JsonElement getProfileJson(Object profile) {
         if (!(profile instanceof GameProfile)) return null;
         GameProfile gameProfile = (GameProfile)profile;
         JsonElement profileJson = getGson().toJsonTree(gameProfile);

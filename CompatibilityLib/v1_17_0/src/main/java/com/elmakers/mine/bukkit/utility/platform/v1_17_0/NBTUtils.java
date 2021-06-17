@@ -71,6 +71,16 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
+    public String getMetaString(ItemStack stack, String tag) {
+        if (platform.getItemUtils().isEmpty(stack)) return null;
+        String meta = null;
+        Object tagObject = platform.getItemUtils().getTag(stack);
+        if (tagObject == null || !(tagObject instanceof CompoundTag)) return null;
+        meta = ((CompoundTag)tagObject).getString(tag);
+        return meta;
+    }
+
+    @Override
     public Byte getMetaByte(Object node, String tag) {
         if (node == null || !(node instanceof CompoundTag)) return null;
         return ((CompoundTag)node).getByte(tag);
@@ -92,12 +102,6 @@ public class NBTUtils extends NBTUtilsBase {
     public Boolean getMetaBoolean(Object node, String tag) {
         if (node == null || !(node instanceof CompoundTag)) return null;
         return ((CompoundTag)node).getBoolean(tag);
-    }
-
-    @Override
-    public void setMeta(Object node, String tag, String value) {
-        if (node == null || !(node instanceof CompoundTag)) return;
-        ((CompoundTag)node).putString(tag, value);
     }
 
     @Override
@@ -135,7 +139,7 @@ public class NBTUtils extends NBTUtilsBase {
         if (node == null || !(node instanceof CompoundTag)) return;
         if (child == null) {
             ((CompoundTag)node).remove(tag);
-        } else if (child instanceof Tag){
+        } else if (child instanceof Tag) {
             ((CompoundTag)node).put(tag, (Tag)child);
         }
     }
@@ -156,13 +160,9 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public String getMetaString(ItemStack stack, String tag) {
-        if (platform.getItemUtils().isEmpty(stack)) return null;
-        String meta = null;
-        Object tagObject = platform.getItemUtils().getTag(stack);
-        if (tagObject == null || !(tagObject instanceof CompoundTag)) return null;
-        meta = ((CompoundTag)tagObject).getString(tag);
-        return meta;
+    public void setMeta(Object node, String tag, String value) {
+        if (node == null || !(node instanceof CompoundTag)) return;
+        ((CompoundTag)node).putString(tag, value);
     }
 
     @Override
