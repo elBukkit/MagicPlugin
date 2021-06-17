@@ -54,6 +54,7 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftItem;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
@@ -1603,5 +1604,10 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public boolean isPrimaryThread() {
         return Bukkit.isPrimaryThread();
+    }
+
+    @Override
+    public String getEnchantmentKey(Enchantment enchantment) {
+        return enchantment.getKey().getKey();
     }
 }

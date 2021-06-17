@@ -81,4 +81,10 @@ public interface DeprecatedUtils {
     void setPassenger(Entity mount, Entity passenger);
 
     org.bukkit.UnsafeValues getUnsafe();
+
+    boolean isTransparent(Material material);
+
+    void setItemDamage(ItemStack itemStack, short damage);
+
+    short getItemDamage(ItemStack itemStack);
 }

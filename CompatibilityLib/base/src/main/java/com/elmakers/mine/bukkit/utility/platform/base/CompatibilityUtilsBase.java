@@ -30,6 +30,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.Damageable;
@@ -711,5 +712,11 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public String translateColors(String message) {
         return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public String getEnchantmentKey(Enchantment enchantment) {
+        return enchantment.getName();
     }
 }

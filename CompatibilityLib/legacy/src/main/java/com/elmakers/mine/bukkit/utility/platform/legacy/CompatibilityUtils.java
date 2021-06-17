@@ -19,7 +19,6 @@ import java.util.logging.Level;
 
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;

@@ -250,4 +250,19 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
     public org.bukkit.UnsafeValues getUnsafe() {
         return Bukkit.getUnsafe();
     }
+
+    @Override
+    public boolean isTransparent(Material material) {
+        return material.isTransparent();
+    }
+
+    @Override
+    public void setItemDamage(ItemStack itemStack, short damage) {
+        itemStack.setDurability(damage);
+    }
+
+    @Override
+    public short getItemDamage(ItemStack itemStack) {
+        return itemStack.getDurability();
+    }
 }

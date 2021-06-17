@@ -28,6 +28,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
@@ -441,4 +442,6 @@ public interface CompatibilityUtils {
     boolean isPrimaryThread();
 
     String translateColors(String message);
+
+    String getEnchantmentKey(Enchantment enchantment);
 }

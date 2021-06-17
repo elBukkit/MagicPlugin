@@ -259,7 +259,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     public ItemData createVariant(String key, short damage) throws Exception {
         ItemData copy = new ItemData(key, this.item.clone(), worth, controller);
         copy.categories = categories;
-        copy.item.setDurability(damage);
+        CompatibilityLib.getDeprecatedUtils().setItemDamage(copy.item, damage);
         return copy;
     }
 
@@ -388,7 +388,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     @Override
     public int getDurability() {
-        return getOrCreateItemStack().getDurability();
+        return CompatibilityLib.getDeprecatedUtils().getItemDamage(getOrCreateItemStack());
     }
 
     @Override

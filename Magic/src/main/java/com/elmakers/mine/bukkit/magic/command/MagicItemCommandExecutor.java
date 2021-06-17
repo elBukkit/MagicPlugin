@@ -216,7 +216,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             boolean isAddRemove = subCommand.equalsIgnoreCase("remove") || subCommand.equalsIgnoreCase("add");
             if (isAddRemove && subCommand2.equalsIgnoreCase("enchant")) {
                 for (Enchantment enchantment : Enchantment.values()) {
-                    options.add(enchantment.getName().toLowerCase());
+                    options.add(CompatibilityLib.getCompatibilityUtils().getEnchantmentKey(enchantment).toLowerCase());
                 }
             }
             if (isAddRemove && subCommand2.equalsIgnoreCase("attribute")) {
