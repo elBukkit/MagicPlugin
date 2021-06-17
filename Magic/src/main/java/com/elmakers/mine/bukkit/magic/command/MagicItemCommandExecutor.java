@@ -363,7 +363,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.GREEN + "Removed: " + ChatColor.DARK_GREEN + tag);
             return true;
         }
-        String value = ChatColor.translateAlternateColorCodes('&', args[1]);
+        String value = CompatibilityLib.getCompatibilityUtils().translateColors(args[1]);
         for (int i = 0; i < path.length; i++) {
             String key = path[i];
             if (node == null) {
@@ -586,11 +586,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             String[] pieces = StringUtils.split(secondPageText, '\n');
             if (pieces.length > 0) {
                 ItemMeta skullMeta = skullItem.getItemMeta();
-                skullMeta.setDisplayName(ChatColor.translateAlternateColorCodes('&', pieces[0]));
+                skullMeta.setDisplayName(CompatibilityLib.getCompatibilityUtils().translateColors(pieces[0]));
                 if (pieces.length > 1) {
                     List<String> lore = new ArrayList<>();
                     for (int i = 1; i < pieces.length; i++) {
-                        lore.add(ChatColor.translateAlternateColorCodes('&', pieces[i]));
+                        lore.add(CompatibilityLib.getCompatibilityUtils().translateColors(pieces[i]));
                     }
                     skullMeta.setLore(lore);
                 }
@@ -790,7 +790,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         if (parameters.length < 1) {
             sender.sendMessage(api.getMessages().get("item.rename_clear"));
         } else {
-            displayName = ChatColor.translateAlternateColorCodes('&', StringUtils.join(parameters, " "));
+            displayName = CompatibilityLib.getCompatibilityUtils().translateColors(StringUtils.join(parameters, " "));
             sender.sendMessage(api.getMessages().get("item.renamed"));
         }
 
@@ -1140,7 +1140,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         if (addCommand.equalsIgnoreCase("lore")) {
             String[] loreLines = Arrays.copyOfRange(parameters, 1, parameters.length);
-            String loreLine = ChatColor.translateAlternateColorCodes('&', StringUtils.join(loreLines, " "));
+            String loreLine = CompatibilityLib.getCompatibilityUtils().translateColors(StringUtils.join(loreLines, " "));
             return onItemAddLore(sender, player, item, loreLine);
         }
         if (addCommand.equalsIgnoreCase("enchant")) {

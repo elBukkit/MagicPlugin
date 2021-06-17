@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -16,6 +15,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 @Deprecated
@@ -60,13 +60,13 @@ public class ItemShopAction extends com.elmakers.mine.bukkit.action.BaseShopActi
                                         ItemStack item = shopItem.getItem();
                                         ItemMeta meta = item.getItemMeta();
                                         if (name != null) {
-                                            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+                                            meta.setDisplayName(CompatibilityLib.getCompatibilityUtils().translateColors(name));
                                         }
                                         if (lore != null) {
                                             List<String> translatedLore = new ArrayList<>();
                                             for (String line : lore) {
                                                 if (line != null) {
-                                                    translatedLore.add(ChatColor.translateAlternateColorCodes('&', line));
+                                                    translatedLore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
                                                 }
                                             }
                                             meta.setLore(translatedLore);

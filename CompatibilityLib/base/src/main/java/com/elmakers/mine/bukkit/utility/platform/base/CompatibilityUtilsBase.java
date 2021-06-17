@@ -18,6 +18,7 @@ import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -705,5 +706,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public void cancelDismount(EntityDismountEvent event) {
         event.setCancelled(true);
+    }
+
+    @Override
+    public String translateColors(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 }

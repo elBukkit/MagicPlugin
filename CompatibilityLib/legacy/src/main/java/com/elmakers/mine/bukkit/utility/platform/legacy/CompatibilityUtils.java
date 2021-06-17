@@ -114,7 +114,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         if (shorterName.length() > 32) {
             shorterName = shorterName.substring(0, 31);
         }
-        shorterName = ChatColor.translateAlternateColorCodes('&', shorterName);
+        shorterName = translateColors(shorterName);
 
         // TODO: Is this even still necessary?
         if (NMSUtils.class_CraftInventoryCustom_constructor == null) {

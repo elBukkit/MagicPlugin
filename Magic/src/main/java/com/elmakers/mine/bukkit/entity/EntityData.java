@@ -351,7 +351,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             name = controller.getMessages().getIfSet("mobs." + key + ".name");
         }
         if (name != null) {
-            name = ChatColor.translateAlternateColorCodes('&', name);
+            name = CompatibilityLib.getCompatibilityUtils().translateColors(name);
         }
         registerByName = true;
         if (name != null && (name.equals("Grumm") || name.equals("Dinnerbone") || name.equals("jeb_"))) {

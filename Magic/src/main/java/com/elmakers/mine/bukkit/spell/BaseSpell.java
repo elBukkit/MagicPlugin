@@ -2063,7 +2063,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         verticalSearchDistance = parameters.getInt("vertical_range", 8);
         String nameOverride = parameters.getString("name", "");
         if (!nameOverride.isEmpty()) {
-            name = ChatColor.translateAlternateColorCodes('&', nameOverride).replace('_', ' ');
+            name = CompatibilityLib.getCompatibilityUtils().translateColors(nameOverride).replace('_', ' ');
         }
 
         friendlyEntityTypes = null;

@@ -5317,7 +5317,7 @@ public class MagicController implements MageController {
                                 currencyDescription = currencyDescription.replace("$type", name);
                                 currencyDescription = currencyDescription.replace("$amount", itemData);
                                 List<String> lore = new ArrayList<>();
-                                CompatibilityLib.getInventoryUtils().wrapText(ChatColor.translateAlternateColorCodes('&', currencyDescription), lore);
+                                CompatibilityLib.getInventoryUtils().wrapText(CompatibilityLib.getCompatibilityUtils().translateColors(currencyDescription), lore);
                                 meta.setLore(lore);
                             }
                             itemStack.setItemMeta(meta);
@@ -7753,8 +7753,8 @@ public class MagicController implements MageController {
 
         redstoneReplacement = ConfigurationUtils.getMaterialAndData(properties, "redstone_replacement", redstoneReplacement);
 
-        messagePrefix = ChatColor.translateAlternateColorCodes('&', messagePrefix);
-        castMessagePrefix = ChatColor.translateAlternateColorCodes('&', castMessagePrefix);
+        messagePrefix = CompatibilityLib.getCompatibilityUtils().translateColors(messagePrefix);
+        castMessagePrefix = CompatibilityLib.getCompatibilityUtils().translateColors(castMessagePrefix);
 
         worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", worldGuardManager.isEnabled()));
         factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));

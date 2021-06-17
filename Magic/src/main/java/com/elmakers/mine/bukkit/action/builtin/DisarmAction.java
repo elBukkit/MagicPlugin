@@ -78,7 +78,7 @@ public class DisarmAction extends BaseSpellAction
         maxSlot = parameters.getInt("max_slot", com.elmakers.mine.bukkit.wand.Wand.PLAYER_INVENTORY_SIZE - 1);
         displayName = parameters.getString("display_name", null);
         if (displayName != null) {
-            displayName = ChatColor.translateAlternateColorCodes('&', displayName);
+            displayName = CompatibilityLib.getCompatibilityUtils().translateColors(displayName);
         }
     }
 

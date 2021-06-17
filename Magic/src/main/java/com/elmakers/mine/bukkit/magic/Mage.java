@@ -5476,7 +5476,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public String parameterize(String text) {
-        text = ChatColor.translateAlternateColorCodes('&', text);
+        text = CompatibilityLib.getCompatibilityUtils().translateColors(text);
         // These should be the only two characters used as prefixes!
         // .. and also placeholders
         if (!text.contains("@") && !text.contains("$") && !text.contains("%")) return text;

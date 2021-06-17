@@ -449,13 +449,13 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     ItemMeta meta = item.getItemMeta();
                     String customName = configuration.getString("name");
                     if (applyNameToItem && customName != null  && !customName.isEmpty()) {
-                        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
+                        meta.setDisplayName(CompatibilityLib.getCompatibilityUtils().translateColors(customName));
                     }
                     List<String> lore = configuration.contains("lore") ? configuration.getStringList("lore") : null;
                     if (applyLoreToItem && lore != null) {
                         List<String> translated = new ArrayList<>();
                         for (String line : lore) {
-                            translated.add(ChatColor.translateAlternateColorCodes('&', line));
+                            translated.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
                         }
                         meta.setLore(translated);
                     }
@@ -736,7 +736,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
-            name = ChatColor.translateAlternateColorCodes('&', name);
+            name = CompatibilityLib.getCompatibilityUtils().translateColors(name);
             description = configuration.getString("description");
             if (description == null) {
                 if (unlockClass != null && !unlockClass.isEmpty()) {
@@ -1053,7 +1053,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     itemLore = new ArrayList<>();
                 }
                 for (String line : lore) {
-                    itemLore.add(ChatColor.translateAlternateColorCodes('&', line));
+                    itemLore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
                 }
                 meta.setLore(itemLore);
             }

@@ -1438,7 +1438,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Override
     public String parameterize(String text) {
         if (text == null || text.isEmpty()) return "";
-        text = ChatColor.translateAlternateColorCodes('&', text);;
+        text = CompatibilityLib.getCompatibilityUtils().translateColors(text);
         // These should be the only two characters used as prefixes!
         // .. and also placeholders
         if (!text.contains("@") && !text.contains("$") && !text.contains("%")) return text;

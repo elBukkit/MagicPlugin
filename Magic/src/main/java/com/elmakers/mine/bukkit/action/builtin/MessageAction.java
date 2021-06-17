@@ -36,13 +36,13 @@ public class MessageAction extends BaseSpellAction
         if (messageKey != null) {
             message = context.getMessage(messageKey);
         } else {
-            message = ChatColor.translateAlternateColorCodes('&', parameters.getString("message", ""));
+            message = CompatibilityLib.getCompatibilityUtils().translateColors(parameters.getString("message", ""));
         }
         String subMessageKey = parameters.getString("sub_message_key");
         if (subMessageKey != null) {
             subMessage = context.getMessage(subMessageKey);
         } else {
-            subMessage = ChatColor.translateAlternateColorCodes('&', parameters.getString("sub_message", ""));
+            subMessage = CompatibilityLib.getCompatibilityUtils().translateColors(parameters.getString("sub_message", ""));
         }
         fadeIn = parameters.getInt("fade_in", -1);
         stay = parameters.getInt("stay", -1);

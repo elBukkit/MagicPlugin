@@ -439,4 +439,6 @@ public interface CompatibilityUtils {
     void cancelDismount(EntityDismountEvent event);
 
     boolean isPrimaryThread();
+
+    String translateColors(String message);
 }

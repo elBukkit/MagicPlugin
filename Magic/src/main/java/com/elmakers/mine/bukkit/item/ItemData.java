@@ -187,7 +187,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
         if (customName != null) {
             ItemMeta meta = item.getItemMeta();
-            meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', customName));
+            meta.setDisplayName(CompatibilityLib.getCompatibilityUtils().translateColors(customName));
             item.setItemMeta(meta);
         }
         List<String> lore = configuration.getStringList("lore");
@@ -197,7 +197,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         if (lore != null && !lore.isEmpty()) {
             ItemMeta meta = item.getItemMeta();
             for (int i = 0; i < lore.size(); i++) {
-                lore.set(i, ChatColor.translateAlternateColorCodes('&', lore.get(i)));
+                lore.set(i, CompatibilityLib.getCompatibilityUtils().translateColors(lore.get(i)));
             }
             meta.setLore(lore);
             item.setItemMeta(meta);

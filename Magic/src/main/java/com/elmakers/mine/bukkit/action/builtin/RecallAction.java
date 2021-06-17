@@ -159,11 +159,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public String permission;
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, boolean maintainDirection) {
-            this.name = ChatColor.translateAlternateColorCodes('&', name);
+            this.name = CompatibilityLib.getCompatibilityUtils().translateColors(name);
             this.type = type;
             this.location = location;
             this.message = message;
-            this.description = description == null ? null : ChatColor.translateAlternateColorCodes('&', description);
+            this.description = description == null ? null : CompatibilityLib.getCompatibilityUtils().translateColors(description);
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = null;
@@ -177,11 +177,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         public Waypoint(RecallType type, Location location, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
-            this.name = ChatColor.translateAlternateColorCodes('&', name);
+            this.name = CompatibilityLib.getCompatibilityUtils().translateColors(name);
             this.type = type;
             this.location = location;
             this.message = message;
-            this.description = description == null ? null : ChatColor.translateAlternateColorCodes('&', description);
+            this.description = description == null ? null : CompatibilityLib.getCompatibilityUtils().translateColors(description);
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = iconURL;
@@ -195,13 +195,13 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         public Waypoint(RecallType type, String warpName, String serverName, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
-            this.name = ChatColor.translateAlternateColorCodes('&', name);
+            this.name = CompatibilityLib.getCompatibilityUtils().translateColors(name);
             this.type = type;
             this.location = null;
             this.warpName = warpName;
             this.serverName = serverName;
             this.message = message;
-            this.description = description == null ? null : ChatColor.translateAlternateColorCodes('&', description);;
+            this.description = description == null ? null : CompatibilityLib.getCompatibilityUtils().translateColors(description);;
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = iconURL;
@@ -213,11 +213,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         public Waypoint(RecallType type, String command, boolean opPlayer, boolean asConsole, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
-            this.name = ChatColor.translateAlternateColorCodes('&', name);
+            this.name = CompatibilityLib.getCompatibilityUtils().translateColors(name);
             this.type = type;
             this.location = null;
             this.message = message;
-            this.description = description == null ? null : ChatColor.translateAlternateColorCodes('&', description);;
+            this.description = description == null ? null : CompatibilityLib.getCompatibilityUtils().translateColors(description);;
             this.failMessage = failMessage;
             this.icon = icon == null ? defaultMaterial : icon;
             this.iconURL = iconURL;
@@ -343,9 +343,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
 
             String optionName = configuration.getString("name", defaultTitle);
-            name = ChatColor.translateAlternateColorCodes('&', optionName);
+            name = CompatibilityLib.getCompatibilityUtils().translateColors(optionName);
             message = configuration.getString("message",  defaultMessage).replace("$name", name);;
-            description = ChatColor.translateAlternateColorCodes('&', configuration.getString("description", defaultDescription));
+            description = CompatibilityLib.getCompatibilityUtils().translateColors(configuration.getString("description", defaultDescription));
             failMessage = configuration.getString("fail_message", defaultFailMessage).replace("$name", name);
             icon = ConfigurationUtils.getMaterialAndData(configuration, "icon", defaultIcon);
             iconURL = configuration.getString("icon_url");
@@ -593,7 +593,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     warpName = config.getString("name", warpName);
                 }
             }
-            warpName = ChatColor.translateAlternateColorCodes('&', warpName);
+            warpName = CompatibilityLib.getCompatibilityUtils().translateColors(warpName);
             String unlockMessage = context.getMessage("unlock_warp").replace("$name", warpName);
             context.sendMessageKey("unlock_warp", unlockMessage);
 

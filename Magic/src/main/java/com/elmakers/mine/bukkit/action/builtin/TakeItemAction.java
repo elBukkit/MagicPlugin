@@ -78,7 +78,7 @@ public class TakeItemAction extends BaseSpellAction
         super.prepare(context, parameters);
         displayName = parameters.getString("display_name", null);
         if (displayName != null) {
-            displayName = ChatColor.translateAlternateColorCodes('&', displayName);
+            displayName = CompatibilityLib.getCompatibilityUtils().translateColors(displayName);
         }
         giveToCaster = true;
         String itemKey = parameters.getString("item", "");

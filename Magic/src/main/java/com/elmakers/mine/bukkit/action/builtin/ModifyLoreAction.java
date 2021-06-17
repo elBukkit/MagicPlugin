@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,6 +20,7 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
@@ -40,7 +40,7 @@ public class ModifyLoreAction extends BaseSpellAction
         public String defaultValue;
 
         public ModifyLoreLine(String pattern, Object value) {
-            this.pattern = Pattern.compile(ChatColor.translateAlternateColorCodes('&', pattern));
+            this.pattern = Pattern.compile(CompatibilityLib.getCompatibilityUtils().translateColors(pattern));
             this.value = value;
         }
 
@@ -48,7 +48,7 @@ public class ModifyLoreAction extends BaseSpellAction
             this(configuration.getString("pattern"), configuration.get("value"));
             defaultValue = configuration.getString("default");
             if (defaultValue != null)
-                defaultValue = ChatColor.translateAlternateColorCodes('&', defaultValue);
+                defaultValue = CompatibilityLib.getCompatibilityUtils().translateColors(defaultValue);
             if (configuration.contains("min"))
                 min = configuration.getDouble("min");
             if (configuration.contains("max"))
@@ -145,7 +145,7 @@ public class ModifyLoreAction extends BaseSpellAction
                                 value = TextUtils.printNumber(transformedValue, digits);
                             }
                         } else {
-                            value = ChatColor.translateAlternateColorCodes('&', (String)property.value);
+                            value = CompatibilityLib.getCompatibilityUtils().translateColors((String)property.value);
                         }
                     } else if (property.value instanceof Number) {
                         value = TextUtils.printNumber(NumberConversions.toDouble(originalValue), digits);

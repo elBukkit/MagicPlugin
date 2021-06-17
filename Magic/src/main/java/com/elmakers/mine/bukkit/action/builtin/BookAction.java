@@ -116,7 +116,7 @@ public class BookAction extends BaseSpellAction {
             }
 
             while (newContents.size() <= pageNumber) newContents.add("");
-            newContents.set(pageNumber, ChatColor.translateAlternateColorCodes('&', pageText));
+            newContents.set(pageNumber, CompatibilityLib.getCompatibilityUtils().translateColors(pageText));
         }
 
         return newContents;
@@ -130,8 +130,8 @@ public class BookAction extends BaseSpellAction {
         String titleParam = parameters.getString("title", "");
         String authorParam = parameters.getString("author", context.getMage().getName());
 
-        title = messages.get(titleParam, ChatColor.translateAlternateColorCodes('&', titleParam));
-        author = messages.get(authorParam, ChatColor.translateAlternateColorCodes('&', authorParam));
+        title = messages.get(titleParam, CompatibilityLib.getCompatibilityUtils().translateColors(titleParam));
+        author = messages.get(authorParam, CompatibilityLib.getCompatibilityUtils().translateColors(authorParam));
         pages = parameters.getConfigurationSection("pages");
         giveBook = parameters.getBoolean("give_book", false);
         bookItem = parameters.getString("book_item");

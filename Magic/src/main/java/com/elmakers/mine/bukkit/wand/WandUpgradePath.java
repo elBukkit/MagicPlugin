@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -41,6 +40,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.progression.ProgressionLevel;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.WeightedPair;
@@ -628,7 +628,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 }
                 WandUpgradePath upgrade = getPath(upgradeKey);
                 command = command.replace("$path", upgrade.getName());
-                command = ChatColor.translateAlternateColorCodes('&', command);
+                command = CompatibilityLib.getCompatibilityUtils().translateColors(command);
                 controller.getPlugin().getServer().dispatchCommand(sender, command);
             }
         }
@@ -639,7 +639,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
                 .replace("$pn", mage.getDisplayName())
                 .replace("$name", mage.getName())
                 .replace("$path", upgrade.getName());
-            message = ChatColor.translateAlternateColorCodes('&', message);
+            message = CompatibilityLib.getCompatibilityUtils().translateColors(message);
             for (Player messagePlayer : controller.getPlugin().getServer().getOnlinePlayers()) {
                 TextUtils.sendMessage(messagePlayer, message);
             }

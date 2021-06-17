@@ -855,7 +855,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public String getName() {
-        return ChatColor.translateAlternateColorCodes('&', wandName);
+        return CompatibilityLib.getCompatibilityUtils().translateColors(wandName);
     }
 
     public String getDescription() {
@@ -2370,14 +2370,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (materialName == null) {
             materialName = "none";
         }
-        String brushPrefix = ChatColor.translateAlternateColorCodes('&', messages.get("wand.brush_prefix"));
+        String brushPrefix = CompatibilityLib.getCompatibilityUtils().translateColors(messages.get("wand.brush_prefix"));
         return brushPrefix + materialName;
     }
 
     private static String getSpellDisplayName(Messages messages, SpellTemplate spell, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
         String name = "";
         if (spell != null) {
-            String spellPrefix = ChatColor.translateAlternateColorCodes('&', messages.get("wand.spell_prefix"));
+            String spellPrefix = CompatibilityLib.getCompatibilityUtils().translateColors(messages.get("wand.spell_prefix"));
             if (brush != null && spell.usesBrush() && spell.showBrush()) {
                 name = spellPrefix + spell.getName() + " " + getBrushDisplayName(messages, brush) + ChatColor.WHITE;
             } else {
@@ -2411,7 +2411,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // $uses
         name = name.replace("$uses", Integer.toString(getRemainingUses()));
 
-        return ChatColor.translateAlternateColorCodes('&', name);
+        return CompatibilityLib.getCompatibilityUtils().translateColors(name);
     }
 
     private String getActiveWandName(SpellTemplate spell, com.elmakers.mine.bukkit.api.block.MaterialBrush brush) {
@@ -2425,7 +2425,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String wandColorPrefix = (hasUses && remaining <= 1) ? "single_use_prefix" : isModifiable()
                 ? (bound ? "bound_prefix" : "unbound_prefix") :
                   (path != null && path.length() > 0 ? "has_path_prefix" : "unmodifiable_prefix");
-        String name = ChatColor.translateAlternateColorCodes('&', getMessage(wandColorPrefix)) + getDisplayName();
+        String name = CompatibilityLib.getCompatibilityUtils().translateColors(getMessage(wandColorPrefix)) + getDisplayName();
         if (randomizeOnActivate) return name;
 
         Set<String> spells = getSpells();
@@ -2467,7 +2467,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected String getDisplayName() {
-        return ChatColor.translateAlternateColorCodes('&', randomizeOnActivate ? getMessage("randomized_name") : wandName);
+        return CompatibilityLib.getCompatibilityUtils().translateColors(randomizeOnActivate ? getMessage("randomized_name") : wandName);
     }
 
     public void updateName(boolean isActive) {
@@ -2478,7 +2478,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String name;
         if (isActive || useActiveName) {
             name = !isUpgrade ? getActiveWandName() :
-                    ChatColor.translateAlternateColorCodes('&', getMessage("upgrade_prefix")) + getDisplayName();
+                    CompatibilityLib.getCompatibilityUtils().translateColors(getMessage("upgrade_prefix")) + getDisplayName();
         } else {
             name = stripColors ? getDisplayName() : getActiveWandName(null, null);
         }
@@ -2655,13 +2655,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         if (mage != null) {
                             line = mage.parameterize(line);
                         }
-                        lore.add(ChatColor.translateAlternateColorCodes('&', line));
+                        lore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
                 }
             } else {
                 if (mage != null) {
                     line = mage.parameterize(line);
                 }
-                lore.add(ChatColor.translateAlternateColorCodes('&', line));
+                lore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
             }
         }
         return lore;
@@ -2695,7 +2695,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else if (!descriptionTemplate.isEmpty()) {
             updatedDescription = descriptionTemplate.replace("$description", description);
         }
-        updatedDescription = ChatColor.translateAlternateColorCodes('&', updatedDescription);
+        updatedDescription = CompatibilityLib.getCompatibilityUtils().translateColors(updatedDescription);
         return updatedDescription;
     }
 

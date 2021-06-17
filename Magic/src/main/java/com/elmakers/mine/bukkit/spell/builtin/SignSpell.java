@@ -30,7 +30,7 @@ public class SignSpell extends BlockSpell
         boolean autoGive = parameters.getBoolean("auto_give", false);
         boolean editSign = parameters.getBoolean("edit", false);
         boolean displayName = parameters.getBoolean("display_name", true);
-        String prefix = ChatColor.translateAlternateColorCodes('&', parameters.getString("prefix", ""));
+        String prefix = CompatibilityLib.getCompatibilityUtils().translateColors(parameters.getString("prefix", ""));
 
         Entity sourceEntity = mage.getEntity();
         if (sourceEntity == null) {

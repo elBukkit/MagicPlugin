@@ -366,7 +366,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Nonnull
     public String getName() {
         String name = this.name == null ? "" : this.name;
-        return ChatColor.translateAlternateColorCodes('&', name);
+        return CompatibilityLib.getCompatibilityUtils().translateColors(name);
     }
 
     @Override

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 import javax.annotation.Nonnull;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,6 +12,7 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.google.common.collect.ImmutableList;
 
 public class ChatAction extends BaseSpellAction {
@@ -22,7 +22,7 @@ public class ChatAction extends BaseSpellAction {
 
     private String translate(CastContext context, String key) {
         String message = context.getMessage(key, key);
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return CompatibilityLib.getCompatibilityUtils().translateColors(message);
     }
 
     @Override

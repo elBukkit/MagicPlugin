@@ -208,7 +208,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         if (shorterName.length() > 32) {
             shorterName = shorterName.substring(0, 31);
         }
-        shorterName = ChatColor.translateAlternateColorCodes('&', shorterName);
+        shorterName = translateColors(shorterName);
         return Bukkit.createInventory(holder, size, shorterName);
     }
 

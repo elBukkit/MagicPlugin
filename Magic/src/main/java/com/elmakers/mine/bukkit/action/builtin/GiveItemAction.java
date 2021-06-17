@@ -54,13 +54,13 @@ public class GiveItemAction extends BaseSpellAction
                 ItemMeta meta = item.getItemMeta();
                 if (name != null && !name.isEmpty())
                 {
-                    meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', name));
+                    meta.setDisplayName(CompatibilityLib.getCompatibilityUtils().translateColors(name));
                 }
                 if (lore != null && !lore.isEmpty())
                 {
                     for (int i = 0; i < lore.size(); i++)
                     {
-                        lore.set(i, ChatColor.translateAlternateColorCodes('&', lore.get(i)));
+                        lore.set(i, CompatibilityLib.getCompatibilityUtils().translateColors(lore.get(i)));
                     }
                     meta.setLore(lore);
                 }

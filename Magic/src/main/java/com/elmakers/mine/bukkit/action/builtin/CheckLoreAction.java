@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -15,6 +14,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class CheckLoreAction extends CheckAction {
     private Pattern pattern;
@@ -22,7 +22,7 @@ public class CheckLoreAction extends CheckAction {
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        this.pattern = Pattern.compile(ChatColor.translateAlternateColorCodes('&', parameters.getString("pattern")));
+        this.pattern = Pattern.compile(CompatibilityLib.getCompatibilityUtils().translateColors(parameters.getString("pattern")));
     }
 
     @Override
