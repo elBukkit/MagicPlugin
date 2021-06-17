@@ -64,10 +64,11 @@ wolf:
     - newpage
 
     # Page 1, conduit
-    - backup
     - repair
-    - superrepair
+    - backup
     - superbackup
+    - superrepair
+    - save
     - portal
     - night
     - capture
