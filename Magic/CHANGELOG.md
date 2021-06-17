@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 9.0.1
+
 # 9.0
 
 ## 1.17 Support
@@ -19,7 +21,7 @@
          Minecraft 1.17 and up. This is a trade-off for now, to avoid dropping
          backwards compatibility alltogether.
  - Hex color support in all messages in-game using an `&#AA22FF` format
- - Add `save` spell to engineering configs (unobtainable), for saving schematics) [WIP]
+ - Add `save` spell to engineering configs (unobtainable, only on Wolf staff), for saving schematics) [WIP]
  - Add `geode` schematic to engineering configs
  - Add `screaming` mob property for goats
 
