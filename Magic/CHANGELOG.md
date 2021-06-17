@@ -11,7 +11,14 @@
    - AlterSpell
  - Non-functional hologram functionality removed
 
-## Other Changes and Additions
+## 1.17-Only Changes and Additions
+
+ - NOTE: Changes requiring modern Minecraft API use may now sometimes only work on
+         Minecraft 1.17 and up. This is a trade-off for now, to avoid dropping
+         backwards compatibility alltogether.
+ - Hex color support in all messages in-game using an `#AA22FF` format
+
+## General Changes and Additions
 
  - Add `prevent_teleport` mob option, and a `contained_enderman` mob for arena battles
  - Add `use_parent_target_location` and `use_parent_source_location` ChangeContext options
