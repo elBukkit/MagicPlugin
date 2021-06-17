@@ -16,11 +16,12 @@
  - NOTE: Changes requiring modern Minecraft API use may now sometimes only work on
          Minecraft 1.17 and up. This is a trade-off for now, to avoid dropping
          backwards compatibility alltogether.
- - Hex color support in all messages in-game using an `#AA22FF` format
+ - Hex color support in all messages in-game using an `&#AA22FF` format
 
 ## Fixes
 
  - Fix integration with some economy plugins by delaying registration a bit
+ - Fix a wand dupe issue when adding spell items to a wand inside of a container
 
 ## General Changes and Additions
  

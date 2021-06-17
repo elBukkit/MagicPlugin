@@ -144,7 +144,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class CompatibilityUtils extends CompatibilityUtilsBase {
-    private final Pattern hexColorPattern = Pattern.compile("(#[A-Fa-f0-9]{6})");
+    private final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
     private final Map<String, net.minecraft.world.entity.EntityType> projectileEntityTypes = new HashMap<>();
     private final Map<String, Class<? extends net.minecraft.world.entity.projectile.Projectile>> projectileClasses = new HashMap<>();
 
