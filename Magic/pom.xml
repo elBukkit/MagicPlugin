@@ -22,9 +22,10 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>org.bukkit</groupId>
-                <artifactId>bukkit</artifactId>
+                <groupId>org.spigotmc</groupId>
+                <artifactId>spigot-api</artifactId>
                 <version>${bukkit.version}</version>
+                <scope>provided</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -68,10 +69,10 @@
             <scope>compile</scope>
         </dependency>
 
-        <!-- Bukkit, our dear friend. Implicitly also provides guava. -->
+        <!-- Spigot, our new dear friend. Implicitly also provides guava. -->
         <dependency>
-            <groupId>org.bukkit</groupId>
-            <artifactId>bukkit</artifactId>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
             <scope>provided</scope>
         </dependency>
 
