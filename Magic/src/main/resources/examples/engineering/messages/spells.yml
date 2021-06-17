@@ -234,7 +234,7 @@ spells:
         usage: Cast twice to fill
         target_selected: Cast again to save schematic
         fail: Can't save that much!
-        cast: Saved @blocks blocks to $filename
+        cast_finish: Saved selection to $filename
     superregenerate:
         name: SuperRegenerate
         description: Regenerate full chunks

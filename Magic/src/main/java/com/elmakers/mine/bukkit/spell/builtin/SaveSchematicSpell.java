@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.spell.TargetingSpell;
 public class SaveSchematicSpell extends TargetingSpell {
     private static final int DEFAULT_MAX_DIMENSION = 128;
     private Block targetBlock = null;
+    private String filename = "(Not Saved)";
 
     @Override
     public SpellResult onCast(ConfigurationSection parameters) {
@@ -82,5 +83,16 @@ public class SaveSchematicSpell extends TargetingSpell {
     public void onDeactivate() {
         targetBlock = null;
         setSelectedLocation(null);
+    }
+
+    public void setFilename(String filename) {
+        this.filename = filename;
+    }
+
+    @Override
+    public String getMessage(String messageKey, String def) {
+        String message = super.getMessage(messageKey, def);
+        message = message.replace("$filename", filename);
+        return message;
     }
 }

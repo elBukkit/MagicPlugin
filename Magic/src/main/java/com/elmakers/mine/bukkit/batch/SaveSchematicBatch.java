@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.logging.Level;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
@@ -15,9 +16,11 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
+import com.elmakers.mine.bukkit.spell.builtin.SaveSchematicSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class SaveSchematicBatch implements Batch, com.elmakers.mine.bukkit.api.batch.SpellBatch {
+    private static final int MAX_FILES = 1000;
     private final World world;
     private final TargetingSpell spell;
     private final CastContext context;
@@ -128,8 +131,20 @@ public class SaveSchematicBatch implements Batch, com.elmakers.mine.bukkit.api.b
         }
 
         // TODO: Find new filename
-        filename = context.getMage().getName().toLowerCase() + "1.schem";
-        File targetFile = new File(schematicFolder, filename);
+        int index = 1;
+        File targetFile = null;
+        while ((targetFile == null || targetFile.exists()) && index < MAX_FILES) {
+            filename = context.getMage().getName().toLowerCase() + index + ".schem";
+            targetFile = new File(schematicFolder, filename);
+            index++;
+        }
+        if (index >= MAX_FILES) {
+            context.getMage().sendMessage(ChatColor.RED + "You have over " + MAX_FILES + " schematics!");
+            context.getMage().sendMessage(ChatColor.YELLOW + "Overwriting: " + ChatColor.WHITE + filename);
+        }
+        if (spell instanceof SaveSchematicSpell) {
+            ((SaveSchematicSpell)spell).setFilename(filename);
+        }
         try (FileOutputStream outputStream = new FileOutputStream(targetFile)) {
             return CompatibilityLib.getSchematicUtils().saveSchematic(outputStream, blockData);
         } catch (Exception ex) {
@@ -146,12 +161,17 @@ public class SaveSchematicBatch implements Batch, com.elmakers.mine.bukkit.api.b
     public void finish() {
         if (!finished) {
             finished = true;
+            if (context != null) {
+                context.finish();
+            }
         }
     }
 
     @Override
     public void cancel() {
-
+        context.cancelEffects();
+        spell.cancel();
+        finish();
     }
 
     @Override
