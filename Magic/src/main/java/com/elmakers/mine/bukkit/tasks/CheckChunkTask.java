@@ -25,11 +25,16 @@ public class CheckChunkTask implements Runnable {
     }
 
     public static void process(MagicController controller, ChunkLoadListener listener, Chunk chunk) {
+        // This is hopefully temporary
+        // Works around async entity loading by waiting a bit to look for them.
+        defer(controller.getPlugin(), listener, chunk);
+        /*
         if (!controller.isDataLoaded()) {
             defer(controller.getPlugin(), listener, chunk);
         } else {
             listener.onChunkLoad(chunk);
         }
+        */
     }
 
     private static void defer(Plugin plugin, ChunkLoadListener listener, Chunk chunk) {
