@@ -17,13 +17,12 @@ public class ReflectionUtils {
         return null;
     }
 
-    public static boolean setPrivateNeedsFixing(Logger logger, Object o, Class<?> c, String field, Object value) {
-        return false;
+    public static boolean setPrivateNeedsFixing(Logger logger, Object o, Class<?> c, String field, String fixedField, Object value) {
+        return setPrivate(logger, o, c, fixedField, value);
     }
 
-    public static Object getPrivateNeedsFixing(Logger logger, Object o, Class<?> c, String field) {
-        // probs should return null but oh well
-        return false;
+    public static Object getPrivateNeedsFixing(Logger logger, Object o, Class<?> c, String field, String fixedField) {
+        return getPrivate(logger, o, c, fixedField);
     }
 
     public static boolean setPrivate(Logger logger, Object o, Class<?> c, String field, Object value) {

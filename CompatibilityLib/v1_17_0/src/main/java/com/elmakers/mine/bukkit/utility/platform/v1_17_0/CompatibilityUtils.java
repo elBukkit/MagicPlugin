@@ -637,8 +637,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax) {
         entity.setHurtEntities(true);
         FallingBlockEntity nms = (FallingBlockEntity)((CraftEntity)entity).getHandle();
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamagePerDistance", fallHurtAmount);
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamageMax", fallHurtMax);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamagePerDistance", "ar", fallHurtAmount);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamageMax", "aq", fallHurtMax);
     }
 
     @Override
@@ -711,7 +711,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public void addFlightExemption(Player player, int ticks) {
         ServerPlayer nms = ((CraftPlayer)player).getHandle();
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms.connection, ServerGamePacketListenerImpl.class, "aboveGroundTickCount", -ticks);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms.connection, ServerGamePacketListenerImpl.class, "aboveGroundTickCount", "C", -ticks);
     }
 
     @Override
@@ -983,7 +983,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public boolean isJumping(LivingEntity entity) {
         net.minecraft.world.entity.LivingEntity living = ((CraftLivingEntity)entity).getHandle();
-        return (boolean)ReflectionUtils.getPrivateNeedsFixing(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping");
+        return (boolean)ReflectionUtils.getPrivateNeedsFixing(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping", "bn");
     }
 
     @Override
@@ -1522,7 +1522,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
 
             if (ticksFlown != null) {
-                ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), fireworkHandle, FireworkRocketEntity.class, "life", ticksFlown);
+                ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), fireworkHandle, FireworkRocketEntity.class, "life", "e", ticksFlown);
             }
             if (expectedLifespan != null) {
                 fireworkHandle.lifetime = expectedLifespan;

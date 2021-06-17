@@ -2,13 +2,12 @@
 
 # 1.17
 
- - NPC dialog not activating
+ - Should modern CU still reflect into CraftBukkit methods to make updates easier?
+   .. maybe test out the shading method again, not sure why that wouldn't work other than the CB stuff
 
 # Recent issues
 
- - Prevent enderman teleporting
  - Prevent spiders climbing?
- - Some timeout or something, a way to advance to next if mobs get stuck
  - Prevent players teleporting into an areaa
    - Or at least teleporting to a player in an arena?
    - And don't save their death location
