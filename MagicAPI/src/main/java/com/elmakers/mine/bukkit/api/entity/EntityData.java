@@ -93,6 +93,7 @@ public interface EntityData extends Cloneable {
     void setMaterial(@Nonnull MaterialAndData material);
     @Nullable
     String getInteractPermission();
+    boolean getInteractRequiresOwner();
     @Nullable
     MaterialAndData getMaterial();
     @Nullable

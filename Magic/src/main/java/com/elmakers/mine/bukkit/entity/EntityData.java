@@ -172,6 +172,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Set<String> removeMounts;
     protected String interactSpell;
     protected String interactPermission;
+    protected boolean interactRequiresOwner;
     protected List<com.elmakers.mine.bukkit.api.item.Cost> interactCosts;
     protected ConfigurationSection interactSpellParameters;
     protected EntityData.SourceType interactSpellSource;
@@ -482,6 +483,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         List<Cost> interactCosts = Cost.parseCosts(ConfigurationUtils.getConfigurationSection(parameters, "interact_costs"), controller);
         this.interactCosts = (interactCosts == null) ? null : new ArrayList<>(interactCosts);
         interactPermission = parameters.getString("interact_permission");
+        interactRequiresOwner = parameters.getBoolean("interact_requires_owner", false);
         String sourceType = parameters.getString("interact_spell_source", "PLAYER");
         if (sourceType.equalsIgnoreCase("NPC")) {
             sourceType = "MOB";
@@ -1549,6 +1551,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public String getInteractPermission() {
         return interactPermission;
+    }
+
+    @Override
+    public boolean getInteractRequiresOwner() {
+        return interactRequiresOwner;
     }
 
     public boolean isSplittable() {

@@ -13,11 +13,13 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Tameable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -488,6 +490,17 @@ public class PlayerController implements Listener {
             String message = controller.getMessages().get("npc.no_permission");
             playerMage.sendMessage(message);
             return;
+        }
+        boolean requiresOwner = mob.getInteractRequiresOwner();
+        if (requiresOwner) {
+            if (!(entity instanceof Tameable)) {
+                return;
+            }
+            Tameable tamed = (Tameable)entity;
+            AnimalTamer tamer = tamed.getOwner();
+            if (!tamer.getUniqueId().equals(player.getUniqueId())) {
+                return;
+            }
         }
 
         Collection<Cost> costs = mob.getInteractCosts();

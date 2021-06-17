@@ -31,6 +31,7 @@
  - Enchanting wands with books follows vanilla rules, allows multiple enchantments
  - Nerf mutant mobs a bit
  - Add `/mnpc clean` command for cleaning up unkillable mobs orphaned from their NPC
+ - Add `interact_requires_owner` mob property, so mobs right-click action only works for their owner
 
 # 8.7.1
 
