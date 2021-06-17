@@ -1,5 +1,10 @@
 # Migration Notes
 
+# 9.0
+
+ - Persistent mobs now have separate `spawn` and `respawn` triggers. You may need to 
+   listen for both if you have been relying on `spawn` to trigger when a persistent mob reloads.
+
 # 8.6
 
  - Builtin placeholder replacement was optimized.

@@ -75,6 +75,7 @@ public interface EntityData extends Cloneable {
     @Deprecated
     boolean modify(MageController controller, Entity entity);
     boolean modify(Entity entity);
+    boolean respawned(Entity entity);
     @Nullable
     EntityData getRelativeTo(Location center);
     String describe();

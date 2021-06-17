@@ -873,6 +873,18 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return entity;
     }
 
+    @Override
+    public boolean respawned(Entity entity) {
+        boolean success = modify(entity, true);
+        if (success && mageData != null) {
+            Mage mage = controller.getMage(entity);
+            if (mage != null) {
+                mageData.trigger(mage, "respawn");
+            }
+        }
+        return success;
+    }
+
     @Deprecated
     @Override
     public boolean modify(MageController controller, Entity entity) {
@@ -1019,7 +1031,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (!isPlayer) {
             entity.setCustomNameVisible(nameVisible);
         }
-        attach(entity);
+        Mage mage = attachToMage(entity);
+        if (mage != null) {
+            mageData.trigger(mage, "spawn");
+        }
 
         if (disguise != null) {
             tryDisguise(entity, disguise);
@@ -1054,17 +1069,24 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public void attach(@Nonnull Entity entity) {
+        attachToMage(entity);
+    }
+
+    public Mage attachToMage(@Nonnull Entity entity) {
+        Mage apiMage = null;
         if (mageData != null) {
-            Mage apiMage = controller.getMage(entity);
-            if (apiMage.getEntityData() == this) return;
+            apiMage = controller.getMage(entity);
+            if (apiMage.getEntityData() == this) {
+                return apiMage;
+            }
 
             if (apiMage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage)apiMage).setEntityData(this);
             }
 
             mageData.resetTriggers();
-            mageData.trigger(apiMage, "spawn");
         }
+        return apiMage;
     }
 
     @Nullable
