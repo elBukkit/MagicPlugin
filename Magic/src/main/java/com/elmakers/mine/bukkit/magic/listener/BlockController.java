@@ -525,12 +525,7 @@ public class BlockController implements Listener, ChunkLoadListener {
 
     @EventHandler
     public void onChunkLoad(ChunkLoadEvent event) {
-        Chunk chunk = event.getChunk();
-        if (!controller.isDataLoaded()) {
-            CheckChunkTask.defer(controller.getPlugin(), this, chunk);
-        } else {
-            onChunkLoad(chunk);
-        }
+        CheckChunkTask.process(controller, this, event.getChunk());
     }
 
     @EventHandler

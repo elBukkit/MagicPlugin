@@ -117,6 +117,10 @@ public class WorldController implements Listener {
         return controller.getPlugin();
     }
 
+    public MagicController getMagicController() {
+        return controller;
+    }
+
     public MagicWorld getWorld(String name) {
         return magicWorlds.get(name);
     }

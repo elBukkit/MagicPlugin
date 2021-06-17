@@ -74,12 +74,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChunkLoad(ChunkLoadEvent event) {
         if (controller.isDisableSpawnReplacement() || ignoreReasons.contains(SpawnReason.CHUNK_GEN) || !event.isNewChunk()) return;
-        Chunk chunk = event.getChunk();
-        if (!controller.isDataLoaded()) {
-            CheckChunkTask.defer(controller.getPlugin(), this, chunk);
-        } else {
-            onChunkLoad(chunk);
-        }
+        CheckChunkTask.process(controller.getMagicController(), this, event.getChunk());
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

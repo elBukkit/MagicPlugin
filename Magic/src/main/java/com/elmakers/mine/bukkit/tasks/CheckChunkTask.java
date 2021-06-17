@@ -3,6 +3,8 @@ package com.elmakers.mine.bukkit.tasks;
 import org.bukkit.Chunk;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.listener.ChunkLoadListener;
 
 public class CheckChunkTask implements Runnable {
@@ -22,7 +24,15 @@ public class CheckChunkTask implements Runnable {
         }
     }
 
-    public static void defer(Plugin plugin, ChunkLoadListener listener, Chunk chunk) {
+    public static void process(MagicController controller, ChunkLoadListener listener, Chunk chunk) {
+        if (!controller.isDataLoaded()) {
+            defer(controller.getPlugin(), listener, chunk);
+        } else {
+            listener.onChunkLoad(chunk);
+        }
+    }
+
+    private static void defer(Plugin plugin, ChunkLoadListener listener, Chunk chunk) {
         // MagicController waits 2 ticks, so we'll wait a bit longer.
         // This is kind of a hacky relationship, but I thought it preferable to retrying
         plugin.getServer().getScheduler().runTaskLater(plugin, new CheckChunkTask(listener, chunk), 5);

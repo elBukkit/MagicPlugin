@@ -145,12 +145,7 @@ public class MobController implements Listener, ChunkLoadListener {
 
     @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGH)
     public void onChunkLoad(ChunkLoadEvent event) {
-        Chunk chunk = event.getChunk();
-        if (!controller.isDataLoaded()) {
-            CheckChunkTask.defer(controller.getPlugin(), this, chunk);
-        } else {
-            onChunkLoad(chunk);
-        }
+        CheckChunkTask.process(controller, this, event.getChunk());
     }
 
     @EventHandler(ignoreCancelled = false, priority = EventPriority.HIGHEST)
