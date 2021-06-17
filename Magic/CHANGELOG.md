@@ -10,6 +10,8 @@
    - ShapeSpell
    - AlterSpell
  - Non-functional hologram functionality removed
+ - Known Issues:
+   - NPCs might duplicate, this should fix itself eventually
 
 ## 1.17-Only Changes and Additions
 
