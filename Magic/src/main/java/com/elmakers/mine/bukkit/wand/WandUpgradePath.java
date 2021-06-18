@@ -403,7 +403,10 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             loadPath(controller, key, configuration);
         }
         // Resolve follows tree in a second pass to avoid complexities in detecting infinite loops
-        for (WandUpgradePath path : paths.values())  {
+        // New paths may be created here as placeholders when using "follows" for an unloaded set of configs.
+        // So we must make a copy of the list to iterate over.
+        List<WandUpgradePath> currentPaths = new ArrayList<>(paths.values());
+        for (WandUpgradePath path : currentPaths)  {
             path.loadFollows(controller, configuration);
         }
     }
@@ -418,15 +421,16 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         if (followsKey != null && !followsKey.isEmpty()) {
             follows = paths.get(followsKey);
             if (follows == null) {
-                controller.getLogger().warning("Failed to load follows path '" + followsKey + "' for path: " + key);
-                return;
+                controller.getLogger().info("Missing follows path '" + followsKey + "' for path: " + key + ", will create a placeholder");
+                follows = new WandUpgradePath(controller, followsKey, null, ConfigurationUtils.newConfigurationSection());
+                paths.put(followsKey, follows);
             }
 
             // This is a little hacky, but to keep it simpler this seems best
             // Just going to make it a warning though and allow it, in case there's some
             // weird reason someone needs this I can't think of.
             ConfigurationSection followParameters = pathsConfiguration.getConfigurationSection(followsKey);
-            if (followParameters.contains("follows")) {
+            if (followParameters != null && followParameters.contains("follows")) {
                 controller.getLogger().warning("Path " + key + " follows path " + followsKey + " which follows "
                     + followParameters.getString("follows")
                     + ", paths shouldn't follow paths that follow paths... probably. Consider re-arranging this?");

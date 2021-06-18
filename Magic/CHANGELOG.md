@@ -2,6 +2,8 @@
 
 # 9.0.1
 
+ - Fix `potter` spells not levelling up
+
 # 9.0
 
 ## 1.17 Support

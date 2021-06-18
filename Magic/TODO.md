@@ -1,5 +1,7 @@
 # TODO
 
+ - PotterPlus inheritance broken again
+
 # 1.17
 
  - Should modern CU still reflect into CraftBukkit methods to make updates easier?
