@@ -431,6 +431,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             effectContext.cancelEffects();
             effectContext = null;
         }
+
+        removed();
     }
 
     public void onCombust(EntityCombustEvent event) {
