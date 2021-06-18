@@ -421,7 +421,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         if (followsKey != null && !followsKey.isEmpty()) {
             follows = paths.get(followsKey);
             if (follows == null) {
-                controller.getLogger().info("Missing follows path '" + followsKey + "' for path: " + key + ", will create a placeholder");
+                controller.info("Missing follows path '" + followsKey + "' for path: " + key + ", will create a placeholder", 2);
                 follows = new WandUpgradePath(controller, followsKey, null, ConfigurationUtils.newConfigurationSection());
                 paths.put(followsKey, follows);
             }
