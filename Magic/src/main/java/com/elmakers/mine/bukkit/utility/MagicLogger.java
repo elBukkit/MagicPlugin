@@ -65,7 +65,7 @@ public class MagicLogger extends ColoredLogger {
                 MagicWarningEvent event = new MagicWarningEvent(record, context, pendingWarningCount, capture);
                 if (compatibility != null && compatibility.isPrimaryThread()) {
                     Bukkit.getPluginManager().callEvent(event);
-                } else if (plugin != null) {
+                } else if (plugin != null && plugin.isEnabled()) {
                     Bukkit.getScheduler().runTask(plugin, new CallEventTask(event));
                 }
             }
@@ -77,7 +77,7 @@ public class MagicLogger extends ColoredLogger {
 
                 if (compatibility != null && compatibility.isPrimaryThread()) {
                     Bukkit.getPluginManager().callEvent(event);
-                } else if (plugin != null) {
+                } else if (plugin != null && plugin.isEnabled()) {
                     Bukkit.getScheduler().runTask(plugin, new CallEventTask(event));
                 }
             }
