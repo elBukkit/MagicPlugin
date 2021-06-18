@@ -294,10 +294,11 @@ public class ConfigurationLoadTask implements Runnable {
 
         // We can have multiple inheritance which causes us to actually load the same configuration
         // twice, so we have to traverse each tree edge individually
-        boolean isMainConfig = fileName.equals("config") || fileName.equals("messages") || fileName.equals("materials");
+        boolean isMainConfig = fileName.equals("config");
+        boolean isUnkeyedConfig = isMainConfig || fileName.equals("messages") || fileName.equals("materials");
         if (inherited == null) {
             inherited = new LinkedHashSet<>();
-            if (!isMainConfig) {
+            if (!isUnkeyedConfig) {
                 enableAll(exampleConfig);
             }
         } else {
@@ -328,7 +329,7 @@ public class ConfigurationLoadTask implements Runnable {
                             } else {
                                 processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited);
                             }
-                            if (!isMainConfig && disable != null && disable.contains(fileName)) {
+                            if (!isUnkeyedConfig && disable != null && disable.contains(fileName)) {
                                 disableAll(inheritedConfig);
                             }
                             ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
@@ -342,7 +343,7 @@ public class ConfigurationLoadTask implements Runnable {
             }
         }
         // Prepare this config to be merged with others that may have force-disabled some of this config via inheritance
-        if (!isMainConfig) {
+        if (!isUnkeyedConfig) {
             enableAll(exampleConfig);
         }
     }
@@ -374,7 +375,7 @@ public class ConfigurationLoadTask implements Runnable {
         if (DEFAULT_ON.contains(fileName)) {
             loadAllDefaults = true;
         }
-        boolean isMainConfig = fileName.equals("config") || fileName.equals("messages") || fileName.equals("materials");
+        boolean isUnkeyedConfig = fileName.equals("config") || fileName.equals("messages") || fileName.equals("materials");
         boolean loadDefaults = mainConfiguration.getBoolean("load_default_" + fileName, loadAllDefaults);
         boolean disableDefaults = mainConfiguration.getBoolean("disable_default_" + fileName, false);
 
@@ -468,14 +469,14 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Apply overrides after loading defaults and examples
-        if (!isMainConfig) {
+        if (!isUnkeyedConfig) {
             enableAll(overrides);
         }
         ConfigurationUtils.addConfigurations(config, overrides, true, false, true);
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        loadConfigFolder(config, configSubFolder, !isMainConfig);
+        loadConfigFolder(config, configSubFolder, !isUnkeyedConfig);
 
         // Clear any enabled flags we added in to re-enable disabled inherited configs
         clearEnabled(config);
@@ -668,11 +669,11 @@ public class ConfigurationLoadTask implements Runnable {
     @Nullable
     private ConfigurationSection getSpellConfig(String key, ConfigurationSection config, boolean addInherited, Set<String> resolving) {
         // Catch circular dependencies
-        if (resolvingKeys.contains(key)) {
-            getLogger().log(Level.WARNING, "Circular dependency detected in spell configs: " + StringUtils.join(resolvingKeys, " -> ") + " -> " + key);
+        if (resolving.contains(key)) {
+            getLogger().log(Level.WARNING, "Circular dependency detected in spell configs: " + StringUtils.join(resolving, " -> ") + " -> " + key);
             return config;
         }
-        resolvingKeys.add(key);
+        resolving.add(key);
 
         if (addInherited) {
             ConfigurationSection built = spellConfigurations.get(key);

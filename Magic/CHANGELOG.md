@@ -3,6 +3,7 @@
 # 9.0.1
 
  - Fix `potter` spells not levelling up
+ - Fix PotterPlus add-on (broken spell inheritance against builtin potter example)
 
 # 9.0
 

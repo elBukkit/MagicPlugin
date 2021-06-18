@@ -1,6 +1,9 @@
 # TODO
 
- - PotterPlus inheritance broken again
+# MagicArenas
+
+ - Add arena stage list command
+ - Arena leave command not working
 
 # 1.17
 
