@@ -43,13 +43,13 @@
         <dependency>
             <groupId>com.elmakers.mine.bukkit.compatibility</groupId>
             <artifactId>CompatibilityLib</artifactId>
-            <version>1.9-1.1.17-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.elmakers.mine.bukkit.compatibility</groupId>
             <artifactId>CompatibilityLib-common</artifactId>
-            <version>1.9-1.1.17-SNAPSHOT</version>
+            <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
 
