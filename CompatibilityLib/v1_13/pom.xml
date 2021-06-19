@@ -7,10 +7,10 @@
         <artifactId>CompatibilityLib-parent</artifactId>
         <version>9.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>CompatibilityLib-v1_14</artifactId>
+    <artifactId>CompatibilityLib-v1_13</artifactId>
 
     <properties>
-        <bukkit.version>1.14.4-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.13.2-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <dependencies>
@@ -18,12 +18,6 @@
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>${bukkit.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_13</artifactId>
-            <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
