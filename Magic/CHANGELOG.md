@@ -4,6 +4,7 @@
 
  - Fix `potter` spells not levelling up
  - Fix PotterPlus add-on (broken spell inheritance against builtin potter example)
+ - Fix `otherside` example creating a `world_netherside_backup` world on load
 
 # 9.0
 

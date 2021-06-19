@@ -10,5 +10,5 @@ otherside_blocks:
 
 otherside_blocks_backup:
   inherit: otherside_blocks
-  world: world_netherside_backup
+  world: world_otherside_backup
   autoload: false
