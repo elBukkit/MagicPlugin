@@ -21,7 +21,7 @@ public class SkinUtils extends SkinUtilsBase {
     public SkinUtils(Platform platform) {
         super(platform);
     }
-    
+
     @Override
     public String getProfileURL(Object profile)
     {

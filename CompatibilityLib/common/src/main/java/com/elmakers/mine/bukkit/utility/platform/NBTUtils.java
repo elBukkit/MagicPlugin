@@ -5,13 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {
-    String getMetaString(ItemStack stack, String tag, String defaultValue);
 
     boolean hasMeta(ItemStack stack, String tag);
 
     Object getNode(ItemStack stack, String tag);
-
-    boolean containsNode(Object nbtBase, String tag);
 
     Object getNode(Object nbtBase, String tag);
 
@@ -19,9 +16,15 @@ public interface NBTUtils {
 
     Object createNode(ItemStack stack, String tag);
 
+    boolean containsNode(Object nbtBase, String tag);
+
     String getMetaString(Object node, String tag, String defaultValue);
 
     String getMetaString(Object node, String tag);
+
+    String getMetaString(ItemStack stack, String tag);
+
+    String getMetaString(ItemStack stack, String tag, String defaultValue);
 
     String getMeta(Object node, String tag);
 
@@ -33,13 +36,25 @@ public interface NBTUtils {
 
     Double getMetaDouble(Object node, String tag);
 
+    boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue);
+
     Boolean getMetaBoolean(Object node, String tag);
+
+    void setMetaTyped(Object node, String tag, String value);
+
+    void setMetaNode(Object node, String tag, Object child);
+
+    boolean setMetaNode(ItemStack stack, String tag, Object child);
+
+    void setMeta(ItemStack stack, String tag, String value);
 
     void setMeta(Object node, String tag, String value);
 
     void setMetaLong(Object node, String tag, long value);
 
     void setMetaBoolean(Object node, String tag, boolean value);
+
+    void setMetaBoolean(ItemStack stack, String tag, boolean value);
 
     void setMetaDouble(Object node, String tag, double value);
 
@@ -50,20 +65,6 @@ public interface NBTUtils {
     void removeMeta(Object node, String tag);
 
     void removeMeta(ItemStack stack, String tag);
-
-    void setMetaTyped(Object node, String tag, String value);
-
-    void setMetaNode(Object node, String tag, Object child);
-
-    boolean setMetaNode(ItemStack stack, String tag, Object child);
-
-    String getMetaString(ItemStack stack, String tag);
-
-    void setMeta(ItemStack stack, String tag, String value);
-
-    void setMetaBoolean(ItemStack stack, String tag, boolean value);
-
-    boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue);
 
     void addToList(Object listObject, Object node);
 }

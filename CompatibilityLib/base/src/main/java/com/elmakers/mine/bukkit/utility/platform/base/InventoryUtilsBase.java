@@ -32,6 +32,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     protected InventoryUtilsBase(final Platform platform) {
         this.platform = platform;
     }
+
     @Override
     public CurrencyAmount getCurrencyAmount(ItemStack item) {
         if (platform.getItemUtils().isEmpty(item)) return null;
@@ -196,6 +197,13 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
+    public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
+        // Old versions of Bukkit would NPE trying to save a skull without an owner name
+        // So we'll use MHF_Question, why not.
+        return setSkullURL(itemStack, url, id, "MHF_Question");
+    }
+
+    @Override
     public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
         try {
             itemStack = platform.getItemUtils().makeReal(itemStack);
@@ -207,13 +215,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         }
 
         return itemStack;
-    }
-
-    @Override
-    public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id) {
-        // Old versions of Bukkit would NPE trying to save a skull without an owner name
-        // So we'll use MHF_Question, why not.
-        return setSkullURL(itemStack, url, id, "MHF_Question");
     }
 
     @Override

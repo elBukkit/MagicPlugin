@@ -25,18 +25,6 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public boolean containsNode(Object nbtBase, String tag) {
-        if (nbtBase == null) return false;
-        Boolean result = false;
-        try {
-            result = (Boolean) NMSUtils.class_NBTTagCompound_hasKeyMethod.invoke(nbtBase, tag);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
-
-    @Override
     public Object getNode(Object nbtBase, String tag) {
         if (nbtBase == null) return null;
         Object meta = null;
@@ -46,6 +34,18 @@ public class NBTUtils extends NBTUtilsBase {
             ex.printStackTrace();
         }
         return meta;
+    }
+
+    @Override
+    public boolean containsNode(Object nbtBase, String tag) {
+        if (nbtBase == null) return false;
+        Boolean result = false;
+        try {
+            result = (Boolean) NMSUtils.class_NBTTagCompound_hasKeyMethod.invoke(nbtBase, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return result;
     }
 
     @Override
@@ -89,6 +89,20 @@ public class NBTUtils extends NBTUtilsBase {
         String meta = null;
         try {
             meta = (String) NMSUtils.class_NBTTagCompound_getStringMethod.invoke(node, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
+    }
+
+    @Override
+    public String getMetaString(ItemStack stack, String tag) {
+        if (platform.getItemUtils().isEmpty(stack)) return null;
+        String meta = null;
+        try {
+            Object tagObject = platform.getItemUtils().getTag(stack);
+            if (tagObject == null) return null;
+            meta = (String) NMSUtils.class_NBTTagCompound_getStringMethod.invoke(tagObject, tag);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -145,7 +159,7 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public void setMeta(Object node, String tag, String value) {
-        if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             if (value == null || value.length() == 0) {
                 NMSUtils.class_NBTTagCompound_removeMethod.invoke(node, tag);
@@ -158,8 +172,22 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
+    public void setMeta(ItemStack stack, String tag, String value) {
+        if (platform.getItemUtils().isEmpty(stack)) return;
+        try {
+            Object craft = platform.getItemUtils().getHandle(stack);
+            if (craft == null) return;
+            Object tagObject = platform.getItemUtils().getTag(craft);
+            if (tagObject == null) return;
+            NMSUtils.class_NBTTagCompound_setStringMethod.invoke(tagObject, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     public void setMetaLong(Object node, String tag, long value) {
-        if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setLongMethod.invoke(node, tag, value);
         } catch (Throwable ex) {
@@ -169,7 +197,7 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public void setMetaBoolean(Object node, String tag, boolean value) {
-        if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setBooleanMethod.invoke(node, tag, value);
         } catch (Throwable ex) {
@@ -179,7 +207,7 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public void setMetaDouble(Object node, String tag, double value) {
-        if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setDoubleMethod.invoke(node, tag, value);
         } catch (Throwable ex) {
@@ -189,7 +217,7 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public void setMetaInt(Object node, String tag, int value) {
-        if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setIntMethod.invoke(node, tag, value);
         } catch (Throwable ex) {
@@ -199,7 +227,7 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public void removeMeta(Object node, String tag) {
-        if (node == null|| !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_removeMethod.invoke(node, tag);
         } catch (Throwable ex) {
@@ -240,34 +268,6 @@ public class NBTUtils extends NBTUtilsBase {
         }
 
         return true;
-    }
-
-    @Override
-    public String getMetaString(ItemStack stack, String tag) {
-        if (platform.getItemUtils().isEmpty(stack)) return null;
-        String meta = null;
-        try {
-            Object tagObject = platform.getItemUtils().getTag(stack);
-            if (tagObject == null) return null;
-            meta = (String) NMSUtils.class_NBTTagCompound_getStringMethod.invoke(tagObject, tag);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return meta;
-    }
-
-    @Override
-    public void setMeta(ItemStack stack, String tag, String value) {
-        if (platform.getItemUtils().isEmpty(stack)) return;
-        try {
-            Object craft = platform.getItemUtils().getHandle(stack);
-            if (craft == null) return;
-            Object tagObject = platform.getItemUtils().getTag(craft);
-            if (tagObject == null) return;
-            NMSUtils.class_NBTTagCompound_setStringMethod.invoke(tagObject, tag, value);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override

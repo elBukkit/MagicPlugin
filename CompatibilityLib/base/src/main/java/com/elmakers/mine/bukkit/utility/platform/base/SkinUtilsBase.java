@@ -32,12 +32,12 @@ import com.google.gson.JsonParser;
 
 public abstract class SkinUtilsBase implements SkinUtils {
     protected final Platform platform;
-    protected Gson gson;
-    protected long holdoff = 0;
     protected final Map<UUID, ProfileResponse> responseCache = new HashMap<>();
     protected final Map<String, UUID> uuidCache = new HashMap<>();
     protected final Map<String, Object> loadingUUIDs = new HashMap<>();
     protected final Map<UUID, Object> loadingProfiles = new HashMap<>();
+    protected Gson gson;
+    protected long holdoff = 0;
 
     protected SkinUtilsBase(final Platform platform) {
         this.platform = platform;
@@ -88,7 +88,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
     private String fetchURL(String urlString) throws IOException {
         StringBuffer response = new StringBuffer();
         URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setConnectTimeout(30000);
         conn.setReadTimeout(30000);
         conn.setInstanceFollowRedirects(true);
@@ -152,7 +152,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
                             cacheFolder.mkdirs();
                         }
 
-                        try{
+                        try {
                             File playerCache = new File(cacheFolder, playerName + ".yml");
                             YamlConfiguration config = new YamlConfiguration();
                             config.set("uuid", uuid.toString());
@@ -209,7 +209,8 @@ public abstract class SkinUtilsBase implements SkinUtils {
                         } else {
                             String uuidJSON = fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
                             if (uuidJSON.isEmpty()) {
-                                if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Got empty UUID JSON for " + playerName);
+                                if (CompatibilityConstants.DEBUG)
+                                    platform.getLogger().warning("Got empty UUID JSON for " + playerName);
                                 synchronizeCallbackUUID(callback, null);
                                 return;
                             }
@@ -221,11 +222,13 @@ public abstract class SkinUtilsBase implements SkinUtils {
                             }
                             if (uuidString == null) {
                                 engageHoldoff();
-                                if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
+                                if (CompatibilityConstants.DEBUG)
+                                    platform.getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
                                 synchronizeCallbackUUID(callback, null);
                                 return;
                             }
-                            if (CompatibilityConstants.DEBUG) platform.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
+                            if (CompatibilityConstants.DEBUG)
+                                platform.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
                             uuid = UUID.fromString(addDashes(uuidString));
 
                             YamlConfiguration config = new YamlConfiguration();
@@ -254,8 +257,8 @@ public abstract class SkinUtilsBase implements SkinUtils {
 
     private String addDashes(String uuidString) {
         StringBuilder builder = new StringBuilder(uuidString);
-        for(int i=8, j=0; i<=20; i+=4, j++)
-            builder.insert(i+j, '-');
+        for (int i = 8, j = 0; i <= 20; i += 4, j++)
+            builder.insert(i + j, '-');
         return builder.toString();
     }
 
@@ -294,7 +297,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
                             cacheFolder.mkdirs();
                         }
 
-                        try{
+                        try {
                             File playerCache = new File(cacheFolder, uuid + ".yml");
                             YamlConfiguration config = new YamlConfiguration();
                             response.save(config);
@@ -361,7 +364,8 @@ public abstract class SkinUtilsBase implements SkinUtils {
                         if (profileJSON.isEmpty()) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
+                            if (CompatibilityConstants.DEBUG)
+                                platform.getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
                         if (CompatibilityConstants.DEBUG) platform.getLogger().info("Got profile: " + profileJSON);
@@ -369,7 +373,8 @@ public abstract class SkinUtilsBase implements SkinUtils {
                         if (element == null || !element.isJsonObject()) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
+                            if (CompatibilityConstants.DEBUG)
+                                platform.getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
                             return;
                         }
 
@@ -392,15 +397,18 @@ public abstract class SkinUtilsBase implements SkinUtils {
                         if (encodedTextures == null) {
                             synchronizeCallbackProfile(callback, null);
                             engageHoldoff();
-                            if (CompatibilityConstants.DEBUG) platform.getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
+                            if (CompatibilityConstants.DEBUG)
+                                platform.getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
                             return;
                         }
                         String decodedTextures = Base64Coder.decodeString(encodedTextures);
-                        if (CompatibilityConstants.DEBUG) platform.getLogger().info("Decoded textures: " + decodedTextures);
+                        if (CompatibilityConstants.DEBUG)
+                            platform.getLogger().info("Decoded textures: " + decodedTextures);
                         String skinURL = getTextureURL(decodedTextures);
 
                         // A null skin URL here is normal if the player has no skin.
-                        if (CompatibilityConstants.DEBUG) platform.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
+                        if (CompatibilityConstants.DEBUG)
+                            platform.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
                         ProfileResponse response = new ProfileResponse(skinUtils, uuid, profileJson.get("name").getAsString(), skinURL, profileJSON);
                         synchronized (responseCache) {
                             responseCache.put(uuid, response);

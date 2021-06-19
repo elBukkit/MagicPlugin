@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility;
 
 import java.lang.reflect.Constructor;
 import java.util.logging.Logger;
-
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.ArrayUtils;
@@ -68,10 +67,6 @@ public class CompatibilityLib {
         return platform != null;
     }
 
-    public static boolean isLegacy() {
-        return platform == null ? false : platform.isLegacy();
-    }
-
     public static boolean isCurrentVersion() {
         return platform == null ? true : platform.isCurrentVersion();
     }
@@ -86,6 +81,10 @@ public class CompatibilityLib {
 
     public static boolean hasTimeSkipEvent() {
         return platform == null ? true : platform.hasTimeSkipEvent();
+    }
+
+    public static boolean isLegacy() {
+        return platform == null ? false : platform.isLegacy();
     }
 
     // This is here as a bit of a hack, MaterialAndData needs to know how to parse materials, but this is used
@@ -184,7 +183,7 @@ public class CompatibilityLib {
             if (pieces.length > 2) {
                 version[2] = Integer.parseInt(pieces[2]);
             }
-        } catch (Exception ex) {
+        } catch (Exception ignore) {
 
         }
         return version;
@@ -198,7 +197,7 @@ public class CompatibilityLib {
         try {
             Class.forName("org.bukkit.persistence.PersistentDataContainer");
             return true;
-        } catch (Exception noPersistence) {
+        } catch (Exception ignore) {
 
         }
         return false;

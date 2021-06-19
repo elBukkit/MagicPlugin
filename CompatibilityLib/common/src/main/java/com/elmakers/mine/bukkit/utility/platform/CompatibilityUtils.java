@@ -115,15 +115,17 @@ public interface CompatibilityUtils {
 
     void damage(Damageable target, double amount, Entity source);
 
-    void magicDamage(Damageable target, double amount, Entity source);
-
     void damage(Damageable target, double amount, Entity source, String damageType);
+
+    void magicDamage(Damageable target, double amount, Entity source);
 
     Location getEyeLocation(Entity entity);
 
-    ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException;
-
     YamlConfiguration loadBuiltinConfiguration(String fileName) throws IOException, InvalidConfigurationException;
+
+    ConfigurationSection loadConfiguration(File file) throws IOException, InvalidConfigurationException;
+
+    ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException;
 
     YamlConfiguration loadConfiguration(InputStream stream, String fileName) throws IOException, InvalidConfigurationException;
 
@@ -148,8 +150,6 @@ public interface CompatibilityUtils {
 
     int getFacing(BlockFace direction);
 
-    byte getBlockData(FallingBlock falling);
-
     MapView getMapById(int id);
 
     Map<String, Object> getMap(ConfigurationSection section);
@@ -162,8 +162,6 @@ public interface CompatibilityUtils {
     Vector getPosition(Object entityData, String tag);
 
     BlockVector getBlockVector(Object entityData, String tag);
-
-    ConfigurationSection loadConfiguration(File file) throws IOException, InvalidConfigurationException;
 
     void setTNTSource(TNTPrimed tnt, LivingEntity source);
 
@@ -187,8 +185,6 @@ public interface CompatibilityUtils {
 
     int getMaxHeight(World world);
 
-    void setInvisible(ArmorStand armorStand, boolean invisible);
-
     void setGravity(ArmorStand armorStand, boolean gravity);
 
     void setGravity(Entity entity, boolean gravity);
@@ -196,6 +192,8 @@ public interface CompatibilityUtils {
     void setDisabledSlots(ArmorStand armorStand, int disabledSlots);
 
     int getDisabledSlots(ArmorStand armorStand);
+
+    void setInvisible(ArmorStand armorStand, boolean invisible);
 
     void setInvisible(Entity entity, boolean invisible);
 
@@ -339,15 +337,17 @@ public interface CompatibilityUtils {
 
     boolean setColor(PotionMeta meta, Color color);
 
+    byte getBlockData(FallingBlock falling);
+
     String getBlockData(Material material, byte data);
-
-    boolean hasBlockDataSupport();
-
-    boolean isTopBlock(Block block);
 
     String getBlockData(Block block);
 
     boolean setBlockData(Block block, String data);
+
+    boolean hasBlockDataSupport();
+
+    boolean isTopBlock(Block block);
 
     boolean applyPhysics(Block block);
 

@@ -55,7 +55,7 @@ public class InventoryUtils extends InventoryUtilsBase {
 
         return true;
     }
-    
+
     @Override
     public boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames)
     {
@@ -67,7 +67,7 @@ public class InventoryUtils extends InventoryUtilsBase {
             platform.getLogger().warning("Trying to save tags to a non-CompoundTag");
             return false;
         }
-        
+
         if (tagNames == null) {
             tagNames = tags.keySet();
         }
@@ -80,7 +80,7 @@ public class InventoryUtils extends InventoryUtilsBase {
         } else {
             currentTags = null;
         }
-        
+
         for (String tagName : tagNames)
         {
             if (currentTags != null) currentTags.remove(tagName);
@@ -297,7 +297,20 @@ public class InventoryUtils extends InventoryUtilsBase {
         try {
             if (itemMeta == null || !NMSUtils.class_CraftMetaSkull.isInstance(itemMeta)) return null;
             profile = NMSUtils.class_CraftMetaSkull_profile.get(itemMeta);
-        } catch (Exception ex) {
+        } catch (Exception ignore) {
+
+        }
+        return profile;
+    }
+
+    @Override
+    public Object getSkullProfile(Skull state)
+    {
+        Object profile = null;
+        try {
+            if (state == null || !NMSUtils.class_CraftSkull.isInstance(state)) return false;
+            profile = NMSUtils.class_CraftSkull_profile.get(state);
+        } catch (Exception ignore) {
 
         }
         return profile;
@@ -314,23 +327,10 @@ public class InventoryUtils extends InventoryUtilsBase {
                 NMSUtils.class_CraftMetaSkull_profile.set(itemMeta, data);
             }
             return true;
-        } catch (Exception ex) {
+        } catch (Exception ignore) {
 
         }
         return false;
-    }
-
-    @Override
-    public Object getSkullProfile(Skull state)
-    {
-        Object profile = null;
-        try {
-            if (state == null || !NMSUtils.class_CraftSkull.isInstance(state)) return false;
-            profile = NMSUtils.class_CraftSkull_profile.get(state);
-        } catch (Exception ex) {
-
-        }
-        return profile;
     }
 
     @Override
@@ -340,7 +340,7 @@ public class InventoryUtils extends InventoryUtilsBase {
             if (state == null || !NMSUtils.class_CraftSkull.isInstance(state)) return false;
             NMSUtils.class_CraftSkull_profile.set(state, data);
             return true;
-        } catch (Exception ex) {
+        } catch (Exception ignore) {
 
         }
 

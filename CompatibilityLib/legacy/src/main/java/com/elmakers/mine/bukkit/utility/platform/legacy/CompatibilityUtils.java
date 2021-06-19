@@ -84,12 +84,12 @@ import com.google.common.io.BaseEncoding;
 
 /**
  * A generic place to put compatibility-based utilities.
- * 
- * These are generally here when there is a new method added
+ *
+ * <p>These are generally here when there is a new method added
  * to the Bukkti API we'd like to use, but aren't quite
  * ready to give up backwards compatibility.
- * 
- * The easy solution to this problem is to shamelessly copy
+ *
+ * <p>The easy solution to this problem is to shamelessly copy
  * Bukkit's code in here, mark it as deprecated and then
  * switch everything over once the new Bukkit method is in an
  * official release.
@@ -168,6 +168,15 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         try {
             Object handle = NMSUtils.getHandle(entity);
             NMSUtils.class_Entity_setSilentMethod.invoke(handle, flag);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void setSilent(Object nmsEntity, boolean flag) {
+        if (NMSUtils.class_Entity_setSilentMethod == null) return;
+        try {
+            NMSUtils.class_Entity_setSilentMethod.invoke(nmsEntity, flag);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -412,7 +421,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                     NMSUtils.class_EntityDamageSource_setThornsMethod.invoke(damageSource);
                 }
 
-                try (Touchable damaging = DAMAGING.enter()) {
+                try (Touchable damaging = isDamaging.enter()) {
                     damaging.touch();
                     NMSUtils.class_EntityLiving_damageEntityMethod.invoke(
                             targetHandle,
@@ -420,7 +429,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                             (float) amount);
                 }
             } else {
-                try (Touchable damaging = DAMAGING.enter()) {
+                try (Touchable damaging = isDamaging.enter()) {
                     damaging.touch();
                     NMSUtils.class_EntityLiving_damageEntityMethod.invoke(
                             targetHandle,
@@ -451,7 +460,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             return;
         }
 
-        try (Touchable damaging = DAMAGING.enter()) {
+        try (Touchable damaging = isDamaging.enter()) {
             damaging.touch();
             Object targetHandle = NMSUtils.getHandle(target);
             if (targetHandle == null) return;
@@ -488,9 +497,9 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             if (worldHandle == null) return false;
             Object entityHandle = entity == null ? null : NMSUtils.getHandle(entity);
 
-            Object explosion = NMSUtils.class_EnumExplosionEffect != null ?
-                    NMSUtils.class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks ? NMSUtils.enum_ExplosionEffect_BREAK : NMSUtils.enum_ExplosionEffect_NONE) :
-                    NMSUtils.class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
+            Object explosion = NMSUtils.class_EnumExplosionEffect != null
+                    ? NMSUtils.class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks ? NMSUtils.enum_ExplosionEffect_BREAK : NMSUtils.enum_ExplosionEffect_NONE)
+                    : NMSUtils.class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
             Field cancelledField = explosion.getClass().getDeclaredField("wasCanceled");
             result = (Boolean)cancelledField.get(explosion);
         } catch (Throwable ex) {
@@ -657,20 +666,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
 
         return null;
-    }
-
-    @Override
-    public byte getBlockData(FallingBlock falling) {
-        // @deprecated Magic value
-        byte data = 0;
-        try {
-            if (NMSUtils.class_FallingBlock_getBlockDataMethod != null) {
-                data = (byte) NMSUtils.class_FallingBlock_getBlockDataMethod.invoke(falling);
-            }
-        } catch (Exception ignore) {
-
-        }
-        return data;
     }
 
     @Override
@@ -892,6 +887,17 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
+    public void setInvisible(Entity entity, boolean invisible) {
+        if (NMSUtils.class_Entity_setInvisible == null) return;
+        try {
+            Object handle = NMSUtils.getHandle(entity);
+            NMSUtils.class_Entity_setInvisible.invoke(handle, invisible);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     public void setInvisible(ArmorStand armorStand, boolean invisible) {
         try {
             Object handle = NMSUtils.getHandle(armorStand);
@@ -899,6 +905,18 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public Boolean isInvisible(Entity entity) {
+        if (NMSUtils.class_Entity_isInvisible == null) return null;
+        try {
+            Object handle = NMSUtils.getHandle(entity);
+            return (boolean) NMSUtils.class_Entity_isInvisible.invoke(handle);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
     }
 
     @Override
@@ -948,29 +966,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             ex.printStackTrace();
         }
         return 0;
-    }
-
-    @Override
-    public void setInvisible(Entity entity, boolean invisible) {
-        if (NMSUtils.class_Entity_setInvisible == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_setInvisible.invoke(handle, invisible);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public Boolean isInvisible(Entity entity) {
-        if (NMSUtils.class_Entity_isInvisible == null) return null;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            return (boolean) NMSUtils.class_Entity_isInvisible.invoke(handle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
     }
 
     @Override
@@ -1791,22 +1786,22 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public String getBlockData(Material material, byte data) {
-        if (NMSUtils.class_UnsafeValues_fromLegacyMethod == null) return null;
-        try {
-            Object blockData = NMSUtils.class_UnsafeValues_fromLegacyMethod.invoke(platform.getDeprecatedUtils().getUnsafe(), material, data);
-            if (blockData != null) {
-                return (String) NMSUtils.class_BlockData_getAsStringMethod.invoke(blockData);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+    public boolean hasBlockDataSupport() {
+        return NMSUtils.class_Block_getBlockDataMethod != null;
     }
 
     @Override
-    public boolean hasBlockDataSupport() {
-        return NMSUtils.class_Block_getBlockDataMethod != null;
+    public byte getBlockData(FallingBlock falling) {
+        // @deprecated Magic value
+        byte data = 0;
+        try {
+            if (NMSUtils.class_FallingBlock_getBlockDataMethod != null) {
+                data = (byte) NMSUtils.class_FallingBlock_getBlockDataMethod.invoke(falling);
+            }
+        } catch (Exception ignore) {
+
+        }
+        return data;
     }
 
     @Override
@@ -1818,6 +1813,20 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 return null;
             }
             return (String) NMSUtils.class_BlockData_getAsStringMethod.invoke(blockData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public String getBlockData(Material material, byte data) {
+        if (NMSUtils.class_UnsafeValues_fromLegacyMethod == null) return null;
+        try {
+            Object blockData = NMSUtils.class_UnsafeValues_fromLegacyMethod.invoke(platform.getDeprecatedUtils().getUnsafe(), material, data);
+            if (blockData != null) {
+                return (String) NMSUtils.class_BlockData_getAsStringMethod.invoke(blockData);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1889,10 +1898,10 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     protected boolean isPowerableLegacy(Block block) {
         BlockState blockState = block.getState();
         org.bukkit.material.MaterialData data = blockState.getData();
-        return data instanceof org.bukkit.material.Button ||
-                data instanceof org.bukkit.material.Lever ||
-                data instanceof org.bukkit.material.PistonBaseMaterial ||
-                data instanceof org.bukkit.material.PoweredRail;
+        return data instanceof org.bukkit.material.Button
+                || data instanceof org.bukkit.material.Lever
+                || data instanceof org.bukkit.material.PistonBaseMaterial
+                || data instanceof org.bukkit.material.PoweredRail;
     }
 
     @Override
@@ -2163,7 +2172,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             short maxDurability = ingredient.getType().getMaxDurability();
             if (ignoreDamage && maxDurability > 0) {
                 List<ItemStack> damaged = new ArrayList<>();
-                for (short damage = 0 ; damage < maxDurability; damage++) {
+                for (short damage = 0; damage < maxDurability; damage++) {
                     ingredient = ingredient.clone();
                     ingredient.setDurability(damage);
                     damaged.add(ingredient);
@@ -2301,7 +2310,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     /**
      * This will load chunks asynchronously if possible.
      *
-     * But note that it will never be truly asynchronous, it is important not to call this in a tight retry loop,
+     * <p>But note that it will never be truly asynchronous, it is important not to call this in a tight retry loop,
      * the main server thread needs to free up to actually process the async chunk loads.
      */
     @Override
@@ -2413,15 +2422,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             return null;
         }
         return projectileType;
-    }
-
-    private void setSilent(Object nmsEntity, boolean flag) {
-        if (NMSUtils.class_Entity_setSilentMethod == null) return;
-        try {
-            NMSUtils.class_Entity_setSilentMethod.invoke(nmsEntity, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override

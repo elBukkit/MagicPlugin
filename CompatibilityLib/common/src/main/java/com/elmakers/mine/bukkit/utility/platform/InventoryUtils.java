@@ -30,9 +30,9 @@ public interface InventoryUtils {
 
     boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames);
 
-    boolean addTagsToNBT(Map<String, Object> tags, Object node);
-
     boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames);
+
+    boolean addTagsToNBT(Map<String, Object> tags, Object node);
 
     Object wrapInTag(Object value)
             throws IllegalAccessException, InvocationTargetException, InstantiationException;
@@ -46,11 +46,11 @@ public interface InventoryUtils {
 
     ItemStack setSkullURL(ItemStack itemStack, String url);
 
-    ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id);
-
     ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id);
 
     ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String name);
+
+    ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id);
 
     String getSkullURL(ItemStack skull);
 
@@ -61,11 +61,11 @@ public interface InventoryUtils {
 
     Object getSkullProfile(ItemMeta itemMeta);
 
-    boolean setSkullProfile(ItemMeta itemMeta, Object data);
-
     Object getSkullProfile(Skull state);
 
     boolean setSkullProfile(Skull state, Object data);
+
+    boolean setSkullProfile(ItemMeta itemMeta, Object data);
 
     void wrapText(String text, Collection<String> list);
 

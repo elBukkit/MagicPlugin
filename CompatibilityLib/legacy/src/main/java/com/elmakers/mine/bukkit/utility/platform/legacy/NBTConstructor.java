@@ -7,7 +7,7 @@ import java.lang.reflect.Method;
 /**
  * This is a helper class to encapsulate a reflected constructor for a particular NBT tag class.
  *
- * This is here to bridge the static construction method of 1.15, while falling back to direct constructor access,
+ * <p>This is here to bridge the static construction method of 1.15, while falling back to direct constructor access,
  * including private constructors.
  */
 @SuppressWarnings({ "rawtypes", "unchecked" })
@@ -22,7 +22,7 @@ public class NBTConstructor {
             if (!tagClass.isAssignableFrom(staticConstructor.getReturnType())) {
                 staticConstructor = null;
             }
-        } catch(Exception ignore) {
+        } catch (Exception ignore) {
         }
 
         if (staticConstructor == null) {

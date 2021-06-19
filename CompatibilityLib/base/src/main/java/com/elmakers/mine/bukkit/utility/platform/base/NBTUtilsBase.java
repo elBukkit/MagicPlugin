@@ -13,15 +13,15 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public String getMetaString(ItemStack stack, String tag, String defaultValue) {
-        String result = getMetaString(stack, tag);
-        return result == null ? defaultValue : result;
-    }
-
-    @Override
     public boolean hasMeta(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return false;
         return getNode(stack, tag) != null;
+    }
+
+    @Override
+    public String getMetaString(ItemStack stack, String tag, String defaultValue) {
+        String result = getMetaString(stack, tag);
+        return result == null ? defaultValue : result;
     }
 
     @Override

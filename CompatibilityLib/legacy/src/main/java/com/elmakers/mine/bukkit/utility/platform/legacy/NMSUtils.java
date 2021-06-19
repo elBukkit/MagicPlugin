@@ -50,14 +50,14 @@ import com.google.common.base.CaseFormat;
 
 /**
  * Contains some raw methods for doing some simple NMS utilities.
- * 
- * This is not meant to be a replacement for full-on NMS or Protocol libs,
+ *
+ * <p>This is not meant to be a replacement for full-on NMS or Protocol libs,
  * but it is enough for Magic to use internally without requiring any
  * external dependencies.
- * 
- * Use any of this at your own risk!
+ *
+ * <p>Use any of this at your own risk!
  */
-@SuppressWarnings({ "rawtypes", "unchecked", "deprecation" })
+@SuppressWarnings({"rawtypes", "unchecked", "deprecation"})
 public class NMSUtils {
     protected static String versionPrefix;
     protected static boolean failed = false;
@@ -453,8 +453,8 @@ public class NMSUtils {
             class_Packet = fixBukkitClass("net.minecraft.server.Packet");
             class_World = fixBukkitClass("net.minecraft.server.World");
             class_WorldServer = fixBukkitClass("net.minecraft.server.WorldServer");
-            class_EnumSkyBlock = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumSkyBlock");
-            class_EnumSoundCategory = (Class<Enum>)fixBukkitClass("net.minecraft.server.SoundCategory");
+            class_EnumSkyBlock = (Class<Enum>) fixBukkitClass("net.minecraft.server.EnumSkyBlock");
+            class_EnumSoundCategory = (Class<Enum>) fixBukkitClass("net.minecraft.server.SoundCategory");
             enum_SoundCategory_PLAYERS = Enum.valueOf(class_EnumSoundCategory, "PLAYERS");
             class_EntityPainting = fixBukkitClass("net.minecraft.server.EntityPainting");
             class_EntityCreature = fixBukkitClass("net.minecraft.server.EntityCreature");
@@ -532,7 +532,7 @@ public class NMSUtils {
             class_EntityPlayer_setResourcePackMethod = class_EntityPlayer.getMethod("setResourcePack", String.class, String.class);
             class_CraftServer_getServerMethod = class_CraftServer.getMethod("getServer");
             class_MinecraftServer_getResourcePackMethod = class_MinecraftServer.getMethod("getResourcePack");
-            
+
             class_CraftInventoryCustom_constructor = class_CraftInventoryCustom.getConstructor(InventoryHolder.class, Integer.TYPE, String.class);
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
             class_PacketSpawnEntityConstructor = class_PacketPlayOutSpawnEntity.getConstructor(class_Entity, Integer.TYPE);
@@ -613,10 +613,10 @@ public class NMSUtils {
 
             class_CraftItemStack_getHandleField = class_CraftItemStack.getDeclaredField("handle");
             class_CraftItemStack_getHandleField.setAccessible(true);
-            
+
             class_MemorySection_mapField = MemorySection.class.getDeclaredField("map");
             class_MemorySection_mapField.setAccessible(true);
-            
+
             class_TileEntityContainer = fixBukkitClass("net.minecraft.server.TileEntityContainer");
             class_ChestLock = fixBukkitClass("net.minecraft.server.ChestLock");
             class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
@@ -638,7 +638,7 @@ public class NMSUtils {
             class_GameProfileProperty_constructor = class_GameProfileProperty.getConstructor(String.class, String.class, String.class);
             class_GameProfileProperty_noSignatureConstructor = class_GameProfileProperty.getConstructor(String.class, String.class);
 
-            class_EnumDirection = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumDirection");
+            class_EnumDirection = (Class<Enum>) fixBukkitClass("net.minecraft.server.EnumDirection");
             class_BlockPosition_Constructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
@@ -885,8 +885,8 @@ public class NMSUtils {
             }
             try {
                 class_Bisected = Class.forName("org.bukkit.block.data.Bisected");
-                class_BisectedHalf = (Class<Enum>)Class.forName("org.bukkit.block.data.Bisected$Half");
-                enum_BisectedHalf_TOP =  Enum.valueOf(class_BisectedHalf, "TOP");
+                class_BisectedHalf = (Class<Enum>) Class.forName("org.bukkit.block.data.Bisected$Half");
+                enum_BisectedHalf_TOP = Enum.valueOf(class_BisectedHalf, "TOP");
                 class_Bisected_setHalfMethod = class_Bisected.getMethod("setHalf", class_BisectedHalf);
             } catch (Exception ignore) {
                 class_Bisected = null;
@@ -894,7 +894,7 @@ public class NMSUtils {
 
             // 1.14 Support
             try {
-                class_EnumExplosionEffect = (Class<Enum>)fixBukkitClass("net.minecraft.server.Explosion$Effect");
+                class_EnumExplosionEffect = (Class<Enum>) fixBukkitClass("net.minecraft.server.Explosion$Effect");
                 enum_ExplosionEffect_BREAK = Enum.valueOf(class_EnumExplosionEffect, "BREAK");
                 enum_ExplosionEffect_NONE = Enum.valueOf(class_EnumExplosionEffect, "NONE");
                 class_World_explodeMethod = class_World.getMethod("createExplosion", class_Entity, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Boolean.TYPE, class_EnumExplosionEffect);
@@ -981,8 +981,8 @@ public class NMSUtils {
                     class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("maxY");
                     class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("maxZ");
                 } catch (Throwable ex) {
-                     logger.warning("Could not bind to AABB methods, vanilla hitboxes aren't readable");
-                     class_Entity_getBoundingBox = null;
+                    logger.warning("Could not bind to AABB methods, vanilla hitboxes aren't readable");
+                    class_Entity_getBoundingBox = null;
                 }
             }
 
@@ -1001,7 +1001,7 @@ public class NMSUtils {
                     class_PacketPlayOutCustomSoundEffect_Constructor = class_PacketPlayOutCustomSoundEffect.getConstructor(String.class, class_EnumSoundCategory, Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
                 }
             } catch (Throwable ex) {
-                 logger.warning("Could not bind to custom effect method, custom sound effects will not work");
+                logger.warning("Could not bind to custom effect method, custom sound effects will not work");
             }
 
             try {
@@ -1111,7 +1111,7 @@ public class NMSUtils {
                 class_PotionMeta_getColorMethod = PotionMeta.class.getMethod("getColor");
                 class_PotionMeta_setColorMethod = PotionMeta.class.getMethod("setColor", Color.class);
             } catch (Throwable ex) {
-                 logger.warning("Could not bind to PotionMeta color methods, Custom colored potions will not work.");
+                logger.warning("Could not bind to PotionMeta color methods, Custom colored potions will not work.");
             }
             try {
                 class_Block_setTypeIdAndDataMethod = Block.class.getMethod("setTypeIdAndData", Integer.TYPE, Byte.TYPE, Boolean.TYPE);
@@ -1196,12 +1196,12 @@ public class NMSUtils {
                 logger.warning("Could not register ProjectileHitEvent.getHitBlock, arrow hit locations will be fuzzy");
             }
             try {
-                class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.AbstractArrow$PickupStatus");
+                class_PickupStatus = (Class<Enum>) Class.forName("org.bukkit.entity.AbstractArrow$PickupStatus");
                 Class<?> arrowClass = Class.forName("org.bukkit.entity.AbstractArrow");
                 class_Arrow_setPickupStatusMethod = arrowClass.getMethod("setPickupStatus", class_PickupStatus);
             } catch (Throwable not141) {
                 try {
-                    class_PickupStatus = (Class<Enum>)Class.forName("org.bukkit.entity.Arrow$PickupStatus");
+                    class_PickupStatus = (Class<Enum>) Class.forName("org.bukkit.entity.Arrow$PickupStatus");
                     class_Arrow_setPickupStatusMethod = Arrow.class.getMethod("setPickupStatus", class_PickupStatus);
                 } catch (Throwable ex) {
                     class_PickupStatus = null;
@@ -1359,7 +1359,7 @@ public class NMSUtils {
                     class_ChatComponentText_constructor = class_ChatComponentText.getConstructor(String.class);
 
                     // Common to 1.16 and below
-                    class_ChatMessageType = (Class<Enum>)fixBukkitClass("net.minecraft.server.ChatMessageType");
+                    class_ChatMessageType = (Class<Enum>) fixBukkitClass("net.minecraft.server.ChatMessageType");
                     enum_ChatMessageType_GAME_INFO = Enum.valueOf(class_ChatMessageType, "GAME_INFO");
 
                     // 1.16 specific
@@ -1453,32 +1453,38 @@ public class NMSUtils {
                 try {
                     try {
                         class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bv");
-                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.15/1.14, maybe");
+                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
+                            throw new Exception("Looks like 1.15/1.14, maybe");
                     } catch (Exception not16) {
                         try {
                             class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bE");
-                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.13, maybe");
+                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
+                                throw new Exception("Looks like 1.13, maybe");
                         } catch (Exception not14) {
                             // 1.13
                             try {
                                 class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bH");
-                                if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.12, maybe");
+                                if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
+                                    throw new Exception("Looks like 1.12, maybe");
                             } catch (Exception not13) {
                                 try {
                                     // 1.12, same as 1.10
                                     class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.11, maybe");
+                                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
+                                        throw new Exception("Looks like 1.11, maybe");
                                 } catch (Throwable not12) {
                                     try {
                                         // 1.11
                                         class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.10");
+                                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
+                                            throw new Exception("Looks like 1.10");
                                     } catch (Throwable ignore) {
                                         // 1.10 and earlier
                                         setLegacy();
                                         try {
                                             class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
+                                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
+                                                throw new Exception("Looks like 1.9");
                                         } catch (Throwable ignore2) {
                                             try {
                                                 // 1.9.4
@@ -1548,7 +1554,8 @@ public class NMSUtils {
                 try {
                     // 1.10 and 1.11
                     class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("C");
-                    if (class_PlayerConnection_floatCountField.getType() != Integer.TYPE) throw new Exception("Looks like 1.9");
+                    if (class_PlayerConnection_floatCountField.getType() != Integer.TYPE)
+                        throw new Exception("Looks like 1.9");
                     class_PlayerConnection_floatCountField.setAccessible(true);
                 } catch (Throwable ignore) {
                     // 1.9 and earlier
@@ -1589,8 +1596,7 @@ public class NMSUtils {
                 logger.log(Level.WARNING, "Could not find arrow lifetime field, setting arrow lifespan will not work");
                 class_EntityArrow_lifeField = null;
             }
-            if (class_EntityArrow_lifeField != null)
-            {
+            if (class_EntityArrow_lifeField != null) {
                 class_EntityArrow_lifeField.setAccessible(true);
             }
 
@@ -1599,13 +1605,13 @@ public class NMSUtils {
                 try {
                     class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("x");
                     if (!class_EntityDamageSource_setThornsMethod.getReturnType().isAssignableFrom(class_EntityDamageSource)) {
-                        throw new Exception ("Wrong return type");
+                        throw new Exception("Wrong return type");
                     }
                 } catch (Throwable not13) {
                     // 1.9 and up
                     class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
                     if (!class_EntityDamageSource_setThornsMethod.getReturnType().isAssignableFrom(class_EntityDamageSource)) {
-                        throw new Exception ("Wrong return type");
+                        throw new Exception("Wrong return type");
                     }
                 }
             } catch (Throwable ex) {
@@ -1712,7 +1718,7 @@ public class NMSUtils {
                 class_CraftBlock_getNMSBlockMethod.setAccessible(true);
                 class_BlockActionContext = fixBukkitClass("net.minecraft.server.BlockActionContext");
                 class_Block_getPlacedStateMethod = class_Block.getMethod("getPlacedState", class_BlockActionContext);
-                class_EnumHand = (Class<Enum>)fixBukkitClass("net.minecraft.server.EnumHand");
+                class_EnumHand = (Class<Enum>) fixBukkitClass("net.minecraft.server.EnumHand");
                 enum_EnumHand_MAIN_HAND = Enum.valueOf(class_EnumHand, "MAIN_HAND");
                 class_MovingObjectPositionBlock = fixBukkitClass("net.minecraft.server.MovingObjectPositionBlock");
                 class_BlockActionContext_constructor = class_BlockActionContext.getDeclaredConstructor(class_World, class_EntityHuman, class_EnumHand, class_ItemStack, class_MovingObjectPositionBlock);
@@ -1727,8 +1733,7 @@ public class NMSUtils {
                 class_CraftBlock = null;
                 logger.log(Level.WARNING, "Could not bind to auto block state methods");
             }
-        }
-        catch (Throwable ex) {
+        } catch (Throwable ex) {
             failed = true;
             logger.log(Level.SEVERE, "An unexpected error occurred initializing Magic", ex);
         }
@@ -1839,11 +1844,11 @@ public class NMSUtils {
         return handle;
     }
 
-    protected static void sendPacket(Server server, Location source, Collection<? extends Player> players, Object packet) throws Exception  {
+    protected static void sendPacket(Server server, Location source, Collection<? extends Player> players, Object packet) throws Exception {
         players = ((players != null && players.size() > 0) ? players : server.getOnlinePlayers());
 
         int viewDistance = Bukkit.getServer().getViewDistance() * 16;
-        int viewDistanceSquared =  viewDistance * viewDistance;
+        int viewDistanceSquared = viewDistance * viewDistance;
         World sourceWorld = source.getWorld();
         for (Player player : players) {
             Location location = player.getLocation();

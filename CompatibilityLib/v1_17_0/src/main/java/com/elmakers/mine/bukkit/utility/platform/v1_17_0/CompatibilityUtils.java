@@ -378,12 +378,12 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 // of various non-living entity pieces.
                 ((EntityDamageSource)magicSource).setThorns();
 
-                try (EnteredStateTracker.Touchable damaging = DAMAGING.enter()) {
+                try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
                     damaging.touch();
                     targetHandle.hurt(magicSource, (float)amount);
                 }
             } else {
-                try (EnteredStateTracker.Touchable damaging = DAMAGING.enter()) {
+                try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
                     damaging.touch();
                     targetHandle.hurt(DamageSource.MAGIC, (float)amount);
                 }
@@ -443,7 +443,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         net.minecraft.world.entity.Entity targetHandle = ((CraftEntity)target).getHandle();
         if (targetHandle == null) return;
 
-        try (EnteredStateTracker.Touchable damaging = DAMAGING.enter()) {
+        try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
             damaging.touch();
             targetHandle.hurt(damageSource, (float)amount);
         } catch (Exception ex) {

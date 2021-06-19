@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.logging.Logger;
-
 import javax.annotation.Nullable;
 
 import org.bukkit.plugin.Plugin;

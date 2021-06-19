@@ -60,10 +60,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
     // (for instance when undoing a spell in an unloaded chunk that threw a ton of different falling blocks)
     // So putting some lower number on this will trigger a lot of false-positives.
-    protected final int MAX_CHUNK_LOAD_TRY = 10000;
-    protected final int MAX_ENTITY_RANGE = 72;
-    protected boolean USE_MAGIC_DAMAGE = true;
-    protected int BLOCK_BREAK_RANGE = 64;
+    protected static final int MAX_CHUNK_LOAD_TRY = 10000;
+    protected static final int MAX_ENTITY_RANGE = 72;
+    protected static boolean USE_MAGIC_DAMAGE = true;
+    protected static int BLOCK_BREAK_RANGE = 64;
 
     protected final UUID emptyUUID = new UUID(0L, 0L);
     protected ItemStack dummyItem;
@@ -71,8 +71,8 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected boolean teleporting = false;
     protected final Map<World.Environment, Integer> maxHeights = new HashMap<>();
     protected final Map<LoadingChunk, Integer> loadingChunks = new HashMap<>();
-    protected final EnteredStateTracker DAMAGING = new EnteredStateTracker();
-    protected final Map<World, WeakReference<ThrownPotion>> POTION_PER_WORLD = new WeakHashMap<>();
+    protected final EnteredStateTracker isDamaging = new EnteredStateTracker();
+    protected final Map<World, WeakReference<ThrownPotion>> worldPotions = new WeakHashMap<>();
     public Map<Integer, Material> materialIdMap;
     protected final Platform platform;
 
@@ -82,7 +82,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean isDamaging() {
-        return DAMAGING.isInside();
+        return isDamaging.isInside();
     }
 
     @Override
@@ -170,7 +170,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             return;
         }
 
-        try (EnteredStateTracker.Touchable damaging = DAMAGING.enter()) {
+        try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
             damaging.touch();
             if (target instanceof ArmorStand) {
                 double newHealth = Math.max(0, target.getHealth() - amount);
@@ -200,7 +200,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
         // Maintain a separate potion entity for every world so that
         // potion.getWorld() reports the correct result.
-        WeakReference<ThrownPotion> ref = POTION_PER_WORLD.get(world);
+        WeakReference<ThrownPotion> ref = worldPotions.get(world);
         ThrownPotion potion = ref == null ? null : ref.get();
 
         if (potion == null) {
@@ -210,7 +210,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             potion.remove();
 
             ref = new WeakReference<>(potion);
-            POTION_PER_WORLD.put(world, ref);
+            worldPotions.put(world, ref);
         } else {
             // TODO: Make sure this actually works?
             potion.teleport(location);
@@ -233,16 +233,24 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         YamlConfiguration configuration = new YamlConfiguration();
         try {
             configuration.load(fileName);
-        } catch (FileNotFoundException fileNotFound) {
+        } catch (FileNotFoundException ignore) {
 
         }
         return configuration;
     }
 
     @Override
-    public YamlConfiguration loadBuiltinConfiguration(String fileName) throws IOException, InvalidConfigurationException {
-        Plugin plugin = platform.getPlugin();
-        return loadConfiguration(plugin.getResource(fileName), fileName);
+    public ConfigurationSection loadConfiguration(File file) throws IOException, InvalidConfigurationException {
+        YamlConfiguration configuration = new YamlConfiguration();
+        try {
+            configuration.load(file);
+        } catch (FileNotFoundException ignore) {
+
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
+            throw ex;
+        }
+        return configuration;
     }
 
     @Override
@@ -254,10 +262,16 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
         try {
             configuration.load(new InputStreamReader(stream, "UTF-8"));
-        } catch (FileNotFoundException fileNotFound) {
+        } catch (FileNotFoundException ignore) {
 
         }
         return configuration;
+    }
+
+    @Override
+    public YamlConfiguration loadBuiltinConfiguration(String fileName) throws IOException, InvalidConfigurationException {
+        Plugin plugin = platform.getPlugin();
+        return loadConfiguration(plugin.getResource(fileName), fileName);
     }
 
     @Override
@@ -285,20 +299,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public Map<String, Object> getMap(ConfigurationSection section) {
         return getTypedMap(section);
-    }
-
-    @Override
-    public ConfigurationSection loadConfiguration(File file) throws IOException, InvalidConfigurationException {
-        YamlConfiguration configuration = new YamlConfiguration();
-        try {
-            configuration.load(file);
-        } catch (FileNotFoundException fileNotFound) {
-
-        } catch (Throwable ex) {
-            platform.getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
-            throw ex;
-        }
-        return configuration;
     }
 
     @Override
@@ -503,7 +503,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             try {
                 data = Byte.parseByte(pieces[1]);
                 textData = "";
-            } catch (Exception ex) {
+            } catch (Exception ignore) {
             }
         }
 
