@@ -68,6 +68,8 @@ import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
+import org.bukkit.material.Door;
+import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
@@ -76,6 +78,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
+import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
@@ -2542,5 +2545,79 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public boolean isPrimaryThread() {
         return primaryThread.get() == Thread.currentThread();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean performDoorAction(Block[] doorBlocks, DoorActionType actionType) {
+        BlockState blockState = doorBlocks[0].getState();
+        MaterialData data = blockState.getData();
+        if (!(data instanceof Door)) {
+            return false;
+        }
+        Door doorData = (Door)data;
+
+        switch (actionType) {
+            case OPEN:
+                if (doorData.isOpen()) {
+                    return false;
+                }
+                doorData.setOpen(true);
+                break;
+            case CLOSE:
+                if (!doorData.isOpen()) {
+                    return false;
+                }
+                doorData.setOpen(false);
+                break;
+            case TOGGLE:
+                doorData.setOpen(!doorData.isOpen());
+            default:
+                return false;
+        }
+        blockState.setData(doorData);
+        blockState.update();
+        return true;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public boolean checkDoorAction(Block[] doorBlocks, DoorActionType actionType) {
+        BlockState blockState = doorBlocks[0].getState();
+        MaterialData data = blockState.getData();
+        if (!(data instanceof Door)) {
+            return false;
+        }
+        Door doorData = (Door)data;
+        switch (actionType) {
+            case OPEN:
+                return !doorData.isOpen();
+            case CLOSE:
+                return doorData.isOpen();
+            case TOGGLE:
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public Block[] getDoorBlocks(Block targetBlock) {
+        BlockState blockState = targetBlock.getState();
+        MaterialData data = blockState.getData();
+        if (!(data instanceof Door)) {
+            return null;
+        }
+        Block[] doorBlocks = new Block[2];
+        Door doorData = (Door)data;
+        if (doorData.isTopHalf()) {
+            doorBlocks[1] = targetBlock;
+            doorBlocks[0] = targetBlock.getRelative(BlockFace.DOWN);
+        } else {
+            doorBlocks[1] = targetBlock.getRelative(BlockFace.UP);
+            doorBlocks[0] = targetBlock;
+        }
+        return doorBlocks;
     }
 }

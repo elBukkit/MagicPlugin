@@ -61,6 +61,7 @@ import org.bukkit.util.Vector;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
+import com.elmakers.mine.bukkit.utility.DoorActionType;
 
 public interface CompatibilityUtils {
     void applyPotionEffects(LivingEntity entity, Collection<PotionEffect> effects);
@@ -444,4 +445,10 @@ public interface CompatibilityUtils {
     String translateColors(String message);
 
     String getEnchantmentKey(Enchantment enchantment);
+
+    boolean checkDoorAction(Block[] doorBlocks, DoorActionType actionType);
+
+    boolean performDoorAction(Block[] doorBlocks, DoorActionType actionType);
+
+    Block[] getDoorBlocks(Block targetBlock);
 }
