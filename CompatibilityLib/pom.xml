@@ -10,7 +10,7 @@
     </parent>
 
     <packaging>pom</packaging>
-    <groupId>com.elmakers.mine.bukkit</groupId>
+    <groupId>com.elmakers.mine.bukkit.compatibility</groupId>
     <artifactId>CompatibilityLib-parent</artifactId>
     <version>1.9-1.1.17-SNAPSHOT</version>
 
