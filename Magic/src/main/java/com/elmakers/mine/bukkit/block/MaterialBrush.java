@@ -826,7 +826,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 cloneSource = cloneTarget.clone();
                 if (targetWorldName != null && targetWorldName.length() > 0) {
                     World sourceWorld = cloneSource.getWorld();
-                    cloneSource.setWorld(ConfigurationUtils.overrideWorld(targetWorldName, sourceWorld, mage.getController().canCreateWorlds()));
+                    cloneSource.setWorld(ConfigurationUtils.overrideWorld(controller, targetWorldName, sourceWorld, mage.getController().canCreateWorlds()));
                 }
             }
             if (materialTarget == null) {

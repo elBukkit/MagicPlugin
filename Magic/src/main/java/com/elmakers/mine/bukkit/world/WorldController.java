@@ -99,10 +99,18 @@ public class WorldController implements Listener {
     }
 
     public World createWorld(String worldName) {
+        MagicWorld world = magicWorlds.get(worldName);
+        if (world != null) {
+            return world.checkWorldCreate();
+        }
         return Bukkit.createWorld(new WorldCreator(worldName));
     }
 
     public World copyWorld(String worldName, World copyFrom) {
+        MagicWorld world = magicWorlds.get(worldName);
+        if (world != null) {
+            return world.copyWorld(copyFrom);
+        }
         return Bukkit.createWorld(new WorldCreator(worldName).copy(copyFrom));
     }
 

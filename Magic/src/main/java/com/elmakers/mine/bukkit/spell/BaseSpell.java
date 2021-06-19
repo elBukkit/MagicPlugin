@@ -2020,7 +2020,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         backfireChance = (float)parameters.getDouble("backfire_chance", 0);
 
         Location defaultLocation = location == null ? mage.getLocation() : location;
-        Location locationOverride = ConfigurationUtils.overrideLocation(parameters, "p", defaultLocation, controller.canCreateWorlds());
+        Location locationOverride = ConfigurationUtils.overrideLocation(controller, parameters, "p", defaultLocation, controller.canCreateWorlds());
         if (locationOverride != null) {
             location = locationOverride;
         }

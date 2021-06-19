@@ -249,9 +249,9 @@ public class Targeting {
         }
         if (targetLocationWorldName != null && targetLocationWorldName.length() > 0) {
             Location location = target.getLocation();
-            if (location != null) {
+            if (location != null && context != null) {
                 World targetWorld = location.getWorld();
-                target.setWorld(ConfigurationUtils.overrideWorld(targetLocationWorldName, targetWorld, context.getController().canCreateWorlds()));
+                target.setWorld(ConfigurationUtils.overrideWorld(context.getController(), targetLocationWorldName, targetWorld, context.getController().canCreateWorlds()));
             }
         }
         this.target = target;

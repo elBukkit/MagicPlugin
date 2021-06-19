@@ -566,12 +566,12 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     @Nullable
-    public static World overrideWorld(ConfigurationSection node, String path, World world, boolean canCreateWorlds) {
-        return overrideWorld(node.getString(path), world, canCreateWorlds);
+    public static World overrideWorld(MageController controller, ConfigurationSection node, String path, World world, boolean canCreateWorlds) {
+        return overrideWorld(controller, node.getString(path), world, canCreateWorlds);
     }
 
     @Nullable
-    public static World overrideWorld(String worldName, World world, boolean canCreateWorlds) {
+    public static World overrideWorld(MageController controller, String worldName, World world, boolean canCreateWorlds) {
         if (worldName == null || worldName.length() == 0) return null;
 
         if (worldName.charAt(0) == '~') {
@@ -593,8 +593,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (worldOverride == null) {
             if (canCreateWorlds && world != null) {
                 Bukkit.getLogger().info("Creating/Loading world: " + worldName);
-                // TODO: Use MageController API
-                worldOverride = Bukkit.createWorld(new WorldCreator(worldName).copy(world));
+                worldOverride = controller.copyWorld(worldName, world);
                 if (worldOverride == null) {
                     Bukkit.getLogger().warning("Failed to load world: " + worldName);
                     return null;
@@ -609,7 +608,7 @@ public class ConfigurationUtils extends ConfigUtils {
     }
 
     @Nullable
-    public static Location overrideLocation(ConfigurationSection node, String basePath, Location location, boolean canCreateWorlds) {
+    public static Location overrideLocation(MageController controller, ConfigurationSection node, String basePath, Location location, boolean canCreateWorlds) {
         String xName = basePath + "x";
         String yName = basePath + "y";
         String zName = basePath + "z";
@@ -620,7 +619,7 @@ public class ConfigurationUtils extends ConfigUtils {
         boolean hasDirection = node.contains(dxName) || node.contains(dyName) || node.contains(dzName);
 
         World baseWorld = location == null ? null : location.getWorld();
-        World worldOverride = overrideWorld(node, basePath + "world", baseWorld, canCreateWorlds);
+        World worldOverride = overrideWorld(controller, node, basePath + "world", baseWorld, canCreateWorlds);
 
         if (!hasPosition && !hasDirection && worldOverride == null) return null;
 

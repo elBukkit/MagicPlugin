@@ -111,23 +111,24 @@ public class MagicWorld {
         spawnHandler.finalizeLoad();
     }
 
-    public void checkWorldCreate() {
+    public World checkWorldCreate() {
         // Loaded check
         if (state != WorldState.UNLOADED) {
-            return;
+            return Bukkit.getWorld(worldName);
         }
 
         if (copyFrom.isEmpty()) {
-            createWorld();
+            return createWorld();
         } else {
             World targetWorld = controller.getPlugin().getServer().getWorld(copyFrom);
             if (targetWorld != null) {
-                copyWorld(targetWorld);
+                return copyWorld(targetWorld);
             }
         }
+        return null;
     }
 
-    public void createWorld() {
+    public World createWorld() {
         state = WorldState.LOADING;
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
@@ -151,6 +152,7 @@ public class MagicWorld {
             CompatibilityLib.getCompatibilityUtils().setEnvironment(world, appearanceEnvironment);
             controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
         }
+        return world;
     }
 
     public void installPopulators(World world) {
@@ -199,8 +201,10 @@ public class MagicWorld {
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new CopyWorldTask(this, initWorld), 1L);
     }
 
-    public void copyWorld(World targetWorld) {
-        if (copyFrom.isEmpty() || !targetWorld.getName().equals(copyFrom)) return;
+    public World copyWorld(World targetWorld) {
+        if (!copyFrom.isEmpty() && !targetWorld.getName().equals(copyFrom)) {
+            controller.getLogger().warning("World " + worldName + " getting created as a copy of " + targetWorld.getName() + ", but is configured to copy " + copyFrom);
+        }
 
         state = WorldState.LOADING;
         // Create this world if it doesn't exist
@@ -215,6 +219,7 @@ public class MagicWorld {
                controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
            }
         }
+        return world;
     }
 
     public void playerEntered(Player player) {

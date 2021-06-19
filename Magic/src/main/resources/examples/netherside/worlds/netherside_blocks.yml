@@ -87,4 +87,5 @@ netherside_blocks:
 netherside_blocks_backup:
   inherit: netherside_blocks
   world: world_netherside_backup
+  copy: world_netherside
   autoload: false

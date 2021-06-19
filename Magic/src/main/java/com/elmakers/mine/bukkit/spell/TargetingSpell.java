@@ -733,11 +733,11 @@ public class TargetingSpell extends BaseSpell {
         originAtTarget = parameters.getBoolean("origin_at_target", false);
 
         Location defaultLocation = getLocation();
-        targetLocation = ConfigurationUtils.overrideLocation(parameters, "t", defaultLocation, controller.canCreateWorlds());
+        targetLocation = ConfigurationUtils.overrideLocation(controller, parameters, "t", defaultLocation, controller.canCreateWorlds());
 
         // For two-click construction spells
         defaultLocation = targetLocation == null ? defaultLocation : targetLocation;
-        targetLocation2 = ConfigurationUtils.overrideLocation(parameters, "t2", defaultLocation, controller.canCreateWorlds());
+        targetLocation2 = ConfigurationUtils.overrideLocation(controller, parameters, "t2", defaultLocation, controller.canCreateWorlds());
 
         String uuid = parameters.getString("entity", "");
         String playerName = parameters.getString("player", "");
