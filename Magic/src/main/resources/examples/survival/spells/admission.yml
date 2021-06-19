@@ -43,17 +43,19 @@ admission:
         - class: EffectSingle
           location: target
           use_block_location: true
+          color_override: color
           effectlib:
            class: Modified
            iterations: 30
            parameters:
-            edge_length: "max(1, (t / i) * 5 - 2)"
+            padding: "(t / i) * 5"
            effect:
-             class: CubeEffect
+             class: CuboidEffect
              particle: redstone
-             speed: 2
-             enable_rotation: false
-             offset: 0.5,0.5,0.5
+             offset: 0.5,0,0.5
+             x_length: 1
+             y_length: 2
+             z_length: 1
         no_target:
         - sound: block_beacon_activate
           sound_volume: 0.8
