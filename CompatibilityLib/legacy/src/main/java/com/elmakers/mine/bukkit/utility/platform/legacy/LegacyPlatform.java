@@ -11,13 +11,19 @@ public class LegacyPlatform extends PlatformBase {
     public LegacyPlatform(Plugin plugin, Logger logger) {
         super(plugin, logger);
         valid = NMSUtils.initialize(this);
-        compatibilityUtils = new CompatibilityUtils(this);
         deprecatedUtils = new DeprecatedUtils(this);
         inventoryUtils = new InventoryUtils(this);
         itemUtils = new ItemUtils(this);
         nbtUtils = new NBTUtils(this);
         schematicUtils = new SchematicUtils(this);
         skinUtils = new SkinUtils(this);
+
+        // These may be overridden by inherited versions
+        createCompatibilityUtils();
+    }
+
+    protected void createCompatibilityUtils() {
+        compatibilityUtils = new CompatibilityUtils(this);
     }
 
     @Override

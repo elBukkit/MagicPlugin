@@ -8,6 +8,10 @@ public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_14.Pl
 
     public Platform(Plugin plugin, Logger logger) {
         super(plugin, logger);
+    }
+
+    @Override
+    protected void createCompatibilityUtils() {
         this.compatibilityUtils = new CompatibilityUtils(this);
     }
 }

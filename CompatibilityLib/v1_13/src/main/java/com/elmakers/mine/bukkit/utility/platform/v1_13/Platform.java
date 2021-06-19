@@ -10,6 +10,10 @@ public class Platform extends LegacyPlatform {
 
     public Platform(Plugin plugin, Logger logger) {
         super(plugin, logger);
+    }
+
+    @Override
+    protected void createCompatibilityUtils() {
         compatibilityUtils = new CompatibilityUtils(this);
     }
 }
