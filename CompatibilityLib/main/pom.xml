@@ -52,17 +52,4 @@
             <scope>compile</scope>
         </dependency>
     </dependencies>
-
-    <distributionManagement>
-       <repository>
-         <id>github</id>
-         <name>elBukkit Apache Maven Packages</name>
-         <url>https://maven.pkg.github.com/elBukkit/MagicPlugin</url>
-       </repository>
-       <snapshotRepository>
-         <id>github</id>
-         <name>elBukkit Apache Maven Packages</name>
-         <url>https://maven.pkg.github.com/elBukkit/MagicPlugin</url>
-       </snapshotRepository>
-    </distributionManagement>
 </project>
