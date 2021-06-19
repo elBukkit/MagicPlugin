@@ -173,10 +173,10 @@ public class ChangeWorldAction extends BaseTeleportAction
             if (loadWorld) {
                 if (copyFrom != null) {
                     context.getLogger().info("Creating world: " + worldName + " as copy of " + copyFrom.getName());
-                    world = Bukkit.createWorld(new WorldCreator(worldName).copy(copyFrom));
+                    world = context.getController().copyWorld(worldName, copyFrom);
                 } else {
                     context.getLogger().info("Loading world: " + worldName);
-                    world = Bukkit.createWorld(new WorldCreator(worldName));
+                    world = context.getController().createWorld(worldName);
                 }
             }
         }

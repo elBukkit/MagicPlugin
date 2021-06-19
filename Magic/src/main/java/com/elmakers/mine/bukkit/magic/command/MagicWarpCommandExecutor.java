@@ -159,7 +159,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 if (worldName != null) {
                     sender.sendMessage(ChatColor.YELLOW + "Attempting to load target world "
                         + ChatColor.WHITE + worldName + ChatColor.YELLOW + ", please wait");
-                    Bukkit.createWorld(new WorldCreator(worldName));
+                    controller.createWorld(worldName);
                     location = magicWarp.getLocation();
                 }
             }

@@ -1264,7 +1264,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     if (magicWarp != null) {
                         String worldName = magicWarp.getWorldName();
                         if (worldName != null) {
-                            Bukkit.createWorld(new WorldCreator(worldName));
+                            controller.createWorld(worldName);
                             location = magicWarp.getLocation();
                         }
                     }

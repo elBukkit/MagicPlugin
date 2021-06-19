@@ -7062,6 +7062,16 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public World createWorld(String worldName) {
+        return worldController.createWorld(worldName);
+    }
+
+    @Override
+    public World copyWorld(String worldName, World world) {
+        return worldController.copyWorld(worldName, world);
+    }
+
+    @Override
     public int getMaxHeight(World world) {
         MagicWorld magicWorld = getMagicWorld(world.getName());
         int maxHeight = CompatibilityLib.getCompatibilityUtils().getMaxHeight(world);

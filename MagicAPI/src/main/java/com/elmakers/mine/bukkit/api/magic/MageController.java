@@ -789,4 +789,6 @@ public interface MageController {
     ItemStack getSpawnEgg(String mobType);
     Entity getDamageSource(Entity entity);
     boolean isDamaging();
+    World createWorld(String worldName);
+    World copyWorld(String worldName, World copyFrom);
 }

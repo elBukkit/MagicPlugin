@@ -593,6 +593,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (worldOverride == null) {
             if (canCreateWorlds && world != null) {
                 Bukkit.getLogger().info("Creating/Loading world: " + worldName);
+                // TODO: Use MageController API
                 worldOverride = Bukkit.createWorld(new WorldCreator(worldName).copy(world));
                 if (worldOverride == null) {
                     Bukkit.getLogger().warning("Failed to load world: " + worldName);

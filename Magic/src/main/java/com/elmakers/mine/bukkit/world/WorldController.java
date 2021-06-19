@@ -7,7 +7,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -94,6 +96,14 @@ public class WorldController implements Listener {
         for (MagicWorld world : magicWorlds.values()) {
             world.finalizeLoad();
         }
+    }
+
+    public World createWorld(String worldName) {
+        return Bukkit.createWorld(new WorldCreator(worldName));
+    }
+
+    public World copyWorld(String worldName, World copyFrom) {
+        return Bukkit.createWorld(new WorldCreator(worldName).copy(copyFrom));
     }
 
     public int getCount() {

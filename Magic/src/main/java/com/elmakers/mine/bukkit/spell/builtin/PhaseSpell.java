@@ -111,7 +111,7 @@ public class PhaseSpell extends TargetingSpell
         if (world == null) {
             if (loadWorld) {
                 Bukkit.getLogger().info("Loading world: " + worldName);
-                world = Bukkit.createWorld(new WorldCreator(worldName));
+                world = controller.createWorld(worldName);
                 if (world == null) {
                     Bukkit.getLogger().warning("Failed to load world: " + worldName);
                     return null;
