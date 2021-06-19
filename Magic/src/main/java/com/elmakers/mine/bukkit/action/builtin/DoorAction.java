@@ -3,79 +3,47 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Collection;
 
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.material.Door;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.DoorActionType;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
-public class DoorAction extends BaseSpellAction
-{
-    private enum DoorActionType {
-        OPEN,
-        CLOSE,
-        TOGGLE
-    }
-
+public class DoorAction extends BaseSpellAction {
     private DoorActionType actionType;
 
     @Override
     public SpellResult perform(CastContext context)
     {
         Block targetBlock = context.getTargetBlock();
-        BlockState blockState = targetBlock.getState();
-        Object data = blockState.getData();
-        if (!(data instanceof Door)) {
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+        Block[] doorBlocks = compatibilityUtils.getDoorBlocks(targetBlock);
+        if (doorBlocks == null) {
             return SpellResult.NO_TARGET;
         }
-        Door doorData = (Door)data;
-
-        // isTopHalf got broken, I guess.
-        Block blockUnder = targetBlock.getRelative(BlockFace.DOWN);
-        BlockState underState = blockUnder.getState();
-        Object underData = underState.getData();
-
-        if (underData instanceof Door) {
-            targetBlock = blockUnder;
-            blockState = underState;
-            doorData = (Door)underData;
+        for (Block doorBlock : doorBlocks) {
+            if (!context.hasBuildPermission(doorBlock)) {
+                return SpellResult.INSUFFICIENT_PERMISSION;
+            }
+            if (!context.isDestructible(doorBlock)) {
+                return SpellResult.NO_TARGET;
+            }
         }
-
-        if (!context.hasBuildPermission(targetBlock))
-        {
-            return SpellResult.INSUFFICIENT_PERMISSION;
+        if (!compatibilityUtils.checkDoorAction(doorBlocks, actionType)) {
+            return SpellResult.NO_TARGET;
         }
-        if (!context.isDestructible(targetBlock))
-        {
+        for (Block doorBlock : doorBlocks) {
+            context.registerForUndo(doorBlock);
+        }
+        if (!CompatibilityLib.getCompatibilityUtils().performDoorAction(doorBlocks, actionType)) {
             return SpellResult.NO_TARGET;
         }
 
-        context.registerForUndo(targetBlock);
-        switch (actionType)
-        {
-            case OPEN:
-                if (doorData.isOpen()) {
-                    return SpellResult.NO_TARGET;
-                }
-                doorData.setOpen(true);
-                break;
-            case CLOSE:
-                if (!doorData.isOpen()) {
-                    return SpellResult.NO_TARGET;
-                }
-                doorData.setOpen(false);
-                break;
-            case TOGGLE:
-                doorData.setOpen(!doorData.isOpen());
-                break;
-        }
-        blockState.setData(doorData);
-        blockState.update();
-
+        context.setTargetLocation(doorBlocks[0].getLocation());
         return SpellResult.CAST;
     }
 
