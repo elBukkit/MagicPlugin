@@ -4,7 +4,7 @@
 
  - Fix `potter` spells not levelling up
  - Fix PotterPlus add-on (broken spell inheritance against builtin potter example)
- - Fix `otherside` example creating a `world_netherside_backup` world on load
+ - Fix `otherside` and `netherside` examples force-loading backup worlds
  - The Door action now sets the target location to the bottom block of the door
 
 # 9.0

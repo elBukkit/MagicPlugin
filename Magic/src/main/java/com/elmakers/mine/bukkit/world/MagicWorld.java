@@ -198,7 +198,9 @@ public class MagicWorld {
 
         // See if this is a world we want to make a copy of
         // Delay this one tick to avoid issues at startup
-        Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new CopyWorldTask(this, initWorld), 1L);
+        if (autoLoad && !copyFrom.isEmpty() && initWorld.getName().equals(copyFrom)) {
+            Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new CopyWorldTask(this, initWorld), 1L);
+        }
     }
 
     public World copyWorld(World targetWorld) {
