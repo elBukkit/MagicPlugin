@@ -217,6 +217,19 @@
             </snapshots>
         </repository>
         <repository>
+            <name>Magic github repo</name>
+            <id>magic-repo</id>
+            <url>https://maven.pkg.github.com/elBukkit/MagicPlugin</url>
+            <releases>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+        <repository>
             <name>Bukkit is Dead, Long Live Bukkit</name>
             <id>bukkit-repo</id>
             <url>http://repo.bukkit.org/content/groups/public/</url>
