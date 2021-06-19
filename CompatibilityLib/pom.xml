@@ -2,6 +2,13 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <parent>
+        <groupId>com.elmakers.mine.bukkit</groupId>
+        <artifactId>Magic-parent</artifactId>
+        <version>9.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
     <packaging>pom</packaging>
     <groupId>com.elmakers.mine.bukkit</groupId>
     <artifactId>CompatibilityLib-parent</artifactId>
@@ -11,18 +18,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.java>1.8</version.java>
         <findbugs.version>1.3.9</findbugs.version>
-        <project.version>1.9-1.1.17-SNAPSHOT</project.version>
     </properties>
-
-    <dependencies>
-        <!-- For Nullability annotations, provided by guava. -->
-        <dependency>
-            <groupId>com.google.code.findbugs</groupId>
-            <artifactId>jsr305</artifactId>
-            <version>${findbugs.version}</version>
-            <scope>provided</scope>
-        </dependency>
-    </dependencies>
 
     <repositories>
         <repository>
@@ -44,35 +40,4 @@
         <module>v1_17_0</module>
         <module>main</module>
     </modules>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-                <configuration>
-                    <!-- The name is confusing, but this actually prevents Maven from recompiling every single source file when only one has changed -->
-                    <useIncrementalCompilation>false</useIncrementalCompilation>
-
-                    <source>${version.java}</source>
-                    <target>${version.java}</target>
-
-                    <compilerArgs>
-                        <arg>-Xlint:all,-serial,-fallthrough</arg>
-                    </compilerArgs>
-                    <showWarnings>true</showWarnings>
-                    <showDeprecation>true</showDeprecation>
-                </configuration>
-                <dependencies>
-                    <!-- Work around error_prone warnings from guava -->
-                    <dependency>
-                        <groupId>com.google.errorprone</groupId>
-                        <artifactId>error_prone_annotations</artifactId>
-                        <version>2.0.15</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-    </build>
 </project>
