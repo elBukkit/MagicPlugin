@@ -153,7 +153,7 @@
 
         <!-- Restrict variable names -->
         <module name="PackageName">
-            <property name="format" value="^[a-z]+(\.[a-z][a-z0-9]*)*$"/>
+            <property name="format" value="^[a-z_]+(\.[a-z_][_a-z0-9]*)*$"/>
             <message key="name.invalidPattern"
              value="Package name ''{0}'' must match pattern ''{1}''."/>
             <property name="severity" value="error"/>
@@ -184,7 +184,7 @@
         </module>
         <module name="LocalVariableName">
             <property name="tokens" value="VARIABLE_DEF"/>
-            <property name="format" value="^[a-z]([a-zA-Z0-9]*)?$"/>
+            <property name="format" value="^[a-z_]([a-zA-Z0-9_]*)?$"/>
             <message key="name.invalidPattern"
              value="Local variable name ''{0}'' must match pattern ''{1}''."/>
             <property name="severity" value="error"/>
