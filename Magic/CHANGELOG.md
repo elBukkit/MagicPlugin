@@ -6,6 +6,7 @@
  - Fix PotterPlus add-on (broken spell inheritance against builtin potter example)
  - Fix `otherside` and `netherside` examples force-loading backup worlds
  - The Door action now sets the target location to the bottom block of the door
+ - Hex colors now supported in 1.16 (as well as 1.17)
 
 # 9.0
 

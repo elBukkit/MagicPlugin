@@ -47,6 +47,7 @@
         <module>legacy</module>
         <module>v1_13</module>
         <module>v1_14</module>
+        <module>v1_16</module>
         <module>v1_17_0</module>
         <module>main</module>
     </modules>

@@ -10,6 +10,6 @@ public class Platform extends LegacyPlatform {
 
     public Platform(Plugin plugin, Logger logger) {
         super(plugin, logger);
-
+        compatibilityUtils = new CompatibilityUtils(this);
     }
 }
