@@ -41,13 +41,13 @@
 
         <!-- Compatibility Lib (shaded) -->
         <dependency>
-            <groupId>com.elmakers.mine.bukkit</groupId>
+            <groupId>com.elmakers.mine.bukkit.compatibility</groupId>
             <artifactId>CompatibilityLib</artifactId>
             <version>1.9-1.1.17-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.elmakers.mine.bukkit</groupId>
+            <groupId>com.elmakers.mine.bukkit.compatibility</groupId>
             <artifactId>CompatibilityLib-common</artifactId>
             <version>1.9-1.1.17-SNAPSHOT</version>
             <scope>compile</scope>
@@ -1134,9 +1134,29 @@
                     </relocations>
                     <filters>
                         <filter>
-                            <artifact>*:*</artifact>
+                            <artifact>com.elmakers.mine.bukkit:EffectLib</artifact>
                             <excludes>
-                                <exclude>resources/*</exclude>
+                                <exclude>plugin.yml</exclude>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                            </excludes>
+                        </filter>
+                        <filter>
+                            <artifact>org.bstats:*</artifact>
+                            <excludes>
+                                <exclude>plugin.yml</exclude>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                            </excludes>
+                        </filter>
+                        <filter>
+                            <artifact>com.elmakers.mine.bukkit:MagicAPI</artifact>
+                            <excludes>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
+                            </excludes>
+                        </filter>
+                        <filter>
+                            <artifact>com.elmakers.mine.bukkit.compatibility:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/MANIFEST.MF</exclude>
                             </excludes>
                         </filter>
                     </filters>
