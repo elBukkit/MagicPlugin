@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -2568,6 +2569,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private void addDamageTypeLore(String property, String propertyType, double amount, double max, List<String> lore) {
+        addDamageTypeLore(property, propertyType, amount, max, lore, null);
+    }
+
+    private void addDamageTypeLore(String property, String propertyType, double amount, double max, List<String> lore, String unknownDefault) {
         if (amount != 0) {
             String prefix = getMessageKey("prefixes." + property);
             prefix = controller.getMessages().get(prefix, "");
@@ -2580,6 +2585,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 template = controller.getMessages().get(templateKey);
                 String pretty = propertyType.substring(0, 1).toUpperCase() + propertyType.substring(1);
                 template = template.replace("$type", pretty);
+                if (unknownDefault != null && !unknownDefault.isEmpty()) {
+                    // This is some special-case hackery, currently only used for enchantments but would
+                    // nicely format any NamespacedKey
+                    String[] pieces = StringUtils.split(unknownDefault, ":");
+                    unknownDefault = pieces[pieces.length - 1];
+                    unknownDefault = WordUtils.capitalize(unknownDefault.replace("_", " "));
+                    template = template.replace("$name", unknownDefault);
+                }
             }
             template = formatPropertyString(prefix + template, (float)amount, (float)max);
             ConfigurationUtils.addIfNotEmpty(template, lore);
@@ -3019,7 +3032,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Set<String> enchantmentKeys = enchantments.getKeys(false);
                 for (String enchantmentKey : enchantmentKeys) {
                     int level = enchantments.getInt(enchantmentKey);
-                    addDamageTypeLore("enchantment", enchantmentKey.toLowerCase(), level, 0, lore);
+                    addDamageTypeLore("enchantment", enchantmentKey, level, 0, lore, enchantmentKey.toLowerCase());
                 }
             }
         }
