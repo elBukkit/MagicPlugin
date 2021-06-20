@@ -331,7 +331,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     // This is copied from MagicController, which I'm still trying to keep out of this class. Shrug?
     public ItemStack createMap(int mapId) {
         short durability = CompatibilityLib.isCurrentVersion() ? 0 : (short)mapId;
-        ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
+        ItemStack mapItem = CompatibilityLib.getDeprecatedUtils().createItemStack(DefaultMaterials.getFilledMap(), 1, durability);
         if (CompatibilityLib.isCurrentVersion()) {
             mapItem = CompatibilityLib.getItemUtils().makeReal(mapItem);
             CompatibilityLib.getNBTUtils().setMetaInt(mapItem, "map", mapId);

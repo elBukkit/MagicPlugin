@@ -247,6 +247,7 @@ import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
@@ -5514,7 +5515,8 @@ public class MagicController implements MageController {
 
     public boolean isSameItem(ItemStack first, ItemStack second) {
         if (first.getType() != second.getType()) return false;
-        if (first.getDurability() != second.getDurability()) return false;
+        DeprecatedUtils deprecatedUtils = CompatibilityLib.getDeprecatedUtils();
+        if (deprecatedUtils.getItemDamage(first) != deprecatedUtils.getItemDamage(second)) return false;
         if (first.hasItemMeta() != second.hasItemMeta()) return false;
         if (!first.hasItemMeta()) return true;
         return first.getItemMeta().equals(second.getItemMeta());
@@ -5532,7 +5534,8 @@ public class MagicController implements MageController {
         if (secondIsEmpty && firstIsEmpty) return true;
         if (secondIsEmpty || firstIsEmpty) return false;
         if (first.getType() != second.getType()) return false;
-        if (!ignoreDamage && first.getDurability() != second.getDurability()) return false;
+        DeprecatedUtils deprecatedUtils = CompatibilityLib.getDeprecatedUtils();
+        if (!ignoreDamage && deprecatedUtils.getItemDamage(first) != deprecatedUtils.getItemDamage(second)) return false;
 
         boolean firstIsWand = Wand.isWandOrUpgrade(first);
         boolean secondIsWand = Wand.isWandOrUpgrade(second);
@@ -6390,7 +6393,7 @@ public class MagicController implements MageController {
     @Override
     public ItemStack getMap(int mapId) {
         short durability = CompatibilityLib.isCurrentVersion() ? 0 : (short) mapId;
-        ItemStack mapItem = new ItemStack(DefaultMaterials.getFilledMap(), 1, durability);
+        ItemStack mapItem = CompatibilityLib.getDeprecatedUtils().createItemStack(DefaultMaterials.getFilledMap(), 1, durability);
         if (CompatibilityLib.isCurrentVersion()) {
             mapItem = CompatibilityLib.getItemUtils().makeReal(mapItem);
             CompatibilityLib.getNBTUtils().setMetaInt(mapItem, "map", mapId);

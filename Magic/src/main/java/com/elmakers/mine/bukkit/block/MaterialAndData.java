@@ -113,7 +113,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     public MaterialAndData(ItemStack item) {
         this.material = item.getType();
-        this.data = item.getDurability();
+        this.data = CompatibilityLib.getDeprecatedUtils().getItemDamage(item);
         if (DefaultMaterials.isPlayerSkull(this))
         {
             ItemMeta meta = item.getItemMeta();
@@ -785,7 +785,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public boolean isDifferent(ItemStack itemStack) {
         if (getMaterial() != itemStack.getType()) return true;
-        if (getData() != itemStack.getDurability()) return true;
+        if (getData() != CompatibilityLib.getDeprecatedUtils().getItemDamage(itemStack)) return true;
         if (tags != null) {
             Object customModelData = tags.get("CustomModelData");
             int itemModelData = CompatibilityLib.getNBTUtils().getMetaInt(itemStack, "CustomModelData", 0);
@@ -818,7 +818,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             item.material = material;
         }
 
-        ItemStack stack = new ItemStack(material, amount, data == null ? 0 : data);
+        ItemStack stack = CompatibilityLib.getDeprecatedUtils().createItemStack(material, amount, data == null ? 0 : data);
         stack = item.applyToItem(stack, callback);
         return stack;
     }
@@ -838,7 +838,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         boolean asynchronous = false;
         stack.setType(material);
         if (data != null) {
-            stack.setDurability(data);
+            CompatibilityLib.getDeprecatedUtils().setItemDamage(stack, data);
         }
         if (tags != null) {
             stack = CompatibilityLib.getItemUtils().makeReal(stack);

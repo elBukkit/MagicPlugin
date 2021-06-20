@@ -422,7 +422,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public Wand(MagicController controller, Material icon, short iconData) {
         // This will make the Bukkit ItemStack into a real ItemStack with NBT data.
-        this(controller, CompatibilityLib.getItemUtils().makeReal(new ItemStack(icon, 1, iconData)));
+        this(controller, CompatibilityLib.getItemUtils().makeReal(
+                CompatibilityLib.getDeprecatedUtils().createItemStack(icon, 1, iconData)
+        ));
         saveState();
         updateName();
     }
@@ -667,7 +669,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         Short durability = null;
         if (!indestructible && !isUpgrade && icon.getMaterial().getMaxDurability() > 0) {
-            durability = item.getDurability();
+            durability = CompatibilityLib.getDeprecatedUtils().getItemDamage(item);
         }
         try {
             if (inactiveIcon == null || useActiveIcon()) {
@@ -687,7 +689,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         if (durability != null) {
-            item.setDurability(durability);
+            CompatibilityLib.getDeprecatedUtils().setItemDamage(item, durability);
         }
 
         // Make indestructible
@@ -2888,12 +2890,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if (!enchantable) {
             item.setType(icon.getMaterial());
-            item.setDurability(icon.getData());
+            CompatibilityLib.getDeprecatedUtils().setItemDamage(item, icon.getData());
         } else {
             MaterialSet enchantableMaterials = controller.getMaterialSetManager().getMaterialSetEmpty("enchantable");
             if (!enchantableMaterials.testItem(item)) {
                 item.setType(EnchantableWandMaterial);
-                item.setDurability((short) 0);
+                CompatibilityLib.getDeprecatedUtils().setItemDamage(item, (short)0);
             }
         }
         updateName();
@@ -4277,7 +4279,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             } else if (durability < 0) {
                 durability = 0;
             }
-            item.setDurability((short)durability);
+            CompatibilityLib.getDeprecatedUtils().setItemDamage(item, (short)durability);
         }
     }
 

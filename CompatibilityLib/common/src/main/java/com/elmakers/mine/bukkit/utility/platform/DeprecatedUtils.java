@@ -90,4 +90,6 @@ public interface DeprecatedUtils {
     short getItemDamage(ItemStack itemStack);
 
     Biome getBiome(Location location);
+
+    ItemStack createItemStack(Material material, int amount, short legacyData);
 }

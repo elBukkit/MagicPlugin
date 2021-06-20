@@ -271,4 +271,9 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
     public Biome getBiome(Location location) {
         return location.getWorld().getBiome(location.getBlockX(), location.getBlockZ());
     }
+
+    @Override
+    public ItemStack createItemStack(Material material, int amount, short legacyData) {
+        return new ItemStack(material, amount, legacyData);
+    }
 }
