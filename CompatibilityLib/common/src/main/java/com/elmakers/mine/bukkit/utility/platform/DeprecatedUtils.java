@@ -6,6 +6,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -87,4 +88,6 @@ public interface DeprecatedUtils {
     void setItemDamage(ItemStack itemStack, short damage);
 
     short getItemDamage(ItemStack itemStack);
+
+    Biome getBiome(Location location);
 }

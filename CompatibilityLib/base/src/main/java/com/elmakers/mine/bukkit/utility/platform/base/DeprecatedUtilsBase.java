@@ -8,6 +8,7 @@ import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
@@ -264,5 +265,11 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
     @Override
     public short getItemDamage(ItemStack itemStack) {
         return itemStack.getDurability();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public Biome getBiome(Location location) {
+        return location.getWorld().getBiome(location.getBlockX(), location.getBlockZ());
     }
 }

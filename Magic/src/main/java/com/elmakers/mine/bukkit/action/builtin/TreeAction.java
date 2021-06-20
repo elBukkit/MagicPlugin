@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class TreeAction extends BaseSpellAction
@@ -103,7 +104,7 @@ public class TreeAction extends BaseSpellAction
         else
         if (biomeMap != null)
         {
-            Biome biome = treeLoc.getWorld().getBiome(treeLoc.getBlockX(), treeLoc.getBlockZ());
+            Biome biome = CompatibilityLib.getDeprecatedUtils().getBiome(treeLoc);
             List<TreeType> types = biomeMap.get(biome);
             if (types != null)
             {
