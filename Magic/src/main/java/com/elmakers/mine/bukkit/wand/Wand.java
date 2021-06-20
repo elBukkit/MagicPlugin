@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -2586,11 +2587,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 String pretty = propertyType.substring(0, 1).toUpperCase() + propertyType.substring(1);
                 template = template.replace("$type", pretty);
                 if (unknownDefault != null && !unknownDefault.isEmpty()) {
-                    // This is some special-case hackery, currently only used for enchantments but would
-                    // nicely format any NamespacedKey
-                    String[] pieces = StringUtils.split(unknownDefault, ":");
-                    unknownDefault = pieces[pieces.length - 1];
-                    unknownDefault = WordUtils.capitalize(unknownDefault.replace("_", " "));
+                    // This is some special-case hackery, currently only used for enchantments
+                    unknownDefault = WordUtils.capitalize(unknownDefault.toLowerCase().replace("_", " "));
                     template = template.replace("$name", unknownDefault);
                 }
             }
@@ -3032,7 +3030,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Set<String> enchantmentKeys = enchantments.getKeys(false);
                 for (String enchantmentKey : enchantmentKeys) {
                     int level = enchantments.getInt(enchantmentKey);
-                    addDamageTypeLore("enchantment", enchantmentKey, level, 0, lore, enchantmentKey.toLowerCase());
+                    String[] pieces = StringUtils.split(enchantmentKey, ":");
+                    enchantmentKey = pieces[pieces.length - 1];
+                    addDamageTypeLore("enchantment", enchantmentKey, level, 0, lore, enchantmentKey);
                 }
             }
         }
