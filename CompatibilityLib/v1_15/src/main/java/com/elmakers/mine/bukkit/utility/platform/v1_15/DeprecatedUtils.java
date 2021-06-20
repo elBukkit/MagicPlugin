@@ -5,7 +5,7 @@ import org.bukkit.block.Biome;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
-public class DeprecatedUtils extends com.elmakers.mine.bukkit.utility.platform.legacy.DeprecatedUtils {
+public class DeprecatedUtils extends com.elmakers.mine.bukkit.utility.platform.v1_14.DeprecatedUtils {
 
     public DeprecatedUtils(Platform platform) {
         super(platform);

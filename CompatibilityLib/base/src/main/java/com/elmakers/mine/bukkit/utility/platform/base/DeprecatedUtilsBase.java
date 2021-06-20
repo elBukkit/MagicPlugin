@@ -87,7 +87,7 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public short getMapId(MapView mapView) {
-        return (short)mapView.getId();
+        return mapView.getId();
     }
 
     @Override
@@ -268,7 +268,6 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public Biome getBiome(Location location) {
         return location.getWorld().getBiome(location.getBlockX(), location.getBlockZ());
     }
