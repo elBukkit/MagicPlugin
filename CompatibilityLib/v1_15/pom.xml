@@ -7,10 +7,10 @@
         <artifactId>CompatibilityLib-parent</artifactId>
         <version>9.0.1-SNAPSHOT</version>
     </parent>
-    <artifactId>CompatibilityLib-v1_16</artifactId>
+    <artifactId>CompatibilityLib-v1_15</artifactId>
 
     <properties>
-        <bukkit.version>1.16.5-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.15.2-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <dependencies>
@@ -29,12 +29,6 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>CompatibilityLib-v1_14</artifactId>
-            <version>${project.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_15</artifactId>
             <version>${project.version}</version>
             <scope>provided</scope>
         </dependency>

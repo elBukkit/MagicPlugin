@@ -7,7 +7,7 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 import net.md_5.bungee.api.ChatColor;
 
-public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_14.CompatibilityUtils {
+public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_15.CompatibilityUtils {
     private final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
 
     public CompatibilityUtils(Platform platform) {

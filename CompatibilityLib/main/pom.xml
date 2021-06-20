@@ -60,6 +60,13 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>CompatibilityLib-v1_15</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>CompatibilityLib-v1_16</artifactId>
             <version>${project.version}</version>
             <type>jar</type>

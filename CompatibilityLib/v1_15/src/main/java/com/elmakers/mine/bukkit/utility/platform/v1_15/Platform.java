@@ -1,10 +1,10 @@
-package com.elmakers.mine.bukkit.utility.platform.v1_16;
+package com.elmakers.mine.bukkit.utility.platform.v1_15;
 
 import java.util.logging.Logger;
 
 import org.bukkit.plugin.Plugin;
 
-public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_15.Platform {
+public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_14.Platform {
 
     public Platform(Plugin plugin, Logger logger) {
         super(plugin, logger);
@@ -12,6 +12,6 @@ public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_15.Pl
 
     @Override
     protected void createCompatibilityUtils() {
-        this.compatibilityUtils = new CompatibilityUtils(this);
+        compatibilityUtils = new CompatibilityUtils(this);
     }
 }

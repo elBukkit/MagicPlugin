@@ -53,6 +53,9 @@ public class CompatibilityLib {
         } else if (minorVersion >= 16) {
             logger.info("Loading legacy 1.16+ compatibility layer for server version " + versionDescription);
             platform = new com.elmakers.mine.bukkit.utility.platform.v1_16.Platform(plugin, logger);
+        } else if (minorVersion >= 15) {
+            logger.info("Loading legacy 1.15+ compatibility layer for server version " + versionDescription);
+            platform = new com.elmakers.mine.bukkit.utility.platform.v1_15.Platform(plugin, logger);
         } else if (minorVersion >= 14) {
             logger.info("Loading legacy 1.14+ compatibility layer for server version " + versionDescription);
             platform = new com.elmakers.mine.bukkit.utility.platform.v1_14.Platform(plugin, logger);
