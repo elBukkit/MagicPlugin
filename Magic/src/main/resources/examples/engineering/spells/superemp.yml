@@ -63,5 +63,6 @@ superemp:
         undo: 3000
         entity_undo_types: ""
         cancel_on_deactivate: false
+        power: true
     costs:
         mana: 200
