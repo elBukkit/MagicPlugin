@@ -43,6 +43,7 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class MagicItemCommandExecutor extends MagicTabExecutor {
 
@@ -216,7 +217,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             boolean isAddRemove = subCommand.equalsIgnoreCase("remove") || subCommand.equalsIgnoreCase("add");
             if (isAddRemove && subCommand2.equalsIgnoreCase("enchant")) {
                 for (Enchantment enchantment : Enchantment.values()) {
-                    options.add(CompatibilityLib.getCompatibilityUtils().getEnchantmentKey(enchantment).toLowerCase());
+                    options.add(CompatibilityLib.getCompatibilityUtils().getEnchantmentKey(enchantment));
                 }
             }
             if (isAddRemove && subCommand2.equalsIgnoreCase("attribute")) {
@@ -853,8 +854,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
     public boolean onItemAddEnchant(CommandSender sender, Player player, ItemStack item, String enchantName, String enchantValue)
     {
         Enchantment enchantment = null;
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         try {
-            enchantment = Enchantment.getByName(enchantName.toUpperCase());
+            enchantment = compatibilityUtils.getEnchantmentByKey(enchantName);
         } catch (Exception ex) {
             sender.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
             return true;
@@ -897,6 +899,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
     {
         Enchantment enchantment = null;
         ItemMeta itemMeta = item.getItemMeta();
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         if (enchantName == null) {
             Map<Enchantment, Integer> enchants = itemMeta.getEnchants();
             if (enchants == null || enchants.size() == 0) {
@@ -906,7 +909,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             enchantment = enchants.keySet().iterator().next();
         } else {
             try {
-                enchantment = Enchantment.getByName(enchantName.toUpperCase());
+                enchantment = compatibilityUtils.getEnchantmentByKey(enchantName);
             } catch (Exception ex) {
                 sender.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
                 return true;

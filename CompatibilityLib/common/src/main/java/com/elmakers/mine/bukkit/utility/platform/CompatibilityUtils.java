@@ -450,6 +450,8 @@ public interface CompatibilityUtils {
 
     String getEnchantmentKey(Enchantment enchantment);
 
+    Enchantment getEnchantmentByKey(String key);
+
     boolean checkDoorAction(Block[] doorBlocks, DoorActionType actionType);
 
     boolean performDoorAction(Block[] doorBlocks, DoorActionType actionType);

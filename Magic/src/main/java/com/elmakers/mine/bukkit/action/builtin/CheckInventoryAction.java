@@ -17,6 +17,8 @@ import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.item.InventorySlot;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class CheckInventoryAction extends CheckAction {
     private ItemStack item;
@@ -54,8 +56,9 @@ public class CheckInventoryAction extends CheckAction {
         List<String> keys = parameters.getStringList(key);
         if (keys != null && !keys.isEmpty()) {
             enchantments = new ArrayList<>();
+            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
             for (String enchantmentKey : keys) {
-                Enchantment enchantment = Enchantment.getByName(enchantmentKey.toUpperCase());
+                Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantmentKey);
                 if (enchantment != null) {
                     enchantments.add(enchantment);
                 } else {

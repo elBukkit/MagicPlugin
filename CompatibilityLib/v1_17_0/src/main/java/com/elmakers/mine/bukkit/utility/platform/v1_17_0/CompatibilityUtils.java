@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -1616,7 +1617,24 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public String getEnchantmentKey(Enchantment enchantment) {
-        return enchantment.getKey().getKey();
+        // We don't use toString here since we'll be parsing this ourselves
+        return enchantment.getKey().getNamespace() + ":" + enchantment.getKey().getKey();
+    }
+
+    @Override
+    @SuppressWarnings("deprecated")
+    public Enchantment getEnchantmentByKey(String key) {
+        // Really wish there was a fromString that took a string default namespace
+        String namespace = NamespacedKey.MINECRAFT;
+        if (key.contains(":")) {
+            String[] pieces = StringUtils.split(key, ":", 2);
+            namespace = pieces[0];
+            key = pieces[1];
+        }
+        // API says plugins aren't supposed to use this, but i have no idea how to deal
+        // with custom enchants otherwise
+        NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
+        return Enchantment.getByKey(namespacedKey);
     }
 
     @Override

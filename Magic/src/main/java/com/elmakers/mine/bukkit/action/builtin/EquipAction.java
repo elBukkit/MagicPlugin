@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class EquipAction extends BaseSpellAction
 {
@@ -54,11 +55,12 @@ public class EquipAction extends BaseSpellAction
         {
             enchantments = new HashMap<>();
             ConfigurationSection enchantConfig = ConfigurationUtils.getConfigurationSection(parameters, "enchantments");
+            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys)
             {
                 try {
-                    Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                    Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
                     enchantments.put(enchantment, enchantConfig.getInt(enchantKey));
                 } catch (Exception ex) {
                     spell.getController().getLogger().warning("Invalid enchantment: " + enchantKey);

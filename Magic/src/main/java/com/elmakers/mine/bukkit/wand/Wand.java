@@ -86,6 +86,7 @@ import com.elmakers.mine.bukkit.tasks.OpenWandTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
     public static final int OFFHAND_SLOT = 40;
@@ -6290,9 +6291,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         } else {
+            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
             ConfigurationSection enchantments = ConfigurationUtils.newConfigurationSection();
             for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-                enchantments.set(entry.getKey().getName().toLowerCase(), entry.getValue());
+                enchantments.set(compatibilityUtils.getEnchantmentKey(entry.getKey()), entry.getValue());
             }
             setProperty("enchantments", enchantments);
             if (item != null) {
@@ -6309,15 +6311,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return false;
         }
 
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         ConfigurationSection enchantments = ConfigurationUtils.newConfigurationSection();
         for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-            enchantments.set(entry.getKey().getName().toLowerCase(), entry.getValue());
+            enchantments.set(compatibilityUtils.getEnchantmentKey(entry.getKey()), entry.getValue());
         }
         if (CompatibilityLib.getInventoryUtils().addEnchantments(item, enchantments)) {
             enchantments = ConfigurationUtils.newConfigurationSection();
             Map<Enchantment, Integer> newEnchants = item.getItemMeta().getEnchants();
             for (Map.Entry<Enchantment, Integer> entry : newEnchants.entrySet()) {
-                enchantments.set(entry.getKey().getName().toLowerCase(), entry.getValue());
+                enchantments.set(compatibilityUtils.getEnchantmentKey(entry.getKey()), entry.getValue());
             }
             setProperty("enchantments", enchantments);
             saveState();
@@ -6332,10 +6335,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Map<Enchantment, Integer> enchantMap = new HashMap<>();
         ConfigurationSection enchantConfig = getConfigurationSection("enchantments");
         if (enchantConfig != null) {
+            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys) {
                 try {
-                    Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                    Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
                     enchantMap.put(enchantment, enchantConfig.getInt(enchantKey));
                 } catch (Exception ex) {
                     controller.getLogger().warning("Invalid enchantment: " + enchantKey);

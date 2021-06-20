@@ -23,6 +23,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
@@ -287,11 +288,12 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         Set<Enchantment> keep = null;
         if (enchantConfig != null) {
             keep = new HashSet<>();
+            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();;
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys)
             {
                 try {
-                    Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                    Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
                     item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
                     keep.add(enchantment);
                 } catch (Exception ex) {
@@ -316,10 +318,11 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
         boolean addedAny = false;
         if (enchantConfig != null) {
+            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();;
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys) {
                 try {
-                    Enchantment enchantment = Enchantment.getByName(enchantKey.toUpperCase());
+                    Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
                     int level = enchantConfig.getInt(enchantKey);
                     if (meta.hasConflictingEnchant(enchantment)) continue;
                     if (meta.getEnchantLevel(enchantment) >= level) continue;

@@ -96,6 +96,7 @@ wand:
       magic: "Magical Weakness $roman"
       unknown: "$type Weakness $roman"
     enchantment:
+      unknown: "$name $roman"
       arrow_damage: "Power $roman"
       arrow_fire: "Flame"
       arrow_infinite: "Infinity"

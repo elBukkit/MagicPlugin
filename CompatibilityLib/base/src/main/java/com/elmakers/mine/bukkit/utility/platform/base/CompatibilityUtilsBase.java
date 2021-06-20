@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
@@ -717,9 +718,13 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public String getEnchantmentKey(Enchantment enchantment) {
-        return enchantment.getName();
+        return enchantment.getName().toLowerCase();
+    }
+
+    @Override
+    public Enchantment getEnchantmentByKey(String key) {
+        return Enchantment.getByName(key.toUpperCase());
     }
 
     @Override
