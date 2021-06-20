@@ -44,6 +44,7 @@ import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class MagicItemCommandExecutor extends MagicTabExecutor {
 
@@ -442,11 +443,13 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             items.put(mat.getKey(), mat);
 
             String baseName = mat.getName(controller.getMessages());
+            DeprecatedUtils deprecatedUtils = CompatibilityLib.getDeprecatedUtils();
             for (short data = 1; data < 32; data++) {
-                testItem = new ItemStack(material, 1, data);
+                testItem = CompatibilityLib.getDeprecatedUtils().createItemStack(material, 1, data);
                 inventory.setItem(itemSlot, testItem);
                 setItem = inventory.getItem(itemSlot);
-                if (setItem == null || setItem.getType() != testItem.getType() || setItem.getDurability() != testItem.getDurability()) break;
+                if (setItem == null || setItem.getType() != testItem.getType()) break;
+                if (deprecatedUtils.getItemDamage(setItem) != deprecatedUtils.getItemDamage(testItem)) break;
 
                 mat = new MaterialAndData(material, data);
                 if (mat.getName().equals(baseName)) break;
@@ -883,12 +886,12 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         boolean allowUnsafe = player.hasPermission("Magic.item.enchant.unsafe");
         if (itemMeta.addEnchant(enchantment, level, allowUnsafe)) {
             item.setItemMeta(itemMeta);
-            sender.sendMessage(api.getMessages().get("item.enchant_added").replace("$enchant", enchantment.getName()));
+            sender.sendMessage(api.getMessages().get("item.enchant_added").replace("$enchant", compatibilityUtils.getEnchantmentKey(enchantment)));
         } else {
             if (!allowUnsafe && level > 5) {
                 sender.sendMessage(api.getMessages().get("item.enchant_unsafe"));
             } else {
-                sender.sendMessage(api.getMessages().get("item.enchant_not_added").replace("$enchant", enchantment.getName()));
+                sender.sendMessage(api.getMessages().get("item.enchant_not_added").replace("$enchant", compatibilityUtils.getEnchantmentKey(enchantment)));
             }
         }
 
@@ -921,11 +924,11 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
 
         if (!itemMeta.hasEnchant(enchantment)) {
-            sender.sendMessage(api.getMessages().get("item.no_enchant").replace("$enchant", enchantment.getName()));
+            sender.sendMessage(api.getMessages().get("item.no_enchant").replace("$enchant", compatibilityUtils.getEnchantmentKey(enchantment)));
         } else {
             itemMeta.removeEnchant(enchantment);
             item.setItemMeta(itemMeta);
-            sender.sendMessage(api.getMessages().get("item.enchant_removed").replace("$enchant", enchantment.getName()));
+            sender.sendMessage(api.getMessages().get("item.enchant_removed").replace("$enchant", compatibilityUtils.getEnchantmentKey(enchantment)));
         }
 
         return true;
@@ -1118,7 +1121,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             sender.sendMessage("Invalid damage value: " + parameters[0]);
             return true;
         }
-        item.setDurability(durability);
+        CompatibilityLib.getDeprecatedUtils().setItemDamage(item, durability);
         return true;
     }
 
