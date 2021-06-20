@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.lang.reflect.Constructor;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 
@@ -47,21 +48,19 @@ public class CompatibilityLib {
                 logger.severe("Failed to load compatibility layer, the plugin may need to be updated to work with your server version");
                 return false;
             }
-        } else if (minorVersion >= 16) {
-            logger.info("Loading legacy 1.16+ compatibility layer for server version " + versionDescription);
-            platform = new com.elmakers.mine.bukkit.utility.platform.v1_16.Platform(plugin, logger);
-        } else if (minorVersion >= 15) {
-            logger.info("Loading legacy 1.15+ compatibility layer for server version " + versionDescription);
-            platform = new com.elmakers.mine.bukkit.utility.platform.v1_15.Platform(plugin, logger);
-        } else if (minorVersion >= 14) {
-            logger.info("Loading legacy 1.14+ compatibility layer for server version " + versionDescription);
-            platform = new com.elmakers.mine.bukkit.utility.platform.v1_14.Platform(plugin, logger);
-        } else if (minorVersion >= 13) {
-            logger.info("Loading legacy 1.13+ compatibility layer for server version " + versionDescription);
-            platform = new com.elmakers.mine.bukkit.utility.platform.v1_13.Platform(plugin, logger);
         } else {
-            logger.info("Loading legacy compatibility layer for server version " + versionDescription);
-            platform = new LegacyPlatform(plugin, logger);
+            versionDescription = version[0] + "." + version[1];
+            logger.info("Loading legacy  compatibility layer for server version " + versionDescription);
+            try {
+                // No minor minor version numbers here
+                String versionPackage = version[0] + "_" + version[1];
+                Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
+                Constructor<?> platformConstructor = platformClass.getConstructor(Plugin.class, Logger.class);
+                platform = (Platform)platformConstructor.newInstance(plugin, logger);
+            } catch (Exception ex) {
+                logger.log(Level.SEVERE, "Failed to load compatibility layer, this is unexpected for legacy versions, please report this error", ex);
+                return false;
+            }
         }
         return platform.isValid();
     }
