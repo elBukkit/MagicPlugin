@@ -18,7 +18,6 @@ import org.bukkit.entity.Horse.Color;
 import org.bukkit.entity.Horse.Style;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Ocelot;
-import org.bukkit.entity.Ocelot.Type;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Villager;
@@ -196,14 +195,6 @@ public class AlterSpell extends BlockSpell
 
                 horse.setStyle(horseStyle);
                 horse.setColor(color);
-                break;
-            case OCELOT:
-                registerModified(entity);
-                Ocelot ocelot = (Ocelot)entity;
-                Type catType = ocelot.getCatType();
-                Type[] typeValues = Type.values();
-                catType = typeValues[(catType.ordinal() + 1) % typeValues.length];
-                ocelot.setCatType(catType);
                 break;
             case VILLAGER:
                 registerModified(entity);
