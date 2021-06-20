@@ -34,7 +34,6 @@ public class ConstructSpell extends BrushSpell
     private static final int DEFAULT_MAX_DIMENSION                 = 16;
 
     private Block targetBlock = null;
-    private boolean powered = false;
 
     @Override
     public SpellResult onCast(ConfigurationSection parameters)
@@ -213,9 +212,6 @@ public class ConstructSpell extends BrushSpell
         } else if (parameters.contains("odmin")) {
             batch.setOrientDimensionMin(parameters.getInt("odmin"));
         }
-        if (parameters.getBoolean("power", false)) {
-            batch.setPower(true);
-        }
         boolean success = mage.addBatch(batch);
         return success ? SpellResult.PENDING : SpellResult.FAIL;
     }
@@ -247,20 +243,7 @@ public class ConstructSpell extends BrushSpell
     @Override
     public boolean hasBrushOverride()
     {
-        return powered || super.hasBrushOverride();
-    }
-
-    @Override
-    protected void loadTemplate(ConfigurationSection node)
-    {
-        super.loadTemplate(node);
-        ConfigurationSection parameters = node.getConfigurationSection("parameters");
-        if (parameters != null) {
-            powered = parameters.getBoolean("power", false);
-            if (powered) {
-                controller.getLogger().warning("Using the 'power' flag with ConstructSpell is deprecated and will be removed in the future. Please use a Sphere + PowerBlock combination instead.");
-            }
-        }
+        return super.hasBrushOverride();
     }
 
     @Override
@@ -284,7 +267,7 @@ public class ConstructSpell extends BrushSpell
             for (ConstructionType constructionType : constructionTypes) {
                 examples.add(constructionType.name().toLowerCase());
             }
-        } else if (parameterKey.equals("power") || parameterKey.equals("replace")
+        } else if (parameterKey.equals("replace")
                 || parameterKey.equals("falling") || parameterKey.equals("lock_chunks")) {
             examples.addAll(Arrays.asList(EXAMPLE_BOOLEANS));
         }

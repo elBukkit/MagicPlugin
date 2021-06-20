@@ -8,19 +8,12 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
-import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.material.Button;
-import org.bukkit.material.Lever;
-import org.bukkit.material.PistonBaseMaterial;
-import org.bukkit.material.PoweredRail;
-import org.bukkit.material.RedstoneWire;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
@@ -66,7 +59,6 @@ public class ConstructBatch extends BrushBatch {
     private Deque<com.elmakers.mine.bukkit.api.block.BlockData> deferred;
     private Integer maxOrientDimension = null;
     private Integer minOrientDimension = null;
-    private boolean power = false;
     private boolean commit = false;
     private double breakable = 0;
     private double backfireChance = 0;
@@ -102,11 +94,6 @@ public class ConstructBatch extends BrushBatch {
         this.delayed = materials.getMaterialSetEmpty("delayed");
         this.deferredTypes = materials.getMaterialSetEmpty("deferred");
         this.orient = orientVector == null ? new Vector(0, 1, 0) : orientVector;
-    }
-
-    public void setPower(boolean power) {
-        this.power = power;
-        this.undoList.setApplyPhysics(true);
     }
 
     public void setBackfireChance(double backfireChance) {
@@ -452,57 +439,6 @@ public class ConstructBatch extends BrushBatch {
             }
         }
 
-        // Check for power mode.
-        BlockState blockState = block.getState();
-        if (power)
-        {
-            Material material = block.getType();
-            org.bukkit.material.MaterialData data = blockState.getData();
-            boolean powerBlock = false;
-            if (data instanceof Button) {
-                Button powerData = (Button)data;
-                registerForUndo(block);
-                powerData.setPowered(!powerData.isPowered());
-                powerBlock = true;
-            } else if (data instanceof Lever) {
-                Lever powerData = (Lever)data;
-                registerForUndo(block);
-                powerData.setPowered(!powerData.isPowered());
-                powerBlock = true;
-            } else if (data instanceof PistonBaseMaterial) {
-                PistonBaseMaterial powerData = (PistonBaseMaterial)data;
-                registerForUndo(block);
-                powerData.setPowered(!powerData.isPowered());
-                powerBlock = true;
-            } else if (data instanceof PoweredRail) {
-                PoweredRail powerData = (PoweredRail)data;
-                registerForUndo(block);
-                powerData.setPowered(!powerData.isPowered());
-                powerBlock = true;
-            } else if (data instanceof RedstoneWire) {
-                RedstoneWire wireData = (RedstoneWire)data;
-                registerForUndo(block);
-                wireData.setData((byte)(15 - wireData.getData()));
-                powerBlock = true;
-            } else if (material == Material.REDSTONE_BLOCK) {
-                registerForUndo(block);
-                block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material.getId());
-                controller.getRedstoneReplacement().modify(block, applyPhysics);
-            } else if (material == Material.TNT) {
-                registerForUndo(block);
-                block.setType(Material.AIR);
-
-                // Kaboomy time!
-                registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
-            }
-
-            if (powerBlock) {
-                blockState.update();
-            }
-
-            return true;
-        }
-
         // Make sure the brush is ready, it may need to load chunks.
         if (!brush.isReady()) {
             brush.prepare();
@@ -525,6 +461,7 @@ public class ConstructBatch extends BrushBatch {
             return true;
         }
 
+        BlockState blockState = block.getState();
         modifyWith(block, brush);
         if (!undoList.isScheduled()) {
             controller.logBlockChange(spell.getMage(), blockState, block.getState());

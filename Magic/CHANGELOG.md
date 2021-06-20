@@ -11,6 +11,7 @@
 
  - More deprecated spell removals:
    - DoorSpell
+   - "power" option to ConstructSpell, use PowerBlock action instead 
    - SuperEMP (spell config, removed from architect path .. may come back one day)
 
 # 9.0
