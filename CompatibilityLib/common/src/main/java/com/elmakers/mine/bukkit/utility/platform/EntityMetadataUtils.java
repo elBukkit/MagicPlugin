@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.metadata;
+package com.elmakers.mine.bukkit.utility.platform;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;

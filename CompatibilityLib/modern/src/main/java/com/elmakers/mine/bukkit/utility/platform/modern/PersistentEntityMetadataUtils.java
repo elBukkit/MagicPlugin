@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.metadata;
+package com.elmakers.mine.bukkit.utility.platform.modern;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;
@@ -6,6 +6,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.MetaKey;
+import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 
 public class PersistentEntityMetadataUtils extends EntityMetadataUtils {
     public PersistentEntityMetadataUtils(Plugin plugin) {

@@ -46,6 +46,13 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>CompatibilityLib-modern</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>CompatibilityLib-v1_13</artifactId>
             <version>${project.version}</version>
             <type>jar</type>

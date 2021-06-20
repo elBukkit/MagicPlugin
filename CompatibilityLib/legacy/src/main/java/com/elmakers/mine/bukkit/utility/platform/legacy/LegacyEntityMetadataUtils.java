@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.metadata;
+package com.elmakers.mine.bukkit.utility.platform.legacy;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -7,6 +7,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.MetaKey;
+import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 
 public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
     // This is leaky.
@@ -17,6 +18,7 @@ public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
 
     public LegacyEntityMetadataUtils(Plugin plugin) {
         super(plugin);
+        plugin.getLogger().info("Persistent metadata is not available, will rely on custom names to restore persistent magic mobs");
     }
 
     protected <T> T getRawValue(Entity entity, MetaKey<T> key) {

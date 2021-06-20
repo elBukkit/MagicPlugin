@@ -2,12 +2,15 @@ package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.util.function.Consumer;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
+import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -19,27 +22,99 @@ import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 public abstract class PlatformBase implements Platform {
     private final Logger logger;
     private final Plugin plugin;
-    protected boolean valid = false;
-    protected CompatibilityUtils compatibilityUtils;
-    protected DeprecatedUtils deprecatedUtils;
-    protected InventoryUtils inventoryUtils;
-    protected ItemUtils itemUtils;
-    protected NBTUtils nbtUtils;
-    protected SchematicUtils schematicUtils;
-    protected SkinUtils skinUtils;
-    protected PaperUtils paperUtils;
+    @Nonnull
+    protected final CompatibilityUtils compatibilityUtils;
+    @Nonnull
+    protected final DeprecatedUtils deprecatedUtils;
+    @Nonnull
+    protected final InventoryUtils inventoryUtils;
+    @Nonnull
+    protected final ItemUtils itemUtils;
+    @Nonnull
+    protected final NBTUtils nbtUtils;
+    @Nonnull
+    protected final SchematicUtils schematicUtils;
+    @Nonnull
+    protected final SkinUtils skinUtils;
+    protected final PaperUtils paperUtils;
+    @Nonnull
+    protected final EntityMetadataUtils entityMetadataUtils;
+    protected final boolean valid;
 
     public PlatformBase(Plugin plugin, Logger logger) {
         this.plugin = plugin;
         this.logger = logger;
+        this.valid = initialize();
 
+        if (valid) {
+            this.compatibilityUtils = createCompatibilityUtils();
+            this.deprecatedUtils = createDeprecatedUtils();
+            this.inventoryUtils = createInventoryUtils();
+            this.itemUtils = createItemUtils();
+            this.nbtUtils = createNBTUtils();
+            this.schematicUtils = createSchematicUtils();
+            this.skinUtils = createSkinUtils();
+            this.paperUtils = createPaperUtils();
+            this.entityMetadataUtils = createEntityMetadataUtils();
+        } else {
+            this.compatibilityUtils = null;
+            this.deprecatedUtils = null;
+            this.inventoryUtils = null;
+            this.itemUtils = null;
+            this.nbtUtils = null;
+            this.schematicUtils = null;
+            this.skinUtils = null;
+            this.paperUtils = null;
+            this.entityMetadataUtils = null;
+        }
+    }
+
+    protected boolean initialize() {
+        return true;
+    }
+
+    protected EntityMetadataUtils createEntityMetadataUtils() {
+        throw new IllegalStateException("Platform does not implement createEntityMetadataUtils");
+    }
+
+    protected PaperUtils createPaperUtils() {
         // Is there a better way to check for Paper?
         try {
             World.class.getMethod("getChunkAtAsync", Integer.TYPE, Integer.TYPE, Boolean.TYPE, Consumer.class);
             logger.info("Async chunk loading API found");
-            paperUtils = new com.elmakers.mine.bukkit.utility.paper.PaperUtils(this);
+            return new com.elmakers.mine.bukkit.utility.paper.PaperUtils(this);
         } catch (Throwable ignore) {
         }
+        // null PaperUtils is OK
+        return paperUtils;
+    }
+
+    protected SkinUtils createSkinUtils() {
+        throw new IllegalStateException("Platform does not implement createSkinUtils");
+    }
+
+    protected SchematicUtils createSchematicUtils() {
+        throw new IllegalStateException("Platform does not implement createSchematicUtils");
+    }
+
+    protected NBTUtils createNBTUtils() {
+        throw new IllegalStateException("Platform does not implement createNBTUtils");
+    }
+
+    protected ItemUtils createItemUtils() {
+        throw new IllegalStateException("Platform does not implement createItemUtils");
+    }
+
+    protected InventoryUtils createInventoryUtils() {
+        throw new IllegalStateException("Platform does not implement createInventoryUtils");
+    }
+
+    protected CompatibilityUtils createCompatibilityUtils() {
+        throw new IllegalStateException("Platform does not implement createCompatibilityUtils");
+    }
+
+    protected DeprecatedUtils createDeprecatedUtils() {
+        throw new IllegalStateException("Platform does not implement createDeprecatedUtils");
     }
 
     @Override
@@ -118,7 +193,13 @@ public abstract class PlatformBase implements Platform {
     }
 
     @Override
+    @Nullable
     public PaperUtils getPaperUtils() {
         return paperUtils;
+    }
+
+    @Override
+    public EntityMetadataUtils getEnityMetadataUtils() {
+        return entityMetadataUtils;
     }
 }

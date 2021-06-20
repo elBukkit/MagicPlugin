@@ -13,7 +13,7 @@ public class Platform extends LegacyPlatform {
     }
 
     @Override
-    protected void createCompatibilityUtils() {
-        compatibilityUtils = new CompatibilityUtils(this);
+    protected com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils createCompatibilityUtils() {
+        return new CompatibilityUtils(this);
     }
 }

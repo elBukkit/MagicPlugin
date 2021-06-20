@@ -36,6 +36,8 @@ public interface Platform {
 
     SkinUtils getSkinUtils();
 
+    EntityMetadataUtils getEnityMetadataUtils();
+
     @Nullable
     PaperUtils getPaperUtils();
 }
