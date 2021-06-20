@@ -1257,16 +1257,6 @@ public class ConfigurationUtils extends ConfigUtils {
          return new TranslatingConfigurationSection(parent, path);
     }
 
-    public static Collection<ConfigurationSection> getNodeList(ConfigurationSection node, String path) {
-        Collection<ConfigurationSection> results = new ArrayList<ConfigurationSection>();
-        List<Map<?, ?>> mapList = node.getMapList(path);
-        for (Map<?, ?> map : mapList) {
-            results.add(toConfigurationSection(node, map));
-        }
-
-        return results;
-    }
-
     @Nullable
     public static Collection<Requirement> getRequirements(ConfigurationSection configuration) {
         List<Requirement> requirements = null;
