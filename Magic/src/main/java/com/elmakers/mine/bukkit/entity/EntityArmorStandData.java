@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.entity;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 
@@ -33,15 +34,16 @@ public class EntityArmorStandData extends EntityExtraData {
     }
 
     public EntityArmorStandData(ArmorStand armorStand) {
-        itemInHand = armorStand.getItemInHand();
+        EntityEquipment equipment = armorStand.getEquipment();
+        itemInHand = equipment.getItemInMainHand();
         if (itemInHand != null) itemInHand = itemInHand.clone();
-        boots = armorStand.getBoots();
+        boots = equipment.getBoots();
         if (boots != null) boots = boots.clone();
-        leggings = armorStand.getLeggings();
+        leggings = equipment.getLeggings();
         if (leggings != null) leggings = leggings.clone();
-        chestplate = armorStand.getChestplate();
+        chestplate = equipment.getChestplate();
         if (chestplate != null) chestplate = chestplate.clone();
-        helmet = armorStand.getHelmet();
+        helmet = equipment.getHelmet();
         if (helmet != null) helmet = helmet.clone();
         bodyPose = armorStand.getBodyPose();
         leftArmPose = armorStand.getLeftArmPose();
@@ -72,12 +74,13 @@ public class EntityArmorStandData extends EntityExtraData {
     public void apply(Entity entity) {
         if (!(entity instanceof ArmorStand)) return;
         ArmorStand armorStand = (ArmorStand)entity;
+        EntityEquipment equipment = armorStand.getEquipment();
 
-        armorStand.setItemInHand(itemInHand);
-        armorStand.setBoots(boots);
-        armorStand.setLeggings(leggings);
-        armorStand.setChestplate(chestplate);
-        armorStand.setHelmet(helmet);
+        equipment.setItemInMainHand(itemInHand);
+        equipment.setBoots(boots);
+        equipment.setLeggings(leggings);
+        equipment.setChestplate(chestplate);
+        equipment.setHelmet(helmet);
         if (bodyPose != null) armorStand.setBodyPose(bodyPose);
         if (leftArmPose != null) armorStand.setLeftArmPose(leftArmPose);
         if (rightArmPose != null) armorStand.setRightArmPose(rightArmPose);

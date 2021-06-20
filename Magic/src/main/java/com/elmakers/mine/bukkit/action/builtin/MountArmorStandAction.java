@@ -217,9 +217,9 @@ public class MountArmorStandAction extends RideEntityAction
         controller.setForceSpawn(false);
 
         if (mountWand) {
-            armorStand.setHelmet(item);
+            armorStand.getEquipment().setHelmet(item);
         } else if (helmetItem != null) {
-            armorStand.setHelmet(helmetItem);
+            armorStand.getEquipment().setHelmet(helmetItem);
         }
         if (mountName != null && !mountName.isEmpty()) {
             armorStand.setCustomName(mountName);
