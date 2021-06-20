@@ -9,17 +9,15 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.EntityType;
-import org.bukkit.material.RedstoneWire;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.block.DefaultMaterials;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class PowerBlockAction extends BaseSpellAction {
     private boolean applyPhysics = false;
@@ -30,7 +28,6 @@ public class PowerBlockAction extends BaseSpellAction {
         applyPhysics = parameters.getBoolean("physics", false);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context) {
         Block block = context.getTargetBlock();
@@ -42,60 +39,29 @@ public class PowerBlockAction extends BaseSpellAction {
         }
         context.getUndoList().setApplyPhysics(true);
 
-        Material material = block.getType();
-        BlockState blockState = block.getState();
-        org.bukkit.material.MaterialData data = blockState.getData();
-        MageController controller = context.getController();
-        boolean updateBlockState = false;
-        if (CompatibilityLib.getCompatibilityUtils().isPowerable(block)) {
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+        if (compatibilityUtils.canToggleBlockPower(block)) {
             context.registerForUndo(block);
-            CompatibilityLib.getCompatibilityUtils().setPowered(block, !CompatibilityLib.getCompatibilityUtils().isPowered(block));
-        } else if (data instanceof RedstoneWire) {
-            RedstoneWire wireData = (RedstoneWire)data;
-            context.registerForUndo(block);
-            wireData.setData((byte)(15 - wireData.getData()));
-            updateBlockState = true;
-        } else if (material == Material.REDSTONE_BLOCK) {
-            context.registerForUndo(block);
-            block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material);
-            controller.getRedstoneReplacement().modify(block, applyPhysics);
-        } else if (material == Material.TNT) {
-            context.registerForUndo(block);
-            block.setType(Material.AIR);
-
-            // Kaboomy time!
-            context.registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
+            compatibilityUtils.toggleBlockPower(block);
         } else {
-            byte dataValue = (byte)(data.getData() & 0x4);
-            MaterialAndData redstoneTorchOff = DefaultMaterials.getRedstoneTorchOff();
-            MaterialAndData redstoneTorchOn = DefaultMaterials.getRedstoneTorchOn();
-            MaterialAndData redstoneWallTorchOff = DefaultMaterials.getRedstoneWallTorchOff();
-            MaterialAndData redstoneWallTorchOn = DefaultMaterials.getRedstoneWallTorchOn();
-            MaterialAndData modifyWith = null;
-
-            if (redstoneTorchOff != null && redstoneTorchOn != null && redstoneWallTorchOff != null && redstoneWallTorchOn != null) {
-                if (redstoneTorchOff.matches(material, dataValue)) {
-                    modifyWith = redstoneTorchOn;
-                } else if (redstoneTorchOn.matches(material, dataValue)) {
-                    modifyWith = redstoneTorchOff;
-                } else if (redstoneWallTorchOff.matches(material, dataValue)) {
-                    modifyWith = redstoneWallTorchOn;
-                } else if (redstoneWallTorchOn.matches(material, dataValue)) {
-                    modifyWith = redstoneWallTorchOff;
-                }
-            }
-
-            if (modifyWith != null) {
+            Material material = block.getType();
+            BlockState blockState = block.getState();
+            MageController controller = context.getController();
+            boolean updateBlockState = false;
+            if (material == Material.REDSTONE_BLOCK) {
                 context.registerForUndo(block);
-                Short modifyData = modifyWith.getData();
-                if (modifyData != 0) {
-                    dataValue = (byte)((data.getData() & 0x3) | modifyWith.getData());
-                }
-                CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, modifyWith.getMaterial(), dataValue, true);
+                block.getWorld().playEffect(block.getLocation(), Effect.STEP_SOUND, material);
+                controller.getRedstoneReplacement().modify(block, applyPhysics);
+            } else if (material == Material.TNT) {
+                context.registerForUndo(block);
+                block.setType(Material.AIR);
+
+                // Kaboomy time!
+                context.registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
             }
-        }
-        if (updateBlockState) {
-            blockState.update();
+            if (updateBlockState) {
+                blockState.update();
+            }
         }
         return SpellResult.CAST;
     }

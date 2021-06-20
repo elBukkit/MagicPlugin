@@ -366,6 +366,10 @@ public interface CompatibilityUtils {
 
     boolean setPowered(Block block, boolean powered);
 
+    boolean toggleBlockPower(Block block);
+
+    boolean canToggleBlockPower(Block block);
+
     boolean isWaterLoggable(Block block);
 
     boolean setWaterlogged(Block block, boolean waterlogged);

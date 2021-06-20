@@ -70,6 +70,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.Door;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.RedstoneWire;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
@@ -1892,6 +1893,53 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
 
         return true;
+    }
+
+    @Override
+    public boolean canToggleBlockPower(Block block) {
+        if (isPowerable(block)) {
+            return true;
+        }
+
+        Material material = block.getType();
+        if (material == Material.REDSTONE_TORCH_OFF || material == Material.REDSTONE_TORCH_ON) {
+            return true;
+        }
+
+        BlockState blockState = block.getState();
+        MaterialData data = blockState.getData();
+        if (data instanceof RedstoneWire) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean toggleBlockPower(Block block) {
+        if (isPowerable(block)) {
+            setPowered(block, !isPowered(block));
+            return true;
+        }
+
+        Material material = block.getType();
+        if (material == Material.REDSTONE_TORCH_OFF) {
+            block.setType(Material.REDSTONE_TORCH_ON);
+            return true;
+        }
+        if (material == Material.REDSTONE_TORCH_ON) {
+            block.setType(Material.REDSTONE_TORCH_OFF);
+            return true;
+        }
+
+        BlockState blockState = block.getState();
+        MaterialData data = blockState.getData();
+        if (data instanceof RedstoneWire) {
+            RedstoneWire wireData = (RedstoneWire)data;
+            wireData.setData((byte)(15 - wireData.getData()));
+            blockState.update();
+            return true;
+        }
+        return false;
     }
 
     @Override

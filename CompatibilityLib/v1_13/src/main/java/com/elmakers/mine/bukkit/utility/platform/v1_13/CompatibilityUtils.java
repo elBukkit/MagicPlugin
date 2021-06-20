@@ -3,8 +3,11 @@ package com.elmakers.mine.bukkit.utility.platform.v1_13;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Lightable;
+import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.material.Torch;
 import org.spigotmc.event.entity.EntityDismountEvent;
@@ -102,5 +105,50 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     @Override
     public void cancelDismount(EntityDismountEvent event) {
         event.setCancelled(true);
+    }
+
+    @Override
+    public boolean canToggleBlockPower(Block block) {
+        BlockData blockData = block.getBlockData();
+        if (blockData == null) {
+            return false;
+        }
+        if (blockData instanceof Powerable) {
+            return true;
+        }
+        if (blockData instanceof Lightable) {
+            return true;
+        }
+        if (blockData instanceof AnaloguePowerable) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean toggleBlockPower(Block block) {
+        BlockData blockData = block.getBlockData();
+        if (blockData == null) {
+            return false;
+        }
+        if (blockData instanceof Powerable) {
+            Powerable powerable = (Powerable)blockData;
+            powerable.setPowered(!powerable.isPowered());
+            block.setBlockData(powerable, true);
+            return true;
+        }
+        if (blockData instanceof Lightable) {
+            Lightable lightable = (Lightable)blockData;
+            lightable.setLit(!lightable.isLit());
+            block.setBlockData(lightable, true);
+            return true;
+        }
+        if (blockData instanceof AnaloguePowerable) {
+            AnaloguePowerable powerable = (AnaloguePowerable)blockData;
+            powerable.setPower(powerable.getMaximumPower() - powerable.getPower());
+            block.setBlockData(powerable, true);
+            return true;
+        }
+        return false;
     }
 }
