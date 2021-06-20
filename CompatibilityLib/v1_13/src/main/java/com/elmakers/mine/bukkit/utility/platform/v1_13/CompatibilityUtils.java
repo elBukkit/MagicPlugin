@@ -2,9 +2,12 @@ package com.elmakers.mine.bukkit.utility.platform.v1_13;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.Door;
+import org.bukkit.material.Torch;
+import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
@@ -80,5 +83,24 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             doorBlocks[0] = targetBlock;
         }
         return doorBlocks;
+    }
+
+    @Override
+    public boolean setTorchFacingDirection(Block block, BlockFace facing) {
+        BlockState state = block.getState();
+        Object data = state.getData();
+        if (data instanceof Torch) {
+            Torch torchData = (Torch)data;
+            torchData.setFacingDirection(facing);
+            state.setData(torchData);
+            state.update();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void cancelDismount(EntityDismountEvent event) {
+        event.setCancelled(true);
     }
 }

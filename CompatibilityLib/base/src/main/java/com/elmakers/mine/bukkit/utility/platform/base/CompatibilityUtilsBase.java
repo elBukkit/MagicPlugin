@@ -27,6 +27,7 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -43,6 +44,7 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.Torch;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.projectiles.ProjectileSource;
@@ -706,7 +708,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public void cancelDismount(EntityDismountEvent event) {
-        event.setCancelled(true);
+        // This event can't be cancelled in this version of Spigot
     }
 
     @Override
@@ -718,5 +720,19 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @SuppressWarnings("deprecation")
     public String getEnchantmentKey(Enchantment enchantment) {
         return enchantment.getName();
+    }
+
+    @Override
+    public boolean setTorchFacingDirection(Block block, BlockFace facing) {
+        BlockState state = block.getState();
+        Object data = state.getData();
+        if (data instanceof Torch) {
+            Torch torchData = (Torch)data;
+            torchData.setFacingDirection(facing);
+            state.setData(torchData);
+            state.update();
+            return true;
+        }
+        return false;
     }
 }

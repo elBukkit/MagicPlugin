@@ -455,4 +455,6 @@ public interface CompatibilityUtils {
     boolean performDoorAction(Block[] doorBlocks, DoorActionType actionType);
 
     Block[] getDoorBlocks(Block targetBlock);
+
+    boolean setTorchFacingDirection(Block block, BlockFace facing);
 }

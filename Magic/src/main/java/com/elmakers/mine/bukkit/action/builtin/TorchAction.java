@@ -6,9 +6,7 @@ import java.util.Collection;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.material.Torch;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -19,6 +17,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class TorchAction extends BaseSpellAction
 {
@@ -160,14 +159,7 @@ public class TorchAction extends BaseSpellAction
         try {
             targetMaterial.modify(target);
             if (direction != BlockFace.SELF) {
-                BlockState state = target.getState();
-                Object data = state.getData();
-                if (data instanceof Torch) {
-                    Torch torchData = (Torch)data;
-                    torchData.setFacingDirection(direction.getOppositeFace());
-                    state.setData(torchData);
-                    state.update();
-                }
+                CompatibilityLib.getCompatibilityUtils().setTorchFacingDirection(target, direction.getOppositeFace());
             }
         } catch (Exception ex) {
             ex.printStackTrace();
