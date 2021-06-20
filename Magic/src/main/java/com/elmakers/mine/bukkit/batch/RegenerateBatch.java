@@ -82,6 +82,7 @@ public class RegenerateBatch extends SpellBatch {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public int process(int maxBlocks) {
         int processedBlocks = 0;
         if (state == RegenerateState.SAVING && expand && !spell.isUndoable())

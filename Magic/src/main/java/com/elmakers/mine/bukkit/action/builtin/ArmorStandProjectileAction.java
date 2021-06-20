@@ -7,6 +7,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
@@ -204,30 +205,31 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
             player.getInventory().setItem(slotNumber, new ItemStack(Material.AIR));
         }
         if (stepCount == visibleDelayTicks) {
+            EntityEquipment equipment = armorStand.getEquipment();
             if (wandItem != null && wandSlot == InventorySlot.HELMET) {
-                armorStand.setHelmet(wandItem);
+                equipment.setHelmet(wandItem);
             } else {
-                armorStand.setHelmet(getItem(helmetItem));
+                equipment.setHelmet(getItem(helmetItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.RIGHT_ARM) {
-                armorStand.setItemInHand(wandItem);
+                equipment.setItemInHand(wandItem);
             } else {
-                armorStand.setItemInHand(getItem(rightArmItem));
+                equipment.setItemInHand(getItem(rightArmItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.CHESTPLATE) {
-                armorStand.setChestplate(wandItem);
+                equipment.setChestplate(wandItem);
             } else {
-                armorStand.setChestplate(getItem(chestplateItem));
+                equipment.setChestplate(getItem(chestplateItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.LEGGINGS) {
-                armorStand.setLeggings(wandItem);
+                equipment.setLeggings(wandItem);
             } else {
-                armorStand.setLeggings(getItem(leggingsItem));
+                equipment.setLeggings(getItem(leggingsItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.BOOTS) {
-                armorStand.setBoots(wandItem);
+                equipment.setBoots(wandItem);
             } else {
-                armorStand.setBoots(getItem(bootsItem));
+                equipment.setBoots(getItem(bootsItem));
             }
         }
         stepCount++;

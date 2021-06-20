@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
@@ -99,10 +101,11 @@ final class SimpleMaterialSet implements MaterialSet {
             }
         }
 
+        DeprecatedUtils deprecatedUtils = CompatibilityLib.getDeprecatedUtils();
         for (MaterialAndData materialAndData : materialAndDatas) {
             // TODO: Consider item metadata
             if (materialAndData.getMaterial() == item.getType()
-                    && materialAndData.getData() == item.getDurability()) {
+                    && materialAndData.getData() == deprecatedUtils.getItemDamage(item)) {
                 return true;
             }
         }
