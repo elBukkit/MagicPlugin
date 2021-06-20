@@ -16,4 +16,9 @@ public class Platform extends LegacyPlatform {
     protected com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils createCompatibilityUtils() {
         return new CompatibilityUtils(this);
     }
+
+    @Override
+    protected com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils createDeprecatedUtils() {
+        return new DeprecatedUtils(this);
+    }
 }

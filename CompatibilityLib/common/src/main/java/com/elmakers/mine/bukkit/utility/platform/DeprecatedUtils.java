@@ -92,4 +92,8 @@ public interface DeprecatedUtils {
     Biome getBiome(Location location);
 
     ItemStack createItemStack(Material material, int amount, short legacyData);
+
+    void setSkullType(Skull skullBlock, short skullType);
+
+    short getSkullType(Skull skullBlock);
 }

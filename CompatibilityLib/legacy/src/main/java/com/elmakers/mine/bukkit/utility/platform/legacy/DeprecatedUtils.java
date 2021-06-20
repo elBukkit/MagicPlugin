@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.utility.platform.legacy;
 
 import org.bukkit.Material;
+import org.bukkit.SkullType;
 import org.bukkit.block.Block;
+import org.bukkit.block.Skull;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtilsBase;
@@ -11,7 +13,6 @@ import com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtilsBase;
  * number' deprecations.
  *
  */
-@SuppressWarnings("deprecation")
 public class DeprecatedUtils extends DeprecatedUtilsBase {
     public DeprecatedUtils(Platform platform) {
         super(platform);
@@ -30,5 +31,15 @@ public class DeprecatedUtils extends DeprecatedUtilsBase {
         } else {
             block.setType(material, applyPhysics);
         }
+    }
+
+    @Override
+    public void setSkullType(Skull skullBlock, short skullType) {
+        skullBlock.setSkullType(SkullType.values()[skullType]);
+    }
+
+    @Override
+    public short getSkullType(Skull skullBlock) {
+        return (short)skullBlock.getSkullType().ordinal();
     }
 }

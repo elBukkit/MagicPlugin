@@ -12,7 +12,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
-import org.bukkit.SkullType;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -478,9 +477,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 extraData = new BlockCommand(command.getCommand(), command.getName());
             } else if (blockState instanceof Skull) {
                 Skull skull = (Skull)blockState;
-                if (!CompatibilityLib.isCurrentVersion()) {
-                    data = (short)skull.getSkullType().ordinal();
-                }
+                data = CompatibilityLib.getDeprecatedUtils().getSkullType(skull);
                 extraData = new BlockSkull(CompatibilityLib.getInventoryUtils().getSkullProfile(skull), skull.getRotation());
             } else if (blockState instanceof CreatureSpawner) {
                 CreatureSpawner spawner = (CreatureSpawner)blockState;
@@ -616,9 +613,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (blockState != null && blockState instanceof Skull && extraData != null && extraData instanceof BlockSkull) {
                 Skull skull = (Skull)blockState;
                 BlockSkull skullData = (BlockSkull)extraData;
-                // Don't do this in 1.13
-                if (data != null && data != 0 && !CompatibilityLib.isCurrentVersion()) {
-                    skull.setSkullType(SkullType.values()[data]);
+                if (data != null && data != 0) {
+                    CompatibilityLib.getDeprecatedUtils().setSkullType(skull, data);
                 }
                 if (skullData.rotation != null && skullData.rotation != org.bukkit.block.BlockFace.SELF) {
                     skull.setRotation(skullData.rotation);
