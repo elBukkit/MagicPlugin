@@ -2799,40 +2799,60 @@ wand:
 ##################################################################################
   enchantment:
     arrow_damage: Poder $roman
+    power: Poder $roman
     arrow_fire: Llama
+    flame: Llama
     arrow_infinite: Infinidad
+    infinity: Infinidad
     arrow_knockback: Golpe $roman
+    punch: Golpe $roman
     binding_curse: Maldición de Encuadernación
     channeling: Canalización
     damage_all: Nitidez $roman
+    sharpness: Nitidez $roman
     damage_arthropods: Bane de artrópodos $roman
+    bane_of_arthropods: Bane de artrópodos $roman
     damage_undead: Aplastar $roman
+    smite: Aplastar $roman
     depth_strider: Profundidad de Strider $roman
     dig_speed: Eficiencia $roman
+    efficiency: Eficiencia $roman
     durability: Inrrompibilidad $roman
+    unbreaking: Inrrompibilidad $roman
     fire_aspect: Aspecto del Fuego
     frost_walker: Caminante de Hielo $roman
     impaling: Empalar
     knockback: Retroceso $roman
     loot_bonus_blocks: Fortuna $roman
+    fortune: Fortuna $roman
     loot_bonus_mobs: Saqueo $roman
+    looting: Saqueo $roman
     loyalty: Lealtad
     luck: Suerte $roman
+    luck_of_the_sea: Suerte $roman
     lure: Señuelo $roman
     mending: Reparación
     multishot: Disparo múltiple
     oxygen: Respiración $roman
+    respiration: Respiración $roman
     protection_environmental: Protección del Ambiental $roman
+    protection: Protección del Ambiental $roman
     protection_explosions: Protección contra explosiones $roman
+    blast_protection: Protección contra explosiones $roman
     protection_fall: Protección contra caídas $roman
+    feather_falling: Protección contra caídas $roman
     protection_fire: Protección contra el fuego $roman
+    fire_protection: Protección contra el fuego $roman
     protection_projectile: Protección de proyectiles $roman
+    projectile_protection: Protección de proyectiles $roman
     riptide: Riptide
     silk_touch: Toque Sedoso
     sweeping_edge: Borde de barrido $roman
+    sweeping: Borde de barrido $roman
     thorns: Espinas $roman
     vanishing_curse: Maldición de Desaparecer
     water_worker: Trabajador del Agua
+    aqua_affinity: Trabajador del Agua
   ##################################################################################
   potion_effect: $effect $roman
   super_powered: Superpoderosas

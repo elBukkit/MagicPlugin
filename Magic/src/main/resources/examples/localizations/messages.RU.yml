@@ -3829,40 +3829,60 @@ wand:
     wither: Уязвимость к иссушени $roman
   enchantment:
     arrow_damage: Урон стрел $roman
+    power: Урон стрел $roman
     arrow_fire: Горящая стрела
+    flame: Горящая стрела
     arrow_infinite: Бесконечные стрелы
+    infinity: Бесконечные стрелы
     arrow_knockback: Откидывание $roman
+    punch: Откидывание $roman
     binding_curse: Проклятие несъемности
     channeling: Громовержец
     damage_all: Острота $roman
+    sharpness: Острота $roman
     damage_arthropods: Бич членистоногих $roman
+    bane_of_arthropods: Бич членистоногих $roman
     damage_undead: Небесная кара $roman
+    smite: Небесная кара $roman
     depth_strider: Ходьба под водой $roman
     dig_speed: Эффективность $roman
+    efficiency: Эффективность $roman
     durability: Прочность $roman
+    unbreaking: Прочность $roman
     fire_aspect: Заговор огня
     frost_walker: Ледоход $roman
     impaling: Пронзание
     knockback: Отдача $roman
     loot_bonus_blocks: Удача $roman
+    fortune: Удача $roman
     loot_bonus_mobs: Добыча $roman
+    looting: Добыча $roman
     loyalty: Верность
     luck: Везучий рыбак $roman
+    luck_of_the_sea: Везучий рыбак $roman
     lure: Приманка $roman
     mending: Починка
     multishot: Тройной выстрел
     oxygen: Подводное дыхание $roman
+    respiration: Подводное дыхание $roman
     protection_environmental: Защита $roman
+    protection: Защита $roman
     protection_explosions: Взрывоустойчивость $roman
+    blast_protection: Взрывоустойчивость $roman
     protection_fall: Невесомость $roman
+    feather_falling: Невесомость $roman
     protection_fire: Огнестойкость $roman
+    fire_protection: Огнестойкость $roman
     protection_projectile: Защита от снарядов $roman
+    projectile_protection: Защита от снарядов $roman
     riptide: Тягун
     silk_touch: Шелковое касание
     sweeping_edge: Разящий клинок $roman
+    sweeping: Разящий клинок $roman
     thorns: Шипы $roman
     vanishing_curse: Проклятие утраты
     water_worker: Подводник
+    aqua_affinity: Подводник
   potion_effect: '&b$effect $roman'
   super_powered: '&3Сверхмощный'
   super_protected: '&3Неуязвимость'

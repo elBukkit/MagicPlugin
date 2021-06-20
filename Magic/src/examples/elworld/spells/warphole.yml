@@ -46,4 +46,3 @@ warphole:
         offset: 0,1,0
         radius: 1
         duration: 15000
-        orient: true

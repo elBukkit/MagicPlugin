@@ -2100,40 +2100,60 @@ wand:
     unknown: 対$type弱体化 $roman
   enchantment:
     arrow_damage: 射撃ダメージ増加 $roman
+    power: 射撃ダメージ増加 $roman
     arrow_fire: フレイム
+    flame: フレイム
     arrow_infinite: 無限
+    infinity: 無限
     arrow_knockback: パンチ $roman
+    punch: パンチ $roman
     binding_curse: 束縛の呪い
     channeling: 招雷
     damage_all: ダメージ増加 $roman
+    sharpness: ダメージ増加 $roman
     damage_arthropods: 虫特攻 $roman
+    bane_of_arthropods: 虫特攻 $roman
     damage_undead: アンデッド特攻 $roman
+    smite: アンデッド特攻 $roman
     depth_strider: 水中歩行 $roman
     dig_speed: 効率強化 $roman
+    efficiency: 効率強化 $roman
     durability: 耐久力 $roman
+    unbreaking: 耐久力 $roman
     fire_aspect: 火属性
     frost_walker: 氷渡り $roman
     impaling: 水性特攻
     knockback: ノックバック $roman
     loot_bonus_blocks: 幸運 $roman
+    fortune: 幸運 $roman
     loot_bonus_mobs: ドロップ増加 $roman
+    looting: ドロップ増加 $roman
     loyalty: 忠誠
     luck: 宝釣り $roman
+    luck_of_the_sea: 宝釣り $roman
     lure: 入れ食い $roman
     mending: 修繕
     multishot: マルチショット
     oxygen: 水中呼吸 $roman
+    respiration: 水中呼吸 $roman
     protection_environmental: ダメージ軽減 $roman
+    protection: ダメージ軽減 $roman
     protection_explosions: 爆発耐性 $roman
+    blast_protection: 爆発耐性 $roman
     protection_fall: 落下耐性 $roman
+    feather_falling: 落下耐性 $roman
     protection_fire: 火炎耐性 $roman
+    fire_protection: 火炎耐性 $roman
     protection_projectile: 飛び道具耐性 $roman
+    projectile_protection: 飛び道具耐性 $roman
     riptide: 激流
     silk_touch: シルクタッチ
     sweeping_edge: 範囲ダメージ増加 $roman
+    sweeping: 範囲ダメージ増加 $roman
     thorns: 棘の鎧 $roman
     vanishing_curse: 消滅の呪い
     water_worker: 水中採掘
+    aqua_affinity: 水中採掘
   potion_effect: '&b$effect $roman'
   super_powered: '&3超人'
   super_protected: '&3無敵'

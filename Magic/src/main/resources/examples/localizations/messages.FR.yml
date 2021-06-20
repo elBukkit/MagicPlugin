@@ -534,40 +534,60 @@ wand:
       unknown: "Faiblesse contre $type $roman"
     enchantment:
       arrow_damage: "Puissance $roman"
+      power: "Puissance $roman"
       arrow_fire: "Flamme"
+      flame: "Flamme"
       arrow_infinite: "Infinité"
+      infinity: "Infinité"
       arrow_knockback: "Recul $roman"
+      punch: "Recul $roman"
       binding_curse: "Malédiction du lien éternel"
       channeling: "Canalisation"
       damage_all: Tranchant $roman
+      sharpness: Tranchant $roman
       damage_arthropods: Fléau des arthropodes $roman
+      bane_of_arthropods: Fléau des arthropodes $roman
       damage_undead: Châtiment $roman
+      smite: Châtiment $roman
       depth_strider: Agilité aquatique $roman
       dig_speed: Efficacité $roman
+      efficiency: Efficacité $roman
       durability: Solidité $roman
+      unbreaking: Solidité $roman
       fire_aspect: Aura de feu
       frost_walker: Semelles givrantes $roman
       impaling: Empalement
       knockback: Recul $roman
       loot_bonus_blocks: Fortune $roman
+      fortune: Fortune $roman
       loot_bonus_mobs: Butin $roman
+      looting: Butin $roman
       loyalty: Loyauté
       luck: Chance $roman
+      luck_of_the_sea: Chance $roman
       lure: Appât $roman
       mending: Raccommodage
       multishot: Tir multiple
       oxygen: Respiration $roman
+      respiration: Respiration $roman
       protection_environmental: Protection $roman
+      protection: Protection $roman
       protection_explosions: Protection contre les explosions $roman
+      blast_protection: Protection contre les explosions $roman
       protection_fall: Protection contre les chutes $roman
+      feather_falling: Protection contre les chutes $roman
       protection_fire: Protection contre le feu $roman
+      fire_protection: Protection contre le feu $roman
       protection_projectile: Protection contre les projectiles $roman
+      projectile_protection: Protection contre les projectiles $roman
       riptide: Impulsion
       silk_touch: Toucher de soie
       sweeping_edge: Affilage $roman
+      sweeping: Affilage $roman
       thorns: Épines $roman
       vanishing_curse: Malédiction de disparition
       water_worker: Travailleur de l'eau
+      aqua_affinity: Travailleur de l'eau
     potion_effect: "&b$effect $roman"
     super_powered: "&3Superpuissant"
     super_protected: "&3Invulnérable"

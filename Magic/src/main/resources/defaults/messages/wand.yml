@@ -98,40 +98,63 @@ wand:
     enchantment:
       unknown: "$name $roman"
       arrow_damage: "Power $roman"
+      power: "Power $roman"
       arrow_fire: "Flame"
+      flame: Flame
       arrow_infinite: "Infinity"
+      infinity: Infinity
       arrow_knockback: "Punch $roman"
+      punch: "Punch $roman"
       binding_curse: "Curse of Binding"
       channeling: "Channeling"
       damage_all: Sharpness $roman
+      sharpness: Sharpness $roman
       damage_arthropods: Bane of Arthropods $roman
+      bane_of_arthropods: Bane of Arthropods $roman
       damage_undead: Smite $roman
+      smite: Smite $roman
       depth_strider: Depth Strider $roman
       dig_speed: Efficiency $roman
+      efficiency: Efficiency $roman
       durability: Unbreaking $roman
+      unbreaking: Unbreaking $roman
       fire_aspect: Fire Aspect
       frost_walker: Frost Walker $roman
       impaling: Impaling
       knockback: Knockback $roman
       loot_bonus_blocks: Fortune $roman
+      fortune: Fortune $roman
       loot_bonus_mobs: Looting $roman
+      looting: Looting $roman
       loyalty: Loyalty
-      luck: Luck $roman
+      luck: Luck of the Sea $roman
+      luck_of_the_sea: Luck of the Sea $roman
       lure: Lure $roman
       mending: Mending
       multishot: Multishot
       oxygen: Respiration $roman
+      respiration: Respiration $roman
       protection_environmental: Protection $roman
+      protection: Protection $roman
       protection_explosions: Blast Protection $roman
-      protection_fall: Fall Protection $roman
+      blast_protection: Blast Protection $roman
+      protection_fall: Feather Falling $roman
+      feather_falling: Feather Falling $roman
       protection_fire: Fire Protection $roman
+      fire_protection: Fire Protection $roman
       protection_projectile: Projectile Protection $roman
+      projectile_protection: Projectile Protection $roman
       riptide: Riptide
       silk_touch: Silk Touch
       sweeping_edge: Sweeping Edge $roman
+      sweeping: Sweeping Edge $roman
       thorns: Thorns $roman
       vanishing_curse: Curse of Vanishing
-      water_worker: Water Worker
+      water_worker: Aqua Affinity
+      aqua_affinity: Aqua Affinity
+      quick_charge: Quick Charge
+      piercing: Piercing
+      soul_speed: Soul Speed
     potion_effect: "&b$effect $roman"
     super_powered: "&3Superpowered"
     super_protected: "&3Invulnerability"
