@@ -11,6 +11,8 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 
 public class RepairItemAction extends BaseSpellAction
 {
@@ -73,11 +75,12 @@ public class RepairItemAction extends BaseSpellAction
             return false;
         }
         short maxDurability = itemStack.getType().getMaxDurability();
-        if (maxDurability <= 0 || itemStack.getDurability() <= 0)
+        DeprecatedUtils deprecatedUtils = CompatibilityLib.getDeprecatedUtils();
+        if (maxDurability <= 0 || deprecatedUtils.getItemDamage(itemStack) <= 0)
         {
             return false;
         }
-        itemStack.setDurability((short)0);
+        deprecatedUtils.setItemDamage(itemStack, (short)0);
         return true;
     }
 

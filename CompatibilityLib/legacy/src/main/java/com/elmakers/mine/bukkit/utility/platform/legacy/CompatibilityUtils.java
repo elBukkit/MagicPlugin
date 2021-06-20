@@ -1794,7 +1794,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public byte getBlockData(FallingBlock falling) {
+    public byte getLegacyBlockData(FallingBlock falling) {
         // @deprecated Magic value
         byte data = 0;
         try {
@@ -1805,6 +1805,16 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
         }
         return data;
+    }
+
+    @Override
+    public Material getMaterial(FallingBlock falling) {
+        return falling.getMaterial();
+    }
+
+    @Override
+    public String getBlockData(FallingBlock fallingBlock) {
+        return null;
     }
 
     @Override

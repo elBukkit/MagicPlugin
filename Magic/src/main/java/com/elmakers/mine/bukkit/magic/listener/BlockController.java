@@ -51,6 +51,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.UndoBlockTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 
@@ -437,7 +438,15 @@ public class BlockController implements Listener, ChunkLoadListener {
                         blockList.convert(entity, block);
                         if (!blockList.getApplyPhysics()) {
                             FallingBlock falling = (FallingBlock)entity;
-                            CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, falling.getMaterial(), CompatibilityLib.getCompatibilityUtils().getBlockData(falling), false);
+                            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+                            Material material = compatibilityUtils.getMaterial(falling);
+                            String blockData = compatibilityUtils.getBlockData(falling);
+                            if (blockData != null) {
+                                compatibilityUtils.setBlockData(block, blockData);
+                            } else {
+                                byte data = CompatibilityLib.getCompatibilityUtils().getLegacyBlockData(falling);
+                                CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, material, data, false);
+                            }
                             event.setCancelled(true);
                         }
                     }

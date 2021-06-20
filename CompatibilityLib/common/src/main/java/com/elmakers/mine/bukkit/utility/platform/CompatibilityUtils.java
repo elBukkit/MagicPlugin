@@ -308,6 +308,8 @@ public interface CompatibilityUtils {
 
     Material getMaterial(String blockData);
 
+    Material getMaterial(FallingBlock falling);
+
     boolean hasLegacyMaterials();
 
     boolean isLegacy(Material material);
@@ -338,7 +340,9 @@ public interface CompatibilityUtils {
 
     boolean setColor(PotionMeta meta, Color color);
 
-    byte getBlockData(FallingBlock falling);
+    byte getLegacyBlockData(FallingBlock falling);
+
+    String getBlockData(FallingBlock fallingBlock);
 
     String getBlockData(Material material, byte data);
 

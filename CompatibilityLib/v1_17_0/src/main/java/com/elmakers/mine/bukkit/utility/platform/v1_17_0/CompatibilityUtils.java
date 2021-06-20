@@ -1162,8 +1162,19 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public byte getBlockData(FallingBlock falling) {
+    public byte getLegacyBlockData(FallingBlock falling) {
         return 0;
+    }
+
+    @Override
+    public Material getMaterial(FallingBlock falling) {
+        return falling.getBlockData().getMaterial();
+    }
+
+    @Override
+    public String getBlockData(FallingBlock fallingBlock) {
+        BlockData blockData = fallingBlock.getBlockData();
+        return blockData.getAsString();
     }
 
     @Override
