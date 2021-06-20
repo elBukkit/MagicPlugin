@@ -9,6 +9,10 @@
  - Hex colors now supported in 1.16 (as well as 1.17)
  - Maybe support custom enchantment plugins (1.17 only for now)
 
+ - More deprecated spell removals:
+   - DoorSpell
+   - SuperEMP (spell config, removed from architect path .. may come back one day)
+
 # 9.0
 
 ## 1.17 Support
