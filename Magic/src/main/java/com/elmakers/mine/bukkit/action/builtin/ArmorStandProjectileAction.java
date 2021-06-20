@@ -212,9 +212,9 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
                 equipment.setHelmet(getItem(helmetItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.RIGHT_ARM) {
-                equipment.setItemInHand(wandItem);
+                equipment.setItemInMainHand(wandItem);
             } else {
-                equipment.setItemInHand(getItem(rightArmItem));
+                equipment.setItemInMainHand(getItem(rightArmItem));
             }
             if (wandItem != null && wandSlot == InventorySlot.CHESTPLATE) {
                 equipment.setChestplate(wandItem);

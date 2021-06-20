@@ -72,7 +72,11 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @SuppressWarnings("deprecation")
     public void onChunkLoad(ChunkLoadEvent event) {
+        // We are kind of abusing the deprecated CHUNK_GEN spawn reason here, it isn't used in vanilla
+        // But we allow it here to avoid processing entities on chunk load
+        // If the enum is ever removed completely we'll have to figure out something else.
         if (controller.isDisableSpawnReplacement() || ignoreReasons.contains(SpawnReason.CHUNK_GEN) || !event.isNewChunk()) return;
         CheckChunkTask.process(controller.getMagicController(), this, event.getChunk());
     }

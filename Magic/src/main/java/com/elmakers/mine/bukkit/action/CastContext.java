@@ -870,7 +870,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             return targetingSpell.isTransparent(material);
         }
 
-        return material.isTransparent();
+        return CompatibilityLib.getDeprecatedUtils().isTransparent(material);
     }
 
     @Override
@@ -879,7 +879,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             return targetingSpell.isTransparent(block);
         }
 
-        return block.getType().isTransparent();
+        return CompatibilityLib.getDeprecatedUtils().isTransparent(block.getType());
     }
 
     @Override
@@ -889,7 +889,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             return baseSpell.isPassthrough(material);
         }
 
-        return material.isTransparent();
+        return CompatibilityLib.getDeprecatedUtils().isTransparent(material);
     }
 
     @Override
@@ -898,7 +898,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             return baseSpell.isPassthrough(block);
         }
 
-        return block.getType().isTransparent();
+        return CompatibilityLib.getDeprecatedUtils().isTransparent(block.getType());
     }
 
     @Override

@@ -8,15 +8,13 @@ import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Arrow;
+import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.SpectralArrow;
 import org.bukkit.entity.TNTPrimed;
-import org.bukkit.entity.TippedArrow;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.HandlerList;
@@ -578,7 +576,7 @@ public class EntityController implements Listener {
                 boolean invulnerable = controller.getWandProperty(itemStack, "invulnerable", false);
                 if (invulnerable) {
                     event.setCancelled(true);
-                } else if (event.getDamage() >= itemStack.getDurability()) {
+                } else if (event.getDamage() >= CompatibilityLib.getDeprecatedUtils().getItemDamage(itemStack)) {
                     String wandId = Wand.getWandId(itemStack);
                     controller.removeLostWand(wandId);
                 }
@@ -597,7 +595,7 @@ public class EntityController implements Listener {
 
     public void checkArrowLaunch(com.elmakers.mine.bukkit.magic.Mage mage, Projectile projectile, ProjectileLaunchEvent event) {
         if (!mage.isPlayer()) return;
-        if (!(projectile instanceof Arrow) && !(projectile instanceof TippedArrow) && !(projectile instanceof SpectralArrow)) return;
+        if (!(projectile instanceof AbstractArrow)) return;
         Integer slot = mage.getArrowToLaunch();
         if (slot == null) return;
         ItemStack itemStack = mage.getItemInSlot(slot);

@@ -219,6 +219,7 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
         return !event.isCancelled();
     }
 
+    @SuppressWarnings("deprecation")
     public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, BlockFace signDirection) {
         Block signBlock = signLocation.getBlock();
         Material signMaterial = DefaultMaterials.getGroundSignBlock();
