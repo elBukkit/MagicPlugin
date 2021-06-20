@@ -79,6 +79,7 @@ import org.bukkit.entity.Sittable;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -1766,5 +1767,20 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             doorBlocks[0] = targetBlock;
         }
         return doorBlocks;
+    }
+
+    @Override
+    public boolean isAdult(Zombie zombie) {
+        return zombie.isAdult();
+    }
+
+    @Override
+    public void setBaby(Zombie zombie) {
+        zombie.setBaby();
+    }
+
+    @Override
+    public void setAdult(Zombie zombie) {
+        zombie.setAdult();
     }
 }

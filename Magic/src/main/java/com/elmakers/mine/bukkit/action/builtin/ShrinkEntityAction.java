@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class ShrinkEntityAction extends DamageAction
 {
@@ -64,6 +65,7 @@ public class ShrinkEntityAction extends DamageAction
         EntityType replaceType = null;
 
         boolean handled = true;
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         if (li instanceof Player) {
             super.perform(context);
             if (li.isDead() && !alreadyDead && dropSkull) {
@@ -74,9 +76,9 @@ public class ShrinkEntityAction extends DamageAction
         } else if (li instanceof Ageable && ((Ageable)li).isAdult()) {
             context.registerModified(li);
             ((Ageable)li).setBaby();
-        } else  if (li instanceof Zombie && !((Zombie)li).isBaby()) {
+        } else  if (li instanceof Zombie && compatibilityUtils.isAdult((Zombie)li)) {
             context.registerModified(li);
-            ((Zombie)li).setBaby(true);
+            compatibilityUtils.setBaby((Zombie)li);
         } else if (li instanceof Slime && ((Slime)li).getSize() > 1) {
             context.registerModified(li);
             Slime slime = (Slime)li;
@@ -114,7 +116,7 @@ public class ShrinkEntityAction extends DamageAction
                 return SpellResult.FAIL;
             }
             if (replacement instanceof Zombie) {
-                ((Zombie)replacement).setBaby(false);
+                compatibilityUtils.setAdult((Zombie)replacement);
             }
             context.registerForUndo(replacement);
             if (spawnedList != null) {

@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -575,7 +574,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             else if (type == EntityType.ZOMBIE || (type != null && type.name().equals("PIG_ZOMBIE"))) {
                 EntityZombieData zombieData = new EntityZombieData();
-                zombieData.isBaby = isBaby;
+                zombieData.isAdult = isBaby;
                 extraData = zombieData;
             }
             else if (type == EntityType.ARMOR_STAND) {

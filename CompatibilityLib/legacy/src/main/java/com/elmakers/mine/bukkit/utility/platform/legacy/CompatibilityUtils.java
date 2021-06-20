@@ -56,6 +56,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.EquipmentSlot;
@@ -2639,7 +2640,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean checkDoorAction(Block[] doorBlocks, DoorActionType actionType) {
         BlockState blockState = doorBlocks[0].getState();
         MaterialData data = blockState.getData();
@@ -2660,7 +2660,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public Block[] getDoorBlocks(Block targetBlock) {
         BlockState blockState = targetBlock.getState();
         MaterialData data = blockState.getData();
@@ -2677,5 +2676,20 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             doorBlocks[0] = targetBlock;
         }
         return doorBlocks;
+    }
+
+    @Override
+    public boolean isAdult(Zombie zombie) {
+        return !zombie.isBaby();
+    }
+
+    @Override
+    public void setBaby(Zombie zombie) {
+        zombie.setBaby(true);
+    }
+
+    @Override
+    public void setAdult(Zombie zombie) {
+        zombie.setBaby(false);
     }
 }

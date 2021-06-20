@@ -23,6 +23,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class GrowEntityAction extends BaseSpellAction
 {
@@ -54,16 +56,17 @@ public class GrowEntityAction extends BaseSpellAction
         LivingEntity li = (LivingEntity)targetEntity;
         EntityType replaceType = null;
 
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         if (li instanceof Ageable && !((Ageable)li).isAdult() && !(li instanceof Player)) {
             context.registerModified(li);
             ((Ageable)li).setAdult();
         } else if (li instanceof Zombie) {
             Zombie zombie = (Zombie)li;
-            if (!zombie.isBaby()) {
+            if (compatibilityUtils.isAdult(zombie)) {
                 replaceType = EntityType.GIANT;
             } else {
                 context.registerModified(li);
-                ((Zombie) li).setBaby(false);
+                compatibilityUtils.setAdult((Zombie) li);
             }
         } else if (li instanceof Slime) {
             context.registerModified(li);

@@ -43,6 +43,7 @@ import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
+import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.Inventory;
@@ -463,4 +464,10 @@ public interface CompatibilityUtils {
     Block[] getDoorBlocks(Block targetBlock);
 
     boolean setTorchFacingDirection(Block block, BlockFace facing);
+
+    boolean isAdult(Zombie zombie);
+
+    void setBaby(Zombie zombie);
+
+    void setAdult(Zombie zombie);
 }
