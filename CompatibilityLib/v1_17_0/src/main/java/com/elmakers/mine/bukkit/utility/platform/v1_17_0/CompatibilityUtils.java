@@ -1634,7 +1634,12 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         // API says plugins aren't supposed to use this, but i have no idea how to deal
         // with custom enchants otherwise
         NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
-        return Enchantment.getByKey(namespacedKey);
+        Enchantment enchantment = Enchantment.getByKey(namespacedKey);
+        if (enchantment == null) {
+            // Convert legacy enchantments
+            enchantment = Enchantment.getByName(key.toUpperCase());
+        }
+        return enchantment;
     }
 
     @Override
