@@ -52,4 +52,23 @@ public class EntityFoxData extends EntityAnimalData {
             fox.setCrouching(crouching);
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+        Fox fox = (Fox)entity;
+        Fox.Type type = fox.getFoxType();
+        Fox.Type[] typeValues = Fox.Type.values();
+        int typeOrdinal = (type.ordinal() + 1) % typeValues.length;
+        type = typeValues[typeOrdinal];
+        fox.setFoxType(type);
+        return true;
+    }
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Fox;
+    }
 }

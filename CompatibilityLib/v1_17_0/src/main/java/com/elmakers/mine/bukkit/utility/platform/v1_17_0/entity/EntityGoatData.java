@@ -35,4 +35,19 @@ public class EntityGoatData extends EntityAnimalData {
             goat.setScreaming(screaming);
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+        Goat goat = (Goat)entity;
+        goat.setScreaming(!goat.isScreaming());
+        return true;
+    }
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Goat;
+    }
 }

@@ -47,4 +47,23 @@ public class EntityRabbitData extends EntityAnimalData {
             }
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+        Rabbit rabbit = (Rabbit)entity;
+        Rabbit.Type type = rabbit.getRabbitType();
+        Rabbit.Type[] typeValues = Rabbit.Type.values();
+        int typeOrdinal = (type.ordinal() + 1) % typeValues.length;
+        type = typeValues[typeOrdinal];
+        rabbit.setRabbitType(type);
+        return true;
+    }
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Rabbit;
+    }
 }

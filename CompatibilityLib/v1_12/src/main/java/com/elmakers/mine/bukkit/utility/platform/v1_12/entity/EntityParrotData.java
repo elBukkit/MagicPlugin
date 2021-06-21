@@ -47,4 +47,24 @@ public class EntityParrotData extends EntityAnimalData {
             }
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+        Parrot parrot = (Parrot)entity;
+        Parrot.Variant type = parrot.getVariant();
+        Parrot.Variant[] typeValues = Parrot.Variant.values();
+        int typeOrdinal = (type.ordinal() + 1) % typeValues.length;
+        type = typeValues[typeOrdinal];
+        parrot.setVariant(type);
+        return true;
+    }
+
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Parrot;
+    }
 }

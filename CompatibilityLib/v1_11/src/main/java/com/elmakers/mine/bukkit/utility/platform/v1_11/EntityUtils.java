@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.v1_11.entity.EntityLlamaData;
 import com.elmakers.mine.bukkit.utility.platform.v1_11.entity.EntityMuleData;
+import com.elmakers.mine.bukkit.utility.platform.v1_11.entity.EntityZombieVillagerData;
 
 public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.legacy.EntityUtils  {
     public EntityUtils(final Platform platform) {
@@ -22,6 +23,8 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.legac
                 return new EntityLlamaData(entity, controller);
             case MULE:
                 return new EntityMuleData(entity, controller);
+            case ZOMBIE_VILLAGER:
+                return new EntityZombieVillagerData(entity);
             default:
                 return super.getExtraData(controller, entity);
         }
@@ -34,6 +37,8 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.legac
                 return new EntityMuleData(parameters, controller);
             case LLAMA:
                 return new EntityLlamaData(parameters, controller);
+            case ZOMBIE_VILLAGER:
+                return new EntityZombieVillagerData(parameters, controller);
             default:
                 return super.getExtraData(controller, type, parameters);
         }

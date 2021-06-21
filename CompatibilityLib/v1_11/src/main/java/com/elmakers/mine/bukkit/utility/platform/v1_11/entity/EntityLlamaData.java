@@ -53,4 +53,23 @@ public class EntityLlamaData extends EntityChestedHorseData {
             }
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+        Llama llama = (Llama)entity;
+        Llama.Color type = llama.getColor();
+        Llama.Color[] typeValues = Llama.Color.values();
+        int typeOrdinal = (type.ordinal() + 1) % typeValues.length;
+        type = typeValues[typeOrdinal];
+        llama.setColor(type);
+        return true;
+    }
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Llama;
+    }
 }

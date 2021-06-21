@@ -55,7 +55,6 @@ public class EntityShulkerData extends EntityExtraData {
         return true;
     }
 
-
     @Override
     public boolean canCycle(Entity entity) {
         return entity instanceof Shulker;
