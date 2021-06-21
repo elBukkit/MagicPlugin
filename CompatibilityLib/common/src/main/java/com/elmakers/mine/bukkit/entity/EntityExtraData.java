@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.entity;
 
 import javax.annotation.Nullable;
 
-import org.bukkit.Material;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,6 +19,10 @@ public abstract class EntityExtraData {
     public void cycle(Entity entity) {
     }
 
+    public boolean canCycle(Entity entity) {
+        return false;
+    }
+
     public static Platform getPlatform() {
         return PlatformInterpreter.getPlatform();
     }
@@ -28,23 +32,21 @@ public abstract class EntityExtraData {
         return item == null ? null : controller.createItemData(item);
     }
 
+    // Here for slime-like mobs
     public boolean isSplittable() {
         return true;
     }
 
-    public byte getMaterialData() {
-        return 0;
-    }
-
-    public Material getMaterial() {
-        return null;
-    }
-
+    // These are here for falling blocks
     public MaterialAndData getMaterialAndData() {
         return null;
     }
 
     public void setMaterialAndData(MaterialAndData material) {
+    }
 
+    // This is only used for specific entity types that require special spawning
+    public SpawnedEntityExtraData spawn(Location location) {
+        return null;
     }
 }

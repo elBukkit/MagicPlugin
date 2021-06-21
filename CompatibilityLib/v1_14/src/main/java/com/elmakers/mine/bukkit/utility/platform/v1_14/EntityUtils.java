@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.utility.platform.v1_14.entity.EntityCatData;
 import com.elmakers.mine.bukkit.utility.platform.v1_14.entity.EntityFoxData;
 import com.elmakers.mine.bukkit.utility.platform.v1_14.entity.EntityPhantomData;
 
-public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_12.EntityUtils  {
+public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_13.EntityUtils  {
     public EntityUtils(final Platform platform) {
         super(platform);
     }

@@ -4,8 +4,6 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.utility.platform.legacy.LegacyPlatform;
-
 public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_12.Platform {
 
     public Platform(Plugin plugin, Logger logger) {
@@ -20,5 +18,10 @@ public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_12.Pl
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils createDeprecatedUtils() {
         return new DeprecatedUtils(this);
+    }
+
+    @Override
+    protected com.elmakers.mine.bukkit.utility.platform.EntityUtils createEntityUtils() {
+        return new EntityUtils(this);
     }
 }
