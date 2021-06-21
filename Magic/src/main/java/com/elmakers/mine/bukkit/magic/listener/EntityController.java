@@ -8,7 +8,6 @@ import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -595,7 +594,7 @@ public class EntityController implements Listener {
 
     public void checkArrowLaunch(com.elmakers.mine.bukkit.magic.Mage mage, Projectile projectile, ProjectileLaunchEvent event) {
         if (!mage.isPlayer()) return;
-        if (!(projectile instanceof AbstractArrow)) return;
+        if (!CompatibilityLib.getCompatibilityUtils().isArrow(projectile)) return;
         Integer slot = mage.getArrowToLaunch();
         if (slot == null) return;
         ItemStack itemStack = mage.getItemInSlot(slot);

@@ -33,6 +33,7 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
@@ -40,8 +41,10 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.SpectralArrow;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.ThrownPotion;
+import org.bukkit.entity.TippedArrow;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -756,5 +759,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             tameable.setOwner(tamer);
         }
         return true;
+    }
+
+    @Override
+    public boolean isArrow(Entity projectile) {
+        return (projectile instanceof Arrow) || (projectile instanceof TippedArrow) || (projectile instanceof SpectralArrow);
     }
 }

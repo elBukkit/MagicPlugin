@@ -474,4 +474,6 @@ public interface CompatibilityUtils {
     void setAdult(Zombie zombie);
 
     boolean tame(Entity entity, Player tamer);
+
+    boolean isArrow(Entity entity);
 }
