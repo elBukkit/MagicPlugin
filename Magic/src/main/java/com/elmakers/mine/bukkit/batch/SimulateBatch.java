@@ -581,6 +581,7 @@ public class SimulateBatch extends SpellBatch {
                     if (!block.isDifferent()) {
                         iterator.remove();
                         undoList.remove(block);
+                        block.unlink();
                     }
                 }
             }

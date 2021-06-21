@@ -2,12 +2,20 @@
 
 # 9.0.1
 
+
+## Fixes
+
  - Fix `potter` spells not levelling up
  - Fix PotterPlus add-on (broken spell inheritance against builtin potter example)
  - Fix `otherside` and `netherside` examples force-loading backup worlds
+ - Fix automaton block monsters leaving blocks behind
+
+## Additions and Changes   
+
  - The Door action now sets the target location to the bottom block of the door
  - Hex colors now supported in 1.16 (as well as 1.17)
  - Maybe support custom enchantment plugins (1.17 only for now)
+  
  - Alter updated:
    - No longer alters ocelots
    - Now alters: cats, shulkers, rabbits, zombie villagers, llamas, parrots, foxes, goats and axolotls
