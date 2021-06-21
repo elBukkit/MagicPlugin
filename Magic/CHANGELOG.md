@@ -8,12 +8,14 @@
  - The Door action now sets the target location to the bottom block of the door
  - Hex colors now supported in 1.16 (as well as 1.17)
  - Maybe support custom enchantment plugins (1.17 only for now)
+ - Alter updated:
+   - No longer alters ocelots
+   - Now alters: cats, shulkers
 
  - More deprecated spell removals:
    - DoorSpell
    - "power" option to ConstructSpell, use PowerBlock action instead 
    - SuperEMP (spell config, removed from architect path .. may come back one day)
-   - Alter no longer alters ocelots in old MC versions, but will alter cats in newer ones
 
 # 9.0
 
