@@ -8155,4 +8155,9 @@ public class MagicController implements MageController {
     public MaterialAndData createMaterialAndData(Material material, byte legacyBlockData) {
         return new MaterialAndData(material, legacyBlockData);
     }
+
+    @Override
+    public MaterialAndData createMaterialAndData(String materialKey) {
+        return new MaterialAndData(materialKey);
+    }
 }

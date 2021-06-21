@@ -56,6 +56,8 @@ public interface MaterialAndData {
     Short getData();
     @Nullable
     Byte getBlockData();
+    @Nullable
+    String getModernBlockData();
     void setData(Short data);
     @Nullable
     Material getMaterial();

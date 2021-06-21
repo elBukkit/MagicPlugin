@@ -658,6 +658,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return data == null ? null : (byte)(short)data;
     }
 
+    @Nullable
+    @Override
+    public String getModernBlockData() {
+        return blockData;
+    }
+
     @Override
     public Material getMaterial() {
         return material;
