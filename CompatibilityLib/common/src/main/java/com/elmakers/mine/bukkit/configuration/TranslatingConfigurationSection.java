@@ -15,8 +15,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.util.NumberConversions;
 
-import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
+import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 
 public class TranslatingConfigurationSection extends MemorySection {
     private static Logger logger;
@@ -51,9 +51,9 @@ public class TranslatingConfigurationSection extends MemorySection {
     }
 
     public void wrap(ConfigurationSection wrap) {
-        Map<String, Object> data = CompatibilityLib.getCompatibilityUtils().getMap(wrap);
+        Map<String, Object> data = PlatformInterpreter.getPlatform().getCompatibilityUtils().getMap(wrap);
         if (data != null) {
-            CompatibilityLib.getCompatibilityUtils().setMap(this, data);
+            PlatformInterpreter.getPlatform().getCompatibilityUtils().setMap(this, data);
         }
     }
 
@@ -227,7 +227,7 @@ public class TranslatingConfigurationSection extends MemorySection {
         Object val = get(path, null);
         if (val != null) {
             if (val instanceof Map) {
-                return ConfigurationUtils.toConfigurationSection(this, path, (Map<?, ?>)val);
+                return ConfigUtils.toConfigurationSection(this, path, (Map<?, ?>)val);
             }
             return (val instanceof ConfigurationSection) ? (ConfigurationSection) val : null;
         }
@@ -246,7 +246,7 @@ public class TranslatingConfigurationSection extends MemorySection {
     @Override
     public void set(String key, Object value) {
         if (value instanceof Map) {
-            value = ConfigurationUtils.toConfigurationSection(this, key, (Map<?,?>)value);
+            value = ConfigUtils.toConfigurationSection(this, key, (Map<?,?>)value);
         }
         super.set(key, value);
     }
