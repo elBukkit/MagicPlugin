@@ -46,7 +46,7 @@ public class CompatibilityLib extends PlatformInterpreter {
                 Constructor<?> platformConstructor = platformClass.getConstructor(Plugin.class, Logger.class);
                 platform = (Platform)platformConstructor.newInstance(plugin, logger);
             } catch (Exception ex) {
-                logger.severe("Failed to load compatibility layer, the plugin may need to be updated to work with your server version");
+                logger.log(Level.SEVERE, "Failed to load compatibility layer, the plugin may need to be updated to work with your server version", ex);
                 return false;
             }
         } else {

@@ -22,4 +22,9 @@ public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_15.Pl
     protected com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils createCompatibilityUtils() {
         return new CompatibilityUtils(this);
     }
+
+    @Override
+    protected com.elmakers.mine.bukkit.utility.platform.EntityUtils createEntityUtils() {
+        return new EntityUtils(this);
+    }
 }

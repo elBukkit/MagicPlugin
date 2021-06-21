@@ -53,4 +53,9 @@ public class Platform extends PlatformBase {
     protected com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils createDeprecatedUtils() {
         return new DeprecatedUtils(this);
     }
+
+    @Override
+    protected com.elmakers.mine.bukkit.utility.platform.EntityUtils createEntityUtils() {
+        return new EntityUtils(this);
+    }
 }
