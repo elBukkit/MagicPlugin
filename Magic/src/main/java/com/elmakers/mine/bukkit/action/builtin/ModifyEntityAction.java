@@ -11,7 +11,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Ocelot;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Rabbit;
@@ -215,10 +214,6 @@ public class ModifyEntityAction extends BaseSpellAction
             }
         } else if (parameterKey.equals("reason")) {
             for (CreatureSpawnEvent.SpawnReason type : CreatureSpawnEvent.SpawnReason.values()) {
-                examples.add(type.name().toLowerCase());
-            }
-        } else if (parameterKey.equals("ocelot_type")) {
-            for (Ocelot.Type type : Ocelot.Type.values()) {
                 examples.add(type.name().toLowerCase());
             }
         } else if (parameterKey.equals("villager_profession")) {
