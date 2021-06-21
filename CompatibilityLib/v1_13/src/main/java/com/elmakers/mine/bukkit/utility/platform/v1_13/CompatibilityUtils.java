@@ -2,14 +2,14 @@ package com.elmakers.mine.bukkit.utility.platform.v1_13;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Directional;
 import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.Powerable;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Door;
-import org.bukkit.material.Torch;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.DoorActionType;
@@ -90,16 +90,14 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public boolean setTorchFacingDirection(Block block, BlockFace facing) {
-        BlockState state = block.getState();
-        Object data = state.getData();
-        if (data instanceof Torch) {
-            Torch torchData = (Torch)data;
-            torchData.setFacingDirection(facing);
-            state.setData(torchData);
-            state.update();
-            return true;
+        BlockData blockData = block.getBlockData();
+        if (!(blockData instanceof Directional)) {
+            return false;
         }
-        return false;
+        Directional directional = (Directional)blockData;
+        directional.setFacing(facing);
+        block.setBlockData(directional);
+        return true;
     }
 
     @Override
@@ -150,5 +148,55 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean isPowerable(Block block) {
+        BlockData blockData = block.getBlockData();
+        return blockData != null && blockData instanceof Powerable;
+    }
+
+    @Override
+    public boolean isPowered(Block block) {
+        BlockData blockData = block.getBlockData();
+        if (blockData == null || !(blockData instanceof Powerable)) return false;
+        Powerable powerable = (Powerable)blockData;
+        return powerable.isPowered();
+    }
+
+    @Override
+    public boolean setPowered(Block block, boolean powered) {
+        BlockData blockData = block.getBlockData();
+        if (blockData == null || !(blockData instanceof Powerable)) return false;
+        Powerable powerable = (Powerable)blockData;
+        powerable.setPowered(powered);
+        block.setBlockData(powerable, true);
+        return true;
+    }
+
+    @Override
+    public boolean isWaterLoggable(Block block) {
+        BlockData blockData = block.getBlockData();
+        return blockData != null && blockData instanceof Waterlogged;
+    }
+
+    @Override
+    public boolean setWaterlogged(Block block, boolean waterlogged) {
+        BlockData blockData = block.getBlockData();
+        if (blockData == null || !(blockData instanceof Waterlogged)) return false;
+        Waterlogged waterlogger = (Waterlogged)blockData;
+        waterlogger.setWaterlogged(waterlogged);
+        block.setBlockData(waterlogger, true);
+        return true;
+    }
+
+    @Override
+    public boolean setTopHalf(Block block) {
+        BlockData blockData = block.getBlockData();
+        if (blockData == null || !(blockData instanceof Bisected)) return false;
+        Bisected bisected = (Bisected)blockData;
+        bisected.setHalf(Bisected.Half.TOP);
+        block.setBlockData(bisected, false);
+        return true;
     }
 }

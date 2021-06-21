@@ -12,8 +12,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
@@ -35,13 +33,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Lockable;
-import org.bukkit.block.data.AnaloguePowerable;
-import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.Lightable;
-import org.bukkit.block.data.Powerable;
-import org.bukkit.block.data.Waterlogged;
-import org.bukkit.block.data.type.Door;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
@@ -59,7 +51,6 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
-import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
@@ -67,7 +58,6 @@ import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Fox;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
@@ -104,16 +94,13 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
-import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 import com.google.common.collect.Multimap;
 
-import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.core.BlockPos;
@@ -151,8 +138,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class CompatibilityUtils extends CompatibilityUtilsBase {
-    private final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
+public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16.CompatibilityUtils {
     private final Map<String, net.minecraft.world.entity.EntityType> projectileEntityTypes = new HashMap<>();
     private final Map<String, Class<? extends net.minecraft.world.entity.projectile.Projectile>> projectileClasses = new HashMap<>();
 
@@ -1225,101 +1211,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean canToggleBlockPower(Block block) {
-        BlockData blockData = block.getBlockData();
-        if (blockData == null) {
-            return false;
-        }
-        if (blockData instanceof Powerable) {
-            return true;
-        }
-        if (blockData instanceof Lightable) {
-            return true;
-        }
-        if (blockData instanceof AnaloguePowerable) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean toggleBlockPower(Block block) {
-        BlockData blockData = block.getBlockData();
-        if (blockData == null) {
-            return false;
-        }
-        if (blockData instanceof Powerable) {
-            Powerable powerable = (Powerable)blockData;
-            powerable.setPowered(!powerable.isPowered());
-            block.setBlockData(powerable, true);
-            return true;
-        }
-        if (blockData instanceof Lightable) {
-            Lightable lightable = (Lightable)blockData;
-            lightable.setLit(!lightable.isLit());
-            block.setBlockData(lightable, true);
-            return true;
-        }
-        if (blockData instanceof AnaloguePowerable) {
-            AnaloguePowerable powerable = (AnaloguePowerable)blockData;
-            powerable.setPower(powerable.getMaximumPower() - powerable.getPower());
-            block.setBlockData(powerable, true);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isPowerable(Block block) {
-        BlockData blockData = block.getBlockData();
-        return blockData != null && blockData instanceof Powerable;
-    }
-
-    @Override
-    public boolean isPowered(Block block) {
-        BlockData blockData = block.getBlockData();
-        if (blockData == null || !(blockData instanceof Powerable)) return false;
-        Powerable powerable = (Powerable)blockData;
-        return powerable.isPowered();
-    }
-
-    @Override
-    public boolean setPowered(Block block, boolean powered) {
-        BlockData blockData = block.getBlockData();
-        if (blockData == null || !(blockData instanceof Powerable)) return false;
-        Powerable powerable = (Powerable)blockData;
-        powerable.setPowered(powered);
-        block.setBlockData(powerable, true);
-        return true;
-    }
-
-    @Override
-    public boolean isWaterLoggable(Block block) {
-        BlockData blockData = block.getBlockData();
-        return blockData != null && blockData instanceof Waterlogged;
-    }
-
-    @Override
-    public boolean setWaterlogged(Block block, boolean waterlogged) {
-        BlockData blockData = block.getBlockData();
-        if (blockData == null || !(blockData instanceof Waterlogged)) return false;
-        Waterlogged waterlogger = (Waterlogged)blockData;
-        waterlogger.setWaterlogged(waterlogged);
-        block.setBlockData(waterlogger, true);
-        return true;
-    }
-
-    @Override
-    public boolean setTopHalf(Block block) {
-        BlockData blockData = block.getBlockData();
-        if (blockData == null || !(blockData instanceof Bisected)) return false;
-        Bisected bisected = (Bisected)blockData;
-        bisected.setHalf(Bisected.Half.TOP);
-        block.setBlockData(bisected, false);
-        return true;
-    }
-
-    @Override
     public boolean stopSound(Player player, Sound sound) {
         player.stopSound(sound);
         return true;
@@ -1693,85 +1584,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public String translateColors(String message) {
-        message = super.translateColors(message);
-        Matcher matcher = hexColorPattern.matcher(message);
-        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
-        while (matcher.find()) {
-            String match = matcher.group(1);
-            matcher.appendReplacement(buffer, ChatColor.of(match).toString());
-        }
-        return matcher.appendTail(buffer).toString();
-    }
-
-    @Override
-    public boolean performDoorAction(Block[] doorBlocks, DoorActionType actionType) {
-        BlockData blockData = doorBlocks[0].getBlockData();
-        if (!(blockData instanceof Door)) {
-            return false;
-        }
-        Door doorData = (Door)blockData;
-        switch (actionType) {
-            case OPEN:
-                if (doorData.isOpen()) {
-                    return false;
-                }
-                doorData.setOpen(true);
-                break;
-            case CLOSE:
-                if (!doorData.isOpen()) {
-                    return false;
-                }
-                doorData.setOpen(false);
-                break;
-            case TOGGLE:
-                doorData.setOpen(!doorData.isOpen());
-            default:
-                return false;
-        }
-        // Going to assume we only need to update one of them?
-        doorBlocks[0].setBlockData(doorData);
-        return true;
-    }
-
-    @Override
-    public boolean checkDoorAction(Block[] doorBlocks, DoorActionType actionType) {
-        BlockData blockData = doorBlocks[0].getBlockData();
-        if (!(blockData instanceof Door)) {
-            return false;
-        }
-        Door doorData = (Door)blockData;
-        switch (actionType) {
-            case OPEN:
-                return !doorData.isOpen();
-            case CLOSE:
-                return doorData.isOpen();
-            case TOGGLE:
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
-    public Block[] getDoorBlocks(Block targetBlock) {
-        BlockData blockData = targetBlock.getBlockData();
-        if (!(blockData instanceof Door)) {
-            return null;
-        }
-        Door doorData = (Door)blockData;
-        Block[] doorBlocks = new Block[2];
-        if (doorData.getHalf() == Bisected.Half.TOP) {
-            doorBlocks[1] = targetBlock;
-            doorBlocks[0] = targetBlock.getRelative(BlockFace.DOWN);
-        } else {
-            doorBlocks[1] = targetBlock.getRelative(BlockFace.UP);
-            doorBlocks[0] = targetBlock;
-        }
-        return doorBlocks;
-    }
-
-    @Override
     public boolean isAdult(Zombie zombie) {
         return zombie.isAdult();
     }
@@ -1784,19 +1596,5 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public void setAdult(Zombie zombie) {
         zombie.setAdult();
-    }
-
-    @Override
-    public boolean tame(Entity entity, Player tamer) {
-        if (entity instanceof Fox) {
-            if (tamer == null) return false;
-            Fox fox = (Fox)entity;
-            AnimalTamer current = fox.getFirstTrustedPlayer();
-            if (current != null && current.getUniqueId().equals(tamer.getUniqueId())) {
-                return false;
-            }
-            fox.setFirstTrustedPlayer(tamer);
-        }
-        return super.tame(entity, tamer);
     }
 }
