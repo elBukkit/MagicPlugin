@@ -26,29 +26,19 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
-import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creature;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Hanging;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Rabbit;
-import org.bukkit.entity.Slime;
 import org.bukkit.entity.Tameable;
-import org.bukkit.entity.Villager;
-import org.bukkit.entity.Wolf;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -71,10 +61,10 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
 /**
  * This class stores information about an Entity.
@@ -271,45 +261,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         } else if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             item = droppedItem.getItemStack();
-        } else if (entity instanceof Horse) {
-            extraData = new EntityHorseData((Horse)entity, controller);
-        } else if (entity instanceof Villager) {
-            extraData = new EntityVillagerData((Villager)entity);
-        } else if (entity instanceof Wolf) {
-            extraData = new EntityWolfData(entity);
-        } else if (entity instanceof Rabbit) {
-            extraData = new EntityRabbitData((Rabbit)entity);
-        } else if (entity instanceof ArmorStand) {
-            extraData = new EntityArmorStandData((ArmorStand)entity);
         } else if (entity instanceof ExperienceOrb) {
             xp = ((ExperienceOrb)entity).getExperience();
-        } else if (entity instanceof Zombie) {
-            extraData = new EntityZombieData((Zombie)entity);
-        } else if (entity instanceof AreaEffectCloud) {
-            extraData = new EntityAreaEffectCloudData((AreaEffectCloud)entity);
-        } else if (entity instanceof Slime) {
-            extraData = new EntitySlimeData((Slime)entity);
-        } else if (entity instanceof FallingBlock) {
-            extraData = new EntityFallingBlockData((FallingBlock)entity);
-        } else if (entity.getType().name().equals("PARROT")) {
-            extraData = new EntityParrotData(entity);
-        } else if (entity.getType().name().equals("GOAT")) {
-            extraData = new EntityGoatData(entity);
-        } else if (entity instanceof EnderDragon) {
-            extraData = new EntityEnderDragonData(entity);
-        } else if (entity instanceof Creeper) {
-            extraData = new EntityCreeperData(entity);
-        } else if (entity.getType().name().equals("FOX")) {
-            extraData = new EntityFoxData(entity);
-        } else if (entity.getType().name().equals("LLAMA")) {
-            extraData = new EntityLlamaData(entity, controller);
-        } else if (entity.getType().name().equals("MULE")) {
-            extraData = new EntityMuleData(entity, controller);
-        } else if (entity.getType().name().equals("CAT")) {
-            extraData = new EntityCatData(entity);
-        } else if (entity.getType().name().equals("PHANTOM")) {
-            extraData = new EntityPhantomData(entity);
         }
+        extraData = CompatibilityLib.getEntityUtils().getExtraData(controller, entity);
 
         ItemUtils itemUtils = CompatibilityLib.getItemUtils();
         if (!itemUtils.isEmpty(item)) {
@@ -560,56 +515,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         try {
-            if (type == EntityType.HORSE) {
-                extraData = new EntityHorseData(parameters, controller);
-            }
-            else if (type == EntityType.VILLAGER) {
-                extraData = new EntityVillagerData(parameters, controller);
-            }
-            else if (type == EntityType.AREA_EFFECT_CLOUD) {
-                extraData = new EntityAreaEffectCloudData(parameters, controller);
-            }
-            else if (type == EntityType.RABBIT) {
-                extraData = new EntityRabbitData(parameters, controller);
-            }
-            else if (type == EntityType.ZOMBIE || (type != null && type.name().equals("PIG_ZOMBIE"))) {
-                EntityZombieData zombieData = new EntityZombieData();
-                zombieData.isAdult = isBaby;
-                extraData = zombieData;
-            }
-            else if (type == EntityType.ARMOR_STAND) {
-                extraData = new EntityArmorStandData(parameters);
-            } else if (type == EntityType.SLIME || type == EntityType.MAGMA_CUBE) {
-                EntitySlimeData slimeData = new EntitySlimeData();
-                slimeData.size = parameters.getInt("size", 16);
-                slimeData.splittable = parameters.getBoolean("split", true);
-                extraData = slimeData;
-            } else if (type == EntityType.FALLING_BLOCK) {
-                extraData = new EntityFallingBlockData(parameters);
-            } else if (type != null && type.name().equals("PARROT")) {
-                extraData = new EntityParrotData(parameters, controller);
-            } else if (type != null && type.name().equals("GOAT")) {
-                extraData = new EntityGoatData(parameters, controller);
-            } else if (type == EntityType.ENDER_DRAGON) {
-                extraData = new EntityEnderDragonData(parameters, controller);
-            } else if (type == EntityType.CREEPER) {
-                extraData = new EntityCreeperData(parameters);
-            } else if (type != null && type.name().equals("FOX")) {
-                extraData = new EntityFoxData(parameters, controller);
-            } else if (type != null && type.name().equals("LLAMA")) {
-                extraData = new EntityLlamaData(parameters, controller);
-            } else if (type != null && type.name().equals("MULE")) {
-                extraData = new EntityMuleData(parameters, controller);
-            } else if (type != null && type.name().equals("CAT")) {
-                extraData = new EntityCatData(parameters, controller);
-            } else if (type == EntityType.WOLF) {
-                extraData = new EntityWolfData(parameters, controller);
-            } else if (type != null && type.name().equals("PHANTOM")) {
-                EntityPhantomData phantomData = new EntityPhantomData();
-                extraData = phantomData;
-                phantomData.size = parameters.getInt("size", 1);
-            }
-
+            extraData = CompatibilityLib.getEntityUtils().getExtraData(controller, type, parameters);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
         }
@@ -766,10 +672,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                     case FALLING_BLOCK:
                         Material material = null;
                         byte data = 0;
-                        if (extraData != null && extraData instanceof EntityFallingBlockData) {
-                            EntityFallingBlockData falling = (EntityFallingBlockData)extraData;
-                            material = falling.getMaterial();
-                            data = falling.getData();
+                        if (extraData != null) {
+                            material = extraData.getMaterial();
+                            data = extraData.getMaterialData();
                         }
                         if (material == null) {
                             material = Material.DIRT;
@@ -1462,8 +1367,8 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     @Override
     public void setMaterial(@Nonnull com.elmakers.mine.bukkit.api.block.MaterialAndData material) {
-        if (extraData != null && extraData instanceof EntityFallingBlockData) {
-            ((EntityFallingBlockData)extraData).setMaterialAndData(material);
+        if (extraData != null) {
+            extraData.setMaterialAndData(material);
         }
 
         // Not sure if I should mess with "item" here
@@ -1472,8 +1377,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     @Nullable
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getMaterial() {
-        if (extraData != null && extraData instanceof EntityFallingBlockData) {
-            return ((EntityFallingBlockData)extraData).getMaterialAndData();
+        com.elmakers.mine.bukkit.api.block.MaterialAndData extraMaterial = extraData != null ? extraData.getMaterialAndData() : null;
+        if (extraMaterial != null) {
+            return extraMaterial;
         }
 
         if (item != null) {
@@ -1569,9 +1475,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     public boolean isSplittable() {
-        return extraData != null
-                && extraData instanceof EntitySlimeData
-                && ((EntitySlimeData)extraData).splittable;
+        return extraData == null || extraData.isSplittable();
     }
 
     @Override

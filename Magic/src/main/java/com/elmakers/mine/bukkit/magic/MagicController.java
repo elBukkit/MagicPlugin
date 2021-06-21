@@ -8145,4 +8145,14 @@ public class MagicController implements MageController {
     public boolean isDamaging() {
         return CompatibilityLib.getCompatibilityUtils().isDamaging();
     }
+
+    @Override
+    public MaterialAndData createMaterialAndData(Material material, String blockData) {
+        return new MaterialAndData(material, blockData);
+    }
+
+    @Override
+    public MaterialAndData createMaterialAndData(Material material, byte legacyBlockData) {
+        return new MaterialAndData(material, legacyBlockData);
+    }
 }

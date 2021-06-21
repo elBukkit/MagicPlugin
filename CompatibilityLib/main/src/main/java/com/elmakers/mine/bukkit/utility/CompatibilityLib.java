@@ -14,6 +14,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -168,6 +169,13 @@ public class CompatibilityLib extends PlatformInterpreter {
             throw new IllegalStateException("EntityMetadataUtils used before being initialized");
         }
         return platform.getEnityMetadataUtils();
+    }
+
+    public static EntityUtils getEntityUtils() {
+        if (platform == null) {
+            throw new IllegalStateException("EntityUtils used before being initialized");
+        }
+        return platform.getEntityUtils();
     }
 
     public static int[] getServerVersion() {

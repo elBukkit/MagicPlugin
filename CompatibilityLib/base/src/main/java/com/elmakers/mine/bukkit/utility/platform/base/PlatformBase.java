@@ -11,6 +11,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
+import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -36,6 +37,8 @@ public abstract class PlatformBase implements Platform {
     protected final SchematicUtils schematicUtils;
     @Nonnull
     protected final SkinUtils skinUtils;
+    @Nonnull
+    protected final EntityUtils entityUtils;
     protected final PaperUtils paperUtils;
     @Nonnull
     protected final EntityMetadataUtils entityMetadataUtils;
@@ -56,6 +59,7 @@ public abstract class PlatformBase implements Platform {
             this.skinUtils = createSkinUtils();
             this.paperUtils = createPaperUtils();
             this.entityMetadataUtils = createEntityMetadataUtils();
+            this.entityUtils = createEntityUtils();
         } else {
             this.compatibilityUtils = null;
             this.deprecatedUtils = null;
@@ -66,6 +70,7 @@ public abstract class PlatformBase implements Platform {
             this.skinUtils = null;
             this.paperUtils = null;
             this.entityMetadataUtils = null;
+            this.entityUtils = null;
         }
     }
 
@@ -75,6 +80,10 @@ public abstract class PlatformBase implements Platform {
 
     protected EntityMetadataUtils createEntityMetadataUtils() {
         throw new IllegalStateException("Platform does not implement createEntityMetadataUtils");
+    }
+
+    protected EntityUtils createEntityUtils() {
+        throw new IllegalStateException("Platform does not implement createEntityUtils");
     }
 
     protected PaperUtils createPaperUtils() {
@@ -201,5 +210,10 @@ public abstract class PlatformBase implements Platform {
     @Override
     public EntityMetadataUtils getEnityMetadataUtils() {
         return entityMetadataUtils;
+    }
+
+    @Override
+    public EntityUtils getEntityUtils() {
+        return entityUtils;
     }
 }

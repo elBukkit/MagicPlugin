@@ -38,6 +38,8 @@ public interface Platform {
 
     EntityMetadataUtils getEnityMetadataUtils();
 
+    EntityUtils getEntityUtils();
+
     @Nullable
     PaperUtils getPaperUtils();
 }

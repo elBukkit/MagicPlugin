@@ -791,4 +791,6 @@ public interface MageController {
     boolean isDamaging();
     World createWorld(String worldName);
     World copyWorld(String worldName, World copyFrom);
+    MaterialAndData createMaterialAndData(Material material, String blockData);
+    MaterialAndData createMaterialAndData(Material material, byte legacyBlockData);
 }

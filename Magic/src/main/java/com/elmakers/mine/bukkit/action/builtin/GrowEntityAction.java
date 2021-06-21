@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.entity.EntityData;
-import com.elmakers.mine.bukkit.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
@@ -79,9 +78,8 @@ public class GrowEntityAction extends BaseSpellAction
                 return SpellResult.NO_TARGET;
             }
         } else if (li.getType().name().equals("PHANTOM")) {
-            EntityPhantomData phantomData = new EntityPhantomData(li);
-            phantomData.size++;
-            phantomData.apply(li);
+            int size = compatibilityUtils.getPhantomSize(li);
+            compatibilityUtils.setPhantomSize(li, size + 1);
         } else {
             return SpellResult.NO_TARGET;
         }

@@ -23,7 +23,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.entity.EntityData;
-import com.elmakers.mine.bukkit.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
@@ -90,10 +89,9 @@ public class ShrinkEntityAction extends DamageAction
         } else if (li.getType().name().equals("WITHER_SKELETON") && skeletons) {
             replaceType = EntityType.SKELETON;
         } else if (li.getType().name().equals("PHANTOM")) {
-            EntityPhantomData phantomData = new EntityPhantomData(li);
-            if (phantomData.size > 1) {
-                phantomData.size--;
-                phantomData.apply(li);
+            int size = compatibilityUtils.getPhantomSize(li);
+            if (size > 1) {
+                compatibilityUtils.setPhantomSize(li, size - 1);
             } else {
                 handled = false;
             }

@@ -49,6 +49,11 @@ public class LegacyPlatform extends PlatformBase {
     }
 
     @Override
+    protected com.elmakers.mine.bukkit.utility.platform.EntityUtils createEntityUtils() {
+        return new EntityUtils(this);
+    }
+
+    @Override
     protected com.elmakers.mine.bukkit.utility.platform.SkinUtils createSkinUtils() {
         return new SkinUtils(this);
     }
