@@ -3,6 +3,11 @@ package com.elmakers.mine.bukkit.utility.platform.v1_16;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.bukkit.entity.AnimalTamer;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Fox;
+import org.bukkit.entity.Player;
+
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 import net.md_5.bungee.api.ChatColor;
@@ -24,5 +29,19 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             matcher.appendReplacement(buffer, ChatColor.of(match).toString());
         }
         return matcher.appendTail(buffer).toString();
+    }
+
+    @Override
+    public boolean tame(Entity entity, Player tamer) {
+        if (entity instanceof Fox) {
+            if (tamer == null) return false;
+            Fox fox = (Fox)entity;
+            AnimalTamer current = fox.getFirstTrustedPlayer();
+            if (current != null && current.getUniqueId().equals(tamer.getUniqueId())) {
+                return false;
+            }
+            fox.setFirstTrustedPlayer(tamer);
+        }
+        return super.tame(entity, tamer);
     }
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.WeakHashMap;
@@ -41,6 +40,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Tameable;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
@@ -739,5 +739,22 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean tame(Entity entity, Player tamer) {
+        if (!(entity instanceof Tameable)) {
+            return false;
+        }
+
+        Tameable tameable = (Tameable)entity;
+        if (tameable.isTamed()) {
+            return false;
+        }
+        tameable.setTamed(true);
+        if (tamer != null) {
+            tameable.setOwner(tamer);
+        }
+        return true;
     }
 }

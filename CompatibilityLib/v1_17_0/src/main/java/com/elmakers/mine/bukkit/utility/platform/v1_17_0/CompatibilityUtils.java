@@ -59,6 +59,7 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
@@ -66,6 +67,7 @@ import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Fox;
 import org.bukkit.entity.Hanging;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
@@ -1782,5 +1784,19 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public void setAdult(Zombie zombie) {
         zombie.setAdult();
+    }
+
+    @Override
+    public boolean tame(Entity entity, Player tamer) {
+        if (entity instanceof Fox) {
+            if (tamer == null) return false;
+            Fox fox = (Fox)entity;
+            AnimalTamer current = fox.getFirstTrustedPlayer();
+            if (current != null && current.getUniqueId().equals(tamer.getUniqueId())) {
+                return false;
+            }
+            fox.setFirstTrustedPlayer(tamer);
+        }
+        return super.tame(entity, tamer);
     }
 }

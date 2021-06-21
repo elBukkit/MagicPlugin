@@ -470,4 +470,6 @@ public interface CompatibilityUtils {
     void setBaby(Zombie zombie);
 
     void setAdult(Zombie zombie);
+
+    boolean tame(Entity entity, Player tamer);
 }
