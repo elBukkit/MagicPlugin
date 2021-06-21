@@ -7,6 +7,7 @@ import org.bukkit.entity.EntityType;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_0.entity.EntityAxolotlData;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_0.entity.EntityGoatData;
 
 public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16.EntityUtils  {
@@ -19,6 +20,8 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16
         switch (entity.getType()) {
             case GOAT:
                 return new EntityGoatData(entity);
+            case AXOLOTL:
+                return new EntityAxolotlData(entity);
             default:
                 return super.getExtraData(controller, entity);
         }
@@ -29,6 +32,8 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16
         switch (type) {
             case GOAT:
                 return new EntityGoatData(parameters, controller);
+            case AXOLOTL:
+                return new EntityAxolotlData(parameters, controller);
             default:
                 return super.getExtraData(controller, type, parameters);
         }

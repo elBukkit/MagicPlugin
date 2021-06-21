@@ -10,7 +10,7 @@
  - Maybe support custom enchantment plugins (1.17 only for now)
  - Alter updated:
    - No longer alters ocelots
-   - Now alters: cats, shulkers, rabbits, zombie villagers, llamas, parrots, foxes
+   - Now alters: cats, shulkers, rabbits, zombie villagers, llamas, parrots, foxes, goats and axolotls
 
  - More deprecated spell removals:
    - DoorSpell
