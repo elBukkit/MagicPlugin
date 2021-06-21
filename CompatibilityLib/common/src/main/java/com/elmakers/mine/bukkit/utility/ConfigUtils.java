@@ -26,15 +26,10 @@ public class ConfigUtils {
         Collection<ConfigurationSection> results = new ArrayList<>();
         List<Map<?, ?>> mapList = node.getMapList(path);
         for (Map<?, ?> map : mapList) {
-            results.add(toConfigurationSection(map));
+            results.add(toConfigurationSection(node, map));
         }
 
         return results;
-    }
-
-    @Deprecated
-    public static ConfigurationSection toNodeList(Map<?, ?> nodeMap) {
-        return toConfigurationSection(nodeMap);
     }
 
     public static ConfigurationSection newSection(ConfigurationSection parent, String path) {
@@ -42,15 +37,6 @@ public class ConfigUtils {
             return ((TranslatingConfigurationSection)parent).newSection(path);
         }
         return new TranslatingConfigurationSection(parent, path);
-    }
-
-    public static ConfigurationSection toConfigurationSection(Map<?, ?> nodeMap) {
-        ConfigurationSection newSection = new MemoryConfiguration();
-        for (Map.Entry<?, ?> entry : nodeMap.entrySet()) {
-            newSection.set(entry.getKey().toString(), entry.getValue());
-        }
-
-        return newSection;
     }
 
     public static ConfigurationSection toConfigurationSection(ConfigurationSection parent, Map<?, ?> nodeMap) {
