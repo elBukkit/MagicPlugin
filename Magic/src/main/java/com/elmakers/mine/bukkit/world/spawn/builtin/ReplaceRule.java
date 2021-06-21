@@ -15,8 +15,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
+import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.spawn.SpawnOption;
 import com.elmakers.mine.bukkit.world.spawn.SpawnOptionParser;
 import com.elmakers.mine.bukkit.world.spawn.SpawnResult;

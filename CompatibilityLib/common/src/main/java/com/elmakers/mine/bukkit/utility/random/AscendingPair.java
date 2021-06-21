@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.random;
 
 /**
  * Used by RandomUtils to extrapolate values from an ascending list that may contain gaps.

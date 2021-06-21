@@ -10,7 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.item.Cost;
-import com.elmakers.mine.bukkit.utility.RandomUtils;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
 public class ProgressionLevel implements com.elmakers.mine.bukkit.api.magic.ProgressionLevel {
     private final int level;

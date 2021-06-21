@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.random;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -16,6 +16,8 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
+
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 /**
  * Contains some general Randomization utilities, including
@@ -85,7 +87,7 @@ public class RandomUtils {
         } else if (parent.isInt(key)) {
             populateProbabilityConstant(ValueParser.INTEGER, probabilityMap, parent.getString(key));
         } else {
-            populateProbabilityList(ValueParser.INTEGER, probabilityMap, ConfigurationUtils.getStringList(parent, key));
+            populateProbabilityList(ValueParser.INTEGER, probabilityMap, ConfigUtils.getStringList(parent, key));
         }
     }
 
@@ -97,7 +99,7 @@ public class RandomUtils {
         if (parent.isConfigurationSection(key)) {
             populateProbabilityMap(ValueParser.STRING, probabilityMap, parent.getConfigurationSection(key), levelIndex, nextLevelIndex, distance);
         } else {
-            populateProbabilityList(ValueParser.STRING, probabilityMap, ConfigurationUtils.getStringList(parent, key));
+            populateProbabilityList(ValueParser.STRING, probabilityMap, ConfigUtils.getStringList(parent, key));
         }
     }
 
@@ -123,7 +125,7 @@ public class RandomUtils {
         } else if (parent.isDouble(key) || parent.isInt(key)) {
             populateProbabilityConstant(ValueParser.FLOAT, probabilityMap, parent.getString(key));
         } else {
-            populateProbabilityList(ValueParser.FLOAT, probabilityMap, ConfigurationUtils.getStringList(parent, key));
+            populateProbabilityList(ValueParser.FLOAT, probabilityMap, ConfigUtils.getStringList(parent, key));
         }
     }
 

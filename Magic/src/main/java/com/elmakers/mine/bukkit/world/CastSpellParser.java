@@ -2,7 +2,7 @@ package com.elmakers.mine.bukkit.world;
 
 import javax.annotation.Nullable;
 
-import com.elmakers.mine.bukkit.utility.ValueParser;
+import com.elmakers.mine.bukkit.utility.random.ValueParser;
 
 public class CastSpellParser extends ValueParser<CastSpell> {
     private static CastSpellParser instance = null;

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.random;
 
 /**
  * Used by RandomUtils to create a randomly-selectable set of objects, based on each

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility;
+package com.elmakers.mine.bukkit.utility.random;
 
 public abstract class ValueParser<T> {
     public static final ValueParser<Integer> INTEGER = new ValueParser<Integer>() {

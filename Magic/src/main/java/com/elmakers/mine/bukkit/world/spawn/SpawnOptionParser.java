@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.world.spawn;
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.utility.ValueParser;
+import com.elmakers.mine.bukkit.utility.random.ValueParser;
 
 public class SpawnOptionParser extends ValueParser<SpawnOption> {
     private static SpawnOptionParser instance = null;

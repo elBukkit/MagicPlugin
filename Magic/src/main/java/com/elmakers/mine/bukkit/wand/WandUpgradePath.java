@@ -43,7 +43,7 @@ import com.elmakers.mine.bukkit.progression.ProgressionLevel;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
-import com.elmakers.mine.bukkit.utility.WeightedPair;
+import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
 /**
  * A represents a randomized upgrade path that a wand may use
