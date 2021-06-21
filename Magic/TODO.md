@@ -7,9 +7,10 @@
 
 # Recent issues
 
+ - Automata don't fully clean up, or perhaps Blast doesn't, idk
  - Selector cost at top-level (default cost) doesn't work
  - Prevent spiders climbing?
- - Prevent players teleporting into an areaa
+ - Prevent players teleporting into an arena
    - Or at least teleporting to a player in an arena?
    - And don't save their death location
 

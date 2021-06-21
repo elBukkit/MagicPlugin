@@ -189,7 +189,6 @@ import com.elmakers.mine.bukkit.magic.listener.ItemController;
 import com.elmakers.mine.bukkit.magic.listener.JumpController;
 import com.elmakers.mine.bukkit.magic.listener.MinigamesListener;
 import com.elmakers.mine.bukkit.magic.listener.MobController;
-import com.elmakers.mine.bukkit.magic.listener.MobController2;
 import com.elmakers.mine.bukkit.magic.listener.PlayerController;
 import com.elmakers.mine.bukkit.magic.listener.WildStackerListener;
 import com.elmakers.mine.bukkit.maps.MapController;
@@ -517,7 +516,6 @@ public class MagicController implements MageController {
     // Sub-Controllers
     private CraftingController crafting = null;
     private MobController mobs = null;
-    private MobController2 mobs2 = null;
     private ItemController items = null;
     private EnchantingController enchanting = null;
     private AnvilController anvil = null;
@@ -1451,9 +1449,6 @@ public class MagicController implements MageController {
         if (CompatibilityLib.hasStatistics()) {
             jumpController = new JumpController(this);
         }
-        if (CompatibilityLib.hasEntityTransformEvent()) {
-            mobs2 = new MobController2(this);
-        }
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");
         examplesFolder.mkdirs();
 
@@ -1610,10 +1605,7 @@ public class MagicController implements MageController {
         if (jumpController != null) {
             pm.registerEvents(jumpController, plugin);
         }
-        if (mobs2 != null) {
-            pm.registerEvents(mobs2, plugin);
-        }
-
+        CompatibilityLib.registerEvents(this, pm);
         worldController.registerEvents();
     }
 
@@ -4565,6 +4557,13 @@ public class MagicController implements MageController {
             properties.set(key, worldConfig);
         }
         worldController.loadWorlds(properties);
+    }
+
+    @Override
+    public void timeSkipped(World changedWorld, long skippedAmount) {
+        for (MagicWorld world : worldController.getWorlds()) {
+            world.updateTimeFrom(changedWorld, skippedAmount);
+        }
     }
 
     @Override

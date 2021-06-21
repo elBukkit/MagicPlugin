@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.magic.listener;
+package com.elmakers.mine.bukkit.utility.platform.v1_14.event;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -8,10 +8,10 @@ import org.bukkit.event.entity.EntityTransformEvent;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public class MobController2 implements Listener {
+public class EntityTransformController implements Listener {
     private MageController controller;
 
-    public MobController2(MageController controller) {
+    public EntityTransformController(MageController controller) {
         this.controller = controller;
     }
 
