@@ -18,11 +18,11 @@ import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.legacy.LegacyPlatform;
 
-public class CompatibilityLib {
+public class CompatibilityLib extends PlatformInterpreter {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
@@ -62,6 +62,7 @@ public class CompatibilityLib {
                 return false;
             }
         }
+        setPlatform(platform);
         return platform.isValid();
     }
 
