@@ -40,15 +40,6 @@ public class RandomUtils {
         return (T)(Number)((Float)previousValue + distance * ((Float)nextValue - (Float)previousValue));
     }
 
-    /**
-     * This method is for backwards-compatibility of plugins that relied on the LinkedList variant, notably MagicWorlds.
-     */
-    @Nullable
-    @Deprecated
-    public static <T> T weightedRandom(LinkedList<WeightedPair<T>> weightList) {
-        return weightedRandom((Deque<WeightedPair<T>>) weightList);
-    }
-
     @Nullable
     public static <T extends Object> T weightedRandom(Deque<WeightedPair<T>> weightList) {
         if (weightList == null || weightList.size() == 0) return null;

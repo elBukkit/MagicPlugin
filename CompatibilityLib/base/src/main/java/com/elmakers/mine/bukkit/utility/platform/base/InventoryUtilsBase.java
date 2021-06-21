@@ -224,12 +224,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @Deprecated
-    public String getPlayerSkullURL(String playerName) {
-        return platform.getSkinUtils().getOnlineSkinURL(playerName);
-    }
-
-    @Override
     public void makeKeep(ItemStack itemStack) {
         platform.getNBTUtils().setMetaBoolean(itemStack, "keep", true);
     }

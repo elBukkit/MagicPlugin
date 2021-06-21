@@ -54,9 +54,6 @@ public interface InventoryUtils {
 
     String getSkullURL(ItemStack skull);
 
-    @Deprecated
-    String getPlayerSkullURL(String playerName);
-
     boolean isSkull(ItemStack item);
 
     Object getSkullProfile(ItemMeta itemMeta);

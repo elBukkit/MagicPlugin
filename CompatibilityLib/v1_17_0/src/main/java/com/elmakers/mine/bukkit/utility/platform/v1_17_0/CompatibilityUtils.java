@@ -728,7 +728,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
             Object nmsProjectile = null;
             try {
-                nmsProjectile = entityType == null ? constructor.newInstance(nmsWorld) : constructor.newInstance(entityType, nmsWorld);
+                nmsProjectile = constructor.newInstance(entityType, nmsWorld);
             } catch (Exception ex) {
                 nmsProjectile = null;
                 platform.getLogger().log(Level.WARNING, "Error spawning projectile of class " + projectileType.getName(), ex);
@@ -1563,7 +1563,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
-    @SuppressWarnings("deprecated")
+    @SuppressWarnings("deprecation")
     public Enchantment getEnchantmentByKey(String key) {
         // Really wish there was a fromString that took a string default namespace
         String namespace = NamespacedKey.MINECRAFT;
