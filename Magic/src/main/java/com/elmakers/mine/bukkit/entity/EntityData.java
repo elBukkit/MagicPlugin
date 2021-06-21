@@ -19,7 +19,6 @@ import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.Rotation;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
@@ -31,11 +30,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.ExperienceOrb;
-import org.bukkit.entity.Hanging;
-import org.bukkit.entity.Item;
-import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Tameable;
@@ -53,7 +48,6 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
-import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.item.Cost;
@@ -62,7 +56,6 @@ import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
@@ -94,10 +87,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean magicSpawned = false;
     private boolean respawn = true;
     protected String name = null;
-    protected Art art;
-    protected BlockFace facing;
-    protected Rotation rotation;
-    protected ItemStack item;
 
     protected Double maxHealth;
     protected Double health;
@@ -138,7 +127,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Vector velocity = null;
     protected boolean hasPotionEffects = false;
     protected boolean hasVelocity = false;
-    protected boolean isHanging = false;
     protected boolean isLiving = false;
     protected boolean isProjectile = false;
     protected boolean canPickupItems = false;
@@ -187,7 +175,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         this.magicSpawned = CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED);
         this.cancelExplosion = CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION);
         this.isLiving = entity instanceof LivingEntity;
-        this.isHanging = entity instanceof Hanging;
         this.isProjectile = entity instanceof Projectile;
         this.type = entity.getType();
         this.fireTicks = entity.getFireTicks();
@@ -208,15 +195,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.velocity = entity.getVelocity();
         } catch (Exception ex) {
             this.velocity = null;
-        }
-
-        if (entity instanceof Hanging) {
-            Hanging hanging = (Hanging)entity;
-            try {
-                facing = hanging.getFacing();
-            } catch (Exception ex) {
-                org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error reading HangingEntity " + entity + " of type " + entity.getType(), ex);
-            }
         }
 
         if (entity instanceof LivingEntity) {
@@ -251,25 +229,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             dyeColor = colorable.getColor();
         }
 
-        if (entity instanceof Painting) {
-            Painting painting = (Painting)entity;
-            art = painting.getArt();
-        } else if (entity instanceof ItemFrame) {
-            ItemFrame itemFrame = (ItemFrame)entity;
-            item = itemFrame.getItem();
-            this.rotation = ((ItemFrame)entity).getRotation();
-        } else if (entity instanceof Item) {
-            Item droppedItem = (Item)entity;
-            item = droppedItem.getItemStack();
-        } else if (entity instanceof ExperienceOrb) {
+        // TODO: Extra data class for this?
+        if (entity instanceof ExperienceOrb) {
             xp = ((ExperienceOrb)entity).getExperience();
         }
         extraData = CompatibilityLib.getEntityUtils().getExtraData(controller, entity);
-
-        ItemUtils itemUtils = CompatibilityLib.getItemUtils();
-        if (!itemUtils.isEmpty(item)) {
-            item = itemUtils.getCopy(item);
-        }
     }
 
     public EntityData(MageController controller, EntityType type) {
@@ -294,8 +258,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Override
+    @Deprecated
     public ItemStack getItem() {
-        return item;
+        return null;
     }
 
     @Deprecated
@@ -560,9 +525,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        MaterialAndData itemData = ConfigurationUtils.getMaterialAndData(parameters, "item");
-        item = itemData == null || !itemData.isValid() ? null : itemData.getItemStack(parameters.getInt("amount", 1));
-
         itemInHand = controller.getOrCreateItem(parameters.getString("item"));
         itemInOffhand = controller.getOrCreateItem(parameters.getString("offhand"));
         helmet = controller.getOrCreateItem(parameters.getString("helmet"));
@@ -580,18 +542,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public static EntityData loadPainting(MageController controller, Vector location, Art art, BlockFace direction) {
         EntityData data = new EntityData(controller, EntityType.PAINTING);
-        data.facing = direction;
+        data.extraData = CompatibilityLib.getEntityUtils().getPaintingData(art, direction);
         data.relativeLocation = location.clone();
-        data.art = art;
         return data;
     }
 
     public static EntityData loadItemFrame(MageController controller, Vector location, ItemStack item, BlockFace direction, Rotation rotation) {
         EntityData data = new EntityData(controller, EntityType.ITEM_FRAME);
-        data.facing = direction;
+        data.extraData = CompatibilityLib.getEntityUtils().getItemFrameData(item, direction, rotation);
         data.relativeLocation = location.clone();
-        data.rotation = rotation;
-        data.item = item;
         return data;
     }
 
@@ -636,13 +595,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Override
+    @Deprecated
     public Art getArt() {
-        return art;
+        return null;
     }
 
     @Override
+    @Deprecated
     public BlockFace getFacing() {
-        return facing;
+        return BlockFace.SELF;
     }
 
     @Override
@@ -657,34 +618,16 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         boolean addedToWorld = false;
         if (type != null && type != EntityType.PLAYER) {
             try {
-                switch (type) {
-                    case PAINTING:
-                        spawned = CompatibilityLib.getCompatibilityUtils().createPainting(location, facing, art);
-                        break;
-                    case ITEM_FRAME:
-                        spawned = CompatibilityLib.getCompatibilityUtils().createItemFrame(location, facing, rotation, item);
-                        break;
-                    case DROPPED_ITEM:
-                        if (CompatibilityLib.getItemUtils().isEmpty(item)) return null;
-                        spawned = location.getWorld().dropItem(location, item);
-                        addedToWorld = true;
-                        break;
-                    case FALLING_BLOCK:
-                        Material material = null;
-                        byte data = 0;
-                        if (extraData != null) {
-                            material = extraData.getMaterial();
-                            data = extraData.getMaterialData();
-                        }
-                        if (material == null) {
-                            material = Material.DIRT;
-                        }
-                        spawned = location.getWorld().spawnFallingBlock(location, material, data);
-                        addedToWorld = true;
-                        break;
-                    default:
-                        spawned = CompatibilityLib.getCompatibilityUtils().createEntity(location, type);
-                    }
+                SpawnedEntityExtraData spawnedEntity = null;
+                if (extraData != null) {
+                    spawnedEntity = extraData.spawn(location);
+                }
+                if (spawnedEntity != null) {
+                    spawned = spawnedEntity.getEntity();
+                    addedToWorld = spawnedEntity.isAddedToWorld();
+                } else {
+                    spawned = CompatibilityLib.getCompatibilityUtils().createEntity(location, type);
+                }
             } catch (Exception ex) {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity type " + getType() + " at " + getLocation(), ex);
             }
@@ -878,11 +821,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             Creature creature = (Creature)entity;
             creature.setCanPickupItems(canPickupItems);
         }
-
-        if (entity instanceof Item && !CompatibilityLib.getItemUtils().isEmpty(item)) {
-            Item droppedItem = (Item)entity;
-            droppedItem.setItemStack(item);
-        }
         if (entity instanceof ExperienceOrb && xp != null) {
             ((ExperienceOrb)entity).setExperience(xp);
         }
@@ -1055,23 +993,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             mobStackSize--;
         }
-        if (entity instanceof Painting) {
-            Painting painting = (Painting) entity;
-            if (art != null) {
-                painting.setArt(art, true);
-            }
-            if (facing != null) {
-                painting.setFacingDirection(facing, true);
-            }
-        } else if (entity instanceof ItemFrame) {
-            ItemFrame itemFrame = (ItemFrame)entity;
-            if (!CompatibilityLib.getItemUtils().isEmpty(item)) {
-                itemFrame.setItem(item);
-            }
-            if (facing != null) {
-                itemFrame.setFacingDirection(facing, true);
-            }
-        }
         if (cancelExplosion) {
             CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION, true);
         }
@@ -1156,10 +1077,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void setHasVelocity(boolean hasVelocity) {
         this.hasVelocity = hasVelocity;
-    }
-
-    public boolean isHanging() {
-        return isHanging;
     }
 
     public boolean isLiving() {
@@ -1370,22 +1287,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (extraData != null) {
             extraData.setMaterialAndData(material);
         }
-
-        // Not sure if I should mess with "item" here
     }
 
     @Override
     @Nullable
     public com.elmakers.mine.bukkit.api.block.MaterialAndData getMaterial() {
-        com.elmakers.mine.bukkit.api.block.MaterialAndData extraMaterial = extraData != null ? extraData.getMaterialAndData() : null;
-        if (extraMaterial != null) {
-            return extraMaterial;
+        if (extraData != null) {
+            return extraData.getMaterialAndData();
         }
-
-        if (item != null) {
-            return new MaterialAndData(item);
-        }
-
+        // Note: this was changed to not return item material, so this *only* works for falling block entities now
         return null;
     }
 

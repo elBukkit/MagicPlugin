@@ -53,6 +53,7 @@
 
 ## Suggestions
 
+ - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Add "tick" effects for Projectile
  - Make emerald swords based on diamond sword
  - Per-player setting to turn off particles? Sounds maybe?  

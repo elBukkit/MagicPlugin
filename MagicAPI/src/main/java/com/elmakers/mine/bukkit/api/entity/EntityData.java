@@ -36,8 +36,11 @@ public interface EntityData extends Cloneable {
     Location getLocation();
     EntityType getType();
     String getName();
+    @Deprecated
     Art getArt();
+    @Deprecated
     BlockFace getFacing();
+    @Deprecated
     ItemStack getItem();
     double getHealth();
     void setHasMoved(boolean hasMoved);
