@@ -16,7 +16,8 @@ public abstract class EntityExtraData {
 
     public abstract void apply(Entity entity);
 
-    public void cycle(Entity entity) {
+    public boolean cycle(Entity entity) {
+        return false;
     }
 
     public boolean canCycle(Entity entity) {

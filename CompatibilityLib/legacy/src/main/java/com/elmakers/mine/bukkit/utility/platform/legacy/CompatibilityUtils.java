@@ -2692,4 +2692,9 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void setAdult(Zombie zombie) {
         zombie.setBaby(false);
     }
+
+    @Override
+    public boolean isFilledMap(Material material) {
+        return material == Material.MAP;
+    }
 }

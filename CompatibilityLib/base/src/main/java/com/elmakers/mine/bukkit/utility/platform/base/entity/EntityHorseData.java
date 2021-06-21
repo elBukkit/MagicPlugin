@@ -69,4 +69,32 @@ public class EntityHorseData extends EntityAbstractHorseData {
             horse.setStyle(style);
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+
+        Horse horse = (Horse)entity;
+
+        Horse.Color color = horse.getColor();
+        Horse.Color[] colorValues = Horse.Color.values();
+        color = colorValues[(color.ordinal() + 1) % colorValues.length];
+
+        Horse.Style horseStyle = horse.getStyle();
+        Horse.Style[] styleValues = Horse.Style.values();
+        horseStyle = styleValues[(horseStyle.ordinal() + 1) % styleValues.length];
+
+        horse.setStyle(horseStyle);
+        horse.setColor(color);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Horse;
+    }
 }

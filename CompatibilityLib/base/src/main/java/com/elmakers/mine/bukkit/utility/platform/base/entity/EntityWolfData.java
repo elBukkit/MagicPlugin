@@ -51,4 +51,25 @@ public class EntityWolfData extends EntityAnimalData {
             wolf.setSitting(sitting);
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+
+        Wolf wolf = (Wolf)entity;
+        DyeColor wolfColor = wolf.getCollarColor();
+        DyeColor[] wolfColorValues = DyeColor.values();
+        wolfColor = wolfColorValues[(wolfColor.ordinal() + 1) % wolfColorValues.length];
+        wolf.setCollarColor(wolfColor);
+
+        return true;
+    }
+
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Wolf;
+    }
 }

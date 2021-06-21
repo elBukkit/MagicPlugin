@@ -64,4 +64,24 @@ public class EntityCatData extends EntityAnimalData {
             }
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+
+        Cat cat = (Cat)entity;
+        Cat.Type catType = cat.getCatType();
+        Cat.Type[] typeValues = Cat.Type.values();
+        catType = typeValues[(catType.ordinal() + 1) % typeValues.length];
+        cat.setCatType(catType);
+        return true;
+    }
+
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Cat;
+    }
 }

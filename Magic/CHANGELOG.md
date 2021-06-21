@@ -13,6 +13,7 @@
    - DoorSpell
    - "power" option to ConstructSpell, use PowerBlock action instead 
    - SuperEMP (spell config, removed from architect path .. may come back one day)
+   - Alter no longer alters ocelots in old MC versions, but will alter cats in newer ones
 
 # 9.0
 

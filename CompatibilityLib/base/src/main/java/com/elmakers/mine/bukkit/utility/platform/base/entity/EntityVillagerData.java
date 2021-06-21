@@ -50,4 +50,25 @@ public class EntityVillagerData extends EntityExtraData {
             villager.setProfession(profession);
         }
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!canCycle(entity)) {
+            return false;
+        }
+
+        Villager villager = (Villager)entity;
+        Villager.Profession profession = villager.getProfession();
+        Villager.Profession[] professionValues = Villager.Profession.values();
+        int villagerOrdinal = (profession.ordinal() + 1) % professionValues.length;
+        profession = professionValues[villagerOrdinal];
+        villager.setProfession(profession);
+        return true;
+    }
+
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Villager;
+    }
 }

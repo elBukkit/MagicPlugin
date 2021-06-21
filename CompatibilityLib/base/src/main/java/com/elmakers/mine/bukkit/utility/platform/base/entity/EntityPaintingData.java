@@ -71,4 +71,30 @@ public class EntityPaintingData extends EntityExtraData {
         Entity newEntity = PlatformInterpreter.getPlatform().getCompatibilityUtils().createPainting(location, facing, art);
         return new SpawnedEntityExtraData(newEntity, false);
     }
+
+    @Override
+    public boolean cycle(Entity entity) {
+        if (!(entity instanceof Painting)) {
+            return false;
+        }
+        Painting painting = (Painting)entity;
+        Art[] artValues = Art.values();
+        Art oldArt = painting.getArt();
+        Art newArt = oldArt;
+        int ordinal = (oldArt.ordinal() + 1);
+        for (int i = 0; i < artValues.length; i++) {
+            newArt = artValues[ordinal++ % artValues.length];
+            painting.setArt(newArt);
+            newArt = painting.getArt();
+            if (oldArt != newArt) {
+                break;
+            }
+        }
+        return oldArt != newArt;
+    }
+
+    @Override
+    public boolean canCycle(Entity entity) {
+        return entity instanceof Painting;
+    }
 }

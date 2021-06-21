@@ -107,6 +107,8 @@ public interface CompatibilityUtils {
 
     Entity createEntity(Location location, EntityType entityType);
 
+    boolean isFilledMap(Material material);
+
     boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason);
 
     Collection<Entity> getNearbyEntities(Location location, double x, double y, double z);

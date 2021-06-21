@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_13;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.AnaloguePowerable;
@@ -198,5 +199,10 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         bisected.setHalf(Bisected.Half.TOP);
         block.setBlockData(bisected, false);
         return true;
+    }
+
+    @Override
+    public boolean isFilledMap(Material material) {
+        return material == Material.FILLED_MAP;
     }
 }
