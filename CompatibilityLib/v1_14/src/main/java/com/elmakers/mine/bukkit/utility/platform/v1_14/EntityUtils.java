@@ -18,20 +18,16 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_13
 
     @Override
     public EntityExtraData getExtraData(MageController controller, Entity entity) {
-        EntityExtraData extraData = null;
-        if (entity.getType() == EntityType.FOX) {
-            extraData = new EntityFoxData(entity);
+        switch (entity.getType()) {
+            case FOX:
+                return new EntityFoxData(entity);
+            case CAT:
+                return new EntityCatData(entity);
+            case PHANTOM:
+                return new EntityPhantomData(entity);
+            default:
+                return super.getExtraData(controller, entity);
         }
-        if (entity.getType() == EntityType.CAT) {
-            extraData = new EntityCatData(entity);
-        }
-        if (entity.getType() == EntityType.PHANTOM) {
-            extraData = new EntityPhantomData(entity);
-        }
-        if (extraData == null) {
-            extraData = super.getExtraData(controller, entity);
-        }
-        return extraData;
     }
 
     @Override

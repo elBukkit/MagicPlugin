@@ -16,15 +16,13 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_12
 
     @Override
     public EntityExtraData getExtraData(MageController controller, Entity entity) {
-        EntityExtraData extraData = null;
-        // Falling blocks overridden here to use BlockData
-        if (entity.getType() == EntityType.FALLING_BLOCK) {
-            extraData = new EntityFallingBlockData(entity, controller);
+        switch (entity.getType()) {
+            case FALLING_BLOCK:
+                // Falling blocks overridden here to use BlockData
+                return new EntityFallingBlockData(entity, controller);
+            default:
+                return super.getExtraData(controller, entity);
         }
-        if (extraData == null) {
-            return super.getExtraData(controller, entity);
-        }
-        return extraData;
     }
 
     @Override
