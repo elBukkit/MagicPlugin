@@ -17,7 +17,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
 import org.bukkit.attribute.Attribute;
@@ -115,8 +114,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Boolean removeWhenFarAway = null;
     protected int fireTicks;
     protected Set<String> permissions;
-
-    protected DyeColor dyeColor;
 
     protected Collection<PotionEffect> potionEffects = null;
     protected Collection<PotionEffectType> removeEffects = null;
@@ -222,11 +219,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
             this.isBaby = !ageable.isAdult();
-        }
-
-        if (entity instanceof Colorable) {
-            Colorable colorable = (Colorable)entity;
-            dyeColor = colorable.getColor();
         }
 
         // TODO: Extra data class for this?
@@ -337,15 +329,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 }
                 controller.getLogger().log(Level.WARNING, message);
                 return;
-            }
-        }
-
-        String colorString = parameters.getString("color");
-        if (colorString != null) {
-            try {
-                dyeColor = DyeColor.valueOf(colorString.toUpperCase());
-            } catch (Exception ex) {
-                dyeColor = null;
             }
         }
 
@@ -804,11 +787,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         CompatibilityLib.getCompatibilityUtils().setSitting(entity, isSitting);
         CompatibilityLib.getCompatibilityUtils().setInvulnerable(entity, isInvulnerable);
-
-        if (entity instanceof Colorable && dyeColor != null) {
-            Colorable colorable = (Colorable)entity;
-            colorable.setColor(dyeColor);
-        }
 
         if (tags != null && !tags.isEmpty()) {
             Set<String> entityTags = CompatibilityLib.getCompatibilityUtils().getTags(entity);
