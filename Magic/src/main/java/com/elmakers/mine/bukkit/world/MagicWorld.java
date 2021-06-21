@@ -23,6 +23,8 @@ import com.elmakers.mine.bukkit.world.tasks.CopyWorldTask;
 public class MagicWorld {
     private enum WorldState { UNLOADED, LOADING, LOADED }
 
+    private static boolean updatingTime = false;
+
     private final MagicController controller;
     private final MagicChunkHandler chunkHandler;
     private final MagicSpawnHandler spawnHandler;
@@ -208,18 +210,18 @@ public class MagicWorld {
             controller.getLogger().warning("World " + worldName + " getting created as a copy of " + targetWorld.getName() + ", but is configured to copy " + copyFrom);
         }
 
-        state = WorldState.LOADING;
         // Create this world if it doesn't exist
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-           controller.info("Loading " + worldName + " using settings copied from " + targetWorld.getName());
-           world = Bukkit.createWorld(new WorldCreator(worldName).copy(targetWorld));
-           if (world == null) {
-               controller.getLogger().warning("Failed to create world: " + worldName);
-           } else if (appearanceEnvironment != null) {
-               CompatibilityLib.getCompatibilityUtils().setEnvironment(world, appearanceEnvironment);
-               controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
-           }
+            state = WorldState.LOADING;
+            controller.info("Loading " + worldName + " using settings copied from " + targetWorld.getName());
+            world = Bukkit.createWorld(new WorldCreator(worldName).copy(targetWorld));
+            if (world == null) {
+                controller.getLogger().warning("Failed to create world: " + worldName);
+            } else if (appearanceEnvironment != null) {
+                CompatibilityLib.getCompatibilityUtils().setEnvironment(world, appearanceEnvironment);
+                controller.info("Changed " + worldName + " appearance to " + appearanceEnvironment);
+            }
         }
         return world;
     }
@@ -234,26 +236,32 @@ public class MagicWorld {
         updateTimeFrom(null, 0);
     }
 
-    public boolean updateTimeFrom(World changedWorld, long skipAmount) {
-        if (!synchronizeTime || copyFrom.isEmpty() || state != WorldState.LOADED) {
-            return true;
+    public void updateTimeFrom(World changedWorld, long skipAmount) {
+        if (!synchronizeTime || copyFrom.isEmpty() || state != WorldState.LOADED || updatingTime) {
+            return;
         }
+        World world = Bukkit.getWorld(worldName);
         if (changedWorld != null && worldName.equals(changedWorld.getName())) {
-            return false;
+            if (world != null) {
+                updatingTime = true;
+                changedWorld.setTime(world.getTime() - synchronizedTimeOffset + skipAmount);
+                updatingTime = false;
+            }
+            return;
         }
         if (changedWorld == null) {
             changedWorld = Bukkit.getWorld(copyFrom);
         } else if (!changedWorld.getName().equals(copyFrom)) {
-            return true;
+            return;
         }
         if (changedWorld == null) {
-            return true;
+            return;
         }
-        World world = Bukkit.getWorld(worldName);
         if (world != null) {
+            updatingTime = true;
             world.setTime(changedWorld.getTime() + synchronizedTimeOffset + skipAmount);
+            updatingTime = false;
         }
-        return true;
     }
 
     public boolean isCancelSpellsOnSave() {
