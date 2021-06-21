@@ -1025,8 +1025,10 @@ public class PlayerController implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @SuppressWarnings("deprecation")
     public void onPlayerPickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
+        // TODO: Change to EntityPickupItemEvent
         Player player = event.getPlayer();
         if (player.isDead()) {
             controller.info("Player picking up item while dead? " + player.getName() + ", cancelling", 5);
@@ -1046,8 +1048,10 @@ public class PlayerController implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
+    @SuppressWarnings("deprecation")
     public void onPlayerPrePickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
+        // TODO: Change to EntityPickupItemEvent
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
         if (CompatibilityLib.getItemUtils().isTemporary(pickup) || CompatibilityLib.getEntityMetadataUtils().getBoolean(item, MagicMetaKeys.TEMPORARY))
