@@ -447,6 +447,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                                 byte data = CompatibilityLib.getCompatibilityUtils().getLegacyBlockData(falling);
                                 CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, material, data, false);
                             }
+                            entity.remove();
                             event.setCancelled(true);
                         }
                     }

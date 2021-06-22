@@ -9,6 +9,7 @@
  - Fix PotterPlus add-on (broken spell inheritance against builtin potter example)
  - Fix `otherside` and `netherside` examples force-loading backup worlds
  - Fix automaton block monsters leaving blocks behind
+ - Fix falling block spells like Blast and Collapse leaving blocks behind
 
 ## Additions and Changes   
 
