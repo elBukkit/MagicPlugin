@@ -2,6 +2,8 @@
 
 # 9.2
 
+ - Add `bound_name: name` option for wands, to use IGN instead of display name in bound lore
+
 # 9.1.1
 
 # 9.1

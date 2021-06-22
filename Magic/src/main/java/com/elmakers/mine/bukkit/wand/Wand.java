@@ -147,6 +147,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean glow = false;
     private boolean spellGlow = false;
     private boolean bound = false;
+    private boolean boundDisplayName = true;
     private boolean indestructible = false;
     private boolean undroppable = false;
     private boolean keep = false;
@@ -1073,7 +1074,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if ((ownerId == null || ownerId.length() == 0) && quietLevel < 2) {
             showInstructions(true);
         }
-        owner = ChatColor.stripColor(player.getDisplayName());
+        String ownerName = boundDisplayName ? player.getDisplayName() : player.getName();
+        owner = ChatColor.stripColor(ownerName);
         ownerId = mage.getId();
         if (setMage) {
             mage = null;
@@ -1973,6 +1975,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         undroppable = getBoolean("undroppable");
         isHeroes = getBoolean("heroes");
         bound = getBoolean("bound");
+        boundDisplayName = getString("bound_name", "display").equals("display");
         forceUpgrade = getBoolean("force");
         autoOrganize = getBoolean("organize");
         autoAlphabetize = getBoolean("alphabetize");
