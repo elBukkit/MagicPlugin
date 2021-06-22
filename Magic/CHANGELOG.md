@@ -2,7 +2,6 @@
 
 # 9.0.1
 
-
 ## Fixes
 
  - Fix `potter` spells not levelling up
@@ -10,6 +9,7 @@
  - Fix `otherside` and `netherside` examples force-loading backup worlds
  - Fix automaton block monsters leaving blocks behind
  - Fix falling block spells like Blast and Collapse leaving blocks behind
+ - Fix a block dupe exploit I won't mention here
 
 ## Additions and Changes   
 

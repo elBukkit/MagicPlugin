@@ -141,10 +141,11 @@ public class BlockController implements Listener, ChunkLoadListener {
                     event.setCancelled(true);
                     Collection<ItemStack> items = null;
                     if (dropOriginalBlock) {
-                        while (modifiedBlock.getPriorState() != null) {
-                            modifiedBlock = modifiedBlock.getPriorState();
+                        com.elmakers.mine.bukkit.api.block.BlockData originalBlock = modifiedBlock;
+                        while (originalBlock.getPriorState() != null) {
+                            originalBlock = originalBlock.getPriorState();
                         }
-                        modifiedBlock.modify(block);
+                        originalBlock.modify(block);
                         items = block.getDrops();
                     }
                     if (items != null) {
