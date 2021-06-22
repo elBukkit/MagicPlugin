@@ -495,6 +495,7 @@ public class MagicController implements MageController {
     private String exampleDefaults = null;
     private Collection<String> addExamples = null;
     private boolean loaded = false;
+    private PostStartupLoadTask finalizingConfig = null;
     private boolean shuttingDown = false;
     private boolean dataLoaded = false;
     private String defaultSkillIcon = "stick";
@@ -1749,6 +1750,7 @@ public class MagicController implements MageController {
         registerHandlers(loader.getMainConfiguration());
 
         // We'll need to delay everything else by one tick to let integrating plugins have a chance to load.
+        finalizingConfig = new PostStartupLoadTask(this, loader, sender);
         if (!loaded) {
             // Some first-time registration that's safe to do at startup
             activateMetrics();
@@ -1757,13 +1759,23 @@ public class MagicController implements MageController {
 
             // Delay validation of configs or anything else that requires attributes or
             // other external plugin registrations
-            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, new PostStartupLoadTask(this, loader, sender), 1);
+            Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, finalizingConfig, 1);
         } else {
-            finalizePostStartupLoad(loader, sender);
+            finalizingConfig.run();
+        }
+    }
+
+    public void checkPostStartupLoad() {
+        if (finalizingConfig != null) {
+            finalizingConfig.run();
         }
     }
 
     public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
+        if (finalizingConfig == null) {
+            return;
+        }
+        finalizingConfig = null;
         if (!loaded) {
             finalizeIntegrationPreLoad();
         }

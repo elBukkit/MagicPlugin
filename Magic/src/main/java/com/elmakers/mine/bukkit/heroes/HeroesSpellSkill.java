@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.herocraftonline.heroes.Heroes;
 import com.herocraftonline.heroes.api.SkillResult;
@@ -56,6 +57,10 @@ public class HeroesSpellSkill extends ActiveSkill {
         }
         MagicAPI api = (MagicAPI) magicPlugin;
         MageController controller = api.getController();
+        // This is unfortunately needed because Heroes tries to load these skills before
+        // Magic has loaded spell configs
+        ((MagicController)controller).checkPostStartupLoad();
+
         SpellTemplate spellTemplate = controller.getSpellTemplate(spellKey);
         if (spellTemplate == null) {
             controller.getLogger().warning("Failed to load Magic skill spell: " + spellKey);
