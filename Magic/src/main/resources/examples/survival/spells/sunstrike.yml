@@ -34,10 +34,6 @@ sunstrike:
                   actions:
                     - class: Damage
                     - class: Ignite
-       requirements:
-        - time:
-            min: 0
-            max: 12000
   effects:
     no_target: []
     tick:
