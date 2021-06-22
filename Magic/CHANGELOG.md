@@ -1,6 +1,6 @@
 # CHANGELOG
 
-# 9.0.1
+# 9.1
 
 ## Fixes
 
@@ -10,6 +10,7 @@
  - Fix automaton block monsters leaving blocks behind
  - Fix falling block spells like Blast and Collapse leaving blocks behind
  - Fix a block dupe exploit I won't mention here
+ - Update Heroes Magic Skill Pack
 
 ## Additions and Changes   
 
