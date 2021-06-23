@@ -2140,3 +2140,362 @@ zombie_wall_head:
   worth: 0
 zombified_piglin_spawn_egg:
   worth: 500
+
+# 1.17
+
+amethyst_block:
+  worth: 100
+amethyst_cluster:
+  worth: 100
+amethyst_shard:
+  worth: 100
+
+axolotl_bucket:
+  worth: 100
+axolotl_spawn_egg:
+  worth: 100
+azalea:
+  worth: 100
+azalea_leaves:
+  worth: 100
+
+big_dripleaf:
+  worth: 100
+big_dripleaf_stem:
+  worth: 100
+
+black_candle:
+  worth: 100
+black_candle_cake:
+  worth: 100
+
+blue_candle:
+  worth: 100
+blue_candle_cake:
+  worth: 100
+
+brown_candle:
+  worth: 100
+brown_candle_cake:
+  worth: 100
+
+budding_amethyst:
+  worth: 100
+bundle:
+  worth: 100
+
+calcite:
+  worth: 100
+
+candle:
+  worth: 100
+candle_cake:
+  worth: 100
+
+cave_vines:
+  worth: 100
+cave_vines_plant:
+  worth: 100
+
+chiseled_deepslate:
+  worth: 100
+
+cobbled_deepslate:
+  worth: 100
+cobbled_deepslate_slab:
+  worth: 100
+cobbled_deepslate_stairs:
+  worth: 100
+cobbled_deepslate_wall:
+  worth: 100
+
+copper_block:
+  worth: 100
+copper_ingot:
+  worth: 100
+copper_ore:
+  worth: 100
+
+cracked_deepslate_bricks:
+  worth: 100
+cracked_deepslate_tiles:
+  worth: 100
+
+cut_copper:
+  worth: 100
+cut_copper_slab:
+  worth: 100
+cut_copper_stairs:
+  worth: 100
+
+cyan_candle:
+  worth: 100
+cyan_candle_cake:
+  worth: 100
+
+deepslate:
+  worth: 100
+deepslate_brick_slab:
+  worth: 100
+deepslate_brick_stairs:
+  worth: 100
+deepslate_brick_wall:
+  worth: 100
+deepslate_bricks:
+  worth: 100
+deepslate_coal_ore:
+  worth: 100
+deepslate_copper_ore:
+  worth: 100
+deepslate_diamond_ore:
+  worth: 100
+deepslate_emerald_ore:
+  worth: 100
+deepslate_gold_ore:
+  worth: 30
+deepslate_iron_ore:
+  worth: 0.5
+deepslate_lapis_ore:
+  worth: 100
+deepslate_redstone_ore:
+  worth: 100
+deepslate_tile_slab:
+  worth: 100
+deepslate_tile_stairs:
+  worth: 100
+deepslate_tile_wall:
+  worth: 100
+deepslate_tiles:
+  worth: 100
+
+dirt_path:
+  worth: 100
+
+dripstone_block:
+  worth: 100
+
+exposed_copper:
+  worth: 100
+exposed_cut_copper:
+  worth: 100
+exposed_cut_copper_slab:
+  worth: 100
+exposed_cut_copper_stairs:
+  worth: 100
+
+glow_berries:
+  worth: 100
+glow_ink_sac:
+  worth: 100
+glow_item_frame:
+  worth: 100
+glow_lichen:
+  worth: 100
+glow_squid_spawn_egg:
+  worth: 100
+
+goat_spawn_egg:
+  worth: 100
+
+gray_candle:
+  worth: 100
+gray_candle_cake:
+  worth: 100
+
+green_candle:
+  worth: 100
+green_candle_cake:
+  worth: 100
+
+hanging_roots:
+  worth: 100
+
+infested_deepslate:
+  worth: 100
+
+large_amethyst_bud:
+  worth: 100
+
+lava_cauldron:
+  worth: 100
+
+light:
+  worth: 100
+
+light_blue_candle:
+  worth: 100
+light_blue_candle_cake:
+  worth: 100
+
+light_gray_candle:
+  worth: 100
+light_gray_candle_cake:
+  worth: 100
+
+lightning_rod:
+  worth: 100
+
+lime_candle:
+  worth: 100
+lime_candle_cake:
+  worth: 100
+
+magenta_candle:
+  worth: 100
+magenta_candle_cake:
+  worth: 100
+
+medium_amethyst_bud:
+  worth: 100
+
+moss_block:
+  worth: 100
+moss_carpet:
+  worth: 100
+
+orange_candle:
+  worth: 100
+orange_candle_cake:
+  worth: 100
+
+oxidized_copper:
+  worth: 100
+oxidized_cut_copper:
+  worth: 100
+oxidized_cut_copper_slab:
+  worth: 100
+oxidized_cut_copper_stairs:
+  worth: 100
+
+pink_candle:
+  worth: 100
+pink_candle_cake:
+  worth: 100
+
+pointed_dripstone:
+  worth: 100
+
+polished_deepslate:
+  worth: 100
+polished_deepslate_slab:
+  worth: 100
+polished_deepslate_stairs:
+  worth: 100
+polished_deepslate_wall:
+  worth: 100
+
+potted_azalea_bush:
+  worth: 100
+
+potted_flowering_azalea_bush:
+  worth: 100
+
+powder_snow:
+  worth: 100
+powder_snow_bucket:
+  worth: 100
+powder_snow_cauldron:
+  worth: 100
+
+purple_candle:
+  worth: 100
+purple_candle_cake:
+  worth: 100
+
+raw_copper:
+  worth: 3
+raw_copper_block:
+  worth: 3
+raw_gold:
+  worth: 6
+raw_gold_block:
+  worth: 6
+raw_iron:
+  worth: 0.5
+raw_iron_block:
+  worth: 0.5
+
+red_candle:
+  worth: 100
+red_candle_cake:
+  worth: 100
+
+rooted_dirt:
+  worth: 100
+
+sculk_sensor:
+  worth: 100
+
+small_amethyst_bud:
+  worth: 100
+small_dripleaf:
+  worth: 100
+
+smooth_basalt:
+  worth: 100
+
+spore_blossom:
+  worth: 100
+
+spyglass:
+  worth: 100
+
+tinted_glass:
+  worth: 100
+
+tuff:
+  worth: 100
+
+water_cauldron:
+  worth: 100
+waxed_copper_block:
+  worth: 100
+waxed_cut_copper:
+  worth: 100
+waxed_cut_copper_slab:
+  worth: 100
+waxed_cut_copper_stairs:
+  worth: 100
+waxed_exposed_copper:
+  worth: 100
+waxed_exposed_cut_copper:
+  worth: 100
+waxed_exposed_cut_copper_slab:
+  worth: 100
+waxed_exposed_cut_copper_stairs:
+  worth: 100
+waxed_oxidized_copper:
+  worth: 100
+waxed_oxidized_cut_copper:
+  worth: 100
+waxed_oxidized_cut_copper_slab:
+  worth: 100
+waxed_oxidized_cut_copper_stairs:
+  worth: 100
+waxed_weathered_copper:
+  worth: 100
+waxed_weathered_cut_copper:
+  worth: 100
+waxed_weathered_cut_copper_slab:
+  worth: 100
+waxed_weathered_cut_copper_stairs:
+  worth: 100
+weathered_copper:
+  worth: 100
+weathered_cut_copper:
+  worth: 100
+weathered_cut_copper_slab:
+  worth: 100
+weathered_cut_copper_stairs:
+  worth: 100
+
+white_candle:
+  worth: 100
+white_candle_cake:
+  worth: 100
+
+yellow_candle:
+  worth: 100
+yellow_candle_cake:
+  worth: 100
+
