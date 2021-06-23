@@ -2,48 +2,48 @@ magictorch:
     icon: spell_icon:62
     icon_disabled: spell_icon_disabled:62
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
-    requires: LightAPI
     category: specialty
     actions:
         cast:
-        - class: Light
+        - class: ChangeContext
+          target_offset: 0,2,0
+          actions:
+            - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
            particle: smoke_normal
            particle_count: 10
     parameters:
+        destructible: all_air,light
         target: self
-        async: false
         undo: 500
-        undo_previous: false
+        brush: light
+        replace_same: true
 
 throwmagictorch:
     icon: spell_icon:62
     icon_disabled: spell_icon_disabled:62
     icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
     category: specialty
-    requires: LightAPI
     actions:
         cast:
         - class: ThrowItem
           tick:
-          - class: Light
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
            particle: smoke_normal
            particle_count: 10
     parameters:
+        destructible: all_air,light
         target: none
-        async: false
-        undo: 100
+        undo: 20
         cooldown: 1000
         throw_wand: true
         temporary: false
         age_items: 0
         lifetime: 3600000
-        undo_previous: true
-        min_distance: 2
-
-
+        brush: light
+        replace_same: true

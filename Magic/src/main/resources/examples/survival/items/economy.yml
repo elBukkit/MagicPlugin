@@ -2210,11 +2210,11 @@ cobbled_deepslate_wall:
   worth: 100
 
 copper_block:
-  worth: 100
+  worth: 45
 copper_ingot:
-  worth: 100
+  worth: 5
 copper_ore:
-  worth: 100
+  worth: 5
 
 cracked_deepslate_bricks:
   worth: 100

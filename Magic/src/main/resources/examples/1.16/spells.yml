@@ -1,0 +1,30 @@
+light:
+  requires: LightAPI
+  actions:
+    cast:
+      -  class: Light
+  parameters:
+    brush: air
+
+magictorch:
+  requires: LightAPI
+  actions:
+    cast:
+      - class: Light
+  parameters:
+    brush: air
+    async: false
+    undo_previous: false
+
+throwmagictorch:
+  requires: LightAPI
+  actions:
+    cast:
+      - class: ThrowItem
+        tick:
+          - class: Light
+  parameters:
+    brush: air
+    undo_previous: true
+    async: false
+    min_distance: 2

@@ -7,10 +7,12 @@ light:
     category: engineering
     worth: 500
     earns_sp: 2
-    requires: LightAPI
     actions:
         cast:
-        -  class: Light
+          - class: ChangeContext
+            target_attachment: true
+            actions:
+            - class: ModifyBlock
     effects:
         cast:
         - sound: block_beacon_activate
@@ -30,5 +32,8 @@ light:
         cooldown: 10000
         async: false
         ignore_region_overrides: true
+        brush: light
+        destructible: all_air
+        transparent: transparent_to_construction
     costs:
         mana: 200

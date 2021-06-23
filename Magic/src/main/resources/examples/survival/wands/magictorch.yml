@@ -3,7 +3,6 @@ magictorch:
     locked: true
     cast_spell: magictorch
     cast_interval: 200
-    requires: LightAPI
     undroppable: true
     drop: alt_cast
     alternate_spell: throwmagictorch

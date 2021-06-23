@@ -14,6 +14,7 @@ architect:
       mana_max: 500
     extra_spells:
       - projector
+      - light
     spells:
       - absorb
       - superalter

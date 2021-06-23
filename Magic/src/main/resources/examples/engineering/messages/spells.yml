@@ -314,3 +314,6 @@ spells:
         description: Exchange money for Spell Points
         title: "&3Materia &7(&a$balance&7)"
         not_applicable: "&cYou are at the limit for &3Materia"
+    light:
+        name: Light
+        description: Create an invisible light source

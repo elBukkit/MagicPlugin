@@ -4,6 +4,9 @@
 
  - Add `bound_name: name` option for wands, to use IGN instead of display name in bound lore
  - Fix spell casts at y < 0
+ - Magic Torch and Light spells use light blocks in 1.17, don't require LightAPI
+ - Light spell moved to engineering configs, available at Architect
+ - Alter now works on candles and candle cakes
 
 # 9.1.1
 
