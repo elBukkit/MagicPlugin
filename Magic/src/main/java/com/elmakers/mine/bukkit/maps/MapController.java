@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.maps;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -22,14 +21,14 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class MapController implements com.elmakers.mine.bukkit.api.maps.MapController {
-    private final File configurationFile;
+    protected final File configurationFile;
     private final File cacheFolder;
     private final Plugin plugin;
 
     private boolean animationAllowed = true;
     private boolean loaded = false;
     private boolean disabled = false;
-    private BukkitTask saveTask = null;
+    protected BukkitTask saveTask = null;
 
     private HashMap<String, URLMap> keyMap = new HashMap<>();
     private HashMap<String, URLMap> playerMap = new HashMap<>();
@@ -131,65 +130,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         save(true);
     }
 
-    private class SaveRunnable implements Runnable {
-        final List<URLMap> saveMaps;
-
-        public SaveRunnable(Collection<URLMap> maps) {
-            saveMaps = new ArrayList<>(maps);
-        }
-
-        @Override
-        public void run() {
-            try {
-                YamlConfiguration configuration = new YamlConfiguration();
-                for (URLMap map : saveMaps) {
-                    ConfigurationSection mapConfig = configuration.createSection(Integer.toString(map.id));
-                    mapConfig.set("world", map.world);
-                    mapConfig.set("url", map.url);
-                    mapConfig.set("x", map.x);
-                    mapConfig.set("y", map.y);
-                    mapConfig.set("width", map.width);
-                    mapConfig.set("height", map.height);
-                    mapConfig.set("enabled", map.isEnabled());
-                    mapConfig.set("name", map.name);
-                    mapConfig.set("player", map.playerName);
-                    if (map.priority != null) {
-                        mapConfig.set("priority", map.priority);
-                    }
-                    if (map.xOverlay != null) {
-                        mapConfig.set("x_overlay", map.xOverlay);
-                    }
-                    if (map.yOverlay != null) {
-                        mapConfig.set("y_overlay", map.yOverlay);
-                    }
-                }
-                File tempFile = new File(configurationFile.getAbsolutePath() + ".tmp");
-                configuration.save(tempFile);
-                if (configurationFile.exists()) {
-                    File backupFile = new File(configurationFile.getAbsolutePath() + ".bak");
-                    if (!backupFile.exists() || configurationFile.length() >= backupFile.length()) {
-                        if (backupFile.exists() && !backupFile.delete()) {
-                            warning("Failed to delete backup file in order to replace it: " + backupFile.getAbsolutePath());
-                        }
-                        configurationFile.renameTo(backupFile);
-                    } else {
-                        info("Backup file is larger than current map file, you may want to restore or delete it? " + backupFile.getAbsolutePath());
-                        if (!configurationFile.delete()) {
-                            warning("Failed to delete file in order to replace it: " + configurationFile.getAbsolutePath());
-                        }
-                    }
-                }
-
-                if (!tempFile.renameTo(configurationFile)) {
-                    warning("Failed to rename file from " + tempFile.getAbsolutePath() + " to " + configurationFile.getAbsolutePath());
-                }
-            } catch (Exception ex) {
-                warning("Failed to save file " + configurationFile.getAbsolutePath());
-            }
-            saveTask = null;
-        };
-    }
-
     /**
      * Saves the configuration file.
      *
@@ -207,7 +147,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         if (configurationFile == null || disabled) return;
         if (asynchronous && (saveTask != null || plugin == null)) return;
 
-        Runnable runnable = new SaveRunnable(idMap.values());
+        Runnable runnable = new SaveMapsRunnable(this, idMap.values());
         if (asynchronous) {
             saveTask = Bukkit.getScheduler().runTaskAsynchronously(plugin, runnable);
         } else {
