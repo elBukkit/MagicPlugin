@@ -67,6 +67,11 @@ public class CompatibilityLib extends PlatformInterpreter {
                 return false;
             }
         }
+        return initialize(platform);
+    }
+
+    public static boolean initialize(Platform platform) {
+        CompatibilityLib.platform = platform;
         setPlatform(platform);
         return platform.isValid();
     }
