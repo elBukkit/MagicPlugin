@@ -342,3 +342,35 @@ material_colors:
   green: green_wall_banner
   red: red_wall_banner
   black: black_wall_banner
+- white: white_candle
+  orange: orange_candle
+  magenta: magenta_candle
+  light_blue: light_blue_candle
+  yellow: yellow_candle
+  lime: lime_candle
+  pink: pink_candle
+  gray: gray_candle
+  light_gray: light_gray_candle
+  cyan: cyan_candle
+  purple: purple_candle
+  blue: blue_candle
+  brown: brown_candle
+  green: green_candle
+  red: red_candle
+  black: black_candle
+- white: white_candle_cake
+  orange: orange_candle_cake
+  magenta: magenta_candle_cake
+  light_blue: light_blue_candle_cake
+  yellow: yellow_candle_cake
+  lime: lime_candle_cake
+  pink: pink_candle_cake
+  gray: gray_candle_cake
+  light_gray: light_gray_candle_cake
+  cyan: cyan_candle_cake
+  purple: purple_candle_cake
+  blue: blue_candle_cake
+  brown: brown_candle_cake
+  green: green_candle_cake
+  red: red_candle_cake
+  black: black_candle_cake
