@@ -3,6 +3,7 @@
 # 9.2
 
  - Add `bound_name: name` option for wands, to use IGN instead of display name in bound lore
+ - Fix spell casts at y < 0
 
 # 9.1.1
 

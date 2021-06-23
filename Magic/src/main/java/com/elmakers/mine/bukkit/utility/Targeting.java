@@ -110,15 +110,6 @@ public class Targeting {
         if (blockIterator != null) {
             return true;
         }
-        if (location.getBlockY() < 0) {
-            location = location.clone();
-            location.setY(0);
-        }
-        int maxHeight = location.getWorld().getMaxHeight();
-        if (location.getBlockY() > maxHeight) {
-            location = location.clone();
-            location.setY(maxHeight);
-        }
 
         try {
             blockIterator = new BlockIterator(location, yOffset, (int)Math.ceil(range));
