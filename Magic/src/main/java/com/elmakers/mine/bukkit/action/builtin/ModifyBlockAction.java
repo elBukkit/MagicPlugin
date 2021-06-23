@@ -41,6 +41,7 @@ public class ModifyBlockAction extends BaseSpellAction {
     private boolean consumeVariants = true;
     private boolean checkChunk = false;
     private boolean autoBlockState = false;
+    private boolean replaceSame = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -57,6 +58,7 @@ public class ModifyBlockAction extends BaseSpellAction {
         consumeVariants = parameters.getBoolean("consume_variants", true);
         fallingBlocksHurt = parameters.getBoolean("falling_hurts", false);
         checkChunk = parameters.getBoolean("check_chunk", true);
+        replaceSame = parameters.getBoolean("replace_same", false);
         fallingBlockDirection = null;
         if (spawnFallingBlocks && parameters.contains("direction") && !parameters.getString("direction").isEmpty())
         {
@@ -120,7 +122,7 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.FAIL;
         }
 
-        if (!brush.isDifferent(block)) {
+        if (!replaceSame && !brush.isDifferent(block)) {
             return SpellResult.NO_TARGET;
         }
 
