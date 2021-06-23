@@ -1597,4 +1597,9 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     public void setAdult(Zombie zombie) {
         zombie.setAdult();
     }
+
+    @Override
+    public int getMinHeight(World world) {
+        return world.getMinHeight();
+    }
 }
