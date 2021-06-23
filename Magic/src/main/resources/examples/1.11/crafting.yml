@@ -13,3 +13,6 @@ apprenticehelmet:
 apprenticeleggings:
   materials:
     i: wool
+
+magictorch:
+  requires: LightAPI

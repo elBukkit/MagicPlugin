@@ -6,6 +6,7 @@
  - Fix spell casts at y < 0
  - Magic Torch and Light spells use light blocks in 1.17, don't require LightAPI
  - Light spell moved to engineering configs, available at Architect
+ - Magic Torch is craftable by default, use `/mconfig disable recipe magictorch` if you don't want it
  - Alter now works on candles and candle cakes
 
 # 9.1.1
