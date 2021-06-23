@@ -12,6 +12,7 @@ import java.util.logging.LogRecord;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Server;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -56,29 +57,33 @@ public class MagicLogger extends ColoredLogger {
             super.log(record);
         }
 
+        Server server = Bukkit.getServer();
         CompatibilityUtils compatibility = CompatibilityLib.isInitialized() ? CompatibilityLib.getCompatibilityUtils() : null;
         LogMessage logMessage = new LogMessage(context, record.getMessage().replace("[Magic] ", ""));
         if (record.getLevel().equals(Level.WARNING)) {
             synchronized (warnings) {
                 pendingWarningCount++;
                 warnings.add(logMessage);
-                MagicWarningEvent event = new MagicWarningEvent(record, context, pendingWarningCount, capture);
-                if (compatibility != null && compatibility.isPrimaryThread()) {
-                    Bukkit.getPluginManager().callEvent(event);
-                } else if (plugin != null && plugin.isEnabled()) {
-                    Bukkit.getScheduler().runTask(plugin, new CallEventTask(event));
+                if (server != null) {
+                    MagicWarningEvent event = new MagicWarningEvent(record, context, pendingWarningCount, capture);
+                    if (compatibility != null && compatibility.isPrimaryThread()) {
+                        server.getPluginManager().callEvent(event);
+                    } else if (plugin != null && plugin.isEnabled()) {
+                        server.getScheduler().runTask(plugin, new CallEventTask(event));
+                    }
                 }
             }
         } else if (record.getLevel().equals(Level.SEVERE)) {
             synchronized (errors) {
                 pendingErrorCount++;
                 errors.add(logMessage);
-                MagicErrorEvent event = new MagicErrorEvent(record, context, pendingErrorCount, capture);
-
-                if (compatibility != null && compatibility.isPrimaryThread()) {
-                    Bukkit.getPluginManager().callEvent(event);
-                } else if (plugin != null && plugin.isEnabled()) {
-                    Bukkit.getScheduler().runTask(plugin, new CallEventTask(event));
+                if (server != null) {
+                    MagicErrorEvent event = new MagicErrorEvent(record, context, pendingErrorCount, capture);
+                    if (compatibility != null && compatibility.isPrimaryThread()) {
+                        server.getPluginManager().callEvent(event);
+                    } else if (plugin != null && plugin.isEnabled()) {
+                        server.getScheduler().runTask(plugin, new CallEventTask(event));
+                    }
                 }
             }
         }
