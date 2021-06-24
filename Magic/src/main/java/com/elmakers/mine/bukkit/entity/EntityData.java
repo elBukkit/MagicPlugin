@@ -685,7 +685,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public Entity spawn(Location location, CreatureSpawnEvent.SpawnReason reason) {
         if (location != null) this.location = location;
         else if (this.location == null) return null;
-        return trySpawn(reason);
+        Entity entity = trySpawn(reason);
+        if (entity != null && mageData != null) {
+            Mage mage = controller.getMage(entity);
+            if (mage != null) {
+                mageData.trigger(mage, "spawn");
+            }
+        }
+        return entity;
     }
 
     @Nullable
@@ -706,6 +713,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
                     // Undo'ing an entity won't drop loot
                     CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.NO_DROPS, true);
+                }
+            }
+            if (entity != null && mageData != null) {
+                Mage mage = controller.getMage(entity);
+                if (mage != null) {
+                    mageData.trigger(mage, "respawn");
                 }
             }
             setEntity(entity);
@@ -864,10 +877,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (!isPlayer) {
             entity.setCustomNameVisible(nameVisible);
         }
-        Mage mage = attachToMage(entity);
-        if (mage != null) {
-            mageData.trigger(mage, "spawn");
-        }
+        attachToMage(entity);
 
         if (disguise != null) {
             tryDisguise(entity, disguise);
