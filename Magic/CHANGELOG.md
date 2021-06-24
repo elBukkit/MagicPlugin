@@ -15,6 +15,7 @@
  - New effect player parameters to support 1.17 particles:
    - `to_color`: An alias for `color2` to align with EffectLib parameters
    - `particle_arrival_time`: For playing individual vibration particles
+ - New external example added, `/mconfig fetch httyd` - a "How to Train Your Dragon" config pack from Night!
 
 # 9.1.1
 

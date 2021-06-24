@@ -1,3 +1,4 @@
+
 #
 # These are examples that can be fetched via the `/mconfig fetch` command
 #
@@ -7,3 +8,4 @@ external_examples:
   extramobs: "https://github.com/PhvntxmX/Magic-Bosses/archive/main.zip"
   mars: "https://github.com/elBukkit/Magic-Mars/archive/main.zip"
   pride: "https://github.com/elBukkit/Magic-Pride/archive/main.zip"
+  httyd: "https://github.com/elBukkit/Magic-HTTYD/archive/main.zip"
