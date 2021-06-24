@@ -27,6 +27,12 @@ tracking:
              particle_offset_x: 0.1
              particle_offset_y: 0.1
              particle_offset_z: 0.1
+        - particle: vibration
+          particle_arrival_time: 40
+          particle_count: 8
+          particle_offset_x: 0.1
+          particle_offset_y: 0.1
+          particle_offset_z: 0.1
         - requires_entity_target: true
           sound: entity_villager_yes
           sound_pitch: 1.25
