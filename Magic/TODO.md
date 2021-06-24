@@ -7,6 +7,7 @@
 
 # Recent issues
 
+ - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Automata don't fully clean up, or perhaps Blast doesn't, idk
  - Selector cost at top-level (default cost) doesn't work
  - Prevent spiders climbing?

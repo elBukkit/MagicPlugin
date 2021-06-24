@@ -108,6 +108,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean useNPCName;
     protected boolean preventDismount;
     protected boolean preventTeleport;
+    protected boolean equipOnRespawn = true;
     protected Boolean invisible = null;
     protected Boolean persistentInvisible = null;
     protected Boolean persist = null;
@@ -311,6 +312,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         preventDismount = parameters.getBoolean("prevent_dismount", false);
         preventTeleport = parameters.getBoolean("prevent_teleport", false);
         cancelExplosion = parameters.getBoolean("cancel_explosion", false);
+        equipOnRespawn = parameters.getBoolean("equip_on_respawn", true);
         List<String> permissionsList = ConfigurationUtils.getStringList(parameters, "permissions");
         if (permissionsList != null && !permissionsList.isEmpty()) {
             permissions = new HashSet<>(permissionsList);
@@ -617,7 +619,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         if (spawned != null) {
             try {
-                modifyPreSpawn(spawned);
+                modifyPreSpawn(spawned, true);
                 if (!addedToWorld) {
                     isSpawning = true;
                     reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
@@ -757,12 +759,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (register && !(entity instanceof Player)) {
             controller.registerMob(entity, this);
         }
-        boolean modifiedPre = modifyPreSpawn(entity);
+        boolean modifiedPre = modifyPreSpawn(entity, false);
         boolean modifiedPost = modifyPostSpawn(entity);
         return modifiedPre || modifiedPost;
     }
 
-    private boolean modifyPreSpawn(Entity entity) {
+    private boolean modifyPreSpawn(Entity entity, boolean isFirstSpawn) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
 
         if (!(entity instanceof Player)) {
@@ -852,7 +854,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             try {
                 if (!isPlayer) {
                     applyAttributes(li);
-                    copyEquipmentTo(li);
+                    if (equipOnRespawn || isFirstSpawn) {
+                        copyEquipmentTo(li);
+                    }
                     if (maxHealth != null) {
                         CompatibilityLib.getCompatibilityUtils().setMaxHealth(li, maxHealth);
                     }
