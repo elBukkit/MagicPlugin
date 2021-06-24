@@ -85,7 +85,8 @@ missile:
            effectlib:
              class: ConeEffect
              iterations: 10
-             particle: redstone
+             particle: dust_color_transition
+             to_color: "#222222"
              lengthGrow: 0.1
              radiusGrow: 0.003
              updateLocations: false
@@ -98,7 +99,8 @@ missile:
         # These effects will be spawned at regular intervals along the projectile path.
         # This is determined by the tick_size parameter, which defaults to every 1/2 (0.5) blocks.
         tick:
-        - particle: redstone
+        - particle: dust_color_transition
+          color: "#FF2222"
           # It is important to set the location here to target so that it spawns at the projectile's current location
           location: target
           # Note that increasing the particle_count is "free" in terms of packets, but may cause
