@@ -9,6 +9,12 @@
  - Magic Torch is craftable by default, use `/mconfig disable recipe magictorch` if you don't want it
  - Alter now works on candles and candle cakes
  - The Cloak spell will deactivate when you take damage
+ - New EffectLib parameters to support 1.17 particles:
+   - `to_color`: Used for the dust_color_transition particle
+   - `arrival_time`: Used for the vibration particle
+ - New effect player parameters to support 1.17 particles:
+   - `to_color`: An alias for `color2` to align with EffectLib parameters
+   - `particle_arrival_time`: For playing individual vibration particles
 
 # 9.1.1
 

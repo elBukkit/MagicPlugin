@@ -36,6 +36,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.ParticleOptions;
 
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
@@ -130,6 +131,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected float particleZOffset = 0.3f;
     protected int particleCount = 1;
     protected float particleSize = 1;
+    protected int arrivalTime;
 
     protected boolean requireEntity = false;
     protected boolean requireTargetEntity = false;
@@ -242,6 +244,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         } else {
             color1 = ConfigurationUtils.getColor(configuration, "color", null);
             color2 = ConfigurationUtils.getColor(configuration, "color2", null);
+            if (color2 == null) {
+                color2 = ConfigurationUtils.getColor(configuration, "to_color", null);
+            }
         }
 
         if (configuration.contains("effect")) {
@@ -320,6 +325,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
                 particleYOffset = (float)configuration.getDouble("particle_offset_y", particleYOffset);
                 particleZOffset = (float)configuration.getDouble("particle_offset_z", particleZOffset);
                 particleCount = configuration.getInt("particle_count", particleCount);
+                arrivalTime = configuration.getInt("particle_arrival_time", arrivalTime);
                 particleSize = (float)configuration.getDouble("particle_size", particleSize);
             }
         }
@@ -493,6 +499,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
 
     public static void displayParticle(Particle particle, Location center, float offsetX, float offsetY, float offsetZ, float speed, int amount, float size, Color color, Material material, byte materialData, double range) {
         effectLib.displayParticle(particle, center, offsetX, offsetY, offsetZ, speed, amount, size, color, material, materialData, range);
+    }
+
+    public static void displayParticle(Particle particle, ParticleOptions options, Location center, double range) {
+        effectLib.displayParticle(particle, options, center, range);
     }
 
     public Particle overrideParticle(Particle particle) {
@@ -849,7 +859,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             Particle useEffect = overrideParticle(particleType);
             Material material = getWorkingMaterial().getMaterial();
             Short data = getWorkingMaterial().getData();
-            displayParticle(useEffect, sourceLocation, particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, particleSize, getColor1(), material, data == null ? 0 : (byte)(short)data, PARTICLE_RANGE);
+            ParticleOptions options = new ParticleOptions(particleXOffset, particleYOffset, particleZOffset, particleData, particleCount, particleSize, getColor1(), getColor2(), arrivalTime, material, data == null ? 0 : (byte)(short)data);
+            options.target = target;
+            displayParticle(useEffect, options, sourceLocation, PARTICLE_RANGE);
         }
     }
 

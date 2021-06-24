@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
 import de.slikey.effectlib.util.DynamicLocation;
+import de.slikey.effectlib.util.ParticleOptions;
 
 /**
  * Manages EffectLib integration
@@ -192,5 +193,9 @@ public class EffectLibManager {
 
     public void displayParticle(Particle particle, Location center, float offsetX, float offsetY, float offsetZ, float speed, int amount, float size, Color color, Material material, byte materialData, double range) {
         effectManager.display(particle, center, offsetX, offsetY, offsetZ, speed, amount, size, color, material, materialData, range, null);
+    }
+
+    public void displayParticle(Particle particle, ParticleOptions options, Location center, double range) {
+        effectManager.display(particle, options, center, range, null);
     }
 }
