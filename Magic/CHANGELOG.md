@@ -8,6 +8,7 @@
  - Light spell moved to engineering configs, available at Architect
  - Magic Torch is craftable by default, use `/mconfig disable recipe magictorch` if you don't want it
  - Alter now works on candles and candle cakes
+ - The Cloak spell will deactivate when you take damage
 
 # 9.1.1
 

@@ -11,6 +11,7 @@ cloak:
     toggle: undo
     disable_mana_regeneration: true
     cancel_on_cast_other: true
+    cancel_on_damage: 0.5
     quick_cast: true
     boss_bar:
       bar_title: "&7$spell"
