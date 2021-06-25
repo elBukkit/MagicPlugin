@@ -17,6 +17,7 @@
    - `particle_arrival_time`: For playing individual vibration particles
  - New external example added, `/mconfig fetch httyd` - a "How to Train Your Dragon" config pack from Night!
  - Add `equip_on_respawn: false` option for mobs, to their equipment won't get reset on respawn/reload
+ - Add `EntityAnimation` action, can make players or mobs swing their arms
 
 # 9.1.1
 
