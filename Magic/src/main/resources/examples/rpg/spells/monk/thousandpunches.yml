@@ -1,0 +1,18 @@
+monk_thousandpunches:
+  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
+  inherit: false
+  actions:
+    cast:
+      - class: Interval
+        actions:
+          - class: Random
+            actions:
+              - class: EntityAnimation
+                animation: swing_main_hand
+              - class: EntityAnimation
+                animation: swing_off_hand
+  parameters:
+    target: self
+    duration: 5 seconds
+    delay: 100 milliseconds
+    cooldown: 6 seconds
