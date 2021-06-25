@@ -245,6 +245,8 @@ public interface CompatibilityUtils {
 
     void swingOffhand(Entity entity);
 
+    void swingMainHand(Entity entity);
+
     @SuppressWarnings("deprecation")
     void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut);
 

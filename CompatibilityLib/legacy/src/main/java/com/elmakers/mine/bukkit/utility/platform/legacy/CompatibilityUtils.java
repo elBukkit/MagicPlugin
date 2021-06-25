@@ -1421,6 +1421,28 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
+    public void swingMainHand(Entity entity) {
+        int rangeSquared = OFFHAND_BROADCAST_RANGE * OFFHAND_BROADCAST_RANGE;
+        String worldName = entity.getWorld().getName();
+        Location center = entity.getLocation();
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > rangeSquared) {
+                continue;
+            }
+            swingMainHand(player, entity);
+        }
+    }
+
+    private void swingMainHand(Player sendToPlayer, Entity entity) {
+        try {
+            Object packet = NMSUtils.class_PacketPlayOutAnimation_Constructor.newInstance(NMSUtils.getHandle(entity), 0);
+            NMSUtils.sendPacket(sendToPlayer, packet);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
     public boolean sendActionBar(Player player, String message) {
         if (NMSUtils.class_PacketPlayOutChat == null) return false;
         try {

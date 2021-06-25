@@ -923,6 +923,14 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
+    public void swingMainHand(Entity entity) {
+        if (!(entity instanceof LivingEntity)) {
+            return;
+        }
+        ((LivingEntity)entity).swingMainHand();
+    }
+
+    @Override
     public void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut) {
         player.sendTitle(title, subTitle, fadeIn, stay, fadeOut);
     }
