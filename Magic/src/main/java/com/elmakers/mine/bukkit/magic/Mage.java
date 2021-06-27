@@ -4001,7 +4001,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     protected void addPassiveAttributes(CasterProperties properties) {
-        boolean stack = properties.getBoolean("stack", false);
+        addPassiveAttributes(properties, false);
+    }
+
+    protected void addPassiveAttributes(CasterProperties properties, boolean defaultStack) {
+        boolean stack = properties.getBoolean("stack", defaultStack);
         addPassiveEffectsGroup(attributes, properties, "attributes", stack, null);
     }
 
@@ -4104,19 +4108,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         for (MageModifier modifier : modifiers.values()) {
-            addPassiveAttributes(modifier);
+            addPassiveAttributes(modifier, true);
         }
 
         if (activeWand != null && !activeWand.isWorn()) {
-            addPassiveAttributes(activeWand);
+            addPassiveAttributes(activeWand, true);
         }
         // Don't add these together so things stay balanced!
         if (offhandWand != null && !offhandWand.isWorn()) {
-            addPassiveAttributes(offhandWand);
+            addPassiveAttributes(offhandWand, true);
         }
         for (Wand armorWand : activeArmor.values()) {
             if (armorWand != null) {
-                addPassiveAttributes(armorWand);
+                addPassiveAttributes(armorWand, true);
             }
         }
         reloadAttributes();
