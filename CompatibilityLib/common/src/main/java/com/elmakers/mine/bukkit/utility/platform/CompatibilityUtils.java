@@ -478,4 +478,6 @@ public interface CompatibilityUtils {
     boolean tame(Entity entity, Player tamer);
 
     boolean isArrow(Entity entity);
+
+    void setMaterialCooldown(Player player, Material material, int duration);
 }

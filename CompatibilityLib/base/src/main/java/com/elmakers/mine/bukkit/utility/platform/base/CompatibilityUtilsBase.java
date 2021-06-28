@@ -765,4 +765,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public boolean isArrow(Entity projectile) {
         return (projectile instanceof Arrow) || (projectile instanceof TippedArrow) || (projectile instanceof SpectralArrow);
     }
+
+    @Override
+    public void setMaterialCooldown(Player player, Material material, int duration) {
+        // Not going to mess about with packets for this.
+    }
 }

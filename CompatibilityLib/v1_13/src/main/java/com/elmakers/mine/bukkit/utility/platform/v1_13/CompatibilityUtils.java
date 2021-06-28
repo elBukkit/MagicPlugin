@@ -11,6 +11,7 @@ import org.bukkit.block.data.Lightable;
 import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Door;
+import org.bukkit.entity.Player;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.DoorActionType;
@@ -204,5 +205,11 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     @Override
     public boolean isFilledMap(Material material) {
         return material == Material.FILLED_MAP;
+    }
+
+
+    @Override
+    public void setMaterialCooldown(Player player, Material material, int duration) {
+        player.setCooldown(material, duration);
     }
 }
