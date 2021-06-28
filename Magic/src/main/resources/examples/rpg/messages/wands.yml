@@ -23,3 +23,5 @@ wands:
   alchemybook:
     name: Book of Alchemy
     description: Contains ancient alchemical lore
+  inthelmet:
+    name: Helmet of Intelligence

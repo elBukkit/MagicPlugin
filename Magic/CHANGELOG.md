@@ -18,6 +18,7 @@
  - New external example added, `/mconfig fetch httyd` - a "How to Train Your Dragon" config pack from Night!
  - Add `equip_on_respawn: false` option for mobs, to their equipment won't get reset on respawn/reload
  - Add `EntityAnimation` action, can make players or mobs swing their arms
+ - Attributes on armor, wands and modifiers will now stack by default (`stack: false` to turn this off)
 
 # 9.1.1
 
