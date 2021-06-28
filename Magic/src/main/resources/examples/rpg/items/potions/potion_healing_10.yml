@@ -1,0 +1,24 @@
+potion_healing_10:
+  worth: 20
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2724
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      ItemFlags:
+        - HIDE_POTION_EFFECTS
+      custom-color:
+        ==: Color
+        RED: 255
+        BLUE: 0
+        GREEN: 0
+      custom-effects:
+        - ==: PotionEffect
+          effect: 6
+          duration: 10
+          amplifier: 20
+          ambient: true
+          has-particles: true
+          has-icon: true
