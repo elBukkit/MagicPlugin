@@ -12,7 +12,7 @@ thousandpunches:
             actions:
               - class: Damage
           - class: Skip
-            until: 750 milliseconds
+            until: 0.75 seconds
             actions:
               - class: PlayEffects
                 effects: punch
@@ -39,7 +39,7 @@ thousandpunches:
   parameters:
     target: self
     duration: 5 seconds
-    delay: 100 milliseconds
+    delay: 0.1 seconds
     cooldown: 6 seconds
     range: 2
     fov: 45
