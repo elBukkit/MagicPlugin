@@ -55,6 +55,7 @@
 
 ## Suggestions
 
+ - Option on mobs to allow interact spell to use player's spell level
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Add "tick" effects for Projectile
  - Make emerald swords based on diamond sword

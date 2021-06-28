@@ -1,8 +1,11 @@
 peasant:
   inherit: base
   locked: false
+  # This makes every 10 HP equal one heart (2 health)
+  # So 10 hearts (20 health) would be 100 HP
+  health_scale: "health_max / 5"
   entity_attributes:
     generic_max_health:
       operation: base
-      value: 6
+      value: 10
 

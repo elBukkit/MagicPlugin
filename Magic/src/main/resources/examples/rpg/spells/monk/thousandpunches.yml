@@ -1,4 +1,4 @@
-monk_thousandpunches:
+thousandpunches:
   # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
   inherit: false
   actions:

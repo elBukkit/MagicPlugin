@@ -3,8 +3,10 @@ monk:
   locked: true
   icon: spell_icon:270
   icon_disabled: spell_icon_disabled:270
+  spells:
+    - thousandpunches
   entity_attributes:
     generic_max_health:
-      value: "constitution / 1.2"
+      value: "constitution * 5"
       operation: base
 
