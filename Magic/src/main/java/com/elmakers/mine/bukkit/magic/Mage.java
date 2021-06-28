@@ -3976,7 +3976,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         updatePassiveEffects();
     }
 
-    protected void addPassiveEffectsGroup(Map<String, Double> properties, CasterProperties addProperties, String section, boolean stack, Double maxValue) {
+    protected void addPassiveEffectsGroup(Map<String, Double> properties, CasterProperties addProperties, String section, boolean stack, double maxValue) {
        ConfigurationSection addSection = addProperties.getConfigurationSection(section);
        if (addSection != null) {
            Set<String> sectionTypes = addSection.getKeys(false);
@@ -3987,11 +3987,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
                 double addValue = addSection.getDouble(sectionType);
                 if (stack) {
-                    if (maxValue != null) {
-                        existing = Math.min(1, existing + addValue);
-                    } else {
-                        existing = existing + addValue;
-                    }
+                    existing = Math.min(maxValue, existing + addValue);
                 } else {
                     existing = Math.max(existing, addValue);
                 }
@@ -4004,9 +4000,37 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         addPassiveAttributes(properties, false);
     }
 
-    protected void addPassiveAttributes(CasterProperties properties, boolean defaultStack) {
-        boolean stack = properties.getBoolean("stack", defaultStack);
-        addPassiveEffectsGroup(attributes, properties, "attributes", stack, null);
+    protected void addPassiveAttributes(CasterProperties addProperties, boolean defaultStack) {
+        boolean stack = addProperties.getBoolean("stack", defaultStack);
+        // addPassiveEffectsGroup(attributes, properties, "attributes", stack, null);
+        ConfigurationSection addSection = addProperties.getConfigurationSection("attributes");
+        if (addSection != null) {
+            Set<String> addAttributes = addSection.getKeys(false);
+            for (String attributeKey : addAttributes) {
+                MagicAttribute magicAttribute = controller.getAttribute(attributeKey);
+                Double existing = attributes.get(attributeKey);
+                if (existing == null) {
+                    if (magicAttribute != null) {
+                        existing = magicAttribute.getDefault();
+                    }
+                    if (existing == null) {
+                        existing = 0.0;
+                    }
+                }
+                double addValue = addSection.getDouble(attributeKey);
+                if (stack) {
+                    Double maxValue = magicAttribute == null ? null : magicAttribute.getMax();
+                    if (maxValue != null) {
+                        existing = Math.min(maxValue, existing + addValue);
+                    } else {
+                        existing = existing + addValue;
+                    }
+                } else {
+                    existing = Math.max(existing, addValue);
+                }
+                attributes.put(attributeKey, existing);
+            }
+        }
     }
 
     protected void addPassiveEffects(CasterProperties properties, boolean activeReduction) {
