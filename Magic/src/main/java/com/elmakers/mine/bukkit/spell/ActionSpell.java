@@ -65,20 +65,31 @@ public class ActionSpell extends BrushSpell
     @Override
     public void processParameters(ConfigurationSection parameters) {
         ConfigurationSection alternateParameters = null;
-        if (isLookingDown())
-        {
+        boolean lookingUp = isLookingUp();
+        boolean lookingDown = isLookingDown();
+        boolean sneaking = mage.isSneaking();
+        boolean jumping = mage.isJumping();
+
+        if (lookingDown && sneaking) {
+            alternateParameters = getHandlerParameters("alternate_sneak_down");
+        } else if (lookingUp && sneaking) {
+            alternateParameters = getHandlerParameters("alternate_sneak_up");
+        } else if (lookingDown && jumping) {
+            alternateParameters = getHandlerParameters("alternate_jumping_down");
+        } else if (lookingUp && jumping) {
+            alternateParameters = getHandlerParameters("alternate_jumping_up");
+        }
+
+        if (alternateParameters == null && lookingDown) {
             alternateParameters = getHandlerParameters("alternate_down");
         }
-        if (alternateParameters == null && isLookingUp())
-        {
+        if (alternateParameters == null && lookingUp) {
             alternateParameters = getHandlerParameters("alternate_up");
         }
-        if (alternateParameters == null && mage.isSneaking())
-        {
+        if (alternateParameters == null && sneaking) {
             alternateParameters = getHandlerParameters("alternate_sneak");
         }
-        if (alternateParameters == null && mage.isJumping())
-        {
+        if (alternateParameters == null && jumping) {
             alternateParameters = getHandlerParameters("alternate_jumping");
         }
         if (alternateParameters != null)
@@ -106,24 +117,37 @@ public class ActionSpell extends BrushSpell
         ActionHandler upHandler = actions.get("alternate_up");
         ActionHandler sneakHandler = actions.get("alternate_sneak");
         ActionHandler jumpHandler = actions.get("alternate_jumping");
+        ActionHandler jumpUpHandler = actions.get("alternate_jumping_up");
+        ActionHandler jumpDownHandler = actions.get("alternate_jumping_down");
+        ActionHandler sneakDownHandler = actions.get("alternate_sneak_down");
+        ActionHandler sneakUpHandler = actions.get("alternate_sneak_up");
+        boolean lookingUp = isLookingUp();
+        boolean lookingDown = isLookingDown();
+        boolean sneaking = mage.isSneaking();
+        boolean jumping = mage.isJumping();
         workThreshold = parameters.getInt("work_threshold", 500);
-        if (downHandler != null && isLookingDown())
-        {
+        if (jumpUpHandler != null && jumping && lookingUp) {
+            result = SpellResult.ALTERNATE_JUMPING_UP;
+            currentHandler = jumpUpHandler;
+        } else if (jumpDownHandler != null && jumping && lookingDown) {
+            result = SpellResult.ALTERNATE_JUMPING_DOWN;
+            currentHandler = jumpDownHandler;
+        } else if (sneakDownHandler != null && sneaking && lookingDown) {
+            result = SpellResult.ALTERNATE_SNEAK_DOWN;
+            currentHandler = sneakDownHandler;
+        } else if (sneakUpHandler != null && sneaking && lookingUp) {
+            result = SpellResult.ALTERNATE_SNEAK_UP;
+            currentHandler = sneakUpHandler;
+        } else if (downHandler != null && lookingDown) {
             result = SpellResult.ALTERNATE_DOWN;
             currentHandler = downHandler;
-        }
-        else if (upHandler != null && isLookingUp())
-        {
+        } else if (upHandler != null && lookingUp) {
             result = SpellResult.ALTERNATE_UP;
             currentHandler = upHandler;
-        }
-        else if (sneakHandler != null && mage.isSneaking())
-        {
+        } else if (sneakHandler != null && sneaking) {
             result = SpellResult.ALTERNATE_SNEAK;
             currentHandler = sneakHandler;
-        }
-        else if (jumpHandler != null && mage.isJumping())
-        {
+        } else if (jumpHandler != null && jumping) {
             result = SpellResult.ALTERNATE_JUMPING;
             currentHandler = jumpHandler;
         }

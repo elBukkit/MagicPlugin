@@ -24,6 +24,10 @@ public enum SpellResult {
     ALTERNATE_DOWN(true, false, false, true),
     ALTERNATE_SNEAK(true, false, false, true),
     ALTERNATE_JUMPING(true, false, false, true),
+    ALTERNATE_SNEAK_UP(true, false, false, true),
+    ALTERNATE_SNEAK_DOWN(true, false, false, true),
+    ALTERNATE_JUMPING_UP(true, false, false, true),
+    ALTERNATE_JUMPING_DOWN(true, false, false, true),
 
     // Reactivated on reload
     REACTIVATE(true, false, true),
