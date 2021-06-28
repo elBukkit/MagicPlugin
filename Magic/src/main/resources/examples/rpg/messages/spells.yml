@@ -59,6 +59,6 @@ spells:
       description: Warps the player to "start" if they have chosen a class, race and attributes
       property_max: "&cYou must allocate all of your Attribute Points"
       no_class: "&cYou must choose a class and race"
-  monk_thousandpunches:
+  thousandpunches:
       name: 1,000 Punches
       description: Throw a furious volley of deadly punches
