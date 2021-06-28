@@ -241,8 +241,12 @@ public class ActionSpell extends BrushSpell
                 Collection<String> actionKeys = actionsNode.getKeys(false);
                 for (String actionKey : actionKeys)
                 {
+                    String configKey = actionKey;
+                    if (actionsNode.isString(actionKey)) {
+                        configKey = actionsNode.getString(actionKey);
+                    }
                     ActionHandler handler = new ActionHandler();
-                    handler.load(this, actionsNode, actionKey);
+                    handler.load(this, actionsNode, configKey);
                     handler.initialize(this, parameters);
                     usesBrush = usesBrush || handler.usesBrush();
                     undoable = undoable || handler.isUndoable();

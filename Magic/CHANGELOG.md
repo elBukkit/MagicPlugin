@@ -20,6 +20,7 @@
  - Add `EntityAnimation` action, can make players or mobs swing their arms
  - Attributes on armor, wands and modifiers will now stack by default (`stack: false` to turn this off)
  - Add new handlers for combinations: `alternate_jumping_up`, `alternate_jumping_down`, `alternate_sneak_down`, `alternate_sneak_up`
+ - Allow handlers to refer to other handlers, e.g `alternate_jumping_up: alternate_jumping`
 
 # 9.1.1
 
