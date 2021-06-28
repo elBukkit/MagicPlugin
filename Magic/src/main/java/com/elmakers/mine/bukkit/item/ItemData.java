@@ -18,6 +18,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -212,6 +214,18 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                 LeatherArmorMeta leather = (LeatherArmorMeta)meta;
                 leather.setColor(Color.fromRGB(red, green, blue));
                 item.setItemMeta(meta);
+            }
+        }
+        ConfigurationSection potionEffects = configuration.getConfigurationSection("potion_effects");
+        if (potionEffects != null) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta instanceof PotionMeta) {
+                PotionMeta potion = (PotionMeta)meta;
+                Collection<PotionEffect> effects = ConfigurationUtils.getPotionEffects(potionEffects);
+                for (PotionEffect effect : effects) {
+                    potion.addCustomEffect(effect, true);
+                }
+                item.setItemMeta(potion);
             }
         }
     }
