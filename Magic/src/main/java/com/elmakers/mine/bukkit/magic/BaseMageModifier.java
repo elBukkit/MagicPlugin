@@ -84,14 +84,6 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     }
 
     protected void activateAttributes() {
-        double healthScale = getDouble("health_scale");
-        if (healthScale > 0) {
-            Player player = mage.getPlayer();
-            if (player != null) {
-                player.setHealthScale(healthScale);
-            }
-        }
-
         Collection<EntityAttributeModifier> modifiers = getAttributeModifiers();
         if (modifiers == null) return;
         LivingEntity entity = mage.getLivingEntity();
@@ -135,14 +127,6 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     }
 
     protected void deactivateAttributes() {
-        double healthScale = getDouble("health_scale");
-        if (healthScale > 0) {
-            Player player = mage.getPlayer();
-            if (player != null) {
-                player.setHealthScaled(false);
-            }
-        }
-
         if (attributeModifiers == null) return;
         LivingEntity entity = mage.getLivingEntity();
         if (entity == null) return;

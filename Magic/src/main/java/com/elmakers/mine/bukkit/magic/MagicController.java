@@ -1921,6 +1921,11 @@ public class MagicController implements MageController {
         logger.setContext(null);
         log("Loaded " + automatonTemplates.size() + " automata templates");
 
+        // Update registered mages so their passive effects take into account classes and modifiers
+        for (Mage mage : mages.values()) {
+            mage.updatePassiveEffects();
+        }
+
         logger.setContext(null);
     }
 

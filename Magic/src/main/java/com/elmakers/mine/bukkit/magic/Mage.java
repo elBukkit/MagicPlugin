@@ -214,6 +214,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float spEarnMultiplier = 1;
     private float manaMaxBoost = 0;
     private float manaRegenerationBoost = 0;
+    private double healthScale = 0;
 
     private boolean costFree = false;
     private boolean cooldownFree = false;
@@ -4037,6 +4038,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         spEarnMultiplier = (float) (spEarnMultiplier * properties.getDouble("earn_multiplier", properties.getDouble("sp_multiplier", 1.0)));
         manaRegenerationBoost += properties.getFloat("mana_regeneration_boost", 0);
         manaMaxBoost += properties.getFloat("mana_max_boost", 0);
+        healthScale = Math.max(healthScale, properties.getDouble("health_scale"));
 
         boolean stack = properties.getBoolean("stack", false);
         addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
@@ -4121,6 +4123,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void updatePassiveEffects() {
         // Need to do attributes first, in case they are used by any of the other properties
         attributes.clear();
+        double previousHealthScale = healthScale;
+        healthScale = 0;
 
         addPassiveAttributes(properties);
         if (activeClass != null) {
@@ -4215,6 +4219,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             for (Map.Entry<PotionEffectType, Integer> effects : effectivePotionEffects.entrySet()) {
                 PotionEffect effect = new PotionEffect(effects.getKey(), Integer.MAX_VALUE, effects.getValue(), true, false);
                 CompatibilityLib.getCompatibilityUtils().applyPotionEffect(entity, effect);
+            }
+            // Avoid resetting health scale that may have been set by other plugins
+            if (entity instanceof Player && previousHealthScale != healthScale) {
+                Player player = (Player)entity;
+                if (healthScale > 0) {
+                    player.setHealthScale(healthScale);
+                } else {
+                    player.setHealthScaled(false);
+                }
             }
         }
 
