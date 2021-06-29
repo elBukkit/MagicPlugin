@@ -100,7 +100,7 @@ missile:
         # This is determined by the tick_size parameter, which defaults to every 1/2 (0.5) blocks.
         tick:
         - particle: dust_color_transition
-          color: "#FF2222"
+          color: "#FFFFFF"
           # It is important to set the location here to target so that it spawns at the projectile's current location
           location: target
           # Note that increasing the particle_count is "free" in terms of packets, but may cause
