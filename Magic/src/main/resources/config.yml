@@ -59,15 +59,6 @@
 # Whether wands can be crafted on a crafting table
 # enable_crafting: true
 
-# Whether wands can be combined on an anvil
-# enable_combining: true
-
-# Whether wands can be upgraded on an enchanting table
-# enable_enchanting: true
-
-# Whether or not using a wand on an anvil will organize its inventory
-# enable_organizing: true
-
 # Enable/Disable automatic spell upgrades
 # enable_spell_upgrades: true
 
