@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
@@ -95,9 +94,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
-import com.elmakers.mine.bukkit.utility.LoadingChunk;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
-import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.google.common.collect.Multimap;
 
@@ -1385,55 +1382,6 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             }
         }
         return player.getBedSpawnLocation();
-    }
-
-    /**
-     * This will load chunks asynchronously if possible.
-     *
-     * <p>But note that it will never be truly asynchronous, it is important not to call this in a tight retry loop,
-     * the main server thread needs to free up to actually process the async chunk loads.
-     */
-    @Override
-    public void loadChunk(World world, int x, int z, boolean generate, Consumer<Chunk> consumer) {
-        PaperUtils paperUtils = platform.getPaperUtils();
-        if (paperUtils == null) {
-            Chunk chunk = world.getChunkAt(x, z);
-            chunk.load();
-            if (consumer != null) {
-                consumer.accept(chunk);
-            }
-            return;
-        }
-
-        final LoadingChunk loading = new LoadingChunk(world, x, z);
-        Integer requestCount = loadingChunks.get(loading);
-        if (requestCount != null) {
-            requestCount++;
-            if (requestCount > MAX_CHUNK_LOAD_TRY) {
-                platform.getLogger().warning("Exceeded retry count for asynchronous chunk load, loading synchronously");
-                if (!hasDumpedStack) {
-                    hasDumpedStack = true;
-                    Thread.dumpStack();
-                }
-                Chunk chunk = world.getChunkAt(x, z);
-                chunk.load();
-                if (consumer != null) {
-                    consumer.accept(chunk);
-                }
-                loadingChunks.remove(loading);
-                return;
-            }
-            loadingChunks.put(loading, requestCount);
-            return;
-        }
-
-        loadingChunks.put(loading, 1);
-        paperUtils.loadChunk(world, x, z, generate, chunk -> {
-            loadingChunks.remove(loading);
-            if (consumer != null) {
-                consumer.accept(chunk);
-            }
-        });
     }
 
     @Override

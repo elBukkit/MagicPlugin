@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import org.bukkit.Art;
@@ -82,7 +81,6 @@ import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
-import com.elmakers.mine.bukkit.utility.LoadingChunk;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 import com.google.common.io.BaseEncoding;
@@ -2389,58 +2387,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
         }
         return player.getBedSpawnLocation();
-    }
-
-    /**
-     * This will load chunks asynchronously if possible.
-     *
-     * <p>But note that it will never be truly asynchronous, it is important not to call this in a tight retry loop,
-     * the main server thread needs to free up to actually process the async chunk loads.
-     */
-    @Override
-    public void loadChunk(World world, int x, int z, boolean generate, Consumer<Chunk> consumer) {
-        final LoadingChunk loading = new LoadingChunk(world, x, z);
-        Integer requestCount = loadingChunks.get(loading);
-        if (requestCount != null) {
-            requestCount++;
-            if (requestCount > MAX_CHUNK_LOAD_TRY) {
-                platform.getLogger().warning("Exceeded retry count for asynchronous chunk load, loading synchronously");
-                if (!hasDumpedStack) {
-                    hasDumpedStack = true;
-                    Thread.dumpStack();
-                }
-                Chunk chunk = world.getChunkAt(x, z);
-                chunk.load();
-                if (consumer != null) {
-                    consumer.accept(chunk);
-                }
-                loadingChunks.remove(loading);
-                return;
-            }
-            loadingChunks.put(loading, requestCount);
-            return;
-        }
-        if (NMSUtils.class_World_getChunkAtAsyncMethod != null) {
-            try {
-                loadingChunks.put(loading, 1);
-                NMSUtils.class_World_getChunkAtAsyncMethod.invoke(world, x, z, generate, (Consumer<Chunk>) chunk -> {
-                    loadingChunks.remove(loading);
-                    if (consumer != null) {
-                        consumer.accept(chunk);
-                    }
-                });
-                return;
-            } catch (Exception ex) {
-                platform.getLogger().log(Level.WARNING, "Error loading chunk asynchronously", ex);
-                loadingChunks.remove(loading);
-            }
-        }
-
-        Chunk chunk = world.getChunkAt(x, z);
-        chunk.load();
-        if (consumer != null) {
-            consumer.accept(chunk);
-        }
     }
 
     @Override

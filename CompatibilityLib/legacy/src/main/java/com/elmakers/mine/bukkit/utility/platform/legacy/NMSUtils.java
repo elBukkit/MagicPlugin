@@ -309,7 +309,6 @@ public class NMSUtils {
     protected static Method class_WorldServer_worldMethod;
     protected static Method class_Keyed_getKeyMethod;
     protected static Method class_LivingEntity_setRemoveWhenFarAway;
-    protected static Method class_World_getChunkAtAsyncMethod;
     protected static Method class_NamespacedKey_getKeyMethod;
     protected static Method class_NamespacedKey_getNamespaceMethod;
     protected static Method class_CraftMetaSkull_setProfileMethod;
@@ -707,13 +706,6 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 hasTimeSkipEvent = false;
                 logger.warning("TimeSkipEvent not found, can't synchronize time between worlds");
-            }
-
-            try {
-                class_World_getChunkAtAsyncMethod = World.class.getMethod("getChunkAtAsync", Integer.TYPE, Integer.TYPE, Boolean.TYPE, Consumer.class);
-                logger.info("Async chunk loading API found");
-            } catch (Throwable ignore) {
-                class_World_getChunkAtAsyncMethod = null;
             }
 
             try {
