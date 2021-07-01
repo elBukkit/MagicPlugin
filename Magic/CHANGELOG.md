@@ -23,6 +23,7 @@
  - Allow handlers to refer to other handlers, e.g `alternate_jumping_up: alternate_jumping`
  - Add `potion_effects` item config option for simple custom potion creation
  - Add `enable_custom_sounds` config options for easily disabling custom (resource pack) sounds
+ - Add `Drop` class for block break/place rules, see lucky example
  
 # 9.1.1
 

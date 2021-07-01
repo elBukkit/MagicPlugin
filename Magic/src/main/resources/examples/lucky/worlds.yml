@@ -11,12 +11,24 @@ world_lucky:
         none: 100
     lucky_dirt:
       class: Cast
-      types: dirt,grass_block
+      types: dirt,coarse_dirt
       spells:
         lucky_loot: 10
         lucky_potion: 20
         lucky_block: 30
         none: 100
+    lucky_grass:
+      class: Drop
+      types: grass_block
+      items:
+        dirt: 500
+        grass_block: 100
+        lime_stained_glass: 10
+        green_stained_glass: 10
+        green_wool: 10
+        lime_wool: 10
+        lime_bed: 1
+        green_bed: 1
 
 world_nether_lucky:
   world: world_nether

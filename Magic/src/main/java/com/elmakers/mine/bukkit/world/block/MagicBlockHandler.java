@@ -62,10 +62,10 @@ public class MagicBlockHandler {
                         }
                     }
                 } else {
-                    controller.info("Skipping invalid " + key + " block rule for " + worldName);
+                    controller.getLogger().warning("Skipping invalid " + key + " block rule for " + worldName);
                 }
             } else {
-                controller.info("Skipping invalid " + key + " block rule for " + worldName);
+                controller.getLogger().warning("Skipping invalid " + key + " block rule for " + worldName);
             }
         }
     }
