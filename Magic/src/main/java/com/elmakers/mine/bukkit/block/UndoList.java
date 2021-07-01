@@ -564,7 +564,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         Spell spell = getSpell();
         if (spell != null)
         {
-            spell.cancel();
+            spell.stop();
         }
         undo(blocking, true);
     }

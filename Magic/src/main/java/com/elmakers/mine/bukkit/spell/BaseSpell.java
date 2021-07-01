@@ -2637,6 +2637,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public boolean stop() {
+        return cancel(true);
+    }
+
+    @Override
     public void setActive(boolean active) {
         if (active && !isActive) {
             onActivate();

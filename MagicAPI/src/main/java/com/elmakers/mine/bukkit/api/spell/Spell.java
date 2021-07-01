@@ -108,6 +108,11 @@ public interface Spell extends SpellTemplate {
     boolean cancel();
 
     /**
+     * Like a quiet version of cancel() - at some point cancel, stop and deactivate should all get cleaned up.
+     */
+    boolean stop();
+
+    /**
      * Cancel a selection in-progress for a two-click selection spell (like Architect magic)
      *
      * <p>Will call cancel() if selection was cancelled.
