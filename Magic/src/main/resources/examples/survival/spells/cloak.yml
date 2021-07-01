@@ -10,8 +10,6 @@ cloak:
     earns_sp: 5
     toggle: undo
     disable_mana_regeneration: true
-    cancel_on_cast_other: true
-    cancel_on_damage: 0.5
     quick_cast: true
     boss_bar:
       bar_title: "&7$spell"
@@ -79,6 +77,8 @@ cloak:
       effect_invisibility: 5
       radius: 32
       add_modifiers: hidden
+      cancel_on_cast_other: true
+      cancel_on_damage: 0.5
     costs:
       mana: 10
     active_costs:
