@@ -7979,6 +7979,7 @@ public class MagicController implements MageController {
         despawnMagicMobs = properties.getBoolean("despawn_magic_mobs", false);
         MobController.REMOVE_INVULNERABLE = properties.getBoolean("remove_invulnerable_mobs", false);
         com.elmakers.mine.bukkit.effect.EffectPlayer.ENABLE_VANILLA_SOUNDS = properties.getBoolean("enable_vanilla_sounds", true);
+        com.elmakers.mine.bukkit.effect.EffectPlayer.ENABLE_CUSTOM_SOUNDS = properties.getBoolean("enable_custom_sounds", true);
 
         ConfigurationSection blockExchange = properties.getConfigurationSection("block_exchange");
         if (blockExchange != null) {

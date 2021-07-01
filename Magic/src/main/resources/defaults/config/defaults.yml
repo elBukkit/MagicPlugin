@@ -641,6 +641,12 @@ console_bypass_locked_wands: true
 # They can be turned on/off for each effect using enable_vanilla_sounds on the effect config as well
 enable_vanilla_sounds: true
 
+# Set this to false to turn off all custom sounds by default
+# They can be turned on/off for each effect using enable_custom_sounds on the effect config as well
+# Turning this off will save a few server->client packets if you don't use the resource pack but still
+# use the builtin spell configs.
+enable_custom_sounds: true
+
 # Set this to false if you have players who are stuck invisible.
 # this may have been caused by a bug in previous versions of magic.
 allow_player_persistent_invisibility: true

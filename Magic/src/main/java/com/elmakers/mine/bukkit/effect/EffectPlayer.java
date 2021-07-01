@@ -41,6 +41,7 @@ import de.slikey.effectlib.util.ParticleOptions;
 public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effect.EffectPlayer {
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
     public static boolean ENABLE_VANILLA_SOUNDS = true;
+    public static boolean ENABLE_CUSTOM_SOUNDS = true;
     public static int PARTICLE_RANGE = 32;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
@@ -286,6 +287,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         boolean enableVanillaSounds = configuration.getBoolean("enable_vanilla_sounds", ENABLE_VANILLA_SOUNDS);
         if (!enableVanillaSounds && sound != null && !sound.isCustom()) {
+            sound = null;
+        }
+        boolean enableCustomSounds = configuration.getBoolean("enable_custom_sounds", ENABLE_CUSTOM_SOUNDS);
+        if (!enableCustomSounds && sound != null && sound.isCustom()) {
             sound = null;
         }
 
