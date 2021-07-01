@@ -1,10 +1,10 @@
 # This is a modifier on the default survival configs
 inherit: survival
 
-resource_pack: "http://rp.elmakers.com/Magic-all-RP-8.5-1.16.zip"
-add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-8.5-1.16.zip"
+resource_pack: "http://rp.elmakers.com/Magic-all-RP-1.17.zip"
+add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-1.17.zip"
 
 # Alternate resource packs can be accessed with /getrp <pack>
 alternate_resource_packs:
   robes:
-    url: "http://rp.elmakers.com/Magic-all-RP-8.5-1.16.zip"
+    url: "http://rp.elmakers.com/Magic-all-RP-1.17.zip"

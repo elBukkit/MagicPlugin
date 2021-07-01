@@ -322,3 +322,11 @@ kindletron:
     type: zombie
     name: Kindle Sr
     model: kindletronsr
+
+deathbell:
+  type: zombie
+  triggers:
+    kill1:
+      type: kill
+      cast:
+        missile: 1

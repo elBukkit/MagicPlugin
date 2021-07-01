@@ -42,6 +42,10 @@
  - Mobs that are friendly *and* happen to hit each other shouldn't force-target
    (could not find this, doesn't seem like a get a targeting event.. is magic forcing them? Can't find that either)
 
+# Pets
+
+https://docs.google.com/document/d/1ORA5W9q3UxN40sqemiDPM0u1UF5pvQ-1r91iGcOc4Ys/edit
+
 # Engineering Improvements
 
  - Fill out worth values for all blocks (and items, for shops) .. mostly done?
@@ -55,6 +59,7 @@
 
 ## Suggestions
 
+ - Allow randomized loot in kits
  - Option on mobs to allow interact spell to use player's spell level
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Add "tick" effects for Projectile
