@@ -558,8 +558,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         // Send on to any registered spells
-        List<Listener> active = new ArrayList<>(damageListeners);
-        for (Listener listener : active) {
+        List<Listener> damageSpells = new ArrayList<>(damageListeners);
+        for (Listener listener : damageSpells) {
             callEvent(listener, event);
             if (event.isCancelled()) break;
         }
@@ -675,6 +675,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 {
                     batch.cancel();
                     iterator.remove();
+                }
+            }
+
+            for (MageSpell spell : activeSpells) {
+                double cancelOnDamage = spell.cancelOnDamage();
+                if (cancelOnDamage > 0 && cancelOnDamage < damage) {
+                    spell.cancel();
                 }
             }
         }

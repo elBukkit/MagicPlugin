@@ -1475,6 +1475,12 @@ public class BaseSpell implements MageSpell, Cloneable {
                     iterator.remove();
                 }
             }
+
+            for (Spell spell : mage.getActiveSpells()) {
+                if (spell.cancelOnCastOther()) {
+                    spell.cancel();
+                }
+            }
         }
 
         return finalizeCast(workingParameters);
