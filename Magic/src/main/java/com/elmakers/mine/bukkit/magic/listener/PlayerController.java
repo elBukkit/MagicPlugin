@@ -726,7 +726,6 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
-        // Check for locked items
         Mage mage = controller.getMage(player);
         if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             ItemStack item = event.getItem();
@@ -735,8 +734,39 @@ public class PlayerController implements Listener {
                 + ", block: " + (block == null ? "(Nothing)" : block.getType().name()) + " at " + System.currentTimeMillis(), DEBUG_LEVEL);
         }
 
+        // Check for locked items
+        if (!mage.canUse(itemInHand)) {
+            mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
+            event.setCancelled(true);
+            return;
+        }
+
+        Wand wand = mage.checkWand();
+
+        // Check for wand permission if a wand is being held
+        if (wand != null) {
+            Messages messages = controller.getMessages();
+            if (!controller.hasWandPermission(player))
+            {
+                return;
+            }
+
+            // Check for region or wand-specific permissions
+            if (!controller.hasWandPermission(player, wand))
+            {
+                wand.deactivate();
+                mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
+                return;
+            }
+        }
+
+        // If wand needs to be closed then always allow a right-click
+        boolean closingWand = isRightClick && wand != null && wand.getRightClickAction() == WandAction.TOGGLE && wand.isInventoryOpen();
+        if (!closingWand) {
+            closingWand = isLeftClick && wand != null && wand.getLeftClickAction() == WandAction.TOGGLE && wand.isInventoryOpen();
+        }
         // Check for offhand casting
-        if (isRightClick && allowOffhandCasting && mage.offhandCast()) {
+        if (!closingWand && isRightClick && allowOffhandCasting && mage.offhandCast()) {
             // Kind of weird but the intention is to avoid normal "left click" actions,
             // which in the offhand case are right-click actions.
             if (cancelInteractOnLeftClick) {
@@ -745,23 +775,17 @@ public class PlayerController implements Listener {
             return;
         }
 
-        if (!mage.canUse(itemInHand)) {
-            mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
-            event.setCancelled(true);
-            return;
-        }
-
         // Don't allow interacting while holding spells, brushes or upgrades
         boolean isSkill = Wand.isSkill(itemInHand);
         boolean isSpell = !isSkill && Wand.isSpell(itemInHand);
-        if (isSpell || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand)) {
+        if (!closingWand && (isSpell || Wand.isBrush(itemInHand) || Wand.isUpgrade(itemInHand))) {
             event.setCancelled(true);
             return;
         }
 
         boolean isOffhandSkill = false;
         ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
-        if (isRightClick) {
+        if (isRightClick && !closingWand) {
             isOffhandSkill = Wand.isSkill(itemInOffhand);
             boolean isOffhandSpell = !isOffhandSkill && Wand.isSpell(itemInOffhand);
             if (isOffhandSpell || Wand.isBrush(itemInOffhand) || Wand.isUpgrade(itemInOffhand)) {
@@ -771,7 +795,7 @@ public class PlayerController implements Listener {
         }
 
         // Check for right-clicking SP or currency items
-        if (isRightClick) {
+        if (isRightClick && !closingWand) {
             CurrencyAmount currencyAmount = CompatibilityLib.getInventoryUtils().getCurrencyAmount(itemInHand);
             Currency currency = currencyAmount == null ? null : controller.getCurrency(currencyAmount.getType());
             if (currency != null) {
@@ -796,7 +820,6 @@ public class PlayerController implements Listener {
             }
         }
 
-        Wand wand = mage.checkWand();
         if (action == Action.RIGHT_CLICK_BLOCK) {
             Material material = event.getClickedBlock().getType();
             boolean isInteractible = wand != null ? wand.isInteractible(event.getClickedBlock()) : controller.isInteractible(event.getClickedBlock());
@@ -807,7 +830,7 @@ public class PlayerController implements Listener {
                 wand.closeInventory();
             }
         }
-        if (!isLeftClick && !mage.checkLastClick(clickCooldown)) {
+        if (!isLeftClick && !mage.checkLastClick(clickCooldown) && !closingWand) {
             return;
         }
         if (isRightClick) {
@@ -820,7 +843,8 @@ public class PlayerController implements Listener {
                 isOffhandSkill = false;
             }
         }
-        if (isRightClick && (isOffhandSkill || isSkill)) {
+
+        if (isRightClick && (isOffhandSkill || isSkill) && !closingWand) {
             if (isSkill) {
                 mage.useSkill(itemInHand);
             } else {
@@ -833,35 +857,17 @@ public class PlayerController implements Listener {
         // Check for wearing via right-click
         // Special-case here for skulls, which actually are not wearable via right-click.
         // Wearable wands are handled below.
-        if (wand == null && itemInHand != null && isRightClick && controller.isWearable(itemInHand) && !DefaultMaterials.isSkull(itemInHand.getType()))
+        if (wand == null && !closingWand && itemInHand != null && isRightClick && controller.isWearable(itemInHand) && !DefaultMaterials.isSkull(itemInHand.getType()))
         {
             controller.onArmorUpdated(mage);
             return;
-        }
-
-        // Check for wand permission
-        // This is done this way for the enchant click below, which may be allowed without a wand
-        // After that we will break from this handler if there is no wand.
-        if (wand != null) {
-            Messages messages = controller.getMessages();
-            if (!controller.hasWandPermission(player))
-            {
-                return;
-            }
-
-            // Check for region or wand-specific permissions
-            if (!controller.hasWandPermission(player, wand))
-            {
-                wand.deactivate();
-                mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
-                return;
-            }
         }
 
         // Check for enchantment table click
         Block clickedBlock = event.getClickedBlock();
         SpellBlock spellBlock = clickedBlock == null ? null : spellBlocks.get(clickedBlock.getType());
         if (spellBlock != null
+            && !closingWand
             && (wand != null || !spellBlock.requiresWand())
             && (!spellBlock.requiresSpellProgression() || (wand != null && wand.hasSpellProgression()))
         ) {
@@ -884,7 +890,7 @@ public class PlayerController implements Listener {
 
         // Check for offhand items
         ItemStack offhandItem = player.getInventory().getItemInOffHand();
-        if (controller.isOffhandMaterial(offhandItem)) {
+        if (controller.isOffhandMaterial(offhandItem) && !closingWand) {
             return;
         }
 

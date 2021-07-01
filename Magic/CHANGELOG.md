@@ -24,6 +24,8 @@
  - Add `potion_effects` item config option for simple custom potion creation
  - Add `enable_custom_sounds` config options for easily disabling custom (resource pack) sounds
  - Add `Drop` class for block break/place rules, see lucky example
+ - Right-clicking a wand will always close the inventory if it is open, regardless of what is in your 
+   offhand or what block you are looking at
  
 # 9.1.1
 
