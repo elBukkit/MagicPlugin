@@ -830,7 +830,7 @@ public class PlayerController implements Listener {
                 wand.closeInventory();
             }
         }
-        if (!isLeftClick && !mage.checkLastClick(clickCooldown) && !closingWand) {
+        if (!isLeftClick && !mage.checkLastClick(clickCooldown)) {
             return;
         }
         if (isRightClick) {
