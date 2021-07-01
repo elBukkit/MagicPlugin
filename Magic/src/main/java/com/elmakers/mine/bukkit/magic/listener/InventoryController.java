@@ -125,13 +125,19 @@ public class InventoryController implements Listener {
         }
 
         Wand activeWand = mage.getActiveWand();
+        boolean isSpellInventory = activeWand != null && activeWand.isInventoryOpen() && activeWand.getMode() == WandMode.INVENTORY;
+        if (isSpellInventory && event.getRawSlots().contains(45)) {
+            event.setCancelled(true);
+            return;
+        }
+
         boolean isSkillInventory = activeWand != null && activeWand.isInventoryOpen() && activeWand.getMode() == WandMode.SKILLS;
         if (isSkillInventory) {
             // Unfortunately this event gives us a shallow copy of the item so we need to dig a little bit.
             ItemStack oldCursor = event.getOldCursor();
             oldCursor = oldCursor.hasItemMeta() ? CompatibilityLib.getItemUtils().makeReal(oldCursor) : oldCursor;
             boolean isSpell = Wand.isSpell(oldCursor);
-            boolean isSpellInventory = false;
+            isSpellInventory = false;
             Set<Integer> slots = event.getRawSlots();
             int spellInventoryStart = event.getInventory().getSize();
             for (int slot : slots) {
