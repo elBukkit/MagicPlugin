@@ -27,6 +27,7 @@
  - Right-clicking a wand will always close the inventory if it is open, regardless of what is in your 
    offhand or what block you are looking at
  - Fix cloak (and other spells) not respecting `cancel_on_cast_other` nor `cancel_on_damage`  
+ - Fix Secure in 1.17
  
 # 9.1.1
 

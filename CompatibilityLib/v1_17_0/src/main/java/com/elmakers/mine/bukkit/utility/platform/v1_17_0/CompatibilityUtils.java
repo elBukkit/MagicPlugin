@@ -596,31 +596,37 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public boolean setLock(Block block, String lockName) {
-        if (!(block instanceof Lockable)) return false;
-        Lockable lockable = (Lockable)block;
+        BlockState blockData = block.getState();
+        if (!(blockData instanceof Lockable)) return false;
+        Lockable lockable = (Lockable)blockData;
         lockable.setLock(lockName);
+        blockData.update();
         return true;
     }
 
     @Override
     public boolean clearLock(Block block) {
-        if (!(block instanceof Lockable)) return false;
-        Lockable lockable = (Lockable)block;
+        BlockState blockData = block.getState();
+        if (!(blockData instanceof Lockable)) return false;
+        Lockable lockable = (Lockable)blockData;
         lockable.setLock(null);
+        blockData.update();
         return true;
     }
 
     @Override
     public boolean isLocked(Block block) {
-        if (!(block instanceof Lockable)) return false;
-        Lockable lockable = (Lockable)block;
+        BlockState blockData = block.getState();
+        if (!(blockData instanceof Lockable)) return false;
+        Lockable lockable = (Lockable)blockData;
         return lockable.isLocked();
     }
 
     @Override
     public String getLock(Block block) {
-        if (!(block instanceof Lockable)) return null;
-        Lockable lockable = (Lockable)block;
+        BlockState blockData = block.getState();
+        if (!(blockData instanceof Lockable)) return null;
+        Lockable lockable = (Lockable)blockData;
         return lockable.getLock();
     }
 
