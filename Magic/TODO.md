@@ -17,6 +17,7 @@
 
 # Bugs
 
+ - Kill trigger doesn't work on mobs (or maybe just mobs using magic)
  - Effects on Repair/SuperRepair broken?
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)
  - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
