@@ -39,6 +39,7 @@
  - Fix cloak (and other spells) not respecting `cancel_on_cast_other` nor `cancel_on_damage`
  - Fix Secure in 1.17
  - The Cloak spell will deactivate when you take damage or cast a different spell
+ - Fix mobs' kill triggers not working when killing via a spell or projectile
  
 # 9.1.1
 

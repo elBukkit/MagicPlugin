@@ -170,46 +170,6 @@ namedspider:
   type: zombie
   health: 10
 
-# This works currently, but is a little cumbersome
-npc_lootshop:
-  name: Sell Your Loot
-  type: villager
-  invulnerable: true
-  persist: true
-  interact_spell: lootshop
-  ai: false
-  gravity: false
-  interval: 1000
-  cast_requires_target: false
-  triggers:
-    interval:
-      cast:
-        - spell: dialog
-          message: "Sell your mob loot here!"
-
-## Would be nice syntax:
-# also would be nice if existing mobs updated on live reload.
-npc_base:
-  name: NPC
-  type: villager
-  invulnerable: true
-  persist: true
-  ai: false
-  gravity: false
-  cast_requires_target: false
-  interval: 5000
-  triggers:
-    interval:
-      cast:
-        - spell: dialog
-          message: $dialog
-
-npc_proto:
-  inherit: npc_base
-  name: "Loot Shop"
-  interact_spell: lootshop
-  dialog: "Sell your loot here!"
-
 redsheep:
   type: sheep
   color: red
@@ -325,8 +285,12 @@ kindletron:
 
 deathbell:
   type: zombie
+  interval: 1000
   triggers:
+    interval:
+      cast:
+        "missile player_damage 500": 1
     kill1:
       type: kill
       cast:
-        missile: 1
+        shutdown: 1

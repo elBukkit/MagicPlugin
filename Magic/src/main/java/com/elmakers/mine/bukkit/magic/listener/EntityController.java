@@ -411,6 +411,7 @@ public class EntityController implements Listener {
         if (damageEvent instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent dbe = (EntityDamageByEntityEvent)damageEvent;
             Entity damager = dbe.getDamager();
+            damager = CompatibilityLib.getCompatibilityUtils().getSource(damager);
             if (damager != null) {
                 Mage damagerMage = controller.getRegisteredMage(damager);
                 if (damagerMage != null) {
