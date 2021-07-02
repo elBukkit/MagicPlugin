@@ -49,7 +49,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                 // Not really deprecated, just a draft API at this point but it works.
                 exactChoice = new RecipeChoice.ExactChoice(damaged);
             } else {
-                exactChoice = new RecipeChoice.ExactChoice(item);
+                exactChoice = new RecipeChoice.ExactChoice(source);
             }
 
             return new FurnaceRecipe(namespacedKey, item, exactChoice, experience, cookingTime);

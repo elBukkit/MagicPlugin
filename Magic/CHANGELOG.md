@@ -28,6 +28,7 @@
    offhand or what block you are looking at
  - Fix cloak (and other spells) not respecting `cancel_on_cast_other` nor `cancel_on_damage`  
  - Fix Secure in 1.17
+ - Add `type: furnace` option for recipes, 1.14+ only
  
 # 9.1.1
 
