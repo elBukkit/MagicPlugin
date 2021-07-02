@@ -12,9 +12,9 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 /**
  * Represents a crafting recipe which will make a wand item.
@@ -26,12 +26,18 @@ public abstract class MagicRecipe {
     protected final String key;
     protected boolean locked = false;
     protected boolean disableDefaultRecipe;
+
+    // Ingredients
     protected boolean ignoreDamage;
 
     // Output item
     private String outputKey;
     private Material outputType;
     private String outputItemType;
+
+    // Discovery
+    private boolean autoDiscover = false;
+    private List<String> discover = null;
 
     protected MagicRecipe(String key, MagicController controller) {
         this.key = key;
@@ -44,6 +50,8 @@ public abstract class MagicRecipe {
         locked = configuration.getBoolean("locked", false);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
         ignoreDamage = configuration.getBoolean("ignore_damage", false);
+        autoDiscover = configuration.getBoolean("auto_discover", false);
+        discover = ConfigurationUtils.getStringList(configuration, "discover");
 
         outputKey = configuration.getString("output");
         if (outputKey == null || outputKey.isEmpty()) {
@@ -69,10 +77,6 @@ public abstract class MagicRecipe {
 
     public String getOutputKey() {
         return outputKey;
-    }
-
-    public boolean isAutoDiscover() {
-        return false;
     }
 
     public Material getSubstitute() {
@@ -105,7 +109,16 @@ public abstract class MagicRecipe {
     }
 
     public void crafted(HumanEntity entity, MageController controller) {
+        if (discover == null) return;
+        for (String key : discover) {
+            if (controller.hasPermission(entity, "Magic.craft." + key)) {
+                CompatibilityLib.getCompatibilityUtils().discoverRecipe(entity, key);
+            }
+        }
+    }
 
+    public boolean isAutoDiscover() {
+        return autoDiscover;
     }
 
     public void unregister(Plugin plugin) {

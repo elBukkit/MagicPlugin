@@ -33,8 +33,6 @@ public class MagicShapedRecipe extends MagicRecipe {
     private String group;
     private ShapedRecipe recipe;
     private Map<Character, ItemData> ingredients = new HashMap<>();
-    private boolean autoDiscover = false;
-    private List<String> discover = null;
 
     protected MagicShapedRecipe(String key, MagicController controller) {
         super(key, controller);
@@ -48,8 +46,6 @@ public class MagicShapedRecipe extends MagicRecipe {
         }
         substitue = ConfigurationUtils.getMaterial(configuration, "substitute", null);
         group = configuration.getString("group", "");
-        autoDiscover = configuration.getBoolean("auto_discover", false);
-        discover = ConfigurationUtils.getStringList(configuration, "discover");
 
         String vanillaItemKey = configuration.getString("vanilla");
         boolean isVanillaRecipe = vanillaItemKey != null && !vanillaItemKey.isEmpty() && !vanillaItemKey.equalsIgnoreCase("false");
@@ -229,20 +225,5 @@ public class MagicShapedRecipe extends MagicRecipe {
             shapeRow++;
         }
         return RecipeMatchType.MATCH;
-    }
-
-    @Override
-    public void crafted(HumanEntity entity, MageController controller) {
-        if (discover == null) return;
-        for (String key : discover) {
-            if (controller.hasPermission(entity, "Magic.craft." + key)) {
-                CompatibilityLib.getCompatibilityUtils().discoverRecipe(entity, key);
-            }
-        }
-    }
-
-    @Override
-    public boolean isAutoDiscover() {
-        return autoDiscover;
     }
 }
