@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.crafting.MagicRecipe;
+import com.elmakers.mine.bukkit.crafting.RecipeMatchType;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -68,14 +69,9 @@ public class CraftingController implements Listener {
             if (!ConfigurationUtils.isEnabled(parameters)) continue;
             parameters = MagicConfiguration.getKeyed(controller, parameters, "recipe", key);
 
-            MagicRecipe recipe = new MagicRecipe(key, controller);
-            try {
-                if (!recipe.load(parameters)) {
-                    controller.getLogger().warning("Failed to create crafting recipe: " + key);
-                    continue;
-                }
-            } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "An error occurred creating crafting recipe: " + key, ex);
+            MagicRecipe recipe = MagicRecipe.loadRecipe(controller, key, parameters);
+            if (recipe == null) {
+                controller.getLogger().warning("Failed to create crafting recipe: " + key);
                 continue;
             }
             Material outputType = recipe.getOutputType();
@@ -160,12 +156,12 @@ public class CraftingController implements Listener {
         if (result == null) return;
         Material resultType = result.getType();
         List<MagicRecipe> candidates = recipes.get(resultType);
-        MagicRecipe.MatchType matchType = MagicRecipe.MatchType.NONE;
+        RecipeMatchType matchType = RecipeMatchType.NONE;
         if (candidates != null && !candidates.isEmpty()) {
             for (MagicRecipe candidate : candidates) {
                 matchType = candidate.getMatchType(recipe, contents);
                 Material substitute = candidate.getSubstitute();
-                if (matchType != MagicRecipe.MatchType.NONE) {
+                if (matchType != RecipeMatchType.NONE) {
                     for (HumanEntity human : event.getViewers()) {
                         if (human instanceof Player && !hasCraftPermission((Player) human, candidate)) {
                             inventory.setResult(new ItemStack(Material.AIR));
@@ -173,9 +169,9 @@ public class CraftingController implements Listener {
                         }
                     }
 
-                    if (matchType == MagicRecipe.MatchType.PARTIAL) {
+                    if (matchType == RecipeMatchType.PARTIAL) {
                         continue;
-                    } else if (matchType == MagicRecipe.MatchType.MATCH) {
+                    } else if (matchType == RecipeMatchType.MATCH) {
                         ItemStack crafted = candidate.craft();
                         inventory.setResult(crafted);
                         for (HumanEntity human : event.getViewers()) {
@@ -190,8 +186,8 @@ public class CraftingController implements Listener {
         }
 
         // We may need to prevent magic items from being used as ingredients if this did not match
-        boolean preventCrafting = matchType == MagicRecipe.MatchType.PARTIAL;
-        if (!preventCrafting && matchType == MagicRecipe.MatchType.NONE) {
+        boolean preventCrafting = matchType == RecipeMatchType.PARTIAL;
+        if (!preventCrafting && matchType == RecipeMatchType.NONE) {
             for (ItemStack item : contents) {
                 ItemData itemData = controller.getItem(item);
                 if (itemData != null && itemData.isExactIngredient()) {
