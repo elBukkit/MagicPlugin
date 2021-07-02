@@ -1,10 +1,6 @@
 package com.elmakers.mine.bukkit.crafting;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
@@ -13,16 +9,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 /**
  * Represents a crafting recipe which will make a wand item.
@@ -128,7 +119,7 @@ public abstract class MagicRecipe {
         try {
             switch (recipeType) {
                 case "shaped":
-                    recipe = new ShapedMagicRecipe(key, controller);
+                    recipe = new MagicShapedRecipe(key, controller);
                     break;
                 default:
                     controller.getLogger().warning("Unknown recipe type: " + recipeType);

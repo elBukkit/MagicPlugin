@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 /**
  * Represents a crafting recipe which will make a wand item.
  */
-public class ShapedMagicRecipe extends MagicRecipe {
+public class MagicShapedRecipe extends MagicRecipe {
 
     private String outputKey;
     private Material outputType;
@@ -41,7 +41,7 @@ public class ShapedMagicRecipe extends MagicRecipe {
     private boolean locked = false;
     private List<String> discover = null;
 
-    protected ShapedMagicRecipe(String key, MagicController controller) {
+    protected MagicShapedRecipe(String key, MagicController controller) {
         super(key, controller);
     }
 
