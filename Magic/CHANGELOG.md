@@ -2,35 +2,43 @@
 
 # 9.2
 
- - Add `bound_name: name` option for wands, to use IGN instead of display name in bound lore
- - Fix spell casts at y < 0
- - Magic Torch and Light spells use light blocks in 1.17, don't require LightAPI
- - Light spell moved to engineering configs, available at Architect
- - Magic Torch is craftable by default, use `/mconfig disable recipe magictorch` if you don't want it
- - Alter now works on candles and candle cakes
- - The Cloak spell will deactivate when you take damage
+## Additions
+
+ - New external example added, `/mconfig fetch httyd` - a "How to Train Your Dragon" config pack from Night!
+ - Add `type: furnace` option for recipes, 1.14+ only
+ - Add `EntityAnimation` action, can make players or mobs swing their arms
  - New EffectLib parameters to support 1.17 particles:
    - `to_color`: Used for the dust_color_transition particle
    - `arrival_time`: Used for the vibration particle
  - New effect player parameters to support 1.17 particles:
    - `to_color`: An alias for `color2` to align with EffectLib parameters
    - `particle_arrival_time`: For playing individual vibration particles
- - New external example added, `/mconfig fetch httyd` - a "How to Train Your Dragon" config pack from Night!
  - Add `equip_on_respawn: false` option for mobs, to their equipment won't get reset on respawn/reload
- - Add `EntityAnimation` action, can make players or mobs swing their arms
  - Attributes on armor, wands and modifiers will now stack by default (`stack: false` to turn this off)
  - Add new handlers for combinations: `alternate_jumping_up`, `alternate_jumping_down`, `alternate_sneak_down`, `alternate_sneak_up`
  - Allow handlers to refer to other handlers, e.g `alternate_jumping_up: alternate_jumping`
  - Add `potion_effects` item config option for simple custom potion creation
  - Add `enable_custom_sounds` config options for easily disabling custom (resource pack) sounds
  - Add `Drop` class for block break/place rules, see lucky example
- - Right-clicking a wand will always close the inventory if it is open, regardless of what is in your 
-   offhand or what block you are looking at
- - Fix cloak (and other spells) not respecting `cancel_on_cast_other` nor `cancel_on_damage`  
- - Fix Secure in 1.17
- - Add `type: furnace` option for recipes, 1.14+ only
+ - Add `bound_name: name` option for wands, to use IGN instead of display name in bound lore
+
+## Changes
+
  - Change builtin `zombie_leather` recipe to a furnace recipe
+ - Right-clicking a wand will always close the inventory if it is open, regardless of what is in your
+   offhand or what block you are looking at
+ - Alter now works on candles and candle cakes
+ - Magic Torch and Light spells use light blocks in 1.17, don't require LightAPI
+ - Light spell moved to engineering configs, available at Architect
+ - Magic Torch is craftable by default, use `/mconfig disable recipe magictorch` if you don't want it
+
+## Fixes
+
+ - Fix spell casts at y < 0
  - Fix chest mode casting a spell when selecting an icon in the chest menu
+ - Fix cloak (and other spells) not respecting `cancel_on_cast_other` nor `cancel_on_damage`
+ - Fix Secure in 1.17
+ - The Cloak spell will deactivate when you take damage or cast a different spell
  
 # 9.1.1
 
