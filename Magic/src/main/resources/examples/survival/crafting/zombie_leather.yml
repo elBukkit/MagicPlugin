@@ -3,11 +3,9 @@
 zombie_leather:
   enabled: false
   auto_discover: true
-  group: ""
+  type: furnace
   output: leather
+  ingredient: rotten_flesh
   output_type: item
-  materials:
-    o: rotten_flesh
-  row_1: oo
-  row_2: oo
-  row_3: ""
+  cooking_time: 30 seconds
+  experience: 5

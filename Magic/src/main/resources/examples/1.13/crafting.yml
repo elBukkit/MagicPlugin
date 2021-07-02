@@ -1,2 +1,13 @@
 magictorch:
   requires: LightAPI
+
+zombie_leather:
+  type: shaped
+  group: ""
+  output: leather
+  output_type: item
+  materials:
+    o: rotten_flesh
+  row_1: oo
+  row_2: oo
+  row_3: ""
