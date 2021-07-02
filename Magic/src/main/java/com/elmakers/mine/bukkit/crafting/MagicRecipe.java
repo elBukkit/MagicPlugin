@@ -12,6 +12,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
@@ -26,21 +27,47 @@ public abstract class MagicRecipe {
     protected boolean locked = false;
     private boolean disableDefaultRecipe;
 
+    // Output item
+    private String outputKey;
+    private Material outputType;
+    private String outputItemType;
+
     protected MagicRecipe(String key, MagicController controller) {
         this.key = key;
         this.controller = controller;
     }
 
-    protected boolean load(ConfigurationSection configuration) {
+    protected abstract boolean load(ConfigurationSection configuration);
+
+    protected ItemStack loadItem(ConfigurationSection configuration) {
         locked = configuration.getBoolean("locked", false);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
-        return true;
+
+        outputKey = configuration.getString("output");
+        if (outputKey == null || outputKey.isEmpty()) {
+            outputKey = this.key;
+        }
+
+        outputItemType = configuration.getString("output_type", "item");
+        ItemStack item = craft();
+        if (item == null) {
+            controller.getLogger().warning("Unknown output for recipe " + key + ": " + outputKey);
+            return null;
+        }
+        outputType = item.getType();
+
+        return item;
     }
 
     public abstract Recipe getRecipe();
-    public abstract Material getOutputType();
-    public abstract String getOutputKey();
-    public abstract @Nullable ItemStack craft();
+
+    public Material getOutputType() {
+        return outputType;
+    }
+
+    public String getOutputKey() {
+        return outputKey;
+    }
 
     public boolean isAutoDiscover() {
         return false;
@@ -48,6 +75,31 @@ public abstract class MagicRecipe {
 
     public Material getSubstitute() {
         return null;
+    }
+
+    public @Nullable ItemStack craft() {
+        if (outputKey == null) {
+            return null;
+        }
+
+        ItemStack item;
+        if (outputItemType.equalsIgnoreCase("wand")) {
+            if (outputKey != null && !outputKey.isEmpty()) {
+                item = controller.createWand(outputKey).getItem();
+            } else {
+                item = null;
+            }
+        } else if (outputItemType.equalsIgnoreCase("spell")) {
+            item = controller.createSpellItem(outputKey);
+        } else if (outputItemType.equalsIgnoreCase("brush")) {
+            item = controller.createBrushItem(outputKey);
+        } else if (outputItemType.equalsIgnoreCase("item")) {
+            item = controller.createItem(outputKey);
+        } else {
+            item = null;
+        }
+
+        return item;
     }
 
     public void crafted(HumanEntity entity, MageController controller) {

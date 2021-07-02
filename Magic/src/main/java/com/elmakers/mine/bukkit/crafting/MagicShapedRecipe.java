@@ -29,16 +29,12 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
  */
 public class MagicShapedRecipe extends MagicRecipe {
 
-    private String outputKey;
-    private Material outputType;
     private Material substitue;
-    private String outputItemType;
     private String group;
     private boolean ignoreDamage;
     private ShapedRecipe recipe;
     private Map<Character, ItemData> ingredients = new HashMap<>();
     private boolean autoDiscover = false;
-    private boolean locked = false;
     private List<String> discover = null;
 
     protected MagicShapedRecipe(String key, MagicController controller) {
@@ -47,45 +43,15 @@ public class MagicShapedRecipe extends MagicRecipe {
 
     @Override
     protected boolean load(ConfigurationSection configuration) {
-        outputKey = configuration.getString("output");
-        if (outputKey == null || outputKey.isEmpty()) {
-            outputKey = this.key;
+        ItemStack item = super.loadItem(configuration);
+        if (item == null) {
+            return false;
         }
-
         substitue = ConfigurationUtils.getMaterial(configuration, "substitute", null);
         group = configuration.getString("group", "");
         ignoreDamage = configuration.getBoolean("ignore_damage", false);
         autoDiscover = configuration.getBoolean("auto_discover", false);
         discover = ConfigurationUtils.getStringList(configuration, "discover");
-
-        outputItemType = configuration.getString("output_type", "item");
-        ItemStack item = null;
-
-        if (outputItemType.equalsIgnoreCase("wand"))
-        {
-            Wand wand = !outputKey.isEmpty() ? controller.createWand(outputKey) : null;
-            if (wand != null) {
-                item = wand.getItem();
-            } else {
-                controller.getLogger().warning("Unable to load recipe output wand: " + outputKey);
-            }
-        }
-        else if (outputItemType.equalsIgnoreCase("spell"))
-        {
-            item = controller.createSpellItem(outputKey);
-        }
-        else if (outputItemType.equalsIgnoreCase("brush"))
-        {
-            item = controller.createBrushItem(outputKey);
-        }
-        else if (outputItemType.equalsIgnoreCase("item"))
-        {
-            item = controller.createItem(outputKey);
-        }
-        if (item == null) {
-            controller.getLogger().warning("Unknown output for recipe " + key + ": " + outputKey);
-            return false;
-        }
 
         String vanillaItemKey = configuration.getString("vanilla");
         boolean isVanillaRecipe = vanillaItemKey != null && !vanillaItemKey.isEmpty() && !vanillaItemKey.equalsIgnoreCase("false");
@@ -98,11 +64,10 @@ public class MagicShapedRecipe extends MagicRecipe {
                     vanillaItem = item;
                 }
             }
-            outputType = item.getType();
             List<Recipe> recipes = controller.getPlugin().getServer().getRecipesFor(vanillaItem);
             if (recipes != null && !recipes.isEmpty()) {
                 if (recipes.size() > 1) {
-                    controller.getLogger().warning("Crafting recipe " + key + " specifies a vanilla recipe, but more than one recipe was found for: " + outputKey + ". Only one version will be overridden.");
+                    controller.getLogger().warning("Crafting recipe " + key + " specifies a vanilla recipe, but more than one recipe was found for: " + getOutputKey() + ". Only one version will be overridden.");
                 }
                 Recipe recipe = recipes.get(0);
                 if (recipe instanceof ShapedRecipe) {
@@ -118,19 +83,17 @@ public class MagicShapedRecipe extends MagicRecipe {
                         ItemData ingredient = controller.createItemData(input);
                         ingredients.put(ingredientKey, ingredient);
                         if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(this.recipe, ingredientKey, ingredient.getItemStack(1), ignoreDamage)) {
-                            outputType = null;
                             controller.getLogger().warning("Unable to set recipe ingredient from vanilla ingredient: " + input);
                             return false;
                         }
                     }
                 } else {
-                    controller.getLogger().warning("Crafting recipe " + key + " specifies a shapeless vanilla recipe: " + outputKey);
+                    controller.getLogger().warning("Crafting recipe " + key + " specifies a shapeless vanilla recipe: " + getOutputKey());
                 }
             } else {
-                controller.getLogger().warning("Crafting recipe " + key + " specifies a vanilla recipe, but no recipe was found for: " + outputKey);
+                controller.getLogger().warning("Crafting recipe " + key + " specifies a vanilla recipe, but no recipe was found for: " + getOutputKey());
             }
         } else {
-            outputType = item.getType();
             ShapedRecipe shaped = CompatibilityLib.getCompatibilityUtils().createShapedRecipe(key, item);
             List<String> rows = new ArrayList<>();
             for (int i = 1; i <= 3; i++) {
@@ -150,12 +113,10 @@ public class MagicShapedRecipe extends MagicRecipe {
                     String materialKey = materials.getString(key);
                     ItemData ingredient = controller.getOrCreateItem(materialKey);
                     if (ingredient == null) {
-                        outputType = null;
                         controller.getLogger().warning("Invalid recipe ingredient " + materialKey);
                         return false;
                     }
                     if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1), ignoreDamage)) {
-                        outputType = null;
                         controller.getLogger().warning("Unable to set recipe ingredient " + materialKey);
                         return false;
                     }
@@ -168,7 +129,7 @@ public class MagicShapedRecipe extends MagicRecipe {
         if (recipe != null && group != null && !group.isEmpty()) {
             CompatibilityLib.getCompatibilityUtils().setRecipeGroup(recipe, group);
         }
-        return outputType != null && super.load(configuration);
+        return true;
     }
 
     @Override
@@ -177,52 +138,8 @@ public class MagicShapedRecipe extends MagicRecipe {
     }
 
     @Override
-    public Material getOutputType() {
-        return outputType;
-    }
-
-    @Override
-    public String getOutputKey() {
-        return outputKey;
-    }
-
-    @Override
     public Material getSubstitute() {
         return substitue;
-    }
-
-    @Override
-    public @Nullable ItemStack craft() {
-        if (outputKey == null) {
-            return null;
-        }
-
-        ItemStack item;
-        if (outputItemType.equalsIgnoreCase("wand")) {
-            if (outputKey != null && !outputKey.isEmpty()) {
-                item = controller.createWand(outputKey).getItem();
-            } else {
-                item = null;
-            }
-        }
-        else if (outputItemType.equalsIgnoreCase("spell"))
-        {
-            item = controller.createSpellItem(outputKey);
-        }
-        else if (outputItemType.equalsIgnoreCase("brush"))
-        {
-            item = controller.createBrushItem(outputKey);
-        }
-        else if (outputItemType.equalsIgnoreCase("item"))
-        {
-            item = controller.createItem(outputKey);
-        }
-        else
-        {
-            item = null;
-        }
-
-        return item;
     }
 
     public boolean isSameRecipe(Recipe matchRecipe) {
@@ -334,5 +251,4 @@ public class MagicShapedRecipe extends MagicRecipe {
     public boolean isAutoDiscover() {
         return autoDiscover;
     }
-
 }
