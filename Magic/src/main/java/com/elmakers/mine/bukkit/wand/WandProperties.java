@@ -45,7 +45,7 @@ public abstract class WandProperties extends TemplatedProperties {
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows",
             "class", "classes", "consume_spell", "stack", "unstashable", "unmoveable",
-            "page_free_space", "enchantable", "hide_flags", "slot", "slots", "slotted",
+            "page_free_space", "enchantable", "hide_flags", "item_flags", "slot", "slots", "slotted",
             "use_active_name", "interactible", "craftable", "unswappable", "worth", "glow", "spell_glow"
         ).build();
     protected BaseMagicProperties wandTemplate;

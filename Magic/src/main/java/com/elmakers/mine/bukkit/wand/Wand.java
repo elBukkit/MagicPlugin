@@ -41,6 +41,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -110,6 +111,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
      * The item as it appears in the inventory of the player.
      */
     protected @Nullable ItemStack item;
+    private int hideFlags;
 
     /**
      * The currently active mage.
@@ -703,7 +705,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else {
             CompatibilityLib.getItemUtils().removeUnbreakable(item);
         }
-        CompatibilityLib.getItemUtils().hideFlags(item, getProperty("hide_flags", HIDE_FLAGS));
+        CompatibilityLib.getItemUtils().hideFlags(item, hideFlags);
     }
 
     private boolean useActiveIcon() {
@@ -2155,6 +2157,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         wandName = getString("name", wandName);
         description = getString("description", description);
 
+        List<String> flagList = getStringList("item_flags");
+        if (flagList != null) {
+            hideFlags = 0;
+            for (String flagKey : flagList) {
+                try {
+                    ItemFlag flag = ItemFlag.valueOf(flagKey.toUpperCase());
+                    // Making some assumptions here, but should be ok..
+                    hideFlags |= (1 << flag.ordinal());
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid ItemFlag: " + flagKey);
+                }
+            }
+        } else {
+            hideFlags = getProperty("hide_flags", HIDE_FLAGS);
+        }
+
         WandTemplate wandTemplate = getTemplate();
 
         boolean legacyIcons = controller.isLegacyIconsEnabled();
@@ -2497,7 +2515,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         CompatibilityLib.getCompatibilityUtils().setDisplayName(item, name);
 
         // This is a bit of a hack to make anvil+book combining show enchantments
-        int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
         if (!stripColors) {
             CompatibilityLib.getItemUtils().hideFlags(item, hideFlags);
         } else if ((hideFlags & 1) == 1) {
@@ -6282,6 +6299,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 || key.equals("drop_sneak") || key.equals("swap_sneak")) {
             for (WandAction action : WandAction.values()) {
                 options.add(action.name().toLowerCase());
+            }
+        } else if (key.equals("item_flags")) {
+            for (ItemFlag flag : ItemFlag.values()) {
+                options.add(flag.name().toLowerCase());
             }
         }
     }

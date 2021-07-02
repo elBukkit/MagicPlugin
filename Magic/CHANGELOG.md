@@ -21,6 +21,7 @@
  - Add `enable_custom_sounds` config options for easily disabling custom (resource pack) sounds
  - Add `Drop` class for block break/place rules, see lucky example
  - Add `bound_name: name` option for wands, to use IGN instead of display name in bound lore
+ - Add `item_flags` list config to wands, for nicer-than-`hide_flags` item flag support
 
 ## Changes
 
