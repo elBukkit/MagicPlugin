@@ -31,7 +31,6 @@ public class MagicShapedRecipe extends MagicRecipe {
 
     private Material substitue;
     private String group;
-    private boolean ignoreDamage;
     private ShapedRecipe recipe;
     private Map<Character, ItemData> ingredients = new HashMap<>();
     private boolean autoDiscover = false;
@@ -49,7 +48,6 @@ public class MagicShapedRecipe extends MagicRecipe {
         }
         substitue = ConfigurationUtils.getMaterial(configuration, "substitute", null);
         group = configuration.getString("group", "");
-        ignoreDamage = configuration.getBoolean("ignore_damage", false);
         autoDiscover = configuration.getBoolean("auto_discover", false);
         discover = ConfigurationUtils.getStringList(configuration, "discover");
 
@@ -140,10 +138,6 @@ public class MagicShapedRecipe extends MagicRecipe {
     @Override
     public Material getSubstitute() {
         return substitue;
-    }
-
-    public boolean isSameRecipe(Recipe matchRecipe) {
-        return CompatibilityLib.getCompatibilityUtils().isSameKey(controller.getPlugin(), getKey(), matchRecipe);
     }
 
     @Override

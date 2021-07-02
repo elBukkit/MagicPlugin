@@ -25,7 +25,8 @@ public abstract class MagicRecipe {
     protected final MagicController controller;
     protected final String key;
     protected boolean locked = false;
-    private boolean disableDefaultRecipe;
+    protected boolean disableDefaultRecipe;
+    protected boolean ignoreDamage;
 
     // Output item
     private String outputKey;
@@ -42,6 +43,7 @@ public abstract class MagicRecipe {
     protected ItemStack loadItem(ConfigurationSection configuration) {
         locked = configuration.getBoolean("locked", false);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
+        ignoreDamage = configuration.getBoolean("ignore_damage", false);
 
         outputKey = configuration.getString("output");
         if (outputKey == null || outputKey.isEmpty()) {
@@ -173,6 +175,9 @@ public abstract class MagicRecipe {
                 case "shaped":
                     recipe = new MagicShapedRecipe(key, controller);
                     break;
+                case "furnace":
+                    recipe = new MagicFurnaceRecipe(key, controller);
+                    break;
                 default:
                     controller.getLogger().warning("Unknown recipe type: " + recipeType);
             }
@@ -192,7 +197,7 @@ public abstract class MagicRecipe {
         if (!CompatibilityLib.getCompatibilityUtils().isLegacyRecipes()) {
             return isSameRecipe(matchRecipe) ? RecipeMatchType.MATCH : RecipeMatchType.NONE;
         }
-        // I .. guess?
-        return RecipeMatchType.MATCH;
+        // I think this method is only ever called for shaped recipes anyway?
+        return RecipeMatchType.NONE;
     }
 }
