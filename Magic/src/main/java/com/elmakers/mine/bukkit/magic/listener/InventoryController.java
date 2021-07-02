@@ -29,11 +29,13 @@ import org.bukkit.inventory.CraftingInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.tasks.CloseInventoryTask;
 import com.elmakers.mine.bukkit.tasks.WandCastTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
@@ -617,7 +619,12 @@ public class InventoryController implements Listener {
                     // Chest mode falls back to selection from here.
                     boolean isInventoryQuickSelect = isRightClick && wandMode == WandMode.INVENTORY && enableInventorySelection;
                     if (isInventoryQuickSelect || wandMode == WandMode.CHEST) {
-                        player.closeInventory();
+                        // Closing the inventory inside this event will make it look like we're dropping
+                        // the item that was clicked on, which (due to some really @^%#4 stupid decision on Mojang's part)
+                        // will send left-click animate packets and cause a spell cast.
+                        // So delay the close one tick.
+                        Plugin plugin = controller.getPlugin();
+                        plugin.getServer().getScheduler().runTaskLater(plugin, new CloseInventoryTask(player), 1);
                         mage.activateIcon(activeWand, clickedItem);
                         event.setCancelled(true);
                     }

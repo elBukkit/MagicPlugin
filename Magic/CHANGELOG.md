@@ -30,6 +30,7 @@
  - Fix Secure in 1.17
  - Add `type: furnace` option for recipes, 1.14+ only
  - Change builtin `zombie_leather` recipe to a furnace recipe
+ - Fix chest mode casting a spell when selecting an icon in the chest menu
  
 # 9.1.1
 
