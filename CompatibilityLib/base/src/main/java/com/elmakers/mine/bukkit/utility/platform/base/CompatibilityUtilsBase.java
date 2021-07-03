@@ -826,4 +826,13 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public FurnaceRecipe createFurnaceRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
         return null;
     }
+
+    @Override
+    public String convertParticle(String particle) {
+        switch (particle.toLowerCase()) {
+            case "dust_color_transition":
+                return "redstone";
+        }
+        return particle;
+    }
 }

@@ -483,4 +483,6 @@ public interface CompatibilityUtils {
     boolean isArrow(Entity entity);
 
     void setMaterialCooldown(Player player, Material material, int duration);
+
+    String convertParticle(String particle);
 }

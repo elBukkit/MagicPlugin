@@ -314,6 +314,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
         if (configuration.contains("particle")) {
             String typeName = configuration.getString("particle");
+            typeName = CompatibilityLib.getCompatibilityUtils().convertParticle(typeName);
             try {
                 particleType = Particle.valueOf(typeName.toUpperCase());
             } catch (Exception ignored) {

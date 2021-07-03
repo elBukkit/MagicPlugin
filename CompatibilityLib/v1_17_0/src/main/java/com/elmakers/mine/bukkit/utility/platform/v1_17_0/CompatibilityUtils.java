@@ -1564,4 +1564,9 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     public int getMinHeight(World world) {
         return world.getMinHeight();
     }
+
+    @Override
+    public String convertParticle(String particle) {
+        return particle;
+    }
 }
