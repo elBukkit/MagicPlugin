@@ -1,32 +1,18 @@
 coffee1:
   worth: 10.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      display-name: Cup o' Jo
-      potion-type: minecraft:swiftness
+  item: potion:A0522D
+  potion_effects:
+    speed: 1
 
 coffee2:
-  worth: 20.0
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      display-name: Espresso
-      potion-type: minecraft:long_swiftness
+  worth: 10.0
+  item: potion:8B4513
+  potion_effects:
+    speed: 2
+
 
 coffee3:
-  worth: 50
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    type: POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      display-name: Double Espresso
-      potion-type: minecraft:strong_swiftness
+  worth: 10.0
+  item: potion:800000
+  potion_effects:
+    speed: 3
