@@ -226,4 +226,9 @@ public class MagicShapedRecipe extends MagicRecipe {
         }
         return RecipeMatchType.MATCH;
     }
+
+    @Override
+    protected String getType() {
+        return "shaped";
+    }
 }

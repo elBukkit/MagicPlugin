@@ -305,6 +305,8 @@ public interface CompatibilityUtils {
 
     Recipe createStonecuttingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage);
 
+    Recipe createSmithingRecipe(String key, ItemStack item, ItemStack source, ItemStack addition);
+
     boolean discoverRecipe(HumanEntity entity, String key);
 
     boolean undiscoverRecipe(HumanEntity entity, String key);

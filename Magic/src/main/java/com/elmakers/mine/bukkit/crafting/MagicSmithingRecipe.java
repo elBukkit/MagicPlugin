@@ -8,12 +8,13 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
-public class MagicStonecuttnigRecipe extends MagicRecipe {
+public class MagicSmithingRecipe extends MagicRecipe {
     protected Recipe recipe;
     protected ItemData ingredient;
+    protected ItemData addition;
     protected String group;
 
-    protected MagicStonecuttnigRecipe(String key, MagicController controller) {
+    protected MagicSmithingRecipe(String key, MagicController controller) {
         super(key, controller);
     }
 
@@ -26,10 +27,16 @@ public class MagicStonecuttnigRecipe extends MagicRecipe {
         String materialKey = configuration.getString("ingredient");
         ingredient = controller.getOrCreateItem(materialKey);
         if (ingredient == null) {
-            controller.getLogger().warning("Could not create stonecutting recipe ingredient: " + materialKey);
+            controller.getLogger().warning("Could not create smithing recipe ingredient: " + materialKey);
             return null;
         }
-        recipe = CompatibilityLib.getCompatibilityUtils().createStonecuttingRecipe(key, item, ingredient.getItemStack(1), ignoreDamage);
+        materialKey = configuration.getString("addition");
+        addition = controller.getOrCreateItem(materialKey);
+        if (addition == null) {
+            controller.getLogger().warning("Could not create smithing recipe addition: " + materialKey);
+            return null;
+        }
+        recipe = CompatibilityLib.getCompatibilityUtils().createSmithingRecipe(key, item, ingredient.getItemStack(1), addition.getItemStack(1));
         if (recipe != null && group != null && !group.isEmpty()) {
             CompatibilityLib.getCompatibilityUtils().setRecipeGroup(recipe, group);
         }
@@ -43,6 +50,6 @@ public class MagicStonecuttnigRecipe extends MagicRecipe {
 
     @Override
     protected String getType() {
-        return "stonecutting";
+        return "smithing";
     }
 }

@@ -157,7 +157,7 @@ public abstract class MagicRecipe {
                     return;
                 }
             }
-            controller.info("Adding crafting recipe for " + getOutputKey());
+            controller.info("Adding " + getType() + " recipe for " + getOutputKey());
             try {
                 plugin.getServer().addRecipe(recipe);
             } catch (Exception ex) {
@@ -173,6 +173,8 @@ public abstract class MagicRecipe {
     public String getKey() {
         return key;
     }
+
+    protected abstract String getType();
 
     public boolean isLocked() {
         return locked;
@@ -200,6 +202,9 @@ public abstract class MagicRecipe {
                     break;
                 case "stonecutting":
                     recipe = new MagicStonecuttnigRecipe(key, controller);
+                    break;
+                case "smithing":
+                    recipe = new MagicSmithingRecipe(key, controller);
                     break;
                 default:
                     controller.getLogger().warning("Unknown recipe type: " + recipeType);

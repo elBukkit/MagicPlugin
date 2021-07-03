@@ -140,6 +140,10 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             ((CookingRecipe)recipe).setGroup(group);
             return true;
         }
+        if (recipe instanceof StonecuttingRecipe) {
+            ((StonecuttingRecipe)recipe).setGroup(group);
+            return true;
+        }
         return false;
     }
 }

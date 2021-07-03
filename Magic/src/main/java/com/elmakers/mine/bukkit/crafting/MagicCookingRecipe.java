@@ -42,8 +42,6 @@ public abstract class MagicCookingRecipe extends MagicRecipe {
 
     protected abstract Recipe createRecipe(ItemStack item);
 
-    protected abstract String getType();
-
     @Override
     public Recipe getRecipe() {
         return recipe;

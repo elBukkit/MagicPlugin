@@ -7,6 +7,9 @@
 
 # Recent issues
 
+ - ATM acting weird? Heads doubled up, clicking not always working
+ - cornelia says world configs don't load unless doing `/magic load`
+
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Automata don't fully clean up, or perhaps Blast doesn't, idk
  - Selector cost at top-level (default cost) doesn't work
@@ -60,6 +63,8 @@ https://docs.google.com/document/d/1ORA5W9q3UxN40sqemiDPM0u1UF5pvQ-1r91iGcOc4Ys/
 
 ## Suggestions
 
+ - `/mmap slice` command .. still would really like this
+ - Can smithing recipes support magic item outputs?  
  - Allow randomized loot in kits
  - Option on mobs to allow interact spell to use player's spell level
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)

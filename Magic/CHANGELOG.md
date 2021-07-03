@@ -6,6 +6,7 @@
 
  - New external example added, `/mconfig fetch httyd` - a "How to Train Your Dragon" config pack from Night!
  - Add `type:` option for recipes, 1.14+ only, can be any of: `furnace`,`campfire`,`blasting`,`smoking`, `stonecutting`
+   and `smithing` (requires 1.16 or post-July 1.17 spigot)
  - Add `EntityAnimation` action, can make players or mobs swing their arms
  - New EffectLib parameters to support 1.17 particles:
    - `to_color`: Used for the dust_color_transition particlea

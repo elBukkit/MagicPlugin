@@ -849,6 +849,11 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public Recipe createSmithingRecipe(String key, ItemStack item, ItemStack source, ItemStack addition) {
+        return null;
+    }
+
+    @Override
     public String convertParticle(String particle) {
         switch (particle.toLowerCase()) {
             case "dust_color_transition":
