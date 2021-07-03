@@ -44,9 +44,7 @@ public abstract class MagicRecipe {
         this.controller = controller;
     }
 
-    protected abstract boolean load(ConfigurationSection configuration);
-
-    protected ItemStack loadItem(ConfigurationSection configuration) {
+    public ItemStack load(ConfigurationSection configuration) {
         locked = configuration.getBoolean("locked", false);
         disableDefaultRecipe = configuration.getBoolean("disable_default", false);
         ignoreDamage = configuration.getBoolean("ignore_damage", false);
@@ -191,11 +189,20 @@ public abstract class MagicRecipe {
                 case "furnace":
                     recipe = new MagicFurnaceRecipe(key, controller);
                     break;
+                case "blasting":
+                    recipe = new MagicBlastingRecipe(key, controller);
+                    break;
+                case "campfire":
+                    recipe = new MagicCampfireRecipe(key, controller);
+                    break;
+                case "smoking":
+                    recipe = new MagicSmokingRecipe(key, controller);
+                    break;
                 default:
                     controller.getLogger().warning("Unknown recipe type: " + recipeType);
             }
             if (recipe != null) {
-                if (!recipe.load(configuration)) {
+                if (recipe.load(configuration) == null) {
                     recipe = null;
                 }
             }

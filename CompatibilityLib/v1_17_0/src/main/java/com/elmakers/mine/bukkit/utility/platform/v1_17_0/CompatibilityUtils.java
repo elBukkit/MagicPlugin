@@ -1263,12 +1263,6 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
-    public boolean setRecipeGroup(ShapedRecipe recipe, String group) {
-        recipe.setGroup(group);
-        return true;
-    }
-
-    @Override
     public boolean isSameKey(Plugin plugin, String key, Object keyedObject) {
         if (!(keyedObject instanceof Keyed)) return false;
         String namespace = plugin.getName().toLowerCase(Locale.ROOT);

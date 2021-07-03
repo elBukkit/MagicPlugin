@@ -48,6 +48,7 @@ import org.bukkit.entity.TippedArrow;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Torch;
 import org.bukkit.plugin.Plugin;
@@ -824,6 +825,21 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public FurnaceRecipe createFurnaceRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
+        return null;
+    }
+
+    @Override
+    public Recipe createBlastingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
+        return null;
+    }
+
+    @Override
+    public Recipe createCampfireRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
+        return null;
+    }
+
+    @Override
+    public Recipe createSmokingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
         return null;
     }
 

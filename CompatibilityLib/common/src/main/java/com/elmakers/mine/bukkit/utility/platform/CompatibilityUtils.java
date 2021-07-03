@@ -297,6 +297,12 @@ public interface CompatibilityUtils {
 
     FurnaceRecipe createFurnaceRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime);
 
+    Recipe createBlastingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime);
+
+    Recipe createCampfireRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime);
+
+    Recipe createSmokingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime);
+
     boolean discoverRecipe(HumanEntity entity, String key);
 
     boolean undiscoverRecipe(HumanEntity entity, String key);
@@ -398,7 +404,7 @@ public interface CompatibilityUtils {
 
     BlockFace getCCW(BlockFace face);
 
-    boolean setRecipeGroup(ShapedRecipe recipe, String group);
+    boolean setRecipeGroup(Recipe recipe, String group);
 
     boolean isSameKey(Plugin plugin, String key, Object keyed);
 

@@ -39,10 +39,10 @@ public class MagicShapedRecipe extends MagicRecipe {
     }
 
     @Override
-    protected boolean load(ConfigurationSection configuration) {
-        ItemStack item = super.loadItem(configuration);
+    public ItemStack load(ConfigurationSection configuration) {
+        ItemStack item = super.load(configuration);
         if (item == null) {
-            return false;
+            return null;
         }
         substitue = ConfigurationUtils.getMaterial(configuration, "substitute", null);
         group = configuration.getString("group", "");
@@ -78,7 +78,7 @@ public class MagicShapedRecipe extends MagicRecipe {
                         ingredients.put(ingredientKey, ingredient);
                         if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(this.recipe, ingredientKey, ingredient.getItemStack(1), ignoreDamage)) {
                             controller.getLogger().warning("Unable to set recipe ingredient from vanilla ingredient: " + input);
-                            return false;
+                            return null;
                         }
                     }
                 } else {
@@ -108,11 +108,11 @@ public class MagicShapedRecipe extends MagicRecipe {
                     ItemData ingredient = controller.getOrCreateItem(materialKey);
                     if (ingredient == null) {
                         controller.getLogger().warning("Invalid recipe ingredient " + materialKey);
-                        return false;
+                        return null;
                     }
                     if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1), ignoreDamage)) {
                         controller.getLogger().warning("Unable to set recipe ingredient " + materialKey);
-                        return false;
+                        return null;
                     }
                     ingredients.put(key.charAt(0), ingredient);
                 }
@@ -123,7 +123,7 @@ public class MagicShapedRecipe extends MagicRecipe {
         if (recipe != null && group != null && !group.isEmpty()) {
             CompatibilityLib.getCompatibilityUtils().setRecipeGroup(recipe, group);
         }
-        return true;
+        return item;
     }
 
     @Override

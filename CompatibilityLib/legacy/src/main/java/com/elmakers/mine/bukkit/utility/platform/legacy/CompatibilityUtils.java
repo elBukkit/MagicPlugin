@@ -2200,7 +2200,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean setRecipeGroup(ShapedRecipe recipe, String group) {
+    public boolean setRecipeGroup(Recipe recipe, String group) {
+        if (!(recipe instanceof ShapedRecipe)) return false;
         if (NMSUtils.class_Recipe_setGroupMethod == null) return false;
         try {
             NMSUtils.class_Recipe_setGroupMethod.invoke(recipe, group);
