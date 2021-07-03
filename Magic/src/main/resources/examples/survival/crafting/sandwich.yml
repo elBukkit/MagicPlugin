@@ -1,0 +1,19 @@
+sandwich:
+  # use /mconfig enable recipe sandwich to turn this on
+  enabled: false
+  # This defines the recipe output
+  output: sandwich
+
+  # This defines the materials that will be required to craft this wand
+  materials:
+    s: bread_slice
+    c: carrot
+    b: beetroot
+    p: pumpkin_seeds
+
+  # This defines the shape of the recipe, row_1 is the top. Each row may
+  # have up to 3 characters that map to the materials listed above.
+  # You may need to use quotes for the spaces to be read correctly!
+  row_1: " s "
+  row_2: "cbp"
+  row_3: " s "

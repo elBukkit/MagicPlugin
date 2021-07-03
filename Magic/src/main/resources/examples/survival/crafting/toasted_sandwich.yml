@@ -1,0 +1,14 @@
+toasted_sandwich:
+  # use /mconfig enable recipe sandwich to turn this on
+  enabled: false
+  type: campfire
+  # Will show in players' knowledge books
+  auto_discover: true
+  # Produces leather
+  output: toasted_sandwich
+  # Requires zombie flesh
+  ingredient: sandwich
+  # How long it takes to cook
+  cooking_time: 10 seconds
+  # How much experience is earned per item smelted
+  experience: 5

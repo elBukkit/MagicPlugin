@@ -1,0 +1,11 @@
+bread_slice:
+  worth: 3
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2724
+    type: BREAD
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '{"extra":[{"text":"Bread Slice"}],"text":""}'
+      custom-model-data: 18003

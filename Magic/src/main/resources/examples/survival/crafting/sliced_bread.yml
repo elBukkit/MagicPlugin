@@ -1,0 +1,9 @@
+sliced_bread:
+  # use /mconfig enable recipe sandwich to turn this on
+  enabled: false
+  # This is a stonecuttong recipe
+  type: stonecutting
+  # Will show in players' knowledge books
+  auto_discover: true
+  output: bread_slice@2
+  ingredient: bread

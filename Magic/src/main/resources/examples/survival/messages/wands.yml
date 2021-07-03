@@ -466,3 +466,7 @@ wands:
     dice:
         name: Dice
         description: Well, just one die, technically
+    sandwich:
+        name: Sandwich
+    toasted_sandwich:
+        name: Toasted Sandwich

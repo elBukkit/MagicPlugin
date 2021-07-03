@@ -3,3 +3,9 @@ items:
     name: Emerald Sword
   invisible_item_frame:
     name: Invisible Item Frame
+  coffee1:
+    name: Cup o' Jo
+  coffee2:
+    name: Espresso
+  coffee3:
+    name: Double Espresso

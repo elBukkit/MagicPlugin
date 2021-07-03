@@ -1,0 +1,9 @@
+eat_toasted_sandwich:
+  actions:
+    cast:
+    - class: Feed
+  parameters:
+    target: self
+    saturation: 5
+    feed: 10
+    exhaustion: false

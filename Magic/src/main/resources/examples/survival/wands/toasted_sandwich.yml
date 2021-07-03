@@ -1,0 +1,3 @@
+toasted_sandwich:
+  icon: bread{CustomModelData:18002}
+  consume_spell: eat_toasted_sandwich
