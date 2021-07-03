@@ -86,13 +86,13 @@ jitonspikes:
       particle_offset_y: 0.03
       particle_offset_z: 0.03
     hit_block:
-    - class: Sphere
+    - class: EffectRing
       location: target
       particle: crit_magic
       particle_count: 3
       radius: 0.4
     hit_entity:
-    - class: Sphere
+    - class: EffectRing
       location: target
       target_location: body
       particle: redstone
@@ -100,7 +100,7 @@ jitonspikes:
       particle_count: 40
       radius: 1
     hit:
-    - class: Circle
+    - class: EffectRing
       location: target
       target_location: body
       particle: town_aura

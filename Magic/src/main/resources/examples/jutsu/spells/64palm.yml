@@ -38,7 +38,7 @@
       sound_pitch: 0.1
       location: origin
       effectlib:
-particles: 100
+        particles: 100
         duration: 6000
         radius: 6
         particle: end_rod

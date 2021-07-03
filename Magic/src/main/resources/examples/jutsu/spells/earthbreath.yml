@@ -15,7 +15,7 @@ earthbreath:
             - class: PotionEffect
             - class: Retarget
               actions:
-- class: Asynchronous
+              - class: Asynchronous
                 actions:
                 - class: CustomProjectile
                   hitbox_size: 0.3
@@ -99,13 +99,13 @@ earthbreath:
            particle_offset_y: 0.085
            particle_offset_z: 0.085
         hit_block:
-        -  class: Sphere
+        -  class: EffectRing
            location: target
            particle: crit_magic
            particle_count: 3
            radius: 0.4
         hit_entity:
-        -  class: Sphere
+        -  class: EffectRing
            location: target
            target_location: body
            particle: redstone
@@ -113,7 +113,7 @@ earthbreath:
            particle_count: 40
            radius: 1
         hit:
-        -  class: Circle
+        -  class: EffectRing
            location: target
            target_location: body
            particle: town_aura
@@ -123,7 +123,7 @@ earthbreath:
            sound_volume: 2
            particle_data: 0.1
         reflect:
-- class: EffectSingle
+        - class: EffectSingle
           location: target
           particle: town_aura
           particle_count: 5

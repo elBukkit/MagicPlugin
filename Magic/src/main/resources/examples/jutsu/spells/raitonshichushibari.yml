@@ -117,7 +117,7 @@ raitonshichushibari:
     - class: EffectSingle
       location: target
       effectlib:
-class: AnimatedBall
+        class: AnimatedBall
   parameters:
     target_type: Damageable
     allow_max_range: true

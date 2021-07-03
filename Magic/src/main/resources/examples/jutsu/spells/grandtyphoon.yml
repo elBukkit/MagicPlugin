@@ -15,7 +15,7 @@ grandtyphoon:
           actions:
           - class: ModifyBlock
             direction: 0,1,0
-        - class: volume
+        - class: Volume
           y_size: 1
           z_size: 10
           x_size: 10

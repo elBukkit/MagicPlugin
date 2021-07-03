@@ -10,7 +10,7 @@ multiearthbullet:
           - class: PotionEffect
           - class: Retarget
             actions:
-- class: Asynchronous
+            - class: Asynchronous
               actions:
               - class: CustomProjectile
                 actions:
@@ -60,20 +60,20 @@ multiearthbullet:
            particle_offset_y: 0.025
            particle_offset_z: 0.025
         hit_block:
-        -  class: Sphere
+        -  class: EffectRing
            location: target
            particle: crit_magic
            particle_count: 3
            radius: 0.4
         hit_entity:
-        -  class: Sphere
+        -  class: EffectRing
            location: target
            target_location: body
            particle: crit_magic
            particle_count: 20
            radius: 1
         hit:
-        -  class: Circle
+        -  class: EffectRing
            location: target
            target_location: body
            particle: town_aura
@@ -83,7 +83,7 @@ multiearthbullet:
            sound_volume: 2
            particle_data: 0.1
         reflect:
-- class: EffectSingle
+        - class: EffectSingle
           location: target
           particle: town_aura
           particle_count: 5

@@ -8,7 +8,7 @@
  - Add `type: furnace` option for recipes, 1.14+ only
  - Add `EntityAnimation` action, can make players or mobs swing their arms
  - New EffectLib parameters to support 1.17 particles:
-   - `to_color`: Used for the dust_color_transition particle
+   - `to_color`: Used for the dust_color_transition particlea
    - `arrival_time`: Used for the vibration particle
  - New effect player parameters to support 1.17 particles:
    - `to_color`: An alias for `color2` to align with EffectLib parameters
@@ -41,6 +41,7 @@
  - Fix Secure in 1.17
  - The Cloak spell will deactivate when you take damage or cast a different spell
  - Fix mobs' kill triggers not working when killing via a spell or projectile
+ - Fix errors in jutsu configs, though they still aren't really ready for use
  
 # 9.1.1
 

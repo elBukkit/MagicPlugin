@@ -15,7 +15,7 @@ swordexplosion:
       sound: entity.player.attack.weak
       sound_pitch: 0.1
       location: origin
-      particle: sweepattack
+      particle: sweep_attack
       particle_count: 3
       particle_offset_x: 0.2
       particle_offset_y: 0.2

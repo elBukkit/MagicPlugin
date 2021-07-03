@@ -22,16 +22,16 @@ fuutonfungokyaku:
         - class: Command
           command: castp @p fuutonfungokyaku_part
   effects:
-cast:
+    cast:
     - class: EffectSingle
       location: origin
       sound: entity_ender_dragon_flap
       sound_pitch: 1.8
   parameters:
-target: other_entity
+    target: other_entity
     target_type: Damageable
   costs:
-mana: 50
+    mana: 50
 
 fuutonfungokyaku_part:
   hidden: true
