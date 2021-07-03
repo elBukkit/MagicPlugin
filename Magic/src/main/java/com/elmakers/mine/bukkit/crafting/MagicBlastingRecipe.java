@@ -15,4 +15,9 @@ public class MagicBlastingRecipe extends MagicCookingRecipe {
     protected Recipe createRecipe(ItemStack item) {
         return CompatibilityLib.getCompatibilityUtils().createBlastingRecipe(key, item, ingredient.getItemStack(1), ignoreDamage, experience, cookingTime);
     }
+
+    @Override
+    protected String getType() {
+        return "blasting";
+    }
 }

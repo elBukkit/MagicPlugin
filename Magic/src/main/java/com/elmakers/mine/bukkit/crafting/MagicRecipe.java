@@ -198,6 +198,9 @@ public abstract class MagicRecipe {
                 case "smoking":
                     recipe = new MagicSmokingRecipe(key, controller);
                     break;
+                case "stonecutting":
+                    recipe = new MagicStonecuttnigRecipe(key, controller);
+                    break;
                 default:
                     controller.getLogger().warning("Unknown recipe type: " + recipeType);
             }

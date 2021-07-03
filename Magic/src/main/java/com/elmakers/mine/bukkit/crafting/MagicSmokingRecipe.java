@@ -15,4 +15,9 @@ public class MagicSmokingRecipe extends MagicCookingRecipe {
     protected Recipe createRecipe(ItemStack item) {
         return CompatibilityLib.getCompatibilityUtils().createSmokingRecipe(key, item, ingredient.getItemStack(1), ignoreDamage, experience, cookingTime);
     }
+
+    @Override
+    protected String getType() {
+        return "smoking";
+    }
 }

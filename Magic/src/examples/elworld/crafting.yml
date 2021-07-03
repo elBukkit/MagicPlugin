@@ -38,6 +38,7 @@ rabbitboots:
   enabled: true
 
 ruby_sword:
+  enabled: false
   output: ruby_sword
 
   materials:
@@ -49,6 +50,7 @@ ruby_sword:
   row_3: o
 
 sapphire_sword:
+  enabled: false
   output: sapphire_sword
 
   materials:

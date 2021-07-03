@@ -303,6 +303,8 @@ public interface CompatibilityUtils {
 
     Recipe createSmokingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime);
 
+    Recipe createStonecuttingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage);
+
     boolean discoverRecipe(HumanEntity entity, String key);
 
     boolean undiscoverRecipe(HumanEntity entity, String key);

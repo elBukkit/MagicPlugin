@@ -16,6 +16,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.SmokingRecipe;
+import org.bukkit.inventory.StonecuttingRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
@@ -110,6 +111,21 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             return new SmokingRecipe(namespacedKey, item, choice, experience, cookingTime);
         } catch (Throwable ex) {
             platform.getLogger().log(Level.SEVERE, "Error creating smoking recipe", ex);
+        }
+        return null;
+    }
+
+    @Override
+    public Recipe createStonecuttingRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null || source == null) {
+            return null;
+        }
+        try {
+            RecipeChoice choice = getChoice(source, ignoreDamage);
+            return new StonecuttingRecipe(namespacedKey, item, choice);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating stonecutton recipe", ex);
         }
         return null;
     }

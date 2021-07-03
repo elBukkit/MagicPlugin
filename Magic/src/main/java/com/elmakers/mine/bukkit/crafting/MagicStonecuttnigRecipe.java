@@ -8,14 +8,12 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
-public abstract class MagicCookingRecipe extends MagicRecipe {
+public class MagicStonecuttnigRecipe extends MagicRecipe {
     protected Recipe recipe;
     protected ItemData ingredient;
     protected String group;
-    protected float experience;
-    protected int cookingTime;
 
-    protected MagicCookingRecipe(String key, MagicController controller) {
+    protected MagicStonecuttnigRecipe(String key, MagicController controller) {
         super(key, controller);
     }
 
@@ -25,24 +23,18 @@ public abstract class MagicCookingRecipe extends MagicRecipe {
         if (item == null) {
             return null;
         }
-        cookingTime = configuration.getInt("cooking_time") / 50;
-        experience = (float)configuration.getDouble("experience");
         String materialKey = configuration.getString("ingredient");
         ingredient = controller.getOrCreateItem(materialKey);
         if (ingredient == null) {
-            controller.getLogger().warning("Could not create " + getType() + " recipe ingredient: " + materialKey);
+            controller.getLogger().warning("Could not create stonecutting recipe ingredient: " + materialKey);
             return null;
         }
-        recipe = createRecipe(item);
+        recipe = CompatibilityLib.getCompatibilityUtils().createStonecuttingRecipe(key, item, ingredient.getItemStack(1), ignoreDamage);
         if (recipe != null && group != null && !group.isEmpty()) {
             CompatibilityLib.getCompatibilityUtils().setRecipeGroup(recipe, group);
         }
         return item;
     }
-
-    protected abstract Recipe createRecipe(ItemStack item);
-
-    protected abstract String getType();
 
     @Override
     public Recipe getRecipe() {
