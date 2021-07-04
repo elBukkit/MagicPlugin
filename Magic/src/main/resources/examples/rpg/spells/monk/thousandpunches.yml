@@ -38,11 +38,11 @@ thousandpunches:
         relative_offset: 1,0,0
   parameters:
     target: self
-    duration: 5 seconds
-    delay: 0.1 seconds
-    cooldown: 6 seconds
+    duration: (constitution / 4) *  seconds
+    delay: ((20 - dexterity) * 0.01 + 0.1) * seconds
+    cooldown: ((20 - constitution) / 5 + 4) seconds
     range: 2
     fov: 45
-    damage: 0.1
+    damage: 0.1 * strength / 5
     no_damage_ticks: 0
     knockback_resistance: 1000
