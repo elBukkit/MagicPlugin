@@ -4,8 +4,14 @@ import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
+
+import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface Platform {
+
+    void registerEvents(MageController controller, PluginManager pm);
+
     Plugin getPlugin();
 
     Logger getLogger();

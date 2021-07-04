@@ -27,6 +27,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.automata.Automaton;
 import com.elmakers.mine.bukkit.api.block.BlockList;
@@ -795,4 +796,5 @@ public interface MageController {
     MaterialAndData createMaterialAndData(Material material, byte legacyBlockData);
     MaterialAndData createMaterialAndData(String materialKey);
     void timeSkipped(World world, long skippedAmount);
+    void onPlayerJump(Player player, Vector velocity);
 }

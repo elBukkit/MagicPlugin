@@ -7,7 +7,9 @@ import javax.annotation.Nullable;
 
 import org.bukkit.World;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
@@ -76,6 +78,12 @@ public abstract class PlatformBase implements Platform {
 
     protected boolean initialize() {
         return true;
+    }
+
+    public void registerEvents(MageController controller, PluginManager pm) {
+        if (paperUtils != null) {
+            paperUtils.registerEvents(controller, pm);
+        }
     }
 
     protected EntityMetadataUtils createEntityMetadataUtils() {

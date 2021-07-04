@@ -114,6 +114,10 @@ public class CompatibilityLib extends PlatformInterpreter {
         return compatibilityUtils == null ? false : compatibilityUtils.hasLegacyMaterials();
     }
 
+    public static boolean hasJumpEvent() {
+        return platform == null ? false : platform.getPaperUtils() != null;
+    }
+
     @Nonnull
     public static Logger getLogger() {
         Logger logger = platform == null ? null : platform.getLogger();
@@ -221,6 +225,9 @@ public class CompatibilityLib extends PlatformInterpreter {
         if (hasTimeSkipEvent()) {
             TimeListener timeListener = new TimeListener(controller);
             pm.registerEvents(timeListener, controller.getPlugin());
+        }
+        if (platform != null) {
+            platform.registerEvents(controller, pm);
         }
     }
 }

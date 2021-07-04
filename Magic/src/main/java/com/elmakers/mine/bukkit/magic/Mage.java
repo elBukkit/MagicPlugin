@@ -1735,6 +1735,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return velocity;
     }
 
+    // This does not actually apply velocity!
+    public void setVelocity(Vector velocity) {
+        this.velocity = velocity;
+    }
+
     protected void updateVelocity() {
         if (lastLocation != null) {
             Location currentLocation = getLocation();
@@ -4895,6 +4900,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case "attack_damage":  return getVanillaAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
             case "luck": return getVanillaAttribute(Attribute.GENERIC_LUCK);
             case "knockback_resistance": return getVanillaAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+            case "movement_speed": return getVanillaAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
             case "mana": return (double)getMana();
             case "mana_max": return (double)getEffectiveManaMax();
             case "xp": return (double)getExperience();

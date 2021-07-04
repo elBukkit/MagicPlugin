@@ -77,6 +77,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
@@ -281,7 +282,7 @@ public class MagicController implements MageController {
     private final Set<String> builtinMageAttributes = ImmutableSet.of(
             "health", "health_max",
             "armor",  "luck",
-            "knockback_resistance",
+            "knockback_resistance", "movement_speed",
             "attack_damage",
             "location_x", "location_y", "location_z",
             "time", "moon",
@@ -653,12 +654,16 @@ public class MagicController implements MageController {
         return true;
     }
 
-    public void onPlayerJump(Player player) {
+    @Override
+    public void onPlayerJump(Player player, Vector velocity) {
         if (climbableMaterials.testBlock(player.getLocation().getBlock())) {
             return;
         }
         Mage mage = getRegisteredMage(player);
         if (mage != null) {
+            if (velocity != null && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                ((com.elmakers.mine.bukkit.magic.Mage)mage).setVelocity(velocity);
+            }
             mage.trigger("jump");
         }
     }
@@ -1448,7 +1453,7 @@ public class MagicController implements MageController {
         explosionController = new ExplosionController(this);
         requirementsController = new RequirementsController(this);
         worldController = new WorldController(this);
-        if (CompatibilityLib.hasStatistics()) {
+        if (CompatibilityLib.hasStatistics() && !CompatibilityLib.hasJumpEvent()) {
             jumpController = new JumpController(this);
         }
         File examplesFolder = new File(getPlugin().getDataFolder(), "examples");

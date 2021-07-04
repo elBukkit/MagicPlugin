@@ -17,7 +17,7 @@ public class JumpController implements Listener {
     @EventHandler
     public void onPlayerStatistic(PlayerStatisticIncrementEvent event) {
         if (event.getStatistic() == Statistic.JUMP) {
-            controller.onPlayerJump(event.getPlayer());
+            controller.onPlayerJump(event.getPlayer(), null);
         }
     }
 }

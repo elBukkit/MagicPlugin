@@ -24,6 +24,7 @@
  - Add `bound_name: name` option for wands, to use IGN instead of display name in bound lore
  - Add `item_flags` list config to wands, for nicer-than-`hide_flags` item flag support
  - Add sliced bread, sandwich and toasted_sandwich items (recipes disabled by default)
+ - Add `movement_speed` attribute
 
 ## Changes
 
