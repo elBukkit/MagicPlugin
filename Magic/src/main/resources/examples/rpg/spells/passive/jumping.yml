@@ -1,0 +1,13 @@
+jumping:
+  passive: true
+  triggers: jump
+  actions:
+    cast:
+      - class: ChangeContext
+        source_use_movement_direction: true
+        actions:
+        - class: Velocity
+          additive: true
+  parameters:
+    target: self
+    speed: dexterity * 0.1

@@ -9,4 +9,6 @@ monk:
     generic_max_health:
       value: "constitution * 5"
       operation: base
-
+    generic_movement_speed:
+      value: "0.08 + dexterity * 0.002"
+      operation: base
