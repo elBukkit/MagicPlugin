@@ -1724,6 +1724,10 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         if (targetEntity == null) {
             return null;
         }
+        // If we are targeting the caster, route through context so we get the right wand
+        if (targetEntity == getEntity()) {
+            return getCasterProperties(propertyType);
+        }
         Mage mage = controller.getMage(targetEntity);
         return mage == null ? null : mage.getCasterProperties(propertyType);
     }

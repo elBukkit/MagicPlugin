@@ -45,6 +45,7 @@
  - The Cloak spell will deactivate when you take damage or cast a different spell
  - Fix mobs' kill triggers not working when killing via a spell or projectile
  - Fix errors in jutsu configs, though they still aren't really ready for use
+ - Fix `ModifyProperties` and `ModifyAttributes` not applying to the wand used to cast the spell (for armor and offhand casts) 
  
 # 9.1.1
 
