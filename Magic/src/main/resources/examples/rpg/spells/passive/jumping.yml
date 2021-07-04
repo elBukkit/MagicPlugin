@@ -2,7 +2,7 @@ jumping:
   passive: true
   triggers: jump
   actions:
-    cast:
+    alternate_sneak:
       - class: ChangeContext
         source_use_movement_direction: true
         actions:
