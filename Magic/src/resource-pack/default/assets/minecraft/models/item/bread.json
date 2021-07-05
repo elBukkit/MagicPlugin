@@ -6,6 +6,7 @@
   "overrides": [
     {"predicate": {"custom_model_data": 18001}, "model": "item/custom/sandwich"},
     {"predicate": {"custom_model_data": 18002}, "model": "item/custom/toasted_sandwich"},
-    {"predicate": {"custom_model_data": 18003}, "model": "item/custom/bread_slice"}
+    {"predicate": {"custom_model_data": 18003}, "model": "item/custom/bread_slice"},
+    {"predicate": {"custom_model_data": 18004}, "model": "item/custom/toast"}
   ]
 }
