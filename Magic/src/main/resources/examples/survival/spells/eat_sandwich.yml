@@ -1,9 +1,0 @@
-eat_sandwich:
-  actions:
-    cast:
-    - class: Feed
-  parameters:
-    target: self
-    saturation: 5
-    feed: 5
-    exhaustion: false
