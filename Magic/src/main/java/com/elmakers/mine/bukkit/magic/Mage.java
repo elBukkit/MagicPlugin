@@ -3172,8 +3172,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void sendExperience(float exp, int level) {
         if (virtualExperience && exp == virtualExperienceProgress && level == virtualExperienceLevel) return;
+        if (Float.isNaN(exp)) return;
         Player player = getPlayer();
         if (player != null) {
+            exp = Math.max(Math.min(exp, 1), 0);
             CompatibilityLib.getCompatibilityUtils().sendExperienceUpdate(player, exp, level);
             virtualExperience = true;
             virtualExperienceProgress = exp;
