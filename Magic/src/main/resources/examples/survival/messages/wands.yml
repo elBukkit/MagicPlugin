@@ -470,3 +470,7 @@ wands:
         name: Sandwich
     toasted_sandwich:
         name: Toasted Sandwich
+    bread_slice:
+        name: Bread Slice
+    toast:
+        name: Toast

@@ -1,0 +1,6 @@
+bread_slice:
+  icon: bread{CustomModelData:18003}
+  consume_spell: eat_food
+  overrides:
+    feed: 1
+    saturation: 1
