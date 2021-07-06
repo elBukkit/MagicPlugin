@@ -5,5 +5,8 @@ cursedmeat:
   icon: rotten_flesh
   locked: true
   potion_effects: hunger:20
-
-
+  spells: eat_food
+  consume_spell: eat_food
+  left_click: cast
+  overrides:
+    food_level: 0
