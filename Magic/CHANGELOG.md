@@ -2,6 +2,8 @@
 
 # 9.2
 
+## 1.17.1 Support
+
 ## Additions
 
  - New external example added, `/mconfig fetch httyd` - a "How to Train Your Dragon" config pack from Night!
