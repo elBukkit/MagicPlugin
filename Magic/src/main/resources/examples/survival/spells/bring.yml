@@ -13,3 +13,10 @@ bring:
             swap_source_and_target: true
             actions:
             - class: Teleport
+  parameters:
+    target: self
+    target_self: false
+    bypass_friendly_fire: true
+    bypass_pvp: true
+    loud: true
+    target_game_modes: survival,creative,adventure
