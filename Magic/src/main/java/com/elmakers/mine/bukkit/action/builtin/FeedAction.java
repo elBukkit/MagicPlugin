@@ -1,12 +1,17 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.Arrays;
+import java.util.Collection;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class FeedAction extends BaseSpellAction
 {
@@ -76,5 +81,27 @@ public class FeedAction extends BaseSpellAction
     public boolean requiresTargetEntity()
     {
         return true;
+    }
+
+    @Override
+    public void getParameterNames(Spell spell, Collection<String> parameters) {
+        super.getParameterNames(spell, parameters);
+        parameters.add("food_level");
+        parameters.add("feed");
+        parameters.add("saturation");
+        parameters.add("exhaustion");
+    }
+
+    @Override
+    public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
+        if (parameterKey.equals("food_level") || parameterKey.equals("feed") ||  parameterKey.equals("saturation")) {
+            examples.add("0");
+            examples.add("1");
+            examples.add("10");
+        } else if (parameterKey.equals("exhaustion")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
+        } else {
+            super.getParameterOptions(spell, parameterKey, examples);
+        }
     }
 }
