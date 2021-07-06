@@ -31,7 +31,7 @@ public class CompatibilityLib extends PlatformInterpreter {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
-        int[] version = getServerVersion();
+        int[] version = getServerVersion(plugin);
         String versionDescription = StringUtils.join(ArrayUtils.toObject(version), ".");
         if (version.length < 2 || version[0] != 1) {
             logger.severe("Could not parse server version: " + versionDescription);
@@ -191,16 +191,16 @@ public class CompatibilityLib extends PlatformInterpreter {
         return platform.getEntityUtils();
     }
 
-    public static int[] getServerVersion() {
+    public static int[] getServerVersion(Plugin plugin) {
         int[] version = new int[3];
-        String versionString = CompatibilityConstants.getVersionPrefix();
+        String versionString = plugin.getServer().getBukkitVersion();
         if (versionString == null || versionString.isEmpty()) {
             return version;
         }
-        // Format:  v1_12_R1
-        versionString = versionString.substring(1);
+        // Format:  1.17.1-R0.1-SNAPSHOT
         try {
-            String[] pieces = StringUtils.split(versionString, '_');
+            String[] pieces = StringUtils.split(versionString, '-');
+            pieces = StringUtils.split(pieces[0], '.');
             if (pieces.length > 0) {
                 version[0] = Integer.parseInt(pieces[0]);
             }

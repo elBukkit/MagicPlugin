@@ -488,7 +488,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         newSession.setLegacyIcons(magic.isLegacyIconsEnabled());
         newSession.setMagicVersion(getMagicVersion());
-        newSession.setMinecraftVersion(CompatibilityLib.getServerVersion());
+        newSession.setMinecraftVersion(CompatibilityLib.getServerVersion(api.getPlugin()));
 
         if ((editorType.equals("config") || editorType.equals("messages")) && parameters.length == 1) {
             File pluginFolder = api.getPlugin().getDataFolder();

@@ -498,7 +498,7 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private void addVersionConfigs(ConfigurationSection config, String fileName) throws InvalidConfigurationException, IOException {
-        int[] serverVersion = CompatibilityLib.getServerVersion();
+        int[] serverVersion = CompatibilityLib.getServerVersion(plugin);
         int majorVersion = serverVersion[0];
         int minorVersion = serverVersion[1];
         String versionExample = majorVersion + "." + minorVersion;
