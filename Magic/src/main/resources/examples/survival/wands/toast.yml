@@ -2,5 +2,5 @@ toast:
   icon: bread{CustomModelData:18004}
   consume_spell: eat_food
   overrides:
-    feed: 2
+    feed: 4
     saturation: 1
