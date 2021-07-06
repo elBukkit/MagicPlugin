@@ -2,6 +2,8 @@
 
 # 9.3
 
+ - Fix consumable wands giving vanilla food depending on the icon used
+
 # 9.2.1
 
 # 9.2

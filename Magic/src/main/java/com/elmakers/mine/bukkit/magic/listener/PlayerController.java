@@ -52,6 +52,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.economy.Currency;
@@ -67,6 +68,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.magic.SpellBlock;
 import com.elmakers.mine.bukkit.tasks.DropActionTask;
+import com.elmakers.mine.bukkit.tasks.GiveItemTask;
 import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -1121,27 +1123,49 @@ public class PlayerController implements Listener {
 
     @EventHandler(ignoreCancelled = true)
     public void onConsume(PlayerItemConsumeEvent event) {
-        Mage mage = controller.getMage(event.getPlayer());
+        Player player = event.getPlayer();
+        Mage mage = controller.getMage(player);
         mage.trigger("consume");
 
-        ItemStack item = event.getItem();
-        if (!item.hasItemMeta()) return;
+        ItemStack originalItem = event.getItem();
+        if (!originalItem.hasItemMeta()) return;
 
         // The item we get passed in this event is a shallow bukkit copy.
-        item = CompatibilityLib.getItemUtils().makeReal(item);
+        ItemStack item = CompatibilityLib.getItemUtils().makeReal(originalItem);
 
         String consumeSpell = controller.getWandProperty(item, "consume_spell", "");
         if (!consumeSpell.isEmpty()) {
             Spell spell = mage.getSpell(consumeSpell);
             if (spell != null) {
+                boolean success;
                 if (Wand.isWand(item)) {
                     Wand wand = Wand.createWand(controller, item);
-                    if (!wand.cast(spell)) {
-                        event.setCancelled(true);
-                    }
+                    success = wand.cast(spell);
                 } else {
-                    if (!spell.cast()) {
-                        event.setCancelled(true);
+                    success = spell.cast();
+                }
+                if (!success) {
+                    event.setCancelled(true);
+                } else {
+                    // So unfortunately cancelling the event prevents us from being
+                    // able to hold right-click to continue consuming more food.
+                    // We will instead change the item in the event to air, which will
+                    // prevent the default food behavior from applying
+                    event.setItem(new ItemStack(Material.AIR));
+                    item = originalItem;
+
+                    // However, this also means we have to deal with consuming the item ourselves.
+                    // The event will remove it completely since we set it to air,
+                    // we need to put it back after the event logic has finished.
+                    boolean creative = player.getGameMode() == GameMode.CREATIVE;
+                    if (item.getAmount() > 1 || creative) {
+                        ItemStack offhandItem = player.getInventory().getItemInOffHand();
+                        boolean offhand = item.equals(offhandItem);
+                        if (!creative) {
+                            item.setAmount(item.getAmount() - 1);
+                        }
+                        Plugin plugin = controller.getPlugin();
+                        plugin.getServer().getScheduler().runTask(plugin, new GiveItemTask(player, item, offhand));
                     }
                 }
             }
