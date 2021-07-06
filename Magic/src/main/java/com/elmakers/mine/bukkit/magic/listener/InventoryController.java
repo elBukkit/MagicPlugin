@@ -35,7 +35,7 @@ import com.elmakers.mine.bukkit.api.action.GUIAction;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
-import com.elmakers.mine.bukkit.tasks.CloseInventoryTask;
+import com.elmakers.mine.bukkit.tasks.ActivateIconTask;
 import com.elmakers.mine.bukkit.tasks.WandCastTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
@@ -624,8 +624,7 @@ public class InventoryController implements Listener {
                         // will send left-click animate packets and cause a spell cast.
                         // So delay the close one tick.
                         Plugin plugin = controller.getPlugin();
-                        plugin.getServer().getScheduler().runTaskLater(plugin, new CloseInventoryTask(player), 1);
-                        mage.activateIcon(activeWand, clickedItem);
+                        plugin.getServer().getScheduler().runTaskLater(plugin, new ActivateIconTask(mage, activeWand, clickedItem), 1);
                         event.setCancelled(true);
                     }
 

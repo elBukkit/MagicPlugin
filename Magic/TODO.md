@@ -9,6 +9,7 @@
 
  - ATM acting weird? Heads doubled up, clicking not always working
  - cornelia says world configs don't load unless doing `/magic load`
+ - Do automata drop loot when expiring due to chunk load?
 
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Automata don't fully clean up, or perhaps Blast doesn't, idk
@@ -20,7 +21,6 @@
 
 # Bugs
 
- - Kill trigger doesn't work on mobs (or maybe just mobs using magic)
  - Effects on Repair/SuperRepair broken?
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)
  - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
