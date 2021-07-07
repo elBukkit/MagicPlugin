@@ -4,6 +4,7 @@
 
  - Fix consumable wands giving vanilla food depending on the icon used
  - Add `target_fall_distance` attribute
+ - Master Sword is no longer bound (you will keep it on death though)
 
 # 9.2.1
 

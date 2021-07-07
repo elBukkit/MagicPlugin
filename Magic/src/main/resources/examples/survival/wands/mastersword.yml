@@ -2,7 +2,7 @@
 # The legendary sword that seals the darkness
 #
 mastersword:
-    inherit: base_bound
+    inherit: base_keep
     icon: diamond_sword{CustomModelData:18002}
     legacy_icon: sword_icon:1
     effect_color: '11FF88'

@@ -63,6 +63,7 @@ https://docs.google.com/document/d/1ORA5W9q3UxN40sqemiDPM0u1UF5pvQ-1r91iGcOc4Ys/
 
 ## Suggestions
 
+ - Drop rule add required tools
  - `/mmap slice` command .. still would really like this
  - Can smithing recipes support magic item outputs?  
  - Allow randomized loot in kits
