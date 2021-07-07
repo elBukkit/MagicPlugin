@@ -660,6 +660,7 @@ public interface Mage extends CostReducer, CooldownReducer {
      * <p>This is a computed value, and is not the same as getEntity().getVelocity.
      */
     Vector getVelocity();
+    double getLastFallDistance();
 
     void setVanished(boolean vanished);
     boolean isVanished();

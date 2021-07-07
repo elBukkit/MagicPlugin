@@ -3,6 +3,7 @@
 # 9.3
 
  - Fix consumable wands giving vanilla food depending on the icon used
+ - Add `target_fall_distance` attribute
 
 # 9.2.1
 

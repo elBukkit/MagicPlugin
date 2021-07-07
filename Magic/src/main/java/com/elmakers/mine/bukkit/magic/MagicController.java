@@ -296,7 +296,7 @@ public class MagicController implements MageController {
             "target_armor", "target_luck", "target_knockback_resistance",
             "target_location_x", "target_location_y", "target_location_z",
             "target_mana", "target_mana_max",
-            "target_air", "target_air_max", "target_hunger"
+            "target_air", "target_air_max", "target_hunger", "target_fall_distance"
     );
     private final Set<String> builtinAttributes = ImmutableSet.of(
             "epoch",

@@ -4964,6 +4964,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
+    public double getLastFallDistance() {
+        return lastFallDistance;
+    }
+
+    @Override
     public void setLastDamageType(String damageType) {
         currentDamageType = damageType;
         lastDamageType = damageType;

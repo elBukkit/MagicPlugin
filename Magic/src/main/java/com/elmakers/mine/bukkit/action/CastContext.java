@@ -1529,6 +1529,10 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 Mage targetMage = getTargetMage();
                 return targetMage == null ? null : (double)targetMage.getManaMax();
             }
+            case "target_fall_distance": {
+                Mage targetMage = getTargetMage();
+                return targetMage == null ? null : targetMage.getLastFallDistance();
+            }
         }
         if (value == null && attributeKey.startsWith("target_")) {
             Mage targetMage = getTargetMage();
