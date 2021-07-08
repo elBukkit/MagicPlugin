@@ -193,6 +193,11 @@ public class ArenaController implements Runnable {
     }
 
     public void importArenas(CommandSender sender) {
+        if (sender != null) {
+            sender.sendMessage(ChatColor.RED + "Disabled for now while I re-think how to do this");
+            return;
+        }
+
         File pluginFolder = plugin.getDataFolder().getParentFile();
         File magicArenasFolder = new File(pluginFolder, "MagicArenas");
         if (!magicArenasFolder.exists()) {
