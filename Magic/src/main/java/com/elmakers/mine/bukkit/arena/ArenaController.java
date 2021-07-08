@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -41,57 +40,6 @@ public class ArenaController implements Runnable {
         Arena arena = new Arena(arenaName, this, location, min, max, type);
         arenas.put(arenaName.toLowerCase(), arena);
         return arena;
-    }
-
-    public void save() {
-        save(true);
-    }
-
-    public void save(boolean asynchronous) {
-        final File arenaSaveFile = getDataFile("arenas");
-        final YamlConfiguration arenaSaves = new YamlConfiguration();
-        save(arenaSaves);
-
-        try {
-            arenaSaves.save(arenaSaveFile);
-        } catch (Exception ex) {
-            plugin.getLogger().warning("Error saving arena configuration to " + arenaSaveFile.getName());
-            ex.printStackTrace();
-        }
-
-        if (asynchronous) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (saveLock) {
-                        try {
-                            arenaSaves.save(arenaSaveFile);
-                        } catch (Exception ex) {
-                            plugin.getLogger().warning("Error saving arena configuration to " + arenaSaveFile.getName());
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-            });
-        } else {
-            try {
-                arenaSaves.save(arenaSaveFile);
-            } catch (Exception ex) {
-                plugin.getLogger().warning("Error saving arena configuration to " + arenaSaveFile.getName() + " synchronously");
-                ex.printStackTrace();
-            }
-        }
-    }
-
-    private void save(ConfigurationSection configuration) {
-        Collection<String> oldKeys = configuration.getKeys(false);
-        for (String oldKey : oldKeys) {
-            configuration.set(oldKey, null);
-        }
-        for (Arena arena : arenas.values()) {
-            ConfigurationSection arenaConfig = configuration.createSection(arena.getKey());
-            arena.save(arenaConfig);
-        }
     }
 
     public void saveData(ConfigurationSection configuration) {
@@ -182,7 +130,7 @@ public class ArenaController implements Runnable {
     public void remove(String arenaName) {
         Arena arena = arenas.get(arenaName.toLowerCase());
         if (arena != null) {
-            arena.remove();
+            arena.delete();
             arenas.remove(arenaName.toLowerCase());
         }
     }
@@ -281,6 +229,7 @@ public class ArenaController implements Runnable {
                 arena.loadData(saveData);
             }
             arenas.put(arenaKey.toLowerCase(), arena);
+            arena.save();
             sender.sendMessage(ChatColor.AQUA + "Imported " + arenaKey);
         }
     }

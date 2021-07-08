@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.arena;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -27,12 +29,14 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -45,7 +49,8 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class Arena {
-    private static Random random = new Random();
+    private static final Random random = new Random();
+    private static final Object saveLock = new Object();
 
     private ArenaState state = ArenaState.LOBBY;
     private long started;
@@ -284,8 +289,10 @@ public class Arena {
         return suddenDeathEffect != null;
     }
 
-    public void save(ConfigurationSection configuration) {
-        if (!isValid()) return;
+    public boolean save(ConfigurationSection configuration) {
+        if (!isValid()) {
+            return false;
+        }
 
         configuration.set("name", name);
         configuration.set("description", description);
@@ -374,6 +381,35 @@ public class Arena {
             configuration.set("leaderboard_sign_location", ConfigurationUtils.fromLocation(leaderboardLocation));
             configuration.set("leaderboard_sign_facing", ConfigurationUtils.fromBlockFace(leaderboardFacing));
         }
+        return true;
+    }
+
+    public void save() {
+        Plugin plugin = controller.getPlugin();
+        final File arenaSaveFile = getSaveFile();
+        final YamlConfiguration arenaSaves = new YamlConfiguration();
+        ConfigurationSection arenaConfig = arenaSaves.createSection(key);
+        if (!save(arenaConfig)) {
+            plugin.getLogger().warning("Not saving invalid arena: " + key);
+            return;
+        }
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
+            @Override
+            public void run() {
+                synchronized (saveLock) {
+                    try {
+                        arenaSaves.save(arenaSaveFile);
+                    } catch (Exception ex) {
+                        plugin.getLogger().warning("Error saving arena configuration to " + arenaSaveFile.getName());
+                        ex.printStackTrace();
+                    }
+                }
+            }
+        });
+    }
+
+    protected File getSaveFile() {
+        return new File(controller.getPlugin().getDataFolder(), "arenas/" + key + ".yml");
     }
 
     public void saveData(ConfigurationSection configuration) {
@@ -527,6 +563,18 @@ public class Arena {
         messagePlayers(ChatColor.RED + "This arena has been removed");
         stop();
         clearQueue();
+    }
+
+    public void delete() {
+        remove();
+        File configFile = getSaveFile();
+        if (!configFile.exists()) {
+            controller.getPlugin().getLogger().warning("Can not remove arena " + key + ", if it exists in a combined config file you will need to remove it manually");
+            return;
+        }
+        if (!configFile.delete()) {
+            controller.getPlugin().getLogger().warning("Failed to delete file " + configFile.getAbsolutePath());
+        }
     }
 
     public ArenaPlayer getWinner() {

@@ -6,9 +6,6 @@
  - Arena auto-build/repair using schematics  
  - A way for examples to provide schematics
  - Change "all" stage to store common inherited stage properties
- - Make sure `/magic save` saves arena data
- - Arena configs should never be saved except for a specific arena, using
-   commands
 
 # 1.17
 
