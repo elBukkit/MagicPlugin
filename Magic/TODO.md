@@ -2,10 +2,9 @@
 
 # Arenas
 
- - Leaderboard sign creation needs fixing, MA was using BlockData
+ - Change "all" stage to store common inherited stage properties
  - Arena auto-build/repair using schematics  
  - A way for examples to provide schematics
- - Change "all" stage to store common inherited stage properties
 
 # 1.17
 

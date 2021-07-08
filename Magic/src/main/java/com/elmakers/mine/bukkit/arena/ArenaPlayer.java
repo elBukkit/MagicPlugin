@@ -12,6 +12,7 @@ import org.bukkit.potion.PotionEffect;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class ArenaPlayer implements Comparable<ArenaPlayer> {
     private Mage mage;
@@ -337,9 +338,7 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
     public void heal() {
         Player player = getPlayer();
         if (player != null) {
-            // TODO: Use attribute api
-            @SuppressWarnings("deprecation")
-            double maxHealth = player.getMaxHealth();
+            double maxHealth = CompatibilityLib.getCompatibilityUtils().getMaxHealth(player);
             player.setHealth(maxHealth);
             player.setFoodLevel(20);
             player.setSaturation(20);

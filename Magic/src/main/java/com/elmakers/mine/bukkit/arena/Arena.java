@@ -46,7 +46,10 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DirectionUtils;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.CompatibilityUtils;
 
 public class Arena {
     private static final Random random = new Random();
@@ -1500,16 +1503,15 @@ public class Arena {
                 Block neighborBlock = leaderboardBlock.getRelative(rightDirection);
                 if (canReplace(neighborBlock)) {
                     neighborBlock.setType(signMaterial);
-                    // TODO: Fix this
-                    /*
-                    BlockData data = neighborBlock.getBlockData();
-                    if (data instanceof WallSign) {
-                        WallSign sign = (WallSign)data;
-                        sign.setFacing(leaderboardFacing);
-                        neighborBlock.setBlockData(data);
-                    }
-                    */
+
+
                     BlockState blockState = neighborBlock.getState();
+                    Object data = blockState.getData();
+                    if (data instanceof org.bukkit.material.Sign) {
+                        org.bukkit.material.Sign signData = (org.bukkit.material.Sign)data;
+                        signData.setFacingDirection(leaderboardFacing);
+                        blockState.setData(signData);
+                    }
                     if (blockState instanceof org.bukkit.block.Sign) {
                         org.bukkit.block.Sign signBlock = (org.bukkit.block.Sign)blockState;
                         String playerName = ChatColor.DARK_PURPLE + player.getDisplayName();
@@ -1519,6 +1521,7 @@ public class Arena {
                             + "% " + String.format("(%.2f)", player.getWinConfidence()));
                         signBlock.setLine(2, ChatColor.GREEN + "Wins   : " + ChatColor.DARK_GREEN + player.getWins());
                         signBlock.setLine(3, ChatColor.RED + "Losses : " + ChatColor.DARK_RED + player.getLosses());
+
                     }
                     blockState.update();
                 }
@@ -1719,14 +1722,11 @@ public class Arena {
         if (!DefaultMaterials.isSign(leaderboardBlock.getType())) {
             return false;
         }
-        /*
-        BlockData blockData = leaderboardBlock.getBlockData();
-        if (!(blockData instanceof WallSign)) {
-            controller.getPlugin().getLogger().warning("Block at " + leaderboardBlock.getLocation() + " has no sign data! " + blockData.getClass());
+        BlockFace signDirection = CompatibilityLib.getCompatibilityUtils().getSignFacing(leaderboardBlock);
+        if (signDirection == null) {
+            controller.getPlugin().getLogger().warning("Block at " + leaderboardBlock.getLocation() + " has no sign data");
             return false;
         }
-        WallSign sign = (WallSign)blockData;
-        BlockFace signDirection = sign.getFacing();
         BlockFace rightDirection = goLeft(signDirection);
         Block checkBlock = leaderboardBlock;
         for (int y = 0; y <= leaderboardSize; y++) {
@@ -1744,8 +1744,6 @@ public class Arena {
         leaderboardLocation = leaderboardBlock.getLocation();
         leaderboardFacing = signDirection;
         updateLeaderboard();
-        */
-        // TODO: FIX This
         return true;
     }
 
@@ -1763,7 +1761,7 @@ public class Arena {
     }
 
     public void reset() {
-        // TODO.. need to cycle the id or something :(
+        leaderboard.clear();
     }
 
     public void setWinXP(int xp) {
