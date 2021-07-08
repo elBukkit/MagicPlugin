@@ -156,8 +156,8 @@ public class Arena {
         name = configuration.getString("name", null);
         description = configuration.getString("description", null);
         // These have legacy names
-        minPlayers = configuration.getInt("min_players", configuration.getInt("maxplayers", 2));
-        maxPlayers = configuration.getInt("max_players", configuration.getInt("minplayers", 2));
+        minPlayers = configuration.getInt("min_players", configuration.getInt("minplayers", 2));
+        maxPlayers = configuration.getInt("max_players", configuration.getInt("maxplayers", 2));
         requiredKills = configuration.getInt("required_kills", 1);
 
         portalDamage = configuration.getInt("portal_damage", 0);
