@@ -1391,8 +1391,10 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         Location targetLocation = getTargetLocation();
         Entity targetEntity = getTargetEntity();
         Mage targetMage = targetEntity == null ? null : controller.getRegisteredMage(targetEntity);
+        Wand wand = getWand();
         switch (symbol) {
             case "spell": return getSpell().getName();
+            case "wand": return wand == null ? null : wand.getName();
             case "world": return location == null ? null : location.getWorld().getName();
             case "x": return location == null ? null : (integerValues ? Integer.toString(location.getBlockX()) : Double.toString(location.getX()));
             case "y": return location == null ? null : (integerValues ? Integer.toString(location.getBlockY()) : Double.toString(location.getY()));

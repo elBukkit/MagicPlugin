@@ -33,6 +33,7 @@ import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -63,6 +64,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -71,6 +73,7 @@ import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.api.wand.WandUseMode;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
 import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
@@ -292,6 +295,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private Inventory storedInventory = null;
     private int heldSlot = 0;
     private boolean isActive = false;
+
+    // Boss bar
+    protected BossBar bossBar;
+    protected BossBarConfiguration bossBarConfiguration;
+    protected double bossBarMana;
 
     public Wand(MagicController controller) {
         super(controller);
@@ -2360,6 +2368,37 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         checkActiveMaterial();
+
+        // Boss bar, can be a simple boolean or a config
+        if (getBoolean("boss_bar", false)) {
+            bossBarConfiguration = new BossBarConfiguration(controller, ConfigurationUtils.newConfigurationSection());
+        } else {
+            ConfigurationSection config = getConfigurationSection("boss_bar");
+            if (config != null) {
+                bossBarConfiguration = new BossBarConfiguration(controller, config, "$wand");
+            }
+        }
+    }
+
+    private void checkBossBar() {
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player == null || bossBarConfiguration == null) return;
+        if (bossBar == null) {
+            bossBar = bossBarConfiguration.createBossBar(mage);
+            bossBar.addPlayer(player);
+            bossBarMana = mage.getMana();
+        }
+        double durationRemaining = 1;
+        double costsRemaining = 1;
+        bossBar.setProgress(Math.min(1,Math.max(0,Math.min(durationRemaining, costsRemaining))));
+    }
+
+    private void removeBossBar() {
+        if (bossBar != null) {
+            bossBar.setVisible(false);
+            bossBar.removeAll();
+            bossBar = null;
+        }
     }
 
     @Override
@@ -4439,6 +4478,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         isActive = false;
         mage.sendDebugMessage(ChatColor.YELLOW + " Deactivating wand", 50);
 
+        // Remove boss bar if we have one
+        removeBossBar();
+
         // Play deactivate FX
         playPassiveEffects("deactivate");
 
@@ -4729,6 +4771,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         {
             updateEffects();
         }
+        checkBossBar();
     }
 
     @Override
