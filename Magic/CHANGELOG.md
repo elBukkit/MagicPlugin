@@ -14,6 +14,7 @@
 ## Changes
 
  - Master Sword is no longer bound (you will keep it on death though)
+ - Wands will now look up one level (only, for performance) for messages
 
 # 9.2.1
 

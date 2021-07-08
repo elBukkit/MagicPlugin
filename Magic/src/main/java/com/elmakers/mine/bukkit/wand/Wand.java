@@ -5528,6 +5528,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (templateKey != null) {
             return templateKey;
         }
+        // For performance reasons we will only look one level up
+        template = template == null ? null : template.getParent();
+        templateKey = template == null ? null : template.getMessageKey(key, controller);
+        if (templateKey != null) {
+            return templateKey;
+        }
+
         return "wand." + key;
     }
 
