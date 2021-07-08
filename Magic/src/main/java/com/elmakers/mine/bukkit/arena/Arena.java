@@ -155,8 +155,9 @@ public class Arena {
     public void load(ConfigurationSection configuration) {
         name = configuration.getString("name", null);
         description = configuration.getString("description", null);
-        minPlayers = configuration.getInt("minplayers");
-        maxPlayers = configuration.getInt("maxplayers");
+        // These have legacy names
+        minPlayers = configuration.getInt("min_players", configuration.getInt("maxplayers"));
+        maxPlayers = configuration.getInt("max_players", configuration.getInt("minplayers"));
         requiredKills = configuration.getInt("required_kills", 1);
 
         portalDamage = configuration.getInt("portal_damage", 0);
@@ -299,8 +300,8 @@ public class Arena {
 
         configuration.set("name", name);
         configuration.set("description", description);
-        configuration.set("minplayers", minPlayers);
-        configuration.set("maxplayers", maxPlayers);
+        configuration.set("min_players", minPlayers);
+        configuration.set("max_players", maxPlayers);
         configuration.set("required_kills", requiredKills);
 
         configuration.set("lose_xp", loseXP);
