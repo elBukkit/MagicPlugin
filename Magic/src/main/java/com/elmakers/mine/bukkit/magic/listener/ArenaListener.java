@@ -31,7 +31,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
 
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
-import com.elmakers.mine.bukkit.api.event.SaveEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.arena.Arena;
@@ -340,10 +339,5 @@ public class ArenaListener implements Listener {
         if (event.getView().getTitle().contains("Leaderboard")) {
             event.getWhoClicked().closeInventory();
         }
-    }
-
-    @EventHandler
-    public void onMagicSave(SaveEvent event) {
-        controller.saveData(event.isAsynchronousSave());
     }
 }

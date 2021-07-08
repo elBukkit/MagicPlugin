@@ -8,14 +8,12 @@ import java.util.WeakHashMap;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
@@ -27,13 +25,11 @@ public class ArenaController implements Runnable {
     private final MageController magic;
     private final Object saveLock = new Object();
 
-    private BukkitTask task = null;
-
     public ArenaController(MageController magic) {
         this.magic = magic;
         this.plugin = magic.getPlugin();
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
-        task = scheduler.runTaskTimer(plugin, this, 1, 10);
+        scheduler.runTaskTimer(plugin, this, 1, 10);
     }
 
     public Arena addArena(String arenaName, Location location, int min, int max, ArenaType type) {
@@ -93,7 +89,7 @@ public class ArenaController implements Runnable {
         }
     }
 
-    private void saveData(ConfigurationSection configuration) {
+    public void saveData(ConfigurationSection configuration) {
         Collection<String> oldKeys = configuration.getKeys(false);
         for (String oldKey : oldKeys) {
             configuration.set(oldKey, null);
@@ -101,46 +97,6 @@ public class ArenaController implements Runnable {
         for (Arena arena : arenas.values()) {
             ConfigurationSection arenaConfig = configuration.createSection(arena.getKey());
             arena.saveData(arenaConfig);
-        }
-    }
-
-    public void saveData() {
-        saveData(true);
-    }
-
-    public void saveData(boolean asynchronous) {
-        final File arenaSaveFile = getDataFile("data");
-        final YamlConfiguration arenaSaves = new YamlConfiguration();
-        saveData(arenaSaves);
-
-        try {
-            arenaSaves.save(arenaSaveFile);
-        } catch (Exception ex) {
-            plugin.getLogger().warning("Error saving arena data to " + arenaSaveFile.getName());
-            ex.printStackTrace();
-        }
-
-        if (asynchronous) {
-            Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-                @Override
-                public void run() {
-                    synchronized (saveLock) {
-                        try {
-                            arenaSaves.save(arenaSaveFile);
-                        } catch (Exception ex) {
-                            plugin.getLogger().warning("Error saving arena data to " + arenaSaveFile.getName());
-                            ex.printStackTrace();
-                        }
-                    }
-                }
-            });
-        } else {
-            try {
-                arenaSaves.save(arenaSaveFile);
-            } catch (Exception ex) {
-                plugin.getLogger().warning("Error saving arena data to " + arenaSaveFile.getName() + " synchronously");
-                ex.printStackTrace();
-            }
         }
     }
 

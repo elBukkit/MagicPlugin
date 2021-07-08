@@ -2646,6 +2646,16 @@ public class MagicController implements MageController {
         }
     }
 
+    protected void saveArenas(Collection<YamlDataFile> stores) {
+        try {
+            YamlDataFile arenaData = createDataFile(ARENAS_FILE);
+            arenaController.saveData(arenaData);
+            stores.add(arenaData);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
     protected void saveAutomata(Collection<YamlDataFile> stores) {
         try {
             YamlDataFile automataData = createDataFile(AUTOMATA_DATA_FILE);
@@ -2947,6 +2957,7 @@ public class MagicController implements MageController {
         saveAutomata(saveData);
         saveWarps(saveData);
         saveNPCs(saveData);
+        saveArenas(saveData);
 
         if (mageDataStore != null && !shuttingDown) {
             if (asynchronous) {
