@@ -38,6 +38,9 @@ cooldown:
     description: "&eCooldown: &6$time"
     mage_description: "&cExhaustion: &6$time"
 
+charges:
+  description: "&eCharges: &6$count"
+
 warmup:
     description: "&7Warmup: &6$time"
 

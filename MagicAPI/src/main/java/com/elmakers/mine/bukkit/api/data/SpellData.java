@@ -13,6 +13,7 @@ public class SpellData {
     private long lastEarn;
     private long castCount;
     private long cooldownExpiration;
+    private long chargesUsed;
     private ConfigurationSection variables;
 
     public SpellData(SpellKey spellKey) {
@@ -102,5 +103,13 @@ public class SpellData {
 
     public void setLastEarn(long lastEarn) {
         this.lastEarn = lastEarn;
+    }
+
+    public long getChargesUsed() {
+        return chargesUsed;
+    }
+
+    public void setChargesUsed(long chargesUsed) {
+        this.chargesUsed = chargesUsed;
     }
 }

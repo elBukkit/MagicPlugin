@@ -108,7 +108,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public static final String[] EXAMPLE_PERCENTAGES = {"0", "0.1", "0.25", "0.5", "0.75", "1"};
 
     public static final String[] OTHER_PARAMETERS = {
-        "transparent", "target", "target_type", "range", "duration", "player"
+        "transparent", "target", "target_type", "range", "duration", "player", "cooldown", "charges"
     };
 
     public static final String[] WORLD_PARAMETERS = {
@@ -290,6 +290,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private boolean                             bypassCooldown          = false;
     private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
+    private int                                 charges                 = 0;
     private int                                 displayCooldown         = -1;
     private int                                 warmup                  = 0;
     private int                                 earnCooldown            = 0;
@@ -1419,6 +1420,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         cooldown = workingParameters.getInt("cooldown", cooldown);
         cooldown = workingParameters.getInt("cool", cooldown);
         mageCooldown = workingParameters.getInt("cooldown_mage", mageCooldown);
+        charges = workingParameters.getInt("charges", charges);
 
         // Color override
         color = ConfigurationUtils.getColor(workingParameters, "color", color);
@@ -1730,6 +1732,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         double cooldownReduction = wand != null ? wand.getCooldownReduction() : mage.getCooldownReduction();
         cooldownReduction += this.cooldownReduction;
         spellData.setLastCast(System.currentTimeMillis());
+        spellData.setChargesUsed(spellData.getChargesUsed() + 1);
         if (!isCooldownFree && !bypassCooldown && cooldown > 0 && cooldownReduction < 1) {
             int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
             spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), System.currentTimeMillis() + reducedCooldown));
@@ -1995,6 +1998,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         cooldown = parameters.getInt("cooldown", 0);
         cooldown = parameters.getInt("cool", cooldown);
         mageCooldown = parameters.getInt("cooldown_mage", 0);
+        charges = parameters.getInt("charges", 0);
         displayCooldown = parameters.getInt("display_cooldown", -1);
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
@@ -2507,6 +2511,11 @@ public class BaseSpell implements MageSpell, Cloneable {
         return getTimeDescription(controller.getMessages(), warmup);
     }
 
+    @Override
+    public int getCharges() {
+        return charges;
+    }
+
     /**
      * @return The cooldown to show in UI. Spells can manually set their
      *         "display_cooldown" if they apply cooldown via an action.
@@ -2553,6 +2562,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void clearCooldown() {
         spellData.setCooldownExpiration(0);
+        spellData.setChargesUsed(0);
     }
 
     @Override
@@ -2578,9 +2588,12 @@ public class BaseSpell implements MageSpell, Cloneable {
         {
             long now = System.currentTimeMillis();
             if (spellData.getCooldownExpiration() > now) {
-                remaining = spellData.getCooldownExpiration() - now;
+                if (spellData.getChargesUsed() >= charges) {
+                    remaining = spellData.getCooldownExpiration() - now;
+                }
             } else {
                 spellData.setCooldownExpiration(0);
+                spellData.setChargesUsed(0);
             }
         }
 
@@ -3007,21 +3020,31 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
         }
         String warmupDescription = getWarmupDescription();
-        if (warmupDescription != null && !warmupDescription.isEmpty()) {
-            lore.add(messages.get("warmup.description").replace("$time", warmupDescription));
+        String description = messages.get("warmup.description");
+        if (warmupDescription != null && !warmupDescription.isEmpty() && !description.isEmpty()) {
+            lore.add(description.replace("$time", warmupDescription));
         }
+        description = messages.get("charges.description");
+        if (charges > 1 && !description.isEmpty()) {
+            lore.add(description.replace("$count", Integer.toString(charges)));
+        }
+        description = messages.get("cooldown.description");
         String cooldownDescription = getCooldownDescription(mage, wand);
-        if (cooldownDescription != null && !cooldownDescription.isEmpty()) {
-            lore.add(messages.get("cooldown.description").replace("$time", cooldownDescription));
+        if (cooldownDescription != null && !cooldownDescription.isEmpty() && !description.isEmpty()) {
+            lore.add(description.replace("$time", cooldownDescription));
         }
+        description = messages.get("cooldown.mage_description");
         String mageCooldownDescription = getMageCooldownDescription(mage, wand);
-        if (mageCooldownDescription != null && !mageCooldownDescription.isEmpty()) {
-            lore.add(messages.get("cooldown.mage_description").replace("$time", mageCooldownDescription));
+        if (mageCooldownDescription != null && !mageCooldownDescription.isEmpty() && !description.isEmpty()) {
+            lore.add(description.replace("$time", mageCooldownDescription));
         }
 
         double range = getRange();
         if (range > 0) {
-            lore.add(ChatColor.GRAY + messages.getRangeDescription(range, "wand.range_description"));
+            String message = messages.getRangeDescription(range, "wand.range_description");
+            if (!message.isEmpty()) {
+                lore.add(ChatColor.GRAY + message);
+            }
         }
 
         String effectiveDuration = this.getDurationDescription(messages);
@@ -3049,17 +3072,19 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         reducerMage = mage;
         reducerWand = wand;
-        if (costs != null) {
+        description = messages.get("wand.costs_description");
+        if (costs != null && !description.isEmpty()) {
             for (CastingCost cost : costs) {
                 if (!cost.isEmpty(this)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages, this)));
+                    lore.add(ChatColor.YELLOW + description.replace("$description", cost.getFullDescription(messages, this)));
                 }
             }
         }
-        if (activeCosts != null) {
+        description = messages.get("wand.active_costs_description");
+        if (activeCosts != null && !description.isEmpty()) {
             for (CastingCost cost : activeCosts) {
                 if (!cost.isEmpty(this)) {
-                    lore.add(ChatColor.YELLOW + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages, this)));
+                    lore.add(ChatColor.YELLOW + description.replace("$description", cost.getFullDescription(messages, this)));
                 }
             }
         }

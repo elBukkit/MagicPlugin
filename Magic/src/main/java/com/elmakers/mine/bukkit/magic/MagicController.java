@@ -4929,48 +4929,65 @@ public class MagicController implements MageController {
             lines.add("");
         }
 
+        int charges = spell.getCharges();
+        String description = messages.get("charges.description");
+        if (charges > 1 && !description.isEmpty()) {
+            String chargesDescription = description.replace("$count", Integer.toString(charges));
+            lines.add("" + ChatColor.DARK_PURPLE + chargesDescription);
+        }
+
         String spellCooldownDescription = spell.getCooldownDescription();
-        if (spellCooldownDescription != null && spellCooldownDescription.length() > 0) {
-            spellCooldownDescription = messages.get("cooldown.description").replace("$time", spellCooldownDescription);
+        description = messages.get("cooldown.description");
+        if (spellCooldownDescription != null && spellCooldownDescription.length() > 0 && !description.isEmpty()) {
+            spellCooldownDescription = description.replace("$time", spellCooldownDescription);
             lines.add("" + ChatColor.DARK_PURPLE + spellCooldownDescription);
         }
 
         String spellMageCooldownDescription = spell.getMageCooldownDescription();
-        if (spellMageCooldownDescription != null && spellMageCooldownDescription.length() > 0) {
-            spellMageCooldownDescription = messages.get("cooldown.mage_description").replace("$time", spellMageCooldownDescription);
+        description = messages.get("cooldown.mage_description");
+        if (spellMageCooldownDescription != null && spellMageCooldownDescription.length() > 0 && !description.isEmpty()) {
+            spellMageCooldownDescription = description.replace("$time", spellMageCooldownDescription);
             lines.add("" + ChatColor.RED + spellMageCooldownDescription);
         }
 
         Collection<CastingCost> costs = spell.getCosts();
-        if (costs != null) {
+        description = messages.get("wand.costs_description");
+        if (costs != null && !description.isEmpty()) {
             for (CastingCost cost : costs) {
                 if (!cost.isEmpty()) {
-                    lines.add(ChatColor.DARK_PURPLE + messages.get("wand.costs_description").replace("$description", cost.getFullDescription(messages)));
+                    lines.add(ChatColor.DARK_PURPLE + description.replace("$description", cost.getFullDescription(messages)));
                 }
             }
         }
         Collection<CastingCost> activeCosts = spell.getActiveCosts();
+        description = messages.get("wand.active_costs_description");
         if (activeCosts != null) {
             for (CastingCost cost : activeCosts) {
                 if (!cost.isEmpty()) {
-                    lines.add(ChatColor.DARK_PURPLE + messages.get("wand.active_costs_description").replace("$description", cost.getFullDescription(messages)));
+                    lines.add(ChatColor.DARK_PURPLE + description.replace("$description", cost.getFullDescription(messages)));
                 }
             }
         }
 
-        for (String pathKey : paths) {
-            WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
-            if (!checkPath.isHidden() && (checkPath.hasSpell(spell.getKey()) || checkPath.hasExtraSpell(spell.getKey()))) {
-                lines.add(ChatColor.DARK_BLUE + messages.get("spell.available_path").replace("$path", checkPath.getName()));
-                break;
+        description = messages.get("spell.available_path");
+        if (!description.isEmpty()) {
+            for (String pathKey : paths) {
+                WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
+                if (!checkPath.isHidden() && (checkPath.hasSpell(spell.getKey()) || checkPath.hasExtraSpell(spell.getKey()))) {
+                    lines.add(ChatColor.DARK_BLUE + description.replace("$path", checkPath.getName()));
+                    break;
+                }
             }
         }
 
-        for (String pathKey : paths) {
-            WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
-            if (checkPath.requiresSpell(spell.getKey())) {
-                lines.add(ChatColor.DARK_RED + messages.get("spell.required_path").replace("$path", checkPath.getName()));
-                break;
+        description = messages.get("spell.required_path");
+        if (!description.isEmpty()) {
+            for (String pathKey : paths) {
+                WandUpgradePath checkPath = WandUpgradePath.getPath(pathKey);
+                if (checkPath.requiresSpell(spell.getKey())) {
+                    lines.add(ChatColor.DARK_RED + description.replace("$path", checkPath.getName()));
+                    break;
+                }
             }
         }
 
@@ -4991,8 +5008,9 @@ public class MagicController implements MageController {
             }
         }
 
-        if (spell.usesBrush()) {
-            lines.add(ChatColor.DARK_GRAY + messages.get("spell.brush"));
+        description = messages.get("spell.brush");
+        if (spell.usesBrush() && !description.isEmpty()) {
+            lines.add(ChatColor.DARK_GRAY + description);
         }
 
         SpellKey baseKey = spell.getSpellKey();
@@ -5004,9 +5022,10 @@ public class MagicController implements MageController {
             upgradeKey = new SpellKey(upgradeKey.getBaseKey(), upgradeKey.getLevel() + 1);
             upgradeSpell = getSpellTemplate(upgradeKey.getKey());
         }
-        if (spellLevels > 0) {
+        description = messages.get("spell.levels_available");
+        if (spellLevels > 0 && !description.isEmpty()) {
             spellLevels++;
-            lines.add(ChatColor.DARK_AQUA + messages.get("spell.levels_available").replace("$levels", Integer.toString(spellLevels)));
+            lines.add(ChatColor.DARK_AQUA + description.replace("$levels", Integer.toString(spellLevels)));
         }
 
         String usage = spell.getUsage();

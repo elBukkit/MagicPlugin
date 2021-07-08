@@ -2,8 +2,17 @@
 
 # 9.3
 
+## Fixes
+
  - Fix consumable wands giving vanilla food depending on the icon used
+   
+## Additions
+
  - Add `target_fall_distance` attribute
+ - Add `charges` spell property, a spell can be used several times before going on cooldown   
+
+## Changes
+
  - Master Sword is no longer bound (you will keep it on death though)
 
 # 9.2.1

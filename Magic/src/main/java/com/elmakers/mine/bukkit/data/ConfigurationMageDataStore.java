@@ -114,6 +114,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 node.set("cooldown_expiration", spell.getCooldownExpiration());
                 node.set("active", spell.isActive() ? true : null);
                 node.set("enabled", spell.isEnabled() ? null : false);
+                node.set("charges_used", spell.getChargesUsed());
             }
         }
 
@@ -351,6 +352,8 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 spellData.setLastEarn(Math.max(spellData.getLastEarn(), node.getLong("last_earn", 0)));
                 spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), node.getLong("cooldown_expiration", 0)));
                 spellData.setIsActive(node.getBoolean("active"));
+                spellData.setChargesUsed(node.getInt("charges_used"));
+                node.set("charges_used", null);
                 node.set("cast_count", null);
                 node.set("last_cast", null);
                 node.set("last_earn", null);
