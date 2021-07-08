@@ -32,6 +32,9 @@ public class ArenaController implements Runnable {
     public ArenaController(MageController magic) {
         this.magic = magic;
         this.plugin = magic.getPlugin();
+    }
+
+    public void start() {
         BukkitScheduler scheduler = plugin.getServer().getScheduler();
         scheduler.runTaskTimer(plugin, this, 1, 10);
     }

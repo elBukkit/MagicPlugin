@@ -1457,6 +1457,7 @@ public class MagicController implements MageController {
         requirementsController = new RequirementsController(this);
         worldController = new WorldController(this);
         arenaController = new ArenaController(this);
+        arenaController.start();
         if (CompatibilityLib.hasStatistics() && !CompatibilityLib.hasJumpEvent()) {
             jumpController = new JumpController(this);
         }

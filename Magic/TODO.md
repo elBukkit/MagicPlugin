@@ -2,7 +2,7 @@
 
 # Arenas
 
- - Change "all" stage to store common inherited stage properties
+ - Change "all" stage to store common inherited stage properties (oops, guess not)
  - Arena auto-build/repair using schematics  
  - A way for examples to provide schematics
 
