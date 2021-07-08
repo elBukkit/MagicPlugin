@@ -1020,6 +1020,10 @@ public class Arena {
         final Server server = controller.getPlugin().getServer();
         if (players.size() == 0 && state != ArenaState.WON) {
             if (isMobArena()) {
+                for (ArenaPlayer loser : deadPlayers) {
+                    loser.lost();
+                    updateLeaderboard(loser);
+                }
                 announce(ChatColor.RED + "The " + ChatColor.YELLOW + getName() + ChatColor.RED + " match has ended, better luck next time!");
             } else {
                 announce(ChatColor.RED + "The " + ChatColor.YELLOW + getName() + ChatColor.RED + " match ended in a default");
