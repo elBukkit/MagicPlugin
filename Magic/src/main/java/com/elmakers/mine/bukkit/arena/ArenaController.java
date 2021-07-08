@@ -1,19 +1,24 @@
 package com.elmakers.mine.bukkit.arena;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
+import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitScheduler;
+import org.geysermc.connector.common.ChatColor;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
@@ -229,6 +234,54 @@ public class ArenaController implements Runnable {
             if (arena.isStarted()) {
                 arena.stop();
             }
+        }
+    }
+
+    public void importArenas(CommandSender sender) {
+        File pluginFolder = plugin.getDataFolder().getParentFile();
+        File magicArenasFolder = new File(pluginFolder, "MagicArenas");
+        if (!magicArenasFolder.exists()) {
+            sender.sendMessage(ChatColor.RED + "Could not find MagicArenas folder, did you have it installed?");
+            return;
+        }
+
+        YamlConfiguration saveConfiguration = new YamlConfiguration();
+        YamlConfiguration arenaConfiguration = new YamlConfiguration();
+        File arenaFile = new File(magicArenasFolder, "arenas.yml");
+        if (arenaFile.exists()) {
+            try {
+                arenaConfiguration.load(arenaFile);
+            } catch (IOException | InvalidConfigurationException ex) {
+                sender.sendMessage(ChatColor.RED + "Could not read arena config file, please see console for errors");
+                plugin.getLogger().log(Level.SEVERE, "Error loading " + arenaFile.getAbsolutePath(), ex);
+            }
+        }
+
+        File saveFile = new File(magicArenasFolder, "data.yml");
+        if (saveFile.exists()) {
+            try {
+                arenaConfiguration.load(arenaFile);
+            } catch (IOException | InvalidConfigurationException ex) {
+                sender.sendMessage(ChatColor.RED + "Could not read arena config file, please see console for errors");
+                plugin.getLogger().log(Level.SEVERE, "Error loading " + arenaFile.getAbsolutePath(), ex);
+            }
+        }
+
+        Collection<String> arenaKeys = arenaConfiguration.getKeys(false);
+        for (String arenaKey : arenaKeys) {
+            if (arenas.containsKey(arenaKey)) {
+                sender.sendMessage(ChatColor.YELLOW + "Skipping " + arenaKey + ", that arena already exists");
+                continue;
+            }
+
+            Arena arena = new Arena(arenaKey, this);
+            arena.load(arenaConfiguration.getConfigurationSection(arenaKey));
+            ConfigurationSection saveData = saveConfiguration.getConfigurationSection(arenaKey);
+            if (saveData != null) {
+                arena.loadData(saveData);
+            }
+            arenas.put(arenaKey.toLowerCase(), arena);
+            sender.sendMessage(ChatColor.AQUA + "Imported " + arenaKey);
         }
     }
 }

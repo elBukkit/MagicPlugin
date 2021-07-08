@@ -3,10 +3,6 @@
 # Arenas
 
  - Leaderboard sign creation needs fixing, MA was using BlockData
- - Need import command to pull in MA arena configs
- - Separate data/arena loading
- - Move data to data folder
- - Move arena config to arenas.yml/arenas folder
  - Arena auto-build/repair using schematics  
  - A way for examples to provide schematics
  - Change "all" stage to store common inherited stage properties

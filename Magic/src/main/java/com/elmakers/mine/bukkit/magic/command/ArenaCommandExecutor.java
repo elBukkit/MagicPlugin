@@ -194,6 +194,11 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
+        if (subCommand.equalsIgnoreCase("import")) {
+            arenaController.importArenas(sender);
+            return true;
+        }
+
         if (subCommand.equalsIgnoreCase("describe") && args.length < 2) {
             Collection<Arena> arenas = arenaController.getArenas();
             sender.sendMessage(ChatColor.BLUE + "Arenas: " + ChatColor.DARK_AQUA + arenas.size());
