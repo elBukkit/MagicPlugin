@@ -282,6 +282,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "Magic.commands.mage.", "deactivate");
             addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
             addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
+            addIfPermissible(sender, options, "Magic.commands.mage.", "switch");
             addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
             addIfPermissible(sender, options, "Magic.commands.mage.", "attribute");
             addIfPermissible(sender, options, "Magic.commands.mage.", "bypass");
@@ -416,7 +417,8 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
                 if (subCommand.equalsIgnoreCase("lock")
                         || subCommand.equalsIgnoreCase("unlock")
-                        || subCommand.equalsIgnoreCase("activate")) {
+                        || subCommand.equalsIgnoreCase("activate")
+                        || subCommand.equalsIgnoreCase("switch")) {
                     options.addAll(api.getController().getMageClassKeys());
                 }
             }
