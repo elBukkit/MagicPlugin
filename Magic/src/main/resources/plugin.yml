@@ -974,7 +974,7 @@ commands:
       usage: |
 
          /mwarp map <marker icon>
-    marena:
+  marena:
       description: Commands for managing mob and pvp arenas
       usage: /marena [add, remove, describe, configure, stage, start, stop, join, leave]
       permission: Magic.commands.marena
@@ -2015,10 +2015,6 @@ permissions:
     type: boolean
   Magic.commands.marena:
     description: Player may use the base /marena command
-    type: boolean
-    default: op
-  Magic.commands.marena.load:
-    description: Player may use the /marena load command
     type: boolean
     default: op
   Magic.commands.marena.add:
