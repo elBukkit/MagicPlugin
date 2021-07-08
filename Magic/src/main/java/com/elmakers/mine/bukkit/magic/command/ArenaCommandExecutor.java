@@ -29,8 +29,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ArenaCommandExecutor extends MagicTabExecutor {
     private static final String[] SUB_COMMANDS = {
-        "start", "stop", "add", "remove", "configure", "describe", "join", "leave", "load",
-        "save", "stats", "reset", "stage"
+        "start", "stop", "add", "remove", "configure", "describe", "join", "leave", "stats", "reset", "stage"
     };
 
     private static final String[] STAGE_PROPERTIES = {
@@ -84,8 +83,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
 
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
-        String completeCommand = args.length > 0 ? args[args.length - 1] : "";
-
         List<String> options = new ArrayList<>();
         if (args.length < 2) {
             options.addAll(Arrays.asList(SUB_COMMANDS));
@@ -167,11 +164,11 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!command.getName().equalsIgnoreCase("arena")) {
+        if (!command.getName().equalsIgnoreCase("marena")) {
             return false;
         }
 
-        if (!sender.hasPermission("MagicArenas.commands.arena")) {
+        if (!sender.hasPermission("MagicArenas.commands.marena")) {
             sendNoPermission(sender);
             return true;
         }
@@ -192,21 +189,8 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         }
 
         String subCommand = args[0];
-        if (!sender.hasPermission("MagicArenas.commands.arena." + subCommand)) {
+        if (!sender.hasPermission("Magic.commands.marena." + subCommand)) {
             sendNoPermission(sender);
-            return true;
-        }
-
-        if (subCommand.equalsIgnoreCase("load")) {
-            arenaController.load();
-            sender.sendMessage("Configuration and data reloaded");
-            return true;
-        }
-
-        if (subCommand.equalsIgnoreCase("save")) {
-            arenaController.save();
-            arenaController.saveData();
-            sender.sendMessage("Data saved");
             return true;
         }
 
