@@ -208,7 +208,7 @@ public class ArenaController implements Runnable {
         File saveFile = new File(magicArenasFolder, "data.yml");
         if (saveFile.exists()) {
             try {
-                arenaConfiguration.load(arenaFile);
+                saveConfiguration.load(saveFile);
             } catch (IOException | InvalidConfigurationException ex) {
                 sender.sendMessage(ChatColor.RED + "Could not read arena config file, please see console for errors");
                 plugin.getLogger().log(Level.SEVERE, "Error loading " + arenaFile.getAbsolutePath(), ex);
@@ -232,5 +232,6 @@ public class ArenaController implements Runnable {
             arena.save();
             sender.sendMessage(ChatColor.AQUA + "Imported " + arenaKey);
         }
+        magic.getAPI().save();
     }
 }
