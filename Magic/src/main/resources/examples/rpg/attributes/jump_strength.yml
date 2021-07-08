@@ -1,0 +1,3 @@
+jump_strength:
+  default: 0.1
+  # TODO: Find some way for this attribute to be computed after all others?

@@ -10,4 +10,4 @@ jumping:
           additive: true
   parameters:
     target: self
-    speed: dexterity * 0.1
+    speed: jump_strength

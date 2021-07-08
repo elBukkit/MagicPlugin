@@ -5,6 +5,9 @@ monk:
   icon_disabled: spell_icon_disabled:270
   spells:
     - thousandpunches
+    - jumping
+  attributes:
+    jump_strength: dexterity * 0.1
   entity_attributes:
     generic_max_health:
       value: "constitution * 5"
