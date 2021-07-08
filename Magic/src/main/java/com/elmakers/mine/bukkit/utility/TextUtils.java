@@ -160,7 +160,7 @@ public class TextUtils
 
         if (isTitle && player != null) {
             String fullMessage = prefix + messages[0];
-            String subtitle = messages.length > 1 ? prefix + messages[1] : null;
+            String subtitle = messages.length > 1 ? prefix + messages[1] : "";
             CompatibilityLib.getCompatibilityUtils().sendTitle(player, fullMessage, subtitle, -1, -1, -1);
             if (messages.length > 2) {
                 messages = Arrays.copyOfRange(messages, 2, messages.length);
