@@ -1,0 +1,14 @@
+vanilla:
+  health_scale: 0
+  entity_attributes:
+    generic_max_health: 20
+    generic_follow_range: 0
+    generic_knockback_resistance: 0
+    generic_movement_speed: 0.1
+    generic_attack_damage: 2
+    generic_armor: 0
+    generic_armor_toughness: 0
+    generic_attack_knockback: 0
+    generic_attack_speed: 4
+    generic_luck: 0
+    generic_flying_speed: 0.4
