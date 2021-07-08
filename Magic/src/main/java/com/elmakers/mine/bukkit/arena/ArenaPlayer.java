@@ -9,13 +9,13 @@ import org.bukkit.entity.Player;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 
+import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.wand.Wand;
-import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 
 public class ArenaPlayer implements Comparable<ArenaPlayer> {
     private Mage mage;
-    private WandUpgradePath path;
+    private ProgressionPath path;
     private final Arena arena;
     private final UUID uuid;
     private String name;
@@ -58,13 +58,9 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
         displayName = player.getDisplayName();
 
         path = null;
-        String baseTemplate = controller.getPathTemplate();
-        if (baseTemplate != null)
-        {
-            Wand boundWand = mage.getBoundWand(baseTemplate);
-            if (boundWand != null) {
-                path = boundWand.getPath();
-            }
+        CasterProperties mageClass = mage.getActiveProperties();
+        if (mageClass != null) {
+            path = mageClass.getPath();
         }
 
         wins = get("won");
@@ -316,8 +312,7 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
 
     public void teleport(Location location) {
         Player player = getPlayer();
-        if (player != null) {
-
+        if (player != null && location != null) {
             if (player.isDead()) {
                 player.setMetadata("respawnLocation", new FixedMetadataValue(arena.getController().getPlugin(), location));
             } else {

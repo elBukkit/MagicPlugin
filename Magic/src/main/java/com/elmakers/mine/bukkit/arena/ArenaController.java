@@ -28,11 +28,12 @@ public class ArenaController implements Runnable {
     private final Object saveLock = new Object();
 
     private BukkitTask task = null;
-    private String pathTemplate = "beginner";
 
     public ArenaController(MageController magic) {
         this.magic = magic;
         this.plugin = magic.getPlugin();
+        BukkitScheduler scheduler = plugin.getServer().getScheduler();
+        task = scheduler.runTaskTimer(plugin, this, 1, 10);
     }
 
     public Arena addArena(String arenaName, Location location, int min, int max, ArenaType type) {
@@ -143,26 +144,7 @@ public class ArenaController implements Runnable {
         }
     }
 
-    public void load() {
-        BukkitScheduler scheduler = plugin.getServer().getScheduler();
-        if (task != null) {
-            task.cancel();
-            task = null;
-        }
-        ConfigurationSection arenaConfiguration = loadDataFile("arenas");
-        load(arenaConfiguration);
-
-        ConfigurationSection arenaData = loadDataFile("data");
-        loadData(arenaData);
-
-        plugin.reloadConfig();
-        Configuration config = plugin.getConfig();
-        pathTemplate = config.getString("path_template", pathTemplate);
-
-        task = scheduler.runTaskTimer(plugin, this, 1, 10);
-    }
-
-    private void load(ConfigurationSection configuration) {
+    public void load(ConfigurationSection configuration) {
         if (configuration == null) return;
 
         Collection<String> arenaKeys = configuration.getKeys(false);
@@ -176,15 +158,12 @@ public class ArenaController implements Runnable {
             arena.load(configuration.getConfigurationSection(arenaKey));
             arenas.put(arenaKey.toLowerCase(), arena);
         }
-
-        plugin.getLogger().info("Loaded " + arenas.size() + " arenas");
     }
 
-    private void loadData(ConfigurationSection configuration) {
+    public void loadData(ConfigurationSection configuration) {
         if (configuration == null) return;
 
         Collection<String> arenaKeys = configuration.getKeys(false);
-
         for (String arenaKey : arenaKeys) {
             Arena arena = arenas.get(arenaKey);
             if (arena != null) {
@@ -235,15 +214,6 @@ public class ArenaController implements Runnable {
         arenaMobs.put(entity, arena);
     }
 
-    protected ConfigurationSection loadDataFile(String fileName) {
-        File dataFile = getDataFile(fileName);
-        if (!dataFile.exists()) {
-            return null;
-        }
-        Configuration configuration = YamlConfiguration.loadConfiguration(dataFile);
-        return configuration;
-    }
-
     protected File getDataFile(String fileName) {
         return new File(plugin.getDataFolder(), fileName + ".yml");
     }
@@ -287,10 +257,6 @@ public class ArenaController implements Runnable {
 
     public MageController getMagic() {
         return magic;
-    }
-
-    public String getPathTemplate() {
-        return pathTemplate;
     }
 
     @Override

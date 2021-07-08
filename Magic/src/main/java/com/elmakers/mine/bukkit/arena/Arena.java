@@ -698,7 +698,10 @@ public class Arena {
         for (ArenaPlayer arenaPlayer : queue) {
             Player player = arenaPlayer.getPlayer();
             if (player != null) {
-                arenaPlayer.teleport(getExit());
+                Location exit = getExit();
+                if (exit != null) {
+                    arenaPlayer.teleport(getExit());
+                }
                 controller.unregister(player);
             }
         }

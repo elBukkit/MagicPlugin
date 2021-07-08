@@ -271,6 +271,7 @@ public class MagicController implements MageController {
     private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
     private static final String LOST_WANDS_FILE = "lostwands";
     private static final String WARPS_FILE = "warps";
+    private static final String ARENAS_FILE = "arenas";
     private static final String SPELLS_DATA_FILE = "spells";
     private static final String AUTOMATA_DATA_FILE = "automata";
     private static final String NPC_DATA_FILE = "npcs";
@@ -1846,6 +1847,13 @@ public class MagicController implements MageController {
             }
         }
 
+        // Load arenas, this needs to be done post-startup because it requires references to loaded worlds
+        // This should probably be improved by using SerializedLocation or something in Arena
+        logger.setContext("arenas");
+        arenaController.load(loader.getArenas());
+        logger.setContext(null);
+        log("Loaded " + arenaController.getArenas().size() + " arenas");
+
         // Final loading tasks
         finishLoad(sender);
 
@@ -2436,7 +2444,11 @@ public class MagicController implements MageController {
             info("Loaded " + warpController.getCustomWarps().size() + " warps");
         }
 
-        arenaController.load();
+        ConfigurationSection arenas = loadDataFile(ARENAS_FILE);
+        if (arenas != null) {
+            arenaController.loadData(arenas);
+            info("Loaded arena data");
+        }
 
         getLogger().info("Finished loading data.");
         dataLoaded = true;

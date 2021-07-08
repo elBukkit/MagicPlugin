@@ -571,6 +571,11 @@
 
                                 <!-- Default Configs -->
 
+                                <concat destfile="${project.build.directory}/classes/defaults/arenas.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/arenas">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/defaults/items.defaults.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/defaults/items">
                                         <include name="**/*.yml"/>
