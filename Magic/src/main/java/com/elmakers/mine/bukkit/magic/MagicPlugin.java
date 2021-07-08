@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.magic.command.ArenaCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MageCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicAutomataCommandExecutor;
@@ -201,6 +202,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         new RPCommandExecutor(this).register(this);
         new MagicWarpCommandExecutor(controller).register(this);
         new MagicConfigCommandExecutor(this, controller).register(this);
+        new ArenaCommandExecutor(this, controller.getArenas()).register(this);
         // Note: The Citizens trait command is registered later in MagicController if we decide it's needed
     }
 

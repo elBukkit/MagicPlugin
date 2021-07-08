@@ -974,6 +974,10 @@ commands:
       usage: |
 
          /mwarp map <marker icon>
+    marena:
+      description: Commands for managing mob and pvp arenas
+      usage: /marena [add, remove, describe, configure, stage, start, stop, join, leave]
+      permission: Magic.commands.marena
 permissions:
   Magic.commands.*:
     description: Player may use all Magic commands
@@ -1009,6 +1013,8 @@ permissions:
     - Magic.commands.getrp
     - Magic.commands.mwarp
     - Magic.commands.mwarp.*
+    - Magic.commands.marena
+    - Magic.commands.marena.*
   Magic.commands.getrp:
     description: Player may download the resource pack
     type: boolean
@@ -2007,3 +2013,63 @@ permissions:
     description: A player will be notified of errors, warnings and other events
     default: false
     type: boolean
+  Magic.commands.marena:
+    description: Player may use the base /marena command
+    type: boolean
+    default: op
+  Magic.commands.marena.load:
+    description: Player may use the /marena load command
+    type: boolean
+    default: op
+  Magic.commands.marena.add:
+    description: Player may use the /marena add command
+    type: boolean
+    default: op
+  Magic.commands.marena.remove:
+    description: Player may use the /marena remove command
+    type: boolean
+    default: op
+  Magic.commands.marena.start:
+    description: Player may use the /marena start command
+    type: boolean
+    default: op
+  Magic.commands.marena.stop:
+    description: Player may use the /marena stop command
+    type: boolean
+    default: op
+  Magic.commands.marena.join:
+    description: Player may use the /marena join command
+    type: boolean
+    default: op
+  Magic.commands.marena.leave:
+    description: Player may use the /marena leave command
+    type: boolean
+    default: op
+  Magic.commands.marena.reset:
+    description: Player may use the /marena reset command
+    type: boolean
+    default: op
+  Magic.commands.marena.configure:
+    description: Player may use the /marena configure command
+    type: boolean
+    default: op
+  Magic.commands.marena.stage:
+    description: Player may use the /marena stage command
+    type: boolean
+    default: op
+  Magic.commands.marena.join.other:
+    description: Player may use the /marena join command on others
+    type: boolean
+    default: op
+  Magic.commands.marena.leave.other:
+    description: Player may use the /marena leave command on others
+    type: boolean
+    default: op
+  Magic.arena.signs.create:
+    description: Player may create arena signs
+    type: boolean
+    default: op
+  Magic.arena.signs.use:
+    description: Player may use arena signs
+    type: boolean
+    default: true

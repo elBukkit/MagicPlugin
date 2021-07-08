@@ -1,5 +1,13 @@
 # TODO
 
+# Arenas
+
+ - Leaderboard sign creation needs fixing, MA was using BlockData
+ - Need import command to pull in MA arena configs
+ - Separate data/arena loading
+ - Move data to data folder
+ - Move arena config to arenas.yml/arenas folder
+
 # 1.17
 
  - Should modern CU still reflect into CraftBukkit methods to make updates easier?

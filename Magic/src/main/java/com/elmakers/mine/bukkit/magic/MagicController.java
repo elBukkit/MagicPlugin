@@ -126,6 +126,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.arena.ArenaController;
 import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.automata.AutomatonTemplate;
 import com.elmakers.mine.bukkit.block.BlockData;
@@ -179,6 +180,7 @@ import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.config.FetchExampleRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.UpdateAllExamplesCallback;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
+import com.elmakers.mine.bukkit.magic.listener.ArenaListener;
 import com.elmakers.mine.bukkit.magic.listener.BlockController;
 import com.elmakers.mine.bukkit.magic.listener.CraftingController;
 import com.elmakers.mine.bukkit.magic.listener.EnchantingController;
@@ -534,8 +536,8 @@ public class MagicController implements MageController {
     private ExplosionController explosionController = null;
     private JumpController jumpController = null;
     private WorldController worldController = null;
-    private @Nonnull
-    MageIdentifier mageIdentifier = new MageIdentifier();
+    private ArenaController arenaController = null;
+    private @Nonnull MageIdentifier mageIdentifier = new MageIdentifier();
     private boolean citizensEnabled = true;
     private boolean logBlockEnabled = true;
     private boolean libsDisguiseEnabled = true;
@@ -1453,6 +1455,7 @@ public class MagicController implements MageController {
         explosionController = new ExplosionController(this);
         requirementsController = new RequirementsController(this);
         worldController = new WorldController(this);
+        arenaController = new ArenaController(this);
         if (CompatibilityLib.hasStatistics() && !CompatibilityLib.hasJumpEvent()) {
             jumpController = new JumpController(this);
         }
@@ -1609,6 +1612,8 @@ public class MagicController implements MageController {
         pm.registerEvents(playerController, plugin);
         pm.registerEvents(inventoryController, plugin);
         pm.registerEvents(explosionController, plugin);
+        ArenaListener listener = new ArenaListener(arenaController);
+        pm.registerEvents(listener, plugin);
         if (jumpController != null) {
             pm.registerEvents(jumpController, plugin);
         }
@@ -2430,6 +2435,8 @@ public class MagicController implements MageController {
             warpController.load(warps);
             info("Loaded " + warpController.getCustomWarps().size() + " warps");
         }
+
+        arenaController.load();
 
         getLogger().info("Finished loading data.");
         dataLoaded = true;
@@ -3641,6 +3648,7 @@ public class MagicController implements MageController {
         if (migrateDataStore != null) {
             migrateDataStore.close();
         }
+        arenaController.cancel();
     }
 
     public void undoScheduled() {
@@ -7146,6 +7154,10 @@ public class MagicController implements MageController {
         } else {
             disableSpawnReplacement--;
         }
+    }
+
+    public ArenaController getArenas() {
+        return arenaController;
     }
 
     @Override
