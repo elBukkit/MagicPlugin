@@ -495,4 +495,6 @@ public interface CompatibilityUtils {
     void setMaterialCooldown(Player player, Material material, int duration);
 
     String convertParticle(String particle);
+
+    BlockFace getSignFacing(Block sign);
 }

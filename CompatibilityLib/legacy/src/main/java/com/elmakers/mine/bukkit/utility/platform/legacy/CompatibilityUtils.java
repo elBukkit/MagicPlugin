@@ -2666,4 +2666,16 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public boolean isFilledMap(Material material) {
         return material == Material.MAP;
     }
+
+    @Override
+    public BlockFace getSignFacing(Block sign) {
+        BlockState blockState = sign.getState();
+        MaterialData data = blockState.getData();
+        if (!(data instanceof org.bukkit.material.Sign)) {
+            return null;
+        }
+
+        org.bukkit.material.Sign signData = (org.bukkit.material.Sign)data;
+        return signData.getFacing();
+    }
 }

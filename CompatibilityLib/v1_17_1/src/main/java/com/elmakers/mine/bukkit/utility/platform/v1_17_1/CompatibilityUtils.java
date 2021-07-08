@@ -33,6 +33,7 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Lockable;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.WallSign;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
@@ -1562,5 +1563,15 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     @Override
     public String convertParticle(String particle) {
         return particle;
+    }
+
+    @Override
+    public BlockFace getSignFacing(Block signBlock) {
+        BlockData blockData = signBlock.getBlockData();
+        if (!(blockData instanceof WallSign)) {
+            return null;
+        }
+        WallSign sign = (WallSign)blockData;
+        return sign.getFacing();
     }
 }
