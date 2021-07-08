@@ -104,14 +104,14 @@ public class ArenaStage implements EditingStage {
             mobSpawnList.add(ConfigurationUtils.fromLocation(spawn));
         }
         configuration.set("mob_spawns", mobSpawnList);
-        configuration.set("name", name);
-        configuration.set("win_xp", winXP);
-        configuration.set("win_sp", winSP);
-        configuration.set("win_money", winMoney);
+        if (name != null && !name.isEmpty()) configuration.set("name", name);
+        if (winXP != 0) configuration.set("win_xp", winXP);
+        if (winSP != 0) configuration.set("win_sp", winSP);
+        if (winMoney != 0) configuration.set("win_money", winMoney);
         configuration.set("drops", defaultDrops);
         configuration.set("aggro", forceTarget);
-        configuration.set("duration", duration);
-        configuration.set("respawn_duration", respawnDuration);
+        if (duration != 0) configuration.set("duration", duration);
+        if (respawnDuration != 0) configuration.set("respawn_duration", respawnDuration);
 
         if (randomizeMobSpawn != null) {
             configuration.set("randomize_mob_spawn", ConfigurationUtils.fromVector(randomizeMobSpawn));

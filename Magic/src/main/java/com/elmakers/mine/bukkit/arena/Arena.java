@@ -156,8 +156,8 @@ public class Arena {
         name = configuration.getString("name", null);
         description = configuration.getString("description", null);
         // These have legacy names
-        minPlayers = configuration.getInt("min_players", configuration.getInt("maxplayers"));
-        maxPlayers = configuration.getInt("max_players", configuration.getInt("minplayers"));
+        minPlayers = configuration.getInt("min_players", configuration.getInt("maxplayers", 2));
+        maxPlayers = configuration.getInt("max_players", configuration.getInt("minplayers", 2));
         requiredKills = configuration.getInt("required_kills", 1);
 
         portalDamage = configuration.getInt("portal_damage", 0);
@@ -298,26 +298,26 @@ public class Arena {
             return false;
         }
 
-        configuration.set("name", name);
-        configuration.set("description", description);
-        configuration.set("min_players", minPlayers);
-        configuration.set("max_players", maxPlayers);
-        configuration.set("required_kills", requiredKills);
+        if (name != null && !name.isEmpty()) configuration.set("name", name);
+        if (description != null && !description.isEmpty()) configuration.set("description", description);
+        if (minPlayers != 2) configuration.set("min_players", minPlayers);
+        if (maxPlayers != 2) configuration.set("max_players", maxPlayers);
+        if (requiredKills != 1) configuration.set("required_kills", requiredKills);
 
-        configuration.set("lose_xp", loseXP);
-        configuration.set("draw_xp", drawXP);
-        configuration.set("win_xp", winXP);
+        if (loseXP != 0) configuration.set("lose_xp", loseXP);
+        if (drawXP != 0) configuration.set("draw_xp", drawXP);
+        if (winXP != 0) configuration.set("win_xp", winXP);
 
-        configuration.set("lose_sp", loseSP);
-        configuration.set("draw_sp", drawSP);
-        configuration.set("win_sp", winSP);
+        if (loseSP != 0) configuration.set("lose_sp", loseSP);
+        if (drawSP != 0) configuration.set("draw_sp", drawSP);
+        if (winSP != 0) configuration.set("win_sp", winSP);
 
-        configuration.set("lose_money", loseMoney);
-        configuration.set("draw_money", drawMoney);
-        configuration.set("win_money", winMoney);
+        if (loseMoney != 0) configuration.set("lose_money", loseMoney);
+        if (drawMoney != 0) configuration.set("draw_money", drawMoney);
+        if (winMoney != 0) configuration.set("win_money", winMoney);
 
-        configuration.set("duration", duration);
-        configuration.set("sudden_death", suddenDeath);
+        if (duration != 0) configuration.set("duration", duration);
+        if (suddenDeath != 0) configuration.set("sudden_death", suddenDeath);
         if (suddenDeathEffect != null) {
             configuration.set("sudden_death_effect",
                     suddenDeathEffect.getType().getName().toLowerCase() + ":"
@@ -325,9 +325,9 @@ public class Arena {
                     + suddenDeathEffect.getDuration()
             );
         }
-        configuration.set("border_min", borderMin);
-        configuration.set("border_max", borderMax);
-        configuration.set("start_commands", startCommands);
+        if (borderMin != 0) configuration.set("border_min", borderMin);
+        if (borderMax != 0) configuration.set("border_max", borderMax);
+        if (startCommands != null && !startCommands.isEmpty()) configuration.set("start_commands", startCommands);
 
         configuration.set("keep_inventory", keepInventory);
         configuration.set("keep_level", keepLevel);
@@ -336,22 +336,22 @@ public class Arena {
         configuration.set("allow_melee", allowMelee);
         configuration.set("allow_projectiles", allowProjectiles);
 
-        configuration.set("leaderboard_size", leaderboardSize);
-        configuration.set("leaderboard_record_size", leaderboardRecordSize);
-        configuration.set("leaderboard_games_required", leaderboardGamesRequired);
+        if (leaderboardSize != 5) configuration.set("leaderboard_size", leaderboardSize);
+        if (leaderboardRecordSize != 30) configuration.set("leaderboard_record_size", leaderboardRecordSize);
+        if (leaderboardGamesRequired != 5) configuration.set("leaderboard_games_required", leaderboardGamesRequired);
         configuration.set("leaderboard_sign_type", signMaterial.name().toLowerCase());
 
-        configuration.set("portal_damage", portalDamage);
-        configuration.set("portal_enter_damage", portalEnterDamage);
-        configuration.set("portal_death_message", portalDeathMessage);
+        if (portalDamage != 0) configuration.set("portal_damage", portalDamage);
+        if (portalEnterDamage != 0) configuration.set("portal_enter_damage", portalEnterDamage);
+        if (portalDeathMessage != null && !portalDeathMessage.isEmpty()) configuration.set("portal_death_message", portalDeathMessage);
 
-        configuration.set("max_teleport_distance", maxTeleportDistance);
-        configuration.set("announcer_range", announcerRange);
+        if (maxTeleportDistance != 64) configuration.set("max_teleport_distance", maxTeleportDistance);
+        if (announcerRange != 64) configuration.set("announcer_range", announcerRange);
 
-        configuration.set("countdown", countdown);
-        configuration.set("countdown_max", countdownMax);
+        if (countdown != 10) configuration.set("countdown", countdown);
+        if (countdownMax != 30) configuration.set("countdown_max", countdownMax);
         configuration.set("op_check", opCheck);
-        configuration.set("allow_interrupt", allowInterrupt);
+        if (allowInterrupt) configuration.set("allow_interrupt", allowInterrupt);
 
         configuration.set("type", arenaType.name());
 
