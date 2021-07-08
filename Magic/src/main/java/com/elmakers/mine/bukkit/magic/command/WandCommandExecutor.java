@@ -838,7 +838,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         wand.setOverride(parameters[0], value);
         wand.saveState();
         sender.sendMessage(ChatColor.DARK_AQUA  + "Added override " + ChatColor.AQUA + parameters[0]
-                + ChatColor.WHITE + " = " + ChatColor.DARK_AQUA + parameters[1]);
+                + ChatColor.WHITE + " = " + ChatColor.DARK_AQUA + value);
 
         return true;
     }
