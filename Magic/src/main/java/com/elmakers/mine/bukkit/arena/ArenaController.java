@@ -139,6 +139,10 @@ public class ArenaController implements Runnable {
         return arenas.values();
     }
 
+    public Collection<String> getArenaKeys() {
+        return arenas.keySet();
+    }
+
     public ArenaPlayer leave(Player player) {
         ArenaPlayer arenaPlayer = getArenaPlayer(player);
         if (arenaPlayer != null) {

@@ -2,6 +2,12 @@
 
 # 9.3
 
+## Arenas
+
+ - The MagicArenas plugin has been integrated into Magic
+ - If you are using MagicArenas, you can remove that plugin and then use `/marena import`  
+ - Use the `/marena` command or the editor to create mob and pvp arenas
+
 ## Fixes
 
  - Fix consumable wands giving vanilla food depending on the icon used

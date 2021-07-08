@@ -6871,6 +6871,11 @@ public class MagicController implements MageController {
     }
 
     @Override
+    public Collection<String> getArenaKeys() {
+        return arenaController.getArenaKeys();
+    }
+
+    @Override
     public Collection<String> getAutoDiscoverRecipeKeys() {
         return crafting.getAutoDiscoverRecipeKeys();
     }
