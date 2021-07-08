@@ -9,7 +9,8 @@
 ## Additions
 
  - Add `target_fall_distance` attribute
- - Add `charges` spell property, a spell can be used several times before going on cooldown   
+ - Add `charges` spell property, a spell can be used several times before going on cooldown
+ - Add work-in-progress (very) `brawl` Brawl Stars external example
 
 ## Changes
 
