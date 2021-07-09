@@ -76,6 +76,7 @@ flashbang:
              color: 0A2A0A
              radius: 2
              particles: 20
+             update_locations: false
         -  location: target
            effectlib:
              class: Modified
@@ -90,6 +91,7 @@ flashbang:
                particle_offset_x: 0.5
                particle_offset_y: 0.5
                particle_offset_z: 0.5
+               update_locations: false
         reflect:
         - sound: item.trident.throw
           sound_pitch: 1.3
