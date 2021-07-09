@@ -1,7 +1,6 @@
 
 # This controls what players will see when interacting with an enchantment table
 enchant_click: progressmenu
-enchant_sneak_click: spellshop
 
 # Set this to empty to prevent the enchantment table from showing players the spell shop defined above
 # enchant_block: ""

@@ -25,6 +25,8 @@
 
  - Master Sword is no longer bound (you will keep it on death though)
  - Wands will now look up one level (only, for performance) for messages
+ - Sneak-clicking the enchant table to bring up the spellshop was removed from survival
+   Use `/mconfig configure config enchant_sneak_click spellshop` to put it back
 
 # 9.2.1
 
