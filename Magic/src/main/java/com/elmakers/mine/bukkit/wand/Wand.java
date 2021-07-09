@@ -299,7 +299,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     // Boss bar
     protected BossBar bossBar;
     protected BossBarConfiguration bossBarConfiguration;
-    protected double bossBarMana;
 
     public Wand(MagicController controller) {
         super(controller);
@@ -2386,11 +2385,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (bossBar == null) {
             bossBar = bossBarConfiguration.createBossBar(mage);
             bossBar.addPlayer(player);
-            bossBarMana = mage.getMana();
         }
         double durationRemaining = 1;
-        double costsRemaining = 1;
-        bossBar.setProgress(Math.min(1,Math.max(0,Math.min(durationRemaining, costsRemaining))));
+        Spell spell = getActiveSpell();
+        if (spell != null) {
+            long remainingCooldown = spell.getRemainingCooldown();
+            long cooldown = spell.getCooldown();
+            if (cooldown > 0) {
+                durationRemaining = (double)(cooldown - remainingCooldown) / cooldown;
+            }
+        }
+        bossBar.setProgress(Math.min(1, Math.max(0, durationRemaining)));
     }
 
     private void removeBossBar() {
