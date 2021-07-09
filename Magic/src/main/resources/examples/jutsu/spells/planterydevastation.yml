@@ -1,0 +1,120 @@
+planterydevastation:
+    name: Planetary Devastation
+    icon: coal{CustomModelData:18001}
+    icon_disabled: coal{CustomModelData:18002}
+    pvp_restricted: true
+    actions:
+        cast:
+          - class: Parallel
+            actions:
+            - class: Sphere
+              actions:
+                - class: ModifyBlock
+                  speed: 1
+                  direction: 0,1,0
+                  falling: true
+                - class: Skip
+                  skip: 200
+                  actions:
+                    - class: Delay
+            - class: Interval
+              interval: 20
+              actions:
+                - class: AreaOfEffect
+                  actions:
+                    - class: Velocity
+            - class: Serial
+              actions:
+              - class: Delay
+                delay: 5 seconds
+              - class: Brush
+                brush: obsidian
+                actions:
+                - class: Sphere
+                  radius: 6
+                  actions:
+                    - class: ModifyBlock
+                    - class: Skip
+                      skip: 2
+                      actions:
+                        - class: Delay
+    effects:
+        cast_finish:
+        -  sound: entity_iron_golem_death
+           sound_pitch: 0.3
+           sound_volume: 0.2
+        -  sound: block_conduit_deactivate
+           sound_pitch: 0.7
+           sound_volume: 0.5
+           effectlib:
+             class: Modified
+             iterations: 3
+             duration: 150
+             parameters:
+               radius: 1.5 + (t/i) * 5
+             effect:
+               class: Sphere
+               particle: redstone
+               color: "#000000"
+               particle_size: 0.6
+               radius: 0.6
+               particles: 150
+        cast:
+        -  sound: entity_wither_shoot
+           sound_pitch: 0.4
+        -  class: EffectSingle
+           sound: magic.bonk
+           sound_pitch: 0.2
+           sound_volume: 0.3
+           location: origin
+        -  sound: block_conduit_deactivate
+           sound_pitch: 0.7
+           sound_volume: 0.5
+        -  sound: entity_bee_loop
+           sound_pitch: 2
+           location: target
+        -  sound: entity_wither_death
+           sound_pitch: 0.5
+           location: target
+           target_location: block_center
+           effectlib:
+             class: Sphere
+             duration: $duration
+             particle: redstone
+             color: "#000000"
+             particle_size: 1.5
+             radius: 1.5
+             particles: 250
+        -  class: EffectSingle
+           location: target
+           target_location: block_center
+           effectlib:
+             class: Modified
+             duration: $duration
+             period: 3
+             parameters:
+               radius: "8(1-(t/i))"
+               rotation: t/10
+             effect:
+               class: Helix
+               particle: redstone
+               color: "#000000"
+               particle_size: 0.6
+               particles: 70
+               curve: -2
+    parameters:
+      target_type: FallingBlock
+      range: 12
+      target: block
+      allow_max_range: true
+      undo: 15000
+      speed: 20
+      brush: erase
+      push: -1
+      radius: 32
+      cooldown: 30000
+      velocity_max_distance: 10
+      falling_probability: 0.4
+      invert_distance: true
+      duration: 20000
+      check_destructible: false

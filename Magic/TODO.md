@@ -2,45 +2,22 @@
 
 # Arenas
 
- - Make ArenaTemplate
- - Arena just has location-based properties (can also override anything from the template)
- - Import process adds templates and instances
- - Add/remove commands only add instances
- - How to configure template vs instance?
- - Maybe arenas don't override template parameters?
-   Or maybe convert everything to be MagicProperties based...
-   Yes, probably that ... need property routes?
- - If stages and arenas are properties-based, could probably
-   do the "default stage" thing
- - Add override command
- - Add stage override command (combine configure/override and stage?)
- - All locations should be relative vectors, only store center location
-
- - Change "all" stage to store common inherited stage properties (oops, guess not)
+ - Convert to storing configs rather than rebuilding, this will allow cleaner configs
+ - Change "all" stage to store common inherited stage properties (requires above to be done first)
  - Arena auto-build/repair using schematics  
  - A way for examples to provide schematics
 
-# 1.17
-
- - Should modern CU still reflect into CraftBukkit methods to make updates easier?
-   .. maybe test out the shading method again, not sure why that wouldn't work other than the CB stuff
-
-# Recent issues
-
- - ATM acting weird? Heads doubled up, clicking not always working
- - cornelia says world configs don't load unless doing `/magic load`
- - Do automata drop loot when expiring due to chunk load?
-
- - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
- - Automata don't fully clean up, or perhaps Blast doesn't, idk
- - Selector cost at top-level (default cost) doesn't work
- - Prevent spiders climbing?
  - Prevent players teleporting into an arena
    - Or at least teleporting to a player in an arena?
    - And don't save their death location
+ - Prevent spiders climbing?
 
 # Bugs
 
+ - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
+ - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
+ - Do automata drop loot when expiring due to chunk load?
+ - Selector cost at top-level (default cost) doesn't work
  - Effects on Repair/SuperRepair broken?
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)
  - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
@@ -68,22 +45,26 @@
 
 # Pets
 
-https://docs.google.com/document/d/1ORA5W9q3UxN40sqemiDPM0u1UF5pvQ-1r91iGcOc4Ys/edit
+ - https://docs.google.com/document/d/1ORA5W9q3UxN40sqemiDPM0u1UF5pvQ-1r91iGcOc4Ys/edit
 
 # Engineering Improvements
 
  - Fill out worth values for all blocks (and items, for shops) .. mostly done?
  - Tree spell allow using materia?
 
+## 1.17
+
+ - Separate out NMS, CB and Bukkit access
+ - Try shading again on a shared NMS lib?
+ - PR APIs for getPriveNeedsFixing stuff
+ - PR APIs for CB stuff .. ?
+
 ## RPG
-
-## ModelEngine
-
- - Check in on Discord?
 
 ## Suggestions
 
- - Damaging, kill triggers should set the triggered spells' target (?)
+ - ATMs broken
+ - Add per-player particle on/off settings
  - Drop rule add required tools
  - `/mmap slice` command .. still would really like this
  - Can smithing recipes support magic item outputs?  
