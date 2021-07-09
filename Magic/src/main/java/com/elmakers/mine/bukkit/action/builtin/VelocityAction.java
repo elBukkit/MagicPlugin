@@ -43,6 +43,7 @@ public class VelocityAction extends BaseSpellAction
     private Vector direction;
     private boolean registerDamaged;
     private double maxDistanceSquared;
+    private boolean invertDistance;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -63,6 +64,7 @@ public class VelocityAction extends BaseSpellAction
         registerDamaged = parameters.getBoolean("damaged", true);
         double maxDistance = parameters.getDouble("velocity_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
+        invertDistance = parameters.getBoolean("invert_distance", false);
     }
 
     @Override
@@ -121,7 +123,11 @@ public class VelocityAction extends BaseSpellAction
                     return SpellResult.NO_TARGET;
                 }
                 if (distanceSquared > 0) {
-                    speed = speed * (1 - distanceSquared / maxDistanceSquared);
+                    double ratio = distanceSquared / maxDistanceSquared;
+                    if (!invertDistance) {
+                        ratio = 1 - ratio;
+                    }
+                    speed = speed * ratio;
                 }
             }
             velocity.normalize().multiply(speed);
