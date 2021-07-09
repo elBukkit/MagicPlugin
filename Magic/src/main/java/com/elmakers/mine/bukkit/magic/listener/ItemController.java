@@ -14,8 +14,10 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.item.ItemData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ItemController {
     private MageController controller;
@@ -39,7 +41,10 @@ public class ItemController {
         for (String itemKey : itemKeys) {
             ConfigurationSection itemConfig = configuration.getConfigurationSection(itemKey);
             if (itemConfig != null) {
-                loadItem(itemKey, itemConfig);
+                if (ConfigurationUtils.isEnabled(itemConfig)) {
+                    itemConfig = MagicConfiguration.getKeyed(controller, itemConfig, "item", itemKey);
+                    loadItem(itemKey, itemConfig);
+                }
             } else {
                 String itemString = configuration.getString(itemKey);
                 if (itemString != null && !itemString.isEmpty()) {
