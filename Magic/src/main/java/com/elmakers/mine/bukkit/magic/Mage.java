@@ -5517,6 +5517,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return activeSpell == null ? null : activeSpell.getName();
             }
             case "wand": return activeWand == null ? null : activeWand.getName();
+            case "class": return activeClass == null ? null : activeClass.getName();
             default:
                 Double value = getAttribute(symbol);
                 if (value != null) {

@@ -1393,6 +1393,10 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         Mage targetMage = targetEntity == null ? null : controller.getRegisteredMage(targetEntity);
         Wand wand = getWand();
         switch (symbol) {
+            case "class": {
+                MageClass mageClass = targetMage != null ? targetMage.getActiveClass() : null;
+                return mageClass == null ? null : mageClass.getName();
+            }
             case "spell": return getSpell().getName();
             case "wand": return wand == null ? null : wand.getName();
             case "world": return location == null ? null : location.getWorld().getName();

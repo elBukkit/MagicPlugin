@@ -20,7 +20,7 @@
  - Add `charges` spell property, a spell can be used several times before going on cooldown
  - Add work-in-progress (very) `brawl` Brawl Stars external example
  - Add `boss_bar` option to wands, for showing current spell cooldown
- - Add $wand placeholder for messages, commands and boss bar titles
+ - Add $wand, $spell and $class placeholders for messages, commands and boss bar titles
 
 ## Changes
 
