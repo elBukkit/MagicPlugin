@@ -4,18 +4,18 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MagicConfiguration extends ParameterizedConfiguration {
-    private final MagicController controller;
+    private final MageController controller;
 
-    public MagicConfiguration(MagicController controller, ConfigurationSection copy, String logContext) {
+    public MagicConfiguration(MageController controller, ConfigurationSection copy, String logContext) {
         this(controller, logContext);
         ConfigurationUtils.addConfigurations(this, copy);
     }
 
-    public MagicConfiguration(MagicController controller, String logContext) {
+    public MagicConfiguration(MageController controller, String logContext) {
         super(logContext);
         this.controller = controller;
     }
@@ -25,11 +25,11 @@ public class MagicConfiguration extends ParameterizedConfiguration {
         this.controller = copy.controller;
     }
 
-    public static MagicConfiguration getKeyed(MagicController controller, ConfigurationSection copy, String logPrefix, String key) {
+    public static MagicConfiguration getKeyed(MageController controller, ConfigurationSection copy, String logPrefix, String key) {
         return new MagicConfiguration(controller, copy, logPrefix + "." + key);
     }
 
-    public static MagicConfiguration getKeyed(MagicController controller, ConfigurationSection copy, String logContext) {
+    public static MagicConfiguration getKeyed(MageController controller, ConfigurationSection copy, String logContext) {
         return new MagicConfiguration(controller, copy, logContext);
     }
 

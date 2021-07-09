@@ -8196,6 +8196,7 @@ public class MagicController implements MageController {
         return maxLevel == null ? 1 : maxLevel;
     }
 
+    @Override
     @Nullable
     public Double getBuiltinAttribute(String attributeKey) {
         switch (attributeKey) {
