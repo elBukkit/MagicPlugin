@@ -221,7 +221,8 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             ItemMeta meta = item.getItemMeta();
             if (meta instanceof PotionMeta) {
                 PotionMeta potion = (PotionMeta)meta;
-                Collection<PotionEffect> effects = ConfigurationUtils.getPotionEffects(potionEffects);
+                int potionEffectDuration = configuration.getInt("potion_effect_duration");
+                Collection<PotionEffect> effects = ConfigurationUtils.getPotionEffects(potionEffects, potionEffectDuration);
                 for (PotionEffect effect : effects) {
                     potion.addCustomEffect(effect, true);
                 }
