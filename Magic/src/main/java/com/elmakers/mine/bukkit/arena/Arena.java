@@ -209,10 +209,13 @@ public class Arena {
 
         duration = configuration.getInt("duration", 0);
         suddenDeath = configuration.getInt("sudden_death", 0);
+
+        suddenDeathEffect = null;
         if (configuration.contains("sudden_death_effect")) {
             setSuddenDeathEffect(configuration.getString("sudden_death_effect"));
         }
 
+        spawns.clear();
         for (String s : configuration.getStringList("spawns")) {
             spawns.add(ConfigurationUtils.toLocation(s, center));
         }
@@ -221,6 +224,7 @@ public class Arena {
             randomizeSpawn = ConfigurationUtils.toVector(configuration.getString("randomize.spawn"));
         }
 
+        stages.clear();
         if (configuration.contains("stages")) {
             Collection<ConfigurationSection> stageConfigurations = ConfigurationUtils.getNodeList(configuration, "stages");
             for (ConfigurationSection stageConfiguration : stageConfigurations) {
