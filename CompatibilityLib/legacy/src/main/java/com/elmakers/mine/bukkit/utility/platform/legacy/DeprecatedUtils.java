@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtilsBase;
  * number' deprecations.
  *
  */
-@SuppressWarnings("deprecated")
+@SuppressWarnings("deprecation")
 public class DeprecatedUtils extends DeprecatedUtilsBase {
     public DeprecatedUtils(Platform platform) {
         super(platform);
