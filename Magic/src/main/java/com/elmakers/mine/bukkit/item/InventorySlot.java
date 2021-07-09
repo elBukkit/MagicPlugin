@@ -34,8 +34,7 @@ public enum InventorySlot {
     public static InventorySlot parse(String key) {
         if (key.equalsIgnoreCase("mainhand")) {
             key = "main_hand";
-        }
-        if (key.equalsIgnoreCase("offhand")) {
+        } else if (key.equalsIgnoreCase("offhand")) {
             key = "off_hand";
         }
         try {
@@ -43,6 +42,15 @@ public enum InventorySlot {
         } catch (Exception ignore) {
         }
         return null;
+    }
+
+    public static Integer parseSlot(String key) {
+        try {
+            return Integer.parseInt(key);
+        } catch (Exception ignore) {
+        }
+        InventorySlot slot = parse(key);
+        return slot == null ? null : slot.getSlot();
     }
 
     public static InventorySlot getArmorSlot(int slot) {

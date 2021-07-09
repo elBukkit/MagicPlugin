@@ -11,6 +11,7 @@
 ## Fixes
 
  - Fix consumable wands giving vanilla food depending on the icon used
+ - Fix armor-slotted items in kits, such as the armor in the starter kit
    
 ## Additions
 

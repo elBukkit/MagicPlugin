@@ -9,3 +9,27 @@ iron_kit:
   items:
     - iron_ingot
     - iron_nugget@8
+
+tutorial:
+  starter: true
+  items:
+    - stick
+    - book
+    - emerald@8
+    - diamond@2
+    - wooden_sword
+    - wooden_pickaxe
+    - wooden_shovel
+    - wooden_axe
+    - wooden_pickaxe
+    - item: bread@32
+      slot: 8
+    - item: leather_helmet
+      slot: helmet
+    - item: leather_chestplate
+      slot: chestplate
+    - item: leather_leggings
+      slot: leggings
+    - item: leather_boots
+      slot: boots
+    - item: phome

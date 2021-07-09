@@ -14,6 +14,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.kit.Kit;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -73,7 +74,11 @@ public class MagicKit implements Kit {
                     }
                     Integer slot = null;
                     if (itemConfig.contains("slot")) {
-                        slot = itemConfig.getInt("slot");
+                        if (itemConfig.isInt("slot")) {
+                            slot = itemConfig.getInt("slot");
+                        } else {
+                            slot = InventorySlot.parseSlot(itemConfig.getString("slot"));
+                        }
                     }
                     if (itemConfig.contains("amount")) {
                         itemKey = itemKey + "@" + itemConfig.getInt("amount");
