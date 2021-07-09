@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.effect;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
@@ -195,7 +196,7 @@ public class EffectLibManager {
         effectManager.display(particle, center, offsetX, offsetY, offsetZ, speed, amount, size, color, material, materialData, range, null);
     }
 
-    public void displayParticle(Particle particle, ParticleOptions options, Location center, double range) {
-        effectManager.display(particle, options, center, range, null);
+    public void displayParticle(Particle particle, ParticleOptions options, Location center, double range, List<Player> targetPlayers) {
+        effectManager.display(particle, options, center, range, targetPlayers);
     }
 }

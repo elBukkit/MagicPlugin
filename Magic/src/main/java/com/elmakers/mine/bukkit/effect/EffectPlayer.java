@@ -23,6 +23,7 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.Vector;
 
@@ -507,8 +508,34 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         effectLib.displayParticle(particle, center, offsetX, offsetY, offsetZ, speed, amount, size, color, material, materialData, range);
     }
 
-    public static void displayParticle(Particle particle, ParticleOptions options, Location center, double range) {
-        effectLib.displayParticle(particle, options, center, range);
+    public void displayParticle(Particle particle, ParticleOptions options, Location center, double range) {
+        Player targetPlayer = null;
+        switch (getVisibility()) {
+            case TARGET:
+                if (target != null && target.getEntity() instanceof Player) {
+                    targetPlayer = (Player)target.getEntity();
+                }
+                if (targetPlayer == null) {
+                    return;
+                }
+                break;
+            case ORIGIN:
+                if (origin != null && origin.getEntity() instanceof Player) {
+                    targetPlayer = (Player)origin.getEntity();
+                }
+                if (targetPlayer == null) {
+                    return;
+                }
+                break;
+            default:
+                break;
+        }
+        List<Player> targetPlayers = null;
+        if (targetPlayer != null) {
+            targetPlayers = new ArrayList<>();
+            targetPlayers.add(targetPlayer);
+        }
+        effectLib.displayParticle(particle, options, center, range, targetPlayers);
     }
 
     public Particle overrideParticle(Particle particle) {
