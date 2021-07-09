@@ -2,6 +2,20 @@
 
 # Arenas
 
+ - Make ArenaTemplate
+ - Arena just has location-based properties (can also override anything from the template)
+ - Import process adds templates and instances
+ - Add/remove commands only add instances
+ - How to configure template vs instance?
+ - Maybe arenas don't override template parameters?
+   Or maybe convert everything to be MagicProperties based...
+   Yes, probably that ... need property routes?
+ - If stages and arenas are properties-based, could probably
+   do the "default stage" thing
+ - Add override command
+ - Add stage override command (combine configure/override and stage?)
+ - All locations should be relative vectors, only store center location
+
  - Change "all" stage to store common inherited stage properties (oops, guess not)
  - Arena auto-build/repair using schematics  
  - A way for examples to provide schematics

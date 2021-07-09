@@ -71,7 +71,7 @@ public class ArenaStage implements EditingStage {
         endSpell = configuration.getString("spell_end");
 
         for (String s : configuration.getStringList("mob_spawns")) {
-            mobSpawns.add(ConfigurationUtils.toLocation(s));
+            mobSpawns.add(ConfigurationUtils.toLocation(s, arena.getCenter()));
         }
         name = configuration.getString("name");
         winXP = configuration.getInt("win_xp");
@@ -99,9 +99,9 @@ public class ArenaStage implements EditingStage {
         configuration.set("spell_start", startSpell);
         configuration.set("spell_end", endSpell);
 
-        List<String> mobSpawnList = new ArrayList<String>();
+        List<String> mobSpawnList = new ArrayList<>();
         for (Location spawn : mobSpawns) {
-            mobSpawnList.add(ConfigurationUtils.fromLocation(spawn));
+            mobSpawnList.add(ConfigurationUtils.fromLocation(spawn, arena.getCenter()));
         }
         configuration.set("mob_spawns", mobSpawnList);
         if (name != null && !name.isEmpty()) configuration.set("name", name);

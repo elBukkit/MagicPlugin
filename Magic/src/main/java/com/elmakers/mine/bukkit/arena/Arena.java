@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -48,13 +47,12 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.DirectionUtils;
-import com.elmakers.mine.bukkit.utility.platform.v1_17_1.CompatibilityUtils;
 
 public class Arena {
     private static final Random random = new Random();
     private static final Object saveLock = new Object();
 
+    private ArenaTemplate template;
     private ArenaState state = ArenaState.LOBBY;
     private long started;
     private long lastTick;
@@ -121,7 +119,6 @@ public class Arena {
     private int portalEnterDamage;
     private String portalDeathMessage;
 
-    private ArenaType arenaType;
     private final String key;
     private String name;
     private String description;
@@ -135,29 +132,28 @@ public class Arena {
 
     private BossBar respawnBar;
 
-    public Arena(final String key, final ArenaController controller) {
+    public Arena(final String key, final ArenaTemplate template, final ArenaController controller) {
         this.key = key;
+        this.template = template;
         this.controller = controller;
         allStages = new AllStages(this);
         signMaterial = DefaultMaterials.getWallSignBlock();
     }
 
-    public Arena(final String name, final ArenaController plugin, Location location, int min, int max, ArenaType type) {
-        this(name, plugin);
+    public Arena(final String name, final ArenaTemplate template, final ArenaController plugin, Location location) {
+        this(name, template, plugin);
         center = location.clone();
-
-        maxPlayers = max;
-        minPlayers = min;
-
-        arenaType = type;
     }
 
-    public void load(ConfigurationSection configuration) {
+    public void loadProperties() {
+        loadProperties(template.getConfiguration());
+    }
+
+    public void loadProperties(ConfigurationSection configuration) {
         name = configuration.getString("name", null);
         description = configuration.getString("description", null);
-        // These have legacy names
-        minPlayers = configuration.getInt("min_players", configuration.getInt("minplayers", 2));
-        maxPlayers = configuration.getInt("max_players", configuration.getInt("maxplayers", 2));
+        minPlayers = configuration.getInt("min_players",2);
+        maxPlayers = configuration.getInt("max_players", 2);
         requiredKills = configuration.getInt("required_kills", 1);
 
         portalDamage = configuration.getInt("portal_damage", 0);
@@ -188,16 +184,10 @@ public class Arena {
         allowMelee = configuration.getBoolean("allow_melee", true);
         allowProjectiles = configuration.getBoolean("allow_projectiles", true);
 
-        arenaType = ArenaType.parse(configuration.getString("type"));
-        if (arenaType == null) {
-            arenaType = ArenaType.FFA;
-        }
-
-        lose = ConfigurationUtils.toLocation(configuration.getString("lose"));
-        win = ConfigurationUtils.toLocation(configuration.getString("win"));
-        lobby = ConfigurationUtils.toLocation(configuration.getString("lobby"));
-        center = ConfigurationUtils.toLocation(configuration.getString("center"));
-        exit = ConfigurationUtils.toLocation(configuration.getString("exit"));
+        lose = ConfigurationUtils.toLocation(configuration.getString("lose"), center);
+        win = ConfigurationUtils.toLocation(configuration.getString("win"), center);
+        lobby = ConfigurationUtils.toLocation(configuration.getString("lobby"), center);
+        exit = ConfigurationUtils.toLocation(configuration.getString("exit"), center);
         String signType = configuration.getString("leaderboard_sign_type", "birch_wall_sign");
         try {
             signMaterial = Material.valueOf(signType.toUpperCase());
@@ -224,7 +214,7 @@ public class Arena {
         }
 
         for (String s : configuration.getStringList("spawns")) {
-            spawns.add(ConfigurationUtils.toLocation(s));
+            spawns.add(ConfigurationUtils.toLocation(s, center));
         }
 
         if (configuration.contains("randomize.spawn")) {
@@ -242,12 +232,10 @@ public class Arena {
             leaderboardLocation = ConfigurationUtils.toLocation(configuration.getString("leaderboard_sign_location"));
             leaderboardFacing = ConfigurationUtils.toBlockFace(configuration.getString("leaderboard_sign_facing"));
         }
-
-        // For migrating legacy data
-        loadData(configuration);
     }
 
-    public void loadData(ConfigurationSection configuration) {
+    public void load(ConfigurationSection configuration) {
+        center = ConfigurationUtils.toLocation(configuration.getString("location"));
         if (configuration.contains("leaderboard")) {
             leaderboard.clear();
             ConfigurationSection leaders = configuration.getConfigurationSection("leaderboard");
@@ -259,6 +247,12 @@ public class Arena {
             }
             Collections.sort(leaderboard, new ArenaPlayerComparator());
         }
+        loadProperties();
+    }
+
+    public void reload() {
+        template = controller.getTemplate(template.getKey());
+        loadProperties();
     }
 
     public boolean setSuddenDeathEffect(String value) {
@@ -293,7 +287,7 @@ public class Arena {
         return suddenDeathEffect != null;
     }
 
-    public boolean save(ConfigurationSection configuration) {
+    public boolean saveTemplate(ConfigurationSection configuration) {
         if (!isValid()) {
             return false;
         }
@@ -353,17 +347,14 @@ public class Arena {
         configuration.set("op_check", opCheck);
         if (allowInterrupt) configuration.set("allow_interrupt", allowInterrupt);
 
-        configuration.set("type", arenaType.name());
+        configuration.set("lobby", ConfigurationUtils.fromLocation(lobby, center));
+        configuration.set("win", ConfigurationUtils.fromLocation(win, center));
+        configuration.set("lose", ConfigurationUtils.fromLocation(lose, center));
+        configuration.set("exit", ConfigurationUtils.fromLocation(exit, center));
 
-        configuration.set("lobby", ConfigurationUtils.fromLocation(lobby));
-        configuration.set("win", ConfigurationUtils.fromLocation(win));
-        configuration.set("lose", ConfigurationUtils.fromLocation(lose));
-        configuration.set("center", ConfigurationUtils.fromLocation(center));
-        configuration.set("exit", ConfigurationUtils.fromLocation(exit));
-
-        List<String> spawnList = new ArrayList<String>();
+        List<String> spawnList = new ArrayList<>();
         for (Location spawn : spawns) {
-            spawnList.add(ConfigurationUtils.fromLocation(spawn));
+            spawnList.add(ConfigurationUtils.fromLocation(spawn, center));
         }
         configuration.set("spawns", spawnList);
 
@@ -388,12 +379,12 @@ public class Arena {
         return true;
     }
 
-    public void save() {
+    public void saveTemplate() {
         Plugin plugin = controller.getPlugin();
         final File arenaSaveFile = getSaveFile();
         final YamlConfiguration arenaSaves = new YamlConfiguration();
         ConfigurationSection arenaConfig = arenaSaves.createSection(key);
-        if (!save(arenaConfig)) {
+        if (!saveTemplate(arenaConfig)) {
             plugin.getLogger().warning("Not saving invalid arena: " + key);
             return;
         }
@@ -416,7 +407,7 @@ public class Arena {
         return new File(controller.getPlugin().getDataFolder(), "arenas/" + key + ".yml");
     }
 
-    public void saveData(ConfigurationSection configuration) {
+    public void save(ConfigurationSection configuration) {
         if (!isValid()) return;
 
         if (leaderboard.size() > 0) {
@@ -427,6 +418,8 @@ public class Arena {
                 player.save(playerData);
             }
         }
+        configuration.set("location", ConfigurationUtils.fromLocation(center));
+        configuration.set("template", template.getKey());
     }
 
     public void respawn() {
@@ -959,45 +952,6 @@ public class Arena {
 
     public void setMaxPlayers(int players) {
         maxPlayers = players;
-    }
-
-    public void setType(ArenaType types) {
-        switch (types) {
-            case FFA:
-                setMinPlayers(2);
-                setMaxPlayers(20);
-                arenaType = types;
-                break;
-            case FOURVFOUR:
-                setMinPlayers(8);
-                setMaxPlayers(8);
-                arenaType = types;
-                break;
-            case ONEVONE:
-                setMinPlayers(2);
-                setMinPlayers(2);
-                arenaType = types;
-                break;
-            case TWOVTWO:
-                setMinPlayers(4);
-                setMaxPlayers(4);
-                arenaType = types;
-                break;
-            case THREEVTHREE:
-                setMinPlayers(6);
-                setMaxPlayers(6);
-                arenaType = types;
-                break;
-            case SPLEEF:
-                setMinPlayers(5);
-                setMaxPlayers(15);
-                arenaType = types;
-                break;
-        }
-    }
-
-    public ArenaType getType() {
-        return arenaType;
     }
 
     public void setRandomizeSpawn(Vector vector) {

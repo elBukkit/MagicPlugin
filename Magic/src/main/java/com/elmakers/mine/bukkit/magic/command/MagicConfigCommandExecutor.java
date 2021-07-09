@@ -246,7 +246,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 }
             }
             if (fileType.equals("arenas")) {
-                Collection<String> arenaKeys = api.getController().getArenaKeys();
+                Collection<String> arenaKeys = api.getController().getArenaTemplateKeys();
                 options.addAll(arenaKeys);
             }
             if (fileType.equals("spells")) {

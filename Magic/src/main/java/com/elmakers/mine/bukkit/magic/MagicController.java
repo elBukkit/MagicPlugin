@@ -1851,7 +1851,7 @@ public class MagicController implements MageController {
         // Load arenas, this needs to be done post-startup because it requires references to loaded worlds
         // This should probably be improved by using SerializedLocation or something in Arena
         logger.setContext("arenas");
-        arenaController.load(loader.getArenas());
+        arenaController.loadTemplates(loader.getArenas());
         logger.setContext(null);
         log("Loaded " + arenaController.getArenas().size() + " arenas");
 
@@ -2447,7 +2447,7 @@ public class MagicController implements MageController {
 
         ConfigurationSection arenas = loadDataFile(ARENAS_FILE);
         if (arenas != null) {
-            arenaController.loadData(arenas);
+            arenaController.loadArenas(arenas);
             info("Loaded arena data");
         }
 
@@ -6874,6 +6874,11 @@ public class MagicController implements MageController {
     @Override
     public Collection<String> getArenaKeys() {
         return arenaController.getArenaKeys();
+    }
+
+    @Override
+    public Collection<String> getArenaTemplateKeys() {
+        return arenaController.getArenaTemplateKeys();
     }
 
     @Override

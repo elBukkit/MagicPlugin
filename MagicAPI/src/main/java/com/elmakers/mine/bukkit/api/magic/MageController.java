@@ -173,6 +173,7 @@ public interface MageController {
     Collection<String> getRecipeKeys();
     Collection<String> getAutoDiscoverRecipeKeys();
     Collection<String> getArenaKeys();
+    Collection<String> getArenaTemplateKeys();
     @Nullable
     SpellTemplate getSpellTemplate(String key);
     Set<String> getWandPathKeys();

@@ -159,6 +159,22 @@ public class ConfigurationUtils extends ConfigUtils {
         return toMaterialAndData(stringData);
     }
 
+    public static String fromLocation(Location location, Location relativeTo) {
+        if (location == null) return "";
+        if (location.getWorld() == null) return "";
+        if (relativeTo != null && relativeTo.getWorld() == null) return "";
+        if (!relativeTo.getWorld().equals(location.getWorld())) {
+            return fromLocation(location);
+        }
+        location = location.clone();
+        location.subtract(relativeTo);
+        String serialized = location.getX() + "," + location.getY() + "," + location.getZ();
+        if (location.getPitch() != relativeTo.getPitch() || location.getYaw() != relativeTo.getYaw()) {
+            serialized += "," + location.getYaw() + "," + location.getPitch();
+        }
+        return serialized;
+    }
+
     public static String fromLocation(Location location) {
         if (location == null) return "";
         if (location.getWorld() == null) return "";
@@ -188,15 +204,25 @@ public class ConfigurationUtils extends ConfigUtils {
 
     @Nullable
     public static Location toLocation(Object o) {
+        return toLocation(o, null);
+    }
+
+    @Nullable
+    public static Location toLocation(Object o, Location relativeTo) {
         if (o instanceof Location) {
             return (Location)o;
         }
-        SerializedLocation location = toSerializedLocation(o);
+        SerializedLocation location = toSerializedLocation(o, relativeTo);
         return location == null ? null : location.asLocation();
     }
 
     @Nullable
     public static SerializedLocation toSerializedLocation(Object o) {
+        return toSerializedLocation(o, null);
+    }
+
+    @Nullable
+    public static SerializedLocation toSerializedLocation(Object o, Location relativeTo) {
         if (o instanceof SerializedLocation) {
             return (SerializedLocation)o;
         }
@@ -209,14 +235,28 @@ public class ConfigurationUtils extends ConfigUtils {
                 double y = parseDouble(pieces[1]);
                 double z = parseDouble(pieces[2]);
                 String world = null;
-                if (pieces.length > 3) {
-                    world = pieces[3];
+                if (relativeTo != null && (pieces.length == 3 || pieces.length == 5)) {
+                    world = relativeTo.getWorld().getName();
+                    x += relativeTo.getX();
+                    y += relativeTo.getY();
+                    z += relativeTo.getZ();
+                    if (pieces.length == 5) {
+                        yaw = Float.parseFloat(pieces[3]);
+                        pitch = Float.parseFloat(pieces[4]);
+                    } else {
+                        yaw = relativeTo.getYaw();
+                        pitch = relativeTo.getPitch();
+                    }
                 } else {
-                    world = Bukkit.getWorlds().get(0).getName();
-                }
-                if (pieces.length > 5) {
-                    yaw = Float.parseFloat(pieces[4]);
-                    pitch = Float.parseFloat(pieces[5]);
+                    if (pieces.length > 3) {
+                        world = pieces[3];
+                    } else {
+                        world = Bukkit.getWorlds().get(0).getName();
+                    }
+                    if (pieces.length > 5) {
+                        yaw = Float.parseFloat(pieces[4]);
+                        pitch = Float.parseFloat(pieces[5]);
+                    }
                 }
                 return new SerializedLocation(world, new BlockVector(x, y, z), yaw, pitch);
             } catch (Exception ex) {

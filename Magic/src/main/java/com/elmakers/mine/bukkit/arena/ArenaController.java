@@ -20,9 +20,11 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.geysermc.connector.common.ChatColor;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ArenaController implements Runnable {
-    private final Map<String, Arena> arenas = new HashMap<String, Arena>();
+    private final Map<String, ArenaTemplate> templates = new HashMap<>();
+    private final Map<String, Arena> arenas = new HashMap<>();
     private final Map<Player, ArenaPlayer> arenaPlayers = new WeakHashMap<>();
     private final Map<Entity, Arena> arenaMobs = new WeakHashMap<>();
     private final Plugin plugin;
@@ -39,10 +41,20 @@ public class ArenaController implements Runnable {
         scheduler.runTaskTimer(plugin, this, 1, 10);
     }
 
-    public Arena addArena(String arenaName, Location location, int min, int max, ArenaType type) {
-        Arena arena = new Arena(arenaName, this, location, min, max, type);
-        arenas.put(arenaName.toLowerCase(), arena);
+    public Arena addArena(String arenaName, String templateKey, Location location) {
+        ArenaTemplate template = getTemplate(templateKey);
+        Arena arena = new Arena(arenaName, template, this, location);
+        arenas.put(arenaName, arena);
         return arena;
+    }
+
+    public ArenaTemplate getTemplate(String templateKey) {
+        ArenaTemplate arenaTemplate = templates.get(templateKey);
+        if (arenaTemplate == null) {
+            arenaTemplate = new ArenaTemplate(templateKey);
+            templates.put(templateKey, arenaTemplate);
+        }
+        return arenaTemplate;
     }
 
     public void saveData(ConfigurationSection configuration) {
@@ -52,35 +64,33 @@ public class ArenaController implements Runnable {
         }
         for (Arena arena : arenas.values()) {
             ConfigurationSection arenaConfig = configuration.createSection(arena.getKey());
-            arena.saveData(arenaConfig);
+            arena.save(arenaConfig);
         }
     }
 
-    public void load(ConfigurationSection configuration) {
+    public void loadTemplates(ConfigurationSection configuration) {
         if (configuration == null) return;
 
-        Collection<String> arenaKeys = configuration.getKeys(false);
-
+        Collection<String> templateKeys = configuration.getKeys(false);
+        templates.clear();
+        for (String templateKey : templateKeys) {
+            templates.put(templateKey, new ArenaTemplate(templateKey, configuration.getConfigurationSection(templateKey)));
+        }
         for (Arena arena : arenas.values()) {
-            arena.remove();
-        }
-        arenas.clear();
-        for (String arenaKey : arenaKeys) {
-            Arena arena = new Arena(arenaKey, this);
-            arena.load(configuration.getConfigurationSection(arenaKey));
-            arenas.put(arenaKey.toLowerCase(), arena);
+            arena.reload();
         }
     }
 
-    public void loadData(ConfigurationSection configuration) {
+    public void loadArenas(ConfigurationSection configuration) {
         if (configuration == null) return;
-
         Collection<String> arenaKeys = configuration.getKeys(false);
         for (String arenaKey : arenaKeys) {
-            Arena arena = arenas.get(arenaKey);
-            if (arena != null) {
-                arena.loadData(configuration.getConfigurationSection(arenaKey));
-            }
+            ConfigurationSection arenaConfiguration = configuration.getConfigurationSection(arenaKey);
+            String templateKey = configuration.getString("template", arenaKey);
+            ArenaTemplate template = getTemplate(templateKey);
+            Arena arena = new Arena(arenaKey, template, this);
+            arena.load(arenaConfiguration);
+            arenas.put(arenaKey, arena);
         }
     }
 
@@ -93,7 +103,7 @@ public class ArenaController implements Runnable {
     }
 
     public Arena getArena(String arenaName) {
-        return arenas.get(arenaName.toLowerCase());
+        return arenas.get(arenaName);
     }
 
     public Arena getArena(Player player) {
@@ -131,10 +141,9 @@ public class ArenaController implements Runnable {
     }
 
     public void remove(String arenaName) {
-        Arena arena = arenas.get(arenaName.toLowerCase());
+        Arena arena = arenas.remove(arenaName);
         if (arena != null) {
             arena.delete();
-            arenas.remove(arenaName.toLowerCase());
         }
     }
 
@@ -144,6 +153,10 @@ public class ArenaController implements Runnable {
 
     public Collection<String> getArenaKeys() {
         return arenas.keySet();
+    }
+
+    public Collection<String> getArenaTemplateKeys() {
+        return templates.keySet();
     }
 
     public ArenaPlayer leave(Player player) {
@@ -193,11 +206,6 @@ public class ArenaController implements Runnable {
     }
 
     public void importArenas(CommandSender sender) {
-        if (sender != null) {
-            sender.sendMessage(ChatColor.RED + "Disabled for now while I re-think how to do this");
-            return;
-        }
-
         File pluginFolder = plugin.getDataFolder().getParentFile();
         File magicArenasFolder = new File(pluginFolder, "MagicArenas");
         if (!magicArenasFolder.exists()) {
@@ -229,19 +237,30 @@ public class ArenaController implements Runnable {
 
         Collection<String> arenaKeys = arenaConfiguration.getKeys(false);
         for (String arenaKey : arenaKeys) {
-            if (arenas.containsKey(arenaKey)) {
+            if (arenas.containsKey(arenaKey) || templates.containsKey(arenaKey)) {
                 sender.sendMessage(ChatColor.YELLOW + "Skipping " + arenaKey + ", that arena already exists");
                 continue;
             }
 
-            Arena arena = new Arena(arenaKey, this);
-            arena.load(arenaConfiguration.getConfigurationSection(arenaKey));
+            ConfigurationSection templateConfiguration = arenaConfiguration.getConfigurationSection(arenaKey);
             ConfigurationSection saveData = saveConfiguration.getConfigurationSection(arenaKey);
-            if (saveData != null) {
-                arena.loadData(saveData);
+            if (saveData == null) {
+                saveData = ConfigurationUtils.newConfigurationSection();
             }
-            arenas.put(arenaKey.toLowerCase(), arena);
-            arena.save();
+
+            // Migrate properties
+            templateConfiguration.set("min_players", templateConfiguration.get("minplayers"));
+            templateConfiguration.set("minplayers", null);
+            templateConfiguration.set("max_players", templateConfiguration.get("maxplayers"));
+            templateConfiguration.set("maxplayers", null);
+            saveData.set("location", templateConfiguration.get("center"));
+
+            ArenaTemplate template = new ArenaTemplate(arenaKey, templateConfiguration);
+            templates.put(arenaKey, template);
+            Arena arena = new Arena(arenaKey, template, this);
+            arena.load(saveData);
+            arenas.put(arenaKey, arena);
+            arena.saveTemplate();
             sender.sendMessage(ChatColor.AQUA + "Imported " + arenaKey);
         }
         magic.getAPI().save();
