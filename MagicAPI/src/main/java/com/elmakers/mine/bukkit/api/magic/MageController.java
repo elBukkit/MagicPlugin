@@ -259,6 +259,7 @@ public interface MageController {
 
     void disablePhysics(int interval);
 
+    @Deprecated
     boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue);
     boolean hasPermission(CommandSender sender, String pNode);
     boolean hasPermission(Entity entity, String pNode);

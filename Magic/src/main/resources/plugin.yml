@@ -1086,7 +1086,6 @@ permissions:
     - Magic.commands.wand.destroy
     - Magic.commands.wand.add
     - Magic.commands.wand.add.spell
-    - Magic.commands.wand.add.material
     - Magic.commands.wand.add.brush
     - Magic.commands.wand.organize
     - Magic.commands.wand.configure
@@ -1140,10 +1139,6 @@ permissions:
   Magic.commands.wand.add.spell:
     description: Player may add a specific spell to a wand for another player
     type: list
-  Magic.commands.wand.add.material:
-    description: Player may add a specific material to a wand (outdated)
-    type: boolean
-    default: op
   Magic.commands.wand.add.brush:
     description: Player may add a specific brush to a wand
     type: boolean
@@ -1219,7 +1214,6 @@ permissions:
     - Magic.commands.wandp.destroy
     - Magic.commands.wandp.add
     - Magic.commands.wandp.add.spell
-    - Magic.commands.wandp.add.material
     - Magic.commands.wandp.add.brush
     - Magic.commands.wandp.organize
     - Magic.commands.wandp.configure
@@ -1252,10 +1246,6 @@ permissions:
   Magic.commands.wandp.add.spell:
     description: Player may add a specific spell to a wand for another player
     type: list
-  Magic.commands.wandp.add.material:
-    description: Player may add a specific material to a wand for another player
-    type: boolean
-    default: op
   Magic.commands.wandp.configure:
     description: Player may set wand properties for another player
     type: boolean

@@ -354,9 +354,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 if (subCommand.equalsIgnoreCase("add")) {
                     Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
                     for (SpellTemplate spell : spellList) {
-                        addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+                        addIfPermissible(sender, options, subCommandPNode, spell.getKey());
                     }
-                    addIfPermissible(sender, options, subCommandPNode, "brush", true);
+                    addIfPermissible(sender, options, subCommandPNode, "brush");
                 }
                 if (subCommand.equalsIgnoreCase("reward")) {
                     if (args.length > 1) {
@@ -364,7 +364,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     } else {
                         Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
                         for (SpellTemplate spell : spellList) {
-                            addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+                            addIfPermissible(sender, options, subCommandPNode, spell.getKey());
                         }
                     }
                 }
@@ -387,9 +387,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 if (subCommand.equalsIgnoreCase("add")) {
                     Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
                     for (SpellTemplate spell : spellList) {
-                        addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+                        addIfPermissible(sender, options, subCommandPNode, spell.getKey());
                     }
-                    addIfPermissible(sender, options, subCommandPNode, "brush", true);
+                    addIfPermissible(sender, options, subCommandPNode, "brush");
                 }
 
 

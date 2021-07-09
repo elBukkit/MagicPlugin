@@ -236,6 +236,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     }
 
     @Override
+    @Deprecated
     public boolean hasPermission(CommandSender sender, String pNode, boolean defaultPermission) {
         return controller.hasPermission(sender, pNode, defaultPermission);
     }

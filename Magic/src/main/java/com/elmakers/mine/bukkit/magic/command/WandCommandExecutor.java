@@ -179,9 +179,9 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             if (subCommand.equalsIgnoreCase("add")) {
                 Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
                 for (SpellTemplate spell : spellList) {
-                    addIfPermissible(sender, options, subCommandPNode, spell.getKey(), true);
+                    addIfPermissible(sender, options, subCommandPNode, spell.getKey());
                 }
-                addIfPermissible(sender, options, subCommandPNode, "brush", true);
+                addIfPermissible(sender, options, subCommandPNode, "brush");
             }
 
             if (subCommand.equalsIgnoreCase("configure") || subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc") || subCommand.equalsIgnoreCase("upgrade")) {
@@ -241,7 +241,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             if (subCommand.equalsIgnoreCase("combine")) {
                 Collection<String> allWands = api.getWandKeys();
                 for (String wandKey : allWands) {
-                    addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".combine.", wandKey, true);
+                    addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".combine.", wandKey);
                 }
             }
 
@@ -334,9 +334,6 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         if (subCommand.equalsIgnoreCase("add"))
         {
             if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
-            if (args2.length > 0 && args2[0].equals("material") && !api.hasPermission(sender,"Magic.commands.wand.add." + args2[0], true)) return true;
-            if (args2.length > 0 && args2[0].equals("brush") && !api.hasPermission(sender,"Magic.commands.wand.add." + args2[0], true)) return true;
-            if (args2.length > 0 && !api.hasPermission(sender,"Magic.commands.wand.add.spell." + args2[0], true)) return true;
             onWandAdd(sender, player, args2);
             return true;
         }
@@ -434,7 +431,6 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         if (subCommand.equalsIgnoreCase("combine"))
         {
             if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
-            if (args2.length > 0 && !api.hasPermission(sender,"Magic.commands." + command + ".combine." + args2[0], true)) return true;
 
             onWandCombine(sender, player, args2);
             return true;

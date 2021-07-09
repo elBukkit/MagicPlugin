@@ -3553,40 +3553,41 @@ public class MagicController implements MageController {
         return inRegion != null && inRegion;
     }
 
-    public boolean hasPermission(Player player, String pNode, boolean defaultValue) {
+    public boolean hasPermission(Player player, String pNode) {
         // Should this return defaultValue? Can't give perms to console.
         if (player == null) return true;
 
-        // The GM won't handle this properly because we are unable to register
-        // dynamic lists (spells, wands, brushes) in plugin.yml
-        if (pNode.contains(".")) {
-            String parentNode = pNode.substring(0, pNode.lastIndexOf('.') + 1) + "*";
-            boolean isParentSet = player.isPermissionSet(parentNode);
-            if (isParentSet) {
-                defaultValue = player.hasPermission(parentNode);
-            }
+        // If the player has the permission directly, use that
+        boolean hasPermission = player.hasPermission(pNode);
+        if (player.isPermissionSet(pNode)) {
+            return hasPermission;
         }
 
-        boolean isSet = player.isPermissionSet(pNode);
-        return isSet ? player.hasPermission(pNode) : defaultValue;
-    }
+        // Check for wildcards, this is particularly important for lists
+        // Only going to look up one level though, and hope the perm system handles it from there
+        boolean hasWildcard = false;
+        if (pNode.contains(".")) {
+            String parentNode = pNode.substring(0, pNode.lastIndexOf('.') + 1) + "*";
+            hasWildcard = player.hasPermission(parentNode);
+        }
 
-    public boolean hasPermission(Player player, String pNode) {
-        return hasPermission(player, pNode, false);
+        // Use default permission or wildcard default/override
+        return hasPermission || hasWildcard;
     }
 
     // Note that this version doesn't work with mob permissions
     @Override
     public boolean hasPermission(CommandSender sender, String pNode) {
         if (!(sender instanceof Player)) return true;
-        return hasPermission((Player) sender, pNode, false);
+        return hasPermission((Player) sender, pNode);
     }
 
     // Note that this version doesn't work with mob permissions
     @Override
+    @Deprecated
     public boolean hasPermission(CommandSender sender, String pNode, boolean defaultValue) {
         if (!(sender instanceof Player)) return true;
-        return hasPermission((Player) sender, pNode, defaultValue);
+        return hasPermission((Player) sender, pNode);
     }
 
     @Override

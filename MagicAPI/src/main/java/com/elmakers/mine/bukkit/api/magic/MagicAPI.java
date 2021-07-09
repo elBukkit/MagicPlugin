@@ -155,6 +155,7 @@ public interface MagicAPI {
      * @param defaultPermission set to true to enable permission by default
      * @return True if the sender has permission
      */
+    @Deprecated
     boolean hasPermission(CommandSender sender, String pNode, boolean defaultPermission);
 
     /**
