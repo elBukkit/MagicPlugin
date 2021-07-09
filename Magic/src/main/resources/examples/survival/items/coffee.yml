@@ -1,12 +1,14 @@
 coffee1:
   worth: 10.0
   item: potion:A0522D
+  potion_effect_duration: 10 seconds
   potion_effects:
     speed: 1
 
 coffee2:
   worth: 10.0
   item: potion:8B4513
+  potion_effect_duration: 30 seconds
   potion_effects:
     speed: 2
 
@@ -14,5 +16,6 @@ coffee2:
 coffee3:
   worth: 10.0
   item: potion:800000
+  potion_effect_duration: 60 seconds
   potion_effects:
     speed: 3
