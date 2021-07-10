@@ -299,6 +299,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     // Boss bar
     protected BossBar bossBar;
     protected BossBarConfiguration bossBarConfiguration;
+    protected WandBossBarDisplayMode bossBarDisplayMode = WandBossBarDisplayMode.COOLDOWN;
 
     public Wand(MagicController controller) {
         super(controller);
@@ -2375,6 +2376,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             ConfigurationSection config = getConfigurationSection("boss_bar");
             if (config != null) {
                 bossBarConfiguration = new BossBarConfiguration(controller, config, "$wand");
+                String displayMode = config.getString("display_mode");
+                if (displayMode != null && !displayMode.isEmpty()) {
+                    try {
+                        bossBarDisplayMode = WandBossBarDisplayMode.valueOf(displayMode.toUpperCase());
+                    } catch (Exception ex) {
+                        controller.getLogger().warning("Invalid boss bar display mode: " + displayMode);
+                    }
+                }
             }
         }
     }
@@ -2387,17 +2396,27 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             bossBar = bossBarConfiguration.createBossBar(mage);
             bossBar.addPlayer(player);
         }
-        double durationRemaining = 1;
-        Spell spell = getActiveSpell();
-        if (spell != null && spell instanceof BaseSpell) {
-            BaseSpell baseSpell = (BaseSpell)spell;
-            long timeToCast = baseSpell.getTimeToCast(mage);
-            long maxTimeToCast = baseSpell.getMaxTimeToCast(mage);
-            if (maxTimeToCast > 0) {
-                durationRemaining = (double)(maxTimeToCast - timeToCast) / maxTimeToCast;
-            }
+        double progress = 1;
+        switch (bossBarDisplayMode) {
+            case COOLDOWN:
+                Spell spell = getActiveSpell();
+                if (spell != null && spell instanceof BaseSpell) {
+                    BaseSpell baseSpell = (BaseSpell)spell;
+                    long timeToCast = baseSpell.getTimeToCast(mage);
+                    long maxTimeToCast = baseSpell.getMaxTimeToCast(mage);
+                    if (maxTimeToCast > 0) {
+                        progress = (double)(maxTimeToCast - timeToCast) / maxTimeToCast;
+                    }
+                }
+                break;
+            case MANA:
+                double maxMana = mage.getEffectiveManaMax();
+                if (maxMana > 0 && !isCostFree()) {
+                    progress = mage.getMana() / maxMana;
+                }
+                break;
         }
-        bossBar.setProgress(Math.min(1, Math.max(0, durationRemaining)));
+        bossBar.setProgress(Math.min(1, Math.max(0, progress)));
     }
 
     private void removeBossBar() {
