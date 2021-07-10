@@ -2380,7 +2380,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private void checkBossBar() {
-        Player player = mage == null ? null : mage.getPlayer();
+        if (mage == null) return;
+        Player player = mage.getPlayer();
         if (player == null || bossBarConfiguration == null) return;
         if (bossBar == null) {
             bossBar = bossBarConfiguration.createBossBar(mage);
@@ -2388,11 +2389,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         double durationRemaining = 1;
         Spell spell = getActiveSpell();
-        if (spell != null) {
-            long remainingCooldown = spell.getRemainingCooldown();
-            long cooldown = spell.getCooldown();
-            if (cooldown > 0) {
-                durationRemaining = (double)(cooldown - remainingCooldown) / cooldown;
+        if (spell != null && spell instanceof BaseSpell) {
+            BaseSpell baseSpell = (BaseSpell)spell;
+            long timeToCast = baseSpell.getTimeToCast(mage);
+            long maxTimeToCast = baseSpell.getMaxTimeToCast(mage);
+            if (maxTimeToCast > 0) {
+                durationRemaining = (double)(maxTimeToCast - timeToCast) / maxTimeToCast;
             }
         }
         bossBar.setProgress(Math.min(1, Math.max(0, durationRemaining)));

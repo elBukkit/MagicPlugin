@@ -3472,4 +3472,49 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean onReactivate() {
         return false;
     }
+
+    public long getMaxTimeToCast(Mage mage) {
+        long maxTimeToCast = cooldown;
+        if (costs != null) {
+            for (CastingCost cost : costs) {
+                int mana = cost.getMana();
+                if (mana > 0) {
+                    long targetManaTime = (long)(1000.0 * mana / mage.getEffectiveManaRegeneration());
+                    maxTimeToCast = Math.max(maxTimeToCast, targetManaTime);
+                }
+            }
+        }
+        return maxTimeToCast;
+    }
+
+    public Long getTimeToCast(Mage mage) {
+        Location location = mage.getLocation();
+        if (!canCast(location)) {
+            return null;
+        }
+        long remainingCooldown = getRemainingCooldown();
+        CastingCost requiredCost = getRequiredCost();
+
+        Long timeToCast = null;
+        if (remainingCooldown == 0 && requiredCost == null) {
+            timeToCast = 0L;
+        } else {
+            timeToCast = com.elmakers.mine.bukkit.wand.Wand.LiveHotbarCooldown ? remainingCooldown : null;
+            if (com.elmakers.mine.bukkit.wand.Wand.LiveHotbarMana && requiredCost != null) {
+                int mana = requiredCost.getMana();
+                if (mana > 0) {
+                    if (mana <= mage.getEffectiveManaMax() && mage.getEffectiveManaRegeneration() > 0) {
+                        float remainingMana = mana - mage.getMana();
+                        long targetManaTime = (long)(1000.0 * remainingMana / mage.getEffectiveManaRegeneration());
+                        if (timeToCast == null) {
+                            timeToCast = targetManaTime;
+                        } else {
+                            timeToCast = Math.max(targetManaTime, timeToCast);
+                        }
+                    }
+                }
+            }
+        }
+        return timeToCast;
+    }
 }

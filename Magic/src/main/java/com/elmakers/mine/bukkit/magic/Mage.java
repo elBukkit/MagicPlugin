@@ -4562,7 +4562,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void updateHotbarStatus() {
         Player player = getPlayer();
         if (player != null) {
-            Location location = getLocation();
             boolean isWandInventory = hasStoredInventory();
             for (int i = 0; i < Wand.HOTBAR_SIZE; i++) {
                 ItemStack spellItem = player.getInventory().getItem(i);
@@ -4571,50 +4570,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 boolean isSkill = Wand.isSkill(spellItem);
                 if (spellKey != null && (isSkill || isWandInventory)) {
                     Spell spell = getSpell(spellKey);
-                    if (spell != null) {
+                    if (spell != null && spell instanceof BaseSpell) {
+                        Long timeToCast = null;
+                        BaseSpell baseSpell = (BaseSpell)spell;
                         int targetAmount = 1;
-                        long remainingCooldown = 0;
-                        CastingCost requiredCost = null;
-                        boolean canCastSpell = false;
+                        MageClass mageClass = null;
                         if (classKey != null && !classKey.isEmpty()) {
-                            MageClass mageClass = getClass(classKey);
-                            if (mageClass != null && spell instanceof BaseSpell) {
-                                BaseSpell baseSpell = (BaseSpell)spell;
-                                baseSpell.setMageClass(mageClass);
-                                remainingCooldown = spell.getRemainingCooldown();
-                                requiredCost = spell.getRequiredCost();
-                                canCastSpell = spell.canCast(location);
-                                baseSpell.setMageClass(null);
-                            }
+                            mageClass = getClass(classKey);
+                        }
+                        if (mageClass != null) {
+                            baseSpell.setMageClass(mageClass);
+                            timeToCast = baseSpell.getTimeToCast(this);
+                            baseSpell.setMageClass(null);
                         } else {
-                            remainingCooldown = spell.getRemainingCooldown();
-                            requiredCost = spell.getRequiredCost();
-                            canCastSpell = spell.canCast(location);
+                            timeToCast = baseSpell.getTimeToCast(this);
                         }
 
-                        boolean canCast = canCastSpell;
-                        if (canCastSpell && remainingCooldown == 0 && requiredCost == null) {
+                        boolean canCastSpell = timeToCast != null;
+                        boolean canCast = timeToCast != null && timeToCast == 0;
+                        if (!canCastSpell) {
                             targetAmount = 1;
-                        } else if (canCastSpell) {
-                            canCast = remainingCooldown == 0;
-                            targetAmount = Wand.LiveHotbarCooldown ? (int)Math.min(Math.ceil((double)remainingCooldown / 1000), 99) : 99;
-                            if (Wand.LiveHotbarCooldown && Wand.LiveHotbarMana && requiredCost != null) {
-                                int mana = requiredCost.getMana();
-                                if (mana > 0) {
-                                    if (mana <= getEffectiveManaMax() && getEffectiveManaRegeneration() > 0) {
-                                        float remainingMana = mana - getMana();
-                                        canCast = canCast && remainingMana <= 0;
-                                        int targetManaTime = (int)Math.min(Math.ceil(remainingMana / getEffectiveManaRegeneration()), 99);
-                                        targetAmount = Math.max(targetManaTime, targetAmount);
-                                    } else {
-                                        canCastSpell = false;
-                                        canCast = false;
-                                    }
-                                }
-                            }
+                        } else {
+                            targetAmount = (int)Math.ceil((double)timeToCast / 1000);
                         }
-                        if (targetAmount == 0) targetAmount = 1;
-                        boolean setAmount = false;
+                        targetAmount = Math.max(Math.min(targetAmount, 99), 1);
 
                         MaterialAndData disabledIcon = spell.getDisabledIcon();
                         MaterialAndData spellIcon = spell.getIcon();
@@ -4625,12 +4604,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                             if (!canCast || !spell.isEnabled()) {
                                 if (disabledIcon.isValid() && disabledIcon.isDifferent(spellItem)) {
                                     disabledIcon.applyToItem(spellItem);
-                                }
-                                if (!canCastSpell) {
-                                    if (spellItem.getAmount() != 1) {
-                                        spellItem.setAmount(1);
-                                    }
-                                    setAmount = true;
                                 }
                             } else {
                                 if (spellIcon.isValid() && spellIcon.isDifferent(spellItem)) {
@@ -4644,12 +4617,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                     spellItem = CompatibilityLib.getInventoryUtils().setSkullURL(spellItem, disabledUrlIcon);
                                     player.getInventory().setItem(i, spellItem);
                                 }
-                                if (!canCastSpell) {
-                                    if (spellItem.getAmount() != 1) {
-                                        spellItem.setAmount(1);
-                                    }
-                                    setAmount = true;
-                                }
                             } else {
                                 if (!urlIcon.equals(currentURL)) {
                                     spellItem = CompatibilityLib.getInventoryUtils().setSkullURL(spellItem, urlIcon);
@@ -4658,7 +4625,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                             }
                         }
 
-                        if (!setAmount && spellItem.getAmount() != targetAmount) {
+                        if (spellItem.getAmount() != targetAmount) {
                             spellItem.setAmount(targetAmount);
                         }
                     }
