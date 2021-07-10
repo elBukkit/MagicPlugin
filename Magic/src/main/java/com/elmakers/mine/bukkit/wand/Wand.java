@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -64,7 +63,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
-import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -218,7 +216,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean levelSpells = false;
     private boolean limitBrushesToPath = false;
     private Double resetManaOnActivate = null;
-    private Currency currencyDisplay = null;
 
     private float manaPerDamage = 0;
 
@@ -267,7 +264,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private int currentHotbar = 0;
 
     public static WandManaMode manaMode = WandManaMode.BAR;
-    public static WandManaMode currencyMode = WandManaMode.NUMBER;
     public static boolean regenWhileInactive = true;
     public static Material DefaultUpgradeMaterial = Material.NETHER_STAR;
     public static Material DefaultWandMaterial = Material.BLAZE_ROD;
@@ -296,10 +292,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private int heldSlot = 0;
     private boolean isActive = false;
 
+    // XP bar
+    protected WandDisplayMode xpBarDisplayMode = WandDisplayMode.MANA;
+
+    // Level
+    protected WandDisplayMode levelDisplayMode = WandDisplayMode.SP;
+
     // Boss bar
     protected BossBar bossBar;
     protected BossBarConfiguration bossBarConfiguration;
-    protected WandBossBarDisplayMode bossBarDisplayMode = WandBossBarDisplayMode.COOLDOWN;
+    protected WandDisplayMode bossBarDisplayMode = WandDisplayMode.COOLDOWN;
 
     public Wand(MagicController controller) {
         super(controller);
@@ -2051,7 +2053,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         brushMode = parseWandMode(getString("brush_mode"), controller.getDefaultBrushMode());
-        currencyDisplay = controller.getCurrency(getString("currency_display", "sp"));
 
         // Backwards compatibility
         if (getBoolean("mode_drop", false)) {
@@ -2376,46 +2377,51 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             ConfigurationSection config = getConfigurationSection("boss_bar");
             if (config != null) {
                 bossBarConfiguration = new BossBarConfiguration(controller, config, "$wand");
-                String displayMode = config.getString("display_mode");
-                if (displayMode != null && !displayMode.isEmpty()) {
-                    try {
-                        bossBarDisplayMode = WandBossBarDisplayMode.valueOf(displayMode.toUpperCase());
-                    } catch (Exception ex) {
-                        controller.getLogger().warning("Invalid boss bar display mode: " + displayMode);
-                    }
+                bossBarDisplayMode = parseDisplayMode(config, WandDisplayMode.COOLDOWN);
+            }
+        }
+
+        ConfigurationSection config = getConfigurationSection("xp_display");
+        if (config != null) {
+            xpBarDisplayMode = parseDisplayMode(config, WandDisplayMode.MANA);
+        }
+
+        config = getConfigurationSection("level_display");
+        if (config != null) {
+            levelDisplayMode = parseDisplayMode(config, WandDisplayMode.SP);
+        } else {
+            // Backwards-compatiiblity
+            String currencyDisplay = getString("currency_display", "sp");
+            if (!currencyDisplay.equals("sp")) {
+                if (currencyDisplay.isEmpty()) {
+                    levelDisplayMode = WandDisplayMode.NONE;
+                } else {
+                    levelDisplayMode = WandDisplayMode.getCurrency(currencyDisplay);
                 }
             }
         }
+    }
+
+    private WandDisplayMode parseDisplayMode(ConfigurationSection config, WandDisplayMode defaultMode) {
+        WandDisplayMode mode = defaultMode;
+        try {
+            mode = WandDisplayMode.parse(controller, config, "mode");
+        } catch (Exception ex) {
+            controller.getLogger().warning("Invalid display mode: " + ex.getMessage());
+        }
+        return mode == null ? defaultMode : mode;
     }
 
     private void checkBossBar() {
         if (mage == null) return;
         Player player = mage.getPlayer();
         if (player == null || bossBarConfiguration == null) return;
+        if (!bossBarDisplayMode.isEnabled(this)) return;
         if (bossBar == null) {
             bossBar = bossBarConfiguration.createBossBar(mage);
             bossBar.addPlayer(player);
         }
-        double progress = 1;
-        switch (bossBarDisplayMode) {
-            case COOLDOWN:
-                Spell spell = getActiveSpell();
-                if (spell != null && spell instanceof BaseSpell) {
-                    BaseSpell baseSpell = (BaseSpell)spell;
-                    long timeToCast = baseSpell.getTimeToCast(mage);
-                    long maxTimeToCast = baseSpell.getMaxTimeToCast(mage);
-                    if (maxTimeToCast > 0) {
-                        progress = (double)(maxTimeToCast - timeToCast) / maxTimeToCast;
-                    }
-                }
-                break;
-            case MANA:
-                double maxMana = mage.getEffectiveManaMax();
-                if (maxMana > 0 && !isCostFree()) {
-                    progress = mage.getMana() / maxMana;
-                }
-                break;
-        }
+        double progress = bossBarDisplayMode.getProgress(this);
         bossBar.setProgress(Math.min(1, Math.max(0, progress)));
     }
 
@@ -4384,17 +4390,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean usesXPBar()
     {
-        return (usesCurrency() && currencyMode.useXP()) || (usesMana() && manaMode.useXP());
+        return xpBarDisplayMode.isEnabled(this);
     }
 
     public boolean usesXPNumber()
     {
-        return (usesCurrency() && currencyMode.useXPNumber()) || (usesMana() && manaMode.useXP());
-    }
-
-    public boolean hasSpellProgression()
-    {
-        return hasSpellProgression;
+        return levelDisplayMode.isEnabled(this);
     }
 
     public boolean usesXPDisplay()
@@ -4402,8 +4403,27 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return usesXPBar() || usesXPNumber();
     }
 
+    public boolean usesCurrency(String type) {
+        if (type.equals("sp") && !usesSP()) return false;
+        return xpBarDisplayMode.usesCurrency(type) || levelDisplayMode.usesCurrency(type) || bossBarDisplayMode.usesCurrency(type);
+    }
+
+    public boolean usesSP() {
+        return controller.isSPEarnEnabled() && hasSpellProgression && earnMultiplier > 0;
+    }
+
+    public boolean hasSpellProgression()
+    {
+        return hasSpellProgression;
+    }
+
     @Override
     public void updateMana() {
+        if (isInOffhand) {
+            return;
+        }
+
+        updateXPBar();
         Player player = mage == null ? null : mage.getPlayer();
         if (player == null) return;
 
@@ -4420,22 +4440,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 updateDurability();
             }
         }
+    }
 
-        if (usesXPDisplay()) {
+    public void updateXPBar() {
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player == null) return;
+
+        boolean usesXPDisplay = xpBarDisplayMode.isEnabled(this);
+        boolean usesLevelDisplay = levelDisplayMode.isEnabled(this);
+        if (usesXPDisplay || usesLevelDisplay) {
             int playerLevel = player.getLevel();
             float playerProgress = player.getExp();
 
-            if (usesMana() && manaMode.useXPNumber())
-            {
-                playerLevel = (int) mana;
+            if (usesXPDisplay) {
+                playerProgress = (float)Math.min(Math.max(0, xpBarDisplayMode.getProgress(this)), 1);
             }
-            if (usesMana() && manaMode.useXPBar())
-            {
-                playerProgress = effectiveManaMax <= 0 ? 0 : Math.min(Math.max(0, mana / effectiveManaMax), 1);
-            }
-            if (usesCurrency() && currencyMode.useXPNumber())
-            {
-                playerLevel = (int)Math.ceil(currencyDisplay.getBalance(mage, this));
+            if (usesLevelDisplay) {
+                playerLevel = (int)levelDisplayMode.getValue(this);
             }
 
             mage.sendExperience(playerProgress, playerLevel);
@@ -4780,9 +4801,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (player == null) return;
 
         super.tick();
-        if (usesMana() && !isInOffhand) {
-            updateMana();
-        }
+        updateXPBar();
 
         if (player.isBlocking() && blockMageCooldown > 0) {
             mage.setRemainingCooldown(blockMageCooldown);
@@ -6200,21 +6219,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return 9 * inventoryRows;
         }
         return INVENTORY_SIZE;
-    }
-
-    public boolean usesCurrency() {
-        if (currencyDisplay == null || !hasSpellProgression || earnMultiplier <= 0 || !currencyDisplay.isValid()) return false;
-        if (currencyDisplay.getKey().equals("sp") && !controller.isSPEarnEnabled()) return false;
-        return true;
-    }
-
-    public boolean usesCurrency(String type) {
-        if (type.equals("sp") && !controller.isSPEarnEnabled()) return false;
-        return usesCurrency() && currencyDisplay.getKey().equals(type);
-    }
-
-    public boolean usesSP() {
-        return usesCurrency("sp");
     }
 
     @Override

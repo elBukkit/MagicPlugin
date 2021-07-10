@@ -7931,14 +7931,6 @@ public class MagicController implements MageController {
                 Wand.manaMode = WandManaMode.NONE;
             }
         }
-        if (properties.contains("sp_display")) {
-            String spDisplay = properties.getString("sp_display");
-            if (spDisplay.equalsIgnoreCase("number")) {
-                Wand.currencyMode = WandManaMode.NUMBER;
-            } else {
-                Wand.currencyMode = WandManaMode.NONE;
-            }
-        }
         spEnabled = properties.getBoolean("sp_enabled", true);
         spEarnEnabled = properties.getBoolean("sp_earn_enabled", true);
 

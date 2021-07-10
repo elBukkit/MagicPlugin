@@ -4429,7 +4429,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!quiet) {
             queueCurrencyMessage(type, delta);
         }
-        if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
+        if (activeWand != null && activeWand.usesCurrency(type)) {
             if (isFirstEarn && currency != null && !quiet) {
                 startInstructions();
                 String message = activeWand.getMessage(currency.getKey() + "_earn_instructions", activeWand.getMessage("earn_instructions"));
@@ -4457,7 +4457,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!quiet) {
             queueCurrencyMessage(type, delta);
         }
-        if (activeWand != null && Wand.currencyMode != WandManaMode.NONE && activeWand.usesCurrency(type)) {
+        if (activeWand != null && activeWand.usesCurrency(type)) {
             activeWand.updateMana();
         }
     }

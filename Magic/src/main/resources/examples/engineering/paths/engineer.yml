@@ -8,7 +8,9 @@ engineer:
     override_properties:
       mana_regeneration: 50
       mana_max: 300
-      currency_display: materia
+      level_display:
+        mode: currency
+        currency: materia
     extra_spells:
       - brushselect
     spells:

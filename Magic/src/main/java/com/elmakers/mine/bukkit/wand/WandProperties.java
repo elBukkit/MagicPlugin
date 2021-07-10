@@ -35,7 +35,7 @@ public abstract class WandProperties extends TemplatedProperties {
             "cast_min_velocity", "cast_velocity_direction", "cast_min_bowpull",
             "icon_inactive", "icon_inactive_delay", "mode",
             "active_effects", "cancel_effects_delay",
-            "brush_mode", "currency_display",
+            "brush_mode",
             "keep", "locked", "quiet", "force", "rename", "rename_description",
             "power", "heroes",
             "enchant_count", "max_enchant_count", "cast_location",
@@ -46,7 +46,8 @@ public abstract class WandProperties extends TemplatedProperties {
             "unique", "track", "invulnerable", "immortal", "inventory_rows",
             "class", "classes", "consume_spell", "stack", "unstashable", "unmoveable",
             "page_free_space", "enchantable", "hide_flags", "item_flags", "slot", "slots", "slotted",
-            "use_active_name", "interactible", "craftable", "unswappable", "worth", "glow", "spell_glow"
+            "use_active_name", "interactible", "craftable", "unswappable", "worth", "glow", "spell_glow",
+            "boss_bar", "level_display", "xp_display"
         ).build();
     protected BaseMagicProperties wandTemplate;
     protected MageClass mageClass;

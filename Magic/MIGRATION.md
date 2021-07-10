@@ -1,5 +1,10 @@
 # Migration Notes
 
+# 9.3
+
+ - Removed `sp_display` global config option. 
+   Wand SP and other displays are now configured on the wand using level_display and xp_display
+
 # 9.0
 
  - Persistent mobs now have separate `spawn` and `respawn` triggers. You may need to 

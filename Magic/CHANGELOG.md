@@ -20,8 +20,15 @@
  - Add `target_fall_distance` attribute
  - Add `charges` spell property, a spell can be used several times before going on cooldown
  - Add work-in-progress (very) `brawl` Brawl Stars external example
- - Add `boss_bar` option to wands, for showing current spell cooldown
  - Add $wand, $spell and $class placeholders for messages, commands and boss bar titles
+ - Add wand properties for complete UI configuration:
+    - New config sections available, each contains `mode`:
+       - `xp_display` : What to show in the XP bar, can be anything now, not just mana
+       - `level_display` : What to show as the level number, doesn't have to be SP. 
+         Replaces `currency_display` option,
+       - `boss_bar` : Configured like other boss bar sections, shows at top of screen
+    - `mode` can be one of `mana`, `cooldown`, `attribute`, `currency` or `none`
+    -  Use `attribute` and `currency` properties to specify what attribute/currency to show for those modes
 
 ## Changes
 

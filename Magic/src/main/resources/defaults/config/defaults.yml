@@ -359,9 +359,6 @@ default_wand: wand
 # How to display Mana. Options are "bar", "number", "durability", "glow" and "none"
 mana_display: bar
 
-# How to display SP. Options are "number" and "none"
-sp_display: number
-
 # Set this to false to disable the Skill Point system completely.
 sp_enabled: true
 
