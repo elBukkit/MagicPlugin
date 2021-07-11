@@ -86,7 +86,7 @@ base_sword:
     hidden: true
     inherit: base_bound
     mode: inventory
-    drop: cycle_hotbar
+    drop: toggle
     left_click: none
     right_click: toggle
     swap: cycle_hotbar

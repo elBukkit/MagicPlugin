@@ -37,6 +37,7 @@
  - Wands will now look up one level (only, for performance) for messages
  - Sneak-clicking the enchant table to bring up the spellshop was removed from survival
    Use `/mconfig configure config enchant_sneak_click spellshop` to put it back
+ - Sword controls changes to use the same drop/swap behavior as wands  
 
 # 9.2.1
 
