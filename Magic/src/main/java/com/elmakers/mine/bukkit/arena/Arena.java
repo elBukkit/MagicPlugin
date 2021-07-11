@@ -152,7 +152,7 @@ public class Arena {
     public void loadProperties(ConfigurationSection configuration) {
         name = configuration.getString("name", null);
         description = configuration.getString("description", null);
-        minPlayers = configuration.getInt("min_players",2);
+        setMinPlayers(configuration.getInt("min_players",2));
         maxPlayers = configuration.getInt("max_players", 2);
         requiredKills = configuration.getInt("required_kills", 1);
 
@@ -951,7 +951,7 @@ public class Arena {
     }
 
     public void setMinPlayers(int players) {
-        minPlayers = players;
+        minPlayers = Math.max(1, players);
     }
 
     public void setMaxPlayers(int players) {

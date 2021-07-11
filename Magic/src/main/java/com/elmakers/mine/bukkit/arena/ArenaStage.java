@@ -252,6 +252,10 @@ public class ArenaStage implements EditingStage {
             MageController magic = arena.getController().getMagic();
             magic.setForceSpawn(true);
             List<ArenaPlayer> players = new ArrayList<>(arena.getLivingParticipants());
+            if (players.isEmpty()) {
+                arena.getController().getMagic().getLogger().warning("Arena stage " + getNumber() + " of " + arena.getKey() + " starting without any living players");
+                return;
+            }
             try {
                 List<Location> spawns = getMobSpawns();
                 int num = 0;

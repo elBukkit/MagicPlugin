@@ -63,6 +63,7 @@
 
 ## Suggestions
 
+ - A way to get placeholders in a message or command for the target player
  - ATMs broken
  - Add per-player particle on/off settings
  - Drop rule add required tools
