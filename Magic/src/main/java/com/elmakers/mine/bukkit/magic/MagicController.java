@@ -157,6 +157,7 @@ import com.elmakers.mine.bukkit.essentials.EssentialsController;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.integration.AureliumSkillsManager;
 import com.elmakers.mine.bukkit.integration.BattleArenaManager;
 import com.elmakers.mine.bukkit.integration.GenericMetadataNPCSupplier;
 import com.elmakers.mine.bukkit.integration.GeyserManager;
@@ -563,6 +564,8 @@ public class MagicController implements MageController {
     private RedProtectManager redProtectManager = null;
     private RequirementsController requirementsController = null;
     private HeroesManager heroesManager = null;
+    private AureliumSkillsManager aureliumSkillsManager = null;
+    private ConfigurationSection aureliumSkillsConfiguration = null;
     private LibsDisguiseManager libsDisguiseManager = null;
     private ModelEngineManager modelEngineManager = null;
     private SkillAPIManager skillAPIManager = null;
@@ -1882,7 +1885,6 @@ public class MagicController implements MageController {
         // Main configuration
         logger.setContext("config");
         loadProperties(sender, loader.getMainConfiguration());
-        registerProviders();
 
         // We need to do this here so global attributes are available to configs.
         // Attribute providers added after this will be finalized by the register() method.
@@ -1994,6 +1996,9 @@ public class MagicController implements MageController {
     }
 
     private void registerManagers() {
+        // Register attribute and other providers
+        registerProviders();
+
         // Cast Managers
         if (worldGuardManager.isEnabled()) castManagers.add(worldGuardManager);
         if (preciousStonesManager.isEnabled()) castManagers.add(preciousStonesManager);
@@ -2074,10 +2079,13 @@ public class MagicController implements MageController {
     private void registerProviders() {
         // Attribute providers
         if (skillAPIManager != null) {
-            attributeProviders.add(skillAPIManager);
+            registerAttributes(skillAPIManager);
         }
         if (heroesManager != null) {
-            attributeProviders.add(heroesManager);
+            registerAttributes(heroesManager);
+        }
+        if (aureliumSkillsManager != null && aureliumSkillsManager.useAttributes()) {
+            registerAttributes(aureliumSkillsManager);
         }
 
         // Requirements providers
@@ -3366,6 +3374,22 @@ public class MagicController implements MageController {
         requirementProcessors.put(Requirement.DEFAULT_TYPE, requirementsController);
     }
 
+    private void registerAttributes(AttributeProvider attributes) {
+        registerAttributes(attributes, true);
+    }
+
+    private void registerAttributes(AttributeProvider attributes, boolean update) {
+        attributeProviders.add(attributes);
+        if (update) {
+            Set<String> providerAttributes = attributes.getAllAttributes();
+            if (providerAttributes != null) {
+                registerPlayerAttributes(providerAttributes);
+                MageParameters.initializeAttributes(registeredAttributes);
+                log("Registered additional attributes: " + providerAttributes);
+            }
+        }
+    }
+
     private boolean registerAndUpdate(MagicProvider provider) {
         return register(provider, true);
     }
@@ -3383,16 +3407,7 @@ public class MagicController implements MageController {
         }
         if (provider instanceof AttributeProvider) {
             added = true;
-            AttributeProvider attributes = (AttributeProvider) provider;
-            attributeProviders.add(attributes);
-            if (update) {
-                Set<String> providerAttributes = attributes.getAllAttributes();
-                if (providerAttributes != null) {
-                    registerPlayerAttributes(providerAttributes);
-                    MageParameters.initializeAttributes(registeredAttributes);
-                    log("Registered additional attributes: " + providerAttributes);
-                }
-            }
+            registerAttributes((AttributeProvider) provider, update);
         }
         if (provider instanceof TeamProvider) {
             added = true;
@@ -5733,6 +5748,7 @@ public class MagicController implements MageController {
     @Nullable
     public ManaController getManaController() {
         if (useHeroesMana && heroesManager != null) return heroesManager;
+        if (aureliumSkillsManager != null && aureliumSkillsManager.useMana()) return aureliumSkillsManager;
         if (useSkillAPIMana && skillAPIManager != null) return skillAPIManager;
         return null;
     }
@@ -7284,6 +7300,19 @@ public class MagicController implements MageController {
             getLogger().warning(ex.getMessage());
         }
 
+        // Try to link to AureliumSkills:
+        try {
+            Plugin aureliumSkillsPlugin = pluginManager.getPlugin("AureliumSkills");
+            if (aureliumSkillsPlugin != null) {
+                aureliumSkillsManager = new AureliumSkillsManager(aureliumSkillsConfiguration, this);
+            } else {
+                aureliumSkillsManager = null;
+
+            }
+        } catch (Throwable ex) {
+            getLogger().warning(ex.getMessage());
+        }
+
         // Check for SkillAPI
         Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
         if (skillAPIPlugin != null && skillAPIEnabled && skillAPIPlugin.isEnabled()) {
@@ -7866,6 +7895,7 @@ public class MagicController implements MageController {
         useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
         heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
+        aureliumSkillsConfiguration = properties.getConfigurationSection("aurelium_skills");
 
         messagePrefix = properties.getString("message_prefix", messagePrefix);
         castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);

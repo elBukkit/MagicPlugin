@@ -39,6 +39,7 @@ softdepend:
   - WildStacker
   - SilkSpawners
   - ModelEngine
+  - AureliumSkills
 loadbefore:
   - Scavenger
   - Quests

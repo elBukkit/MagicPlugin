@@ -402,6 +402,12 @@
             <version>R2.1.5</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.Archy-X</groupId>
+            <artifactId>AureliumSkills</artifactId>
+            <version>Beta1.1.2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
