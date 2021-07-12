@@ -3503,7 +3503,10 @@ public class BaseSpell implements MageSpell, Cloneable {
             if (com.elmakers.mine.bukkit.wand.Wand.LiveHotbarMana && requiredCost != null) {
                 int mana = requiredCost.getMana();
                 if (mana > 0) {
-                    if (mana <= mage.getEffectiveManaMax() && mage.getEffectiveManaRegeneration() > 0) {
+                    if (mana > mage.getEffectiveManaMax()) {
+                        return null;
+                    }
+                    if (mage.getEffectiveManaRegeneration() > 0) {
                         float remainingMana = mana - mage.getMana();
                         long targetManaTime = (long)(1000.0 * remainingMana / mage.getEffectiveManaRegeneration());
                         if (timeToCast == null) {
