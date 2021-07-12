@@ -1,14 +1,36 @@
 vanilla:
   health_scale: 0
   entity_attributes:
-    generic_max_health: 20
-    generic_follow_range: 0
-    generic_knockback_resistance: 0
-    generic_movement_speed: 0.1
-    generic_attack_damage: 2
-    generic_armor: 0
-    generic_armor_toughness: 0
-    generic_attack_knockback: 0
-    generic_attack_speed: 4
-    generic_luck: 0
-    generic_flying_speed: 0.4
+    generic_max_health:
+      value: 20
+      operation: base
+    generic_follow_range:
+      value: 0
+      operation: base
+    generic_knockback_resistance:
+      value: 0
+      operation: base
+    generic_movement_speed:
+      value: 0.1
+      operation: base
+    generic_attack_damage:
+      value: 2
+      operation: base
+    generic_armor:
+      value: 0
+      operation: base
+    generic_armor_toughness:
+      value: 0
+      operation: base
+    generic_attack_knockback:
+      value: 0
+      operation: base
+    generic_attack_speed:
+      value: 4
+      operation: base
+    generic_luck:
+      value: 0
+      operation: base
+    generic_flying_speed:
+      value: 0.4
+      operation: base
