@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.magic.command.MageCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicAutomataCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicConfigCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicEditorCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicGiveCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicItemCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicKitCommandExecutor;
@@ -202,6 +203,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         new RPCommandExecutor(this).register(this);
         new MagicWarpCommandExecutor(controller).register(this);
         new MagicConfigCommandExecutor(this, controller).register(this);
+        new MagicEditorCommandExecutor(this, controller).register(this);
         new ArenaCommandExecutor(this, controller.getArenas()).register(this);
         // Note: The Citizens trait command is registered later in MagicController if we decide it's needed
     }

@@ -56,10 +56,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String CUSTOM_FILE_NAME = "_customizations.yml";
     private static final String EXAMPLES_FILE_NAME = "_examples.yml";
     private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list", "fetch", "help", "unfetch");
-    private static Set<String> availableFiles = ImmutableSet.of(
+    protected static Set<String> availableFiles = ImmutableSet.of(
             "spells", "wands", "automata", "classes", "config", "crafting", "effects", "items",
             "kits", "materials", "mobs", "paths", "attributes", "messages", "modifiers", "worlds", "arenas");
-    private static final Map<String, String> availableFileMap = ImmutableMap.<String, String>builder()
+    protected static final Map<String, String> availableFileMap = ImmutableMap.<String, String>builder()
         .put("spell", "spells")
         .put("wand", "wands")
         .put("automaton", "automata")
@@ -83,9 +83,13 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private Gson gson;
     private final Map<String, String> sessions = new HashMap<>();
 
-    public MagicConfigCommandExecutor(MagicAPI api, MagicController controller) {
-        super(api, "mconfig");
+    protected MagicConfigCommandExecutor(MagicAPI api, MagicController controller, String command) {
+        super(api, command);
         this.magic = controller;
+    }
+
+    public MagicConfigCommandExecutor(MagicAPI api, MagicController controller) {
+        this(api, controller, "mconfig");
     }
 
     @Override
@@ -228,101 +232,105 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             if (subCommand.equals("configure") && fileType.equals("messages")) {
                 options.addAll(controller.getMessages().getAllKeys());
             }
-            if (fileType.equals("worlds")) {
-                if (subCommand.equals("configure")) {
-                    for (World world : api.getPlugin().getServer().getWorlds()) {
-                        options.add(world.getName());
-                    }
+            if (fileType.equals("worlds") && subCommand.equals("configure")) {
+                for (World world : api.getPlugin().getServer().getWorlds()) {
+                    options.add(world.getName());
                 }
+            }
 
-                File pluginFolder = api.getPlugin().getDataFolder();
-                File defaultsFile = new File(pluginFolder, "defaults/worlds.defaults.yml");
-                YamlConfiguration defaultConfig = null;
-                try {
-                    defaultConfig = new YamlConfiguration();
-                    defaultConfig.load(defaultsFile);
-                    options.addAll(defaultConfig.getKeys(false));
-                } catch (Exception ignore) {
-                }
-            }
-            if (fileType.equals("arenas")) {
-                Collection<String> arenaKeys = api.getController().getArenaTemplateKeys();
-                options.addAll(arenaKeys);
-            }
-            if (fileType.equals("spells")) {
-                Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
-                for (SpellTemplate spell : spellList) {
-                    options.add(spell.getKey());
-                }
-            }
-            if (fileType.equals("wands")) {
-                Collection<WandTemplate> wandList = api.getController().getWandTemplates();
-                for (WandTemplate wand : wandList) {
-                    options.add(wand.getKey());
-                }
-            }
-            if (fileType.equals("paths")) {
-                Collection<String> pathList = api.getController().getWandPathKeys();
-                for (String path : pathList) {
-                    options.add(path);
-                }
-            }
-            if (fileType.equals("modifiers")) {
-                Collection<String> modifierList = api.getController().getModifierTemplateKeys();
-                for (String modifier : modifierList) {
-                    options.add(modifier);
-                }
-            }
-            if (fileType.equals("crafting")) {
-                Collection<String> recipeList = api.getController().getRecipeKeys();
-                for (String recipe : recipeList) {
-                    options.add(recipe);
-                }
-            }
-            if (fileType.equals("mobs")) {
-                Collection<String> mobList = api.getController().getMobKeys(true);
-                for (String mob : mobList) {
-                    options.add(mob);
-                }
-            }
-            if (fileType.equals("items")) {
-                Collection<String> itemList = api.getController().getItemKeys();
-                for (String item : itemList) {
-                    options.add(item);
-                }
-            }
-            if (fileType.equals("automata")) {
-                Collection<String> list = api.getController().getAutomatonTemplateKeys();
-                for (String key : list) {
-                    options.add(key);
-                }
-            }
-            if (fileType.equals("classes")) {
-                Collection<String> list = api.getController().getMageClassKeys();
-                for (String key : list) {
-                    options.add(key);
-                }
-            }
-            if (fileType.equals("attributes")) {
-                Collection<String> list = api.getController().getAttributes();
-                for (String key : list) {
-                    options.add(key);
-                }
-            }
-            if (fileType.equals("effects")) {
-                Collection<String> list = api.getController().getEffectKeys();
-                for (String key : list) {
-                    options.add(key);
-                }
-            }
-            if (fileType.equals("kits")) {
-                Collection<String> list = api.getController().getKitKeys();
-                for (String key : list) {
-                    options.add(key);
-                }
-            }
+            addConfigureOptions(fileType, options);
         }
         return options;
+    }
+
+    protected void addConfigureOptions(String fileType, Collection<String> options) {
+        if (fileType.equals("worlds")) {
+            File pluginFolder = api.getPlugin().getDataFolder();
+            File defaultsFile = new File(pluginFolder, "defaults/worlds.defaults.yml");
+            YamlConfiguration defaultConfig = null;
+            try {
+                defaultConfig = new YamlConfiguration();
+                defaultConfig.load(defaultsFile);
+                options.addAll(defaultConfig.getKeys(false));
+            } catch (Exception ignore) {
+            }
+        }
+        if (fileType.equals("arenas")) {
+            Collection<String> arenaKeys = api.getController().getArenaTemplateKeys();
+            options.addAll(arenaKeys);
+        }
+        if (fileType.equals("spells")) {
+            Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
+            for (SpellTemplate spell : spellList) {
+                options.add(spell.getKey());
+            }
+        }
+        if (fileType.equals("wands")) {
+            Collection<WandTemplate> wandList = api.getController().getWandTemplates();
+            for (WandTemplate wand : wandList) {
+                options.add(wand.getKey());
+            }
+        }
+        if (fileType.equals("paths")) {
+            Collection<String> pathList = api.getController().getWandPathKeys();
+            for (String path : pathList) {
+                options.add(path);
+            }
+        }
+        if (fileType.equals("modifiers")) {
+            Collection<String> modifierList = api.getController().getModifierTemplateKeys();
+            for (String modifier : modifierList) {
+                options.add(modifier);
+            }
+        }
+        if (fileType.equals("crafting")) {
+            Collection<String> recipeList = api.getController().getRecipeKeys();
+            for (String recipe : recipeList) {
+                options.add(recipe);
+            }
+        }
+        if (fileType.equals("mobs")) {
+            Collection<String> mobList = api.getController().getMobKeys(true);
+            for (String mob : mobList) {
+                options.add(mob);
+            }
+        }
+        if (fileType.equals("items")) {
+            Collection<String> itemList = api.getController().getItemKeys();
+            for (String item : itemList) {
+                options.add(item);
+            }
+        }
+        if (fileType.equals("automata")) {
+            Collection<String> list = api.getController().getAutomatonTemplateKeys();
+            for (String key : list) {
+                options.add(key);
+            }
+        }
+        if (fileType.equals("classes")) {
+            Collection<String> list = api.getController().getMageClassKeys();
+            for (String key : list) {
+                options.add(key);
+            }
+        }
+        if (fileType.equals("attributes")) {
+            Collection<String> list = api.getController().getAttributes();
+            for (String key : list) {
+                options.add(key);
+            }
+        }
+        if (fileType.equals("effects")) {
+            Collection<String> list = api.getController().getEffectKeys();
+            for (String key : list) {
+                options.add(key);
+            }
+        }
+        if (fileType.equals("kits")) {
+            Collection<String> list = api.getController().getKitKeys();
+            for (String key : list) {
+                options.add(key);
+            }
+        }
     }
 
     @Override

@@ -33,6 +33,7 @@
  - Add `charges` spell property, a spell can be used several times before going on cooldown
  - Add $wand, $spell and $class placeholders for messages, commands and boss bar titles
  - Add work-in-progress (very) `brawl` Brawl Stars external example
+ - Add `/meditor` command as an alias for `/mconfig editor`
 
 ## Changes
 

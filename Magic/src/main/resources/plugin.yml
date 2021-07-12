@@ -422,6 +422,13 @@ commands:
         /mconfig language RU
         /mconfig language FR
         /mconfig language EN
+  "meditor":
+    description: Launch a web editor (alias for /mconfig editor)
+    permission: Magic.commands.mconfig.editor
+    usage: |
+      /meditor spell
+      /meditor spell missile
+      /meditor mob warlock
   magic:
     description: Administer the Magic plugin
     permission: Magic.commands.magic
