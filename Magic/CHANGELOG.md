@@ -25,6 +25,7 @@
        - `boss_bar` : Configured like other boss bar sections, shows at top of screen
     - `mode` can be one of `mana`, `cooldown`, `attribute`, `currency` or `none`
     -  Use `attribute` and `currency` properties to specify what attribute/currency to show for those modes
+    - Added `action_bar` section, containing `message` and `interval`, can show mana or whatever else in action bar
  - Add AureliumSkills integration for mana and attributes: 
    - https://www.spigotmc.org/resources/aurelium-skills-advanced-skills-stats-abilities-and-more.81069/
    - Use all-uppercase for skills and stats, this prevents overlap with builtin `health` and other attributes

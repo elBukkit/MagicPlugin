@@ -303,6 +303,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected BossBarConfiguration bossBarConfiguration;
     protected WandDisplayMode bossBarDisplayMode = WandDisplayMode.COOLDOWN;
 
+    // Action bar
+    protected String actionBarMessage;
+    protected int actionBarInterval;
+    protected long lastActionBar;
+    protected boolean actionBarMana;
+    protected boolean lastActionBarFullMana;
+
     public Wand(MagicController controller) {
         super(controller);
 
@@ -2400,6 +2407,23 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         }
+
+        config = getConfigurationSection("action_bar");
+        if (config != null) {
+            actionBarMessage = config.getString("message");
+            if (actionBarMessage.isEmpty()) {
+                actionBarMessage = null;
+            } else {
+                actionBarInterval = config.getInt("interval", 1000);
+                actionBarMana = config.getBoolean("uses_mana");
+            }
+            lastActionBar = 0;
+        } else {
+            actionBarMessage = null;
+        }
+        if (actionBarMessage == null) {
+            actionBarMana = false;
+        }
     }
 
     private WandDisplayMode parseDisplayMode(ConfigurationSection config, WandDisplayMode defaultMode) {
@@ -4423,12 +4447,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return;
         }
 
-        updateXPBar();
         Player player = mage == null ? null : mage.getPlayer();
         if (player == null) return;
+        updateXPBar();
 
         float mana = getMana();
         if (usesMana()) {
+            if (actionBarMana) {
+                updateActionBar();
+            }
             if (manaMode.useGlow()) {
                 if (mana == effectiveManaMax) {
                     CompatibilityLib.getItemUtils().addGlow(item);
@@ -4440,6 +4467,24 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 updateDurability();
             }
         }
+    }
+
+    protected void updateActionBar() {
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player == null || actionBarMessage == null) {
+            return;
+        }
+        if (actionBarMana) {
+            double mana = mage.getMana();
+            double manaMax = mage.getEffectiveManaMax();
+            boolean fullMana = mana == manaMax;
+            if (fullMana && lastActionBarFullMana) {
+                return;
+            }
+            lastActionBarFullMana = fullMana;
+        }
+        String message = mage.parameterize(actionBarMessage);
+        CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
     }
 
     public void updateXPBar() {
@@ -4802,6 +4847,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         super.tick();
         updateXPBar();
+        long now = System.currentTimeMillis();
+        if (actionBarMessage != null && now > lastActionBar + actionBarInterval) {
+            lastActionBar = System.currentTimeMillis();
+            updateActionBar();
+        }
 
         if (player.isBlocking() && blockMageCooldown > 0) {
             mage.setRemainingCooldown(blockMageCooldown);
