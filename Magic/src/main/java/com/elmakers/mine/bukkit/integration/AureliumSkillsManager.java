@@ -8,6 +8,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import com.archyx.aureliumskills.api.AureliumAPI;
+import com.archyx.aureliumskills.configuration.Option;
+import com.archyx.aureliumskills.configuration.OptionL;
 import com.archyx.aureliumskills.skills.Skills;
 import com.archyx.aureliumskills.stats.Stat;
 import com.archyx.aureliumskills.stats.Stats;
@@ -63,7 +65,8 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
 
     @Override
     public int getManaRegen(Player player) {
-        return 0;
+        double regen = OptionL.getDouble(Option.REGENERATION_BASE_MANA_REGEN) + AureliumAPI.getStatLevel(player, Stats.REGENERATION) * OptionL.getDouble(Option.REGENERATION_MANA_MODIFIER);
+        return (int)regen;
     }
 
     @Override
