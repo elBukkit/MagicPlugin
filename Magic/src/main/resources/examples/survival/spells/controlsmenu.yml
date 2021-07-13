@@ -29,6 +29,6 @@ controlsmenu:
           - item: none
           - item: none
           - item: particles
-            apply_to: class
+            apply_to: mage
           - item: noparticles
-            apply_to: class
+            apply_to: mage
