@@ -47,6 +47,7 @@ tracking:
         player_weight: 500
         target: other_entity
         target_type: LivingEntity
+        ignore_types: Player
         cooldown: 5000
         ignore_blocks: true
         loud: true
@@ -74,6 +75,7 @@ tracking|4:
     upgrade_required_casts: 50
     alternate_sneak_parameters:
         target_type: Player
+        ignore_types:
 
 tracking|5:
   actions:
@@ -83,6 +85,7 @@ tracking|5:
           - class: PotionEffect
   alternate_down_parameters:
      target: self
+     ignore_types:
      target_type: LivingEntity
      effect_glowing: 1
      duration: 10000

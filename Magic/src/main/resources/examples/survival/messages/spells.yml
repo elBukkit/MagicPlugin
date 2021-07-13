@@ -1052,7 +1052,7 @@ spells:
         no_target: It's quiet ... too quiet!
         upgrade_description: "Larger search radius"
     tracking|4:
-        upgrade_description: "Sneak-cast to look only for players"
+        upgrade_description: "Sneak-cast to look for players"
     tracking|5:
         upgrade_description: "Aim down and cast to highlight all mobs/players within a 16 block radius"
     enchantwand:
