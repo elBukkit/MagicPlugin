@@ -27,9 +27,13 @@ public class WorldPlayerListener implements Listener {
     public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
         MagicWorld magicWorld = controller.getWorld(player.getWorld().getName());
-        if (magicWorld == null) return;
-
-        magicWorld.playerEntered(player);
+        if (magicWorld != null) {
+            magicWorld.playerEntered(player);
+        }
+        MagicWorld leaveWorld = controller.getWorld(event.getFrom().getName());
+        if (leaveWorld != null) {
+            leaveWorld.playerLeft(player);
+        }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

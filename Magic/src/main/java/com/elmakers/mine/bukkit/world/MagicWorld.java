@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.world;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.WorldType;
@@ -46,6 +47,8 @@ public class MagicWorld {
     private WorldState state = WorldState.UNLOADED;
     private Integer maxHeight;
     private Integer minHeight;
+    private GameMode gameMode;
+    private GameMode leavingGameMode;
 
     public MagicWorld(MagicController controller) {
         this.controller = controller;
@@ -90,6 +93,22 @@ public class MagicWorld {
                 worldType = WorldType.valueOf(typeString.toUpperCase());
             } catch (Exception ex) {
                 controller.getLogger().warning("Invalid world type: " + typeString);
+            }
+        }
+        if (config.contains("game_mode")) {
+            String modeString = config.getString("game_mode");
+            try {
+                gameMode = GameMode.valueOf(modeString.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid game mode: " + modeString);
+            }
+        }
+        if (config.contains("leave_game_mode")) {
+            String modeString = config.getString("leave_game_mode");
+            try {
+                leavingGameMode = GameMode.valueOf(modeString.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid game mode: " + modeString);
             }
         }
         seed = config.getLong("seed", this.seed);
@@ -229,6 +248,15 @@ public class MagicWorld {
     public void playerEntered(Player player) {
         if (resourcePack != null) {
             player.setResourcePack(resourcePack);
+        }
+        if (gameMode != null) {
+            player.setGameMode(gameMode);
+        }
+    }
+
+    public void playerLeft(Player player) {
+        if (leavingGameMode != null) {
+            player.setGameMode(leavingGameMode);
         }
     }
 
