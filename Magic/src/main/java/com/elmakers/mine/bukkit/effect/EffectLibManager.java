@@ -199,4 +199,8 @@ public class EffectLibManager {
     public void displayParticle(Particle particle, ParticleOptions options, Location center, double range, List<Player> targetPlayers) {
         effectManager.display(particle, options, center, range, targetPlayers);
     }
+
+    public void ignorePlayer(Player player, boolean ignore) {
+        effectManager.ignorePlayer(player, ignore);
+    }
 }

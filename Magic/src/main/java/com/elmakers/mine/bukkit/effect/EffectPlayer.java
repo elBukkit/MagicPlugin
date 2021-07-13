@@ -50,6 +50,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         return effectLib != null;
     }
 
+    public static void ignorePlayer(Player player, boolean ignore) {
+        if (effectLib != null) {
+            effectLib.ignorePlayer(player, ignore);
+        }
+    }
+
     public static void debugEffects(boolean debug) {
         if (effectLib != null) {
             effectLib.enableDebug(debug);

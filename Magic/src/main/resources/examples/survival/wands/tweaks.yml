@@ -114,3 +114,15 @@ silent:
     upgrade: true
     indestructible: false
     quiet: 2
+
+particles:
+    icon: music_disc_blocks{CustomModelData:18001}
+    legacy_icon: diamond_axe:218
+    upgrade: true
+    ignore_particles: false
+
+noparticles:
+    icon: music_disc_11{CustomModelData:18001}
+    legacy_icon: diamond_axe:220
+    upgrade: true
+    ignore_particles: true

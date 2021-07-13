@@ -264,6 +264,12 @@ wands:
     inventorymode:
         name: Inventory Mode
         description: For expert wizards
+    particles:
+        name: Show Particles
+        description: Turn on the display of all particles from spells
+    noparticles:
+        name: Hide Particles
+        description: Turn off the display of all particles from spells
     quickcast_enable:
         name: Quick Cast (All)
         description: Enable quick-cast on all spells

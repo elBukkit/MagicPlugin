@@ -25,4 +25,10 @@ controlsmenu:
             selected: "You organized your spell inventory"
           - item: alphabetizer
             selected: "You alphabetized your spell inventory"
-
+          - item: none
+          - item: none
+          - item: none
+          - item: particles
+            apply_to: class
+          - item: noparticles
+            apply_to: class

@@ -102,6 +102,7 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.UndoQueue;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.economy.CustomCurrency;
+import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
@@ -185,6 +186,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean unloading = false;
     private int debugLevel = 0;
     private boolean quiet = false;
+    private boolean ignoreParticles = false;
     private EntityData entityData;
     private long lastTick;
     private Location lastLocation;
@@ -391,6 +393,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (Listener listener : active) {
             callEvent(listener, event);
         }
+        EffectPlayer.ignorePlayer(player, false);
     }
 
     public void onPlayerDeath(EntityDeathEvent event) {
@@ -4059,6 +4062,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         addPassiveEffectsGroup(weakness, properties, "weakness", stack, 1.0);
         addPassiveEffectsGroup(strength, properties, "strength", stack, 1.0);
 
+        if (properties.getBoolean("ignore_particles")) {
+            ignoreParticles = true;
+        }
+
         if (activeReduction || properties.isPassive() || stack) {
             if (stack) {
                 cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
@@ -4139,6 +4146,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         attributes.clear();
         double previousHealthScale = healthScale;
         healthScale = 0;
+        ignoreParticles = false;
 
         addPassiveAttributes(properties);
         if (activeClass != null) {
@@ -4235,12 +4243,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 CompatibilityLib.getCompatibilityUtils().applyPotionEffect(entity, effect);
             }
             // Avoid resetting health scale that may have been set by other plugins
-            if (entity instanceof Player && previousHealthScale != healthScale) {
+            if (entity instanceof Player) {
                 Player player = (Player)entity;
-                if (healthScale > 0) {
-                    player.setHealthScale(healthScale);
-                } else {
-                    player.setHealthScaled(false);
+                EffectPlayer.ignorePlayer(player, ignoreParticles);
+                if (previousHealthScale != healthScale) {
+                    if (healthScale > 0) {
+                        player.setHealthScale(healthScale);
+                    } else {
+                        player.setHealthScaled(false);
+                    }
                 }
             }
         }
