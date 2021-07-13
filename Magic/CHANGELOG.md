@@ -37,6 +37,7 @@
  - Add `/meditor` command as an alias for `/mconfig editor`
  - Add `ignore_particles` mage option, allow turning off particles in the tweak menu
  - Reduce particles on flare, fountain and teleporter effects
+ - Add `ignore_modified_entities` AreaOfEffect option, to ignore entities that have already been modified by this spell
 
 ## Changes
 

@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,6 +17,7 @@ import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.action.CompoundEntityAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -26,6 +30,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
     protected int yRadius;
     protected int targetCount;
     protected boolean targetSource;
+    protected boolean ignoreModified;
 
     @Override
     public void reset(CastContext context) {
@@ -40,6 +45,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
         yRadius = parameters.getInt("y_radius", radius);
         targetCount = parameters.getInt("target_count", -1);
         targetSource = parameters.getBoolean("target_source", true);
+        ignoreModified = parameters.getBoolean("ignore_modified", false);
 
         Mage mage = context.getMage();
         radius = (int)(mage.getRadiusMultiplier() * radius);
@@ -50,6 +56,14 @@ public class AreaOfEffectAction extends CompoundEntityAction
     @Override
     public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
     {
+        Set<UUID> ignore = null;
+        UndoList undoList = context.getUndoList();
+        if (ignoreModified && undoList != null) {
+            ignore = new HashSet<>();
+            for (Entity entity : undoList.getAllEntities()) {
+                ignore.add(entity.getUniqueId());
+            }
+        }
         context.addWork((int)Math.ceil(radius) + 10);
         Mage mage = context.getMage();
         Location sourceLocation = context.getTargetLocation();
@@ -71,6 +85,10 @@ public class AreaOfEffectAction extends CompoundEntityAction
             {
                 boolean canTarget = true;
                 if (entity == targetEntity && !targetSource) canTarget = false;
+                if (ignore != null && ignore.contains(entity.getUniqueId())) {
+                    mage.sendDebugMessage(ChatColor.DARK_RED + "Ignoring Modified Target " + ChatColor.GREEN + entity.getType(), 16);
+                    continue;
+                }
                 if (canTarget && context.canTarget(entity))
                 {
                     Target target = new Target(sourceLocation, entity, radius, 0);
@@ -95,6 +113,10 @@ public class AreaOfEffectAction extends CompoundEntityAction
             {
                 boolean canTarget = true;
                 if (entity == targetEntity && !targetSource) canTarget = false;
+                if (ignore != null && ignore.contains(entity.getUniqueId())) {
+                    mage.sendDebugMessage(ChatColor.DARK_RED + "Ignoring Modified Target " + ChatColor.GREEN + entity.getType(), 16);
+                    continue;
+                }
                 if (canTarget && context.canTarget(entity))
                 {
                     entities.add(new WeakReference<>(entity));

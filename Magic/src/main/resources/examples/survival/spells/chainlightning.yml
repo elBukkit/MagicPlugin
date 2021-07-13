@@ -13,6 +13,7 @@ chainlightning:
         cast:
         - class: CustomProjectile
           actions:
+          - class: Electrify
           - class: Damage
           - class: Delay
           - class: AreaOfEffect
@@ -22,14 +23,21 @@ chainlightning:
               - class: CustomProjectile
                 velocity: 150
                 actions:
+                - class: Damage
+                - class: Electrify
+                - class: Delay
+                - class: AreaOfEffect
+                  target_count: 1
+                  actions:
+                  - class: CustomProjectile
+                    actions:
+                      - class: Damage
                 - class: Repeat
                   actions:
-                  - class: Electrify
                   - class: Damage
                     player_damage: 0.5
                     entity_damage: 1
                   - class: Delay
-          - class: Electrify
           - class: Repeat
             actions:
             - class: Damage
@@ -107,6 +115,7 @@ chainlightning:
         repeat: 4
         target_breakables: 1
         cooldown: 20000
+        ignore_modified: true
     costs:
         mana: 75
 
