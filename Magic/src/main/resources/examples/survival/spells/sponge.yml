@@ -35,6 +35,7 @@ sponge:
           particle: drip_water
           enable_rotation: false
           iterations: 4
+          period: 3
       cast:
       - sound: magic.shimmer
       - sound: entity_generic_drink
@@ -43,7 +44,7 @@ sponge:
         reverse: true
         particle: block_crack
         material: water
-        particle_count: 20
+        particle_count: 8
         particle_offset_x: 0.2
         particle_offset_y: 0.2
         particle_offset_z: 0.2
@@ -53,9 +54,9 @@ sponge:
           class: Line
           particle: block_crack
           duration: 1000
-          particles: 5
-          period: 1
-          particle_count: 6
+          particles: 4
+          period: 2
+          particle_count: 3
           particle_offset_x: 0.01
           particle_offset_y: 0.01
           particle_offset_z: 0.01
