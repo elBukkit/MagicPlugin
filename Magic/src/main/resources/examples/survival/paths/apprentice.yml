@@ -17,6 +17,7 @@ apprentice:
       - horse
       - critical
       - decoy
+      - soulburn
     spells:
       - breach
       - disintegrate
@@ -41,6 +42,5 @@ apprentice:
       - chainlightning
       - airscooter
       - growth
-      - soulburn
       - gather
 

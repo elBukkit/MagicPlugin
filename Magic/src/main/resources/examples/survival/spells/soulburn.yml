@@ -4,7 +4,7 @@ soulburn:
   earns_sp: 4
   upgrade_required_casts: 50
   upgrade_required_path: student
-  worth: 800
+  worth: 250
   actions:
     cast:
     - class: CustomProjectile
