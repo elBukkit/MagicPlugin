@@ -13,6 +13,7 @@
  - Fix compatibility with PowerRanks (please look out for permission issues, even on other perm systems)
  - Fix consumable wands giving vanilla food depending on the icon used
  - Fix armor-slotted items in kits, such as the armor in the starter kit
+ - Improve `close_wand_on_world_change` feature for better PerWorldInventory compatibility  
  - The `visibility` parameter on effects now works on particles as well as EffectLib effects
    
 ## Additions
