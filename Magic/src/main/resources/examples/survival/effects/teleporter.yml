@@ -4,13 +4,14 @@ teleporter:
      radius: 1
      height: 2
      height_spout: 4
-     particles_spout: 3
-     particles_strand: 5
+     strands: 2
+     particles_spout: 2
+     particles_strand: 3
      duration: 86400000
      particle_offset_x: 0.1
      particle_offset_y: 0.1
      particle_offset_z: 0.1
      particle_count: 4
      particle_data: 2
-     interval: 4
+     period: 4
      particle: enchantment_table

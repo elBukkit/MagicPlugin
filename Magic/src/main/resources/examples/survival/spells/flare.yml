@@ -15,8 +15,6 @@ flare:
         - class: CustomProjectile
           actions:
           - class: Firework
-          miss:
-          - class: Firework
     effects:
         cast:
         - sound: entity_firework_rocket_launch
@@ -36,27 +34,20 @@ flare:
         ticks_flown: 2
         expected_lifespan: 1
         cooldown: 2000
-        miss_effects: hit
+        hit_on_miss: true
     costs:
         mana: 10
 
 flare|2:
   upgrade_required_path: apprentice
   effects:
-    actions:
-        cast:
-        - class: CustomProjectile
-          actions:
-          - class: Firework
-          miss:
-          - class: Firework
     hit:
     - class: EffectRing
       location: target
       firework: star
       radius: 8
       target_offset: 0,4,0
-      size: 6
+      size: 3
 
 flare|3:
   effects:
@@ -66,11 +57,11 @@ flare|3:
       firework: star
       radius: 8
       target_offset: 0,4,0
-      size: 6
+      size: 3
     - class: EffectRing
       location: target
       firework_power: 1
       radius: 16
       target_offset: 0,12,0
-      size: 8
+      size: 4
       color: false
