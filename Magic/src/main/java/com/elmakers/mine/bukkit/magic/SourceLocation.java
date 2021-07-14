@@ -32,6 +32,14 @@ public class SourceLocation {
     }
 
     @Nullable
+    public static SourceLocation tryCreate(Object locationType, boolean isSource) {
+        if (locationType instanceof String) {
+            return tryCreate((String)locationType, isSource);
+        }
+        return null;
+    }
+
+    @Nullable
     public static SourceLocation tryCreate(String locationTypeString, boolean isSource) {
         if (locationTypeString != null && !locationTypeString.isEmpty()) {
             try {
