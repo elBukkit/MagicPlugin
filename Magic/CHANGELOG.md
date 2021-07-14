@@ -35,6 +35,7 @@
  - Add `charges` spell property, a spell can be used several times before going on cooldown
  - Add $wand, $spell and $class placeholders for messages, commands and boss bar titles
  - Add work-in-progress (very) `brawl` Brawl Stars external example
+ - Add simple `creative` example, pairs with a world gen plugin for personal creative-mode islands  
  - Add `/meditor` command as an alias for `/mconfig editor`
  - Add `ignore_particles` mage option, allow turning off particles in the tweak menu
  - Reduce particles on flare, fountain and teleporter effects
