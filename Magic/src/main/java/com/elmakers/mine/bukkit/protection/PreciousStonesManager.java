@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -115,11 +117,20 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
     }
 
     @Nullable
+    @Deprecated
     public Map<String, Location> getFieldLocations(Player player) {
         if (!enabled || api == null || player == null)
             return null;
 
-        return api.getFieldLocations(player);
+        List<PlayerWarp> warps = api.getFieldLocations(player);
+        if (warps == null) {
+            return null;
+        }
+        Map<String, Location> locations = new HashMap<>();
+        for (PlayerWarp warp : warps) {
+            locations.put(warp.getName(), warp.getLocation());
+        }
+        return locations;
     }
 
     @Nullable
@@ -127,16 +138,19 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
     public Collection<PlayerWarp> getWarps(@Nonnull Player player) {
         if (!enabled || api == null || player == null)
             return null;
+        return api.getFieldLocations(player);
+    }
 
-        Map<String, Location> locations = api.getFieldLocations(player);
-        if (locations == null || locations.isEmpty()) {
+    /**
+     * Return all warps.
+     *
+     * @return A list of warps
+     */
+    @Nullable
+    @Override
+    public Collection<PlayerWarp> getAllWarps() {
+        if (!enabled || api == null)
             return null;
-        }
-        Collection<PlayerWarp> warps = new ArrayList<>();
-        for (Map.Entry<String, Location> entry : locations.entrySet()) {
-            PlayerWarp warp = new PlayerWarp(entry.getKey(), entry.getValue());
-            warps.add(warp);
-        }
-        return warps;
+        return api.getAllFieldLocations();
     }
 }

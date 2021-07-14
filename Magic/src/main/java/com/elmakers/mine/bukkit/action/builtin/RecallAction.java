@@ -94,6 +94,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private enum RecallType
     {
         REGIONS,
+        ALL_REGIONS,
         DEATH,
         SOULS,
         SPAWN,
@@ -772,11 +773,15 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                             }
                         }
                         break;
+                    case ALL_REGIONS:
                     case REGIONS:
+                        boolean allRegions = testType == RecallType.ALL_REGIONS;
                         Set<String> warpProviders = controller.getPlayerWarpProviderKeys();
                         for (String key : warpProviders) {
-                            if (parameters.getBoolean("allow_" + key.toLowerCase(), true)) {
-                                Collection<PlayerWarp> warps = controller.getPlayerWarps(player, key);
+                            String allowKey = allRegions ? "all_" : "";
+                            boolean allowDefault = allRegions ? false : true;
+                            if (parameters.getBoolean("allow_" + allowKey + key.toLowerCase(), allowDefault)) {
+                                Collection<PlayerWarp> warps = allRegions ? controller.getAllPlayerWarps(key) : controller.getPlayerWarps(player, key);
                                 if (warps == null) {
                                     break;
                                 }
@@ -795,13 +800,16 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                                         }
                                     }
 
-                                    options.add(new Waypoint(RecallType.REGIONS, location,
-                                            warp.getName(),
-                                            context.getMessage("cast_" + key, context.getMessage("cast_regions")),
-                                            context.getMessage("no_target_" + key, context.getMessage("no_target_regions")),
-                                            description,
-                                            icon,
-                                            true));
+                                    Waypoint waypoint = new Waypoint(RecallType.REGIONS, location,
+                                        warp.getName(),
+                                        context.getMessage("cast_" + key, context.getMessage("cast_regions")),
+                                        context.getMessage("no_target_" + key, context.getMessage("no_target_regions")),
+                                        description,
+                                        icon,
+                                        true);
+                                    if (waypoint.isValid(allowCrossWorld, playerLocation)) {
+                                        options.add(waypoint);
+                                    }
                                 }
                             }
                         }
@@ -983,6 +991,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             displayInventory.setItem(index, waypointItem);
             index++;
+
+            // The inventory will limit its own size
+            if (index >= displayInventory.getSize()) break;
         }
         context.playEffects("menu");
         mage.activateGUI(this, displayInventory);

@@ -4312,6 +4312,7 @@ public class MagicController implements MageController {
         return townyManager.getTownLocation(player);
     }
 
+    @Deprecated
     @Nullable
     @Override
     public Map<String, Location> getHomeLocations(Player player) {
@@ -4332,6 +4333,16 @@ public class MagicController implements MageController {
             return null;
         }
         return manager.getWarps(player);
+    }
+
+    @Nullable
+    @Override
+    public Collection<PlayerWarp> getAllPlayerWarps(String key) {
+        PlayerWarpManager manager = playerWarpManagers.get(key);
+        if (manager == null) {
+            return null;
+        }
+        return manager.getAllWarps();
     }
 
     public TownyManager getTowny() {

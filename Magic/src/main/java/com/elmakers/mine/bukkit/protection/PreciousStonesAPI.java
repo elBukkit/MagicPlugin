@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.protection;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -29,6 +30,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.api.protection.BlockBreakManager;
 import com.elmakers.mine.bukkit.api.protection.BlockBuildManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
+import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -61,16 +63,21 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
     }
 
     @Nullable
-    public Map<String, Location> getFieldLocations(Player player) {
-        if (preciousStones == null || player == null)
+    public List<PlayerWarp> getFieldLocations(Player player) {
+        return getFieldLocations(player == null ? null : player.getName());
+    }
+
+    @Nullable
+    public List<PlayerWarp> getFieldLocations(String playerName) {
+        if (preciousStones == null || playerName == null)
             return null;
 
         ForceFieldManager manager = preciousStones.getForceFieldManager();
         if (manager == null) return null;
 
-        Map<String, Location> fieldLocations = new HashMap<>();
+        List<PlayerWarp> fieldLocations = new ArrayList<>();
         for (World world : Bukkit.getWorlds()) {
-            Collection<Field> fields = manager.getFields(player.getName(), world);
+            Collection<Field> fields = manager.getFields(playerName, world);
             if (fields == null) continue;
             for (Field field : fields) {
                 String fieldName = field.getName();
@@ -80,17 +87,22 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
                 if (fieldName == null || fieldName.isEmpty()) {
                     fieldName = fieldType;
                 }
-                if (!fieldOwner.equalsIgnoreCase(player.getName())) {
-                    if (renters.contains(player.getName().toLowerCase())) {
+                if (!fieldOwner.equalsIgnoreCase(playerName)) {
+                    if (renters.contains(playerName.toLowerCase())) {
                         fieldName = fieldName + ChatColor.GRAY + " (Renting)";
                     } else {
                         fieldName = fieldName + ChatColor.LIGHT_PURPLE + " (" + fieldOwner + ")";
                     }
                 }
-                fieldLocations.put(fieldName, field.getLocation());
+                fieldLocations.add(new PlayerWarp(fieldName, field.getLocation()));
             }
         }
         return fieldLocations.isEmpty() ? null : fieldLocations;
+    }
+
+    @Nullable
+    public List<PlayerWarp> getAllFieldLocations() {
+        return getFieldLocations("*");
     }
 
     @Override

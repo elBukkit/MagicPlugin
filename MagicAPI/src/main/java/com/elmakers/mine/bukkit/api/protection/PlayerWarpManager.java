@@ -19,4 +19,14 @@ public interface PlayerWarpManager {
      */
     @Nullable
     Collection<PlayerWarp> getWarps(@Nonnull Player player);
+
+    /**
+     * Return all warps.
+     *
+     * @return A list of warps
+     */
+    @Nullable
+    default Collection<PlayerWarp> getAllWarps() {
+        return null;
+    }
 }

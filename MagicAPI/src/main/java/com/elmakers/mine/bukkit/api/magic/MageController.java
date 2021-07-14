@@ -308,6 +308,13 @@ public interface MageController {
     Location getWarp(String warpName);
     @Nullable
     Location getTownLocation(Player player);
+
+    /**
+     * This method is deprecated, it doesn't allow for two homes with the same name.
+     * Use getPlayerWarps instead, "fields" is the correct key to specify to get the
+     * PreciousStones homes that this method returns.
+     */
+    @Deprecated
     @Nullable
     Map<String, Location> getHomeLocations(Player player);
 
@@ -748,6 +755,8 @@ public interface MageController {
     Set<String> getPlayerWarpProviderKeys();
     @Nullable
     Collection<PlayerWarp> getPlayerWarps(Player player, String key);
+    @Nullable
+    Collection<PlayerWarp> getAllPlayerWarps(String key);
 
     /**
      * Register an implementation of one or more MageProvider interfaces.
