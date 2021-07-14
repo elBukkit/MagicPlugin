@@ -47,7 +47,8 @@
  - Wands will now look up one level (only, for performance) for messages
  - Sneak-clicking the enchant table to bring up the spellshop was removed from survival
    Use `/mconfig configure config enchant_sneak_click spellshop` to put it back
- - Sword controls changes to use the same drop/swap behavior as wands  
+ - Sword controls changes to use the same drop/swap behavior as wands
+ - Tracking Sense now only tracks players if sneak-casting
 
 # 9.2.1
 
@@ -62,7 +63,7 @@
    and `smithing` (requires 1.16 or post-July 1.17 spigot)
  - Add `EntityAnimation` action, can make players or mobs swing their arms
  - New EffectLib parameters to support 1.17 particles:
-   - `to_color`: Used for the dust_color_transition particlea
+   - `to_color`: Used for the dust_color_transition particles
    - `arrival_time`: Used for the vibration particle
  - New effect player parameters to support 1.17 particles:
    - `to_color`: An alias for `color2` to align with EffectLib parameters
