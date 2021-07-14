@@ -68,6 +68,7 @@
 
 ## Suggestions
 
+ - Map brushes should fill transparent bits with air if the erase modifiers is active
  - Modifiers from wands keep track of their wand item to use in CastContext for triggered spells
  - AureliumSkills integration
  - Custom death message support?

@@ -42,6 +42,7 @@ public class DamageAction extends BaseSpellAction
     private double criticalProbability;
     private double criticalMultiplier;
     private int noDamageTicks;
+    private boolean cancelOnKillTarget;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -53,6 +54,7 @@ public class DamageAction extends BaseSpellAction
         playerDamage = parameters.getDouble("player_damage", damage);
         elementalDamage = parameters.getDouble("elemental_damage", damage);
         invertDistance = parameters.getBoolean("invert_distance", false);
+        cancelOnKillTarget = parameters.getBoolean("cancel_on_kill_target", false);
         if (parameters.contains("damage_multiplier")) {
             damageMultiplier = parameters.getDouble("damage_multiplier");
         } else {
@@ -186,6 +188,9 @@ public class DamageAction extends BaseSpellAction
                 AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
                 knockBackAttribute.setBaseValue(previousKnockbackResistance);
             }
+        }
+        if (cancelOnKillTarget && targetEntity != null && targetEntity.isDead()) {
+            return SpellResult.STOP;
         }
 
         return SpellResult.CAST;
