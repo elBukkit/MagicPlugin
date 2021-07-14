@@ -53,8 +53,8 @@ public class ChangeContextAction extends CompoundAction {
     private float sourcePitchOffset;
     private float targetYawOffset;
     private float targetPitchOffset;
-    private String absoluteTargetLocation;
-    private String absoluteSourceLocation;
+    private Object absoluteTargetLocation;
+    private Object absoluteSourceLocation;
     private SourceLocation sourceLocation;
     private SourceLocation targetLocation;
     private boolean persistTarget;
@@ -128,8 +128,8 @@ public class ChangeContextAction extends CompoundAction {
             indestructible = context.getController().getMaterialSetManager().fromConfig(indestructibleKey);
         }
 
-        absoluteTargetLocation = parameters.getString("target_location");
-        absoluteSourceLocation = parameters.getString("source_location");
+        absoluteTargetLocation = parameters.get("target_location");
+        absoluteSourceLocation = parameters.get("source_location");
 
         // See if these are entity-specific locations;
         targetLocation = SourceLocation.tryCreate(absoluteTargetLocation, false);
@@ -342,7 +342,7 @@ public class ChangeContextAction extends CompoundAction {
         if (sourceLocation != null) {
             sourceLocation = sourceLocation.clone();
         }
-        if (this.absoluteSourceLocation != null && !this.absoluteSourceLocation.isEmpty()) {
+        if (this.absoluteSourceLocation != null) {
             Vector newSource = ConfigurationUtils.toVector(this.absoluteSourceLocation);
             if (newSource != null) {
                 if (sourceLocation == null) {
@@ -364,7 +364,7 @@ public class ChangeContextAction extends CompoundAction {
         Block previousBlock = null;
         if (targetLocation != null) {
             targetLocation = targetLocation.clone();
-            if (this.absoluteTargetLocation != null && !this.absoluteTargetLocation.isEmpty()) {
+            if (this.absoluteTargetLocation != null) {
                 Vector newTarget = ConfigurationUtils.toVector(this.absoluteTargetLocation);
                 if (newTarget != null) {
                     targetLocation.setX(newTarget.getX());

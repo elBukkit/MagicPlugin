@@ -79,6 +79,7 @@
  - Add `item_flags` list config to wands, for nicer-than-`hide_flags` item flag support
  - Add sliced bread, sandwich and toasted_sandwich items (recipes disabled by default)
  - Add `movement_speed` attribute
+ - Add support for vectors as sections in ChangeContext target_location and source_location, allows building locations from equations
 
 ## Changes
 

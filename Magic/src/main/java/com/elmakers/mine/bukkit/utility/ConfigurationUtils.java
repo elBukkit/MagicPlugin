@@ -271,6 +271,10 @@ public class ConfigurationUtils extends ConfigUtils {
         if (o instanceof Vector) {
             return (Vector)o;
         }
+        if (o instanceof ConfigurationSection) {
+            ConfigurationSection config = (ConfigurationSection)o;
+            return new Vector(config.getDouble("x"), config.getDouble("y"), config.getDouble("z"));
+        }
         if (o instanceof String) {
             try {
                 String parse = (String)o;
@@ -554,6 +558,9 @@ public class ConfigurationUtils extends ConfigUtils {
             double min = Double.parseDouble(pieces[1].trim());
             double max = Double.parseDouble(pieces[2].trim());
             return random.nextDouble() * (max - min) + min;
+        }
+        if (firstChar == '#') {
+            String equation = s.substring(1);
         }
 
         return Double.parseDouble(s);

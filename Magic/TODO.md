@@ -15,6 +15,7 @@
 # Bugs
 
  - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
+ - Look at ConstructBatch orientTo, debug it, make superring orientable in a sane way  
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Do automata drop loot when expiring due to chunk load?
  - Selector cost at top-level (default cost) doesn't work
