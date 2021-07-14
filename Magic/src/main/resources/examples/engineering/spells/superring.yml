@@ -78,6 +78,7 @@ superring:
         thickness: 1
         ignore_region_overrides: true
         cancel_on_deactivate: false
+        transparent: transparent_to_construction
     costs:
         mana: 200
 
