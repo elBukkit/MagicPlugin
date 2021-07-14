@@ -1,252 +1,325 @@
 unbreakable-blocks: []
 force-field-blocks:
-- title: Home
-  meta-name: '&3Home Protection'
-  meta-autoset: false
-  meta-lore:
-  - '&eThis will protect a 16x16x16 area'
-  - Use /ps allow <player> to add members
-  block: SEA_LANTERN
-  radius: 8
-  custom-height: 8
-  no-resize: true
-  prevent-pvp: true
-  dynmap-area: true
-  dynmap-no-toggle: true
-  prevent-fire: true
-  prevent-place: true
-  prevent-destroy: true
-  prevent-vehicle-destroy: true
-  prevent-enderman-destroy: true
-  prevent-explosions: true
-  prevent-tnt-explosions: true
-  prevent-creeper-explosions: true
-  prevent-wither-explosions: true
-  prevent-mob-spawn: true
-  prevent-use:
-  - oak_door
-  - iron_door
-  - spruce_door
-  - birch_door
-  - jungle_door
-  - acacia_door
-  - dark_oak_door
-  - crimson_door
-  - warped_door
-  - oak_fence_gate
-  - spruce_fence_gate
-  - birch_fence_gate
-  - jungle_fence_gate
-  - acacia_fence_gate
-  - dark_oak_fence_gate
-  - crimson_fence_gate
-  - warped_fence_gate
-  - chest
-  - trapped_chest
-  - barrel
-  - anvil
-  - jukebox
-  prevent-unprotectable: true
-  prevent-item-frame-take: true
-  prevent-flow: true
-  protect-crops: true
-  protect-animals: true
-  protect-mobs: true
-  protect-villagers: true
-  protect-inventories: true
-  welcome-message: true
-  farewell-message: true
-  ?prevent-portal-enter: true
-  ?prevent-portal-destination: true
-  ?prevent-portal-create: true
-  ?prevent-vehicle-enter: true
-  ?prevent-vehicle-exit: true
-  ?prevent-teleport: false
-  command-blacklisting: true
-  can-change-owner: true
-  enable-on-src: true
-  mixing-group: 1
-  hidable: true
-  rentable: false
-  buyable: false
-  cuboid: true
-  mask-on-disabled: 80
-  limits:
-  - 1
-- title: Shop
-  meta-name: '&3Shop Protection'
-  meta-autoset: false
-  meta-lore:
-  - '&eThis will protect a 5x12x5 area'
-  block: BOOKSHELF
-  radius: 2
-  custom-height: 6
-  no-resize: true
-  prevent-pvp: true
-  dynmap-area: true
-  dynmap-no-toggle: true
-  prevent-fire: true
-  prevent-place: true
-  prevent-destroy: true
-  prevent-vehicle-destroy: true
-  prevent-enderman-destroy: true
-  prevent-explosions: true
-  prevent-tnt-explosions: true
-  prevent-creeper-explosions: true
-  prevent-wither-explosions: true
-  prevent-mob-spawn: true
-  prevent-use:
-  - oak_door
-  - iron_door
-  - spruce_door
-  - birch_door
-  - jungle_door
-  - acacia_door
-  - dark_oak_door
-  - crimson_door
-  - warped_door
-  - oak_fence_gate
-  - spruce_fence_gate
-  - birch_fence_gate
-  - jungle_fence_gate
-  - acacia_fence_gate
-  - dark_oak_fence_gate
-  - crimson_fence_gate
-  - warped_fence_gate
-  - chest
-  - trapped_chest
-  - barrel
-  - anvil
-  - jukebox
-  prevent-unprotectable: true
-  prevent-item-frame-take: true
-  prevent-flow: true
-  protect-crops: true
-  protect-mobs: true
-  protect-villagers: true
-  protect-inventories: true
-  welcome-message: false
-  farewell-message: false
-  ?prevent-portal-enter: true
-  ?prevent-portal-destination: true
-  ?prevent-portal-create: true
-  ?prevent-vehicle-enter: true
-  ?prevent-vehicle-exit: true
-  ?prevent-teleport: false
-  command-blacklisting: true
-  can-change-owner: true
-  enable-on-src: true
-  mixing-group: 1
-  hidable: true
-  rentable: false
-  buyable: false
-  cuboid: true
-  mask-on-disabled: 80
-  limits:
-  - 1
+  - title: Home
+    meta-name: '&3Home Protection'
+    meta-autoset: false
+    meta-lore:
+      - '&eThis will protect a 16x16x16 area'
+      - Use /ps allow <player> to add members
+    block: SEA_LANTERN
+    radius: 8
+    custom-height: 8
+    no-resize: true
+    prevent-pvp: true
+    dynmap-area: true
+    dynmap-no-toggle: true
+    prevent-fire: true
+    prevent-place: true
+    prevent-destroy: true
+    prevent-vehicle-destroy: true
+    prevent-enderman-destroy: true
+    prevent-explosions: true
+    prevent-tnt-explosions: true
+    prevent-creeper-explosions: true
+    prevent-wither-explosions: true
+    prevent-mob-spawn: true
+    prevent-use:
+      - oak_door
+      - iron_door
+      - spruce_door
+      - birch_door
+      - jungle_door
+      - acacia_door
+      - dark_oak_door
+      - crimson_door
+      - warped_door
+      - oak_fence_gate
+      - spruce_fence_gate
+      - birch_fence_gate
+      - jungle_fence_gate
+      - acacia_fence_gate
+      - dark_oak_fence_gate
+      - crimson_fence_gate
+      - warped_fence_gate
+      - chest
+      - trapped_chest
+      - barrel
+      - anvil
+      - jukebox
+    prevent-unprotectable: true
+    prevent-item-frame-take: true
+    prevent-flow: true
+    protect-crops: true
+    protect-animals: true
+    protect-mobs: true
+    protect-villagers: true
+    protect-inventories: true
+    welcome-message: true
+    farewell-message: true
+    ?prevent-portal-enter: true
+    ?prevent-portal-destination: true
+    ?prevent-portal-create: true
+    ?prevent-vehicle-enter: true
+    ?prevent-vehicle-exit: true
+    ?prevent-teleport: false
+    command-blacklisting: true
+    can-change-owner: true
+    enable-on-src: true
+    mixing-group: 1
+    hidable: true
+    rentable: false
+    buyable: false
+    cuboid: true
+    mask-on-disabled: 80
+    limits:
+      - 1
+  - title: Shop
+    meta-name: '&3Shop Protection'
+    meta-autoset: false
+    meta-lore:
+      - '&eThis will protect a 5x12x5 area'
+    block: BOOKSHELF
+    radius: 2
+    custom-height: 6
+    no-resize: true
+    prevent-pvp: true
+    dynmap-area: true
+    dynmap-no-toggle: true
+    prevent-fire: true
+    prevent-place: true
+    prevent-destroy: true
+    prevent-vehicle-destroy: true
+    prevent-enderman-destroy: true
+    prevent-explosions: true
+    prevent-tnt-explosions: true
+    prevent-creeper-explosions: true
+    prevent-wither-explosions: true
+    prevent-mob-spawn: true
+    prevent-use:
+      - oak_door
+      - iron_door
+      - spruce_door
+      - birch_door
+      - jungle_door
+      - acacia_door
+      - dark_oak_door
+      - crimson_door
+      - warped_door
+      - oak_fence_gate
+      - spruce_fence_gate
+      - birch_fence_gate
+      - jungle_fence_gate
+      - acacia_fence_gate
+      - dark_oak_fence_gate
+      - crimson_fence_gate
+      - warped_fence_gate
+      - chest
+      - trapped_chest
+      - barrel
+      - anvil
+      - jukebox
+    prevent-unprotectable: true
+    prevent-item-frame-take: true
+    prevent-flow: true
+    protect-crops: true
+    protect-mobs: true
+    protect-villagers: true
+    protect-inventories: true
+    welcome-message: false
+    farewell-message: false
+    ?prevent-portal-enter: true
+    ?prevent-portal-destination: true
+    ?prevent-portal-create: true
+    ?prevent-vehicle-enter: true
+    ?prevent-vehicle-exit: true
+    ?prevent-teleport: false
+    command-blacklisting: true
+    can-change-owner: true
+    enable-on-src: true
+    mixing-group: 1
+    hidable: true
+    rentable: false
+    buyable: false
+    cuboid: true
+    mask-on-disabled: 80
+    limits:
+      - 1
+  - title: Creative
+    meta-name: '&3Creative Protection'
+    meta-autoset: false
+    meta-lore:
+      - '&eThis will protect a 300x255x300 area'
+      - Use /ps allow <player> to add members
+    block: SHROOMLIGHT
+    radius: 300
+    custom-height: 255
+    no-resize: true
+    prevent-pvp: true
+    dynmap-area: true
+    dynmap-no-toggle: true
+    prevent-fire: true
+    prevent-place: true
+    prevent-destroy: true
+    prevent-vehicle-destroy: true
+    prevent-enderman-destroy: true
+    prevent-explosions: true
+    prevent-tnt-explosions: true
+    prevent-creeper-explosions: true
+    prevent-wither-explosions: true
+    prevent-mob-spawn: true
+    prevent-use:
+      - oak_door
+      - iron_door
+      - spruce_door
+      - birch_door
+      - jungle_door
+      - acacia_door
+      - dark_oak_door
+      - crimson_door
+      - warped_door
+      - oak_fence_gate
+      - spruce_fence_gate
+      - birch_fence_gate
+      - jungle_fence_gate
+      - acacia_fence_gate
+      - dark_oak_fence_gate
+      - crimson_fence_gate
+      - warped_fence_gate
+      - chest
+      - trapped_chest
+      - barrel
+      - anvil
+      - jukebox
+    prevent-unprotectable: true
+    prevent-item-frame-take: true
+    prevent-flow: true
+    protect-crops: true
+    protect-animals: true
+    protect-mobs: true
+    protect-villagers: true
+    protect-inventories: true
+    welcome-message: true
+    farewell-message: true
+    ?prevent-portal-enter: true
+    ?prevent-portal-destination: true
+    ?prevent-portal-create: true
+    ?prevent-vehicle-enter: true
+    ?prevent-vehicle-exit: true
+    ?prevent-teleport: false
+    command-blacklisting: true
+    can-change-owner: true
+    enable-on-src: true
+    mixing-group: 1
+    hidable: true
+    rentable: false
+    buyable: false
+    cuboid: true
+    mask-on-disabled: 80
+    limits:
+      - 6
 bypass-blocks: []
 unprotectable-blocks: []
 hiding-mask-blocks:
-- STONE
-- GRASS_BLOCK
-- DIRT
-- COBBLESTONE
-- OAK_PLANKS
-- BEDROCK
-- SAND
-- GRAVEL
-- OAK_LOG
-- OAK_LEAVES
-- GLASS
-- SANDSTONE
-- WHITE_WOOL
-- STONE_SLAB
-- BRICKS
-- BOOKSHELF
-- MOSSY_COBBLESTONE
-- OBSIDIAN
-- OAK_STAIRS
-- FARMLAND
-- COBBLESTONE_STAIRS
-- SNOW_BLOCK
-- CACTUS
-- CLAY
-- NETHERRACK
-- SOUL_SAND
-- GLOWSTONE
-- BROWN_MUSHROOM_BLOCK
-- RED_MUSHROOM_BLOCK
-- BRICK_STAIRS
-- STONE_BRICK_STAIRS
-- MYCELIUM
-- REDSTONE_LAMP
-- REDSTONE_LAMP
-- OAK_SLAB
-- SANDSTONE_STAIRS
-- SPRUCE_STAIRS
-- BIRCH_STAIRS
-- JUNGLE_STAIRS
+  - STONE
+  - GRASS_BLOCK
+  - DIRT
+  - COBBLESTONE
+  - OAK_PLANKS
+  - BEDROCK
+  - SAND
+  - GRAVEL
+  - OAK_LOG
+  - OAK_LEAVES
+  - GLASS
+  - SANDSTONE
+  - WHITE_WOOL
+  - STONE_SLAB
+  - BRICKS
+  - BOOKSHELF
+  - MOSSY_COBBLESTONE
+  - OBSIDIAN
+  - OAK_STAIRS
+  - FARMLAND
+  - COBBLESTONE_STAIRS
+  - SNOW_BLOCK
+  - CACTUS
+  - CLAY
+  - NETHERRACK
+  - SOUL_SAND
+  - GLOWSTONE
+  - BROWN_MUSHROOM_BLOCK
+  - RED_MUSHROOM_BLOCK
+  - BRICK_STAIRS
+  - STONE_BRICK_STAIRS
+  - MYCELIUM
+  - REDSTONE_LAMP
+  - REDSTONE_LAMP
+  - OAK_SLAB
+  - SANDSTONE_STAIRS
+  - SPRUCE_STAIRS
+  - BIRCH_STAIRS
+  - JUNGLE_STAIRS
 tool-items:
-- IRON_SHOVEL
-- IRON_PICKAXE
-- WOODEN_SHOVEL
-- WOODEN_PICKAXE
-- STONE_SHOVEL
-- STONE_PICKAXE
-- DIAMOND_SHOVEL
-- DIAMOND_PICKAXE
-- GOLDEN_SHOVEL
-- GOLDEN_PICKAXE
+  - IRON_SHOVEL
+  - IRON_PICKAXE
+  - WOODEN_SHOVEL
+  - WOODEN_PICKAXE
+  - STONE_SHOVEL
+  - STONE_PICKAXE
+  - DIAMOND_SHOVEL
+  - DIAMOND_PICKAXE
+  - GOLDEN_SHOVEL
+  - GOLDEN_PICKAXE
 repairable-items:
-- IRON_SHOVEL
-- IRON_PICKAXE
-- IRON_AXE
-- FLINT_AND_STEEL
-- BOW
-- IRON_SWORD
-- WOODEN_SWORD
-- WOODEN_SHOVEL
-- WOODEN_PICKAXE
-- WOODEN_AXE
-- STONE_SWORD
-- STONE_SHOVEL
-- STONE_PICKAXE
-- STONE_AXE
-- DIAMOND_SWORD
-- DIAMOND_SHOVEL
-- DIAMOND_PICKAXE
-- DIAMOND_AXE
-- GOLDEN_SWORD
-- GOLDEN_SHOVEL
-- GOLDEN_PICKAXE
-- GOLDEN_AXE
-- WOODEN_HOE
-- STONE_HOE
-- IRON_HOE
-- DIAMOND_HOE
-- GOLDEN_HOE
-- LEATHER_HELMET
-- LEATHER_CHESTPLATE
-- LEATHER_LEGGINGS
-- LEATHER_BOOTS
-- CHAINMAIL_HELMET
-- CHAINMAIL_CHESTPLATE
-- CHAINMAIL_LEGGINGS
-- CHAINMAIL_BOOTS
-- IRON_HELMET
-- IRON_CHESTPLATE
-- IRON_LEGGINGS
-- IRON_BOOTS
-- DIAMOND_HELMET
-- DIAMOND_CHESTPLATE
-- DIAMOND_LEGGINGS
-- DIAMOND_BOOTS
-- GOLDEN_HELMET
-- GOLDEN_CHESTPLATE
-- GOLDEN_LEGGINGS
-- GOLDEN_BOOTS
-- FISHING_ROD
-- SHEARS
+  - IRON_SHOVEL
+  - IRON_PICKAXE
+  - IRON_AXE
+  - FLINT_AND_STEEL
+  - BOW
+  - IRON_SWORD
+  - WOODEN_SWORD
+  - WOODEN_SHOVEL
+  - WOODEN_PICKAXE
+  - WOODEN_AXE
+  - STONE_SWORD
+  - STONE_SHOVEL
+  - STONE_PICKAXE
+  - STONE_AXE
+  - DIAMOND_SWORD
+  - DIAMOND_SHOVEL
+  - DIAMOND_PICKAXE
+  - DIAMOND_AXE
+  - GOLDEN_SWORD
+  - GOLDEN_SHOVEL
+  - GOLDEN_PICKAXE
+  - GOLDEN_AXE
+  - WOODEN_HOE
+  - STONE_HOE
+  - IRON_HOE
+  - DIAMOND_HOE
+  - GOLDEN_HOE
+  - LEATHER_HELMET
+  - LEATHER_CHESTPLATE
+  - LEATHER_LEGGINGS
+  - LEATHER_BOOTS
+  - CHAINMAIL_HELMET
+  - CHAINMAIL_CHESTPLATE
+  - CHAINMAIL_LEGGINGS
+  - CHAINMAIL_BOOTS
+  - IRON_HELMET
+  - IRON_CHESTPLATE
+  - IRON_LEGGINGS
+  - IRON_BOOTS
+  - DIAMOND_HELMET
+  - DIAMOND_CHESTPLATE
+  - DIAMOND_LEGGINGS
+  - DIAMOND_BOOTS
+  - GOLDEN_HELMET
+  - GOLDEN_CHESTPLATE
+  - GOLDEN_LEGGINGS
+  - GOLDEN_BOOTS
+  - FISHING_ROD
+  - SHEARS
 log:
   translocation: true
   rollback: true
@@ -303,9 +376,9 @@ settings:
   max-size-translocation-for-redstone: 1000
   version: 13
   prevent-place-everywhere:
-  - world_other
+    - world_other
   prevent-destroy-everywhere:
-  - world_other
+    - world_other
   show-default-welcome-farewell-messages: true
   sneak-to-place-field: false
   sneak-to-place-normal-block: true
@@ -320,8 +393,8 @@ settings:
   lines-per-page: 100
   show-debug-info: false
   blacklisted-worlds:
-  - world_other
-  - world_the_end
+    - world_other
+    - world_the_end
   auto-allow-clan-on-fields: true
   auto-allow-team-on-fields: false
   check-once-per-block-on-move: false
@@ -357,7 +430,7 @@ visualization:
 grief-revert:
   min-interval-secs: 30
   black-list:
-  - CAKE
+    - CAKE
 mysql:
   enable: false
   host: localhost
