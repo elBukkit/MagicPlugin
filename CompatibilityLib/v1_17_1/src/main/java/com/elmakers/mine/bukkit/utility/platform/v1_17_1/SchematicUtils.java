@@ -26,7 +26,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
-import net.minecraft.nbt.Tag;
 
 public class SchematicUtils extends SchematicUtilsBase {
     public SchematicUtils(Platform platform) {
@@ -87,6 +86,8 @@ public class SchematicUtils extends SchematicUtilsBase {
             Collection<Object> tileEntityData = new ArrayList<>();
             Collection<Object> entityData = new ArrayList<>();
 
+            // TODO: Re-enable this once mappings are fixed
+            /*
             ListTag entityList = nbtData.getList("Entities", CompatibilityConstants.NBT_TYPE_COMPOUND);
             ListTag tileEntityList = null;
             if (nbtData.contains("BlockEntities")) {
@@ -110,6 +111,7 @@ public class SchematicUtils extends SchematicUtilsBase {
                     tileEntityData.add(tileEntity);
                 }
             }
+            */
 
             Vector origin = new Vector(0, 0, 0);
             int[] offset = nbtData.getIntArray("Offset");

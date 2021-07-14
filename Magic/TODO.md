@@ -2,7 +2,8 @@
 
 # Revert Some Hacks
 
- - BufferedMapCanvas revert change to bound palette indexes when 1.17 is fixed 
+ - BufferedMapCanvas revert change to bound palette indexes when 1.17 is fixed
+ - Turn schematic entity loading back on once 1.17 fixes NBTList access
 
 # Arenas
 
@@ -18,8 +19,6 @@
 
 # Bugs
 
- - Wolf house schematic is broken, hangs
- - Building with map brushes is broken  
  - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Do automata drop loot when expiring due to chunk load?
