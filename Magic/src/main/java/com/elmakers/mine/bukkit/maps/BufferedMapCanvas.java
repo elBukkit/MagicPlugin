@@ -59,6 +59,10 @@ public class BufferedMapCanvas implements MapCanvas {
 
         // Map colors in advance.
         if (color != MapPalette.TRANSPARENT && !dyeColors.containsKey(color)) {
+            // temporary for now to avoid exceptions in 1.17 until it is updated
+            // TODO: Revert this
+            if ((color > -21 && color < 0) || color > 127) return;
+
             java.awt.Color mapColor = MapPalette.getColor(color);
             Color targetColor = Color.fromRGB(mapColor.getRed(), mapColor.getGreen(), mapColor.getBlue());
 
