@@ -11,7 +11,6 @@ broom:
     upgrade_required_path: broom
     upgrade_required_casts: 20
     world_border_restricted: true
-    creative_restricted: true
     cast_on_no_target: false
     cancellable: false
     show_undoable: false
