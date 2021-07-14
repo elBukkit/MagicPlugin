@@ -218,7 +218,7 @@ skill_inventory_max_rows: 6
 mskills_spell: skills
 
 # Control word-wrapping in various lore texts
-lore_wrap_limit: 48
+lore_wrap_limit: 32
 
 # This will hide all flags on a wand.
 # If you want enchantments to show, use
