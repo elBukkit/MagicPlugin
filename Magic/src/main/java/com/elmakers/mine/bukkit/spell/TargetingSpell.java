@@ -220,10 +220,6 @@ public class TargetingSpell extends BaseSpell {
         target(context);
     }
 
-    public void retarget(double range, double fov, double closeRange, double closeFOV, boolean useHitbox) {
-        retarget(currentCast, range, fov, closeRange, closeFOV, useHitbox);
-    }
-
     public void target(CastContext castContext) {
         if (!targeting.hasTarget())
         {

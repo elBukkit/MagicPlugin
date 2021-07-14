@@ -573,8 +573,8 @@ public class Targeting {
         hitboxBlockPadding = parameters.getDouble("hitbox_block_size", 0);
         rangeQueryPadding = parameters.getDouble("range_padding", 1);
         fov = parameters.getDouble("fov", 0.3);
-        closeRange = parameters.getDouble("close_range", 0);
-        closeFOV = parameters.getDouble("close_fov", 0.5);
+        closeRange = parameters.getDouble("close_range", 1);
+        closeFOV = parameters.getDouble("close_fov", 1.5);
 
         distanceWeight = (float)parameters.getDouble("distance_weight", 1);
         fovWeight = (float)parameters.getDouble("fov_weight", 4);

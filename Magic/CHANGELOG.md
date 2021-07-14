@@ -50,6 +50,8 @@
    Use `/mconfig configure config enchant_sneak_click spellshop` to put it back
  - Sword controls changes to use the same drop/swap behavior as wands
  - Tracking Sense now only tracks players if sneak-casting
+ - Change default ConeOfEffect (non-hitbox) targeting to use a wider FOV up close.
+   This also fixes issues selecting NPCs right in front of you
 
 # 9.2.1
 
