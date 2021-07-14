@@ -20,13 +20,13 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.SchematicUtilsBase;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 import com.google.common.primitives.Bytes;
-import com.google.common.primitives.Ints;
 
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.Tag;
 
 public class SchematicUtils extends SchematicUtilsBase {
     public SchematicUtils(Platform platform) {
@@ -98,7 +98,7 @@ public class SchematicUtils extends SchematicUtilsBase {
             if (entityList != null) {
                 int size = entityList.size();
                 for (int i = 0; i < size; i++) {
-                    Object entity = entityList.get(i);
+                    Tag entity = entityList.get(i);
                     entityData.add(entity);
                 }
             }
@@ -106,7 +106,7 @@ public class SchematicUtils extends SchematicUtilsBase {
             if (tileEntityList != null) {
                 int size = tileEntityList.size();
                 for (int i = 0; i < size; i++) {
-                    Object tileEntity = tileEntityList.get(i);
+                    Tag tileEntity = tileEntityList.get(i);
                     tileEntityData.add(tileEntity);
                 }
             }
