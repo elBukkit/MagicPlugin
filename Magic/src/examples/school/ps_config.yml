@@ -152,7 +152,7 @@ force-field-blocks:
       - Use /ps allow <player> to add members
     block: SHROOMLIGHT
     radius: 300
-    custom-height: 255
+    custom-height: 512
     no-resize: true
     prevent-pvp: true
     dynmap-area: true
