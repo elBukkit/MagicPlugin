@@ -63,7 +63,7 @@ studenttool:
       description: Only nearby people can hear you
       commands: ch local
     - placeholder: true
-    - placeholder: true
+    - cast_spell: teleporter
     - warp: mesa
       effects: warp
       requirements:

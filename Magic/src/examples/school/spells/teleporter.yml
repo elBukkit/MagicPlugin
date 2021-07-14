@@ -1,4 +1,6 @@
 teleporter:
+  name: Teleporter
+  dscription: Teleport to various destinations
   earns_sp: 0
   inherit: recall
   hidden: true
