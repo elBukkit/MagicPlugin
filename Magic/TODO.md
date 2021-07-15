@@ -23,7 +23,6 @@
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Do automata drop loot when expiring due to chunk load?
  - Selector cost at top-level (default cost) doesn't work
- - Effects on Repair/SuperRepair broken?
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)
  - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
  - Need to show spell name on cycle-mode wands (seems tow ork for me?)

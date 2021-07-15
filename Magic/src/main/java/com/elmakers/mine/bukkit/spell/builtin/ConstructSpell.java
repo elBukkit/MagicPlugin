@@ -213,7 +213,7 @@ public class ConstructSpell extends BrushSpell
             batch.setOrientDimensionMin(parameters.getInt("odmin"));
         }
         boolean success = mage.addBatch(batch);
-        return success ? SpellResult.PENDING : SpellResult.FAIL;
+        return success ? SpellResult.CAST : SpellResult.FAIL;
     }
 
     @Override
