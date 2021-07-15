@@ -33,3 +33,6 @@ tutorial:
     - item: leather_boots
       slot: boots
     - item: phome
+
+navigator:
+  enabled: true
