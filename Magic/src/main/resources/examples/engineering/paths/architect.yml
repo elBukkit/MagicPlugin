@@ -37,6 +37,7 @@ architect:
       - tunnel
       - light
       - toggleair
+      - paste
     brush_count:
       7: 100
       8: 60

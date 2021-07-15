@@ -60,6 +60,7 @@ repair:
         cooldown: 7000
         ignore_region_overrides: true
         cancel_on_deactivate: false
+        consume: true
     costs:
         mana: 200
 

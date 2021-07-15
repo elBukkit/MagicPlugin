@@ -23,7 +23,6 @@ conduit:
       - repair
       - superrepair
       - superbackup
-      - paste
       - anvil
       - day
       - night
