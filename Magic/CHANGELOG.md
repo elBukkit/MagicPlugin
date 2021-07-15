@@ -2,9 +2,15 @@
 
 # 9.4
 
+## Additions
+
  - Add `placeable` wand item, will avoid cancelling block place events when held.
    This is mainly intended to be used on hoes, shovels or other tools with right-click actions
    that modify blocks, which Spigot interprets as a block place.
+   
+## Changes
+
+ - Mob interact spells will use the player's spell level
 
 # 9.3
 

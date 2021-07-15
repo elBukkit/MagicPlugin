@@ -550,6 +550,12 @@ public class PlayerController implements Listener {
                 case NONE:
                     break;
             }
+            if (!interactSpell.contains("|")) {
+                int level = mage.getActiveProperties().getSpellLevel(interactSpell);
+                if (level > 1) {
+                    interactSpell += "|" + level;
+                }
+            }
 
             success = controller.cast(mage, interactSpell, parameters, player, sourceEntity);
         }
