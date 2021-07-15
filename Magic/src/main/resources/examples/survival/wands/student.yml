@@ -2,15 +2,15 @@
 # A sampling of "pre-levelled up" wands
 #
 student:
-    inherit: base_wand
-    active_spell: missile
+    inherit: beginner
     legacy_icon: wand_icon:2
     icon: stick{CustomModelData:18002}
     migrate_icon: wand_icon
     effect_color: '00FF00'
-    mana_regeneration: 30
-    mana_max: 150
-    mana: 150
+    hotbar_count: 2
+    mana_regeneration: 15
+    mana_max: 100
+    mana: 100
     spells:
       - missile
       - blink

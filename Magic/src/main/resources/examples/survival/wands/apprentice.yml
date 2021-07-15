@@ -3,10 +3,9 @@ apprentice:
     legacy_icon: wand_icon:3
     icon: stick{CustomModelData:18003}
     effect_color: '22FF22'
-    hotbar_count: 2
-    mana_regeneration: 40
-    mana_max: 200
-    mana: 200
+    mana_regeneration: 25
+    mana_max: 150
+    mana: 150
     spells:
       - missile
       - blink

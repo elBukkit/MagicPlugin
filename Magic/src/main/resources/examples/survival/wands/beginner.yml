@@ -1,19 +1,29 @@
 #
+# An example of a progressed beginner wand
 #
-# Wand templates
+# These wands (student, master, etc) are meant to be used
+# as examples only!
 #
-# Can be created with /wand <key> and /wandp <key>
-#
-# Names and descriptions for wands are defined in messages.yml.
-#
-#
-#
-# A beginner wand, this is a leftover from previous configs.
-#
-# It is probably best to use the default "wand" for this now instead!
-#
-# This wand will automatically migrate to the "wand" template.
+# Make your own wands if you want to give out ranked wands,
+# or use the "wand" wand for the survival experience.
 #
 beginner:
-  migrate_to: wand
-
+  inherit: base_wand
+  active_spell: missile
+  legacy_icon: wand_icon:1
+  icon: stick{CustomModelData:18001}
+  migrate_icon: wand_icon
+  effect_color: '004400'
+  mana_regeneration: 5
+  mana_max: 50
+  mana: 50
+  earn_multiplier: 0
+  spells:
+    - missile
+    - push
+    - arrow
+    - boom
+    - familiar
+    - fire
+    - frost
+    - heal
