@@ -15,6 +15,7 @@
  - Fix armor-slotted items in kits, such as the armor in the starter kit
  - Improve `close_wand_on_world_change` feature for better PerWorldInventory compatibility  
  - The `visibility` parameter on effects now works on particles as well as EffectLib effects
+ - Fix books dropping out of magically-destroyed lecterns
    
 ## Additions
 

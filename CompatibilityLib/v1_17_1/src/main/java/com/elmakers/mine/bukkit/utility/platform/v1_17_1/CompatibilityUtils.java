@@ -31,6 +31,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Lectern;
 import org.bukkit.block.Lockable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.WallSign;
@@ -485,6 +486,21 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     @Override
     public void clearItems(Location location) {
         if (location == null) return;
+
+        // Block-specific behaviors
+        Block block = location.getBlock();
+        BlockState blockState = block.getState();
+        if (blockState instanceof Lootable) {
+            Lootable lootable = (Lootable)blockState;
+            lootable.setLootTable(null);
+            blockState.update();
+        }
+        if (blockState instanceof Lectern) {
+            Lectern lectern = (Lectern)blockState;
+            lectern.getInventory().setItem(0, new ItemStack(Material.AIR));
+            blockState.update();
+        }
+        // TODO: Just clear inventory instead?
         BlockEntity tileEntity = getTileEntity(location);
         if (tileEntity == null) return;
         CompoundTag tag = new CompoundTag();
@@ -494,18 +510,9 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         // Is it really necessary to clear the list before removing it?
         if (itemList != null) {
             itemList.clear();
-        }
-        tag.remove("Items");
-        tileEntity.load(tag);
-        tileEntity.setChanged();
-
-        // Clear loot tables
-        Block block = location.getBlock();
-        BlockState blockState = block.getState();
-        if (blockState instanceof Lootable) {
-            Lootable lootable = (Lootable)blockState;
-            lootable.setLootTable(null);
-            blockState.update();
+            tag.remove("Items");
+            tileEntity.load(tag);
+            tileEntity.setChanged();
         }
     }
 

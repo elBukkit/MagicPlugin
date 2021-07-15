@@ -25,15 +25,10 @@
  - Selector cost at top-level (default cost) doesn't work
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)
  - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
- - Need to show spell name on cycle-mode wands (seems tow ork for me?)
- - Right-click doesn't work when looking at a mob (fixed, look out for spells casting when right-clicking NPCs though)
 
  - Mars automata doesn't seem to auto-activate 
 
  - Need an easier way to set prices that works with wands, too
-
- - Dieing while cloaked keeps you invisible again (could not reproduce)
- - Factions integration not working? (seems to be fine)
 
  - Need to remove books from a Lectern when destroying it
  - Check wand particle FX for TPS drop (only in WG region.. maybe?) (could not reproduce)
