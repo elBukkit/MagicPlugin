@@ -97,7 +97,7 @@ public class RecurseAction extends CompoundAction {
         super.initialize(spell, parameters);
 
         // Parsing this parameter here to pre-prime the stack
-        recursionDepth = parameters.getInt("size", 32);
+        recursionDepth = parameters.getInt("size", 4);
         recursionDepth = parameters.getInt("depth", recursionDepth);
 
         directions = DirectionUtils.getDirections(parameters, "faces");
@@ -117,7 +117,7 @@ public class RecurseAction extends CompoundAction {
         checker = parameters.getBoolean("checkered", false);
         replace = parameters.getBoolean("replace", false);
         depthFirst = parameters.getBoolean("depth_first", false);
-        recursionDepth = parameters.getInt("size", 32);
+        recursionDepth = parameters.getInt("size", 4);
         recursionDepth = parameters.getInt("depth", recursionDepth);
         limit = parameters.getInt("limit", 0);
 
