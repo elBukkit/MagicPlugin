@@ -1,0 +1,12 @@
+superspade:
+  passive: true
+  triggers: block_broken
+  actions:
+    cast:
+    - class: Recurse
+      actions:
+        - class: Drop
+  parameters:
+    target: block_broken
+    replace: true
+    depth: 2
