@@ -8,10 +8,14 @@
    This is mainly intended to be used on hoes, shovels or other tools with right-click actions
    that modify blocks, which Spigot interprets as a block place.
  - Add `block_broken` trigger and `target` type  
+ - Add `allow_all: false` Recall option, to make available options a whitelist instead of blacklist
    
 ## Changes
 
  - Mob interact spells will use the player's spell level
+ - Rebalance example wands to better match paths, turn off SP earn for them
+   You should not be using these wands for anything other than demoing, but if you need to undo this change you can
+   `/mconfig configure wand beginner earn_multiplier 1`
 
 # 9.3
 

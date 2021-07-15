@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
+import com.elmakers.mine.bukkit.api.warp.Warp;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -277,11 +278,25 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 defaultUnavailableMessage = parameters.getString("unavailable_warp_description", "");
                 break;
             case WARP:
-                defaultTitle = context.getMessage("title_warp", "$name").replace("$name", warpName);
+                location = context.getController().getWarp(warpName);
+                Warp magicWarp = context.getController().getMagicWarp(warpName);
+                String warpLabel = warpName;
+                if (magicWarp != null) {
+                    warpLabel = magicWarp.getName();
+                    String warpDescription = magicWarp.getDescription();
+                    if (warpDescription != null) {
+                        defaultDescription = warpDescription;
+                    }
+                    String iconKey = magicWarp.getIcon();
+                    if (iconKey != null && !iconKey.isEmpty()) {
+                        defaultIcon = new MaterialAndData(iconKey);
+                    }
+                }
+
+                defaultTitle = context.getMessage("title_warp", "$name").replace("$name", warpLabel);
                 defaultMessage = context.getMessage("cast_warp", "");
                 defaultFailMessage = context.getMessage("no_target_warp", "");
                 defaultUnavailableMessage = context.getMessage("unavailable_warp_description", "");
-                location = context.getController().getWarp(warpName);
                 break;
             case MARKER:
                 markerNumber = configuration.getInt("marker", 1);
@@ -706,8 +721,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         }
 
         // Automatically append enabled types if not defined in options
+        boolean allowAll = parameters.getBoolean("allow_all", true);
         for (RecallType testType : RecallType.values()) {
-            if (!optionTypes.contains(testType) && parameters.getBoolean("allow_" + testType.name().toLowerCase(), testType.showByDefault)) {
+            if (!optionTypes.contains(testType) && parameters.getBoolean("allow_" + testType.name().toLowerCase(), allowAll && testType.showByDefault)) {
                 switch (testType) {
                     case FRIENDS:
                         for (String friendId : friends) {
@@ -892,7 +908,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return SpellResult.NO_TARGET;
         }
 
-        String inventoryTitle = context.getMessage(titleKey, "Recall");
+        String inventoryTitle = context.getMessage(titleKey, parameters.getString("title", "Recall"));
         int invSize = (int)Math.ceil(options.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         int index = 0;
