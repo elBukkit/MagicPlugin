@@ -17,6 +17,7 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class DropAction extends BaseSpellAction {
     private static Material defaultTool = Material.DIAMOND_PICKAXE;
@@ -33,6 +34,7 @@ public class DropAction extends BaseSpellAction {
         if (target == null || drops == null) return;
 
         for (ItemStack drop : drops) {
+            if (CompatibilityLib.getItemUtils().isEmpty(drop)) continue;
             if (giveToCaster) {
                 context.getMage().giveItem(drop);
             } else {
