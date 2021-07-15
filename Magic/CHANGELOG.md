@@ -7,6 +7,7 @@
  - Add `placeable` wand item, will avoid cancelling block place events when held.
    This is mainly intended to be used on hoes, shovels or other tools with right-click actions
    that modify blocks, which Spigot interprets as a block place.
+ - Add `block_broken` trigger and `target` type  
    
 ## Changes
 

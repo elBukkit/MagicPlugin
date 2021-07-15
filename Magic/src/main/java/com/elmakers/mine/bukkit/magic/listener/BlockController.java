@@ -105,11 +105,11 @@ public class BlockController implements Listener, ChunkLoadListener {
                 return;
             }
         }
+        Mage mage = controller.getRegisteredMage(event.getPlayer());
         if (controller.areLocksProtected() && controller.isContainer(block) && !controller.hasBypassPermission(event.getPlayer())) {
             String lockKey = CompatibilityLib.getCompatibilityUtils().getLock(block);
             if (lockKey != null && !lockKey.isEmpty()) {
                 Inventory inventory = player.getInventory();
-                Mage mage = controller.getRegisteredMage(event.getPlayer());
                 if (mage != null) {
                     inventory = mage.getInventory();
                 }
@@ -160,6 +160,10 @@ public class BlockController implements Listener, ChunkLoadListener {
                 }
                 modifiedBlock.commit();
             }
+        }
+
+        if (!event.isCancelled()) {
+            ((com.elmakers.mine.bukkit.magic.Mage)mage).onBlockBroken(block);
         }
     }
 

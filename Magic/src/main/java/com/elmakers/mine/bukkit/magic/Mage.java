@@ -203,6 +203,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private MageTargeting targeting;
     private WeakReference<Entity> lastDamageSource;
     private WeakReference<Entity> lastDamageTarget;
+    private Block lastBlockBroken;
 
     private Map<PotionEffectType, Integer> effectivePotionEffects = new HashMap<>();
     private Map<String, Double> protection = new HashMap<>();
@@ -525,6 +526,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         currentDamageDealtType = null;
         lastDamageDealtType = getDamageType(damageType, event.getCause());
         trigger("damage_dealt");
+    }
+
+    public void onBlockBroken(Block block) {
+        lastBlockBroken = block;
+        trigger("block_broken");
+    }
+
+    @Nullable
+    @Override
+    public Block getLastBlockBroken() {
+        return lastBlockBroken;
     }
 
     private String getDamageType(String damageType, EntityDamageEvent.DamageCause cause) {

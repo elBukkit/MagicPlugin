@@ -18,7 +18,8 @@ public enum TargetType {
     SELECT_ENTITY(false),
     LAST_DAMAGER(false),
     TOP_DAMAGER(false),
-    DAMAGE_TARGET(false);
+    DAMAGE_TARGET(false),
+    BLOCK_BROKEN(false);
 
     private final boolean ranged;
 

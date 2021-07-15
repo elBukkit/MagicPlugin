@@ -604,6 +604,8 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     Entity getLastDamageTarget();
     @Nullable
+    Block getLastBlockBroken();
+    @Nullable
     Long getLastTrigger(String trigger);
     void setTarget(Entity entity);
 

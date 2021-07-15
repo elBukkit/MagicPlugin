@@ -282,6 +282,9 @@ public class TargetingSpell extends BaseSpell {
         if (targetType == TargetType.DAMAGE_TARGET) {
             return targeting.overrideTarget(context, new Target(source, mage.getLastDamageTarget()));
         }
+        if (targetType == TargetType.BLOCK_BROKEN) {
+            return targeting.overrideTarget(context, new Target(source, mage.getLastBlockBroken()));
+        }
 
         if (targetType != TargetType.SELF && targetLocation != null) {
             return targeting.overrideTarget(context, new Target(source, targetLocation.getBlock()));
