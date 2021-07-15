@@ -175,7 +175,7 @@ public class BlockController implements Listener, ChunkLoadListener {
             return;
         }
 
-        if (CompatibilityLib.getItemUtils().isUnplaceable(itemStack) || Wand.isSpecial(itemStack)) {
+        if (CompatibilityLib.getItemUtils().isUnplaceable(itemStack)) {
             event.setCancelled(true);
             return;
         }
@@ -185,7 +185,12 @@ public class BlockController implements Listener, ChunkLoadListener {
             event.setCancelled(true);
         }
 
-        if (Wand.isSpecial(itemStack)) {
+        Wand wand = controller.getIfWand(itemStack);
+        if (wand != null) {
+            if (!wand.isPlaceable()) {
+                event.setCancelled(true);
+            }
+        } else if (Wand.isSpecial(itemStack)) {
             event.setCancelled(true);
         }
 

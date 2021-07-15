@@ -6545,4 +6545,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         return controller != null ? controller.isInteractible(block) : false;
     }
+
+    public boolean isPlaceable() {
+        return getBoolean("placeable");
+    }
 }

@@ -62,13 +62,13 @@
 
 ## Suggestions
 
+ - Need a way to prevent a trident projectile from remaining as an item
  - Map brushes should fill transparent bits with air if the erase modifiers is active
  - Modifiers from wands keep track of their wand item to use in CastContext for triggered spells
  - AureliumSkills integration
  - Custom death message support?
  - Register attributes as placeholderapi placeholders  
  - A way to get placeholders in a message or command for the target player
- - ATMs broken
  - Add per-player particle on/off settings
  - Drop rule add required tools
  - `/mmap slice` command .. still would really like this
