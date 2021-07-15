@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 9.4
+
 # 9.3
 
 ## Arenas
@@ -55,8 +57,6 @@
  - Change default ConeOfEffect (non-hitbox) targeting to use a wider FOV up close.
    This also fixes issues selecting NPCs right in front of you
  - Paste and Repair will consume materia, Paste moved to architect rank
-
-# 9.2.1
 
 # 9.2
 
