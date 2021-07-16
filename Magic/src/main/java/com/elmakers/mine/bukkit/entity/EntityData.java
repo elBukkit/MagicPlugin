@@ -465,7 +465,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         try {
-            extraData = CompatibilityLib.getEntityUtils().getExtraData(controller, type, parameters);
+            extraData = type == null ? null : CompatibilityLib.getEntityUtils().getExtraData(controller, type, parameters);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Invalid entity type or sub-type", ex);
         }
