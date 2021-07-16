@@ -40,6 +40,7 @@ public class MagicKit implements Kit {
     private final String description;
     private final Double worth;
     private final Set<String> worlds;
+    private final boolean allWorlds;
 
     // Items can be mapped by slot, or not, or a mix of both
     private Map<Integer, ItemData> slotItems;
@@ -63,8 +64,10 @@ public class MagicKit implements Kit {
         List<String> worldKeys = ConfigurationUtils.getStringList(configuration, "worlds");
         if (worldKeys != null && !worldKeys.isEmpty()) {
             worlds = new HashSet<>(worldKeys);
+            allWorlds = worlds.contains("*");
         } else {
             worlds = null;
+            allWorlds = false;
         }
         List<? extends Object> itemList = configuration.getList("items");
         if (itemList != null) {
@@ -353,6 +356,7 @@ public class MagicKit implements Kit {
     }
 
     public boolean isWorld(World world) {
+        if (allWorlds) return true;
         if (world == null || !isWorldSpecific()) return false;
         return worlds.contains(world.getName());
     }
