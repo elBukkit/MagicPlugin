@@ -24,6 +24,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.WorldBorder;
@@ -137,6 +138,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int OFFHAND_CAST_COOLDOWN = 500;
     public static int CURRENCY_MESSAGE_DELAY = 1000;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
+    public static boolean DEACTIVATE_WAND_ON_GAME_MODE_CHANGE = false;
     public static boolean COMMAND_BLOCKS_SUPERPOWERED = true;
     public static boolean CONSOLE_SUPERPOWERED = true;
     public static boolean ALLOW_PERSISTENT_INVISIBILITY = true;
@@ -787,6 +789,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return;
             }
             deactivateWand();
+            checkWandNextTick();
         }
     }
 
@@ -794,6 +797,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         checkWandNextTick(true);
         if (CHANGE_WORLD_EQUIP_COOLDOWN > 0) {
             ignoreItemActivationUntil = System.currentTimeMillis() + CHANGE_WORLD_EQUIP_COOLDOWN;
+        }
+    }
+
+    public void onGameModeChange(GameMode oldGameMode, GameMode newGameMode) {
+        if (DEACTIVATE_WAND_ON_GAME_MODE_CHANGE || newGameMode == GameMode.CREATIVE || oldGameMode == GameMode.CREATIVE) {
+            deactivateWand();
+            checkWandNextTick();
         }
     }
 

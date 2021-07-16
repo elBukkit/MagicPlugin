@@ -302,7 +302,9 @@ currency_message_delay: 1000
 # This can be used to fix compatibility with PerWorldInventory or other plugins that store players'
 # inventories on world change.
 # This makes sure wands close their inventory before players change worlds.
-close_wand_on_world_change: false
+# Turn this off if you don't need it and you'd like a smoother cross-world experience.
+# By default this is true if PerWorldInventory is detected, otherwise false.
+close_wand_on_world_change: true|false
 
 # Turn this off to use normal damage. May be useful if you want
 # direct damage spells to effect armor.

@@ -1020,21 +1020,14 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerGameModeChange(PlayerGameModeChangeEvent event)
     {
         Player player = event.getPlayer();
         if (!player.isOnline()) return;
-
-        if (event.getNewGameMode() == GameMode.CREATIVE || player.getGameMode() == GameMode.CREATIVE) {
-            Mage mage = controller.getRegisteredMage(player);
-            if (mage != null) {
-                com.elmakers.mine.bukkit.api.wand.Wand activeWand = mage.getActiveWand();
-                if (activeWand != null) {
-                    activeWand.deactivate();
-                    mage.checkWandNextTick();
-                }
-            }
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage != null) {
+            mage.onGameModeChange(player.getGameMode(), event.getNewGameMode());
         }
     }
 

@@ -40,6 +40,7 @@ softdepend:
   - SilkSpawners
   - ModelEngine
   - AureliumSkills
+  - PerWorldInventory
 loadbefore:
   - Scavenger
   - Quests

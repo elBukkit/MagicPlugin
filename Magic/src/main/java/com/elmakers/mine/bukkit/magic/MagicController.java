@@ -8045,7 +8045,19 @@ public class MagicController implements MageController {
         Wand.DEFAULT_CAST_OFFSET.setY(properties.getDouble("wand_location_offset_vertical", Wand.DEFAULT_CAST_OFFSET.getY()));
         com.elmakers.mine.bukkit.magic.Mage.JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = properties.getInt("jump_exemption", 0);
         com.elmakers.mine.bukkit.magic.Mage.CHANGE_WORLD_EQUIP_COOLDOWN = properties.getInt("change_world_equip_cooldown", 0);
-        com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = properties.getBoolean("close_wand_on_world_change", false);
+
+        final String variableBoolean = "true|false";
+        String closeWandVariable = properties.getString("close_wand_on_world_change", variableBoolean);
+        if (closeWandVariable.equalsIgnoreCase(variableBoolean)) {
+            boolean hasPerWorldInventory = plugin.getServer().getPluginManager().getPlugin("PerWorldInventory") != null;
+            if (hasPerWorldInventory) {
+                getLogger().info("PerWorldInventory found, will close spell inventories on game mode or world change");
+            }
+            com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = hasPerWorldInventory;
+        } else {
+            com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = properties.getBoolean("close_wand_on_world_change", false);
+        }
+        com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_GAME_MODE_CHANGE = properties.getBoolean("close_wand_on_game_mode_change", com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE);
         com.elmakers.mine.bukkit.magic.Mage.ALLOW_PERSISTENT_INVISIBILITY = properties.getBoolean("allow_player_persistent_invisibility", true);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
