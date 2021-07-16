@@ -1,10 +1,5 @@
 # TODO
 
-# Important
-
- - Need to take PS stones when in creative
- - Default parameter for /addmember
-
 # Creative server
 
  - Need to delay world kit processing for one tick for PWI integration
@@ -15,6 +10,7 @@
  - `/mmap slice` command for easy multi-map banners
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Ability to open an editor session on behalf of another player
+ - Avoid re-sending the RP if not necessary when moving between worlds
 
 # Revert Some Hacks
 

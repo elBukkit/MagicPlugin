@@ -23,6 +23,7 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
     private boolean useMana;
     private boolean enabled;
     private boolean useAttributes;
+    private double manaScale;
 
     public AureliumSkillsManager(ConfigurationSection configuration, MageController controller) {
         this.controller = controller;
@@ -33,6 +34,11 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
         enabled = configuration.getBoolean("enabled", true);
         useMana = enabled && configuration.getBoolean("use_mana", true);
         useAttributes = enabled && configuration.getBoolean("use_attributes", true);
+        manaScale = configuration.getDouble("mana_scale");
+        if (manaScale <= 0) {
+            controller.getLogger().info("Invalid mana scale in aurelium_sklls configuration: " + manaScale);
+            manaScale = 1;
+        }
         String statusString;
         if (!useMana && !useAttributes) {
             statusString = " but integration is disabled in configs";
@@ -60,28 +66,28 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
 
     @Override
     public int getMaxMana(Player player) {
-        return (int)AureliumAPI.getMaxMana(player);
+        return (int)(manaScale * AureliumAPI.getMaxMana(player));
     }
 
     @Override
     public int getManaRegen(Player player) {
         double regen = OptionL.getDouble(Option.REGENERATION_BASE_MANA_REGEN) + AureliumAPI.getStatLevel(player, Stats.REGENERATION) * OptionL.getDouble(Option.REGENERATION_MANA_MODIFIER);
-        return (int)regen;
+        return (int)(manaScale * regen);
     }
 
     @Override
     public float getMana(Player player) {
-        return (float)AureliumAPI.getMana(player);
+        return (float)(manaScale * AureliumAPI.getMana(player));
     }
 
     @Override
     public void removeMana(Player player, float amount) {
-            AureliumAPI.setMana(player, AureliumAPI.getMana(player) - amount);
+        AureliumAPI.setMana(player, AureliumAPI.getMana(player) - (amount / manaScale));
     }
 
     @Override
     public void setMana(Player player, float amount) {
-        AureliumAPI.setMana(player, amount);
+        AureliumAPI.setMana(player, amount / manaScale);
     }
 
     @Override

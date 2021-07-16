@@ -204,6 +204,9 @@ aurelium_skills:
   enabled: true
   use_mana: true
   use_attributes: true
+  # This can be used to scale up mana, but you may be better off adjusting
+  # wisdom.max-mana-per-wisdom and base-mana in AureliumSkills' config
+  mana_scale: 1
 
 # Indirect integration with other protection plugins.
 # Add a plugin here to have Magic send it fake Block/Break events to check for permission.
