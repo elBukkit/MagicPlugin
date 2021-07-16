@@ -81,7 +81,7 @@ poison:
         cooldown: 7000
 
 poison|2:
-    upgrade_required_path: master
+    upgrade_required_path: apprentice
     upgrade_required_casts: 50
     parameters:
         range: 16
