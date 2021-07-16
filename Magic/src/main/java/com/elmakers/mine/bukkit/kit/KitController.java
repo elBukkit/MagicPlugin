@@ -14,10 +14,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.tasks.ProcessKitsTask;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class KitController implements Listener {
@@ -82,16 +84,17 @@ public class KitController implements Listener {
         World fromWorld = event.getFrom();
         World toWorld = player.getWorld();
 
+        // We need to delay this one tick so PerWorldInventory or similar plugins
+        // can be done messing about with the inventory
+        ProcessKitsTask task = new ProcessKitsTask(mage, fromWorld, toWorld);
         for (MagicKit joinKit : joinKits) {
-            if (joinKit.isStarter() && joinKit.isWorld(toWorld)) {
-                joinKit.checkGive(mage);
+            if (joinKit.isWorld(toWorld)) {
+                task.addKit(joinKit);
             }
-            if (joinKit.isRemove() && joinKit.isWorld(fromWorld)) {
-                joinKit.checkRemoveFrom(mage);
-            }
-            if (joinKit.isKeep() && joinKit.isWorld(toWorld)) {
-                joinKit.giveMissing(mage);
-            }
+        }
+        if (!task.isEmpty()) {
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getScheduler().runTaskLater(plugin, task, 1);
         }
     }
 }
