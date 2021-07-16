@@ -1,78 +1,78 @@
 unbreakable-blocks: []
 force-field-blocks:
-  - title: Creative
-    meta-name: '&3Creative Protection'
-    meta-autoset: false
-    meta-lore:
-      - '&eThis will protect a 300x255x300 area'
-      - Use /ps allow <player> to add members
-    block: SHROOMLIGHT
-    radius: 300
-    custom-height: 512
-    no-resize: true
-    prevent-pvp: true
-    dynmap-area: true
-    dynmap-no-toggle: true
-    prevent-fire: true
-    prevent-place: truea
-    prevent-destroy: true
-    prevent-vehicle-destroy: true
-    prevent-enderman-destroy: true
-    prevent-explosions: true
-    prevent-tnt-explosions: true
-    prevent-creeper-explosions: true
-    prevent-wither-explosions: true
-    prevent-mob-spawn: true
-    prevent-use:
-      - oak_door
-      - iron_door
-      - spruce_door
-      - birch_door
-      - jungle_door
-      - acacia_door
-      - dark_oak_door
-      - crimson_door
-      - warped_door
-      - oak_fence_gate
-      - spruce_fence_gate
-      - birch_fence_gate
-      - jungle_fence_gate
-      - acacia_fence_gate
-      - dark_oak_fence_gate
-      - crimson_fence_gate
-      - warped_fence_gate
-      - chest
-      - trapped_chest
-      - barrel
-      - anvil
-      - jukebox
-    prevent-unprotectable: true
-    prevent-item-frame-take: true
-    prevent-flow: true
-    protect-crops: true
-    protect-animals: true
-    protect-mobs: true
-    protect-villagers: true
-    protect-inventories: true
-    welcome-message: true
-    farewell-message: true
-    ?prevent-portal-enter: true
-    ?prevent-portal-destination: true
-    ?prevent-portal-create: true
-    ?prevent-vehicle-enter: true
-    ?prevent-vehicle-exit: true
-    ?prevent-teleport: false
-    command-blacklisting: true
-    can-change-owner: true
-    enable-on-src: true
-    mixing-group: 1
-    hidable: true
-    rentable: false
-    buyable: false
-    cuboid: true
-    mask-on-disabled: 80
-    limits:
-      - 6
+- title: Creative
+  meta-name: '&3Creative Protection'
+  meta-autoset: false
+  meta-lore:
+  - '&eThis will protect a 300x255x300 area'
+  - Use /ps allow <player> to add members
+  block: SHROOMLIGHT
+  radius: 300
+  custom-height: 512
+  no-resize: true
+  prevent-pvp: true
+  dynmap-area: true
+  dynmap-no-toggle: true
+  prevent-fire: true
+  prevent-place: truea
+  prevent-destroy: true
+  prevent-vehicle-destroy: true
+  prevent-enderman-destroy: true
+  prevent-explosions: true
+  prevent-tnt-explosions: true
+  prevent-creeper-explosions: true
+  prevent-wither-explosions: true
+  prevent-mob-spawn: true
+  prevent-use:
+  - oak_door
+  - iron_door
+  - spruce_door
+  - birch_door
+  - jungle_door
+  - acacia_door
+  - dark_oak_door
+  - crimson_door
+  - warped_door
+  - oak_fence_gate
+  - spruce_fence_gate
+  - birch_fence_gate
+  - jungle_fence_gate
+  - acacia_fence_gate
+  - dark_oak_fence_gate
+  - crimson_fence_gate
+  - warped_fence_gate
+  - chest
+  - trapped_chest
+  - barrel
+  - anvil
+  - jukebox
+  prevent-unprotectable: true
+  prevent-item-frame-take: true
+  prevent-flow: true
+  protect-crops: true
+  protect-animals: true
+  protect-mobs: true
+  protect-villagers: true
+  protect-inventories: true
+  welcome-message: true
+  farewell-message: true
+  ?prevent-portal-enter: true
+  ?prevent-portal-destination: true
+  ?prevent-portal-create: true
+  ?prevent-vehicle-enter: true
+  ?prevent-vehicle-exit: true
+  ?prevent-teleport: false
+  command-blacklisting: true
+  can-change-owner: true
+  enable-on-src: true
+  mixing-group: 1
+  hidable: true
+  rentable: false
+  buyable: false
+  cuboid: true
+  mask-on-disabled: 80
+  limits:
+  - 6
 - title: Home Protection
   meta-name: '&3Home Protection'
   meta-autoset: false

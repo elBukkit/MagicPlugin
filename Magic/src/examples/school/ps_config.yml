@@ -72,7 +72,7 @@ force-field-blocks:
     cuboid: true
     mask-on-disabled: 80
     limits:
-      - 1
+      - 8
   - title: Shop
     meta-name: '&3Shop Protection'
     meta-autoset: false
@@ -143,7 +143,7 @@ force-field-blocks:
     cuboid: true
     mask-on-disabled: 80
     limits:
-      - 1
+      - 8
   - title: Creative
     meta-name: '&3Creative Protection'
     meta-autoset: false
