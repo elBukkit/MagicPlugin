@@ -308,7 +308,10 @@ wand:
     chest_inventory_title: "$wand"
     # You can use this to update wand lore when the spell inventory is open
     # but note that this will cause the wand to "bob" when opened or closed.
-    # inventory_open: "&7Spell Inventory Open"
+    inventory_open: "&8------------------------\n&eSpell Inventory Open"
+    inventory_open_cycle: '&b&bull; &fClick &7to cycle inventory pages'
+    inventory_open_cycle_hotbar: '&b&bull; &fRight-Click &7to cycle hotbars'
+
     # You can use this to show an action bar message whenever the player cycles their hotbar
     #hotbar_changed: "a:Switched hotbars"
     # Messages can also be sent as simple titles with default fade in/out

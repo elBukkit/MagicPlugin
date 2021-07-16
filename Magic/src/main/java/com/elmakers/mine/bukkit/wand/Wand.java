@@ -2913,10 +2913,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             addOwnerDescription(lore);
         }
 
-        if (isInventoryOpen() && inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
-            lore.add(inventoryOpenLore);
-        }
-
         SpellTemplate spell = mage == null ? controller.getSpellTemplate(getActiveSpellKey()) : mage.getSpell(getActiveSpellKey());
         Messages messages = controller.getMessages();
 
@@ -2982,6 +2978,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slottedWand.getName()), lore);
                     }
                 }
+            }
+        }
+
+        if (isInventoryOpen() && inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
+            CompatibilityLib.getInventoryUtils().wrapText(inventoryOpenLore, lore);
+
+            String cycleMessage = getMessage("inventory_open_cycle", "");
+            if (!cycleMessage.isEmpty() &&  inventories.size() > 1) {
+                CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
+            }
+
+            cycleMessage = getMessage("inventory_open_cycle_hotbar", "");
+            if (!cycleMessage.isEmpty() &&  hotbars.size() > 1) {
+                CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
             }
         }
         return lore;
@@ -3091,9 +3101,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 ConfigurationUtils.addIfNotEmpty(getLevelString("mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()), lore);
             }
         }
-        if (superPowered) {
-            ConfigurationUtils.addIfNotEmpty(getMessage("super_powered"), lore);
-        }
         if (blockReflectChance > 0) {
             ConfigurationUtils.addIfNotEmpty(getLevelString("reflect_chance", blockReflectChance), lore);
         } else if (blockChance != 0) {
@@ -3136,6 +3143,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 double amount = entry.getValue();
                 addDamageTypeLore("protection", protectionType, amount, lore);
             }
+        }
+        if (superPowered) {
+            ConfigurationUtils.addIfNotEmpty(getMessage("super_powered"), lore);
         }
 
         if (isEnchantable()) {

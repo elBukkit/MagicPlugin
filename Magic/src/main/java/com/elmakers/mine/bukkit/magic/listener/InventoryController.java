@@ -254,6 +254,7 @@ public class InventoryController implements Listener {
 
         // Check for right-click-to-use
         boolean isRightClick = action == InventoryAction.PICKUP_HALF;
+        boolean isLeftClick = !isDrop && !isRightClick;
         if (isSkill && isRightClick)
         {
             mage.useSkill(clickedItem);
@@ -415,15 +416,10 @@ public class InventoryController implements Listener {
                 }
                 if (clickedWand) {
                     event.setCancelled(true);
-                    if ((dropChangesPages && isDrop) || isRightClick) {
+                    if ((dropChangesPages && isDrop) || isLeftClick) {
                         activeWand.cycleInventory();
                     } else {
-                        // There doesn't seem to be any other way to allow cycling in creative
-                        if (player.getGameMode() == GameMode.CREATIVE) {
-                            activeWand.cycleInventory();
-                        } else {
-                            activeWand.cycleHotbar(1);
-                        }
+                        activeWand.cycleHotbar(1);
                     }
                     return;
                 }

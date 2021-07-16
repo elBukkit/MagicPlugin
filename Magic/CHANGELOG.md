@@ -25,6 +25,9 @@
    `/mconfig configure wand beginner earn_multiplier 1`
  - The `close_wand_on_world_change` option is now true by default if PerWorldInventory is detected, and
    also applies to game mode changes.
+ - Wands now show instructions in lore while the wand inventory is open. This causes wands to "bounce" when
+   opening them. If you don't like that effect, set `wand.inventory_open` to "" in messages
+ - Clicks on wands in the spell inventory behavior changed slightly to better support creative mode  
 
 # 9.3
 
