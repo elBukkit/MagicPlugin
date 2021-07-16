@@ -1617,6 +1617,7 @@ public class MagicController implements MageController {
         pm.registerEvents(playerController, plugin);
         pm.registerEvents(inventoryController, plugin);
         pm.registerEvents(explosionController, plugin);
+        pm.registerEvents(kitController, plugin);
         ArenaListener listener = new ArenaListener(arenaController);
         pm.registerEvents(listener, plugin);
         if (jumpController != null) {

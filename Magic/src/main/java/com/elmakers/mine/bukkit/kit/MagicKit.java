@@ -3,10 +3,14 @@ package com.elmakers.mine.bukkit.kit;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nullable;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -35,6 +39,7 @@ public class MagicKit implements Kit {
     private final String name;
     private final String description;
     private final Double worth;
+    private final Set<String> worlds;
 
     // Items can be mapped by slot, or not, or a mix of both
     private Map<Integer, ItemData> slotItems;
@@ -55,6 +60,12 @@ public class MagicKit implements Kit {
         worth = configuration.contains("worth") ? configuration.getDouble("worth") : null;
         name = configuration.getString("name", "");
         description = configuration.getString("description", "");
+        List<String> worldKeys = ConfigurationUtils.getStringList(configuration, "worlds");
+        if (worldKeys != null && !worldKeys.isEmpty()) {
+            worlds = new HashSet<>(worldKeys);
+        } else {
+            worlds = null;
+        }
         List<? extends Object> itemList = configuration.getList("items");
         if (itemList != null) {
             for (Object itemObject : itemList) {
@@ -176,6 +187,12 @@ public class MagicKit implements Kit {
         }
         if (getRemainingCooldown(mage) > 0) {
             return false;
+        }
+        if (isWorldSpecific()) {
+            Location location  = apiMage.getLocation();
+            if (location == null || !isWorld(location.getWorld())) {
+                return false;
+            }
         }
         return true;
     }
@@ -333,5 +350,14 @@ public class MagicKit implements Kit {
             }
         }
         return computed;
+    }
+
+    public boolean isWorld(World world) {
+        if (world == null || !isWorldSpecific()) return false;
+        return worlds.contains(world.getName());
+    }
+
+    public boolean isWorldSpecific() {
+        return worlds != null;
     }
 }

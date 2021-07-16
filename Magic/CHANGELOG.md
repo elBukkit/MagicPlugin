@@ -13,6 +13,7 @@
    that modify blocks, which Spigot interprets as a block place.
  - Add `block_broken` trigger and `target` type  
  - Add `allow_all: false` Recall option, to make available options a whitelist instead of blacklist
+ - Add `worlds` list to kit configs, for starter kits that only apply when joining a specific world
    
 ## Changes
 

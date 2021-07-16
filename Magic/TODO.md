@@ -1,5 +1,21 @@
 # TODO
 
+# Important
+
+ - Need to take PS stones when in creative
+ - Default parameter for /addmember
+
+# Creative server
+
+ - Need to delay world kit processing for one tick for PWI integration
+
+# Near-Term Hopeful List
+
+ - Re-work charges functionality, add recharge_rate or something, cooldowns are separate and still apply
+ - `/mmap slice` command for easy multi-map banners
+ - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
+ - Ability to open an editor session on behalf of another player
+
 # Revert Some Hacks
 
  - BufferedMapCanvas revert change to bound palette indexes when 1.17 is fixed
@@ -62,26 +78,16 @@
 
 ## Suggestions
 
- - Need a way to prevent a trident projectile from remaining as an item
  - Map brushes should fill transparent bits with air if the erase modifiers is active
  - Modifiers from wands keep track of their wand item to use in CastContext for triggered spells
- - AureliumSkills integration
  - Custom death message support?
  - Register attributes as placeholderapi placeholders  
- - A way to get placeholders in a message or command for the target player
- - Add per-player particle on/off settings
  - Drop rule add required tools
- - `/mmap slice` command .. still would really like this
  - Can smithing recipes support magic item outputs?  
  - Allow randomized loot in kits
- - Option on mobs to allow interact spell to use player's spell level
- - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Add "tick" effects for Projectile
- - Make emerald swords based on diamond sword
- - Per-player setting to turn off particles? Sounds maybe?  
  - CheckInventory needs an option to just compare material
  - KingdomsX support (currency, protection?) https://github.com/CryptoMorin/KingdomsX/wiki/API
- - Allow stacking enchants on wands with enchanted books?
  - Allow some custom variables in wand lore, to be able to show the result of equations in lore
  - Shops should just hide invalid items (option to hide them, or just use show_unavailable)
  - Use hitbox of disguised mob
@@ -93,7 +99,6 @@
  - Custom wand name formatting
  - Per-wand flag for allowing offhand casting
  - Sound override (works like particle override) for wands
- - Ability to open an editor session on behalf of another player
  - Allow multiple slugs to /mconfig apply/load to load multiple configs at once
 
 ## Client Localization

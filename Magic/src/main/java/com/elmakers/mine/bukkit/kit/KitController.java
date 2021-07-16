@@ -6,14 +6,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 
 import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class KitController {
+public class KitController implements Listener {
     private final MagicController controller;
     private final Map<String, MagicKit> kits = new HashMap<>();
     private final List<MagicKit> joinKits = new ArrayList<>();
@@ -42,8 +49,20 @@ public class KitController {
         return kits.size();
     }
 
+    public MagicKit getKit(String key) {
+        return kits.get(key);
+    }
+
+    public Set<String> getKitKeys() {
+        return kits.keySet();
+    }
+
     public void onJoin(Mage mage) {
+        Location location = mage.getLocation();
+        World world = location == null ? null : location.getWorld();
         for (MagicKit joinKit : joinKits) {
+            if (joinKit.isWorldSpecific() && !joinKit.isWorld(world)) continue;
+
             if (joinKit.isStarter()) {
                 joinKit.checkGive(mage);
             }
@@ -56,11 +75,23 @@ public class KitController {
         }
     }
 
-    public MagicKit getKit(String key) {
-        return kits.get(key);
-    }
+    @EventHandler(priority = EventPriority.HIGH)
+    public void onWorldChange(PlayerChangedWorldEvent event) {
+        Player player = event.getPlayer();
+        Mage mage = controller.getMage(player);
+        World fromWorld = event.getFrom();
+        World toWorld = player.getWorld();
 
-    public Set<String> getKitKeys() {
-        return kits.keySet();
+        for (MagicKit joinKit : joinKits) {
+            if (joinKit.isStarter() && joinKit.isWorld(toWorld)) {
+                joinKit.checkGive(mage);
+            }
+            if (joinKit.isRemove() && joinKit.isWorld(fromWorld)) {
+                joinKit.checkRemoveFrom(mage);
+            }
+            if (joinKit.isKeep() && joinKit.isWorld(toWorld)) {
+                joinKit.giveMissing(mage);
+            }
+        }
     }
 }
