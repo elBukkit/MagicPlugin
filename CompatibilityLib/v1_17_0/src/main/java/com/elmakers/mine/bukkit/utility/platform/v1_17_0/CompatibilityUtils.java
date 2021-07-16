@@ -53,7 +53,6 @@ import org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -1024,7 +1023,8 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
-    public boolean setPickupStatus(Arrow arrow, String pickupStatus) {
+    public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
+        if (!(projectile instanceof AbstractArrow)) return false;
         AbstractArrow.PickupStatus status;
         try {
             status = AbstractArrow.PickupStatus.valueOf(pickupStatus.toUpperCase());
@@ -1032,7 +1032,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             platform.getLogger().warning("Invalid pickup status: " + pickupStatus);
             return false;
         }
-        arrow.setPickupStatus(status);
+        ((AbstractArrow)projectile).setPickupStatus(status);
         return true;
     }
 

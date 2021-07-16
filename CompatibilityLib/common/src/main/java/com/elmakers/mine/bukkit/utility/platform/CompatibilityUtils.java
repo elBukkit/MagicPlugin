@@ -278,7 +278,7 @@ public interface CompatibilityUtils {
     boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data);
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    boolean setPickupStatus(Arrow arrow, String pickupStatus);
+    boolean setPickupStatus(Projectile projectile, String pickupStatus);
 
     Block getHitBlock(ProjectileHitEvent event);
 

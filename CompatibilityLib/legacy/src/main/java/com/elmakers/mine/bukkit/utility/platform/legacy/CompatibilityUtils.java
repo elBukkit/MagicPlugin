@@ -1547,12 +1547,13 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public boolean setPickupStatus(Arrow arrow, String pickupStatus) {
-        if (arrow == null || pickupStatus == null || NMSUtils.class_Arrow_setPickupStatusMethod == null || NMSUtils.class_PickupStatus == null) return false;
+    public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
+        if (!(projectile instanceof Arrow)) return false;
+        if (projectile == null || pickupStatus == null || NMSUtils.class_Arrow_setPickupStatusMethod == null || NMSUtils.class_PickupStatus == null) return false;
 
         try {
             Enum enumValue = Enum.valueOf(NMSUtils.class_PickupStatus, pickupStatus.toUpperCase());
-            NMSUtils.class_Arrow_setPickupStatusMethod.invoke(arrow, enumValue);
+            NMSUtils.class_Arrow_setPickupStatusMethod.invoke(projectile, enumValue);
         } catch (Throwable ex) {
             ex.printStackTrace();
             return false;

@@ -183,9 +183,9 @@ public class ProjectileAction  extends BaseProjectileAction
                     if (tickIncrease > 0) {
                         CompatibilityLib.getCompatibilityUtils().decreaseLifespan(projectile, tickIncrease);
                     }
-                    if (pickupStatus != null && !pickupStatus.isEmpty()) {
-                        CompatibilityLib.getCompatibilityUtils().setPickupStatus(arrow, pickupStatus);
-                    }
+                }
+                if (pickupStatus != null && !pickupStatus.isEmpty()) {
+                    CompatibilityLib.getCompatibilityUtils().setPickupStatus(projectile, pickupStatus);
                 }
                 if (!breakBlocks) {
                     CompatibilityLib.getEntityMetadataUtils().setBoolean(projectile, MagicMetaKeys.CANCEL_EXPLOSION_BLOCKS, true);

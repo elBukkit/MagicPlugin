@@ -2,6 +2,10 @@
 
 # 9.4
 
+## Fixes
+
+ - Trident projectiles can not be picked up (1.17+)
+
 ## Additions
 
  - Add `placeable` wand item, will avoid cancelling block place events when held.
