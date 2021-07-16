@@ -35,17 +35,6 @@ tridents:
            sound_pitch: 0.1
         -  sound: block_beacon_activate
            sound_pitch: 1.1
-        -  class: EffectSingle
-           sound: magic.electrify
-           sound_pitch: 0.1
-           source_location: body
-           origin_offset: 0,0.55,0
-           effectlib:
-             class: Sphere
-             particle: fireworks_spark
-             duration: $warmup
-             particles: 10
-             radius: 0.2
         shoot:
         -  class: EffectSingle
            sound: entity_arrow_shoot

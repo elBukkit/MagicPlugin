@@ -12,6 +12,7 @@ iron_kit:
 
 tutorial:
   starter: true
+  worlds: world
   items:
     - stick
     - book
@@ -36,3 +37,6 @@ tutorial:
 
 navigator:
   enabled: true
+
+ticket:
+  enabled: false

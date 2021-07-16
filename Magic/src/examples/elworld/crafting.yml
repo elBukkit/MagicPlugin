@@ -39,7 +39,7 @@ rabbitboots:
 
 ruby_sword:
   enabled: false
-  output: ruby_sword
+  output: rubysword
 
   materials:
     o: stick
@@ -51,7 +51,7 @@ ruby_sword:
 
 sapphire_sword:
   enabled: false
-  output: sapphire_sword
+  output: sapphiresword
 
   materials:
     o: stick
