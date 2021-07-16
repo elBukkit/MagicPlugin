@@ -418,11 +418,11 @@ public class InventoryController implements Listener {
                     if ((dropChangesPages && isDrop) || isRightClick) {
                         activeWand.cycleInventory();
                     } else {
-                        activeWand.cycleHotbar(1);
-
                         // There doesn't seem to be any other way to allow cycling in creative
                         if (player.getGameMode() == GameMode.CREATIVE) {
                             activeWand.cycleInventory();
+                        } else {
+                            activeWand.cycleHotbar(1);
                         }
                     }
                     return;
