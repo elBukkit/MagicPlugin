@@ -5,6 +5,7 @@
 ## Fixes
 
  - Trident projectiles can not be picked up (1.17+)
+ - Broomsticks can't be broken, the armor stands are indestructible by default and if broken won't drop items
 
 ## Additions
 

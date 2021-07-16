@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 public class MountArmorStandAction extends RideEntityAction
 {
     private boolean armorStandInvisible;
+    private boolean armorStandInvulnerable;
     private boolean armorStandSmall;
     private boolean armorStandMarker;
     private boolean armorStandGravity;
@@ -61,6 +62,7 @@ public class MountArmorStandAction extends RideEntityAction
         noTarget = parameters.getBoolean("mount_untargetable", true);
         mountTarget = parameters.getBoolean("mount_target", false);
         armorStandInvisible = parameters.getBoolean("armor_stand_invisible", true);
+        armorStandInvulnerable = parameters.getBoolean("armor_stand_invulnerable", true);
         armorStandSmall = parameters.getBoolean("armor_stand_small", false);
         armorStandMarker = parameters.getBoolean("armor_stand_marker", true);
         armorStandGravity = parameters.getBoolean("armor_stand_gravity", true);
@@ -194,6 +196,9 @@ public class MountArmorStandAction extends RideEntityAction
         if (armorStandInvisible) {
             CompatibilityLib.getCompatibilityUtils().setInvisible(armorStand, true);
         }
+        if (armorStandInvulnerable) {
+            CompatibilityLib.getCompatibilityUtils().setInvulnerable(armorStand, true);
+        }
         if (armorStandMarker) {
             armorStand.setMarker(true);
         }
@@ -262,6 +267,7 @@ public class MountArmorStandAction extends RideEntityAction
     {
         super.getParameterNames(spell, parameters);
         parameters.add("armor_stand_invisible");
+        parameters.add("armor_stand_invulnerable");
         parameters.add("armor_stand_small");
         parameters.add("armor_stand_marker");
         parameters.add("armor_stand_gravity");
@@ -279,6 +285,8 @@ public class MountArmorStandAction extends RideEntityAction
                 || parameterKey.equals("armor_stand_marker")
                 || parameterKey.equals("armor_stand_small")
                 || parameterKey.equals("armor_stand_gravity")
+                || parameterKey.equals("armor_stand_invulnerable")
+                || parameterKey.equals("armor_stand_invisible")
                 || parameterKey.equals("mount_target")
                 || parameterKey.equals("mount_wand")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));

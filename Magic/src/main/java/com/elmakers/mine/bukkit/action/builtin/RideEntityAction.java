@@ -78,6 +78,7 @@ public class RideEntityAction extends BaseSpellAction
     private boolean warningEffectsApplied;
     private long nextSoundPlay;
     protected boolean noTarget = true;
+    protected boolean noDrops = true;
     private boolean noTargetPlayer = false;
     private Class<?> crashEntityType;
     private double crashDismountSpeed;
@@ -159,6 +160,7 @@ public class RideEntityAction extends BaseSpellAction
         pitchOffset = parameters.getDouble("pitch_offset", 0);
         yawOffset = parameters.getDouble("yaw_offset", 0);
         noTarget = parameters.getBoolean("mount_untargetable", false);
+        noDrops = parameters.getBoolean("mount_no_drops", true);
         noTargetPlayer = parameters.getBoolean("rider_untargetable", false);
         controllable = parameters.getBoolean("controllable", false);
         pitchControllable = parameters.getBoolean("pitch_controllable", true);
@@ -554,6 +556,9 @@ public class RideEntityAction extends BaseSpellAction
         if (noTarget) {
             CompatibilityLib.getEntityMetadataUtils().setBoolean(mount, MagicMetaKeys.NO_TARGET, true);
         }
+        if (noDrops) {
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(mount, MagicMetaKeys.NO_DROPS, true);
+        }
         if (isPassenger) {
             CompatibilityLib.getDeprecatedUtils().setPassenger(entity, mount);
         } else {
@@ -690,6 +695,7 @@ public class RideEntityAction extends BaseSpellAction
         parameters.add("gravity");
         parameters.add("air_controllable");
         parameters.add("height_check_radius");
+        parameters.add("mount_no_drops");
     }
 
     @Override
@@ -720,6 +726,7 @@ public class RideEntityAction extends BaseSpellAction
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_DURATIONS));
         } else if (parameterKey.equals("air_controllable")
                 || parameterKey.equals("controllable")
+                || parameterKey.equals("mount_no_drops")
                 || parameterKey.equals("pitch_controllable")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
