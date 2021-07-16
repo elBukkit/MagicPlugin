@@ -12,6 +12,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -89,7 +90,8 @@ public abstract class MagicRecipe {
         ItemStack item;
         if (outputItemType.equalsIgnoreCase("wand")) {
             if (outputKey != null && !outputKey.isEmpty()) {
-                item = controller.createWand(outputKey).getItem();
+                Wand wand = controller.createWand(outputKey);
+                item = wand == null ? null : wand.getItem();
             } else {
                 item = null;
             }
