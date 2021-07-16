@@ -7,53 +7,152 @@ master:
     mana_max: 200
     mana: 200
     hotbar_count: 3
+
     spells:
+      # Hotbar 1
       - missile
+      - push
+      - arrow
+      - frost
+      - bubble
+      - peek
+      - torch
+      - recall
+
+      # Hotbar 2
+
+      - fling
       - blink
       - arrowrain
-      - boom
-      - familiar
-      - fling
-      - fire
-      - frost
-      - grenade
       - heal
-      - monster
+      - stream
+      - wither
+      - blob
+
+      # Hotbar 3
+
+      # Beginner
+      - blast
+      - boon
+      - cloak
+      - collapse
+      - cure
+      - fireball
+      - pull
+      - blind
+      - reflect
+      - poison
+      - fire
+
+      # Student
+      - newpage
+
+      - boom
+      - grenade
       - lightning
       - lava
-      - portal
-      - stream
       - flamethrower
-      - wither
       - mine
       - chop
       - shell
-      - tag
-      - blob
-      - disarm
       - entangle
-      - poison
-      - laser
-      - tracking
-      - rocket
-      - shrink
-      - emp
-      - blessing
+      - curse
+      - vengeance
+      - whip
+
+      # Apprentice
+      - newpage
+
       - breach
       - disintegrate
-      - force
       - hat
-      - music
       - sandblast
-      - phase
-      - grow
       - counterspell
-      - tent
-      - disc
+      - platform
       - rubberize
       - wound
       - harden
       - sponge
       - flashbang
       - gatling
+      - walls
+      - smite
+      - shuriken
+      - sticky
+      - homing
+      - lift
+      - laser
+      - wave
+      - chainlightning
+      - airscooter
+      - growth
+      - gather
 
+      # Master
+      - levitate
+      - railgun
+      - fury
+      - petrify
+      - stash
+      - shrink
+      - kill
+
+      - blessing
+      - cluster
+      - bomb
+      - invincible
+      - earthquake
+      - icbm
+      - nuke
+      - meteor
+      - pollinate
+      - torture
+      - singularity
+      - tornado
+      - tendril
+      - dragonball
+      - neutron
+      - mob
+      - sunstrike
+      - force
+
+      # Extra spells
+      - newpage
+
+      - flare
+      - stun
+      - workbench
+      - aqualung
+
+      - none
+
+      - familiar
+      - monster
+      - tracking
+      - rocket
+      - secure
+      - admission
+      - tag
+      - phase
+      - grow
+
+      - none
+
+      - emp
+      - music
+      - disarm
+      - ghast
+      - glide
+      - horse
+      - critical
+      - decoy
+      - soulburn
+
+      - none
+
+      - mount
+      - cage
+      - silence
+      - tent
+      - tame
+      - holylight

@@ -12,33 +12,72 @@ student:
     mana_max: 100
     mana: 100
     spells:
+      # Hotbar 1
       - missile
+      - push
+      - arrow
+      - frost
+      - bubble
+      - peek
+      - torch
+      - recall
+
+      # Hotbar 2
+
+      - fling
       - blink
       - arrowrain
-      - boom
-      - familiar
-      - fling
-      - fire
-      - frost
-      - grenade
       - heal
-      - monster
+      - stream
+      - wither
+      - blob
+
+      # Beginner
+      - blast
+      - boon
+      - cloak
+      - collapse
+      - cure
+      - fireball
+      - pull
+      - blind
+      - reflect
+      - poison
+      - fire
+
+      # Student
+      - newpage
+
+      - boom
+      - grenade
       - lightning
       - lava
-      - portal
-      - stream
       - flamethrower
-      - wither
       - mine
       - chop
       - shell
-      - tag
-      - blob
-      - disarm
       - entangle
-      - poison
-      - laser
+      - curse
+      - vengeance
+      - whip
+
+      # Extra spells
+      - newpage
+
+      - flare
+      - stun
+      - workbench
+      - aqualung
+
+      - none
+
+      - familiar
+      - monster
       - tracking
       - rocket
-      - shrink
+      - secure
+      - admission
+      - tag
+      - phase
+      - grow
 

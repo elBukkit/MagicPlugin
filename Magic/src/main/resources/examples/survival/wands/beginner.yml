@@ -19,11 +19,33 @@ beginner:
   mana: 50
   earn_multiplier: 0
   spells:
+    # Hotbar
     - missile
     - push
     - arrow
-    - boom
-    - familiar
-    - fire
     - frost
-    - heal
+    - bubble
+    - peek
+    - torch
+    - recall
+
+    # Inventory
+    - blast
+    - boon
+    - cloak
+    - collapse
+    - cure
+    - fireball
+    - pull
+    - blind
+    - reflect
+    - poison
+    - fire
+
+    # Extra spells
+    - newpage
+
+    - flare
+    - stun
+    - workbench
+    - aqualung

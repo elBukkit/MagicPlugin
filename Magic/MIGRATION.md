@@ -1,5 +1,10 @@
 # Migration Notes
 
+# 9.4
+
+ - The `beginner` wand has been made into a demo wand and no longer turns into `wand`
+   If you have been using this wand as a `welcome_wand` or in a kit, please change it to `wand`
+
 # 9.3
 
  - Removed `sp_display` global config option. 

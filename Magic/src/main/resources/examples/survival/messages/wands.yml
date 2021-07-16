@@ -9,17 +9,17 @@ wands:
         name: Starter Wand
         description: A Wand with Limited Potential
     beginner:
-        name: (Outdated) Beginner Wand
-        description: "Don't use this anymore... Use 'wand' instead."
+        name: Beginner Wand
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the beginner spells."
     master:
-        name: Master Wand
-        description: "For demonstration purposes"
+        name: Wizard Wand
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Wizard spells."
     student:
         name: Student Wand
-        description: "For demonstration purposes"
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Student spells."
     apprentice:
         name: Apprentice Wand
-        description: "For demonstration purposes"
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Apprentice spells."
     rage:
         name: Rage Sword
         description: Gathers energy when hitting an enemy

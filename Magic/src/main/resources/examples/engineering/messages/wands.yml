@@ -4,13 +4,13 @@ wands:
         description: NathanWolf's Staff
     engineer:
         name: Engineering Wand
-        description: "$path &rMagic Wand"
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Engineering spells.\nHowever, it does not contain most of the normal survival spells from Wizard and below."
     architect:
         name: Architect Wand
-        description: "$path &rMagic Wand"
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Architect spells.\nHowever, it does not contain most of the normal survival spells from Wizard and below."
     conduit:
         name: Conduit Wand
-        description: "$path &rMagic Wand"
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Conduit spells.\nHowever, it does not contain most of the normal survival spells from Wizard and below."
     architectstaff:
         name: The Architect
         description: With Great Power Comes Great Responsibility
