@@ -39,4 +39,4 @@ navigator:
   enabled: true
 
 ticket:
-  enabled: false
+  worlds: world_hogwarts
