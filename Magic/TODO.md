@@ -1,8 +1,19 @@
 # TODO
 
-# Creative server
+# Demo server
 
- - Need to delay world kit processing for one tick for PWI integration
+ - Use stained glass panes and not concrete for icons
+
+ - Fix dialog text, maybe change default behavior? "you bought let's go for nothing"
+   selector vs shop default?
+   
+ - starclass needs title, center icon
+
+ - add freespshop, use everywher
+
+ - support \n in npc dialog and warp descriptions
+
+ - move warp name/descriptions for navigator into configs, pretty it up
 
 # Near-Term Hopeful List
 

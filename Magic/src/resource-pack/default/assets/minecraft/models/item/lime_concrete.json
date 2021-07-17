@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/lime_concrete",
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/icons/yes"}
+  ]
+}

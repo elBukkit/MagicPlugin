@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/red_concrete",
+
+  "overrides": [
+    {"predicate": { "custom_model_data": 18001}, "model": "item/icons/no"}
+  ]
+}

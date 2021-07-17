@@ -5,9 +5,9 @@ navigator:
       - type: placeholder
       - warp: creative
       - type: placeholder
-      - type: placeholder
+      - warp: potter
       - warp: stars
-      - type: placeholder
+      - warp: war
       - type: placeholder
       - warp: sandbox
         icon: sand

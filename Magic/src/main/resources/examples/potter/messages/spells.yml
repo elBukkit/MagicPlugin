@@ -479,4 +479,7 @@ spells:
         cost_lore: "Free!"
         confirm_title: "Get $item"
         deducted: "&d&oYou received &r&6$item"
-
+    professor:
+        name: Spell Teacher
+        no_items: You have to take your exams before you can learn more spells.
+        no_path: You have graduated already!

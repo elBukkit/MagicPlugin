@@ -1,0 +1,11 @@
+icon_yes:
+  item: lime_concrete{18001}
+
+icon_no:
+  item: red_concrete{18001}
+
+icon_placeholder:
+  item: gray_concrete{18001}
+
+icon_gray:
+  item: gray_concrete{18001}

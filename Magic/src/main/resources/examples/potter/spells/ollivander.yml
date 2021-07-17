@@ -1,5 +1,6 @@
 ollivander:
   hidden: true
+  category: npc
   inherit: buyshop
   parameters:
     put_in_hand: false

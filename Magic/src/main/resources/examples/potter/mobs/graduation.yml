@@ -1,7 +1,7 @@
-spellshop:
+professor:
   inherit: base_npc
   name: Professor
-  interact_spell: spellshop
+  interact_spell: professor
   villager_profession: librarian
   dialog:
     - Want to learn some new spells?
