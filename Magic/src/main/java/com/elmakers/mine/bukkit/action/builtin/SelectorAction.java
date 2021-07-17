@@ -239,7 +239,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         }
 
         protected void parseIcon(ConfigurationSection configuration) {
-            iconPlaceholderKey = configuration.getString("placeholder_icon");
+            iconPlaceholderKey = configuration.getString("placeholder_icon", iconPlaceholderKey);
             iconKey = configuration.getString("icon");
             iconDisabledKey = configuration.getString("icon_disabled");
         }
