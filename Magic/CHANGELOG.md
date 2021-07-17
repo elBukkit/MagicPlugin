@@ -17,6 +17,7 @@
  - Add `worlds` list to kit configs, for starter kits that only apply when joining a specific world
  - The EMP spell now triggers dispensers (1.13+)
  - Starter kits can have a `priority`, higher priority kits are given first
+ - Sparkle spell added as optional Student spell, applies a random status effect
 
 ## Changes
 

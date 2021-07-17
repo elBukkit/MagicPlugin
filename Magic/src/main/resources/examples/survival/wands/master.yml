@@ -123,6 +123,7 @@ master:
       - stun
       - workbench
       - aqualung
+      - sparkle
 
       - none
 
