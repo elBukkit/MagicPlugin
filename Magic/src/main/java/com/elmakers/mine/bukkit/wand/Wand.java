@@ -4059,6 +4059,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 updateInventory();
                 updateHotbarStatus();
                 if (inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
+                    findItem();
                     updateLore();
                 }
             }
