@@ -1,0 +1,18 @@
+freespshop:
+    inherit: buyshop
+    parameters:
+        remove_lore: true
+        apply_to_mage: true
+        free: true
+        title: "Free Spell Points!"
+        auto_close: true
+        items:
+        - icon: icon_placeholder
+        - icon: icon_placeholder
+        - icon: icon_placeholder
+        - icon: icon_placeholder
+        - item: sp:9999
+        - icon: icon_placeholder
+        - icon: icon_placeholder
+        - icon: icon_placeholder
+        - icon: icon_placeholder

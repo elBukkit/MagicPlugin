@@ -6,12 +6,22 @@ starclass:
       cast:
       - class: Selector
   parameters:
+    title: "Switch Sides"
     auto_close: true
+    placeholder_icon: icon_placeholder
     options:
-    - switch_class: jedi
-      selected: "You became $name"
-      icon: lightsaber_blue
-    - switch_class: sith
-      selected: "You gave in to the dark side"
-      icon: lightsaber_red
+      - placeholder: true
+      - placeholder: true
+      - placeholder: true
+      - placeholder: true
+      - switch_class: jedi
+        selected: "You became $name"
+        icon: lightsaber_blue
+      - switch_class: sith
+        selected: "You gave in to the dark side"
+        icon: lightsaber_red
+      - placeholder: true
+      - placeholder: true
+      - placeholder: true
+      - placeholder: true
 

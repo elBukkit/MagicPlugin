@@ -8,19 +8,20 @@ hagrid:
           - class: Selector
             auto_close: true
             title: Ready to go to Hogwarts?
+            placeholder_icon: icon_placeholder
             options:
-              - icon: icon_placeholder
-              - icon: icon_placeholder
+              - placeholder: true
+              - placeholder: true
               - icon: icon_yes
                 warp: greathall
                 name: Yes, Let's Go!
-              - icon: icon_placeholder
-              - icon: icon_placeholder
+              - placeholder: true
+              - placeholder: true
               - icon: icon_no
                 name: No, not yet
-              - icon: icon_placeholder
-              - icon: icon_placeholder
-              - icon: icon_placeholder
+              - placeholder: true
+              - placeholder: true
+              - placeholder: true
         fail:
           - class: Message
             message: Ye need te go see Ollivander!

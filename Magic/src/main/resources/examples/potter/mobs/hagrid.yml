@@ -1,7 +1,7 @@
 hagrid:
   inherit: base_npc
-  type: iron_golem
   interact_spell: hagrid
   interact_spell_source: player
+  villager_profession: mason
   dialog:
     - Allright, ye got yer wand yet?
