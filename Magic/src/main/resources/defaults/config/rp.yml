@@ -9,7 +9,7 @@ enable_resource_pack: true
 # client timing out on connect due to RP processing on potato computers.
 # This value is in milliseconds.
 # Set this to 0 to set resource packs immediately on join.
-resource_pack_delay: 200
+resource_pack_delay: 750
 
 # Delay the RP login prompt so players can see it
 resource_pack_prompt_delay: 2000
