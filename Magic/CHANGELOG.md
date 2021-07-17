@@ -16,6 +16,7 @@
  - Add `allow_all: false` Recall option, to make available options a whitelist instead of blacklist
  - Add `worlds` list to kit configs, for starter kits that only apply when joining a specific world
  - The EMP spell now triggers dispensers (1.13+)
+ - Starter kits can have a `priority`, higher priority kits are given first
 
 ## Changes
 

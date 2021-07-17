@@ -14,6 +14,7 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.kit.Kit;
@@ -24,7 +25,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class MagicKit implements Kit {
+public class MagicKit implements Kit, Comparable<MagicKit> {
     private final MagicController controller;
     private Collection<Requirement> requirements;
     private final String key;
@@ -34,6 +35,7 @@ public class MagicKit implements Kit {
     private final boolean isPartial;
     private final boolean isWelcomeWand;
     private final int cooldown;
+    private final int priority;
     private final String icon;
     private final String iconDisabled;
     private final String name;
@@ -55,6 +57,7 @@ public class MagicKit implements Kit {
         isPartial = configuration.getBoolean("partial");
         isWelcomeWand = configuration.getBoolean("welcome_wand");
         cooldown = configuration.getInt("cooldown");
+        priority = configuration.getInt("priority");
         icon = configuration.getString("icon");
         iconDisabled = configuration.getString("icon_disabled");
         requirements = ConfigurationUtils.getRequirements(configuration);
@@ -363,5 +366,10 @@ public class MagicKit implements Kit {
 
     public boolean isWorldSpecific() {
         return worlds != null;
+    }
+
+    @Override
+    public int compareTo(@NotNull MagicKit o) {
+        return Integer.compare(o.priority, priority);
     }
 }

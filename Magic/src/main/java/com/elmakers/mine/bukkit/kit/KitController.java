@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.kit;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +46,7 @@ public class KitController implements Listener {
                 joinKits.add(kit);
             }
         }
+        Collections.sort(joinKits);
     }
 
     public int getCount() {
