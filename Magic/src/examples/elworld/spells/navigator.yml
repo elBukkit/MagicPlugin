@@ -1,15 +1,16 @@
 navigator:
-  options:
-    - type: placeholder
-    - warp: sandbox
-      icon: sand
-      name: Sandbox Server
-      description: A server where you can create your own spells using a web editor
-      server: sandbox
-    - type: placeholder
-    - type: placeholder
-    - warp: survival
-    - type: placeholder
-    - type: placeholder
-    - warp: creative
-    - type: placeholder
+  parameters:
+    options:
+      - warp: survival
+      - type: placeholder
+      - warp: creative
+      - type: placeholder
+      - type: placeholder
+      - warp: stars
+      - type: placeholder
+      - type: placeholder
+      - warp: sandbox
+        icon: sand
+        name: Sandbox Server
+        description: A server where you can create your own spells using a web editor
+        server: sandbox

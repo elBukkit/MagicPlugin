@@ -74,6 +74,8 @@
 
 ## Suggestions
 
+ - Crackshot support, apparently it sets health directly or otherwise bypasses damage events?
+   It has an API, but is closed source with no Maven
  - Map brushes should fill transparent bits with air if the erase modifiers is active
  - Modifiers from wands keep track of their wand item to use in CastContext for triggered spells
  - Custom death message support?
