@@ -27,12 +27,15 @@ public class MageConversation {
         if (target == null || nextLine >= dialog.size()) {
             return true;
         }
-        String line = dialog.get(nextLine);
-        if (!line.isEmpty()) {
-            String message = formatString.replace("$line", line);
-            message = message.replace("$speaker", speaker.getDisplayName())
-                    .replace("$target", target.getDisplayName());
-            target.sendMessage(CompatibilityLib.getCompatibilityUtils().translateColors(message));
+        String configuredLines = dialog.get(nextLine);
+        if (!configuredLines.isEmpty()) {
+            String[] lines = configuredLines.split("\n");
+            for (String line : lines) {
+                String message = formatString.replace("$line", line);
+                message = message.replace("$speaker", speaker.getDisplayName())
+                        .replace("$target", target.getDisplayName());
+                target.sendMessage(CompatibilityLib.getCompatibilityUtils().translateColors(message));
+            }
         }
         nextLine++;
         return nextLine >= dialog.size();
