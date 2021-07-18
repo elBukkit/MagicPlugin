@@ -968,7 +968,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             if (meta != null) {
                 String name = waypoint.name;
                 if (!isValid || isUnavailable || isPlaceholder) {
-                    name = context.getMessage("unavailable_name").replace("$name", name);
+                    name = context.getMessage("unavailable_name", " ").replace("$name", name);
                 }
                 meta.setDisplayName(name);
                 if (waypoint.description != null && waypoint.description.length() > 0)
