@@ -5,7 +5,6 @@
 # Near-Term Hopeful List
 
  - Re-work charges functionality, add recharge_rate or something, cooldowns are separate and still apply
- - `/mmap slice` command for easy multi-map banners
  - Add clone/replicate source selected effects (cube)  
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Ability to open an editor session on behalf of another player

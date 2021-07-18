@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -93,7 +94,8 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                         if (map == null && mapId != null) {
                             map = get(world, mapId, mapConfig.getString("url"), mapConfig.getString("name"),
                                     mapConfig.getInt("x"), mapConfig.getInt("y"),
-                                    xOverlay, yOverlay, mapConfig.getInt("width"), mapConfig.getInt("height"), priority, playerName);
+                                    xOverlay, yOverlay, mapConfig.getInt("width"), mapConfig.getInt("height"),
+                                    priority, playerName, mapConfig.getBoolean("slice"));
                         }
 
                         if (map == null) {
@@ -224,6 +226,12 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         return map.getMapView();
     }
 
+    @Nullable
+    public MapView getURL(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName, boolean isSlice) {
+        URLMap map = get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName, isSlice);
+        return map.getMapView();
+    }
+
     /**
      * A helper function to get an ItemStack from a MapView.
      *
@@ -252,6 +260,12 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
             {
                 ItemMeta meta = newMapItem.getItemMeta();
                 meta.setDisplayName(mapName);
+                if (loadedMap.isSlice) {
+                    String slice = "Slice " + loadedMap.x + " " + loadedMap.y;
+                    List<String> lore = new ArrayList<>();
+                    lore.add(slice);
+                    meta.setLore(lore);
+                }
                 newMapItem.setItemMeta(meta);
             }
         }
@@ -287,6 +301,22 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     public ItemStack getURLItem(String world, String url, String name, int x, int y, int width, int height, Integer priority) {
         MapView mapView = getURL(world, url, name, x, y, null, null, width, height, priority);
         return getMapItem(name, mapView);
+    }
+
+    @Override
+    @Nonnull
+    public List<ItemStack> getURLSlices(String world, String url, String name, int xSlices, int ySlices, Integer priority) {
+        List<ItemStack> items = new ArrayList<>();
+        for (int x = 0; x < xSlices; x++) {
+            for (int y = 0; y < ySlices; y++) {
+                MapView mapView = getURL(world, url, name, x, y, null, null, xSlices, ySlices, priority, null, true);
+                ItemStack item = getMapItem(name, mapView);
+                if (item != null) {
+                    items.add(item);
+                }
+            }
+        }
+        return items;
     }
 
     @Override
@@ -351,7 +381,11 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     public URLMap get(String world, int mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
-        String key = URLMap.getKey(world, url, playerName, x, y, width, height);
+        return get(world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName, false);
+    }
+
+    public URLMap get(String world, int mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName, boolean isSlice) {
+        String key = URLMap.getKey(world, url, playerName, x, y, width, height, isSlice);
         URLMap map = idMap.get(mapId);
         if (map != null) {
             if (!map.getKey().equals(key)) {
@@ -367,7 +401,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
             return map;
         }
 
-        map = new URLMap(this, world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName);
+        map = new URLMap(this, world, mapId, url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName, isSlice);
         keyMap.put(key, map);
         idMap.put(mapId, map);
         if (playerName != null) {
@@ -387,13 +421,18 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     private URLMap get(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
+        return get(worldName, url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName, false);
+    }
+
+    @Nullable
+    @SuppressWarnings("deprecation")
+    private URLMap get(String worldName, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName, boolean isSlice) {
         URLMap existing = null;
         if (url == null) {
             existing = playerMap.get(playerName);
         } else {
-            String key = URLMap.getKey(worldName, url, playerName, x, y, width, height);
+            String key = URLMap.getKey(worldName, url, playerName, x, y, width, height, isSlice);
             existing = keyMap.get(key);
         }
         if (existing != null) {
@@ -413,7 +452,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
             }
             return null;
         }
-        URLMap newMap = get(worldName, mapView.getId(), url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName);
+        URLMap newMap = get(worldName, mapView.getId(), url, name, x, y, xOverlay, yOverlay, width, height, priority, playerName, isSlice);
         save();
         return newMap;
     }

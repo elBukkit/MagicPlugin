@@ -32,6 +32,7 @@ class SaveMapsRunnable implements Runnable {
                 mapConfig.set("enabled", map.isEnabled());
                 mapConfig.set("name", map.name);
                 mapConfig.set("player", map.playerName);
+                mapConfig.set("slice", map.isSlice);
                 if (map.priority != null) {
                     mapConfig.set("priority", map.priority);
                 }

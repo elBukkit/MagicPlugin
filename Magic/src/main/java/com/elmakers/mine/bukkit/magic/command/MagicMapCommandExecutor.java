@@ -46,7 +46,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
 
         if (args.length == 0)
         {
-            sender.sendMessage("Usage: mmap [list|give|load|import|player|fix|restore|unnamed|name]");
+            sender.sendMessage("Usage: mmap [list|give|load|slice|import|player|fix|restore|unnamed|name]");
             return true;
         }
 
@@ -267,6 +267,36 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             }
             onMapLoad(sender, world, args[1], mapName, width, height, x, y, priority);
         }
+        else if (subCommand.equalsIgnoreCase("slice"))
+        {
+            if (args.length == 1) {
+                sender.sendMessage("Usage: mmap slice <file/url> [name] [horizontal slices] [vertical slices]");
+                return true;
+            }
+            int xSlices = 0;
+            int ySlices = 0;
+            Integer priority = null;
+            String mapName = null;
+
+            if (args.length > 2) {
+                mapName = args[2];
+            }
+            if (args.length > 3) {
+                try {
+                    xSlices = Integer.parseInt(args[3]);
+                } catch (Exception ex) {
+                    sender.sendMessage("Invalid horizontal slices: " + args[3]);
+                }
+            }
+            if (args.length > 4) {
+                try {
+                    ySlices = Integer.parseInt(args[4]);
+                } catch (Exception ex) {
+                    sender.sendMessage("Invalid vertical slices: " + args[4]);
+                }
+            }
+            onMapSlice(sender, world, args[1], mapName, xSlices, ySlices, priority);
+        }
         else if (subCommand.equalsIgnoreCase("import"))
         {
             String path = "plugins/Pixelator/renderers.cache";
@@ -299,6 +329,34 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             ItemStack mapItem = maps.getMapItem((short)mapId);
             api.giveItemToPlayer((Player)sender, mapItem);
         }
+    }
+
+    protected void onMapSlice(CommandSender sender, World world, String url, String mapName, int xSlices, int ySlices, Integer priority)
+    {
+        if (xSlices * ySlices > 100) {
+            sender.sendMessage(ChatColor.RED + "Can't make more than 100 maps at a time, seems like a bad idea");
+            return;
+        }
+        if (xSlices < 1 || ySlices < 1) {
+            sender.sendMessage(ChatColor.RED + "Invalid x or y slices");
+            return;
+        }
+        MapController maps = api.getController().getMaps();
+        List<ItemStack> items = maps.getURLSlices(world.getName(), url, mapName, xSlices, ySlices, priority);
+        if (items.isEmpty()) {
+            sender.sendMessage(ChatColor.RED + "Failed to slice map: " + url);
+            return;
+        }
+        List<String> ids = new ArrayList<>();
+        for (ItemStack item : items) {
+            int mapId = CompatibilityLib.getInventoryUtils().getMapId(item);
+            ids.add(Integer.toString(mapId));
+            if (sender instanceof Player) {
+                ItemStack mapItem = maps.getMapItem((short)mapId);
+                api.giveItemToPlayer((Player)sender, mapItem);
+            }
+        }
+        sender.sendMessage("Loaded map ids " + StringUtils.join(ids, ","));
     }
 
     protected void onMapPlayer(CommandSender sender, World world, String playerName)
@@ -573,14 +631,49 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             options.add("import");
             options.add("list");
             options.add("load");
+            options.add("slice");
             options.add("remove");
             options.add("player");
             options.add("fix");
             options.add("restore");
             options.add("name");
             options.add("unnamed");
-        } else if (args.length == 2 && args[0].equals("give")) {
-            options.addAll(api.getPlayerNames());
+        } else if (args.length == 2) {
+            if (args[0].equals("give")) {
+                options.addAll(api.getPlayerNames());
+            } else if (args[0].equals("slice") || args[1].equals("load")) {
+                options.add("http");
+            }
+        } else if (args.length == 3) {
+            if (args[0].equals("slice") || args[1].equals("load")) {
+                options.add("Map_Name");
+            }
+        } else if (args.length == 4) {
+            if (args[0].equals("slice")) {
+                options.add("1");
+                options.add("2");
+                options.add("3");
+                options.add("4");
+                options.add("5");
+            } else if (args[0].equals("load")) {
+                options.add("128");
+                options.add("256");
+                options.add("512");
+                options.add("1024");
+            }
+        } else if (args.length == 5) {
+            if (args[0].equals("slice")) {
+                options.add("1");
+                options.add("2");
+                options.add("3");
+                options.add("4");
+                options.add("5");
+            } else if (args[0].equals("load")) {
+                options.add("128");
+                options.add("256");
+                options.add("512");
+                options.add("1024");
+            }
         }
         return options;
     }

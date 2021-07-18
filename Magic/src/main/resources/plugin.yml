@@ -816,6 +816,7 @@ commands:
         Use /help mmap [subcommand] for more information
         /mmap load       Load a new image map
         /mmap player     Load a map from a player's skin
+        /mmap slice      Load multiple maps from one image
         /mmap list       List all loaded image maps
         /mmap give       Give a player an image map
         /mmap import     Import image maps from Pixelator
@@ -831,6 +832,12 @@ commands:
         /mmap load http://i.imgur.com/YsbKHg1.gif Magic
         /mmap load plugins/Pixelator/MyImage.png
         /mmap load http://i.imgur.com/EufZP2A.gif Cropped 128 128
+  "mmap slice":
+    description: Load multiple maps from one image
+    permission: Magic.commands.mmap.slice
+    usage: |
+      /mmap slice [url] <name> <horizontal slices> <vertical slices>
+      /mmap slice https://i.imgur.com/nuRGWw7.png Magic 2 1
   "mmap player":
     description: Load a new map from a player skil
     permission: Magic.commands.mmap.player

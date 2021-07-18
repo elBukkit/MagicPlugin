@@ -58,6 +58,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     protected int y;
     protected int width;
     protected int height;
+    protected boolean isSlice;
     protected Integer xOverlay;
     protected Integer yOverlay;
     protected String name;
@@ -128,16 +129,29 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
                 }
                 for (BufferedImage rawImage : images)
                 {
-                    int imageWidth = width <= 0 ? rawImage.getWidth() + width : width;
-                    int imageHeight = height <= 0 ? rawImage.getHeight() + height : height;
+                    int imageWidth;
+                    int imageHeight;
+                    int imageX;
+                    int imageY;
+                    if (isSlice && width > 0 && height > 0) {
+                        imageWidth = rawImage.getWidth() / width;
+                        imageHeight = rawImage.getHeight() / height;
+                        imageX = x * imageWidth;
+                        imageY = y * imageHeight;
+                    } else {
+                        imageWidth = width <= 0 ? rawImage.getWidth() + width : width;
+                        imageHeight = height <= 0 ? rawImage.getHeight() + height : height;
+                        imageX = x;
+                        imageY = y;
+                    }
                     if (imageWidth > rawImage.getWidth()) {
                         imageWidth = rawImage.getWidth();
                     }
                     if (imageHeight > rawImage.getHeight()) {
                         imageHeight = rawImage.getHeight();
                     }
-                    int imageX = x + rawImage.getMinX();
-                    int imageY = y + rawImage.getMinY();
+                    imageX += rawImage.getMinX();
+                    imageY += rawImage.getMinY();
 
                     BufferedImage croppedImage = rawImage.getSubimage(imageX, imageY, imageWidth, imageHeight);
                     BufferedImage image = new BufferedImage(128, 128, BufferedImage.TYPE_INT_ARGB);
@@ -160,7 +174,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         }
     }
 
-    protected URLMap(MapController controller, String world, int mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName) {
+    protected URLMap(MapController controller, String world, int mapId, String url, String name, int x, int y, Integer xOverlay, Integer yOverlay, int width, int height, Integer priority, String playerName, boolean isSlice) {
         this.controller = controller;
         this.world = world;
         this.url = url;
@@ -174,6 +188,7 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
         this.id = mapId;
         this.priority = priority;
         this.playerName = playerName;
+        this.isSlice = isSlice;
     }
 
     // Render method override
@@ -310,14 +325,18 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     }
 
     protected String getKey() {
-        return getKey(world, url, playerName, x, y, width, height);
+        return getKey(world, url, playerName, x, y, width, height, isSlice);
     }
 
-    protected static String getKey(String world, String url, String playerName, int x, int y, int width, int height) {
+    protected static String getKey(String world, String url, String playerName, int x, int y, int width, int height, boolean isSlice) {
         if (url == null) {
             url = playerName;
         }
-        return world + "|" + x + "," + y + "|" + width + "," + height + "|" + url;
+        String key = world + "|" + x + "," + y + "|" + width + "," + height + "|" + url;
+        if (isSlice) {
+            key = "slice:" + key;
+        }
+        return key;
     }
 
     protected void resendTo(String playerName) {

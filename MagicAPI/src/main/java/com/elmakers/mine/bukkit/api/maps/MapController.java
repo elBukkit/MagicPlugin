@@ -10,6 +10,7 @@ public interface MapController {
     URLMap getMap(int id);
     void loadMap(String world, int id, String url, String name, int x, int y, int width, int height, Integer priority);
     ItemStack getURLItem(String world, String url, String name, int x, int y, int width, int height, Integer priority);
+    List<ItemStack> getURLSlices(String world, String url, String name, int xSlices, int ySlices, Integer priority);
     void forceReloadPlayerPortrait(String worldName, String playerName);
     @Nullable
     ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoName);
