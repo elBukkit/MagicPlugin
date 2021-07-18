@@ -250,7 +250,12 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     }
 
     @Override
-    public ItemStack getMapItem(int id)
+    public ItemStack getMapItem(int id) {
+        return getMapItem(id, true);
+    }
+
+    @Override
+    public ItemStack getMapItem(int id, boolean named)
     {
         ItemStack newMapItem = createMap(id);
         URLMap loadedMap = idMap.get(id);
@@ -260,7 +265,9 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
             if (mapName != null)
             {
                 ItemMeta meta = newMapItem.getItemMeta();
-                meta.setDisplayName(mapName);
+                if (named) {
+                    meta.setDisplayName(mapName);
+                }
                 if (loadedMap.isSlice) {
                     String slice = ChatColor.YELLOW + "Slice " + ChatColor.WHITE + (loadedMap.x + 1) + " " + (loadedMap.y + 1);
                     List<String> lore = new ArrayList<>();

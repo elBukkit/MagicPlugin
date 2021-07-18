@@ -15,6 +15,7 @@ public interface MapController {
     @Nullable
     ItemStack getPlayerPortrait(String worldName, String playerName, Integer priority, String photoName);
     ItemStack getMapItem(int id);
+    ItemStack getMapItem(int id, boolean named);
     boolean hasMap(int id);
     boolean remove(int id);
     void save();

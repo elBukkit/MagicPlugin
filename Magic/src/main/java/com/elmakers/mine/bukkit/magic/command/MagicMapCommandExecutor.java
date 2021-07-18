@@ -352,7 +352,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             int mapId = CompatibilityLib.getInventoryUtils().getMapId(item);
             ids.add(Integer.toString(mapId));
             if (sender instanceof Player) {
-                ItemStack mapItem = maps.getMapItem((short)mapId);
+                ItemStack mapItem = maps.getMapItem((short)mapId, false);
                 api.giveItemToPlayer((Player)sender, mapItem);
             }
         }
