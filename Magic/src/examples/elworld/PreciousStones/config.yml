@@ -72,7 +72,7 @@ force-field-blocks:
   cuboid: true
   mask-on-disabled: 80
   limits:
-  - 6
+  - 1
 - title: Home Protection
   meta-name: '&3Home Protection'
   meta-autoset: false

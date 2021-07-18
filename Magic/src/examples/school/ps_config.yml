@@ -216,7 +216,7 @@ force-field-blocks:
     cuboid: true
     mask-on-disabled: 80
     limits:
-      - 6
+      - 2
 bypass-blocks: []
 unprotectable-blocks: []
 hiding-mask-blocks:

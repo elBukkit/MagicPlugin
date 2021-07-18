@@ -29,6 +29,7 @@
 
 # Bugs
 
+ - Buy/sell shops get inaccurate if they dont auto-close, need to refresh lore after each purchase
  - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Do automata drop loot when expiring due to chunk load?
@@ -72,6 +73,7 @@
 
 ## Suggestions
 
+ - CheckMount action, klein_76 would like to detect when players are sitting down.. triggers?
  - Crackshot support, apparently it sets health directly or otherwise bypasses damage events?
    It has an API, but is closed source with no Maven
  - Map brushes should fill transparent bits with air if the erase modifiers is active
