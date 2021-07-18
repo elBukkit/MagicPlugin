@@ -188,7 +188,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
         else if (subCommand.equalsIgnoreCase("name"))
         {
-            if (args.length <= 1) {
+            if (args.length <= 2) {
                 sender.sendMessage("Usage: mmap name <name>");
             }
             String mapName = args[1];
