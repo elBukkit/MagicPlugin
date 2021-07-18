@@ -30,6 +30,7 @@
  - Wands now show instructions in lore while the wand inventory is open. This causes wands to "bounce" when
    opening them. If you don't like that effect, set `wand.inventory_open` to "" in messages
  - Clicks on wands in the spell inventory behavior changed slightly to better support creative mode  
+ - Shop and Selector default messages are now different, base selector messages may need localization
 
 # 9.3
 

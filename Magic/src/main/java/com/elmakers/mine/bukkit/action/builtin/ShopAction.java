@@ -277,4 +277,9 @@ public class ShopAction extends SelectorAction {
             loadOptions(itemConfigs);
         }
     }
+
+    @Override
+    protected String getDefaultMessageSection() {
+        return "shops";
+    }
 }

@@ -17,7 +17,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
-import org.bukkit.WorldCreator;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Container;
@@ -775,7 +774,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             placeholder = true;
             String placeholderKey = iconKey == null || iconKey.isEmpty() ? iconPlaceholderKey : iconKey;
             this.icon = parseItem(placeholderKey);
-            if (icon == null) {
+            if (CompatibilityLib.getItemUtils().isEmpty(this.icon)) {
                 this.icon = new ItemStack(Material.AIR);
             } else {
                 icon = CompatibilityLib.getItemUtils().makeReal(icon);
@@ -1512,7 +1511,16 @@ public class SelectorAction extends CompoundAction implements GUIAction
     }
 
     protected String getDefaultMessage(CastContext context, String key) {
-        return context.getController().getMessages().get("shops." + key);
+        String messageSection = getDefaultMessageSection();
+        String defaultMessage =  context.getController().getMessages().getIfSet(messageSection + "." + key);
+        if (defaultMessage == null && !messageSection.equals("selector")) {
+            defaultMessage = context.getController().getMessages().get("selector." + key);
+        }
+        return defaultMessage;
+    }
+
+    protected String getDefaultMessageSection() {
+        return "selector";
     }
 
     @Override
