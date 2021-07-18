@@ -16,7 +16,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.WeakHashMap;
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
@@ -40,6 +42,7 @@ import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 
 public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.maps.URLMap {
+    private static final Map<String, Collection<BufferedImage>> imageCache = new WeakHashMap<>();
 
     // Private and Protected Members
     private final MapController controller;
@@ -68,62 +71,73 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     protected Set<String> sentToPlayers = new HashSet<>();
     protected Integer priority;
 
+    private Collection<BufferedImage> getImages(String url, MapController controller) throws IOException {
+        final Plugin plugin = controller.getPlugin();
+        final File cacheFolder = controller.getCacheFolder();
+        Collection<BufferedImage> images = null;
+        if (!url.startsWith("http"))
+        {
+            File fileName;
+            if (!url.startsWith("/")) {
+                File baseFolder = plugin.getDataFolder().getParentFile().getParentFile();
+                fileName = new File(baseFolder, url);
+            } else {
+                fileName = new File(url);
+            }
+            controller.info("Loading map file: " + fileName.getName());
+            images = loadImages(ImageIO.createImageInputStream(fileName));
+        }
+        else
+        {
+            String cacheFileName = URLEncoder.encode(url, "UTF-8");
+            File cacheFile = cacheFolder != null ? new File(cacheFolder, cacheFileName) : null;
+            if (cacheFile != null) {
+                if (cacheFile.exists()) {
+                    controller.info("Loading from cache: " + cacheFile.getName());
+                    images = loadImages(ImageIO.createImageInputStream(cacheFile));
+                } else {
+                    controller.info("Loading " + url);
+                    URL imageUrl = new URL(url);
+                    HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
+                    conn.setConnectTimeout(30000);
+                    conn.setReadTimeout(30000);
+                    conn.setInstanceFollowRedirects(true);
+                    try (InputStream in = conn.getInputStream();
+                         OutputStream out = new FileOutputStream(cacheFile)) {
+                        byte[] buffer = new byte[10 * 1024];
+                        int len;
+
+                        while ((len = in.read(buffer)) != -1) {
+                            out.write(buffer, 0, len);
+                        }
+                    }
+
+                    images = loadImages(ImageIO.createImageInputStream(cacheFile));
+                }
+            } else {
+                controller.info("Loading " + url);
+                URL imageUrl = new URL(url);
+                images = loadImages(ImageIO.createImageInputStream(imageUrl));
+            }
+        }
+        return images;
+    }
+
     private class GetImageTask implements Runnable {
         @Override
         public void run() {
             try {
-                final Plugin plugin = controller.getPlugin();
-                final File cacheFolder = controller.getCacheFolder();
                 animated = url.endsWith(".gif");
-                Collection<BufferedImage> images = null;
-                if (!url.startsWith("http"))
-                {
-                    File fileName;
-                    if (!url.startsWith("/")) {
-                        File baseFolder = plugin.getDataFolder().getParentFile().getParentFile();
-                        fileName = new File(baseFolder, url);
-                    } else {
-                        fileName = new File(url);
-                    }
-                    controller.info("Loading map file: " + fileName.getName());
-                    images = loadImages(ImageIO.createImageInputStream(fileName));
-                }
-                else
-                {
-                    String cacheFileName = URLEncoder.encode(url, "UTF-8");
-                    File cacheFile = cacheFolder != null ? new File(cacheFolder, cacheFileName) : null;
-                    if (cacheFile != null) {
-                        if (cacheFile.exists()) {
-                            controller.info("Loading from cache: " + cacheFile.getName());
-                            images = loadImages(ImageIO.createImageInputStream(cacheFile));
-                        } else {
-                            controller.info("Loading " + url);
-                            URL imageUrl = new URL(url);
-                            HttpURLConnection conn = (HttpURLConnection)imageUrl.openConnection();
-                            conn.setConnectTimeout(30000);
-                            conn.setReadTimeout(30000);
-                            conn.setInstanceFollowRedirects(true);
-                            try (InputStream in = conn.getInputStream();
-                                    OutputStream out = new FileOutputStream(cacheFile)) {
-                                byte[] buffer = new byte[10 * 1024];
-                                int len;
-
-                                while ((len = in.read(buffer)) != -1) {
-                                    out.write(buffer, 0, len);
-                                }
-                            }
-
-                            images = loadImages(ImageIO.createImageInputStream(cacheFile));
-                        }
-                    } else {
-                        controller.info("Loading " + url);
-                        URL imageUrl = new URL(url);
-                        images = loadImages(ImageIO.createImageInputStream(imageUrl));
+                Collection<BufferedImage> images;
+                synchronized (imageCache) {
+                    images = imageCache.get(url);
+                    if (images == null) {
+                        images = getImages(url, controller);
+                        imageCache.put(url, images);
                     }
                 }
 
-                if (images.size() == 0)
-                {
+                if (images.size() == 0) {
                     enabled = false;
                     controller.warning("Failed to load map " + url);
                 }
