@@ -9,6 +9,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -261,7 +262,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
                 ItemMeta meta = newMapItem.getItemMeta();
                 meta.setDisplayName(mapName);
                 if (loadedMap.isSlice) {
-                    String slice = "Slice " + loadedMap.x + " " + loadedMap.y;
+                    String slice = ChatColor.YELLOW + "Slice " + ChatColor.WHITE + (loadedMap.x + 1) + " " + (loadedMap.y + 1);
                     List<String> lore = new ArrayList<>();
                     lore.add(slice);
                     meta.setLore(lore);

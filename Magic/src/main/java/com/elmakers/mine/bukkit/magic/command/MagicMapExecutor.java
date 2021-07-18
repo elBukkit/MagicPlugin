@@ -42,7 +42,7 @@ public abstract class MagicMapExecutor extends MagicTabExecutor {
                 name = ChatColor.AQUA + "" + mapId + ChatColor.WHITE + ": "
                         + name + " => " + ChatColor.GRAY + map.getURL();
                 if (map.isSlice()) {
-                    name = name + ChatColor.BLUE + " Slice: " + ChatColor.WHITE + map.getX() + " " + map.getY();
+                    name = name + ChatColor.BLUE + " Slice: " + ChatColor.WHITE + (map.getX() + 1) + " " + (map.getY() + 1);
                 }
                 sender.sendMessage(name);
                 if (shown > 100) {
