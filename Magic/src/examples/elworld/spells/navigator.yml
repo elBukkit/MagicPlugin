@@ -1,16 +1,64 @@
 navigator:
   parameters:
+    placeholder_icon: air
     options:
       - warp: survival
+        name: "&l&n&5Survival"
+        icon: stick{CustomModelData:18001}
+        description: |-
+          &fThe default example
+          &fUse &7/mconfig example set none&f to turn it off
+
+          &bThis is a drop-in survival add-on, where players can craft &6wands &b and other items, learn &6spells and eventually become a master wizard
+
+          &3This demo will quickly show you how players will interact with the plugin if you do no configuration at all
       - type: placeholder
       - warp: creative
+        name: "&l&n&5Creative"
+        icon: blaze_rod{CustomModelData:18006}
+        description: |-
+          &fA creative-mode world where you can try out example wands freely
+          &bThere are several &6demo wands &bavailable, each representing one of the &6ranks &bthat survival players can get to
+
+          &bThis demo also has the &6engineering &bconfiguration enabled, with demo wands for engineering ranks
+          &bYou are free to try out the engineering, architect and conduit magic here as well
+
+          &fUse &7/mconfig example add engineering&f to enable the engineering progression on your server
+          &bPlayers are able to progress to the &6Engineer&b rank after finishing the &6Wizard &brank
       - type: placeholder
       - warp: potter
+        icon: acacia_sapling{CustomModelData:18001}
+        name: "&l&n&5Diagon Alley"
+        description: |-
+          &fA &6Harry Potter &fthemed example, mostly renames the builtin survival spells.
+          &fUse &7/mconfig example set potter&f to switch your server to the Harry Potter theme
+
+          &bPlayers journey to &6Diagon Alley &bto get a &6wand &ffrom &6Ollivander
+
+          &bProgression is slightly different, using an NPC-based setup mimicing classes and exams
       - warp: stars
+        icon: shield{CustomModelData:18003}
+        name: "&l&n&5Millenium Falcon"
+        description: |-
+          &fA &6Star Wars &fthemed example with a very basic set of &6Force Powers
+          &fUse &7/mconfig example set stars&f to switch your server to the Star Wars theme
+
+          &bPlayers choose between &aJedi &bor &cSith
+
+          &bThere are &6Lightsabers&b and &6Blasters &bto wield, and a basic progression of &6Force Powers &bto learn
       - warp: war
+        name: "&l&n&5Greenfield"
+        icon: diamond_pickaxe:4
+        description: |-
+          &fA &6GTA or CS &fthemed example with &6guns &fand &6vehicldes
+          &fUse &7/mconfig example set war&f to switch your server to the War theme
       - type: placeholder
       - warp: sandbox
         icon: sand
-        name: Sandbox Server
-        description: A server where you can create your own spells using a web editor
+        name: "&l&n&5Sandbox Server"
         server: sandbox
+        description: |-
+          &fA server where you can create your own spells using a web editor
+          &bThis is the same web editor you can get on your own server with &7/meditor
+          &fGo to &7https://sandbox.elmakers.com
+          &f to start creating your own spells

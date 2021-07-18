@@ -2,11 +2,6 @@
 
 # Demo server
 
- - Fix dialog text, maybe change default behavior? "you bought let's go for nothing"
-   selector vs shop default?
-
- - move warp name/descriptions for navigator into configs, pretty it up
-
 # Near-Term Hopeful List
 
  - Re-work charges functionality, add recharge_rate or something, cooldowns are separate and still apply
