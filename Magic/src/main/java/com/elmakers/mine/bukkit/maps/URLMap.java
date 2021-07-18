@@ -521,4 +521,19 @@ public class URLMap extends MapRenderer implements com.elmakers.mine.bukkit.api.
     public void setPriority(Integer priority) {
         this.priority = priority;
     }
+
+    @Override
+    public boolean isSlice() {
+        return isSlice;
+    }
+
+    @Override
+    public int getX() {
+        return x;
+    }
+
+    @Override
+    public int getY() {
+        return y;
+    }
 }

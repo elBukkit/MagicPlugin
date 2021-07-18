@@ -10,4 +10,7 @@ public interface URLMap {
     boolean matches(String keyword);
     boolean isEnabled();
     boolean fix(World world, int maxIds);
+    int getX();
+    int getY();
+    boolean isSlice();
 }
