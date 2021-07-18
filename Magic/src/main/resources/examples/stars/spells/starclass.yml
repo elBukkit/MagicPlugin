@@ -8,7 +8,7 @@ starclass:
   parameters:
     title: "Switch Sides"
     auto_close: true
-    placeholder_icon: icon_placeholder
+    placeholder_icon: air
     options:
       - placeholder: true
       - placeholder: true

@@ -2,6 +2,10 @@ navigator:
   parameters:
     placeholder_icon: air
     options:
+      - type: placeholder
+      - type: placeholder
+      - type: placeholder
+
       - warp: survival
         name: "&l&n&5Survival"
         icon: stick{CustomModelData:18001}
@@ -12,7 +16,9 @@ navigator:
           &bThis is a drop-in survival add-on, where players can craft &6wands &b and other items, learn &6spells and eventually become a master wizard
 
           &3This demo will quickly show you how players will interact with the plugin if you do no configuration at all
+
       - type: placeholder
+
       - warp: creative
         name: "&l&n&5Creative"
         icon: blaze_rod{CustomModelData:18006}
@@ -25,6 +31,12 @@ navigator:
 
           &fUse &7/mconfig example add engineering&f to enable the engineering progression on your server
           &bPlayers are able to progress to the &6Engineer&b rank after finishing the &6Wizard &brank
+
+      - type: placeholder
+      - type: placeholder
+      - type: placeholder
+
+      - type: placeholder
       - type: placeholder
       - warp: potter
         icon: acacia_sapling{CustomModelData:18001}
@@ -52,6 +64,19 @@ navigator:
         description: |-
           &fA &6GTA or CS &fthemed example with &6guns &fand &6vehicldes
           &fUse &7/mconfig example set war&f to switch your server to the War theme
+      - warp: bending
+        name: "&l&n&5Bending"
+        icon: wood_hoe:34
+        description: |-
+          &fAn &6Avatar &fthemed example with &6bending &fmoves from all four elements
+          &fUse &7/mconfig example set bending&f to switch your server to the Bending theme
+      - type: placeholder
+      - type: placeholder
+      - type: placeholder
+
+      - type: placeholder
+      - type: placeholder
+      - type: placeholder
       - type: placeholder
       - warp: sandbox
         icon: sand
@@ -62,3 +87,7 @@ navigator:
           &bThis is the same web editor you can get on your own server with &7/meditor
           &fGo to &7https://sandbox.elmakers.com
           &f to start creating your own spells
+      - type: placeholder
+      - type: placeholder
+      - type: placeholder
+      - type: placeholder

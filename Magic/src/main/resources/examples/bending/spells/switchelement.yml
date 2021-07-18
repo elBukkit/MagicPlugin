@@ -1,0 +1,27 @@
+switchelement:
+  icon: sulphur
+  category: shop
+  hidden: true
+  actions:
+      cast:
+      - class: Selector
+  parameters:
+    title: "Switch Element"
+    auto_close: true
+    placeholder_icon: air
+    selected: "You switched to $name"
+    options:
+      - placeholder: true
+      - placeholder: true
+      - switch_class: airbender
+        icon: wood_hoe:34
+      - switch_class: waterbender
+        icon: wood_hoe:20
+      - switch_class: earthbender
+        icon: wood_hoe:21
+      - switch_class: firebender
+        icon: wood_hoe:22
+      - placeholder: true
+      - placeholder: true
+      - placeholder: true
+

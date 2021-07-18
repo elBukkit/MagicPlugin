@@ -2,6 +2,6 @@ examples:
   bending:
     instructions: |-
       &8| &3&nBENDING &r
-      &8|   &fUse &6/mnpc add bendingshop &fto allow &r
+      &8|   &fUse &6/mnpc add aang &fto allow &r
       &8|   &fplayers to choose a bending element &r
 
