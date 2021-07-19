@@ -14,7 +14,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 public class ModelEngineAction extends BaseSpellAction
 {
     private enum ActionType {
-        ADD_STATE, REMOVE_STATE
+        ADD_STATE, REMOVE_STATE,
+        ADD_SUB_MODEL, REMOVE_SUB_MODEL
     }
 
     private ActionType actionType;
@@ -25,6 +26,11 @@ public class ModelEngineAction extends BaseSpellAction
     private int lerpOut;
     private double lerpSpeed;
 
+    private String partId;
+    private String subModelId;
+    private String subPartId;
+    private String customId;
+
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
@@ -34,8 +40,12 @@ public class ModelEngineAction extends BaseSpellAction
         lerpIn = parameters.getInt("lerp_in", 0);
         lerpOut = parameters.getInt("lerp_out", 1);
         lerpSpeed = parameters.getDouble("lerp_speed", 1);
+        partId = parameters.getString("part_id");
+        subModelId = parameters.getString("sub_model_id");
+        subPartId = parameters.getString("sub_part_id");
+        customId = parameters.getString("custom_id");
 
-        String actionTypeString = parameters.getString("model_action", "add");
+        String actionTypeString = parameters.getString("model_action", "add_state");
         if (actionTypeString != null && !actionTypeString.isEmpty()) {
             try {
                 actionType = ActionType.valueOf(actionTypeString.toUpperCase());
@@ -64,6 +74,12 @@ public class ModelEngineAction extends BaseSpellAction
                 break;
             case REMOVE_STATE:
                 result = modelEngine.removeModelState(target, model, state, ignoreLerp);
+                break;
+            case ADD_SUB_MODEL:
+                result = modelEngine.addSubModel(target, model, partId, subModelId, subPartId, customId);
+                break;
+            case REMOVE_SUB_MODEL:
+                result = modelEngine.removeSubModel(target, model, subPartId, customId);
                 break;
             default:
         }
