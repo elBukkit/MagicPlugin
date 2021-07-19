@@ -22,6 +22,7 @@
  - Sparkle spell added as optional Student spell, applies a random status effect
  - Add `ModelEngine` action for detailed model control
  - Add `commandwand` and `commandspell` to set up command-bound items
+ - The `transformable` mob property now applies to falling_block entities, and will prevent them from turning into blocks
 
 ## Changes
 

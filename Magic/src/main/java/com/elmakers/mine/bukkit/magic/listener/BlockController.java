@@ -43,6 +43,7 @@ import org.bukkit.plugin.PluginManager;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.batch.UndoBatch;
@@ -433,6 +434,12 @@ public class BlockController implements Listener, ChunkLoadListener {
         Entity entity = event.getEntity();
 
         if (entity instanceof FallingBlock) {
+            EntityData entityData = controller.getMob(entity);
+            if (!entityData.isTransformable()) {
+                event.setCancelled(true);
+                entity.remove();
+                return;
+            }
             if (event.getTo() == Material.AIR) {
                 // Block is falling, register it
                 controller.registerFallingBlock(entity, event.getBlock());
