@@ -1,0 +1,66 @@
+midas:
+  name: Midas Touch
+  description: "Kill things with gold or something, idk, I don't SkyBlock"
+  icon: stick
+  actions:
+    cast:
+    - class: Parallel
+      actions:
+      - class: ChangeContext
+        relative_source_offset: 2,-1.5,-1.5
+        source_pitch: 0
+        actions:
+        - class: CustomProjectile
+          tick:
+            - class: AreaOfEffect
+              actions:
+                - class: Damage
+            - class: SpawnEntity
+              type: falling_block
+              material: gold_block
+              set_target: true
+            - class: Velocity
+              direction: 0,1,0
+              speed: 0.2
+      - class: ChangeContext
+        relative_source_offset: 2,-1.5,0
+        source_pitch: 0
+        actions:
+        - class: CustomProjectile
+          tick:
+            - class: AreaOfEffect
+              actions:
+                - class: Damage
+            - class: SpawnEntity
+              type: falling_block
+              material: gold_block
+              set_target: true
+            - class: Velocity
+              direction: 0,1,0
+              speed: 0.2
+      - class: ChangeContext
+        relative_source_offset: 2,-1.5,1.5
+        source_pitch: 0
+        actions:
+        - class: CustomProjectile
+          tick:
+            - class: AreaOfEffect
+              actions:
+                - class: Damage
+            - class: SpawnEntity
+              type: falling_block
+              material: gold_block
+              set_target: true
+            - class: Velocity
+              direction: 0,1,0
+              speed: 0.2
+  effects:
+    cast:
+    - sound: magic.zap
+  parameters:
+    range: 32
+    damage: 10
+    tick_size: 0.5
+    undo: 5000
+    transformable: false
+    radius: 2
