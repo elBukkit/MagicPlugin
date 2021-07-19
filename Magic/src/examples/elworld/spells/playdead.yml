@@ -1,0 +1,15 @@
+playdead:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Play Dead
+  description: Make your robot pet play dead
+  icon: stick
+  actions:
+    cast:
+    - class: AreaOfEffect
+      actions:
+      - class: Trigger
+  parameters:
+    target: self
+    radius: 32
+    trigger: playdead

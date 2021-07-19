@@ -279,9 +279,12 @@ teams:
       amplifier: 1
 
 kindletron:
-    type: zombie
+    type: husk
     name: Kindle Sr
     model: kindletronsr
+    triggers:
+      playdead:
+        cast: medeath
 
 deathbell:
   type: zombie

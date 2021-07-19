@@ -1,0 +1,11 @@
+medeath:
+  triggers: playdead
+  passive: true
+  actions:
+    cast:
+    - class: ModelEngine
+  parameters:
+    target: self
+    model_action: add_state
+    model_state: death
+    
