@@ -70,13 +70,13 @@ homing:
              particle: redstone
              color: "FFA500"
              duration: $lifetime
-             radius: 0.2
+             radius: 0.1
              particles: 5
              particle_count: 5
              particle_offset_y: 0.2
              particle_offset_x: 0.2
              particle_offset_z: 0.2
-             particle_size: 3
+             particle_size: 2
         hit:
         -  sound: entity_elder_guardian_curse
            sound_pitch: 1.75
