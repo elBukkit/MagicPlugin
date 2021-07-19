@@ -21,6 +21,7 @@
  - Starter kits can have a `priority`, higher priority kits are given first
  - Sparkle spell added as optional Student spell, applies a random status effect
  - Add `ModelEngine` action for detailed model control
+ - Add `commandwand` and `commandspell` to set up command-bound items
 
 ## Changes
 

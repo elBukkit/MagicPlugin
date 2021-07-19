@@ -480,3 +480,6 @@ wands:
         name: Bread Slice
     toast:
         name: Toast
+    commandwand:
+        name: Command Wand
+        description: "&eUse the &f/wand&e command to customize this wand\n&f/wand name Spawn Tool\n&f/wand configure description Right-click to go to spawn\n&f/wand override commands spawn\n&f/mitem save spawntool\n&f/mgive spawntool"

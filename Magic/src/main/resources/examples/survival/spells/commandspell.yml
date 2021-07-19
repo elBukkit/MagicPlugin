@@ -1,0 +1,6 @@
+commandspell:
+  actions:
+    cast:
+      - class: Command
+  parameters:
+    command: "msg @p did you forget to override the command parameter?"

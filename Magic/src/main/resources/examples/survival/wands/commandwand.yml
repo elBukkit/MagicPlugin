@@ -1,0 +1,6 @@
+commandwand:
+    icon: stick
+    right_click: cast
+    active_spell: commandspell
+    overrides:
+        command: "msg @p change this with /wand override command /msg @p you changed it"
