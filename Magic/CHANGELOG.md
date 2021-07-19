@@ -20,6 +20,7 @@
  - The EMP spell now triggers dispensers (1.13+)
  - Starter kits can have a `priority`, higher priority kits are given first
  - Sparkle spell added as optional Student spell, applies a random status effect
+ - Add `ModelEngine` action for detailed model control
 
 ## Changes
 

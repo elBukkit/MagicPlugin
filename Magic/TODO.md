@@ -8,7 +8,8 @@
  - Add clone/replicate source selected effects (cube)  
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Ability to open an editor session on behalf of another player
- - Avoid re-sending the RP if not necessary when moving between worlds
+ - Avoid re-sending the RP if not necessary when moving between worlds 
+ - Buy/sell shops get inaccurate if they dont auto-close, need to refresh lore after each purchase
 
 # Revert Some Hacks
 
@@ -29,7 +30,7 @@
 
 # Bugs
 
- - Buy/sell shops get inaccurate if they dont auto-close, need to refresh lore after each purchase
+ - using inherit: sellshop make the quiet: true not working on item parameter but it works correctly with inherit: buyshop (brushette)
  - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Do automata drop loot when expiring due to chunk load?
@@ -73,6 +74,11 @@
 
 ## Suggestions
 
+ - RideEntity action parameter to work on target mob
+ - Add requirements lists to wands
+ - Some way to make a spell that uses the reflect behavior of shield wands
+ - AureliumSkills + path integration
+ - Variable crafting recipe ingredients (e.g. all planks)
  - CheckMount action, klein_76 would like to detect when players are sitting down.. triggers?
  - Crackshot support, apparently it sets health directly or otherwise bypasses damage events?
    It has an API, but is closed source with no Maven

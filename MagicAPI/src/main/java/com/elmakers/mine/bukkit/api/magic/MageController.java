@@ -38,6 +38,7 @@ import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.api.integration.ModelEngine;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.kit.Kit;
@@ -569,9 +570,12 @@ public interface MageController {
     boolean disguise(Entity entity, ConfigurationSection configuration);
 
     /**
+     * ModelEngine integration
      * configuration must contain an "id" property
      */
     boolean applyModel(Entity entity, ConfigurationSection configuration);
+    ModelEngine getModelEngine();
+
     void managePlayerData(boolean external, boolean backupInventories);
     String getDefaultWandTemplate();
     String getHeroesSkillPrefix();

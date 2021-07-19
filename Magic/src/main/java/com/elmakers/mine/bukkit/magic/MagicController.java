@@ -5851,6 +5851,12 @@ public class MagicController implements MageController {
         }
         return modelEngineManager.applyModel(entity, configuration);
     }
+
+    @Override
+    public ModelEngineManager getModelEngine() {
+        return modelEngineManager;
+    }
+
     @Override
     public boolean isPathUpgradingEnabled() {
         return autoPathUpgradesEnabled;
