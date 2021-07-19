@@ -998,7 +998,9 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void setYawPitch(Entity entity, float yaw, float pitch) {
         try {
             Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_setYawPitchMethod.invoke(handle, yaw, pitch);
+            if (handle != null) {
+                NMSUtils.class_Entity_setYawPitchMethod.invoke(handle, yaw, pitch);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -1008,7 +1010,9 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void setLocation(Entity entity, double x, double y, double z, float yaw, float pitch) {
         try {
             Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_setLocationMethod.invoke(handle, x, y, z, yaw, pitch);
+            if (handle != null) {
+                NMSUtils.class_Entity_setLocationMethod.invoke(handle, x, y, z, yaw, pitch);
+            }
         } catch (Exception ex) {
             ex.printStackTrace();
         }

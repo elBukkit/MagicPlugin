@@ -333,6 +333,9 @@ public class RideEntityAction extends BaseSpellAction
     }
 
     protected void adjustHeading(CastContext context) {
+        if (mount == null) {
+            return;
+        }
         targetLocation = context.getEntity().getLocation();
 
         // Use strafe steering controls

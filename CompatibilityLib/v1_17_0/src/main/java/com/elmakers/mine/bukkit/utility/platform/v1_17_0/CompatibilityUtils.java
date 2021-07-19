@@ -699,6 +699,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public void setYawPitch(Entity entity, float yaw, float pitch) {
+        if (entity == null) return;
         net.minecraft.world.entity.Entity nms = ((CraftEntity)entity).getHandle();
         // Entity setYawPitch is protected, but I think we can do without the extra
         // CraftBukkit checks ... er, hopefully.
@@ -708,6 +709,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public void setLocation(Entity entity, double x, double y, double z, float yaw, float pitch) {
+        if (entity == null) return;
         net.minecraft.world.entity.Entity nms = ((CraftEntity)entity).getHandle();
         nms.absMoveTo(x, y, z, yaw, pitch);
     }
