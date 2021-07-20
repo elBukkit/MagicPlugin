@@ -285,7 +285,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static String WAND_KEY = "wand";
     public static String UPGRADE_KEY = "wand_upgrade";
     public static String WAND_SELF_DESTRUCT_KEY = null;
-    public static int HIDE_FLAGS = 191;
+    public static int HIDE_FLAGS = 127;
     public static String brushSelectSpell = "";
 
     private Inventory storedInventory = null;
