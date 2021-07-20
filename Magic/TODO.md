@@ -4,6 +4,7 @@
 
  - Implement respawning NPCs
  - Make sure the test dummy restores properly on reboot
+ - Creative mode should maybe consume PS blocks when placed? idk
 
 ## Arenas
 
@@ -41,6 +42,7 @@
 
 # Bugs
 
+ - Got "Recall got to doTeleport with no waypoint selected" .. how?
  - using inherit: sellshop make the quiet: true not working on item parameter but it works correctly with inherit: buyshop (brushette)
  - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...

@@ -5,10 +5,11 @@ testdummy:
   chestplate: iron_chestplate
   leggings: iron_leggings
   boots: iron_boots
-  health: 1000
-  # TODO: Implement this, reduce health
-  respawn: true
+  invulnerable: false
+  health: 100
   static: false
   triggers:
     damage:
       cast: dummydialog
+    death:
+      cast: dummyrespawn

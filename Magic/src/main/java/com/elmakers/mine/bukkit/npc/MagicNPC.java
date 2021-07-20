@@ -303,6 +303,12 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     }
 
     @Nullable
+    @Override
+    public Entity respawn() {
+        return restore();
+    }
+
+    @Nullable
     public Entity restore() {
         if (location == null || !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(location)) {
             return null;

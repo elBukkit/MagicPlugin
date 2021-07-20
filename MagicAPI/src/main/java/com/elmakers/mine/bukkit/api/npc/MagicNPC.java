@@ -42,6 +42,8 @@ public interface MagicNPC extends Locatable {
     UUID getId();
     @Nonnull
     UUID getEntityId();
+    @Nullable
+    Entity respawn();
 
     /**
      * This method returns the UUID of the entity and may change if the entity needs to be

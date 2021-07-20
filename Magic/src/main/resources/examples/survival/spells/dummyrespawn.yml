@@ -1,0 +1,45 @@
+dummyrespawn:
+  hidden: true
+  actions:
+    cast:
+    - class: Random
+      actions:
+        - class: Message
+          message: "Goodbye, cruel world!"
+        - class: Message
+          message: "I'll be right back, boyo!"
+        - class: Message
+          message: "Ooooooooh ya got me!"
+        - class: Message
+          message: "OW dat was a good one!"
+
+    - class: Delay
+    - class: ChangeContext
+      target_caster: true
+      actions:
+        - class: Respawn
+        - class: PlayEffects
+          effects: respawned
+
+    - class: Random
+      actions:
+        - class: Message
+          message: "I'm back, boyo!"
+        - class: Message
+          message: "Told ya I'd be back!"
+        - class: Message
+          message: "Can't get rid of me that easily!"
+        - class: Message
+          message: "Anyway..."
+
+  effects:
+    respawned:
+      - particle: spell
+        particle_count: 8
+        particle_offset: 0.5
+
+  parameters:
+    target: damager
+    dialog_format: "npc.dialog"
+    message_target: true
+    delay: 4000

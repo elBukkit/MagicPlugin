@@ -744,6 +744,17 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         return success;
     }
 
+    public Entity respawn() {
+        Entity entity = spawn();
+        if (entity != null && mageData != null) {
+            Mage mage = controller.getMage(entity);
+            if (mage != null) {
+                mageData.trigger(mage, "respawn");
+            }
+        }
+        return entity;
+    }
+
     @Deprecated
     @Override
     public boolean modify(MageController controller, Entity entity) {
