@@ -7,7 +7,7 @@ midas:
     - class: Parallel
       actions:
       - class: ChangeContext
-        relative_source_offset: 2,-1.5,-1.5
+        relative_source_offset: 2,-2,-1.5
         source_pitch: 0
         actions:
         - class: CustomProjectile
@@ -23,7 +23,7 @@ midas:
               direction: 0,1,0
               speed: 0.2
       - class: ChangeContext
-        relative_source_offset: 2,-1.5,0
+        relative_source_offset: 2,-2,0
         source_pitch: 0
         actions:
         - class: CustomProjectile
@@ -39,7 +39,7 @@ midas:
               direction: 0,1,0
               speed: 0.2
       - class: ChangeContext
-        relative_source_offset: 2,-1.5,1.5
+        relative_source_offset: 2,-2,1.5
         source_pitch: 0
         actions:
         - class: CustomProjectile
@@ -63,4 +63,5 @@ midas:
     tick_size: 0.5
     undo: 5000
     transformable: false
+    transparent: "*"
     radius: 2
