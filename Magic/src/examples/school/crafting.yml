@@ -16,39 +16,6 @@ name_tag:
 
 # Disable all magic items for now
 
-magicheart:
-  enabled: false
-
-apprenticeboots:
-  enabled: false
-
-apprenticechestplate:
-  enabled: false
-
-apprenticehelmet:
-  enabled: false
-
-apprenticeleggings:
-  enabled: false
-
-wizardboots:
-  enabled: false
-
-wizardchestplate:
-  enabled: false
-
-wizardhelmet:
-  enabled: false
-
-wizardleggings:
-  enabled: false
-
-battle:
-  enabled: false
-
-magicsword:
-  enabled: false
-
 broomstick:
   inherit: false
   auto_discover: true
@@ -75,34 +42,6 @@ camera:
   row_1:
   row_2: i
   row_3: d
-
-
-divinghelmet:
-  enabled: false
-
-elytra:
-  enabled: false
-
-goggles:
-  enabled: false
-
-magicbow:
-  enabled: false
-
-magichat:
-  enabled: false
-
-mirrorshield:
-  enabled: false
-
-spellbook:
-  enabled: false
-
-talisman:
-  enabled: false
-
-wand:
-  enabled: false
 
 # Stars
 
