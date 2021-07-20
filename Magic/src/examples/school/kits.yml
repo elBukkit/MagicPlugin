@@ -1,5 +1,6 @@
 students:
   keep: true
+  worlds: "*"
   requirements:
     - not_permission: orla.mod
   items:
