@@ -56,7 +56,7 @@ public class FlyAction extends BaseSpellAction {
     }
 
     private void toggleFlight(Player player, boolean flying) {
-        if (player.getGameMode() != GameMode.CREATIVE) {
+        if (player.getGameMode() != GameMode.CREATIVE || flying) {
             player.setAllowFlight(flying);
         }
 
