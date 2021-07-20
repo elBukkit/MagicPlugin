@@ -222,9 +222,9 @@ lore_wrap_limit: 32
 
 # This will hide all flags on a wand.
 # If you want enchantments to show, use
-# wand_hide_flags: 62
+# wand_hide_flags: 126
 # See: http://minecraft.gamepedia.com/Tutorials/Command_NBT_Tags
-wand_hide_flags: 63
+wand_hide_flags: 127
 
 # Set this to true to turn on material brush glow.
 brush_glow: false
