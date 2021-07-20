@@ -1758,7 +1758,8 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     @Nonnull
     protected String getMessageRaw(String messageKey, String def) {
-        String message = controller.getMessages().get("spells.default." + messageKey, def);
+        String message = controller.getMessages().get(messageKey, def);
+        message = controller.getMessages().get("spells.default." + messageKey, message);
         if (inheritKey != null && !inheritKey.isEmpty()) {
             message = controller.getMessages().get("spells." + inheritKey + "." + messageKey, message);
         }
