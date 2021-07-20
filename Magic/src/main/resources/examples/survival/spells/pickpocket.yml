@@ -27,6 +27,7 @@ pickpocket:
         check_protection: true
         bypass_pvp: true
         bypass_friendly_fire: true
+        target_game_modes: "all"
     costs:
         mana: 75
 
