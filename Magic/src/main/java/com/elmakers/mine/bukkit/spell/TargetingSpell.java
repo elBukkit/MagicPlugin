@@ -455,7 +455,7 @@ public class TargetingSpell extends BaseSpell {
                 return false;
             }
             if (targetGameModes != null && !targetGameModes.contains(player.getGameMode())) {
-                mage.sendDebugMessage("Entity has one of the ignored potion effects", 30);
+                mage.sendDebugMessage("Entity has one of the ignored game modes", 30);
                 return false;
             }
         }
