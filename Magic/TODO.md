@@ -2,6 +2,17 @@
 
 # Demo server
 
+ - Implement respawning NPCs
+ - Make sure the test dummy restores properly on reboot
+
+## Arenas
+
+ - Add option to save inventory and class layout
+   - Mage stored inventories need to be by key
+   - Restore all inventories on login, if restoring inventories remove any spells
+   - Restore classes on login (save these by key, too?
+ - Add class selector option  
+
 # Near-Term Hopeful List
 
  - Re-work charges functionality, add recharge_rate or something, cooldowns are separate and still apply

@@ -1,9 +1,14 @@
 testdummy:
   inherit: base_npc
-  type: husk
+  type: skeleton
   helmet: iron_helmet
   chestplate: iron_chestplate
   leggings: iron_leggings
   boots: iron_boots
-  invulnerable: true
+  health: 1000
+  # TODO: Implement this, reduce health
+  respawn: true
   static: false
+  triggers:
+    damage:
+      cast: dummydialog
