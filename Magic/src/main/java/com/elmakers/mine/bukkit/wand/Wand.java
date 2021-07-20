@@ -4503,6 +4503,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (player == null) return;
 
         boolean usesXPDisplay = xpBarDisplayMode.isEnabled(this);
+        // backwards-compatibility
+        if (usesXPDisplay && xpBarDisplayMode.usesMana() && manaMode == WandManaMode.NONE) {
+            usesXPDisplay = false;
+        }
         boolean usesLevelDisplay = levelDisplayMode.isEnabled(this);
         if (usesXPDisplay || usesLevelDisplay) {
             int playerLevel = player.getLevel();

@@ -170,4 +170,8 @@ public class WandDisplayMode {
     public boolean usesCurrency(String currencyKey) {
         return (displayType == DisplayType.CURRENCY && currencyKey.equals(currencyKey));
     }
+
+    public boolean usesMana() {
+        return displayType == DisplayType.MANA;
+    }
 }
