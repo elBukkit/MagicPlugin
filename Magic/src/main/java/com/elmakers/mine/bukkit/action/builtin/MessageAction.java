@@ -23,6 +23,7 @@ public class MessageAction extends BaseSpellAction
 
     private String message = "";
     private String subMessage = "";
+    private String dialogFormatKey = "";
     private int fadeIn;
     private int stay;
     private int fadeOut;
@@ -48,6 +49,7 @@ public class MessageAction extends BaseSpellAction
         stay = parameters.getInt("stay", -1);
         fadeOut = parameters.getInt("fade_out", -1);
         messageTarget = parameters.getBoolean("message_target", false);
+        dialogFormatKey = parameters.getString("dialog_format", "");
         if (parameters.contains("equation")) {
             double value = parameters.getDouble("equation");
             message = message.replace("$equation", Double.toString(value))
@@ -86,6 +88,17 @@ public class MessageAction extends BaseSpellAction
         String message = context.parameterize(context.getMessage(this.message, this.message));
         // This is leftover but really shouldn't be here, use @spell instead!
         message = message.replace("$spell", context.getSpell().getName());
+        if (!dialogFormatKey.isEmpty()) {
+            String targetName = "Nobody";
+            Entity targetEntity = context.getTargetEntity();
+            if (targetEntity != null) {
+                targetName = context.getController().getEntityDisplayName(targetEntity);
+            }
+            String template = context.getMessage(dialogFormatKey);
+            message = template.replace("$line", message);
+            message = message.replace("$speaker", context.getMage().getDisplayName())
+                    .replace("$target", targetName);
+        }
         Player player = (commandSender instanceof Player) ? (Player)commandSender : null;
         switch (messageType) {
             case CHAT:
