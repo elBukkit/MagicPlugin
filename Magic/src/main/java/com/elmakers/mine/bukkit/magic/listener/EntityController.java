@@ -545,7 +545,7 @@ public class EntityController implements Listener {
         Entity entity = event.getEntity();
         if (entity == null) return;
 
-        if (controller.isMagicNPC(event.getEntity())) {
+        if (controller.isStaticMagicNPC(event.getEntity())) {
             event.setCancelled(true);
             return;
         }

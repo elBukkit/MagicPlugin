@@ -4006,11 +4006,15 @@ public class MagicController implements MageController {
         return npcSuppliers.isNPC(entity);
     }
 
+    public boolean isStaticMagicNPC(Entity entity) {
+        MagicNPC npc = getNPC(entity);
+        return npc != null && npc.isStatic();
+    }
+
     @Override
     public boolean isStaticNPC(Entity entity) {
-        MagicNPC npc = getNPC(entity);
-        if (npc != null) {
-            return npc.isStatic();
+        if (isStaticMagicNPC(entity)) {
+            return true;
         }
         return npcSuppliers.isStaticNPC(entity);
     }
