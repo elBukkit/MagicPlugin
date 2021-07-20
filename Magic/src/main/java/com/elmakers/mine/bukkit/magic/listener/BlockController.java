@@ -435,7 +435,7 @@ public class BlockController implements Listener, ChunkLoadListener {
 
         if (entity instanceof FallingBlock) {
             EntityData entityData = controller.getMob(entity);
-            if (!entityData.isTransformable()) {
+            if (entityData != null && !entityData.isTransformable()) {
                 event.setCancelled(true);
                 return;
             }
