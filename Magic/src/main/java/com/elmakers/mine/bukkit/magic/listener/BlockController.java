@@ -437,7 +437,6 @@ public class BlockController implements Listener, ChunkLoadListener {
             EntityData entityData = controller.getMob(entity);
             if (!entityData.isTransformable()) {
                 event.setCancelled(true);
-                entity.remove();
                 return;
             }
             if (event.getTo() == Material.AIR) {
