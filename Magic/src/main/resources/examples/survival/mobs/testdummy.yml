@@ -1,0 +1,9 @@
+testdummy:
+  inherit: base_npc
+  type: husk
+  helmet: iron_helmet
+  chestplate: iron_chestplate
+  leggings: iron_leggings
+  boots: iron_boots
+  invulnerable: true
+  static: false

@@ -100,6 +100,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isDocile;
     protected boolean transformable = true;
     protected boolean combustible = true;
+    protected boolean isStatic = false;
     protected boolean preventProjectiles;
     protected boolean preventMelee;
     protected boolean nameVisible;
@@ -280,6 +281,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         registerByName = parameters.getBoolean("register_by_name", registerByName);
         isNPC = parameters.getBoolean("npc");
+        isStatic = parameters.getBoolean("static", isNPC);
         useNPCName = parameters.getBoolean("use_npc_name", false);
         isHidden = parameters.getBoolean("hidden");
         nameVisible = parameters.getBoolean("show_name");
@@ -1422,5 +1424,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Nullable
     public BossBarTracker getBossBar(Mage mage) {
         return bossBar == null ? null : bossBar.createTracker(mage);
+    }
+
+    public boolean isStatic() {
+        return isStatic;
     }
 }

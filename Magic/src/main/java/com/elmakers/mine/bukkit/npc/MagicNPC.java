@@ -471,4 +471,8 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public void setImportedId(int importedId) {
         this.importedId = importedId;
     }
+
+    public boolean isStatic() {
+        return entityData != null ? entityData.isStatic() : true;
+    }
 }
