@@ -16,4 +16,4 @@ base_npc:
   dialog_range: 4
   cancel_interact: true
   prevent_dismount: true
-  default_drops: true
+  default_drops: false

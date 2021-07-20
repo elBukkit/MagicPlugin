@@ -6,6 +6,8 @@ dummydialog:
     - class: Random
       actions:
         - class: Message
+          message: "Oof"
+        - class: Message
           message: "Ataboy, keep hittin' me!"
         - class: Message
           message: "Oooh dat was a good one, boyo!"
@@ -17,4 +19,4 @@ dummydialog:
     dialog_format: "npc.dialog"
     target: damager
     message_target: true
-    cooldown: 2000
+    cooldown: 7000

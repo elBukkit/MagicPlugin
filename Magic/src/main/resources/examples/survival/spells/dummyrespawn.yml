@@ -34,7 +34,8 @@ dummyrespawn:
 
   effects:
     respawned:
-      - particle: spell
+      - location: target
+        particle: spell
         particle_count: 8
         particle_offset: 0.5
 

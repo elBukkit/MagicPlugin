@@ -2,7 +2,7 @@
 
 # Demo server
 
- - Implement respawning NPCs
+ - Need a way to duplicate NPCs
  - Make sure the test dummy restores properly on reboot
  - Creative mode should maybe consume PS blocks when placed? idk
 
