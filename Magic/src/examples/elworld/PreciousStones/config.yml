@@ -7,7 +7,7 @@ force-field-blocks:
   - '&eThis will protect a 300x255x300 area'
   - Use /ps allow <player> to add members
   block: SHROOMLIGHT
-  radius: 300
+  radius: 200
   custom-height: 512
   no-resize: true
   prevent-pvp: true
