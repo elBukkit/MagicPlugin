@@ -87,6 +87,7 @@ public class CustomProjectileAction extends CompoundAction
     private boolean reflectReorient;
     private boolean reflectResetDistanceTraveled;
     private boolean reflectTargetCaster;
+    private boolean reflectTargetCasterIfNoPvp;
     private boolean reflectTrackEntity;
     private boolean hitRequiresEntity;
     private double reflectTrackCursorRange;
@@ -260,7 +261,14 @@ public class CustomProjectileAction extends CompoundAction
 
         reflectReorient = parameters.getBoolean("reflect_reorient", false);
         reflectResetDistanceTraveled = parameters.getBoolean("reflect_reset_distance_traveled", true);
-        reflectTargetCaster = parameters.getBoolean("reflect_target_caster", true);
+        String reflectString = parameters.getString("reflect_target_caster", "");
+        if (reflectString.equalsIgnoreCase("pvp")) {
+            reflectTargetCaster = true;
+            reflectTargetCasterIfNoPvp = false;
+        } else {
+            reflectTargetCaster = parameters.getBoolean("reflect_target_caster", true);
+            reflectTargetCasterIfNoPvp = reflectTargetCaster;
+        }
         reflectTrackEntity = parameters.getBoolean("reflect_track_target", false);
         reflectTrackCursorRange = parameters.getDouble("reflect_track_range", 0D);
         hitOnMiss = parameters.getBoolean("hit_on_miss", false);
@@ -764,7 +772,10 @@ public class CustomProjectileAction extends CompoundAction
         reorient = reflectReorient;
         if (reflectResetDistanceTraveled) distanceTravelled = 0;
         if (reflectTrackCursorRange >= 0) trackCursorRange = reflectTrackCursorRange;
-        if (reflectTargetCaster) actionContext.setTargetsCaster(true);
+        Player player = actionContext.getMage().getPlayer();
+        boolean isPvPAllowed = actionContext.getController().isPVPAllowed(player, actionContext.getTargetLocation());
+        boolean shouldTargetCaster = isPvPAllowed ? reflectTargetCaster : reflectTargetCasterIfNoPvp;
+        if (shouldTargetCaster) actionContext.setTargetsCaster(true);
 
         // Calculate angle of reflection
         if (normal != null) {
