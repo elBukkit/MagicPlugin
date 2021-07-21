@@ -4,11 +4,12 @@
 
 ## Fixes
 
- - Trident projectiles can not be picked up (1.17+)
+ - Trident projectiles respect pickup status (can't be picked up by default) (1.17+)
  - Broomsticks can't be broken, the armor stands are indestructible by default and if broken won't drop items
  - Fix Mine not working on 1.17 ores
  - Fix using `mana_display: none` in the main config to turn off the XP bar mana display
- - Fix changes to `aurelium_skills` configuration not taking effect until server restart 
+ - Fix changes to `aurelium_skills` configuration not taking effect until server restart
+ - Fix `CheckBlock` biome-checking
 
 ## Additions
 

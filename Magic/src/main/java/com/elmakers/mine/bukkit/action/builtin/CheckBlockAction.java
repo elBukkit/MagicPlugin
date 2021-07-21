@@ -71,12 +71,13 @@ public class CheckBlockAction extends CheckAction {
                 block = block.getRelative(direction);
             }
         }
-        boolean isAllowed = false;
-        if (allowBrush) {
-            isAllowed = brush != null && !brush.isDifferent(block);
-        }
-        if (!isAllowed && allowed != null) {
-            isAllowed = allowed.testBlock(block);
+
+        // Default to true
+        boolean isAllowed = true;
+
+        // Perform positive tests first
+        if (allowed != null && !allowed.testBlock(block)) {
+            isAllowed = false;
         }
         if (!isAllowed && checkPermissions) {
             isAllowed = true;
@@ -96,6 +97,13 @@ public class CheckBlockAction extends CheckAction {
         if (isAllowed && allowedBiomes != null && !allowedBiomes.contains(block.getBiome())) {
             isAllowed = false;
         }
+
+        // Brush can override positive tests
+        if (!isAllowed && allowBrush && brush != null && !brush.isDifferent(block)) {
+            isAllowed = true;
+        }
+
+        // Negative tests override all
         if (isAllowed && notBiomes != null && notBiomes.contains(block.getBiome())) {
             isAllowed = false;
         }
