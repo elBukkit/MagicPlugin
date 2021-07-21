@@ -1,0 +1,53 @@
+ghosts:
+  name: Ghosts
+  description: Scary!
+  icon: skeleton_skull
+  actions:
+    cast:
+    # This goes on the player
+    - class: PotionEffect
+      add_effects:
+        damage_resistance: 100
+    # These spawn entities around the player
+    - class: ChangeContext
+      target_offset: -1,-1,0
+      actions:
+        - class: SpawnEntity
+          type: creeper
+          powered: true
+          ai: false
+          potion_effects:
+            invisibility: 1
+    - class: ChangeContext
+      target_offset: 1,-1,0
+      actions:
+        - class: SpawnEntity
+          type: creeper
+          powered: true
+          ai: false
+          potion_effects:
+            invisibility: 1
+    - class: ChangeContext
+      target_offset: 0,-1,1
+      actions:
+        - class: SpawnEntity
+          type: creeper
+          powered: true
+          ai: false
+          potion_effects:
+            invisibility: 1
+    - class: ChangeContext
+      target_offset: 0,-1,-1
+      actions:
+        - class: SpawnEntity
+          type: creeper
+          powered: true
+          ai: false
+          potion_effects:
+            invisibility: 1
+  parameters:
+    target: self
+    range: 32
+    damage: 10
+    undo: 10000
+    duration: 10000
