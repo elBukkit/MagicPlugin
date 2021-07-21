@@ -89,6 +89,8 @@
 
 ## Suggestions
 
+ - BetonQuest, expand integration - NPC quest dialog, class and cast count support
+   https://github.com/BetonQuest/BetonQuest
  - RideEntity action parameter to work on target mob
  - Add requirements lists to wands
  - Some way to make a spell that uses the reflect behavior of shield wands

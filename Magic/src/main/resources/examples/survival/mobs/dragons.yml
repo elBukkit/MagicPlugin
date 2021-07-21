@@ -74,7 +74,7 @@ lightbluedragon:
 
 greendragon:
   inherit: base_dragon
-  hidden: falses
+  hidden: false
   item: dragonwingrightgreen
   offhand: dragonwingleftgreen
   helmet: dragonbodygreen

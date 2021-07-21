@@ -204,6 +204,12 @@ public class TranslatingConfigurationSection extends MemorySection {
             if (s.equalsIgnoreCase("false")) {
                 return false;
             }
+            double dValue = getDouble(path);
+            return dValue != 0;
+        }
+        if (val instanceof Number) {
+            Number n = (Number)val;
+            return n.intValue() != 0;
         }
         return (val instanceof Boolean) ? (Boolean) val : def;
     }

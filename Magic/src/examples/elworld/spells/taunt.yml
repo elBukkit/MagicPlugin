@@ -1,0 +1,25 @@
+taunt:
+  name: Taunt
+  icon: beef{18001}
+  actions:
+    cast:
+    - class: ModifyVariable
+      variable: aggro
+      default: 0
+      value: 1 - aggro
+      scope: spell
+    - class: Aggro
+    - class: Message
+      message: "Aggro = $aggro"
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Sphere
+        duration: 500
+        particle: end_rod
+        particles: 3
+    - sound: magic.zap
+  parameters:
+    range: 32
+    clear_target: 1 - aggro

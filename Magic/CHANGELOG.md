@@ -86,6 +86,7 @@
  - Add `ignore_modified_entities` AreaOfEffect option, to ignore entities that have already been modified by this spell
  - Add `game_mode` and `leave_game_mode` world option, for per-world game modes
  - Add `cancel_on_kill_target` option to Damage action
+ - Numeric variables can be used in boolean parameters (non-zero means true)
 
 ## Changes
 
