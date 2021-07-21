@@ -1,7 +1,7 @@
 recallshop:
   inherit: buyshop
   parameters:
-    selected_free: "a:You learned $item"
+    selected_free: "t:&r&6$item\n&d&oLearned"
     free: true
     spells:
       - placeholder: true

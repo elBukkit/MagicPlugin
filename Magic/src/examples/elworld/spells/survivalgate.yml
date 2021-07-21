@@ -1,0 +1,40 @@
+survivalgate:
+  actions:
+    cast:
+      - class: ChangeContext
+        target_location: -16837,77,-7405
+        actions:
+        - class: Parallel
+          actions:
+            - class: Volume
+              actions:
+                - class: Skip
+                  actions:
+                    - class: Delay
+                - class: ModifyBlock
+            - class: Interval
+              actions:
+                - class: PlayEffects
+                  effects: chain
+      - class: ChangeContext
+        use_target_mage: true
+        actions:
+          - class: Recall
+            unlock: survival_town
+  effects:
+    chain:
+      - sound: block_chain_place
+  parameters:
+    target: self
+    brush: air
+    undo: 5000
+    interval: 500
+    duration: 2000
+    skip: 10
+    delay: 750
+    volume_type: XZY
+    center_y: false
+    x_size: 2
+    z_size: 0
+    y_size: 5
+    destructible: iron_bars

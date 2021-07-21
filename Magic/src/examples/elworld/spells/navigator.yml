@@ -78,8 +78,7 @@ navigator:
       - type: placeholder
       - type: placeholder
       - type: placeholder
-      - warp: sandbox
-        icon: sand
+      - icon: sand
         name: "&l&n&5Sandbox Server"
         server: sandbox
         description: |-

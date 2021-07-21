@@ -801,7 +801,7 @@ spells:
         cross_world_disallowed: You are not allowed to Recall to another world
         title: Choose Destination
         move_marker_title: Move Marker
-        unlock_warp: "&bYou have unlocked &5$name &bas a &6Recall &bdestination!"
+        unlock_warp: "t:&r&6$name\n&d&oUnlocked in Recall"
         add_friend: "&bYou have added &5$name &bas a &6Recall &bdestination!"
         remove_friend: "&cYou have removed &5$name &cas a &6Recall &cdestination!"
         invalid_description: "\n&cThis location is invalid"
@@ -820,6 +820,7 @@ spells:
     warpunlock:
       name: Unlock Warp
       description: Useful in command blocks or region commands to unlock Recall waypoints when a player discovers an area
+      unlock_warp: "t:&r&6$name\n&d&oUnlocked in Recall"
       cooldown: ""
     warpmenu:
       name: Warp Menu
