@@ -71,7 +71,11 @@ navigator:
           &fAn &6Avatar &fthemed example with &6bending &fmoves from all four elements
           &fUse &7/mconfig example set bending&f to switch your server to the Bending theme
       - type: placeholder
-      - type: placeholder
+      - warp: features
+        name: "&l&n&5Other Features"
+        icon: oak_sign{CustomModelData:18001}
+        description: |-
+          &fTake a tour of other features &dMagic &fhas to offer!
       - type: placeholder
 
       - type: placeholder
