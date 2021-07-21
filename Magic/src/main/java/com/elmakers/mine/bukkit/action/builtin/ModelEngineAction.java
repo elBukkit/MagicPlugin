@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -10,12 +11,14 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.integration.ModelEngine;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ModelEngineAction extends BaseSpellAction
 {
     private enum ActionType {
         ADD_STATE, REMOVE_STATE,
-        ADD_SUB_MODEL, REMOVE_SUB_MODEL
+        ADD_SUB_MODEL, REMOVE_SUB_MODEL,
+        TINT
     }
 
     private ActionType actionType;
@@ -30,6 +33,8 @@ public class ModelEngineAction extends BaseSpellAction
     private String subModelId;
     private String subPartId;
     private String customId;
+    private Color color;
+    private boolean exactMatch;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -54,6 +59,15 @@ public class ModelEngineAction extends BaseSpellAction
             }
         } else {
             context.getLogger().warning("Missing required model_action in ModelEngine action");
+        }
+
+        switch (actionType) {
+            case TINT:
+                exactMatch = parameters.getBoolean("exact_match");
+                color = ConfigurationUtils.getColor(parameters, "color", Color.WHITE);
+                break;
+            default:
+                break;
         }
     }
 
@@ -80,6 +94,9 @@ public class ModelEngineAction extends BaseSpellAction
                 break;
             case REMOVE_SUB_MODEL:
                 result = modelEngine.removeSubModel(target, model, subPartId, customId);
+                break;
+            case TINT:
+                result = modelEngine.tintModel(target, model, subPartId, color, exactMatch);
                 break;
             default:
         }

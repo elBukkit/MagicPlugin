@@ -5,6 +5,8 @@
  - Need a way to duplicate NPCs
  - Make sure the test dummy restores properly on reboot
  - Creative mode should maybe consume PS blocks when placed? idk
+ - What order are schematic brushes even in?
+ - Add a way to get new brushes if you're maxed out
 
 ## Arenas
 

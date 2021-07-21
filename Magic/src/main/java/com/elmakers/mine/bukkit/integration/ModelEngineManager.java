@@ -3,8 +3,10 @@ package com.elmakers.mine.bukkit.integration;
 import java.util.Iterator;
 import javax.annotation.Nullable;
 
+import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.EulerAngle;
@@ -182,6 +184,19 @@ public class ModelEngineManager implements ModelEngine {
         }
 
         currentModel.addToIndex(part);
+        return true;
+    }
+
+    @Override
+    public boolean tintModel(Entity entity, String modelId, String partId, Color color, boolean exactMatch) {
+        if (entity == null) {
+            return false;
+        }
+        ModeledEntity modeledEntity = ModelEngineAPI.api.getModelManager().getModeledEntity(entity.getUniqueId());
+        if (modeledEntity == null) {
+            return false;
+        }
+        modeledEntity.setTint(color, modelId, partId, exactMatch);
         return true;
     }
 }

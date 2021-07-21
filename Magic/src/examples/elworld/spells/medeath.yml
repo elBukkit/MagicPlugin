@@ -4,6 +4,9 @@ medeath:
   actions:
     cast:
     - class: ModelEngine
+    - class: ModelEngine
+      model_action: tint
+      color: random
   parameters:
     target: self
     model_action: add_state
