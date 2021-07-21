@@ -234,13 +234,12 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
 
         public Waypoint(CastContext context, ConfigurationSection configuration) {
             warpName = configuration.getString("warp", "");
+            serverName = configuration.getString("server");
             command = configuration.getString("command");
             if (command != null) {
                 type = RecallType.COMMAND;
-                serverName = null;
-            } else if (!warpName.isEmpty()) {
+            } else if (!warpName.isEmpty() || serverName != null) {
                 type = RecallType.WARP;
-                serverName = configuration.getString("server");
             } else {
                 RecallType parsedType;
                 try {
@@ -249,7 +248,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     parsedType = RecallType.PLACEHOLDER;
                 }
                 type = parsedType;
-                serverName = null;
             }
 
             // Determine default messages and icon based on type
@@ -398,11 +396,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             if (location == null || location.getWorld() == null)
             {
-                if (serverName != null && warpName != null)
-                {
-                    return true;
-                }
-                return false;
+                return serverName != null;
             }
             return crossWorld || source.getWorld().equals(location.getWorld());
         }
@@ -1209,6 +1203,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 String warpName = waypoint.warpName;
                 if (warpName != null && serverName != null) {
                     context.getController().warpPlayerToServer(player, serverName, warpName);
+                } else if (serverName != null) {
+                    context.getController().sendPlayerToServer(player, serverName);
                 } else {
                     context.sendMessageKey("teleport_failed", waypoint.failMessage);
                 }
