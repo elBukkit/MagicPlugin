@@ -54,6 +54,7 @@ import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -1441,14 +1442,19 @@ public class SelectorAction extends CompoundAction implements GUIAction
         }
 
         public String getSelectedMessage() {
-            String message = selectedMessage;
+            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+            String message;
             if (costs == null) {
                 if (selectedFreeMessage != null) {
                     message = selectedFreeMessage;
-                } else if (message == null) {
+                } else if (selectedMessage != null) {
+                    message = compatibilityUtils.translateColors(selectedMessage);
+                } else {
                     message = getMessage("selected_free");
                 }
-            } else if (message == null) {
+            } else if (selectedMessage != null) {
+                message = compatibilityUtils.translateColors(selectedMessage);
+            } else {
                 message = getMessage("selected");
             }
             return getCostsMessage(message);
