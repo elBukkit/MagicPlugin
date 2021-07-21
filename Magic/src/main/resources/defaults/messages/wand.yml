@@ -308,7 +308,7 @@ wand:
     chest_inventory_title: "$wand"
     # You can use this to update wand lore when the spell inventory is open
     # but note that this will cause the wand to "bob" when opened or closed.
-    inventory_open: "&8------------------------\n&eSpell Inventory Open"
+    inventory_open: "&8------------------------\n&7Spell Inventory Open"
     inventory_open_cycle: '&b&bull; &fClick &7to cycle inventory pages'
     inventory_open_cycle_hotbar: '&b&bull; &fRight-Click &7to cycle hotbars'
 

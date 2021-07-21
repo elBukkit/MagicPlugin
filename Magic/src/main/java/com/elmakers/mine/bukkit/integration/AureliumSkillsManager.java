@@ -25,12 +25,11 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
     private boolean useAttributes;
     private double manaScale;
 
-    public AureliumSkillsManager(ConfigurationSection configuration, MageController controller) {
+    public AureliumSkillsManager(MageController controller) {
         this.controller = controller;
-        load(configuration);
     }
 
-    private void load(ConfigurationSection configuration) {
+    public void load(ConfigurationSection configuration) {
         enabled = configuration.getBoolean("enabled", true);
         useMana = enabled && configuration.getBoolean("use_mana", true);
         useAttributes = enabled && configuration.getBoolean("use_attributes", true);

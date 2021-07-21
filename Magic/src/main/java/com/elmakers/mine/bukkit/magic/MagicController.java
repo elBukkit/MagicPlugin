@@ -565,7 +565,6 @@ public class MagicController implements MageController {
     private RequirementsController requirementsController = null;
     private HeroesManager heroesManager = null;
     private AureliumSkillsManager aureliumSkillsManager = null;
-    private ConfigurationSection aureliumSkillsConfiguration = null;
     private LibsDisguiseManager libsDisguiseManager = null;
     private ModelEngineManager modelEngineManager = null;
     private SkillAPIManager skillAPIManager = null;
@@ -1788,6 +1787,13 @@ public class MagicController implements MageController {
         }
     }
 
+    private void loadIntegrations(ConfigurationSection configuration) {
+        if (aureliumSkillsManager != null) {
+            ConfigurationSection aureliumSkillsConfiguration = configuration.getConfigurationSection("aurelium_skills");
+            aureliumSkillsManager.load(aureliumSkillsConfiguration);
+        }
+    }
+
     public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
         if (finalizingConfig == null) {
             return;
@@ -1796,6 +1802,9 @@ public class MagicController implements MageController {
         if (!loaded) {
             finalizeIntegrationPreLoad();
         }
+
+        // Load integration controllers
+        loadIntegrations(loader.getMainConfiguration());
 
         // Register currencies and other preload integrations
         registerPreLoad(loader.getMainConfiguration());
@@ -7327,7 +7336,7 @@ public class MagicController implements MageController {
         try {
             Plugin aureliumSkillsPlugin = pluginManager.getPlugin("AureliumSkills");
             if (aureliumSkillsPlugin != null) {
-                aureliumSkillsManager = new AureliumSkillsManager(aureliumSkillsConfiguration, this);
+                aureliumSkillsManager = new AureliumSkillsManager(this);
             } else {
                 aureliumSkillsManager = null;
 
@@ -7918,7 +7927,6 @@ public class MagicController implements MageController {
         useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
         heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
-        aureliumSkillsConfiguration = properties.getConfigurationSection("aurelium_skills");
 
         messagePrefix = properties.getString("message_prefix", messagePrefix);
         castMessagePrefix = properties.getString("cast_message_prefix", castMessagePrefix);
