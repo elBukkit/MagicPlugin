@@ -337,6 +337,9 @@ public class ChangeContextAction extends CompoundAction {
         Entity targetEntity = context.getTargetEntity();
         Location targetLocation = context.getTargetLocation();
         if (useTargetMage) {
+            if (targetEntity == null) {
+                return SpellResult.NO_TARGET;
+            }
             sourceMage = context.getController().getMage(targetEntity);
         }
         if (sourceLocation != null) {
