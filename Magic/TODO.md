@@ -12,6 +12,7 @@
  - Creative mode should maybe consume PS blocks when placed? idk
  - What order are schematic brushes even in?
  - Add a way to get new brushes if you're maxed out
+ - NPCs names getting reset if they're not villagers?
 
  - HTTYD
 
@@ -22,12 +23,13 @@
    - World enter behavior needs to trigger on login
 
  - Features
+   - npcs (add GUI example instead of a shop)
    - warps
    - arenas
-   - mobs
-   - items
-   - worlds
-   - automata
+   - ~~mobs~~
+   - items (show bannershop)
+   - ~~worlds~~
+   - ~~magic blocks~~
 
 ## Arenas
 
