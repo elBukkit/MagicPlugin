@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.automata;
+package com.elmakers.mine.bukkit.block.magic;
 
 public class Nearby {
     public int players;

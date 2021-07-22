@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.automata;
+package com.elmakers.mine.bukkit.block.magic;
 
 import java.util.Collection;
 import java.util.List;
@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 
-public class AutomatonTemplate {
+public class MagicBlockTemplate {
     @Nonnull
     private final MageController controller;
     @Nonnull
@@ -44,7 +44,7 @@ public class AutomatonTemplate {
     private final boolean removeWhenBroken;
     private final String dropWhenRemoved;
 
-    public AutomatonTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
+    public MagicBlockTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
         this.key = Preconditions.checkNotNull(key);
         this.controller = controller;
         this.configuration = configuration;
@@ -161,7 +161,7 @@ public class AutomatonTemplate {
         return alwaysActive;
     }
 
-    public void tick(Automaton instance) {
+    public void tick(MagicBlock instance) {
         boolean isActive = checkActive(instance.getLocation());
         boolean firstActivate = false;
         if (isActive) {
@@ -188,10 +188,10 @@ public class AutomatonTemplate {
         }
     }
 
-    public AutomatonTemplate getVariant(ConfigurationSection parameters) {
+    public MagicBlockTemplate getVariant(ConfigurationSection parameters) {
         ConfigurationSection mergedConfiguration = ConfigurationUtils.cloneConfiguration(configuration);
         mergedConfiguration = ConfigurationUtils.addConfigurations(mergedConfiguration, parameters);
-        return new AutomatonTemplate(controller, key, mergedConfiguration);
+        return new MagicBlockTemplate(controller, key, mergedConfiguration);
     }
 
     @Nullable

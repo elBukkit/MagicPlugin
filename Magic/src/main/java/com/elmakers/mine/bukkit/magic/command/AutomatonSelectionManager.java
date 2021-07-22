@@ -9,17 +9,17 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.automata.Automaton;
+import com.elmakers.mine.bukkit.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
-public class AutomatonSelectionManager extends SelectionManager<Automaton> {
+public class AutomatonSelectionManager extends SelectionManager<MagicBlock> {
     public AutomatonSelectionManager(MagicController controller) {
         super(controller);
     }
 
     @Override
     @Nonnull
-    public Collection<Automaton> getAll() {
+    public Collection<MagicBlock> getAll() {
         return controller.getAutomata();
     }
 
@@ -30,7 +30,7 @@ public class AutomatonSelectionManager extends SelectionManager<Automaton> {
     }
 
     @Override
-    protected void showListItem(CommandSender sender, Automaton automaton, ListType listType) {
+    protected void showListItem(CommandSender sender, MagicBlock magicBlock, ListType listType) {
         String effectsKey;
         switch (listType) {
             case TARGET:
@@ -45,20 +45,20 @@ public class AutomatonSelectionManager extends SelectionManager<Automaton> {
                 effectsKey = "blockitem";
                 break;
         }
-        playEffects(sender, automaton, effectsKey);
+        playEffects(sender, magicBlock, effectsKey);
     }
 
     @Override
     @Nullable
-    protected Automaton getTarget(CommandSender sender, List<Automaton> sorted) {
+    protected MagicBlock getTarget(CommandSender sender, List<MagicBlock> sorted) {
         return sorted.isEmpty() ? null : sorted.get(0);
     }
 
-    public void playEffects(CommandSender sender, Automaton automaton, String effectsKey) {
+    public void playEffects(CommandSender sender, MagicBlock magicBlock, String effectsKey) {
         int maxRangeSquared = 64 * 64;
         if (sender instanceof Player) {
             Location location = ((Player)sender).getLocation();
-            Location automatonLocation = automaton.getLocation();
+            Location automatonLocation = magicBlock.getLocation();
             if (location.getWorld().equals(automatonLocation.getWorld())) {
                 double distance = location.distanceSquared(automatonLocation);
                 if (distance < maxRangeSquared) {

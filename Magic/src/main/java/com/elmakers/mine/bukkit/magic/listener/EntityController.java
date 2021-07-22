@@ -39,8 +39,8 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.automata.Automaton;
 import com.elmakers.mine.bukkit.block.BlockData;
+import com.elmakers.mine.bukkit.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -387,9 +387,9 @@ public class EntityController implements Listener {
         }
         Long spawnerId = CompatibilityLib.getEntityMetadataUtils().getLong(entity, MagicMetaKeys.AUTOMATION);
         if (spawnerId != null) {
-            Automaton automaton = controller.getActiveAutomaton(spawnerId);
-            if (automaton != null) {
-                automaton.onSpawnDeath();
+            MagicBlock magicBlock = controller.getActiveAutomaton(spawnerId);
+            if (magicBlock != null) {
+                magicBlock.onSpawnDeath();
             }
         }
         // Just don't ever clear player death drops, for real

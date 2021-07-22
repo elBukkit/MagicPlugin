@@ -17,9 +17,9 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.automata.Automaton;
-import com.elmakers.mine.bukkit.automata.AutomatonTemplate;
-import com.elmakers.mine.bukkit.automata.Nearby;
+import com.elmakers.mine.bukkit.block.magic.MagicBlock;
+import com.elmakers.mine.bukkit.block.magic.MagicBlockTemplate;
+import com.elmakers.mine.bukkit.block.magic.Nearby;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -63,7 +63,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
 
         String subCommand = args[0];
         args = Arrays.copyOfRange(args, 1, args.length);
-        Automaton selection = selections.getSelected(sender);
+        MagicBlock selection = selections.getSelected(sender);
 
         if (subCommand.equalsIgnoreCase("list")) {
             onListAutomata(sender, args);
@@ -152,7 +152,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         }
 
         Location location = player.getLocation();
-        Automaton existing = magicController.getAutomatonAt(location);
+        MagicBlock existing = magicController.getAutomatonAt(location);
         if (existing != null) {
             player.sendMessage(ChatColor.RED + "Automata already exists: " + ChatColor.LIGHT_PURPLE + existing.getName()
                 + ChatColor.RED + " at " + TextUtils.printLocation(existing.getLocation(), 0));
@@ -165,36 +165,36 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
             parameters = ConfigurationUtils.newConfigurationSection();
             ConfigurationUtils.addParameters(parameterArgs, parameters);
         }
-        Automaton automaton = new Automaton(magicController, location, key, player.getUniqueId().toString(), player.getName(), parameters);
-        magicController.registerAutomaton(automaton);
+        MagicBlock magicBlock = new MagicBlock(magicController, location, key, player.getUniqueId().toString(), player.getName(), parameters);
+        magicController.registerAutomaton(magicBlock);
 
-        playEffects(player, automaton, "blockselect");
-        selections.setSelection(player, automaton);
+        playEffects(player, magicBlock, "blockselect");
+        selections.setSelection(player, magicBlock);
 
-        player.sendMessage(ChatColor.AQUA + "Created automaton: " + ChatColor.LIGHT_PURPLE + automaton.getName()
-            + ChatColor.AQUA + " at " + TextUtils.printLocation(automaton.getLocation(), 0));
+        player.sendMessage(ChatColor.AQUA + "Created automaton: " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
+            + ChatColor.AQUA + " at " + TextUtils.printLocation(magicBlock.getLocation(), 0));
     }
 
-    private void playEffects(CommandSender sender, Automaton automaton, String effectsKey) {
-        selections.playEffects(sender, automaton, effectsKey);
+    private void playEffects(CommandSender sender, MagicBlock magicBlock, String effectsKey) {
+        selections.playEffects(sender, magicBlock, effectsKey);
     }
 
-    private void onRemoveAutomata(CommandSender sender, Automaton automaton) {
-        if (automaton == null) {
+    private void onRemoveAutomata(CommandSender sender, MagicBlock magicBlock) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
-        if (!magicController.unregisterAutomaton(automaton)) {
+        if (!magicController.unregisterAutomaton(magicBlock)) {
             sender.sendMessage(ChatColor.RED + "Could not find automata at given position (something went wrong)");
             return;
         }
 
-        Location location = automaton.getLocation();
+        Location location = magicBlock.getLocation();
         selections.clearSelection(sender);
 
-        playEffects(sender, automaton, "blockremove");
-        String rangeMessage = selections.getDistanceMessage(sender, automaton);
-        String message = ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + automaton.getName()
+        playEffects(sender, magicBlock, "blockremove");
+        String rangeMessage = selections.getDistanceMessage(sender, magicBlock);
+        String message = ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
@@ -202,8 +202,8 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(message);
     }
 
-    private void onDebugAutomaton(CommandSender sender, Automaton automaton, String[] args) {
-        if (automaton == null) {
+    private void onDebugAutomaton(CommandSender sender, MagicBlock magicBlock, String[] args) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
@@ -217,22 +217,22 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        Mage mage = automaton.getMage();
+        Mage mage = magicBlock.getMage();
 
         if (level == 0 || (mage.getDebugLevel() > 0 && level == 1)) {
             mage.setDebugLevel(0);
             mage.setDebugger(null);
-            sender.sendMessage(ChatColor.GOLD + "Disabling debug for " + ChatColor.AQUA + automaton.getName());
+            sender.sendMessage(ChatColor.GOLD + "Disabling debug for " + ChatColor.AQUA + magicBlock.getName());
             return;
         }
 
         mage.setDebugLevel(level);
         mage.setDebugger(sender);
 
-        Location location = automaton.getLocation();
-        playEffects(sender, automaton, "blockdebug");
-        String rangeMessage = selections.getDistanceMessage(sender, automaton);
-        String message = ChatColor.YELLOW + "Debugging " + ChatColor.LIGHT_PURPLE + automaton.getName()
+        Location location = magicBlock.getLocation();
+        playEffects(sender, magicBlock, "blockdebug");
+        String rangeMessage = selections.getDistanceMessage(sender, magicBlock);
+        String message = ChatColor.YELLOW + "Debugging " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
@@ -240,20 +240,20 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(message);
     }
 
-    private void onEnableAutomaton(CommandSender sender, Automaton automaton) {
-        if (automaton == null) {
+    private void onEnableAutomaton(CommandSender sender, MagicBlock magicBlock) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
-        if (automaton.isEnabled()) {
+        if (magicBlock.isEnabled()) {
             sender.sendMessage(ChatColor.RED + "Automaton is already enabled");
             return;
         }
-        automaton.enable();
-        Location location = automaton.getLocation();
-        playEffects(sender, automaton, "blockselect");
-        String rangeMessage = selections.getDistanceMessage(sender, automaton);
-        String message = ChatColor.YELLOW + "Enabled " + ChatColor.LIGHT_PURPLE + automaton.getName()
+        magicBlock.enable();
+        Location location = magicBlock.getLocation();
+        playEffects(sender, magicBlock, "blockselect");
+        String rangeMessage = selections.getDistanceMessage(sender, magicBlock);
+        String message = ChatColor.YELLOW + "Enabled " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
@@ -261,20 +261,20 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(message);
     }
 
-    private void onDisableAutomaton(CommandSender sender, Automaton automaton) {
-        if (automaton == null) {
+    private void onDisableAutomaton(CommandSender sender, MagicBlock magicBlock) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
-        if (!automaton.isEnabled()) {
+        if (!magicBlock.isEnabled()) {
             sender.sendMessage(ChatColor.RED + "Automaton is already disabled");
             return;
         }
-        automaton.disable();
-        Location location = automaton.getLocation();
-        playEffects(sender, automaton, "blockremove");
-        String rangeMessage = selections.getDistanceMessage(sender, automaton);
-        String message = ChatColor.YELLOW + "Disabled " + ChatColor.LIGHT_PURPLE + automaton.getName()
+        magicBlock.disable();
+        Location location = magicBlock.getLocation();
+        playEffects(sender, magicBlock, "blockremove");
+        String rangeMessage = selections.getDistanceMessage(sender, magicBlock);
+        String message = ChatColor.YELLOW + "Disabled " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
         if (rangeMessage != null) {
             message += rangeMessage;
@@ -282,88 +282,88 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(message);
     }
 
-    private void onTPAutomata(CommandSender sender, Automaton automaton) {
+    private void onTPAutomata(CommandSender sender, MagicBlock magicBlock) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
             return;
         }
-        if (automaton == null) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
         Player player = (Player)sender;
-        Location location = automaton.getLocation();
-        player.teleport(automaton.getLocation());
-        String message = ChatColor.YELLOW + "Teleported you to " + ChatColor.LIGHT_PURPLE + automaton.getName()
+        Location location = magicBlock.getLocation();
+        player.teleport(magicBlock.getLocation());
+        String message = ChatColor.YELLOW + "Teleported you to " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
         sender.sendMessage(message);
     }
 
-    private void onMoveAutomata(CommandSender sender, Automaton automaton) {
+    private void onMoveAutomata(CommandSender sender, MagicBlock magicBlock) {
         if (!(sender instanceof Player)) {
             sender.sendMessage(ChatColor.RED + "This command may only be used in-game");
             return;
         }
-        if (automaton == null) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
         Player player = (Player)sender;
         Location location = player.getLocation();
-        Automaton existing = magicController.getAutomatonAt(location);
+        MagicBlock existing = magicController.getAutomatonAt(location);
         if (existing != null) {
             player.sendMessage(ChatColor.RED + "Automata already exists: " + ChatColor.LIGHT_PURPLE + existing.getName()
                 + ChatColor.RED + " at " + TextUtils.printLocation(existing.getLocation(), 0));
             return;
         }
 
-        magicController.moveAutomaton(automaton, location);
-        String message = ChatColor.YELLOW + "Moved " + ChatColor.LIGHT_PURPLE + automaton.getName()
+        magicController.moveAutomaton(magicBlock, location);
+        String message = ChatColor.YELLOW + "Moved " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " to " + TextUtils.printLocation(location, 0);
         sender.sendMessage(message);
     }
 
-    private void onDescribeAutomata(CommandSender sender, Automaton automaton) {
-        if (automaton == null) {
+    private void onDescribeAutomata(CommandSender sender, MagicBlock magicBlock) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
-        Location location = automaton.getLocation();
+        Location location = magicBlock.getLocation();
 
-        playEffects(sender, automaton, "blockselect");
-        String message = ChatColor.LIGHT_PURPLE + automaton.getName()
+        playEffects(sender, magicBlock, "blockselect");
+        String message = ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0)
-            + selections.getDistanceMessage(sender, automaton);
+            + selections.getDistanceMessage(sender, magicBlock);
         sender.sendMessage(message);
-        String description = automaton.getDescription();
+        String description = magicBlock.getDescription();
         if (description != null) {
             sender.sendMessage(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + description);
         }
-        if (automaton.hasSpawner()) {
-            Nearby nearby = automaton.getNearby();
+        if (magicBlock.hasSpawner()) {
+            Nearby nearby = magicBlock.getNearby();
             if (nearby != null) {
-                int limit = automaton.getSpawnLimit();
+                int limit = magicBlock.getSpawnLimit();
                 sender.sendMessage(ChatColor.GOLD + "Has " + ChatColor.GREEN + nearby.mobs
                     + ChatColor.GRAY + "/" + ChatColor.DARK_GREEN + limit
                     + ChatColor.GOLD + " active mobs");
-                int minPlayers = automaton.getSpawnMinPlayers();
+                int minPlayers = magicBlock.getSpawnMinPlayers();
                 sender.sendMessage(ChatColor.GOLD + "Has " + ChatColor.GREEN + nearby.players
                     + ChatColor.GRAY + "/" + ChatColor.DARK_GREEN + minPlayers
                     + ChatColor.GOLD + " nearby players");
             }
 
-            long timeToNextSpawn = automaton.getTimeToNextSpawn();
+            long timeToNextSpawn = magicBlock.getTimeToNextSpawn();
             sender.sendMessage(ChatColor.GOLD + "Time to next spawn: " + controller.getMessages().getTimeDescription(timeToNextSpawn, "description", "cooldown"));
         }
 
-        String creatorName = automaton.getCreatorName();
+        String creatorName = magicBlock.getCreatorName();
         if (creatorName != null && !creatorName.isEmpty()) {
             sender.sendMessage(ChatColor.DARK_GREEN + "  Created by: " + ChatColor.GREEN + creatorName);
         }
-        ConfigurationSection parameters = automaton.getParameters();
+        ConfigurationSection parameters = magicBlock.getParameters();
         Set<String> parameterKeys = null;
         if (parameters == null) {
             sender.sendMessage(ChatColor.YELLOW + "(No Parameters)");
@@ -380,7 +380,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
                 }
             }
         }
-        AutomatonTemplate template = automaton.getTemplate();
+        MagicBlockTemplate template = magicBlock.getTemplate();
         if (template != null) {
             ConfigurationSection templateParameters = template.getConfiguration();
             Set<String> keys = templateParameters.getKeys(true);
@@ -396,52 +396,52 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         }
     }
 
-    private void onNameAutomata(CommandSender sender, Automaton automaton, String[] args) {
-        if (automaton == null) {
+    private void onNameAutomata(CommandSender sender, MagicBlock magicBlock, String[] args) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
         if (args.length == 0) {
-            automaton.setName(null);
-            sender.sendMessage(ChatColor.GREEN + "Cleared custom name for " + ChatColor.WHITE + automaton.getName());
+            magicBlock.setName(null);
+            sender.sendMessage(ChatColor.GREEN + "Cleared custom name for " + ChatColor.WHITE + magicBlock.getName());
             return;
         }
 
-        String currentName = automaton.getName();
-        automaton.setName(StringUtils.join(args, " "));
-        sender.sendMessage(ChatColor.GREEN + "Renamed " + ChatColor.WHITE + currentName + ChatColor.GRAY + " to " + ChatColor.AQUA + automaton.getName());
+        String currentName = magicBlock.getName();
+        magicBlock.setName(StringUtils.join(args, " "));
+        sender.sendMessage(ChatColor.GREEN + "Renamed " + ChatColor.WHITE + currentName + ChatColor.GRAY + " to " + ChatColor.AQUA + magicBlock.getName());
     }
 
-    private void onConfigureAutomata(CommandSender sender, Automaton automaton, String[] args) {
+    private void onConfigureAutomata(CommandSender sender, MagicBlock magicBlock, String[] args) {
         if (args.length == 0) {
             sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mblock configure <property> [value]");
             return;
         }
 
-        if (automaton == null) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
         String key = args[0];
-        ConfigurationSection parameters = automaton.getParameters();
+        ConfigurationSection parameters = magicBlock.getParameters();
         if (args.length == 1 && (parameters == null || !parameters.contains(key))) {
             sender.sendMessage(ChatColor.RED + "Automata does not have a " + ChatColor.WHITE + key + ChatColor.RED + " parameter");
             return;
         }
 
-        Location location = automaton.getLocation();
+        Location location = magicBlock.getLocation();
 
-        selections.playEffects(sender, automaton, "blockselect");
-        String message = ChatColor.GREEN + "Configured " + ChatColor.LIGHT_PURPLE + automaton.getName()
+        selections.playEffects(sender, magicBlock, "blockselect");
+        String message = ChatColor.GREEN + "Configured " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0)
-            + selections.getDistanceMessage(sender, automaton);
+            + selections.getDistanceMessage(sender, magicBlock);
         sender.sendMessage(message);
 
-        boolean isActive = magicController.isActive(automaton);
+        boolean isActive = magicController.isActive(magicBlock);
         if (isActive) {
-            automaton.pause();
+            magicBlock.pause();
         }
         if (args.length == 1) {
             parameters.set(key, null);
@@ -453,19 +453,19 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
             String configValue = StringUtils.join(Arrays.copyOfRange(args, 1, args.length), " ");
             ConfigurationUtils.set(parameters, key, configValue);
             Object value = parameters.get(key);
-            automaton.setParameters(parameters);
+            magicBlock.setParameters(parameters);
             sender.sendMessage(ChatColor.DARK_AQUA + "Set property: " + ChatColor.AQUA + key
                 + ChatColor.DARK_AQUA + " to " + ChatColor.WHITE + CompatibilityLib.getInventoryUtils().describeProperty(value));
         }
 
-        automaton.reload();
+        magicBlock.reload();
         if (isActive) {
-            automaton.resume();
+            magicBlock.resume();
         }
     }
 
     private void onSelectAutomata(CommandSender sender, String[] args) {
-        List<Automaton> list = selections.getList(sender);
+        List<MagicBlock> list = selections.getList(sender);
         if (list == null || args.length == 0) {
             if (sender instanceof Player) {
                 list = selections.updateList(sender).getList();
@@ -473,13 +473,13 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
                     if (list.isEmpty()) {
                         sender.sendMessage(ChatColor.RED + "Could not find any automata");
                     } else {
-                        Automaton automaton = list.get(0);
-                        selections.playEffects(sender, automaton, "blockselect");
-                        String message = ChatColor.GREEN + "Selected nearby " + ChatColor.LIGHT_PURPLE + automaton.getName()
-                            + ChatColor.GREEN + " at " + TextUtils.printLocation(automaton.getLocation(), 0)
-                            + selections.getDistanceMessage(sender, automaton);
+                        MagicBlock magicBlock = list.get(0);
+                        selections.playEffects(sender, magicBlock, "blockselect");
+                        String message = ChatColor.GREEN + "Selected nearby " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
+                            + ChatColor.GREEN + " at " + TextUtils.printLocation(magicBlock.getLocation(), 0)
+                            + selections.getDistanceMessage(sender, magicBlock);
                         sender.sendMessage(message);
-                        selections.setSelection(sender, automaton);
+                        selections.setSelection(sender, magicBlock);
                     }
                     return;
                 }
@@ -493,7 +493,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        Automaton automaton = null;
+        MagicBlock magicBlock = null;
         String name = args[0];
         if (args.length > 0) {
             try {
@@ -503,30 +503,30 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
                         + ChatColor.GRAY + "/" + ChatColor.WHITE + list.size());
                     return;
                 }
-                automaton = list.get(index - 1);
+                magicBlock = list.get(index - 1);
             } catch (NumberFormatException ignore) {
             }
         }
-        if (automaton == null) {
-            for (Automaton candidate : list) {
+        if (magicBlock == null) {
+            for (MagicBlock candidate : list) {
                 if (candidate.getName().equalsIgnoreCase(name) || candidate.getTemplateKey().equalsIgnoreCase(name)) {
-                    automaton = candidate;
+                    magicBlock = candidate;
                     break;
                 }
             }
         }
-        if (automaton == null) {
+        if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "Could not find: " + ChatColor.WHITE + name);
             return;
         }
 
-        selections.setSelection(sender, automaton);
-        Location location = automaton.getLocation();
+        selections.setSelection(sender, magicBlock);
+        Location location = magicBlock.getLocation();
 
-        selections.playEffects(sender, automaton, "blockselect");
-        String message = ChatColor.GREEN + "Selected " + ChatColor.LIGHT_PURPLE + automaton.getName()
+        selections.playEffects(sender, magicBlock, "blockselect");
+        String message = ChatColor.GREEN + "Selected " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0)
-            + selections.getDistanceMessage(sender, automaton);
+            + selections.getDistanceMessage(sender, magicBlock);
         sender.sendMessage(message);
     }
 
@@ -559,7 +559,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
             options.add("enable");
             options.add("disable");
         } else if (args.length == 2 && subCommand.equalsIgnoreCase("add")) {
-            options.addAll(magicController.getAutomatonTemplateKeys());
+            options.addAll(magicController.getMagicBlockTemplateKeys());
         } else if (isConfigure) {
             switch (property) {
                 case "spawn.mobs":

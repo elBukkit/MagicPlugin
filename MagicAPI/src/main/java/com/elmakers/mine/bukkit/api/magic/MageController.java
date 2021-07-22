@@ -34,6 +34,7 @@ import com.elmakers.mine.bukkit.api.block.BlockList;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.Schematic;
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
@@ -170,7 +171,9 @@ public interface MageController {
     Collection<String> getSpellTemplateKeys();
     Collection<SpellTemplate> getSpellTemplates();
     Collection<SpellTemplate> getSpellTemplates(boolean showHidden);
+    @Deprecated
     Collection<String> getAutomatonTemplateKeys();
+    Collection<String> getMagicBlockTemplateKeys();
     Collection<String> getRecipeKeys();
     Collection<String> getAutoDiscoverRecipeKeys();
     Collection<String> getArenaKeys();
@@ -250,6 +253,8 @@ public interface MageController {
     Mage getRegisteredMage(@Nonnull Entity entity);
     @Nonnull
     Mage getAutomaton(@Nonnull String id, @Nonnull String name);
+    @Nonnull
+    Mage getBlockMage(@Nonnull String id, @Nonnull String name);
     @Nonnull
     Mage getConsoleMage();
     boolean showConsoleCastFeedback();
@@ -796,6 +801,9 @@ public interface MageController {
     Warp getMagicWarp(String warpKey);
     @Nonnull
     Collection<? extends Warp> getMagicWarps();
+    @Nullable
+    MagicBlock addMagicBlock(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters);
+    @Deprecated
     @Nullable
     Automaton addAutomaton(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters);
     @Nonnull

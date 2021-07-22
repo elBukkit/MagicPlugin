@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.automata;
+package com.elmakers.mine.bukkit.block.magic;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -29,11 +29,12 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automata.Automaton {
+public class MagicBlock implements Locatable, com.elmakers.mine.bukkit.api.automata.Automaton,
+        com.elmakers.mine.bukkit.api.block.magic.MagicBlock {
     @Nonnull
     private final MagicController controller;
     @Nullable
-    private AutomatonTemplate template;
+    private MagicBlockTemplate template;
     @Nullable
     private ConfigurationSection parameters;
     private String templateKey;
@@ -54,7 +55,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
 
     private Mage mage;
 
-    public Automaton(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
+    public MagicBlock(@Nonnull MagicController controller, @Nonnull ConfigurationSection node) {
         this.controller = controller;
         enabled = node.getBoolean("enabled", true);
         templateKey = node.getString("template");
@@ -87,7 +88,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
         location = new Location(world, x, y, z, yaw, pitch);
     }
 
-    public Automaton(@Nonnull MagicController controller, @Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters) {
+    public MagicBlock(@Nonnull MagicController controller, @Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters) {
         this.controller = controller;
         this.templateKey = templateKey;
         this.parameters = parameters;
@@ -100,7 +101,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
         this.creatorName = creatorName;
     }
 
-    private void setTemplate(AutomatonTemplate template) {
+    private void setTemplate(MagicBlockTemplate template) {
         this.template = template;
         if (template != null) {
             if (parameters != null) {
@@ -340,7 +341,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     }
 
     @Nullable
-    public AutomatonTemplate getTemplate() {
+    public MagicBlockTemplate getTemplate() {
         return template;
     }
 
@@ -378,7 +379,7 @@ public class Automaton implements Locatable, com.elmakers.mine.bukkit.api.automa
     public Mage getMage() {
         if (mage == null) {
             String automatonId = UUID.randomUUID().toString();
-            mage = controller.getAutomaton(automatonId, template == null ? "?" : template.getName());
+            mage = controller.getBlockMage(automatonId, template == null ? "?" : template.getName());
             mage.setLocation(location);
         }
 

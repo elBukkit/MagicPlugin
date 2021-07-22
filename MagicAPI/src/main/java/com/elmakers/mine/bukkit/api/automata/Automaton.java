@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.api.automata;
 
-public interface Automaton {
-    void pause();
-    void resume();
+import com.elmakers.mine.bukkit.api.block.magic.MagicBlock;
+
+public interface Automaton extends MagicBlock {
 }

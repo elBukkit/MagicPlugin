@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.automata;
+package com.elmakers.mine.bukkit.block.magic;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
@@ -20,7 +20,7 @@ public class Caster {
     private final boolean undoAll;
     private final boolean allowOverlapping;
 
-    public Caster(@Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
+    public Caster(@Nonnull MagicBlockTemplate automaton, ConfigurationSection configuration) {
         spells = new ArrayDeque<>();
         RandomUtils.populateStringProbabilityMap(spells, configuration, "spells");
         recast = configuration.getBoolean("recast", true);

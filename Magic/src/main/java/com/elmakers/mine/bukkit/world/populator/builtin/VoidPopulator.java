@@ -8,11 +8,9 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.world.BlockResult;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class VoidPopulator extends MagicBlockPopulator {
-    private static MaterialAndData AIR = new MaterialAndData(Material.AIR);
-
+public class VoidPopulator extends BaseBlockPopulator {
     @Override
     public boolean onLoad(ConfigurationSection configuration) {
         return true;

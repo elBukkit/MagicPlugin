@@ -13,9 +13,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MaterialMap;
 import com.elmakers.mine.bukkit.world.BlockResult;
-import com.elmakers.mine.bukkit.world.populator.MagicBlockPopulator;
+import com.elmakers.mine.bukkit.world.populator.BaseBlockPopulator;
 
-public class ReplacePopulator extends MagicBlockPopulator {
+public class ReplacePopulator extends BaseBlockPopulator {
     private static final int WARNING_INTERVAL = 10000;
     private MaterialMap replaceMap = null;
     private Map<Biome, Biome> replaceBiomes = null;

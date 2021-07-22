@@ -31,7 +31,11 @@
 
 ## Changes
 
- - Rebranded the /mauto command as /mblock, "Automata" as "Magic Blocks". The /mauto should still work as an alias.
+ - Rebranded "automata" to "magic blocks", to avoid confusion with the "block monster" automata
+   - The `/mauto` command is now `/mblock`, though `/mauto` should still work as an alias.
+   - The `CreateAutomaton` action was renamed to `CreateMagicBlock`. The `CreateAutomaton` action should still work.
+   - `AutomatonRule` changed to `MagicBlockRule`, `AutomatonRule` should still work.
+   - `AutomatonPopulator` changed to `MagicBlockPopulator`, `AutomatonPopulator` should still work. 
  - Mob interact spells will use the player's spell level
  - Rebalance example wands to better match paths, turn off SP earn for them
    You should not be using these wands for anything other than demoing, but if you need to undo this change you can

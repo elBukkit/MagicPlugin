@@ -302,7 +302,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             }
         }
         if (fileType.equals("automata")) {
-            Collection<String> list = api.getController().getAutomatonTemplateKeys();
+            Collection<String> list = api.getController().getMagicBlockTemplateKeys();
             for (String key : list) {
                 options.add(key);
             }

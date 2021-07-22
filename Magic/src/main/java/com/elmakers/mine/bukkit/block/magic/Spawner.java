@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.automata;
+package com.elmakers.mine.bukkit.block.magic;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -55,7 +55,7 @@ public class Spawner {
     private final boolean leash;
     private int interval;
 
-    public Spawner(@Nonnull MageController controller, @Nonnull AutomatonTemplate automaton, ConfigurationSection configuration) {
+    public Spawner(@Nonnull MageController controller, @Nonnull MagicBlockTemplate automaton, ConfigurationSection configuration) {
         this.controller = controller;
         ConfigurationSection entityParameters = configuration.getConfigurationSection("parameters");
         entityTypeProbability = new ArrayDeque<>();
@@ -168,11 +168,11 @@ public class Spawner {
         return null;
     }
 
-    public Nearby getNearby(Automaton automaton) {
-        Location location = automaton.getLocation();
+    public Nearby getNearby(MagicBlock magicBlock) {
+        Location location = magicBlock.getLocation();
         int range = 0;
         Nearby nearby = new Nearby();
-        nearby.mobs = automaton.getSpawnedCount();
+        nearby.mobs = magicBlock.getSpawnedCount();
         int playerRangeSquared = playerRange * playerRange;
         int limitRangeSquared = limitRange * limitRange;
         boolean hasLimit = limit > 0 && limitRange > 0;
@@ -206,8 +206,8 @@ public class Spawner {
     }
 
     @Nullable
-    public List<Entity> spawn(Automaton automaton) {
-        Location location = automaton.getLocation();
+    public List<Entity> spawn(MagicBlock magicBlock) {
+        Location location = magicBlock.getLocation();
         if (entityTypeProbability.isEmpty()) {
             return null;
         }
@@ -223,7 +223,7 @@ public class Spawner {
         boolean hasLimit = limit > 0 && limitRange > 0;
         boolean requiresPlayers = playerRange > 0 && minPlayers > 0;
         if (hasLimit || requiresPlayers) {
-            nearby = getNearby(automaton);
+            nearby = getNearby(magicBlock);
             if (requiresPlayers && nearby.players < minPlayers) {
                 return null;
             }
