@@ -29,9 +29,11 @@ import ch.njol.skript.registrations.EventValues;
 import ch.njol.skript.util.Getter;
 
 public class SkriptManager {
+    public static MageController controller;
 
     public SkriptManager(MageController controller) {
         Plugin plugin = controller.getPlugin();
+        SkriptManager.controller = controller;
 
         EvtCast.register();
         EvtPreCast.register();

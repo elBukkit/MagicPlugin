@@ -4,9 +4,11 @@ import javax.annotation.Nullable;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
+import com.elmakers.mine.bukkit.integration.SkriptManager;
 
 import ch.njol.skript.ScriptLoader;
 import ch.njol.skript.Skript;
@@ -51,6 +53,12 @@ public class ExprCaster extends SimpleExpression<Entity> {
     private static Entity getCaster(final Event e) {
         if (e != null && e instanceof CastEvent) {
             return ((CastEvent)e).getMage().getEntity();
+        }
+        if (e != null && e instanceof EntityDamageByEntityEvent) {
+            EntityDamageByEntityEvent damageEvent = (EntityDamageByEntityEvent)e;
+            Entity source = damageEvent.getDamager();
+            source = SkriptManager.controller.getDamageSource(source);
+            return source;
         }
         return null;
     }
