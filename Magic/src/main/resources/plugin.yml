@@ -752,24 +752,25 @@ commands:
         /mkit <Player> [kit]
         /mgive starter
         /mgive NathanWolf admin
-  mauto:
+  mblock:
     description: Manage Automatic Blocks, such as spawners or effects
-    permission: Magic.commands.mauto
+    permission: Magic.commands.mblock
+    aliases: [mauto]
     usage: |
-        /mauto add <template> <params>    Add a new automatic block at your feet
-        /mauto add spawner                Add a spawner from automata.yml
-        /mauto add fountain               Add a particle fountain from automata.yml
-        /mauto add spawner spawn.mobs creeper Add a custom creeper spawner
-        /mauto select                     Select the automaton closest to you
-        /mauto remove                     Remove the selected automaton
-        /mauto list <page>                List all automata
-        /mauto describe                   Show details of selected automaton
-        /mauto configure                  Configure properties of selected automaton
-        /mauto tp                         Teleport to the selected automaton
-        /mauto move                       Move the selected automaton to your location
-        /mauto debug                      Debug spell casts from the selected automaton
-        /mauto disable                    Turn off an automaton without removing it
-        /mauto enable                     Reactivate a disabled automaton
+        /mblock add <template> <params>    Add a new automatic block at your feet
+        /mblock add spawner                Add a spawner from automata.yml
+        /mblock add fountain               Add a particle fountain from automata.yml
+        /mblock add spawner spawn.mobs creeper Add a custom creeper spawner
+        /mblock select                     Select the automaton closest to you
+        /mblock remove                     Remove the selected automaton
+        /mblock list <page>                List all automata
+        /mblock describe                   Show details of selected automaton
+        /mblock configure                  Configure properties of selected automaton
+        /mblock tp                         Teleport to the selected automaton
+        /mblock move                       Move the selected automaton to your location
+        /mblock debug                      Debug spell casts from the selected automaton
+        /mblock disable                    Turn off an automaton without removing it
+        /mblock enable                     Reactivate a disabled automaton
   mmob:
     description: Manage Magic Mobs
     permission: Magic.commands.mmob
@@ -1005,7 +1006,7 @@ permissions:
     - Magic.commands.mtrait
     - Magic.commands.mmob
     - Magic.commands.mnpc
-    - Magic.commands.mauto
+    - Magic.commands.mblock
     - Magic.commands.cast
     - Magic.commands.castp
     - Magic.commands.cast.parameters
@@ -1067,8 +1068,8 @@ permissions:
     description: Player may manage magic NPCs
     type: boolean
     default: op
-  Magic.commands.mauto:
-    description: Player may create and manage automatic blocks
+  Magic.commands.mblock:
+    description: Player may create and manage magic blocks
     type: boolean
     default: op
   Magic.commands.cast:

@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.google.common.collect.ImmutableSet;
 
-public class MagicAutomataCommandExecutor extends MagicTabExecutor {
+public class MagicBlockCommandExecutor extends MagicTabExecutor {
     private final MagicController magicController;
     private final AutomatonSelectionManager selections;
 
@@ -43,8 +43,8 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
     );
     private static final ImmutableSet<String> IGNORE_PROPERTIES = ImmutableSet.of("name", "description");
 
-    public MagicAutomataCommandExecutor(MagicController controller) {
-        super(controller.getAPI(), "mauto");
+    public MagicBlockCommandExecutor(MagicController controller) {
+        super(controller.getAPI(), "mblock");
         selections = new AutomatonSelectionManager(controller);
         this.magicController = controller;
     }
@@ -57,7 +57,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: mauto [add|select|remove|list|configure|describe|name]");
+            sender.sendMessage(ChatColor.RED + "Usage: mblock [add|select|remove|list|configure|describe|name]");
             return true;
         }
 
@@ -131,7 +131,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             return true;
         }
 
-        sender.sendMessage(ChatColor.RED + "Usage: mauto [add|select|remove|list|configure|describe]");
+        sender.sendMessage(ChatColor.RED + "Usage: mblock [add|select|remove|list|configure|describe]");
         return true;
     }
 
@@ -141,7 +141,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private void onAddAutomata(Player player, String[] args) {
         if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mauto add <template>");
+            player.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mblock add <template>");
             return;
         }
 
@@ -181,7 +181,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private void onRemoveAutomata(CommandSender sender, Automaton automaton) {
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
         if (!magicController.unregisterAutomaton(automaton)) {
@@ -204,7 +204,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private void onDebugAutomaton(CommandSender sender, Automaton automaton, String[] args) {
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
         int level = 1;
@@ -242,7 +242,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private void onEnableAutomaton(CommandSender sender, Automaton automaton) {
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
         if (automaton.isEnabled()) {
@@ -263,7 +263,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private void onDisableAutomaton(CommandSender sender, Automaton automaton) {
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
         if (!automaton.isEnabled()) {
@@ -288,7 +288,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             return;
         }
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
@@ -306,7 +306,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             return;
         }
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
@@ -327,7 +327,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private void onDescribeAutomata(CommandSender sender, Automaton automaton) {
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
@@ -398,7 +398,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private void onNameAutomata(CommandSender sender, Automaton automaton, String[] args) {
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
@@ -415,12 +415,12 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
 
     private void onConfigureAutomata(CommandSender sender, Automaton automaton, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mauto configure <property> [value]");
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/mblock configure <property> [value]");
             return;
         }
 
         if (automaton == null) {
-            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mauto select");
+            sender.sendMessage(ChatColor.RED + "No automata selected, use " + ChatColor.WHITE + "/mblock select");
             return;
         }
 
@@ -485,7 +485,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
                 }
             } else {
                 if (args.length == 0) {
-                    sender.sendMessage(ChatColor.RED + "Nothing to select, Use " + ChatColor.WHITE + "/mauto list");
+                    sender.sendMessage(ChatColor.RED + "Nothing to select, Use " + ChatColor.WHITE + "/mblock list");
                     return;
                 } else {
                     list = selections.updateList(sender).getList();
@@ -543,7 +543,7 @@ public class MagicAutomataCommandExecutor extends MagicTabExecutor {
             property = args[args.length - 2];
         }
 
-        if (!sender.hasPermission("Magic.commands.mauto")) return options;
+        if (!sender.hasPermission("Magic.commands.mblock")) return options;
         if (args.length == 1) {
             options.add("add");
             options.add("list");

@@ -26,7 +26,7 @@ import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.magic.command.ArenaCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.CastCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MageCommandExecutor;
-import com.elmakers.mine.bukkit.magic.command.MagicAutomataCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.MagicBlockCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicConfigCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicEditorCommandExecutor;
@@ -192,7 +192,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         new MagicItemCommandExecutor(this).register(this);
         new MagicMobCommandExecutor(this).register(this);
         new MagicNPCCommandExecutor(this).register(this);
-        new MagicAutomataCommandExecutor(controller).register(this);
+        new MagicBlockCommandExecutor(controller).register(this);
         new MagicMapCommandExecutor(this).register(this);
         new MagicServerCommandExecutor(this).register(this);
         new MagicSaveCommandExecutor(this).register(this);

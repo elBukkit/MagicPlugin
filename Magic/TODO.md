@@ -1,5 +1,10 @@
 # TODO
 
+# /mblock
+
+ - Migrate automata configs and data to blocks
+ - Update mconfig command
+
 # Demo server
 
  - Need a way to duplicate NPCs
@@ -21,6 +26,8 @@
    - arenas
    - mobs
    - items
+   - worlds
+   - automata
 
 ## Arenas
 
@@ -58,6 +65,7 @@
 
 # Bugs
 
+ - Copying an east-facing item frame didn't work
  - Context-specific variables don't represent the current state of the action tree
    not sure if this only affects ModifyVariable? Maybe it only needs to be fixed there?
  - Got "Recall got to doTeleport with no waypoint selected" .. how?
