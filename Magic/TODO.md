@@ -23,7 +23,7 @@
    - World enter behavior needs to trigger on login
 
  - Features
-   - npcs (add GUI example instead of a shop)
+   - ~~npcs~~
    - warps
    - arenas
    - ~~mobs~~

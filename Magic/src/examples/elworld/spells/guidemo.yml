@@ -1,0 +1,40 @@
+guidemo:
+  hidden: true
+  category: npc
+  actions:
+    cast:
+      - class: CheckInventory
+        item: navigator
+        slot: main_hand
+        actions:
+          - class: Selector
+            auto_close: true
+            title: How are you liking the demo?
+            placeholder_icon: icon_placeholder
+            yeah:
+              - class: Message
+                message: "&aAwesome, glad to hear it!"
+            nope:
+              - class: Message
+                message: "&cOh no! ☹ &fFeel free to join our Discord server if you have some feedback! &nhttps://discord.gg/QHH2RSq"
+            options:
+              - placeholder: true
+              - placeholder: true
+              - icon: icon_yes
+                actions: yeah
+                name: "It's great!"
+              - placeholder: true
+              - placeholder: true
+              - icon: icon_no
+                name: "Don't like it at all"
+                actions: nope
+              - placeholder: true
+              - placeholder: true
+              - placeholder: true
+        fail:
+          - class: Message
+            message: "Can you please hold your &bNavigator&f and try again?"
+  parameters:
+    target: self
+    free: true
+
