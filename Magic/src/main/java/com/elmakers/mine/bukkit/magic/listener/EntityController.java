@@ -189,7 +189,7 @@ public class EntityController implements Listener {
 
         // Make sure to resolve the source after getting the undo list, since the undo
         // list is attached to the projectile.
-        damager = CompatibilityLib.getCompatibilityUtils().getSource(damager);
+        damager = controller.getDamageSource(damager);
         Mage mage = controller.getRegisteredMage(damager);
         if (mage != null && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             ((com.elmakers.mine.bukkit.magic.Mage)mage).onDamageDealt(event);
@@ -411,7 +411,7 @@ public class EntityController implements Listener {
         if (damageEvent instanceof EntityDamageByEntityEvent) {
             EntityDamageByEntityEvent dbe = (EntityDamageByEntityEvent)damageEvent;
             Entity damager = dbe.getDamager();
-            damager = CompatibilityLib.getCompatibilityUtils().getSource(damager);
+            damager = controller.getDamageSource(damager);
             if (damager != null) {
                 Mage damagerMage = controller.getRegisteredMage(damager);
                 if (damagerMage != null) {

@@ -1175,7 +1175,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
             if (!(lastDamage instanceof EntityDamageByEntityEvent)) return;
             Entity damager = ((EntityDamageByEntityEvent)lastDamage).getDamager();
-            damager = CompatibilityLib.getCompatibilityUtils().getSource(damager);
+            damager = controller.getDamageSource(damager);
             if (!(damager instanceof Player) || damager == event.getEntity()) return;
         }
 

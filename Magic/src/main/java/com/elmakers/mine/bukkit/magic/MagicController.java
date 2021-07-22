@@ -65,6 +65,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPhysicsEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -8322,7 +8323,17 @@ public class MagicController implements MageController {
 
     @Override
     public Entity getDamageSource(Entity entity) {
-        return CompatibilityLib.getCompatibilityUtils().getSource(entity);
+        Entity source = CompatibilityLib.getCompatibilityUtils().getSource(entity);
+        if (source instanceof TNTPrimed) {
+            UndoList blockList = getEntityUndo(source);
+            if (blockList != null) {
+                Mage owner = blockList.getOwner();
+                Entity mageEntity = owner == null ? null : owner.getEntity();
+                if (mageEntity != null) {
+                    source = mageEntity;
+                }
+            }
+        }
     }
 
     @Override
