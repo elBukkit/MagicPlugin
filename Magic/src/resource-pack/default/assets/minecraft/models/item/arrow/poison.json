@@ -1,7 +1,6 @@
 {
-    "parent" : "item/custom/icon",
+    "parent" : "item/generated",
     "textures": {
-        "particle": "arrows/poison",
-        "texture": "arrows/poison"
+        "layer0": "arrows/poison"
     }
 }
