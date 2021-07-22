@@ -556,7 +556,7 @@ public class BlockController implements Listener, ChunkLoadListener {
 
     @EventHandler
     public void onWorldInit(WorldInitEvent e) {
-        controller.checkAutomata(e.getWorld());
+        controller.checkMagicBlocks(e.getWorld());
         controller.checkNPCs(e.getWorld());
     }
 

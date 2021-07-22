@@ -42,8 +42,8 @@ load_default_mobs: true
 # Set to false to skip loading defaults/items.defaults.yml entirely.
 load_default_items: true
 
-# Set to false to skip loading defaults/automata.defaults.yml entirely.
-load_default_automata: true
+# Set to false to skip loading defaults/blocks.defaults.yml entirely.
+load_default_blocks: true
 
 # Set to false to skip loading defaults/effects.defaults.yml entirely.
 load_default_effects: true
@@ -440,7 +440,7 @@ mage_update_frequency: 5
 # How often to "tick" an Automaton, which is a virtual block that
 # can cast spells, spawn mobs or produce effects.
 # Decreasing this value may introduce some lag (though probably not)
-automata_update_frequency: 10
+magic_block_update_frequency: 10
 
 # How long to exempt players from flight checks for each tick that
 # they have a jump potion effect

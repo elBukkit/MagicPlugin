@@ -222,7 +222,6 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
 import com.elmakers.mine.bukkit.tasks.AutoSaveTask;
-import com.elmakers.mine.bukkit.tasks.AutomataUpdateTask;
 import com.elmakers.mine.bukkit.tasks.BatchUpdateTask;
 import com.elmakers.mine.bukkit.tasks.ChangeServerTask;
 import com.elmakers.mine.bukkit.tasks.ConfigCheckTask;
@@ -234,6 +233,7 @@ import com.elmakers.mine.bukkit.tasks.LogNotifyTask;
 import com.elmakers.mine.bukkit.tasks.LogWatchdogTask;
 import com.elmakers.mine.bukkit.tasks.MageQuitTask;
 import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
+import com.elmakers.mine.bukkit.tasks.MagicBlockUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MigrateDataTask;
 import com.elmakers.mine.bukkit.tasks.MigrationTask;
 import com.elmakers.mine.bukkit.tasks.PostStartupLoadTask;
@@ -275,7 +275,7 @@ public class MagicController implements MageController {
     private static final String WARPS_FILE = "warps";
     private static final String ARENAS_FILE = "arenas";
     private static final String SPELLS_DATA_FILE = "spells";
-    private static final String AUTOMATA_DATA_FILE = "automata";
+    private static final String BLOCKS_DATA_FILE = "blocks";
     private static final String NPC_DATA_FILE = "npcs";
     private static final String URL_MAPS_FILE = "imagemaps";
     private static final String DEFAULT_DATASTORE_PACKAGE = "com.elmakers.mine.bukkit.data";
@@ -469,7 +469,7 @@ public class MagicController implements MageController {
     private MigrateDataTask migrateDataTask = null;
     private BukkitTask logWatchdogTimer = null;
     private MagicPlugin plugin = null;
-    private int automataUpdateFrequency = 1;
+    private int magicBlockUpdateFrequency = 1;
     private int mageUpdateFrequency = 5;
     private int workFrequency = 1;
     private int undoFrequency = 10;
@@ -494,7 +494,7 @@ public class MagicController implements MageController {
     private Mailer mailer = null;
     private PhysicsHandler physicsHandler = null;
     private List<ConfigurationSection> invalidNPCs = new ArrayList<>();
-    private List<ConfigurationSection> invalidAutomata = new ArrayList<>();
+    private List<ConfigurationSection> invalidMagicBlocks = new ArrayList<>();
     private int metricsLevel = 5;
     private Metrics metrics = null;
     private boolean hasEssentials = false;
@@ -1492,26 +1492,46 @@ public class MagicController implements MageController {
         // One-time migration of legacy configurations
         migrateConfig("enchanting", "paths");
         migrateConfig("automata", "blocks");
+        migrateDataFile("automata", "blocks");
 
         // Ready to load
         load();
         resourcePacks.startResourcePackChecks();
     }
 
+    private void migrateDataFile(String fromName, String toName) {
+        migrateConfig("data/" + fromName, "data/" + toName, true);
+    }
+
     private void migrateConfig(String fromName, String toName) {
+        migrateConfig(fromName, toName, false);
+    }
+
+    private void migrateConfig(String fromName, String toName, boolean dataFile) {
         File legacyConfig = new File(configFolder, fromName + ".yml");
         File newConfig = new File(configFolder, toName + ".yml");
 
         if (!newConfig.exists() && legacyConfig.exists()) {
-            getLogger().info("Renaming "  + fromName + ".yml to " + toName + ".yml, please update " + toName + ".yml from now on");
+            String message = "Migrating "  + fromName + ".yml to " + toName + ".yml";
+            if (!dataFile) {
+                message += ", please update " + toName + ".yml from now on";
+            }
+            getLogger().info(message);
             legacyConfig.renameTo(newConfig);
+        } else if (newConfig.exists() && legacyConfig.exists()) {
+            getLogger().warning("Both files exist, will not migrate: " + fromName + ".yml and " + toName + ".yml");
         }
-        File legacyFolder = new File(configFolder, fromName);
-        File newFolder = new File(configFolder, toName);
 
-        if (!newFolder.exists() && legacyFolder.exists()) {
-            getLogger().info("Renaming folder "  + fromName + " to " + toName);
-            legacyFolder.renameTo(newFolder);
+        if (!dataFile) {
+            File legacyFolder = new File(configFolder, fromName);
+            File newFolder = new File(configFolder, toName);
+
+            if (!newFolder.exists() && legacyFolder.exists()) {
+                getLogger().info("Migrating folder "  + fromName + " to " + toName);
+                legacyFolder.renameTo(newFolder);
+            } else if (newFolder.exists() && legacyFolder.exists()) {
+                getLogger().warning("Both folders exist, will not migrate: " + fromName + " and " + toName);
+            }
         }
     }
 
@@ -2469,7 +2489,7 @@ public class MagicController implements MageController {
         }
         loadSpellData();
         loadLostWands();
-        loadAutomata();
+        loadMagicBlocks();
         loadNPCs();
 
         // Load URL Map Data
@@ -2611,26 +2631,26 @@ public class MagicController implements MageController {
         return npcCount;
     }
 
-    public void checkAutomata(World world) {
-        if (this.invalidAutomata.isEmpty()) return;
-        List<ConfigurationSection> check = this.invalidAutomata;
-        this.invalidAutomata = new ArrayList<>();
-        int automataCount = loadAutomata(check);
-        if (automataCount > 0) {
-            info("Loaded " + automataCount + " automata in world " + world.getName());
+    public void checkMagicBlocks(World world) {
+        if (this.invalidMagicBlocks.isEmpty()) return;
+        List<ConfigurationSection> check = this.invalidMagicBlocks;
+        this.invalidMagicBlocks = new ArrayList<>();
+        int blockCount = loadMagicBlocks(check);
+        if (blockCount > 0) {
+            info("Loaded " + blockCount + " magic blocks in world " + world.getName());
             for (Chunk chunk : world.getLoadedChunks()) {
                 resumeMagicBlocks(chunk);
             }
         }
     }
 
-    protected void loadAutomata() {
-        ConfigurationSection toggleBlockData = loadDataFile(AUTOMATA_DATA_FILE);
+    protected void loadMagicBlocks() {
+        ConfigurationSection toggleBlockData = loadDataFile(BLOCKS_DATA_FILE);
         if (toggleBlockData != null) {
             Collection<ConfigurationSection> list = ConfigurationUtils.getNodeList(toggleBlockData, "automata");
-            int automataCount = loadAutomata(list);
-            if (automataCount > 0) {
-                info("Loaded " + automataCount + " automata");
+            int blockCount = loadMagicBlocks(list);
+            if (blockCount > 0) {
+                info("Loaded " + blockCount + " magic blocks");
                 for (World world : Bukkit.getWorlds()) {
                     for (Chunk chunk : world.getLoadedChunks()) {
                         resumeMagicBlocks(chunk);
@@ -2640,19 +2660,19 @@ public class MagicController implements MageController {
         }
     }
 
-    protected int loadAutomata(Collection<ConfigurationSection> list) {
-        int automataCount = 0;
+    protected int loadMagicBlocks(Collection<ConfigurationSection> list) {
+        int blockCount = 0;
         try {
             for (ConfigurationSection node : list) {
                 MagicBlock magicBlock = new MagicBlock(this, node);
                 if (!magicBlock.isValid()) {
-                    invalidAutomata.add(node);
+                    invalidMagicBlocks.add(node);
                     continue;
                 }
 
                 String chunkId = getChunkKey(magicBlock.getLocation());
                 if (chunkId == null) {
-                    invalidAutomata.add(node);
+                    invalidMagicBlocks.add(node);
                     continue;
                 }
 
@@ -2665,17 +2685,17 @@ public class MagicController implements MageController {
                 long id = magicBlock.getId();
                 MagicBlock existing = restoreChunk.get(id);
                 if (existing != null) {
-                    getLogger().warning("Duplicate automata exist at " + magicBlock.getLocation() + ", one will be removed!");
+                    getLogger().warning("Duplicate magic blocks exist at " + magicBlock.getLocation() + ", one will be removed!");
                     continue;
                 }
 
-                automataCount++;
+                blockCount++;
                 restoreChunk.put(id, magicBlock);
             }
         } catch (Exception ex) {
-            getLogger().log(Level.SEVERE, "Something went wrong loading automata data", ex);
+            getLogger().log(Level.SEVERE, "Something went wrong loading magic block data", ex);
         }
-        return automataCount;
+        return blockCount;
     }
 
     protected void saveWarps(Collection<YamlDataFile> stores) {
@@ -2700,7 +2720,7 @@ public class MagicController implements MageController {
 
     protected void saveAutomata(Collection<YamlDataFile> stores) {
         try {
-            YamlDataFile automataData = createDataFile(AUTOMATA_DATA_FILE);
+            YamlDataFile automataData = createDataFile(BLOCKS_DATA_FILE);
             List<ConfigurationSection> nodes = new ArrayList<>();
             for (Entry<String, Map<Long, MagicBlock>> toggleEntry : magicBlocks.entrySet()) {
                 Collection<MagicBlock> blocks = toggleEntry.getValue().values();
@@ -2712,7 +2732,7 @@ public class MagicController implements MageController {
                     }
                 }
             }
-            nodes.addAll(invalidAutomata);
+            nodes.addAll(invalidMagicBlocks);
             automataData.set("automata", nodes);
             stores.add(automataData);
         } catch (Exception ex) {
@@ -7727,12 +7747,12 @@ public class MagicController implements MageController {
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
 
         // Set up the Block update timer
-        final BatchUpdateTask blockTask = new BatchUpdateTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, workFrequency);
+        final BatchUpdateTask batchTask = new BatchUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, batchTask, 0, workFrequency);
 
         // Set up the Automata timer
-        final AutomataUpdateTask automataTaks = new AutomataUpdateTask(this);
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, automataTaks, 0, automataUpdateFrequency);
+        final MagicBlockUpdateTask blockTask = new MagicBlockUpdateTask(this);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, blockTask, 0, magicBlockUpdateFrequency);
 
         // Set up the Update check timer
         final UndoUpdateTask undoTask = new UndoUpdateTask(this);
@@ -7779,7 +7799,7 @@ public class MagicController implements MageController {
         undoQueueDepth = properties.getInt("undo_depth", undoQueueDepth);
         workPerUpdate = properties.getInt("work_per_update", workPerUpdate);
         workFrequency = properties.getInt("work_frequency", workFrequency);
-        automataUpdateFrequency = properties.getInt("automata_update_frequency", automataUpdateFrequency);
+        magicBlockUpdateFrequency = properties.getInt("magic_block_update_frequency", magicBlockUpdateFrequency);
         mageUpdateFrequency = properties.getInt("mage_update_frequency", mageUpdateFrequency);
         undoFrequency = properties.getInt("undo_frequency", undoFrequency);
         pendingQueueDepth = properties.getInt("pending_depth", pendingQueueDepth);
@@ -8334,6 +8354,7 @@ public class MagicController implements MageController {
                 }
             }
         }
+        return source;
     }
 
     @Override
