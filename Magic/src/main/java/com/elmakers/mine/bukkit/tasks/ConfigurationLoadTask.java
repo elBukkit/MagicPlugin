@@ -38,7 +38,8 @@ public class ConfigurationLoadTask implements Runnable {
     private boolean verboseLogging;
 
     private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
-            "classes", "wands", "items", "kits", "crafting", "mobs", "blocks", "modifiers", "worlds", "arenas", "automata"};
+            "classes", "wands", "items", "kits", "crafting", "mobs", "blocks", "modifiers", "worlds", "arenas"};
+
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
 
     private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
@@ -497,6 +498,63 @@ public class ConfigurationLoadTask implements Runnable {
         return config;
     }
 
+    private ConfigurationSection loadLegacyConfigFile(String fileName, String modernFilename, ConfigurationSection mainConfiguration) {
+        boolean loadAllDefaults = mainConfiguration.getBoolean("load_default_configs", true);
+        boolean loadDefaults = mainConfiguration.getBoolean("load_default_" + modernFilename, loadAllDefaults);
+        boolean disableDefaults = mainConfiguration.getBoolean("disable_default_" + modernFilename, false);
+
+        ConfigurationSection mainSection = mainConfiguration.getConfigurationSection(fileName);
+        boolean usingExample = exampleDefaults != null && exampleDefaults.length() > 0;
+        String examplesFilePrefix = usingExample ? "examples/" + exampleDefaults + "/" + fileName : null;
+
+        YamlConfiguration config = new YamlConfiguration();
+
+        // Load example
+        if (usingExample && loadDefaults) {
+            ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, exampleDefaults);
+            if (exampleConfig != null) {
+                try {
+                    if (disableDefaults) {
+                        disableAll(exampleConfig);
+                    }
+                    processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
+                    ConfigurationUtils.addConfigurations(config, exampleConfig);
+                    info(" Using " + examplesFilePrefix);
+                } catch (Exception ex) {
+                    getLogger().severe("Error loading file: " + examplesFilePrefix);
+                    throw ex;
+                }
+            }
+        }
+
+        // Load anything relevant from the main config
+        if (mainSection != null) {
+            ConfigurationUtils.addConfigurations(config, mainSection);
+        }
+
+        // Add in examples
+        if (addExamples != null && addExamples.size() > 0) {
+            for (String example : addExamples) {
+                examplesFilePrefix = "examples/" + example + "/" + fileName;
+                ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
+                if (exampleConfig != null)
+                {
+                    try {
+                        processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
+                        reenableAll(config, exampleConfig);
+                        ConfigurationUtils.addConfigurations(config, exampleConfig, false);
+                        info(" Added " + examplesFilePrefix);
+                    } catch (Exception ex) {
+                        getLogger().severe("Error loading file: " + examplesFilePrefix);
+                        throw ex;
+                    }
+                }
+            }
+        }
+
+        return config;
+    }
+
     private void addVersionConfigs(ConfigurationSection config, String fileName) throws InvalidConfigurationException, IOException {
         int[] serverVersion = CompatibilityLib.getServerVersion(plugin);
         int majorVersion = serverVersion[0];
@@ -785,6 +843,13 @@ public class ConfigurationLoadTask implements Runnable {
         for (String configurationFile : CONFIG_FILES) {
             try {
                 ConfigurationSection configuration = loadConfigFile(configurationFile, mainConfiguration);
+
+                // Blocks may have legacy configs spread across examples
+                // there should not be any automata configs in the root Magic folder though
+                if (configurationFile.equals("blocks")) {
+                    ConfigurationSection legacyConfig = loadLegacyConfigFile("automata", "blocks", mainConfiguration);
+                    configuration = ConfigurationUtils.addConfigurations(configuration, legacyConfig, false);
+                }
 
                 // Spells require special processing
                 if (configurationFile.equals("spells")) {
