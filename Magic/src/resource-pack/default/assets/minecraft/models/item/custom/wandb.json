@@ -2,7 +2,7 @@
 	"credit": "Designed by Lix3nn with Cubik Studio - https://cubik.studio. Edited by PhvntxmX using BlockBench.",
 	"parent": "item/custom/lit",
 	"textures": {
-		"texture": "item/custom/sarimavi",
+		"texture": "item/custom/redpurple",
 		"texture1": "item/spells/reflect"
 	},
 	"elements": [
