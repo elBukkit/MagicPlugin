@@ -34,9 +34,6 @@
 
 # Some common fields that you might like to override:
 
-# Give new players a wand when they first join
-# welcome_wand: beginner
-
 # Whether or not to show any messages (in chat)
 # show_messages: true
 
