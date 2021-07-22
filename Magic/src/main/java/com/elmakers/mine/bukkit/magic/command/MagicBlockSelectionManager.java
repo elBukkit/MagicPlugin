@@ -12,21 +12,21 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
-public class AutomatonSelectionManager extends SelectionManager<MagicBlock> {
-    public AutomatonSelectionManager(MagicController controller) {
+public class MagicBlockSelectionManager extends SelectionManager<MagicBlock> {
+    public MagicBlockSelectionManager(MagicController controller) {
         super(controller);
     }
 
     @Override
     @Nonnull
     public Collection<MagicBlock> getAll() {
-        return controller.getAutomata();
+        return controller.getMagicBlocks();
     }
 
     @Override
     @Nonnull
     protected String getTypeNamePlural() {
-        return "automata";
+        return "blocks";
     }
 
     @Override

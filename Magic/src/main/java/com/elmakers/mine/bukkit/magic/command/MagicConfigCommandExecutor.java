@@ -57,12 +57,12 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     private static final String EXAMPLES_FILE_NAME = "_examples.yml";
     private static Set<String> exampleActions = ImmutableSet.of("add", "remove", "set", "list", "fetch", "help", "unfetch");
     protected static Set<String> availableFiles = ImmutableSet.of(
-            "spells", "wands", "automata", "classes", "config", "crafting", "effects", "items",
+            "spells", "wands", "blocks", "classes", "config", "crafting", "effects", "items",
             "kits", "materials", "mobs", "paths", "attributes", "messages", "modifiers", "worlds", "arenas");
     protected static final Map<String, String> availableFileMap = ImmutableMap.<String, String>builder()
         .put("spell", "spells")
         .put("wand", "wands")
-        .put("automaton", "automata")
+        .put("block", "blocks")
         .put("class", "classes")
         .put("recipe", "crafting")
         .put("effect", "effects")
@@ -301,7 +301,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 options.add(item);
             }
         }
-        if (fileType.equals("automata")) {
+        if (fileType.equals("blocks")) {
             Collection<String> list = api.getController().getMagicBlockTemplateKeys();
             for (String key : list) {
                 options.add(key);

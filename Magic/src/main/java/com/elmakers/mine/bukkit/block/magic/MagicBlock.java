@@ -61,7 +61,7 @@ public class MagicBlock implements Locatable, com.elmakers.mine.bukkit.api.autom
         templateKey = node.getString("template");
         parameters = ConfigurationUtils.getConfigurationSection(node, "parameters");
         if (templateKey != null) {
-            setTemplate(controller.getAutomatonTemplate(templateKey));
+            setTemplate(controller.getMagicBlockTemplate(templateKey));
         }
         if (template == null) {
             controller.getLogger().warning("Automaton missing template: " + templateKey);
@@ -95,7 +95,7 @@ public class MagicBlock implements Locatable, com.elmakers.mine.bukkit.api.autom
         this.location = location;
         World world = this.location.getWorld();
         worldName = world == null ? null : world.getName();
-        setTemplate(controller.getAutomatonTemplate(templateKey));
+        setTemplate(controller.getMagicBlockTemplate(templateKey));
         createdAt = System.currentTimeMillis();
         this.creatorId = creatorId;
         this.creatorName = creatorName;
@@ -114,7 +114,7 @@ public class MagicBlock implements Locatable, com.elmakers.mine.bukkit.api.autom
 
     public void reload() {
         if (template != null) {
-            setTemplate(controller.getAutomatonTemplate(template.getKey()));
+            setTemplate(controller.getMagicBlockTemplate(template.getKey()));
         }
     }
 

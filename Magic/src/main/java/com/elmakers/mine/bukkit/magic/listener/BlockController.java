@@ -126,7 +126,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                 }
             }
         }
-        if (controller.checkAutomatonBreak(block)) {
+        if (controller.checkMagicBlockBreak(block)) {
             event.setCancelled(true);
             return;
         }
@@ -545,7 +545,7 @@ public class BlockController implements Listener, ChunkLoadListener {
 
     @Override
     public void onChunkLoad(Chunk chunk) {
-        controller.resumeAutomata(chunk);
+        controller.resumeMagicBlocks(chunk);
         controller.restoreNPCs(chunk);
     }
 
@@ -562,6 +562,6 @@ public class BlockController implements Listener, ChunkLoadListener {
 
     @EventHandler
     public void onChunkUnload(ChunkUnloadEvent e) {
-        controller.pauseAutomata(e.getChunk());
+        controller.pauseMagicBlocks(e.getChunk());
     }
 }

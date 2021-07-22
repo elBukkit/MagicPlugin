@@ -349,7 +349,7 @@ public class MagicController implements MageController {
     private final Map<String, Currency> currencies = new HashMap<>();
     private final Map<String, List<MagicNPC>> npcsByChunk = new HashMap<>();
     private final Map<UUID, MagicNPC> npcs = new HashMap<>();
-    private final Map<String, Map<Long, MagicBlock>> automata = new HashMap<>();
+    private final Map<String, Map<Long, MagicBlock>> magicBlocks = new HashMap<>();
     private final Map<Long, MagicBlock> activeBlocks = new HashMap<>();
     private final Map<String, LostWand> lostWands = new HashMap<>();
     private final Map<String, Set<String>> lostWandChunks = new HashMap<>();
@@ -1488,16 +1488,30 @@ public class MagicController implements MageController {
         File magicSchematicFolder = new File(plugin.getDataFolder(), "schematics");
         magicSchematicFolder.mkdirs();
 
-        // One-time migration of enchanting.yml
-        File legacyPathConfig = new File(configFolder, "enchanting.yml");
-        File pathConfig = new File(configFolder, "paths.yml");
+        // One-time migration of legacy configurations
+        migrateConfig("enchanting", "paths");
+        migrateConfig("automata", "blocks");
 
-        if (!pathConfig.exists() && legacyPathConfig.exists()) {
-            getLogger().info("Renaming enchanting.yml to paths.yml, please update paths.yml from now on");
-            legacyPathConfig.renameTo(pathConfig);
-        }
+        // Ready to load
         load();
         resourcePacks.startResourcePackChecks();
+    }
+
+    private void migrateConfig(String fromName, String toName) {
+        File legacyConfig = new File(configFolder, fromName + ".yml");
+        File newConfig = new File(configFolder, toName + ".yml");
+
+        if (!newConfig.exists() && legacyConfig.exists()) {
+            getLogger().info("Renaming "  + fromName + ".yml to " + toName + ".yml, please update " + toName + ".yml from now on");
+            legacyConfig.renameTo(newConfig);
+        }
+        File legacyFolder = new File(configFolder, fromName);
+        File newFolder = new File(configFolder, toName);
+
+        if (!newFolder.exists() && legacyFolder.exists()) {
+            getLogger().info("Renaming "  + fromName + " to " + toName);
+            legacyFolder.renameTo(newFolder);
+        }
     }
 
     public void processUndo() {
@@ -1845,7 +1859,7 @@ public class MagicController implements MageController {
         } else {
             // Update anything in the world that may have had its config changed
             try {
-                updateActiveAutomata();
+                updateActiveBlocks();
             } catch (Exception ex) {
                 getLogger().log(Level.SEVERE, "Error updating automata", ex);
             }
@@ -1954,8 +1968,8 @@ public class MagicController implements MageController {
         logger.setContext(null);
         log("Loaded " + mobs.getCount() + " mob templates");
 
-        logger.setContext("automata");
-        loadAutomatonTemplates(loader.getAutomata());
+        logger.setContext("blocks");
+        loadBlockTemplates(loader.getBlocks());
         logger.setContext(null);
         log("Loaded " + magicBlockTemplates.size() + " automata templates");
 
@@ -2172,26 +2186,26 @@ public class MagicController implements MageController {
         }
     }
 
-    private void loadAutomatonTemplates(ConfigurationSection automataConfiguration) {
-        Set<String> keys = automataConfiguration.getKeys(false);
+    private void loadBlockTemplates(ConfigurationSection blockConfiguration) {
+        Set<String> keys = blockConfiguration.getKeys(false);
         Map<String, ConfigurationSection> templateConfigurations = new HashMap<>();
         magicBlockTemplates.clear();
         for (String key : keys) {
-            logger.setContext("automata." + key);
-            ConfigurationSection config = resolveConfiguration(key, automataConfiguration, templateConfigurations);
+            logger.setContext("blocks." + key);
+            ConfigurationSection config = resolveConfiguration(key, blockConfiguration, templateConfigurations);
             if (!ConfigurationUtils.isEnabled(config)) continue;
-            config = MagicConfiguration.getKeyed(this, config, "automaton", key);
+            config = MagicConfiguration.getKeyed(this, config, "block", key);
             MagicBlockTemplate template = new MagicBlockTemplate(this, key, config);
             magicBlockTemplates.put(key, template);
         }
     }
 
-    public void updateActiveAutomata() {
+    public void updateActiveBlocks() {
         // Update existing automata
         for (MagicBlock active : activeBlocks.values()) {
             active.pause();
         }
-        for (Map<Long, MagicBlock> chunk : automata.values()) {
+        for (Map<Long, MagicBlock> chunk : magicBlocks.values()) {
             for (MagicBlock magicBlock : chunk.values()) {
                 magicBlock.reload();
             }
@@ -2201,7 +2215,7 @@ public class MagicController implements MageController {
         }
     }
 
-    public boolean isAutomataTemplate(@Nonnull String key) {
+    public boolean isMagicBlockTemplate(@Nonnull String key) {
         return magicBlockTemplates.containsKey(key);
     }
 
@@ -2222,9 +2236,9 @@ public class MagicController implements MageController {
         return activeBlocks.get(id);
     }
 
-    public Collection<MagicBlock> getAutomata() {
+    public Collection<MagicBlock> getMagicBlocks() {
         List<MagicBlock> list = new ArrayList<>();
-        for (Map<Long, MagicBlock> chunk : automata.values()) {
+        for (Map<Long, MagicBlock> chunk : magicBlocks.values()) {
             list.addAll(chunk.values());
         }
         return list;
@@ -2245,13 +2259,13 @@ public class MagicController implements MageController {
     }
 
     @Nullable
-    public MagicBlock getAutomatonAt(@Nonnull Location location) {
+    public MagicBlock getMagicBlockAt(@Nonnull Location location) {
         String chunkId = getChunkKey(location);
         if (chunkId == null) {
             return null;
         }
 
-        Map<Long, MagicBlock> restoreChunk = automata.get(chunkId);
+        Map<Long, MagicBlock> restoreChunk = magicBlocks.get(chunkId);
         if (restoreChunk == null) {
             return null;
         }
@@ -2260,17 +2274,17 @@ public class MagicController implements MageController {
         return restoreChunk.get(blockId);
     }
 
-    public boolean checkAutomatonBreak(Block block) {
-        MagicBlock magicBlock = getAutomatonAt(block.getLocation());
+    public boolean checkMagicBlockBreak(Block block) {
+        MagicBlock magicBlock = getMagicBlockAt(block.getLocation());
         if (magicBlock != null && magicBlock.removeWhenBroken()) {
-            unregisterAutomaton(magicBlock);
+            unregisterMagicBlock(magicBlock);
             return true;
         }
         return false;
     }
 
     @Nullable
-    public MagicBlockTemplate getAutomatonTemplate(String key) {
+    public MagicBlockTemplate getMagicBlockTemplate(String key) {
         return magicBlockTemplates.get(key);
     }
 
@@ -2604,7 +2618,7 @@ public class MagicController implements MageController {
         if (automataCount > 0) {
             info("Loaded " + automataCount + " automata in world " + world.getName());
             for (Chunk chunk : world.getLoadedChunks()) {
-                resumeAutomata(chunk);
+                resumeMagicBlocks(chunk);
             }
         }
     }
@@ -2618,7 +2632,7 @@ public class MagicController implements MageController {
                 info("Loaded " + automataCount + " automata");
                 for (World world : Bukkit.getWorlds()) {
                     for (Chunk chunk : world.getLoadedChunks()) {
-                        resumeAutomata(chunk);
+                        resumeMagicBlocks(chunk);
                     }
                 }
             }
@@ -2641,10 +2655,10 @@ public class MagicController implements MageController {
                     continue;
                 }
 
-                Map<Long, MagicBlock> restoreChunk = automata.get(chunkId);
+                Map<Long, MagicBlock> restoreChunk = magicBlocks.get(chunkId);
                 if (restoreChunk == null) {
                     restoreChunk = new HashMap<>();
-                    automata.put(chunkId, restoreChunk);
+                    magicBlocks.put(chunkId, restoreChunk);
                 }
 
                 long id = magicBlock.getId();
@@ -2687,7 +2701,7 @@ public class MagicController implements MageController {
         try {
             YamlDataFile automataData = createDataFile(AUTOMATA_DATA_FILE);
             List<ConfigurationSection> nodes = new ArrayList<>();
-            for (Entry<String, Map<Long, MagicBlock>> toggleEntry : automata.entrySet()) {
+            for (Entry<String, Map<Long, MagicBlock>> toggleEntry : magicBlocks.entrySet()) {
                 Collection<MagicBlock> blocks = toggleEntry.getValue().values();
                 if (blocks.size() > 0) {
                     for (MagicBlock block : blocks) {
@@ -2722,20 +2736,20 @@ public class MagicController implements MageController {
         }
     }
 
-    public void moveAutomaton(MagicBlock magicBlock, Location location) {
-        unregisterAutomaton(magicBlock);
+    public void moveMagicBlock(MagicBlock magicBlock, Location location) {
+        unregisterMagicBlock(magicBlock);
         magicBlock.setLocation(location);
-        registerAutomaton(magicBlock);
+        registerMagicBlock(magicBlock);
     }
 
-    public void registerAutomaton(MagicBlock magicBlock) {
+    public void registerMagicBlock(MagicBlock magicBlock) {
         String chunkId = getChunkKey(magicBlock.getLocation());
         if (chunkId == null) return;
 
-        Map<Long, MagicBlock> chunkAutomata = automata.get(chunkId);
+        Map<Long, MagicBlock> chunkAutomata = magicBlocks.get(chunkId);
         if (chunkAutomata == null) {
             chunkAutomata = new HashMap<>();
-            automata.put(chunkId, chunkAutomata);
+            magicBlocks.put(chunkId, chunkAutomata);
         }
         long id = magicBlock.getId();
         chunkAutomata.put(id, magicBlock);
@@ -2746,15 +2760,15 @@ public class MagicController implements MageController {
         }
     }
 
-    public boolean unregisterAutomaton(MagicBlock magicBlock) {
+    public boolean unregisterMagicBlock(MagicBlock magicBlock) {
         boolean removed = false;
         String chunkId = getChunkKey(magicBlock.getLocation());
         long id = magicBlock.getId();
-        Map<Long, MagicBlock> chunkAutomata = automata.get(chunkId);
+        Map<Long, MagicBlock> chunkAutomata = magicBlocks.get(chunkId);
         if (chunkAutomata != null) {
             removed = chunkAutomata.remove(id) != null;
             if (chunkAutomata.size() == 0) {
-                automata.remove(chunkId);
+                magicBlocks.remove(chunkId);
             }
         }
         if (activeBlocks.remove(id) != null) {
@@ -2765,9 +2779,9 @@ public class MagicController implements MageController {
         return removed;
     }
 
-    public void resumeAutomata(final Chunk chunk) {
+    public void resumeMagicBlocks(final Chunk chunk) {
         String chunkKey = getChunkKey(chunk);
-        Map<Long, MagicBlock> chunkData = automata.get(chunkKey);
+        Map<Long, MagicBlock> chunkData = magicBlocks.get(chunkKey);
         if (chunkData != null) {
             activeBlocks.putAll(chunkData);
             for (MagicBlock magicBlock : chunkData.values()) {
@@ -2778,9 +2792,9 @@ public class MagicController implements MageController {
         }
     }
 
-    public void pauseAutomata(final Chunk chunk) {
+    public void pauseMagicBlocks(final Chunk chunk) {
         String chunkKey = getChunkKey(chunk);
-        Map<Long, MagicBlock> chunkData = automata.get(chunkKey);
+        Map<Long, MagicBlock> chunkData = magicBlocks.get(chunkKey);
         if (chunkData != null) {
             for (MagicBlock magicBlock : chunkData.values()) {
                 if (!magicBlock.isAlwaysActive()) {
@@ -2791,7 +2805,7 @@ public class MagicController implements MageController {
         }
     }
 
-    public void tickAutomata() {
+    public void tickMagicBlocks() {
         for (MagicBlock magicBlock : activeBlocks.values()) {
             magicBlock.tick();
         }
@@ -2807,17 +2821,17 @@ public class MagicController implements MageController {
     @Override
     @Nullable
     public MagicBlock addMagicBlock(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters) {
-        if (!isAutomataTemplate(templateKey)) {
+        if (!isMagicBlockTemplate(templateKey)) {
             return null;
         }
 
-        MagicBlock existing = getAutomatonAt(location);
+        MagicBlock existing = getMagicBlockAt(location);
         if (existing != null) {
             return null;
         }
 
         MagicBlock magicBlock = new MagicBlock(this, location, templateKey, creatorId, creatorName, parameters);
-        registerAutomaton(magicBlock);
+        registerMagicBlock(magicBlock);
         return magicBlock;
     }
 

@@ -11,6 +11,6 @@ public class AutomataUpdateTask implements Runnable {
 
     @Override
     public void run() {
-        controller.tickAutomata();
+        controller.tickMagicBlocks();
     }
 }

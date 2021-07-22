@@ -5,6 +5,10 @@
  - The `beginner` wand has been made into a demo wand and no longer turns into `wand`
    If you have been using this wand as a `welcome_wand` or in a kit, please change it to `wand`
 
+ - `Automata` have been re-branded as `Magic Blocks`. This had a lot of trickle-down effects,
+   actions changed, world parameters, the `/mauto` command is now `/mblock`. Everything *should* continue
+   to work without updates, but you may get warnings if you are using the now-deprecated features. 
+
 # 9.3
 
  - Removed `sp_display` global config option. 
