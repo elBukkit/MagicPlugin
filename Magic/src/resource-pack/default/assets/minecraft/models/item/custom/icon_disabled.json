@@ -1,8 +1,11 @@
 {
     "__comment": "Designed by Droobledore - with BDcraft Cubik PRO 0.96 Beta. Used with permission in NathanWolf's Magic plugin.",
-    "parent" : "item/custom/lit",
+    "parent": "minecraft:item/generated",
     "ambientocclusion": false,
     "gui_light": "side",
+    "textures": {
+        "layer0": "#texture"
+    },
     "elements": [
         {
             "__comment": "Icon",
