@@ -10,6 +10,7 @@
  - Fix using `mana_display: none` in the main config to turn off the XP bar mana display
  - Fix changes to `aurelium_skills` configuration not taking effect until server restart
  - Fix `CheckBlock` biome-checking
+ - Fix `CheckInventory` checking for items in specific slots
 
 ## Additions
 

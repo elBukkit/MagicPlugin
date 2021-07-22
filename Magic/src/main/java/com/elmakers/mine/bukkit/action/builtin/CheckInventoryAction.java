@@ -106,7 +106,7 @@ public class CheckInventoryAction extends CheckAction {
                 return false;
             }
 
-            return true;
+            return false;
         }
         return item != null && mage.hasItem(item);
     }
