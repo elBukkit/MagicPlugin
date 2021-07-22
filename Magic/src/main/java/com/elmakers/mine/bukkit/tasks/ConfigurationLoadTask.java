@@ -38,7 +38,7 @@ public class ConfigurationLoadTask implements Runnable {
     private boolean verboseLogging;
 
     private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
-            "classes", "wands", "items", "kits", "crafting", "mobs", "blocks", "modifiers", "worlds", "arenas"};
+            "classes", "wands", "items", "kits", "crafting", "mobs", "blocks", "modifiers", "worlds", "arenas", "automata"};
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
 
     private final Map<String, ConfigurationSection> loadedConfigurations = new HashMap<>();
@@ -882,7 +882,9 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     public ConfigurationSection getBlocks() {
-        return loadedConfigurations.get("blocks");
+        ConfigurationSection legacyConfig = loadedConfigurations.get("automata");
+        ConfigurationSection newConfig = loadedConfigurations.get("blocks");
+        return ConfigurationUtils.addConfigurations(newConfig, legacyConfig, false);
     }
 
     public ConfigurationSection getEffects() {
