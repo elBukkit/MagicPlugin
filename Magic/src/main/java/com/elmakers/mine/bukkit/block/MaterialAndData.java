@@ -132,7 +132,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (meta != null && meta instanceof LeatherArmorMeta) {
                 extraData = new LeatherArmorData(((LeatherArmorMeta)meta).getColor());
             }
-        } else if (this.material == Material.POTION) {
+        } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof PotionMeta) {
                 extraData = new PotionData(CompatibilityLib.getCompatibilityUtils().getColor((PotionMeta)meta));
@@ -339,7 +339,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             }
                         }
                     }
-                } else if (material == Material.POTION) {
+                } else if (material == Material.POTION || material == Material.TIPPED_ARROW) {
                     String color = dataString;
                     if (color.startsWith("#")) {
                         color = color.substring(1);
@@ -712,7 +712,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         materialKey += ":#" + Integer.toHexString(color.asRGB());
                     }
                 }
-            } else if (this.material == Material.POTION) {
+            } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW) {
                 if (extraData != null && extraData instanceof PotionData) {
                     Color color = ((PotionData)extraData).getColor();
                     if (color != null) {
@@ -894,7 +894,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 ((LeatherArmorMeta)meta).setColor(((LeatherArmorData)extraData).getColor());
                 stack.setItemMeta(meta);
             }
-        } else if (this.material == Material.POTION) {
+        } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW) {
             ItemMeta meta = stack.getItemMeta();
             if (extraData != null && extraData instanceof PotionData && meta != null && meta instanceof PotionMeta) {
                 CompatibilityLib.getCompatibilityUtils().setColor((PotionMeta)meta, ((PotionData)extraData).getColor());

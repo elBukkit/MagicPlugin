@@ -28,6 +28,7 @@
  - The `transformable` mob property now applies to falling_block entities, and will prevent them from turning into blocks
  - Add `Respawn` action, for respawning mobs that have died
  - Add `testdummy` mob, a loveable punching bag you can use for spell testing
+ - Add support for getting colored tipped arrows, `/mgive tipped_arrow{18001}:#00FF00`
 
 ## Changes
 
