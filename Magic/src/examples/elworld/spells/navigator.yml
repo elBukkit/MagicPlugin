@@ -4,20 +4,6 @@ navigator:
     options:
       - type: placeholder
       - type: placeholder
-      - type: placeholder
-
-      - warp: survival
-        name: "&l&n&5Survival"
-        icon: stick{CustomModelData:18001}
-        description: |-
-          &fThe default example
-          &fUse &7/mconfig example set none&f to turn it off
-
-          &bThis is a drop-in survival add-on, where players can craft &6wands &b and other items, learn &6spells and eventually become a master wizard
-
-          &3This demo will quickly show you how players will interact with the plugin if you do no configuration at all
-
-      - type: placeholder
 
       - warp: creative
         name: "&l&n&5Creative"
@@ -33,6 +19,27 @@ navigator:
           &bPlayers are able to progress to the &6Engineer&b rank after finishing the &6Wizard &brank
 
       - type: placeholder
+
+      - warp: survival
+        name: "&l&n&5Survival"
+        icon: stick{CustomModelData:18001}
+        description: |-
+          &fThe default example
+          &fUse &7/mconfig example set none&f to turn it off
+
+          &bThis is a drop-in survival add-on, where players can craft &6wands &b and other items, learn &6spells and eventually become a master wizard
+
+          &3This demo will quickly show you how players will interact with the plugin if you do no configuration at all
+
+
+      - type: placeholder
+
+      - warp: features
+        name: "&l&n&5Other Features"
+        icon: oak_sign{CustomModelData:18001}
+        description: |-
+          &fTake a tour of other features &dMagic &fhas to offer!
+
       - type: placeholder
       - type: placeholder
 
@@ -71,11 +78,7 @@ navigator:
           &fAn &6Avatar &fthemed example with &6bending &fmoves from all four elements
           &fUse &7/mconfig example set bending&f to switch your server to the Bending theme
       - type: placeholder
-      - warp: features
-        name: "&l&n&5Other Features"
-        icon: oak_sign{CustomModelData:18001}
-        description: |-
-          &fTake a tour of other features &dMagic &fhas to offer!
+      - type: placeholder
       - type: placeholder
 
       - type: placeholder
