@@ -8,6 +8,20 @@
  - What order are schematic brushes even in?
  - Add a way to get new brushes if you're maxed out
 
+ - HTTYD
+
+   - Improve per-world RP features
+   - Can specify RPs by name, or "default"
+   - Automatically return to default when leaving
+   - May need better world->world communication to avoid throttling (do this for game modes too)
+   - World enter behavior needs to trigger on login
+
+ - Features
+   - warps
+   - arenas
+   - mobs
+   - items
+
 ## Arenas
 
  - Add option to save inventory and class layout
@@ -44,6 +58,8 @@
 
 # Bugs
 
+ - Context-specific variables don't represent the current state of the action tree
+   not sure if this only affects ModifyVariable? Maybe it only needs to be fixed there?
  - Got "Recall got to doTeleport with no waypoint selected" .. how?
  - using inherit: sellshop make the quiet: true not working on item parameter but it works correctly with inherit: buyshop (brushette)
  - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
@@ -89,6 +105,7 @@
 
 ## Suggestions
 
+ - Allow using variables in equation transforms (velocity_transform)
  - BetonQuest, expand integration - NPC quest dialog, class and cast count support
    https://github.com/BetonQuest/BetonQuest
  - RideEntity action parameter to work on target mob

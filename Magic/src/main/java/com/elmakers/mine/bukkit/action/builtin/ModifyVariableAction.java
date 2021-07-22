@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ModifyVariableAction extends BaseSpellAction {
@@ -70,7 +71,18 @@ public class ModifyVariableAction extends BaseSpellAction {
         if (!hasValue) {
             return SpellResult.NO_ACTION;
         }
+
+        // This is kind of ugly, but it forces context-specific variables (like target location)
+        // to read from the current context state.
+        SpellParameters spellParameters = parameters instanceof SpellParameters ? (SpellParameters)parameters : null;
+        CastContext originalContext = spellParameters != null ? spellParameters.getContext() : null;
+        if (spellParameters != null) {
+            spellParameters.setContext(context);
+        }
         double value = parameters.getDouble("value", 0);
+        if (originalContext != null) {
+            spellParameters.setContext(originalContext);
+        }
         ConfigurationSection variables = context.getVariables(scope);
         if (clear) {
             if (!variables.contains(key)) {
