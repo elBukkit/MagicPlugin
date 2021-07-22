@@ -13,6 +13,7 @@
  - What order are schematic brushes even in?
  - Add a way to get new brushes if you're maxed out
  - NPCs names getting reset if they're not villagers?
+ - Dragon NPC left a phantom .. testing longer wait times
 
  - HTTYD
 
