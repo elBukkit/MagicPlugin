@@ -597,8 +597,8 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
-                                <concat destfile="${project.build.directory}/classes/defaults/automata.defaults.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/defaults/automata">
+                                <concat destfile="${project.build.directory}/classes/defaults/blocks.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/blocks">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
@@ -1014,8 +1014,8 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
-                                <concat destfile="${project.build.directory}/classes/examples/survival/automata.yml" overwrite="yes" fixlastline="yes">
-                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/automata">
+                                <concat destfile="${project.build.directory}/classes/examples/survival/blocks.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/survival/blocks">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

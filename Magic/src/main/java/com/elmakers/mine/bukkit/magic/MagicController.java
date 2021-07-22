@@ -1509,7 +1509,7 @@ public class MagicController implements MageController {
         File newFolder = new File(configFolder, toName);
 
         if (!newFolder.exists() && legacyFolder.exists()) {
-            getLogger().info("Renaming "  + fromName + " to " + toName);
+            getLogger().info("Renaming folder "  + fromName + " to " + toName);
             legacyFolder.renameTo(newFolder);
         }
     }

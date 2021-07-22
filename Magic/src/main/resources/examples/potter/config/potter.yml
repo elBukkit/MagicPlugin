@@ -22,7 +22,7 @@ skip_inherited:
  - crafting
  - classes
  - mobs
- - automata
+ - blocks
  - kits
 
 # Don't allow crafting
