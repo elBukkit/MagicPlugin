@@ -1446,7 +1446,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             String message;
             if (costs == null) {
                 if (selectedFreeMessage != null) {
-                    message = selectedFreeMessage;
+                    message = compatibilityUtils.translateColors(selectedFreeMessage);
                 } else if (selectedMessage != null) {
                     message = compatibilityUtils.translateColors(selectedMessage);
                 } else {
