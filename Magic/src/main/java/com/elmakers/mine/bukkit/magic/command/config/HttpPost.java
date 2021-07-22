@@ -51,7 +51,7 @@ public abstract class HttpPost extends AsyncProcessor implements Runnable {
             }
             processResponse(response);
         } catch (Exception ex) {
-            fail(controller.getMessages().get("commands.mconfig.editor.error"), "Error processing HTTP request", ex);
+            fail(controller.getMessages().get("commands.mconfig.editor.error"), "Error processing HTTP request to " + this.url, ex);
             return;
         }
     }

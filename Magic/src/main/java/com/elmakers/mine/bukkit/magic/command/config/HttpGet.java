@@ -38,7 +38,7 @@ public abstract class HttpGet extends AsyncProcessor implements Runnable {
             contentSize = connection.getContentLengthLong();
             processResponse(inputStream);
         } catch (Exception ex) {
-            fail(controller.getMessages().get("commands.mconfig.example.fetch.error"), "Error processing HTTP request", ex);
+            fail(controller.getMessages().get("commands.mconfig.example.fetch.error"), "Error processing HTTP request to " + this.url, ex);
             processResponse(null);
             return;
         }
