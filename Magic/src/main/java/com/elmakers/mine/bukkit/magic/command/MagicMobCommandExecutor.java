@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.gson.Gson;
@@ -136,7 +137,8 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             Location location = player.getEyeLocation();
             BlockIterator iterator = new BlockIterator(location.getWorld(), location.toVector(), location.getDirection(), 0, 16);
             Block block = location.getBlock();
-            while (block.getType() == Material.AIR && iterator.hasNext()) {
+            MaterialSet allAir = controller.getMaterialSetManager().getMaterialSet("all_air");
+            while (allAir.testBlock(block) && iterator.hasNext()) {
                 block = iterator.next();
             }
             block = block.getRelative(BlockFace.UP);
