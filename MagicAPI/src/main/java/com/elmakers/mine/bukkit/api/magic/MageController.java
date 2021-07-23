@@ -575,10 +575,14 @@ public interface MageController {
     boolean disguise(Entity entity, ConfigurationSection configuration);
 
     /**
-     * ModelEngine integration
-     * configuration must contain an "id" property
+     * Use getModelEngine instead
      */
+    @Deprecated
     boolean applyModel(Entity entity, ConfigurationSection configuration);
+
+    /**
+     * ModelEngine integration
+     */
     ModelEngine getModelEngine();
 
     void managePlayerData(boolean external, boolean backupInventories);

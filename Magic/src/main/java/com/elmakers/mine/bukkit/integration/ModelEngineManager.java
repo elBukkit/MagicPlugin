@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.integration;
 
 import java.util.Iterator;
+import java.util.logging.Level;
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.util.EulerAngle;
@@ -36,20 +36,61 @@ public class ModelEngineManager implements ModelEngine {
     @Override
     public boolean applyModel(Entity entity, ConfigurationSection config) {
         if (config == null || entity == null) return false;
+
         String modelName = config.getString("id");
+
+        ModeledEntity modeledEntity = api.getModelManager().getModeledEntity(entity.getUniqueId());
+        if (modeledEntity == null) {
+            modeledEntity = api.getModelManager().createModeledEntity(entity);
+        }
+        if (modeledEntity == null) {
+            return false;
+        }
+
+        if (modeledEntity.getAllActiveModel().containsKey(modelName)) {
+            return true;
+        }
+
         ActiveModel model = api.getModelManager().createActiveModel(modelName);
         if (model == null) {
             return false;
         }
 
+        modeledEntity.clearModels();
+        try {
+            modeledEntity.addActiveModel(model);
+        } catch (Exception ex) {
+            owningPlugin.getLogger().log(Level.WARNING, "Error applying ModelEngine model id '" + modelName + "'", ex);
+            return false;
+        }
+        modeledEntity.detectPlayers();
+        modeledEntity.setInvisible(config.getBoolean("invisible", true));
+        return true;
+    }
+
+    @Override
+    public boolean removeModel(Entity entity, String modelId) {
+        if (entity == null || modelId == null) return false;
         ModeledEntity modeledEntity = api.getModelManager().createModeledEntity(entity);
         if (modeledEntity == null) {
             return false;
         }
+        ActiveModel activeModel = modeledEntity.getActiveModel(modelId);
+        if (activeModel != null) {
+            activeModel.clearModel();
+        }
+        modeledEntity.removeModel(modelId);
+        return true;
+    }
 
-        modeledEntity.addActiveModel(model);
-        modeledEntity.detectPlayers();
-        modeledEntity.setInvisible(config.getBoolean("invisible", true));
+    @Override
+    public boolean removeAllModels(Entity entity) {
+        if (entity == null) return false;
+        ModeledEntity modeledEntity = api.getModelManager().createModeledEntity(entity);
+        if (modeledEntity == null) {
+            return false;
+        }
+        modeledEntity.clearModels();
         return true;
     }
 

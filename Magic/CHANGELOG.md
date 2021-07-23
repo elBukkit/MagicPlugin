@@ -11,6 +11,7 @@
  - Fix changes to `aurelium_skills` configuration not taking effect until server restart
  - Fix `CheckBlock` biome-checking
  - Fix `CheckInventory` checking for items in specific slots
+ - Fix ModelEngine models duplicating when put on NPCs
 
 ## Additions
 
