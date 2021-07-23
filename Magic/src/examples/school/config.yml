@@ -9,3 +9,6 @@ examples:
 - engineering
 - robes
 - mars
+
+resource_pack: "http://rp.elmakers.com/Magic-modelengine-RP-1.17.zip"
+add_resource_pack: "http://rp.elmakers.com/Magic-modelengine-RP-1.17.zip"

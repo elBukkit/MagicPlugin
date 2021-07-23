@@ -66,6 +66,13 @@
 
 # Bugs
 
+ - /mmob remove doesn't remove mounts
+ - Map brush broken again?
+ - Triggered spells need to track the wand they came from (think this is on the list somewhere already)
+ - Fairy doesn't go away after 10 seconds
+ - Does FakeBlock not really respect indestructible blocks? test out invisiworld
+ - Don't drop blocks when breaking magically-changed blocks in creative mode
+ - NPC dialog should always use NPC name, mob name is unreliable  
  - Copying an east-facing item frame didn't work
  - Context-specific variables don't represent the current state of the action tree
    not sure if this only affects ModifyVariable? Maybe it only needs to be fixed there?

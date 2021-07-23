@@ -13,3 +13,4 @@ playdead:
     target: self
     radius: 32
     trigger: playdead
+    target_npc: true

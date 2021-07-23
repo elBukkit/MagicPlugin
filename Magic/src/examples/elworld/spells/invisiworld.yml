@@ -1,0 +1,39 @@
+invisiworld:
+  name: Invisiworld
+  icon: stick
+  actions:
+    cast:
+      - class: Sphere
+        actions:
+          - class: Skip
+            actions:
+              - class: Delay
+          - class: FakeBlock
+  effects:
+    cast:
+      - location: target
+        effectlib:
+          class: Modified
+          parameters:
+            radius: "3+(t/i) * 10"
+            particles: "(t/i)*40+3"
+          effect:
+            class: Sphere
+            particle: end_rod
+            particle_count: 4
+            particle_offset: 1.5
+          duration: 10000
+      - sound: magic.zap
+  parameters:
+    target: self
+    destructible: solid
+    # Why does this not work?
+    indestructible: black_banner,black_concrete
+    y_size: 4
+    radius: 16
+    brush: barrier
+    undo: 5000
+    cooldown: 15000
+    delay: 1
+    skip: 500
+    undo_speed: 200

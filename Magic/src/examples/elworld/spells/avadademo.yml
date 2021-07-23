@@ -1,0 +1,33 @@
+avadademo:
+  name: Image Effect Demo
+  actions:
+    cast:
+      - class: Orient
+      - class: Delay
+      - class: Message
+  effects:
+    cast:
+      - sound: entity_wither_death
+        sound_pitch: 1.6
+        sound_volume: 0.8
+        location: origin
+        offset: 0,2,8
+        orient: true
+        effectlib:
+          class: Modified
+          duration: 7500
+          parameters:
+            size: "max(0, (t / i) * 5 - 3) + 0.2"
+          effect:
+            enable_rotation: false
+            class: ColoredImageEffect
+            fileName: https://i.imgur.com/47aVrwT.gif
+            stepX: 1
+            stepY: 1
+            transparency: true
+  parameters:
+    yaw: 0
+    pitch: -10
+    cooldown: 10000
+    delay: 5000
+    message: "&eYou can use any image for this effect, even an animated gif!"
