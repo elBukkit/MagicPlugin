@@ -8121,7 +8121,7 @@ public class MagicController implements MageController {
         if (closeWandVariable.equalsIgnoreCase(variableBoolean)) {
             boolean hasPerWorldInventory = plugin.getServer().getPluginManager().getPlugin("PerWorldInventory") != null;
             if (hasPerWorldInventory) {
-                getLogger().info("PerWorldInventory found, will close spell inventories on game mode or world change");
+                info("PerWorldInventory found, will close spell inventories on game mode or world change");
             }
             com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE = hasPerWorldInventory;
         } else {
