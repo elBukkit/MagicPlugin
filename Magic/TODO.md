@@ -1,10 +1,5 @@
 # TODO
 
-# /mblock
-
- - Migrate automata configs and data to blocks
- - Update mconfig command
-
 # Demo server
 
  - Need a way to duplicate NPCs

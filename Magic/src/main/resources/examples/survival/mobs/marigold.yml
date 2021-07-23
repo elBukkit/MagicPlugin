@@ -2,6 +2,8 @@ marigold:
   inherit: base_npc
   name: Marigold
   type: axolotl
+  ai: true
+  leash_range: 8
   axolotl_type: wild
   transformable: false
   default_drops: false
