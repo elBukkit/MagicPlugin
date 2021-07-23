@@ -5908,6 +5908,7 @@ public class MagicController implements MageController {
         return libsDisguiseManager.disguise(entity, configuration);
     }
 
+    @Deprecated
     @Override
     public boolean applyModel(Entity entity, ConfigurationSection configuration) {
         if (modelEngineManager == null || entity == null) {

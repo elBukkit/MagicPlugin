@@ -906,7 +906,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         if (model != null) {
-            if (!controller.applyModel(entity, model)) {
+            if (!controller.getModelEngine().applyModel(entity, model)) {
                 controller.getLogger().warning("Invalid model config in mob " + getName() + " (" + getKey() + ")");
             }
         }
