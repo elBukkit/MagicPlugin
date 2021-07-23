@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
@@ -14,6 +15,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.EulerAngle;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 
@@ -21,6 +24,8 @@ import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
  * This was originally part of EffectLib, but I wanted to make an independent copy to use for Magic.
  */
 public class ConfigUtils {
+
+    public static Random random = new Random();
 
     public static Collection<ConfigurationSection> getNodeList(ConfigurationSection node, String path) {
         Collection<ConfigurationSection> results = new ArrayList<>();
@@ -275,5 +280,90 @@ public class ConfigUtils {
             }
         }
         return potionEffects;
+    }
+
+    @Nullable
+    public static EulerAngle getEulerAngle(ConfigurationSection node, String path) {
+        Vector vector = getVector(node, path, null);
+        return vector == null ? null : new EulerAngle(vector.getX(), vector.getY(), vector.getZ());
+    }
+
+    @Nullable
+    public static Vector getVector(ConfigurationSection node, String path) {
+        return getVector(node, path, null);
+    }
+
+    @Nullable
+    public static Vector getVector(ConfigurationSection node, String path, Vector def) {
+        return getVector(node, path, def, null, null);
+    }
+
+    @Nullable
+    public static Vector getVector(ConfigurationSection node, String path, Vector def, Logger logger, String logContext) {
+        Object o = node.get(path, null);
+        if (o == null) {
+            return def;
+        }
+
+        Vector result = toVector(o);
+        if (result == null && logger != null) {
+            if (logContext == null) {
+                logContext = "unknown";
+            }
+            logger.warning("Invalid vector in " + logContext + ": " + o);
+        }
+        return result;
+    }
+
+    @Nullable
+    public static Vector toVector(Object o) {
+        if (o instanceof Vector) {
+            return (Vector)o;
+        }
+        if (o instanceof ConfigurationSection) {
+            ConfigurationSection config = (ConfigurationSection)o;
+            return new Vector(config.getDouble("x"), config.getDouble("y"), config.getDouble("z"));
+        }
+        if (o instanceof String) {
+            try {
+                String parse = (String)o;
+                if (parse.isEmpty()) return null;
+                // rand() coordinates can not use commas as the delimiter
+                if (!parse.contains("r") && !parse.contains("R") && parse.contains(",")) {
+                    parse = parse.replace(" ", "");
+                    parse = parse.replace(",", " ");
+                }
+                if (parse.contains("|")) {
+                    parse = parse.replace(" ", "");
+                    parse = parse.replace("|", " ");
+                }
+                String[] pieces = StringUtils.split(parse, ' ');
+                double x = parseDouble(pieces[0]);
+                double y = parseDouble(pieces[1]);
+                double z = parseDouble(pieces[2]);
+                return new Vector(x, y, z);
+            } catch (Exception ex) {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    protected static double parseDouble(String s) throws NumberFormatException
+    {
+        if (s == null || s.isEmpty()) return 0;
+        char firstChar = s.charAt(0);
+        if (firstChar == 'r' || firstChar == 'R')
+        {
+            String[] pieces = StringUtils.split(s, "(,)");
+            double min = Double.parseDouble(pieces[1].trim());
+            double max = Double.parseDouble(pieces[2].trim());
+            return random.nextDouble() * (max - min) + min;
+        }
+        if (firstChar == '#') {
+            String equation = s.substring(1);
+        }
+
+        return Double.parseDouble(s);
     }
 }
