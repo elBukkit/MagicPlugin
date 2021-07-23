@@ -22,8 +22,10 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.TriggerType;
+import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.magic.MageConversation;
 import com.elmakers.mine.bukkit.magic.MobTrigger;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -35,6 +37,7 @@ public class EntityMageData {
     protected MobTargeting targeting;
     protected long tickInterval;
     protected long lifetime;
+    protected int leashRange;
     protected @Nullable Multimap<String, MobTrigger> triggers;
     private final Set<String> triggering = new HashSet<>();
     protected ConfigurationSection mageProperties;
@@ -104,6 +107,7 @@ public class EntityMageData {
         }
 
         aggro = parameters.getBoolean("aggro", !isEmpty());
+        leashRange = parameters.getInt("leash_range", 0);
     }
 
     public boolean isEmpty() {
@@ -111,7 +115,8 @@ public class EntityMageData {
         boolean hasProperties = mageProperties != null;
         boolean hasLifetime = lifetime > 0;
         boolean hasTargeting = targeting != null;
-        return !hasProperties && !hasTriggers && !aggro && !hasLifetime && !hasDialog() && !hasTargeting;
+        boolean hasLeash = leashRange > 0;
+        return !hasProperties && !hasTriggers && !aggro && !hasLifetime && !hasDialog() && !hasTargeting && !hasLeash;
     }
 
     public boolean hasDialog() {
@@ -154,6 +159,18 @@ public class EntityMageData {
             trigger(mage, "death");
             mage.getEntity().remove();
             return;
+        }
+        if (leashRange > 0) {
+            // This currently only works on NPCs
+            Entity entity = mage.getEntity();
+            MagicNPC npc = mage.getController().getNPC(entity);
+            if (npc != null) {
+                Location npcLocation = npc.getLocation();
+                Location entityLocation = entity.getLocation();
+                if (!npcLocation.getWorld().equals(entityLocation.getWorld()) || npcLocation.distanceSquared(entityLocation) > leashRange * leashRange) {
+                    CompatibilityLib.getCompatibilityUtils().teleportWithVehicle(entity, npcLocation);
+                }
+            }
         }
 
         Collection<MobTrigger> intervalTriggers = getTriggers(TriggerType.INTERVAL);
