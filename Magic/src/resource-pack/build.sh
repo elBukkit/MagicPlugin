@@ -67,7 +67,7 @@ cd ..
 
 echo "** BUILDING POTTER **"
 
-mkdir potter 
+mkdir potter
 cd potter
 cp -R ../../default/* .
 cp -R ../../potter/* .
@@ -104,6 +104,28 @@ echo , >> assets/minecraft/sounds.json
 tail -n +2 ../../war/assets/minecraft/sounds.json >> assets/minecraft/sounds.json
 find . -name ".DS_Store" -type f -delete
 zip -r -X ../Magic-all-RP-1.17.zip *
+cd ..
+
+echo "** BUILDING MODEL ENGINE **"
+
+mkdir modelengine
+cd modelengine
+cp -R ../../default/* .
+cp -R ../../chainmail/assets/minecraft/textures/* assets/minecraft/textures/
+cp -R ../../war/assets/minecraft/sounds/* assets/minecraft/sounds/
+cp -R ../../war/assets/minecraft/models/item/* assets/minecraft/models/item/
+cp -R ../../war/assets/minecraft/textures/misc assets/minecraft/textures/
+cp -R ../../war/assets/minecraft/textures/item/custom/* assets/minecraft/textures/item/custom/
+
+cp -R ../../modelengine/assets/minecraft/models/item/* assets/minecraft/models/item/
+mkdir assets/modelengine
+cp -R ../../modelengine/assets/modelengine/* assets/modelengine/
+
+sed -e '$ d' ../../default/assets/minecraft/sounds.json > assets/minecraft/sounds.json
+echo , >> assets/minecraft/sounds.json
+tail -n +2 ../../war/assets/minecraft/sounds.json >> assets/minecraft/sounds.json
+find . -name ".DS_Store" -type f -delete
+zip -r -X ../Magic-modelengine-RP-1.17.zip *
 cd ..
 
 echo "** BUILDING HIRES **"
