@@ -1,0 +1,10 @@
+marigold:
+  inherit: base_npc
+  name: Marigold
+  type: axolotl
+  axolotl_type: wild
+  transformable: false
+  default_drops: false
+  model:
+    id: bearded_dragon
+    invisible: true

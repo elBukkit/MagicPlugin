@@ -14,6 +14,8 @@
  - Add a way to get new brushes if you're maxed out
  - NPCs names getting reset if they're not villagers?
  - Dragon NPC left a phantom .. testing longer wait times
+ - Prevent axolotls from dying on land
+ - Model engine models reproduce on npc update
 
  - HTTYD
 
@@ -31,6 +33,7 @@
    - items (show bannershop)
    - ~~worlds~~
    - ~~magic blocks~~
+   - ModelEngine
 
 ## Arenas
 

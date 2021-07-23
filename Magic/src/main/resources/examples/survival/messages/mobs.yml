@@ -113,3 +113,5 @@ mobs:
     name: Daily Rewards!
   atm:
     name: ATM
+  marigold:
+    name: "&6Marigold"
