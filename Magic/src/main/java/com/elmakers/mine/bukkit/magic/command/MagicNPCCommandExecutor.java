@@ -626,6 +626,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("villager_profession");
             options.add("dialog_range");
             options.add("dialog_interval");
+            options.add("leash_range");
             if (controller.hasDisguises()) {
                 options.add("disguise.type");
                 options.add("disguise.skin");
