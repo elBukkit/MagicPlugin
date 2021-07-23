@@ -1,34 +1,41 @@
 count:
-    icon: watch
-    category: staff
-    worth: 50
-    hidden: true
-    actions:
-        alternate_down:
-        -  class: TileEntities
-           actions:
-           -  class: Count
-        alternate_up:
-        -  class: AllEntities
-           actions:
-           -  class: Count
-        cast:
-        -  class: AreaOfEffect
-           actions:
-           -  class: Count
-    effects:
-        cast:
-        -  class: EffectSingle
-           sound: magic.shimmer
-           effectlib:
-             class: HelixEffect
-             iterations: 1
-             particle: flame
-    parameters:
-        target: block
-        range: 64
-        target_type: Entity
-        target_self: false
-        radius: 64
-        messsage_targets: false
-
+  icon: watch
+  category: staff
+  worth: 50
+  hidden: true
+  actions:
+    alternate_down:
+      -  class: TileEntities
+         actions:
+           - class: Count
+    alternate_up:
+      -  class: AllEntities
+         actions:
+           - class: Count
+    cast:
+      -  class: AreaOfEffect
+         actions:
+           - class: Count
+           - class: PotionEffect
+  effects:
+    cast:
+      -  class: EffectSingle
+         sound: magic.shimmer
+         effectlib:
+           class: HelixEffect
+           iterations: 1
+           particle: flame
+  parameters:
+    target: block
+    range: 64
+    target_type: Entity
+    target_self: false
+    radius: 64
+    messsage_targets: false
+    target_armor_stand: true
+    target_vanished: true
+    target_npc: true
+    target_pet: true
+    target_mount: true
+    effect_glowing: 1
+    duration: 10000
