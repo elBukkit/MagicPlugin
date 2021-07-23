@@ -8,3 +8,13 @@ marigold:
   model:
     id: bearded_dragon
     invisible: true
+  interval: 5000
+  interval_requires_target: false
+  triggers:
+    interval:
+      cast:
+        "model_state model_state smell": 300
+        "model_state model_state dance": 200
+        "model_state model_state sit": 500
+        "model_state model_state lookup": 600
+        none: 500

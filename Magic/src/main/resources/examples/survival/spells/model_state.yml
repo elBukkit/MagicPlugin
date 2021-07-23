@@ -1,0 +1,8 @@
+model_state:
+  hidden: true
+  category: npc
+  actions:
+    cast:
+      - class: ModelEngine
+  parameters:
+    target: self
