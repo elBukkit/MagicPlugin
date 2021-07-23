@@ -59,8 +59,8 @@ custom_currency:
 # resource_pack_prompt: true
 resource_pack_delay: 2000
 
-# resource_pack: "http://rp.elmakers.com/Magic-all-RP-TESTING.zip"
-# add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-TESTING.zip"
+resource_pack: "http://rp.elmakers.com/Magic-modelengine-RP-1.17.zip"
+add_resource_pack: "http://rp.elmakers.com/Magic-modelengine-RP-1.17.zip"
 
 # Using SQLLite here
 player_data_store:
