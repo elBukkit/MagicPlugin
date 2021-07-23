@@ -8,6 +8,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityArmorStandData extends EntityExtraData {
     public ItemStack itemInHand;
@@ -68,6 +69,13 @@ public class EntityArmorStandData extends EntityExtraData {
         isMarker = parameters.getBoolean("marker", false);
         hasArms = parameters.getBoolean("arms", false);
         disabledSlots = parameters.getInt("disabled_slots", 0);
+
+        bodyPose = ConfigUtils.getEulerAngle(parameters, "body_pose");
+        leftArmPose = ConfigUtils.getEulerAngle(parameters, "left_arm_pose");
+        rightArmPose = ConfigUtils.getEulerAngle(parameters, "right_arm_pose");
+        leftLegPose = ConfigUtils.getEulerAngle(parameters, "left_leg_pose");
+        rightLegPose = ConfigUtils.getEulerAngle(parameters, "right_leg_pose");
+        headPose = ConfigUtils.getEulerAngle(parameters, "head_pose");
     }
 
     @Override

@@ -32,7 +32,8 @@
  - Add `testdummy` mob, a loveable punching bag you can use for spell testing
  - Add support for getting colored tipped arrows, `/mgive tipped_arrow{18001}:#00FF00`
  - Add `leash_range` mob property, currently only works for NPCs
-
+ - Add pose parameters to armor stands
+ 
 ## Changes
 
  - Rebranded "automata" to "magic blocks", to avoid confusion with the "block monster" automata
