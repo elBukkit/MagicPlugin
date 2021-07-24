@@ -1,5 +1,9 @@
 # TODO
 
+# Resource pack changes near-term
+
+ - Configurable off-by-default RP load invulnerability window  
+
 # Demo server
 
  - Need a way to duplicate NPCs
@@ -39,9 +43,10 @@
  - Add class selector option  
 
 # Near-Term Hopeful List
-
- - Re-work charges functionality, add recharge_rate or something, cooldowns are separate and still apply
+ 
+ - Add tab-completion and editor support for wand UI configs
  - Add clone/replicate source selected effects (cube)  
+ - Add brush for creative mode, uses last held block  
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Ability to open an editor session on behalf of another player
  - Avoid re-sending the RP if not necessary when moving between worlds 

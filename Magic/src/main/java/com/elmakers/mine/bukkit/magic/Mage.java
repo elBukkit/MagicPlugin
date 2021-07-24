@@ -80,13 +80,11 @@ import com.elmakers.mine.bukkit.api.event.WandActivatedEvent;
 import com.elmakers.mine.bukkit.api.event.WandDeactivatedEvent;
 import com.elmakers.mine.bukkit.api.integration.ClientPlatform;
 import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.spell.CastParameter;
-import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -124,7 +122,6 @@ import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
-import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
@@ -2582,7 +2579,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public MageController getController() {
+    public MagicController getController() {
         return controller;
     }
 

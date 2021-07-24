@@ -17,6 +17,7 @@ import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
@@ -118,6 +119,12 @@ public class WorldController implements Listener {
 
         controller.info("Initializing world " + world.getName());
         magicWorld.installPopulators(world);
+    }
+
+    public void onPlayerJoin(Mage mage) {
+        MagicWorld magicWorld = getWorld(mage.getLocation().getWorld().getName());
+        if (magicWorld == null) return;
+        magicWorld.playerJoined(mage);
     }
 
     public Plugin getPlugin() {

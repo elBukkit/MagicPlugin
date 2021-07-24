@@ -898,6 +898,10 @@ public class MagicController implements MageController {
         });
     }
 
+    public void onPlayerJoin(com.elmakers.mine.bukkit.magic.Mage mage) {
+        worldController.onPlayerJoin(mage);
+    }
+
     private void getMageData(String id, MageDataCallback callback) {
         synchronized (saveLock) {
             MageData cached = mageDataPreCache.get(id);
@@ -6338,7 +6342,11 @@ public class MagicController implements MageController {
 
     @Override
     public boolean promptResourcePack(final Player player) {
-        return resourcePacks.promptResourcePack(player);
+        return resourcePacks.checkPromptResourcePack(player);
+    }
+
+    public boolean promptResourcePack(final Player player, String resourcePack) {
+        return resourcePacks.checkPromptResourcePack(player, resourcePack);
     }
 
     @Override

@@ -9,8 +9,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.world.BlockResult;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.WorldController;
@@ -26,23 +26,15 @@ public class WorldPlayerListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onPlayerChangeWorld(PlayerChangedWorldEvent event) {
         Player player = event.getPlayer();
-        MagicWorld leaveWorld = controller.getWorld(event.getFrom().getName());
-        if (leaveWorld != null) {
-            leaveWorld.playerLeft(player);
+        Mage mage = controller.getMagicController().getMage(player);
+        MagicWorld fromWorld = controller.getWorld(event.getFrom().getName());
+        MagicWorld toWorld = controller.getWorld(player.getWorld().getName());
+        if (fromWorld != null) {
+            fromWorld.playerLeft(mage, toWorld);
         }
-        MagicWorld magicWorld = controller.getWorld(player.getWorld().getName());
-        if (magicWorld != null) {
-            magicWorld.playerEntered(player);
+        if (toWorld != null) {
+            toWorld.playerEntered(mage, fromWorld);
         }
-    }
-
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player player = event.getPlayer();
-        MagicWorld magicWorld = controller.getWorld(player.getWorld().getName());
-        if (magicWorld == null) return;
-
-        magicWorld.playerEntered(player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)

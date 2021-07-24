@@ -37,6 +37,7 @@ public class ResourcePackUpdateRunnable implements Runnable {
     @Override
     public void run() {
         boolean success = true;
+        boolean hasModifiedTime = false;
         final MagicController controller = manager.getController();
         final Plugin plugin = controller.getPlugin();
         final Server server = plugin.getServer();
@@ -56,11 +57,9 @@ public class ResourcePackUpdateRunnable implements Runnable {
             {
                 SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US);
                 Date tryParseDate = new Date(1L);
-                boolean hasModifiedTime = false;
                 final String lastModified = connection.getHeaderField("Last-Modified");
                 if (lastModified == null || lastModified.isEmpty()) {
                     responses.add(ChatColor.YELLOW + "Server did not return a Last-Modified field");
-                    success = false;
                 } else {
                     try {
                         tryParseDate = format.parse(lastModified);
@@ -125,11 +124,12 @@ public class ResourcePackUpdateRunnable implements Runnable {
         }
 
         if (plugin.isEnabled() && callback != null) {
-            boolean finalSuccess = success;
+            final boolean finalSuccess = success;
+            final boolean finalHasModified = hasModifiedTime;
             server.getScheduler().runTask(plugin, new Runnable() {
                 @Override
                 public void run() {
-                    callback.finished(finalSuccess, responses, resourcePack);
+                    callback.finished(finalSuccess, finalHasModified, responses, resourcePack);
                 }
             });
         }

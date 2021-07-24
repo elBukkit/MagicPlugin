@@ -123,7 +123,7 @@ public class ResourcePackManager {
         return true;
     }
 
-    public boolean promptResourcePack(final Player player) {
+    public boolean checkPromptResourcePack(final Player player) {
         if (resourcePack == null || resourcePackHash == null) {
             return false;
         }
@@ -137,6 +137,26 @@ public class ResourcePackManager {
         return sendResourcePack(player);
     }
 
+    public boolean checkPromptResourcePack(final Player player, String resourcePackKey) {
+        ResourcePack resourcePack = null;
+        if (resourcePackKey != null && !resourcePackKey.isEmpty()) {
+            // First check for a predefined alternate RP
+            String url = resourcePackKey;
+            ConfigurationSection alternateConfig = alternateResourcePacks.getConfigurationSection(resourcePackKey);
+            if (alternateConfig != null) {
+                url = alternateConfig.getString("url");
+            }
+            resourcePack = createResourcePack(url);
+        }
+        if (resourcePackPrompt) {
+            String message = controller.getMessages().get("resource_pack.prompt");
+            promptResourcePack(player, message);
+            return false;
+        }
+
+        return checkAndSendResourcePack(controller.getMage(player), resourcePack);
+    }
+
     public boolean promptNoResourcePack(final Player player) {
         if (resourcePack == null || resourcePackHash == null) {
             return false;
@@ -146,19 +166,18 @@ public class ResourcePackManager {
         return promptResourcePack(player, message);
     }
 
-    public boolean sendResourcePack(final Mage mage) {
-        String url = getResourcePackUrl(mage.getPreferredResourcePack());
-        if (url == null) {
-            url = resourcePack;
+    public boolean checkAndSendResourcePack(final Mage mage, ResourcePack rp) {
+        if (rp == null) {
+            rp = getPreferredResourcePack(mage);
         }
-        if (url == null || url.isEmpty()) {
+        if (rp == null) {
             return false;
         }
-        ResourcePack rp = createResourcePack(url);
         if (!rp.isChecked()) {
+            final ResourcePack checkRP = rp;
             updateResourcePackHash(rp, false, false, new ResourcePackResponse() {
                 @Override
-                public void finished(boolean success, List<String> responses, ResourcePack pack) {
+                public void finished(boolean success, boolean hasModifiedTime, List<String> responses, ResourcePack pack) {
                     Plugin plugin = controller.getPlugin();
                     CommandSender sender = Bukkit.getConsoleSender();
                     if (plugin.isEnabled()) {
@@ -167,7 +186,7 @@ public class ResourcePackManager {
                         }
                     }
                     if (success) {
-                        sendResourcePack(mage, rp);
+                        sendResourcePack(mage, checkRP);
                     }
                 }
             });
@@ -176,11 +195,29 @@ public class ResourcePackManager {
         return sendResourcePack(mage, rp);
     }
 
+    public ResourcePack getPreferredResourcePack(final Mage mage) { String url = getResourcePackUrl(mage.getPreferredResourcePack());
+        if (url == null) {
+            url = resourcePack;
+        }
+        if (url == null || url.isEmpty()) {
+            return null;
+        }
+        return createResourcePack(url);
+    }
+
+    public boolean sendResourcePack(final Mage mage) {
+        ResourcePack rp = getPreferredResourcePack(mage);
+        if (rp == null) {
+            return false;
+        }
+        return checkAndSendResourcePack(mage, rp);
+    }
+
     public boolean sendResourcePack(final Player player) {
         return sendResourcePack(controller.getMage(player));
     }
 
-    public boolean sendResourcePack(final Mage mage, ResourcePack pack) {
+    private boolean sendResourcePack(final Mage mage, ResourcePack pack) {
         return sendResourcePack(mage, pack.getUrl(), pack.getHash());
     }
 
@@ -289,13 +326,13 @@ public class ResourcePackManager {
         ResourcePack resourcePackInfo = createResourcePack(resourcePack);
         updateResourcePackHash(resourcePackInfo, force, filenameChanged, new ResourcePackResponse() {
             @Override
-            public void finished(boolean success, List<String> responses, ResourcePack pack) {
+            public void finished(boolean success, boolean hasModifiedTime, List<String> responses, ResourcePack pack) {
                 if (!quiet && plugin.isEnabled()) {
                     for (String response : responses) {
                         sender.sendMessage(response);
                     }
                 }
-                if (!success) {
+                if (!success && !hasModifiedTime) {
                     cancelResourcePackChecks();
                     if (!quiet) {
                         sender.sendMessage("Cancelling automatic RP checks until next restart");

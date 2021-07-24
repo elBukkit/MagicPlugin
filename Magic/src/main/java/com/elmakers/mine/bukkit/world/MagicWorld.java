@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.world;
 
+import java.util.Objects;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
@@ -13,6 +14,8 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.world.block.MagicBlockHandler;
@@ -245,18 +248,30 @@ public class MagicWorld {
         return world;
     }
 
-    public void playerEntered(Player player) {
-        if (resourcePack != null) {
-            player.setResourcePack(resourcePack);
+    public void playerJoined(Mage mage) {
+        playerEntered(mage, null, true);
+    }
+
+    public void playerEntered(Mage mage, MagicWorld previousWorld) {
+        playerEntered(mage, previousWorld, false);
+    }
+
+    public void playerEntered(Mage mage, MagicWorld previousWorld, boolean isJoin) {
+        if (mage.isResourcePackEnabled()) {
+            if (previousWorld == null || !Objects.equals(previousWorld.resourcePack, resourcePack)) {
+                controller.promptResourcePack(mage.getPlayer(), resourcePack);
+            }
+        } else if (isJoin && mage.isResourcePackPrompt()) {
+            controller.promptNoResourcePack(mage.getPlayer());
         }
-        if (gameMode != null) {
-            player.setGameMode(gameMode);
+        if (gameMode != null && (previousWorld == null || previousWorld.gameMode != gameMode)) {
+            mage.getPlayer().setGameMode(gameMode);
         }
     }
 
-    public void playerLeft(Player player) {
-        if (leavingGameMode != null) {
-            player.setGameMode(leavingGameMode);
+    public void playerLeft(Mage mage, MagicWorld nextWorld) {
+        if (leavingGameMode != null && (nextWorld == null || nextWorld.gameMode == null)) {
+            mage.getPlayer().setGameMode(leavingGameMode);
         }
     }
 
