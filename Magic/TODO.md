@@ -25,14 +25,19 @@
    - World enter behavior needs to trigger on login
 
  - Features
-   - ~~npcs~~
-   - warps
-   - arenas
-   - ~~mobs~~
-   - items (show bannershop)
-   - ~~worlds~~
-   - ~~magic blocks~~
-   - ModelEngine
+    - warps
+    - arenas
+    - wands and items (bannershop)
+      
+    - automata (monsters)
+    - crafting
+    - protection (world guard, flag demonstration)
+      
+    - ~~worlds~~
+    - ~~npcs~~
+    - ~~mobs~~
+    - ~~magic blocks~~
+    - ~~ModelEngine~~
 
 ## Arenas
 
@@ -71,6 +76,7 @@
 
 # Bugs
 
+ - `prevent_melee_damage: true` prevents you from taking items out of item frames
  - Tag wand spell icons so they're not droppable!
    .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :()
  - /mmob remove doesn't remove mounts
