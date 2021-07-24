@@ -76,6 +76,11 @@ public class ResourcePackManager {
         resourcePackDelay = properties.getLong("resource_pack_delay", 0);
         alternateResourcePacks = properties.getConfigurationSection("alternate_resource_packs");
 
+        ConfigurationSection altDefault = alternateResourcePacks.getConfigurationSection(defaultResourcePack);
+        if (altDefault != null) {
+            defaultResourcePack = altDefault.getString("url");
+        }
+
         if (!firstLoad && resourcePack != null && !defaultResourcePack.equals(currentResourcePack)) {
             checkResourcePack(sender, false, false, true);
         }

@@ -1,6 +1,7 @@
 # This resource pack will automatically be used if none is defined in your server.properties
 # Set this to "" if you have some other plugin or Bungee managing resource packs.
-resource_pack: "http://rp.elmakers.com/Magic-RP-1.17.zip"
+# This can be a url, or an entry from alternate_resource_packs (see below)
+resource_pack: default
 
 # Use this to turn off all resource pack functionality
 enable_resource_pack: true
@@ -46,6 +47,8 @@ resource_pack_default_auto: true
 
 # Alternate resource packs can be accessed with /getrp <pack>
 alternate_resource_packs:
+  default:
+    url: "http://rp.elmakers.com/Magic-RP-1.17.zip"
   borders:
     url: "http://rp.elmakers.com/Magic-potter-RP-1.17.zip"
   painterly:
