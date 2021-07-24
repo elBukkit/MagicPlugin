@@ -52,6 +52,7 @@
  - Clicks on wands in the spell inventory behavior changed slightly to better support creative mode  
  - Shop and Selector default messages are now different, base selector messages may need localization
  - Default wand item flags changed to hide dye color. Add an `item_flags` list to your wand config if you don't want that.
+ - Wand charges functionality changed to work more like per-spell mana
 
 # 9.3
 

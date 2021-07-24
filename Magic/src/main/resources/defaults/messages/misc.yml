@@ -40,6 +40,10 @@ cooldown:
 
 charges:
   description: "&eCharges: &6$count"
+  # This is used when the regeneration rate is greater than one, meaning we regenerate more than one charge per second
+  regeneration_description: "&eCharges: &6$count &7(&e$rate&6/&fs&7)"
+  # This is used when the regeneration rate is less than one, meaning it takes more than one second to recharge one charge
+  recharge_description: "&eCharges: &6$count &7(&e1&6/&f&e$rates&7)"
 
 warmup:
     description: "&7Warmup: &6$time"

@@ -13,7 +13,7 @@ public class SpellData {
     private long lastEarn;
     private long castCount;
     private long cooldownExpiration;
-    private long chargesUsed;
+    private double charges;
     private ConfigurationSection variables;
 
     public SpellData(SpellKey spellKey) {
@@ -77,6 +77,35 @@ public class SpellData {
         this.lastCast = lastCast;
     }
 
+    public boolean useCharge(double regenerationRate, double maxCharges) {
+        if (maxCharges <= 0 || regenerationRate <= 0) return true;
+        double newCharges = getCharges(regenerationRate, maxCharges);
+        if (newCharges < 1) {
+            return false;
+        }
+        charges = newCharges - 1;
+        return true;
+    }
+
+    public long getTimeToRecharge(double regenerationRate, double maxCharges) {
+        if (maxCharges <= 0 || regenerationRate <= 0) return 0;
+        double charges = getCharges(regenerationRate, maxCharges);
+        if (charges >= 1) return 0;
+        return (long)(1000.0 * (1.0 - charges) / regenerationRate);
+    }
+
+    public double getCharges(double regenerationRate, double maxCharges) {
+        return Math.min(charges + regenerationRate * (System.currentTimeMillis() - lastCast) / 1000, maxCharges);
+    }
+
+    public double getCharges() {
+        return charges;
+    }
+
+    public void setCharges(double charges) {
+        this.charges = charges;
+    }
+
     public long getCastCount() {
         return castCount;
     }
@@ -103,13 +132,5 @@ public class SpellData {
 
     public void setLastEarn(long lastEarn) {
         this.lastEarn = lastEarn;
-    }
-
-    public long getChargesUsed() {
-        return chargesUsed;
-    }
-
-    public void setChargesUsed(long chargesUsed) {
-        this.chargesUsed = chargesUsed;
     }
 }

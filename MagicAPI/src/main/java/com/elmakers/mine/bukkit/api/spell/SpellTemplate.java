@@ -31,7 +31,8 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     String getCooldownDescription();
     @Nullable
     String getMageCooldownDescription();
-    int getCharges();
+    int getMaxCharges();
+    double getChargeRegeneration();
     String getKey();
     SpellKey getSpellKey();
     @Nullable

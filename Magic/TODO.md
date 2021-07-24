@@ -66,6 +66,8 @@
 
 # Bugs
 
+ - Tag wand spell icons so they're not droppable!
+   .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :()
  - /mmob remove doesn't remove mounts
  - Map brush broken again?
  - Triggered spells need to track the wand they came from (think this is on the list somewhere already)

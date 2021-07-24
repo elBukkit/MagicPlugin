@@ -108,7 +108,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     public static final String[] EXAMPLE_PERCENTAGES = {"0", "0.1", "0.25", "0.5", "0.75", "1"};
 
     public static final String[] OTHER_PARAMETERS = {
-        "transparent", "target", "target_type", "range", "duration", "player", "cooldown", "charges"
+        "transparent", "target", "target_type", "range", "duration", "player", "cooldown", "charges", "charge_regeneration"
     };
 
     public static final String[] WORLD_PARAMETERS = {
@@ -290,7 +290,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     private boolean                             bypassCooldown          = false;
     private int                                 mageCooldown            = 0;
     private int                                 cooldown                = 0;
-    private int                                 charges                 = 0;
+    private int maxCharges = 0;
+    private double                              rechargeRate            = 1;
     private int                                 displayCooldown         = -1;
     private int                                 warmup                  = 0;
     private int                                 earnCooldown            = 0;
@@ -1420,7 +1421,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         cooldown = workingParameters.getInt("cooldown", cooldown);
         cooldown = workingParameters.getInt("cool", cooldown);
         mageCooldown = workingParameters.getInt("cooldown_mage", mageCooldown);
-        charges = workingParameters.getInt("charges", charges);
+        maxCharges = workingParameters.getInt("charges", maxCharges);
+        rechargeRate = parameters.getDouble("charge_regeneration", rechargeRate);
 
         // Color override
         color = ConfigurationUtils.getColor(workingParameters, "color", color);
@@ -1443,6 +1445,15 @@ public class BaseSpell implements MageSpell, Cloneable {
             sendMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
             processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
             sendCastDebugMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
+            return false;
+        }
+
+        if (!isCooldownFree() && !spellData.useCharge(rechargeRate, maxCharges)) {
+            long timeRemaining = spellData.getTimeToRecharge(rechargeRate, maxCharges);
+            timeDescription = controller.getMessages().getTimeDescription(timeRemaining, "wait", "charge");
+            sendMessageKey("charge", getMessage("charge").replace("$time", timeDescription));
+            processResult(SpellResult.INSUFFICIENT_CHARGES, workingParameters);
+            sendCastDebugMessage(SpellResult.INSUFFICIENT_CHARGES, " (no cast)");
             return false;
         }
 
@@ -1732,7 +1743,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         double cooldownReduction = wand != null ? wand.getCooldownReduction() : mage.getCooldownReduction();
         cooldownReduction += this.cooldownReduction;
         spellData.setLastCast(System.currentTimeMillis());
-        spellData.setChargesUsed(spellData.getChargesUsed() + 1);
         if (!isCooldownFree && !bypassCooldown && cooldown > 0 && cooldownReduction < 1) {
             int reducedCooldown = (int)Math.ceil((1.0f - cooldownReduction) * cooldown);
             spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), System.currentTimeMillis() + reducedCooldown));
@@ -1837,7 +1847,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                 castMessageKey(resultName, message);
             } else
             // Special cases where messaging is handled elsewhere
-            if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN)
+            if (result != SpellResult.INSUFFICIENT_RESOURCES && result != SpellResult.COOLDOWN && result != SpellResult.INSUFFICIENT_CHARGES)
             {
                 String message = null;
                 if (result.isFailure() && result != SpellResult.FAIL) {
@@ -1999,7 +2009,8 @@ public class BaseSpell implements MageSpell, Cloneable {
         cooldown = parameters.getInt("cooldown", 0);
         cooldown = parameters.getInt("cool", cooldown);
         mageCooldown = parameters.getInt("cooldown_mage", 0);
-        charges = parameters.getInt("charges", 0);
+        maxCharges = parameters.getInt("charges", 0);
+        rechargeRate = parameters.getDouble("charge_regeneration", 1);
         displayCooldown = parameters.getInt("display_cooldown", -1);
         bypassPvpRestriction = parameters.getBoolean("bypass_pvp", false);
         bypassPvpRestriction = parameters.getBoolean("bp", bypassPvpRestriction);
@@ -2513,8 +2524,18 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
-    public int getCharges() {
-        return charges;
+    public int getMaxCharges() {
+        return maxCharges;
+    }
+
+    @Override
+    public double getChargeRegeneration() {
+        return rechargeRate;
+    }
+
+    @Override
+    public double getChargesRemaining() {
+        return spellData.getCharges(rechargeRate, maxCharges);
     }
 
     /**
@@ -2539,10 +2560,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         return cooldown;
     }
 
+    public boolean isCostFree() {
+        return mage.isCostFree() || (mageClass != null && mageClass.isCostFree());
+    }
+
     @Nullable
     @Override
     public CastingCost getRequiredCost() {
-        if (!mage.isCostFree() && (mageClass == null || !mageClass.isCostFree()))
+        if (!isCostFree())
         {
             CasterProperties caster = mageClass != null ? mageClass : getCurrentCast().getWand();
             if (costs != null && !isActive)
@@ -2563,7 +2588,6 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public void clearCooldown() {
         spellData.setCooldownExpiration(0);
-        spellData.setChargesUsed(0);
     }
 
     @Override
@@ -2576,25 +2600,28 @@ public class BaseSpell implements MageSpell, Cloneable {
         spellData.setCooldownExpiration(Math.max(0, spellData.getCooldownExpiration() - ms));
     }
 
+    public boolean isCooldownFree() {
+        if (mage.isCooldownFree()) return true;
+        if (mageClass != null && mageClass.isCooldownFree()) return true;
+        if (mageClass == null) {
+            // TODO: Why don't we check the wand if there is a class?
+            Wand wand = mage.getActiveWand();
+            if (wand != null && wand.isCooldownFree()) return true;
+        }
+        return false;
+    }
+
     @Override
     public long getRemainingCooldown() {
         long remaining = 0;
-        if (mage.isCooldownFree()) return 0;
-        if (mageClass != null && mageClass.isCooldownFree()) return 0;
-        if (mageClass == null) {
-            Wand wand = mage.getActiveWand();
-            if (wand != null && wand.isCooldownFree()) return 0;
-        }
+        if (isCooldownFree()) return 0;
         if (spellData.getCooldownExpiration() > 0 && !bypassCooldown)
         {
             long now = System.currentTimeMillis();
             if (spellData.getCooldownExpiration() > now) {
-                if (spellData.getChargesUsed() >= charges) {
-                    remaining = spellData.getCooldownExpiration() - now;
-                }
+                remaining = spellData.getCooldownExpiration() - now;
             } else {
                 spellData.setCooldownExpiration(0);
-                spellData.setChargesUsed(0);
             }
         }
 
@@ -3025,9 +3052,22 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (warmupDescription != null && !warmupDescription.isEmpty() && !description.isEmpty()) {
             lore.add(description.replace("$time", warmupDescription));
         }
-        description = messages.get("charges.description");
-        if (charges > 1 && !description.isEmpty()) {
-            lore.add(description.replace("$count", Integer.toString(charges)));
+        if (maxCharges > 0) {
+            double displayRegeneration = rechargeRate;
+            if (rechargeRate == 0) {
+                description = messages.get("charges.description");
+            } else if (rechargeRate >= 1) {
+                description = messages.get("charges.regeneration_description");
+            } else {
+                description = messages.get("charges.recharge_description");
+                displayRegeneration = 1.0 / rechargeRate;
+            }
+            if (!description.isEmpty()) {
+                lore.add(description
+                        .replace("$count", Integer.toString(maxCharges))
+                        .replace("$rate", Integer.toString((int) (Math.ceil(displayRegeneration))))
+                );
+            }
         }
         description = messages.get("cooldown.description");
         String cooldownDescription = getCooldownDescription(mage, wand);
@@ -3485,6 +3525,9 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
             }
         }
+        if (maxCharges > 0 && rechargeRate > 0) {
+            maxTimeToCast = Math.max(maxTimeToCast, (int)Math.ceil(1000.0 / rechargeRate));
+        }
         return maxTimeToCast;
     }
 
@@ -3495,12 +3538,17 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         long remainingCooldown = getRemainingCooldown();
         CastingCost requiredCost = getRequiredCost();
+        long timeToRecharge = spellData.getTimeToRecharge(rechargeRate, maxCharges);
 
         Long timeToCast = null;
-        if (remainingCooldown == 0 && requiredCost == null) {
+        if (remainingCooldown == 0 && requiredCost == null && timeToRecharge == 0) {
             timeToCast = 0L;
         } else {
+            // TODO: These Wand flags are really ugly, can we move these to spell?
             timeToCast = com.elmakers.mine.bukkit.wand.Wand.LiveHotbarCooldown ? remainingCooldown : null;
+            if (com.elmakers.mine.bukkit.wand.Wand.LiveHotbarCharges && timeToRecharge > 0) {
+                timeToCast = timeToCast == null ? timeToRecharge : Math.max(timeToCast, timeToRecharge);
+            }
             if (com.elmakers.mine.bukkit.wand.Wand.LiveHotbarMana && requiredCost != null) {
                 int mana = requiredCost.getMana();
                 if (mana > 0) {

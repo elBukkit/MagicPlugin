@@ -242,6 +242,9 @@ live_hotbar_cooldown: true
 # Set this to incorporate mana costs in the cooldown countdown timer
 live_hotbar_mana: true
 
+# Set this to incorporate charge regenerate rates into the cooldown countdown timer
+live_hotbar_charges: true
+
 # Set this to false to turn off cooldown timers on skills
 # This involves scanning players' hotbars all the time, even
 # when not holding an active wand.

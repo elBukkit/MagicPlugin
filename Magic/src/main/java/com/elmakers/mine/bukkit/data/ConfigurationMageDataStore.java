@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.data.BrushData;
 import com.elmakers.mine.bukkit.api.data.MageData;
-import com.elmakers.mine.bukkit.api.data.MageDataCallback;
 import com.elmakers.mine.bukkit.api.data.MageDataStore;
 import com.elmakers.mine.bukkit.api.data.SerializedLocation;
 import com.elmakers.mine.bukkit.api.data.SpellData;
@@ -114,7 +113,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 node.set("cooldown_expiration", spell.getCooldownExpiration());
                 node.set("active", spell.isActive() ? true : null);
                 node.set("enabled", spell.isEnabled() ? null : false);
-                node.set("charges_used", spell.getChargesUsed());
+                node.set("charges_used", spell.getCharges());
             }
         }
 
@@ -202,7 +201,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
     @Override
     public void save(Collection<MageData> mages) {
         for (MageData data : mages) {
-            save(data, (MageDataCallback)null, false);
+            save(data, null, false);
         }
     }
 
@@ -352,8 +351,8 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 spellData.setLastEarn(Math.max(spellData.getLastEarn(), node.getLong("last_earn", 0)));
                 spellData.setCooldownExpiration(Math.max(spellData.getCooldownExpiration(), node.getLong("cooldown_expiration", 0)));
                 spellData.setIsActive(node.getBoolean("active"));
-                spellData.setChargesUsed(node.getInt("charges_used"));
-                node.set("charges_used", null);
+                spellData.setCharges(node.getDouble("charges"));
+                node.set("charges", null);
                 node.set("cast_count", null);
                 node.set("last_cast", null);
                 node.set("last_earn", null);

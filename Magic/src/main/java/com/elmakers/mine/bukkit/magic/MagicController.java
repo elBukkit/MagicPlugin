@@ -5053,7 +5053,7 @@ public class MagicController implements MageController {
             lines.add("");
         }
 
-        int charges = spell.getCharges();
+        int charges = spell.getMaxCharges();
         String description = messages.get("charges.description");
         if (charges > 1 && !description.isEmpty()) {
             String chargesDescription = description.replace("$count", Integer.toString(charges));
@@ -8073,6 +8073,7 @@ public class MagicController implements MageController {
         Wand.LiveHotbar = properties.getBoolean("live_hotbar", Wand.LiveHotbar);
         Wand.LiveHotbarCooldown = properties.getBoolean("live_hotbar_cooldown", Wand.LiveHotbarCooldown);
         Wand.LiveHotbarMana = properties.getBoolean("live_hotbar_mana", Wand.LiveHotbarMana);
+        Wand.LiveHotbarCharges = properties.getBoolean("live_hotbar_charges", Wand.LiveHotbarCharges);
         Wand.BrushGlow = properties.getBoolean("brush_glow", Wand.BrushGlow);
         Wand.BrushItemGlow = properties.getBoolean("brush_item_glow", Wand.BrushItemGlow);
         Wand.WAND_KEY = properties.getString("wand_key", "wand");

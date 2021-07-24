@@ -274,6 +274,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static boolean LiveHotbar = true;
     public static boolean LiveHotbarSkills = false;
     public static boolean LiveHotbarCooldown = true;
+    public static boolean LiveHotbarCharges = true;
     public static boolean LiveHotbarMana = true;
     public static boolean Unbreakable = false;
     public static boolean Unstashable = true;

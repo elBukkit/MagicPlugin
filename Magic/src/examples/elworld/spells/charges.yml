@@ -1,0 +1,8 @@
+charges:
+  name: Test Charges
+  inherit: railgun
+  costs: []
+  parameters:
+    charges: 3
+    charge_regeneration: 1/5
+    cooldown: 50

@@ -123,4 +123,5 @@ public interface Spell extends SpellTemplate {
     boolean isEnabled();
     void setEnabled(boolean enabled);
     long getLastCast();
+    double getChargesRemaining();
 }

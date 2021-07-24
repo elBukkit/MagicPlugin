@@ -13,9 +13,10 @@ public class WandDisplayMode {
     public static WandDisplayMode NONE = new WandDisplayMode(DisplayType.NONE);
     public static WandDisplayMode COOLDOWN = new WandDisplayMode(DisplayType.COOLDOWN);
     public static WandDisplayMode MANA = new WandDisplayMode(DisplayType.MANA);
+    public static WandDisplayMode CHARGES = new WandDisplayMode(DisplayType.CHARGES);
     public static WandDisplayMode SP = new WandDisplayMode(DisplayType.CURRENCY, "sp");
 
-    private enum DisplayType { NONE, COOLDOWN, MANA, CURRENCY, ATTRIBUTE }
+    private enum DisplayType { NONE, COOLDOWN, MANA, CHARGES, CURRENCY, ATTRIBUTE }
 
     private final DisplayType displayType;
     private final String currencyKey;
@@ -58,6 +59,8 @@ public class WandDisplayMode {
                 return COOLDOWN;
             case MANA:
                 return MANA;
+            case CHARGES:
+                return CHARGES;
             case NONE:
                 return NONE;
             case CURRENCY:
@@ -85,16 +88,25 @@ public class WandDisplayMode {
 
     public double getProgress(Wand wand) {
         Mage mage = wand.getMage();
+        Spell spell = wand.getActiveSpell();
         double progress = 1;
         switch (displayType) {
             case COOLDOWN:
-                Spell spell = wand.getActiveSpell();
                 if (spell != null && spell instanceof BaseSpell) {
                     BaseSpell baseSpell = (BaseSpell)spell;
                     long timeToCast = baseSpell.getTimeToCast(mage);
                     long maxTimeToCast = baseSpell.getMaxTimeToCast(mage);
                     if (maxTimeToCast > 0) {
                         progress = (double)(maxTimeToCast - timeToCast) / maxTimeToCast;
+                    }
+                }
+                break;
+            case CHARGES:
+                if (spell != null) {
+                    double charges = spell.getChargesRemaining();
+                    int maxCharges = spell.getMaxCharges();
+                    if (maxCharges > 0) {
+                        progress = charges / maxCharges;
                     }
                 }
                 break;
@@ -128,12 +140,17 @@ public class WandDisplayMode {
     public double getValue(Wand wand) {
         Mage mage = wand.getMage();
         double value = 1;
+        Spell spell = wand.getActiveSpell();
         switch (displayType) {
             case COOLDOWN:
-                Spell spell = wand.getActiveSpell();
                 if (spell != null && spell instanceof BaseSpell) {
                     BaseSpell baseSpell = (BaseSpell)spell;
                     value = baseSpell.getTimeToCast(mage) / 1000;
+                }
+                break;
+            case CHARGES:
+                if (spell != null) {
+                    value = spell.getChargesRemaining();
                 }
                 break;
             case MANA:
@@ -151,6 +168,8 @@ public class WandDisplayMode {
 
     public boolean isEnabled(Wand wand) {
         switch (displayType) {
+            case CHARGES:
+                return !wand.isCooldownFree();
             case COOLDOWN:
                 return !wand.isCooldownFree();
             case MANA:

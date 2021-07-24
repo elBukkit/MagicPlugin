@@ -9,6 +9,7 @@ spells:
         insufficient_resources: "a:&cNot enough &4$cost"
         insufficient: "a:&cRequires &4$cost"
         cooldown: "a:&eYou must wait &6$time"
+        charges: "a:&eYou must wait &6$time"
         cancelled: "a:&eYour spell was cancelled!"
         cancel: "a:&e$spell Interrupted"
         cancel_selection: "a:&cCancelled &6$spell"
