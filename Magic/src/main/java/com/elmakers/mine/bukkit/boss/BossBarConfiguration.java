@@ -36,7 +36,8 @@ public class BossBarConfiguration {
             } catch (Exception ex) {
                 controller.getLogger().warning("Invalid boss bar color: " + colorString);
             }
-        } else {
+        }
+        if (color == null) {
             color = BarColor.BLUE;
         }
         String styleString = parameters.getString("bar_style");
@@ -46,7 +47,8 @@ public class BossBarConfiguration {
             } catch (Exception ex) {
                 controller.getLogger().warning("Invalid boss bar style: " + styleString);
             }
-        } else {
+        }
+        if (style == null) {
             style = BarStyle.SOLID;
         }
         List<String> flagList = ConfigurationUtils.getStringList(parameters, "bar_flags");
