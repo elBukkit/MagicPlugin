@@ -447,6 +447,18 @@ wands:
     rainbowboots:
       name: Technicolor Boots
       spell_aura: ""
+    camohelmet:
+        name: Camouflage Helmet
+        spell_aura: ""
+    camochestplate:
+        name: Camouflage Chestplate
+        spell_aura: ""
+    camoleggings:
+        name: Camouflage Leggings
+        spell_aura: ""
+    camoboots:
+        name: Camouflage Boots
+        spell_aura: ""
     iceskates:
       name: Ice Skates
     admintool:

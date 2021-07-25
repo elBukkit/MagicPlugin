@@ -1,0 +1,8 @@
+camochestplate:
+    icon: "leather_chestplate:#random"
+    indestructible: false
+    locked: true
+    keep: true
+    cast_spell: biomechestplate
+    cast_interval: 100
+    passive: true

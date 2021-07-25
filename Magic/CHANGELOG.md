@@ -9,6 +9,8 @@
 ## Additions
 
  - Added `block_actions` and `biome_actions` maps to `CheckBlock` action, for easier biome and block type reactions
+ - Added `camohelmet`, `camochestplate`, `camoleggings` and `camoboots` items, a set of biome-adaptive camoflage armor.
+   Like the rainbow armor, these are currently not craftable
 
 # 9.4
 

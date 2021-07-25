@@ -1,0 +1,33 @@
+lizard:
+  actions:
+    cast:
+    - class: AreaOfEffect
+      actions:
+        - class: ModelEngine
+          model_state: smell
+        - class: Delay
+          delay: 2000
+        - class: ModelEngine
+          model_state: dance
+        - class: Delay
+          delay: 2000
+        - class: ModelEngine
+          model_state: sit
+        - class: Delay
+          delay: 2000
+        - class: ModelEngine
+          model_state: lookup
+        - class: Delay
+          delay: 2000
+        - class: ModelEngine
+          model_state: walk
+        - class: Delay
+          delay: 2000
+        - class: ModelEngine
+          model_state: idle
+        - class: Delay
+          delay: 2000
+  parameters:
+    target: self
+    radius: 16
+    target_npc: true

@@ -1,5 +1,5 @@
-biomecolor:
-  name: Camoflage
+camoarmor:
+  name: Camouflage
   hidden: true
   variables:
     - variable: target_r
@@ -24,15 +24,100 @@ biomecolor:
     cast:
     - class: CheckBlock
       ignore_result: true
-      biomes:
-        - jungle
-        - jungle_edge
-        - jungle_hills
-        - bamboo_jungle
-        - bamboo_jungle_hills
-        - jungle_edge
-        - modified_jungle_edge
-      actions:
+
+      # Map biomes to sets of actions to run
+      biome_actions:
+        jungle: green
+        jungle_edge: green
+        jungle_hills: green
+        bamboo_jungle: green
+        bamboo_jungle_hills: green
+        modified_jungle_edge: green
+
+        forest: lightgreen
+        wooded_hills: lightgreen
+
+        dark_forest: darkgreen
+        dark_forest_hills: darkgreen
+
+        swamp: swampy
+        swamp_hills: swampy
+
+        river: bluegreen
+
+        desert: sand
+        desert_hills: sand
+        desert_lakes: sand
+        beach: sand
+
+        lukewarm_ocean: blue
+        deep_lukewarm_ocean: blue
+        ocean: blue
+        cold_ocean: blue
+        deep_cold_ocean: blue
+
+        warm_ocean: darkblue
+        deep_warm_ocean: darkblue
+
+        frozen_ocean: frozenblue
+        deep_frozen_ocean: frozenblue
+        ice_spikes: frozenblue
+        frozen_river: frozenblue
+
+        plains: plains
+
+        birch_forest: birch_green
+        birch_forest_hills: birch_green
+        tall_birch_forest: birch_green
+
+        savanna: savanna
+
+        mountains: mountains
+        mountain_edge: mountains
+        gravelly_mountains: mountains
+        modified_gravelly_mountains: mountains
+        stone_shore: mountains
+
+        mushroom_fields: mushroom
+
+        sunflower_plains: sunflowers
+
+        flower_forest: flower_forest
+
+        snowy_tundra: snowy
+        snowy_beach: snowy
+        snowy_mountains: snowy
+        snowy_taiga: snowy
+        snowy_taiga_hills: snowy
+        snowy_taiga_mountains: snowy
+
+        badlands: badlands
+        eroded_badlands: badlands
+
+        taiga: taiga
+        wooded_mountains: taiga
+        taiga_hills: taiga
+        taiga_mountains: taiga
+        giant_spruce_taiga: taiga
+        giant_spruce_taiga_hills: taiga
+        giant_tree_taiga: taiga
+        giant_tree_taiga_hills: taiga
+
+        nether_wastes: nether
+        warped_forest: nether
+        crimson_forest: nether
+        basalt_deltas: nether
+        soul_sand_valley: nether
+
+        the_end: the_end
+        the_void: the_end
+        small_end_islands: the_end
+        end_barrens: the_end
+        end_midlands: the_end
+        end_highlands: the_end
+
+      # Actions handlers called by the biome_actions map
+      green:
         # color: "#2CA80A"
         - class: ModifyVariable
           variable: target_r
@@ -43,12 +128,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 10
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - forest
-        - wooded_hills
-      actions:
+
+      lightgreen:
         # color: "#4B872D"
         - class: ModifyVariable
           variable: target_r
@@ -59,12 +140,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 45
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - dark_forest
-        - dark_forest_hills
-      actions:
+
+      darkgreen:
         # "#4C3A22"
         - class: ModifyVariable
           variable: target_r
@@ -75,12 +152,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 34
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - swamp
-        - swamp_hills
-      actions:
+
+      swampy:
         # "#475B2E"
         - class: ModifyVariable
           variable: target_r
@@ -91,11 +164,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 46
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - river
-      actions:
+
+      bluegreen:
         # "#3E61C9"
         - class: ModifyVariable
           variable: target_r
@@ -106,14 +176,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 201
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - desert
-        - desert_hills
-        - desert_lakes
-        - beach
-      actions:
+
+      sand:
         # "#E0D4A8"
         - class: ModifyVariable
           variable: target_r
@@ -124,15 +188,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 168
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - lukewarm_ocean
-        - deep_lukewarm_ocean
-        - ocean
-        - cold_ocean
-        - deep_cold_ocean
-      actions:
+
+      blue:
         # "#3B5991"
         - class: ModifyVariable
           variable: target_r
@@ -143,12 +200,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 145
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - warm_ocean
-        - deep_warm_ocean
-      actions:
+
+      darkblue:
         # color: "#36857F"
         - class: ModifyVariable
           variable: target_r
@@ -159,14 +212,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 127
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - frozen_ocean
-        - deep_frozen_ocean
-        - ice_spikes
-        - frozen_river
-      actions:
+
+      frozenblue:
         # "90B6FA"
         - class: ModifyVariable
           variable: target_r
@@ -177,11 +224,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 250
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - plains
-      actions:
+
+      plains:
         # "#749648"
         - class: ModifyVariable
           variable: target_r
@@ -192,13 +236,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 72
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - birch_forest
-        - birch_forest_hills
-        - tall_birch_forest
-      actions:
+
+      birch_green:
         # color: "#6D8752"
         - class: ModifyVariable
           variable: target_r
@@ -209,11 +248,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 82
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - savanna
-      actions:
+
+      savanna:
         # color: "#968B40"
         - class: ModifyVariable
           variable: target_r
@@ -224,15 +260,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 64
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - mountains
-        - mountain_edge
-        - gravelly_mountains
-        - modified_gravelly_mountains
-        - stone_shore
-      actions:
+
+      mountains:
         # color: "#727272"
         - class: ModifyVariable
           variable: target_r
@@ -243,11 +272,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 114
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - mushroom_fields
-      actions:
+
+      mushroom:
         # "#705E64"
         - class: ModifyVariable
           variable: target_r
@@ -258,11 +284,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 106
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - sunflower_plains
-      actions:
+
+      sunflowers:
         # color: "#FBE84E"
         - class: ModifyVariable
           variable: target_r
@@ -273,11 +296,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 78
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - flower_forest
-      actions:
+
+      flower_forest:
         # color: "#CFA3F2"
         - class: ModifyVariable
           variable: target_r
@@ -288,16 +308,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 242
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - snowy_tundra
-        - snowy_beach
-        - snowy_mountains
-        - snowy_taiga
-        - snowy_taiga_hills
-        - snowy_taiga_mountains
-      actions:
+
+      snowy:
         # color: "#ffffff"
         - class: ModifyVariable
           variable: target_r
@@ -308,12 +320,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 255
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - badlands
-        - eroded_badlands
-      actions:
+
+      badlands:
         # "#C66A23"
         - class: ModifyVariable
           variable: target_r
@@ -324,18 +332,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 35
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - taiga
-        - wooded_mountains
-        - taiga_hills
-        - taiga_mountains
-        - giant_spruce_taiga
-        - giant_spruce_taiga_hills
-        - giant_tree_taiga
-        - giant_tree_taiga_hills
-      actions:
+
+      tiaga:
         # "#567054"
         - class: ModifyVariable
           variable: target_r
@@ -346,15 +344,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 84
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - nether_wastes
-        - warped_forest
-        - crimson_forest
-        - basalt_deltas
-        - soul_sand_valley
-      actions:
+
+      nether:
         # "#703131"
         - class: ModifyVariable
           variable: target_r
@@ -365,16 +356,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 49
-    - class: CheckBlock
-      ignore_result: true
-      biomes:
-        - the_end
-        - the_void
-        - small_end_islands
-        - end_barrens
-        - end_midlands
-        - end_highlands
-      actions:
+
+      the_end:
         # "#1C1528"
         - class: ModifyVariable
           variable: target_r
@@ -385,6 +368,8 @@ biomecolor:
         - class: ModifyVariable
           variable: target_b
           value: 40
+
+    # Now move our current color toward the target color
     - class: ModifyVariable
       variable: current_r
       value: "(target_r + current_r * 3) / 4"
@@ -394,8 +379,12 @@ biomecolor:
     - class: ModifyVariable
       variable: current_b
       value: "(target_b + current_b * 3) / 4"
+
+    # Enable for debugging
     # - class: Message
-    #  message: "Target: @target_r,@target_g,@target_b, Curent: @current_r,@current_g,@current_b"
+    #  message: "Target: @target_r,@target_g,@target_b, Current: @current_r,@current_g,@current_b"
+
+    # Finally set our equipment to this color
     - class: ColorItem
       color:
         r: current_r
@@ -407,3 +396,27 @@ biomecolor:
     - helmet
     - main_hand
     - off_hand
+    - chestplate
+    - helmet
+    - leggings
+    - boots
+
+camochestplate:
+  inherit: camoarmor
+  icon: "leather_chestplate:#random"
+  color_wand: true
+
+camoleggings:
+  inherit: camoarmor
+  icon: "leather_leggings:#random"
+  color_wand: true
+
+camoboots:
+  inherit: camoarmor
+  icon: "leather_boots:#random"
+  color_wand: true
+
+camohelmet:
+  inherit: camoarmor
+  icon: "leather_helmet:#random"
+  color_wand: true
