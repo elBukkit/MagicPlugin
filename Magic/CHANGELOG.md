@@ -5,6 +5,7 @@
 ## Changes
 
  - The variables section of a spell can now specify default scope for a variable for the rest of the spell
+ - Turn off using AureliumSkills' mana by default
 
 ## Additions
 

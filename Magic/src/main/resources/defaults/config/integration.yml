@@ -202,7 +202,9 @@ wildstacker:
 # AureliumSkills integration
 aurelium_skills:
   enabled: true
-  use_mana: true
+  # Set this to true to switch Magic to use AS mana.
+  # Since mana in AS is much lower you will need to make some adjustments to really make this work.
+  use_mana: false
   use_attributes: true
   # This can be used to scale up mana, but you may be better off adjusting
   # wisdom.max-mana-per-wisdom and base-mana in AureliumSkills' config
