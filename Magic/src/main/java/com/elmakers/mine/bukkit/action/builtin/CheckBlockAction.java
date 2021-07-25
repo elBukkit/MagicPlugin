@@ -1,17 +1,22 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.CheckAction;
+import com.elmakers.mine.bukkit.api.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -25,17 +30,60 @@ public class CheckBlockAction extends CheckAction {
     private SourceLocation sourceLocation;
     private Set<Biome> allowedBiomes;
     private Set<Biome> notBiomes;
+    private Map<Biome, String> biomeActions;
+    private Map<Material, String> blockActions;
     private boolean checkPermissions;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
-        super.initialize(spell, parameters);
-
         allowed = spell.getController().getMaterialSetManager()
                 .fromConfig(parameters.getString("allowed"));
         allowedBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(parameters, "biomes"), spell.getController().getLogger(), "spell " + spell.getKey());
         notBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(parameters, "not_biomes"), spell.getController().getLogger(), "spell " + spell.getKey());
+        ConfigurationSection biomeActionConfig = ConfigurationUtils.getConfigurationSection(parameters, "biome_actions");
+        if (biomeActionConfig != null) {
+            biomeActions = new HashMap<>();
+            for (String biomeKey : biomeActionConfig.getKeys(false)) {
+                try {
+                    Biome biome = Biome.valueOf(biomeKey.trim().toUpperCase());
+                    biomeActions.put(biome, biomeActionConfig.getString(biomeKey));
+                } catch (Exception ex) {
+                    spell.getController().getLogger().warning("Invalid biome in biome_actions config: " + biomeKey);
+                }
+            }
+        }
+
+        ConfigurationSection blockActionConfig = ConfigurationUtils.getConfigurationSection(parameters, "block_actions");
+        if (blockActionConfig != null) {
+            blockActions = new HashMap<>();
+            for (String blockKey : blockActionConfig.getKeys(false)) {
+                try {
+                    Material blockType = Material.valueOf(blockKey.trim().toUpperCase());
+                    blockActions.put(blockType, blockActionConfig.getString(blockKey));
+                } catch (Exception ex) {
+                    spell.getController().getLogger().warning("Invalid block type in block_actions config: " + blockKey);
+                }
+            }
+        }
+
+        // Have to do this after initializing the action map above since super.initialize calls addHandlers
+        super.initialize(spell, parameters);
+    }
+
+    @Override
+    protected void addHandlers(Spell spell, ConfigurationSection parameters) {
+        super.addHandlers(spell, parameters);
+        if (blockActions != null) {
+            for (String handler : blockActions.values()) {
+                addHandler(spell, handler);
+            }
+        }
+        if (biomeActions != null) {
+            for (String handler : biomeActions.values()) {
+                addHandler(spell, handler);
+            }
+        }
     }
 
     @Override
@@ -60,16 +108,42 @@ public class CheckBlockAction extends CheckAction {
     }
 
     @Override
-    protected boolean isAllowed(CastContext context) {
-        MaterialBrush brush = context.getBrush();
-        Block block = sourceLocation.getBlock(context);
-        if (block == null) {
-            return false;
+    public SpellResult step(CastContext context) {
+        String actionHandler = null;
+        if (blockActions != null || biomeActions != null) {
+            Block block = getTargetBlock(context);
+            if (block == null) {
+                return SpellResult.NO_TARGET;
+            }
+            if (blockActions != null) {
+                actionHandler = blockActions.get(block.getType());
+            }
+            if (biomeActions != null && actionHandler == null) {
+                actionHandler = biomeActions.get(block.getBiome());
+            }
         }
-        if (direction != null) {
+        if (actionHandler != null)  {
+            return startActions(actionHandler);
+        }
+        return super.step(context);
+    }
+
+    private Block getTargetBlock(CastContext context) {
+        Block block = sourceLocation.getBlock(context);
+        if (block != null && direction != null) {
             for (int i = 0; i < directionCount; i++) {
                 block = block.getRelative(direction);
             }
+        }
+        return block;
+    }
+
+    @Override
+    protected boolean isAllowed(CastContext context) {
+        MaterialBrush brush = context.getBrush();
+        Block block = getTargetBlock(context);
+        if (block == null) {
+            return false;
         }
 
         // Default to true

@@ -6,6 +6,10 @@
 
  - The variables section of a spell can now specify default scope for a variable for the rest of the spell
 
+## Additions
+
+ - Added `block_actions` and `biome_actions` maps to `CheckBlock` action, for easier biome and block type reactions
+
 # 9.4
 
 ## Fixes
