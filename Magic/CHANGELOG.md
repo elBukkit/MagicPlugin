@@ -13,6 +13,7 @@
  - Fix `CheckInventory` checking for items in specific slots
  - Fix ModelEngine models duplicating when put on NPCs
  - Allow breaking item frames, paintings and armor stands even if prevent_melee_damage is enabled (see: allow_melee_damage)
+ - Fix config load warnings (vibration particles) in 1.16 and earlier
 
 ## Additions
 

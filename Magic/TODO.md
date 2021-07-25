@@ -45,6 +45,7 @@
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Ability to open an editor session on behalf of another player
  - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
+ - Some indicator for long-running engineering casts?
 
 # Revert Some Hacks
 
