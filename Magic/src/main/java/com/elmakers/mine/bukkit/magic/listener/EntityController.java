@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -44,6 +45,7 @@ import com.elmakers.mine.bukkit.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Targeting;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
@@ -56,6 +58,7 @@ public class EntityController implements Listener {
     private boolean    disableItemSpawn = false;
     private boolean    forceSpawn = false;
     private boolean    preventWandMeleeDamage = true;
+    private final Set<EntityType> allowMeleeDamage = new HashSet<>();
     private int ageDroppedItems    = 0;
     private Map<EntityType, Double> entityDamageReduction;
 
@@ -65,6 +68,18 @@ public class EntityController implements Listener {
         keepWandsOnDeath = properties.getBoolean("keep_wands_on_death", true);
         preventWandMeleeDamage = properties.getBoolean("prevent_wand_melee_damage", true);
         ageDroppedItems = properties.getInt("age_dropped_items", 0);
+        List<String> allowMeleeKeys = ConfigurationUtils.getStringList(properties, "allow_melee_damage");
+        allowMeleeDamage.clear();
+        if (allowMeleeKeys != null) {
+            for (String allowMeleeKey : allowMeleeKeys) {
+                try {
+                    EntityType entityType = EntityType.valueOf(allowMeleeKey.toUpperCase());
+                    allowMeleeDamage.add(entityType);
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid entity type in allow_melee_damage config: " + allowMeleeKey);
+                }
+            }
+        }
         ConfigurationSection entityReduction = properties.getConfigurationSection("entity_damage_reduction");
         if (entityReduction != null) {
             Set<String> keys = entityReduction.getKeys(false);
@@ -262,7 +277,7 @@ public class EntityController implements Listener {
                 boolean isMeleeWeapon = controller.isMeleeWeapon(itemInHand);
                 if (isMelee && hasWand && !isMeleeWeapon) {
                     event.setCancelled(true);
-                } else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon) {
+                } else if (!hasWand && preventMeleeDamage && isMelee && !isMeleeWeapon && !allowMeleeDamage.contains(entity.getType())) {
                     event.setCancelled(true);
                 }
             }

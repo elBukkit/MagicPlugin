@@ -264,6 +264,14 @@ prevent_wand_melee_damage: true
 # Has no effect if prevent_wand_melee_damage is set to false
 prevent_melee_damage: false
 
+# A list of entities that can be damaged even if melee damage is prevented
+# This is usually used for entities that are more like blocks, such as item
+# frames and armor stands.
+allow_melee_damage:
+  - item_frame
+  - painting
+  - armor_stand
+
 # A value above 0 here will reduce melee damage from any weapon globally.
 # A value of 1 or higher will completely disable all melee damage.
 melee_damage_reduction: 0
