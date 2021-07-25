@@ -9,7 +9,6 @@ import org.bukkit.entity.Horse;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAbstractHorseData;
 
 public class EntityHorseData extends EntityAbstractHorseData {
     public Horse.Color color;
@@ -47,11 +46,14 @@ public class EntityHorseData extends EntityAbstractHorseData {
         armor = controller.getOrCreateItem(parameters.getString("armor"));
     }
 
-    public EntityHorseData(Horse horse, MageController controller) {
-        super(horse);
-        color = horse.getColor();
-        style = horse.getStyle();
-        armor = getItem(horse.getInventory().getArmor(), controller);
+    public EntityHorseData(Entity entity, MageController controller) {
+        super(entity, controller);
+        if (entity instanceof Horse) {
+            Horse horse = (Horse)entity;
+            color = horse.getColor();
+            style = horse.getStyle();
+            armor = getItem(horse.getInventory().getArmor(), controller);
+        }
     }
 
     @Override

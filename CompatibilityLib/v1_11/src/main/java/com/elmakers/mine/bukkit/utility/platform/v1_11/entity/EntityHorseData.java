@@ -9,12 +9,12 @@ import org.bukkit.entity.Horse;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAbstractHorseData;
 
 public class EntityHorseData extends EntityAbstractHorseData {
     public Horse.Color color;
     public Horse.Style style;
     public ItemData armor;
+    public ItemData saddle;
 
     public EntityHorseData() {
 
@@ -45,13 +45,18 @@ public class EntityHorseData extends EntityAbstractHorseData {
             jumpStrength = parameters.getDouble("horse_jump_strength");
         }
         armor = controller.getOrCreateItem(parameters.getString("armor"));
+        saddle = controller.getOrCreateItem(parameters.getString("saddle"));
     }
 
-    public EntityHorseData(Horse horse, MageController controller) {
-        super(horse);
-        color = horse.getColor();
-        style = horse.getStyle();
-        armor = getItem(horse.getInventory().getArmor(), controller);
+    public EntityHorseData(Entity entity, MageController controller) {
+        super(entity);
+        if (entity instanceof Horse) {
+            Horse horse = (Horse)entity;
+            color = horse.getColor();
+            style = horse.getStyle();
+            armor = getItem(horse.getInventory().getArmor(), controller);
+            saddle = getItem(horse.getInventory().getSaddle(), controller);
+        }
     }
 
     @Override
@@ -62,6 +67,9 @@ public class EntityHorseData extends EntityAbstractHorseData {
 
         if (armor != null) {
             horse.getInventory().setArmor(armor.getItemStack(1));
+        }
+        if (saddle != null) {
+            horse.getInventory().setSaddle(armor.getItemStack(1));
         }
         if (color != null) {
             horse.setColor(color);
