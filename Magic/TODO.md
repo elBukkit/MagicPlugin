@@ -6,23 +6,8 @@
 
 # Demo server
 
- - Need a way to duplicate NPCs
  - Make sure the test dummy restores properly on reboot
- - Creative mode should maybe consume PS blocks when placed? idk
- - What order are schematic brushes even in?
- - Add a way to get new brushes if you're maxed out
  - NPCs names getting reset if they're not villagers?
- - Dragon NPC left a phantom .. testing longer wait times
- - Prevent axolotls from dying on land
- - Model engine models reproduce on npc update
-
- - HTTYD
-
-   - Improve per-world RP features
-   - Can specify RPs by name, or "default"
-   - Automatically return to default when leaving
-   - May need better world->world communication to avoid throttling (do this for game modes too)
-   - World enter behavior needs to trigger on login
 
  - Features
     - warps
@@ -38,7 +23,7 @@
     - ~~mobs~~
     - ~~magic blocks~~
     - ~~ModelEngine~~
-
+   
 ## Arenas
 
  - Add option to save inventory and class layout
@@ -48,14 +33,18 @@
  - Add class selector option  
 
 # Near-Term Hopeful List
- 
+
+ - Need a way to duplicate NPCs
+ - Creative mode should maybe consume PS blocks when placed? idk
+ - What order are schematic brushes even in?
+ - Add a way to get new brushes if you're maxed out
+ - Prevent axolotls from dying on land
  - Add tab-completion and editor support for wand UI configs
  - Add clone/replicate source selected effects (cube)  
  - Add brush for creative mode, uses last held block  
  - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Ability to open an editor session on behalf of another player
- - Avoid re-sending the RP if not necessary when moving between worlds 
- - Buy/sell shops get inaccurate if they dont auto-close, need to refresh lore after each purchase
+ - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
 
 # Revert Some Hacks
 
@@ -68,7 +57,6 @@
  - Change "all" stage to store common inherited stage properties (requires above to be done first)
  - Arena auto-build/repair using schematics  
  - A way for examples to provide schematics
-
  - Prevent players teleporting into an arena
    - Or at least teleporting to a player in an arena?
    - And don't save their death location
@@ -76,19 +64,17 @@
 
 # Bugs
 
- - `prevent_melee_damage: true` prevents you from taking items out of item frames
  - Tag wand spell icons so they're not droppable!
-   .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :()
+   .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :(
+ - PW having inventory loss issues (spells go into normal inventory)
  - /mmob remove doesn't remove mounts
- - Map brush broken again?
  - Triggered spells need to track the wand they came from (think this is on the list somewhere already)
  - Fairy doesn't go away after 10 seconds
  - Does FakeBlock not really respect indestructible blocks? test out invisiworld
  - Don't drop blocks when breaking magically-changed blocks in creative mode
- - NPC dialog should always use NPC name, mob name is unreliable  
+ - NPC dialog should always use NPC name, mob name is unreliable (but why?)
+ - Copying dragon cage from httyd world doesn't work- block data wrong?  
  - Copying an east-facing item frame didn't work
- - Context-specific variables don't represent the current state of the action tree
-   not sure if this only affects ModifyVariable? Maybe it only needs to be fixed there?
  - Got "Recall got to doTeleport with no waypoint selected" .. how?
  - using inherit: sellshop make the quiet: true not working on item parameter but it works correctly with inherit: buyshop (brushette)
  - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
@@ -97,20 +83,10 @@
  - Selector cost at top-level (default cost) doesn't work
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)
  - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
-
- - Mars automata doesn't seem to auto-activate 
-
+ - Mars automata doesn't seem to auto-activate
  - Need an easier way to set prices that works with wands, too
-
- - Need to remove books from a Lectern when destroying it
- - Check wand particle FX for TPS drop (only in WG region.. maybe?) (could not reproduce)
-   
- - PW having inventory loss issues (spells go into normal inventory)
- - Swapping wand between main/off hand restores mana (? @sogn)  (could not reproduce)
-  
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
-
  - Mobs that are friendly *and* happen to hit each other shouldn't force-target
    (could not find this, doesn't seem like a get a targeting event.. is magic forcing them? Can't find that either)
 
@@ -137,9 +113,9 @@
  - Allow using variables in equation transforms (velocity_transform)
  - BetonQuest, expand integration - NPC quest dialog, class and cast count support
    https://github.com/BetonQuest/BetonQuest
- - RideEntity action parameter to work on target mob
+ - RideEntity action parameter to work on target mob (I think it has this already?)
  - Add requirements lists to wands
- - Some way to make a spell that uses the reflect behavior of shield wands
+ - Some way to make a spell that uses the reflect behavior of shield wands (reflective modifiers)
  - AureliumSkills + path integration
  - Variable crafting recipe ingredients (e.g. all planks)
  - CheckMount action, klein_76 would like to detect when players are sitting down.. triggers?
