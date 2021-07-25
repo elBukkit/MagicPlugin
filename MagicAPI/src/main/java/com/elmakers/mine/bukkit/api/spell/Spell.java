@@ -13,6 +13,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 /**
@@ -124,4 +125,6 @@ public interface Spell extends SpellTemplate {
     void setEnabled(boolean enabled);
     long getLastCast();
     double getChargesRemaining();
+    @Nullable
+    VariableScope getVariableScope(String variableName);
 }

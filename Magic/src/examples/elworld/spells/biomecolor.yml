@@ -1,0 +1,409 @@
+biomecolor:
+  name: Camoflage
+  hidden: true
+  variables:
+    - variable: target_r
+      scope: spell
+      value: 1
+    - variable: target_g
+      scope: spell
+      value: 1
+    - variable: target_b
+      scope: spell
+      value: 1
+    - variable: current_r
+      scope: spell
+      value: 1
+    - variable: current_g
+      scope: spell
+      value: 1
+    - variable: current_b
+      scope: spell
+      value: 1
+  actions:
+    cast:
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - jungle
+        - jungle_edge
+        - jungle_hills
+        - bamboo_jungle
+        - bamboo_jungle_hills
+        - jungle_edge
+        - modified_jungle_edge
+      actions:
+        # color: "#2CA80A"
+        - class: ModifyVariable
+          variable: target_r
+          value: 44
+        - class: ModifyVariable
+          variable: target_g
+          value: 168
+        - class: ModifyVariable
+          variable: target_b
+          value: 10
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - forest
+        - wooded_hills
+      actions:
+        # color: "#4B872D"
+        - class: ModifyVariable
+          variable: target_r
+          value: 75
+        - class: ModifyVariable
+          variable: target_g
+          value: 135
+        - class: ModifyVariable
+          variable: target_b
+          value: 45
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - dark_forest
+        - dark_forest_hills
+      actions:
+        # "#4C3A22"
+        - class: ModifyVariable
+          variable: target_r
+          value: 76
+        - class: ModifyVariable
+          variable: target_g
+          value: 58
+        - class: ModifyVariable
+          variable: target_b
+          value: 34
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - swamp
+        - swamp_hills
+      actions:
+        # "#475B2E"
+        - class: ModifyVariable
+          variable: target_r
+          value: 71
+        - class: ModifyVariable
+          variable: target_g
+          value: 91
+        - class: ModifyVariable
+          variable: target_b
+          value: 46
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - river
+      actions:
+        # "#3E61C9"
+        - class: ModifyVariable
+          variable: target_r
+          value: 62
+        - class: ModifyVariable
+          variable: target_g
+          value: 97
+        - class: ModifyVariable
+          variable: target_b
+          value: 201
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - desert
+        - desert_hills
+        - desert_lakes
+        - beach
+      actions:
+        # "#E0D4A8"
+        - class: ModifyVariable
+          variable: target_r
+          value: 224
+        - class: ModifyVariable
+          variable: target_g
+          value: 212
+        - class: ModifyVariable
+          variable: target_b
+          value: 168
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - lukewarm_ocean
+        - deep_lukewarm_ocean
+        - ocean
+        - cold_ocean
+        - deep_cold_ocean
+      actions:
+        # "#3B5991"
+        - class: ModifyVariable
+          variable: target_r
+          value: 59
+        - class: ModifyVariable
+          variable: target_g
+          value: 89
+        - class: ModifyVariable
+          variable: target_b
+          value: 145
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - warm_ocean
+        - deep_warm_ocean
+      actions:
+        # color: "#36857F"
+        - class: ModifyVariable
+          variable: target_r
+          value: 54
+        - class: ModifyVariable
+          variable: target_g
+          value: 133
+        - class: ModifyVariable
+          variable: target_b
+          value: 127
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - frozen_ocean
+        - deep_frozen_ocean
+        - ice_spikes
+        - frozen_river
+      actions:
+        # "90B6FA"
+        - class: ModifyVariable
+          variable: target_r
+          value: 144
+        - class: ModifyVariable
+          variable: target_g
+          value: 182
+        - class: ModifyVariable
+          variable: target_b
+          value: 250
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - plains
+      actions:
+        # "#749648"
+        - class: ModifyVariable
+          variable: target_r
+          value: 116
+        - class: ModifyVariable
+          variable: target_g
+          value: 150
+        - class: ModifyVariable
+          variable: target_b
+          value: 72
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - birch_forest
+        - birch_forest_hills
+        - tall_birch_forest
+      actions:
+        # color: "#6D8752"
+        - class: ModifyVariable
+          variable: target_r
+          value: 109
+        - class: ModifyVariable
+          variable: target_g
+          value: 135
+        - class: ModifyVariable
+          variable: target_b
+          value: 82
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - savanna
+      actions:
+        # color: "#968B40"
+        - class: ModifyVariable
+          variable: target_r
+          value: 150
+        - class: ModifyVariable
+          variable: target_g
+          value: 139
+        - class: ModifyVariable
+          variable: target_b
+          value: 64
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - mountains
+        - mountain_edge
+        - gravelly_mountains
+        - modified_gravelly_mountains
+        - stone_shore
+      actions:
+        # color: "#727272"
+        - class: ModifyVariable
+          variable: target_r
+          value: 114
+        - class: ModifyVariable
+          variable: target_g
+          value: 114
+        - class: ModifyVariable
+          variable: target_b
+          value: 114
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - mushroom_fields
+      actions:
+        # "#705E64"
+        - class: ModifyVariable
+          variable: target_r
+          value: 112
+        - class: ModifyVariable
+          variable: target_g
+          value: 94
+        - class: ModifyVariable
+          variable: target_b
+          value: 106
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - sunflower_plains
+      actions:
+        # color: "#FBE84E"
+        - class: ModifyVariable
+          variable: target_r
+          value: 251
+        - class: ModifyVariable
+          variable: target_g
+          value: 232
+        - class: ModifyVariable
+          variable: target_b
+          value: 78
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - flower_forest
+      actions:
+        # color: "#CFA3F2"
+        - class: ModifyVariable
+          variable: target_r
+          value: 207
+        - class: ModifyVariable
+          variable: target_g
+          value: 163
+        - class: ModifyVariable
+          variable: target_b
+          value: 242
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - snowy_tundra
+        - snowy_beach
+        - snowy_mountains
+        - snowy_taiga
+        - snowy_taiga_hills
+        - snowy_taiga_mountains
+      actions:
+        # color: "#ffffff"
+        - class: ModifyVariable
+          variable: target_r
+          value: 255
+        - class: ModifyVariable
+          variable: target_g
+          value: 255
+        - class: ModifyVariable
+          variable: target_b
+          value: 255
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - badlands
+        - eroded_badlands
+      actions:
+        # "#C66A23"
+        - class: ModifyVariable
+          variable: target_r
+          value: 198
+        - class: ModifyVariable
+          variable: target_g
+          value: 106
+        - class: ModifyVariable
+          variable: target_b
+          value: 35
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - taiga
+        - wooded_mountains
+        - taiga_hills
+        - taiga_mountains
+        - giant_spruce_taiga
+        - giant_spruce_taiga_hills
+        - giant_tree_taiga
+        - giant_tree_taiga_hills
+      actions:
+        # "#567054"
+        - class: ModifyVariable
+          variable: target_r
+          value: 86
+        - class: ModifyVariable
+          variable: target_g
+          value: 112
+        - class: ModifyVariable
+          variable: target_b
+          value: 84
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - nether_wastes
+        - warped_forest
+        - crimson_forest
+        - basalt_deltas
+        - soul_sand_valley
+      actions:
+        # "#703131"
+        - class: ModifyVariable
+          variable: target_r
+          value: 112
+        - class: ModifyVariable
+          variable: target_g
+          value: 49
+        - class: ModifyVariable
+          variable: target_b
+          value: 49
+    - class: CheckBlock
+      ignore_result: true
+      biomes:
+        - the_end
+        - the_void
+        - small_end_islands
+        - end_barrens
+        - end_midlands
+        - end_highlands
+      actions:
+        # "#1C1528"
+        - class: ModifyVariable
+          variable: target_r
+          value: 28
+        - class: ModifyVariable
+          variable: target_g
+          value: 21
+        - class: ModifyVariable
+          variable: target_b
+          value: 40
+    - class: ModifyVariable
+      variable: current_r
+      value: "(target_r + current_r * 3) / 4"
+    - class: ModifyVariable
+      variable: current_g
+      value: "(target_g + current_g * 3) / 4"
+    - class: ModifyVariable
+      variable: current_b
+      value: "(target_b + current_b * 3) / 4"
+    # - class: Message
+    #  message: "Target: @target_r,@target_g,@target_b, Curent: @current_r,@current_g,@current_b"
+    - class: ColorItem
+      color:
+        r: current_r
+        g: current_g
+        b: current_b
+  parameters:
+    target: self
+    slots:
+    - helmet
+    - main_hand
+    - off_hand

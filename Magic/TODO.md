@@ -34,6 +34,9 @@
 
 # Near-Term Hopeful List
 
+ - An option to be able to replace slotted upgrades, pop the old one out
+ - Can the variables section specify default scope for all ModifyVariables actions in that spell? Would be simpler.
+   Also, add editor support for the variables section, it's very confusing
  - Need a way to duplicate NPCs
  - Creative mode should maybe consume PS blocks when placed? idk
  - What order are schematic brushes even in?
@@ -65,6 +68,9 @@
 
 # Bugs
 
+ - `/mconfig apply` doesn't work without a slug, after starting a new editor session
+ - Upgrading wand enchantment levels with books doesn't work (this was probably an intentional prevention but sounds like it should be allowed)
+ - Cover action doesn't work on top of water (Phantom)
  - Tag wand spell icons so they're not droppable!
    .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :(
  - PW having inventory loss issues (spells go into normal inventory)

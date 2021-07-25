@@ -2,6 +2,10 @@
 
 # 9.5
 
+## Changes
+
+ - The variables section of a spell can now specify default scope for a variable for the rest of the spell
+
 # 9.4
 
 ## Fixes

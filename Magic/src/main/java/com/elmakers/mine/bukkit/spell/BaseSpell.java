@@ -202,6 +202,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     // For convenience, these can be provide as a list of configurations, or as a map to objects
     private Collection<ConfigurationSection> variablesList;
     private ConfigurationSection variablesSection;
+    private final Map<String, VariableScope> variableScopes = new HashMap<>();
 
     protected boolean cancelOnDeactivate        = true;
     protected double cancelOnDamage             = 0;
@@ -1511,10 +1512,12 @@ public class BaseSpell implements MageSpell, Cloneable {
 
     public void initializeVariables(SpellParameters parameters) {
         if (variablesSection != null) {
-            ConfigurationSection variables = parameters.getVariables(VariableScope.CAST);
+            VariableScope scope = VariableScope.CAST;
+            ConfigurationSection variables = parameters.getVariables(scope);
             if (variables != null) {
                 Set<String> keys = variablesSection.getKeys(false);
                 for (String variable : keys) {
+                    variableScopes.put(variable, scope);
                     if (!variables.contains(variable)) {
                         variables.set(variable, variablesSection.get(variable));
                     }
@@ -1524,16 +1527,23 @@ public class BaseSpell implements MageSpell, Cloneable {
             if (variablesList != null && !variablesList.isEmpty()) {
                 for (ConfigurationSection variableConfig : variablesList) {
                     VariableScope scope = ConfigurationUtils.parseScope(variableConfig.getString("scope"), VariableScope.CAST, controller.getLogger());
+                    String variable = variableConfig.getString("variable");
+                    variableScopes.put(variable, scope);
                     ConfigurationSection variables = parameters.getVariables(scope);
                     if (variables == null) continue;
 
-                    String variable = variableConfig.getString("variable");
                     if (!variables.contains(variable)) {
-                        variables.set(variable, variableConfig.get("value"));
+                        variables.set(variable, variableConfig.get("value", variableConfig.get("default")));
                     }
                 }
             }
         }
+    }
+
+    @Override
+    @Nullable
+    public VariableScope getVariableScope(String variable) {
+        return variableScopes.get(variable);
     }
 
     @Override

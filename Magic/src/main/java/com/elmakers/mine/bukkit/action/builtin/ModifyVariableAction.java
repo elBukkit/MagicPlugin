@@ -29,15 +29,16 @@ public class ModifyVariableAction extends BaseSpellAction {
         }
     }
 
-    private void parseScope(ConfigurationSection parameters, Logger logger) {
-        scope = ConfigurationUtils.parseScope(parameters.getString("scope"), scope, logger);
+    private void parseScope(ConfigurationSection parameters, VariableScope defaultScope, Logger logger) {
+        defaultScope = defaultScope == null ? scope : defaultScope;
+        scope = ConfigurationUtils.parseScope(parameters.getString("scope"), defaultScope, logger);
     }
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
         key = parameters.getString("variable", "");
         clear = parameters.getBoolean("clear");
-        parseScope(parameters, spell.getController().getLogger());
+        parseScope(parameters, spell.getVariableScope(key), spell.getController().getLogger());
         switch (scope) {
             case SPELL:
                 checkDefaults(spell.getVariables(), parameters);
@@ -56,8 +57,8 @@ public class ModifyVariableAction extends BaseSpellAction {
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
-        parseScope(parameters, context.getLogger());
         key = parameters.getString("variable", "");
+        parseScope(parameters, context.getSpell().getVariableScope(key), context.getLogger());
         clear = parameters.getBoolean("clear");
         checkDefaults(context.getVariables(scope), parameters);
         this.parameters = parameters;
