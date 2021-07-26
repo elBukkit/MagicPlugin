@@ -1,0 +1,48 @@
+automaton_npc:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Automaton NPC
+  class: AnimateSpell
+  levels:
+    1: 100
+    3: 40
+    5: 10
+  effects:
+    tick:
+      - sound: entity_endermen_scream
+        sound_range: 4
+        sound_volume: 0.3
+        sound_pitch: 0.4
+  parameters:
+    range: 3
+    allow_max_range: true
+    pdy: 2
+    bypass_build: true
+    bypass_break: true
+    destructible: all_air,mushroom_stem,red_mushroom_block,brown_mushroom_block
+    check_destructible: true
+    death_material: light
+    name: Hunter
+    seed_radius: 2
+    radius: 12
+    yradius: 12
+    move: 3
+    birth_range: 6
+    max_blocks: 200
+    min_blocks: 100
+    live_range: 6
+    delay: 200
+    undo: 7000
+    cooldown: 0
+    live_rules: 3,4,5,6,7,8,9
+    birth_rules: 4,5
+    target_min_range: 1
+    target_max_range: 16
+    target_mode: hunt
+    targets: player
+    target_game_modes: all
+    create_mage: false
+    materials:
+      - mushroom_stem
+      - red_mushroom_block
+      - brown_mushroom_block
