@@ -29,7 +29,7 @@ hunter:
     live_range: 3,4,5
     delay: 1200,800,500
     drop_xp: 50,75,100
-    spell_parameters: "loud true transparent air,$birth range 32"
+    spell_parameters: "loud true transparent all_air,$birth range 32"
     death_cast:
         "hunter_death speed 0^1 destructible $birth": 500,300,50
         "hunter_death speed 0^5 destructible $birth": 300,200,100

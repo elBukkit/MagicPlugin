@@ -29,7 +29,7 @@ worm:
     live_range: 16,20,28
     delay: 1800,1500,1200
     drop_xp: 75,100,125
-    spell_parameters: "loud true transparent air,$birth range 48"
+    spell_parameters: "loud true transparent all_air,$birth range 48"
     death_cast:
         "worm_death radius 10 destructible $birth": 100,100,100
         "worm_death radius 12 destructible $birth": 20,50,200

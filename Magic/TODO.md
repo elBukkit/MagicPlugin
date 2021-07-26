@@ -14,7 +14,7 @@
     - arenas
     - wands and items (bannershop)
       
-    - automata (monsters)
+    - automata (monsters)  (look at why they're not undoing and/or overlapping .. generally being weird only in the region)
     - crafting
     - protection (world guard, flag demonstration)
       
@@ -34,6 +34,7 @@
 
 # Near-Term Hopeful List
 
+ - Look at httyd riddennightfuryfire
  - An option to be able to replace slotted upgrades, pop the old one out
  - Can the variables section specify default scope for all ModifyVariables actions in that spell? Would be simpler.
    Also, add editor support for the variables section, it's very confusing
@@ -117,6 +118,7 @@
 
 ## Suggestions
 
+ - Spell option to carry over CastContext
  - Allow using variables in equation transforms (velocity_transform)
  - BetonQuest, expand integration - NPC quest dialog, class and cast count support
    https://github.com/BetonQuest/BetonQuest

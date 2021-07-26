@@ -29,7 +29,7 @@ virus:
     move: 8,10,16
     delay: 3500,3000,2500
     drop_xp: 100,150,200
-    spell_parameters: "loud true transparent air,$birth range 48"
+    spell_parameters: "loud true transparent all_air,$birth range 48"
     cast:
         neutron: 5,10,20
         fury: 20,50,100

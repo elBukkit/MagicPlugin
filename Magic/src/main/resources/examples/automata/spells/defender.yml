@@ -16,7 +16,7 @@ defender:
         - sound: entity_endermen_scream
         hurt:
         - sound: entity_endermen_hurt,0.3,2
-    spell_parameters: "loud true transparent air,$birth,stained_glass"
+    spell_parameters: "loud true transparent all_air,$birth,stained_glass"
     cast:
         "defender_attack indestructible $birth": 200
         "none": 500

@@ -27,7 +27,7 @@ snake:
     min_blocks: 50,75,100
     delay: 500,300,250
     drop_xp: 20,40,50
-    spell_parameters: "loud true transparent air,$birth range 48"
+    spell_parameters: "loud true transparent all_air,$birth range 48"
     death_cast:
         "snake_death destructible $birth": 100,100,100
     cast:
