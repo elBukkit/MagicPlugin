@@ -31,6 +31,7 @@ conduit:
       - commit
       - forest
     brushes:
+      - light
       - schematic|rainbow_blocks
       - schematic|lantern
       - schematic|creeper_rug
