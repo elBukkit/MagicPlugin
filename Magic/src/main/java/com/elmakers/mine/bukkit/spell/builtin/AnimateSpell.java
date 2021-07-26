@@ -32,7 +32,7 @@ public class AnimateSpell extends SimulateSpell
     private Deque<WeightedPair<Integer>> levelWeights = null;
 
     public static final String[] ANIMATE_PARAMETERS = {
-        "animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget", "create_mage"
+        "animate", "sim_check_destructible", "seed_radius", "restricted", "obworld", "btarget", "create_mage", "animate_spell"
     };
 
     @Override
@@ -161,14 +161,15 @@ public class AnimateSpell extends SimulateSpell
         Mage mage = getMage();
         if (parameters.getBoolean("create_mage", true)) {
             String automataId = UUID.randomUUID().toString();
+            mage = controller.getAutomaton(automataId, automataName);
             mage.setLocation(targetBlock.getLocation());
             mage.setQuiet(true);
             mage.addTag(getKey());
-            mage = controller.getAutomaton(automataId, automataName);
         }
 
         automataParameters.set("animate", automataName);
-        final Spell spell = mage.getSpell(getKey());
+        String spellKey = parameters.getString("animate_spell", getKey());
+        final Spell spell = mage.getSpell(spellKey);
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
             @Override
             public void run() {

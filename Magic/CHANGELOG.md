@@ -5,6 +5,7 @@
 ## Fixes
 
  - Fix wizards not being able to advance to engineers if the engineering example is loaded
+ - Fix automaton sound effects, errors from automata dealing damage in 1.17
 
 ## Changes
 

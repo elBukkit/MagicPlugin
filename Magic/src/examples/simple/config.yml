@@ -27,7 +27,7 @@ spells:
       effects:
           cast:
           -  class: EffectSingle
-             sound: entity_endermen_hurt
+             sound: entity_enderman_hurt
              effectlib:
               class: WarpEffect
               particle: block_crack

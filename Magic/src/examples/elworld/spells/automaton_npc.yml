@@ -9,14 +9,15 @@ automaton_npc:
     5: 10
   effects:
     tick:
-      - sound: entity_endermen_scream
-        sound_range: 4
-        sound_volume: 0.3
+      - sound: entity_enderman_scream
+        # sound_range: 8
+        sound_volume: 0.28
         sound_pitch: 0.4
+        particle: end_rod
+        particle_count: 8
+        particle_offset: 2
   parameters:
-    range: 3
-    allow_max_range: true
-    pdy: 2
+    target: self
     bypass_build: true
     bypass_break: true
     destructible: all_air,mushroom_stem,red_mushroom_block,brown_mushroom_block

@@ -9,13 +9,13 @@ defender:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_endermen_scream
+           sound: entity_enderman_scream
         -  class: EffectTrail
            particle: block_crack
         tick:
-        - sound: entity_endermen_scream
+        - sound: entity_enderman_scream
         hurt:
-        - sound: entity_endermen_hurt,0.3,2
+        - sound: entity_enderman_hurt,0.3,2
     spell_parameters: "loud true transparent all_air,$birth,stained_glass"
     cast:
         "defender_attack indestructible $birth": 200
@@ -174,3 +174,4 @@ birth_defender:
     allow_max_range: true
     seed_radius: 2
     ignore_region_overrides: true
+    animate_spell: defender

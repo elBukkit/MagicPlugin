@@ -9,13 +9,20 @@ hunter:
     effects:
         cast:
         -  class: EffectSingle
-           sound: entity_endermen_scream
+           sound: entity_enderman_scream
         -  class: EffectTrail
            particle: block_crack
         tick:
-        - sound: entity_endermen_scream
+        - sound: entity_enderman_scream
+          particle: end_rod
+          particle_count: 15
+          particle_offset: 3
         hurt:
-        - sound: entity_endermen_hurt,0.3,2
+        - sound: entity_enderman_hurt,0.3,2
+          material: redstone_block
+          particle: drip_lava
+          particle_count: 30
+          particle_offset: 4
     levels:
         1: 100
         3: 40
@@ -148,7 +155,7 @@ hunter_death:
            color: FACC2E
            firework: burst
            particle: explosion_large
-           sound: entity_endermen_death,0.3,2
+           sound: entity_enderman_death,0.3,2
     parameters:
         speed: 0.9
         direction: 0,0.8,0
@@ -169,3 +176,4 @@ birth_hunter:
     allow_max_range: true
     seed_radius: 2
     ignore_region_overrides: true
+    animate_spell: hunter

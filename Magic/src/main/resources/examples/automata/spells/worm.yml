@@ -132,3 +132,4 @@ birth_worm:
     allow_max_range: true
     seed_radius: 3
     ignore_region_overrides: true
+    animate_spell: worm
