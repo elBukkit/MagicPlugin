@@ -2,6 +2,10 @@
 
 # 9.5
 
+## Fixes
+
+ - Fix wizards not being able to advance to engineers if the engineering example is loaded
+
 ## Changes
 
  - The variables section of a spell can now specify default scope for a variable for the rest of the spell

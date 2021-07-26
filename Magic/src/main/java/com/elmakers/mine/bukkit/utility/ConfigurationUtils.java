@@ -452,7 +452,7 @@ public class ConfigurationUtils extends ConfigUtils {
             }
             if (value instanceof ConfigurationSection && (existingValue == null || existingValue instanceof ConfigurationSection)) {
                 ConfigurationSection addChild = (ConfigurationSection)value;
-                boolean skipMerge = isUserConfig ? addChild.contains("inherit") : !addChild.getBoolean("inherit", true);
+                boolean skipMerge = isUserConfig ? addChild.contains("inherit") : addChild.isBoolean("inherit") && !addChild.getBoolean("inherit", true);
                 if (existingValue == null || skipMerge) {
                     ConfigurationSection newChild = first.createSection(key);
                     addConfigurations(newChild, addChild, override);
