@@ -351,10 +351,10 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                 return;
             }
 
-            net.minecraft.world.entity.Entity targetHandle = ((CraftEntity)target).getHandle();
+            net.minecraft.world.entity.Entity targetHandle = target == null ? null : ((CraftEntity)target).getHandle();
             if (targetHandle == null) return;
 
-            net.minecraft.world.entity.Entity sourceHandle = ((CraftEntity)source).getHandle();
+            net.minecraft.world.entity.Entity sourceHandle = source == null ? null : ((CraftEntity)source).getHandle();
 
             // Bukkit won't allow magic damage from anything but a potion..
             if (sourceHandle != null && source instanceof LivingEntity) {
