@@ -1,4 +1,5 @@
 shoptool:
+    hidden: true
     inherit: base_bound
     icon: nether_star{"CustomModelData":18001}
     mode: cast
