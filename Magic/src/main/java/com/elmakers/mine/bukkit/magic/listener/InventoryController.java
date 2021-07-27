@@ -52,6 +52,7 @@ public class InventoryController implements Listener {
     private boolean dropChangesPages = false;
     private long openCooldown = 0;
     private boolean enableInventoryCasting = true;
+    private boolean enableInventoryDropCasting = false;
     private boolean enableInventorySelection = true;
     private Set<InventoryType> unstashableTypes = new HashSet<>();
 
@@ -68,6 +69,7 @@ public class InventoryController implements Listener {
         enableItemHacks = properties.getBoolean("enable_custom_item_hacks", false);
         dropChangesPages = properties.getBoolean("drop_changes_pages", false);
         enableInventoryCasting = properties.getBoolean("allow_inventory_casting", true);
+        enableInventoryDropCasting = properties.getBoolean("allow_inventory_drop_casting", false);
         enableInventorySelection = properties.getBoolean("allow_inventory_selection", true);
         openCooldown = properties.getInt("open_cooldown", 0);
         List<String> unstashableTypeKeys = properties.getStringList("unstashable_containers");
@@ -249,6 +251,8 @@ public class InventoryController implements Listener {
         boolean isPlayerInventory = inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.PLAYER;
         ItemStack clickedItem = event.getCurrentItem();
 
+        // TODO: Use the enum
+        boolean isSwap = event.getClick().name().equals("SWAP_OFFHAND");
         boolean isDrop = event.getClick() == ClickType.DROP || event.getClick() == ClickType.CONTROL_DROP;
         boolean isSkill = clickedItem != null && Wand.isSkill(clickedItem);
 
@@ -285,6 +289,10 @@ public class InventoryController implements Listener {
         boolean clickedWand = Wand.isWand(clickedItem);
 
         boolean isHotbar = action == InventoryAction.HOTBAR_SWAP || action == InventoryAction.HOTBAR_MOVE_AND_READD;
+        // Pressing the swap hands button also looks like a hotbar_swap ... for some reason .. I guess the offhand is considered part of the hotbar?
+        if (isSwap) {
+            isHotbar = false;
+        }
 
         // I'm not sure why or how this happens, but sometimes we can get a hotbar event without a slot number?
         int hotbarButton = event.getHotbarButton();
@@ -397,6 +405,23 @@ public class InventoryController implements Listener {
             if (clickedSpell && clickedItem.getAmount() != 1)
             {
                 clickedItem.setAmount(1);
+            }
+
+            // Check for swapping into the offhand, we have to prevent this in the wand inventory
+            if (isSwap) {
+                String spellName = Wand.getSpell(clickedItem);
+                if (spellName != null && !activeWand.isManualQuickCastDisabled() && enableInventoryCasting) {
+                    final Spell spell = mage.getSpell(spellName);
+                    if (spell != null) {
+                        // Delay this one tick because cancelling this event is going to mean the spell icon
+                        // gets put back in the player inventory, and this can cause strange side effects with
+                        // spells levelling up, or spells with GUIs or other inventories.
+                        final Wand castWand = activeWand;
+                        controller.getPlugin().getServer().getScheduler().runTaskLater(controller.getPlugin(),
+                                new WandCastTask(castWand, spell), 1);
+                    }
+                }
+                event.setCancelled(true);
             }
 
             // Check for page/hotbar cycling by clicking the active wand
@@ -555,7 +580,7 @@ public class InventoryController implements Listener {
                 if (!controller.isSpellDroppingEnabled()) {
                     player.closeInventory();
                     String spellName = Wand.getSpell(droppedItem);
-                    if (spellName != null && !activeWand.isManualQuickCastDisabled() && enableInventoryCasting) {
+                    if (spellName != null && !activeWand.isManualQuickCastDisabled() && enableInventoryDropCasting) {
                         final Spell spell = mage.getSpell(spellName);
                         if (spell != null) {
                             // Delay this one tick because cancelling this event is going to mean the spell icon

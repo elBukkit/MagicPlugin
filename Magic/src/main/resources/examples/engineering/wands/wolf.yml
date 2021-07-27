@@ -64,6 +64,7 @@ wolf:
     - newpage
 
     # Page 1, conduit
+    - superbroom
     - repair
     - backup
     - superbackup

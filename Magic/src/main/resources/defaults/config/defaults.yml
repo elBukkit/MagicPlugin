@@ -290,10 +290,13 @@ cancel_interact_on_right_click: false
 # Set this to false to disallow casting using an offhand wand
 allow_offhand_casting: true
 
-# Set this to true to allow casting a spell from an inventory using the drop button
+# Set this to true to allow casting a spell from an inventory using the swap button
+allow_inventory_casting: true
+
+# Same as above, but using the drop button. This is the old way.
 # This does not work well in recent MC versions though because this action also sends
 # an arm swing animation
-allow_inventory_casting: false
+allow_inventory_drop_casting: false
 
 # Set this to false to prevent selecting a spell from an inventory using right-click
 allow_inventory_selection: true

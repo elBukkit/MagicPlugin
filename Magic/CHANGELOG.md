@@ -11,6 +11,7 @@
  - Fix potter wand icons pre-1.14 (maybe?)
  - Fix a specific issue with overlapping undo, not sure what the effects are (helps messy automata at least)
  - Fix Equation action `orient: true`, add `use_target_location: false` option
+ - Fix losing items or duping spells using the swap key
 
 ## Changes
 
@@ -19,6 +20,7 @@
  - Allow setting `break_durability` of `BreakBlock` action to less than one, e.g. to crack glass
  - Add `break_material` to `BreakBlock` action, to fill with something other than air
  - Default Message action behavior changed to follow normal message rules, can use "t:" for titles, "a:" for action bar
+ - The swap key can be used in a spell inventory to quick-cast a spell, replacing the old drop key behavior
 
 ## Additions
 

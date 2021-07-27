@@ -1,12 +1,13 @@
 # TODO
 
 # Nowish
- 
+
  - Holes in containment if automata gets contained while in the glass
  - Need an option to cancel spells when changing worlds via PWI
    (lose broom when tp'ing while riding)
  - Cancelled spells (`/magic cancel`) should still auto-undo
- - Spell inventory not saving on wolf staff (sometimes? Maybe just the one broken staff?)
+ - Save spell can make upside-down schematics
+ - Some way for automata to use air and light? Allow all_air?
 
 # Resource pack changes near-term
 
