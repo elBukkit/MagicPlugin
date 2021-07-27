@@ -1,0 +1,13 @@
+automaton_clean:
+  name: Clean Automaton
+  actions:
+    cast:
+      - class: Volume
+        actions:
+          - class: ModifyBlock
+  parameters:
+    target: self
+    cooldown: 20 seconds
+    brush: light
+    destructible: air,mushroom_stem,red_mushroom_block,brown_mushroom_block
+    radius: 24

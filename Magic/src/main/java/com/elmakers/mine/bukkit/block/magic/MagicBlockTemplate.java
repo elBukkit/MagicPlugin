@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.base.Preconditions;
 
@@ -184,7 +185,9 @@ public class MagicBlockTemplate {
         }
 
         if (caster != null && (caster.isRecast() || firstActivate)) {
-            caster.cast(instance.getMage());
+            Mage mage = instance.getMage();
+            mage.setLocation(instance.getLocation());
+            caster.cast(mage);
         }
     }
 

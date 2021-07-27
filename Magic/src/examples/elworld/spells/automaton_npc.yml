@@ -10,12 +10,8 @@ automaton_npc:
   effects:
     tick:
       - sound: entity_enderman_scream
-        # sound_range: 8
-        sound_volume: 0.28
+        sound_volume: 0.15
         sound_pitch: 0.4
-        particle: end_rod
-        particle_count: 8
-        particle_offset: 2
   parameters:
     target: self
     bypass_build: true
