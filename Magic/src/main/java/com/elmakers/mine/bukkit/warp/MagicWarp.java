@@ -11,8 +11,10 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.warp.Warp;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class MagicWarp implements Warp {
     @Nonnull
@@ -80,7 +82,13 @@ public class MagicWarp implements Warp {
 
     public void checkMarker(MagicController controller) {
         if (markerIcon != null) {
-            controller.addMarker("warp-" + key, markerIcon, getMarkerSet(), getName(), getLocation(), description);
+            CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+            String cleanName = ChatColor.stripColor(compatibilityUtils.translateColors(getName()));
+            String cleanDescription = description;
+            if (cleanDescription != null) {
+                cleanDescription = ChatColor.stripColor(compatibilityUtils.translateColors(cleanDescription));
+            }
+            controller.addMarker("warp-" + key, markerIcon, getMarkerSet(), cleanName, getLocation(), cleanDescription);
         } else {
             removeMarker(controller);
         }
