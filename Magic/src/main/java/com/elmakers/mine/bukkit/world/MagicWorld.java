@@ -258,7 +258,8 @@ public class MagicWorld {
 
     public void playerEntered(Mage mage, MagicWorld previousWorld, boolean isJoin) {
         if (mage.isResourcePackEnabled()) {
-            if (previousWorld == null || !Objects.equals(previousWorld.resourcePack, resourcePack)) {
+            String fromResourcePack = previousWorld == null ? null : previousWorld.resourcePack;
+            if (!Objects.equals(fromResourcePack, resourcePack) || isJoin) {
                 controller.promptResourcePack(mage.getPlayer(), resourcePack);
             }
         } else if (isJoin && mage.isResourcePackPrompt()) {
