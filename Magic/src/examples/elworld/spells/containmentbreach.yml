@@ -146,8 +146,8 @@ containmentbreach:
     target_magic_blocks: automaton_npc
     target_all_worlds: false
     destructible: stained_glasses,mushroom_stem,red_mushroom_block,brown_mushroom_block,packed_ice
-    delay: 50
-    repeat: 4
+    delay: 30
+    repeat: 5
     break_durability: 0.15
     bypass: true
     break_material: light
