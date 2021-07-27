@@ -4,12 +4,13 @@
 
 ## Fixes
 
- - Fix wizards not being able to advance to engineers if the engineering example is loaded
+ - Fix wizards not being able to advance to engineer if the engineering example is loaded
  - Fix automaton sound effects, errors from automata dealing damage in 1.17
  - Fix `lifetime` on a mob not working unless `interval` was also set
  - Fix migrating legacy enchantments on wands
  - Fix potter wand icons pre-1.14 (maybe?)
  - Fix a specific issue with overlapping undo, not sure what the effects are (helps messy automata at least)
+ - Fix Equation action `orient: true`, add `use_target_location: false` option
 
 ## Changes
 

@@ -31,6 +31,7 @@ public class EquationAction extends CompoundAction
     private boolean orient;
     private boolean orientPitch;
     private boolean reorient;
+    private boolean useTargetLocation;
     private int iterations;
     private int iterations2;
 
@@ -50,6 +51,7 @@ public class EquationAction extends CompoundAction
         reorient = parameters.getBoolean("reorient", false);
         orient = parameters.getBoolean("orient", false);
         orientPitch = parameters.getBoolean("orient_pitch", true);
+        useTargetLocation = parameters.getBoolean("use_target_location", true);
         iterations = parameters.getInt("iterations", 1);
         iterations2 = parameters.getInt("iterations2", 0);
 
@@ -85,12 +87,12 @@ public class EquationAction extends CompoundAction
         if (startLocation == null) return;
 
         Location targetLocation = context.getTargetLocation();
-        if (targetLocation == null) {
+        if (!useTargetLocation || targetLocation == null || targetLocation.equals(startLocation)) {
             direction = startLocation.getDirection();
         } else {
-            startLocation = targetLocation;
             Vector startLoc = startLocation.toVector();
             Vector targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
+            startLocation = targetLocation;
             direction = targetLoc.clone();
             direction.subtract(startLoc);
             direction.normalize();

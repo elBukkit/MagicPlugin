@@ -1,0 +1,30 @@
+# This is the key name of this spell
+# It must be unique across the server, and is used in commands such as /mage, /wand and /mgive
+# to refer to this spell.
+waveblocks:
+  # Name and description may be added here and will appear in lore for this spell.
+  name: Wave Blocks
+  # Choose an icon, used when showing this spell in a wand inventory.
+  icon: string
+  # Actions define what this spell does when cast. In this case we will damage the target.
+  actions:
+    # Actions can be triggered from a few different events, but the most common is "cast",
+    # which will happen immediately when the spell is cast.
+    cast:
+      - class: ChangeContext
+        relative_target_offset: 2,1,0
+        actions:
+          - class: Equation
+            actions:
+              - class: ModifyBlock
+  parameters:
+    target: self
+    x_equation: t/4
+    y_equation: 0
+    z_equation: sin(t/4)*4
+    brush: blackstone
+    undo: 5000
+    iterations: 50
+    destructible: all_air
+    orient: true
+    orient_pitch: false
