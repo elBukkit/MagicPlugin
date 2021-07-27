@@ -6,6 +6,7 @@
 potterwand:
     inherit: base_wand
     class: wizard
+    legacy_icon: wand_icon:24,wand_icon:25,wand_icon:26
     icon: stick{CustomModelData:18024},stick{CustomModelData:18025},stick{CustomModelData:18026}
     migrate_icons:
       wood_hoe: wood_hoe:24

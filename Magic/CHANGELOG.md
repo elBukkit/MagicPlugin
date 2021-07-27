@@ -8,6 +8,7 @@
  - Fix automaton sound effects, errors from automata dealing damage in 1.17
  - Fix `lifetime` on a mob not working unless `interval` was also set
  - Fix migrating legacy enchantments on wands
+ - Fix potter wand icons pre-1.14 (maybe?)
 
 ## Changes
 
