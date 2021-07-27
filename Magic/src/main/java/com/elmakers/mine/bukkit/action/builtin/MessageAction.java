@@ -19,7 +19,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class MessageAction extends BaseSpellAction
 {
-    public enum MessageType { CHAT, TITLE, ACTION_BAR }
+    public enum MessageType { MAGE, CHAT, TITLE, ACTION_BAR }
 
     private String message = "";
     private String subMessage = "";
@@ -28,7 +28,7 @@ public class MessageAction extends BaseSpellAction
     private int stay;
     private int fadeOut;
     private boolean messageTarget = false;
-    private MessageType messageType = MessageType.CHAT;
+    private MessageType messageType = MessageType.MAGE;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -101,6 +101,10 @@ public class MessageAction extends BaseSpellAction
         }
         Player player = (commandSender instanceof Player) ? (Player)commandSender : null;
         switch (messageType) {
+            case MAGE:
+                Mage mage = context.getController().getMage(commandSender);
+                mage.sendMessage(message);
+                break;
             case CHAT:
                 commandSender.sendMessage(message);
                 break;

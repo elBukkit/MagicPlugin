@@ -805,6 +805,8 @@ public interface MageController {
     Warp getMagicWarp(String warpKey);
     @Nonnull
     Collection<? extends Warp> getMagicWarps();
+    @Nonnull
+    Collection<MagicBlock> getMagicBlocks();
     @Nullable
     MagicBlock addMagicBlock(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters);
     @Deprecated

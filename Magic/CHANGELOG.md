@@ -16,6 +16,7 @@
  - Turn off using AureliumSkills' mana by default
  - Allow setting `break_durability` of `BreakBlock` action to less than one, e.g. to crack glass
  - Add `break_material` to `BreakBlock` action, to fill with something other than air
+ - Default Message action behavior changed to follow normal message rules, can use "t:" for titles, "a:" for action bar
 
 ## Additions
 
