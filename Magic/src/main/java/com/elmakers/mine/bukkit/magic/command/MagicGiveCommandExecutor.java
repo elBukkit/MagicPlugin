@@ -112,7 +112,7 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             } else if (itemName.equalsIgnoreCase("sp")) {
                 Mage mage = controller.getMage(player);
                 mage.addSkillPoints(count);
-                sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " skill points to " + ChatColor.GOLD + player.getName());
+                sender.sendMessage(ChatColor.AQUA + "Gave " + ChatColor.WHITE + count + ChatColor.AQUA + " spell points to " + ChatColor.GOLD + player.getName());
             } else if (customCosts.contains(itemName)) {
                 Mage mage = controller.getMage(player);
                 mage.addCurrency(itemName, count);
