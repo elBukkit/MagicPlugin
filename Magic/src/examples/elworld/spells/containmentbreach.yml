@@ -1,0 +1,155 @@
+containmentbreach:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Containment Breach
+  actions:
+    cast:
+    - class: Repeat
+      actions:
+      - class: Sphere
+        actions:
+          - class: CheckBlock
+            allowed: stained_glasses
+            actions:
+            - class: Probability
+              probability: 0.75
+              actions:
+              - class: Probability
+                probability: 0.25
+                actions:
+                  - class: PlayEffects
+                    effects: smash_sound
+              - class: Probability
+                probability: 0.90
+                actions:
+                  - class: PlayEffects
+                    effects: smash
+              - class: BreakBlock
+              - class: Delay
+    - class: AllEntities
+      actions:
+        - class: Message
+          message_target: true
+          message: "t:&4CONTAINMENT BREACH!\n&6!DANGER!"
+    - class: ModifyVariable
+      variable: started
+      value: epoch
+    - class: Interval
+      interval: 1000
+      duration: 20 seconds
+      actions:
+        - class: PlayEffects
+          effects: breach
+        - class: AllEntities
+          actions:
+            - class: UpdateParameters
+              actions:
+                - class: BossBar
+                  bar_title: "&cContainment Procedure Initiating"
+                  bar_progress: (20000 - (epoch - started)) / 20000
+    - class: AllEntities
+      actions:
+        - class: Message
+          message_target: true
+          message: "t:&4CONTAINING..."
+    - class: Undo
+      undo_oldest: 200
+    - class: Brush
+      brush: packed_ice
+      actions:
+        - class: FindMagicBlocks
+          radius: 0
+          actions:
+            - class: PlayEffects
+              effects: found
+            - class: Volume
+              radius: 8
+              actions:
+                - class: CheckBlock
+                  allowed: "!stained_glasses"
+                  actions:
+                  - class: ModifyBlock
+            - class: Delay
+              delay: 3000
+            - class: PlayEffects
+              effects: destroyed
+            - class: Brush
+              brush: light
+              actions:
+                - class: Volume
+                  radius: 8
+                  actions:
+                    - class: CheckBlock
+                      allowed: "!stained_glasses"
+                      actions:
+                      - class: ModifyBlock
+  effects:
+    smash:
+      - location: target
+        particle: block_crack
+        material: white_stained_glass
+        particle_count: 20
+        particle_offset: 0.5
+    smash_sound:
+      - location: target
+        sound: block_glass_break
+        sound_volume: 0.4
+        particle: block_crack
+        material: white_stained_glass
+        particle_count: 8
+        particle_offset: 0.5
+    breach:
+      - sound: block_bell_use
+        sound_pitch: 1.8
+        sound_volume: 2
+        sound_range: 128
+    found:
+      - location: target
+        sound: block_powder_snow_fall
+        particle: snowflake
+        particle_count: 50
+        particle_offset: 2
+      - location: target
+        sound: block_glass_break
+        sound_pitch: 0.2
+      - location: target
+        sound: block_snow_fall
+        sound_pitch: 0.75
+        sound_volume: 2
+        effectlib:
+          class: Modified
+          duration: 2000
+          parameters:
+            size: "(t/i) * 8"
+          effect:
+            class: AnimatedBall
+            particles: 20
+            particle_count: 10
+            particle_offset_x: 2
+            particle_offset_y: 2
+            particle_offset_z: 2
+            particle: snowball
+            size: 1
+            y_factor: 0.3
+    destroyed:
+      - location: target
+        sound: entity_generic_splash
+        particle: falling_water
+        particle_count: 20
+        particle_offset: 2
+        offset: 0,2,0
+  parameters:
+    target: self
+    target_type: Player
+    target_self: true
+    radius: 3
+    target_magic_blocks: automaton_npc
+    target_all_worlds: false
+    destructible: stained_glasses,mushroom_stem,red_mushroom_block,brown_mushroom_block,packed_ice
+    delay: 50
+    repeat: 4
+    break_durability: 0.15
+    bypass: true
+    break_material: light
+    
+    undo: 5 seconds

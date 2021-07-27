@@ -2,12 +2,64 @@ automaton_clean:
   name: Clean Automaton
   actions:
     cast:
-      - class: Volume
+      - class: FindMagicBlocks
         actions:
-          - class: ModifyBlock
+          - class: PlayEffects
+            effects: found
+          - class: Volume
+            actions:
+            - class: ModifyBlock
+          - class: Delay
+          - class: PlayEffects
+            effects: destroyed
+          - class: Brush
+            brush: light
+            actions:
+            - class: Volume
+              actions:
+              - class: ModifyBlock
+  effects:
+    found:
+      - location: target
+        sound: block_powder_snow_fall
+        particle: snowflake
+        particle_count: 50
+        particle_offset: 2
+      - location: target
+        sound: block_glass_break
+        sound_pitch: 0.2
+      - location: target
+        sound: block_snow_fall
+        sound_pitch: 0.75
+        sound_volume: 2
+        effectlib:
+          class: Modified
+          duration: 2000
+          parameters:
+            size: "(t/i) * 8"
+          effect:
+            class: AnimatedBall
+            particles: 20
+            particle_count: 10
+            particle_offset_x: 2
+            particle_offset_y: 2
+            particle_offset_z: 2
+            particle: snowball
+            size: 1
+            y_factor: 0.3
+    destroyed:
+      - location: target
+        sound: entity_generic_splash
+        offset: 0,2,0
+        particle: falling_water
+        particle_count: 20
+        particle_offset: 2
   parameters:
     target: self
     cooldown: 20 seconds
-    brush: light
-    destructible: air,mushroom_stem,red_mushroom_block,brown_mushroom_block
-    radius: 24
+    brush: packed_ice
+    target_magic_blocks: automaton_npc
+    target_all_worlds: false
+    destructible: air,mushroom_stem,red_mushroom_block,brown_mushroom_block,packed_ice
+    delay: 2000
+    radius: 8
