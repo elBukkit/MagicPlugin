@@ -1531,18 +1531,30 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     public Enchantment getEnchantmentByKey(String key) {
         // Really wish there was a fromString that took a string default namespace
         String namespace = NamespacedKey.MINECRAFT;
+        Enchantment enchantment = null;
         if (key.contains(":")) {
             String[] pieces = StringUtils.split(key, ":", 2);
             namespace = pieces[0];
             key = pieces[1];
+        } else {
+            // Convert legacy enum names
+            enchantment = Enchantment.getByName(key.toUpperCase());
+            if (enchantment != null) {
+                return enchantment;
+            }
         }
+
         // API says plugins aren't supposed to use this, but i have no idea how to deal
         // with custom enchants otherwise
-        NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
-        Enchantment enchantment = Enchantment.getByKey(namespacedKey);
-        if (enchantment == null) {
-            // Convert legacy enchantments
-            enchantment = Enchantment.getByName(key.toUpperCase());
+        try {
+            NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
+            enchantment = Enchantment.getByKey(namespacedKey);
+            if (enchantment == null) {
+                // Convert legacy enchantments
+                enchantment = Enchantment.getByName(key.toUpperCase());
+            }
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Unexpected error parsing enchantment key", ex);
         }
         return enchantment;
     }

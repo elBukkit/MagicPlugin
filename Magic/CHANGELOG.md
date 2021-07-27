@@ -7,6 +7,7 @@
  - Fix wizards not being able to advance to engineers if the engineering example is loaded
  - Fix automaton sound effects, errors from automata dealing damage in 1.17
  - Fix `lifetime` on a mob not working unless `interval` was also set
+ - Fix migrating legacy enchantments on wands
 
 ## Changes
 

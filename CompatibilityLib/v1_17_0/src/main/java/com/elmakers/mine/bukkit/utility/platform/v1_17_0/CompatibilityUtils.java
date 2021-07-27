@@ -1538,13 +1538,21 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             namespace = pieces[0];
             key = pieces[1];
         }
+        // Convert legacy enum names
+        key = key.replace("_", "-");
+
         // API says plugins aren't supposed to use this, but i have no idea how to deal
         // with custom enchants otherwise
-        NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
-        Enchantment enchantment = Enchantment.getByKey(namespacedKey);
-        if (enchantment == null) {
-            // Convert legacy enchantments
-            enchantment = Enchantment.getByName(key.toUpperCase());
+        Enchantment enchantment = null;
+        try {
+            NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
+            enchantment = Enchantment.getByKey(namespacedKey);
+            if (enchantment == null) {
+                // Convert legacy enchantments
+                enchantment = Enchantment.getByName(key.toUpperCase());
+            }
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Unexpected error parsing enchantment key", ex);
         }
         return enchantment;
     }

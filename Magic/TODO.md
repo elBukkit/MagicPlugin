@@ -1,5 +1,21 @@
 # TODO
 
+# Nowish
+
+ - "invalid enchantment" errors in logs, player InuDama- copied their wand .. looks like an issue converting legacy
+   bukkit enchantment names:
+   
+   [18:31:48] [Server thread/ERROR]: [Magic]  Error adding enchantment to item BLAZE_ROD: DAMAGE_ALL
+   java.lang.IllegalArgumentException: Invalid key. Must be [a-z0-9/._-]: DAMAGE_ALL
+   at com.google.common.base.Preconditions.checkArgument(Preconditions.java:191) ~[patched_1.17.1.jar:git-Paper-119]
+   at org.bukkit.NamespacedKey.<init>(NamespacedKey.java:50) ~[patched_1.17.1.jar:git-Paper-119]
+   at com.elmakers.mine.bukkit.utility.platform.v1_17_1.CompatibilityUtils.getEnchantmentByKey(CompatibilityUtils.java:1541) ~[?:?]
+   at com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase.applyEnchantments(InventoryUtilsBase.java:290) ~[?:?]
+   at com.elmakers.mine.bukkit.wand.Wand.loadProperties(Wand.java:2290) ~[?:?]
+
+
+ - Wand lore for explosion protection looks busted, processing order problem "protection"?
+
 # Resource pack changes near-term
 
  - Configurable off-by-default RP load invulnerability window  
@@ -7,7 +23,7 @@
 # Demo server
 
  - Make sure the test dummy restores properly on reboot
- - NPCs names getting reset if they're not villagers?
+ - NPCs names getting reset if they're not villagers? (maybe on config reload)
 
  - Features
     - warps
@@ -34,7 +50,7 @@
 
 # Near-Term Hopeful List
 
- - Look at httyd riddennightfuryfire
+ - Look at httyd riddennightfuryfire, changewingridden
  - An option to be able to replace slotted upgrades, pop the old one out
  - Can the variables section specify default scope for all ModifyVariables actions in that spell? Would be simpler.
    Also, add editor support for the variables section, it's very confusing
@@ -50,6 +66,8 @@
  - Ability to open an editor session on behalf of another player
  - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
  - Some indicator for long-running engineering casts?
+ - Would be cool to represent automata as mobs, maybe just need entity-less mob spawning ability? 
+   .. make sure it gets tracked for `/mmob list` and `remove` functionality
 
 # Revert Some Hacks
 
@@ -69,6 +87,7 @@
 
 # Bugs
 
+ - Essentials warp integration maybe broken
  - `/mconfig apply` doesn't work without a slug, after starting a new editor session
  - Upgrading wand enchantment levels with books doesn't work (this was probably an intentional prevention but sounds like it should be allowed)
  - Cover action doesn't work on top of water (Phantom)
@@ -111,7 +130,7 @@
 
  - Separate out NMS, CB and Bukkit access
  - Try shading again on a shared NMS lib?
- - PR APIs for getPriveNeedsFixing stuff
+ - PR APIs for getPrivateNeedsFixing stuff
  - PR APIs for CB stuff .. ?
 
 ## RPG
