@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 public class BreakBlockAction extends ModifyBlockAction {
     private double durabilityAmount;
     private double maxDistanceSquared;
+    private Material breakMaterial = Material.AIR;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -28,6 +29,16 @@ public class BreakBlockAction extends ModifyBlockAction {
         durabilityAmount = parameters.getDouble("break_durability", 1);
         double maxDistance = parameters.getDouble("durability_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
+
+        String breakMaterialKey = parameters.getString("break_material");
+        if (breakMaterialKey != null && !breakMaterialKey.isEmpty()) {
+            try {
+                breakMaterial = Material.valueOf(breakMaterialKey.toUpperCase());
+            } catch (Exception ex) {
+                context.getLogger().warning("Invalid material for break_material: " + breakMaterialKey);
+                breakMaterial = Material.AIR;
+            }
+        }
     }
 
     @Override
@@ -65,10 +76,10 @@ public class BreakBlockAction extends ModifyBlockAction {
             }
             MaterialBrush brush = context.getBrush();
             if (brush == null) {
-                brush = new com.elmakers.mine.bukkit.block.MaterialBrush(context.getMage(), Material.AIR, (byte)0);
+                brush = new com.elmakers.mine.bukkit.block.MaterialBrush(context.getMage(), breakMaterial, (byte)0);
                 context.setBrush(brush);
             } else {
-                brush.setMaterial(Material.AIR);
+                brush.setMaterial(breakMaterial);
             }
             super.perform(context);
             context.unregisterBreaking(block);

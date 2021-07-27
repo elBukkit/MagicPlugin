@@ -15,6 +15,7 @@
  - The variables section of a spell can now specify default scope for a variable for the rest of the spell
  - Turn off using AureliumSkills' mana by default
  - Allow setting `break_durability` of `BreakBlock` action to less than one, e.g. to crack glass
+ - Add `break_material` to `BreakBlock` action, to fill with something other than air
 
 ## Additions
 
