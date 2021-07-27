@@ -63,7 +63,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
 
         String subCommand = args[0];
         args = Arrays.copyOfRange(args, 1, args.length);
-        MagicBlock selection = selections.getSelected(sender);
+        MagicBlock selection = (MagicBlock)selections.getSelected(sender);
 
         if (subCommand.equalsIgnoreCase("list")) {
             onListBlocks(sender, args);
@@ -465,7 +465,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
     }
 
     private void onSelectBlock(CommandSender sender, String[] args) {
-        List<MagicBlock> list = selections.getList(sender);
+        List<com.elmakers.mine.bukkit.api.block.magic.MagicBlock> list = selections.getList(sender);
         if (list == null || args.length == 0) {
             if (sender instanceof Player) {
                 list = selections.updateList(sender).getList();
@@ -473,7 +473,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
                     if (list.isEmpty()) {
                         sender.sendMessage(ChatColor.RED + "Could not find any magic blocks");
                     } else {
-                        MagicBlock magicBlock = list.get(0);
+                        MagicBlock magicBlock = (MagicBlock)list.get(0);
                         selections.playEffects(sender, magicBlock, "blockselect");
                         String message = ChatColor.GREEN + "Selected nearby " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
                             + ChatColor.GREEN + " at " + TextUtils.printLocation(magicBlock.getLocation(), 0)
@@ -503,14 +503,14 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
                         + ChatColor.GRAY + "/" + ChatColor.WHITE + list.size());
                     return;
                 }
-                magicBlock = list.get(index - 1);
+                magicBlock = (MagicBlock)list.get(index - 1);
             } catch (NumberFormatException ignore) {
             }
         }
         if (magicBlock == null) {
-            for (MagicBlock candidate : list) {
+            for (com.elmakers.mine.bukkit.api.block.magic.MagicBlock candidate : list) {
                 if (candidate.getName().equalsIgnoreCase(name) || candidate.getTemplateKey().equalsIgnoreCase(name)) {
-                    magicBlock = candidate;
+                    magicBlock = (MagicBlock)candidate;
                     break;
                 }
             }

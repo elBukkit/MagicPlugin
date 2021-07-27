@@ -29,7 +29,7 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class MagicBlock implements Locatable, com.elmakers.mine.bukkit.api.automata.Automaton,
+public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automaton,
         com.elmakers.mine.bukkit.api.block.magic.MagicBlock {
     @Nonnull
     private final MagicController controller;
@@ -335,9 +335,10 @@ public class MagicBlock implements Locatable, com.elmakers.mine.bukkit.api.autom
         return location.getWorld() != null;
     }
 
+    @Override
     @Nonnull
     public String getTemplateKey() {
-        return templateKey;
+        return templateKey == null ? "" : templateKey;
     }
 
     @Nullable
@@ -376,6 +377,7 @@ public class MagicBlock implements Locatable, com.elmakers.mine.bukkit.api.autom
     }
 
     @Nonnull
+    @Override
     public Mage getMage() {
         if (mage == null) {
             String automatonId = UUID.randomUUID().toString();

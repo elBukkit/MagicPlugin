@@ -186,8 +186,7 @@ public class MagicBlockTemplate {
 
         if (caster != null && (caster.isRecast() || firstActivate)) {
             Mage mage = instance.getMage();
-            mage.setLocation(instance.getLocation());
-            caster.cast(mage);
+            caster.cast(mage, instance.getLocation());
         }
     }
 

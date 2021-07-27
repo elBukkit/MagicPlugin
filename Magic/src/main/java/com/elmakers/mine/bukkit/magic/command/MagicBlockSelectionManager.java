@@ -9,7 +9,7 @@ import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.block.magic.MagicBlock;
+import com.elmakers.mine.bukkit.api.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class MagicBlockSelectionManager extends SelectionManager<MagicBlock> {

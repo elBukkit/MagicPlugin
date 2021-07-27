@@ -2261,8 +2261,9 @@ public class MagicController implements MageController {
         return activeBlocks.get(id);
     }
 
-    public Collection<MagicBlock> getMagicBlocks() {
-        List<MagicBlock> list = new ArrayList<>();
+    @Override
+    public Collection<com.elmakers.mine.bukkit.api.block.magic.MagicBlock> getMagicBlocks() {
+        List<com.elmakers.mine.bukkit.api.block.magic.MagicBlock> list = new ArrayList<>();
         for (Map<Long, MagicBlock> chunk : magicBlocks.values()) {
             list.addAll(chunk.values());
         }

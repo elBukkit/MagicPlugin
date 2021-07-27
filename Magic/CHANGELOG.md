@@ -23,7 +23,8 @@
  - Added `block_actions` and `biome_actions` maps to `CheckBlock` action, for easier biome and block type reactions
  - Added `camohelmet`, `camochestplate`, `camoleggings` and `camoboots` items, a set of biome-adaptive camoflage armor.
    Like the rainbow armor, these are currently not craftable
- - Light brush added to Conduit path (1.17+)  
+ - Light brush added to Conduit path (1.17+)
+ - Add `FindMagicBlocks` action, for targeting magic block locations
 
 # 9.4
 

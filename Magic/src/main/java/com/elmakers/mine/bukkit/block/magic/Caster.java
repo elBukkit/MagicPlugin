@@ -6,6 +6,7 @@ import java.util.Deque;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -28,7 +29,7 @@ public class Caster {
         allowOverlapping = configuration.getBoolean("allow_overlap", false);
     }
 
-    public void cast(Mage mage) {
+    public void cast(Mage mage, Location location) {
         if (!allowOverlapping) {
             if (!mage.getPendingBatches().isEmpty()) {
                 return;
@@ -47,6 +48,9 @@ public class Caster {
                 spell = mage.getSpell(castSpell);
             }
             if (spell != null) {
+                if (location != null) {
+                    mage.setLocation(location);
+                }
                 spell.cast(parameters);
             }
         }
