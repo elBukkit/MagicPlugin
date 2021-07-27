@@ -78,3 +78,8 @@ seaspawner:
       salmon: 100
       tropical_fish: 100
 
+automaton_npc:
+  name: Automaton NPC
+  interval: 5000
+  cast:
+    spells: automaton_npc
