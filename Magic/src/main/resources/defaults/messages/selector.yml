@@ -22,7 +22,7 @@ selector:
   sell_title: "Sell ($balance&0)"
   sell_icon_name: "&6Sell Items"
   buy_icon_name: "&aBuy Items"
-  extra_spell: "&aNot Required"
+  extra_spell: "&aNot Required to Progress"
   no_upgrade: "There is nothing more for you to learn here."
   upgrade_name_change: "&r&4Upgrades: &r$name"
   level_requirement: "&r&cRequires: &6$path"
