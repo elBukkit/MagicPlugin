@@ -113,6 +113,7 @@ wolf:
     - map@30
     - map:128@31
 
+    - light
     - barrier
     - stone
     - dirt

@@ -98,6 +98,7 @@ conduit:
         - white_stained_glass
         - white_stained_glass_pane
 
+        - light
         - lava
         - water
         - soul_sand
