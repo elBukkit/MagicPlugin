@@ -1,20 +1,12 @@
 # TODO
 
 # Nowish
-
- - "invalid enchantment" errors in logs, player InuDama- copied their wand .. looks like an issue converting legacy
-   bukkit enchantment names:
-   
-   [18:31:48] [Server thread/ERROR]: [Magic]  Error adding enchantment to item BLAZE_ROD: DAMAGE_ALL
-   java.lang.IllegalArgumentException: Invalid key. Must be [a-z0-9/._-]: DAMAGE_ALL
-   at com.google.common.base.Preconditions.checkArgument(Preconditions.java:191) ~[patched_1.17.1.jar:git-Paper-119]
-   at org.bukkit.NamespacedKey.<init>(NamespacedKey.java:50) ~[patched_1.17.1.jar:git-Paper-119]
-   at com.elmakers.mine.bukkit.utility.platform.v1_17_1.CompatibilityUtils.getEnchantmentByKey(CompatibilityUtils.java:1541) ~[?:?]
-   at com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase.applyEnchantments(InventoryUtilsBase.java:290) ~[?:?]
-   at com.elmakers.mine.bukkit.wand.Wand.loadProperties(Wand.java:2290) ~[?:?]
-
-
- - Wand lore for explosion protection looks busted, processing order problem "protection"?
+ 
+ - Holes in containment if automata gets contained while in the glass
+ - Need an option to cancel spells when changing worlds via PWI
+   (lose broom when tp'ing while riding)
+ - Cancelled spells (`/magic cancel`) should still auto-undo
+ - Spell inventory not saving on wolf staff (sometimes? Maybe just the one broken staff?)
 
 # Resource pack changes near-term
 

@@ -657,6 +657,9 @@ enable_vanilla_sounds: true
 # use the builtin spell configs.
 enable_custom_sounds: true
 
+# This can be used to turn down (or up) all sounds played by Magic
+sound_volume: 1.0
+
 # Set this to false if you have players who are stuck invisible.
 # this may have been caused by a bug in previous versions of magic.
 allow_player_persistent_invisibility: true

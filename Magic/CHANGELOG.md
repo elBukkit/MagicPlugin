@@ -26,6 +26,7 @@
    Like the rainbow armor, these are currently not craftable
  - Light brush added to Conduit path (1.17+)
  - Add `FindMagicBlocks` action, for targeting magic block locations
+ - Add `sound_volume` global config option, for adjusting all sound effect volume
 
 # 9.4
 

@@ -6,37 +6,39 @@ containmentbreach:
     cast:
     - class: Repeat
       actions:
-      - class: Sphere
+      - class: ChangeContext
+        target_offset: 0,5,0
         actions:
-          - class: CheckBlock
-            allowed: stained_glasses
-            actions:
-            - class: Probability
-              probability: 0.75
+        - class: Sphere
+          actions:
+            - class: CheckBlock
+              allowed: stained_glasses
               actions:
               - class: Probability
-                probability: 0.25
+                probability: 0.75
                 actions:
-                  - class: PlayEffects
-                    effects: smash_sound
-              - class: Probability
-                probability: 0.90
-                actions:
-                  - class: PlayEffects
-                    effects: smash
-              - class: BreakBlock
-              - class: Delay
+                - class: Probability
+                  probability: 0.25
+                  actions:
+                    - class: PlayEffects
+                      effects: smash_sound
+                - class: Probability
+                  probability: 0.90
+                  actions:
+                    - class: PlayEffects
+                      effects: smash
+                - class: BreakBlock
+                - class: Delay
     - class: AllEntities
       actions:
         - class: Message
-          message_target: true
           message: "t:&4CONTAINMENT BREACH!\n&6!DANGER!"
     - class: ModifyVariable
       variable: started
       value: epoch
     - class: Interval
       interval: 1000
-      duration: 20 seconds
+      duration: 30 seconds
       actions:
         - class: PlayEffects
           effects: breach
@@ -46,11 +48,10 @@ containmentbreach:
               actions:
                 - class: BossBar
                   bar_title: "&cContainment Procedure Initiating"
-                  bar_progress: (20000 - (epoch - started)) / 20000
+                  bar_progress: (30000 - (epoch - started)) / 30000
     - class: AllEntities
       actions:
         - class: Message
-          message_target: true
           message: "t:&4CONTAINING..."
     - class: Undo
       undo_oldest: 200
@@ -145,11 +146,15 @@ containmentbreach:
     radius: 3
     target_magic_blocks: automaton_npc
     target_all_worlds: false
+    show_target: true
+    message_target: true
     destructible: stained_glasses,mushroom_stem,red_mushroom_block,brown_mushroom_block,packed_ice
     delay: 30
     repeat: 5
     break_durability: 0.15
     bypass: true
     break_material: light
+    target_game_modes: all
+    cooldown: 45 seconds
     
     undo: 5 seconds

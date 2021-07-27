@@ -43,6 +43,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     private static final String EFFECT_BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.effect.builtin";
     public static boolean ENABLE_VANILLA_SOUNDS = true;
     public static boolean ENABLE_CUSTOM_SOUNDS = true;
+    public static double VOLUME_SCALE = 1.0;
     public static int PARTICLE_RANGE = 32;
 
     public static boolean initialize(Plugin plugin, Logger logger) {
@@ -288,7 +289,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         if (sound != null) {
-            sound.setVolume((float)configuration.getDouble("sound_volume", sound.getVolume()));
+            double volume = configuration.getDouble("sound_volume", sound.getVolume());
+            volume *= VOLUME_SCALE;
+            sound.setVolume((float)volume);
             sound.setPitch((float)configuration.getDouble("sound_pitch", sound.getPitch()));
             sound.setRange(configuration.getInt("sound_range", sound.getRange()));
         }
