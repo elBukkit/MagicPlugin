@@ -288,10 +288,14 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
             {
                 try {
                     Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
+                    if (enchantment == null) {
+                        platform.getLogger().warning("Invalid enchantment: " + enchantKey);
+                        continue;
+                    }
                     item.addUnsafeEnchantment(enchantment, enchantConfig.getInt(enchantKey));
                     keep.add(enchantment);
                 } catch (Exception ex) {
-                    platform.getLogger().warning("Invalid enchantment: " + enchantKey);
+                    platform.getLogger().log(Level.SEVERE, "Error adding enchantment to item " + item.getType() + ": " + enchantKey, ex);
                 }
             }
         }
@@ -317,6 +321,10 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
             for (String enchantKey : enchantKeys) {
                 try {
                     Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
+                    if (enchantment == null) {
+                        platform.getLogger().warning("Invalid enchantment: " + enchantKey);
+                        continue;
+                    }
                     int level = enchantConfig.getInt(enchantKey);
                     if (meta.hasConflictingEnchant(enchantment)) continue;
                     if (meta.getEnchantLevel(enchantment) >= level) continue;
@@ -324,7 +332,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
                         addedAny = true;
                     }
                 } catch (Exception ex) {
-                    platform.getLogger().warning("Invalid enchantment: " + enchantKey);
+                    platform.getLogger().log(Level.SEVERE, "Error adding enchantment to item " + item.getType() + ": " + enchantKey, ex);
                 }
             }
         }

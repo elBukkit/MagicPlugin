@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -861,7 +862,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         try {
             enchantment = compatibilityUtils.getEnchantmentByKey(enchantName);
         } catch (Exception ex) {
-            sender.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+            sender.sendMessage(ChatColor.RED + "Error adding enchantment: " + ChatColor.WHITE + enchantName);
+            controller.getLogger().log(Level.SEVERE, "Error adding enchantment ", ex);
             return true;
         }
         if (enchantment == null) {
@@ -914,7 +916,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             try {
                 enchantment = compatibilityUtils.getEnchantmentByKey(enchantName);
             } catch (Exception ex) {
-                sender.sendMessage(ChatColor.RED + "Invalid enchantment: " + ChatColor.WHITE + enchantName);
+                sender.sendMessage(ChatColor.RED + "Error adding enchantment: " + ChatColor.WHITE + enchantName);
+                controller.getLogger().log(Level.SEVERE, "Error adding enchantment ", ex);
                 return true;
             }
             if (enchantment == null) {

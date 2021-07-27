@@ -59,11 +59,11 @@ public class EquipAction extends BaseSpellAction
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys)
             {
-                try {
-                    Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
+                Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantKey);
+                if (enchantment == null) {
+                    spell.getController().getLogger().warning("Invalid enchantment in equip action: " + enchantKey);
+                } else {
                     enchantments.put(enchantment, enchantConfig.getInt(enchantKey));
-                } catch (Exception ex) {
-                    spell.getController().getLogger().warning("Invalid enchantment: " + enchantKey);
                 }
             }
         }
