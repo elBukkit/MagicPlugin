@@ -19,13 +19,13 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class BreakBlockAction extends ModifyBlockAction {
-    private int durabilityAmount;
+    private double durabilityAmount;
     private double maxDistanceSquared;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        durabilityAmount = parameters.getInt("break_durability", 1);
+        durabilityAmount = parameters.getDouble("break_durability", 1);
         double maxDistance = parameters.getDouble("durability_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
     }
