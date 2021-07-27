@@ -3016,6 +3016,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void updateLore() {
+        findItem();
         CompatibilityLib.getCompatibilityUtils().setLore(item, getLore());
     }
 
@@ -4060,7 +4061,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 updateInventory();
                 updateHotbarStatus();
                 if (inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
-                    findItem();
                     updateLore();
                 }
             }
