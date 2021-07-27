@@ -102,8 +102,8 @@ public class EntityMageData {
         if (triggers != null && tickInterval <= 0 && triggers.containsKey(TriggerType.INTERVAL.name().toLowerCase())) {
             tickInterval = 1000;
         }
-        if (lifetime > 0 && tickInterval > lifetime / 2) {
-            tickInterval = lifetime / 2;
+        if (lifetime > 0 && (tickInterval > lifetime / 2 || tickInterval == 0)) {
+            tickInterval = Math.max(1000, lifetime / 2 + 1000);
         }
 
         aggro = parameters.getBoolean("aggro", !isEmpty());
