@@ -29,7 +29,8 @@ containmentbreach:
                       effects: smash
                 - class: BreakBlock
                 - class: Delay
-    - class: AllEntities
+    - class: AreaOfEffect
+      radius: 128
       actions:
         - class: Message
           message: "t:&4CONTAINMENT BREACH!\n&6!DANGER!"
@@ -42,14 +43,16 @@ containmentbreach:
       actions:
         - class: PlayEffects
           effects: breach
-        - class: AllEntities
+        - class: AreaOfEffect
+          radius: 128
           actions:
             - class: UpdateParameters
               actions:
                 - class: BossBar
                   bar_title: "&cContainment Procedure Initiating"
                   bar_progress: (30000 - (epoch - started)) / 30000
-    - class: AllEntities
+    - class: AreaOfEffect
+      radius: 128
       actions:
         - class: Message
           message: "t:&4CONTAINING..."
