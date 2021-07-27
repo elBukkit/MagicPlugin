@@ -9,6 +9,7 @@
  - Fix `lifetime` on a mob not working unless `interval` was also set
  - Fix migrating legacy enchantments on wands
  - Fix potter wand icons pre-1.14 (maybe?)
+ - Fix a specific issue with overlapping undo, not sure what the effects are (helps messy automata at least)
 
 ## Changes
 

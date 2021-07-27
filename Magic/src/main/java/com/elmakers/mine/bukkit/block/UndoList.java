@@ -476,6 +476,13 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             prior = block.getPriorState();
         }
         removeFromModified(block, prior);
+        if (prior != null) {
+            prior.setNextState(block.getNextState());
+        }
+        BlockData next = block.getNextState();
+        if (next != null) {
+            next.setPriorState(prior);
+        }
 
         // Clear damage
         Double remainingDamage = registry.removeDamage(block);
