@@ -5,6 +5,7 @@
 ## Additions
 
  - Add `portal-spell` and `portal-warp` WorldGuard flags, for making custom portals
+ - Add `maintain_direction` option to Teleport,Recall and Warp actions
 
 # 9.4.1
 

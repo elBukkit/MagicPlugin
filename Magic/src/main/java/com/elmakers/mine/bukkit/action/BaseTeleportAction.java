@@ -19,6 +19,7 @@ public abstract class BaseTeleportAction extends BaseSpellAction
     private boolean requiresExitPermission = true;
     private boolean keepVelocity = false;
     private boolean teleportVehicle = true;
+    private boolean maintainDirection = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -30,6 +31,7 @@ public abstract class BaseTeleportAction extends BaseSpellAction
         requiresExitPermission = parameters.getBoolean("require_exit", true);
         keepVelocity = parameters.getBoolean("keep_velocity", keepVelocity);
         teleportVehicle = parameters.getBoolean("teleport_vehicle", true);
+        maintainDirection = parameters.getBoolean("maintain_direction", false);
     }
 
     protected SpellResult teleport(CastContext context, Entity entity, Location targetLocation) {
@@ -46,6 +48,11 @@ public abstract class BaseTeleportAction extends BaseSpellAction
             return SpellResult.INSUFFICIENT_PERMISSION;
         }
 
+        if (maintainDirection) {
+            Location currentLocation = entity.getLocation();
+            targetLocation.setPitch(currentLocation.getPitch());
+            targetLocation.setYaw(currentLocation.getYaw());
+        }
         Location sourceLocation = keepVelocity ? entity.getLocation() : null;
         Vector sourceVelocity = keepVelocity ? entity.getVelocity() : null;
         boolean result = context.teleport(entity, targetLocation, verticalSearchDistance, safe, preventFall, teleportVehicle);

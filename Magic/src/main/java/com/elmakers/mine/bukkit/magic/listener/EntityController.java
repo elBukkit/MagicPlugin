@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -7,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -753,11 +755,18 @@ public class EntityController implements Listener {
             return;
         }
         if (portalSpellKey != null) {
+            ConfigurationSection spellParameters = ConfigurationUtils.newConfigurationSection();
+            if (portalSpellKey.contains(" ")) {
+                String[] split = StringUtils.split(portalSpellKey, ' ');
+                portalSpellKey = split[0];
+                String[] parameterPieces = Arrays.copyOfRange(split, 1, split.length);
+                ConfigurationUtils.addParameters(parameterPieces, spellParameters);
+            }
             Spell spell = mage.getSpell(portalSpellKey);
             if (spell == null) {
                 controller.getLogger().warning("Invalid portal-spell in region flag: " + portalSpellKey);
             } else {
-                spell.cast();
+                spell.cast(spellParameters);
             }
         }
         if (portalWarpKey != null) {
