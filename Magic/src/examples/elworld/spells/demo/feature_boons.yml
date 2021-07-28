@@ -17,6 +17,7 @@ feature_boons:
     effects_particles: false
     effects_ambient: true
     quiet: true
+    bypass_undo: true
     add_effects:
       - saturation
       - regeneration
