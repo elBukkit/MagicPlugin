@@ -747,7 +747,7 @@ public class ConfigurationLoadTask implements Runnable {
         ConfigurationSection spellNode = config.getConfigurationSection(key);
         if (spellNode == null)
         {
-            getLogger().warning("Spell " + key + " not known");
+            getLogger().warning("Could not resolve spell " + key + " from inheritance path: " + StringUtils.join(resolving, " -> "));
             return null;
         }
         spellNode = ConfigurationUtils.cloneConfiguration(spellNode);
