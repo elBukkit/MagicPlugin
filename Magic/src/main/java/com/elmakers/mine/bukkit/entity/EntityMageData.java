@@ -48,6 +48,7 @@ public class EntityMageData {
     protected boolean isCancelLaunch = true;
     protected List<String> dialog;
     protected double dialogRadius;
+    protected boolean dialogFacePlayer;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
@@ -70,6 +71,7 @@ public class EntityMageData {
         requiresTarget = parameters.getBoolean("cast_requires_target", parameters.getBoolean("interval_requires_target", true));
         trackRadiusSquared = parameters.getDouble("track_radius", 128);
         trackRadiusSquared = trackRadiusSquared * trackRadiusSquared;
+        dialogFacePlayer = parameters.getBoolean("dialog_face_player", true);
 
         dialog = ConfigurationUtils.getStringList(parameters, "dialog");
         dialogRadius = parameters.getDouble("dialog_range", 3);
@@ -220,7 +222,7 @@ public class EntityMageData {
                 }
             }
 
-            if (targetLocation != null) {
+            if (targetLocation != null && dialogFacePlayer) {
                 Entity entity = mage.getEntity();
                 if (entity != null && entity.isValid()) {
                     Location location = entity.getLocation();

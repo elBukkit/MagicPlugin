@@ -31,6 +31,7 @@
  - Light brush added to Conduit path (1.17+)
  - Add `FindMagicBlocks` action, for targeting magic block locations
  - Add `sound_volume` global config option, for adjusting all sound effect volume
+ - Add `dialog_face_player: false` mob option
 
 # 9.4
 
