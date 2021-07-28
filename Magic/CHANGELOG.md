@@ -32,6 +32,8 @@
  - Add `FindMagicBlocks` action, for targeting magic block locations
  - Add `sound_volume` global config option, for adjusting all sound effect volume
  - Add `dialog_face_player: false` mob option
+ - Add `interact` section to magic blocks, for creating individual blocks in a world with right-click spells
+ - Add `disposal` magic block template, for making garbage cans
 
 # 9.4
 

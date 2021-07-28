@@ -814,6 +814,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
             addIfPermissible(sender, options, "Magic.commands.magic.", "rpcheck");
             addIfPermissible(sender, options, "Magic.commands.magic.", "rpsend");
             addIfPermissible(sender, options, "Magic.commands.magic.", "register");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "logs");
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("list")) {
                 addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
@@ -824,6 +825,9 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 addIfPermissible(sender, options, "Magic.commands.magic.list", "tasks");
                 addIfPermissible(sender, options, "Magic.commands.magic.list", "blocks");
                 addIfPermissible(sender, options, "Magic.commands.magic.list", "mages");
+            } else if (args[0].equalsIgnoreCase("logs")) {
+                options.add("errors");
+                options.add("warnings");
             } else if (args[0].equalsIgnoreCase("give") || args[0].equalsIgnoreCase("worth") || args[0].equalsIgnoreCase("sell")) {
                 options.add("wand");
                 options.add("material");

@@ -22,14 +22,16 @@ public interface EntityData extends Cloneable {
     enum TargetType {
         NONE,
         PLAYER,
-        MOB
+        MOB,
+        BLOCK
     }
 
     enum SourceType {
         PLAYER,
         MOB,
         CONSOLE,
-        OPPED_PLAYER
+        OPPED_PLAYER,
+        BLOCK
     }
 
     String getKey();

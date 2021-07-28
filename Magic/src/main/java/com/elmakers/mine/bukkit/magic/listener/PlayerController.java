@@ -63,6 +63,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
@@ -73,6 +74,7 @@ import com.elmakers.mine.bukkit.tasks.PlayerQuitTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
+import com.elmakers.mine.bukkit.utility.SpellUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 
@@ -522,34 +524,8 @@ public class PlayerController implements Listener {
         if (interactSpell != null) {
             ConfigurationSection parameters = mob.getInteractSpellParameters();
             parameters = parameters == null ? ConfigurationUtils.newConfigurationSection() : ConfigurationUtils.cloneConfiguration(parameters);
-            Entity sourceEntity = player;
-            switch (mob.getInteractSpellSource()) {
-                case PLAYER:
-                    sourceEntity = player;
-                    break;
-                case MOB:
-                    sourceEntity = entity;
-                    break;
-                case CONSOLE:
-                    controller.getLogger().info("Invalid spell source on " + mob.getKey() + ": CONSOLE, using MOB instead");
-                    sourceEntity = entity;
-                    break;
-                case OPPED_PLAYER:
-                    controller.getLogger().info("Invalid spell source on " + mob.getKey() + ": OPPED_PLAYER, will not op player for spell cast");
-                    sourceEntity = player;
-                    break;
-            }
-            Mage mage = controller.getMage(sourceEntity);
-            switch (mob.getInteractSpellTarget()) {
-                case PLAYER:
-                    parameters.set("player", player.getName());
-                    break;
-                case MOB:
-                    parameters.set("entity", entity.getUniqueId().toString());
-                    break;
-                case NONE:
-                    break;
-            }
+            com.elmakers.mine.bukkit.api.magic.Mage mage = SpellUtils.getCastSource(mob.getInteractSpellSource(), player, entity, null, controller, " mob " + mob.getKey());
+            SpellUtils.prepareParameters(mob.getInteractSpellTarget(), parameters, player, entity, null, controller, " mob " + mob.getKey());
             if (!interactSpell.contains("|")) {
                 int level = mage.getActiveProperties().getSpellLevel(interactSpell);
                 if (level > 1) {
@@ -557,7 +533,7 @@ public class PlayerController implements Listener {
                 }
             }
 
-            success = controller.cast(mage, interactSpell, parameters, player, sourceEntity);
+            success = controller.cast(mage, interactSpell, parameters, player, mage.getEntity());
         }
         if (interactCommands != null) {
             CommandSender executor = player;
@@ -871,8 +847,17 @@ public class PlayerController implements Listener {
             return;
         }
 
-        // Check for enchantment table click
+        // Check for magic blocks
         Block clickedBlock = event.getClickedBlock();
+        MagicBlock magicBlock = clickedBlock == null ? null : controller.getMagicBlockAt(clickedBlock.getLocation());
+        if (magicBlock != null) {
+            if (magicBlock.onInteract(player)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        // Check for spell block clicks (like the enchantment table)
         SpellBlock spellBlock = clickedBlock == null ? null : spellBlocks.get(clickedBlock.getType());
         if (spellBlock != null
             && !closingWand

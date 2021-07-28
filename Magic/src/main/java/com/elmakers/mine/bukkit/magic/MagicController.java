@@ -3971,6 +3971,11 @@ public class MagicController implements MageController {
         return cast(null, spellName, config, sender, entity);
     }
 
+    @Override
+    public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender) {
+        return cast(mage, spellName, parameters, sender, null);
+    }
+
     public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity) {
         Player usePermissions = (sender == entity && entity instanceof Player) ? (Player) entity
                 : (sender instanceof Player ? (Player) sender : null);

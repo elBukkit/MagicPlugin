@@ -15,6 +15,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
@@ -441,5 +442,12 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
                 location.getWorld().dropItemNaturally(location, stack);
             }
         }
+    }
+
+    public boolean onInteract(Player player) {
+        if (template == null) {
+            return false;
+        }
+        return template.interact(this, player);
     }
 }

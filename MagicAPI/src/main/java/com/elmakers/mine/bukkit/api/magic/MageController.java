@@ -800,6 +800,7 @@ public interface MageController {
      * @return true if the spell succeeds, else false
      */
     boolean cast(String spellName, String[] parameters);
+    boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender);
     void setDisableSpawnReplacement(boolean disable);
     @Nullable
     Warp getMagicWarp(String warpKey);

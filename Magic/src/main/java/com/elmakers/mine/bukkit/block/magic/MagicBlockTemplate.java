@@ -33,6 +33,8 @@ public class MagicBlockTemplate {
     @Nullable
     private Caster caster;
     @Nullable
+    private InteractCaster interactCaster;
+    @Nullable
     private Collection<EffectPlayer> effects;
 
     private final int playerRange;
@@ -73,6 +75,10 @@ public class MagicBlockTemplate {
 
         if (configuration.contains("cast")) {
             caster = new Caster(this, configuration.getConfigurationSection("cast"));
+        }
+
+        if (configuration.contains("interact")) {
+            interactCaster = new InteractCaster(this, controller, configuration.getConfigurationSection("interact"));
         }
 
         // Common parameters
@@ -160,6 +166,15 @@ public class MagicBlockTemplate {
 
     public boolean isAlwaysActive() {
         return alwaysActive;
+    }
+
+    public boolean interact(MagicBlock instance, Player player) {
+        if (interactCaster == null) {
+            return false;
+        }
+
+        Mage mage = instance.getMage();
+        return interactCaster.onInteract(mage, instance.getLocation(), player);
     }
 
     public void tick(MagicBlock instance) {
