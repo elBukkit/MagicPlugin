@@ -32,6 +32,7 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
     public static SetFlag<String> TAGS = new SetFlag<>("magic-tags", RegionGroup.ALL, new StringFlag(null));
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
+    public static StringFlag PORTAL_SPELL = new StringFlag("portal-spell", RegionGroup.ALL);
 
     // These are outdated but we'll probably keep them forever anyway
     public static SetFlag<String> SPAWN_TAGS = new SetFlag<>("spawn-tags", RegionGroup.ALL, new StringFlag(null));
@@ -65,7 +66,14 @@ public class WorldGuardFlagsManager implements WorldGuardFlags {
         registry.register(REFLECTIVE);
         registry.register(TAGS);
         registry.register(SPAWN_TAGS);
-        callingPlugin.getLogger().info("Registered custom WorldGuard flags: allowed-spells, always-allowed-spells, blocked-spells, always-allowed-spell-categories, allowed-spell-categories, blocked-spell-categories, allowed-wands, always-allowed-wands, blocked-wands, spell-overrides, destructible, reflective, spawn-tags");
+        registry.register(PORTAL_SPELL);
+        callingPlugin.getLogger().info("Registered custom WorldGuard flags: allowed-spells, always-allowed-spells, blocked-spells, always-allowed-spell-categories, allowed-spell-categories, blocked-spell-categories, allowed-wands, always-allowed-wands, blocked-wands, spell-overrides, destructible, reflective, tags, portal-spell");
+    }
+
+    @Nullable
+    @Override
+    public String getPortalSpell(RegionAssociable source, ApplicableRegionSet checkSet) {
+        return checkSet.queryValue(source, PORTAL_SPELL);
     }
 
     @Nullable

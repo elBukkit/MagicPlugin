@@ -24,6 +24,8 @@ import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityPortalEnterEvent;
+import org.bukkit.event.entity.EntityPortalEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ItemDespawnEvent;
 import org.bukkit.event.entity.ItemMergeEvent;
@@ -733,5 +735,28 @@ public class EntityController implements Listener {
             + " undoing? " + BlockData.undoing
             + " disable drops? " + disableItemSpawn
             + " keep inv? " + event.getKeepInventory(), 30);
+    }
+
+    @EventHandler
+    public void onEntityPortalEnter(EntityPortalEnterEvent event) {
+        Entity entity = event.getEntity();
+        String portalSpellKey = controller.getPortalSpell(event.getLocation(), entity);
+        if (portalSpellKey == null) return;
+        Mage mage = controller.getMage(entity);
+        Spell spell = mage.getSpell(portalSpellKey);
+        if (spell == null) {
+            controller.getLogger().warning("Invalid portal-spell in region flag: " + portalSpellKey);
+            return;
+        }
+        spell.cast();
+    }
+
+    @EventHandler
+    public void onEntityPortal(EntityPortalEvent event) {
+        Entity entity = event.getEntity();
+        String portalSpellKey = controller.getPortalSpell(entity.getLocation(), entity);
+        if (portalSpellKey != null) {
+            event.setCancelled(true);
+        }
     }
 }

@@ -317,6 +317,19 @@ public class WorldGuardAPI {
         return null;
     }
 
+    @Nullable
+    public String getPortalSpell(Player player, Location location) {
+        if (location != null && worldGuardPlugin != null && customFlags != null) {
+            ApplicableRegionSet checkSet = getRegionSet(location);
+            if (checkSet == null) {
+                return null;
+            }
+
+            return customFlags.getPortalSpell(getAssociable(player), checkSet);
+        }
+        return null;
+    }
+
     public boolean inTaggedRegion(Location location, Set<String> tags) {
         if (location != null && worldGuardPlugin != null && customFlags != null)
         {

@@ -29,6 +29,7 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
     public static SetFlag<String> TAGS = new SetFlag<>("magic-tags", RegionGroup.ALL, new StringFlag(null));
     public static StringFlag DESTRUCTIBLE = new StringFlag("destructible", RegionGroup.ALL);
     public static StringFlag REFLECTIVE = new StringFlag("reflective", RegionGroup.ALL);
+    public static StringFlag PORTAL_SPELL = new StringFlag("portals-spell", RegionGroup.ALL);
 
     // Deprecated, maybe should be removed in the future
     public static SetFlag<String> SPAWN_TAGS = new SetFlag<>("spawn-tags", RegionGroup.ALL, new StringFlag(null));
@@ -46,6 +47,13 @@ public class WGCustomFlagsManager implements WorldGuardFlags {
         customFlags.addCustomFlag(REFLECTIVE);
         customFlags.addCustomFlag(SPAWN_TAGS);
         customFlags.addCustomFlag(TAGS);
+        customFlags.addCustomFlag(PORTAL_SPELL);
+    }
+
+    @Nullable
+    @Override
+    public String getPortalSpell(RegionAssociable source, ApplicableRegionSet checkSet) {
+        return checkSet.queryValue(source, PORTAL_SPELL);
     }
 
     @Nullable

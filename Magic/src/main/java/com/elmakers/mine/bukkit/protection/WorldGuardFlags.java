@@ -10,6 +10,9 @@ import com.sk89q.worldguard.protection.association.RegionAssociable;
 
 interface WorldGuardFlags {
     @Nullable
+    String getPortalSpell(RegionAssociable source, ApplicableRegionSet checkSet);
+
+    @Nullable
     String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet);
 
     @Nullable

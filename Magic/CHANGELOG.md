@@ -2,6 +2,10 @@
 
 # 9.5
 
+## Additions
+
+ - Add `portal-spell` WorldGuard flag, for making custom portals
+
 # 9.4.1
 
 ## Fixes

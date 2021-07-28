@@ -42,6 +42,7 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerSwapHandItemsEvent;
@@ -986,11 +987,37 @@ public class PlayerController implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
+        // These don't fire portal events for some reason
+        if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL || event.getCause() == PlayerTeleportEvent.TeleportCause.END_GATEWAY) {
+            Entity entity = event.getPlayer();
+            String portalSpellKey = controller.getPortalSpell(entity.getLocation(), entity);
+            if (portalSpellKey != null) {
+                com.elmakers.mine.bukkit.api.magic.Mage mage = controller.getMage(entity);
+                Spell spell = mage.getSpell(portalSpellKey);
+                if (spell == null) {
+                    controller.getLogger().warning("Invalid portal-spell in region flag: " + portalSpellKey);
+                } else {
+                    spell.cast();
+                }
+                // Cancelling the event even if the spell is invalid or fails
+                event.setCancelled(true);
+                return;
+            }
+        }
         Player player = event.getPlayer();
         if (controller.isNPC(player)) return;
         Mage mage = controller.getRegisteredMage(player);
         if (mage != null) {
             mage.onTeleport(event);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerPortal(PlayerPortalEvent event) {
+        Entity entity = event.getPlayer();
+        String portalSpellKey = controller.getPortalSpell(entity.getLocation(), entity);
+        if (portalSpellKey != null) {
+            event.setCancelled(true);
         }
     }
 

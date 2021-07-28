@@ -130,6 +130,14 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
         return null;
     }
 
+    @Nullable
+    public String getPortalSpell(Player player, Location location) {
+        if (enabled && worldGuard != null) {
+            return worldGuard.getPortalSpell(player, location);
+        }
+        return null;
+    }
+
     @Override
     public boolean hasBreakPermission(Player player, Block block) {
         return hasBuildPermission(player, block);
