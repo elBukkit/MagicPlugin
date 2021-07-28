@@ -1,0 +1,13 @@
+# This is here for easily adding warps to anything that uses a spell
+warp:
+  hidden: true
+  actions:
+      cast:
+      -  class: Warp
+  parameters:
+    target: self
+    cooldown: 1000
+    quiet: true
+    warp: nowhere
+    maintain_direction: true
+

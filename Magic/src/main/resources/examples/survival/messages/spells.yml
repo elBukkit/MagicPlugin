@@ -1495,3 +1495,6 @@ spells:
         rolled_4: You rolled a four!
         rolled_5: You rolled a five!
         rolled_6: You rolled a six!
+    warp:
+        name: Warp
+        description: For using with commands or spellcasting configs, e.g. "/cast warp warp castle"
