@@ -215,7 +215,7 @@ public class ConfigUtils {
 
     @Nullable
     public static List<PotionEffect> getPotionEffectObjects(ConfigurationSection baseConfig, String key, Logger log) {
-        return getPotionEffectObjects(baseConfig, key, log, Integer.MAX_VALUE, 0, true, true);
+        return getPotionEffectObjects(baseConfig, key, log, Integer.MAX_VALUE, 0, true, false);
     }
 
     @Nullable
