@@ -43,3 +43,6 @@ passthrough:
 - redstone_wall_torch
 - repeater
 - restone_comparator
+- nether_portal
+- end_portal
+- end_gateway
