@@ -70,9 +70,11 @@ containmentbreach:
               radius: 8
               actions:
                 - class: CheckBlock
-                  allowed: "!stained_glasses"
+                  allowed: "mushroom_stem,red_mushroom_block,brown_mushroom_block,packed_ice"
                   actions:
                   - class: ModifyBlock
+                  - class: PlayEffects
+                    effects: freeze_block
             - class: Delay
               delay: 3000
             - class: PlayEffects
@@ -84,9 +86,11 @@ containmentbreach:
                   radius: 8
                   actions:
                     - class: CheckBlock
-                      allowed: "!stained_glasses"
+                      allowed: "mushroom_stem,red_mushroom_block,brown_mushroom_block,packed_ice"
                       actions:
                       - class: ModifyBlock
+                      - class: PlayEffects
+                        effects: destroyed_block
   effects:
     smash:
       - location: target
@@ -135,6 +139,12 @@ containmentbreach:
             particle: snowball
             size: 1
             y_factor: 0.3
+    freeze_block:
+      - location: target
+        particle: block_crack
+        material: snow_block
+        particle_count: 15
+        particle_offset: 0.5
     destroyed:
       - location: target
         sound: entity_generic_splash
@@ -142,6 +152,15 @@ containmentbreach:
         particle_count: 20
         particle_offset: 2
         offset: 0,2,0
+      - location: target
+        sound: block_glass_break
+        sound_pitch: 0.2
+    destroyed_block:
+      - location: target
+        particle: block_crack
+        material: packed_ice
+        particle_count: 15
+        particle_offset: 0.5
   parameters:
     target: self
     target_type: Player

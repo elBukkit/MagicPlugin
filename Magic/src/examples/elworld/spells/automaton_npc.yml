@@ -37,7 +37,6 @@ automaton_npc:
     target_max_range: 16
     target_mode: hunt
     targets: player
-    target_game_modes: all
     create_mage: false
     materials:
       - mushroom_stem

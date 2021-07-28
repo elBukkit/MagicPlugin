@@ -8,6 +8,7 @@
  - Cancelled spells (`/magic cancel`) should still auto-undo
  - Save spell can make upside-down schematics
  - Some way for automata to use air and light? Allow all_air?
+ - Appearance shop menu has stained glass ??
 
 # Resource pack changes near-term
 

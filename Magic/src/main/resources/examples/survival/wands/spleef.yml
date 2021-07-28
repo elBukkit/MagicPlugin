@@ -5,7 +5,7 @@ spleef:
     glow: true
     uses: 100
     effect_color: '880000'
-    indestructible: false;
+    indestructible: false
     mana_max: 100
     mana_regeneration: 10
     active_spell: blast

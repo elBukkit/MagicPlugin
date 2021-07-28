@@ -11,6 +11,9 @@ wands:
     conduit:
         name: Conduit Wand
         description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Conduit spells.\nHowever, it does not contain most of the normal survival spells from Wizard and below."
+    conduitwand:
+        name: Conduit Wand
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Conduit spells.\nHowever, it does not contain most of the normal survival spells from Wizard and below."
     architectstaff:
         name: The Architect
         description: With Great Power Comes Great Responsibility
