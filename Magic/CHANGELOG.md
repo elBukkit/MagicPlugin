@@ -21,7 +21,8 @@
  - Add `break_material` to `BreakBlock` action, to fill with something other than air
  - Default Message action behavior changed to follow normal message rules, can use "t:" for titles, "a:" for action bar
  - The swap key can be used in a spell inventory to quick-cast a spell, replacing the old drop key behavior
-
+ - The `undo_on_world_save` option is now off by default
+ 
 ## Additions
 
  - Added `block_actions` and `biome_actions` maps to `CheckBlock` action, for easier biome and block type reactions

@@ -479,7 +479,7 @@ save_non_player_mages: false
 # Force any pending scheduled undo tasks to run on world save
 # this will ensure the world reverts to normal in the event of
 # a server crash.
-undo_on_world_save: true
+undo_on_world_save: false
 
 # When redstone is toggled, what block should replace? Note that air is glitchy
 redstone_replacement: obsidian
