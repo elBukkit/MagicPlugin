@@ -224,6 +224,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected double earnScale = 1;
         protected boolean autoClose = true;
         protected boolean showFree = true;
+        protected boolean unbreakableIcon = true;
+        protected int iconHideFlags = 63;
 
         protected int limit = 0;
 
@@ -326,6 +328,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
             applyLoreToItem = configuration.getBoolean("apply_lore_to_item", applyLoreToItem);
             applyNameToItem = configuration.getBoolean("apply_name_to_item", applyNameToItem);
             allowDroppedItems = configuration.getBoolean("allow_dropped_items", allowDroppedItems);
+            iconHideFlags = configuration.getInt("icon_hide_flags", iconHideFlags);
+            unbreakableIcon = configuration.getBoolean("icon_unbreakable", unbreakableIcon);
 
             if (costType.isEmpty() || costType.equalsIgnoreCase("none")) {
                 free = true;
@@ -612,6 +616,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.unlockKey = defaults.unlockKey;
             this.unlockSection = defaults.unlockSection;
             this.showConfirmation = defaults.showConfirmation;
+            this.unbreakableIcon = defaults.unbreakableIcon;
+            this.iconHideFlags = defaults.iconHideFlags;
             this.costType = defaults.costType;
             this.costTypeFallbacks = defaults.costTypeFallbacks;
             this.earnType = defaults.earnType;
@@ -1060,8 +1066,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
             icon.setItemMeta(meta);
             icon = CompatibilityLib.getItemUtils().makeReal(icon);
 
-            CompatibilityLib.getItemUtils().makeUnbreakable(icon);
-            CompatibilityLib.getItemUtils().hideFlags(icon, 63);
+            if (unbreakableIcon) {
+                CompatibilityLib.getItemUtils().makeUnbreakable(icon);
+            }
+            CompatibilityLib.getItemUtils().hideFlags(icon, iconHideFlags);
 
             if (unavailable) {
                 if (unavailableMessage != null && !unavailableMessage.isEmpty()) {

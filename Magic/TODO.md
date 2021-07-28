@@ -2,6 +2,7 @@
 
 # Nowish
 
+ - Item frames and paintings can't be copied, maybe only E/W facing - important for backup
  - Holes in containment if automata gets contained while in the glass
  - Need an option to cancel spells when changing worlds via PWI
    (lose broom when tp'ing while riding)

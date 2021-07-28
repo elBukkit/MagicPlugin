@@ -34,6 +34,7 @@
  - Add `dialog_face_player: false` mob option
  - Add `interact` section to magic blocks, for creating individual blocks in a world with right-click spells
  - Add `disposal` magic block template, for making garbage cans
+ - Add `icon_unbreakable` and `icon_hide_flags` Selector/Shop options to show full vanilla item lore of items in shops
 
 # 9.4
 
