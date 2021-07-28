@@ -3,7 +3,29 @@ warp:
   hidden: true
   actions:
       cast:
-      -  class: Warp
+      - class: PlayEffects
+        effects: leave
+      - class: Warp
+      - class: ChangeContext
+        target_caster: true
+        actions:
+        - class: PlayEffects
+          effects: arrive
+  effects:
+    leave:
+      - location: target
+        particle: portal
+        particle_count: 30
+        particle_offset: 1.5
+        sound: entity_enderman_teleport
+        sound_pitch: 0.2
+    arrive:
+      - location: target
+        particle: portal
+        particle_count: 30
+        particle_offset: 1.5
+        sound: entity_enderman_teleport
+        sound_pitch: 0.2
   parameters:
     target: self
     cooldown: 1000
