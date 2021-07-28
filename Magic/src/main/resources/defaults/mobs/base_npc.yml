@@ -13,7 +13,7 @@ base_npc:
   interact_spell_source: player
   interact_command_source: console
   dialog_interval: 4000
-  dialog_range: 4
+  dialog_range: 3
   cancel_interact: true
   prevent_dismount: true
   default_drops: false
