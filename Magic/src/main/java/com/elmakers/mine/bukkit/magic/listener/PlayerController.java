@@ -987,29 +987,19 @@ public class PlayerController implements Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerTeleport(PlayerTeleportEvent event)
     {
-        // These don't fire portal events for some reason
+        Player player = event.getPlayer();
+        if (controller.isNPC(player)) return;
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage == null) return;
+
+        // These don't fire portal events for some reason, so we have to prevent the TP here instead
         if (event.getCause() == PlayerTeleportEvent.TeleportCause.END_PORTAL || event.getCause() == PlayerTeleportEvent.TeleportCause.END_GATEWAY) {
-            Entity entity = event.getPlayer();
-            String portalSpellKey = controller.getPortalSpell(entity.getLocation(), entity);
-            if (portalSpellKey != null) {
-                com.elmakers.mine.bukkit.api.magic.Mage mage = controller.getMage(entity);
-                Spell spell = mage.getSpell(portalSpellKey);
-                if (spell == null) {
-                    controller.getLogger().warning("Invalid portal-spell in region flag: " + portalSpellKey);
-                } else {
-                    spell.cast();
-                }
-                // Cancelling the event even if the spell is invalid or fails
+            if (mage.isOnPortalCooldown()) {
                 event.setCancelled(true);
                 return;
             }
         }
-        Player player = event.getPlayer();
-        if (controller.isNPC(player)) return;
-        Mage mage = controller.getRegisteredMage(player);
-        if (mage != null) {
-            mage.onTeleport(event);
-        }
+        mage.onTeleport(event);
     }
 
     @EventHandler

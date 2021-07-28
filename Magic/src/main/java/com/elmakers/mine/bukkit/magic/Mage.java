@@ -284,6 +284,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean cancelLaunch = false;
     private EntityType lastProjectileType;
     private boolean bypassEnabled;
+    private long portalsDisabledUntil;
 
     public Mage(String id, MagicController controller) {
         this.id = id;
@@ -5642,5 +5643,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         currencyMessages.remove(type);
+    }
+
+    public void setPortalCooldown(int cooldown) {
+        portalsDisabledUntil = Math.max(portalsDisabledUntil, System.currentTimeMillis() + cooldown);
+    }
+
+    public boolean isOnPortalCooldown() {
+        return System.currentTimeMillis() < portalsDisabledUntil;
     }
 }

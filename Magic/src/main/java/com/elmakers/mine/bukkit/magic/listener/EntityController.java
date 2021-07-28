@@ -62,6 +62,7 @@ public class EntityController implements Listener {
     private boolean    preventWandMeleeDamage = true;
     private final Set<EntityType> allowMeleeDamage = new HashSet<>();
     private int ageDroppedItems    = 0;
+    private int portalCooldown = 500;
     private Map<EntityType, Double> entityDamageReduction;
 
     public void loadProperties(ConfigurationSection properties) {
@@ -70,6 +71,7 @@ public class EntityController implements Listener {
         keepWandsOnDeath = properties.getBoolean("keep_wands_on_death", true);
         preventWandMeleeDamage = properties.getBoolean("prevent_wand_melee_damage", true);
         ageDroppedItems = properties.getInt("age_dropped_items", 0);
+        portalCooldown = properties.getInt("portal_cooldown", 500);
         List<String> allowMeleeKeys = ConfigurationUtils.getStringList(properties, "allow_melee_damage");
         allowMeleeDamage.clear();
         if (allowMeleeKeys != null) {
@@ -742,7 +744,12 @@ public class EntityController implements Listener {
         Entity entity = event.getEntity();
         String portalSpellKey = controller.getPortalSpell(event.getLocation(), entity);
         if (portalSpellKey == null) return;
-        Mage mage = controller.getMage(entity);
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(entity);
+        boolean onCooldown = mage.isOnPortalCooldown();
+        mage.setPortalCooldown(portalCooldown);
+        if (onCooldown) {
+            return;
+        }
         Spell spell = mage.getSpell(portalSpellKey);
         if (spell == null) {
             controller.getLogger().warning("Invalid portal-spell in region flag: " + portalSpellKey);
@@ -754,8 +761,8 @@ public class EntityController implements Listener {
     @EventHandler
     public void onEntityPortal(EntityPortalEvent event) {
         Entity entity = event.getEntity();
-        String portalSpellKey = controller.getPortalSpell(entity.getLocation(), entity);
-        if (portalSpellKey != null) {
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
+        if (mage != null && mage.isOnPortalCooldown()) {
             event.setCancelled(true);
         }
     }
