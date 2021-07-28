@@ -1,0 +1,33 @@
+ocean:
+  description: Make a temporary sphere of blocks
+  icon: bucket
+  actions:
+    cast:
+    - class: SpawnEntity
+      aggro: true
+      type: guardian
+    - class: Sphere
+      actions:
+      - class: ModifyBlock
+      - class: PotionEffect
+  effects:
+    cast:
+    - sound: entity_player_swim
+    - location: target
+  parameters:
+    target: block
+    range: 20
+    allow_max_range: true
+    radius: 8
+    brush: water
+    modifiable: air
+    undo: 12000
+    cooldown: 20000
+    max_health: 50
+    health: 50
+    amount: 2
+    potion_effects: 
+     slow: 7
+     jump: -6
+     poison: 10
+    

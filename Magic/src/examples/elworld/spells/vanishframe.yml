@@ -1,0 +1,14 @@
+vanishframe:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Vanish Frame
+  description: Make the target item frame invisible
+  icon: stick
+  actions:
+    cast:
+    - class: ModifyEntity
+  parameters:
+    target_types:
+      - item_frame
+    range: 32
+    invisible: true

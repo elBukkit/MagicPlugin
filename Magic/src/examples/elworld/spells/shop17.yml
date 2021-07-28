@@ -1,0 +1,25 @@
+shop17:
+    creator: NathanWolf
+    creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+    name: Shop
+    description: Put on an npc using /mnpc cast shop
+    icon: gold_ingot
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        title: "1.17 Stuff!"
+        items:
+        - item: spyglass
+          cost: 5
+        - item: bundle
+          cost: 5
+        - item: axolotl_bucket
+          cost: 5
+        - item: lightning_rod
+          cost: 5
+        - item: glow_item_frame
+          cost: 5
+        - item: glow_ink_sac
+          cost: 5

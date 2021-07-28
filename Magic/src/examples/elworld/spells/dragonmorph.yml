@@ -1,0 +1,40 @@
+# This is the key name of this spell
+# It must be unique across the server, and is used in configs and commands such as /mage, /wand and /mgive
+# to refer to this spell.
+dragonmorph:
+  name: Morph into Dragon
+  # Choose an icon, used when showing this spell in a wand inventory.
+  icon: warped_sign{18003}
+  # Actions define what this spell does when cast. In this case we will damage the target.
+  actions:
+    cast:
+    - class: Wear
+      item: dragonbodyred
+      slot: helmet
+    - class: Wear
+      item: bigdragonwingleftred
+      slot: off_hand
+    - class: Wear
+      item: bigdragonwingrightred
+      slot: main_hand
+    - class: Disguise
+      disguise:
+        type: player
+        name: LOSLT
+        invisible: true
+        animations: true
+        swimming: true
+    alternate_sneak:
+    - class: Command
+      command: undis
+  effects:
+    cast:
+    - location: origin
+      effectlib:
+        class: AnimatedBall
+        # This effect will last 2 seconds
+        duration: 2000
+        
+    - sound: magic.zap
+  parameters:
+    target: self

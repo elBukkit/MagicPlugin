@@ -1,0 +1,12 @@
+waterdmg:
+  icon: stick
+  actions:
+    cast:
+    - class: CheckBlock
+      source_location: feet
+      allowed: water
+      actions:
+      - class: Damage
+  parameters:
+    target: self
+    damage: 1

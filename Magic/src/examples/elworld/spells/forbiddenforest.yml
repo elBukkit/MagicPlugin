@@ -1,0 +1,23 @@
+forbiddenforest:
+  hidden: true
+  category: npc
+  actions:
+    cast:
+      - class: Selector
+        auto_close: true
+        title: Go fight some monsters?
+        options:
+          - icon: icon_gray
+          - icon: icon_gray
+          - icon: icon_yes
+            warp: forbiddenforest
+            name: Yes, Let's Go!
+          - icon: icon_gray
+          - icon: icon_gray
+          - icon: icon_no
+            name: No, I'm scared
+          - icon: icon_gray
+          - icon: icon_gray
+          - icon: icon_gray
+  parameters:
+    target: self

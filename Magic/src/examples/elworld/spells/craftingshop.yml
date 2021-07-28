@@ -1,0 +1,18 @@
+craftingshop:
+    name: Crafting Items
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: false
+        auto_close: false
+        title: Crafting Ingredients
+        scale: 0.05
+        items:
+        - rotten_flesh@16
+        - coal@16
+        - white_dye@16
+        - diamond@2
+        - emerald@8
+        - stick
+        - book
+        - bread

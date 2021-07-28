@@ -1,0 +1,39 @@
+throwexp:
+  # These track who created what spells, you can remove them if you want
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: My Projectile
+  description: Damage Your Target
+  icon: stick
+  actions:
+    cast:
+    # Some actions may be chained together.
+    # In this case, the CustomProjectile action launches a projectile, and when it hits
+    # it will run the actions in its "actions" list.
+    - class: Projectile
+      actions:
+      - class: Damage
+      - class: PotionEffect
+  effects:
+    cast:
+    - sound: magic.zap
+    # These effects will play when the projectile hits, which will happen some time
+    # after casting, as determined by the "velocity" parameter.
+    hit:
+    - location: target
+      effectlib:
+        class: Sphere
+        # This effect will last 2 seconds
+        duration: 2000
+    # These effects will play each tick as the projectile travels. This can be used
+    # to make your projectile visible.
+    tick:
+    - location: target
+      particle: redstone
+  parameters:
+    remove_effects:
+      - levitation
+    projectile: ShulkerBullet
+    range: 32
+    velocity: 20
+    damage: 10

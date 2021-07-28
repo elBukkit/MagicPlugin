@@ -1,0 +1,40 @@
+vanillaitemshop:
+    name: Vanilla Item Shop
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: false
+        auto_close: true
+        icon_hide_flags: 0
+        icon_unbreakable: false
+        scale: 0.01
+        items:
+        - none
+        - none
+        - hylian_shield
+        - emerald_sword
+        - vanilla_master_sword
+        - skull_globe
+        - coffee1
+        - none
+        - none
+        
+        - none
+        - silk_touch_pickaxe
+        - dwarven_battle_axe
+        - dwarven_spade
+        - dwarven_pickaxe
+        - dwarven_pickaxe_luck
+        - felicis_pickaxe
+        - dwarven_felicis_pickaxe
+        - none
+
+        - none
+        - none
+        - none
+        - none
+        - superelytra
+        - none
+        - none
+        - none
+        - none

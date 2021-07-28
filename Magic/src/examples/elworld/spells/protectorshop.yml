@@ -1,0 +1,18 @@
+protectorshop:
+    name: Protector Shop
+    inherit: buyshop
+    parameters:
+        title: Blast It Up
+        scale: 0.1
+        confirm: false
+        auto_close: true
+        items:
+        - none
+        - none
+        - none
+        - none
+        - spleef
+        - none
+        - none
+        - none
+        - none

@@ -1,0 +1,129 @@
+hailstorm:
+  name: Hailstorm
+  description: Create shards of ice to launch at targets
+  icon: diamond_axe:37
+  icon_disabled: spell_icon_disabled:37
+  actions:
+    cast:
+    - class: CheckRequirements
+      requirements:
+        - variables:
+          - variable: hailstormactive
+            max: 1
+      actions:
+      - class: ChangeContext
+        target_caster: true
+        weight: "1-hailstormactive"
+        actions:
+        - class: ModifyVariable
+          variable: iceshards
+          value: 0
+          scope: spell
+        - class: ModifyVariable
+          variable: hailstormactive
+          value: 1
+          scope: spell
+        - class: Repeat
+          actions:
+          - class: Retarget
+          - class: ModifyVariable
+            variable: iceshards
+            value: "iceshards+1"
+            scope: spell
+          - class: Message
+            message: "Ice Shards: $iceshards"
+            message_type: action_bar
+          - class: PlayEffects
+            effects: hailstormtick
+          - class: CheckRequirements
+            requirements:
+              - variables:
+                - variable: hailstormactive
+                  max: 1
+            actions:
+            - class: Stop
+          - class: Delay
+            delay: 1000
+      fail:
+      - class: CheckRequirements
+        requirements:
+          - variables:
+            - variable: iceshards
+              min: 1
+        actions:
+        - class: CustomProjectile
+          range: 32
+          velocity: 20
+        - class: ModifyVariable
+          variable: iceshards
+          value: "iceshards-1"
+          scope: spell
+        - class: Message
+          message: "Ice Shards: $iceshards"
+          message_type: action_bar
+    alternate_sneak:
+    - class: CheckRequirements
+      requirements:
+        - variables:
+          - variable: iceshards
+            min: 0
+      actions:
+      - class: Multiply
+        multiply: "iceshards"
+        actions:
+        - class: CustomProjectile
+          range: 32
+          velocity: 20
+          spread: "iceshards/25"
+      - class: ModifyVariable
+        variable: iceshards
+        value: 0
+        scope: spell
+      - class: Message
+        message: "Ice Shards: $iceshards"
+        message_type: action_bar
+    alternate_down:
+    - class: ModifyVariable
+      variable: hailstormactive
+      value: 0
+      scope: spell
+    - class: CheckRequirements
+      requirements:
+        - variables:
+          - variable: iceshards
+            min: 0
+      actions:
+      - class: Multiply
+        multiply: "iceshards"
+        actions:
+        - class: CustomProjectile
+          range: 32
+          velocity: 20
+          spread: 7
+      - class: ModifyVariable
+        variable: iceshards
+        value: 0
+        scope: spell
+      - class: Message
+        message: "Ice Shards: $iceshards"
+        message_type: action_bar
+      - class: Message
+        message: "Hailstorm Active: $hailstormactive"
+  effects: 
+    hailstormtick:
+    - location: origin
+      particle_offset_x: 1
+      particle_offset_y: 1
+      particle_offset_z: 1
+      particle: cloud
+      particle_count: 1
+    tick: 
+    - location: target
+      particle_offset_x: 0.1
+      particle_offset_y: 0.1
+      particle_offset_z: 0.1
+      particle: snowball
+      particle_count: 1
+  parameters:
+    target: none
+    repeat: 100000

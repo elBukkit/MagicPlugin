@@ -1,0 +1,22 @@
+spawnwarlock:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: My New Spell
+  description: Damage Your Target
+  icon: stick
+  actions:
+    cast:
+    - class: SpawnEntity
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Sphere
+        duration: 2000
+    - sound: magic.zap
+  parameters:
+    range: 32
+    type: warlock
+    helmet: iron_helmet
+    persist: true
+    damage: 10

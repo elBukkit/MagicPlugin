@@ -1,0 +1,15 @@
+equation:
+    # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
+    inherit: false
+    icon: spell_icon:9
+    icon_disabled: diamond_axe:9
+    hidden: true
+    category: staff
+    upgrade_required_casts: 50
+    actions:
+      cast:
+        - class: Message
+    parameters:
+        message: "Value: $equation"
+        equation: "(epoch % 255) / 255"
+        target: self

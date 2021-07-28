@@ -1,0 +1,14 @@
+instamoney:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Coins for Chiron
+  description: Money for death!
+  icon: stick
+  passive: true
+  triggers: drop,swap
+  actions:
+    cast:
+    - class: GiveItem
+  parameters:
+    target: self
+    item: gold_nugget
