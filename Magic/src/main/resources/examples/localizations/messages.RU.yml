@@ -1560,6 +1560,10 @@ worlds:
 cooldown:
   description: '&eПерезарядка: &6$time'
   mage_description: '&cИстощение: &6$time'
+charges:
+  description: '&eЗарядов: &6$count'
+  regeneration_description: '&eЗарядов: &6$count &7(&e$rate&6/&fs&7)'
+  recharge_description: '&eЗарядов: &6$count &7(&e1&6/&f&e$rates&7)'
 warmup:
   description: '&7Подготовка: &6$time'
 duration:
