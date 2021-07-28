@@ -51,6 +51,7 @@
  - Allow breaking item frames, paintings and armor stands even if prevent_melee_damage is enabled (see: allow_melee_damage)
  - Fix config load warnings (vibration particles) in 1.16 and earlier
  - Fix saddles on horses not working in 1.16 and earlier
+ - Fix NPC names sometimes getting messed up on chunk load
 
 ## Additions
 

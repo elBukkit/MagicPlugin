@@ -9,7 +9,6 @@
  - Cancelled spells (`/magic cancel`) should still auto-undo
  - Save spell can make upside-down schematics
  - Some way for automata to use air and light? Allow all_air?
- - Appearance shop menu has stained glass ??
 
 # Resource pack changes near-term
 
@@ -17,17 +16,14 @@
 
 # Demo server
 
- - Make sure the test dummy restores properly on reboot
- - NPCs names getting reset if they're not villagers? (maybe on config reload)
-
  - Features
     - warps
     - arenas
     - wands and items (bannershop)
       
-    - automata (monsters)  (look at why they're not undoing and/or overlapping .. generally being weird only in the region)
-    - crafting
-    - protection (world guard, flag demonstration)
+    - ~~automata~~
+    - ~~crafting~~
+    - ~~protection (world guard, flag demonstration)~~
       
     - ~~worlds~~
     - ~~npcs~~
@@ -82,24 +78,18 @@
 
 # Bugs
 
- - Essentials warp integration maybe broken
  - `/mconfig apply` doesn't work without a slug, after starting a new editor session
  - Upgrading wand enchantment levels with books doesn't work (this was probably an intentional prevention but sounds like it should be allowed)
- - Cover action doesn't work on top of water (Phantom)
  - Tag wand spell icons so they're not droppable!
    .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :(
  - PW having inventory loss issues (spells go into normal inventory)
  - /mmob remove doesn't remove mounts
  - Triggered spells need to track the wand they came from (think this is on the list somewhere already)
- - Fairy doesn't go away after 10 seconds
  - Does FakeBlock not really respect indestructible blocks? test out invisiworld
  - Don't drop blocks when breaking magically-changed blocks in creative mode
- - NPC dialog should always use NPC name, mob name is unreliable (but why?)
  - Copying dragon cage from httyd world doesn't work- block data wrong?  
- - Copying an east-facing item frame didn't work
  - Got "Recall got to doTeleport with no waypoint selected" .. how?
  - using inherit: sellshop make the quiet: true not working on item parameter but it works correctly with inherit: buyshop (brushette)
- - ATM acting weird? Heads doubled up, clicking not always working, seems to get messed up on restart
  - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Do automata drop loot when expiring due to chunk load?
  - Selector cost at top-level (default cost) doesn't work

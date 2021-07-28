@@ -123,11 +123,8 @@ public class MobController implements Listener, ChunkLoadListener {
     @Override
     public void onChunkLoad(Chunk chunk) {
         for (Entity entity : chunk.getEntities()) {
-            String magicMobKey = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.MAGIC_MOB);
-            if (magicMobKey != null) {
-                checkMagicMob(entity, magicMobKey);
-            }
             // Check for disconnected NPCs, we don't want to leave invulnerable entities around
+            boolean removed = false;
             String npcId = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID);
             if (npcId != null) {
                 checkNPC(entity, npcId);
@@ -139,6 +136,15 @@ public class MobController implements Listener, ChunkLoadListener {
                     + location.getWorld().getName() + "] " + location.getBlockX()
                     + "," + location.getBlockY() + "," + location.getBlockZ());
                 entity.remove();
+                removed = true;
+            }
+
+            // If it's not an NPC and we didn't remove it, check for Magic Mob data
+            if (!removed && npcId == null) {
+                String magicMobKey = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.MAGIC_MOB);
+                if (magicMobKey != null) {
+                    checkMagicMob(entity, magicMobKey);
+                }
             }
         }
     }
