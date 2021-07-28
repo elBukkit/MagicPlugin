@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -743,19 +744,30 @@ public class EntityController implements Listener {
     public void onEntityPortalEnter(EntityPortalEnterEvent event) {
         Entity entity = event.getEntity();
         String portalSpellKey = controller.getPortalSpell(event.getLocation(), entity);
-        if (portalSpellKey == null) return;
+        String portalWarpKey = controller.getPortalWarp(event.getLocation(), entity);
+        if (portalSpellKey == null && portalWarpKey == null) return;
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(entity);
         boolean onCooldown = mage.isOnPortalCooldown();
         mage.setPortalCooldown(portalCooldown);
         if (onCooldown) {
             return;
         }
-        Spell spell = mage.getSpell(portalSpellKey);
-        if (spell == null) {
-            controller.getLogger().warning("Invalid portal-spell in region flag: " + portalSpellKey);
-            return;
+        if (portalSpellKey != null) {
+            Spell spell = mage.getSpell(portalSpellKey);
+            if (spell == null) {
+                controller.getLogger().warning("Invalid portal-spell in region flag: " + portalSpellKey);
+            } else {
+                spell.cast();
+            }
         }
-        spell.cast();
+        if (portalWarpKey != null) {
+            Location location = controller.getWarp(portalWarpKey);
+            if (location == null || location.getWorld() == null) {
+                controller.getLogger().warning("Invalid portal-warp in region flag: " + portalWarpKey);
+            } else {
+                entity.teleport(location);
+            }
+        }
     }
 
     @EventHandler

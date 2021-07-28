@@ -13,6 +13,9 @@ interface WorldGuardFlags {
     String getPortalSpell(RegionAssociable source, ApplicableRegionSet checkSet);
 
     @Nullable
+    String getPortalWarp(RegionAssociable source, ApplicableRegionSet checkSet);
+
+    @Nullable
     String getDestructible(RegionAssociable source, ApplicableRegionSet checkSet);
 
     @Nullable

@@ -3638,6 +3638,11 @@ public class MagicController implements MageController {
         return worldGuardManager.getPortalSpell(player, location);
     }
 
+    public String getPortalWarp(Location location, Entity entity) {
+        Player player = entity instanceof Player ? (Player)entity : null;
+        return worldGuardManager.getPortalWarp(player, location);
+    }
+
     public boolean hasPermission(Player player, String pNode) {
         // Should this return defaultValue? Can't give perms to console.
         if (player == null) return true;

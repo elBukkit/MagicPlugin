@@ -1004,9 +1004,8 @@ public class PlayerController implements Listener {
 
     @EventHandler
     public void onPlayerPortal(PlayerPortalEvent event) {
-        Entity entity = event.getPlayer();
-        String portalSpellKey = controller.getPortalSpell(entity.getLocation(), entity);
-        if (portalSpellKey != null) {
+        Mage mage = controller.getRegisteredMage(event.getPlayer());
+        if (mage != null && mage.isOnPortalCooldown()) {
             event.setCancelled(true);
         }
     }
