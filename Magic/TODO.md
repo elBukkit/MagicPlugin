@@ -3,6 +3,8 @@
 # Nowish
 
  - Right-clicking an NPC with no interact causes a spell cast (again?)
+ - Wand active_properties
+ - base modifier "allow_melee", and move reflect parameters from wand
 
  - Item frames and paintings can't be copied, maybe only E/W facing - important for backup
  - Holes in containment if automata gets contained while in the glass
@@ -11,6 +13,7 @@
  - Cancelled spells (`/magic cancel`) should still auto-undo
  - Save spell can make upside-down schematics
  - Some way for automata to use air and light? Allow all_air?
+ - Don't show spells in the spellshop if you don't have the mana to cast them
 
 # Resource pack changes near-term
 
@@ -55,7 +58,6 @@
  - Add tab-completion and editor support for wand UI configs
  - Add clone/replicate source selected effects (cube)  
  - Add brush for creative mode, uses last held block  
- - Don't allow attacking with a lightsaber hilt (maybe an option to prevent damage with an inactive wand?)
  - Ability to open an editor session on behalf of another player
  - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
  - Some indicator for long-running engineering casts?

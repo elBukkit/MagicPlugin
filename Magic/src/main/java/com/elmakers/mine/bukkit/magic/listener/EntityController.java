@@ -266,7 +266,7 @@ public class EntityController implements Listener {
         }
         if (damager instanceof Player) {
             Mage damagerMage = controller.getRegisteredMage(damager);
-            com.elmakers.mine.bukkit.api.wand.Wand activeWand = null;
+            com.elmakers.mine.bukkit.api.wand.Wand activeWand = damagerMage == null ? null : damagerMage.getActiveWand();
             boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityLib.getCompatibilityUtils().isDamaging();
 
             if (isMelee && meleeDamageReduction > 0) {
@@ -288,14 +288,9 @@ public class EntityController implements Listener {
                     event.setCancelled(true);
                 }
             }
-            if (!event.isCancelled()) {
-                if (isMelee && damagerMage != null) {
-                    activeWand = damagerMage.getActiveWand();
-                    if (activeWand != null) {
-                        activeWand.playEffects("hit_entity");
-                        activeWand.damageDealt(event.getDamage(), entity);
-                    }
-                }
+            if (!event.isCancelled() && isMelee && activeWand != null) {
+                activeWand.playEffects("hit_entity");
+                activeWand.damageDealt(event.getDamage(), entity);
             }
         } else {
             Targeting.checkTracking(damager, entity, null);
