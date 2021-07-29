@@ -29,7 +29,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -1381,7 +1381,7 @@ public class Arena {
         this.portalDeathMessage = message;
     }
 
-    public void mobDied(LivingEntity entity) {
+    public void mobDied(Entity entity) {
         ArenaStage currentStage = getCurrentStage();
         if (currentStage != null) {
             currentStage.mobDied(entity);

@@ -7,6 +7,10 @@
  - Add `portal-spell` and `portal-warp` WorldGuard flags, for making custom portals
  - Add `maintain_direction` option to Teleport,Recall and Warp actions
 
+## Improvements
+
+ - Improve the `aggro` arena stage feature
+
 # 9.4.1
 
 ## Fixes

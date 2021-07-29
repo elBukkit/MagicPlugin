@@ -48,6 +48,11 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
         update(player);
     }
 
+    public ArenaPlayer(Arena arena, UUID uuid) {
+        this.uuid = uuid;
+        this.arena = arena;
+    }
+
     public void update(Player player) {
         if (player == null) {
             return;

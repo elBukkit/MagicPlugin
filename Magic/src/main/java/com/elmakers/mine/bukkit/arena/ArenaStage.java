@@ -15,7 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -303,7 +303,29 @@ public class ArenaStage implements EditingStage {
         }
     }
 
-    public void mobDied(LivingEntity entity) {
+    public void checkAggro(Entity mob) {
+        if (mob instanceof Creature) {
+            Creature creature = (Creature)mob;
+            Entity target = creature.getTarget();
+            Set<ArenaPlayer> currentPlayers = arena.getLivingParticipants();
+            if (target != null) {
+                if (target instanceof Player) {
+                    ArenaPlayer targetPlayer = new ArenaPlayer(arena, target.getUniqueId());
+                    if (!currentPlayers.contains(targetPlayer)) {
+                        target = null;
+                    }
+                } else {
+                    target = null;
+                }
+            }
+            if (target == null) {
+                ArenaPlayer player = RandomUtils.getRandom(new ArrayList<>(currentPlayers));
+                creature.setTarget(player.getPlayer());
+            }
+        }
+    }
+
+    public void mobDied(Entity entity) {
         arena.getController().unregister(entity);
         spawned.remove(entity);
     }
@@ -352,14 +374,29 @@ public class ArenaStage implements EditingStage {
         return spawned.isEmpty();
     }
 
+    public void checkSpawnsAndArena() {
+        checkSpawns(true, true);
+    }
+
     public void checkSpawns() {
+        checkSpawns(false, false);
+    }
+
+    public void checkSpawns(boolean checkAggro, boolean checkArena) {
         Iterator<Entity> it = spawned.iterator();
+        boolean mobsDied = false;
         while (it.hasNext()) {
             Entity entity = it.next();
             if (entity.isDead() || !entity.isValid()) {
+                mobsDied = true;
                 arena.getController().unregister(entity);
                 it.remove();
+            } else if (checkAggro && forceTarget) {
+                checkAggro(entity);
             }
+        }
+        if (checkArena && (mobsDied || spawned.isEmpty()) && arena.isStarted()) {
+            arena.check();
         }
     }
 
@@ -463,6 +500,8 @@ public class ArenaStage implements EditingStage {
     }
 
     public void tick() {
+        checkSpawnsAndArena();
+
         if (duration <= 0 && respawnDuration <= 0) {
             return;
         }
