@@ -16,6 +16,7 @@
 ## Fixes
 
  - Fix error when `enable_resource_pack: false` has been set 
+ - Fix `CheckInventory` action `blocked_enchantments` (fixes mars air supply behavior)
 
 # 9.4.1
 

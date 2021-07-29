@@ -75,6 +75,7 @@ public class CheckInventoryAction extends CheckAction {
         if (targetEntity == null || !(targetEntity instanceof Player)) return false;
         Mage mage = context.getController().getMage(targetEntity);
         if (slot != null) {
+            boolean defaultResult = false;
             int slotNumber = slot.getSlot(mage);
             if (slotNumber == -1) {
                 context.getLogger().warning("Invalid slot for CheckInventory action: " + slot);
@@ -86,6 +87,7 @@ public class CheckInventoryAction extends CheckAction {
             }
             ItemMeta meta = item == null ? null : item.getItemMeta();
             if (blockedEnchantments != null) {
+                defaultResult = true;
                 if (meta != null) {
                     for (Enchantment enchantment : blockedEnchantments) {
                         if (meta.hasEnchant(enchantment)) {
@@ -95,6 +97,7 @@ public class CheckInventoryAction extends CheckAction {
                 }
             }
             if (allowedEnchantments != null) {
+                defaultResult = false;
                 if (meta == null) {
                     return false;
                 }
@@ -103,10 +106,9 @@ public class CheckInventoryAction extends CheckAction {
                         return true;
                     }
                 }
-                return false;
             }
 
-            return false;
+            return defaultResult;
         }
         return item != null && mage.hasItem(item);
     }
