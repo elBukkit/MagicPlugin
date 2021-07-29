@@ -1,6 +1,0 @@
-{
-	"parent": "item/custom/staff_survival",
-	"textures": {
-		"1": "item/custom/survivalwand3"
-	}
-}

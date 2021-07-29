@@ -1,7 +1,0 @@
-{
-    "parent" : "item/custom/icon_full",
-    "textures": {
-        "particle": "attributes/strength",
-        "texture": "attributes/strength"
-    }
-}

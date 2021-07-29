@@ -1,7 +1,0 @@
-{
-  "parent": "minecraft:block/blackstone_stairs",
-
-  "overrides": [
-    {"predicate": {"custom_model_data": 18017}, "model": "item/custom/hat_cloak"}
-  ]
-}

@@ -2,6 +2,8 @@
 
 # Nowish
 
+ - SPIGOT: Change sky color possible? .. something else I forgot..
+
  - Right-clicking an NPC with no interact causes a spell cast (again?)
  - Wand active_properties
  - base modifier "allow_melee", and move reflect parameters from wand
@@ -15,6 +17,22 @@
  - Save spell can make upside-down schematics
  - Some way for automata to use air and light? Allow all_air?
  - Don't show spells in the spellshop if you don't have the mana to cast them
+
+# New API
+
+ - Possible to change sky color?
+ - Custom ender signals sound really cool??
+   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/6ff6e0330578458e7e0f869a8b7e7e09a63361e1
+ - Custom compass locations
+   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/6ff65c824ad8dc9ba9228999800a0d7010904893
+ - Item frame fixed/visible official API
+   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/9a6a5a664c15127db80ae154523f9f8b9afd51ba
+ - Non-Collidable modifier
+   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/ad52a4ec1d7b7254e3fe68ca497b2cc63afac373
+ - aware vs ai
+   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/97aeae56caee016136a81e34404f397e2d47a4dc#src/main/java/org/bukkit/entity/Mob.java
+  
+
 
 # AureliumSkills
 

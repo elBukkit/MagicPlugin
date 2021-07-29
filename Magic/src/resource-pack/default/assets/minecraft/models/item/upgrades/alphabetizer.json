@@ -1,7 +1,0 @@
-{
-    "parent" : "item/custom/icon",
-    "textures": {
-        "particle": "item/upgrades/alphabetizer",
-        "texture": "item/upgrades/alphabetizer"
-    }
-}

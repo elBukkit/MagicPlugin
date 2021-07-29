@@ -290,6 +290,7 @@ public class MagicController implements MageController {
             "knockback_resistance", "movement_speed",
             "attack_damage",
             "location_x", "location_y", "location_z",
+            "temperature", "humidity",
             "time", "moon",
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
             "fall_distance",
