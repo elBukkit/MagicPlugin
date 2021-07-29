@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.wand;
 
+import java.util.Collection;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.economy.Currency;
@@ -46,6 +48,28 @@ public class WandDisplayMode {
 
     public static WandDisplayMode getCurrency(String currencyKey) {
         return new WandDisplayMode(DisplayType.CURRENCY, currencyKey);
+    }
+
+    public static WandDisplayMode parse(String displayMode) {
+        if (displayMode == null || displayMode.isEmpty()) {
+            return null;
+        }
+        if (displayMode.equalsIgnoreCase("false")) {
+            return WandDisplayMode.NONE;
+        }
+        DisplayType displayType = DisplayType.valueOf(displayMode.toUpperCase());
+        switch (displayType) {
+            case COOLDOWN:
+                return COOLDOWN;
+            case MANA:
+                return MANA;
+            case CHARGES:
+                return CHARGES;
+            case NONE:
+                return NONE;
+            default:
+                throw new IllegalArgumentException("Unknown display type or can't specify as a simple string: " + displayType);
+        }
     }
 
     public static WandDisplayMode parse(MageController controller, ConfigurationSection config, String modeKey) {
@@ -192,5 +216,17 @@ public class WandDisplayMode {
 
     public boolean usesMana() {
         return displayType == DisplayType.MANA;
+    }
+
+    public static void addOptions(Collection<String> options) {
+        for (DisplayType displayType : DisplayType.values()) {
+            switch (displayType) {
+                case ATTRIBUTE:
+                case CURRENCY:
+                    continue;
+                default:
+                    options.add(displayType.name().toLowerCase());
+            }
+        }
     }
 }

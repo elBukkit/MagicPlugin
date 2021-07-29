@@ -2379,19 +2379,31 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         checkActiveMaterial();
 
         // Boss bar, can be a simple boolean or a config
+        bossBarConfiguration = null;
         if (getBoolean("boss_bar", false)) {
             bossBarConfiguration = new BossBarConfiguration(controller, ConfigurationUtils.newConfigurationSection());
         } else {
             ConfigurationSection config = getConfigurationSection("boss_bar");
             if (config != null) {
-                bossBarConfiguration = new BossBarConfiguration(controller, config, "$wand");
                 bossBarDisplayMode = parseDisplayMode(config, WandDisplayMode.COOLDOWN);
+                if (bossBarDisplayMode != WandDisplayMode.NONE) {
+                    bossBarConfiguration = new BossBarConfiguration(controller, config, "$wand");
+                }
+            } else {
+                String bossBarMode = getString("boss_bar");
+                bossBarDisplayMode = parseDisplayMode(bossBarMode, WandDisplayMode.NONE);
+                if (bossBarDisplayMode != WandDisplayMode.NONE) {
+                    bossBarConfiguration = new BossBarConfiguration(controller, ConfigurationUtils.newConfigurationSection());
+                }
             }
         }
 
         ConfigurationSection config = getConfigurationSection("xp_display");
         if (config != null) {
             xpBarDisplayMode = parseDisplayMode(config, WandDisplayMode.MANA);
+        } else {
+            String displayMode = getString("xp_display");
+            xpBarDisplayMode = parseDisplayMode(displayMode, WandDisplayMode.MANA);
         }
 
         config = getConfigurationSection("level_display");
@@ -2406,6 +2418,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 } else {
                     levelDisplayMode = WandDisplayMode.getCurrency(currencyDisplay);
                 }
+            } else {
+                String displayMode = getString("level_display");
+                levelDisplayMode = parseDisplayMode(displayMode, WandDisplayMode.SP);
             }
         }
 
@@ -2420,11 +2435,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             lastActionBar = 0;
         } else {
-            actionBarMessage = null;
+            actionBarMessage = getString("action_bar");
         }
         if (actionBarMessage == null) {
             actionBarMana = false;
         }
+    }
+
+    private WandDisplayMode parseDisplayMode(String displayMode, WandDisplayMode defaultMode) {
+        WandDisplayMode mode = null;
+        try {
+            mode = WandDisplayMode.parse(displayMode);
+        } catch (Exception ex) {
+            controller.getLogger().warning("Invalid display mode: " + ex.getMessage());
+        }
+        return mode == null ? defaultMode : mode;
     }
 
     private WandDisplayMode parseDisplayMode(ConfigurationSection config, WandDisplayMode defaultMode) {
@@ -6450,6 +6475,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             for (ItemFlag flag : ItemFlag.values()) {
                 options.add(flag.name().toLowerCase());
             }
+        } else if (key.equals("boss_bar") || key.equals("xp_display") || key.equals("level_display")) {
+            WandDisplayMode.addOptions(options);
+        } else if (key.equals("action_bar")) {
+            options.add("&cHP&7: &c@health&7/&c@health_max &f &f &f &f &f &f &bMP&7: &b@mana&7/&b@mana_max");
         }
     }
 

@@ -12,6 +12,7 @@
 ## Improvements
 
  - Improve the `aggro` arena stage feature
+ - Allow using simple strings (just the `mode`, like `mana` or `cooldown`) for wand `xp_display`, `level_display`, `boss_bar` and `action_bar` configs
 
 ## Fixes
 
