@@ -11,18 +11,24 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 public class CoverAction extends CompoundAction
 {
     protected boolean targetAbove = false;
+    protected boolean targetHighest = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         targetAbove = parameters.getBoolean("target_above", false);
+        targetHighest = parameters.getBoolean("target_highest", false);
     }
 
     @Override
     public SpellResult step(CastContext context) {
         Block targetBlock = context.getTargetBlock();
-        targetBlock = context.findSpaceAbove(targetBlock);
-        targetBlock = context.findBlockUnder(targetBlock);
+        if (targetHighest) {
+            targetBlock = targetBlock.getWorld().getHighestBlockAt(targetBlock.getLocation());
+        } else {
+            targetBlock = context.findSpaceAbove(targetBlock);
+            targetBlock = context.findBlockUnder(targetBlock);
+        }
         Block coveringBlock = targetBlock.getRelative(BlockFace.UP);
         if (context.isTransparent(targetBlock) || !context.isTransparent(coveringBlock)) {
             skippedActions(context);

@@ -8,6 +8,7 @@
  - Add `maintain_direction` option to Teleport,Recall and Warp actions
  - Add `archer` example magic bow
  - Add `disasters` external example from Phantom (creator of `extramobs`)
+ - Add `target_highest` option to `Cover` actions
 
 ## Improvements
 
