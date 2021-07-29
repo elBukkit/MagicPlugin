@@ -9,6 +9,7 @@ import org.bukkit.Chunk;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -58,6 +59,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
         controller.setDisableSpawnReplacement(true);
         for (Entity testEntity : chunk.getEntities()) {
             if (!(testEntity instanceof LivingEntity)) continue;
+            if (testEntity instanceof Player) continue;
             LivingEntity entity = (LivingEntity)testEntity;
             try {
                 if (magicWorld.processEntitySpawn(plugin, entity)) {
