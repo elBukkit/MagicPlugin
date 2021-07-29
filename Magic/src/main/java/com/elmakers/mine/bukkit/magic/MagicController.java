@@ -2647,9 +2647,6 @@ public class MagicController implements MageController {
         int blockCount = loadMagicBlocks(check);
         if (blockCount > 0) {
             info("Loaded " + blockCount + " magic blocks in world " + world.getName());
-            for (Chunk chunk : world.getLoadedChunks()) {
-                resumeMagicBlocks(chunk);
-            }
         }
     }
 
@@ -2660,11 +2657,6 @@ public class MagicController implements MageController {
             int blockCount = loadMagicBlocks(list);
             if (blockCount > 0) {
                 info("Loaded " + blockCount + " magic blocks");
-                for (World world : Bukkit.getWorlds()) {
-                    for (Chunk chunk : world.getLoadedChunks()) {
-                        resumeMagicBlocks(chunk);
-                    }
-                }
             }
         }
     }
@@ -2700,6 +2692,11 @@ public class MagicController implements MageController {
 
                 blockCount++;
                 restoreChunk.put(id, magicBlock);
+
+                if (magicBlock.shouldBeActive()) {
+                    activeBlocks.put(magicBlock.getId(), magicBlock);
+                    magicBlock.resume();
+                }
             }
         } catch (Exception ex) {
             getLogger().log(Level.SEVERE, "Something went wrong loading magic block data", ex);
@@ -2784,7 +2781,7 @@ public class MagicController implements MageController {
         long id = magicBlock.getId();
         chunkAutomata.put(id, magicBlock);
 
-        if (magicBlock.inActiveChunk()) {
+        if (magicBlock.shouldBeActive()) {
             activeBlocks.put(id, magicBlock);
             magicBlock.resume();
         }

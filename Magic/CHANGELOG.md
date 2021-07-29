@@ -17,6 +17,7 @@
 
  - Fix error when `enable_resource_pack: false` has been set 
  - Fix `CheckInventory` action `blocked_enchantments` (fixes mars air supply behavior)
+ - Fix `always_on: true` magic blocks not starting back up on server restart
 
 ## Changes
 

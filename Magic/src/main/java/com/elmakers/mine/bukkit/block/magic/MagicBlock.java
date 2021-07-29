@@ -21,7 +21,6 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.item.ItemData;
-import com.elmakers.mine.bukkit.api.magic.Locatable;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.magic.Mage;
@@ -220,7 +219,7 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
     public void enable() {
         if (enabled) return;
         this.enabled = true;
-        if (inActiveChunk()) {
+        if (shouldBeActive()) {
             resume();
         }
     }
@@ -230,8 +229,12 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         pause();
     }
 
+    public boolean shouldBeActive() {
+        return isAlwaysActive() || inActiveChunk();
+    }
+
     public boolean inActiveChunk() {
-        return CompatibilityLib.getCompatibilityUtils().isChunkLoaded(getLocation()) || isAlwaysActive();
+        return CompatibilityLib.getCompatibilityUtils().isChunkLoaded(getLocation());
     }
 
     @Override
