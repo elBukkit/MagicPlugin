@@ -7,6 +7,7 @@
  - Add `portal-spell` and `portal-warp` WorldGuard flags, for making custom portals
  - Add `maintain_direction` option to Teleport,Recall and Warp actions
  - Add `archer` example magic bow
+ - Add `disasters` external example from Phantom (creator of `extramobs`)
 
 ## Improvements
 
