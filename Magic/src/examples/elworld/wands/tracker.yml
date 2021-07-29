@@ -1,0 +1,10 @@
+tracker:
+  name: Tracker
+  icon: spider_eye
+  inherit: basic_wand
+  spells: tracking
+  mana_max: 20
+  mana_regeneration: 20
+  xp_display.mode: cooldown
+  level_display.mode: none
+  right_click: cast

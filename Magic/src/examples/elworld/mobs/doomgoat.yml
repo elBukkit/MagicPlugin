@@ -1,0 +1,19 @@
+doomgoat:
+  # Display name of this mob
+  name: Doom Goat
+  # The base entity type of this mob
+  type: goat
+  health: 20
+  # Turn off the default mob drops
+  default_drops: false
+  interval: 2 seconds
+  interval_requires_target: false
+  permissions: magic.team.goat
+  targeting:
+    denied_permissions: magic.team.goat
+  triggers:
+    interval:
+      cast:
+        doomgoat_doom: 100
+        doomgoat_rush: 50
+        none: 20

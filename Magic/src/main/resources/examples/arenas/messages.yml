@@ -24,26 +24,26 @@ wands:
         name: Bending
         description: The power of the Avatar
     mage2:
-        name: Mage Wand
+        name: Mage Wand Lv2
         description: Battle mage spells
     demolitions2:
-        name: Demolitions Wand
+        name: Demolitions Wand Lv2
         description: Explosive spells
     healer2:
-        name: Healer Wand Wand
+        name: Healer Wand Wand Lv2
         description: White mage spells
     rogue2:
-        name: Rogue Wand
+        name: Rogue Wand Lv2
         description: Rogue abilities
     warrior2:
-        name: Magic Sword
+        name: Magic Sword Lv2
         description: A magic warrior's sword
     jedi2:
-        name: Lightsaber
+        name: Lightsaber Lv2
         description: The chosen weapon of the Jedi
     sith2:
-        name: Lightsaber
+        name: Lightsaber Lv2
         description: The chosen weapon of the Sith
     bender2:
-        name: Bending
+        name: Bending Lv2
         description: The power of the Avatar

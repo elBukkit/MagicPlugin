@@ -1,0 +1,5 @@
+bigslime:
+  type: slime
+  size: 4
+  split: false
+  health: 20

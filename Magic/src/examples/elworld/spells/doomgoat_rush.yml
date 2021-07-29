@@ -1,0 +1,29 @@
+doomgoat_rush:
+  # Name and description may be added here and will appear in lore for this spell.
+  name: Goat Rush
+  # Choose an icon, used when showing this spell in a wand inventory.
+  icon: stick
+  # Actions define what this spell does when cast. In this case we will damage the target.
+  actions:
+    # Actions can be triggered from a few different events, but the most common is "cast",
+    # which will happen immediately when the spell is cast.
+    cast:
+    - class: AreaOfEffect
+      actions:
+        - class: ChangeContext
+          swap_source_and_target: true
+          actions:
+          - class: Velocity
+            push: -1
+            living_entity_speed: 3
+  # Effects are particle or sound effects that are shown when the spell is cast.
+  effects:
+    cast:
+    - location: origin
+      sound: entity_goat_screaming_long_jump
+  # Parameters change how a spell behaves, these may be base spell parameters or
+  # specific to the set of actions you are using.
+  parameters:
+    target: self
+    radius: 64
+    target_count: 1

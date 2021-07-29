@@ -1,0 +1,23 @@
+# This is the key name of this mob
+# It must be unique across the server, and is used in configs and commands such as /mgive to refer to this mob
+doomllama:
+  # These track who created what spells, you can remove them if you want
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  # Display name of this mob
+  name: Doom Llama
+  # The base entity type of this mob
+  type: llama
+  health: 20
+  # Turn off the default mob drops
+  default_drops: false
+  interval: 2 seconds
+  interval_requires_target: false
+  permissions: magic.team.goat
+  targeting:
+    denied_permissions: magic.team.goat
+  triggers:
+    interval:
+      cast:
+        doomllama_spit: 100
+        none: 20

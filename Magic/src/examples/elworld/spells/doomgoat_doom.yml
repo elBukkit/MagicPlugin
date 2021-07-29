@@ -1,0 +1,43 @@
+doomgoat_doom:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Goat Scream
+  icon: stick
+  actions:
+    cast:
+    - class: AreaOfEffect
+      actions:
+        - class: Damage
+        - class: Velocity
+          direction: 0,1,0
+          living_entity_speed: 0.2
+    - class: Delay
+      delay: 100
+    - class: AreaOfEffect
+      actions:
+      - class: Velocity
+        push: 1
+  effects:
+    cast:
+    - location: origin
+      sound: entity_goat_screaming_prepare_ram
+      sound_volume: 1.5
+      sound_pitch: 0.7
+      effectlib:
+        class: Modified
+        duration: 2 seconds
+        parameters:
+          radius: "(t/i) * 8"
+        effect:
+          class: Helix
+          offset: 0,1,0
+          particle: electric_spark
+          strands: 4
+          particles: 8
+          particle_count: 4
+          particle_offset: 0.1
+  parameters:
+    target: self
+    radius: 8
+    damage: 3
+    living_entity_speed: 1

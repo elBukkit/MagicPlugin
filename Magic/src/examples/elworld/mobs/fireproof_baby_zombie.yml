@@ -1,0 +1,4 @@
+fireproof_baby_zombie:
+  type: zombie
+  baby: true
+  combustible: false

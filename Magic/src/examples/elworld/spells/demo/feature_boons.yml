@@ -11,13 +11,14 @@ feature_boons:
   parameters:
     target: self
     target_type: Player
-    radius: 200
-    duration: 15 seconds
+    radius: 18
+    duration: 1 seconds
     target_self: true
     effects_particles: false
     effects_ambient: true
     quiet: true
     bypass_undo: true
     add_effects:
-      - saturation
-      - regeneration
+      saturation: 1
+      regeneration: 1
+      speed: 2

@@ -1914,14 +1914,18 @@ public class MagicController implements MageController {
         log("Loaded " + arenaController.getArenas().size() + " arenas");
 
         // Final loading tasks
+        logger.setContext("finalizingLoad");
         finishLoad(sender);
 
         // Register managers from other plugins
+        logger.setContext("registerManagers");
         registerManagers();
 
         // Notify plugins that we've finished loading.
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
+
+        logger.setContext("postLoad");
     }
 
     public void processConfigurations(ConfigurationLoadTask loader, CommandSender sender) {
