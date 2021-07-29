@@ -1,0 +1,22 @@
+#
+# An example of a progressed magic bow
+#
+# These wands (student, master, etc) are meant to be used
+# as examples only!
+#
+archer:
+  inherit: base_bow
+  active_spell: arrow_regular
+  icon: bow{CustomModelData:18001}
+  legacy_icon: bow_icon:1
+  effect_color: '004400'
+  earn_multiplier: 0
+  spells:
+    - arrow_regular
+    - arrow_poison
+    - arrow_bomb
+    - arrow_blink
+    - arrow_light
+    - arrow_fire
+    - arrow_ice
+    - arrow_shock

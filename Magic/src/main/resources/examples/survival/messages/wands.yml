@@ -20,6 +20,9 @@ wands:
     apprentice:
         name: Apprentice Wand
         description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Apprentice spells."
+    archer:
+        name: Archer Bow
+        description: "&cFor demonstration purposes only!\n&eThis wand represents a survival player who has collected all of the Archer spells."
     rage:
         name: Rage Sword
         description: Gathers energy when hitting an enemy
