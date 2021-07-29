@@ -12,6 +12,10 @@
 
  - Improve the `aggro` arena stage feature
 
+## Fixes
+
+ - Fix error when `enable_resource_pack: false` has been set 
+
 # 9.4.1
 
 ## Fixes

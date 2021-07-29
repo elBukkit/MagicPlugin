@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
@@ -76,12 +77,14 @@ public class ResourcePackManager {
         resourcePackDelay = properties.getLong("resource_pack_delay", 0);
         alternateResourcePacks = properties.getConfigurationSection("alternate_resource_packs");
 
-        ConfigurationSection altDefault = alternateResourcePacks.getConfigurationSection(defaultResourcePack);
-        if (altDefault != null) {
-            defaultResourcePack = altDefault.getString("url");
+        if (defaultResourcePack != null) {
+            ConfigurationSection altDefault = alternateResourcePacks.getConfigurationSection(defaultResourcePack);
+            if (altDefault != null) {
+                defaultResourcePack = altDefault.getString("url");
+            }
         }
 
-        if (!firstLoad && resourcePack != null && !defaultResourcePack.equals(currentResourcePack)) {
+        if (!firstLoad && !Objects.equals(defaultResourcePack, currentResourcePack)) {
             checkResourcePack(sender, false, false, true);
         }
     }
