@@ -60,6 +60,7 @@ automaton_clean:
     brush: packed_ice
     target_magic_blocks: automaton_npc
     target_all_worlds: false
+    bypass: true
     destructible: air,mushroom_stem,red_mushroom_block,brown_mushroom_block,packed_ice
     delay: 2000
     radius: 8

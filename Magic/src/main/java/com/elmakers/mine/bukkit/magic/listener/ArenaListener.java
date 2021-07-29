@@ -171,7 +171,7 @@ public class ArenaListener implements Listener {
     @EventHandler
     public void onSignChange(SignChangeEvent e) {
         Player player = e.getPlayer();
-        if (!player.hasPermission("MagicArenas.signs.create")) {
+        if (!player.hasPermission("Magic.arena.signs.create")) {
             return;
         }
         String firstLine = e.getLine(0);
@@ -224,7 +224,7 @@ public class ArenaListener implements Listener {
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
         Player player = e.getPlayer();
-        if (!player.hasPermission("MagicArenas.signs.use")) {
+        if (!player.hasPermission("Magic.arena.signs.use")) {
             return;
         }
 

@@ -5,6 +5,7 @@
  - Right-clicking an NPC with no interact causes a spell cast (again?)
  - Wand active_properties
  - base modifier "allow_melee", and move reflect parameters from wand
+ - Add levelled-up spells to demo wands
 
  - Item frames and paintings can't be copied, maybe only E/W facing - important for backup
  - Holes in containment if automata gets contained while in the glass
@@ -14,6 +15,20 @@
  - Save spell can make upside-down schematics
  - Some way for automata to use air and light? Allow all_air?
  - Don't show spells in the spellshop if you don't have the mana to cast them
+
+# AureliumSkills
+
+ - Scale spell costs down globally, roughly match this range:
+
+which is leveled by multiple different skills and generally goes up to about 200-300 
+wisdom at max level. If you need me to adjust my default mana values I'll be more than willing to.
+
+max-mana-per-wisdom = 2 (default)
+base-mana = 20 (default)
+mana = base + wisdom * max
+300 wisdom = 20 + 600 = 620
+
+ - Turn mana back on by default
 
 # Resource pack changes near-term
 

@@ -167,7 +167,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             return false;
         }
 
-        if (!sender.hasPermission("MagicArenas.commands.marena")) {
+        if (!sender.hasPermission("Magic.commands.marena")) {
             sendNoPermission(sender);
             return true;
         }
