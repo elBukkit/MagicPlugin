@@ -20,7 +20,7 @@ wands:
     sith:
         name: Lightsaber
         description: The chosen weapon of the Sith
-    bending:
+    bender:
         name: Bending
         description: The power of the Avatar
     mage2:
@@ -44,6 +44,6 @@ wands:
     sith2:
         name: Lightsaber
         description: The chosen weapon of the Sith
-    bending2:
+    bender2:
         name: Bending
         description: The power of the Avatar
