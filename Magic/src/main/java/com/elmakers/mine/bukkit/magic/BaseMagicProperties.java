@@ -193,6 +193,10 @@ public class BaseMagicProperties implements MagicProperties {
         return getBoolean(key, false);
     }
 
+    public boolean isBoolean(String key) {
+        return getPropertyConfiguration(key).isBoolean(key);
+    }
+
     @Override
     public String getString(String key, String defaultValue) {
         Object value = getProperty(key);

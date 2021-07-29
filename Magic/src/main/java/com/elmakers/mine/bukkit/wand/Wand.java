@@ -6376,7 +6376,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public boolean isWearableInSlot(int slotNumber) {
-        if (getBoolean("wearable")) return true;
+        if (isBoolean("wearable") && getBoolean("wearable")) return true;
         Collection<String> slots = getStringList("wearable");
         if (slots != null) {
             for (String slotKey : slots) {
@@ -6396,7 +6396,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Nullable
     public Collection<Integer> getWearableSlots() {
         List<Integer> slots = null;
-        if (getBoolean("wearable")) {
+        if (isBoolean("wearable") && getBoolean("wearable")) {
             slots = new ArrayList<>();
             for (InventorySlot slot : InventorySlot.values()) {
                 if (slot.getSlot() >= 0) {
