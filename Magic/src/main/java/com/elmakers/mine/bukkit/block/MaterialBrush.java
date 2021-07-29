@@ -203,7 +203,8 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                 || REPLICATE_MATERIAL_KEY.equals(materialKey)
                 || CLONE_MATERIAL_KEY.equals(materialKey)
                 || MAP_MATERIAL_KEY.equals(materialKey)
-                || SCHEMATIC_MATERIAL_KEY.equals(materialKey);
+                || SCHEMATIC_MATERIAL_KEY.equals(materialKey)
+                || materialKey.equalsIgnoreCase("light");
     }
 
     public static boolean isSchematic(String materialKey) {
