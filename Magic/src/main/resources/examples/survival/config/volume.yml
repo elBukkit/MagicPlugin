@@ -1,0 +1,4 @@
+# People have complained sound volume is too loud
+# I didn't want to change the defaults since it would affect custom configs
+# But this should help survival and anything inheriting from it
+sound_volume: 0.5

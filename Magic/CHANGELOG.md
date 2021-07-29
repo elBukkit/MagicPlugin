@@ -18,6 +18,10 @@
  - Fix error when `enable_resource_pack: false` has been set 
  - Fix `CheckInventory` action `blocked_enchantments` (fixes mars air supply behavior)
 
+## Changes
+
+ - Sound FX volume cut to 50% by default in survival configs (adjust `sound_volume` if desired)
+
 # 9.4.1
 
 ## Fixes
