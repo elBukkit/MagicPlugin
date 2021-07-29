@@ -9,6 +9,7 @@
  - Add `archer` example magic bow
  - Add `disasters` external example from Phantom (creator of `extramobs`)
  - Add `target_highest` option to `Cover` actions
+ - Add new attributes: `temperature`, `humidity`, `target_temperature`, `target_humidity`
 
 ## Improvements
 
