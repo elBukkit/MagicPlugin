@@ -77,8 +77,8 @@ public class Arena {
 
     private Vector randomizeSpawn;
 
-    private int maxPlayers;
-    private int minPlayers;
+    private int maxPlayers = 2;
+    private int minPlayers = 2;
     private int requiredKills = 1;
     private int winXP = 0;
     private int loseXP = 0;
@@ -1274,7 +1274,9 @@ public class Arena {
         }
         if (state == ArenaState.ACTIVE) {
             ArenaStage currentStage = getCurrentStage();
-            sender.sendMessage(ChatColor.BLUE + "Active mobs: " + ChatColor.GRAY + currentStage.getActiveMobs());
+            if (currentStage != null) {
+                sender.sendMessage(ChatColor.BLUE + "Active mobs: " + ChatColor.GRAY + currentStage.getActiveMobs());
+            }
         }
         if (portalDamage > 0 || portalEnterDamage > 0) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Portal Entry Damage: " + ChatColor.DARK_PURPLE + portalEnterDamage);

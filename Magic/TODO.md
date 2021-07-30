@@ -1,14 +1,17 @@
 # TODO
 
-# Nowish
+# Before next release
+
+- Arena leaderboard signs not facing the right direction
+- Right-clicking an NPC with no interact causes a spell cast (again?)
+- Don't show spells in the spellshop if you don't have the mana to cast them
+
+# New
 
  - Look at to_otherside warp, absolutely insane mob spawning (turn mob spawning back on after)
 
- - Arena leaderboard signs not facing the right direction
-
  - SPIGOT: Change sky color possible? .. something else I forgot..
 
- - Right-clicking an NPC with no interact causes a spell cast (again?)
  - Wand active_properties
  - base modifier "allow_melee", and move reflect parameters from wand
  - Add levelled-up spells to demo wands
@@ -20,7 +23,6 @@
  - Cancelled spells (`/magic cancel`) should still auto-undo
  - Save spell can make upside-down schematics
  - Some way for automata to use air and light? Allow all_air?
- - Don't show spells in the spellshop if you don't have the mana to cast them
 
 # to test
 

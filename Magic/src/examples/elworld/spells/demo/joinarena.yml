@@ -14,8 +14,8 @@ joinarena:
           - placeholder: true
           - icon: spell_icon:267
             name: "&6The Otherside"
-            description: "Coming soon!"
-            command: msg @p Coming Soon!
+            description: "A &bPlayer vs Player&r arena, where two players battle it out until only one is left standing!"
+            command: marena join otherside @p
           - placeholder: true
           - placeholder: true
           - placeholder: true
