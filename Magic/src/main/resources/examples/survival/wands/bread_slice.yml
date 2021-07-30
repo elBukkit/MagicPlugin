@@ -1,5 +1,5 @@
 bread_slice:
-  icon: bread{CustomModelData:18003}
+  icon: bread{18003}
   consume_spell: eat_food
   craftable: true
   overrides:

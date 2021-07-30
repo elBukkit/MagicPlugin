@@ -727,7 +727,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             materialKey += "?" + blockData;
         }
         if (tags != null) {
-            materialKey += getGson().toJson(tags);
+            if (tags.size() == 1 && tags.containsKey("CustomModelData")) {
+                materialKey += "{" + tags.get("CustomModelData") + "}";
+            } else {
+                materialKey += getGson().toJson(tags);
+            }
         }
 
         return materialKey;
