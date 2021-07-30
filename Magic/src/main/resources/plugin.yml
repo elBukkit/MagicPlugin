@@ -337,6 +337,7 @@ commands:
             /mitem spawn <type> <uuid>
     permission: Magic.commands.mitem.spawn
   mconfig:
+    aliases: [/mconfig]
     description: Modify Magic configuration in-game
     permission: Magic.commands.mconfig
     usage: |
