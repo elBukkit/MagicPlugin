@@ -644,6 +644,10 @@ public class ConfigurationUtils extends ConfigUtils {
             } catch (NumberFormatException ex) {
                 return null;
             }
+        } else if (o instanceof ConfigurationSection) {
+            ConfigurationSection config = (ConfigurationSection)o;
+            ColorHD color = new ColorHD(config);
+            return color.getColor();
         }
 
         return null;

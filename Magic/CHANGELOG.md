@@ -15,6 +15,7 @@
 
  - Improve the `aggro` arena stage feature
  - Allow using simple strings (just the `mode`, like `mana` or `cooldown`) for wand `xp_display`, `level_display`, `boss_bar` and `action_bar` configs
+ - Allow using r,g,b or h,s,v format (including with equations) in more color parameters (ModelEngine tint, for instance)
 
 ## Fixes
 
