@@ -1,0 +1,30 @@
+joinarena:
+  name: Join Arena
+  actions:
+    cast:
+      - class: Selector
+        options:
+          - placeholder: true
+          - placeholder: true
+          - placeholder: true
+          - icon: spell_icon:263
+            name: "&6The Netherside"
+            description: "A &bMob Arena&r with increasingly difficult waves of monsters.\n&8......\n&b1 to 10&r players work together to overcome every biome and reach the &4final boss&r!"
+            command: marena join netherside @p
+          - placeholder: true
+          - icon: spell_icon:267
+            name: "&6The Otherside"
+            description: "Coming soon!"
+            command: msg @p Coming Soon!
+          - placeholder: true
+          - placeholder: true
+          - placeholder: true
+  parameters:
+    title: "&bJoin Arena"
+    confirm_title: "&4Are you sure&f you want to join?"
+    selected: ""
+    selected_free: ""
+    target: self
+    confirm: true
+    confirm_filler: icon_placeholder
+    placeholder_icon: icon_placeholder

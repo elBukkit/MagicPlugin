@@ -1,0 +1,27 @@
+arenahelp:
+  name: Arena Help
+  actions:
+    cast:
+      - class: Selector
+        options:
+          - placeholder: true
+          - placeholder: true
+          - placeholder: true
+          - icon: spell_icon:264
+            name: "&6Stock Up"
+            description: Need more arrows? Want to switch weapons?
+            cast_spell: weaponshop
+          - placeholder: true
+          - icon: icon_no
+            name: "&4Leave the Arena"
+            command: marena leave @p
+          - placeholder: true
+          - placeholder: true
+          - placeholder: true
+  parameters:
+    title: "&bArena Help"
+    selected: ""
+    selected_free: ""
+    target: self
+    confirm_filler: icon_placeholder
+    placeholder_icon: icon_placeholder

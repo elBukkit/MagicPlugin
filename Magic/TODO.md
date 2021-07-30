@@ -2,6 +2,10 @@
 
 # Nowish
 
+ - Look at to_otherside warp, absolutely insane mob spawning (turn mob spawning back on after)
+
+ - Arena leaderboard signs not facing the right direction
+
  - SPIGOT: Change sky color possible? .. something else I forgot..
 
  - Right-clicking an NPC with no interact causes a spell cast (again?)

@@ -1,0 +1,88 @@
+lizardskin:
+  # Had to override this for the demo area, since updating biomes didn't actually change
+  # temperature ;(
+  variables:
+    - variable: target_r
+      scope: spell
+      value: 255
+    - variable: target_g
+      scope: spell
+      value: 255
+    - variable: target_b
+      scope: spell
+      value: 255
+    - variable: current_r
+      scope: spell
+      value: 255
+    - variable: current_g
+      scope: spell
+      value: 255
+    - variable: current_b
+      scope: spell
+      value: 255
+    - variable: temperature
+      scope: cast
+      value: 1
+  actions:
+    cast:
+      # Changing biomes on the fly doesn't seem to work, so for demo purposes we'll set temperature based on biome
+      - class: CheckBlock
+        biome_actions:
+          snowy_tundra: cold
+          plains: warm
+          desert: hot
+        cold:
+          - class: ModifyVariable
+            variable: temperature
+            value: -1
+        warm:
+          - class: ModifyVariable
+            variable: temperature
+            value: 0
+        hot:
+          - class: ModifyVariable
+            variable: temperature
+            value: 2
+      # New target color based on temperature
+      - class: ModifyVariable
+        variable: target_r
+        value: max(min(192 + temperature * 128, 255), 0)
+      - class: ModifyVariable
+        variable: target_g
+        value: max(min(192 + temperature * 128, 255), 0)
+      - class: ModifyVariable
+        variable: target_b
+        value: max(min(192 + temperature * 128, 255), 0)
+
+      # Now move our current color toward the target color
+      - class: ModifyVariable
+        variable: current_r
+        value: "(target_r + current_r * 3) / 4"
+      - class: ModifyVariable
+        variable: current_g
+        value: "(target_g + current_g * 3) / 4"
+      - class: ModifyVariable
+        variable: current_b
+        value: "(target_b + current_b * 3) / 4"
+
+      # For debugging
+      #- class: AreaOfEffect
+      #  radius: 8
+      #  actions:
+      #   - class: Message
+      #     message_target: true
+      #     message: "tR,G,B @target_r,@target_g,@target_b cR,G,B @current_r,@current_g,@current_b temp: $temperature"
+
+      # Update model tint
+      - class: ModelEngine
+        model_action: tint
+        color:
+          r: current_r
+          g: current_g
+          b: current_b
+  parameters:
+    target: self
+    radius: 32
+    trigger: playdead
+    target_npc: true
+    destructible: all_air

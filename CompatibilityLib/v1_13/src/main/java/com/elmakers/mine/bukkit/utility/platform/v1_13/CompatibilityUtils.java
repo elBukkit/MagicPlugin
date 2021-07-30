@@ -18,7 +18,7 @@ import org.spigotmc.event.entity.EntityDismountEvent;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
-public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.legacy.CompatibilityUtils {
+public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_12.CompatibilityUtils {
 
     public CompatibilityUtils(Platform platform) {
         super(platform);

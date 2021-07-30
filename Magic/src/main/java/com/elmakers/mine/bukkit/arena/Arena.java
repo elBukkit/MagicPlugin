@@ -1503,8 +1503,11 @@ public class Arena {
 
     protected boolean canReplace(Block block) {
         Material blockType = block.getType();
+        if (controller.getMagic().getMaterialSetManager().getMaterialSet("all_air").testBlock(block)) {
+            return true;
+        }
         MaterialAndData skullMaterial = DefaultMaterials.getPlayerSkullWallBlock();
-        return blockType == Material.AIR || DefaultMaterials.isSign(blockType) || blockType == skullMaterial.getMaterial();
+        return DefaultMaterials.isSign(blockType) || blockType == skullMaterial.getMaterial();
     }
 
     protected Block getLeaderboardBlock() {

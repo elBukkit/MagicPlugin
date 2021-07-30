@@ -1,0 +1,28 @@
+setbiome:
+  icon: snowball
+  actions:
+    cast:
+      - class: Recurse
+        actions:
+          - class: ChangeBiome
+          - class: PlayEffects
+            effects: place
+  effects:
+    place:
+      - location: target
+        use_block_location: true
+        effectlib:
+          class: Cube
+          iterations: 15
+          particle: redstone
+          color: "00AAFF"
+          edge_length: 1.2
+          enable_rotation: false
+          offset: 0.5,0.5,0.5
+  parameters:
+    target: block
+    range: 16
+    depth: 10
+    faces: up
+    destructible: all_air
+    biome: desert
