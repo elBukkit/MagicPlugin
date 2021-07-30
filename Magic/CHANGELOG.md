@@ -10,6 +10,7 @@
  - Add `disasters` external example from Phantom (creator of `extramobs`)
  - Add `target_highest` option to `Cover` actions
  - Add new attributes: `temperature`, `humidity`, `target_temperature`, `target_humidity`
+ - AureliumSkills, SkillAPI and Heroes now only provide mana to the "caster" class, this is configurable
 
 ## Improvements
 
@@ -25,6 +26,8 @@
  - Fix wands dealing melee damage even if not on the melee list (this includes the lightsaber hilt)
  - Fix players not having permission to use arena signs by default
  - Remove inventory title limit in 1.12 and up (was already removed in 1.17)
+ - Fix Stream not dealing repeated damage over time
+ - Fix AureliumSkills (and Heroes?) mana integration breaking wand crafting (by adding mana lore to all wand items)
 
 ## Changes
 

@@ -13,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -50,6 +51,9 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
     private Method getHeroAttributeMethod;
     private static final Map<String, Enum<?>> attributes = new HashMap<>();
 
+    private final Set<String> usesMana = new HashSet<>();
+    private boolean usesParties = true;
+
     public HeroesManager(Plugin plugin, Plugin heroesPlugin) {
         log = plugin.getLogger();
         if (!(heroesPlugin instanceof Heroes))
@@ -81,6 +85,29 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
                 finishIntegration();
             }
         }, 2);
+    }
+
+    public void load(ConfigurationSection configuration) {
+        boolean useMana = configuration.getBoolean("use_heroes_mana", true);
+        usesMana.clear();
+        if (useMana) {
+            usesMana.addAll(ConfigurationUtils.getStringList(configuration, "heroes_mana_classes"));
+        }
+        usesParties = configuration.getBoolean("use_heroes_parties", true);
+        if (usesParties) {
+            log.info("Heroes parties will be respected in friendly fire checks");
+        }
+        if (!usesMana.isEmpty()) {
+            log.info("Heroes mana will be used for classes: " + StringUtils.join(usesMana, ",") + ")");
+        }
+    }
+
+    public boolean useParties() {
+        return usesParties;
+    }
+
+    public boolean usesMana(String mageClass) {
+        return usesMana.contains(mageClass);
     }
 
     public void finishIntegration() {

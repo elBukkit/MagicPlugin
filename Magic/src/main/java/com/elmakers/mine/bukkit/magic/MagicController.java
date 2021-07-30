@@ -511,9 +511,6 @@ public class MagicController implements MageController {
     private boolean despawnMagicMobs = false;
     private int skillInventoryRows = 6;
     private boolean skillsUseHeroes = true;
-    private boolean useHeroesMana = true;
-    private boolean useHeroesParties = true;
-    private boolean useSkillAPIAllies = true;
     private boolean useBattleArenaTeams = true;
     private boolean skillsUsePermissions = false;
     private boolean useWildStacker = true;
@@ -547,7 +544,6 @@ public class MagicController implements MageController {
     private boolean logBlockEnabled = true;
     private boolean libsDisguiseEnabled = true;
     private boolean skillAPIEnabled = true;
-    private boolean useSkillAPIMana = false;
     private boolean placeholdersEnabled = true;
     private boolean lightAPIEnabled = true;
     private boolean skriptEnabled = true;
@@ -1839,6 +1835,12 @@ public class MagicController implements MageController {
             ConfigurationSection aureliumSkillsConfiguration = configuration.getConfigurationSection("aurelium_skills");
             aureliumSkillsManager.load(aureliumSkillsConfiguration);
         }
+        if (heroesManager != null) {
+            heroesManager.load(configuration);
+        }
+        if (skillAPIManager != null) {
+            skillAPIManager.load(configuration);
+        }
     }
 
     public void finalizePostStartupLoad(ConfigurationLoadTask loader, CommandSender sender) {
@@ -2106,10 +2108,10 @@ public class MagicController implements MageController {
         if (redProtectManager != null) blockBreakManagers.add(redProtectManager);
 
         // Team providers
-        if (heroesManager != null && useHeroesParties) {
+        if (heroesManager != null && heroesManager.useParties()) {
             teamProviders.add(heroesManager);
         }
-        if (skillAPIManager != null && useSkillAPIAllies) {
+        if (skillAPIManager != null && skillAPIManager.usesAllies()) {
             teamProviders.add(skillAPIManager);
         }
         if (useScoreboardTeams) {
@@ -5845,10 +5847,12 @@ public class MagicController implements MageController {
     }
 
     @Nullable
-    public ManaController getManaController() {
-        if (useHeroesMana && heroesManager != null) return heroesManager;
-        if (aureliumSkillsManager != null && aureliumSkillsManager.useMana()) return aureliumSkillsManager;
-        if (useSkillAPIMana && skillAPIManager != null) return skillAPIManager;
+    public ManaController getManaController(String mageClass) {
+        if (mageClass != null) {
+            if (heroesManager != null && heroesManager.usesMana(mageClass)) return heroesManager;
+            if (aureliumSkillsManager != null && aureliumSkillsManager.useMana(mageClass)) return aureliumSkillsManager;
+            if (skillAPIManager != null && skillAPIManager.usesMana(mageClass)) return skillAPIManager;
+        }
         return null;
     }
 
@@ -6673,14 +6677,6 @@ public class MagicController implements MageController {
         return defaultValue;
     }
 
-    public boolean useHeroesMana() {
-        return useHeroesMana;
-    }
-
-    public boolean useSkillAPIMana() {
-        return useSkillAPIMana;
-    }
-
     public @Nonnull
     MageIdentifier getMageIdentifier() {
         return mageIdentifier;
@@ -7429,12 +7425,6 @@ public class MagicController implements MageController {
             skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
                 getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
-                if (useSkillAPIAllies) {
-                    getLogger().info("SKillAPI allies will be respected in friendly fire checks");
-                }
-                if (useSkillAPIMana) {
-                    getLogger().info("SkillAPI mana will be used by spells and wands");
-                }
             } else {
                 skillAPIManager = null;
                 getLogger().warning("SkillAPI integration failed");
@@ -7955,7 +7945,6 @@ public class MagicController implements MageController {
         CompatibilityConstants.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", CompatibilityConstants.MAX_LORE_LENGTH);
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
-        useSkillAPIMana = properties.getBoolean("use_skillapi_mana", useSkillAPIMana);
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
         skriptEnabled = properties.getBoolean("skript_enabled", skriptEnabled);
@@ -7999,10 +7988,7 @@ public class MagicController implements MageController {
         }
 
         skillsUseHeroes = properties.getBoolean("skills_use_heroes", skillsUseHeroes);
-        useHeroesParties = properties.getBoolean("use_heroes_parties", useHeroesParties);
-        useSkillAPIAllies = properties.getBoolean("use_skillapi_allies", useSkillAPIAllies);
         useBattleArenaTeams = properties.getBoolean("use_battlearena_teams", useBattleArenaTeams);
-        useHeroesMana = properties.getBoolean("use_heroes_mana", useHeroesMana);
         heroesSkillPrefix = properties.getString("heroes_skill_prefix", heroesSkillPrefix);
         skillsUsePermissions = properties.getBoolean("skills_use_permissions", skillsUsePermissions);
 

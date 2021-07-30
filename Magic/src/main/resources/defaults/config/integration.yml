@@ -95,36 +95,28 @@ use_scoreboard_teams: false
 # This does not affect targeting with normal (damaging, etc) spells.
 default_friendly: true
 
-### Heroes/Skills configuration
-
-# Show Heroes skills in the /mskills menu, if Heroes is present
-skills_use_heroes: true
-
-# Use Heroes mana, if Heroes is present
-use_heroes_mana: true
-
-# Spells that don't bypass friendly fire will check Heroes' parties
-use_heroes_parties: true
-
-# Spells that don't bypass friendly fire will check SkillAPI allies
-use_skillapi_allies: true
-
-# Spells that don't bypass friendly fire will check BattleArena teams
-use_battlearena_teams: true
-
-# Use this to prefix skills added via the Magic skill pack
-# This can be used to avoid conflicts with public or other skills
-heroes_skill_prefix: ""
-
 # Show all Magic spells the player has permission to cast in the /mskills menu
 # This might make opening the skills menu lag if you have a lot of spells.
 skills_use_permissions: false
 
+# Battle Arena
+
+# Spells that don't bypass friendly fire will check BattleArena teams
+use_battlearena_teams: true
+
 ### SkillAPI configuration
 skillapi_enabled: true
 
+# Spells that don't bypass friendly fire will check SkillAPI allies
+use_skillapi_allies: true
+
 # Use Skill API mana, if Skill API is present
 use_skillapi_mana: false
+
+# The classes to map to SkillAPI mana
+skillapi_mana_classes:
+  - mage
+  - battle
 
 # Allow magic placeholders in PlacerHolder API
 placeholder_api_enabled: true
@@ -199,12 +191,36 @@ wildstacker:
   # This will cancel stack events for any custom mob spawns, which prevents magic mobs from stacking
   enabled: true
 
+# Heroes integration
+
+# Show Heroes skills in the /mskills menu, if Heroes is present
+skills_use_heroes: true
+
+# Use Heroes mana, if Heroes is present
+use_heroes_mana: true
+
+# The classes to map to Heroes mana
+heroes_mana_classes:
+  - mage
+  - battle
+
+# Spells that don't bypass friendly fire will check Heroes' parties
+use_heroes_parties: true
+
+# Use this to prefix skills added via the Magic skill pack
+# This can be used to avoid conflicts with public or other skills
+heroes_skill_prefix: ""
+
 # AureliumSkills integration
 aurelium_skills:
   enabled: true
   # Set this to true to switch Magic to use AS mana.
   # Since mana in AS is much lower you will need to make some adjustments to really make this work.
   use_mana: false
+  # The class to map AS mana to, caster covers wands and magic swords
+  mana_classes:
+    - mage
+    - battle
   use_attributes: true
   # This can be used to scale up mana, but you may be better off adjusting
   # wisdom.max-mana-per-wisdom and base-mana in AureliumSkills' config

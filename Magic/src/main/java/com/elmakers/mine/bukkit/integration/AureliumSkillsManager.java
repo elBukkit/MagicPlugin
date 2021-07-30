@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.integration;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -16,11 +17,11 @@ import com.archyx.aureliumskills.stats.Stats;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.ManaController;
-import com.sucy.skill.api.skills.Skill;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class AureliumSkillsManager implements ManaController, AttributeProvider {
     private final MageController controller;
-    private boolean useMana;
+    private final Set<String> usesMana = new HashSet<>();
     private boolean enabled;
     private boolean useAttributes;
     private double manaScale;
@@ -31,20 +32,27 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
 
     public void load(ConfigurationSection configuration) {
         enabled = configuration.getBoolean("enabled", true);
-        useMana = enabled && configuration.getBoolean("use_mana", true);
         useAttributes = enabled && configuration.getBoolean("use_attributes", true);
         manaScale = configuration.getDouble("mana_scale");
         if (manaScale <= 0) {
             controller.getLogger().info("Invalid mana scale in aurelium_sklls configuration: " + manaScale);
             manaScale = 1;
         }
+
+        boolean useMana = enabled && configuration.getBoolean("use_mana", true);
+        usesMana.clear();
+        if (useMana) {
+            usesMana.addAll(ConfigurationUtils.getStringList(configuration, "mana_classes"));
+        }
+        useMana = !usesMana.isEmpty();
+
         String statusString;
         if (!useMana && !useAttributes) {
             statusString = " but integration is disabled in configs";
         } else {
             statusString = ", will integrate for ";
             if (useMana) {
-                statusString += "mana";
+                statusString += "mana for classes (" + StringUtils.join(usesMana, ",") + ")";
                 if (useAttributes) {
                     statusString += " and skill/stat attributes";
                 }
@@ -55,8 +63,8 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
         controller.getLogger().info("AureliumSkills found " + statusString);
     }
 
-    public boolean useMana() {
-        return useMana;
+    public boolean useMana(String mageClass) {
+        return usesMana.contains(mageClass);
     }
 
     public boolean useAttributes() {

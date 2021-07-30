@@ -6,6 +6,7 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -20,6 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.magic.ManaController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerClass;
 import com.sucy.skill.api.player.PlayerData;
@@ -29,6 +31,8 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
     private final Plugin skillAPIPlugin;
     private final MageController controller;
     private Set<String> attributes = new HashSet<>();
+    private final Set<String> usesMana = new HashSet<>();
+    private boolean usesAllies = true;
 
     private AttributeManager attributeManager;
 
@@ -52,6 +56,30 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
         }
 
         return true;
+    }
+
+    public void load(ConfigurationSection configuration) {
+        boolean useMana = configuration.getBoolean("use_skillapi_mana", true);
+        usesMana.clear();
+        if (useMana) {
+            usesMana.addAll(ConfigurationUtils.getStringList(configuration, "heroes_mana_classes"));
+        }
+
+        usesAllies = configuration.getBoolean("use_skillapi_allies", true);
+        if (usesAllies) {
+            controller.getLogger().info("SKillAPI allies will be respected in friendly fire checks");
+        }
+        if (!usesMana.isEmpty()) {
+            controller.getLogger().info("SkillAPI mana will be used for classes: " + StringUtils.join(usesMana, ",") + ")");
+        }
+    }
+
+    public boolean usesAllies() {
+        return usesAllies;
+    }
+
+    public boolean usesMana(String mageClass) {
+        return usesMana.contains(mageClass);
     }
 
     @Override

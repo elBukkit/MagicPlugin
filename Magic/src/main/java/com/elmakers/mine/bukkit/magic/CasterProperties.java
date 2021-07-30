@@ -68,7 +68,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public int getManaRegeneration() {
-        ManaController manaController = controller.getManaController();
+        ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
             return manaController.getManaRegen(getPlayer());
         }
@@ -77,7 +77,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public int getManaMax() {
-        ManaController manaController = controller.getManaController();
+        ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
             return manaController.getMaxMana(getPlayer());
         }
@@ -89,7 +89,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (isCostFree()) {
             setProperty("mana", null);
         } else {
-            ManaController manaController = controller.getManaController();
+            ManaController manaController = getManaController();
             if (manaController != null && isPlayer()) {
                 manaController.setMana(getPlayer(), mana);
                 return;
@@ -110,7 +110,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public float getMana() {
-        ManaController manaController = controller.getManaController();
+        ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
             return manaController.getMana(getPlayer());
         }
@@ -119,7 +119,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public void removeMana(float amount) {
-        ManaController manaController = controller.getManaController();
+        ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
             manaController.removeMana(getPlayer(), amount);
             return;
@@ -152,7 +152,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public int getEffectiveManaMax() {
-        ManaController manaController = controller.getManaController();
+        ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
             return manaController.getMaxMana(getPlayer());
         }
@@ -161,7 +161,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public int getEffectiveManaRegeneration() {
-        ManaController manaController = controller.getManaController();
+        ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
             return manaController.getManaRegen(getPlayer());
         }
@@ -1126,5 +1126,17 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     public int getMaxSpells() {
         return getInt("max_spells");
+    }
+
+    private ManaController getManaController() {
+        String manaClass = null;
+        BaseMagicProperties storage = getStorage("mana_max");
+        if (storage == null) {
+            storage = this;
+        }
+        if (storage instanceof MageClass)  {
+            manaClass = ((MageClass)storage).getKey();
+        }
+        return controller.getManaController(manaClass);
     }
 }
