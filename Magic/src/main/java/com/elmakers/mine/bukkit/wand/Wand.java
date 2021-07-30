@@ -1977,7 +1977,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         // This overrides the value loaded in CasterProperties
-        if (!regenWhileInactive) {
+        if (!usesMana()) {
+            removeProperty("mana_timestamp");
+        } else if (!regenWhileInactive) {
             setProperty("mana_timestamp", System.currentTimeMillis());
         }
 
@@ -5253,7 +5255,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         // Check for mana reset
-        if (resetManaOnActivate != null) {
+        if (resetManaOnActivate != null && usesMana()) {
             float newMana = (float)(double)resetManaOnActivate;
             if (newMana < 1) {
                 newMana *= (float)getManaMax();
