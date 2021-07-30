@@ -1834,6 +1834,7 @@ public class MagicController implements MageController {
         if (aureliumSkillsManager != null) {
             ConfigurationSection aureliumSkillsConfiguration = configuration.getConfigurationSection("aurelium_skills");
             aureliumSkillsManager.load(aureliumSkillsConfiguration);
+            costReduction += aureliumSkillsManager.getManaCostReduction();
         }
         if (heroesManager != null) {
             heroesManager.load(configuration);

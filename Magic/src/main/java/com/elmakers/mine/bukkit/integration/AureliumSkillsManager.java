@@ -25,6 +25,7 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
     private boolean enabled;
     private boolean useAttributes;
     private double manaScale;
+    private double manaCostReduction;
 
     public AureliumSkillsManager(MageController controller) {
         this.controller = controller;
@@ -34,6 +35,7 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
         enabled = configuration.getBoolean("enabled", true);
         useAttributes = enabled && configuration.getBoolean("use_attributes", true);
         manaScale = configuration.getDouble("mana_scale");
+        manaCostReduction = configuration.getDouble("mana_cost_reduction");
         if (manaScale <= 0) {
             controller.getLogger().info("Invalid mana scale in aurelium_sklls configuration: " + manaScale);
             manaScale = 1;
@@ -43,6 +45,8 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
         usesMana.clear();
         if (useMana) {
             usesMana.addAll(ConfigurationUtils.getStringList(configuration, "mana_classes"));
+        } else {
+            manaCostReduction = 0;
         }
         useMana = !usesMana.isEmpty();
 
@@ -61,6 +65,10 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
             }
         }
         controller.getLogger().info("AureliumSkills found " + statusString);
+    }
+
+    public double getManaCostReduction() {
+        return manaCostReduction;
     }
 
     public boolean useMana(String mageClass) {

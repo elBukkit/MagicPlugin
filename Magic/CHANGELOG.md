@@ -11,6 +11,7 @@
  - Add `target_highest` option to `Cover` actions
  - Add new attributes: `temperature`, `humidity`, `target_temperature`, `target_humidity`
  - AureliumSkills, SkillAPI and Heroes now only provide mana to the "caster" class, this is configurable
+ - AureliumSkills mana use turned back on by default, with a 75% mana cost reduction applied to all spells (configurable)
 
 ## Improvements
 
