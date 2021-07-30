@@ -13,7 +13,6 @@ ores:
 - quartz_ore
 - nether_quartz_ore
 - nether_gold_ore
+- copper_ore
 - ancient_debris
-- raw_copper
-- raw_gold
-- raw_iron
+

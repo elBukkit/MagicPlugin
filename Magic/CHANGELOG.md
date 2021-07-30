@@ -28,6 +28,7 @@
  - Remove inventory title limit in 1.12 and up (was already removed in 1.17)
  - Fix Stream not dealing repeated damage over time
  - Fix AureliumSkills (and Heroes?) mana integration breaking wand crafting (by adding mana lore to all wand items)
+ - Fix the Mine spell not working on copper ore
 
 ## Changes
 
