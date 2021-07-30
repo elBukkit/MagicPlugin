@@ -168,6 +168,7 @@ mana = base + wisdom * max
 
 ## Suggestions
 
+ - disable_health_regeneration: true/false
  - Spell option to carry over CastContext
  - Allow using variables in equation transforms (velocity_transform)
  - BetonQuest, expand integration - NPC quest dialog, class and cast count support
