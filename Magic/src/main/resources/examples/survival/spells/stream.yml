@@ -62,6 +62,7 @@ stream:
       undo: 50
       undo_to: 3
       tick_size: 5
+      ignore_hit_entities: false
     costs:
         mana: 30
 
