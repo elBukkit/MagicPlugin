@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.spell.builtin;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;

@@ -188,7 +188,7 @@ public class Arena {
         win = ConfigurationUtils.toLocation(configuration.getString("win"), center);
         lobby = ConfigurationUtils.toLocation(configuration.getString("lobby"), center);
         exit = ConfigurationUtils.toLocation(configuration.getString("exit"), center);
-        String signType = configuration.getString("leaderboard_sign_type", "birch_wall_sign");
+        String signType = configuration.getString("leaderboard_sign_type", "oak_wall_sign");
         try {
             signMaterial = Material.valueOf(signType.toUpperCase());
         } catch (Exception ex) {
@@ -1468,7 +1468,6 @@ public class Arena {
                 Block neighborBlock = leaderboardBlock.getRelative(rightDirection);
                 if (canReplace(neighborBlock)) {
                     neighborBlock.setType(signMaterial);
-
 
                     BlockState blockState = neighborBlock.getState();
                     Object data = blockState.getData();
