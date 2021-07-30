@@ -72,28 +72,28 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
     }
 
     @Override
-    public int getMaxMana(Player player) {
+    public double getMaxMana(Player player) {
         return (int)(manaScale * AureliumAPI.getMaxMana(player));
     }
 
     @Override
-    public int getManaRegen(Player player) {
+    public double getManaRegen(Player player) {
         double regen = OptionL.getDouble(Option.REGENERATION_BASE_MANA_REGEN) + AureliumAPI.getStatLevel(player, Stats.REGENERATION) * OptionL.getDouble(Option.REGENERATION_MANA_MODIFIER);
-        return (int)(manaScale * regen);
+        return (manaScale * regen);
     }
 
     @Override
-    public float getMana(Player player) {
+    public double getMana(Player player) {
         return (float)(manaScale * AureliumAPI.getMana(player));
     }
 
     @Override
-    public void removeMana(Player player, float amount) {
+    public void removeMana(Player player, double amount) {
         AureliumAPI.setMana(player, AureliumAPI.getMana(player) - (amount / manaScale));
     }
 
     @Override
-    public void setMana(Player player, float amount) {
+    public void setMana(Player player, double amount) {
         AureliumAPI.setMana(player, amount / manaScale);
     }
 

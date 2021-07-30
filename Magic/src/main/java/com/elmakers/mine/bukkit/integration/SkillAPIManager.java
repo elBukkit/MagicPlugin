@@ -96,13 +96,13 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
     }
 
     @Override
-    public int getMaxMana(Player player) {
+    public double getMaxMana(Player player) {
         PlayerData playerData = SkillAPI.getPlayerData(player);
-        return (int)playerData.getMaxMana();
+        return playerData.getMaxMana();
     }
 
     @Override
-    public int getManaRegen(Player player) {
+    public double getManaRegen(Player player) {
         PlayerData playerData = SkillAPI.getPlayerData(player);
         Collection<PlayerClass> classes = playerData.getClasses();
         double amount = 0;
@@ -114,23 +114,23 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
             }
         }
 
-        return (int)amount;
+        return amount;
     }
 
     @Override
-    public float getMana(Player player) {
+    public double getMana(Player player) {
         PlayerData playerData = SkillAPI.getPlayerData(player);
-        return (float)playerData.getMana();
+        return playerData.getMana();
     }
 
     @Override
-    public void removeMana(Player player, float amount) {
+    public void removeMana(Player player, double amount) {
         PlayerData playerData = SkillAPI.getPlayerData(player);
         playerData.useMana(amount);
     }
 
     @Override
-    public void setMana(Player player, float amount) {
+    public void setMana(Player player, double amount) {
         PlayerData playerData = SkillAPI.getPlayerData(player);
         playerData.setMana(amount);
     }

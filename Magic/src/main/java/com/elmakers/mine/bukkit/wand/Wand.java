@@ -2786,10 +2786,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         break;
                     case "$mana_max":
                         if (usesMana()) {
-                            int manaMax = getManaMax();
+                            float manaMax = getManaMax();
                             if (effectiveManaMax != manaMax) {
                                 String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
-                                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaMax)), lore);
+                                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString((int)Math.ceil(effectiveManaMax))), lore);
                             } else {
                                 ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
                             }
@@ -2797,13 +2797,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         break;
                     case "$mana_regeneration":
                         if (usesMana()) {
-                            int manaRegeneration = getManaRegeneration();
+                            double manaRegeneration = getManaRegeneration();
                             if (manaRegeneration > 0) {
                                 if (effectiveManaRegeneration != manaRegeneration) {
-                                    String fullMessage = getLevelString("mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
-                                    ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)), lore);
+                                    String fullMessage = getLevelString("mana_regeneration_boosted", (int)Math.ceil(manaRegeneration), controller.getMaxManaRegeneration());
+                                    ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString((int)Math.ceil(effectiveManaRegeneration))), lore);
                                 } else {
-                                    ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
+                                    ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", (int)Math.ceil(manaRegeneration), controller.getMaxManaRegeneration()), lore);
                                 }
                             }
                         }
@@ -3113,7 +3113,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             int manaMax = getManaMax();
             if (effectiveManaMax != manaMax) {
                 String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
-                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaMax)), lore);
+                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString((int)Math.ceil(effectiveManaMax))), lore);
             } else {
                 ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
             }
@@ -3121,7 +3121,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (manaRegeneration > 0 && effectiveManaRegeneration > 0) {
                 if (effectiveManaRegeneration != manaRegeneration) {
                     String fullMessage = getLevelString("mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
-                    ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString(effectiveManaRegeneration)), lore);
+                    ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString((int)Math.ceil(effectiveManaRegeneration))), lore);
                 } else {
                     ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
                 }
@@ -4868,11 +4868,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (heroes != null && mage != null && mage.isPlayer())
             {
                 Player player = mage.getPlayer();
-                effectiveManaMax = heroes.getMaxMana(player);
-                effectiveManaRegeneration = heroes.getManaRegen(player);
+                effectiveManaMax = (float)heroes.getMaxMana(player);
+                effectiveManaRegeneration = (float)heroes.getManaRegen(player);
                 setManaMax(effectiveManaMax);
                 setManaRegeneration(effectiveManaRegeneration);
-                setMana(heroes.getMana(player));
+                setMana((float)heroes.getMana(player));
                 return true;
             }
 

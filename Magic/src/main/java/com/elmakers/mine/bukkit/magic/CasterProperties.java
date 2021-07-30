@@ -48,8 +48,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public static final float DEFAULT_SPELL_COLOR_MIX_WEIGHT = 0.0001f;
     private float effectColorSpellMixWeight = DEFAULT_SPELL_COLOR_MIX_WEIGHT;
 
-    protected int effectiveManaMax = 0;
-    protected int effectiveManaRegeneration = 0;
+    protected float effectiveManaMax = 0;
+    protected float effectiveManaRegeneration = 0;
     private Map<PotionEffectType, Integer> potionEffects = new HashMap<>();
     private ColorHD effectColor = null;
 
@@ -70,7 +70,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public int getManaRegeneration() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return manaController.getManaRegen(getPlayer());
+            return (int)Math.ceil(manaController.getManaRegen(getPlayer()));
         }
         return getInt("mana_regeneration", getInt("xp_regeneration"));
     }
@@ -79,7 +79,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public int getManaMax() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return manaController.getMaxMana(getPlayer());
+            return (int)Math.ceil(manaController.getMaxMana(getPlayer()));
         }
         return getInt("mana_max", getInt("xp_max"));
     }
@@ -99,12 +99,24 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
+    @Deprecated
     public void setManaMax(int manaMax) {
+        setManaMax((float)manaMax);
+    }
+
+    @Override
+    public void setManaMax(float manaMax) {
         setProperty("mana_max", Math.max(0, manaMax));
     }
 
     @Override
+    @Deprecated
     public void setManaRegeneration(int manaRegeneration) {
+        setManaRegeneration((float)manaRegeneration);
+    }
+
+    @Override
+    public void setManaRegeneration(float manaRegeneration) {
         setProperty("mana_regeneration", Math.max(0, manaRegeneration));
     }
 
@@ -112,7 +124,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public float getMana() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return manaController.getMana(getPlayer());
+            return (float)manaController.getMana(getPlayer());
         }
         return getFloat("mana", getFloat("xp"));
     }
@@ -154,18 +166,18 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public int getEffectiveManaMax() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return manaController.getMaxMana(getPlayer());
+            return (int)Math.ceil(manaController.getMaxMana(getPlayer()));
         }
-        return effectiveManaMax;
+        return (int)Math.ceil(effectiveManaMax);
     }
 
     @Override
     public int getEffectiveManaRegeneration() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return manaController.getManaRegen(getPlayer());
+            return (int)Math.ceil(manaController.getManaRegen(getPlayer()));
         }
-        return effectiveManaRegeneration;
+        return (int)Math.ceil(effectiveManaRegeneration);
     }
 
     protected long getLastManaRegeneration() {
@@ -180,13 +192,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             return false;
         }
 
-        int currentMana = effectiveManaMax;
-        int currentManaRegen = effectiveManaRegeneration;
+        float currentMana = effectiveManaMax;
+        float currentManaRegen = effectiveManaRegeneration;
         effectiveManaMax = getManaMax();
         effectiveManaRegeneration = getManaRegeneration();
         if (mage != null && getBoolean("boostable", true)) {
-            effectiveManaMax = (int)((float)effectiveManaMax * mage.getManaMaxMultiplier());
-            effectiveManaRegeneration = (int)((float)effectiveManaRegeneration * mage.getManaRegenerationMultiplier());
+            effectiveManaMax = (int)(effectiveManaMax * mage.getManaMaxMultiplier());
+            effectiveManaRegeneration = (int)(effectiveManaRegeneration * mage.getManaRegenerationMultiplier());
         }
 
         return (currentMana != effectiveManaMax || effectiveManaRegeneration != currentManaRegen);

@@ -338,35 +338,35 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
     }
 
     @Override
-    public int getMaxMana(Player player) {
+    public double getMaxMana(Player player) {
         Hero hero = getHero(player);
         if (hero == null) return 0;
         return hero.getMaxMana();
     }
 
     @Override
-    public int getManaRegen(Player player) {
+    public double getManaRegen(Player player) {
         Hero hero = getHero(player);
         if (hero == null) return 0;
         return hero.getManaRegen();
     }
 
     @Override
-    public float getMana(Player player) {
+    public double getMana(Player player) {
         Hero hero = getHero(player);
         if (hero == null) return 0;
         return hero.getMana();
     }
 
     @Override
-    public void removeMana(Player player, float amount) {
+    public void removeMana(Player player, double amount) {
         Hero hero = getHero(player);
         if (hero == null) return;
         hero.setMana(Math.max(0, hero.getMana() - (int)amount));
     }
 
     @Override
-    public void setMana(Player player, float amount) {
+    public void setMana(Player player, double amount) {
         Hero hero = getHero(player);
         if (hero == null) return;
         hero.setMana((int)amount);
