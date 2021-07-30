@@ -452,7 +452,8 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         if (interactSpell != null && !interactSpell.isEmpty()) {
             SpellTemplate template = controller.getSpellTemplate(interactSpell);
             String spellName = template == null ? (ChatColor.RED + interactSpell) : (ChatColor.YELLOW + template.getName());
-            sender.sendMessage(ChatColor.AQUA + "Casts" + ChatColor.GRAY + ": " + spellName);
+            sender.sendMessage(ChatColor.AQUA + "Casts" + ChatColor.DARK_AQUA + ": " + spellName
+                + ChatColor.DARK_GRAY + " (" + ChatColor.GRAY + interactSpell + ChatColor.DARK_GRAY + ")");
             parameters.set("interact_spell", null);
         }
         Set<String> keys = parameters.getKeys(false);
