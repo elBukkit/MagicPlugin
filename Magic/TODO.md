@@ -18,6 +18,15 @@
  - Some way for automata to use air and light? Allow all_air?
  - Don't show spells in the spellshop if you don't have the mana to cast them
 
+# to test
+
+for Phantom:
+
+relative_target_offset:
+x: 0
+y: 0
+z: variable
+
 # New API
 
  - Possible to change sky color?

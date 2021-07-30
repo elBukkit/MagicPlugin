@@ -11,10 +11,14 @@ marigold:
   model:
     id: bearded_dragon
     invisible: true
-  interval: 5000
+  interval: 500
   interval_requires_target: false
   triggers:
+    colorchange:
+      type: interval
+      cast: lizardskin
     interval:
+      interval: 5000
       cast:
         "model_state model_state smell": 300
         "model_state model_state dance": 200
