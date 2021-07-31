@@ -40,6 +40,8 @@ import java.util.zip.ZipInputStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.elmakers.mine.bukkit.integration.MythicMobManager;
+import io.lumine.xikage.mythicmobs.MythicMobs;
 import org.apache.commons.lang.StringUtils;
 import org.bstats.Metrics;
 import org.bukkit.Bukkit;
@@ -574,6 +576,7 @@ public class MagicController implements MageController {
     private LogBlockManager logBlockManager = null;
     private EssentialsController essentialsController = null;
     private DeadSoulsManager deadSoulsController = null;
+    private MythicMobManager mythicMobManager = null;
     private boolean loading = false;
     private boolean showExampleInstructions = false;
     private int disableSpawnReplacement = 0;
@@ -7446,6 +7449,13 @@ public class MagicController implements MageController {
             skillAPIManager = null;
             getLogger().info("SkillAPI integration disabled");
         }
+
+        MythicMobs mythicMobsPlugin = MythicMobs.inst();
+        if (mythicMobsPlugin != null) {
+            mythicMobManager = new MythicMobManager(this, mythicMobsPlugin);
+            getLogger().info("MythicMobs found, mobs can be spawn in arenas, spells, actions, etc.");
+        }
+
     }
 
     private void finalizeIntegrationPreLoad() {
