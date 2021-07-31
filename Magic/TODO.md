@@ -2,6 +2,8 @@
 
 # New
 
+ - Add requirements to path progression
+
  - Look at to_otherside warp, absolutely insane mob spawning (turn mob spawning back on after)
 
  - SPIGOT: Change sky color possible? .. something else I forgot..
