@@ -1,9 +1,5 @@
 # TODO
 
-# Before next release
-
-- Right-clicking an NPC with no interact causes a spell cast (again?)
-
 # New
 
  - Look at to_otherside warp, absolutely insane mob spawning (turn mob spawning back on after)

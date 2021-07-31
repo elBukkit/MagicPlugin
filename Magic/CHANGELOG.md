@@ -35,6 +35,7 @@
  - Fix Stream not dealing repeated damage over time
  - Fix AureliumSkills (and Heroes?) mana integration breaking wand crafting (by adding mana lore to all wand items)
  - Fix the Mine spell not working on copper ore
+ - Fix right-clicking a mob with a wand causing a spell cast
 
 ## Changes
 

@@ -472,8 +472,14 @@ public class PlayerController implements Listener {
             mobMage.trigger("interact");
         }
 
+        // This will be processed as a left-click via the animate event if we don't set a cooldown
+        Player player = event.getPlayer();
+        Mage playerMage = controller.getMage(player);
+        playerMage.checkLastClick(0);
+
         EntityData mob = controller.getMob(entity);
         if (mob == null) return;
+
         String interactSpell = mob.getInteractSpell();
         interactSpell = interactSpell != null && interactSpell.isEmpty() ? null : interactSpell;
         List<String> interactCommands = mob.getInteractCommands();
@@ -481,11 +487,7 @@ public class PlayerController implements Listener {
 
         if (interactSpell == null && interactCommands == null) return;
 
-        // This will be processed as a left-click via the animate event if we don't cancel it and set a cooldown
         event.setCancelled(true);
-        Player player = event.getPlayer();
-        Mage playerMage = controller.getMage(player);
-        playerMage.checkLastClick(0);
 
         if (playerMage.getDebugLevel() >= DEBUG_LEVEL) {
             playerMage.sendDebugMessage("ENTITY AT INTERACT with: " + event.getHand() + " at " + entity + " : " + TextUtils.printVector(event.getClickedPosition()), DEBUG_LEVEL);
