@@ -15,6 +15,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -38,7 +39,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -166,6 +166,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected String mountType;
 
     protected ConfigurationSection configuration;
+    protected ActiveMob mythicMob;
 
     public EntityData(MageController controller, Entity entity) {
         this.controller = controller;
@@ -244,6 +245,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public EntityData(@Nonnull MageController controller, ConfigurationSection parameters) {
         this.controller = controller;
         load(parameters);
+    }
+
+    public EntityData(@Nonnull MageController controller, ActiveMob mythicMob) {
+        this(controller, mythicMob.getEntity().getBukkitEntity());
+        this.mythicMob = mythicMob;
     }
 
     @Nullable
@@ -1439,5 +1445,14 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public boolean isStatic() {
         return isStatic;
+    }
+
+    public boolean isMythicMob() {
+        return mythicMob != null;
+    }
+
+    @Nullable
+    public ActiveMob getMythicMob() {
+        return mythicMob;
     }
 }
