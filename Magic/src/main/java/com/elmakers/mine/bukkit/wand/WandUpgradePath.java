@@ -590,7 +590,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
         int manaRegeneration = wand.getManaRegeneration();
         if (this.manaRegeneration > 0 && maxManaRegeneration == 0 && this.manaRegeneration  > manaRegeneration) {
-            wand.setManaRegeneration(this.manaRegeneration);
+            wand.setManaRegeneration((float)this.manaRegeneration);
         }
         int manaMax = wand.getManaMax();
         if (this.maxMana > 0 && maxMaxMana == 0 && this.maxMaxMana > manaMax) {

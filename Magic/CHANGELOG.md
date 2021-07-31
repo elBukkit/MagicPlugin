@@ -1,13 +1,13 @@
 # CHANGELOG
 
-# 9.5
+# 9.4.2
 
 ## AureliumSkills
 
  - Mana use turned back on by default, with a 75% mana cost reduction applied to all spells (configurable)
+ - Earning SP from a Magic spell cast now also earns SORCERY xp (at a rate of 50%), configurable
  - AureliumSkills, SkillAPI and Heroes now only provide mana to the "caster" class, this is configurable
  - AureliumSkills XP registered as currencies, can be given by `/mgive`, including physical items, and used in "earns" for spells
- - Earning SP from a Magic spell cast now also earns SORCERY xp (at a rate of 50%), configurable
 
 ## Additions
 
