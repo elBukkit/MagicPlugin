@@ -1,5 +1,6 @@
 mining:
 - ores
+- nether_ores
 - coal_block
 - gold_block
 - lapis_block

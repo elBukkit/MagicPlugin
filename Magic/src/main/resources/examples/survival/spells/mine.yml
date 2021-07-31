@@ -65,14 +65,14 @@ mine:
         mana: 10
 
 mine|2:
-    upgrade_required_path: master
-    upgrade_required_casts: 50
     parameters:
         limit: 16
         depth: 3
 
 mine|3:
+    upgrade_required_path: master
     parameters:
+        destructible: ores,nether_ores
         limit: 32
         depth: 5
 
@@ -80,7 +80,6 @@ mine|4:
     parameters:
         limit: 48
         depth: 8
-        destructible: mining
 
 mine|5:
   parameters:

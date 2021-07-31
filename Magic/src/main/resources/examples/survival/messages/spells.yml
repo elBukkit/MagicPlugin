@@ -515,8 +515,10 @@ spells:
         description: Mines and drops the targeted ores
         cast_finish: Mined some ore
         upgrade_description: "Mines more blocks"
+    mine|3:
+        upgrade_description: "Now mines nether ores"
     mine|4:
-        upgrade_description: "Now mines full blocks"
+        upgrade_description: "Mines more blocks"
     mine|5:
         upgrade_description: "Drops bonus items"
     mine|6:

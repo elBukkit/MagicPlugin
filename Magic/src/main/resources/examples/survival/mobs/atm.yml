@@ -10,6 +10,7 @@ atm:
   potion_effects: invisibility
   interact_spell: atm
   helmet: melon_seeds{18003}
+  dialog_face_player: false
   mount:
     type: zombie
     show_name: false

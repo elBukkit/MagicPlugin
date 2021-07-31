@@ -2,6 +2,8 @@
 
 # New
 
+ - Arena saber needs an update (?)
+
  - Add requirements to path progression
 
  - Look at to_otherside warp, absolutely insane mob spawning (turn mob spawning back on after)
@@ -19,6 +21,8 @@
  - Cancelled spells (`/magic cancel`) should still auto-undo
  - Save spell can make upside-down schematics
  - Some way for automata to use air and light? Allow all_air?
+
+ - Option to interpret Infinity enchantment as cost-free
 
 # to test
 
