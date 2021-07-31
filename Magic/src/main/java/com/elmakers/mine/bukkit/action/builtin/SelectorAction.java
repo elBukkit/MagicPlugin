@@ -1874,7 +1874,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             return null;
         }
 
-        ItemStack item = context.getController().createItem(itemKey);
+        ItemStack item = context.getController().createItem(itemKey, context.getMage());
         if (item == null) {
            context.getLogger().warning("Failed to create item in selector: " + itemKey);
         }

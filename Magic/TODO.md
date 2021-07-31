@@ -2,9 +2,8 @@
 
 # Before next release
 
-- Arena leaderboard signs not facing the right direction
 - Right-clicking an NPC with no interact causes a spell cast (again?)
-- Don't show spells in the spellshop if you don't have the mana to cast them
+- AS xp integration AureliumAPI.addXp(player, Skills.SORCERY, amount)
 
 # New
 

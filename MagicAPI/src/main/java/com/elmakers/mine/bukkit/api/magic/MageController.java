@@ -132,6 +132,8 @@ public interface MageController {
     @Nullable
     ItemStack createSpellItem(String spellKey, boolean brief);
     @Nullable
+    ItemStack createSpellItem(String spellKey, Mage mage, boolean brief);
+    @Nullable
     ItemStack createBrushItem(String brushKey);
     @Nullable
     ItemStack createBrushItem(String materialKey, Wand wand, boolean isItem);

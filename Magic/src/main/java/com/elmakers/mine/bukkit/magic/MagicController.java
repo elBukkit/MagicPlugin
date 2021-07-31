@@ -5470,7 +5470,7 @@ public class MagicController implements MageController {
                     case "spell": {
                         // Fix delimiter replaced above, to handle spell levels
                         String spellKey = itemData.replace(":", "|");
-                        itemStack = createSpellItem(spellKey, brief);
+                        itemStack = createSpellItem(spellKey, mage, brief);
                     }
                     break;
                     case "wand": {
@@ -5581,7 +5581,7 @@ public class MagicController implements MageController {
                 // Spells may be using the | delimiter for levels
                 // I am regretting overloading this delimiter!
                 String spellKey = magicItemKey.replace(":", "|");
-                itemStack = createSpellItem(spellKey, brief);
+                itemStack = createSpellItem(spellKey, mage, brief);
                 if (itemStack != null) {
                     itemStack.setAmount(amount);
                     if (callback != null) {
@@ -5690,6 +5690,14 @@ public class MagicController implements MageController {
     @Override
     public ItemStack createSpellItem(String spellKey, boolean brief) {
         return Wand.createSpellItem(spellKey, this, null, !brief);
+    }
+
+    @Nullable
+    @Override
+    public ItemStack createSpellItem(String spellKey, Mage mage, boolean brief) {
+        com.elmakers.mine.bukkit.api.wand.Wand apiWand = mage == null ? null : mage.getActiveWand();
+        Wand wand = apiWand instanceof Wand ? (Wand)apiWand : null;
+        return Wand.createSpellItem(spellKey, this, mage, wand, !brief);
     }
 
     @Nullable
