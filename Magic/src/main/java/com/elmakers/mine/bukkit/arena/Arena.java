@@ -95,7 +95,7 @@ public class Arena {
 
     private int leaderboardSize = 5;
     private int leaderboardRecordSize = 30;
-    private int leaderboardGamesRequired = 5;
+    private int leaderboardGamesRequired = 1;
 
     private int maxTeleportDistance = 64;
     private int announcerRange = 64;
@@ -162,7 +162,7 @@ public class Arena {
 
         leaderboardSize = configuration.getInt("leaderboard_size", 5);
         leaderboardRecordSize = configuration.getInt("leaderboard_record_size", 30);
-        leaderboardGamesRequired = configuration.getInt("leaderboard_games_required", 5);
+        leaderboardGamesRequired = configuration.getInt("leaderboard_games_required", 1);
 
         maxTeleportDistance = configuration.getInt("max_teleport_distance", 64);
         announcerRange = configuration.getInt("announcer_range", 64);
@@ -336,7 +336,7 @@ public class Arena {
 
         if (leaderboardSize != 5) configuration.set("leaderboard_size", leaderboardSize);
         if (leaderboardRecordSize != 30) configuration.set("leaderboard_record_size", leaderboardRecordSize);
-        if (leaderboardGamesRequired != 5) configuration.set("leaderboard_games_required", leaderboardGamesRequired);
+        if (leaderboardGamesRequired != 1) configuration.set("leaderboard_games_required", leaderboardGamesRequired);
         configuration.set("leaderboard_sign_type", signMaterial.name().toLowerCase());
 
         if (portalDamage != 0) configuration.set("portal_damage", portalDamage);
