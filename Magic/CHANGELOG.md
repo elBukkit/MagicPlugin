@@ -2,6 +2,13 @@
 
 # 9.5
 
+## AureliumSkills
+
+ - Mana use turned back on by default, with a 75% mana cost reduction applied to all spells (configurable)
+ - AureliumSkills, SkillAPI and Heroes now only provide mana to the "caster" class, this is configurable
+ - AureliumSkills XP registered as currencies, can be given by `/mgive`, including physical items, and used in "earns" for spells
+
+
 ## Additions
 
  - Add `portal-spell` and `portal-warp` WorldGuard flags, for making custom portals
@@ -10,8 +17,6 @@
  - Add `disasters` external example from Phantom (creator of `extramobs`)
  - Add `target_highest` option to `Cover` actions
  - Add new attributes: `temperature`, `humidity`, `target_temperature`, `target_humidity`
- - AureliumSkills, SkillAPI and Heroes now only provide mana to the "caster" class, this is configurable
- - AureliumSkills mana use turned back on by default, with a 75% mana cost reduction applied to all spells (configurable)
 
 ## Improvements
 

@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.integration;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +28,7 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
     private boolean useAttributes;
     private double manaScale;
     private double manaCostReduction;
+    private boolean registerCurrencies;
 
     public AureliumSkillsManager(MageController controller) {
         this.controller = controller;
@@ -34,8 +37,9 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
     public void load(ConfigurationSection configuration) {
         enabled = configuration.getBoolean("enabled", true);
         useAttributes = enabled && configuration.getBoolean("use_attributes", true);
-        manaScale = configuration.getDouble("mana_scale");
-        manaCostReduction = configuration.getDouble("mana_cost_reduction");
+        manaScale = configuration.getDouble("mana_scale", 1.0);
+        manaCostReduction = configuration.getDouble("mana_cost_reduction", 0.0);
+        registerCurrencies = enabled && configuration.getBoolean("use_xp_currencies", true);
         if (manaScale <= 0) {
             controller.getLogger().info("Invalid mana scale in aurelium_sklls configuration: " + manaScale);
             manaScale = 1;
@@ -51,20 +55,38 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
         useMana = !usesMana.isEmpty();
 
         String statusString;
-        if (!useMana && !useAttributes) {
+        if (!useMana && !useAttributes && !registerCurrencies) {
             statusString = " but integration is disabled in configs";
         } else {
             statusString = ", will integrate for ";
+            List<String> integrations = new ArrayList<>();
             if (useMana) {
-                statusString += "mana for classes (" + StringUtils.join(usesMana, ",") + ")";
-                if (useAttributes) {
-                    statusString += " and skill/stat attributes";
-                }
-            } else {
-                statusString += "attributes";
+                integrations.add("mana for classes (" + StringUtils.join(usesMana, ",") + ")");
             }
+            if (useAttributes) {
+                integrations.add("skill/stat attributes");
+            }
+            if (registerCurrencies) {
+                integrations.add("xp currencies");
+            }
+            statusString += StringUtils.join(integrations, ",");
         }
         controller.getLogger().info("AureliumSkills found " + statusString);
+    }
+
+    public void register(ConfigurationSection currencyConfiguration) {
+        if (registerCurrencies) {
+            List<String> names = new ArrayList<>();
+            for (Skills skill : Skills.values()) {
+                ConfigurationSection configuration = currencyConfiguration.getConfigurationSection(skill.name());
+                if (configuration == null) {
+                    configuration = ConfigurationUtils.newConfigurationSection();
+                }
+                controller.register(new AureliumSkillCurrency(this, skill, configuration));
+                names.add(skill.name());
+            }
+            controller.getLogger().info("Registered AureliumSkills XP as currencies: " + StringUtils.join(names, ","));
+        }
     }
 
     public double getManaCostReduction() {
@@ -131,5 +153,9 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
         } catch (Exception ignore) {
         }
         return null;
+    }
+
+    public MageController getController() {
+        return controller;
     }
 }

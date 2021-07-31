@@ -222,6 +222,8 @@ aurelium_skills:
   # This will make spell costs more in line with how Aurelium mana progresses, though there may still
   # be some tweaking required
   mana_cost_reduction: 0.75
+  # Register AS XP as Magic currencies, so they can be used in casting costs and give commands
+  use_xp_currencies: true
 
   # The class to map AS mana to, caster covers wands and magic swords
   mana_classes:

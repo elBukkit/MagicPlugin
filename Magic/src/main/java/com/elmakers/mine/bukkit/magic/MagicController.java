@@ -3292,7 +3292,7 @@ public class MagicController implements MageController {
         }
     }
 
-    protected void addCurrency(Currency currency) {
+    public void addCurrency(Currency currency) {
         currencies.put(currency.getKey(), currency);
     }
 
@@ -3389,6 +3389,10 @@ public class MagicController implements MageController {
         // Custom currencies can override the defaults
         for (Currency currency : loadEvent.getCurrencies()) {
             addCurrency(currency);
+        }
+
+        if (aureliumSkillsManager != null) {
+            aureliumSkillsManager.register(currencyConfiguration);
         }
 
         // Configured currencies override everything else
