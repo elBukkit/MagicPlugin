@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.integration;
 
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.MagicLogger;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import org.bukkit.Location;
@@ -25,7 +26,15 @@ public class MythicMobManager {
     @Nullable
     public EntityData spawnMythicMob(String key, Location location) {
         ActiveMob mob = api.getMobManager().spawnMob(key, location);
-        return mob != null ? new EntityData(controller, mob) : null;
+        if (mob == null) {
+            MagicLogger logger = controller.getLogger();
+            logger.setContext("mythicmobs." + key);
+            logger.warning("Unable to spawn mythic mob with id of " + key);
+
+            return null;
+        }
+
+        return new EntityData(controller, mob);
     }
 
 }
