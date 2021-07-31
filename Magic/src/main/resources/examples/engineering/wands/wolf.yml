@@ -40,7 +40,7 @@ wolf:
 
     # Hotbar 2, engineering/architect
     - place
-    - paint
+    - absorb
     - pillar
     - bridge
     - fill
@@ -59,7 +59,7 @@ wolf:
     - commit
 
     # Hotbar 4, brushes
-    - absorb
+    - paint
     - toggleair
     - newpage
 
