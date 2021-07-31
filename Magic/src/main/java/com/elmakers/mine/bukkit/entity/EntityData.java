@@ -166,7 +166,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected String mountType;
 
     protected ConfigurationSection configuration;
-    protected ActiveMob mythicMob;
 
     public EntityData(MageController controller, Entity entity) {
         this.controller = controller;
@@ -247,9 +246,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         load(parameters);
     }
 
-    public EntityData(@Nonnull MageController controller, ActiveMob mythicMob) {
-        this(controller, mythicMob.getEntity().getBukkitEntity());
-        this.mythicMob = mythicMob;
+    public EntityData(@Nonnull MageController controller, String key, Entity entity) {
+        this(controller, entity);
+        this.key = key;
     }
 
     @Nullable
@@ -1445,14 +1444,5 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public boolean isStatic() {
         return isStatic;
-    }
-
-    public boolean isMythicMob() {
-        return mythicMob != null;
-    }
-
-    @Nullable
-    public ActiveMob getMythicMob() {
-        return mythicMob;
     }
 }

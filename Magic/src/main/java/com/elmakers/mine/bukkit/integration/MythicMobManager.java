@@ -5,21 +5,34 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.MagicLogger;
 import io.lumine.xikage.mythicmobs.MythicMobs;
 import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
+import io.lumine.xikage.mythicmobs.mobs.MythicMob;
 import org.bukkit.Location;
+import org.bukkit.plugin.Plugin;
 
 import javax.annotation.Nullable;
 
 public class MythicMobManager {
 
     private final MagicController controller;
-    private final MythicMobs api;
+    private final Plugin plugin;
 
-    public MythicMobManager(MagicController controller, MythicMobs api) {
+    private MythicMobs api = null;
+
+    public MythicMobManager(MagicController controller, Plugin plugin) {
         this.controller = controller;
-        this.api = api;
+        this.plugin = plugin;
     }
 
-    public boolean isValid() {
+    public boolean initialize() {
+        if (plugin == null || !(plugin instanceof MythicMobs)) {
+            return false;
+        }
+
+        api = MythicMobs.inst();
+        return true;
+    }
+
+    public boolean isEnabled() {
         return api != null;
     }
 
@@ -27,14 +40,11 @@ public class MythicMobManager {
     public EntityData spawnMythicMob(String key, Location location) {
         ActiveMob mob = api.getMobManager().spawnMob(key, location);
         if (mob == null) {
-            MagicLogger logger = controller.getLogger();
-            logger.setContext("mythicmobs." + key);
-            logger.warning("Unable to spawn mythic mob with id of " + key);
-
+            controller.getLogger().warning("Unable to spawn mythic mob with id of " + key);
             return null;
         }
 
-        return new EntityData(controller, mob);
+        return new EntityData(controller, key, mob.getEntity().getBukkitEntity());
     }
 
 }
