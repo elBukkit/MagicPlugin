@@ -233,7 +233,7 @@ public class Arena {
         }
 
         if (configuration.contains("leaderboard_sign_location") && configuration.contains("leaderboard_sign_facing")) {
-            leaderboardLocation = ConfigurationUtils.toLocation(configuration.getString("leaderboard_sign_location"));
+            leaderboardLocation = ConfigurationUtils.toLocation(configuration.getString("leaderboard_sign_location"), center);
             leaderboardFacing = ConfigurationUtils.toBlockFace(configuration.getString("leaderboard_sign_facing"));
         }
     }
@@ -377,7 +377,7 @@ public class Arena {
         }
 
         if (leaderboardLocation != null && leaderboardFacing != null) {
-            configuration.set("leaderboard_sign_location", ConfigurationUtils.fromLocation(leaderboardLocation));
+            configuration.set("leaderboard_sign_location", ConfigurationUtils.fromLocation(leaderboardLocation, center));
             configuration.set("leaderboard_sign_facing", ConfigurationUtils.fromBlockFace(leaderboardFacing));
         }
         return true;
@@ -1711,6 +1711,8 @@ public class Arena {
         leaderboardLocation = leaderboardBlock.getLocation();
         leaderboardFacing = signDirection;
         updateLeaderboard();
+        // TODO: Really need to separate template and instance properites
+        saveTemplate();
         return true;
     }
 
