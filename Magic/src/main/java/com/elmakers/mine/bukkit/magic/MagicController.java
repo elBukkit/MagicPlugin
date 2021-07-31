@@ -1603,6 +1603,7 @@ public class MagicController implements MageController {
                             valueMap.put("PreciousStones", controller.preciousStonesManager.isEnabled() ? 1 : 0);
                             valueMap.put("Lockette", controller.locketteManager.isEnabled() ? 1 : 0);
                             valueMap.put("NoCheatPlus", controller.ncpManager.isEnabled() ? 1 : 0);
+                            valueMap.put("MythicMobs", controller.mythicMobManager.isValid() ? 1 : 0);
                             return valueMap;
                         }
                     });
@@ -8414,5 +8415,10 @@ public class MagicController implements MageController {
     @Override
     public MaterialAndData createMaterialAndData(String materialKey) {
         return new MaterialAndData(materialKey);
+    }
+
+    @Nullable
+    public EntityData spawnMythicMob(String key, Location location) {
+        return mythicMobManager.spawnMythicMob(key, location);
     }
 }
