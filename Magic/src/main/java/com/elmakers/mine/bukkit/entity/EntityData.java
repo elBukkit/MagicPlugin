@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
