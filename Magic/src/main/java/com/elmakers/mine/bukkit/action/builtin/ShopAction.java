@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -26,6 +27,7 @@ import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 
 public class ShopAction extends SelectorAction {
     private boolean showNoPermission;
+    private boolean showUncastable;
     private boolean checkLimits;
 
     @Override
@@ -35,6 +37,7 @@ public class ShopAction extends SelectorAction {
         boolean showRequired = parameters.getBoolean("show_required_spells", false);
         boolean showFree = parameters.getBoolean("show_free", false);
         boolean addSellShop = parameters.getBoolean("add_sell_shop", false);
+        showUncastable = parameters.getBoolean("show_uncastable", true);
         showNoPermission = parameters.getBoolean("show_no_permission", false);
         checkLimits = parameters.getBoolean("check_max_spells", showPath);
 
@@ -156,6 +159,24 @@ public class ShopAction extends SelectorAction {
             if (!showNoPermission && !spell.hasCastPermission(mage.getCommandSender())) {
                 mage.sendDebugMessage(ChatColor.YELLOW + " Skipping " + spellKey + ", no permission", 3);
                 continue;
+            }
+            if (!showUncastable) {
+                int manaMax = caster.getManaMax();
+                Collection<CastingCost> costs = spell.getCosts();
+                if (costs != null) {
+                    boolean skip = false;
+                    for (CastingCost cost : costs) {
+                        int mana = cost.getMana(mage);
+                        if (mana > manaMax) {
+                            mage.sendDebugMessage(ChatColor.YELLOW + " Skipping " + spellKey + ", not enough mana to cast", 3);
+                            skip = true;
+                            break;
+                        }
+                    }
+                    if (skip) {
+                        continue;
+                    }
+                }
             }
 
             spells.add(spell);
