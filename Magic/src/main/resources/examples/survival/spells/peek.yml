@@ -6,7 +6,7 @@ peek:
     icon_url: http://textures.minecraft.net/texture/42fe4273a62118f32881159ab3d6eded9fac90748deedbdb16204d107f843
     category: mining
     worth: 300
-    earns_sp: 8
+    earns: 8
     upgrade_required_path: beginner
     upgrade_required_casts: 10
     actions:

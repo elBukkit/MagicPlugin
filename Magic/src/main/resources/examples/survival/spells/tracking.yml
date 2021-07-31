@@ -8,7 +8,7 @@ tracking:
     icon_url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1
     category: utility
     worth: 50
-    earns_sp: 5
+    earns: 5
     actions:
         cast:
          -  class: Orient

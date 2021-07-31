@@ -6,7 +6,7 @@ arrow_grapple:
     category: combat
     worth: 300
     toggle: cancel
-    earns_sp: 2
+    earns: 2
     actions:
         cast:
           - class: Projectile

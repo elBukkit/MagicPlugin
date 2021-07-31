@@ -6,7 +6,7 @@ grow:
     icon_url: http://textures.minecraft.net/texture/b54fa4fb25cef58bc69cac7292e32e449322cac2ace4810a8a0749b2fbbb154
     category: combat
     worth: 75
-    earns_sp: 8
+    earns: 8
     actions:
       cast:
       - class: CustomProjectile

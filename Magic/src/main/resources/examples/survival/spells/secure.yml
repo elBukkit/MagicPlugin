@@ -10,7 +10,7 @@ secure:
     upgrade_required_path: master
     upgrade_required_casts: 10
     worth: 150
-    earns_sp: 10
+    earns: 10
     actions:
        cast:
        - class: Lock

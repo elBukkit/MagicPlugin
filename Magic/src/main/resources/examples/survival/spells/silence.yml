@@ -6,7 +6,7 @@ silence:
     icon_url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
     category: dark
     worth: 750
-    earns_sp: 10
+    earns: 10
     upgrade_required_casts: 50
     upgrade_required_path: master
     actions:

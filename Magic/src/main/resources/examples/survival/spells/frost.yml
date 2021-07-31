@@ -6,7 +6,7 @@ frost:
     icon_url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
     category: combat
     worth: 200
-    earns_sp: 8
+    earns: 8
     upgrade_required_path: beginner
     upgrade_required_casts: 50
     actions:

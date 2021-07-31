@@ -9,7 +9,7 @@ fireball:
     category: combat
     pvp_restricted: true
     worth: 150
-    earns_sp: 10
+    earns: 10
     actions:
         cast:
         -  class: Projectile

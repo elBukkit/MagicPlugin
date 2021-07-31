@@ -6,7 +6,7 @@ whip:
     icon_url: http://textures.minecraft.net/texture/543a93796b389fc710671b62106068619b7673e7bf48a6c77bc4db921d54
     category: combat
     worth: 100
-    earns_sp: 6
+    earns: 6
     actions:
         cast:
         - class: CustomProjectile

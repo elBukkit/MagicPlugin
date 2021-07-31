@@ -8,7 +8,7 @@ shuriken:
     upgrade_required_path: master
     upgrade_required_casts: 50
     worth: 200
-    earns_sp: 12
+    earns: 12
     actions:
         cast:
         -  class: CustomProjectile

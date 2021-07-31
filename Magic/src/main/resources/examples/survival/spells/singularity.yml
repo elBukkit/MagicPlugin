@@ -7,7 +7,7 @@ singularity:
     category: master
     pvp_restricted: true
     worth: 1000
-    earns_sp: 15
+    earns: 15
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:

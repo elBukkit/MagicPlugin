@@ -6,7 +6,7 @@ growth:
     icon_url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
     category: engineering
     worth: 600
-    earns_sp: 8
+    earns: 8
     upgrade_required_casts: 50
     actions:
         cast:

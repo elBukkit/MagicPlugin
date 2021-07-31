@@ -7,7 +7,7 @@ phase:
     category: master
     tags: noduel,nojail
     worth: 400
-    earns_sp: 2
+    earns: 2
     quick_cast: true
     actions:
         cast:

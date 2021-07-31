@@ -6,7 +6,7 @@ petrify:
     icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188
     category: combat
     worth: 300
-    earns_sp: 8
+    earns: 8
     upgrade_required_path: master
     upgrade_required_casts: 50
     actions:

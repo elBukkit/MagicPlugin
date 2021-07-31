@@ -6,7 +6,7 @@ poison:
     icon_url: http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a
     category: combat
     worth: 100
-    earns_sp: 7
+    earns: 7
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:

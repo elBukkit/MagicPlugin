@@ -7,7 +7,7 @@ mount:
     tags: noduel
     category: master
     worth: 150
-    earns_sp: 2
+    earns: 2
     show_undoable: false
     actions:
         cast:

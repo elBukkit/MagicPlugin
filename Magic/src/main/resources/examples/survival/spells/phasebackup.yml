@@ -4,7 +4,7 @@ phasebackup:
     icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
     category: staff
     worth: 1000
-    earns_sp: 2
+    earns: 2
     actions:
         cast:
         - class: ChangeWorld

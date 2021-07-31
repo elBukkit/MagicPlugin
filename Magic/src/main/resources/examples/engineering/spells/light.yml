@@ -6,7 +6,7 @@ light:
     icon_url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
     category: engineering
     worth: 500
-    earns_sp: 2
+    earns: 2
     actions:
         cast:
           - class: ChangeContext

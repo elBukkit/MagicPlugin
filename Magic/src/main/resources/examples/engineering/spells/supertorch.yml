@@ -7,7 +7,7 @@ supertorch:
     category: engineering
     tags: noduel
     worth: 500
-    earns_sp: 15
+    earns: 15
     actions:
         cast:
         -  class: Torch

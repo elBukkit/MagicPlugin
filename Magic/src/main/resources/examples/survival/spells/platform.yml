@@ -9,7 +9,7 @@ platform:
     upgrade_required_casts: 50
     category: utility
     worth: 150
-    earns_sp: 2
+    earns: 2
     actions:
         cast:
         -  class: Disc

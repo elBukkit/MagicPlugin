@@ -8,7 +8,7 @@ superheal:
   upgrade_required_casts: 20
   category: light
   worth: 175
-  earns_sp: 20
+  earns: 20
   quick_cast: true
   actions:
     cast:

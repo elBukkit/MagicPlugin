@@ -8,7 +8,7 @@ superblob:
     tags: noduel
     class: ConstructSpell
     worth: 4500
-    earns_sp: 2
+    earns: 2
     upgrade_required_casts: 50
     effects:
       no_target:

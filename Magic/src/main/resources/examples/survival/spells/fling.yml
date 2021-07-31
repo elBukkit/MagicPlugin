@@ -8,7 +8,7 @@ fling:
     category: utility
     tags: nojail
     worth: 400
-    earns_sp: 2
+    earns: 2
     upgrade_required_path: student
     upgrade_required_casts: 50
     glide_restricted: true

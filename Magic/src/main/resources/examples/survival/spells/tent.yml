@@ -7,7 +7,7 @@ tent:
     category: master
     class: ConstructSpell
     worth: 700
-    earns_sp: 10
+    earns: 10
     effects:
         cast:
         -  class: EffectSingle

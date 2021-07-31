@@ -8,7 +8,7 @@ fire:
     category: demolition
     pvp_restricted: true
     worth: 200
-    earns_sp: 1
+    earns: 1
     upgrade_required_path: beginner
     upgrade_required_casts: 40
     actions:

@@ -1,7 +1,7 @@
 # Use this with /castp <player> warpunlock unlock <warp>
 # This can be done, for example, on region enter using the WGRegionEvents plugin
 warpunlock:
-  earns_sp: 20
+  earns: 20
   earns_cooldown: 30000
   inherit: recall
   hidden: true

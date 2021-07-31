@@ -8,7 +8,7 @@ sponge:
     example_link: https://thumbs.gfycat.com/EcstaticVictoriousBunny
     category: utility
     worth: 100
-    earns_sp: 4
+    earns: 4
     actions:
       cast:
       - class: Sphere

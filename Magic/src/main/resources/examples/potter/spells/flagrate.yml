@@ -4,7 +4,7 @@ flagrate:
     icon_disabled: spell_icon_disabled:29
     category: charms
     worth: 20
-    earns_sp: 1
+    earns: 1
     effects:
         cast:
         -  class: EffectSingle

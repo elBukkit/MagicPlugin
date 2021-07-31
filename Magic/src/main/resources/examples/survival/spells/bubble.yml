@@ -7,7 +7,7 @@ bubble:
     icon_url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
     category: utility
     worth: 100
-    earns_sp: 5
+    earns: 5
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:

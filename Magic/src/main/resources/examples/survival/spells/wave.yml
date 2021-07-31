@@ -7,7 +7,7 @@ wave:
     category: elemental
     pvp_restricted: true
     worth: 400
-    earns_sp: 8
+    earns: 8
     upgrade_required_path: master
     upgrade_required_casts: 50
     actions:

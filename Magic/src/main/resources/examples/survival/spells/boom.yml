@@ -8,7 +8,7 @@ boom:
     category: combat
     pvp_restricted: true
     worth: 200
-    earns_sp: 3
+    earns: 3
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:

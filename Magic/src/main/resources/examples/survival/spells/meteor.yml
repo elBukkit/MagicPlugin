@@ -6,7 +6,7 @@ meteor:
     icon_url: http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21
     category: combat
     worth: 1500
-    earns_sp: 5
+    earns: 5
     upgrade_required_casts: 75
     upgrade_required_path: master
     actions:

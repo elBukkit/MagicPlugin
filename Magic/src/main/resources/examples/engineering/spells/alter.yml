@@ -7,7 +7,7 @@ alter:
     category: engineering
     tags: noduel
     worth: 1500
-    earns_sp: 12
+    earns: 12
     actions:
       cast:
       - class: CycleBlock

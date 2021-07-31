@@ -7,7 +7,7 @@ recall:
     category: utility
     tags: noduel,nojail
     worth: 20
-    earns_sp: 5
+    earns: 5
     cast_on_no_target: false
     upgrade_required_path: beginner
     upgrade_required_casts: 25

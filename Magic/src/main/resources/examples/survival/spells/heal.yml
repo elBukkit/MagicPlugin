@@ -8,7 +8,7 @@ heal:
     upgrade_required_path: student
     upgrade_required_casts: 50
     worth: 300
-    earns_sp: 2
+    earns: 2
     actions:
         cast:
         - class: Repeat

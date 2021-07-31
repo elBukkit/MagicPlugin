@@ -8,7 +8,7 @@ projectile:
     upgrade_required_casts: 15
     category: staff
     worth: 150
-    earns_sp: 10
+    earns: 10
     earns_cooldown: 10000
     hidden: true
     actions:

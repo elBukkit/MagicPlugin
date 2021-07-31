@@ -9,7 +9,7 @@ night:
     category: elemental
     quick_cast: true
     worth: 800
-    earns_sp: 5
+    earns: 5
     actions:
         cast:
         - class: Delay

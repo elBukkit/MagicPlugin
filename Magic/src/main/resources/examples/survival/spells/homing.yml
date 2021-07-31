@@ -8,7 +8,7 @@ homing:
     upgrade_required_casts: 50
     category: combat
     worth: 750
-    earns_sp: 6
+    earns: 6
     actions:
         cast:
         - class: Message

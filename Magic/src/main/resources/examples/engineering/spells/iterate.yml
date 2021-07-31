@@ -7,7 +7,7 @@ iterate:
     category: engineering
     tags: noduel
     worth: 3000
-    earns_sp: 13
+    earns: 13
     actions:
         cast:
         -  class: Line

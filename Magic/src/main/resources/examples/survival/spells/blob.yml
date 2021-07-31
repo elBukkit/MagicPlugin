@@ -6,7 +6,7 @@ blob:
     icon_url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
     category: combat
     worth: 100
-    earns_sp: 2
+    earns: 2
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:

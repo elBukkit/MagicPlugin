@@ -6,7 +6,7 @@ counterspell:
     icon_url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
     category: combat
     worth: 600
-    earns_sp: 20
+    earns: 20
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:

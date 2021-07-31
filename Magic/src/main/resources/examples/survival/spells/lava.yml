@@ -7,7 +7,7 @@ lava:
     category: combat
     pvp_restricted: true
     worth: 250
-    earns_sp: 5
+    earns: 5
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:

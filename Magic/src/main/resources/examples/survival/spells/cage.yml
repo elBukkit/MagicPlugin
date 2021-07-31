@@ -7,7 +7,7 @@ cage:
     category: master
     class: ConstructSpell
     worth: 600
-    earns_sp: 5
+    earns: 5
     effects:
         cast:
         -  class: EffectSingle

@@ -7,7 +7,7 @@ paint:
     category: engineering
     tags: noduel
     worth: 1000
-    earns_sp: 10
+    earns: 10
     actions:
       cast:
       - class: ModifyBlock

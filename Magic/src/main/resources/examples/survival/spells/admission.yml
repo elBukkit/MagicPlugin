@@ -6,7 +6,7 @@ admission:
     icon_url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
     category: utility
     worth: 20
-    earns_sp: 10
+    earns: 10
     upgrade_required_path: apprentice
     upgrade_required_casts: 20
     actions:

@@ -10,7 +10,7 @@ arrowrain:
     example_link: https://thumbs.gfycat.com/SpeedyPlainIaerismetalmark
     category: combat
     worth: 100
-    earns_sp: 5
+    earns: 5
     actions:
         cast:
         -  class: Projectile

@@ -7,7 +7,7 @@ mine:
     category: mining
     tags: noduel,nojail
     worth: 500
-    earns_sp: 10
+    earns: 10
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:

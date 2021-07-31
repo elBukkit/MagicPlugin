@@ -4,7 +4,7 @@ extinguish:
     icon_url: http://textures.minecraft.net/texture/c28bdd34810f866527daaf283da71826a8378286b2a43a626615fa1b3639e
     category: utility
     worth: 100
-    earns_sp: 4
+    earns: 4
     actions:
       cast:
       - class: Sphere

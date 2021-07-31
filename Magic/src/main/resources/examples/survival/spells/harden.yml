@@ -6,7 +6,7 @@ harden:
     icon_url: http://textures.minecraft.net/texture/25147d8c6addc07635b183ae1c4459f173bdfde239d949f56ce56d2728911e2
     category: utility
     worth: 150
-    earns_sp: 4
+    earns: 4
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:

@@ -6,7 +6,7 @@ disarm:
     icon_url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
     category: light
     worth: 200
-    earns_sp: 7
+    earns: 7
     upgrade_required_path: student
     upgrade_required_casts: 50
     actions:

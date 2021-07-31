@@ -10,7 +10,7 @@ lightning:
     category: elemental
     pvp_restricted: true
     worth: 300
-    earns_sp: 2
+    earns: 2
     actions:
         cast:
         -  class: Spread

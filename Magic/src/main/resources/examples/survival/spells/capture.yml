@@ -4,7 +4,7 @@ capture:
   legacy_icon: spell_icon:251
   legacy_icon_disabled: spell_icon_disabled:251
   worth: 750
-  earns_sp: 8
+  earns: 8
   actions:
     cast:
     - class: Capture

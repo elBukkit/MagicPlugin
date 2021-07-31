@@ -9,7 +9,7 @@ wither:
     category: dark
     pvp_restricted: true
     worth: 350
-    earns_sp: 10
+    earns: 10
     actions:
         cast:
         - class: Projectile

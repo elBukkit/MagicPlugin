@@ -8,7 +8,7 @@ bomb:
     pvp_restricted: true
     upgrade_required_casts: 30
     worth: 500
-    earns_sp: 8
+    earns: 8
     actions:
         cast:
         - class: Delay

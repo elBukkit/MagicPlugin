@@ -6,7 +6,7 @@ earthquake:
     icon_url: http://textures.minecraft.net/texture/64764ad7b991afd8886d847f439b3d1753bc2632a7dbc047a9a040aa1ff98
     category: combat
     worth: 450
-    earns_sp: 8
+    earns: 8
     actions:
         cast:
         # Attach everything to a projectile

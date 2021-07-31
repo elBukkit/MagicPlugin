@@ -30,7 +30,7 @@ missile:
     # This is kind of irrelevant for missile in the default configs since you start with it.
     worth: 150
     # How many Spell Points this spell earns on a successful cast.
-    earns_sp: 7
+    earns: 7
     # How often the player may earn SP from casting this spell.
     # Magic Missile is the only spell in the default configs that overrides this value, so that a player
     # May progress more quickly at the beginning.

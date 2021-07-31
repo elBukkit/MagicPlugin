@@ -6,7 +6,7 @@ curse:
     icon_url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
     category: dark
     worth: 80
-    earns_sp: 6
+    earns: 6
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:

@@ -6,7 +6,7 @@ emp:
     icon_url: http://textures.minecraft.net/texture/615baaf7223ce4ff011aa2db6b71c3022151c7f2b873c85d62ef69a36785a61
     category: electrical
     worth: 150
-    earns_sp: 15
+    earns: 15
     actions:
         cast:
         -  class: Sphere

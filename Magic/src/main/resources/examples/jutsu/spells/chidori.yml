@@ -4,7 +4,7 @@ chidori:
   quick_cast: true
   toggle: cancel
   disable_mana_regeneration: false
-  earns_sp: 3
+  earns: 3
   description: Activating this spell will reduce your mana regen rate by 50%. You
     will keep a sphere of air around you which allows you to go through blocks freely.
     Shift to go into the ground. Gain invisibility. This pressure will explode upon

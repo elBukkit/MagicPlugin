@@ -6,7 +6,7 @@ breach:
     icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     category: mining
     worth: 400
-    earns_sp: 5
+    earns: 5
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     actions:

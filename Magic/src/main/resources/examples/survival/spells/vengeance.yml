@@ -1,7 +1,7 @@
 vengeance:
   icon: shield{CustomModelData:18020}
   icon_disabled: shield{CustomModelData:18021}
-  earns_sp: 6
+  earns: 6
   worth: 400
   upgrade_required_casts: 50
   upgrade_required_path: student

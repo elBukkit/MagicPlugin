@@ -8,7 +8,7 @@ gatling:
     icon_url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78
     category: combat
     worth: 400
-    earns_sp: 5
+    earns: 5
     actions:
         cast:
         - class: Delay

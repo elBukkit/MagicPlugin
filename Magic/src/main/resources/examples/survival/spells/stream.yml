@@ -9,7 +9,7 @@ stream:
     category: combat
     pvp_restricted: true
     worth: 150
-    earns_sp: 4
+    earns: 4
     actions:
       cast:
       - class: DisablePhysics

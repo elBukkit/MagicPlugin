@@ -5,7 +5,7 @@ permamelt:
     category: engineering
     tags: noduel
     worth: 2000
-    earns_sp: 10
+    earns: 10
     actions:
         cast:
         - class: Sphere

@@ -8,7 +8,7 @@ sticky:
     upgrade_required_casts: 50
     category: combat
     worth: 300
-    earns_sp: 10
+    earns: 10
     actions:
         cast:
         - class: CustomProjectile

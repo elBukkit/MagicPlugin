@@ -6,7 +6,7 @@ arrow:
     icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
     category: combat
     worth: 70
-    earns_sp: 8
+    earns: 8
     upgrade_required_path: beginner
     upgrade_required_casts: 40
     actions:

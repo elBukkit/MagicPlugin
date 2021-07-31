@@ -6,7 +6,7 @@ walls:
     icon_url: http://textures.minecraft.net/texture/4fed122b86ffaeaee36ab4a8c1c27f46fb5bddc83322c8a165d0f27aeb1830
     category: combat
     worth: 250
-    earns_sp: 5
+    earns: 5
     actions:
         cast:
         - class: Cylinder

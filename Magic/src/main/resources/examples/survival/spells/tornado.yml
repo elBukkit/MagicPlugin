@@ -9,7 +9,7 @@ tornado:
     category: elemental
     pvp_restricted: true
     worth: 900
-    earns_sp: 11
+    earns: 11
     actions:
         cast:
          - class: CustomProjectile

@@ -6,7 +6,7 @@ backflip:
     category: utility
     tags: nojail
     worth: 500
-    earns_sp: 2
+    earns: 2
     upgrade_required_path: student
     upgrade_required_casts: 40
     actions:

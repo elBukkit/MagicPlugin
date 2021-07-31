@@ -7,7 +7,7 @@ cloak:
     category: master
     tags: noduel
     worth: 100
-    earns_sp: 5
+    earns: 5
     toggle: undo
     disable_mana_regeneration: true
     quick_cast: true

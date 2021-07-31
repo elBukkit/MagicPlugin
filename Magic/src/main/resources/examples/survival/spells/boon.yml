@@ -7,7 +7,7 @@ boon:
     alias: perk
     category: utility
     worth: 220
-    earns_sp: 6
+    earns: 6
     upgrade_required_path: beginner
     upgrade_required_casts: 40
     quick_cast: true

@@ -6,7 +6,7 @@ superhemisphere:
     tags: noduel
     class: ConstructSpell
     worth: 800
-    earns_sp: 2
+    earns: 2
     upgrade_required_casts: 50
     effects:
       no_target:

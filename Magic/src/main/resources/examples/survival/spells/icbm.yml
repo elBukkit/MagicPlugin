@@ -9,7 +9,7 @@ icbm:
     category: demolition
     pvp_restricted: true
     worth: 1500
-    earns_sp: 6
+    earns: 6
     actions:
         cast:
         - class: Projectile

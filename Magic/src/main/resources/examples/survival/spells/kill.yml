@@ -9,7 +9,7 @@ kill:
     category: master
     tags: noduel
     worth: 5000
-    earns_sp: 13
+    earns: 13
     upgrade_required_path: master
     upgrade_required_casts: 50
     actions:

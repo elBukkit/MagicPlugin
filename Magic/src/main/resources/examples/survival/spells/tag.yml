@@ -8,7 +8,7 @@ tag:
     class: SignSpell
     tags: noduel
     worth: 20
-    earns_sp: 1
+    earns: 1
     effects:
         cast:
         -  sound: block_wood_place
