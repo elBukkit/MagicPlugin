@@ -25,7 +25,7 @@ public class MythicMobManager {
     @Nullable
     public EntityData spawnMythicMob(String key, Location location) {
         ActiveMob mob = api.getMobManager().spawnMob(key, location);
-        return new EntityData(controller, mob);
+        return mob != null ? new EntityData(controller, mob) : null;
     }
 
 }
