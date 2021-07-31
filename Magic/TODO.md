@@ -3,7 +3,6 @@
 # Before next release
 
 - Right-clicking an NPC with no interact causes a spell cast (again?)
-- AS xp integration AureliumAPI.addXp(player, Skills.SORCERY, amount)
 
 # New
 

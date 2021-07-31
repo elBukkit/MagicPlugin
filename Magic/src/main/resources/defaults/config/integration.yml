@@ -229,9 +229,18 @@ aurelium_skills:
   mana_classes:
     - mage
     - battle
+
+  # This allows you to earn AS xp of certain types any time a player earns SP from casting spells
+  # The default config means you earn 1/2 as much SORCERY as sp
+  xp_earn_from_sp:
+    SORCERY: 0.5
+
+  # Set this to false to turn off attribute registration
   use_attributes: true
-  # This can be used to scale up mana, but you may be better off adjusting
-  # wisdom.max-mana-per-wisdom and base-mana in AureliumSkills' config
+
+  # This can be used to scale up mana, but it really shouldn't be used anymore,
+  # see mana_cost_reduction instead which will let Magic and AureliumSkills show the same
+  # mana amounts while still bringing spell casting costs in range
   mana_scale: 1
 
 # Indirect integration with other protection plugins.

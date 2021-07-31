@@ -1,13 +1,19 @@
 package com.elmakers.mine.bukkit.integration;
 
 import java.util.ArrayList;
+import java.util.EventListener;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import com.archyx.aureliumskills.api.AureliumAPI;
@@ -17,13 +23,16 @@ import com.archyx.aureliumskills.skills.Skills;
 import com.archyx.aureliumskills.stats.Stat;
 import com.archyx.aureliumskills.stats.Stats;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
+import com.elmakers.mine.bukkit.api.event.EarnEvent;
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.ManaController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
-public class AureliumSkillsManager implements ManaController, AttributeProvider {
+public class AureliumSkillsManager implements ManaController, AttributeProvider, Listener {
     private final MageController controller;
     private final Set<String> usesMana = new HashSet<>();
+    private final Map<Skills, Double> xpEarnRates = new HashMap<>();
     private boolean enabled;
     private boolean useAttributes;
     private double manaScale;
@@ -32,6 +41,8 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
 
     public AureliumSkillsManager(MageController controller) {
         this.controller = controller;
+        Plugin plugin = controller.getPlugin();
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     public void load(ConfigurationSection configuration) {
@@ -53,6 +64,17 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
             manaCostReduction = 0;
         }
         useMana = !usesMana.isEmpty();
+
+        xpEarnRates.clear();
+        ConfigurationSection earnRates = configuration.getConfigurationSection("xp_earn_from_sp");
+        for (String key : earnRates.getKeys(false)) {
+            try {
+                Skills skill = Skills.valueOf(key);
+                xpEarnRates.put(skill, earnRates.getDouble(key));
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid AureliumSkills XP type in xp_earn_from_sp config: " + key);
+            }
+        }
 
         String statusString;
         if (!useMana && !useAttributes && !registerCurrencies) {
@@ -157,5 +179,15 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider 
 
     public MageController getController() {
         return controller;
+    }
+
+    @EventHandler
+    public void onEarn(EarnEvent event) {
+        if (event.getEarnCause() != EarnEvent.EarnCause.SPELL_CAST) return;
+        Mage mage = event.getMage();
+        if (!mage.isPlayer()) return;
+        for (Map.Entry<Skills, Double> xpEarnRate : xpEarnRates.entrySet()) {
+            AureliumAPI.addXp(mage.getPlayer(), xpEarnRate.getKey(), xpEarnRate.getValue() * event.getEarnAmount());
+        }
     }
 }
