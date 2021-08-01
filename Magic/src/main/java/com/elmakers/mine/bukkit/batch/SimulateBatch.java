@@ -25,11 +25,14 @@ import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.arena.Arena;
+import com.elmakers.mine.bukkit.arena.ArenaController;
 import com.elmakers.mine.bukkit.automata.AutomatonLevel;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.UndoList;
 import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.Target;
@@ -87,6 +90,7 @@ public class SimulateBatch extends SpellBatch {
     private Material deathMaterial;
     private boolean isAutomata;
     private boolean keepTarget;
+    private String arena;
     private int radius;
     private int x;
     private int y;
@@ -665,6 +669,10 @@ public class SimulateBatch extends SpellBatch {
         case FLEE:
         case HUNT:
         case DIRECTED:
+            // Re-compute target properties if re-using it
+            if (keepTarget && this.target != null) {
+                this.target.update();
+            }
             Target bestTarget = this.target;
             reverseTargetDistanceScore = true;
             if (bestTarget == null || !keepTarget) {
@@ -677,6 +685,7 @@ public class SimulateBatch extends SpellBatch {
                         if (entity instanceof Player || !(entity instanceof LivingEntity) || entity.isDead()) continue;
                         if (!entity.getLocation().getWorld().equals(center.getWorld())) continue;
                         if (!context.canTarget(entity)) continue;
+                        if (arena != null && !isInArena(entity, arena)) continue;
                         Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, 1000, false);
                         int score = newScore.getScore();
                         if (bestTarget == null || score > bestTarget.getScore()) {
@@ -695,6 +704,7 @@ public class SimulateBatch extends SpellBatch {
                         if (mage.isAutomaton() && mage.hasTag(spell.getKey())) continue;
                         if (mage.isDead() || !mage.isOnline() || !mage.hasLocation() || mage.isIgnoredByMobs()) continue;
                         if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
+                        if (arena != null && !isInArena(mage.getEntity(), arena)) continue;
 
                         Entity entity = mage.getEntity();
                         if (entity != null && !context.canTarget(entity)) continue;
@@ -780,6 +790,17 @@ public class SimulateBatch extends SpellBatch {
             center.setYaw(RandomUtils.getRandom().nextInt(360));
         }
         mage.setLocation(center);
+    }
+
+    private boolean isInArena(Entity entity, String arenaName) {
+        Arena arena;
+        ArenaController arenas = ((MagicController)controller).getArenas();
+        if (entity instanceof Player) {
+            arena = arenas.getArena((Player)entity);
+        } else {
+            arena = arenas.getMobArena(entity);
+        }
+        return arena != null && arena.getKey().equals(arenaName);
     }
 
     public void setMoveRange(int commandRadius) {
@@ -902,5 +923,9 @@ public class SimulateBatch extends SpellBatch {
 
     public void setKeepTarget(boolean keepTarget) {
         this.keepTarget = keepTarget;
+    }
+
+    public void setArena(String arena) {
+        this.arena = arena;
     }
 }

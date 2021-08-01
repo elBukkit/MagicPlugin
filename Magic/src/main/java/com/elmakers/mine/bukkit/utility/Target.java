@@ -507,4 +507,17 @@ public class Target implements Comparable<Target>
     public MaterialAndData getTargetedMaterial() {
         return locationMaterial;
     }
+
+    public void update() {
+        Entity entity = getEntity();
+        if (entity != null) {
+            location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
+        } else {
+            Mage mage = getMage();
+            if (mage != null) {
+                location = mage.getEyeLocation();
+            }
+        }
+        calculateScore();
+    }
 }
