@@ -1,5 +1,9 @@
 # Migration Notes
 
+# 9.5
+
+ - Arena start/end commands delimiter changed to ; (from ,)
+
 # 9.4
 
  - The `beginner` wand has been made into a demo wand and no longer turns into `wand`

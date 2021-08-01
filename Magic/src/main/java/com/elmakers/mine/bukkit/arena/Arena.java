@@ -442,7 +442,7 @@ public class Arena {
 
     protected void runCommands(String runCommands) {
         if (runCommands != null && !runCommands.isEmpty()) {
-            String[] commands = StringUtils.split(runCommands, ',');
+            String[] commands = StringUtils.split(runCommands, ';');
             CommandSender sender = Bukkit.getConsoleSender();
             for (String command : commands) {
                 controller.getPlugin().getServer().dispatchCommand(sender, command);
