@@ -1,0 +1,52 @@
+mortar:
+  name: Mortar
+  description: Fire a series of shells off down a line in front of you
+  icon: stick
+  variables:
+    distance: 2
+  actions:
+    cast:
+    - class: ChangeContext
+      source_pitch: 0
+      actions:
+        - class: Repeat
+          actions:
+          - class: ChangeContext
+            relative_source_offset:
+              x: distance
+              y: 0
+              z: 0
+            actions:
+            - class: ChangeContext
+              source_direction: 0,1,0
+              actions:
+                - class: PlayEffects
+                  effects: launch
+                - class: CustomProjectile
+                  actions:
+                    - class: Damage
+            - class: Delay
+            - class: ModifyVariable
+              variable: distance
+              value: distance + 2
+            - class: Message
+              message: "Shooting from @distance"
+  effects:
+    tick:
+    - location: target
+      particle: end_rod
+      particle_count: 4
+      particle_offset: 0.05
+    hit:
+      - location: target
+        particle: explosion_huge
+        particle_count: 3
+        particle_offset: 1
+    launch:
+      - location: origin
+        firework: burst
+  parameters:
+    target: none
+    repeat: 10
+    delay: 500
+    

@@ -1,0 +1,34 @@
+hotcold:
+  name: Test Marigold
+  icon: stick
+  actions:
+    cast:
+    - class: Selector
+      options:
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true
+        - warp: hot
+          name: Hot
+          icon: sand
+        - placeholder: true
+        - warp: cold
+          name: Cold
+          icon: packed_ice
+        - placeholder: true
+        - placeholder: true
+    #- class: Delay
+    #  delay: 200
+    #- class: ChangeContext
+    #  target_caster: true
+    #  actions:
+    #  - class: TeleportNPC
+    #    npc_id: c351b884-39b7-4141-8525-cfff771b2f8e
+        # npc_id: f96a2cb0-1a76-4b7c-b12d-461a70f22e7b
+  parameters:
+    target: self
+    title: "Where to go?"
+    command_source: player
+    quiet: true
+    selected: ""
+    selected_free: ""
