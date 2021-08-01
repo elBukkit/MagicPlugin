@@ -1219,7 +1219,9 @@ public class Arena {
                 + "@" + suddenDeathEffect.getAmplifier());
             }
         }
-
+        if (startCommands != null && !startCommands.isEmpty()) {
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Start Commands: " + ChatColor.AQUA + startCommands);
+        }
         if (endCommands != null && !endCommands.isEmpty()) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "End Commands: " + ChatColor.AQUA + endCommands);
         }
