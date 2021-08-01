@@ -59,7 +59,11 @@ public class MagicLogger extends ColoredLogger {
 
         Server server = Bukkit.getServer();
         CompatibilityUtils compatibility = CompatibilityLib.isInitialized() ? CompatibilityLib.getCompatibilityUtils() : null;
-        LogMessage logMessage = new LogMessage(context, record.getMessage().replace("[Magic] ", ""));
+        String message = record.getMessage();
+        if (message != null) {
+            message = message.replace("[Magic] ", "");
+        }
+        LogMessage logMessage = new LogMessage(context, message);
         if (record.getLevel().equals(Level.WARNING)) {
             synchronized (warnings) {
                 pendingWarningCount++;
