@@ -270,7 +270,8 @@ warrior2:
 
 jedi2:
     inherit: base_arena_lightsaber
-    icon: shield:3
+    legacy_icon: shield_icon:3
+    icon: shield{CustomModelData:18003}
     effect_color: '0000FF'
     protection:
       overall: 1
@@ -286,7 +287,8 @@ jedi2:
 
 sith2:
     inherit: base_arena_lightsaber
-    icon: shield:4
+    legacy_icon: shield_icon:4
+    icon: shield{CustomModelData:18004}
     effect_color: 'FF0000'
     protection:
       overall: 1
