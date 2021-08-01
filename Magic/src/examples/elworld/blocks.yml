@@ -83,3 +83,10 @@ automaton_npc:
   interval: 5000
   cast:
     spells: automaton_npc
+
+automaton_arena:
+  name: Arena Automaton
+  interval: 5000
+  cast:
+    spells: automaton_arena
+

@@ -19,34 +19,36 @@ automaton_arena:
     target: self
     bypass_build: true
     bypass_break: true
-    destructible: all_air,magma_block
+    destructible: passthrough,lava
     death_material: air
     name: Virus
     seed_radius: 3
-    radius: 16
-    yradius: 16
-    move: 8
+    radius: 24
+    yradius: 24
+    move: 4
     delay: 3000
     max_blocks: 10000
     min_blocks: 100
-    birth_range: 18
-    live_range: 25
+    birth_range: 26
+    live_range: 32
     cooldown: 0
     allow_max_range: false
     transparent: transparent_to_construction
     check_destructible: true
-    target_max_range: 128
+    target_max_range: 500
     target_min_range: 0
     message_type: evil
     targets: player
     target_mode: hunt
     concurrent: true
     birth_rules: 1,2,3
-    diagonal_birth_rules: 0,1
     live_rules: 1,2,3
+    diagonal_birth_rules: 0,1
     diagonal_live_rules: 0,1
     undo: 20000
     undo_speed: 20
     create_mage: false
+    keep_target: true
+    arena: otherside
     materials:
-    - magma_block
+    - lava
