@@ -107,8 +107,7 @@ public class SkinUtils extends SkinUtilsBase {
             platform.getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
         }
         if (CompatibilityConstants.DEBUG) {
-            platform.getLogger().info("Got profile: " + gameProfile);
-            platform.getLogger().info(platform.getSkinUtils().getProfileURL(gameProfile));
+            platform.getLogger().info("Got profile: " + gameProfile + ": " + platform.getSkinUtils().getProfileURL(gameProfile));
         }
         return gameProfile;
     }
