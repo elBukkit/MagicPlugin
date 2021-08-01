@@ -4,6 +4,7 @@ toggleair:
   quick_cast: true
   category: engineering
   worth: 500
+  show_undoable: false
   actions:
     cast:
       - class: Selector
