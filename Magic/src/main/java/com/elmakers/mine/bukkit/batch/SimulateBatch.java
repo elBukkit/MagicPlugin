@@ -63,6 +63,7 @@ public class SimulateBatch extends SpellBatch {
     private TargetMode targetMode = TargetMode.STABILIZE;
     private TargetMode backupTargetMode = TargetMode.WANDER;
     private TargetType targetType = TargetType.PLAYER;
+    private Target target;
     private boolean hasDirection = false;
     private String automataName;
     private AutomatonLevel level;
@@ -85,6 +86,7 @@ public class SimulateBatch extends SpellBatch {
     private MaterialAndData birthMaterial;
     private Material deathMaterial;
     private boolean isAutomata;
+    private boolean keepTarget;
     private int radius;
     private int x;
     private int y;
@@ -663,49 +665,52 @@ public class SimulateBatch extends SpellBatch {
         case FLEE:
         case HUNT:
         case DIRECTED:
-            Target bestTarget = null;
+            Target bestTarget = this.target;
             reverseTargetDistanceScore = true;
-            if (targetType == TargetType.ANY || targetType == TargetType.MOB)
-            {
-                Collection<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(center, huntMaxRange, huntMaxRange, huntMaxRange);
-                for (Entity entity : entities)
+            if (bestTarget == null || !keepTarget) {
+                if (targetType == TargetType.ANY || targetType == TargetType.MOB)
                 {
-                    // We'll get the players from the Mages list
-                    if (entity instanceof Player || !(entity instanceof LivingEntity) || entity.isDead()) continue;
-                    if (!entity.getLocation().getWorld().equals(center.getWorld())) continue;
-                    if (!context.canTarget(entity)) continue;
-                    Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, 1000, false);
-                    int score = newScore.getScore();
-                    if (bestTarget == null || score > bestTarget.getScore()) {
-                        bestTarget = newScore;
+                    Collection<Entity> entities = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(center, huntMaxRange, huntMaxRange, huntMaxRange);
+                    for (Entity entity : entities)
+                    {
+                        // We'll get the players from the Mages list
+                        if (entity instanceof Player || !(entity instanceof LivingEntity) || entity.isDead()) continue;
+                        if (!entity.getLocation().getWorld().equals(center.getWorld())) continue;
+                        if (!context.canTarget(entity)) continue;
+                        Target newScore = new Target(center, entity, huntMinRange, huntMaxRange, huntFov, 1000, false);
+                        int score = newScore.getScore();
+                        if (bestTarget == null || score > bestTarget.getScore()) {
+                            bestTarget = newScore;
+                        }
                     }
                 }
-            }
-            if (targetType == TargetType.MAGE || targetType == TargetType.AUTOMATON || targetType == TargetType.ANY || targetType == TargetType.PLAYER)
-            {
-                Collection<Mage> mages = controller.getMages();
-                for (Mage mage : mages)
+                if (targetType == TargetType.MAGE || targetType == TargetType.AUTOMATON || targetType == TargetType.ANY || targetType == TargetType.PLAYER)
                 {
-                    if (mage == this.mage) continue;
-                    if (targetType == TargetType.AUTOMATON && !mage.isAutomaton()) continue;
-                    if (targetType == TargetType.PLAYER && mage.getPlayer() == null) continue;
-                    if (mage.isAutomaton() && mage.hasTag(spell.getKey())) continue;
-                    if (mage.isDead() || !mage.isOnline() || !mage.hasLocation() || mage.isIgnoredByMobs()) continue;
-                    if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
+                    Collection<Mage> mages = controller.getMages();
+                    for (Mage mage : mages)
+                    {
+                        if (mage == this.mage) continue;
+                        if (targetType == TargetType.AUTOMATON && !mage.isAutomaton()) continue;
+                        if (targetType == TargetType.PLAYER && mage.getPlayer() == null) continue;
+                        if (mage.isAutomaton() && mage.hasTag(spell.getKey())) continue;
+                        if (mage.isDead() || !mage.isOnline() || !mage.hasLocation() || mage.isIgnoredByMobs()) continue;
+                        if (!mage.getLocation().getWorld().equals(center.getWorld())) continue;
 
-                    Entity entity = mage.getEntity();
-                    if (entity != null && !context.canTarget(entity)) continue;
+                        Entity entity = mage.getEntity();
+                        if (entity != null && !context.canTarget(entity)) continue;
 
-                    Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 1000, false);
-                    int score = newScore.getScore();
-                    if (bestTarget == null || score > bestTarget.getScore()) {
-                        bestTarget = newScore;
+                        Target newScore = new Target(center, mage, huntMinRange, huntMaxRange, huntFov, 1000, false);
+                        int score = newScore.getScore();
+                        if (bestTarget == null || score > bestTarget.getScore()) {
+                            bestTarget = newScore;
+                        }
                     }
                 }
             }
 
             if (bestTarget != null)
             {
+                this.target = bestTarget;
                 String targetDescription = bestTarget.getEntity() == null ? "NONE" :
                     ((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
 
@@ -893,5 +898,9 @@ public class SimulateBatch extends SpellBatch {
         if (config != null) {
             bossBar = config.createTracker(mage);
         }
+    }
+
+    public void setKeepTarget(boolean keepTarget) {
+        this.keepTarget = keepTarget;
     }
 }
