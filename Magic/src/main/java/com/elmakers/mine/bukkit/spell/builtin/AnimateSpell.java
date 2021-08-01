@@ -13,6 +13,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
@@ -103,9 +104,13 @@ public class AnimateSpell extends SimulateSpell
         registerForUndo(targetBlock);
 
         if (seedRadius > 0) {
-            for (int dx = -seedRadius; dx < seedRadius; dx++) {
-                for (int dz = -seedRadius; dz < seedRadius; dz++) {
-                    for (int dy = -seedRadius; dy < seedRadius; dy++) {
+            int thickness = parameters.getInt("thickness", 0);
+            for (int dx = -seedRadius; dx <= seedRadius; dx++) {
+                for (int dz = -seedRadius; dz <= seedRadius; dz++) {
+                    for (int dy = -seedRadius; dy <= seedRadius; dy++) {
+                        if (thickness > 0 && !containsPoint(seedRadius, thickness, dx, dy, dz)) continue;
+                        if (Math.random() > 0.5) continue;
+
                         Block seedBlock = targetBlock.getRelative(dx, dy, dz);
                         if (isDestructible(seedBlock)) {
                             registerForUndo(seedBlock);
@@ -179,6 +184,16 @@ public class AnimateSpell extends SimulateSpell
 
         registerForUndo();
         return SpellResult.CAST;
+    }
+
+    protected boolean containsPoint(int radius, int thickness, int y, int z, int x) {
+        return thickness == 0
+                || (x > 0 && x > radius - thickness)
+                || (y > 0 && y > radius - thickness)
+                || (z > 0 && z > radius - thickness)
+                || (x < 0 && x < thickness - radius)
+                || (y < 0 && y < thickness - radius)
+                || (z < 0 && z < thickness - radius);
     }
 
     @Override

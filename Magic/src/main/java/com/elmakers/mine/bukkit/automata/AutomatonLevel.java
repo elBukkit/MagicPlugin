@@ -26,6 +26,7 @@ public class AutomatonLevel {
     private final Integer yRadius;
     private final Integer maxBlocks;
     private final Integer minBlocks;
+    private final Integer thickness;
 
     public AutomatonLevel(int level, Integer[] levels, ConfigurationSection template) {
         int levelIndex = 0;
@@ -105,6 +106,11 @@ public class AutomatonLevel {
         } else {
             maxBlocks = null;
         }
+        if (template.contains("thickness")) {
+            thickness = (int)RandomUtils.lerp(StringUtils.split(template.getString("thickness"), ','), levelIndex, nextLevelIndex, distance);
+        } else {
+            thickness = null;
+        }
         spellParameters = template.getString("spell_parameters");
     }
 
@@ -114,6 +120,10 @@ public class AutomatonLevel {
 
     public int getRadius(int radius) {
         return this.radius != null ? this.radius : radius;
+    }
+
+    public int getThickness(int thickness) {
+        return this.thickness != null ? this.thickness : thickness;
     }
 
     public int getMinBlocks(int minBlocks) {

@@ -206,6 +206,7 @@ public class SimulateSpell extends BlockSpell {
             int maxBlocks = parameters.getInt("max_blocks");
             batch.setMaxBlocks(maxBlocks);
             batch.setMinBlocks(parameters.getInt("min_blocks", maxBlocks));
+            batch.setThickness(parameters.getInt("thickness", 0));
 
             int level = parameters.getInt("level", 1);
             if (level < 1) level = 1;

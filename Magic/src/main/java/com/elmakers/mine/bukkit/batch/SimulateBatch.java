@@ -86,6 +86,7 @@ public class SimulateBatch extends SpellBatch {
     private Material deathMaterial;
     private boolean isAutomata;
     private int radius;
+    private int thickness = 2;
     private int x;
     private int y;
     private int z;
@@ -340,9 +341,9 @@ public class SimulateBatch extends SpellBatch {
         }
         if (state == SimulationState.INITIALIZING) {
             // Reset state
-            x = 0;
-            y = 0;
-            z = 0;
+            x = radius;
+            y = radius;
+            z = radius;
             r = 0;
             updatingIndex = 0;
             bornBlocks.clear();
@@ -384,24 +385,17 @@ public class SimulateBatch extends SpellBatch {
                 return processedBlocks;
             }
 
-            y++;
-            if (y > yRadius) {
-                y = 0;
-                if (x < radius) {
-                    x++;
-                } else {
-                    z--;
-                    if (z < 0) {
-                        r++;
-                        z = r;
-                        x = 0;
+            x--;
+            if (x < radius - thickness) {
+                x = radius;
+                z--;
+                if (z < radius - thickness) {
+                    z = radius;
+                    y--;
+                    if (y < radius - thickness) {
+                        state = SimulationState.UPDATING;
                     }
                 }
-            }
-
-            if (r > radius)
-            {
-                state = SimulationState.UPDATING;
             }
         }
 
@@ -478,8 +472,7 @@ public class SimulateBatch extends SpellBatch {
                 }
 
                 // Find a valid block for the command
-                heartTargetBlock = null;
-                Block backupBlock = null;
+                // heartTargetBlock = null;
                 for (Target target : potentialHeartBlocks) {
                     Block block = target.getBlock();
                     if (block != null && birthMaterial.is(block)) {
@@ -490,7 +483,7 @@ public class SimulateBatch extends SpellBatch {
 
                 // If we didn't find any powerable blocks, but we did find at least one valid sim block
                 // just use that one.
-                if (heartTargetBlock == null) heartTargetBlock = backupBlock;
+                if (heartTargetBlock == null) heartTargetBlock = center.getBlock();
 
                 // Search for a power block
                 if (heartTargetBlock == null && DEBUG) {
@@ -505,28 +498,24 @@ public class SimulateBatch extends SpellBatch {
 
         if (state == SimulationState.HEART_UPDATE) {
             if (isAutomata) {
-                if (heartTargetBlock != null) {
-                    if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(heartTargetBlock)) {
-                        finish();
-                        return processedBlocks;
-                    }
+                if (heartTargetBlock == null) {
+                    heartTargetBlock = center.getBlock();
+                }
 
-                    if (reflectChance > 0) {
-                        com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(heartTargetBlock);
-                    }
-                    heartBlock = heartTargetBlock;
-                    Location newLocation = heartTargetBlock.getLocation();
-                    newLocation.setPitch(center.getPitch());
-                    newLocation.setYaw(center.getYaw());
-                    center = newLocation;
-                    mage.setLocation(newLocation);
-                } else {
-                    if (DEBUG) {
-                        controller.getLogger().info("Died, could not find target heart block");
-                    }
-                    die();
+                if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(heartTargetBlock)) {
+                    finish();
                     return processedBlocks;
                 }
+
+                if (reflectChance > 0) {
+                    com.elmakers.mine.bukkit.block.UndoList.getRegistry().unregisterReflective(heartTargetBlock);
+                }
+                heartBlock = heartTargetBlock;
+                Location newLocation = heartTargetBlock.getLocation();
+                newLocation.setPitch(center.getPitch());
+                newLocation.setYaw(center.getYaw());
+                center = newLocation;
+                mage.setLocation(newLocation);
             }
             delayTimeout = System.currentTimeMillis() + delay;
             state = delay > 0 ? SimulationState.DELAY : SimulationState.CLEANUP;
@@ -623,6 +612,7 @@ public class SimulateBatch extends SpellBatch {
         this.blockLimit = level.getMaxBlocks(blockLimit);
         this.maxBlocks = this.blockLimit;
         this.minBlocks = level.getMinBlocks(minBlocks);
+        this.thickness = level.getThickness(thickness);
     }
 
     public void setBirthRange(int range) {
@@ -893,5 +883,9 @@ public class SimulateBatch extends SpellBatch {
         if (config != null) {
             bossBar = config.createTracker(mage);
         }
+    }
+
+    public void setThickness(int thickness) {
+        this.thickness = thickness;
     }
 }
