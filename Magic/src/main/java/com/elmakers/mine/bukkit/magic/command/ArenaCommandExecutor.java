@@ -56,7 +56,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         "leaderboard_size", "leaderboard_record_size", "max_teleport_distance",
         "xp_win", "xp_lose", "xp_draw", "countdown", "countdown_max", "op_check", "allow_interrupt",
         "announcer_range", "sp_win", "sp_lose", "sp_draw", "duration", "sudden_death",
-        "sudden_death_effect", "start_commands", "border", "keep_inventory", "keep_level",
+        "sudden_death_effect", "start_commands", "end_commands", "border", "keep_inventory", "keep_level",
         "money_win", "money_lose", "money_draw", "item_wear",
         "allow_consuming", "leaderboard_sign_type", "allow_melee", "allow_projectiles"
     };
@@ -992,6 +992,17 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Cleared start commands for " + arena.getName());
             } else {
                 sender.sendMessage(ChatColor.AQUA + "Set start commands for " + arena.getName());
+            }
+            arena.saveTemplate();
+            return;
+        }
+
+        if (propertyName.equalsIgnoreCase("end_commands")) {
+            arena.setEndCommands(propertyValue);
+            if (propertyValue == null || propertyValue.isEmpty()) {
+                sender.sendMessage(ChatColor.RED + "Cleared end commands for " + arena.getName());
+            } else {
+                sender.sendMessage(ChatColor.AQUA + "Set end commands for " + arena.getName());
             }
             arena.saveTemplate();
             return;

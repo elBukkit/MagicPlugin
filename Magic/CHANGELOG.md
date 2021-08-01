@@ -6,6 +6,10 @@
 
  - Mine levels 3 and up will mine nether ores (1.16+), level 4 no longer mines full blocks
 
+## Additions
+
+ - Add `end_commands` arena option
+
 # 9.4.2
 
 ## AureliumSkills

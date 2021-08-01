@@ -107,6 +107,7 @@ public class Arena {
     private int suddenDeath = 0;
     private PotionEffect suddenDeathEffect = null;
     private String startCommands;
+    private String endCommands;
     private int borderMin = 0;
     private int borderMax = 0;
 
@@ -173,6 +174,7 @@ public class Arena {
         opCheck = configuration.getBoolean("op_check", true);
         allowInterrupt = configuration.getBoolean("allow_interrupt", false);
         startCommands = configuration.getString("start_commands");
+        endCommands = configuration.getString("end_commands");
 
         borderMin = configuration.getInt("border_min");
         borderMax = configuration.getInt("border_max");
@@ -326,6 +328,7 @@ public class Arena {
         if (borderMin != 0) configuration.set("border_min", borderMin);
         if (borderMax != 0) configuration.set("border_max", borderMax);
         if (startCommands != null && !startCommands.isEmpty()) configuration.set("start_commands", startCommands);
+        if (endCommands != null && !endCommands.isEmpty()) configuration.set("end_commands", endCommands);
 
         configuration.set("keep_inventory", keepInventory);
         configuration.set("keep_level", keepLevel);
@@ -437,6 +440,16 @@ public class Arena {
         hideRespawnBossBar();
     }
 
+    protected void runCommands(String runCommands) {
+        if (runCommands != null && !runCommands.isEmpty()) {
+            String[] commands = StringUtils.split(runCommands, ',');
+            CommandSender sender = Bukkit.getConsoleSender();
+            for (String command : commands) {
+                controller.getPlugin().getServer().dispatchCommand(sender, command);
+            }
+        }
+    }
+
     public void start() {
         if (!isValid()) return;
 
@@ -447,15 +460,7 @@ public class Arena {
         for (ArenaStage stage : stages) {
             stage.reset();
         }
-
-        if (startCommands != null && !startCommands.isEmpty()) {
-            String[] commands = StringUtils.split(startCommands, ',');
-            CommandSender sender = Bukkit.getConsoleSender();
-            for (String command : commands) {
-                Bukkit.getLogger().info("RUNNING: " + command);
-                controller.getPlugin().getServer().dispatchCommand(sender, command);
-            }
-        }
+        runCommands(startCommands);
         if (borderMax > 0 && duration > 0) {
             World world = getCenter().getWorld();
             WorldBorder border = world.getWorldBorder();
@@ -701,6 +706,7 @@ public class Arena {
         if (currentStage != null) {
             currentStage.finish();
         }
+        runCommands(endCommands);
         state = ArenaState.LOBBY;
         exitPlayers();
         hideRespawnBossBar();
@@ -1214,8 +1220,8 @@ public class Arena {
             }
         }
 
-        if (startCommands != null && !startCommands.isEmpty()) {
-            sender.sendMessage(ChatColor.LIGHT_PURPLE + "Start Commands: " + ChatColor.AQUA + startCommands);
+        if (endCommands != null && !endCommands.isEmpty()) {
+            sender.sendMessage(ChatColor.LIGHT_PURPLE + "End Commands: " + ChatColor.AQUA + endCommands);
         }
         if (borderMax > 0) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Border: " + ChatColor.AQUA + borderMax + ChatColor.LIGHT_PURPLE + " to " + ChatColor.AQUA + borderMin);
@@ -1945,6 +1951,10 @@ public class Arena {
 
     public void setStartCommands(String commands) {
         startCommands = commands;
+    }
+
+    public void setEndCommands(String commands) {
+        endCommands = commands;
     }
 
     public void setBorder(int min, int max) {
