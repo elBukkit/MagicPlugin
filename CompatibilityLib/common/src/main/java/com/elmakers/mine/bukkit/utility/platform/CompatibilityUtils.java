@@ -497,4 +497,8 @@ public interface CompatibilityUtils {
     String convertParticle(String particle);
 
     BlockFace getSignFacing(Block sign);
+
+    void sendBlockChange(Player player, Block block);
+
+    void sendBlockChange(Player player, Location location, Material material, String blockData);
 }

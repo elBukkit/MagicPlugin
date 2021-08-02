@@ -861,4 +861,16 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
         return particle;
     }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void sendBlockChange(Player player, Block block) {
+        player.sendBlockChange(block.getLocation(), block.getType(), block.getData());
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void sendBlockChange(Player player, Location location, Material material, String blockData) {
+        player.sendBlockChange(location, material, (byte)0);
+    }
 }

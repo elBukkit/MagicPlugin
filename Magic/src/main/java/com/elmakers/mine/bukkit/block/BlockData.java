@@ -207,7 +207,7 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
                 for (WeakReference<Player> playerRef : fakeSentToPlayers) {
                     Player player = playerRef.get();
                     if (player != null) {
-                        CompatibilityLib.getDeprecatedUtils().sendBlockChange(player, block);
+                        CompatibilityLib.getCompatibilityUtils().sendBlockChange(player, block);
                     }
                 }
             }

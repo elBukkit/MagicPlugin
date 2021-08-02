@@ -28,10 +28,6 @@ public interface DeprecatedUtils {
 
     void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics);
 
-    void sendBlockChange(Player player, Location location, Material material, byte data);
-
-    void sendBlockChange(Player player, Block block);
-
     byte getData(Block block);
 
     byte getWoolData(DyeColor color);

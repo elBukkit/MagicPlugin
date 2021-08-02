@@ -46,16 +46,6 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
     }
 
     @Override
-    public void sendBlockChange(Player player, Location location, Material material, byte data) {
-        player.sendBlockChange(location, material, data);
-    }
-
-    @Override
-    public void sendBlockChange(Player player, Block block) {
-        player.sendBlockChange(block.getLocation(), block.getType(), block.getData());
-    }
-
-    @Override
     public byte getData(Block block) {
         // @deprecated Magic value
         return block.getData();

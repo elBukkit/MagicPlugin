@@ -85,14 +85,7 @@ public class FakeBlockAction extends BaseSpellAction {
         for (WeakReference<Player> playerRef : targetPlayers) {
             Player player = playerRef.get();
             if (player == null) continue;
-            byte data = 0;
-            Short brushData = brush.getData();
-            if (brushData != null) {
-                data = (byte)(short)brushData;
-            } else {
-                data = CompatibilityLib.getDeprecatedUtils().getData(block);
-            }
-            CompatibilityLib.getDeprecatedUtils().sendBlockChange(player, block.getLocation(), brush.getMaterial(), data);
+            CompatibilityLib.getCompatibilityUtils().sendBlockChange(player, block.getLocation(), brush.getMaterial(), brush.getModernBlockData());
         }
 
         return SpellResult.CAST;

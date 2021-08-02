@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_13;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -216,5 +217,14 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     @Override
     public void setMaterialCooldown(Player player, Material material, int duration) {
         player.setCooldown(material, duration);
+    }
+
+    @Override
+    public void sendBlockChange(Player player, Location location, Material material, String blockData) {
+        if (blockData != null) {
+            player.sendBlockChange(location, platform.getPlugin().getServer().createBlockData(blockData));
+        } else {
+            super.sendBlockChange(player, location, material, blockData);
+        }
     }
 }
