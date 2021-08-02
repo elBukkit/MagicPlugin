@@ -20,7 +20,7 @@ automaton_arena:
     bypass_build: true
     bypass_break: true
     destructible: passthrough,lava
-    death_material: air
+    death_materials: chorus_plant,all_air,crimson_roots
     name: Virus
     seed_radius: 3
     radius: 24

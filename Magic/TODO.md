@@ -2,7 +2,18 @@
 
 # New
 
- - Arena saber needs an update (?)
+ - Can't /mblock select by name without /mblock list first
+
+ - Make extra and wearable item shops
+
+ - Doing `/mconfig editor config` gives you just the defaults, without survival, and is what
+   is breaking enchant clicks- need to fix
+   
+ - Why do arena signs have your rank on them- get rid of it
+   
+ - Popcorn skull is a head now
+   
+ - Per-spell setting for dynmap
 
  - Add requirements to path progression
 

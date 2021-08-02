@@ -24,6 +24,7 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.arena.Arena;
 import com.elmakers.mine.bukkit.arena.ArenaController;
@@ -88,6 +89,7 @@ public class SimulateBatch extends SpellBatch {
     private World world;
     private MaterialAndData birthMaterial;
     private Material deathMaterial;
+    private MaterialSet deathMaterials;
     private boolean isAutomata;
     private boolean keepTarget;
     private String arena;
@@ -295,7 +297,7 @@ public class SimulateBatch extends SpellBatch {
             } else {
                 killBlock(block);
             }
-        } else if (blockMaterial == deathMaterial) {
+        } else if (isDead(blockMaterial)) {
             int distanceSquared = birthRangeSquared > 0 || isAutomata
                     ? (int)Math.ceil(block.getLocation().distanceSquared(heartBlock.getLocation()))
                     : 0;
@@ -320,6 +322,13 @@ public class SimulateBatch extends SpellBatch {
         }
 
         return true;
+    }
+
+    protected boolean isDead(Material blockType) {
+        if (deathMaterials == null) {
+            return blockType == deathMaterial;
+        }
+        return deathMaterials.testMaterial(blockType);
     }
 
     protected boolean simulateBlocks(int x, int y, int z) {
@@ -579,7 +588,7 @@ public class SimulateBatch extends SpellBatch {
                         finish();
                         return processedBlocks;
                     }
-                    if (block.getMaterial() == deathMaterial && block.getBlock().getType() != birthMaterial.getMaterial()) {
+                    if (isDead(block.getMaterial()) && block.getBlock().getType() != birthMaterial.getMaterial()) {
                         liveBlocks.remove(blockId);
                         lostBlocks++;
                         this.blockLimit--;
@@ -927,5 +936,9 @@ public class SimulateBatch extends SpellBatch {
 
     public void setArena(String arena) {
         this.arena = arena;
+    }
+
+    public void setDeathMaterials(MaterialSet deathMaterials) {
+        this.deathMaterials = deathMaterials;
     }
 }

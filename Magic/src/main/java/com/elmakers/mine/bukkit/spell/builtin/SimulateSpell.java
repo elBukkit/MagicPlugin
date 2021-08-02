@@ -208,6 +208,10 @@ public class SimulateSpell extends BlockSpell {
             batch.setMinBlocks(parameters.getInt("min_blocks", maxBlocks));
             batch.setKeepTarget(parameters.getBoolean("keep_target", false));
             batch.setArena(parameters.getString("arena"));
+            String deathMaterialsKeys = parameters.getString("death_materials");
+            if (deathMaterialsKeys != null && !deathMaterialsKeys.isEmpty()) {
+                batch.setDeathMaterials(controller.getMaterialSetManager().fromConfig(deathMaterialsKeys));
+            }
 
             int level = parameters.getInt("level", 1);
             if (level < 1) level = 1;
