@@ -105,6 +105,11 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
             displayName = mage.getDisplayName();
             display = displayName;
         }
+        return display;
+    }
+
+    public String getNameAndPath() {
+        String display = getDisplayName();
         if (path != null) {
             display = display + " " + ChatColor.GRAY + "(" + ChatColor.GOLD + path.getName() + ChatColor.GRAY + ")";
         }

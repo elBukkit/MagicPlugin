@@ -538,15 +538,15 @@ public class Arena {
         for (ArenaPlayer messagePlayer : nextUpPlayers) {
             Player player = messagePlayer.getPlayer();
             if (player != null) {
-                String messagePlayerName = messagePlayer.getDisplayName();
+                String messagePlayerName = messagePlayer.getNameAndPath();
                 player.sendMessage(message);
                 for (ArenaPlayer otherArenaPlayer : nextUpPlayers) {
-                    String otherPlayerName = otherArenaPlayer.getDisplayName();
+                    String otherPlayerName = otherArenaPlayer.getNameAndPath();
                     if (!otherPlayerName.equals(messagePlayerName)) {
                         int winCount = otherArenaPlayer.getWins();
                         int lostCount = otherArenaPlayer.getLosses();
 
-                        player.sendMessage(ChatColor.YELLOW + " with " + ChatColor.DARK_AQUA + otherArenaPlayer.getDisplayName() + ChatColor.WHITE + " ("
+                        player.sendMessage(ChatColor.YELLOW + " with " + ChatColor.DARK_AQUA + otherPlayerName + ChatColor.WHITE + " ("
                             + ChatColor.GREEN + winCount + "W" + ChatColor.WHITE + " / " + ChatColor.RED + lostCount + "L" + ChatColor.WHITE + ")");
                     }
                 }
@@ -1074,7 +1074,7 @@ public class Arena {
         if (health >= 0.5) {
             heartDescription = heartDescription + " 1/2";
         }
-        announce(ChatColor.GOLD + winner.getDisplayName() + " is the champion of " + ChatColor.YELLOW + getName());
+        announce(ChatColor.GOLD + winner.getNameAndPath() + " is the champion of " + ChatColor.YELLOW + getName());
         announce(ChatColor.GOLD + " with " + ChatColor.DARK_RED + heartDescription + ChatColor.GOLD
                 + " hearts, and a total of " + ChatColor.GREEN + Integer.toString(winCount) + ChatColor.GOLD + " wins and "
                 + ChatColor.RED + Integer.toString(lostCount) + ChatColor.GOLD + " losses.");
@@ -1128,9 +1128,9 @@ public class Arena {
         arenaPlayer.joined();
 
         if (winCount == 0 && lostCount == 0 && joinedCount == 0) {
-            announce(ChatColor.AQUA + arenaPlayer.getDisplayName() + ChatColor.DARK_AQUA + " has joined " + ChatColor.AQUA + getName() + ChatColor.DARK_AQUA + " for the first time");
+            announce(ChatColor.AQUA + arenaPlayer.getNameAndPath() + ChatColor.DARK_AQUA + " has joined " + ChatColor.AQUA + getName() + ChatColor.DARK_AQUA + " for the first time");
         } else {
-            announce(ChatColor.AQUA + arenaPlayer.getDisplayName() + ChatColor.DARK_AQUA + " has joined " + ChatColor.AQUA + getName()
+            announce(ChatColor.AQUA + arenaPlayer.getNameAndPath() + ChatColor.DARK_AQUA + " has joined " + ChatColor.AQUA + getName()
                     + ChatColor.DARK_AQUA + " with " + ChatColor.GREEN + Integer.toString(winCount) + ChatColor.DARK_AQUA + " wins and "
                     + ChatColor.RED + Integer.toString(lostCount) + ChatColor.DARK_AQUA + " losses.");
         }
