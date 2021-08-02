@@ -1629,11 +1629,73 @@ requirements:
   no_path_end: '&cТы должен изучить все заклинания ранга $path!'
   no_weather: Неподходящая погода
   no_client_platform: Ты не на правильной версии!
+  no_indoors: Нельзя использовать внутри помещения
   light: Уровень освещенности
   time: Время
   height: Высота
   currency: Валюта
   no_cast: '&cТы должен сначала использовать заклинание $spell'
+selector:
+  no_wand: '&cТы должен держать в руке палочку!'
+  no_template: '&cДля палочки $wand нет заклинаний.'
+  no_path: '&cТебе здесь нечего изучать.'
+  no_class: '&cТвой класс должен быть $class'
+  no_required_path: '&cТы должен быть на уровне $path или выше!'
+  no_path_exact: '&cТы должен быть на уровне $path!'
+  no_path_end: '&cТы должен изучить все заклинания ранга $path!'
+  insufficient: '&cСтоит $cost'
+  confirm_title: Купить $item
+  unlock_confirm_title: Разблокировать $item
+  deducted: '&d&oТы купил &r&6$item &r&d&oза &r&a$cost'
+  selected: '&d&oТы купил &r&6$item &r&d&oза &r&a$cost'
+  sold: '&d&oТы продал &r&6$item &r&d&oза &r&a$earn'
+  unlocked: '&d&oТы разблокировал &r&6$item &r&d&oза &r&a$cost'
+  selected_free: '&d&oТы выбрал &r&6$item'
+  not_applicable: У тебя уже есть $item
+  cast_fail: '&cПожалуйста, попробуй еще раз!'
+  warp_fail: '&cУпс, что-то пошло не так!'
+  no_items: Тебе здесь нечего покупать
+  title: Выбирай с умом
+  sell_title: Продать ($balance&0)
+  sell_icon_name: '&6Продать предметы'
+  buy_icon_name: '&aКупить предметы'
+  extra_spell: '&aНе требуется для повышения'
+  no_upgrade: Тебе здесь больше нечего изучать.
+  upgrade_name_change: '&r&4Улучшения: &r$name'
+  level_requirement: '&r&cТребования: &6$path'
+  tags_requirement: '&r&cТребования: &6$tags'
+  cast_requirement: '&r&cИспользований: &6$current&f/&e$required'
+  prerequisite_spell_level: '&6$name'
+  prerequisite_spell_progress_level: ' (Прогресс заклинания $level/$max_level)'
+  required_spells: '&r&cТребуемые заклинания: $spells'
+  cast_spell: $spell
+  unlock_class: $class
+  nothing: Пустота
+  cost_lore: '&6Стоимость: &e$cost'
+  earn_lore: '&6Награда: &e$earn'
+  earn_heading: ''
+  cost_heading: ''
+  unlock_cost_lore: '&6Стоимость разблокировки: &e$cost'
+  locked: '&cНедоступно, &eразблокировать можно на сайте'
+  required_cost_lore: '&cСтоимость: &4$cost'
+  required_unlock_cost_lore: '&cСтоимость разблокировки: &4$cost'
+  has_class: Ты уже имеешь класс $class
+  at_limit: Исчерпан лимит $limit
+  unlocked_lore: '&aРазблокировано'
+  property_requirement: '&r&cТребуется: &6$property &cравное $4$value'
+  property_max: '&r&cУровень &6$property &cслишком высок'
+  property_min: '&r&cУровень &6$property &cдолжен быть выше $4$value'
+  item_amount: $name x$amount
+  attribute: '&6$attribute &f(&b$amount&f)'
+  increase_attribute: Увеличить $attribute на $amount
+  decrease_attribute: Уменьшить $attribute на $amount
+  attribute_max: Нельзя больше увеличивать $attribute
+  attribute_min: Нельзя больше уменьшать $attribute
+  full: Твой инвентарь полон!
+  nostock: Прости, но этот предмет закончился!
+  paid: '&7$owner благодарит тебя за твою работу!'
+  invalid_item: '&cПредмет неизвестен или неверно указан'
+  max_spells: '&cБольше ты не можешь изучать заклиинания'
 shops:
   no_wand: '&cТы должен держать палочку в руке!'
   no_template: '&cНельзя применить это к $wand.'
@@ -2284,6 +2346,8 @@ spells:
     description: Добывает руду
     cast_finish: Добыто немного руды
     upgrade_description: Добывает больше руды
+  mine|3:
+    upgrade_description: Теперь добывает глубинные руды
   mine|4:
     upgrade_description: Теперь добывает всю руду
   mine|5:
@@ -3310,6 +3374,18 @@ spells:
   dailykit:
     name: Ежедневный набор
     description: Дает предметы раз в день
+  rolldice:
+    name: Подбросить кости
+    description: Испытай удачу!
+    rolled_1: Тебе выпала единица!
+    rolled_2: Тебе выпала двойка!
+    rolled_3: Тебе выпала тройка!
+    rolled_4: Тебе выпала четверка!
+    rolled_5: Тебе выпала пятерка!
+    rolled_6: Тебе выпала шестерка!
+  warp:
+    name: Варп
+    description: Для использования в командах или специальных заклинаниях, например: "/cast warp warp замок"
   wolfhouse:
     name: База
     description: Создает самостроющуюся базу
@@ -3541,6 +3617,13 @@ spells:
     target_selected: Используй еще раз, чтобы заполнить, используя $material
     fail: Нельзя заполнить столько!
     cast_finish: Заполнено @blocks блоков, используя $material
+  save:
+    name: Сохранить
+    description: Сохраняет выбранную территорию в виде схематика
+    usage: Используй дважды, чтобы сохранить
+    target_selected: Используй еще раз, чтобы сохранить
+    fail: Нельзя сохранить так много!
+    cast_finish: Файл сохранен как $filename
   superregenerate:
     name: СуперРегенерация
     description: Регенерирует весь чанк
@@ -3887,6 +3970,9 @@ wand:
     vanishing_curse: Проклятие утраты
     water_worker: Подводник
     aqua_affinity: Подводник
+    quick_charge: Быстрая перезарядка
+    piercing: Пронзающая стрела
+    soul_speed: Скорость души
   potion_effect: '&b$effect $roman'
   super_powered: '&3Сверхмощный'
   super_protected: '&3Неуязвимость'
@@ -4044,6 +4130,11 @@ wand:
   spell_prefix: '&6'
   brush_prefix: '&7'
   chest_inventory_title: $wand
+  inventory_open: |-
+    &8------------------------
+    &7Инвентарь заклинаний открыт
+  inventory_open_cycle: '&b&bull; &fНажми &7для смены страницы'
+  inventory_open_cycle_hotbar: '&b&bull; &fПКМ &7для смены хотбара'
   materia_earn_instructions: |-
     &8| &7> &fТы получил немного &6Материи!
     &8| &7> &fКоличество &6Материи &fотбражается над шкалой маны
@@ -4077,6 +4168,11 @@ wands:
   apprentice:
     name: Палочка подмастерья
     description: Для демонстрационных целей
+  archer:
+    name: Лук лучника
+    description: |-
+      &cТолько для демонстрационных целей!
+      &eЭтот лук представляет игрока, который смог собрать все заклиинания Лучника.
   rage:
     name: Меч Ярости
     description: Получает энергию во время удара по врагу
@@ -4343,6 +4439,12 @@ wands:
   inventorymode:
     name: Режим инвентаря
     description: Для экспертов Магии
+  particles:
+    name: Показывать частицы
+    description: Включить отображение частиц
+  noparticles:
+    name: Скрыть частицы
+    description: Выключить отображение частиц
   quickcast_enable:
     name: Быстрое применение (Включить)
     description: Включить быстрое применение для всех заклинаний
@@ -4531,6 +4633,17 @@ wands:
   rainbowboots:
     name: Радужные ботинки
     spell_aura: ''
+  camohelmet:
+    name: Камуфляжный шлем
+    spell_aura: ''
+  camochestplate:
+    name: Камуфляжный нагрудник
+    spell_aura: ''
+  camoleggings:
+    name: Камуфляжные штаны
+    spell_aura: ''
+  camoboots:
+    name: Камуфляжные ботинки
   iceskates:
     name: Коньки
   admintool:
@@ -4554,7 +4667,27 @@ wands:
   foxhelmet:
     name: Шапка из Лисы
   arcticfoxhelmet:
-    name: Arctic Fox Helmet
+    name: Шапка из Песца
+  dice:
+    name: Кости
+    description: Одна кость, если быть точным
+  sandwich:
+    name: Сендвич
+  toasted_sandwich:
+    name: Запеченный сендвич
+  bread_slice:
+    name: Кусок хлеба
+  toast:
+    name: Тост
+  commandwand:
+    name: Палочка для команд
+    description: |-
+      &eИспользуй &f/wand&e <команда> для кастомизации палочки
+      &f/wand name Прибор телепортации
+      &f/wand configure description ПКМ для перемещения к спавну
+      &f/wand override commands spawn
+      &f/mitem save spawntool
+      &f/mgive spawntool
   wolf:
     name: Волк
     description: Посох/палочка NathanWolf
@@ -4567,6 +4700,12 @@ wands:
   conduit:
     name: Посох магистра
     description: Посох ранга $path
+  conduitwand:
+    name: Палочка магистра
+    description: |-
+      &cТолько для демонстрационных целей!
+      &eДанная палочка представляет игрока, который смог собрать все заклинания Магистра.
+      Однако эта палочка не содержит большинство заклиинаний Волшебника и ниже.
   architectstaff:
     name: Архитектор
     description: С великой силой приходит великая ответственность
@@ -4773,17 +4912,25 @@ classes:
     name: Лучник-маг
     description: Умеет обращаться с магическим луком
   butterfly:
-    name: Butterfly Wings
-    description: It gives you wiiiiiiiings
+    name: Крылья бабочки
+    description: Дает тебе крылья!
   tail:
-    name: Demon Tail
-    description: So pointy!
+    name: Демонический хвост
+    description: Такой острый!
   crown:
-    name: Crown
-    description: You'll always be royal
+    name: Корона
+    description: Почувствуй себя королем
 items:
   emerald_sword:
     name: Изумрудный меч
+  invisible_item_frame:
+    name: Невидимая рамка
+  coffee1:
+    name: Чашечка кофе
+  coffee2:
+    name: Эспрессо
+  coffee3:
+    name: Двойной эспрессо
 kits:
   admin:
     name: Набор Админа
@@ -4863,6 +5010,8 @@ mobs:
     name: '&cРа&6ду&eжн&aый&b Дра&dКон'
   dummy:
     name: Мишень
+  marigold:
+    name: '&6Мэригольд'
   dummynoai:
     name: Глупая Мишень
   extraspellshop:
