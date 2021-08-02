@@ -1,0 +1,22 @@
+wearableitemshop:
+    name: Vanilla Item Shop
+    hidden: true
+    inherit: buyshop
+    parameters:
+        title: "Wearables &7(&b$balance&7)"
+        confirm: false
+        auto_close: true
+        icon_hide_flags: 0
+        icon_unbreakable: false
+        scale: 0.01
+        items:
+            - none
+            - magichat
+            - wizardhelmet
+            - wizardchestplate
+            - wizaardleggings
+            - wizardboots
+            - divinghelmet
+            - goggles
+            - none
+

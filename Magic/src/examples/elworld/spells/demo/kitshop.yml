@@ -5,6 +5,7 @@ kitshop:
       - class: Selector
   parameters:
     target: self
+    title: "Kits"
     options:
       - kit: gold_kit
       - placeholder: true

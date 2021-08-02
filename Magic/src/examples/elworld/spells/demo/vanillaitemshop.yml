@@ -7,6 +7,7 @@ vanillaitemshop:
         auto_close: true
         icon_hide_flags: 0
         icon_unbreakable: false
+        title: "Vanilla &7(&b$balance&7)"
         scale: 0.01
         items:
             - none

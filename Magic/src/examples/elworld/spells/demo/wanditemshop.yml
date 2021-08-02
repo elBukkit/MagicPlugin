@@ -1,0 +1,21 @@
+wanditemshop:
+    name: Wand Item Shop
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: false
+        auto_close: true
+        icon_hide_flags: 0
+        icon_unbreakable: false
+        scale: 0.01
+        title: "Wand Items &7(&b$balance&7)"
+        items:
+            - none
+            - ocarina
+            - broomstick
+            - blaster
+            - camera
+            - none
+            - item: paper
+              description: Use to take photos with the &6Camera
+            - none

@@ -3,6 +3,7 @@ weaponshop:
   name: Weapon Shop
   inherit: buyshop
   parameters:
+    title: "Weapons &7(&b$balance&7)"
     confirm: false
     auto_close: true
     items:
