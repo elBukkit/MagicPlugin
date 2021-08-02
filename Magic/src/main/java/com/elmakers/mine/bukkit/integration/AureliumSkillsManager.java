@@ -52,7 +52,7 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
         manaCostReduction = configuration.getDouble("mana_cost_reduction", 0.0);
         registerCurrencies = enabled && configuration.getBoolean("use_xp_currencies", true);
         if (manaScale <= 0) {
-            controller.getLogger().info("Invalid mana scale in aurelium_sklls configuration: " + manaScale);
+            controller.getLogger().info("Invalid mana scale in aurelium_skills configuration: " + manaScale);
             manaScale = 1;
         }
 
@@ -93,7 +93,7 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
             }
             statusString += StringUtils.join(integrations, ",");
         }
-        controller.getLogger().info("AureliumSkills found " + statusString);
+        controller.getLogger().info("AureliumSkills found" + statusString);
     }
 
     public void register(ConfigurationSection currencyConfiguration) {
