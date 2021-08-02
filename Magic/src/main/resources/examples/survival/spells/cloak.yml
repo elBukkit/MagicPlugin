@@ -19,15 +19,6 @@ cloak:
         cast:
         - class: Vanish
         - class: PotionEffect
-        - class: Wear
-          item: pumpkin_seeds
-          slot: chestplate
-        - class: Wear
-          item: pumpkin_seeds
-          slot: leggings
-        - class: Wear
-          item: pumpkin_seeds
-          slot: boots
         - class: AreaOfEffect
           actions:
             - class: Aggro
