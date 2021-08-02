@@ -52,6 +52,7 @@ public class ConfigurationLoadTask implements Runnable {
     private final Map<String, String> exampleKeyNames = new HashMap<>();
 
     private final Map<String, ConfigurationSection> builtinConfigurations = new HashMap<>();
+    private final Map<String, ConfigurationSection> loadedConfigurationFiles = new HashMap<>();
 
     private static final Object loadLock = new Object();
 
@@ -399,8 +400,13 @@ public class ConfigurationLoadTask implements Runnable {
     }
 
     private ConfigurationSection loadConfiguration(String fileType, File configFile) throws IOException, InvalidConfigurationException {
-        ConfigurationSection config = CompatibilityLib.getCompatibilityUtils().loadConfiguration(configFile);
-        checkBuiltin(fileType, configFile, config);
+        String path = configFile.getAbsolutePath();
+        ConfigurationSection config = loadedConfigurationFiles.get(path);
+        if (config == null) {
+            config = CompatibilityLib.getCompatibilityUtils().loadConfiguration(configFile);
+            checkBuiltin(fileType, configFile, config);
+            loadedConfigurationFiles.put(path, config);
+        }
         return config;
     }
 
