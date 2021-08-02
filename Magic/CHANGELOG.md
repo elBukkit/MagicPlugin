@@ -10,6 +10,7 @@
 
  - The Cloak spell no longer removes your armor
  - Mine level 4 no longer mines full blocks
+ - Tweak survival volume again, to 75%
 
 ## Additions
 
