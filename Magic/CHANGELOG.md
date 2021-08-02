@@ -6,6 +6,8 @@
 
  - Mine will mine nether ores (1.16+)
  - The `slimefun` example RP updated, will continue to update going forward
+ - Attempt to resolve issues that occurred due to using `/mconfig editor` and having the default configs copied into 
+   your custom configs. This seems to be the main issue a lot of people were having with the enchantment table.
 
 ## Changes
 

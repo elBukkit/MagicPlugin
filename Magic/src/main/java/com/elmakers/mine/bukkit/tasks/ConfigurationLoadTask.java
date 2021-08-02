@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -49,6 +50,8 @@ public class ConfigurationLoadTask implements Runnable {
     private final Map<String, ConfigurationSection> baseSpellConfigurations = new HashMap<>();
     private final Map<String, ConfigurationSection> exampleConfigurations = new HashMap<>();
     private final Map<String, String> exampleKeyNames = new HashMap<>();
+
+    private final Map<String, ConfigurationSection> builtinConfigurations = new HashMap<>();
 
     private static final Object loadLock = new Object();
 
@@ -112,7 +115,7 @@ public class ConfigurationLoadTask implements Runnable {
             File externalFile = new File(plugin.getDataFolder(), examplesFileName);
             if (externalFile.exists()) {
                 try {
-                    exampleConfig = CompatibilityLib.getCompatibilityUtils().loadConfiguration(externalFile);
+                    exampleConfig = loadConfiguration(examplesPrefix, externalFile);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + examplesFileName);
                 }
@@ -122,7 +125,7 @@ public class ConfigurationLoadTask implements Runnable {
                     if (exampleConfig == null) {
                         exampleConfig = ConfigurationUtils.newConfigurationSection();
                     }
-                    exampleConfig = loadConfigFolder(exampleConfig, externalFolder, false);
+                    exampleConfig = loadConfigFolder(examplesPrefix, exampleConfig, externalFolder, false);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + examplesFileName);
                 }
@@ -262,7 +265,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        loadConfigFolder(config, configSubFolder, false);
+        loadConfigFolder(fileName, config, configSubFolder, false);
 
         // Save default configs for inspection
         if (saveDefaultConfigs) {
@@ -349,6 +352,58 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
+    @Nonnull
+    private ConfigurationSection getBuiltin(String fileType) {
+        ConfigurationSection builtin = builtinConfigurations.get(fileType);
+        if (builtin == null) {
+            File targetFile = new File(controller.getPlugin().getDataFolder(), "defaults/" + fileType + ".defaults.yml");
+            if (!targetFile.exists()) {
+                controller.getLogger().warning("Missing builtin default file for " + fileType);
+                return ConfigurationUtils.newConfigurationSection();
+            }
+            try {
+                YamlConfiguration newFile = new YamlConfiguration();
+                newFile.load(targetFile);
+                builtin = newFile;
+                builtinConfigurations.put(fileType, builtin);
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error loading defaults file: " + targetFile.getAbsolutePath(), ex);
+                return ConfigurationUtils.newConfigurationSection();
+            }
+        }
+        return builtin;
+    }
+
+    private void checkBuiltin(String fileType, File file, ConfigurationSection config) {
+        if (!(config instanceof YamlConfiguration)) {
+            return;
+        }
+
+        YamlConfiguration yaml = (YamlConfiguration)config;
+        String header = yaml.options().header();
+        // Yeah really ugly, ik, ik
+        if (header == null || !header.contains("file is merged from the files")) {
+            return;
+        }
+
+        controller.getLogger().info("Note: You have a " + fileType + " at " + file.getAbsolutePath() + " that was copied from the defaults, will ignore anything that is set to the same as defaults to avoid unintentionally overriding loaded examples");
+        ConfigurationSection builtinConfig = getBuiltin(fileType);
+        Set<String> keys = config.getKeys(false);
+        for (String key : keys) {
+            Object configValue = config.get(key);
+            Object builtinValue = builtinConfig.get(key);
+            if (Objects.equals(configValue, builtinValue)) {
+                config.set(key, null);
+            }
+        }
+    }
+
+    private ConfigurationSection loadConfiguration(String fileType, File configFile) throws IOException, InvalidConfigurationException {
+        ConfigurationSection config = CompatibilityLib.getCompatibilityUtils().loadConfiguration(configFile);
+        checkBuiltin(fileType, configFile, config);
+        return config;
+    }
+
     private ConfigurationSection loadOverrides(String fileName) throws IOException, InvalidConfigurationException {
         String configFileName = fileName + ".yml";
         File configFile = new File(configFolder, configFileName);
@@ -360,7 +415,7 @@ public class ConfigurationLoadTask implements Runnable {
         info("Loading " + configFile.getName());
         ConfigurationSection results;
         try {
-            results = CompatibilityLib.getCompatibilityUtils().loadConfiguration(configFile);
+            results = loadConfiguration(fileName, configFile);
         } catch (Exception ex) {
             getLogger().severe("Error loading: " + configFileName);
             throw ex;
@@ -477,7 +532,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        loadConfigFolder(config, configSubFolder, !isUnkeyedConfig);
+        loadConfigFolder(fileName, config, configSubFolder, !isUnkeyedConfig);
 
         // Clear any enabled flags we added in to re-enable disabled inherited configs
         clearEnabled(config);
@@ -639,7 +694,7 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
-    private ConfigurationSection loadConfigFolder(ConfigurationSection config, File configSubFolder, boolean reenable)
+    private ConfigurationSection loadConfigFolder(String fileType, ConfigurationSection config, File configSubFolder, boolean reenable)
         throws IOException, InvalidConfigurationException {
         if (configSubFolder.exists()) {
             List<File> priorityFiles = new ArrayList<>();
@@ -647,7 +702,7 @@ public class ConfigurationLoadTask implements Runnable {
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
                 if (file.isDirectory()) {
-                    config = loadConfigFolder(config, file, reenable);
+                    config = loadConfigFolder(fileType, config, file, reenable);
                 } else {
                     if (!file.getName().endsWith(".yml")) continue;
                     if (file.getName().startsWith("_")) {
@@ -655,7 +710,7 @@ public class ConfigurationLoadTask implements Runnable {
                         continue;
                     }
                     try {
-                        ConfigurationSection fileOverrides = CompatibilityLib.getCompatibilityUtils().loadConfiguration(file);
+                        ConfigurationSection fileOverrides = loadConfiguration(fileType, file);
                         info(" Loading " + file.getName());
                         if (reenable) {
                             enableAll(fileOverrides);
