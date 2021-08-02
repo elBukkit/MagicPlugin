@@ -1,4 +1,4 @@
-pasteonground:
+fakeonground:
     icon: diamond_axe:129
     icon_disabled: diamond_hoe:129
     actions:
@@ -9,7 +9,7 @@ pasteonground:
             actions:
             - class: Volume
               actions:
-              - class: ModifyBlock
+              - class: FakeBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -25,7 +25,7 @@ pasteonground:
         brush: schematic|tent
         destructible: destructible_replace
         orient: false
-        target_offset: 0,-2,0
+        target_offset: 0,2,0
     costs:
         mana: 100
 
