@@ -56,6 +56,9 @@ public class FakeBlockAction extends BaseSpellAction {
         if (!brush.isValid()) {
             return SpellResult.FAIL;
         }
+        if (!brush.isTargetValid()) {
+            return SpellResult.NO_TARGET;
+        }
 
         // Store this list for the duration of the cast to prevent making a zillion lists
         List<WeakReference<Player>> targetPlayers;

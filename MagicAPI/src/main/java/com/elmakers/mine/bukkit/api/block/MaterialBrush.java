@@ -31,4 +31,5 @@ public interface MaterialBrush extends MaterialAndData {
     boolean isEraseModifierActive();
     boolean isErase();
     MaterialBrush getCopy();
+    boolean isTargetValid();
 }

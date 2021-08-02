@@ -121,6 +121,9 @@ public class ModifyBlockAction extends BaseSpellAction {
         if (!brush.isValid()) {
             return SpellResult.FAIL;
         }
+        if (!brush.isTargetValid()) {
+            return SpellResult.NO_TARGET;
+        }
 
         if (!replaceSame && !brush.isDifferent(block)) {
             return SpellResult.NO_TARGET;
