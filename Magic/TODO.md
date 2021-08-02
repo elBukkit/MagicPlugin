@@ -2,11 +2,8 @@
 
 # New
 
- - Test spells with custom attributes
+ - Test spells with custom attributes (seems ok, maybe they are listening to LoadEvent?)
  - Try FakeBlock with schematics - not updating brush center maybe?
- - Can't /mblock select by name without /mblock list first
-
- - Make extra and wearable item shops
 
  - Doing `/mconfig editor config` gives you just the defaults, without survival, and is what
    is breaking enchant clicks- need to fix

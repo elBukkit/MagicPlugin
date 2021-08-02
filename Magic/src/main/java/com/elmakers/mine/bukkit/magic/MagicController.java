@@ -3297,6 +3297,9 @@ public class MagicController implements MageController {
     }
 
     protected void clearHandlers() {
+        // Clear external providers
+        externalProviders.clear();
+
         // Setup custom providers
         currencies.clear();
         attributeProviders.clear();
