@@ -198,7 +198,7 @@ skull_pokeball:
   name: '&bPokeball'
 
 skull_popcorn:
-  item: skull:http://textures.minecraft.net/texture/70bb2f279162d877c18897639a99cb3b8d25e72e2bdf85fa90eac149f3de0cf6
+  item: skull:http://textures.minecraft.net/texture/73547dd559162ed35411aec9f6832815fb09e4d8ad416bb21cb4c1c947ebb5a
   worth: 200
   name: '&bPopcorn'
 
