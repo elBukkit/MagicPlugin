@@ -9,32 +9,36 @@ vanillaitemshop:
         icon_unbreakable: false
         scale: 0.01
         items:
-        - none
-        - none
-        - hylian_shield
-        - emerald_sword
-        - vanilla_master_sword
-        - skull_globe
-        - coffee1
-        - none
-        - none
-        
-        - none
-        - silk_touch_pickaxe
-        - dwarven_battle_axe
-        - dwarven_spade
-        - dwarven_pickaxe
-        - dwarven_pickaxe_luck
-        - felicis_pickaxe
-        - dwarven_felicis_pickaxe
-        - none
+            - none
+            - none
+            - hylian_shield
+            - emerald_sword
+            - vanilla_master_sword
+            - icon: skull_globe
+              name: Custom Skull Items!
+              description: Magic comes pre-packaged with several custom skull items you can use for decorating.
+              cast_spell: trinketshop
+              cast_spell_parameters:
+                  scale: 0.01
+            - coffee1
+            - none
+            - none
+            - none
+            - silk_touch_pickaxe
+            - dwarven_battle_axe
+            - dwarven_spade
+            - dwarven_pickaxe
+            - dwarven_pickaxe_luck
+            - felicis_pickaxe
+            - dwarven_felicis_pickaxe
+            - none
+            - none
+            - none
+            - none
+            - none
+            - superelytra
+            - none
+            - none
+            - none
+            - none
 
-        - none
-        - none
-        - none
-        - none
-        - superelytra
-        - none
-        - none
-        - none
-        - none
