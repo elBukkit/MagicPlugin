@@ -1,0 +1,17 @@
+refugee:
+  keep_inventory: false
+  keep_level: false
+  item_wear: true
+  allow_consuming: true
+  allow_melee: true
+  allow_projectiles: true
+  leaderboard_sign_type: birch_wall_sign
+  countdown_max: 10
+  op_check: false
+  lobby: ''
+  win: ''
+  lose: ''
+  exit: ''
+  spawns: []
+  randomize:
+    spawn: 30.0,0.0,30.0

@@ -1,0 +1,19 @@
+otherside:
+  min_players: 1
+  start_commands: mblock select arena;mblock enable;mblock select arena2;mblock enable
+  end_commands: mblock select arena;mblock disable;mblock select arena2;mblock disable
+  keep_inventory: false
+  keep_level: false
+  item_wear: false
+  allow_consuming: true
+  allow_melee: true
+  allow_projectiles: true
+  leaderboard_sign_type: oak_wall_sign
+  countdown: 5
+  countdown_max: 5
+  op_check: false
+  lobby: ''
+  win: ''
+  lose: ''
+  exit: ''
+  spawns: []
