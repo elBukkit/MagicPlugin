@@ -1888,6 +1888,7 @@ public class MagicController implements MageController {
             finalizeIntegrationPostLoad();
         } else {
             // Update anything in the world that may have had its config changed
+            logger.setContext("reload active magic blocks");
             try {
                 updateActiveBlocks();
             } catch (Exception ex) {
@@ -1895,6 +1896,7 @@ public class MagicController implements MageController {
             }
 
             // Update any currently loaded mobs
+            logger.setContext("reload active mobs");
             try {
                 mobs.updateAllMobs();
             } catch (Exception ex) {
@@ -1902,12 +1904,24 @@ public class MagicController implements MageController {
             }
 
             // Update all NPCs, they will have a reference to a potentially-stale EntityData
+            logger.setContext("reload active npcs");
             for (MagicNPC npc : npcs.values()) {
                 try {
                     npc.update();
                 } catch (Exception ex) {
                     getLogger().log(Level.SEVERE, "Error updating npc " + npc.getName(), ex);
                 }
+            }
+
+            // Update registered mages so their passive effects take into account classes and modifiers
+            logger.setContext("reload active mages");
+            for (Mage mage : mages.values()) {
+                if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                    com.elmakers.mine.bukkit.magic.Mage impl = ((com.elmakers.mine.bukkit.magic.Mage)mage);
+                    impl.reloadClasses();
+                    impl.reloadModifiers();
+                }
+                mage.updatePassiveEffects();
             }
         }
 
@@ -2006,11 +2020,6 @@ public class MagicController implements MageController {
         loadBlockTemplates(loader.getBlocks());
         logger.setContext(null);
         log("Loaded " + magicBlockTemplates.size() + " automata templates");
-
-        // Update registered mages so their passive effects take into account classes and modifiers
-        for (Mage mage : mages.values()) {
-            mage.updatePassiveEffects();
-        }
 
         logger.setContext(null);
     }
@@ -4627,13 +4636,6 @@ public class MagicController implements MageController {
                 }
             }
         }
-
-        // Update registered mages so their classes are current
-        for (Mage mage : mages.values()) {
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage) mage).reloadClasses();
-            }
-        }
     }
 
     public void loadModifiers(ConfigurationSection properties) {
@@ -4663,13 +4665,6 @@ public class MagicController implements MageController {
                         template.setParent(parent);
                     }
                 }
-            }
-        }
-
-        // Update registered mages so their classes are current
-        for (Mage mage : mages.values()) {
-            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
-                ((com.elmakers.mine.bukkit.magic.Mage) mage).reloadModifiers();
             }
         }
     }
