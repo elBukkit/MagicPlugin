@@ -2,6 +2,8 @@
 
 # New
 
+ - Test spells with custom attributes
+ - Try FakeBlock with schematics - not updating brush center maybe?
  - Can't /mblock select by name without /mblock list first
 
  - Make extra and wearable item shops

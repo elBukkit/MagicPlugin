@@ -57,7 +57,7 @@ mine:
         range: 32
         limit: 8
         depth: 2
-        destructible: ores
+        destructible: ores,deepslate_ores
         cooldown: 10000
         bypass_undo: true
         delay: 100
@@ -72,7 +72,6 @@ mine|2:
 mine|3:
     upgrade_required_path: master
     parameters:
-        destructible: ores,nether_ores
         limit: 32
         depth: 5
 
