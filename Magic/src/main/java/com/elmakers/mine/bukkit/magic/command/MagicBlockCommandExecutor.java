@@ -514,6 +514,16 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
                     break;
                 }
             }
+
+            // Search through all blocks in case the list is stale
+            if (magicBlock == null) {
+                for (com.elmakers.mine.bukkit.api.block.magic.MagicBlock candidate : selections.getAll()) {
+                    if (candidate.getName().equalsIgnoreCase(name) || candidate.getTemplateKey().equalsIgnoreCase(name)) {
+                        magicBlock = (MagicBlock) candidate;
+                        break;
+                    }
+                }
+            }
         }
         if (magicBlock == null) {
             sender.sendMessage(ChatColor.RED + "Could not find: " + ChatColor.WHITE + name);
