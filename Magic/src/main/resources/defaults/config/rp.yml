@@ -62,3 +62,7 @@ alternate_resource_packs:
     url_icons_enabled: true
   survival:
     url: "http://rp.elmakers.com/Magic-RP-1.17.zip"
+  all:
+    url: "http://rp.elmakers.com/Magic-all-RP-1.17.zip"
+  modelengine:
+    url: "http://rp.elmakers.com/Magic-modelengine-RP-1.17.zip"

@@ -5,11 +5,13 @@
 ## Fixes
 
  - Mine will mine nether ores (1.16+)
+ - The `slimefun` example RP updated, will continue to update going forward
 
 ## Changes
 
  - The Cloak spell no longer removes your armor
  - Mine level 4 no longer mines full blocks
+ - Night's HTTYD RP now merged with Magic's "all" RP
  - Tweak survival volume again, to 75%
 
 ## Additions
