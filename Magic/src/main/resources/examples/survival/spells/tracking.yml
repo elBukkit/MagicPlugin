@@ -11,8 +11,9 @@ tracking:
     earns: 5
     actions:
         cast:
-         -  class: Orient
-         -  class: PotionEffect
+         - class: Orient
+         - class: PotionEffect
+         - class: ModifyCompass
     effects:
         cast:
         -  class: EffectSingle

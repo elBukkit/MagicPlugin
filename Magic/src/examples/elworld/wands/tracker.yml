@@ -1,6 +1,6 @@
 tracker:
   name: Tracker
-  icon: spider_eye
+  icon: compass
   inherit: basic_wand
   spells: tracking
   mana_max: 20
