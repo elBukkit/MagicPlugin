@@ -15,21 +15,14 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.BlockVector;
-import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.api.data.SerializedLocation;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
@@ -45,61 +38,6 @@ import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
 
 public class ConfigurationUtils extends ConfigUtils {
-
-    @Nullable
-    public static Location getLocation(ConfigurationSection node, String path) {
-        String stringData = node.getString(path);
-        if (stringData == null) {
-            return null;
-        }
-
-        return toLocation(stringData);
-    }
-
-    @Nullable
-    public static SerializedLocation getSerializedLocation(ConfigurationSection node, String path) {
-        String stringData = node.getString(path);
-        if (stringData == null) {
-            return null;
-        }
-
-        return toSerializedLocation(stringData);
-    }
-
-    @Nullable
-    public static BlockFace toBlockFace(String s) {
-        BlockFace face = null;
-        try {
-            face = BlockFace.valueOf(s.toUpperCase());
-        } catch (Exception ex) {
-            face = null;
-        }
-        return face;
-    }
-
-    public static String fromBlockFace(BlockFace face) {
-        return face.name().toLowerCase();
-    }
-
-    public static String fromVector(Vector vector) {
-        if (vector == null) return "";
-        return vector.getX() + "," + vector.getY() + "," + vector.getZ();
-    }
-
-    @Nullable
-    public static Material getMaterial(ConfigurationSection node, String path, Material def) {
-        String stringData = node.getString(path);
-        if (stringData == null || stringData.isEmpty()) {
-            return def;
-        }
-
-        return toMaterial(stringData);
-    }
-
-    @Nullable
-    public static Material getMaterial(ConfigurationSection node, String path) {
-        return getMaterial(node, path, null);
-    }
 
     @Nullable
     public static MaterialAndData getMaterialAndData(ConfigurationSection node, String path) {
@@ -127,135 +65,6 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         return toMaterialAndData(stringData);
-    }
-
-    public static String fromLocation(Location location, Location relativeTo) {
-        if (location == null) return "";
-        if (location.getWorld() == null) return "";
-        if (relativeTo != null && relativeTo.getWorld() == null) return "";
-        if (!relativeTo.getWorld().equals(location.getWorld())) {
-            return fromLocation(location);
-        }
-        location = location.clone();
-        location.subtract(relativeTo);
-        String serialized = location.getX() + "," + location.getY() + "," + location.getZ();
-        if (location.getPitch() != relativeTo.getPitch() || location.getYaw() != relativeTo.getYaw()) {
-            serialized += "," + location.getYaw() + "," + location.getPitch();
-        }
-        return serialized;
-    }
-
-    public static String fromLocation(Location location) {
-        if (location == null) return "";
-        if (location.getWorld() == null) return "";
-        return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorld().getName()
-                + "," + location.getYaw() + "," + location.getPitch();
-    }
-
-    public static String fromSerializedLocation(SerializedLocation location) {
-        if (location == null) return "";
-        if (location.getWorld() == null) return "";
-        return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorldName()
-                + "," + location.getYaw() + "," + location.getPitch();
-    }
-
-    public static String fromMaterial(Material material)
-    {
-        if (material == null) return "";
-        return material.name().toLowerCase();
-    }
-
-    @Nullable
-    public static String getWorldName(String descriptor) {
-        if (descriptor == null) return null;
-        String[] pieces = StringUtils.split(descriptor, ',');
-        return pieces.length > 3 ? pieces[3] : null;
-    }
-
-    @Nullable
-    public static Location toLocation(Object o) {
-        return toLocation(o, null);
-    }
-
-    @Nullable
-    public static Location toLocation(Object o, Location relativeTo) {
-        if (o instanceof Location) {
-            return (Location)o;
-        }
-        SerializedLocation location = toSerializedLocation(o, relativeTo);
-        return location == null ? null : location.asLocation();
-    }
-
-    @Nullable
-    public static SerializedLocation toSerializedLocation(Object o) {
-        return toSerializedLocation(o, null);
-    }
-
-    @Nullable
-    public static SerializedLocation toSerializedLocation(Object o, Location relativeTo) {
-        if (o instanceof SerializedLocation) {
-            return (SerializedLocation)o;
-        }
-        if (o instanceof String) {
-            try {
-                float pitch = 0;
-                float yaw = 0;
-                String[] pieces = StringUtils.split((String)o, ',');
-                double x = parseDouble(pieces[0]);
-                double y = parseDouble(pieces[1]);
-                double z = parseDouble(pieces[2]);
-                String world = null;
-                if (relativeTo != null && (pieces.length == 3 || pieces.length == 5)) {
-                    world = relativeTo.getWorld().getName();
-                    x += relativeTo.getX();
-                    y += relativeTo.getY();
-                    z += relativeTo.getZ();
-                    if (pieces.length == 5) {
-                        yaw = Float.parseFloat(pieces[3]);
-                        pitch = Float.parseFloat(pieces[4]);
-                    } else {
-                        yaw = relativeTo.getYaw();
-                        pitch = relativeTo.getPitch();
-                    }
-                } else {
-                    if (pieces.length > 3) {
-                        world = pieces[3];
-                    } else {
-                        world = Bukkit.getWorlds().get(0).getName();
-                    }
-                    if (pieces.length > 5) {
-                        yaw = Float.parseFloat(pieces[4]);
-                        pitch = Float.parseFloat(pieces[5]);
-                    }
-                }
-                return new SerializedLocation(world, new BlockVector(x, y, z), yaw, pitch);
-            } catch (Exception ex) {
-                return null;
-            }
-        }
-        return null;
-    }
-
-    @Nullable
-    public static Material toMaterial(Object o) {
-        if (o instanceof Material) {
-            return (Material)o;
-        }
-        if (o instanceof Integer) {
-            return Material.values()[(Integer)o];
-        }
-        if (o instanceof String) {
-            String matName = (String)o;
-            try {
-                int value = Integer.parseInt(matName);
-                return CompatibilityLib.getCompatibilityUtils().getMaterial(value);
-            } catch (NumberFormatException ignored) {
-            }
-
-            return Material.getMaterial(matName.toUpperCase());
-        }
-
-        return null;
     }
 
     @Nullable
@@ -483,272 +292,6 @@ public class ConfigurationUtils extends ConfigUtils {
         // This used to avoid combining sections but I can't remember why. Look at this more if something gets weird
         return addConfigurations(first, second, false);
     }
-
-    protected static int parseInt(String s) throws NumberFormatException
-    {
-        if (s == null || s.isEmpty()) return 0;
-        char firstChar = s.charAt(0);
-        if (firstChar == 'r' || firstChar == 'R')
-        {
-            String[] pieces = StringUtils.split(s, "(,)");
-            double min = Double.parseDouble(pieces[1].trim());
-            double max = Double.parseDouble(pieces[2].trim());
-            return (int)Math.floor(random.nextDouble() * (max - min) + min);
-        }
-
-        return (int)Math.floor(Double.parseDouble(s));
-    }
-
-    public static double overrideDouble(String override, double value)
-    {
-        if (override == null || override.length() == 0) return value;
-        try {
-            if (override.startsWith("~")) {
-                override = override.substring(1);
-                value = value + parseDouble(override);
-            } else if (override.startsWith("*")) {
-                override = override.substring(1);
-                value = value * parseDouble(override);
-            } else {
-                value = parseDouble(override);
-            }
-        } catch (Exception ex) {
-            // ex.printStackTrace();
-        }
-
-        return value;
-    }
-
-    protected static double overrideDouble(ConfigurationSection node, double value, String nodeName)
-    {
-        String override = node.getString(nodeName);
-        return overrideDouble(override, value);
-    }
-
-    @Nullable
-    public static World overrideWorld(MageController controller, ConfigurationSection node, String path, World world, boolean canCreateWorlds) {
-        return overrideWorld(controller, node.getString(path), world, canCreateWorlds);
-    }
-
-    @Nullable
-    public static World overrideWorld(MageController controller, String worldName, World world, boolean canCreateWorlds) {
-        if (worldName == null || worldName.length() == 0) return null;
-
-        if (worldName.charAt(0) == '~') {
-            if (world == null) return null;
-
-            String baseWorld = world.getName();
-            worldName = worldName.substring(1);
-            worldName = worldName.trim();
-            if (worldName.charAt(0) == '-') {
-                worldName = worldName.substring(1);
-                worldName = worldName.trim();
-                worldName = baseWorld.replace(worldName, "");
-            } else {
-                worldName = baseWorld + worldName;
-            }
-        }
-
-        World worldOverride = Bukkit.getWorld(worldName);
-        if (worldOverride == null) {
-            if (canCreateWorlds && world != null) {
-                Bukkit.getLogger().info("Creating/Loading world: " + worldName);
-                worldOverride = controller.copyWorld(worldName, world);
-                if (worldOverride == null) {
-                    Bukkit.getLogger().warning("Failed to load world: " + worldName);
-                    return null;
-                }
-            } else {
-                Bukkit.getLogger().warning("Could not load world: " + worldName);
-                return null;
-            }
-        }
-
-        return worldOverride;
-    }
-
-    @Nullable
-    public static Location overrideLocation(MageController controller, ConfigurationSection node, String basePath, Location location, boolean canCreateWorlds) {
-        String xName = basePath + "x";
-        String yName = basePath + "y";
-        String zName = basePath + "z";
-        String dxName = basePath + "dx";
-        String dyName = basePath + "dy";
-        String dzName = basePath + "dz";
-        boolean hasPosition = node.contains(xName) || node.contains(yName) || node.contains(zName);
-        boolean hasDirection = node.contains(dxName) || node.contains(dyName) || node.contains(dzName);
-
-        World baseWorld = location == null ? null : location.getWorld();
-        World worldOverride = overrideWorld(controller, node, basePath + "world", baseWorld, canCreateWorlds);
-
-        if (!hasPosition && !hasDirection && worldOverride == null) return null;
-
-        if (location == null) {
-            if (worldOverride == null) return null;
-            location = new Location(worldOverride, 0, 0, 0);
-        } else {
-            location = location.clone();
-            if (worldOverride != null) {
-                location.setWorld(worldOverride);
-            }
-        }
-        if (hasPosition) {
-            location.setX(overrideDouble(node, location.getX(), xName));
-            location.setY(overrideDouble(node, location.getY(), yName));
-            location.setZ(overrideDouble(node, location.getZ(), zName));
-        }
-
-        if (hasDirection) {
-            Vector direction = location.getDirection();
-            direction.setX(overrideDouble(node, direction.getX(), dxName));
-            direction.setY(overrideDouble(node, direction.getY(), dyName));
-            direction.setZ(overrideDouble(node, direction.getZ(), dzName));
-
-            location.setDirection(direction);
-        }
-
-        return location;
-    }
-
-    public static Color getColor(ConfigurationSection node, String path, Color def) {
-        Color o = toColor(node.get(path));
-        return o == null ? def : o;
-    }
-
-    @Nullable
-    public static Color toColor(Object o) {
-        if (o == null) {
-            return null;
-        } else if (o instanceof Byte) {
-            return Color.fromRGB((Byte) o);
-        } else if (o instanceof Integer) {
-            return Color.fromRGB((Integer) o);
-        } else if (o instanceof Double) {
-            return Color.fromRGB((int) (double) (Double) o);
-        } else if (o instanceof Float) {
-            return Color.fromRGB((int) (float) (Float) o);
-        } else if (o instanceof Long) {
-            return Color.fromRGB((int) (long) (Long) o);
-        } else if (o instanceof String) {
-            try {
-                String s = (String)o;
-                if (s.length() == 0) return null;
-                if (s.charAt(0) == '#') {
-                    s = s.substring(1);
-                }
-                if (s.startsWith("rand")) {
-                    return Color.fromRGB(random.nextInt(16777216));
-                }
-                Integer rgb = Integer.parseInt(s, 16);
-                return Color.fromRGB(rgb);
-            } catch (NumberFormatException ex) {
-                return null;
-            }
-        } else if (o instanceof ConfigurationSection) {
-            ConfigurationSection config = (ConfigurationSection)o;
-            ColorHD color = new ColorHD(config);
-            return color.getColor();
-        }
-
-        return null;
-    }
-
-    public static Integer getInteger(ConfigurationSection node, String path, Integer def)
-    {
-        if (node.contains(path)) {
-            String strVal = node.getString(path);
-            try {
-                return parseInt(strVal);
-            } catch (NumberFormatException ex) {
-                Bukkit.getLogger().warning("Failed to parse as integer: " + strVal);
-            }
-        }
-        return def;
-    }
-
-    public static Double getDouble(ConfigurationSection node, String path, Double def)
-    {
-        if (node.contains(path)) {
-            String strVal = node.getString(path);
-            try {
-                return parseDouble(strVal);
-            } catch (NumberFormatException ex) {
-                Bukkit.getLogger().warning("Failed to parse as number: " + strVal);
-            }
-        }
-        return def;
-    }
-
-    public static Boolean getBoolean(ConfigurationSection node, String path, Boolean def)
-    {
-        if (node.contains(path)) return node.getBoolean(path);
-        return def;
-    }
-
-    public static void addIfNotEmpty(String message, Collection<String> list) {
-        if (message != null && !message.isEmpty()) {
-            list.add(message);
-        }
-    }
-
-     /**
-      * Gets a list of integers. Non-valid entries will not be in the list.
-      * There will be no null slots. If the list is not defined, the
-      * default will be returned. 'null' can be passed for the default
-      * and an empty list will be returned instead. The node must be
-      * an actual list and not just an integer.
-      *
-      * @param section the ConfigurationSection to load the list from
-      * @param path path to node (dot notation)
-      */
-     public static List<Integer> getIntegerList(ConfigurationSection section, String path) {
-         List<Object> raw = getList(section, path);
-
-         if (raw == null) {
-             return new ArrayList<>();
-         }
-         List<Integer> list = new ArrayList<>();
-
-         for (Object o : raw) {
-             Integer i = castInt(o);
-             if (i != null) {
-                 list.add(i);
-             }
-         }
-
-         return list;
-     }
-
-     /**
-      * Casts a value to an integer. May return null.
-      *
-      * @param o the object to cast
-      * @return an Integer, or null on failure
-      */
-     @Nullable
-     private static Integer castInt(Object o) {
-         if (o == null) {
-             return null;
-         } else if (o instanceof Byte) {
-             return (int) (Byte) o;
-         } else if (o instanceof Integer) {
-             return (Integer) o;
-         } else if (o instanceof Double) {
-             return (int) (double) (Double) o;
-         } else if (o instanceof Float) {
-             return (int) (float) (Float) o;
-         } else if (o instanceof Long) {
-             return (int) (long) (Long) o;
-         } else if (o instanceof String) {
-             try {
-                 return Integer.parseInt((String)o);
-             } catch (NumberFormatException ex) {
-                 return null;
-             }
-         } else {
-             return null;
-         }
-     }
 
     public static void addParameters(String[] extraParameters, ConfigurationSection parameters)
     {
@@ -1073,5 +616,47 @@ public class ConfigurationUtils extends ConfigUtils {
             requirements.add(new Requirement(singleConfiguration));
         }
         return requirements;
+    }
+
+    @Nullable
+    public static Material toMaterial(Object o) {
+        if (o instanceof Material) {
+            return (Material)o;
+        }
+        if (o instanceof Integer) {
+            return Material.values()[(Integer)o];
+        }
+        if (o instanceof String) {
+            String matName = (String)o;
+            try {
+                int value = Integer.parseInt(matName);
+                return CompatibilityLib.getCompatibilityUtils().getMaterial(value);
+            } catch (NumberFormatException ignored) {
+            }
+
+            return Material.getMaterial(matName.toUpperCase());
+        }
+
+        return null;
+    }
+
+    @Nullable
+    public static Material getMaterial(ConfigurationSection node, String path, Material def) {
+        String stringData = node.getString(path);
+        if (stringData == null || stringData.isEmpty()) {
+            return def;
+        }
+
+        return toMaterial(stringData);
+    }
+
+    @Nullable
+    public static Material getMaterial(ConfigurationSection node, String path) {
+        return getMaterial(node, path, null);
+    }
+
+    public static String fromMaterial(Material material) {
+        if (material == null) return "";
+        return material.name().toLowerCase();
     }
 }
