@@ -2346,10 +2346,6 @@ spells:
     description: Добывает руду
     cast_finish: Добыто немного руды
     upgrade_description: Добывает больше руды
-  mine|3:
-    upgrade_description: Теперь добывает глубинные руды
-  mine|4:
-    upgrade_description: Теперь добывает всю руду
   mine|5:
     upgrade_description: Дает бонусную руду
   mine|6:
@@ -3385,7 +3381,7 @@ spells:
     rolled_6: Тебе выпала шестерка!
   warp:
     name: Варп
-    description: Для использования в командах или специальных заклинаниях, например: "/cast warp warp замок"
+    description: 'Для использования в командах или специальных заклинаниях, например: /cast warp warp замок'
   wolfhouse:
     name: База
     description: Создает самостроющуюся базу
