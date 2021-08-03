@@ -779,6 +779,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     public void onTeleport(PlayerTeleportEvent event) {
+        for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
+            Batch batch = iterator.next();
+            if (!(batch instanceof SpellBatch)) continue;
+            SpellBatch spellBatch = (SpellBatch)batch;
+            Spell spell = spellBatch.getSpell();
+            if (spell.cancelOnWorldChange()) {
+                batch.cancel();
+                iterator.remove();
+            }
+        }
         if (DEACTIVATE_WAND_ON_WORLD_CHANGE) {
             Location from = event.getFrom();
             Location to = event.getTo();

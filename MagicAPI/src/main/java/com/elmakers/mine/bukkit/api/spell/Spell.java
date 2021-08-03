@@ -82,6 +82,7 @@ public interface Spell extends SpellTemplate {
     ConfigurationSection getWorkingParameters();
     void finish(CastContext context);
     double cancelOnDamage();
+    boolean cancelOnWorldChange();
     boolean cancelOnCastOther();
     boolean cancelOnDeath();
     boolean cancelOnDeactivate();

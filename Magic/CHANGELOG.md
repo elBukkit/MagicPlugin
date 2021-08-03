@@ -29,6 +29,7 @@
  - Add support for custom ender signals (1.17+) - see diamondsignal elworld example spell
  - Add `ModifyCompass` action (1.17+), will turn a compass into a lodestone compass with a custom target location
  - Add `aware` mob flag (1.17+), works like `ai` but they can still move
+ - Add `cancel_on_world_change` spell option, apply to broom to avoid losing broomsticks when changing worlds
 
 # 9.4.2
 
