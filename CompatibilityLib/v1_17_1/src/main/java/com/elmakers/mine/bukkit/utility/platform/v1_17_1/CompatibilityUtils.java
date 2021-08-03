@@ -122,6 +122,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Motive;
@@ -1619,5 +1620,21 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         compassMeta.setLodestoneTracked(trackLocation);
         compassMeta.setLodestone(targetLocation);
         return true;
+    }
+
+    @Override
+    public boolean isAware(Entity entity) {
+        if (!(entity instanceof org.bukkit.entity.Mob)) {
+            return true;
+        }
+        return ((org.bukkit.entity.Mob)entity).isAware();
+    }
+
+    @Override
+    public void setAware(Entity entity, boolean aware) {
+        if (!(entity instanceof org.bukkit.entity.Mob)) {
+            return;
+        }
+        ((org.bukkit.entity.Mob)entity).setAware(aware);
     }
 }

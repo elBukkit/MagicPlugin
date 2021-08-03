@@ -27,6 +27,7 @@
  - Add `level_spells_to_path` wand option, used in example wands to level up spells to an appropriate level
  - Add support for custom ender signals (1.17+) - see diamondsignal elworld example spell
  - Add `ModifyCompass` action (1.17+), will turn a compass into a lodestone compass with a custom target location
+ - Add `aware` mob flag (1.17+), works like `ai` but they can still move
 
 # 9.4.2
 

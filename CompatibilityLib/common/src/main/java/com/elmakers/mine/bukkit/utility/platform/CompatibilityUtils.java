@@ -510,4 +510,10 @@ public interface CompatibilityUtils {
     default boolean setCompassTarget(ItemMeta meta, Location targetLocation, boolean trackLocation) {
         return false;
     }
+
+    default boolean isAware(Entity entity) {
+        return true;
+    }
+
+    default void setAware(Entity entity, boolean aware) {}
 }

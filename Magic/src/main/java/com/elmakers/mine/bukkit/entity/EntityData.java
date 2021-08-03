@@ -95,6 +95,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean isTamed;
     protected boolean isSitting;
     protected boolean isInvulnerable;
+    protected boolean isAware = true;
     protected boolean hasAI = true;
     protected boolean hasGravity = true;
     protected boolean isDocile;
@@ -196,6 +197,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             this.velocity = null;
         }
 
+        this.isAware = CompatibilityLib.getCompatibilityUtils().isAware(entity);
         if (entity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)entity;
             this.health = li.getHealth();
@@ -362,6 +364,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isInvulnerable = parameters.getBoolean("invulnerable", false);
         isBaby = parameters.getBoolean("baby", false);
         hasAI = parameters.getBoolean("ai", true);
+        isAware = parameters.getBoolean("aware", true);
         hasGravity = parameters.getBoolean("gravity", true);
         isSuperProtected = parameters.getBoolean("protected", false);
 
@@ -834,6 +837,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         // Armor stands handle gravity themselves, for now
         if (!hasGravity && !(entity instanceof ArmorStand)) {
             CompatibilityLib.getCompatibilityUtils().setGravity(entity, hasGravity);
+        }
+
+        if (!isAware) {
+            CompatibilityLib.getCompatibilityUtils().setAware(entity, false);
         }
 
         if (entity instanceof LivingEntity) {
