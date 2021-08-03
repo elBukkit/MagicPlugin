@@ -81,6 +81,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.KnowledgeBookMeta;
@@ -1606,6 +1607,17 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
         PathfinderMob pathfinder = (PathfinderMob)nmsEntity;
         pathfinder.getNavigation().moveTo(nmstarget, speed);
+        return true;
+    }
+
+    @Override
+    public boolean setCompassTarget(ItemMeta meta, Location targetLocation, boolean trackLocation) {
+        if (meta == null || !(meta instanceof CompassMeta)) {
+            return false;
+        }
+        CompassMeta compassMeta = (CompassMeta)meta;
+        compassMeta.setLodestoneTracked(trackLocation);
+        compassMeta.setLodestone(targetLocation);
         return true;
     }
 }

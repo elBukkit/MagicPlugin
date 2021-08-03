@@ -52,6 +52,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
@@ -503,6 +504,10 @@ public interface CompatibilityUtils {
     void sendBlockChange(Player player, Location location, Material material, String blockData);
 
     default boolean setPathFinderTarget(Entity entity, Entity target, double speed) {
+        return false;
+    }
+
+    default boolean setCompassTarget(ItemMeta meta, Location targetLocation, boolean trackLocation) {
         return false;
     }
 }
