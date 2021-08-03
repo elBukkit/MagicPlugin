@@ -16,6 +16,7 @@
  - Mine level 4 no longer mines full blocks
  - Night's HTTYD RP now merged with Magic's "all" RP
  - Tweak survival volume again, to 75%
+ - Nerf Light Arrow
 
 ## Additions
 
