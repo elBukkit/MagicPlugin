@@ -15,6 +15,7 @@ trident_drowned:
 fireproof_stray:
   type: stray
   combustible: false
+  item: bow
 
 fireproof_skeleton:
   type: skeleton
