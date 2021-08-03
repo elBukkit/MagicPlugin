@@ -2,11 +2,12 @@ package com.elmakers.mine.bukkit.arena;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.WeakHashMap;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -15,7 +16,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -31,9 +31,9 @@ public class ArenaStage implements EditingStage {
     private static Random random = new Random();
     private final Arena arena;
     private int index;
-    private List<ArenaMobSpawner> mobs = new ArrayList<ArenaMobSpawner>();
-    private List<Location> mobSpawns = new ArrayList<Location>();
-    private Set<Entity> spawned = new HashSet<Entity>();
+    private List<ArenaMobSpawner> mobs = new ArrayList<>();
+    private List<Location> mobSpawns = new ArrayList<>();
+    private Map<Entity, ArenaPlayer> spawned = new WeakHashMap<>();
     private String startSpell;
     private String endSpell;
     private String name;
@@ -278,15 +278,17 @@ public class ArenaStage implements EditingStage {
                         Entity spawnedEntity = mobType.spawn(spawn);
                         if (spawnedEntity != null) {
                             arena.getController().register(spawnedEntity, arena);
-                            spawned.add(spawnedEntity);
                             if (!defaultDrops) {
                                 magic.disableDrops(spawnedEntity);
                             }
+                            ArenaPlayer targetPlayer = null;
                             if (forceTarget && spawnedEntity instanceof Creature) {
-                                ArenaPlayer player = RandomUtils.getRandom(players);
-                                ((Creature)spawnedEntity).setTarget(player.getPlayer());
-                                CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(spawnedEntity, player.getPlayer(), 0);
+                                targetPlayer = RandomUtils.getRandom(players);
+                                Player player = targetPlayer.getPlayer();
+                                ((Creature)spawnedEntity).setTarget(player);
+                                CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(spawnedEntity, player, 0);
                             }
+                            spawned.put(spawnedEntity, targetPlayer);
                         }
                     }
                 }
@@ -306,29 +308,21 @@ public class ArenaStage implements EditingStage {
         }
     }
 
-    public void checkAggro(Entity mob) {
-        if (mob instanceof Creature) {
-            Creature creature = (Creature)mob;
-            LivingEntity target = creature.getTarget();
-            Set<ArenaPlayer> currentPlayers = arena.getLivingParticipants();
-            if (!currentPlayers.isEmpty()) {
-                if (target != null) {
-                    if (target instanceof Player) {
-                        ArenaPlayer targetPlayer = new ArenaPlayer(arena, target.getUniqueId());
-                        if (!currentPlayers.contains(targetPlayer)) {
-                            target = null;
-                        }
-                    } else {
-                        target = null;
-                    }
-                }
-                if (target == null) {
-                    ArenaPlayer player = RandomUtils.getRandom(new ArrayList<>(currentPlayers));
-                    target = player.getPlayer();
-                    creature.setTarget(target);
-                }
-                CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(mob, target, 1);
+public void checkAggro(Entity mob) {
+        Set<ArenaPlayer> currentPlayers = arena.getLivingParticipants();
+        if (!currentPlayers.isEmpty()) {
+            ArenaPlayer target = spawned.get(mob);
+            if (target != null && !currentPlayers.contains(target)) {
+                target = null;
             }
+            if (target == null) {
+                target = RandomUtils.getRandom(new ArrayList<>(currentPlayers));
+                spawned.put(mob, target);
+            }
+            if (mob instanceof Creature) {
+                ((Creature)mob).setTarget(target.getPlayer());
+            }
+            CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(mob, target.getPlayer(), 1);
         }
     }
 
@@ -390,10 +384,10 @@ public class ArenaStage implements EditingStage {
     }
 
     public void checkSpawns(boolean checkAggro, boolean checkArena) {
-        Iterator<Entity> it = spawned.iterator();
+        Iterator<Map.Entry<Entity, ArenaPlayer>> it = spawned.entrySet().iterator();
         boolean mobsDied = false;
         while (it.hasNext()) {
-            Entity entity = it.next();
+            Entity entity = it.next().getKey();
             if (entity.isDead() || !entity.isValid()) {
                 mobsDied = true;
                 arena.getController().unregister(entity);
@@ -430,7 +424,7 @@ public class ArenaStage implements EditingStage {
     }
 
     public void reset() {
-        for (Entity entity : spawned) {
+        for (Entity entity : spawned.keySet()) {
             if (entity.isValid()) {
                 arena.getController().unregister(entity);
                 entity.remove();
