@@ -1,6 +1,13 @@
 mobarena:
-  min_players: 0
-  max_players: 0
+  name: Mob Arena
+  min_players: 1
+  max_players: 8
+  lose_xp: 20
+  win_xp: 1000
+  lose_sp: 10
+  win_sp: 100
+  lose_money: 5
+  win_money: 1000
   keep_inventory: false
   keep_level: false
   item_wear: false
@@ -8,10 +15,21 @@ mobarena:
   allow_melee: true
   allow_projectiles: true
   leaderboard_sign_type: oak_wall_sign
-  countdown_max: 10
-  op_check: true
-  lobby: ''
+  countdown: 5
+  countdown_max: 5
+  op_check: false
+  allow_interrupt: true
+  lobby: 5.44518608189901,-2.0,-39.240396328485076,-5.318329,-0.7499694
   win: ''
   lose: ''
   exit: ''
-  spawns: []
+  spawns:
+  - 5.44518608189901,-2.0,-39.240396328485076,-5.318329,-0.7499694
+  stages:
+  - mobs:
+    - type: zombie
+      count: 20
+    mob_spawns:
+    - -0.605386435501714,0.0,-3.293049078341028,-64.41867,7.650019
+    drops: false
+    aggro: true

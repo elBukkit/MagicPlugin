@@ -8,15 +8,20 @@ import org.bukkit.entity.LivingEntity;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class AggroAction extends BaseSpellAction
 {
     private boolean clearTarget;
+    private boolean setPathfinder;
+    private double speedModifier;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         clearTarget = parameters.getBoolean("clear_target", false);
+        setPathfinder = parameters.getBoolean("set_pathfinder", true);
+        speedModifier = parameters.getDouble("speed_modifier", 1);
     }
 
     @Override
@@ -50,6 +55,9 @@ public class AggroAction extends BaseSpellAction
         }
 
         ((Creature) target).setTarget(source);
+        if (setPathfinder) {
+            CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(target, source, speedModifier);
+        }
         return SpellResult.CAST;
     }
 

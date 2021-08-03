@@ -121,6 +121,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.decoration.Motive;
 import net.minecraft.world.entity.item.FallingBlockEntity;
@@ -1592,5 +1593,15 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         }
         WallSign sign = (WallSign)blockData;
         return sign.getFacing();
+    }
+
+    @Override
+    public void setPathFinderTarget(Entity entity, Entity target, double speed) {
+        net.minecraft.world.entity.Entity nmsEntity = ((CraftEntity)entity).getHandle();
+        net.minecraft.world.entity.Entity nmstarget = ((CraftEntity)target).getHandle();
+        if (nmsEntity instanceof PathfinderMob) {
+            PathfinderMob pathfinder = (PathfinderMob)nmsEntity;
+            pathfinder.getNavigation().moveTo(nmstarget, speed);
+        }
     }
 }

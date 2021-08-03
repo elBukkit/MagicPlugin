@@ -15,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
@@ -22,6 +23,7 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
@@ -283,6 +285,7 @@ public class ArenaStage implements EditingStage {
                             if (forceTarget && spawnedEntity instanceof Creature) {
                                 ArenaPlayer player = RandomUtils.getRandom(players);
                                 ((Creature)spawnedEntity).setTarget(player.getPlayer());
+                                CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(spawnedEntity, player.getPlayer(), 0);
                             }
                         }
                     }
@@ -306,21 +309,25 @@ public class ArenaStage implements EditingStage {
     public void checkAggro(Entity mob) {
         if (mob instanceof Creature) {
             Creature creature = (Creature)mob;
-            Entity target = creature.getTarget();
+            LivingEntity target = creature.getTarget();
             Set<ArenaPlayer> currentPlayers = arena.getLivingParticipants();
-            if (target != null) {
-                if (target instanceof Player) {
-                    ArenaPlayer targetPlayer = new ArenaPlayer(arena, target.getUniqueId());
-                    if (!currentPlayers.contains(targetPlayer)) {
+            if (!currentPlayers.isEmpty()) {
+                if (target != null) {
+                    if (target instanceof Player) {
+                        ArenaPlayer targetPlayer = new ArenaPlayer(arena, target.getUniqueId());
+                        if (!currentPlayers.contains(targetPlayer)) {
+                            target = null;
+                        }
+                    } else {
                         target = null;
                     }
-                } else {
-                    target = null;
                 }
-            }
-            if (target == null) {
-                ArenaPlayer player = RandomUtils.getRandom(new ArrayList<>(currentPlayers));
-                creature.setTarget(player.getPlayer());
+                if (target == null) {
+                    ArenaPlayer player = RandomUtils.getRandom(new ArrayList<>(currentPlayers));
+                    target = player.getPlayer();
+                    creature.setTarget(target);
+                }
+                CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(mob, target, 1);
             }
         }
     }

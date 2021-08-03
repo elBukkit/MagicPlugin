@@ -20,6 +20,7 @@
 ## Additions
 
  - Add `end_commands` arena option
+ - `Aggro` and mob arena aggro options improved in 1.17+ via pathfinding goals
 
 # 9.4.2
 

@@ -1,0 +1,21 @@
+aggro:
+  name: Aggro
+  description: Call upon the mobs
+  icon: stick
+  actions:
+    cast:
+    - class: AreaOfEffect
+      actions:
+        - class: Aggro
+  effects:
+    cast:
+    - location: target
+      effectlib:
+        class: Helix
+        duration: 2000
+        radius: 32
+        particle: end_rod
+    - sound: magic.zap
+  parameters:
+    target: self
+    radius: 32
