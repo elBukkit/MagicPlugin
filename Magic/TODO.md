@@ -5,8 +5,6 @@
  - Light arrow bypasses pvp?
  - Mob aggro still no bueno
 
- - Try FakeBlock with schematics - not updating brush center maybe?
-
  - Per-spell setting for dynmap
 
  - Add requirements to path progression

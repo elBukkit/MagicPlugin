@@ -29,6 +29,10 @@ mobarena:
   - mobs:
     - type: zombie
       count: 20
+    - type: magma_cube
+      count: 4
+    - type: fireproof_stray
+      count: 8
     mob_spawns:
     - -0.605386435501714,0.0,-3.293049078341028,-64.41867,7.650019
     drops: false

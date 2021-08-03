@@ -38,7 +38,7 @@ netherside:
   stages:
     - mobs:
         - type: fireproof_stray
-          count: 8
+          count: 5
       mob_spawns:
         - 14.499392971801626,0.0,53.93047949214633,178.0967,-4.8000035
         - -2.6238424609874755,1.0,54.775103546040896,-176.65346,15.449977
@@ -249,9 +249,7 @@ netherside:
           count: 8
         - type: ghast
           count: 2
-        - type: magma_cube
-          count: 4
-        - type: wither_skeleton
+        - type: armed_wither_skeleton
           count: 8
       mob_spawns:
         - 14.499392971801626,0.0,53.93047949214633,178.0967,-4.8000035
