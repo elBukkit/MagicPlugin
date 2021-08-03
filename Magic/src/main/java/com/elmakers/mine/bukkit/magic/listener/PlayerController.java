@@ -719,12 +719,12 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         ItemStack itemInHand = player.getInventory().getItemInMainHand();
 
+        Block clickedBlock = event.getClickedBlock();
         Mage mage = controller.getMage(player);
         if (mage.getDebugLevel() >= DEBUG_LEVEL) {
             ItemStack item = event.getItem();
-            Block block = event.getClickedBlock();
             mage.sendDebugMessage("INTERACT " + event.getAction()  + " with " + event.getHand() + " using: " + (item == null ? "(Nothing)" : item.getType().name())
-                + ", block: " + (block == null ? "(Nothing)" : block.getType().name()) + " at " + System.currentTimeMillis(), DEBUG_LEVEL);
+                + ", block: " + (clickedBlock == null ? "(Nothing)" : clickedBlock.getType().name()) + " at " + System.currentTimeMillis(), DEBUG_LEVEL);
         }
 
         // Check for locked items
@@ -814,8 +814,8 @@ public class PlayerController implements Listener {
         }
 
         if (action == Action.RIGHT_CLICK_BLOCK) {
-            Material material = event.getClickedBlock().getType();
-            boolean isInteractible = wand != null ? wand.isInteractible(event.getClickedBlock()) : controller.isInteractible(event.getClickedBlock());
+            Material material = clickedBlock.getType();
+            boolean isInteractible = wand != null ? wand.isInteractible(clickedBlock) : controller.isInteractible(clickedBlock);
             isRightClick = !isInteractible;
 
             // This is to prevent Essentials signs from giving you an item in your wand inventory.
@@ -857,7 +857,6 @@ public class PlayerController implements Listener {
         }
 
         // Check for magic blocks
-        Block clickedBlock = event.getClickedBlock();
         MagicBlock magicBlock = clickedBlock == null ? null : controller.getMagicBlockAt(clickedBlock.getLocation());
         if (magicBlock != null) {
             if (magicBlock.onInteract(player)) {
