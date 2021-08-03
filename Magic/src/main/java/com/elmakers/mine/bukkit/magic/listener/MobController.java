@@ -205,7 +205,7 @@ public class MobController implements Listener, ChunkLoadListener {
         Entity entity = event.getEntity();
         if (controller.isMagicNPC(entity)) {
             event.setCancelled(true);
-        } else if (event.getReason() == EntityTargetEvent.TargetReason.CLOSEST_PLAYER) {
+        } else if (event.getReason() != EntityTargetEvent.TargetReason.CUSTOM && event.getReason() != EntityTargetEvent.TargetReason.UNKNOWN) {
             com.elmakers.mine.bukkit.api.entity.EntityData entityData = controller.getMob(entity);
             if (entityData != null && entityData.isDocile()) {
                 event.setCancelled(true);

@@ -12,6 +12,7 @@
  - Fix skin used by `skull_popcorn`
  - Fix magic bow spell icons
  - Fix some issues using equations in SpawnEntity mob parameters
+ - Mobs with `docile: true` will not attack even if harmed
 
 ## Changes
 

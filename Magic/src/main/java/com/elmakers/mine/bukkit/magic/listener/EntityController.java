@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -377,11 +378,11 @@ public class EntityController implements Listener {
                 mage.addToRespawnInventory(index, itemStack);
                 contents[index] = null;
                 drops.remove(itemStack);
-                controller.info("** Removing keep item from drops: " + TextUtils.nameItem(itemStack) + "&r, drops now: " + drops.size(), 15);
+                controller.info("** Removing keep item from drops: " + TextUtils.nameItem(itemStack) + ChatColor.RESET + ", drops now: " + drops.size(), 15);
             } else if (Wand.isSkill(itemStack)) {
                 drops.remove(itemStack);
                 contents[index] = null;
-                controller.info("** Removing skill item from drops: " + TextUtils.nameItem(itemStack) + "&r, drops now: " + drops.size(), 15);
+                controller.info("** Removing skill item from drops: " + TextUtils.nameItem(itemStack) + ChatColor.RESET + ", drops now: " + drops.size(), 15);
             }
         }
         inventory.setContents(contents);
