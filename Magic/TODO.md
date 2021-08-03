@@ -28,8 +28,6 @@
 # New API
 
  - Possible to change sky color?
- - Custom ender signals sound really cool??
-   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/6ff6e0330578458e7e0f869a8b7e7e09a63361e1
  - Custom compass locations
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/6ff65c824ad8dc9ba9228999800a0d7010904893
  - Item frame fixed/visible official API

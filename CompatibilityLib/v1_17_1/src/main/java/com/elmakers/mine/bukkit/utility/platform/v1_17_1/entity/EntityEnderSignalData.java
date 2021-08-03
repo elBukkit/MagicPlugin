@@ -24,6 +24,11 @@ public class EntityEnderSignalData extends EntityAnimalData {
             dropItem = parameters.getBoolean("drop_item");
         if (parameters.contains("despawn_timer"))
             despawnTimer = parameters.getInt("despawn_timer");
+        else if (parameters.contains("duration")) {
+            // these despawn when they hit 80 ticks
+            int duration = parameters.getInt("duration");
+            despawnTimer = 80 - (duration / 50);
+        }
         String itemKey = parameters.getString("item");
         if (itemKey != null && !itemKey.isEmpty()) {
             ItemData itemData = controller.getOrCreateItem(itemKey);
