@@ -347,7 +347,7 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
 
     public void heal() {
         Player player = getPlayer();
-        if (player != null) {
+        if (player != null && !player.isDead()) {
             double maxHealth = CompatibilityLib.getCompatibilityUtils().getMaxHealth(player);
             player.setHealth(maxHealth);
             player.setFoodLevel(20);
