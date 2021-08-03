@@ -1009,7 +1009,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         // can remove invisibility, somehow.
         if (invisible != null) {
             CompatibilityLib.getCompatibilityUtils().setInvisible(entity, invisible);
-        }
         return true;
     }
 

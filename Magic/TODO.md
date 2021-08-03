@@ -22,18 +22,8 @@
    (lose broom when tp'ing while riding)
  - Cancelled spells (`/magic cancel`) should still auto-undo
  - Save spell can make upside-down schematics
- - Some way for automata to use air and light? Allow all_air?
 
  - Option to interpret Infinity enchantment as cost-free
-
-# to test
-
-for Phantom:
-
-relative_target_offset:
-x: 0
-y: 0
-z: variable
 
 # New API
 
@@ -48,9 +38,7 @@ z: variable
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/ad52a4ec1d7b7254e3fe68ca497b2cc63afac373
  - aware vs ai
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/97aeae56caee016136a81e34404f397e2d47a4dc#src/main/java/org/bukkit/entity/Mob.java
-  
-
-
+ 
 # AureliumSkills
 
  - Scale spell costs down globally, roughly match this range:
