@@ -16,3 +16,5 @@ diamondsignal:
     type: ender_signal
     item: diamond
     despawn_timer: -200
+    target_location: 20,20,20
+    drop_item: false

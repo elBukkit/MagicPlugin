@@ -8,12 +8,14 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityEnderSignalData extends EntityAnimalData {
     private Boolean dropItem;
     private Integer despawnTimer;
     private Location targetLocation;
+    private Object configLocation;
     private ItemStack item;
 
     public EntityEnderSignalData(ConfigurationSection parameters, MageController controller) {
@@ -31,7 +33,7 @@ public class EntityEnderSignalData extends EntityAnimalData {
                 item = itemData.getItemStack();
             }
         }
-        // TODO: Location
+        configLocation = parameters.get("target_location");
     }
 
     public EntityEnderSignalData(Entity entity) {
@@ -42,6 +44,21 @@ public class EntityEnderSignalData extends EntityAnimalData {
             despawnTimer = signal.getDespawnTimer();
             targetLocation = signal.getTargetLocation();
             item = signal.getItem();
+        }
+    }
+
+    @Override
+    public void applyPostSpawn(Entity entity) {
+        super.applyPostSpawn(entity);
+        if (entity instanceof EnderSignal) {
+            // These get reset when adding the signal to the world, so we will apply them again
+            EnderSignal signal = (EnderSignal)entity;
+            if (dropItem != null) {
+                signal.setDropItem(dropItem);
+            }
+            if (despawnTimer != null) {
+                signal.setDespawnTimer(despawnTimer);
+            }
         }
     }
 
@@ -58,6 +75,9 @@ public class EntityEnderSignalData extends EntityAnimalData {
             }
             if (targetLocation != null) {
                 signal.setTargetLocation(targetLocation);
+            } else if (configLocation != null) {
+                Location relativeTarget = ConfigUtils.toLocation(configLocation, entity.getLocation());
+                signal.setTargetLocation(relativeTarget);
             }
             if (item != null) {
                 signal.setItem(item);
