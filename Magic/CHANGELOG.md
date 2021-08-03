@@ -21,6 +21,7 @@
 
  - Add `end_commands` arena option
  - `Aggro` and mob arena aggro options improved in 1.17+ via pathfinding goals
+ - Add `level_spells_to_path` wand option, used in example wands to level up spells to an appropriate level
 
 # 9.4.2
 

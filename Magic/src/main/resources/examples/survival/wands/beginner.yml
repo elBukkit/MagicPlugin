@@ -18,6 +18,7 @@ beginner:
   mana_max: 50
   mana: 50
   earn_multiplier: 0
+  level_spells_to_path: beginner
   spells:
     # Hotbar
     - missile

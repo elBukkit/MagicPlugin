@@ -214,6 +214,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean isSingleUse = false;
     private boolean limitSpellsToPath = false;
     private boolean levelSpells = false;
+    private String levelSpellsToPath = null;
     private boolean limitBrushesToPath = false;
     private Double resetManaOnActivate = null;
 
@@ -1443,8 +1444,29 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             spellKey = controller.unalias(spellKey);
             if (levelSpells) {
                 int maxLevel = controller.getMaxLevel(spellKey.getBaseKey());
-                if (maxLevel > spellKey.getLevel()) {
-                    spellKey = new SpellKey(spellKey.getBaseKey(), maxLevel);
+                int targetLevel = maxLevel;
+                if (levelSpellsToPath != null) {
+                    ProgressionPath levelPath = controller.getPath(levelSpellsToPath);
+                    if (levelPath != null) {
+                        SpellKey testLevelKey = new SpellKey(spellKey.getBaseKey(), targetLevel);
+                        SpellTemplate testLevel = controller.getSpellTemplate(testLevelKey.getKey());
+                        String targetPath = testLevel != null ? testLevel.getRequiredUpgradePath() : null;
+                        while (targetLevel > 1 && targetPath != null && !levelPath.hasPath(targetPath)) {
+                            targetLevel--;
+                            testLevelKey = new SpellKey(spellKey.getBaseKey(), targetLevel);
+                            testLevel = controller.getSpellTemplate(testLevelKey.getKey());
+                            targetPath = testLevel != null ? testLevel.getRequiredUpgradePath() : null;
+                        }
+
+                        // The above logic will give us
+                        // the first version we could level up *from*, so we want to go one level later
+                        targetLevel = Math.min(targetLevel + 1, maxLevel);
+                    } else {
+                        targetLevel = 0;
+                    }
+                }
+                if (targetLevel > spellKey.getLevel()) {
+                    spellKey = new SpellKey(spellKey.getBaseKey(), targetLevel);
                 }
             }
             SpellTemplate spell = controller.getSpellTemplate(spellKey.getKey());
@@ -2318,7 +2340,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         spellInventory.clear();
         limitSpellsToPath = getBoolean("limit_spells_to_path");
         limitBrushesToPath = getBoolean("limit_brushes_to_path");
-        levelSpells = getBoolean("level_spells");
+        levelSpellsToPath = getString("level_spells_to_path");
+        levelSpells = getBoolean("level_spells", levelSpellsToPath != null && !levelSpellsToPath.isEmpty());
 
         Object brushInventoryRaw = getObject("brush_inventory");
         if (brushInventoryRaw != null) {

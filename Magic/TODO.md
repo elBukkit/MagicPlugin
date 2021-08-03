@@ -14,7 +14,6 @@
 
  - Wand active_properties
  - base modifier "allow_melee", and move reflect parameters from wand
- - Add levelled-up spells to demo wands
 
  - Item frames and paintings can't be copied, maybe only E/W facing - important for backup
  - Holes in containment if automata gets contained while in the glass

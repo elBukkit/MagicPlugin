@@ -6,6 +6,7 @@ apprentice:
     mana_regeneration: 25
     mana_max: 150
     mana: 150
+    level_spells_to_path: apprentice
     spells:
       # Hotbar 1
       - missile

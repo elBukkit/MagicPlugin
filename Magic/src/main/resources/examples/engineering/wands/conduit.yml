@@ -10,6 +10,8 @@ conduit:
     effect_bubbles: true
     active_spell: levitate
     hotbar_count: 4
+    level_spells_to_path: conduit
+
     spells:
         # Hotbar 1, engineering
         - levitate|6

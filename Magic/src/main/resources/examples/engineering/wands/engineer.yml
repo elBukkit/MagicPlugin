@@ -11,6 +11,7 @@ engineer:
     mana_regeneration: 50
     mana_max: 300
     hotbar_count: 2
+    level_spells_to_path: engineer
     spells:
       # Hotbar 1, Engineering
       - levitate|4

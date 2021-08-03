@@ -9,6 +9,8 @@ architect:
     mana_max: 500
     active_spell: levitate
     hotbar_count: 3
+    level_spells_to_path: architect
+
     spells:
         # Hotbar 1, engineering
         - levitate|5

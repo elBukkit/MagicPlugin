@@ -11,6 +11,7 @@ student:
     mana_regeneration: 15
     mana_max: 100
     mana: 100
+    level_spells_to_path: student
     spells:
       # Hotbar 1
       - missile

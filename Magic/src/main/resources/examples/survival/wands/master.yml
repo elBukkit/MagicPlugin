@@ -7,6 +7,7 @@ master:
     mana_max: 200
     mana: 200
     hotbar_count: 3
+    level_spells_to_path: master
 
     spells:
       # Hotbar 1
