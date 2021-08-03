@@ -1,10 +1,11 @@
 # CHANGELOG
 
-# 9.5
+# 9.4.3
 
 ## Fixes
 
- - Mine will mine nether ores (1.16+)
+ - Fix the resource pack not sending on join
+ - Mine will mine deepslate ores (1.16+)
  - The `slimefun` example RP updated, will continue to update going forward
  - Attempt to resolve issues that occurred due to using `/mconfig editor` and having the default configs copied into 
    your custom configs. This seems to be the main issue a lot of people were having with the enchantment table.

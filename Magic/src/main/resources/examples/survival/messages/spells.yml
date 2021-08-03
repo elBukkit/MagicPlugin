@@ -421,7 +421,7 @@ spells:
     sunstrike:
         name: Sunstrike
         description: Summon a focused sunbeam
-        usage: Only works during the daytime.\nDeals more damage at noon
+        usage: "Only works during the daytime.\nDeals more damage at noon"
         cast: You summoned a sunbeam!
         upgrade_description: "Increased max damage, decreased delay"
     smite:

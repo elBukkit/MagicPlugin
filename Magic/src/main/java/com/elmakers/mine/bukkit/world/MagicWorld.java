@@ -257,14 +257,7 @@ public class MagicWorld {
     }
 
     public void playerEntered(Mage mage, MagicWorld previousWorld, boolean isJoin) {
-        if (mage.isResourcePackEnabled()) {
-            String fromResourcePack = previousWorld == null ? null : previousWorld.resourcePack;
-            if (!Objects.equals(fromResourcePack, resourcePack) || isJoin) {
-                controller.promptResourcePack(mage.getPlayer(), resourcePack);
-            }
-        } else if (isJoin && mage.isResourcePackPrompt()) {
-            controller.promptNoResourcePack(mage.getPlayer());
-        }
+        joinedDefault(mage, resourcePack, previousWorld, isJoin);
         if (gameMode != null && (previousWorld == null || previousWorld.gameMode != gameMode)) {
             mage.getPlayer().setGameMode(gameMode);
         }
@@ -273,6 +266,22 @@ public class MagicWorld {
     public void playerLeft(Mage mage, MagicWorld nextWorld) {
         if (leavingGameMode != null && (nextWorld == null || nextWorld.gameMode == null)) {
             mage.getPlayer().setGameMode(leavingGameMode);
+        }
+    }
+
+    public static void joinedDefault(Mage mage) {
+        joinedDefault(mage, null, null, true);
+    }
+
+    private static void joinedDefault(Mage mage, String resourcePack, MagicWorld previousWorld, boolean isJoin) {
+        MagicController controller = mage.getController();
+        if (mage.isResourcePackEnabled()) {
+            String fromResourcePack = previousWorld == null ? null : previousWorld.resourcePack;
+            if (!Objects.equals(fromResourcePack, resourcePack) || isJoin) {
+                controller.promptResourcePack(mage.getPlayer(), resourcePack);
+            }
+        } else if (isJoin && mage.isResourcePackPrompt()) {
+            controller.promptNoResourcePack(mage.getPlayer());
         }
     }
 

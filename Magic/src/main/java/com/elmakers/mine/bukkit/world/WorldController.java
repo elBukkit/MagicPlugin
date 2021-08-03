@@ -123,7 +123,10 @@ public class WorldController implements Listener {
 
     public void onPlayerJoin(Mage mage) {
         MagicWorld magicWorld = getWorld(mage.getLocation().getWorld().getName());
-        if (magicWorld == null) return;
+        if (magicWorld == null) {
+            MagicWorld.joinedDefault(mage);
+            return;
+        }
         magicWorld.playerJoined(mage);
     }
 

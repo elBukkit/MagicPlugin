@@ -1,5 +1,8 @@
 # TODO
 
+ - Mars automaton constant lag-spikes, why is it force-loading chunks
+ - Dying as an arena ends puts you
+
 # New
 
  - Light arrow bypasses pvp?

@@ -8,7 +8,7 @@ sunstrike:
   category: master
   pvp_restricted: true
   earns: 9
-  worth: 3000
+  worth: 200
   upgrade_required_casts: 50
   upgrade_required_path: master
   actions:
