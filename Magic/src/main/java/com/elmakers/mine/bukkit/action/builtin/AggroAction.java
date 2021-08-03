@@ -28,9 +28,13 @@ public class AggroAction extends BaseSpellAction
     public SpellResult perform(CastContext context)
     {
         Entity target = context.getTargetEntity();
-        if (!(target instanceof Creature))
-        {
-            return SpellResult.NO_TARGET;
+        Entity sourceEntity = context.getLivingEntity();
+        if (!(target instanceof Creature)) {
+            boolean result = false;
+            if (setPathfinder) {
+                result = CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(target, sourceEntity, speedModifier);
+            }
+            return result ? SpellResult.CAST : SpellResult.NO_TARGET;
         }
 
         Creature creatureTarget = (Creature)target;
@@ -42,15 +46,16 @@ public class AggroAction extends BaseSpellAction
             creatureTarget.setTarget(null);
             return SpellResult.CAST;
         }
-        LivingEntity source = context.getLivingEntity();
-        if (source == null)
-        {
+        if (sourceEntity == null) {
             return SpellResult.NO_TARGET;
         }
+        if (!(sourceEntity instanceof LivingEntity)) {
+            return SpellResult.LIVING_ENTITY_REQUIRED;
+        }
 
+        LivingEntity source = (LivingEntity)sourceEntity;
         LivingEntity current = creatureTarget.getTarget();
-        if (source == current)
-        {
+        if (source == current) {
             return SpellResult.NO_ACTION;
         }
 

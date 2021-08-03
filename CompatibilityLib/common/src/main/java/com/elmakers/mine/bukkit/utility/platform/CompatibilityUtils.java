@@ -502,5 +502,7 @@ public interface CompatibilityUtils {
 
     void sendBlockChange(Player player, Location location, Material material, String blockData);
 
-    default void setPathFinderTarget(Entity entity, Entity target, double speed) {}
+    default boolean setPathFinderTarget(Entity entity, Entity target, double speed) {
+        return false;
+    }
 }

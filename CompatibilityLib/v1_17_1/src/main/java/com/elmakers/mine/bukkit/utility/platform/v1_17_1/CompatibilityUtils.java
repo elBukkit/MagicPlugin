@@ -1596,12 +1596,16 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
-    public void setPathFinderTarget(Entity entity, Entity target, double speed) {
+    public boolean setPathFinderTarget(Entity entity, Entity target, double speed) {
+        if (entity == null || target == null) return false;
         net.minecraft.world.entity.Entity nmsEntity = ((CraftEntity)entity).getHandle();
         net.minecraft.world.entity.Entity nmstarget = ((CraftEntity)target).getHandle();
-        if (nmsEntity instanceof PathfinderMob) {
-            PathfinderMob pathfinder = (PathfinderMob)nmsEntity;
-            pathfinder.getNavigation().moveTo(nmstarget, speed);
+        if (!(nmsEntity instanceof PathfinderMob)) {
+            return false;
         }
+
+        PathfinderMob pathfinder = (PathfinderMob)nmsEntity;
+        pathfinder.getNavigation().moveTo(nmstarget, speed);
+        return true;
     }
 }
