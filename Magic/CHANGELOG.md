@@ -10,6 +10,7 @@
    your custom configs. This seems to be the main issue a lot of people were having with the enchantment table.
  - Fix skin used by `skull_popcorn`
  - Fix magic bow spell icons
+ - Fix some issues using equations in SpawnEntity mob parameters
 
 ## Changes
 
