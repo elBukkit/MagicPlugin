@@ -1,13 +1,15 @@
 package com.elmakers.mine.bukkit.integration;
 
-import com.elmakers.mine.bukkit.entity.EntityData;
-import com.elmakers.mine.bukkit.magic.MagicController;
-import io.lumine.xikage.mythicmobs.MythicMobs;
-import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
+import javax.annotation.Nullable;
+
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
 
-import javax.annotation.Nullable;
+import com.elmakers.mine.bukkit.entity.EntityData;
+import com.elmakers.mine.bukkit.magic.MagicController;
+
+import io.lumine.xikage.mythicmobs.MythicMobs;
+import io.lumine.xikage.mythicmobs.mobs.ActiveMob;
 
 public class MythicMobManager {
 

@@ -7457,7 +7457,7 @@ public class MagicController implements MageController {
             mythicMobManager = new MythicMobManager(this, mythicMobsPlugin);
 
             if (mythicMobManager.initialize()) {
-                getLogger().info("MythicMobs found, mobs can be spawn in arenas, spells, actions, etc.");
+                getLogger().info("MythicMobs found, mobs can be spawned in arenas, spells, actions, etc.");
             } else {
                 getLogger().warning("MythicMobs integration failed");
             }
