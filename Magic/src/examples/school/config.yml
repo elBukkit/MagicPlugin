@@ -1,3 +1,5 @@
+log_verbosity: 20
+
 auto_rollback_duration: 10000
 auto_rollback_speed: 0.5
 auto_rollback_explosions:
