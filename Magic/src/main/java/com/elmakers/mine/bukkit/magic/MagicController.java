@@ -168,6 +168,7 @@ import com.elmakers.mine.bukkit.integration.LightAPIManager;
 import com.elmakers.mine.bukkit.integration.LogBlockManager;
 import com.elmakers.mine.bukkit.integration.ModelEngineManager;
 import com.elmakers.mine.bukkit.integration.ModernLibsDisguiseManager;
+import com.elmakers.mine.bukkit.integration.MythicMobManager;
 import com.elmakers.mine.bukkit.integration.NPCSupplierSet;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
@@ -574,6 +575,7 @@ public class MagicController implements MageController {
     private LogBlockManager logBlockManager = null;
     private EssentialsController essentialsController = null;
     private DeadSoulsManager deadSoulsController = null;
+    private MythicMobManager mythicMobManager = null;
     private boolean loading = false;
     private boolean showExampleInstructions = false;
     private int disableSpawnReplacement = 0;
@@ -1600,6 +1602,7 @@ public class MagicController implements MageController {
                             valueMap.put("PreciousStones", controller.preciousStonesManager.isEnabled() ? 1 : 0);
                             valueMap.put("Lockette", controller.locketteManager.isEnabled() ? 1 : 0);
                             valueMap.put("NoCheatPlus", controller.ncpManager.isEnabled() ? 1 : 0);
+                            valueMap.put("MythicMobs", controller.mythicMobManager.isEnabled() ? 1 : 0);
                             return valueMap;
                         }
                     });
@@ -7448,6 +7451,19 @@ public class MagicController implements MageController {
             skillAPIManager = null;
             getLogger().info("SkillAPI integration disabled");
         }
+
+        Plugin mythicMobsPlugin = pluginManager.getPlugin("MythicMobs");
+        if (mythicMobsPlugin != null && mythicMobsPlugin.isEnabled()) {
+            mythicMobManager = new MythicMobManager(this, mythicMobsPlugin);
+
+            if (mythicMobManager.initialize()) {
+                getLogger().info("MythicMobs found, mobs can be spawn in arenas, spells, actions, etc.");
+            } else {
+                getLogger().warning("MythicMobs integration failed");
+            }
+
+        }
+
     }
 
     private void finalizeIntegrationPreLoad() {
@@ -8406,5 +8422,10 @@ public class MagicController implements MageController {
     @Override
     public MaterialAndData createMaterialAndData(String materialKey) {
         return new MaterialAndData(materialKey);
+    }
+
+    @Nullable
+    public EntityData spawnMythicMob(String key, Location location) {
+        return mythicMobManager.isEnabled() ? mythicMobManager.spawnMythicMob(key, location) : null;
     }
 }

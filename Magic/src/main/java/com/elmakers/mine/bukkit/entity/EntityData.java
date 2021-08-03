@@ -38,7 +38,6 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.material.Colorable;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -246,6 +245,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     public EntityData(@Nonnull MageController controller, ConfigurationSection parameters) {
         this.controller = controller;
         load(parameters);
+    }
+
+    public EntityData(@Nonnull MageController controller, String key, Entity entity) {
+        this(controller, entity);
+        this.key = key;
     }
 
     @Nullable

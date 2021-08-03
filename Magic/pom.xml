@@ -408,6 +408,12 @@
             <version>Beta1.1.2</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>io.lumine.xikage</groupId>
+            <artifactId>MythicMobs</artifactId>
+            <version>4.9.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>
@@ -467,6 +473,11 @@
 		    <id>jitpack.io</id>
 		    <url>https://jitpack.io</url>
 		</repository>
+        <repository>
+            <id>nexus</id>
+            <name>Lumine Releases</name>
+            <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
         <!--
             All of the following repositories seem to be offline.
             If the elmakers repo ever goes down, you could try re-enabling these, but you may be out of luck.
