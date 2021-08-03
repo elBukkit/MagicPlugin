@@ -441,11 +441,6 @@
             <url>https://repo1.maven.org/maven2/</url>
         </repository>
         <repository>
-            <id>nexus</id>
-            <name>Lumine Releases</name>
-            <url>https://mvn.lumine.io/repository/maven-releases/</url>
-        </repository>
-        <repository>
             <id>dynmap</id>
             <url>https://repo.mikeprimm.com/</url>
         </repository>
