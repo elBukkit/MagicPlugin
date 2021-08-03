@@ -27,9 +27,8 @@
 
 # New API
 
+ - Handle RP response event, prompt players if RP is enabled but their client declined
  - Possible to change sky color?
- - Custom compass locations
-   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/6ff65c824ad8dc9ba9228999800a0d7010904893
  - Item frame fixed/visible official API
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/9a6a5a664c15127db80ae154523f9f8b9afd51ba
  - Non-Collidable modifier

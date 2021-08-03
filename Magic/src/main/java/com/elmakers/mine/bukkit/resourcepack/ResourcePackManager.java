@@ -243,6 +243,7 @@ public class ResourcePackManager {
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
             @Override
             public void run() {
+                controller.info("Sending resource pack " + url + " to " + player.getName(), 10);
                 CompatibilityLib.getCompatibilityUtils().setResourcePack(player, url, hash);
             }
         }, resourcePackDelay * 20 / 1000);
