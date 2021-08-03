@@ -1,0 +1,10 @@
+aang:
+  name: Aang
+  inherit: bendingshop
+  villager_profession: cleric
+  interact_spell_parameters:
+    free: true
+    selected: "You are now a $name"
+  dialog:
+    - Welcome, traveller!
+    - "Let's see what element suits you best."

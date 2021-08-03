@@ -1,0 +1,8 @@
+kindletron_npc:
+  inherit: base_npc
+  type: husk
+  name: Kindle Sr
+  model: kindletronsr
+  triggers:
+    playdead:
+      cast: medeath

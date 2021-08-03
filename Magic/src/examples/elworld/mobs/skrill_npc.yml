@@ -1,0 +1,16 @@
+skrill_npc:
+  name: Skrill
+  inherit: base_npc
+  ai: true
+  leash_range: 24
+  type: phantom
+  size: 10
+  disguise:
+    type: player
+    skin: NightScythe1
+    invisible: true
+    swimming: true
+    burning: false
+  helmet: Skrill
+  item: SkrillRight
+  offhand: SkrillLeft

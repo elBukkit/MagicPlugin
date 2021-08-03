@@ -1,0 +1,15 @@
+bird_npc:
+  inherit: base_npc
+  type: zombie
+  baby: true
+  name: Grumm
+  potion_effects:
+    invisibility: 0
+  ai: true
+  leash_range: 4
+  interval: 10 seconds
+  helmet: skull:http://textures.minecraft.net/texture/aa8cfc93a217546e5e6b0ff9966554012bd7461b1595bfcc5fbcaebdf2606791
+  mount: bird0
+  prevent_dismount: true
+  remove_mounts:
+  - bird0

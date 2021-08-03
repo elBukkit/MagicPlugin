@@ -1,0 +1,16 @@
+nightmare_npc:
+  name: Nightmare
+  inherit: base_npc
+  ai: true
+  leash_range: 24
+  type: phantom
+  size: 10
+  disguise:
+    type: player
+    skin: NightScythe1
+    invisible: true
+    swimming: true
+    burning: false
+  helmet: Nightmare
+  item: NightmareRight
+  offhand: NightmareLeft

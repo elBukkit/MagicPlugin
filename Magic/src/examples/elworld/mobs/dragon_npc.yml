@@ -1,0 +1,21 @@
+dragon_npc:
+  inherit: base_npc
+  type: phantom
+  ai: true
+  disguise:
+    type: player
+    skin: NightScythe1
+    invisible: true
+    swimming: true
+  item: dragonwingrightwhite
+  offhand: dragonwingleftwhite
+  helmet: dragonbodywhite
+  interval: 100
+  interval_requires_target: false
+  leash_range: 12
+  triggers:
+    launch:
+      cast:
+        dragonshow: 30
+    interval:
+      cast: rainbowdragon

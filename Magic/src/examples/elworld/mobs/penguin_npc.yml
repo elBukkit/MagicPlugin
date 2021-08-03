@@ -1,0 +1,75 @@
+penguin_npc:
+  inherit: base_npc
+  type: zombie
+  name: "Grumm"
+  health: 10
+  ai: false
+  silent: true
+  persist: true
+  baby: false
+  docile: true
+  track_radius: 8
+  entity_attributes:
+    generic_follow_range: 8
+    generic_movement_speed: 0.1
+    generic_knockback_resistance: 1.0
+    generic_attack_damage: 0
+  potion_effects:
+    invisibility: 0
+  helmet: "skull:http://textures.minecraft.net/texture/7e91cb3e25dd4c72c014931797d69c674ce65cb9bfe7481af6952c049dcd4e15"
+  mount: penguin_npc0
+  prevent_dismount: true
+  default_drops: false
+  transformable: false
+  remove_mounts:
+  - penguin_npc0
+  - penguin_npc00
+
+penguin_npc0:
+  inherit: base_npc
+  hidden: true
+  type: zombie
+  name: "Extra Mobs"
+  health: 10
+  ai: true
+  baby: true
+  silent: true
+  persist: true
+  protected: true
+  docile: true
+  track_radius: 8
+  entity_attributes:
+    generic_follow_range: 8
+    generic_movement_speed: 0.1
+    generic_knockback_resistance: 1.0
+    generic_attack_damage: 0
+  potion_effects:
+    invisibility: 0
+  helmet: "skull:http://textures.minecraft.net/texture/d3c57facbb3a4db7fd55b5c0dc7d19c19cb0813c748ccc9710c714727551f5b9"
+  chestplate: "leather_chestplate:#000000"
+  leggings: "leather_leggings:#000000"
+  boots: "leather_boots:#FFA500"
+  default_drops: false
+  transformable: false
+  prevent_dismount: true
+  remove_mounts:
+  - penguin_npc
+  - penguin_npc00
+
+penguin_npc00:
+  inherit: base_npc
+  hidden: true
+  type: ocelot
+  baby: true
+  silent: true
+  persist: true
+  name: "Extra Mobs"
+  health: 10
+  protected: true
+  entity_attributes:
+    generic_movement_speed: 0.1
+    generic_knockback_resistance: 1.0
+  potion_effects:
+    invisibility: 0
+  default_drops: false
+  transformable: false

@@ -1,0 +1,17 @@
+toothless:
+  name: Toothless
+  inherit: base_npc
+  ai: true
+  leash_range: 24
+  type: ghast
+  size: 10
+  disguise:
+    type: player
+    skin: NightScythe1
+    invisible: true
+    swimming: true
+    burning: false
+  helmet: NightFury
+  item: NightFuryRight
+  offhand: NightFuryLeft
+  equip_on_respawn: false
