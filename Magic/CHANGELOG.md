@@ -12,6 +12,10 @@
 
  - Fix upgrading mana (and probably other properties) in wand slotted upgrades
 
+## Additions
+ 
+ - The ColorItem action can be used to color a firework charge or a firework (will change all effects in a firework)
+
 # 9.4.3
 
 ## Fixes

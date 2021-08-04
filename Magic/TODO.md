@@ -9,10 +9,10 @@
 
  - Mars automaton constant lag-spikes, why is it force-loading chunks
  - Dying at the end of an arena puts you in a broken state (maybe fixed?)
+ - `/mitem describe` doesn't show lists?
 
 # New
 
- - ColorItem should work on firework stars
  - Light arrow bypasses pvp?
  - Mob aggro still no bueno
 

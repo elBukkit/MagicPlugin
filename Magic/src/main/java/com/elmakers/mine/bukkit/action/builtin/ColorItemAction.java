@@ -3,12 +3,15 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.FireworkEffect;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
+import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 
@@ -108,13 +111,49 @@ public class ColorItemAction extends BaseSpellAction {
             return false;
         }
         ItemMeta meta = itemStack.getItemMeta();
-        if (!(meta instanceof LeatherArmorMeta)) {
+        if (meta instanceof LeatherArmorMeta) {
+            LeatherArmorMeta leatherMeta = (LeatherArmorMeta)meta;
+            leatherMeta.setColor(color.getColor());
+        } else if (meta instanceof FireworkMeta) {
+            FireworkMeta fireworkMeta = (FireworkMeta)meta;
+            if (!fireworkMeta.hasEffects()) {
+                FireworkEffect fireworkEffect = FireworkEffect.builder().withColor(color.getColor()).build();
+                fireworkMeta.addEffect(fireworkEffect);
+            } else {
+                List<FireworkEffect> existingEffects = fireworkMeta.getEffects();
+                fireworkMeta.clearEffects();
+                for (FireworkEffect existingEffect : existingEffects) {
+                    FireworkEffect.Type existingType = existingEffect.getType();
+                    FireworkEffect fireworkEffect = FireworkEffect.builder()
+                        .withColor(color.getColor())
+                        .flicker(existingEffect.hasFlicker())
+                        .trail(existingEffect.hasTrail())
+                        .with(existingType == null ? FireworkEffect.Type.BALL : existingType)
+                        .build();
+                    fireworkMeta.addEffect(fireworkEffect);
+                }
+            }
+        } else if (meta instanceof FireworkEffectMeta) {
+            FireworkEffectMeta effectMeta = (FireworkEffectMeta)meta;
+            FireworkEffect existingEffect = effectMeta.getEffect();
+            if (existingEffect == null) {
+                FireworkEffect fireworkEffect = FireworkEffect.builder().withColor(color.getColor()).build();
+                effectMeta.setEffect(fireworkEffect);
+            } else {
+                FireworkEffect.Type existingType = existingEffect.getType();
+                FireworkEffect fireworkEffect = FireworkEffect.builder()
+                        .withColor(color.getColor())
+                        .flicker(existingEffect.hasFlicker())
+                        .trail(existingEffect.hasTrail())
+                        .with(existingType == null ? FireworkEffect.Type.BALL : existingType)
+                        .build();
+                effectMeta.setEffect(fireworkEffect);
+            }
+        } else {
             return false;
         }
         Wand wand = context.getController().getIfWand(itemStack);
-        LeatherArmorMeta leatherMeta = (LeatherArmorMeta)meta;
-        leatherMeta.setColor(color.getColor());
-        itemStack.setItemMeta(leatherMeta);
+        itemStack.setItemMeta(meta);
         if (wand != null) {
             wand.setIcon(new MaterialAndData(itemStack));
         }
