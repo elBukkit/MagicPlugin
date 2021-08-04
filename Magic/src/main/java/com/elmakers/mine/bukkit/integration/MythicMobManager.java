@@ -1,11 +1,12 @@
 package com.elmakers.mine.bukkit.integration;
 
+import java.util.Collection;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
 import io.lumine.xikage.mythicmobs.MythicMobs;
@@ -37,14 +38,17 @@ public class MythicMobManager {
     }
 
     @Nullable
-    public EntityData spawnMythicMob(String key, Location location) {
+    public Entity spawnMythicMob(String key, Location location) {
         ActiveMob mob = api.getMobManager().spawnMob(key, location);
         if (mob == null) {
             controller.getLogger().warning("Unable to spawn mythic mob with id of " + key);
             return null;
         }
 
-        return new EntityData(controller, key, mob.getEntity().getBukkitEntity());
+        return mob.getEntity().getBukkitEntity();
     }
 
+    public Collection<String> getMobKeys() {
+        return api.getMobManager().getMobNames();
+    }
 }

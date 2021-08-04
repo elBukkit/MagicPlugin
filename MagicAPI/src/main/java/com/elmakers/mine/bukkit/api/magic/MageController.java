@@ -832,4 +832,6 @@ public interface MageController {
     MaterialAndData createMaterialAndData(String materialKey);
     void timeSkipped(World world, long skippedAmount);
     void onPlayerJump(Player player, Vector velocity);
+    @Nullable
+    Entity spawnMythicMob(String mythicMobKey, Location location);
 }

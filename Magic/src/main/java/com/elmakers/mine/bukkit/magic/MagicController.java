@@ -2163,6 +2163,9 @@ public class MagicController implements MageController {
         if (aureliumSkillsManager != null && aureliumSkillsManager.useAttributes()) {
             registerAttributes(aureliumSkillsManager);
         }
+        if (mythicMobManager != null) {
+            mobs.registerMythicMobs(mythicMobManager.getMobKeys());
+        }
 
         // Requirements providers
         if (skillAPIManager != null) {
@@ -7439,7 +7442,7 @@ public class MagicController implements MageController {
 
         // Check for SkillAPI
         Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
-        if (skillAPIPlugin != null && skillAPIEnabled && skillAPIPlugin.isEnabled()) {
+        if (skillAPIPlugin != null && skillAPIEnabled) {
             skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
             if (skillAPIManager.initialize()) {
                 getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
@@ -7452,8 +7455,9 @@ public class MagicController implements MageController {
             getLogger().info("SkillAPI integration disabled");
         }
 
+        // Mythic Mobs
         Plugin mythicMobsPlugin = pluginManager.getPlugin("MythicMobs");
-        if (mythicMobsPlugin != null && mythicMobsPlugin.isEnabled()) {
+        if (mythicMobsPlugin != null) {
             mythicMobManager = new MythicMobManager(this, mythicMobsPlugin);
 
             if (mythicMobManager.initialize()) {
@@ -7461,9 +7465,7 @@ public class MagicController implements MageController {
             } else {
                 getLogger().warning("MythicMobs integration failed");
             }
-
         }
-
     }
 
     private void finalizeIntegrationPreLoad() {
@@ -8425,7 +8427,10 @@ public class MagicController implements MageController {
     }
 
     @Nullable
-    public EntityData spawnMythicMob(String key, Location location) {
-        return mythicMobManager.isEnabled() ? mythicMobManager.spawnMythicMob(key, location) : null;
+    public Entity spawnMythicMob(String mythicMobKey, Location location) {
+        if (mythicMobManager != null) {
+            return mythicMobManager.spawnMythicMob(mythicMobKey, location);
+        }
+        return null;
     }
 }

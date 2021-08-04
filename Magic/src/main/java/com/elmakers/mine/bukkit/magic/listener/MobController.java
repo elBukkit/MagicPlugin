@@ -82,6 +82,19 @@ public class MobController implements Listener, ChunkLoadListener {
         }
     }
 
+    public void registerMythicMobs(Collection<String> mythicMobKeys) {
+        for (String mythicMobKey : mythicMobKeys) {
+            EntityData existing = mobs.get(mythicMobKeys);
+            if (existing != null) {
+                existing.setMythicMobKey(mythicMobKey);
+                continue;
+            }
+
+            EntityData wrapper = EntityData.wrapMythicMob(controller, mythicMobKey);
+            mobs.put(mythicMobKey, wrapper);
+        }
+    }
+
     public void checkMagicMob(Entity entity, String mobKey) {
         com.elmakers.mine.bukkit.api.entity.EntityData storedMob = controller.getMob(mobKey);
         if (storedMob != null) {

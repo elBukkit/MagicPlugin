@@ -2,6 +2,12 @@
 
 # 9.5
 
+## New Features
+
+ - MythicMobs support: 
+   - Mythic mobs can be referred to by name in any configs or `/mmob` command.
+   - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities (W.I.P.)
+
 # 9.4.3
 
 ## Fixes

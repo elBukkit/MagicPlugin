@@ -41,6 +41,7 @@ softdepend:
   - ModelEngine
   - AureliumSkills
   - PerWorldInventory
+  - MythicMobs
 loadbefore:
   - Scavenger
   - Quests

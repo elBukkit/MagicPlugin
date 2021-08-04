@@ -71,6 +71,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Nonnull
     private final MageController controller;
     protected String key;
+    protected String mythicMobKey;
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
 
@@ -247,9 +248,19 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         load(parameters);
     }
 
-    public EntityData(@Nonnull MageController controller, String key, Entity entity) {
-        this(controller, entity);
+    private EntityData(@Nonnull MageController controller, @Nonnull String key) {
+        this.controller = controller;
         this.key = key;
+    }
+
+    public static EntityData wrapMythicMob(@Nonnull MageController controller, String mythicMobKey) {
+        EntityData wrapped = new EntityData(controller, mythicMobKey);
+        wrapped.mythicMobKey = mythicMobKey;
+        return wrapped;
+    }
+
+    public void setMythicMobKey(String mythicMobKey) {
+        this.mythicMobKey = mythicMobKey;
     }
 
     @Nullable
@@ -291,6 +302,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         useNPCName = parameters.getBoolean("use_npc_name", false);
         isHidden = parameters.getBoolean("hidden");
         nameVisible = parameters.getBoolean("show_name");
+        mythicMobKey = parameters.getString("mythic_mob");
         if (parameters.contains("health")) {
             health = parameters.getDouble("health", 1);
             maxHealth = health;
@@ -610,7 +622,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Entity trySpawn(CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
         boolean addedToWorld = false;
-        if (type != null && type != EntityType.PLAYER) {
+        if (mythicMobKey != null) {
+            spawned = controller.spawnMythicMob(mythicMobKey, location);
+            if (spawned != null) {
+                addedToWorld = true;
+            } else {
+                controller.getLogger().warning("Could not spawn mythic mob: " + mythicMobKey + " from mob config " + getKey());
+            }
+        }
+        if (spawned == null && type != null && type != EntityType.PLAYER) {
             try {
                 SpawnedEntityExtraData spawnedEntity = null;
                 if (extraData != null) {
