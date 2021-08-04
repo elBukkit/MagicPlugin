@@ -14,6 +14,8 @@ import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -149,6 +151,9 @@ public class ColorItemAction extends BaseSpellAction {
                         .build();
                 effectMeta.setEffect(fireworkEffect);
             }
+        } else if (meta instanceof PotionMeta) {
+            PotionMeta potionMeta = (PotionMeta)meta;
+            CompatibilityLib.getCompatibilityUtils().setColor(potionMeta, color.getColor());
         } else {
             return false;
         }

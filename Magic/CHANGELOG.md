@@ -14,7 +14,7 @@
 
 ## Additions
  
- - The ColorItem action can be used to color a firework charge or a firework (will change all effects in a firework)
+ - The ColorItem action can be used to color a potion, firework charge or a firework (will change all effects in a firework)
 
 # 9.4.3
 
