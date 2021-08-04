@@ -459,7 +459,12 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     public boolean onMageForget(CommandSender sender, Player player, String[] parameters)
     {
         int count = 0;
+        String target = null;
+        if (parameters.length > 0) {
+            target = parameters[0];
+        }
         for (String recipeKey : controller.getRecipeKeys()) {
+            if (target != null && !recipeKey.contains(target)) continue;
             if (CompatibilityLib.getCompatibilityUtils().undiscoverRecipe(player, recipeKey)) {
                 count++;
             }
