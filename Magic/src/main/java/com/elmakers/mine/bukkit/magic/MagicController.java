@@ -2166,6 +2166,7 @@ public class MagicController implements MageController {
         if (mythicMobManager != null) {
             mobs.registerMythicMobs(mythicMobManager.getMobKeys());
         }
+        mobs.validate();
 
         // Requirements providers
         if (skillAPIManager != null) {
@@ -8427,10 +8428,29 @@ public class MagicController implements MageController {
     }
 
     @Nullable
+    @Override
     public Entity spawnMythicMob(String mythicMobKey, Location location) {
         if (mythicMobManager != null) {
-            return mythicMobManager.spawnMythicMob(mythicMobKey, location);
+            return mythicMobManager.spawn(mythicMobKey, location);
         }
         return null;
+    }
+
+    @Nullable
+    @Override
+    public String getMythicMobKey(Entity entity) {
+        if (mythicMobManager != null) {
+            return mythicMobManager.getMobKey(entity);
+        }
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public boolean isMythicMobKey(String mythicMobKey) {
+        if (mythicMobManager != null) {
+            return mythicMobManager.isMobKey(mythicMobKey);
+        }
+        return false;
     }
 }

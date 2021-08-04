@@ -1,10 +1,18 @@
 # TODO
 
+# MythicMobs
+
+ - Need to really make sure all EntityData parameters are nullable and optional, aka
+   Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
+   
+# Important
+
  - Mars automaton constant lag-spikes, why is it force-loading chunks
- - Dying as an arena ends puts you
+ - Dying at the end of an arena puts you in a broken state (maybe fixed?)
 
 # New
 
+ - ColorItem should work on firework stars
  - Light arrow bypasses pvp?
  - Mob aggro still no bueno
 
@@ -132,7 +140,6 @@ mana = base + wisdom * max
  - Copying dragon cage from httyd world doesn't work- block data wrong?  
  - Got "Recall got to doTeleport with no waypoint selected" .. how?
  - using inherit: sellshop make the quiet: true not working on item parameter but it works correctly with inherit: buyshop (brushette)
- - Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
  - Do automata drop loot when expiring due to chunk load?
  - Selector cost at top-level (default cost) doesn't work
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)

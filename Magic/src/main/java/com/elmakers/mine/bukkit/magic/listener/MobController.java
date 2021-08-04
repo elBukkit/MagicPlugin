@@ -41,6 +41,7 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
+import com.elmakers.mine.bukkit.tasks.CheckEntitySpawnTask;
 import com.elmakers.mine.bukkit.tasks.ModifyEntityTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -84,7 +85,7 @@ public class MobController implements Listener, ChunkLoadListener {
 
     public void registerMythicMobs(Collection<String> mythicMobKeys) {
         for (String mythicMobKey : mythicMobKeys) {
-            EntityData existing = mobs.get(mythicMobKeys);
+            EntityData existing = mobs.get(mythicMobKey);
             if (existing != null) {
                 existing.setMythicMobKey(mythicMobKey);
                 continue;
@@ -92,6 +93,12 @@ public class MobController implements Listener, ChunkLoadListener {
 
             EntityData wrapper = EntityData.wrapMythicMob(controller, mythicMobKey);
             mobs.put(mythicMobKey, wrapper);
+        }
+    }
+
+    public void validate() {
+        for (EntityData mob : mobs.values()) {
+            mob.validate();
         }
     }
 
@@ -179,38 +186,77 @@ public class MobController implements Listener, ChunkLoadListener {
             return;
         }
 
-        // Check for default mob overrides
+        // We can process natural spawns now because we assume the mobs are complete.
+        // Custom spawns need to be deferred one tick to give MythicMobs (or other plugins)
+        // a chance to register the mob and set its name.
         Plugin plugin = controller.getPlugin();
+        SpawnReason reason = event.getSpawnReason();
+        if (reason == SpawnReason.CUSTOM) {
+            plugin.getServer().getScheduler().runTaskLater(plugin, new CheckEntitySpawnTask(this, entity), 1);
+            return;
+        }
+
+        // Natural spawns should only check for default mobs
+        if (checkDefaultSpawn(entity, true)) {
+            return;
+        }
+
+        // Spawners and spawn eggs can be processed now since they will already have their display name
+        if (reason != SpawnReason.SPAWNER
+                && reason != SpawnReason.SPAWNER_EGG
+                && reason != SpawnReason.DISPENSE_EGG) {
+            return;
+        }
+
+        checkEntitySpawn(entity, true);
+    }
+
+    public boolean checkDefaultSpawn(Entity entity, boolean defer) {
+        // Check for default mob overrides
         String customName = entity.getCustomName();
         EntityData customMob = defaultMobs.get(entity.getType());
         if (customName == null && customMob != null) {
-            plugin.getServer().getScheduler().runTaskLater(plugin, new ModifyEntityTask(controller, customMob, entity), 1);
-            return;
+            if (defer) {
+                Plugin plugin = controller.getPlugin();
+                plugin.getServer().getScheduler().runTaskLater(plugin, new ModifyEntityTask(controller, customMob, entity), 1);
+            } else {
+                customMob.modify(entity);
+            }
+            return true;
         }
+        return false;
+    }
 
-        // Now only named mobs will be tagged
-        if (customName == null || customName.isEmpty()) {
-            return;
-        }
-
-        // Only want non-natural spawns here
-        // We assume mobs won't naturally spawn with a name.
-        SpawnReason reason = event.getSpawnReason();
-        if (reason != SpawnReason.SPAWNER
-            && reason != SpawnReason.SPAWNER_EGG
-            && reason != SpawnReason.DISPENSE_EGG
-            && reason != SpawnReason.CUSTOM) {
-            return;
+    public boolean checkEntitySpawn(Entity entity, boolean defer) {
+        // Check for mythic mob spawns
+        String mythicMobKey = controller.getMythicMobKey(entity);
+        if (mythicMobKey != null) {
+            com.elmakers.mine.bukkit.api.entity.EntityData mythicMob = controller.getMob(mythicMobKey);
+            if (mythicMob != null) {
+                mythicMob.modify(entity);
+                return true;
+            }
         }
 
         // Check for named custom mobs
-        // This is to allow attaching data to mobs spawned by spawners, eggs or other plugins
-        final EntityData namedMob = mobsByName.get(customName);
-        if (namedMob == null) {
-            return;
+        String customName = entity.getCustomName();
+        if (customName == null || customName.isEmpty()) {
+            return false;
         }
 
-        plugin.getServer().getScheduler().runTaskLater(plugin, new ModifyEntityTask(controller, namedMob, entity), 1);
+        // This is to allow attaching data to mobs spawned by spawners, eggs or other plugins
+        final com.elmakers.mine.bukkit.entity.EntityData namedMob = mobsByName.get(customName);
+        if (namedMob == null) {
+            return false;
+        }
+
+        if (defer) {
+            Plugin plugin = controller.getPlugin();
+            plugin.getServer().getScheduler().runTaskLater(plugin, new ModifyEntityTask(controller, namedMob, entity), 1);
+        } else {
+            namedMob.modify(entity);
+        }
+        return true;
     }
 
     @EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)

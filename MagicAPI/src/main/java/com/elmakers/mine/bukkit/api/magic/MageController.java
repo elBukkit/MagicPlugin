@@ -834,4 +834,7 @@ public interface MageController {
     void onPlayerJump(Player player, Vector velocity);
     @Nullable
     Entity spawnMythicMob(String mythicMobKey, Location location);
+    @Nullable
+    String getMythicMobKey(Entity entity);
+    boolean isMythicMobKey(String mythicMobKey);
 }

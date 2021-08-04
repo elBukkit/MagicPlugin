@@ -219,6 +219,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
         isSitting = CompatibilityLib.getCompatibilityUtils().isSitting(entity);
         isInvulnerable = CompatibilityLib.getCompatibilityUtils().isInvulnerable(entity);
+        mythicMobKey = controller.getMythicMobKey(entity);
 
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
@@ -341,17 +342,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         String entityName = parameters.contains("type") ? parameters.getString("type") : key;
         if (entityName != null && !entityName.isEmpty()) {
             type = parseEntityType(entityName);
-            if (type == null) {
-                String message = " Invalid entity type: " + entityName + " in mob config";
-                if (key != null) {
-                    message = message + " " + key;
-                }
-                if (key != null && entityName.equals(key)) {
-                    message = message + ", did you forget the 'type' parameter?";
-                }
-                controller.getLogger().log(Level.WARNING, message);
-                return;
-            }
         }
 
         ConfigurationSection mountConfig = ConfigurationUtils.getConfigurationSection(parameters, "mount");
@@ -543,6 +533,18 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         EntityMageData mageData = new EntityMageData(controller, parameters);
         if (!mageData.isEmpty()) {
             this.mageData = mageData;
+        }
+    }
+
+    public void validate() {
+        if (mythicMobKey != null) {
+            if (!controller.isMythicMobKey(mythicMobKey)) {
+                controller.getLogger().warning("Invalid mythic mob key: " + mythicMobKey);
+            }
+            return;
+        }
+        if (type == null) {
+            controller.getLogger().warning("Mob config missing 'type' and not a vanilla mob type: " + key);
         }
     }
 
@@ -1231,6 +1233,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (name != null && !name.isEmpty()) {
             return name;
         }
+        if (mythicMobKey != null) return "Mythic: " + mythicMobKey;
         if (type == null) return "Unknown";
         return type.name().toLowerCase();
     }
