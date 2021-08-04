@@ -6610,6 +6610,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return getPropertyConfiguration(key).get(key);
     }
 
+    @Override
+    @Nonnull
+    public ConfigurationSection getPropertyConfiguration(String key) {
+        if (slottedConfiguration != null && slottedConfiguration.contains(key)) {
+            return slottedConfiguration;
+        }
+        return super.getPropertyConfiguration(key);
+    }
+
     public boolean isInteractible(Block block) {
         if (block == null) {
             return false;

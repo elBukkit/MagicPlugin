@@ -8,6 +8,10 @@
    - Mythic mobs can be referred to by name in any configs or `/mmob` command.
    - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities (W.I.P.)
 
+## Fixes
+
+ - Fix upgrading mana (and probably other properties) in wand slotted upgrades
+
 # 9.4.3
 
 ## Fixes
