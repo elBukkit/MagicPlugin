@@ -63,7 +63,7 @@ public class Target implements Comparable<Target>
     public Target(Location sourceLocation, Block block)
     {
         this.source = sourceLocation;
-        this.locationMaterial = new MaterialAndData(block);
+        getSourceMaterial(block);
         this.setBlock(block);
         calculateScore();
     }
@@ -71,7 +71,7 @@ public class Target implements Comparable<Target>
     public Target(Location sourceLocation, Block block, boolean hitbox, double hitboxPadding)
     {
         this.source = sourceLocation;
-        this.locationMaterial = new MaterialAndData(block);
+        getSourceMaterial(block);
         this.useHitbox = hitbox;
         this.hitboxPadding = hitboxPadding;
         this.setBlock(block);
@@ -95,7 +95,7 @@ public class Target implements Comparable<Target>
         this.reverseDistance = reverseDistance;
         this.source = sourceLocation;
         this.setBlock(block);
-        this.locationMaterial = new MaterialAndData(block);
+        getSourceMaterial(block);
         calculateScore();
     }
 
@@ -108,7 +108,7 @@ public class Target implements Comparable<Target>
         this.source = sourceLocation;
         this.fovWeight = fovWeight;
         this.setBlock(block);
-        this.locationMaterial = new MaterialAndData(block);
+        getSourceMaterial(block);
         calculateScore();
     }
 
@@ -258,6 +258,12 @@ public class Target implements Comparable<Target>
             this.setBlock(block);
         } else if (entity != null) {
             this.location = CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
+        }
+    }
+
+    protected void getSourceMaterial(Block block) {
+        if (CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) {
+            this.locationMaterial = new MaterialAndData(block);
         }
     }
 
