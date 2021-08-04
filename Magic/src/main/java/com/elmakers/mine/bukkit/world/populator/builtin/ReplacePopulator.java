@@ -19,24 +19,12 @@ public class ReplacePopulator extends BaseBlockPopulator {
     private static final int WARNING_INTERVAL = 10000;
     private MaterialMap replaceMap = null;
     private Map<Biome, Biome> replaceBiomes = null;
-    private int maxY = 128;
-    private int minY = 3;
     private long lastBiomeWarning;
 
     @Override
     public boolean onLoad(ConfigurationSection config) {
         replaceMap = null;
         replaceBiomes = null;
-
-        maxY = config.getInt("max_y");
-        if (maxY == 0) {
-            maxY = 128;
-        }
-        minY = config.getInt("min_y");
-        if (minY == 0) {
-            minY = 3;
-        }
-
         replaceMap = controller.getMaterialSetManager().mapFromConfig(config, "replace");
 
         ConfigurationSection replaceBiomeSection = config.getConfigurationSection("replace_biomes");
@@ -69,7 +57,6 @@ public class ReplacePopulator extends BaseBlockPopulator {
     @Override
     @Nullable
     public BlockResult populate(Block block, Random random) {
-        if (block.getY() < minY || block.getY() > maxY) return null;
         if (replaceBiomes != null) {
             Biome newBiome = replaceBiomes.get(block.getBiome());
             if (newBiome != null) {
