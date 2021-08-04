@@ -602,7 +602,15 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         updated();
     }
 
+    protected void cleanSlottedUpgradeConfig(ConfigurationSection upgradeConfig) {
+        cleanUpgradeConfig(upgradeConfig, true);
+    }
+
     protected void cleanUpgradeConfig(ConfigurationSection upgradeConfig) {
+        cleanUpgradeConfig(upgradeConfig, false);
+    }
+
+    protected void cleanUpgradeConfig(ConfigurationSection upgradeConfig, boolean slotted) {
         upgradeConfig.set("id", null);
         upgradeConfig.set("indestructible", null);
         upgradeConfig.set("upgrade", null);
@@ -613,6 +621,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         upgradeConfig.set("template", null);
         upgradeConfig.set("description", null);
         upgradeConfig.set("name", null);
+        if (slotted) {
+            upgradeConfig.set("mana", null);
+        }
     }
 
     @Override

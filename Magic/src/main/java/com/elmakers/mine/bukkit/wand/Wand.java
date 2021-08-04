@@ -4338,7 +4338,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(addSlot.getEffectiveConfiguration());
-        cleanUpgradeConfig(upgradeConfig);
+        cleanSlottedUpgradeConfig(upgradeConfig);
         ConfigurationUtils.addConfigurations(slottedConfiguration, upgradeConfig);
     }
 
