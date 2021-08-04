@@ -15,6 +15,8 @@ public abstract class BaseBlockPopulator extends MagicChunkPopulator {
     private int maxY = 255;
     private int minY = 0;
     private int maxAirY = 255;
+    private int cooldown;
+    private long lastPopulate;
 
     @Override
     public boolean load(ConfigurationSection config, MagicController controller) {
@@ -24,6 +26,7 @@ public abstract class BaseBlockPopulator extends MagicChunkPopulator {
         maxY = config.getInt("max_y", maxY);
         minY = config.getInt("min_y", minY);
         maxAirY = config.getInt("max_air_y", maxAirY);
+        cooldown = config.getInt("cooldown", 0);
         return true;
     }
 
@@ -35,6 +38,11 @@ public abstract class BaseBlockPopulator extends MagicChunkPopulator {
                     Block block = chunk.getBlock(x,  y, z);
                     if (y > maxAirY && block.getType() == Material.AIR) {
                         break;
+                    }
+                    if (cooldown > 0) {
+                        long now = System.currentTimeMillis();
+                        if (now < lastPopulate + cooldown) continue;
+                        lastPopulate = now;
                     }
 
                     populate(block, random);

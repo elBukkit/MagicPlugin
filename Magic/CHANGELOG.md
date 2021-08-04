@@ -6,7 +6,7 @@
 
  - MythicMobs support: 
    - Mythic mobs can be referred to by name in any configs or `/mmob` command.
-   - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities (W.I.P.)
+   - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities (W.I.P.
 
 ## Fixes
 
@@ -15,6 +15,7 @@
 ## Additions
  
  - The ColorItem action can be used to color a potion, firework charge or a firework (will change all effects in a firework)
+ - Added `cooldown` option to block populators
 
 # 9.4.3
 
