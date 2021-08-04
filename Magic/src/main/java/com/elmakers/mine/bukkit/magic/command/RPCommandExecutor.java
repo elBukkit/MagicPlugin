@@ -41,6 +41,11 @@ public class RPCommandExecutor extends MagicTabExecutor {
             sendNoPermission(sender);
             return true;
         }
+        if (!controller.isResourcePackEnabled()) {
+            sender.sendMessage(controller.getMessages().get("commands.getrp.disabled"));
+            return true;
+        }
+
         String subCommand = args.length > 0 ? args[0] : "";
         if (subCommand.equalsIgnoreCase("url") || subCommand.equalsIgnoreCase("download")) {
             sender.sendMessage(controller.getResourcePackURL(sender));
@@ -48,10 +53,6 @@ public class RPCommandExecutor extends MagicTabExecutor {
         }
         if (!(sender instanceof Player)) {
             sender.sendMessage(controller.getMessages().get("commands.in_game"));
-            return true;
-        }
-        if (!controller.isResourcePackEnabled()) {
-            sender.sendMessage(controller.getMessages().get("commands.getrp.disabled"));
             return true;
         }
 
