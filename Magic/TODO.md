@@ -11,9 +11,6 @@
 
 # New
 
- - Add cooldown to BlockRule
- - Add biomes filter support to BlockRule
- - Let `types` in BlockRule use a material list (if possible)  
  - Light arrow bypasses pvp?
  - Mob aggro still no bueno
 

@@ -15,7 +15,7 @@
 ## Additions
  
  - The ColorItem action can be used to color a potion, firework charge or a firework (will change all effects in a firework)
- - Added `cooldown` option to block populators
+ - Added `cooldown`, `biomes` and `not_biomes` options to block populators
 
 # 9.4.3
 
