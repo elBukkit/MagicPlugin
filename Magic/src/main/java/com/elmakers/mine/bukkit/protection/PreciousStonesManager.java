@@ -23,6 +23,7 @@ import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class PreciousStonesManager implements BlockBuildManager, BlockBreakManager, PVPManager,
         CastPermissionManager, EntityTargetingManager, PlayerWarpManager {
@@ -61,7 +62,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
 
     @Override
     public boolean isPVPAllowed(Player player, Location location) {
-        if (!enabled || api == null || location == null)
+        if (!enabled || api == null || location == null || !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(location))
         {
             return true;
         }
@@ -80,7 +81,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
     @Nullable
     @Override
     public Boolean getPersonalCastPermission(Player player, SpellTemplate spell, Location location) {
-        if (!override || !enabled || api == null || location == null)
+        if (!override || !enabled || api == null || location == null || !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(location))
         {
             return null;
         }
