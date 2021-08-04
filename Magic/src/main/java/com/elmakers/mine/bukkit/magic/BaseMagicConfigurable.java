@@ -200,10 +200,10 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
             ConfigurationSection effectsConfig = (ConfigurationSection)effectsObject;
             Set<String> keys = effectsConfig.getKeys(false);
             for (String key : keys) {
-                try {
-                        PotionEffectType type = PotionEffectType.getByName(key.toUpperCase());
-                        effects.put(type, effectsConfig.getInt(key));
-                } catch (Exception ex) {
+                PotionEffectType type = PotionEffectType.getByName(key.toUpperCase());
+                if (type != null) {
+                    effects.put(type, effectsConfig.getInt(key));
+                } else {
                     controller.getLogger().log(Level.WARNING, "Invalid potion effect: " + key);
                 }
             }
