@@ -47,17 +47,19 @@ public abstract class BaseBlockPopulator extends MagicChunkPopulator {
                     if (y > maxAirY && block.getType() == Material.AIR) {
                         break;
                     }
-                    if (cooldown > 0) {
-                        long now = System.currentTimeMillis();
-                        if (now < lastPopulate + cooldown) continue;
-                        lastPopulate = now;
-                    }
                     if (biomes != null && !biomes.contains(block.getBiome()))
                         continue;
                     if (notBiomes != null && notBiomes.contains(block.getBiome()))
                         continue;
 
-                    populate(block, random);
+                    long now = System.currentTimeMillis();
+                    if (cooldown > 0 && now < lastPopulate + cooldown)
+                        continue;
+
+                    BlockResult result = populate(block, random);
+                    if (result != BlockResult.SKIP) {
+                        lastPopulate = now;
+                    }
                 }
             }
         }
