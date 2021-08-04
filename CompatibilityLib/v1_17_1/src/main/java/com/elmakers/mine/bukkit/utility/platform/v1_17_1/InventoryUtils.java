@@ -248,6 +248,12 @@ public class InventoryUtils extends InventoryUtilsBase {
             value = converted;
         } else if (tag instanceof StringTag) {
             value = ((StringTag)tag).getAsString();
+        } else if (tag instanceof IntArrayTag) {
+            value = ((IntArrayTag)tag).getAsIntArray();
+        } else if (tag instanceof ByteArrayTag) {
+            value = ((ByteArrayTag)tag).getAsByteArray();
+        } else if (tag instanceof LongArrayTag) {
+            value = ((LongArrayTag)tag).getAsLongArray();
         } else if (tag instanceof CompoundTag) {
             Map<String, Object> compoundMap = new HashMap<>();
             Set<String> keys = getTagKeys(tag);
