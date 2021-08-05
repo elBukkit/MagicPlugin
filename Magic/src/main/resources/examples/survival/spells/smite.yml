@@ -19,7 +19,7 @@ smite:
         -  class: Sphere
            ignore_result: true
            actions:
-           -  class: ModifyBlock
+           -  class: BreakBlock
     effects:
       cast:
       - sound: block_conduit_activate
@@ -64,26 +64,35 @@ smite:
         range: 32
         radius: 1.5
         damage_max_distance: 4
-        cooldown: 45000
+        cooldown: 20000
         effect_only: true
         damage: 3
         duration: 5000
         speed: 0.9
         falling: true
-        brush: air
         undo: 10000
         oty: -2
         undo_speed: 0.5
+
+        durability_max_distance: 4
+        destructible: solid
+        destructible_override: true
+        destructible_durability: 200
+        break_durability: 50
     costs:
         mana: 100
 
 smite|2:
   upgrade_required_path: master
   parameters:
+    destructible_durability: 500
+    break_durability: 100
     radius: 2.5
     damage: 4
 
 smite|3:
   parameters:
+    break_durability: 1000
+    destructible_durability: 5000
     radius: 3.5
     damage: 5

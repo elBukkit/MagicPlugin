@@ -40,7 +40,7 @@ meteor:
               - class: Skip
                 actions:
                   - class: Delay
-              - class: ModifyBlock
+              - class: BreakBlock
             tick:
             - class: Skip
               actions:
@@ -62,7 +62,7 @@ meteor:
                               - class: Damage
                           - class: Sphere
                             actions:
-                              - class: ModifyBlock
+                              - class: BreakBlock
     effects:
         cast:
         -  sound: ambient_nether_wastes_mood
@@ -214,14 +214,20 @@ meteor:
         duration: 5000
         cooldown: 60000
         falling: true
-        brush: air
         direction: 0,0.75,0
-        destructible_override: true
         undo_speed: 2
+
+        durability_max_distance: 4
+        destructible: solid
+        destructible_override: true
+        destructible_durability: 500
+        break_durability: 100
     costs:
         mana: 200
 
 meteor|2:
     parameters:
+        break_durability: 1000
+        destructible_durability: 5000
         multiply: 3
         cooldown: 45000

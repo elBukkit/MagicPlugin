@@ -24,6 +24,7 @@
 ## Changes
 
  - Classes will automatically inherit properties from their parents
+ - Smite and Meteor changed to use BreakBlock action, will work in protected areas
 
 # 9.4.3
 
