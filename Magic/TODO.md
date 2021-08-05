@@ -4,7 +4,15 @@
 
  - Need to really make sure all EntityData parameters are nullable and optional, aka
    Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
-   
+
+# Magic Bow
+
+ - Add "allowed enchantments", or maybe just allow "enchantable" to be a lsit
+ - Add "infinity_cost_free" wand option, if the infinity enchantment is present the wand becomes cost-free
+ - Test applying infinity to a sword, is it allowed? Enchantable should bypass vanilla restrictions
+ - Don't forget to allow upgrading an enchant level while you're in there
+ - Give the archer example bow infinity
+
 # Important
 
  - Dying at the end of an arena puts you in a broken state (maybe fixed?)

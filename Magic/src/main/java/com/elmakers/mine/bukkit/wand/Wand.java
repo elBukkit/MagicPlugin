@@ -160,6 +160,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean autoAlphabetize = false;
     private boolean autoFill = false;
     private boolean isUpgrade = false;
+    private boolean isCostFree = false;
     private boolean randomizeOnActivate = true;
     private boolean rename = false;
     private boolean renameDescription = false;
@@ -798,6 +799,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public static boolean isUpgrade(ItemStack item) {
         return item != null && CompatibilityLib.getNBTUtils().hasMeta(item, UPGRADE_KEY);
+    }
+
+    @Override
+    public boolean isCostFree() {
+        if (isCostFree) {
+            return true;
+        }
+        return super.isCostFree();
     }
 
     @Override
@@ -2307,11 +2316,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (enchantmentList != null && !enchantmentList.isEmpty()) {
                 enchantments = ConfigurationUtils.newConfigurationSection();
                 for (String enchantKey : enchantmentList) {
-                    enchantments.set(enchantKey, 0);
+                    enchantments.set(enchantKey, 1);
                 }
             }
         }
+
+        isCostFree = false;
         CompatibilityLib.getInventoryUtils().applyEnchantments(item, enchantments);
+        if (getBoolean("infinity_cost_free", false)) {
+            ItemMeta itemMeta = item.getItemMeta();
+            if (itemMeta != null && itemMeta.hasEnchant(Enchantment.ARROW_INFINITE)) {
+                isCostFree = true;
+            }
+        }
 
         // Add enchantment glow
         if (enchantments == null || enchantments.getKeys(false).isEmpty()) {
