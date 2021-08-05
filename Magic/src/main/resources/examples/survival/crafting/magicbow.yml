@@ -3,10 +3,9 @@ magicbow:
   output_type: wand
   group: "Wands"
   materials:
-    o: nether_star
     i: bow
     h: magicheart
-  row_1: o
+  row_1: h
   row_2: i
   row_3: h
 
