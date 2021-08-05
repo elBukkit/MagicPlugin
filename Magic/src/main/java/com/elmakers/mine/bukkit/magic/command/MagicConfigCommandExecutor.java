@@ -331,6 +331,14 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 options.add(key);
             }
         }
+        if (fileType.equals("materials")) {
+            Collection<String> list = api.getController().getMaterialSetManager().getMaterialSets();
+            for (String key : list) {
+                if (!key.startsWith("!")) {
+                    options.add(key);
+                }
+            }
+        }
     }
 
     @Override
