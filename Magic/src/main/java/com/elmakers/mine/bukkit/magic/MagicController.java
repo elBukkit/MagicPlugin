@@ -3245,6 +3245,7 @@ public class MagicController implements MageController {
         defaultMaterials.setGroundSignBlock(getVersionedMaterial(configuration, "ground_sign_block"));
         defaultMaterials.setWallSignBlock(getVersionedMaterial(configuration, "wall_sign_block"));
         defaultMaterials.setFirework(getVersionedMaterial(configuration, "firework"));
+        defaultMaterials.setFireworkStar(getVersionedMaterial(configuration, "firework_star"));
         defaultMaterials.setWallTorch(getVersionedMaterialAndData(configuration, "wall_torch"));
         defaultMaterials.setRedstoneTorchOn(getVersionedMaterialAndData(configuration, "redstone_torch_on"));
         defaultMaterials.setRedstoneTorchOff(getVersionedMaterialAndData(configuration, "redstone_torch_off"));

@@ -11,6 +11,7 @@ import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
@@ -23,6 +24,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -135,7 +137,15 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof PotionMeta) {
-                extraData = new PotionData(CompatibilityLib.getCompatibilityUtils().getColor((PotionMeta)meta));
+                extraData = new ColoredData(CompatibilityLib.getCompatibilityUtils().getColor((PotionMeta)meta));
+            }
+        } else if (this.material == DefaultMaterials.getFireworkStar()) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null && meta instanceof FireworkEffectMeta) {
+                FireworkEffect effect = ((FireworkEffectMeta)meta).getEffect();
+                if (effect != null && !effect.getColors().isEmpty()) {
+                    extraData = new ColoredData(effect.getColors().get(0));
+                }
             }
         } else if (this.material == Material.WRITTEN_BOOK) {
             ItemMeta meta = item.getItemMeta();
@@ -339,14 +349,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             }
                         }
                     }
-                } else if (material == Material.POTION || material == Material.TIPPED_ARROW) {
+                } else if (material == Material.POTION || material == Material.TIPPED_ARROW || material == DefaultMaterials.getFireworkStar()) {
                     String color = dataString;
                     if (color.startsWith("#")) {
                         color = color.substring(1);
                     }
                     try {
                         Color potionColor = Color.fromRGB(Integer.parseInt(color, 16));
-                        extraData = new PotionData(potionColor);
+                        extraData = new ColoredData(potionColor);
                     } catch (Exception ex) {
                         extraData = null;
                     }
@@ -712,9 +722,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         materialKey += ":#" + Integer.toHexString(color.asRGB());
                     }
                 }
-            } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW) {
-                if (extraData != null && extraData instanceof PotionData) {
-                    Color color = ((PotionData)extraData).getColor();
+            } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW || this.material == DefaultMaterials.getFireworkStar()) {
+                if (extraData != null && extraData instanceof ColoredData) {
+                    Color color = ((ColoredData)extraData).getColor();
                     if (color != null) {
                         materialKey += ":" + Integer.toHexString(color.asRGB());
                     }
@@ -900,8 +910,28 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
         } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW) {
             ItemMeta meta = stack.getItemMeta();
-            if (extraData != null && extraData instanceof PotionData && meta != null && meta instanceof PotionMeta) {
-                CompatibilityLib.getCompatibilityUtils().setColor((PotionMeta)meta, ((PotionData)extraData).getColor());
+            if (extraData != null && extraData instanceof ColoredData && meta != null && meta instanceof PotionMeta) {
+                CompatibilityLib.getCompatibilityUtils().setColor((PotionMeta)meta, ((ColoredData)extraData).getColor());
+                stack.setItemMeta(meta);
+            }
+        } else if (this.material == DefaultMaterials.getFireworkStar()) {
+            ItemMeta meta = stack.getItemMeta();
+            if (extraData != null && extraData instanceof ColoredData && meta != null && meta instanceof FireworkEffectMeta) {
+                FireworkEffectMeta effectMeta = (FireworkEffectMeta)meta;
+                ColoredData coloredData = (ColoredData)extraData;
+                FireworkEffect existingEffect = effectMeta.getEffect();
+                if (existingEffect != null) {
+                    FireworkEffect.Type existingType = existingEffect.getType();
+                    FireworkEffect fireworkEffect = FireworkEffect.builder()
+                            .withColor(coloredData.getColor())
+                            .flicker(existingEffect.hasFlicker())
+                            .trail(existingEffect.hasTrail())
+                            .with(existingType == null ? FireworkEffect.Type.BALL : existingType)
+                            .build();
+                    effectMeta.setEffect(fireworkEffect);
+                } else {
+                    effectMeta.setEffect(FireworkEffect.builder().withColor(coloredData.getColor()).build());
+                }
                 stack.setItemMeta(meta);
             }
         } else if (this.material == Material.WRITTEN_BOOK) {

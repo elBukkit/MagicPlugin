@@ -2,6 +2,7 @@
 ground_sign_block: oak_sign,sign_post,sign
 wall_sign_block: oak_wall_sign,wall_sign
 firework: firework,firework_rocket
+firework_star: firework_star,firework_charge
 wall_torch: wall_torch,torch
 redstone_torch_on: redstone_torch_on,redstone_torch:1
 redstone_torch_off: redstone_torch_on,redstone_torch:0

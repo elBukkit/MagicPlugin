@@ -2,10 +2,10 @@ package com.elmakers.mine.bukkit.block;
 
 import org.bukkit.Color;
 
-public class PotionData extends MaterialExtraData {
+public class ColoredData extends MaterialExtraData {
     protected Color color;
 
-    public PotionData(Color color) {
+    public ColoredData(Color color) {
         this.color = color;
     }
 
@@ -15,6 +15,6 @@ public class PotionData extends MaterialExtraData {
 
     @Override
     public MaterialExtraData clone() {
-        return new PotionData(color);
+        return new ColoredData(color);
     }
 }

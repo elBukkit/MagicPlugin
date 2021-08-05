@@ -37,6 +37,7 @@ public class DefaultMaterials {
     private Material groundSignBlock = null;
     private Material wallSignBlock = null;
     private Material firework = null;
+    private Material fireworkStar = null;
     private Material mobSpawner = null;
     private Material filledMap = null;
     private Material netherPortal = null;
@@ -161,6 +162,15 @@ public class DefaultMaterials {
     @Nullable
     public static Material getFirework() {
         return getInstance().firework;
+    }
+
+    @Nullable
+    public static Material getFireworkStar() {
+        return getInstance().fireworkStar;
+    }
+
+    public void setFireworkStar(Material material) {
+        this.fireworkStar = material;
     }
 
     public void setMobSpawner(Material material) {
