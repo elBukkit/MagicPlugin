@@ -11,6 +11,7 @@ archer:
   legacy_icon: bow_icon:1
   effect_color: '004400'
   earn_multiplier: 0
+  enchantments: arrow_infinite
   spells:
     - arrow_regular
     - arrow_poison
