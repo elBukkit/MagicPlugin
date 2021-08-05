@@ -326,8 +326,8 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
                         continue;
                     }
                     int level = enchantConfig.getInt(enchantKey);
-                    if (meta.hasConflictingEnchant(enchantment)) continue;
                     if (meta.getEnchantLevel(enchantment) >= level) continue;
+                    if (!meta.hasEnchant(enchantment) && meta.hasConflictingEnchant(enchantment)) continue;
                     if (meta.addEnchant(enchantment, level, false)) {
                         addedAny = true;
                     }
