@@ -2573,7 +2573,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public boolean isCostFree() {
-        return mage.isCostFree() || (mageClass != null && mageClass.isCostFree());
+        return (mage != null && mage.isCostFree()) || (mageClass != null && mageClass.isCostFree());
     }
 
     @Nullable

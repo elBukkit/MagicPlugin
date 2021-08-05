@@ -25,4 +25,12 @@ public interface CostReducer {
      * @return The final scale to apply
      */
     float getCostScale();
+
+    default boolean isCostFree() {
+        return getCostReduction() >= 1;
+    }
+
+    default boolean isConsumeFree() {
+        return getConsumeReduction() >= 1;
+    }
 }

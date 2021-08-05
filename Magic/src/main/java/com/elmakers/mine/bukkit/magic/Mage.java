@@ -212,14 +212,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float costReduction = 0;
     private float cooldownReduction = 0;
     private float consumeReduction = 0;
+    private boolean cooldownFree = false;
+    private boolean costFree = false;
+    private boolean consumeFree = false;
     private float powerMultiplier = 1;
     private float spEarnMultiplier = 1;
     private float manaMaxBoost = 0;
     private float manaRegenerationBoost = 0;
     private double healthScale = 0;
 
-    private boolean costFree = false;
-    private boolean cooldownFree = false;
+    private boolean costFreeOverride = false;
+    private boolean cooldownFreeOverride = false;
     private boolean resourcePackPrompt = true;
     private Boolean resourcePackEnabled = null;
     private String preferredResourcePack = null;
@@ -346,12 +349,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void setCostFree(boolean free) {
-        costFree = free;
+        costFreeOverride = free;
     }
 
     @Override
     public void setCooldownFree(boolean free) {
-        cooldownFree = free;
+        cooldownFreeOverride = free;
     }
 
     @Override
@@ -2396,13 +2399,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isCostFree() {
         // Special case for command blocks, Automata and magic mobs
-        if (costFree || getPlayer() == null) return true;
+        if (costFreeOverride || costFree || getPlayer() == null) return true;
         return getCostReduction() > 1;
     }
 
     @Override
     public boolean isConsumeFree() {
-        return activeWand != null && activeWand.isConsumeFree();
+        return consumeFree || consumeReduction >= 1 || (activeWand != null && activeWand.isConsumeFree());
     }
 
     @Override
@@ -2435,7 +2438,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCostReduction() {
-        if (costFree) {
+        if (costFreeOverride) {
             return 2;
         }
         return costReduction * controller.getMaxCostReduction() + controller.getCostReduction();
@@ -2453,7 +2456,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public float getCooldownReduction() {
-        if (cooldownFree) {
+        if (cooldownFreeOverride) {
             return 2;
         }
         return cooldownReduction * controller.getMaxCooldownReduction() + controller.getCooldownReduction();
@@ -2461,7 +2464,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isCooldownFree() {
-        return cooldownFree || getCooldownReduction() > 1;
+        return cooldownFreeOverride || cooldownFree || getCooldownReduction() > 1;
     }
 
     @Override
@@ -4098,6 +4101,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             ignoreParticles = true;
         }
 
+        if (properties.isCostFree()) {
+            costFree = true;
+        }
+        if (properties.isConsumeFree()) {
+            consumeFree = true;
+        }
+        if (properties.isCooldownFree()) {
+            cooldownFree = true;
+        }
+
         if (activeReduction || properties.isPassive() || stack) {
             if (stack) {
                 cooldownReduction = stackValue(cooldownReduction, properties.getFloat("cooldown_reduction", 0));
@@ -4229,6 +4242,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         consumeReduction = 0;
         manaMaxBoost = 0;
         manaRegenerationBoost = 0;
+        cooldownFree = false;
+        costFree = false;
+        consumeFree = false;
 
         List<PotionEffectType> currentEffects = new ArrayList<>(effectivePotionEffects.keySet());
         LivingEntity entity = getLivingEntity();

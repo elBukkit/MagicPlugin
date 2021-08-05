@@ -216,6 +216,9 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     protected double getReducedCost(double cost, CostReducer reducer)
     {
+        if (reducer != null && reducer.isCostFree()) {
+            return 0;
+        }
         double reducedAmount = cost;
         double reduction = reducer == null ? 0 : reducer.getCostReduction();
         if (reduction >= 1) {
@@ -249,12 +252,12 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
 
     public boolean isConsumeFree(CostReducer reducer)
     {
-        return reducer != null && reducer.getConsumeReduction() >= 1;
+        return reducer != null && reducer.isConsumeFree();
     }
 
     public boolean isCostFree(CostReducer reducer)
     {
-        return reducer != null && reducer.getCostReduction() >= 1;
+        return reducer != null && reducer.isCostFree();
     }
 
     @Override
