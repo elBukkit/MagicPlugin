@@ -92,6 +92,8 @@ base_sword:
     swap: cycle_hotbar
     quick_cast: true
     quiet: 1
+    enchantable: true
+    hide_flags: 61
 
 base_bow:
     hidden: true
@@ -103,3 +105,6 @@ base_bow:
     swap: cycle_hotbar
     quiet: 1
     cast_location: 0,0,0.35
+    infinity_cost_free: true
+    hide_flags: 61
+    enchantable: true
