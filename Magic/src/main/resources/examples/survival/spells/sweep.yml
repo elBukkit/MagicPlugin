@@ -9,7 +9,6 @@ sweep:
     earns: 8
     actions:
         cast:
-        cast:
         - class: Repeat
           actions:
           - class: ConeOfEffect
