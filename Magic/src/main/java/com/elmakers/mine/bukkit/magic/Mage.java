@@ -1969,6 +1969,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 mageClass.deactivate();
             }
             mageClass.setTemplate(template);
+            mageClass.loadProperties();
             if (!mageClass.isLocked()) {
                 mageClass.activate();
             }
@@ -1988,6 +1989,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             modifier.deactivate();
             modifier.setTemplate(template);
+            modifier.loadProperties();
             modifier.activate();
         }
     }
