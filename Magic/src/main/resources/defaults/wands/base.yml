@@ -107,3 +107,4 @@ base_bow:
     cast_location: 0,0,0.35
     infinity_cost_free: true
     enchantable: true
+    allowed_enchantments: infinity

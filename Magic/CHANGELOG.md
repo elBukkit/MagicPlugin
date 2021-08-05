@@ -8,6 +8,11 @@
    - Mythic mobs can be referred to by name in any configs or `/mmob` command.
    - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities (W.I.P.
 
+ - Magic Bow re-work
+   - Light arrow rebalance
+   - Now requires 2 magic hearts to craft, no nether star
+   - Can be enchanted, only the infinity enchantment, which will make it cost-free
+
 ## Fixes
 
  - Fix upgrading mana (and probably other properties) in wand slotted upgrades
@@ -28,6 +33,11 @@
 
  - Classes will automatically inherit properties from their parents
  - Smite and Meteor changed to use BreakBlock action, will work in protected areas
+
+# 9.4.4
+
+ - Hotfix for StackOverflowError with some invalid wand items
+ - This will also fix any broken magic hearts that AureliumSkills users may have crafted
 
 # 9.4.3
 
