@@ -6577,9 +6577,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
+        List<String> enchantmentsAllowed = getStringList("allowed_enchantments");
+        Set<Enchantment> allowed = null;
+        if (enchantmentsAllowed != null && !enchantmentsAllowed.isEmpty()) {
+            allowed = new HashSet<>();
+            for (String enchantmentKey : enchantmentsAllowed) {
+                Enchantment enchantment = compatibilityUtils.getEnchantmentByKey(enchantmentKey);
+                if (enchantment != null) {
+                    allowed.add(enchantment);
+                }
+            }
+        }
+
         ConfigurationSection enchantments = ConfigurationUtils.newConfigurationSection();
         for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
-            enchantments.set(compatibilityUtils.getEnchantmentKey(entry.getKey()), entry.getValue());
+            Enchantment enchantment = entry.getKey();
+            if (allowed != null && !allowed.contains(enchantment)) continue;
+            enchantments.set(compatibilityUtils.getEnchantmentKey(enchantment), entry.getValue());
+        }
+        if (enchantments.getKeys(false).isEmpty()) {
+            return false;
         }
         if (CompatibilityLib.getInventoryUtils().addEnchantments(item, enchantments)) {
             enchantments = ConfigurationUtils.newConfigurationSection();
