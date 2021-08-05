@@ -106,5 +106,4 @@ base_bow:
     quiet: 1
     cast_location: 0,0,0.35
     infinity_cost_free: true
-    hide_flags: 61
     enchantable: true
