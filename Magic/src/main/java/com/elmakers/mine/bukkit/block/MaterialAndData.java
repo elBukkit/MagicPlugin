@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.block;
 
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
@@ -20,10 +22,12 @@ import org.bukkit.block.CommandBlock;
 import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.BookMeta;
+import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.FireworkEffectMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
@@ -151,6 +155,15 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof BookMeta) {
                 extraData = new WrittenBookData((BookMeta)meta);
+            }
+        } else if (this.material == Material.ENCHANTED_BOOK) {
+            ItemMeta meta = item.getItemMeta();
+            if (meta != null && meta instanceof EnchantmentStorageMeta) {
+                EnchantmentStorageMeta enchantStorage = (EnchantmentStorageMeta)meta;
+                Map<Enchantment, Integer> enchants = enchantStorage.getStoredEnchants();
+                if (enchants != null && !enchants.isEmpty()) {
+                    extraData = new EnchantmentData(enchants);
+                }
             }
         }
 
@@ -359,6 +372,28 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         extraData = new ColoredData(potionColor);
                     } catch (Exception ex) {
                         extraData = null;
+                    }
+                } else if (material == Material.ENCHANTED_BOOK) {
+                    Map<Enchantment, Integer> enchants = new HashMap<>();
+                    String[] list = StringUtils.split(dataString, ",");
+                    for (String enchantKey : list) {
+                        int level = 1;
+                        String[] enchantPieces = StringUtils.split(enchantKey, ":");
+                        if (enchantPieces.length > 1) {
+                            try {
+                                enchantKey = enchantPieces[0];
+                                level = Integer.parseInt(enchantPieces[1]);
+                            } catch (Exception ex) {
+                                level = 1;
+                            }
+                        }
+                        Enchantment enchantment = CompatibilityLib.getCompatibilityUtils().getEnchantmentByKey(enchantKey);
+                        if (enchantment != null) {
+                            enchants.put(enchantment, level);
+                        }
+                    }
+                    if (!enchants.isEmpty()) {
+                        extraData = new EnchantmentData(enchants);
                     }
                 } else {
                     try {
@@ -729,6 +764,20 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         materialKey += ":" + Integer.toHexString(color.asRGB());
                     }
                 }
+            } else if (extraData != null && extraData instanceof EnchantmentData) {
+                Map<Enchantment, Integer> enchants = ((EnchantmentData)extraData).getEnchantments();
+                if (!enchants.isEmpty()) {
+                    List<String> enchantKeys = new ArrayList<>();
+                    for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
+                        String enchantKey = CompatibilityLib.getCompatibilityUtils().getEnchantmentKey(entry.getKey());
+                        int level = entry.getValue();
+                        if (level != 1) {
+                            enchantKey = enchantKey + "|" + level;
+                        }
+                        enchantKeys.add(enchantKey);
+                    }
+                    materialKey += ":" + StringUtils.join(enchantKeys, ",");
+                }
             } else if (data != 0) {
                 materialKey += ":" + data;
             }
@@ -912,6 +961,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             ItemMeta meta = stack.getItemMeta();
             if (extraData != null && extraData instanceof ColoredData && meta != null && meta instanceof PotionMeta) {
                 CompatibilityLib.getCompatibilityUtils().setColor((PotionMeta)meta, ((ColoredData)extraData).getColor());
+                stack.setItemMeta(meta);
+            }
+        } else if (extraData != null && extraData instanceof EnchantmentData) {
+            ItemMeta meta = stack.getItemMeta();
+            if (meta != null && meta instanceof EnchantmentStorageMeta) {
+                EnchantmentData enchantmentData = (EnchantmentData)extraData;
+                EnchantmentStorageMeta enchantmentStorage = (EnchantmentStorageMeta)meta;
+                for (Map.Entry<Enchantment, Integer> entry : enchantmentData.getEnchantments().entrySet()) {
+                    enchantmentStorage.addStoredEnchant(entry.getKey(), entry.getValue(), true);
+                }
                 stack.setItemMeta(meta);
             }
         } else if (this.material == DefaultMaterials.getFireworkStar()) {

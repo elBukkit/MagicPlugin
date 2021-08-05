@@ -2316,7 +2316,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (enchantmentList != null && !enchantmentList.isEmpty()) {
                 enchantments = ConfigurationUtils.newConfigurationSection();
                 for (String enchantKey : enchantmentList) {
-                    enchantments.set(enchantKey, 1);
+                    int level = 1;
+                    String[] pieces = StringUtils.split(enchantKey, ":");
+                    if (pieces.length > 0) {
+                        try {
+                            level = Integer.parseInt(pieces[1]);
+                            enchantKey = pieces[0];
+                        } catch (Exception ex) {
+                            controller.getLogger().warning("Invalid enchantment level: " + enchantKey);
+                            continue;
+                        }
+                    }
+                    enchantments.set(enchantKey, level);
                 }
             }
         }
@@ -6579,8 +6590,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setProperty("enchantments", enchantments);
             saveState();
             updateLore();
+            return true;
         }
-        return true;
+        return false;
     }
 
     @Override

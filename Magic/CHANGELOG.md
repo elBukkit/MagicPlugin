@@ -21,6 +21,7 @@
  - The ColorItem action can be used to color a potion, firework charge or a firework (will change all effects in a firework)
  - Add mgive shortcut for `firework_charge:#FF00AA` to give colored firework charges
  - Add `infinity_cost_free` wand property, will make the wand cost-free if it has the Infinity enchantment
+ - Add mgive support for enchanted_book enchantments
 
 ## Changes
 
