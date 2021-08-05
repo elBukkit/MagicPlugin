@@ -336,6 +336,15 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
             }
 
+            if (subCommand.equalsIgnoreCase("reset") && args.length <= 1) {
+                if (target != null) {
+                    Mage mage = controller.getMage(target);
+                    for (String classKey : mage.getClassKeys()) {
+                        options.add(classKey);
+                    }
+                }
+            }
+
             if (subCommand.equalsIgnoreCase("modifier")) {
                 if (args.length <= 1) {
                     options.add("add");
