@@ -8,9 +8,12 @@
 # Important
 
  - Dying at the end of an arena puts you in a broken state (maybe fixed?)
+ - Config reload duplicates mob boss bars
 
 # New
 
+ - itempickup trigger
+ - Support for `/mgive firework_star:#AABBCC`  
  - Light arrow bypasses pvp?
  - Mob aggro still no bueno
 

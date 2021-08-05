@@ -40,6 +40,15 @@ public abstract class TemplateProperties extends BaseMagicProperties {
         return null;
     }
 
+    @Nonnull
+    public ConfigurationSection getPropertyConfiguration(String key) {
+        TemplateProperties parent = getParent();
+        if (parent == null || configuration.contains(key)) {
+            return configuration;
+        }
+        return parent.getPropertyConfiguration(key);
+    }
+
     public @Nullable String getIconKey() {
         return getIcon(controller.isLegacyIconsEnabled());
     }

@@ -17,6 +17,10 @@
  - The ColorItem action can be used to color a potion, firework charge or a firework (will change all effects in a firework)
  - Added `cooldown`, `biomes` and `not_biomes` options to block populators
 
+## Changes
+
+ - Classes will automatically inherit properties from their parents
+
 # 9.4.3
 
 ## Fixes
