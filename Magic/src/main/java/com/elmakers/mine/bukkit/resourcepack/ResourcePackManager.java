@@ -60,7 +60,7 @@ public class ResourcePackManager {
         // For legacy configs
         defaultResourcePack = properties.getString("default_resource_pack", defaultResourcePack);
         // For combined configs
-        if (controller.hasAddedExamples() && !defaultResourcePack.isEmpty()) {
+        if (controller.hasAddedExamples() && !defaultResourcePack.isEmpty() && !defaultResourcePack.startsWith("http")) {
             defaultResourcePack = properties.getString("add_resource_pack", defaultResourcePack);
         }
 

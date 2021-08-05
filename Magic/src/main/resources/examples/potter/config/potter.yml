@@ -39,7 +39,7 @@ builtin_currency:
     name_plural: Galleons
 
 # Use the potter RP
-resource_pack: "http://rp.elmakers.com/Magic-potter-RP-1.17.zip"
+resource_pack: potter
 
 # Default class
 default_mage_class: wizard
