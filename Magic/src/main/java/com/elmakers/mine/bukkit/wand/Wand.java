@@ -2000,7 +2000,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // This overrides the value loaded in CasterProperties
         if (!usesMana()) {
-            removeProperty("mana_timestamp");
+            setProperty("mana_timestamp", null);
         } else if (!regenWhileInactive) {
             setProperty("mana_timestamp", System.currentTimeMillis());
         }
