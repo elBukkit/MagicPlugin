@@ -12,6 +12,7 @@
 
  - Fix upgrading mana (and probably other properties) in wand slotted upgrades
  - Fix some class configurations not updating for online players when configs are changed
+ - Fix mob boss bars duplicating on config reload
 
 ## Additions
  

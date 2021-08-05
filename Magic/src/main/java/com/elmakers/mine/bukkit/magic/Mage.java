@@ -4591,6 +4591,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         // Initialize boss bar
+        if (bossBar != null) {
+            bossBar.remove();
+        }
         bossBar = entityData.getBossBar(this);
 
         // Initialize targeting
