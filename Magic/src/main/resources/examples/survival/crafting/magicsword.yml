@@ -1,7 +1,6 @@
 magicsword:
   output: magicsword
   output_type: wand
-  group: "Wands"
   ignore_damage: true
   materials:
     o: magicheart

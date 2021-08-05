@@ -1,7 +1,6 @@
 magicbow:
   output: magicbow
   output_type: wand
-  group: "Wands"
   materials:
     i: bow
     h: magicheart
