@@ -5,10 +5,18 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public class LightningAction extends BaseSpellAction {
     private boolean effectOnly;
+
+    @Override
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
+        // preload this parameter for build checks
+        effectOnly = parameters.getBoolean("effect_only", false);
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)

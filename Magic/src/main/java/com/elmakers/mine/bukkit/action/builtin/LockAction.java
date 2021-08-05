@@ -177,6 +177,19 @@ public class LockAction extends BaseSpellAction
     }
 
     @Override
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
+
+        actionType = LockActionType.LOCK;
+        String type = parameters.getString("type", "lock");
+        if (type.equalsIgnoreCase("unlock")) {
+            actionType = LockActionType.UNLOCK;
+        } else if (type.equalsIgnoreCase("key")) {
+            actionType = LockActionType.KEY;
+        }
+    }
+
+    @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
 
