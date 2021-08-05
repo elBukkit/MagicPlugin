@@ -1051,6 +1051,7 @@ public class PlayerController implements Listener {
             return;
         }
         Mage mage = controller.getMage(player);
+        mage.trigger("pickup");
 
         // If a wand's inventory is active, add the item there
         if (mage.hasStoredInventory()) {

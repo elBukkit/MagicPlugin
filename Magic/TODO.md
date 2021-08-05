@@ -12,8 +12,6 @@
 
 # New
 
- - itempickup trigger
- - Support for `/mgive firework_star:#AABBCC`  
  - Light arrow bypasses pvp?
  - Mob aggro still no bueno
 
