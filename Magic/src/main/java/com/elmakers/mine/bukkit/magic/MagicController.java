@@ -6029,7 +6029,7 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isSPEarnEnabled() {
-        return spEarnEnabled;
+        return spEnabled && spEarnEnabled;
     }
 
     @Override
