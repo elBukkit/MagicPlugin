@@ -1,0 +1,47 @@
+autochurch:
+    icon: diamond_axe:129
+    icon_disabled: diamond_hoe:129
+    actions:
+        cast:
+        - class: Cover
+          actions:
+          - class: ChangeContext
+            actions:
+            - class: Volume
+              actions:
+              - class: CheckBlock
+                actions:
+                - class: ModifyBlock
+                - class: PlayEffects
+                  effects: built
+                - class: Skip
+                  actions:
+                    - class: Delay
+    effects:
+      built:
+        - location: target
+          particle: block_dust
+          particle_count: 4
+          particle_offset: 0.45
+      undo_block:
+        - location: target
+          use_block_location: true
+          particle: block_crack
+          material: cobblestone
+          particle_count: 4
+          particle_offset: 0.45
+    parameters:
+        not_brush: true
+        check_permission: true
+        allow_max_range: true
+        range: 10
+        use_brush_size: true
+        undo: 2000
+        undo_speed: 20
+        brush: schematic|church
+        destructible: all_air
+        orient: false
+        target_offset: 0,-1,0
+        delay: 1
+        skip: 2
+        

@@ -30,6 +30,7 @@
  - Add `infinity_cost_free` wand property, will make the wand cost-free if it has the Infinity enchantment
  - Add mgive support for enchanted_book enchantments
  - Selector name, description and lore now support placeholders
+ - Add `not_brush` parameter to `CheckBlock`, use-case is only playing effects at a location where a block was modified (not the same as the brush)
 
 ## Changes
 

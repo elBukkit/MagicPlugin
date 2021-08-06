@@ -27,6 +27,7 @@ public class CheckBlockAction extends CheckAction {
     private int directionCount;
     private boolean setTarget;
     private boolean allowBrush;
+    private boolean notBrush;
     private SourceLocation sourceLocation;
     private Set<Biome> allowedBiomes;
     private Set<Biome> notBiomes;
@@ -92,9 +93,10 @@ public class CheckBlockAction extends CheckAction {
         useTarget = parameters.getBoolean("use_target", true);
         setTarget = parameters.getBoolean("set_target", false);
         allowBrush = parameters.getBoolean("allow_brush", false);
+        notBrush = parameters.getBoolean("not_brush", false);
         sourceLocation = new SourceLocation(parameters.getString("source_location", "BLOCK"), !useTarget);
         directionCount = parameters.getInt("direction_count", 1);
-        checkPermissions = notBiomes == null && allowedBiomes == null && !allowBrush && allowed == null;
+        checkPermissions = notBiomes == null && allowedBiomes == null && !allowBrush && !notBrush && allowed == null;
         checkPermissions = parameters.getBoolean("check_permission", checkPermissions);
 
         String directionString = parameters.getString("direction");
@@ -146,6 +148,10 @@ public class CheckBlockAction extends CheckAction {
             return false;
         }
 
+        if (brush != null && (notBrush || allowBrush)) {
+            brush.update(context.getMage(), context.getTargetSourceLocation());
+        }
+
         // Default to true
         boolean isAllowed = true;
 
@@ -179,6 +185,9 @@ public class CheckBlockAction extends CheckAction {
 
         // Negative tests override all
         if (isAllowed && notBiomes != null && notBiomes.contains(block.getBiome())) {
+            isAllowed = false;
+        }
+        if (isAllowed && notBrush && brush != null && !brush.isDifferent(block)) {
             isAllowed = false;
         }
 
