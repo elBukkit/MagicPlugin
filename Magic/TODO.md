@@ -19,6 +19,7 @@
 
 # New
 
+ - picked up trigger for dropped wand items
  - Light arrow bypasses pvp?
  - Mob aggro still no bueno
 

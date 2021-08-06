@@ -2,7 +2,7 @@
 inherit: survival
 
 resource_pack: robes
-add_resource_pack: all
+add_resource_pack: robes
 
 # Alternate resource packs can be accessed with /getrp <pack>
 alternate_resource_packs:
