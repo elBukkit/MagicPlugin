@@ -338,8 +338,12 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
             + ChatColor.GREEN + " at " + TextUtils.printLocation(location, 0)
             + selections.getDistanceMessage(sender, magicBlock);
         sender.sendMessage(message);
+        String templateKey = magicBlock.getTemplateKey();
+        if (templateKey != null && !templateKey.isEmpty()) {
+            sender.sendMessage(ChatColor.GRAY + "  " + templateKey);
+        }
         String description = magicBlock.getDescription();
-        if (description != null) {
+        if (description != null && !description.isEmpty()) {
             sender.sendMessage(ChatColor.DARK_PURPLE + "" + ChatColor.ITALIC + description);
         }
         if (magicBlock.hasSpawner()) {
