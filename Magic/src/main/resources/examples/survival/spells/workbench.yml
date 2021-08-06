@@ -32,7 +32,7 @@ workbench:
         cooldown: 20000
         type: workbench
     costs:
-        mana: 80
+        mana: 50
 
 workbench|2:
     upgrade_required_casts: 50
@@ -40,7 +40,7 @@ workbench|2:
     parameters:
         cooldown: 10000
     costs:
-        mana: 40
+        mana: 30
 
 workbench|3:
     upgrade_required_casts: 50
@@ -48,7 +48,7 @@ workbench|3:
     parameters:
         cooldown: 5000
     costs:
-        mana: 20
+        mana: 10
 
 workbench|4:
     upgrade_required_casts: 100

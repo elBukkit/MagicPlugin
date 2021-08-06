@@ -4,44 +4,34 @@
 
  - Need to really make sure all EntityData parameters are nullable and optional, aka
    Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
-
-# Magic Bow
-
- - Add "allowed enchantments", or maybe just allow "enchantable" to be a lsit
- - Add "infinity_cost_free" wand option, if the infinity enchantment is present the wand becomes cost-free
- - Test applying infinity to a sword, is it allowed? Enchantable should bypass vanilla restrictions
- - Don't forget to allow upgrading an enchant level while you're in there
- - Give the archer example bow infinity
-
+   
 # Important
 
+ - Test applying infinity to a sword, is it allowed? Enchantable should bypass vanilla restrictions
+ - Ability to enchant sticks and such?
+ - Enchantment levels as variables in spell and wand configs would be very cool
+   support Power on a magic bow?
  - Dying at the end of an arena puts you in a broken state (maybe fixed?)
+ - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
+
+# Undo / Build Issues
+
+ - Item frames and paintings can't be copied, maybe only E/W facing - important for backup
+ - Holes in containment if automata gets contained while in the glass
+ - Cancelled spells (`/magic cancel`) should still auto-undo
+
 
 # New
 
  - picked up trigger for dropped wand items
  - Light arrow bypasses pvp?
  - Mob aggro still no bueno
-
  - Per-spell setting for dynmap
-
  - Add requirements to path progression
-
  - Look at to_otherside warp, absolutely insane mob spawning (turn mob spawning back on after)
-
- - SPIGOT: Change sky color possible? .. something else I forgot..
-
  - Wand active_properties
- - base modifier "allow_melee", and move reflect parameters from wand
-
- - Item frames and paintings can't be copied, maybe only E/W facing - important for backup
- - Holes in containment if automata gets contained while in the glass
- - Need an option to cancel spells when changing worlds via PWI
-   (lose broom when tp'ing while riding)
- - Cancelled spells (`/magic cancel`) should still auto-undo
+ - Base modifier "allow_melee", and move reflect parameters from wand
  - Save spell can make upside-down schematics
-
- - Option to interpret Infinity enchantment as cost-free
 
 # New API
 
@@ -53,42 +43,11 @@
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/ad52a4ec1d7b7254e3fe68ca497b2cc63afac373
  - aware vs ai
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/97aeae56caee016136a81e34404f397e2d47a4dc#src/main/java/org/bukkit/entity/Mob.java
- 
-# AureliumSkills
-
- - Scale spell costs down globally, roughly match this range:
-
-which is leveled by multiple different skills and generally goes up to about 200-300 
-wisdom at max level. If you need me to adjust my default mana values I'll be more than willing to.
-
-max-mana-per-wisdom = 2 (default)
-base-mana = 20 (default)
-mana = base + wisdom * max
-300 wisdom = 20 + 600 = 620
-
- - Turn mana back on by default
 
 # Resource pack changes near-term
 
  - Configurable off-by-default RP load invulnerability window  
-
-# Demo server
-
- - Features
-    - warps
-    - arenas
-    - wands and items (bannershop)
-      
-    - ~~automata~~
-    - ~~crafting~~
-    - ~~protection (world guard, flag demonstration)~~
-      
-    - ~~worlds~~
-    - ~~npcs~~
-    - ~~mobs~~
-    - ~~magic blocks~~
-    - ~~ModelEngine~~
-   
+ 
 ## Arenas
 
  - Add option to save inventory and class layout
@@ -100,10 +59,8 @@ mana = base + wisdom * max
 # Near-Term Hopeful List
 
  - Can't offset `target: self` using py or ty (?)
- - Look at httyd riddennightfuryfire, changewingridden
  - An option to be able to replace slotted upgrades, pop the old one out
- - Can the variables section specify default scope for all ModifyVariables actions in that spell? Would be simpler.
-   Also, add editor support for the variables section, it's very confusing
+ - Add editor support for the variables section, it's very confusing
  - Need a way to duplicate NPCs
  - Creative mode should maybe consume PS blocks when placed? idk
  - Add a way to get new brushes if you're maxed out
@@ -112,7 +69,6 @@ mana = base + wisdom * max
  - Add clone/replicate source selected effects (cube)  
  - Add brush for creative mode, uses last held block  
  - Ability to open an editor session on behalf of another player
- - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
  - Some indicator for long-running engineering casts?
  - Would be cool to represent automata as mobs, maybe just need entity-less mob spawning ability? 
    .. make sure it gets tracked for `/mmob list` and `remove` functionality
@@ -136,7 +92,6 @@ mana = base + wisdom * max
 # Bugs
 
  - `/mconfig apply` doesn't work without a slug, after starting a new editor session
- - Upgrading wand enchantment levels with books doesn't work (this was probably an intentional prevention but sounds like it should be allowed)
  - Tag wand spell icons so they're not droppable!
    .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :(
  - PW having inventory loss issues (spells go into normal inventory)
@@ -151,7 +106,6 @@ mana = base + wisdom * max
  - Selector cost at top-level (default cost) doesn't work
  - Need to be able to override default_earn_scale per-shop (for making exchange shops)
  - Can't make crafting recipes that overlap with vanilla ones, see ruby sword, etc
- - Mars automata doesn't seem to auto-activate
  - Need an easier way to set prices that works with wands, too
  - Spells pass through walls in protected regions with blocked-spells set? https://www.youtube.com/watch?v=xHnxopWsSJM
  - See if you can get FishingHook to work as a projectile? requires an EntityHuman to construct
@@ -180,7 +134,6 @@ mana = base + wisdom * max
 
  - disable_health_regeneration: true/false
  - Spell option to carry over CastContext
- - Allow using variables in equation transforms (velocity_transform)
  - BetonQuest, expand integration - NPC quest dialog, class and cast count support
    https://github.com/BetonQuest/BetonQuest
  - RideEntity action parameter to work on target mob (I think it has this already?)
