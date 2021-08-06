@@ -1,0 +1,28 @@
+miniprojector:
+  actions:
+    cast:
+      - class: Interval
+        actions:
+        - class: Brush
+          actions:
+          - class: Plane
+            actions:
+            - class: ModifyBlock
+  parameters:
+    target: block
+    range: 5
+    radius: 4
+    interval: 300
+    duration: 10 seconds
+    repeat: 30
+    axis: z
+    reorient: false
+    orient: true
+    orient_snap: 90
+    destructible: all_air,concretes
+    allow_max_range: true
+    brushmod: black_concrete
+    bypass_break: true
+    bypass_build: true
+    bypass_undo: true
+    brush: "map:16,solid:https://i.gifer.com/origin/ac/acf3abb6da430dd78cc99f925bb52d49.gif"

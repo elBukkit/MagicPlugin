@@ -100,6 +100,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
 
     // For the MAP brush
     private Material mapMaterialBase = null;
+    private Material mapMaterialDefault = null;
     private double scale = 1;
 
     private MaterialBrush(final Mage mage) {
@@ -347,7 +348,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
     }
 
-    public void enableMap(int size) {
+    public void enableMap(int size, boolean solid) {
         if (!MapEnabled) {
             isValid = false;
             return;
@@ -358,6 +359,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         }
         this.scale = (float)128 / size;
         this.mode = BrushMode.MAP;
+        this.mapMaterialDefault = solid ? material : null;
         this.mapMaterialBase = DefaultMaterials.getInstance().getBaseMaterial(material);
         if (this.mapId == -1 && mage != null) {
             this.mapId = mage.getLastHeldMapId();
@@ -499,13 +501,21 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             enableReplication();
         } else if (pieces[0].equals(MAP_MATERIAL_KEY)) {
             int size = DEFAULT_MAP_SIZE;
+            boolean solid = false;
             if (pieces.length > 1) {
                 String[] dataPieces = StringUtils.split(pieces[1], ":", 2);
                 if (dataPieces.length > 0) {
-                    try {
-                        size = Integer.parseInt(dataPieces[0]);
-                    } catch (Exception ex) {
-                        Bukkit.getLogger().info("Error in map brush definition, first part is not an integer: " + activeMaterial);
+                    String[] sizePieces = StringUtils.split(dataPieces[0], ",");
+                    for (String sizePiece : sizePieces) {
+                        if (sizePiece.equalsIgnoreCase("solid")) {
+                            solid = true;
+                        } else {
+                            try {
+                                size = Integer.parseInt(sizePiece);
+                            } catch (Exception ex) {
+                                Bukkit.getLogger().info("Error in map brush definition, first part is not an integer: " + activeMaterial);
+                            }
+                        }
                     }
 
                     if (dataPieces.length > 1) {
@@ -522,7 +532,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                     }
                 }
             }
-            enableMap(size);
+            enableMap(size, solid);
         } else if (activeMaterial.equals(ERASE_MATERIAL_KEY)) {
             enableErase();
         } else if (pieces.length > 1 && pieces[0].equals(SCHEMATIC_MATERIAL_KEY)) {
@@ -633,6 +643,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
                     this.material = mapMaterialBase;
                     DefaultMaterials.getInstance().colorize(this, mapColor);
                     isTargetValid = this.material != null;
+                } else if (mapMaterialDefault != null) {
+                    this.material = mapMaterialDefault;
+                    isTargetValid = true;
                 }
             }
         }
