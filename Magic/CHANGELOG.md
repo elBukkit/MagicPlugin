@@ -12,6 +12,7 @@
    - Light arrow rebalance
    - Now requires 2 magic hearts to craft, no nether star
    - Can be enchanted, only the infinity enchantment, which will make it cost-free
+   - Added Grapple arrow to Archer path
 
 ## Fixes
 
