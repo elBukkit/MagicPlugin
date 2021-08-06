@@ -2572,8 +2572,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         return cooldown;
     }
 
+    @Override
     public boolean isCostFree() {
         return (mage != null && mage.isCostFree()) || (mageClass != null && mageClass.isCostFree());
+    }
+
+    @Override
+    public boolean isConsumeFree() {
+        return (mage != null && mage.isConsumeFree()) || (mageClass != null && mageClass.isConsumeFree());
     }
 
     @Nullable

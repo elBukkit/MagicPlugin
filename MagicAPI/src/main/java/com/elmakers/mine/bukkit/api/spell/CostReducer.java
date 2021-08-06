@@ -26,11 +26,7 @@ public interface CostReducer {
      */
     float getCostScale();
 
-    default boolean isCostFree() {
-        return getCostReduction() >= 1;
-    }
+    boolean isCostFree();
 
-    default boolean isConsumeFree() {
-        return getConsumeReduction() >= 1;
-    }
+    boolean isConsumeFree();
 }
