@@ -806,11 +806,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             List<String> lore = new ArrayList<>();
             if (this.lore != null) {
-                lore.addAll(this.lore);
+                for (String loreString : lore) {
+                    lore.add(context.parameterize(loreString));
+                }
             }
 
             if (description != null && !description.isEmpty()) {
-                CompatibilityLib.getInventoryUtils().wrapText(description, lore);
+                String escapedDescription = context.parameterize(description);
+                CompatibilityLib.getInventoryUtils().wrapText(escapedDescription, lore);
             }
 
             boolean unlocked = false;
@@ -1038,16 +1041,17 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             // Prepare icon
-            String name = this.name;
-            if (attributeKey != null && attributeAmount == 0) {
-                Double value = context.getAttribute(attributeKey);
-                if (value != null) {
-                    String template = getMessage("attribute");
-                    name = template.replace("$attribute", name)
-                        .replace("$amount", Integer.toString((int)(double)value));
-                }
-            }
             if (nameIcon) {
+                String name = this.name;
+                if (attributeKey != null && attributeAmount == 0) {
+                    Double value = context.getAttribute(attributeKey);
+                    if (value != null) {
+                        String template = getMessage("attribute");
+                        name = template.replace("$attribute", name)
+                                .replace("$amount", Integer.toString((int)(double)value));
+                    }
+                }
+                name = context.parameterize(name);
                 meta.setDisplayName(name);
             }
             if (removeLore) {
