@@ -2318,7 +2318,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 for (String enchantKey : enchantmentList) {
                     int level = 1;
                     String[] pieces = StringUtils.split(enchantKey, ":");
-                    if (pieces.length > 0) {
+                    if (pieces.length > 1) {
                         try {
                             level = Integer.parseInt(pieces[1]);
                             enchantKey = pieces[0];
