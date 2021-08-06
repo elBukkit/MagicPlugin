@@ -1105,8 +1105,16 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             }
             Currency currency = controller.getCurrency(currencyKey);
             if (currency == null || !currency.isValid()) {
-                sender.sendMessage("Invalid currency: " + currency);
-                return true;
+                if (parameters.length > 1) {
+                    sender.sendMessage("Invalid currency: " + currencyKey);
+                    return true;
+                }
+                currencyKey = "currency";
+                currency = controller.getCurrency(currencyKey);
+                if (currency == null || !currency.isValid()) {
+                    sender.sendMessage("Could not refund, tried sp and Vault currency but neither are available");
+                    return true;
+                }
             }
             double worth = controller.getWorth(item, currencyKey);
             mage.addCurrency(currencyKey, worth);
