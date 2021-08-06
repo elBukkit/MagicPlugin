@@ -262,6 +262,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         List<String> options = new ArrayList<>();
+        String[] originalArgs = args;
         if (args.length == 1) {
             addIfPermissible(sender, options, "Magic.commands.mage.", "add");
             addIfPermissible(sender, options, "Magic.commands.mage.", "reward");
@@ -336,12 +337,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
             }
 
-            if (subCommand.equalsIgnoreCase("reset") && args.length <= 1) {
-                if (target != null) {
-                    Mage mage = controller.getMage(target);
-                    for (String classKey : mage.getClassKeys()) {
-                        options.add(classKey);
-                    }
+            if (target != null && subCommand.equalsIgnoreCase("reset") && originalArgs.length == 3) {
+                Mage mage = controller.getMage(target);
+                for (String classKey : mage.getClassKeys()) {
+                    options.add(classKey);
                 }
             }
 
