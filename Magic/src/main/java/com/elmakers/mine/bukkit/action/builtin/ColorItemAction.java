@@ -76,10 +76,20 @@ public class ColorItemAction extends BaseSpellAction {
                 }
             }
         }
+
+        Entity entity = context.getTargetEntity();
+        if (entity instanceof Item) {
+            Item item = (Item)entity;
+            ItemStack itemStack = item.getItemStack();
+            if (color(context, itemStack)) {
+                colored = true;
+            }
+            return colored ? SpellResult.CAST : SpellResult.NO_TARGET;
+        }
+
         if (slots == null || slots.isEmpty()) {
             return colored ? SpellResult.CAST : SpellResult.NO_TARGET;
         }
-        Entity entity = context.getTargetEntity();
 
         if (entity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)entity;
@@ -97,15 +107,7 @@ public class ColorItemAction extends BaseSpellAction {
             return colored ? SpellResult.CAST : SpellResult.NO_TARGET;
         }
 
-        if (entity == null || !(entity instanceof Item)) {
-            return SpellResult.NO_TARGET;
-        }
-        Item item = (Item)entity;
-        ItemStack itemStack = item.getItemStack();
-        if (color(context, itemStack)) {
-            colored = true;
-        }
-        return colored ? SpellResult.CAST : SpellResult.NO_TARGET;
+        return SpellResult.NO_TARGET;
     }
 
     protected boolean color(CastContext context, ItemStack itemStack) {
