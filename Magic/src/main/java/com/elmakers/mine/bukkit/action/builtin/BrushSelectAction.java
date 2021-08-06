@@ -257,19 +257,21 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             brushes.add(category);
         }
 
-        Collections.sort(brushes, new Comparator<ItemStack>() {
-            @Override
-            public int compare(ItemStack o1, ItemStack o2) {
-                String name1 = ChatColor.stripColor(o1.getItemMeta().getDisplayName());
-                String name2 = ChatColor.stripColor(o2.getItemMeta().getDisplayName());
-                return name1.compareToIgnoreCase(name2);
-            }
+        Collections.sort(brushes, (o1, o2) -> {
+            String name1 = ChatColor.stripColor(o1.getItemMeta().getDisplayName());
+            String name2 = ChatColor.stripColor(o2.getItemMeta().getDisplayName());
+            return name1.compareToIgnoreCase(name2);
         });
 
         ItemStack schematicItem = null;
         if (schematics.size() == 1) {
             schematicItem = schematics.get(0);
         } else if (schematics.size() > 0) {
+            Collections.sort(schematics, (o1, o2) -> {
+                String name1 = ChatColor.stripColor(o1.getItemMeta().getDisplayName());
+                String name2 = ChatColor.stripColor(o2.getItemMeta().getDisplayName());
+                return name1.compareToIgnoreCase(name2);
+            });
             schematicItem = CompatibilityLib.getItemUtils().getCopy(schematics.get(0));
             ItemMeta meta = schematicItem.getItemMeta();
             meta.setDisplayName(context.getMessage("schematics_name", "" + ChatColor.AQUA + "Schematics"));

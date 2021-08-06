@@ -105,7 +105,6 @@ mana = base + wisdom * max
    Also, add editor support for the variables section, it's very confusing
  - Need a way to duplicate NPCs
  - Creative mode should maybe consume PS blocks when placed? idk
- - What order are schematic brushes even in?
  - Add a way to get new brushes if you're maxed out
  - Prevent axolotls from dying on land
  - Add tab-completion and editor support for wand UI configs
