@@ -99,6 +99,7 @@ mana = base + wisdom * max
 
 # Near-Term Hopeful List
 
+ - Can't offset `target: self` using py or ty (?)
  - Look at httyd riddennightfuryfire, changewingridden
  - An option to be able to replace slotted upgrades, pop the old one out
  - Can the variables section specify default scope for all ModifyVariables actions in that spell? Would be simpler.
