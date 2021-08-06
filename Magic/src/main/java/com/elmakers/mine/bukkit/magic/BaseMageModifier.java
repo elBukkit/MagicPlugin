@@ -296,8 +296,8 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
         return 1.0f;
     }
 
-    protected void takeItems() {
-        List<String> classItems = getStringList("gave_items");
+    protected void takeItems(String configKey) {
+        List<String> classItems = getStringList(configKey);
         if (classItems != null) {
             for (String classItemKey : classItems) {
                 ItemStack item = controller.createItem(classItemKey);
@@ -308,7 +308,15 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
 
                 mage.removeItem(item, true);
             }
-            setProperty("gave_items", null);
+            setProperty(configKey, null);
+        }
+    }
+
+    protected void takeItems() {
+        takeItems("gave_items");
+        if (getBoolean("clean_on_lock", false)) {
+            takeItems("class_items");
+            takeItems("items");
         }
     }
 
