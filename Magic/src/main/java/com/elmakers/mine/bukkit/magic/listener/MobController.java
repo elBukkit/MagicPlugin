@@ -128,9 +128,9 @@ public class MobController implements Listener, ChunkLoadListener {
             MagicNPC npc = controller.getNPC(npcId);
             if (npc == null || !npc.isEntity(entity)) {
                 Location location = entity.getLocation();
-                controller.getLogger().warning("Removing an invalid NPC (id=" + npcId + ") entity of type " + entity.getType() + " at ["
+                controller.info("Removing an invalid NPC (id=" + npcId + ") entity of type " + entity.getType() + " at ["
                     + location.getWorld().getName() + "] " + location.getBlockX()
-                    + "," + location.getBlockY() + "," + location.getBlockZ());
+                    + "," + location.getBlockY() + "," + location.getBlockZ(), 5);
                 entity.remove();
             }
             // TODO: This would also be a better way to reactivate NPCs, but we can't rely on this until
