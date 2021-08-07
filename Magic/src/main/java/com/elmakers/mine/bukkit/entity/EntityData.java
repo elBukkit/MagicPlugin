@@ -52,6 +52,7 @@ import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
@@ -90,32 +91,33 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected Double maxHealth;
     protected Double health;
     protected Integer airLevel;
-    protected boolean isBaby;
-    protected boolean isSilent;
-    protected boolean isTamed;
-    protected boolean isSitting;
-    protected boolean isInvulnerable;
-    protected boolean isAware = true;
-    protected boolean hasAI = true;
-    protected boolean hasGravity = true;
+    protected Boolean isBaby;
+    protected Boolean isSilent;
+    protected Boolean isTamed;
+    protected Boolean isSitting;
+    protected Boolean isInvulnerable;
+    protected Boolean isAware;
+    protected Boolean hasAI;
+    protected Boolean hasGravity;
     protected boolean isDocile;
     protected boolean transformable = true;
     protected boolean combustible = true;
     protected boolean isStatic = false;
     protected boolean preventProjectiles;
     protected boolean preventMelee;
-    protected boolean nameVisible;
+    protected Boolean nameVisible;
     protected boolean isNPC;
     protected boolean isHidden;
     protected boolean useNPCName;
     protected boolean preventDismount;
     protected boolean preventTeleport;
     protected boolean equipOnRespawn = true;
-    protected Boolean invisible = null;
-    protected Boolean persistentInvisible = null;
-    protected Boolean persist = null;
-    protected Boolean removeWhenFarAway = null;
-    protected int fireTicks;
+    protected Boolean invisible;
+    protected Boolean persistentInvisible;
+    protected Boolean persist;
+    protected Boolean removeWhenFarAway;
+    protected Boolean canPickupItems;
+    protected Integer fireTicks;
     protected Set<String> permissions;
 
     protected Collection<PotionEffect> potionEffects = null;
@@ -129,7 +131,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     protected boolean hasVelocity = false;
     protected boolean isLiving = false;
     protected boolean isProjectile = false;
-    protected boolean canPickupItems = false;
     protected boolean isSuperProtected = false;
     protected boolean registerByName = false;
 
@@ -302,16 +303,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isStatic = parameters.getBoolean("static", isNPC);
         useNPCName = parameters.getBoolean("use_npc_name", false);
         isHidden = parameters.getBoolean("hidden");
-        nameVisible = parameters.getBoolean("show_name");
+        nameVisible = ConfigUtils.getOptionalBoolean(parameters, "show_name");
         mythicMobKey = parameters.getString("mythic_mob");
-        if (parameters.contains("health")) {
-            health = parameters.getDouble("health", 1);
-            maxHealth = health;
-        }
-        if (parameters.contains("max_health")) {
-            maxHealth = parameters.getDouble("max_health", 1);
-        }
-        isSilent = parameters.getBoolean("silent", false);
+        health = ConfigUtils.getOptionalDouble(parameters, "health");
+        maxHealth = ConfigUtils.getOptionalDouble(parameters, "max_health");
+        // Shortcut for max_health
+        if (health != null && maxHealth == null) maxHealth = health;
+        isSilent = ConfigUtils.getOptionalBoolean(parameters, "silent");
         if (parameters.contains("persist")) {
             persist = parameters.getBoolean("persist");
         }
@@ -365,13 +363,15 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        isTamed = parameters.getBoolean("tamed", false);
-        isSitting = parameters.getBoolean("sitting", false);
-        isInvulnerable = parameters.getBoolean("invulnerable", false);
-        isBaby = parameters.getBoolean("baby", false);
-        hasAI = parameters.getBoolean("ai", true);
-        isAware = parameters.getBoolean("aware", true);
-        hasGravity = parameters.getBoolean("gravity", true);
+        isTamed = ConfigUtils.getOptionalBoolean(parameters, "tamed");
+        isSitting = ConfigUtils.getOptionalBoolean(parameters, "sitting");
+        isInvulnerable = ConfigUtils.getOptionalBoolean(parameters, "invulnerable");
+        isBaby = ConfigUtils.getOptionalBoolean(parameters, "baby");
+        hasAI = ConfigUtils.getOptionalBoolean(parameters, "ai");
+        isAware = ConfigUtils.getOptionalBoolean(parameters, "aware");
+        hasGravity = ConfigUtils.getOptionalBoolean(parameters, "gravity");
+        canPickupItems = ConfigUtils.getOptionalBoolean(parameters, "can_pickup_items");
+
         isSuperProtected = parameters.getBoolean("protected", false);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
@@ -527,8 +527,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
         leggings = controller.getOrCreateItem(parameters.getString("leggings"));
         boots = controller.getOrCreateItem(parameters.getString("boots"));
-
-        canPickupItems = parameters.getBoolean("can_pickup_items", false);
 
         EntityMageData mageData = new EntityMageData(controller, parameters);
         if (!mageData.isEmpty()) {
@@ -829,9 +827,13 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (removeWhenFarAway != null) {
             CompatibilityLib.getCompatibilityUtils().setRemoveWhenFarAway(entity, removeWhenFarAway);
         }
-        CompatibilityLib.getCompatibilityUtils().setSilent(entity, isSilent);
-        entity.setFireTicks(fireTicks);
-        if (entity instanceof Ageable) {
+        if (isSilent != null) {
+            CompatibilityLib.getCompatibilityUtils().setSilent(entity, isSilent);
+        }
+        if (fireTicks != null) {
+            entity.setFireTicks(fireTicks);
+        }
+        if (entity instanceof Ageable && isBaby != null) {
             Ageable ageable = (Ageable)entity;
             if (isBaby) {
                 ageable.setBaby();
@@ -839,11 +841,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 ageable.setAdult();
             }
         }
-        if (entity instanceof Tameable) {
+        if (entity instanceof Tameable && isTamed != null) {
             ((Tameable)entity).setTamed(isTamed);
         }
-        CompatibilityLib.getCompatibilityUtils().setSitting(entity, isSitting);
-        CompatibilityLib.getCompatibilityUtils().setInvulnerable(entity, isInvulnerable);
+        if (isSitting != null) CompatibilityLib.getCompatibilityUtils().setSitting(entity, isSitting);
+        if (isInvulnerable != null) CompatibilityLib.getCompatibilityUtils().setInvulnerable(entity, isInvulnerable);
 
         if (tags != null && !tags.isEmpty()) {
             Set<String> entityTags = CompatibilityLib.getCompatibilityUtils().getTags(entity);
@@ -852,7 +854,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
         }
 
-        if (entity instanceof Creature) {
+        if (entity instanceof Creature && canPickupItems != null) {
             Creature creature = (Creature)entity;
             creature.setCanPickupItems(canPickupItems);
         }
@@ -861,11 +863,11 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         }
 
         // Armor stands handle gravity themselves, for now
-        if (!hasGravity && !(entity instanceof ArmorStand)) {
+        if (hasGravity != null && !(entity instanceof ArmorStand)) {
             CompatibilityLib.getCompatibilityUtils().setGravity(entity, hasGravity);
         }
 
-        if (!isAware) {
+        if (isAware != null) {
             CompatibilityLib.getCompatibilityUtils().setAware(entity, false);
         }
 
@@ -913,7 +915,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
                 if (airLevel != null) {
                     li.setRemainingAir(Math.min(airLevel, li.getRemainingAir()));
                 }
-                if (!hasAI) {
+                if (hasAI != null) {
                     li.setAI(hasAI);
                 }
             } catch (Throwable ex) {
@@ -924,7 +926,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (!isPlayer && name != null && name.length() > 0) {
             entity.setCustomName(name);
         }
-        if (!isPlayer) {
+        if (!isPlayer && nameVisible != null) {
             entity.setCustomNameVisible(nameVisible);
         }
         attachToMage(entity);
@@ -1359,14 +1361,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
 
     public void setInvulnerable(boolean invulnerable) {
         isInvulnerable = invulnerable;
-    }
-
-    public boolean hasGravity() {
-        return hasGravity;
-    }
-
-    public void setGravity(boolean hasGravity) {
-        this.hasGravity = hasGravity;
     }
 
     public boolean isPersist() {
