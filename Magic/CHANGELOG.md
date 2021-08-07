@@ -41,6 +41,7 @@
  - Classes will automatically inherit properties from their parents
  - Smite and Meteor changed to use BreakBlock action, will work in protected areas
  - Removed robes from hires RP, added hires-robes and hires-all RP which are selected automatically
+ - Broomstick upgrades can be swapped out
 
 # 9.4.4
 
