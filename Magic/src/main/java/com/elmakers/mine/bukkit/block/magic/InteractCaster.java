@@ -24,7 +24,7 @@ public class InteractCaster {
 
     public InteractCaster(MagicBlockTemplate template, MageController controller, ConfigurationSection configuration) {
         this.template = template;
-        String spellKeyAndParameters = configuration.getString("spell");
+        String spellKeyAndParameters = configuration.getString("spell", "");
         ConfigurationSection parameters = configuration.getConfigurationSection("parameters");
         spellParameters = parameters == null ? configuration.createSection("parameters") : parameters;
 
