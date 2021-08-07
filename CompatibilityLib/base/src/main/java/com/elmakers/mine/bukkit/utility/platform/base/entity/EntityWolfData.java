@@ -6,9 +6,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wolf;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityWolfData extends EntityAnimalData {
-    private boolean isAngry;
+    private Boolean isAngry;
     private DyeColor collarColor;
 
     public EntityWolfData() {
@@ -26,7 +27,7 @@ public class EntityWolfData extends EntityAnimalData {
                 collarColor = null;
             }
         }
-        isAngry = parameters.getBoolean("angry", false);
+        isAngry = ConfigUtils.getOptionalBoolean(parameters, "angry");
     }
 
     public EntityWolfData(Entity entity) {
@@ -47,8 +48,8 @@ public class EntityWolfData extends EntityAnimalData {
             if (collarColor != null) {
                 wolf.setCollarColor(collarColor);
             }
-            wolf.setAngry(isAngry);
-            wolf.setSitting(sitting);
+            if (isAngry != null) wolf.setAngry(isAngry);
+            if (sitting != null) wolf.setSitting(sitting);
         }
     }
 

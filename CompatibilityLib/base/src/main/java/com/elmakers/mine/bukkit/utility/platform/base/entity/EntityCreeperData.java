@@ -5,12 +5,13 @@ import org.bukkit.entity.Creeper;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityCreeperData extends EntityExtraData {
-    private boolean powered;
+    private Boolean powered;
 
     public EntityCreeperData(ConfigurationSection parameters) {
-        powered = parameters.getBoolean("powered");
+        powered = ConfigUtils.getOptionalBoolean(parameters, "powered");
     }
 
     public EntityCreeperData(Entity entity) {
@@ -21,7 +22,7 @@ public class EntityCreeperData extends EntityExtraData {
 
     @Override
     public void apply(Entity entity) {
-        if (entity instanceof Creeper) {
+        if (entity instanceof Creeper && powered != null) {
             ((Creeper)entity).setPowered(powered);
         }
     }

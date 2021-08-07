@@ -781,4 +781,24 @@ public class ConfigUtils {
             return null;
         }
     }
+
+    @Nullable
+    public static Boolean getOptionalBoolean(ConfigurationSection configuration, String key) {
+        return configuration.contains(key) ? configuration.getBoolean(key) : null;
+    }
+
+    @Nullable
+    public static Integer getOptionalInteger(ConfigurationSection configuration, String key) {
+        return configuration.contains(key) ? configuration.getInt(key) : null;
+    }
+
+    @Nullable
+    public static Double getOptionalDouble(ConfigurationSection configuration, String key) {
+        return configuration.contains(key) ? configuration.getDouble(key) : null;
+    }
+
+    @Nullable
+    public static Float getOptionalFloat(ConfigurationSection configuration, String key) {
+        return configuration.contains(key) ? (float)configuration.getDouble(key) : null;
+    }
 }

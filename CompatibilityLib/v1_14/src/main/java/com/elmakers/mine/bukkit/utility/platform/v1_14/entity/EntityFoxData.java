@@ -8,11 +8,12 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fox;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityFoxData extends EntityAnimalData {
     private Fox.Type type;
-    private boolean crouching;
+    private Boolean crouching;
 
     public EntityFoxData() {
 
@@ -29,7 +30,7 @@ public class EntityFoxData extends EntityAnimalData {
                 log.log(Level.WARNING, "Invalid fox_type: " + typeString, ex);
             }
         }
-        crouching = parameters.getBoolean("crouching");
+        crouching = ConfigUtils.getOptionalBoolean(parameters, "crouching");
     }
 
     public EntityFoxData(Entity entity) {
@@ -49,7 +50,7 @@ public class EntityFoxData extends EntityAnimalData {
             if (type != null) {
                 fox.setFoxType(type);
             }
-            fox.setCrouching(crouching);
+            if (crouching != null) fox.setCrouching(crouching);
         }
     }
 

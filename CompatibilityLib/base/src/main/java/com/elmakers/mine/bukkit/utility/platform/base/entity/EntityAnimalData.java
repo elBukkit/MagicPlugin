@@ -13,11 +13,12 @@ import org.bukkit.entity.Tameable;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityAnimalData extends EntityExtraData {
     private UUID owner;
-    private boolean tamed;
-    protected boolean sitting;
+    private Boolean tamed;
+    protected Boolean sitting;
 
     public EntityAnimalData() {
 
@@ -33,8 +34,12 @@ public class EntityAnimalData extends EntityExtraData {
                 log.log(Level.WARNING, "Invalid owner UUID: " + tamer, ex);
             }
         }
-        tamed = parameters.getBoolean("tamed", owner != null);
-        sitting = parameters.getBoolean("sitting", false);
+        if (this.owner != null) {
+            this.tamed = true;
+        } else {
+            tamed = ConfigUtils.getOptionalBoolean(parameters, "tamed");
+        }
+        sitting = ConfigUtils.getOptionalBoolean(parameters, "sitting");
     }
 
     public EntityAnimalData(Entity entity) {
@@ -59,8 +64,12 @@ public class EntityAnimalData extends EntityExtraData {
                     tameable.setOwner(owner);
                 }
             }
-            tameable.setTamed(tamed);
+            if (tamed != null) {
+                tameable.setTamed(tamed);
+            }
         }
-        getPlatform().getCompatibilityUtils().setSitting(entity, sitting);
+        if (sitting != null) {
+            getPlatform().getCompatibilityUtils().setSitting(entity, sitting);
+        }
     }
 }

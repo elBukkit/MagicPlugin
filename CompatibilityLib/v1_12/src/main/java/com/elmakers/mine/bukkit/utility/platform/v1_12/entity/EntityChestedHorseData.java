@@ -13,7 +13,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityChestedHorseData extends EntityAbstractHorseData {
-    private boolean hasChest;
+    private Boolean hasChest;
     private ItemStack[] inventory;
 
     public EntityChestedHorseData() {
@@ -22,7 +22,7 @@ public class EntityChestedHorseData extends EntityAbstractHorseData {
 
     public EntityChestedHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
-        hasChest = parameters.getBoolean("has_chest", false);
+        hasChest = ConfigUtils.getOptionalBoolean(parameters, "has_chest");
         List<String> inventory = ConfigUtils.getStringList(parameters, "inventory");
         if (inventory != null && !inventory.isEmpty()) {
             this.inventory = new ItemStack[inventory.size()];
@@ -51,11 +51,11 @@ public class EntityChestedHorseData extends EntityAbstractHorseData {
         super.apply(entity);
         if (entity instanceof ChestedHorse) {
             ChestedHorse horse = (ChestedHorse)entity;
-            horse.setCarryingChest(hasChest);
-            Inventory inventory = horse.getInventory();
-            if (inventory != null) {
-                inventory.clear();
-                if (this.inventory != null) {
+            if (hasChest != null) horse.setCarryingChest(hasChest);
+            if (this.inventory != null) {
+                Inventory inventory = horse.getInventory();
+                if (inventory != null) {
+                    inventory.clear();
                     inventory.setContents(this.inventory);
                 }
             }

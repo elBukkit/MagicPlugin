@@ -22,13 +22,13 @@ public class EntityArmorStandData extends EntityExtraData {
     public EulerAngle leftLegPose;
     public EulerAngle rightLegPose;
     public EulerAngle headPose;
-    public boolean isMarker;
-    public boolean hasGravity;
-    public boolean isVisible;
-    public boolean hasArms;
-    public boolean isSmall;
-    public boolean hasBasePlate;
-    public int disabledSlots;
+    public Boolean isMarker;
+    public Boolean hasGravity;
+    public Boolean isInvisible;
+    public Boolean hasArms;
+    public Boolean isSmall;
+    public Boolean hasBasePlate;
+    public Integer disabledSlots;
 
     public EntityArmorStandData() {
 
@@ -53,7 +53,7 @@ public class EntityArmorStandData extends EntityExtraData {
         rightLegPose = armorStand.getRightLegPose();
         headPose = armorStand.getHeadPose();
         hasGravity = armorStand.hasGravity();
-        isVisible = armorStand.isVisible();
+        isInvisible = !armorStand.isVisible();
         hasArms = armorStand.hasArms();
         isSmall = armorStand.isSmall();
         hasBasePlate = armorStand.hasBasePlate();
@@ -62,13 +62,13 @@ public class EntityArmorStandData extends EntityExtraData {
     }
 
     public EntityArmorStandData(ConfigurationSection parameters) {
-        isSmall = parameters.getBoolean("small", false);
-        isVisible = !parameters.getBoolean("invisible", false);
-        hasBasePlate = !parameters.getBoolean("baseplate", true);
-        hasGravity = parameters.getBoolean("gravity", true);
-        isMarker = parameters.getBoolean("marker", false);
-        hasArms = parameters.getBoolean("arms", false);
-        disabledSlots = parameters.getInt("disabled_slots", 0);
+        isSmall = ConfigUtils.getOptionalBoolean(parameters, "small");
+        isInvisible = ConfigUtils.getOptionalBoolean(parameters, "invisible");
+        hasBasePlate = ConfigUtils.getOptionalBoolean(parameters, "baseplate");
+        hasGravity = ConfigUtils.getOptionalBoolean(parameters, "gravity");
+        isMarker = ConfigUtils.getOptionalBoolean(parameters, "marker");
+        hasArms = ConfigUtils.getOptionalBoolean(parameters, "arms");
+        disabledSlots = ConfigUtils.getOptionalInteger(parameters, "disabled_slots");
 
         bodyPose = ConfigUtils.getEulerAngle(parameters, "body_pose");
         leftArmPose = ConfigUtils.getEulerAngle(parameters, "left_arm_pose");
@@ -84,23 +84,23 @@ public class EntityArmorStandData extends EntityExtraData {
         ArmorStand armorStand = (ArmorStand)entity;
         EntityEquipment equipment = armorStand.getEquipment();
 
-        equipment.setItemInMainHand(itemInHand);
-        equipment.setBoots(boots);
-        equipment.setLeggings(leggings);
-        equipment.setChestplate(chestplate);
-        equipment.setHelmet(helmet);
+        if (itemInHand != null) equipment.setItemInMainHand(itemInHand);
+        if (boots != null) equipment.setBoots(boots);
+        if (leggings != null) equipment.setLeggings(leggings);
+        if (chestplate != null) equipment.setChestplate(chestplate);
+        if (helmet != null) equipment.setHelmet(helmet);
         if (bodyPose != null) armorStand.setBodyPose(bodyPose);
         if (leftArmPose != null) armorStand.setLeftArmPose(leftArmPose);
         if (rightArmPose != null) armorStand.setRightArmPose(rightArmPose);
         if (leftLegPose != null) armorStand.setLeftLegPose(leftLegPose);
         if (rightLegPose != null) armorStand.setRightLegPose(rightLegPose);
         if (headPose != null) armorStand.setHeadPose(headPose);
-        armorStand.setGravity(hasGravity);
-        armorStand.setVisible(isVisible);
-        armorStand.setArms(hasArms);
-        armorStand.setSmall(isSmall);
-        armorStand.setBasePlate(hasBasePlate);
-        armorStand.setMarker(isMarker);
-        getPlatform().getCompatibilityUtils().setDisabledSlots(armorStand, disabledSlots);
+        if (hasGravity != null) armorStand.setGravity(hasGravity);
+        if (isInvisible != null) armorStand.setVisible(isInvisible);
+        if (hasArms != null) armorStand.setArms(hasArms);
+        if (isSmall != null) armorStand.setSmall(isSmall);
+        if (hasBasePlate != null) armorStand.setBasePlate(hasBasePlate);
+        if (isMarker != null) armorStand.setMarker(isMarker);
+        if (disabledSlots != null) getPlatform().getCompatibilityUtils().setDisabledSlots(armorStand, disabledSlots);
     }
 }

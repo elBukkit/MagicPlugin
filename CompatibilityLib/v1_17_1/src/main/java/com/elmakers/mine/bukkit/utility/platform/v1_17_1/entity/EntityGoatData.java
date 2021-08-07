@@ -5,10 +5,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Goat;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityGoatData extends EntityAnimalData {
-    public boolean screaming;
+    public Boolean screaming;
 
     public EntityGoatData() {
 
@@ -16,7 +17,7 @@ public class EntityGoatData extends EntityAnimalData {
 
     public EntityGoatData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
-        screaming = parameters.getBoolean("screaming");
+        screaming = ConfigUtils.getOptionalBoolean(parameters, "screaming");
     }
 
     public EntityGoatData(Entity entity) {
@@ -30,7 +31,7 @@ public class EntityGoatData extends EntityAnimalData {
     @Override
     public void apply(Entity entity) {
         super.apply(entity);
-        if (entity instanceof Goat) {
+        if (entity instanceof Goat && screaming != null) {
             Goat goat = (Goat)entity;
             goat.setScreaming(screaming);
         }

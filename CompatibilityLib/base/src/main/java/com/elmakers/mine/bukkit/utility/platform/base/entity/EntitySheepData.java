@@ -6,10 +6,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Sheep;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntitySheepData extends EntityAnimalData {
     private DyeColor color;
-    private boolean sheared;
+    private Boolean sheared;
 
     public EntitySheepData() {
 
@@ -26,7 +27,7 @@ public class EntitySheepData extends EntityAnimalData {
                 color = null;
             }
         }
-        sheared = parameters.getBoolean("sheared");
+        sheared = ConfigUtils.getOptionalBoolean(parameters,"sheared");
     }
 
     public EntitySheepData(Entity entity) {
@@ -46,7 +47,7 @@ public class EntitySheepData extends EntityAnimalData {
             if (color != null) {
                 sheep.setColor(color);
             }
-            sheep.setSheared(sheared);
+            if (sheared != null) sheep.setSheared(sheared);
         }
     }
 

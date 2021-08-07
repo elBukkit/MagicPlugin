@@ -13,13 +13,14 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class EntityFallingBlockData extends EntityExtraData {
     @Nullable
     private MaterialAndData material;
-    private boolean dropItem;
-    private boolean hurtEntities;
+    private Boolean dropItem;
+    private Boolean hurtEntities;
 
     private EntityFallingBlockData(MaterialAndData material) {
         this.material = material;
@@ -30,8 +31,8 @@ public class EntityFallingBlockData extends EntityExtraData {
         if (materialKey != null && !materialKey.isEmpty()) {
             material = controller.createMaterialAndData(materialKey);
         }
-        dropItem = configuration.getBoolean("drop_items", false);
-        hurtEntities = configuration.getBoolean("hurt_entities", true);
+        dropItem = ConfigUtils.getOptionalBoolean(configuration, "drop_items");
+        hurtEntities = ConfigUtils.getOptionalBoolean(configuration, "hurt_entities");
     }
 
     public EntityFallingBlockData(Entity entity, MageController controller) {
@@ -55,8 +56,8 @@ public class EntityFallingBlockData extends EntityExtraData {
     public void apply(Entity entity) {
         if (entity instanceof  FallingBlock) {
             FallingBlock fallingBlock = (FallingBlock)entity;
-            fallingBlock.setDropItem(dropItem);
-            fallingBlock.setHurtEntities(hurtEntities);
+            if (dropItem != null) fallingBlock.setDropItem(dropItem);
+            if (hurtEntities != null) fallingBlock.setHurtEntities(hurtEntities);
         }
     }
 

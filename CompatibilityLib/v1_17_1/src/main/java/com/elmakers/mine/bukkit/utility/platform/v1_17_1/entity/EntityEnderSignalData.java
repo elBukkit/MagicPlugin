@@ -20,8 +20,7 @@ public class EntityEnderSignalData extends EntityAnimalData {
 
     public EntityEnderSignalData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
-        if (parameters.contains("drop_item"))
-            dropItem = parameters.getBoolean("drop_item");
+        dropItem = ConfigUtils.getOptionalBoolean(parameters, "drop_item");
         if (parameters.contains("despawn_timer"))
             despawnTimer = parameters.getInt("despawn_timer");
         else if (parameters.contains("duration")) {

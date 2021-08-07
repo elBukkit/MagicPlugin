@@ -5,12 +5,13 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Phantom;
 
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityPhantomData extends EntityExtraData {
-    public int size;
+    public Integer size;
 
     public EntityPhantomData(ConfigurationSection parameters) {
-        size = parameters.getInt("size", 1);
+        size = ConfigUtils.getOptionalInteger(parameters, "size");
     }
 
     public EntityPhantomData(Entity entity) {
@@ -21,16 +22,8 @@ public class EntityPhantomData extends EntityExtraData {
 
     @Override
     public void apply(Entity entity) {
-        if (entity instanceof Phantom) {
+        if (entity instanceof Phantom && size != null) {
             ((Phantom)entity).setSize(size);
         }
-    }
-
-    public void setSize(int size) {
-        this.size = size;
-    }
-
-    public int getSize() {
-        return size;
     }
 }

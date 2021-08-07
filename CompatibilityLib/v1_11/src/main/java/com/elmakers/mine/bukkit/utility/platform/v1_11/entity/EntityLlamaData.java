@@ -8,10 +8,11 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Llama;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityLlamaData extends EntityChestedHorseData {
     private Llama.Color color;
-    private int strength;
+    private Integer strength;
 
     public EntityLlamaData() {
 
@@ -28,7 +29,7 @@ public class EntityLlamaData extends EntityChestedHorseData {
                 log.log(Level.WARNING, "Invalid llama_color: " + colorString, ex);
             }
         }
-        strength = parameters.getInt("llama_strength", 1);
+        strength = ConfigUtils.getOptionalInteger(parameters, "llama_strength");
     }
 
     public EntityLlamaData(Entity entity, MageController controller) {
@@ -48,7 +49,7 @@ public class EntityLlamaData extends EntityChestedHorseData {
             if (color != null) {
                 llama.setColor(color);
             }
-            if (strength > 0 && strength < 6) {
+            if (strength != null && strength > 0 && strength < 6) {
                 llama.setStrength(strength);
             }
         }
