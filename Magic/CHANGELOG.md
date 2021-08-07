@@ -21,6 +21,7 @@
  - Fix mob boss bars duplicating on config reload
  - Fix not being able to upgrade enchantment level of magic sword and armor with books
  - Fix casting cost of Workbench being too high for a Beginner to cast
+ - Fix stacked wand upgrades absorbing the full stack when dropping on a wand
 
 ## Additions
  

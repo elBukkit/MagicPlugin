@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.tasks.ActivateIconTask;
 import com.elmakers.mine.bukkit.tasks.WandCastTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandInventory;
@@ -666,9 +667,16 @@ public class InventoryController implements Listener {
             }
             Wand wand = controller.createWand(clickedItem);
             wand.activate(mage);
+            CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(heldItem);
             if (wand.addItem(heldItem)) {
                 event.setCancelled(true);
-                event.setCursor(null);
+                // Currency items will always absorb the full stack
+                if (heldItem.getAmount() > 1 && currency == null) {
+                    heldItem.setAmount(heldItem.getAmount() - 1);
+                    event.setCursor(heldItem);
+                } else {
+                    event.setCursor(null);
+                }
                 player.getInventory().setItem(event.getSlot(), wand.getItem());
             }
             if (activeWand != null) {
