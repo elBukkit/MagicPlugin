@@ -1,4 +1,4 @@
-otherside:
+demo_pvp:
   start_commands: mblock select arena1;mblock enable;mblock select arena2;mblock enable
   end_commands: mblock select arena1;mblock disable;mblock select arena2;mblock disable
   keep_inventory: false

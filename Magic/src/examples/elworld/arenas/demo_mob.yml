@@ -1,5 +1,5 @@
-netherside:
-  name: The Nether Side
+demo_mob:
+  name: Mob Arena
   min_players: 1
   max_players: 10
   lose_xp: 20
