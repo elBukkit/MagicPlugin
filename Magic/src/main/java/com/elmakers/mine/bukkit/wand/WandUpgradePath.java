@@ -594,7 +594,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         }
         int manaMax = wand.getManaMax();
         if (this.maxMana > 0 && maxMaxMana == 0 && this.maxMaxMana > manaMax) {
-            wand.setManaMax(this.maxMana);
+            wand.setManaMax((float)this.maxMana);
         }
     }
 
