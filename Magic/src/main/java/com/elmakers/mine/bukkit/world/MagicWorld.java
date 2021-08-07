@@ -275,6 +275,9 @@ public class MagicWorld {
 
     private static void joinedDefault(Mage mage, String resourcePack, MagicWorld previousWorld, boolean isJoin) {
         MagicController controller = mage.getController();
+        if (controller.isResourcePackEnabled()) {
+            return;
+        }
         if (mage.isResourcePackEnabled()) {
             String fromResourcePack = previousWorld == null ? null : previousWorld.resourcePack;
             if (!Objects.equals(fromResourcePack, resourcePack) || isJoin) {
