@@ -1,0 +1,10 @@
+damageflash:
+  actions:
+    cast:
+    - class: ColorItem
+  parameters:
+    target: self
+    slots: helmet,mainhand,offhand
+    color: "#FF0000"
+    undo: 500
+    cooldown: 750
