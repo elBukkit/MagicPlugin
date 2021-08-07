@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -246,6 +247,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     // Slot system
     private List<Wand> slotted = null;
     private ConfigurationSection slottedConfiguration = null;
+    private Set<String> swappableSlots = null;
 
     // Transient state
 
@@ -1993,9 +1995,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Wand slottedWand = controller.createWand(slottedKey);
                 if (slottedWand != null) {
                     slotted.add(slottedWand);
-                    updateSlotted(slottedWand);
                 }
             }
+            updateSlotted();
         }
 
         // Check for single-use wands
@@ -3034,6 +3036,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else {
             List<String> slots = getStringList("slots");
             if (slots != null && !slots.isEmpty()) {
+                List<String> swappable = getStringList("swappable_slots");
+                if (swappable != null && !swappable.isEmpty()) {
+                    swappableSlots = new HashSet<>(swappable);
+                }
+
                 List<Wand> remaining = new ArrayList<>();
                 if (slotted != null) {
                     remaining.addAll(slotted);
@@ -4341,33 +4348,50 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (Wand wand : slotted) {
             slots.remove(wand.getSlot());
         }
+        boolean canAdd = false;
         String slot = upgradeWand.getSlot();
         for (String remaining : slots) {
             if (remaining.equals(slot)) {
-                List<String> slottedKeys = getStringList("slotted");
-                if (slottedKeys == null) {
-                    slottedKeys = new ArrayList<>();
-                }
-                slottedKeys.add(upgradeWand.getKey());
-                setProperty("slotted", slottedKeys);
-                slotted.add(upgradeWand);
-                updateSlotted(upgradeWand);
-                updated();
-                return true;
+                canAdd = true;
+                break;
             }
+        }
+        if (mage != null && !canAdd && swappableSlots != null && swappableSlots.contains(slot)) {
+            ListIterator<Wand> slotIterator = slotted.listIterator(slotted.size());
+            while (slotIterator.hasPrevious()) {
+                Wand slotted = slotIterator.previous();
+                if (slotted.getSlot().equals(slot)) {
+                    mage.giveItem(slotted.getItem());
+                    canAdd = true;
+                    slotIterator.remove();
+                    break;
+                }
+            }
+        }
+        // TODO: Give back swapped item!
+        // need to change chain of calls for that I think
+        if (canAdd) {
+            slotted.add(upgradeWand);
+            List<String> slottedKeys = new ArrayList<>();
+            for (Wand wand : slotted) {
+                slottedKeys.add(wand.getKey());
+            }
+            setProperty("slotted", slottedKeys);
+            updateSlotted();
+            updated();
+            return true;
         }
 
         return false;
     }
 
-    protected void updateSlotted(Wand addSlot) {
-        if (slottedConfiguration == null) {
-            slottedConfiguration = ConfigurationUtils.newConfigurationSection();
+    protected void updateSlotted() {
+        slottedConfiguration = ConfigurationUtils.newConfigurationSection();
+        for (Wand slot : slotted) {
+            ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(slot.getEffectiveConfiguration());
+            cleanSlottedUpgradeConfig(upgradeConfig);
+            ConfigurationUtils.addConfigurations(slottedConfiguration, upgradeConfig);
         }
-
-        ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(addSlot.getEffectiveConfiguration());
-        cleanSlottedUpgradeConfig(upgradeConfig);
-        ConfigurationUtils.addConfigurations(slottedConfiguration, upgradeConfig);
     }
 
 

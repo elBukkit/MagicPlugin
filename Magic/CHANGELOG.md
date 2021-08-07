@@ -33,6 +33,7 @@
  - Selector name, description and lore now support placeholders
  - Add `not_brush` parameter to `CheckBlock`, use-case is only playing effects at a location where a block was modified (not the same as the brush)
  - The `ColorItem` action is now *mostly* undoable, though probably only suited for mob use (since players can move items around)
+ - Add `swappable_slots` wand property, a list of slot types that can have their slotted items swapped out
 
 ## Changes
 
