@@ -1,8 +1,14 @@
 package com.elmakers.mine.bukkit.arena;
 
+import org.bukkit.configuration.ConfigurationSection;
+
 public class DefaultStage extends ArenaStageTemplate {
     public DefaultStage(Arena arena) {
         super(arena);
+    }
+
+    public DefaultStage(Arena arena, ConfigurationSection configuration) {
+        super(arena, configuration);
     }
 
     @Override

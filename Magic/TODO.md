@@ -34,8 +34,6 @@
 
 ## Arenas
 
- - Change "all" stage to store common inherited stage properties (requires above to be done first)
-
  - Add option to save inventory and class layout
    - Mage stored inventories need to be by key
    - Restore all inventories on login, if restoring inventories remove any spells

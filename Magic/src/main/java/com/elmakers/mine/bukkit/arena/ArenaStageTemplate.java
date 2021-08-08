@@ -124,9 +124,9 @@ public abstract class ArenaStageTemplate implements EditingStage  {
     public void describe(CommandSender sender) {
         int mobSpawnSize = mobSpawns.size();
         if (mobSpawnSize == 1) {
-            sender.sendMessage(ChatColor.BLUE + "Spawn Mobs: " + arena.printLocation(mobSpawns.get(0)));
+            sender.sendMessage(ChatColor.BLUE + "Mob Spawn: " + arena.printLocation(mobSpawns.get(0)));
         } else if (mobSpawnSize > 1) {
-            sender.sendMessage(ChatColor.BLUE + "Spawns Mobs: " + ChatColor.GRAY + mobSpawnSize);
+            sender.sendMessage(ChatColor.BLUE + "Mob Spawns: " + ChatColor.GRAY + mobSpawnSize);
             for (Location spawn : mobSpawns) {
                 sender.sendMessage(arena.printLocation(spawn));
             }

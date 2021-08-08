@@ -43,7 +43,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
 
     private static final String[] STAGE_COMMANDS = {
         "add", "remove", "name", "next", "previous", "go", "describe", "addbefore", "addafter", "move",
-        "configure", "all", "list"
+        "configure", "default", "list"
     };
 
     private static final String[] STAGE_RANDOMIZE = {
@@ -453,7 +453,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             case "name":
                 onNameArenaStage(sender, arena, args);
                 break;
-            case "all":
+            case "default":
                 onDefaultArenaStage(sender, arena);
                 break;
             case "go":

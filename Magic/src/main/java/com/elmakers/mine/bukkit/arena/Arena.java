@@ -61,7 +61,7 @@ public class Arena {
 
     private List<Location> spawns = new ArrayList<Location>();
     private List<ArenaStage> stages = new ArrayList<ArenaStage>();
-    private final DefaultStage defaultStage;
+    private DefaultStage defaultStage;
     private int currentStage = 0;
     private int editingStage = 0;
     private boolean editDefaultStage = false;
@@ -137,7 +137,6 @@ public class Arena {
         this.key = key;
         this.template = template;
         this.controller = controller;
-        defaultStage = new DefaultStage(this);
         signMaterial = DefaultMaterials.getWallSignBlock();
     }
 
@@ -237,6 +236,13 @@ public class Arena {
 
         if (configuration.contains("randomize.spawn")) {
             randomizeSpawn = ConfigurationUtils.toVector(configuration.getString("randomize.spawn"));
+        }
+
+        ConfigurationSection defaultStageConfig = configuration.getConfigurationSection("default_stage");
+        if (defaultStageConfig != null) {
+            defaultStage = new DefaultStage(this, defaultStageConfig);
+        } else {
+            defaultStage = new DefaultStage(this);
         }
 
         stages.clear();

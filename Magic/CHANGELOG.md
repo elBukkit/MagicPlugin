@@ -45,6 +45,7 @@
  - Removed robes from hires RP, added hires-robes and hires-all RP which are selected automatically
  - Broomstick upgrades can be swapped out
  - Changed how arenas and their templates interact to work more like other magic configs/instances
+ - Added `default_stage` properties to arena, to set default stage properties
 
 # 9.4.4
 
