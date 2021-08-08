@@ -53,10 +53,32 @@ public class MythicMobManager {
         return api.getMobManager().getMobNames();
     }
 
-    @Nullable
     public boolean isMobKey(String mobKey) {
         // Hopefully this is backed by a Set?
         return api.getMobManager().getMobNames().contains(mobKey);
+    }
+
+    public void setMobLevel(Entity entity, double level) {
+        if (entity == null) {
+            return;
+        }
+        Optional<ActiveMob> mob = api.getMobManager().getActiveMob(entity.getUniqueId());
+        if (!mob.isPresent()) {
+            return;
+        }
+        mob.get().setLevel(level);
+    }
+
+    @Nullable
+    public Double getMobLevel(Entity entity) {
+        if (entity == null) {
+            return null;
+        }
+        Optional<ActiveMob> mob = api.getMobManager().getActiveMob(entity.getUniqueId());
+        if (!mob.isPresent()) {
+            return null;
+        }
+        return mob.get().getLevel();
     }
 
     @Nullable

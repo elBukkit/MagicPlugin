@@ -8461,6 +8461,22 @@ public class MagicController implements MageController {
 
     @Nullable
     @Override
+    public Double getMythicMobLevel(Entity entity) {
+        if (mythicMobManager != null) {
+            return mythicMobManager.getMobLevel(entity);
+        }
+        return null;
+    }
+
+    @Override
+    public void setMythicMobLevel(Entity entity, double level) {
+        if (mythicMobManager != null) {
+            mythicMobManager.setMobLevel(entity, level);
+        }
+    }
+
+    @Nullable
+    @Override
     public boolean isMythicMobKey(String mythicMobKey) {
         if (mythicMobManager != null) {
             return mythicMobManager.isMobKey(mythicMobKey);

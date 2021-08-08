@@ -73,6 +73,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     private final MageController controller;
     protected String key;
     protected String mythicMobKey;
+    protected Double mythicMobLevel;
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
 
@@ -221,6 +222,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isSitting = CompatibilityLib.getCompatibilityUtils().isSitting(entity);
         isInvulnerable = CompatibilityLib.getCompatibilityUtils().isInvulnerable(entity);
         mythicMobKey = controller.getMythicMobKey(entity);
+        mythicMobLevel = controller.getMythicMobLevel(entity);
 
         if (entity instanceof Ageable) {
             Ageable ageable = (Ageable)entity;
@@ -305,6 +307,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         isHidden = parameters.getBoolean("hidden");
         nameVisible = ConfigUtils.getOptionalBoolean(parameters, "show_name");
         mythicMobKey = parameters.getString("mythic_mob");
+        mythicMobLevel = ConfigUtils.getOptionalDouble(parameters, "mythic_mob_level");
         health = ConfigUtils.getOptionalDouble(parameters, "health");
         maxHealth = ConfigUtils.getOptionalDouble(parameters, "max_health");
         // Shortcut for max_health
@@ -625,6 +628,9 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         if (mythicMobKey != null) {
             spawned = controller.spawnMythicMob(mythicMobKey, location);
             if (spawned != null) {
+                if (mythicMobLevel != null) {
+                    controller.setMythicMobLevel(spawned, mythicMobLevel);
+                }
                 addedToWorld = true;
             } else {
                 controller.getLogger().warning("Could not spawn mythic mob: " + mythicMobKey + " from mob config " + getKey());

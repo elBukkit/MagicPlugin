@@ -838,5 +838,8 @@ public interface MageController {
     Entity spawnMythicMob(String mythicMobKey, Location location);
     @Nullable
     String getMythicMobKey(Entity entity);
+    @Nullable
+    Double getMythicMobLevel(Entity entity);
+    void setMythicMobLevel(Entity entity, double level);
     boolean isMythicMobKey(String mythicMobKey);
 }

@@ -6,7 +6,9 @@
 
  - MythicMobs support: 
    - Mythic mobs can be referred to by name in any configs or `/mmob` command.
-   - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities (W.I.P.
+   - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities
+   - Use `mythic_mob` in a magic mob config to make it build on a mythic mob
+   - use `mythic_mob_level` in a config or spawn parameters to set the MM level
 
  - Magic Bow re-work
    - Light arrow rebalance
