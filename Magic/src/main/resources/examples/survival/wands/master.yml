@@ -14,34 +14,41 @@ master:
       - missile
       - push
       - arrow
+      - blast
       - frost
       - bubble
-      - peek
-      - torch
-      - recall
+      - fireball
+      - blind
 
       # Hotbar 2
 
       - fling
       - blink
       - arrowrain
-      - heal
       - stream
       - wither
       - blob
+      - whip
+      - grenade
 
       # Hotbar 3
 
-      # Beginner
-      - blast
-      - boon
+      - levitate
+      - petrify
+      - railgun
       - cloak
       - collapse
-      - cure
-      - fireball
-      - pull
-      - blind
       - reflect
+      - meteor
+      - kill
+
+      # Beginner
+      - peek
+      - torch
+      - recall
+      - boon
+      - cure
+      - pull
       - poison
       - fire
 
@@ -59,7 +66,7 @@ master:
       - entangle
       - curse
       - vengeance
-      - whip
+      - heal
 
       # Apprentice
       - newpage
@@ -90,13 +97,9 @@ master:
       - gather
 
       # Master
-      - levitate
-      - railgun
       - fury
-      - petrify
       - stash
       - shrink
-      - kill
 
       - blessing
       - cluster
@@ -105,7 +108,6 @@ master:
       - earthquake
       - icbm
       - nuke
-      - meteor
       - pollinate
       - torture
       - singularity

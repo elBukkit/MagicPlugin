@@ -24,21 +24,21 @@ beginner:
     - missile
     - push
     - arrow
+    - blast
     - frost
     - bubble
+    - fireball
+    - blind
+
+    # Inventory
     - peek
     - torch
     - recall
-
-    # Inventory
-    - blast
     - boon
     - cloak
     - collapse
     - cure
-    - fireball
     - pull
-    - blind
     - reflect
     - poison
     - fire

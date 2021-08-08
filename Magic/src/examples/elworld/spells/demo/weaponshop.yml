@@ -73,6 +73,16 @@ weaponshop:
         cost: 100
 
       - placeholder: true
+      - item: wizardhelmet
+      - item: wizardchestplate
+      - item: wizardleggings
+      - item: wizardboots
+      - placeholder: true
+      - placeholder: true
+      - item: talisman
+      - placeholder: true
+
+      - placeholder: true
       - placeholder: true
       - placeholder: true
       - placeholder: true

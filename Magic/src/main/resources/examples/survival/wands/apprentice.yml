@@ -12,31 +12,32 @@ apprentice:
       - missile
       - push
       - arrow
+      - blast
       - frost
       - bubble
-      - peek
-      - torch
-      - recall
+      - fireball
+      - blind
 
       # Hotbar 2
 
       - fling
       - blink
       - arrowrain
-      - heal
       - stream
       - wither
       - blob
+      - whip
+      - grenade
 
       # Beginner
-      - blast
+      - peek
+      - torch
+      - recall
       - boon
       - cloak
       - collapse
       - cure
-      - fireball
       - pull
-      - blind
       - reflect
       - poison
       - fire
@@ -45,7 +46,6 @@ apprentice:
       - newpage
 
       - boom
-      - grenade
       - lightning
       - lava
       - flamethrower
@@ -55,7 +55,7 @@ apprentice:
       - entangle
       - curse
       - vengeance
-      - whip
+      - heal
 
       # Apprentice
       - newpage
