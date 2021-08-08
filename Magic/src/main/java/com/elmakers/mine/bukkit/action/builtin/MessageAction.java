@@ -73,7 +73,7 @@ public class MessageAction extends BaseSpellAction
             if (targetEntity == null || !(targetEntity instanceof Player)) {
                 return SpellResult.NO_TARGET;
             }
-            sendMessage(context, (Player)targetEntity);
+            sendMessage(context, targetEntity);
             return SpellResult.CAST;
         }
         Mage mage = context.getMage();

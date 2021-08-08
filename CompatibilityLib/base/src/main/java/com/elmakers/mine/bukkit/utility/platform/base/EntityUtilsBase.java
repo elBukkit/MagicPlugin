@@ -68,7 +68,7 @@ public abstract class EntityUtilsBase implements EntityUtils {
         } else if (entity instanceof Slime) {
             extraData = new EntitySlimeData((Slime)entity);
         } else if (entity instanceof FallingBlock) {
-            extraData = new EntityFallingBlockData((FallingBlock)entity, controller);
+            extraData = new EntityFallingBlockData(entity, controller);
         } else if (entity instanceof EnderDragon) {
             extraData = new EntityEnderDragonData(entity);
         } else if (entity instanceof Creeper) {

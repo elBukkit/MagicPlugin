@@ -104,7 +104,7 @@ public class ConfigUtils {
             try {
                 double d;
                 if (value instanceof Double) d = (Double) value;
-                else if (value instanceof Float) d = (double) (Float) value;
+                else if (value instanceof Float) d = (Float) value;
                 else d = Double.parseDouble(value.toString());
                 node.set(path, d);
             } catch (Exception ex2) {

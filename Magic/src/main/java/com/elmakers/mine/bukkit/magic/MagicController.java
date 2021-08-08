@@ -6347,7 +6347,7 @@ public class MagicController implements MageController {
                 }
                 return null;
             }
-            return (double) wand.getWorth() / toCurrency.getWorth();
+            return wand.getWorth() / toCurrency.getWorth();
         }
 
         return configuredItem.getWorth() * amount / toCurrency.getWorth();

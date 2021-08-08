@@ -154,7 +154,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     protected Long convertToLong(Object o) {
         if (o == null) return null;
         if (o instanceof Long) return (Long)o;
-        if (o instanceof Integer) return (long)(int)(Integer)o;
+        if (o instanceof Integer) return (long)(Integer)o;
         if (o instanceof Byte) return (long)(Byte)o;
         if (o instanceof Double) return (long)(double)(Double)o;
         if (o instanceof String) return Long.parseLong((String)o);
@@ -180,7 +180,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         if (o == null) return null;
         if (o instanceof Double) return (Double)o;
         if (o instanceof Integer) return (double)(Integer)o;
-        if (o instanceof Long) return (double)(long)(Long)o;
+        if (o instanceof Long) return (double)(Long)o;
         if (o instanceof Byte) return (double)(Byte)o;
         if (o instanceof String) return Double.parseDouble((String)o);
         return null;

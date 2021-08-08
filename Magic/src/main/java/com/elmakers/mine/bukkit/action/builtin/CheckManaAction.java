@@ -35,7 +35,7 @@ public class CheckManaAction extends CheckAction {
         if (requireNotFull && currentMana >= manaMax) {
             return false;
         }
-        if (requirePercentage > 0 && manaMax > 0 && currentMana / (double)manaMax < requirePercentage) {
+        if (requirePercentage > 0 && manaMax > 0 && currentMana / manaMax < requirePercentage) {
             return false;
         }
         return true;

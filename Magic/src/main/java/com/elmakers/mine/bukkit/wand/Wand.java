@@ -5333,7 +5333,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (resetManaOnActivate != null && usesMana()) {
             float newMana = (float)(double)resetManaOnActivate;
             if (newMana < 1) {
-                newMana *= (float)getManaMax();
+                newMana *= getManaMax();
             }
             if (newMana < getMana()) {
                 setMana(newMana);
