@@ -338,7 +338,7 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
     }
 
     public boolean isValid() {
-        return location.getWorld() != null;
+        return location.getWorld() != null; // FIXME
     }
 
     @Override
@@ -434,11 +434,11 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
 
     public void removed() {
         if (template == null) return;
-        if (template.removeWhenBroken() && location != null) {
+        if (template.removeWhenBroken()) {
             location.getBlock().setType(Material.AIR);
         }
         String dropWhenRemoved = template.getDropWhenRemoved();
-        if (dropWhenRemoved != null && !dropWhenRemoved.isEmpty() && location != null) {
+        if (dropWhenRemoved != null && !dropWhenRemoved.isEmpty()) {
             ItemData item = controller.getOrCreateItem(dropWhenRemoved);
             ItemStack stack = item == null ? null : item.getItemStack();
             if (CompatibilityLib.getItemUtils().isEmpty(stack)) {

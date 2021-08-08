@@ -105,8 +105,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static String DEFAULT_WAND_TEMPLATE = "default";
     public static boolean CREATIVE_CHEST_MODE = false;
 
-    private static final String[] EMPTY_PARAMETERS = new String[0];
-
     private static final Random random = new Random();
 
     /**
@@ -418,11 +416,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         setTemplate(templateName);
         setProperty("version", CURRENT_VERSION);
-        ConfigurationSection templateConfig = template.getConfiguration();
-
-        if (templateConfig == null) {
-            throw new UnknownWandException(templateName);
-        }
 
         // Load all properties
         loadProperties();
@@ -637,7 +630,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 iconKey = null;
             }
             WandTemplate template = getTemplate();
-            String templateIcon = template != null && controller != null
+            String templateIcon = template != null
                     ? template.getIcon(controller.isLegacyIconsEnabled())
                     : null;
             if (templateIcon == null || !templateIcon.equals(iconKey)) {
@@ -3992,9 +3985,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             try {
                 return WandUseMode.valueOf(useString.toUpperCase());
             } catch (Exception ex) {
-                if (controller != null) {
-                    controller.getLogger().warning("Invalid use mode: " + useString);
-                }
+                controller.getLogger().warning("Invalid use mode: " + useString);
             }
         }
 
@@ -6696,7 +6687,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (interactibleMaterials != null) {
             return interactibleMaterials.testBlock(block);
         }
-        return controller != null ? controller.isInteractible(block) : false;
+        return controller.isInteractible(block);
     }
 
     public boolean isPlaceable() {

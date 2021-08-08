@@ -797,7 +797,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                                 }
                                 for (PlayerWarp warp : warps) {
                                     Location location = warp.getLocation();
-                                    if (location == null) continue;
                                     String description = warp.getDescription();
                                     if (description == null) {
                                         description = context.getMessage("description_" + key, context.getMessage("description_regions"));
@@ -972,7 +971,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                     meta.setLore(lore);
                 }
                 String invalidMessage = context.getMessage("invalid_description");
-                if (!isValid && invalidMessage != null) {
+                if (!isValid) {
                     List<String> lore = meta.getLore();
                     if (lore == null) {
                         lore = new ArrayList<>();
@@ -1031,8 +1030,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             ItemMeta meta = markerItem.getItemMeta();
             meta.setDisplayName(context.getMessage("title_move_marker").replace("$number", Integer.toString(marker)));
             String description = context.getMessage("description_move_marker");
-            if (description != null && description.length() > 0)
-            {
+            if (!description.isEmpty()) {
                 List<String> lore = new ArrayList<>();
                 lore.add(description);
                 meta.setLore(lore);

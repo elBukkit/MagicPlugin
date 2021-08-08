@@ -97,7 +97,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         // Requires a selection
-        MagicNPC npc = mage == null ? null : selections.getSelected(mage.getCommandSender());
+        MagicNPC npc = selections.getSelected(mage.getCommandSender());
 
         if (npc == null) {
             sender.sendMessage(ChatColor.RED + "Select an NPC first using /mnpc select");

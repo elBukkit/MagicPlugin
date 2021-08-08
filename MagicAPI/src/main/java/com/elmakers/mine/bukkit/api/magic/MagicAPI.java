@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;
@@ -313,6 +314,7 @@ public interface MagicAPI {
      * @param item The item stack.
      * @return A description of this item
      */
+    @Nonnull
     String describeItem(ItemStack item);
 
     /**

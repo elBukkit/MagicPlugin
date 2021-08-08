@@ -95,8 +95,8 @@ public class LockAction extends BaseSpellAction
                 {
                     // Check for old alternate keys
                     boolean isAlternate = false;
-                    String altTemplate = context.getMessage("key_name_alternate", null);
-                    if (altTemplate != null && altTemplate.length() > 0) {
+                    String altTemplate = context.getMessage("key_name_alternate", "");
+                    if (!altTemplate.isEmpty()) {
                         altTemplate = altTemplate
                                 .replace("$name", context.getMage().getName())
                                 .replace("$uuid", context.getMage().getId());

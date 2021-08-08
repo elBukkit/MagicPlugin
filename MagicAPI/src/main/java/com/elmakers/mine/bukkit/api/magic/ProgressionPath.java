@@ -35,7 +35,7 @@ public interface ProgressionPath {
     ProgressionPath getNextPath();
     boolean checkUpgradeRequirements(CasterProperties caster, boolean quiet);
     boolean checkUpgradeRequirements(Wand wand, Mage mage);
-    void upgrade(@Nonnull Mage mage, @Nullable Wand wand);
+    void upgrade(@Nullable Mage mage, @Nullable Wand wand);
     ConfigurationSection getProperties();
     boolean isAutomaticProgression();
 

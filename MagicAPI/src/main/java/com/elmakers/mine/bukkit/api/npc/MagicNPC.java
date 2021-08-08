@@ -40,7 +40,7 @@ public interface MagicNPC extends Locatable {
     boolean isEntity(Entity entity);
     @Nonnull
     UUID getId();
-    @Nonnull
+    @Nullable
     UUID getEntityId();
     @Nullable
     Entity respawn();
@@ -51,7 +51,8 @@ public interface MagicNPC extends Locatable {
      * This is ambiguous, use getEntityId instead, or if looking for a persistent unique id for the NPC itself,
      * use getId()
      */
-    @Nonnull
     @Deprecated
-    UUID getUUID();
+    default UUID getUUID() {
+        return getEntityId();
+    }
 }

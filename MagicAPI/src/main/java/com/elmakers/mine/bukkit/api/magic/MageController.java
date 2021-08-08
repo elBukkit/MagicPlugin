@@ -160,6 +160,7 @@ public interface MageController {
     void loadWandTemplate(String key, ConfigurationSection wandNode);
     void unloadWandTemplate(String key);
 
+    @Nonnull
     String describeItem(ItemStack item);
     String getItemKey(ItemStack item);
     @Nullable
@@ -769,7 +770,7 @@ public interface MageController {
     @Nonnull
     Set<String> getPlayerWarpProviderKeys();
     @Nullable
-    Collection<PlayerWarp> getPlayerWarps(Player player, String key);
+    Collection<PlayerWarp> getPlayerWarps(@Nonnull Player player, String key);
     @Nullable
     Collection<PlayerWarp> getAllPlayerWarps(String key);
 
@@ -825,7 +826,18 @@ public interface MageController {
     Currency getBlockExchangeCurrency();
     @Nullable
     ItemStack getSpawnEgg(String mobType);
+
+    /**
+     * Finds the underlying damage source of an entity. For example, the shooter
+     * in case of an arrow.
+     *
+     * @param entity
+     *            The entity to check the damage source for.
+     * @return The underlying damage source, will be non-null iff entity is
+     *         non-null.
+     */
     Entity getDamageSource(Entity entity);
+
     boolean isDamaging();
     World createWorld(String worldName);
     World copyWorld(String worldName, World copyFrom);

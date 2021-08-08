@@ -6,6 +6,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -1048,8 +1049,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         return getName(null);
     }
 
+    @Nonnull
     @Override
-    public String getName(Messages messages) {
+    public String getName(@Nullable Messages messages) {
         if (!isValid()) return "";
 
         boolean localized = false;

@@ -71,9 +71,7 @@ public class StashWandAction extends BaseSpellAction
             targetMage.giveItem(stashedItem);
         }
         if (context == null) {
-            if (targetMage != null) {
-                targetMage.checkWand();
-            }
+            targetMage.checkWand();
         } else {
             context.checkWand();
         }

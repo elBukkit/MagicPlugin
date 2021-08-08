@@ -130,6 +130,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         this(copy, copy.getEntity(), copy instanceof CastContext ? ((CastContext) copy).location : null);
     }
 
+    @SuppressWarnings("null") // copyFrom
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Mage sourceMage, Entity sourceEntity, Location sourceLocation) {
         super(sourceMage, sourceMage.getActiveWand());
         this.location = sourceLocation == null ? null : sourceLocation.clone();
@@ -137,6 +138,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         copyFrom(copy);
     }
 
+    @SuppressWarnings("null") // copyFrom
     public CastContext(com.elmakers.mine.bukkit.api.action.CastContext copy, Entity sourceEntity, Location sourceLocation) {
         super(copy.getMage(), copy.getWand());
         this.location = sourceLocation == null ? null : sourceLocation.clone();
@@ -1548,7 +1550,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 return targetMage == null ? null : targetMage.getLastFallDistance();
             }
         }
-        if (value == null && attributeKey.startsWith("target_")) {
+        if (attributeKey.startsWith("target_")) {
             Mage targetMage = getTargetMage();
             if (targetMage != null) {
                 attributeKey = attributeKey.substring(7);
@@ -1619,9 +1621,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         if (baseSpell != null) {
             ConfigurationUtils.addConfigurations(combinedVariables, baseSpell.getVariables(), false);
         }
-        if (mage != null) {
-            ConfigurationUtils.addConfigurations(combinedVariables, mage.getVariables(), false);
-        }
+        ConfigurationUtils.addConfigurations(combinedVariables, mage.getVariables(), false);
         return combinedVariables;
     }
 
@@ -1640,7 +1640,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             case SPELL:
                 return baseSpell == null ? getVariables() : baseSpell.getVariables();
             case MAGE:
-                return mage == null ? getVariables() : mage.getVariables();
+                return mage.getVariables();
             case CAST:
             default:
                 return getVariables();
@@ -1655,16 +1655,16 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         }
         if (baseSpell != null) {
             ConfigurationSection spellVariables = baseSpell.getVariables();
-            if (spellVariables != null && spellVariables.contains(variable)) {
+            if (spellVariables.contains(variable)) {
                 return spellVariables.getDouble(variable);
             }
         }
-        if (mage != null) {
-            ConfigurationSection mageVariables = mage.getVariables();
-            if (mageVariables != null && mageVariables.contains(variable)) {
-                return mageVariables.getDouble(variable);
-            }
+
+        ConfigurationSection mageVariables = mage.getVariables();
+        if (mageVariables.contains(variable)) {
+            return mageVariables.getDouble(variable);
         }
+
         return null;
     }
 
@@ -1747,6 +1747,6 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             return getCasterProperties(propertyType);
         }
         Mage mage = controller.getMage(targetEntity);
-        return mage == null ? null : mage.getCasterProperties(propertyType);
+        return mage.getCasterProperties(propertyType);
     }
 }

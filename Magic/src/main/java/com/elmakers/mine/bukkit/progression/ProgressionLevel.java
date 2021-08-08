@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -52,7 +52,7 @@ public class ProgressionLevel implements com.elmakers.mine.bukkit.api.magic.Prog
         }
     }
 
-    @Nullable
+    @Nonnull
     @Override
     public Collection<Cost> getCosts() {
         return costs.values();

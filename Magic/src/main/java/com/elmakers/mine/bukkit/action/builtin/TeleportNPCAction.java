@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.UUID;
 
+import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
@@ -36,7 +37,8 @@ public class TeleportNPCAction extends BaseSpellAction {
         if (npc == null) {
             return SpellResult.NO_TARGET;
         }
-        npc.teleport(context.getTargetLocation());
+        Location targetLocation = context.getTargetLocation();
+        npc.teleport(targetLocation);
         return SpellResult.CAST;
     }
 

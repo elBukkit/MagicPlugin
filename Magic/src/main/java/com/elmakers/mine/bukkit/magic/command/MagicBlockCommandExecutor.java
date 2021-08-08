@@ -196,9 +196,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         String rangeMessage = selections.getDistanceMessage(sender, magicBlock);
         String message = ChatColor.YELLOW + "Removed " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
-        if (rangeMessage != null) {
-            message += rangeMessage;
-        }
+        message += rangeMessage;
         sender.sendMessage(message);
     }
 
@@ -234,9 +232,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         String rangeMessage = selections.getDistanceMessage(sender, magicBlock);
         String message = ChatColor.YELLOW + "Debugging " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
-        if (rangeMessage != null) {
-            message += rangeMessage;
-        }
+        message += rangeMessage;
         sender.sendMessage(message);
     }
 
@@ -255,9 +251,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         String rangeMessage = selections.getDistanceMessage(sender, magicBlock);
         String message = ChatColor.YELLOW + "Enabled " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
-        if (rangeMessage != null) {
-            message += rangeMessage;
-        }
+        message += rangeMessage;
         sender.sendMessage(message);
     }
 
@@ -276,9 +270,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         String rangeMessage = selections.getDistanceMessage(sender, magicBlock);
         String message = ChatColor.YELLOW + "Disabled " + ChatColor.LIGHT_PURPLE + magicBlock.getName()
             + ChatColor.YELLOW + " at " + TextUtils.printLocation(location, 0);
-        if (rangeMessage != null) {
-            message += rangeMessage;
-        }
+        message += rangeMessage;
         sender.sendMessage(message);
     }
 
@@ -339,7 +331,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
             + selections.getDistanceMessage(sender, magicBlock);
         sender.sendMessage(message);
         String templateKey = magicBlock.getTemplateKey();
-        if (templateKey != null && !templateKey.isEmpty()) {
+        if (!templateKey.isEmpty()) {
             sender.sendMessage(ChatColor.GRAY + "  " + templateKey);
         }
         String description = magicBlock.getDescription();

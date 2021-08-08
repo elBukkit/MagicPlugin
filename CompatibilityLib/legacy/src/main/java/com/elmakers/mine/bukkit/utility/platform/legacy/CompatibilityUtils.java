@@ -1552,7 +1552,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
         if (!(projectile instanceof Arrow)) return false;
-        if (projectile == null || pickupStatus == null || NMSUtils.class_Arrow_setPickupStatusMethod == null || NMSUtils.class_PickupStatus == null) return false;
+        if (pickupStatus == null || NMSUtils.class_Arrow_setPickupStatusMethod == null || NMSUtils.class_PickupStatus == null) return false;
 
         try {
             Enum enumValue = Enum.valueOf(NMSUtils.class_PickupStatus, pickupStatus.toUpperCase());
@@ -2243,8 +2243,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         if (ingredient == null) return false;
         if (NMSUtils.class_RecipeChoice_ExactChoice == null) {
             if (platform.isLegacy()) {
-                @SuppressWarnings("deprecation")
-                org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getData();
+                org.bukkit.material.MaterialData material = ingredient.getData();
                 if (material == null) {
                     return false;
                 }

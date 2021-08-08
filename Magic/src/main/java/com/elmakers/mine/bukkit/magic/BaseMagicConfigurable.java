@@ -432,8 +432,8 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         // Only configure leaf nodes
         if (value instanceof ConfigurationSection) return;
 
-        value = convertProperty(value);
-        setProperty(key, value);
+        Object converted = convertProperty(value);
+        setProperty(key, converted);
     }
 
     protected void preUpdate() {

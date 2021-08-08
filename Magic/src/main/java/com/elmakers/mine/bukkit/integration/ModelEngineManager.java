@@ -7,10 +7,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.util.EulerAngle;
-import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.integration.ModelEngine;
 import com.ticxo.modelengine.api.ModelEngineAPI;
@@ -189,13 +186,13 @@ public class ModelEngineManager implements ModelEngine {
             return false;
         }
 
+        // Er.. whoops.. no API for this?
+        /*
         Vector pos = new Vector(bone.getLocalOffsetX(), bone.getLocalOffsetY(), bone.getLocalOffsetZ());
         EulerAngle rot = new EulerAngle(bone.getLocalRotationX(), bone.getLocalRotationY(), bone.getLocalRotationZ());
         int id = blueprint.getItemModelId(subPartId);
         PartEntity part = null;
 
-        // Er.. whoops.. no API for this?
-        /*
         if (id == 0) {
             if (bone.getOption("item_right")) {
                 part = new Right(currentModel, blueprint, subPartId, pos, rot, partEntity);
@@ -207,7 +204,6 @@ public class ModelEngineManager implements ModelEngine {
         } else {
             part = new MEPartEntity(currentModel, blueprint, subPartId, id, pos, rot, partEntity);
         }
-        */
 
         if (part == null) {
             return false;
@@ -226,6 +222,8 @@ public class ModelEngineManager implements ModelEngine {
 
         currentModel.addToIndex(part);
         return true;
+        */
+        return false;
     }
 
     @Override

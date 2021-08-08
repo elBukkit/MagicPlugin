@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.api.protection;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -14,13 +16,19 @@ public class PlayerWarp {
     private final @Nullable MaterialAndData icon;
 
     public PlayerWarp(@Nonnull String name, @Nonnull Location location, @Nullable String description, @Nullable MaterialAndData icon) {
+        checkNotNull(name, "Name cannot be null");
+        checkNotNull(location, "Location cannot be null");
+
         this.name = name;
         this.description = description;
         this.icon = icon;
         this.location = location;
     }
 
-    public PlayerWarp(String name, Location location) {
+    public PlayerWarp(@Nonnull String name, @Nonnull Location location) {
+        checkNotNull(name, "Name cannot be null");
+        checkNotNull(location, "Location cannot be null");
+
         this.name = name;
         this.location = location;
         this.description = null;

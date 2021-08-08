@@ -53,7 +53,6 @@ public class MythicMobManager {
         return api.getMobManager().getMobNames();
     }
 
-    @Nullable
     public boolean isMobKey(String mobKey) {
         // Hopefully this is backed by a Set?
         return api.getMobManager().getMobNames().contains(mobKey);

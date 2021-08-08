@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -225,8 +226,9 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
         return getName(messages);
     }
 
+    @Nonnull
     @Override
-    public String getName(Messages messages) {
+    public String getName(@Nullable Messages messages) {
         String brushKey;
         switch (mode) {
         case ERASE:
@@ -977,9 +979,7 @@ public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.
             ConfigurationUtils.addIfNotEmpty(messages.get("wand.brush_item_description"), lore);
         }
         meta.setLore(lore);
-        if (customName != null) {
-            meta.setDisplayName(customName);
-        }
+        meta.setDisplayName(customName);
         itemStack.setItemMeta(meta);
         return itemStack;
     }

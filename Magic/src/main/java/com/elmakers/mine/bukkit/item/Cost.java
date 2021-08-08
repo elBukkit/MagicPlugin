@@ -322,12 +322,11 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         return item;
     }
 
-    protected ItemStack getItemStackFromMaterial(Material material, CostReducer reducer)
-    {
+    protected ItemStack getItemStackFromMaterial(
+            Material material,
+            CostReducer reducer) {
         ItemStack item = new ItemStack(material);
-        if (item != null) {
-            item.setAmount(Math.max(1, getRoundedCost(amount, reducer)));
-        }
+        item.setAmount(Math.max(1, getRoundedCost(amount, reducer)));
         return item;
     }
 

@@ -22,6 +22,7 @@ public interface Messages {
     String getParameterized(String key, String paramName, String paramValue);
     String getParameterized(String key, String paramName1, String paramValue1, String paramName2, String paramValue2);
     String escape(String source);
+    @Nonnull
     String describeItem(ItemStack item);
     String describeCurrency(double amount);
     String getCurrency();

@@ -224,7 +224,7 @@ public class MagicKit implements Kit, Comparable<MagicKit> {
             return;
         }
         boolean gave = false;
-        Collection<ItemStack> giveItems = new ArrayList<>();
+        List<ItemStack> giveItems = new ArrayList<>();
         if (slotItems != null) {
             for (Map.Entry<Integer, ItemData> slotItem : slotItems.entrySet()) {
                 int slot = slotItem.getKey();
@@ -241,18 +241,13 @@ public class MagicKit implements Kit, Comparable<MagicKit> {
                     mage.setItem(slot, itemStack);
                     gave = true;
                 } else {
-                    if (giveItems == null) {
-                        giveItems = new ArrayList<>();
-                    }
                     giveItems.add(itemStack);
                 }
             }
         }
-        if (giveItems != null) {
-            for (ItemStack giveItem : giveItems) {
-                mage.giveItem(giveItem);
-                gave = true;
-            }
+        for (ItemStack giveItem : giveItems) {
+            mage.giveItem(giveItem);
+            gave = true;
         }
         if (items != null) {
             for (ItemData itemData : items) {

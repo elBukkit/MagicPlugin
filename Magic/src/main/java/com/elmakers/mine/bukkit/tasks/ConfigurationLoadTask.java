@@ -226,34 +226,31 @@ public class ConfigurationLoadTask implements Runnable {
         // Load an example if one is specified
         if (usingExample) {
             ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, exampleDefaults);
-            if (exampleConfig != null)  {
-                try {
-                    info(" Using " + examplesFilePrefix);
-                    processInheritance(exampleDefaults, exampleConfig, fileName, exampleConfig);
-                    mainConfigurations.put(exampleDefaults, exampleConfig);
-                    ConfigurationUtils.addConfigurations(config, exampleConfig);
-                } catch (Exception ex) {
-                    getLogger().severe("Error loading: " + examplesFilePrefix);
-                    throw ex;
-                }
+
+            try {
+                info(" Using " + examplesFilePrefix);
+                processInheritance(exampleDefaults, exampleConfig, fileName, exampleConfig);
+                mainConfigurations.put(exampleDefaults, exampleConfig);
+                ConfigurationUtils.addConfigurations(config, exampleConfig);
+            } catch (Exception ex) {
+                getLogger().severe("Error loading: " + examplesFilePrefix);
+                throw ex;
             }
         }
         if (addExamples != null && addExamples.size() > 0) {
             for (String example : addExamples) {
                 examplesFilePrefix = "examples/" + example + "/" + fileName;
+
                 ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
-                if (exampleConfig != null)
-                {
-                    try {
-                        boolean override = exampleConfig.getBoolean("example_override", false);
-                        info(" Adding " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
-                        processInheritance(example, exampleConfig, fileName, exampleConfig);
-                        mainConfigurations.put(example, exampleConfig);
-                        ConfigurationUtils.addConfigurations(config, exampleConfig, override);
-                    } catch (Exception ex) {
-                        getLogger().severe("Error loading: " + examplesFilePrefix);
-                        throw ex;
-                    }
+                try {
+                    boolean override = exampleConfig.getBoolean("example_override", false);
+                    info(" Adding " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
+                    processInheritance(example, exampleConfig, fileName, exampleConfig);
+                    mainConfigurations.put(example, exampleConfig);
+                    ConfigurationUtils.addConfigurations(config, exampleConfig, override);
+                } catch (Exception ex) {
+                    getLogger().severe("Error loading: " + examplesFilePrefix);
+                    throw ex;
                 }
             }
         }
@@ -316,33 +313,32 @@ public class ConfigurationLoadTask implements Runnable {
             if (skip == null || !skip.contains(fileName)) {
                 for (String inheritFrom : inherits) {
                     String inheritFilePrefix = "examples/" + inheritFrom + "/" + fileName;
-                    ConfigurationSection inheritedConfig = loadExampleConfiguration(inheritFilePrefix, inheritFrom);
-                    if (inheritedConfig != null) {
-                        if (isMainConfig) {
-                            mainConfigurations.put(inheritFrom, ConfigurationUtils.cloneConfiguration(inheritedConfig));
 
-                            // These should not be inherited
-                            inheritedConfig.set("disable_inherited", null);
-                            inheritedConfig.set("skip_inherited", null);
-                            inheritedConfig.set("example", null);
-                            inheritedConfig.set("inherit", null);
+                    ConfigurationSection inheritedConfig = loadExampleConfiguration(inheritFilePrefix, inheritFrom);
+                    if (isMainConfig) {
+                        mainConfigurations.put(inheritFrom, ConfigurationUtils.cloneConfiguration(inheritedConfig));
+
+                        // These should not be inherited
+                        inheritedConfig.set("disable_inherited", null);
+                        inheritedConfig.set("skip_inherited", null);
+                        inheritedConfig.set("example", null);
+                        inheritedConfig.set("inherit", null);
+                    }
+                    try {
+                        List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
+                        if (inherited.contains(inheritFrom)) {
+                            getLogger().log(Level.WARNING, "    Circular dependency detected in configuration inheritance: " + StringUtils.join(inherited, " -> ") + " -> " + inheritFrom);
+                        } else {
+                            processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited);
                         }
-                        try {
-                            List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
-                            if (inherited.contains(inheritFrom)) {
-                                getLogger().log(Level.WARNING, "    Circular dependency detected in configuration inheritance: " + StringUtils.join(inherited, " -> ") + " -> " + inheritFrom);
-                            } else {
-                                processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited);
-                            }
-                            if (!isUnkeyedConfig && disable != null && disable.contains(fileName)) {
-                                disableAll(inheritedConfig);
-                            }
-                            ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
-                            info("   Example " + exampleKey + " inheriting from " + inheritFrom);
-                        } catch (Exception ex) {
-                            getLogger().severe("Error loading file: " + inheritFilePrefix);
-                            throw ex;
+                        if (!isUnkeyedConfig && disable != null && disable.contains(fileName)) {
+                            disableAll(inheritedConfig);
                         }
+                        ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
+                        info("   Example " + exampleKey + " inheriting from " + inheritFrom);
+                    } catch (Exception ex) {
+                        getLogger().severe("Error loading file: " + inheritFilePrefix);
+                        throw ex;
                     }
                 }
             }
@@ -472,18 +468,16 @@ public class ConfigurationLoadTask implements Runnable {
         // Load example
         if (usingExample && loadDefaults) {
             ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, exampleDefaults);
-            if (exampleConfig != null) {
-                try {
-                    if (disableDefaults) {
-                        disableAll(exampleConfig);
-                    }
-                    processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
-                    ConfigurationUtils.addConfigurations(config, exampleConfig);
-                    info(" Using " + examplesFilePrefix);
-                } catch (Exception ex) {
-                    getLogger().severe("Error loading file: " + examplesFilePrefix);
-                    throw ex;
+            try {
+                if (disableDefaults) {
+                    disableAll(exampleConfig);
                 }
+                processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
+                ConfigurationUtils.addConfigurations(config, exampleConfig);
+                info(" Using " + examplesFilePrefix);
+            } catch (Exception ex) {
+                getLogger().severe("Error loading file: " + examplesFilePrefix);
+                throw ex;
             }
         }
 
@@ -497,17 +491,14 @@ public class ConfigurationLoadTask implements Runnable {
             for (String example : addExamples) {
                 examplesFilePrefix = "examples/" + example + "/" + fileName;
                 ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
-                if (exampleConfig != null)
-                {
-                    try {
-                        processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
-                        reenableAll(config, exampleConfig);
-                        ConfigurationUtils.addConfigurations(config, exampleConfig, false);
-                        info(" Added " + examplesFilePrefix);
-                    } catch (Exception ex) {
-                        getLogger().severe("Error loading file: " + examplesFilePrefix);
-                        throw ex;
-                    }
+                try {
+                    processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
+                    reenableAll(config, exampleConfig);
+                    ConfigurationUtils.addConfigurations(config, exampleConfig, false);
+                    info(" Added " + examplesFilePrefix);
+                } catch (Exception ex) {
+                    getLogger().severe("Error loading file: " + examplesFilePrefix);
+                    throw ex;
                 }
             }
         }
@@ -519,14 +510,12 @@ public class ConfigurationLoadTask implements Runnable {
         if (fileName.equals("messages") && languageOverride != null && !languageOverride.isEmpty() && !languageOverride.equalsIgnoreCase("EN")) {
             String languageFilePrefix = "examples/localizations/messages." + languageOverride;
             ConfigurationSection languageConfig = loadExampleConfiguration(languageFilePrefix, "localizations");
-            if (languageConfig != null) {
-                try {
-                    ConfigurationUtils.addConfigurations(config, languageConfig);
-                    info(" Using " + languageFilePrefix);
-                } catch (Exception ex) {
-                    getLogger().severe("Error loading file: " + languageFilePrefix);
-                    throw ex;
-                }
+            try {
+                ConfigurationUtils.addConfigurations(config, languageConfig);
+                info(" Using " + languageFilePrefix);
+            } catch (Exception ex) {
+                getLogger().severe("Error loading file: " + languageFilePrefix);
+                throw ex;
             }
         }
 
@@ -573,18 +562,16 @@ public class ConfigurationLoadTask implements Runnable {
         // Load example
         if (usingExample && loadDefaults) {
             ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, exampleDefaults);
-            if (exampleConfig != null) {
-                try {
-                    if (disableDefaults) {
-                        disableAll(exampleConfig);
-                    }
-                    processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
-                    ConfigurationUtils.addConfigurations(config, exampleConfig);
-                    info(" Using " + examplesFilePrefix);
-                } catch (Exception ex) {
-                    getLogger().severe("Error loading file: " + examplesFilePrefix);
-                    throw ex;
+            try {
+                if (disableDefaults) {
+                    disableAll(exampleConfig);
                 }
+                processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
+                ConfigurationUtils.addConfigurations(config, exampleConfig);
+                info(" Using " + examplesFilePrefix);
+            } catch (Exception ex) {
+                getLogger().severe("Error loading file: " + examplesFilePrefix);
+                throw ex;
             }
         }
 
@@ -598,17 +585,14 @@ public class ConfigurationLoadTask implements Runnable {
             for (String example : addExamples) {
                 examplesFilePrefix = "examples/" + example + "/" + fileName;
                 ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
-                if (exampleConfig != null)
-                {
-                    try {
-                        processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
-                        reenableAll(config, exampleConfig);
-                        ConfigurationUtils.addConfigurations(config, exampleConfig, false);
-                        info(" Added " + examplesFilePrefix);
-                    } catch (Exception ex) {
-                        getLogger().severe("Error loading file: " + examplesFilePrefix);
-                        throw ex;
-                    }
+                try {
+                    processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
+                    reenableAll(config, exampleConfig);
+                    ConfigurationUtils.addConfigurations(config, exampleConfig, false);
+                    info(" Added " + examplesFilePrefix);
+                } catch (Exception ex) {
+                    getLogger().severe("Error loading file: " + examplesFilePrefix);
+                    throw ex;
                 }
             }
         }

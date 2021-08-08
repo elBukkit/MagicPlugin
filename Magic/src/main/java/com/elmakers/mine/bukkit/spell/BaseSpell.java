@@ -1788,7 +1788,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (spellKey.isVariant()) {
             message = controller.getMessages().get("spells." + spellKey.getKey() + "." + messageKey, message);
         }
-        if (message == null) message = "";
         return message;
     }
 

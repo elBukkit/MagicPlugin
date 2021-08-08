@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.integration;
 
+import static com.google.common.base.Verify.verifyNotNull;
+
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
@@ -180,15 +182,16 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
                 return false;
             }
         }
-        if (disguise != null) {
-            try {
-                DisguiseAPI.disguiseEntity(entity, disguise);
-            } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "Error applying disguise", ex);
-                return false;
-            }
+
+        verifyNotNull(disguise);
+
+        try {
+            DisguiseAPI.disguiseEntity(entity, disguise);
+            return true;
+        } catch (Exception ex) {
+            controller.getLogger().log(Level.WARNING, "Error applying disguise", ex);
+            return false;
         }
-        return true;
     }
 
     @Override

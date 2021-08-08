@@ -217,7 +217,7 @@ public class InventoryUtils extends InventoryUtilsBase {
     @Override
     public Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException {
         if (tag == null) return null;
-        Object value = null;
+        Object value;
         if (tag instanceof DoubleTag) {
             value = ((DoubleTag)tag).getAsDouble();
         } else if (tag instanceof IntTag) {
@@ -231,9 +231,9 @@ public class InventoryUtils extends InventoryUtilsBase {
         } else if (tag instanceof ByteTag) {
             // This is kind of nasty. Really need a type-juggling container class for config properties.
             value = ((ByteTag)tag).getAsByte();
-            if (value != null && value.equals((byte)0)) {
+            if (value.equals((byte)0)) {
                 value = false;
-            } else if (value != null && value.equals((byte)1)) {
+            } else if (value.equals((byte)1)) {
                 value = true;
             }
         } else if (tag instanceof ListTag) {
@@ -264,6 +264,8 @@ public class InventoryUtils extends InventoryUtilsBase {
                 }
             }
             value = compoundMap;
+        } else {
+            value = null; // ???
         }
 
         return value;

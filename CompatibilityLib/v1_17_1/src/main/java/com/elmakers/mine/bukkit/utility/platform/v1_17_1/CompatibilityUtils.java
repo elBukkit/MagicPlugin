@@ -267,10 +267,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         }
         BlockPos blockLocation = new BlockPos(location.getX(), location.getY(), location.getZ());
         net.minecraft.world.entity.decoration.Painting newEntity = new net.minecraft.world.entity.decoration.Painting(level, blockLocation, directionEnum);
-        if (newEntity != null) {
-            Motive notchArt = CraftArt.BukkitToNotch(art);
-            newEntity.motive = notchArt;
-        }
+        newEntity.motive = CraftArt.BukkitToNotch(art);
         Entity bukkitEntity = newEntity.getBukkitEntity();
         if (bukkitEntity != null && bukkitEntity instanceof Painting) {
             newPainting = (Painting)bukkitEntity;
@@ -354,7 +351,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                 return;
             }
 
-            net.minecraft.world.entity.Entity targetHandle = target == null ? null : ((CraftEntity)target).getHandle();
+            net.minecraft.world.entity.Entity targetHandle = ((CraftEntity)target).getHandle();
             if (targetHandle == null) return;
 
             net.minecraft.world.entity.Entity sourceHandle = source == null ? null : ((CraftEntity)source).getHandle();

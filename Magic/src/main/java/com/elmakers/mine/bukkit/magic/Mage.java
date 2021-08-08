@@ -506,9 +506,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Override
-    public void damagedBy(@Nonnull Entity damager, double damage) {
+    public void damagedBy(@Nonnull Entity initialDamager, double damage) {
         lastDamage = damage;
-        damager = controller.getDamageSource(damager);
+        Entity damager = controller.getDamageSource(initialDamager);
 
         // Don't count self-attacks
         if (damager == null || damager == getEntity()) return;
@@ -4434,7 +4434,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Currency initCurrency(String type) {
         Currency currency = controller.getCurrency(type);
         if (currency instanceof CustomCurrency && !data.contains(type)) {
-            data.set(type, currency == null ? 0.0 : currency.getDefaultValue());
+            data.set(type, currency.getDefaultValue());
         }
         return currency;
     }
@@ -4443,7 +4443,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public double getCurrency(String type) {
         Currency currency = controller.getCurrency(type);
         if (currency instanceof CustomCurrency) {
-            return data.getDouble(type, currency == null ? 0.0 : currency.getDefaultValue());
+            return data.getDouble(type, currency.getDefaultValue());
         }
         return currency.getBalance(this);
     }
@@ -4489,7 +4489,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             queueCurrencyMessage(type, delta);
         }
         if (activeWand != null && activeWand.usesCurrency(type)) {
-            if (isFirstEarn && currency != null && !quiet) {
+            if (isFirstEarn && !quiet) {
                 startInstructions();
                 String message = activeWand.getMessage(currency.getKey() + "_earn_instructions", activeWand.getMessage("earn_instructions"));
                 sendMessage(message.replace("$currency", currency.getName(controller.getMessages())));
@@ -5669,13 +5669,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (currency != null) {
             if (amount > 0) {
                 String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.default.earned"));
-                if (earnMessage != null && !earnMessage.isEmpty()) {
+                if (!earnMessage.isEmpty()) {
                     String amountString = currency.formatAmount(amount, messages);
                     sendMessage(earnMessage.replace("$amount", amountString));
                 }
             } else if (amount < 0) {
                 String spendMessage = messages.get("currency." + type + ".spent", messages.get("currency.default.spent"));
-                if (spendMessage != null && !spendMessage.isEmpty()) {
+                if (!spendMessage.isEmpty()) {
                     String amountString = currency.formatAmount(Math.abs(amount), messages);
                     sendMessage(spendMessage.replace("$amount", amountString));
                 }

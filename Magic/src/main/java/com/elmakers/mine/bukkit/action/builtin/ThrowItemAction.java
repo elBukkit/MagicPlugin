@@ -115,13 +115,8 @@ public class ThrowItemAction extends BaseProjectileAction {
             itemStack = droppedItem.getItemStack();
             if (itemStack != null) {
                 String removedMessage = context.getMessage("removed");
-                if (removedMessage != null) {
-                    String name = context.getController().describeItem(itemStack);
-                    if (name == null) {
-                        name = "";
-                    }
-                    removedMessage = removedMessage.replace("$material", name);
-                }
+                String name = context.getController().describeItem(itemStack);
+                removedMessage = removedMessage.replace("$material", name);
                 CompatibilityLib.getItemUtils().makeTemporary(itemStack, removedMessage);
                 droppedItem.setItemStack(itemStack);
             }

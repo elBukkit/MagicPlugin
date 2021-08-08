@@ -152,9 +152,6 @@ public class ChangeWorldAction extends BaseTeleportAction
         }
 
         Location playerLocation = entity.getLocation();
-        if (targetLocation == null) {
-            return SpellResult.NO_TARGET;
-        }
 
         // Sanity check!
         targetLocation.setX(Math.min(targetLocation.getX(), 3.0E7D));

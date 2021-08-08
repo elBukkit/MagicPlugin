@@ -158,6 +158,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         return result;
     }
 
+    @Nonnull
     @Override
     public String describeItem(ItemStack item) {
         if (item == null) return "?";

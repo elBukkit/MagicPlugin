@@ -381,9 +381,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     if (target != null) {
                         Mage mage = controller.getMage(target);
                         CasterProperties mageClass = mage.getActiveProperties();
-                        if (mageClass != null) {
-                            options.addAll(mageClass.getSpells());
-                        }
+                        options.addAll(mageClass.getSpells());
                     }
                     options.add("brush");
                 }
@@ -1078,10 +1076,6 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
         Mage mage = controller.getMage(player);
         CasterProperties caster = mage.getActiveProperties();
-        if (caster == null) {
-            sender.sendMessage("Player " + player.getName() + " has no active class");
-            return true;
-        }
 
         String itemName = parameters[0];
         ItemStack item = controller.createItem(itemName);

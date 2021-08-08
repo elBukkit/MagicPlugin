@@ -870,12 +870,12 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     }
 
     @Override
-    public void upgrade(@Nonnull Mage mage, @Nullable com.elmakers.mine.bukkit.api.wand.Wand wand) {
+    public final void upgrade(@Nullable Mage mage, @Nullable com.elmakers.mine.bukkit.api.wand.Wand wand) {
         doUpgrade(mage, wand);
     }
 
     @Override
-    public void upgrade(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
+    public final void upgrade(com.elmakers.mine.bukkit.api.wand.Wand wand, com.elmakers.mine.bukkit.api.magic.Mage mage) {
         doUpgrade(mage, wand);
     }
 
