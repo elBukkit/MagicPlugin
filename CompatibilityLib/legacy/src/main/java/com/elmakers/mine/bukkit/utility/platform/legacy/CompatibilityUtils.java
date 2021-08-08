@@ -1141,7 +1141,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             Object handle = NMSUtils.getHandle(projectile);
             NMSUtils.class_EntityArrow_damageField.set(handle, damage);
         } catch (Exception ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
         }
     }
 
@@ -1155,7 +1155,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 NMSUtils.class_EntityArrow_lifeField.set(handle, ticks);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
         }
     }
 

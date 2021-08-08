@@ -123,7 +123,7 @@ public class EntityItemFrameData extends EntityExtraData {
 
         ItemFrame itemFrame = (ItemFrame)entity;
         ItemStack frameItem = itemFrame.getItem();
-        CompatibilityUtils compatibilityUtils = PlatformInterpreter.getPlatform().getCompatibilityUtils();;
+        CompatibilityUtils compatibilityUtils = PlatformInterpreter.getPlatform().getCompatibilityUtils();
         if (frameItem == null || !compatibilityUtils.isFilledMap(frameItem.getType())) {
             return false;
         }

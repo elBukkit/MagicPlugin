@@ -282,7 +282,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         Set<Enchantment> keep = null;
         if (enchantConfig != null) {
             keep = new HashSet<>();
-            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();;
+            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys)
             {
@@ -316,7 +316,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
         boolean addedAny = false;
         if (enchantConfig != null) {
-            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();;
+            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys) {
                 try {

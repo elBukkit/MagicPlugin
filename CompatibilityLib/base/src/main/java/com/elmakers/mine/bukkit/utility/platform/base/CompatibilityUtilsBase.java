@@ -532,7 +532,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
 
         if (material != null) {
-            materialKey = material.name().toLowerCase();;
+            materialKey = material.name().toLowerCase();
             // This mainly covers player skulls, but .. maybe other things? Maps?
             if (!textData.isEmpty()) {
                 materialKey += ":" + textData;
