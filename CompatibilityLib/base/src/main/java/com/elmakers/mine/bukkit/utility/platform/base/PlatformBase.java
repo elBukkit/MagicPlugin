@@ -80,6 +80,7 @@ public abstract class PlatformBase implements Platform {
         return true;
     }
 
+    @Override
     public void registerEvents(MageController controller, PluginManager pm) {
         if (paperUtils != null) {
             paperUtils.registerEvents(controller, pm);

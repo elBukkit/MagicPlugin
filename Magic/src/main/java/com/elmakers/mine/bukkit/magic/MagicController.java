@@ -2283,6 +2283,7 @@ public class MagicController implements MageController {
         return activeBlocks.get(id);
     }
 
+    @Override
     @Nullable
     public MagicBlock getMagicBlock(String name) {
         for (Map<Long, MagicBlock> chunk : magicBlocks.values()) {

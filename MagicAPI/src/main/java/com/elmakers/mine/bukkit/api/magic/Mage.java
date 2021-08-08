@@ -381,7 +381,9 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean isCooldownFree();
     @Override
     float getCooldownReduction();
+    @Override
     boolean isCostFree();
+    @Override
     boolean isConsumeFree();
     void setCostFree(boolean costFree);
     void setCooldownFree(boolean cooldownFree);
