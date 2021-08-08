@@ -344,6 +344,17 @@ public class Arena {
             stageConfigurations.add(stage.getConfiguration());
         }
         parameters.set("stages", stageConfigurations);
+    }
+
+    protected void saveEditingStage() {
+        if (editDefaultStage) {
+            saveDefaultStage();
+        } else {
+            saveStages();
+        }
+    }
+
+    protected void saveDefaultStage() {
         parameters.set("default_stage", defaultStage.getConfiguration());
     }
 

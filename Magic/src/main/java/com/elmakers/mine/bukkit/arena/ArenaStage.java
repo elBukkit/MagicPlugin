@@ -228,7 +228,7 @@ public void checkAggro(Entity mob) {
     public void setName(String name) {
         this.name = name;
         configuration.set("name", name);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     public int getNumber() {

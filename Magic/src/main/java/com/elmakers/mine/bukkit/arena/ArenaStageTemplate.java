@@ -91,7 +91,7 @@ public abstract class ArenaStageTemplate implements EditingStage  {
             mobsConfigurations.add(section);
         }
         configuration.set("mobs", mobsConfigurations);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     protected void saveMobSpawns() {
@@ -100,7 +100,7 @@ public abstract class ArenaStageTemplate implements EditingStage  {
             mobSpawnList.add(ConfigurationUtils.fromLocation(spawn, arena.getCenter()));
         }
         configuration.set("mob_spawns", mobSpawnList);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     @Override
@@ -192,7 +192,7 @@ public abstract class ArenaStageTemplate implements EditingStage  {
     public void setStartSpell(String startSpell) {
         this.startSpell = startSpell;
         configuration.set("spell_start", startSpell);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     public String getEndSpell() {
@@ -203,7 +203,7 @@ public abstract class ArenaStageTemplate implements EditingStage  {
     public void setEndSpell(String endSpell) {
         this.endSpell = endSpell;
         configuration.set("spell_end", endSpell);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     @Override
@@ -261,28 +261,28 @@ public abstract class ArenaStageTemplate implements EditingStage  {
     public void setRandomizeMobSpawn(Vector vector) {
         randomizeMobSpawn = vector;
         configuration.set("randomize_mob_spawn", ConfigurationUtils.fromVector(randomizeMobSpawn));
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     @Override
     public void setWinXP(int xp) {
         winXP = Math.max(xp, 0);
         configuration.set("win_xp", winXP);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     @Override
     public void setWinSP(int sp) {
         winSP = Math.max(sp, 0);
         configuration.set("win_sp", winSP);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     @Override
     public void setWinMoney(int money) {
         winMoney = Math.max(money, 0);
         configuration.set("win_money", winMoney);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     public List<ArenaMobSpawner> getMobSpawners() {
@@ -293,15 +293,14 @@ public abstract class ArenaStageTemplate implements EditingStage  {
     public void setDuration(int duration) {
         this.duration = duration;
         configuration.set("duration", duration);
-        arena.saveStages();
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     @Override
     public void setRespawnDuration(int duration) {
         this.respawnDuration = duration;
         configuration.set("respawn_duration", respawnDuration);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     public long getRespawnDuration() {
@@ -315,13 +314,13 @@ public abstract class ArenaStageTemplate implements EditingStage  {
     public void setForceTarget(boolean forceTarget) {
         this.forceTarget = forceTarget;
         configuration.set("aggro", forceTarget);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     public void setDefaultDrops(boolean defaultDrops) {
         this.defaultDrops = defaultDrops;
         configuration.set("drops", defaultDrops);
-        arena.saveStages();
+        arena.saveEditingStage();
     }
 
     public ConfigurationSection getConfiguration() {
