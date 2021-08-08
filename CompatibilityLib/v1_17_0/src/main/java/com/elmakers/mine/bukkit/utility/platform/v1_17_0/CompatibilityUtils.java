@@ -137,7 +137,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16.CompatibilityUtils {
-    private final Map<String, net.minecraft.world.entity.EntityType> projectileEntityTypes = new HashMap<>();
+    private final Map<String, net.minecraft.world.entity.EntityType<?>> projectileEntityTypes = new HashMap<>();
     private final Map<String, Class<? extends net.minecraft.world.entity.projectile.Projectile>> projectileClasses = new HashMap<>();
 
     public CompatibilityUtils(Platform platform) {
@@ -1192,6 +1192,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public String getBlockData(Material material, byte data) {
+        @SuppressWarnings("deprecation")
         BlockData blockData = platform.getDeprecatedUtils().getUnsafe().fromLegacy(material, data);
         return blockData == null ? null : blockData.getAsString();
     }

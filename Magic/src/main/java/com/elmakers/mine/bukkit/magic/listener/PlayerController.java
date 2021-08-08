@@ -1040,7 +1040,6 @@ public class PlayerController implements Listener {
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    @SuppressWarnings("deprecation")
     public void onPlayerPickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
         // TODO: Change to EntityPickupItemEvent
@@ -1064,7 +1063,6 @@ public class PlayerController implements Listener {
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    @SuppressWarnings("deprecation")
     public void onPlayerPrePickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
         // TODO: Change to EntityPickupItemEvent

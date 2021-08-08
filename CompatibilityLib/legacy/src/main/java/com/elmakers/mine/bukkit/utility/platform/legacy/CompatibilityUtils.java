@@ -1416,7 +1416,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut) {
         // TODO: New Player.sendTitle in 1.11
         player.sendTitle(title, subTitle);
@@ -1709,7 +1708,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public Material fromLegacy(org.bukkit.material.MaterialData materialData) {
         if (NMSUtils.class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
@@ -2581,7 +2579,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean performDoorAction(Block[] doorBlocks, DoorActionType actionType) {
         BlockState blockState = doorBlocks[0].getState();
         MaterialData data = blockState.getData();

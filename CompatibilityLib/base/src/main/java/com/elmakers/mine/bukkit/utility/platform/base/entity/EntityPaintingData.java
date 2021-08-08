@@ -66,7 +66,6 @@ public class EntityPaintingData extends EntityExtraData {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public SpawnedEntityExtraData spawn(Location location) {
         Entity newEntity = PlatformInterpreter.getPlatform().getCompatibilityUtils().createPainting(location, facing, art);
         return new SpawnedEntityExtraData(newEntity, false);

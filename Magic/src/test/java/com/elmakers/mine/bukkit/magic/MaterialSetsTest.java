@@ -27,7 +27,6 @@ public class MaterialSetsTest {
         assertFalse(set.testBlock(dirt()));
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void testFromConfig() {
         MaterialAndData value = ConfigurationUtils.toMaterialAndData("obsidian");

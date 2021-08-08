@@ -85,7 +85,6 @@ public class EntityItemFrameData extends EntityExtraData {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public SpawnedEntityExtraData spawn(Location location) {
         Entity newEntity = PlatformInterpreter.getPlatform().getCompatibilityUtils().createItemFrame(location, facing, rotation, item);
         return new SpawnedEntityExtraData(newEntity, false);

@@ -24,7 +24,6 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
 import com.google.common.collect.Multimap;
 
-@SuppressWarnings("deprecation")
 public class InventoryUtils extends InventoryUtilsBase {
     public InventoryUtils(Platform platform) {
         super(platform);

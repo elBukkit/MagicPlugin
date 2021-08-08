@@ -37,7 +37,6 @@ public class ModifyCompassAction extends BaseSpellAction {
         isTrackedLodestone = parameters.getBoolean("tracked", false);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context) {
         Player player = context.getMage().getPlayer();

@@ -82,7 +82,6 @@ public class SaveSchematicBatch implements Batch, com.elmakers.mine.bukkit.api.b
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public int process(int maxWork) {
         int workPerformed = 0;
 

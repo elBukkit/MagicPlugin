@@ -192,7 +192,6 @@ public class InventoryUtils extends InventoryUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public Set<String> getTagKeys(Object tag) {
         if (tag == null || !(tag instanceof CompoundTag)) {
             return null;

@@ -275,7 +275,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void applyEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
         if (item == null) return;
 
@@ -308,7 +307,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean addEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
         if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
@@ -380,7 +378,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public int getMapId(ItemStack mapItem) {
         if (platform.isCurrentVersion()) {
             return platform.getNBTUtils().getMetaInt(mapItem, "map", 0);
@@ -390,7 +387,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void setMapId(ItemStack mapItem, int id) {
         if (platform.isCurrentVersion()) {
             platform.getNBTUtils().setMetaInt(mapItem, "map", id);

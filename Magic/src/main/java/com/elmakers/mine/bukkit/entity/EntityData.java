@@ -618,7 +618,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     protected Entity trySpawn(CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
         boolean addedToWorld = false;

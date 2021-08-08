@@ -151,7 +151,6 @@ public interface CompatibilityUtils {
 
     void playCustomSound(Player player, Location location, String sound, float volume, float pitch);
 
-    @SuppressWarnings("unchecked")
     List<Entity> selectEntities(CommandSender sender, String selector);
 
     int getFacing(BlockFace direction);
@@ -160,7 +159,6 @@ public interface CompatibilityUtils {
 
     Map<String, Object> getMap(ConfigurationSection section);
 
-    @SuppressWarnings("unchecked")
     <T> Map<String, T> getTypedMap(ConfigurationSection section);
 
     boolean setMap(ConfigurationSection section, Map<String, Object> map);
@@ -249,7 +247,6 @@ public interface CompatibilityUtils {
 
     void swingMainHand(Entity entity);
 
-    @SuppressWarnings("deprecation")
     void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut);
 
     boolean sendActionBar(Player player, String message);
@@ -278,12 +275,10 @@ public interface CompatibilityUtils {
 
     boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data);
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
     boolean setPickupStatus(Projectile projectile, String pickupStatus);
 
     Block getHitBlock(ProjectileHitEvent event);
 
-    @SuppressWarnings("unchecked")
     Entity getEntity(World world, UUID uuid);
 
     Entity getEntity(UUID uuid);
@@ -316,13 +311,10 @@ public interface CompatibilityUtils {
 
     void setMaxHealth(Damageable li, double maxHealth);
 
-    @SuppressWarnings("deprecation")
     Material fromLegacy(org.bukkit.material.MaterialData materialData);
 
-    @SuppressWarnings("deprecation")
     Material getMaterial(int id, byte data);
 
-    @SuppressWarnings("deprecation")
     Material getMaterial(int id);
 
     Material getMaterial(String blockData);
@@ -335,10 +327,8 @@ public interface CompatibilityUtils {
 
     Material getLegacyMaterial(String materialName);
 
-    @SuppressWarnings("deprecation")
     Material migrateMaterial(Material material, byte data);
 
-    @SuppressWarnings("deprecation")
     String migrateMaterial(String materialKey);
 
     boolean isChunkLoaded(Block block);
@@ -417,7 +407,6 @@ public interface CompatibilityUtils {
 
     boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage);
 
-    @SuppressWarnings("unchecked")
     boolean setAutoBlockState(Block block, Location target, BlockFace facing, boolean physics, Player originator);
 
     boolean forceUpdate(Block block, boolean physics);
@@ -438,7 +427,6 @@ public interface CompatibilityUtils {
 
     void addPassenger(Entity vehicle, Entity passenger);
 
-    @SuppressWarnings("unchecked")
     List<Entity> getPassengers(Entity entity);
 
     void teleportVehicle(Entity vehicle, Location location);

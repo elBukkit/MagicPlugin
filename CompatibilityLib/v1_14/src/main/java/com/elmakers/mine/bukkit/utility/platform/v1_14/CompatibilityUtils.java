@@ -137,7 +137,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             return true;
         }
         if (recipe instanceof CookingRecipe) {
-            ((CookingRecipe)recipe).setGroup(group);
+            ((CookingRecipe<?>)recipe).setGroup(group);
             return true;
         }
         if (recipe instanceof StonecuttingRecipe) {

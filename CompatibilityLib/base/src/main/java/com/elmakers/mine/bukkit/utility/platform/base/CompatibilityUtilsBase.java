@@ -102,7 +102,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean applyPotionEffect(LivingEntity entity, PotionEffect effect) {
         // Avoid nerfing existing effects
         boolean applyEffect = true;

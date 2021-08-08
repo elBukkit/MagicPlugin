@@ -32,7 +32,6 @@ public class ResidenceManager implements PVPManager, BlockBreakManager, BlockBui
     private final MageController controller;
     private final Residence residence;
 
-    @SuppressWarnings({ "unchecked" })
     public ResidenceManager(Plugin residencePlugin, MageController controller, ConfigurationSection configuration) {
         this.controller = controller;
         this.residence = (Residence)residencePlugin;

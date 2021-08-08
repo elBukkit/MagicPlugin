@@ -137,7 +137,6 @@ public class MagicShapedRecipe extends MagicRecipe {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public RecipeMatchType getMatchType(Recipe matchRecipe, ItemStack[] matrix) {
         if (recipe == null || matrix.length < 4) return RecipeMatchType.NONE;
 

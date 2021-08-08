@@ -813,7 +813,6 @@ public class NMSUtils {
             // 1.13 Support
             Class<?> class_MinecraftKey = null;
             try {
-                @SuppressWarnings("deprecation")
                 Class<?> unsafe = org.bukkit.UnsafeValues.class;
                 Class<?> materialData = org.bukkit.material.MaterialData.class;
                 class_UnsafeValues_fromLegacyDataMethod = unsafe.getMethod("fromLegacy", materialData);

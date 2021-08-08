@@ -1496,7 +1496,6 @@ public class Arena {
         setLeaderboardSize(leaderboardSize);
     }
 
-    @SuppressWarnings("deprecation")
     public void updateLeaderboard() {
         MaterialAndData skullMaterial = DefaultMaterials.getPlayerSkullWallBlock();
         Block leaderboardBlock = getLeaderboardBlock();
