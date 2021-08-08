@@ -36,8 +36,14 @@ import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfiguration;
 import com.elmakers.mine.bukkit.configuration.TranslatingConfigurationSection;
 import com.elmakers.mine.bukkit.effect.SoundEffect;
+import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class ConfigurationUtils extends ConfigUtils {
+    private static MagicController controller;
+
+    public static void setMagicController(MagicController controller) {
+        ConfigurationUtils.controller = controller;
+    }
 
     @Nullable
     public static MaterialAndData getMaterialAndData(ConfigurationSection node, String path) {
@@ -573,8 +579,15 @@ public class ConfigurationUtils extends ConfigUtils {
         return directoryToBeDeleted.delete();
     }
 
+    public static ConfigurationSection newConfigurationSection(String logContext) {
+        if (controller != null) {
+            return new MagicConfiguration(controller, logContext);
+        }
+        return new TranslatingConfiguration();
+    }
+
     public static ConfigurationSection newConfigurationSection() {
-         return new TranslatingConfiguration();
+         return newConfigurationSection("Anonymous");
     }
 
     @Nullable

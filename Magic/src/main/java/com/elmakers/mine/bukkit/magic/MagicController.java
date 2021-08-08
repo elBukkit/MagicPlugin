@@ -607,6 +607,7 @@ public class MagicController implements MageController {
 
         defaultsFolder = new File(configFolder, "defaults");
         defaultsFolder.mkdirs();
+        ConfigurationUtils.setMagicController(this);
     }
 
     @Nullable
