@@ -90,7 +90,7 @@ public class ArenaStage implements EditingStage {
     }
 
     public void save(ConfigurationSection configuration) {
-        List<ConfigurationSection> mobsConfigurations = new ArrayList<ConfigurationSection>();
+        List<ConfigurationSection> mobsConfigurations = new ArrayList<>();
         for (ArenaMobSpawner mob : mobs) {
             if (!mob.isValid()) continue;
             ConfigurationSection section = new MemoryConfiguration();
@@ -238,7 +238,7 @@ public class ArenaStage implements EditingStage {
 
     public List<Location> getMobSpawns() {
         if (mobSpawns.size() == 0) {
-            List<Location> centerList = new ArrayList<Location>();
+            List<Location> centerList = new ArrayList<>();
             centerList.add(arena.getCenter());
             return centerList;
         }

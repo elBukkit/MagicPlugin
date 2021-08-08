@@ -14,7 +14,7 @@ public class MagicChunkHandler {
     public static final String BUILTIN_CLASSPATH = "com.elmakers.mine.bukkit.world.populator.builtin";
 
     private final MagicController controller;
-    private final List<MagicChunkPopulator> chunkPopulators = new ArrayList<MagicChunkPopulator>();
+    private final List<MagicChunkPopulator> chunkPopulators = new ArrayList<>();
 
     public MagicChunkHandler(MagicController controller) {
         this.controller = controller;

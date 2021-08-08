@@ -3618,7 +3618,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         boolean hasBuildBypass = false;
         boolean hasBreakBypass = false;
         if (player != null) {
-            Block lookingAt = player.getTargetBlock(new HashSet<Material>(controller.getMaterialSetManager().getMaterialSet("all_air").getMaterials()), 128);
+            Block lookingAt = player.getTargetBlock(new HashSet<>(controller.getMaterialSetManager().getMaterialSet("all_air").getMaterials()), 128);
             if (lookingAt != null) {
                 sender.sendMessage(ChatColor.YELLOW + " Looking at " + ChatColor.GRAY
                     + lookingAt.getType().name().toLowerCase()
