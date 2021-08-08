@@ -39,6 +39,7 @@
  - The `ColorItem` action is now *mostly* undoable, though probably only suited for mob use (since players can move items around)
  - Add `swappable_slots` wand property, a list of slot types that can have their slotted items swapped out
  - Add `magic_blocks` list to arenas, arena will turn the magic block on/off when the arena starts/stops
+ - Add Selector support for simple shortcuts `newrow` and `none`
 
 ## Changes
 

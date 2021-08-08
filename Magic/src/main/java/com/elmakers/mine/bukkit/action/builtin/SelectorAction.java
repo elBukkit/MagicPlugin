@@ -1666,18 +1666,18 @@ public class SelectorAction extends CompoundAction implements GUIAction
         numSlots = 0;
         showingItems = new HashMap<>();
         has = 0;
-        Collection<ConfigurationSection> optionConfigs = ConfigurationUtils.getNodeList(parameters, "options");
+        Collection<? extends Object> optionConfigs = parameters.getList("options");
         if (optionConfigs != null) {
-            loadOptions(optionConfigs);
+            loadOptions(optionConfigs, parameters);
         }
         ConfigurationSection addOptions = parameters.getConfigurationSection("add_options");
         if (addOptions != null) {
-            optionConfigs = new ArrayList<>();
+            Collection<ConfigurationSection> addOptionConfigs = new ArrayList<>();
             Set<String> keys = addOptions.getKeys(false);
             for (String key : keys) {
-                optionConfigs.add(addOptions.getConfigurationSection(key));
+                addOptionConfigs.add(addOptions.getConfigurationSection(key));
             }
-            loadOptions(optionConfigs);
+            loadOptions(addOptionConfigs, parameters);
         }
         if (chestLocation != null) {
             // Load items from chest if configured
@@ -1705,17 +1705,55 @@ public class SelectorAction extends CompoundAction implements GUIAction
         super.prepare(context, parameters);
     }
 
-    protected void loadOptions(Collection<ConfigurationSection> optionConfigs) {
-        // Gather list of selector options first, to compute limits
-        List<SelectorOption> options = new ArrayList<>();
-
-        for (ConfigurationSection option : optionConfigs) {
-            SelectorOption newOption = new SelectorOption(defaultConfiguration, option, context);
+    @SuppressWarnings("unchecked")
+    protected void addOption(Object option, List<SelectorOption> options, ConfigurationSection configRoot) {
+        if (option instanceof Map) {
+            option = ConfigurationUtils.toConfigurationSection(configRoot, (Map<?,?>)option);
+        }
+        if (option instanceof ConfigurationSection) {
+            SelectorOption newOption = new SelectorOption(defaultConfiguration, (ConfigurationSection)option, context);
             if (newOption.hasLimit() && newOption.has(context)) {
                 has++;
             }
             options.add(newOption);
         }
+        if (option instanceof String) {
+            String optionString = (String)option;
+            boolean newRow = optionString.equalsIgnoreCase("newrow") || optionString.equalsIgnoreCase("nextrow");
+            if (newRow || optionString.equalsIgnoreCase("none") || optionString.equalsIgnoreCase("nothing") || optionString.equalsIgnoreCase("placeholder")) {
+                int count = 1;
+                if (newRow) {
+                    count = 9 - (options.size() % 9);
+                }
+                for (int i = 0; i < count; i++) {
+                    ConfigurationSection placeholderConfig = ConfigurationUtils.newConfigurationSection();
+                    placeholderConfig.set("placeholder", true);
+                    SelectorOption newOption = new SelectorOption(defaultConfiguration, placeholderConfig, context);
+                    options.add(newOption);
+                }
+            } else {
+                ConfigurationSection placeholderConfig = ConfigurationUtils.newConfigurationSection();
+                placeholderConfig.set("item", optionString);
+                SelectorOption newOption = new SelectorOption(defaultConfiguration, placeholderConfig, context);
+                options.add(newOption);
+            }
+        }
+    }
+
+    protected void loadOptions(Collection<? extends Object> optionConfigs) {
+        loadOptions(optionConfigs, null);
+    }
+
+    protected void loadOptions(Collection<? extends Object> optionConfigs, ConfigurationSection configRoot) {
+        // Gather list of selector options first, to compute limits
+        List<SelectorOption> options = new ArrayList<>();
+        for (Object option : optionConfigs) {
+            addOption(option, options, configRoot);
+        }
+        addOptions(options);
+    }
+
+    protected void addOptions(List<SelectorOption> options) {
         for (SelectorOption option : options) {
             if (option.isUnavailable() && !option.showIfUnavailable()) {
                 continue;
