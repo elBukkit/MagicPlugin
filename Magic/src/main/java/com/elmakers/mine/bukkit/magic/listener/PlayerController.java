@@ -547,7 +547,8 @@ public class PlayerController implements Listener {
         if (interactCommands != null) {
             CommandSender executor = player;
             boolean opPlayer = false;
-            switch (mob.getInteractCommandSource()) {
+            EntityData.SourceType source = mob.getInteractCommandSource();
+            switch (source) {
                 case CONSOLE:
                     executor = Bukkit.getConsoleSender();
                     break;
@@ -559,7 +560,8 @@ public class PlayerController implements Listener {
                     opPlayer = !player.isOp();
                     break;
                 case MOB:
-                    controller.getLogger().info("Invalid spell source on " + mob.getKey() + ": MOB, will use CONSOLE instead");
+                case BLOCK:
+                    controller.getLogger().info("Invalid spell source on " + mob.getKey() + ": " + source + ", will use CONSOLE instead");
                     executor = Bukkit.getConsoleSender();
                     break;
             }

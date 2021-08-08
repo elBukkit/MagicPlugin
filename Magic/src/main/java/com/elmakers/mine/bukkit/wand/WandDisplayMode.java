@@ -186,6 +186,8 @@ public class WandDisplayMode {
             case ATTRIBUTE:
                 value = mage.getAttribute(attributeKey);
                 break;
+            case NONE:
+                break;
         }
         return value;
     }
