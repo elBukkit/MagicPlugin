@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringEscapeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -1641,6 +1642,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
             confirmFillMaterial = context.getController().getItem(fillerKey);
         }
         title = parameters.getString("title");
+        if (title != null) {
+            // To make custom inventory (via font sheets) testing easier
+            title = StringEscapeUtils.unescapeJava(title);
+        }
         confirmTitle = parameters.getString("confirm_title");
         confirmUnlockTitle = parameters.getString("unlock_confirm_title");
         titleKey = parameters.getString("title_key", "title");
