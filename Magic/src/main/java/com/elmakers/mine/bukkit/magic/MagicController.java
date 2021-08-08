@@ -2286,6 +2286,18 @@ public class MagicController implements MageController {
         return activeBlocks.get(id);
     }
 
+    @Nullable
+    public MagicBlock getMagicBlock(String name) {
+        for (Map<Long, MagicBlock> chunk : magicBlocks.values()) {
+            for (MagicBlock magicBlock : chunk.values()) {
+                if (magicBlock.getName().equals(name)) {
+                    return magicBlock;
+                }
+            }
+        }
+        return null;
+    }
+
     @Override
     public Collection<com.elmakers.mine.bukkit.api.block.magic.MagicBlock> getMagicBlocks() {
         List<com.elmakers.mine.bukkit.api.block.magic.MagicBlock> list = new ArrayList<>();

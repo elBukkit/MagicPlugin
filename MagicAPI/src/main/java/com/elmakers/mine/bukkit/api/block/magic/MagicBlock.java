@@ -10,6 +10,16 @@ public interface MagicBlock extends Locatable {
     String getTemplateKey();
     @Nonnull
     Mage getMage();
+
+    /**
+     * Disable this automaton, it will not run again until re-enabled
+     */
+    void disable();
+    void enable();
+
+    /**
+     * Temporarily pause this automaton, it will auto-resume on chink reload.
+     */
     void pause();
     void resume();
 }

@@ -17,6 +17,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -62,7 +63,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
     };
 
     private static final String[] ARENA_LISTS = {
-        "spawn"
+        "spawn", "magic_block"
     };
 
     private static final String[] ARENA_RANDOMIZE = {
@@ -118,6 +119,10 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 || args[2].equalsIgnoreCase("allow_interrupt")
                 )) {
             options.addAll(Arrays.asList(BOOLEAN_PROPERTIES));
+        } else if (args.length == 4 && args[0].equalsIgnoreCase("configure") && (args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("remove")) && args[3].equalsIgnoreCase("magic_block")) {
+            for (MagicBlock magicBlock : controller.getMagicBlocks()) {
+                options.add(magicBlock.getName());
+            }
         } else if (args.length == 4 && args[0].equalsIgnoreCase("configure") && args[2].equalsIgnoreCase("sudden_death_effect")) {
             for (PotionEffectType pt : PotionEffectType.values()) {
                 if (pt == null) continue;
@@ -893,6 +898,35 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                             sender.sendMessage(ChatColor.AQUA + "You have removed a spawn location at: " + removed.toVector());
                         } else {
                             sender.sendMessage(ChatColor.RED + "No nearby spawn locations");
+                        }
+                    }
+
+                    return;
+                }
+
+                if (subItem.equalsIgnoreCase("magic_block")) {
+                    if (args.length < 2) {
+                        sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.WHITE + "/marena configure <arena> add magic_block <block name>");
+                        return;
+                    }
+                    String blockKey = args[1];
+                    if (isAdd) {
+                        MagicBlock magicBlock = controller.getMagicBlock(blockKey);
+                        if (magicBlock == null) {
+                            sender.sendMessage(ChatColor.RED + "Could not find magic block: " + ChatColor.WHITE + blockKey);
+                            return;
+                        }
+                        magicBlock.disable();
+                        arena.addMagicBlock(blockKey);
+                        arena.saveTemplate();
+                        sender.sendMessage(ChatColor.AQUA + "You have added a magic block to this arena: " + ChatColor.DARK_AQUA + blockKey);
+                    } else {
+                        boolean removed = arena.removeMagicBlock(blockKey);
+                        if (removed) {
+                            arena.saveTemplate();
+                            sender.sendMessage(ChatColor.AQUA + "You have removed the magic block: " + ChatColor.DARK_AQUA + blockKey);
+                        } else {
+                            sender.sendMessage(ChatColor.RED + "This arena doesn't have a magic block " + ChatColor.YELLOW + blockKey);
                         }
                     }
 

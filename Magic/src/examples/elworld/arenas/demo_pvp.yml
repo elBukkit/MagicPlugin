@@ -1,12 +1,14 @@
 demo_pvp:
-  start_commands: mblock select arena1;mblock enable;mblock select arena2;mblock enable
-  end_commands: mblock select arena1;mblock disable;mblock select arena2;mblock disable
+  min_players: 1
   keep_inventory: false
   keep_level: false
   item_wear: false
   allow_consuming: true
   allow_melee: true
   allow_projectiles: true
+  magic_blocks:
+  - arena2
+  - arena
   leaderboard_sign_type: oak_wall_sign
   countdown: 5
   countdown_max: 5

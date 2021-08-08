@@ -811,6 +811,8 @@ public interface MageController {
     @Nonnull
     Collection<MagicBlock> getMagicBlocks();
     @Nullable
+    MagicBlock getMagicBlock(String name);
+    @Nullable
     MagicBlock addMagicBlock(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters);
     @Deprecated
     @Nullable

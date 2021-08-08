@@ -42,6 +42,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
@@ -110,6 +111,7 @@ public class Arena {
     private String endCommands;
     private int borderMin = 0;
     private int borderMax = 0;
+    private List<String> magicBlocks;
 
     private List<ArenaPlayer> leaderboard = new ArrayList<ArenaPlayer>();
     private Location leaderboardLocation;
@@ -211,6 +213,8 @@ public class Arena {
 
         duration = configuration.getInt("duration", 0);
         suddenDeath = configuration.getInt("sudden_death", 0);
+
+        magicBlocks = configuration.getStringList("magic_blocks");
 
         suddenDeathEffect = null;
         if (configuration.contains("sudden_death_effect")) {
@@ -337,6 +341,8 @@ public class Arena {
         configuration.set("allow_melee", allowMelee);
         configuration.set("allow_projectiles", allowProjectiles);
 
+        if (magicBlocks != null) configuration.set("magic_blocks", magicBlocks);
+
         if (leaderboardSize != 5) configuration.set("leaderboard_size", leaderboardSize);
         if (leaderboardRecordSize != 30) configuration.set("leaderboard_record_size", leaderboardRecordSize);
         if (leaderboardGamesRequired != 1) configuration.set("leaderboard_games_required", leaderboardGamesRequired);
@@ -461,6 +467,16 @@ public class Arena {
             stage.reset();
         }
         runCommands(startCommands);
+        if (magicBlocks != null) {
+            for (String magicBlockKey : magicBlocks) {
+                MagicBlock magicBlock = controller.getMagic().getMagicBlock(magicBlockKey);
+                if (magicBlock == null) {
+                    controller.getMagic().getLogger().warning("Invalid magic block: " + magicBlockKey + " in arena config " + getKey());
+                    continue;
+                }
+                magicBlock.enable();
+            }
+        }
         if (borderMax > 0 && duration > 0) {
             World world = getCenter().getWorld();
             WorldBorder border = world.getWorldBorder();
@@ -707,6 +723,16 @@ public class Arena {
             currentStage.finish();
         }
         runCommands(endCommands);
+        if (magicBlocks != null) {
+            for (String magicBlockKey : magicBlocks) {
+                MagicBlock magicBlock = controller.getMagic().getMagicBlock(magicBlockKey);
+                if (magicBlock == null) {
+                    controller.getMagic().getLogger().warning("Invalid magic block: " + magicBlockKey + " in arena config " + getKey());
+                    continue;
+                }
+                magicBlock.disable();
+            }
+        }
         state = ArenaState.LOBBY;
         exitPlayers();
         hideRespawnBossBar();
@@ -851,6 +877,20 @@ public class Arena {
         }
 
         return spawns;
+    }
+
+    public void addMagicBlock(String magicBlock) {
+        if (magicBlocks == null) {
+            magicBlocks = new ArrayList<>();
+        }
+        magicBlocks.add(magicBlock);
+    }
+
+    public boolean removeMagicBlock(String magicBlock) {
+        if (magicBlocks == null) {
+            return false;
+        }
+        return magicBlocks.remove(magicBlock);
     }
 
     public ArenaStage getCurrentStage() {
@@ -1285,6 +1325,9 @@ public class Arena {
             if (currentStage != null) {
                 sender.sendMessage(ChatColor.BLUE + "Active mobs: " + ChatColor.GRAY + currentStage.getActiveMobs());
             }
+        }
+        if (magicBlocks != null && !magicBlocks.isEmpty()) {
+            sender.sendMessage(ChatColor.BLUE + "Magic blocks: " + ChatColor.AQUA + StringUtils.join(magicBlocks, ChatColor.GRAY + "," + ChatColor.AQUA));
         }
         if (portalDamage > 0 || portalEnterDamage > 0) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + "Portal Entry Damage: " + ChatColor.DARK_PURPLE + portalEnterDamage);

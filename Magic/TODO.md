@@ -20,7 +20,6 @@
  - Holes in containment if automata gets contained while in the glass
  - Cancelled spells (`/magic cancel`) should still auto-undo
 
-
 # New
 
  - picked up trigger for dropped wand items
@@ -32,6 +31,24 @@
  - Wand active_properties
  - Base modifier "allow_melee", and move reflect parameters from wand
  - Save spell can make upside-down schematics
+
+## Arenas
+
+- Really finish up the template work, creating an arena of an existing template doesn't even work
+- Add option to save inventory and class layout
+   - Mage stored inventories need to be by key
+   - Restore all inventories on login, if restoring inventories remove any spells
+   - Restore classes on login (save these by key, too?
+- Add class selector option
+
+- Convert to storing configs rather than rebuilding, this will allow cleaner configs
+- Change "all" stage to store common inherited stage properties (requires above to be done first)
+- Arena auto-build/repair using schematics
+- A way for examples to provide schematics
+- Prevent players teleporting into an arena
+   - Or at least teleporting to a player in an arena?
+   - And don't save their death location
+- Prevent spiders climbing?
 
 # New API
 
@@ -47,14 +64,6 @@
 # Resource pack changes near-term
 
  - Configurable off-by-default RP load invulnerability window  
- 
-## Arenas
-
- - Add option to save inventory and class layout
-   - Mage stored inventories need to be by key
-   - Restore all inventories on login, if restoring inventories remove any spells
-   - Restore classes on login (save these by key, too?
- - Add class selector option  
 
 # Near-Term Hopeful List
 
@@ -77,17 +86,6 @@
 
  - BufferedMapCanvas revert change to bound palette indexes when 1.17 is fixed
  - Turn schematic entity loading back on once 1.17 fixes NBTList access
-
-# Arenas
-
- - Convert to storing configs rather than rebuilding, this will allow cleaner configs
- - Change "all" stage to store common inherited stage properties (requires above to be done first)
- - Arena auto-build/repair using schematics  
- - A way for examples to provide schematics
- - Prevent players teleporting into an arena
-   - Or at least teleporting to a player in an arena?
-   - And don't save their death location
- - Prevent spiders climbing?
 
 # Bugs
 

@@ -216,6 +216,7 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         return enabled;
     }
 
+    @Override
     public void enable() {
         if (enabled) return;
         this.enabled = true;
@@ -224,6 +225,7 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         }
     }
 
+    @Override
     public void disable() {
         this.enabled = false;
         pause();
