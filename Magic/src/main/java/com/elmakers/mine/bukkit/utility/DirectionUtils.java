@@ -166,4 +166,51 @@ public class DirectionUtils {
 
         return org.bukkit.block.BlockFace.SELF;
     }
+
+    /**
+     * A helper function to go change a given direction to the direction "to the right".
+     *
+     * <p>There's probably some better matrix-y, math-y way to do this.
+     * It'd be nice if this was in BlockFace.
+     * @param direction The current direction
+     * @return The direction to the left
+     */
+    public static org.bukkit.block.BlockFace goLeft(org.bukkit.block.BlockFace direction) {
+        switch (direction) {
+            case EAST:
+                return org.bukkit.block.BlockFace.NORTH;
+            case NORTH:
+                return org.bukkit.block.BlockFace.WEST;
+            case WEST:
+                return org.bukkit.block.BlockFace.SOUTH;
+            case SOUTH:
+                return org.bukkit.block.BlockFace.EAST;
+            default:
+                return direction;
+        }
+    }
+
+    /**
+     * A helper function to go change a given direction to the direction "to the right".
+     *
+     * <p>There's probably some better matrix-y, math-y way to do this.
+     * It'd be nice if this was in BlockFace.
+     *
+     * @param direction The current direction
+     * @return The direction to the right
+     */
+    public static org.bukkit.block.BlockFace goRight(org.bukkit.block.BlockFace direction) {
+        switch (direction) {
+            case EAST:
+                return org.bukkit.block.BlockFace.SOUTH;
+            case SOUTH:
+                return org.bukkit.block.BlockFace.WEST;
+            case WEST:
+                return org.bukkit.block.BlockFace.NORTH;
+            case NORTH:
+                return org.bukkit.block.BlockFace.EAST;
+            default:
+                return direction;
+        }
+    }
 }

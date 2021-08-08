@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.arena;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -27,15 +26,12 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitScheduler;
@@ -48,12 +44,13 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.DirectionUtils;
 
 public class Arena {
     private static final Random random = new Random();
-    private static final Object saveLock = new Object();
 
     private ArenaTemplate template;
+    private ConfigurationSection parameters;
     private ArenaState state = ArenaState.LOBBY;
     private long started;
     private long lastTick;
@@ -64,10 +61,10 @@ public class Arena {
 
     private List<Location> spawns = new ArrayList<Location>();
     private List<ArenaStage> stages = new ArrayList<ArenaStage>();
-    private final AllStages allStages;
+    private final DefaultStage defaultStage;
     private int currentStage = 0;
     private int editingStage = 0;
-    private boolean editAllStages = false;
+    private boolean editDefaultStage = false;
     private final ArenaController controller;
 
     private Location center;
@@ -135,27 +132,39 @@ public class Arena {
 
     private BossBar respawnBar;
 
+    // Used when loading an arena, load() should be called afterward
     public Arena(final String key, final ArenaTemplate template, final ArenaController controller) {
         this.key = key;
         this.template = template;
         this.controller = controller;
-        allStages = new AllStages(this);
+        defaultStage = new DefaultStage(this);
         signMaterial = DefaultMaterials.getWallSignBlock();
     }
 
+    // Used when creating a new arena
     public Arena(final String name, final ArenaTemplate template, final ArenaController plugin, Location location) {
         this(name, template, plugin);
         center = location.clone();
+        loadProperties();
     }
 
     public void loadProperties() {
-        loadProperties(template.getConfiguration());
+        if (parameters == null) {
+            parameters = ConfigurationUtils.newConfigurationSection("arena " + getKey());
+        }
+        ConfigurationSection effectiveConfiguration = parameters;
+        if (template != null) {
+            effectiveConfiguration = ConfigurationUtils.cloneConfiguration(effectiveConfiguration);
+            ConfigurationUtils.addConfigurations(effectiveConfiguration, template.getConfiguration(), false);
+        }
+        loadProperties(effectiveConfiguration);
     }
 
-    public void loadProperties(ConfigurationSection configuration) {
+    private void loadProperties(ConfigurationSection configuration) {
         name = configuration.getString("name", null);
         description = configuration.getString("description", null);
-        setMinPlayers(configuration.getInt("min_players",2));
+        minPlayers = configuration.getInt("min_players",2);
+        minPlayers = Math.max(1, minPlayers);
         maxPlayers = configuration.getInt("max_players", 2);
         requiredKills = configuration.getInt("required_kills", 1);
 
@@ -218,7 +227,7 @@ public class Arena {
 
         suddenDeathEffect = null;
         if (configuration.contains("sudden_death_effect")) {
-            setSuddenDeathEffect(configuration.getString("sudden_death_effect"));
+            parseSuddenDeathEffect(configuration.getString("sudden_death_effect"));
         }
 
         spawns.clear();
@@ -234,7 +243,7 @@ public class Arena {
         if (configuration.contains("stages")) {
             Collection<ConfigurationSection> stageConfigurations = ConfigurationUtils.getNodeList(configuration, "stages");
             for (ConfigurationSection stageConfiguration : stageConfigurations) {
-                stages.add(new ArenaStage(this, stages.size(), controller.getMagic(), stageConfiguration));
+                stages.add(new ArenaStage(this, stages.size(), stageConfiguration));
             }
         }
 
@@ -245,6 +254,7 @@ public class Arena {
     }
 
     public void load(ConfigurationSection configuration) {
+        parameters = configuration.getConfigurationSection("parameters");
         center = ConfigurationUtils.toLocation(configuration.getString("location"));
         if (configuration.contains("leaderboard")) {
             leaderboard.clear();
@@ -261,14 +271,16 @@ public class Arena {
     }
 
     public void reload() {
-        template = controller.getTemplate(template.getKey());
+        if (template != null) {
+            template = controller.getTemplate(template.getKey());
+        }
         loadProperties();
     }
 
-    public boolean setSuddenDeathEffect(String value) {
+    private void parseSuddenDeathEffect(String value) {
         if (value == null || value.isEmpty()) {
             suddenDeathEffect = null;
-            return false;
+            return;
         }
         int ticks = 100;
         int power = 1;
@@ -293,131 +305,48 @@ public class Arena {
             Bukkit.getLogger().warning("Error parsing potion effect: " + value);
             suddenDeathEffect = null;
         }
+    }
 
+    public boolean setSuddenDeathEffect(String value) {
+        parseSuddenDeathEffect(value);
+        saveSuddenDeathEffect();
         return suddenDeathEffect != null;
     }
 
-    public boolean saveTemplate(ConfigurationSection configuration) {
-        if (!isValid()) {
-            return false;
-        }
-
-        if (name != null && !name.isEmpty()) configuration.set("name", name);
-        if (description != null && !description.isEmpty()) configuration.set("description", description);
-        if (minPlayers != 2) configuration.set("min_players", minPlayers);
-        if (maxPlayers != 2) configuration.set("max_players", maxPlayers);
-        if (requiredKills != 1) configuration.set("required_kills", requiredKills);
-
-        if (loseXP != 0) configuration.set("lose_xp", loseXP);
-        if (drawXP != 0) configuration.set("draw_xp", drawXP);
-        if (winXP != 0) configuration.set("win_xp", winXP);
-
-        if (loseSP != 0) configuration.set("lose_sp", loseSP);
-        if (drawSP != 0) configuration.set("draw_sp", drawSP);
-        if (winSP != 0) configuration.set("win_sp", winSP);
-
-        if (loseMoney != 0) configuration.set("lose_money", loseMoney);
-        if (drawMoney != 0) configuration.set("draw_money", drawMoney);
-        if (winMoney != 0) configuration.set("win_money", winMoney);
-
-        if (duration != 0) configuration.set("duration", duration);
-        if (suddenDeath != 0) configuration.set("sudden_death", suddenDeath);
+    protected void saveSuddenDeathEffect() {
         if (suddenDeathEffect != null) {
-            configuration.set("sudden_death_effect",
+            parameters.set("sudden_death_effect",
                     suddenDeathEffect.getType().getName().toLowerCase() + ":"
-                    + suddenDeathEffect.getAmplifier() + ":"
-                    + suddenDeathEffect.getDuration()
+                            + suddenDeathEffect.getAmplifier() + ":"
+                            + suddenDeathEffect.getDuration()
             );
+        } else {
+            parameters.set("sudden_death_effect", null);
         }
-        if (borderMin != 0) configuration.set("border_min", borderMin);
-        if (borderMax != 0) configuration.set("border_max", borderMax);
-        if (startCommands != null && !startCommands.isEmpty()) configuration.set("start_commands", startCommands);
-        if (endCommands != null && !endCommands.isEmpty()) configuration.set("end_commands", endCommands);
+    }
 
-        configuration.set("keep_inventory", keepInventory);
-        configuration.set("keep_level", keepLevel);
-        configuration.set("item_wear", itemWear);
-        configuration.set("allow_consuming", allowConsuming);
-        configuration.set("allow_melee", allowMelee);
-        configuration.set("allow_projectiles", allowProjectiles);
+    protected void saveStages() {
+        if (stages.isEmpty()) {
+            if (parameters != null) {
+                parameters.set("stages", null);
+            }
+            return;
+        }
 
-        if (magicBlocks != null) configuration.set("magic_blocks", magicBlocks);
+        List<ConfigurationSection> stageConfigurations = new ArrayList<>();
+        for (ArenaStage stage : stages) {
+            stageConfigurations.add(stage.getConfiguration());
+        }
+        parameters.set("stages", stageConfigurations);
+        parameters.set("default_stage", defaultStage.getConfiguration());
+    }
 
-        if (leaderboardSize != 5) configuration.set("leaderboard_size", leaderboardSize);
-        if (leaderboardRecordSize != 30) configuration.set("leaderboard_record_size", leaderboardRecordSize);
-        if (leaderboardGamesRequired != 1) configuration.set("leaderboard_games_required", leaderboardGamesRequired);
-        configuration.set("leaderboard_sign_type", signMaterial.name().toLowerCase());
-
-        if (portalDamage != 0) configuration.set("portal_damage", portalDamage);
-        if (portalEnterDamage != 0) configuration.set("portal_enter_damage", portalEnterDamage);
-        if (portalDeathMessage != null && !portalDeathMessage.isEmpty()) configuration.set("portal_death_message", portalDeathMessage);
-
-        if (maxTeleportDistance != 64) configuration.set("max_teleport_distance", maxTeleportDistance);
-        if (announcerRange != 64) configuration.set("announcer_range", announcerRange);
-
-        if (countdown != 10) configuration.set("countdown", countdown);
-        if (countdownMax != 30) configuration.set("countdown_max", countdownMax);
-        configuration.set("op_check", opCheck);
-        if (allowInterrupt) configuration.set("allow_interrupt", allowInterrupt);
-
-        configuration.set("lobby", ConfigurationUtils.fromLocation(lobby, center));
-        configuration.set("win", ConfigurationUtils.fromLocation(win, center));
-        configuration.set("lose", ConfigurationUtils.fromLocation(lose, center));
-        configuration.set("exit", ConfigurationUtils.fromLocation(exit, center));
-
+    protected void saveSpawns() {
         List<String> spawnList = new ArrayList<>();
         for (Location spawn : spawns) {
             spawnList.add(ConfigurationUtils.fromLocation(spawn, center));
         }
-        configuration.set("spawns", spawnList);
-
-        if (!stages.isEmpty()) {
-            List<ConfigurationSection> stageConfigurations = new ArrayList<ConfigurationSection>();
-            for (ArenaStage stage : stages) {
-                ConfigurationSection section = new MemoryConfiguration();
-                stage.save(section);
-                stageConfigurations.add(section);
-            }
-            configuration.set("stages", stageConfigurations);
-        }
-
-        if (randomizeSpawn != null) {
-            configuration.set("randomize.spawn", ConfigurationUtils.fromVector(randomizeSpawn));
-        }
-
-        if (leaderboardLocation != null && leaderboardFacing != null) {
-            configuration.set("leaderboard_sign_location", ConfigurationUtils.fromLocation(leaderboardLocation, center));
-            configuration.set("leaderboard_sign_facing", ConfigurationUtils.fromBlockFace(leaderboardFacing));
-        }
-        return true;
-    }
-
-    public void saveTemplate() {
-        Plugin plugin = controller.getPlugin();
-        final File arenaSaveFile = getSaveFile();
-        final YamlConfiguration arenaSaves = new YamlConfiguration();
-        ConfigurationSection arenaConfig = arenaSaves.createSection(key);
-        if (!saveTemplate(arenaConfig)) {
-            plugin.getLogger().warning("Not saving invalid arena: " + key);
-            return;
-        }
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, new Runnable() {
-            @Override
-            public void run() {
-                synchronized (saveLock) {
-                    try {
-                        arenaSaves.save(arenaSaveFile);
-                    } catch (Exception ex) {
-                        plugin.getLogger().warning("Error saving arena configuration to " + arenaSaveFile.getName());
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-    protected File getSaveFile() {
-        return new File(controller.getPlugin().getDataFolder(), "arenas/" + key + ".yml");
+        parameters.set("spawns", spawnList);
     }
 
     public void save(ConfigurationSection configuration) {
@@ -432,7 +361,8 @@ public class Arena {
             }
         }
         configuration.set("location", ConfigurationUtils.fromLocation(center));
-        configuration.set("template", template.getKey());
+        configuration.set("template", template == null ? null : template.getKey());
+        configuration.set("parameters", parameters);
     }
 
     public void respawn() {
@@ -585,18 +515,6 @@ public class Arena {
         messagePlayers(ChatColor.RED + "This arena has been removed");
         stop();
         clearQueue();
-    }
-
-    public void delete() {
-        remove();
-        File configFile = getSaveFile();
-        if (!configFile.exists()) {
-            controller.getPlugin().getLogger().warning("Can not remove arena " + key + ", if it exists in a combined config file you will need to remove it manually");
-            return;
-        }
-        if (!configFile.delete()) {
-            controller.getPlugin().getLogger().warning("Failed to delete file " + configFile.getAbsolutePath());
-        }
     }
 
     public ArenaPlayer getWinner() {
@@ -826,73 +744,6 @@ public class Arena {
         return arenaPlayer;
     }
 
-    public void setLoseLocation(Location location) {
-        lose = location == null ? null : location.clone();
-    }
-
-    public void setExit(Location location) {
-        exit = location == null ? null : location.clone();
-    }
-
-    public void setCenter(Location location) {
-        center = location.clone();
-    }
-
-    public void setLobby(Location location) {
-        lobby = location == null ? null : location.clone();
-    }
-
-    public void setWinLocation(Location location) {
-        win = location == null ? null : location.clone();
-    }
-
-    public void addSpawn(Location location) {
-        spawns.add(location.clone());
-    }
-
-    public void setSpawn(Location location) {
-        spawns.clear();
-        if (location != null) {
-            addSpawn(location);
-        }
-    }
-
-    public Location removeSpawn(Location location) {
-        int rangeSquared = 3 * 3;
-        for (Location spawn : spawns) {
-            if (spawn.distanceSquared(location) < rangeSquared) {
-                spawns.remove(spawn);
-                return spawn;
-            }
-        }
-
-        return null;
-    }
-
-    public List<Location> getSpawns() {
-        if (spawns.size() == 0) {
-            List<Location> centerList = new ArrayList<Location>();
-            centerList.add(center);
-            return centerList;
-        }
-
-        return spawns;
-    }
-
-    public void addMagicBlock(String magicBlock) {
-        if (magicBlocks == null) {
-            magicBlocks = new ArrayList<>();
-        }
-        magicBlocks.add(magicBlock);
-    }
-
-    public boolean removeMagicBlock(String magicBlock) {
-        if (magicBlocks == null) {
-            return false;
-        }
-        return magicBlocks.remove(magicBlock);
-    }
-
     public ArenaStage getCurrentStage() {
         if (stages.isEmpty()) {
             return null;
@@ -925,17 +776,20 @@ public class Arena {
     public void addStage() {
         stages.add(new ArenaStage(this, stages.size()));
         editingStage = stages.size() - 1;
+        saveStages();
     }
 
     public void addStageBeforeCurrent() {
         stages.add(editingStage, new ArenaStage(this, stages.size()));
         reindexStages();
+        saveStages();
     }
 
     public void addStageAfterCurrent() {
         editingStage++;
         stages.add(editingStage, new ArenaStage(this, stages.size()));
         reindexStages();
+        saveStages();
     }
 
     public void moveCurrentStage(int newIndex) {
@@ -943,6 +797,7 @@ public class Arena {
         editingStage = newIndex;
         stages.add(editingStage, moveStage);
         reindexStages();
+        saveStages();
     }
 
     public void removeStage() {
@@ -951,6 +806,7 @@ public class Arena {
         stages.remove(editingStage);
         editingStage = 0;
         reindexStages();
+        saveStages();
     }
 
     public void reindexStages() {
@@ -959,16 +815,20 @@ public class Arena {
         }
     }
 
+    public DefaultStage getDefaultStage() {
+        return defaultStage;
+    }
+
     public EditingStage getEditingStage() {
-        if (editAllStages) {
-            return allStages;
+        if (editDefaultStage) {
+            return defaultStage;
         }
         return stages.get(getEditingStageIndex());
     }
 
     public EditingStage getIfEditingStage() {
-        if (editAllStages) {
-            return allStages;
+        if (editDefaultStage) {
+            return defaultStage;
         }
         if (editingStage < 0 || editingStage >= stages.size()) {
             return null;
@@ -978,7 +838,7 @@ public class Arena {
 
     public void setEditingStage(int stage) {
         editingStage = stage;
-        editAllStages = false;
+        editDefaultStage = false;
     }
 
     public int getEditingStageIndex() {
@@ -994,18 +854,6 @@ public class Arena {
 
     public int getStageCount() {
         return stages.size();
-    }
-
-    public void setMinPlayers(int players) {
-        minPlayers = Math.max(1, players);
-    }
-
-    public void setMaxPlayers(int players) {
-        maxPlayers = players;
-    }
-
-    public void setRandomizeSpawn(Vector vector) {
-        randomizeSpawn = vector;
     }
 
     public void check() {
@@ -1121,18 +969,6 @@ public class Arena {
         winner.teleport(getWinLocation());
     }
 
-    public String getDescription() {
-        return description == null ? "" : description;
-    }
-
-    public String getName() {
-        return name == null ? key : name;
-    }
-
-    public String getKey() {
-        return key;
-    }
-
     public void join(Player player) {
         Arena currentArena = controller.getQueuedArena(player);
         if (currentArena != null) {
@@ -1208,11 +1044,16 @@ public class Arena {
     }
 
     public void describe(CommandSender sender) {
+        String displayName;
         if (name == null) {
-            sender.sendMessage(ChatColor.DARK_AQUA + getName());
+            displayName = ChatColor.DARK_AQUA + getName();
         } else {
-            sender.sendMessage(ChatColor.DARK_AQUA + getName() + ChatColor.GRAY + " (" + getKey() + ")");
+            displayName = ChatColor.DARK_AQUA + getName() + ChatColor.DARK_GRAY + " (" + ChatColor.GRAY + getKey() + ChatColor.DARK_GRAY + ")";
         }
+        if (template != null) {
+            displayName += ChatColor.DARK_GRAY + " [" + ChatColor.GRAY + template.getKey() + ChatColor.DARK_GRAY + "]";
+        }
+        sender.sendMessage(displayName);
         if (description != null) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + getDescription());
         }
@@ -1363,7 +1204,7 @@ public class Arena {
         int stageNumber = 1;
         for (ArenaStage stage : stages) {
             String prefix = " ";
-            if (editAllStages || stageNumber == stage.getNumber()) {
+            if (editDefaultStage || stageNumber == stage.getNumber()) {
                 prefix = ChatColor.YELLOW + "*";
             } else {
                 prefix = " ";
@@ -1380,58 +1221,6 @@ public class Arena {
                 + ChatColor.GRAY + location.getBlockY() + ChatColor.DARK_GRAY + ","
                 + ChatColor.GRAY + location.getBlockZ() + ChatColor.DARK_GRAY + " : "
                 + ChatColor.GRAY + location.getWorld().getName();
-    }
-
-    public int getMinPlayers() {
-        return minPlayers;
-    }
-
-    public int getMaxPlayers() {
-        return maxPlayers;
-    }
-
-    public int getQueuedPlayers() {
-        return queue.size();
-    }
-
-    public int getInGamePlayers() {
-        return players.size();
-    }
-
-    public Set<ArenaPlayer> getLivingParticipants() {
-        return players;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public void setPortalEnterDamage(int damage) {
-        this.portalEnterDamage = damage;
-    }
-
-    public int getPortalEnterDamage() {
-        return portalEnterDamage;
-    }
-
-    public void setPortalDamage(int damage) {
-        this.portalDamage = damage;
-    }
-
-    public int getPortalDamage() {
-        return portalDamage;
-    }
-
-    public String getPortalDeathMessage() {
-        return portalDeathMessage;
-    }
-
-    public void setPortalDeathMessage(String message) {
-        this.portalDeathMessage = message;
     }
 
     public void mobDied(Entity entity) {
@@ -1501,7 +1290,7 @@ public class Arena {
         MaterialAndData skullMaterial = DefaultMaterials.getPlayerSkullWallBlock();
         Block leaderboardBlock = getLeaderboardBlock();
         if (leaderboardBlock != null && leaderboardFacing != null) {
-            BlockFace rightDirection = goLeft(leaderboardFacing);
+            BlockFace rightDirection = DirectionUtils.goLeft(leaderboardFacing);
             leaderboardBlock = leaderboardBlock.getRelative(BlockFace.UP);
             int size = Math.min(leaderboard.size(), leaderboardSize);
             BlockFace skullFace = leaderboardFacing;
@@ -1576,61 +1365,10 @@ public class Arena {
         return block;
     }
 
-    /**
-     * A helper function to go change a given direction to the direction "to the right".
-     *
-     * <p>There's probably some better matrix-y, math-y way to do this.
-     * It'd be nice if this was in BlockFace.
-     * @param direction The current direction
-     * @return The direction to the left
-     */
-    public static BlockFace goLeft(BlockFace direction)
-    {
-        switch (direction)
-        {
-            case EAST:
-                return BlockFace.NORTH;
-            case NORTH:
-                return BlockFace.WEST;
-            case WEST:
-                return BlockFace.SOUTH;
-            case SOUTH:
-                return BlockFace.EAST;
-            default:
-                return direction;
-        }
-    }
-
-    /**
-     * A helper function to go change a given direction to the direction "to the right".
-     *
-     * <p>There's probably some better matrix-y, math-y way to do this.
-     * It'd be nice if this was in BlockFace.
-     *
-     * @param direction The current direction
-     * @return The direction to the right
-     */
-    public static BlockFace goRight(BlockFace direction)
-    {
-        switch (direction)
-        {
-            case EAST:
-                return BlockFace.SOUTH;
-            case SOUTH:
-                return BlockFace.WEST;
-            case WEST:
-                return BlockFace.NORTH;
-            case NORTH:
-                return BlockFace.EAST;
-            default:
-                return direction;
-        }
-    }
-
     public void removeLeaderboard() {
         Block leaderboardBlock = getLeaderboardBlock();
         if (leaderboardBlock != null && leaderboardFacing != null) {
-            BlockFace rightDirection = goLeft(leaderboardFacing);
+            BlockFace rightDirection = DirectionUtils.goLeft(leaderboardFacing);
             for (int y = 0; y <= leaderboardSize; y++) {
                 Block neighborBlock = leaderboardBlock.getRelative(rightDirection);
                 clearLeaderboardBlock(neighborBlock);
@@ -1656,6 +1394,7 @@ public class Arena {
             leaderboardSize = leaderboardRecordSize;
         }
         trimLeaderboard();
+        parameters.set("leaderboard_record_size", leaderboardRecordSize);
     }
 
     public void setLeaderboardSize(int size) {
@@ -1664,6 +1403,7 @@ public class Arena {
             leaderboardRecordSize = leaderboardSize;
         }
         trimLeaderboard();
+        parameters.set("leaderboard_size", leaderboardSize);
     }
 
     public void setLeaderboardGamesRequired(int required) {
@@ -1674,6 +1414,7 @@ public class Arena {
             updateLeaderboard(player);
         }
         updateLeaderboard();
+        parameters.set("leaderboard_games_required", leaderboardGamesRequired);
     }
 
     public void describeStats(CommandSender sender, Player player) {
@@ -1745,7 +1486,7 @@ public class Arena {
             controller.getPlugin().getLogger().warning("Block at " + leaderboardBlock.getLocation() + " has no sign data");
             return false;
         }
-        BlockFace rightDirection = goLeft(signDirection);
+        BlockFace rightDirection = DirectionUtils.goLeft(signDirection);
         Block checkBlock = leaderboardBlock;
         for (int y = 0; y <= leaderboardSize; y++) {
             Block neighborBlock = checkBlock.getRelative(rightDirection);
@@ -1762,9 +1503,13 @@ public class Arena {
         leaderboardLocation = leaderboardBlock.getLocation();
         leaderboardFacing = signDirection;
         updateLeaderboard();
-        // TODO: Really need to separate template and instance properites
-        saveTemplate();
+        saveLeaderboardLocation();
         return true;
+    }
+
+    private void saveLeaderboardLocation() {
+        parameters.set("leaderboard_sign_location", ConfigurationUtils.fromLocation(leaderboardLocation, center));
+        parameters.set("leaderboard_sign_facing", ConfigurationUtils.fromBlockFace(leaderboardFacing));
     }
 
     public int getLeaderboardSize() {
@@ -1782,86 +1527,6 @@ public class Arena {
 
     public void reset() {
         leaderboard.clear();
-    }
-
-    public void setWinXP(int xp) {
-        winXP = Math.max(xp, 0);
-    }
-
-    public void setLoseXP(int xp) {
-        loseXP = Math.max(xp, 0);
-    }
-
-    public void setDrawXP(int xp) {
-        drawXP = Math.max(xp, 0);
-    }
-
-    public int getWinXP() {
-        return winXP;
-    }
-
-    public int getLoseXP() {
-        return loseXP;
-    }
-
-    public int getDrawXP() {
-        return drawXP;
-    }
-
-    public void setWinSP(int sp) {
-        winSP = Math.max(sp, 0);
-    }
-
-    public void setLoseSP(int sp) {
-        loseSP = Math.max(sp, 0);
-    }
-
-    public void setDrawSP(int sp) {
-        drawSP = Math.max(sp, 0);
-    }
-
-    public int getWinSP() {
-        return winSP;
-    }
-
-    public int getLoseSP() {
-        return loseSP;
-    }
-
-    public int getDrawSP() {
-        return drawSP;
-    }
-
-    public void setWinMoney(int money) {
-        winMoney = Math.max(money, 0);
-    }
-
-    public void setLoseMoney(int money) {
-        loseMoney = Math.max(money, 0);
-    }
-
-    public void setDrawMoney(int money) {
-        drawMoney = Math.max(money, 0);
-    }
-
-    public int getWinMoney() {
-        return winMoney;
-    }
-
-    public int getLoseMoney() {
-        return loseMoney;
-    }
-
-    public int getDrawMoney() {
-        return drawMoney;
-    }
-
-    public void setMaxTeleportDistance(int distance) {
-        maxTeleportDistance = distance;
-    }
-
-    public int getMaxTeleportDistance() {
-        return maxTeleportDistance;
     }
 
     public void showLeaderboard(Player player) {
@@ -1930,83 +1595,6 @@ public class Arena {
                 });
     }
 
-    public void setCountdown(int countdown) {
-        this.countdown = countdown;
-    }
-
-    public void setCountdownMax(int countdownMax) {
-        this.countdownMax = countdownMax;
-    }
-
-    public boolean hasOpCheck() {
-        return opCheck;
-    }
-
-    public void setOpCheck(boolean check) {
-        opCheck = check;
-    }
-
-    public boolean getAllowInterrupt() {
-        return allowInterrupt;
-    }
-
-    public void setAllowInterrupt(boolean interrupt) {
-        allowInterrupt = interrupt;
-    }
-
-    public void setKeepInventory(boolean keep) {
-        keepInventory = keep;
-    }
-
-    public void setItemWear(boolean wear) {
-        itemWear = wear;
-    }
-
-    public void setAllowConsuming(boolean consume) {
-        allowConsuming = consume;
-    }
-
-    public void setAllowMelee(boolean allow) {
-        allowMelee = allow;
-    }
-
-    public void setAllowProjectiles(boolean allow) {
-        allowProjectiles = allow;
-    }
-
-    public void setKeepLevel(boolean keep) {
-        keepLevel = keep;
-    }
-
-    public void setAnnouncerRange(int range) {
-        this.announcerRange = range;
-    }
-
-    public int getAnnouncerRange() {
-        return announcerRange;
-    }
-
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    public void setSuddenDeath(int suddenDeath) {
-        this.suddenDeath = suddenDeath;
-    }
-
-    public void setStartCommands(String commands) {
-        startCommands = commands;
-    }
-
-    public void setEndCommands(String commands) {
-        endCommands = commands;
-    }
-
-    public void setBorder(int min, int max) {
-        borderMin = min;
-        borderMax = max;
-    }
-
     public void draw() {
         messageInGamePlayers("t:" + ChatColor.RED + "Out of Time!");
         announce(ChatColor.GRAY + "The " + ChatColor.YELLOW + getName() + ChatColor.GRAY + " match timed out in a draw");
@@ -2040,7 +1628,7 @@ public class Arena {
         boolean hasSuddenDeath = suddenDeath > 0 && suddenDeathEffect != null && suddenDeath < duration;
         if (currentTime >= duration - 120000 && previousTime < duration - 1200000) {
             announce(ChatColor.GOLD + "The " + ChatColor.YELLOW + getName() + ChatColor.GOLD + " match will "
-                + ChatColor.RED + "END" + ChatColor.GOLD + " in " + ChatColor.RED + "two minutes!");
+                    + ChatColor.RED + "END" + ChatColor.GOLD + " in " + ChatColor.RED + "two minutes!");
         }
         if (currentTime >= duration - 60000 && previousTime < duration - 60000) {
             announce(ChatColor.GOLD + "The " + ChatColor.YELLOW + getName() + ChatColor.GOLD + " match will "
@@ -2070,6 +1658,26 @@ public class Arena {
                 }
             }
         }
+    }
+
+    public int getMinPlayers() {
+        return minPlayers;
+    }
+
+    public int getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public int getQueuedPlayers() {
+        return queue.size();
+    }
+
+    public int getInGamePlayers() {
+        return players.size();
+    }
+
+    public Set<ArenaPlayer> getLivingParticipants() {
+        return players;
     }
 
     public boolean isValid() {
@@ -2107,11 +1715,7 @@ public class Arena {
     }
 
     public Mage getMage() {
-       return controller.getMagic().getMage("ARENA: " + getKey(), getName());
-    }
-
-    public void setLeaderboardSignType(Material material) {
-        this.signMaterial = material;
+        return controller.getMagic().getMage("ARENA: " + getKey(), getName());
     }
 
     public boolean isBattling(ArenaPlayer player) {
@@ -2122,8 +1726,8 @@ public class Arena {
         return stages;
     }
 
-    public void setEditAllStages(boolean all) {
-        this.editAllStages = all;
+    public void setEditDefaultStage(boolean all) {
+        this.editDefaultStage = all;
     }
 
     public long getLastDeathTime() {
@@ -2148,5 +1752,354 @@ public class Arena {
 
     public boolean hasDeadPlayers() {
         return !deadPlayers.isEmpty();
+    }
+
+    public void setRequiredKills(int requiedKils) {
+        this.requiredKills = requiedKils;
+        parameters.set("required_kills", requiredKills);
+    }
+
+    public void setWinXP(int xp) {
+        winXP = Math.max(xp, 0);
+        parameters.set("win_xp", winXP);
+    }
+
+    public void setLoseXP(int xp) {
+        loseXP = Math.max(xp, 0);
+        parameters.set("lose_xp", loseXP);
+    }
+
+    public void setDrawXP(int xp) {
+        drawXP = Math.max(xp, 0);
+        parameters.set("draw_xp", drawXP);
+    }
+
+    public int getWinXP() {
+        return winXP;
+    }
+
+    public int getLoseXP() {
+        return loseXP;
+    }
+
+    public int getDrawXP() {
+        return drawXP;
+    }
+
+    public void setWinSP(int sp) {
+        winSP = Math.max(sp, 0);
+        parameters.set("win_sp", winSP);
+    }
+
+    public void setLoseSP(int sp) {
+        loseSP = Math.max(sp, 0);
+        parameters.set("lose_sp", loseSP);
+    }
+
+    public void setDrawSP(int sp) {
+        drawSP = Math.max(sp, 0);
+        parameters.set("draw_sp", drawSP);
+    }
+
+    public int getWinSP() {
+        return winSP;
+    }
+
+    public int getLoseSP() {
+        return loseSP;
+    }
+
+    public int getDrawSP() {
+        return drawSP;
+    }
+
+    public void setWinMoney(int money) {
+        winMoney = Math.max(money, 0);
+        parameters.set("win_money", winMoney);
+    }
+
+    public void setLoseMoney(int money) {
+        loseMoney = Math.max(money, 0);
+        parameters.set("lose_money", loseMoney);
+    }
+
+    public void setDrawMoney(int money) {
+        drawMoney = Math.max(money, 0);
+        parameters.set("draw_money", drawMoney);
+    }
+
+    public int getWinMoney() {
+        return winMoney;
+    }
+
+    public int getLoseMoney() {
+        return loseMoney;
+    }
+
+    public int getDrawMoney() {
+        return drawMoney;
+    }
+
+    public void setMaxTeleportDistance(int distance) {
+        maxTeleportDistance = distance;
+        parameters.set("max_teleport_distance", maxTeleportDistance);
+    }
+
+    public int getMaxTeleportDistance() {
+        return maxTeleportDistance;
+    }
+
+    public void setCountdown(int countdown) {
+        this.countdown = countdown;
+        parameters.set("countdown", countdown);
+    }
+
+    public void setCountdownMax(int countdownMax) {
+        this.countdownMax = countdownMax;
+        parameters.set("countdown_max", countdownMax);
+    }
+
+    public boolean hasOpCheck() {
+        return opCheck;
+    }
+
+    public void setOpCheck(boolean check) {
+        opCheck = check;
+        parameters.set("op_check", opCheck);
+    }
+
+    public boolean getAllowInterrupt() {
+        return allowInterrupt;
+    }
+
+    public void setAllowInterrupt(boolean interrupt) {
+        allowInterrupt = interrupt;
+        parameters.set("allow_interrupt", allowInterrupt);
+    }
+
+    public void setKeepInventory(boolean keep) {
+        keepInventory = keep;
+        parameters.set("keep_inventory", keepInventory);
+    }
+
+    public void setItemWear(boolean wear) {
+        itemWear = wear;
+        parameters.set("item_wear", itemWear);
+    }
+
+    public void setAllowConsuming(boolean consume) {
+        allowConsuming = consume;
+        parameters.set("allow_consuming", allowConsuming);
+    }
+
+    public void setAllowMelee(boolean allow) {
+        allowMelee = allow;
+        parameters.set("allow_melee", allowMelee);
+    }
+
+    public void setAllowProjectiles(boolean allow) {
+        allowProjectiles = allow;
+        parameters.set("allow_projectiles", allowProjectiles);
+    }
+
+    public void setKeepLevel(boolean keep) {
+        keepLevel = keep;
+        parameters.set("keep_level", keepLevel);
+    }
+
+    public void setAnnouncerRange(int range) {
+        this.announcerRange = range;
+        parameters.set("announcer_range", announcerRange);
+    }
+
+    public int getAnnouncerRange() {
+        return announcerRange;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+        parameters.set("duration", duration);
+    }
+
+    public void setSuddenDeath(int suddenDeath) {
+        this.suddenDeath = suddenDeath;
+        parameters.set("sudden_death", suddenDeath);
+    }
+
+    public void setStartCommands(String commands) {
+        startCommands = commands;
+        parameters.set("start_commands", startCommands);
+    }
+
+    public void setEndCommands(String commands) {
+        endCommands = commands;
+        parameters.set("end_commands", endCommands);
+    }
+
+    public void setBorder(int min, int max) {
+        borderMin = min;
+        borderMax = max;
+        parameters.set("border_min", borderMin);
+        parameters.set("border_max", borderMax);
+    }
+
+    public void setTemplate(ArenaTemplate template) {
+        this.template = template;
+        reload();
+    }
+
+    public void setLeaderboardSignType(Material material) {
+        this.signMaterial = material;
+        parameters.set("leaderboard_sign_type", signMaterial.name().toLowerCase());
+    }
+
+    public void setMinPlayers(int players) {
+        minPlayers = Math.max(1, players);
+        parameters.set("min_players", minPlayers);
+    }
+
+    public void setMaxPlayers(int players) {
+        maxPlayers = players;
+        parameters.set("max_players", maxPlayers);
+    }
+
+    public void setRandomizeSpawn(Vector vector) {
+        randomizeSpawn = vector;
+        parameters.set("randomize.spawn", ConfigurationUtils.fromVector(randomizeSpawn));
+    }
+
+    public String getDescription() {
+        return description == null ? "" : description;
+    }
+
+    public String getName() {
+        return name == null ? key : name;
+    }
+
+    public String getKey() {
+        return key;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+        parameters.set("name", name);
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+        parameters.set("description", description);
+    }
+
+    public void setPortalEnterDamage(int damage) {
+        this.portalEnterDamage = damage;
+        parameters.set("portal_enter_damage", portalEnterDamage);
+    }
+
+    public int getPortalEnterDamage() {
+        return portalEnterDamage;
+    }
+
+    public void setPortalDamage(int damage) {
+        this.portalDamage = damage;
+        parameters.set("portal_damage", portalDamage);
+    }
+
+    public int getPortalDamage() {
+        return portalDamage;
+    }
+
+    public String getPortalDeathMessage() {
+        return portalDeathMessage;
+    }
+
+    public void setPortalDeathMessage(String message) {
+        this.portalDeathMessage = message;
+        parameters.set("portal_death_message", portalDeathMessage);
+    }
+
+    public void setCenter(Location location) {
+        center = location.clone();
+        // These are all saved relative to the center so we need to update them all
+        if (parameters.contains("exit")) setExit(exit);
+        if (parameters.contains("lobby")) setLobby(lobby);
+        if (parameters.contains("win")) setWinLocation(win);
+        if (parameters.contains("lose")) setLoseLocation(lose);
+        if (parameters.contains("spawns")) saveSpawns();
+        if (parameters.contains("leaderboard_sign_location")) saveLeaderboardLocation();
+    }
+
+    public void setExit(Location location) {
+        exit = location == null ? null : location.clone();
+        parameters.set("exit", ConfigurationUtils.fromLocation(exit, center));
+    }
+
+    public void setLobby(Location location) {
+        lobby = location == null ? null : location.clone();
+        parameters.set("lobby", ConfigurationUtils.fromLocation(lobby, center));
+    }
+
+    public void setWinLocation(Location location) {
+        win = location == null ? null : location.clone();
+        parameters.set("win", ConfigurationUtils.fromLocation(win, center));
+    }
+
+    public void setLoseLocation(Location location) {
+        lose = location == null ? null : location.clone();
+        parameters.set("lose", ConfigurationUtils.fromLocation(lose, center));
+    }
+
+    public void addSpawn(Location location) {
+        spawns.add(location.clone());
+        saveSpawns();
+    }
+
+    public void setSpawn(Location location) {
+        spawns.clear();
+        if (location != null) {
+            addSpawn(location);
+        }
+        saveSpawns();
+    }
+
+    public Location removeSpawn(Location location) {
+        int rangeSquared = 3 * 3;
+        for (Location spawn : spawns) {
+            if (spawn.distanceSquared(location) < rangeSquared) {
+                spawns.remove(spawn);
+                saveSpawns();
+                return spawn;
+            }
+        }
+
+        return null;
+    }
+
+    public List<Location> getSpawns() {
+        if (spawns.size() == 0) {
+            List<Location> centerList = new ArrayList<Location>();
+            centerList.add(center);
+            return centerList;
+        }
+
+        return spawns;
+    }
+
+    public void addMagicBlock(String magicBlock) {
+        if (magicBlocks == null) {
+            magicBlocks = new ArrayList<>();
+        }
+        magicBlocks.add(magicBlock);
+        parameters.set("magic_blocks", magicBlocks);
+    }
+
+    public boolean removeMagicBlock(String magicBlock) {
+        if (magicBlocks == null) {
+            return false;
+        }
+        boolean removed = magicBlocks.remove(magicBlock);
+        if (removed) {
+            parameters.set("magic_blocks", magicBlocks);
+        }
+        return removed;
     }
 }

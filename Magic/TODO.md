@@ -34,21 +34,20 @@
 
 ## Arenas
 
-- Really finish up the template work, creating an arena of an existing template doesn't even work
-- Add option to save inventory and class layout
+ - Change "all" stage to store common inherited stage properties (requires above to be done first)
+
+ - Add option to save inventory and class layout
    - Mage stored inventories need to be by key
    - Restore all inventories on login, if restoring inventories remove any spells
    - Restore classes on login (save these by key, too?
-- Add class selector option
+ - Add class selector option
 
-- Convert to storing configs rather than rebuilding, this will allow cleaner configs
-- Change "all" stage to store common inherited stage properties (requires above to be done first)
-- Arena auto-build/repair using schematics
-- A way for examples to provide schematics
-- Prevent players teleporting into an arena
+ - Arena auto-build/repair using schematics
+ - A way for examples to provide schematics
+ - Prevent players teleporting into an arena
    - Or at least teleporting to a player in an arena?
    - And don't save their death location
-- Prevent spiders climbing?
+ - Prevent spiders climbing?
 
 # New API
 

@@ -27,223 +27,42 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
-public class ArenaStage implements EditingStage {
+public class ArenaStage extends ArenaStageTemplate {
     private static Random random = new Random();
-    private final Arena arena;
     private int index;
-    private List<ArenaMobSpawner> mobs = new ArrayList<>();
-    private List<Location> mobSpawns = new ArrayList<>();
-    private Map<Entity, ArenaPlayer> spawned = new WeakHashMap<>();
-    private String startSpell;
-    private String endSpell;
     private String name;
 
-    private Vector randomizeMobSpawn;
-
-    private int winXP = 0;
-    private int winSP = 0;
-    private int winMoney = 0;
-    private int duration = 0;
-    private int respawnDuration = 0;
-
-    private boolean defaultDrops = false;
-    private boolean forceTarget = true;
-
+    private Map<Entity, ArenaPlayer> spawned = new WeakHashMap<>();
     private long started;
     private long lastTick;
 
     public ArenaStage(Arena arena, int index) {
-        this.arena = arena;
+        super(arena);
         this.index = index;
     }
 
-    public ArenaStage(Arena arena, int index, MageController controller, ConfigurationSection configuration) {
-        this.arena = arena;
+    public ArenaStage(Arena arena, int index, ConfigurationSection configuration) {
+        super(arena, configuration);
         this.index = index;
-        if (configuration.contains("mobs")) {
-            Collection<ConfigurationSection> mobConfigurations = ConfigurationUtils.getNodeList(configuration, "mobs");
-            for (ConfigurationSection mobConfiguration : mobConfigurations) {
-                ArenaMobSpawner mob = new ArenaMobSpawner(controller, mobConfiguration);
-                if (mob.isValid()) {
-                    mobs.add(mob);
-                }
-            }
-        }
-        startSpell = configuration.getString("spell_start");
-        endSpell = configuration.getString("spell_end");
+    }
 
-        for (String s : configuration.getStringList("mob_spawns")) {
-            mobSpawns.add(ConfigurationUtils.toLocation(s, arena.getCenter()));
-        }
+    @Override
+    protected void load() {
+        ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(configuration);
+        DefaultStage defaultStage = arena.getDefaultStage();
+        ConfigurationUtils.addConfigurations(effectiveConfiguration, defaultStage.configuration, false);
+        super.load(effectiveConfiguration);
+    }
+
+    @Override
+    protected void load(ConfigurationSection configuration) {
+        super.load(configuration);
         name = configuration.getString("name");
-        winXP = configuration.getInt("win_xp");
-        winSP = configuration.getInt("win_sp");
-        winMoney = configuration.getInt("win_money");
-        defaultDrops = configuration.getBoolean("drops");
-        forceTarget = configuration.getBoolean("aggro", true);
-        duration = configuration.getInt("duration", 0);
-        respawnDuration = configuration.getInt("respawn_duration", 0);
-
-        if (configuration.contains("randomize_mob_spawn")) {
-            randomizeMobSpawn = ConfigurationUtils.toVector(configuration.getString("randomize_mob_spawn"));
-        }
-    }
-
-    public void save(ConfigurationSection configuration) {
-        List<ConfigurationSection> mobsConfigurations = new ArrayList<ConfigurationSection>();
-        for (ArenaMobSpawner mob : mobs) {
-            if (!mob.isValid()) continue;
-            ConfigurationSection section = new MemoryConfiguration();
-            mob.save(section);
-            mobsConfigurations.add(section);
-        }
-        configuration.set("mobs", mobsConfigurations);
-        configuration.set("spell_start", startSpell);
-        configuration.set("spell_end", endSpell);
-
-        List<String> mobSpawnList = new ArrayList<>();
-        for (Location spawn : mobSpawns) {
-            mobSpawnList.add(ConfigurationUtils.fromLocation(spawn, arena.getCenter()));
-        }
-        configuration.set("mob_spawns", mobSpawnList);
-        if (name != null && !name.isEmpty()) configuration.set("name", name);
-        if (winXP != 0) configuration.set("win_xp", winXP);
-        if (winSP != 0) configuration.set("win_sp", winSP);
-        if (winMoney != 0) configuration.set("win_money", winMoney);
-        configuration.set("drops", defaultDrops);
-        configuration.set("aggro", forceTarget);
-        if (duration != 0) configuration.set("duration", duration);
-        if (respawnDuration != 0) configuration.set("respawn_duration", respawnDuration);
-
-        if (randomizeMobSpawn != null) {
-            configuration.set("randomize_mob_spawn", ConfigurationUtils.fromVector(randomizeMobSpawn));
-        }
-    }
-
-    @Override
-    public void addMob(EntityData entityType, int count) {
-        mobs.add(new ArenaMobSpawner(entityType, count));
-    }
-
-    @Override
-    public void removeMob(EntityData entityType) {
-        Iterator<ArenaMobSpawner> it = mobs.iterator();
-        while (it.hasNext()) {
-            ArenaMobSpawner spawner = it.next();
-            if (spawner.getEntity().getKey().equalsIgnoreCase(entityType.getKey())) {
-                it.remove();
-            }
-        }
     }
 
     public void describe(CommandSender sender) {
         sender.sendMessage(ChatColor.AQUA + getName() + ChatColor.GRAY + " (" + ChatColor.DARK_AQUA + getNumber() + ChatColor.GRAY + ")");
-        int mobSpawnSize = mobSpawns.size();
-        if (mobSpawnSize == 1) {
-            sender.sendMessage(ChatColor.BLUE + "Spawn Mobs: " + arena.printLocation(mobSpawns.get(0)));
-        } else if (mobSpawnSize > 1) {
-            sender.sendMessage(ChatColor.BLUE + "Spawns Mobs: " + ChatColor.GRAY + mobSpawnSize);
-            for (Location spawn : mobSpawns) {
-                sender.sendMessage(arena.printLocation(spawn));
-            }
-        }
-
-        int numMobs = mobs.size();
-        if (numMobs == 0) {
-            sender.sendMessage(ChatColor.GRAY + "(No Mobs)");
-        } else {
-            sender.sendMessage(ChatColor.DARK_GREEN + "Mobs: " + ChatColor.BLUE + numMobs);
-            for (ArenaMobSpawner mob : mobs) {
-                sender.sendMessage(" " + describeMob(mob));
-            }
-        }
-        if (randomizeMobSpawn != null) {
-            sender.sendMessage(ChatColor.DARK_GREEN + " Randomize Spawning: " + ChatColor.BLUE + randomizeMobSpawn);
-        }
-
-        if (duration > 0) {
-            int minutes = (int)Math.ceil((double)duration / 60 / 1000);
-            sender.sendMessage(ChatColor.AQUA + "Duration: " + ChatColor.DARK_AQUA + minutes + ChatColor.WHITE + " minutes");
-        }
-
-        if (respawnDuration > 0) {
-            int seconds = (int)Math.ceil((double)respawnDuration / 1000);
-            sender.sendMessage(ChatColor.AQUA + "Respawn: " + ChatColor.DARK_AQUA + seconds + ChatColor.WHITE + " seconds");
-        }
-
-        if (startSpell != null) {
-            sender.sendMessage(ChatColor.DARK_AQUA + "Cast at Start: " + ChatColor.AQUA + startSpell);
-        }
-
-        if (endSpell != null) {
-            sender.sendMessage(ChatColor.DARK_AQUA + "Cast at End: " + ChatColor.AQUA + endSpell);
-        }
-
-        if (winXP > 0) {
-            sender.sendMessage(ChatColor.AQUA + "Winning Reward: " + ChatColor.LIGHT_PURPLE + winXP + ChatColor.AQUA + " xp");
-        }
-        if (winSP > 0) {
-            sender.sendMessage(ChatColor.AQUA + "Winning Reward: " + ChatColor.LIGHT_PURPLE + winSP + ChatColor.AQUA + " sp");
-        }
-        if (winMoney > 0) {
-            sender.sendMessage(ChatColor.AQUA + "Winning Reward: $" + ChatColor.LIGHT_PURPLE + winMoney);
-        }
-    }
-
-    protected String describeMob(ArenaMobSpawner mob) {
-        if (mob == null) {
-            return ChatColor.RED + "(Invalid Mob)";
-        }
-        if (mob.getEntity() == null) {
-            return ChatColor.RED + "(Invalid Mob)" + ChatColor.YELLOW + " x" + mob.getCount();
-        }
-        return ChatColor.DARK_GREEN + " " + mob.getEntity().describe() + ChatColor.YELLOW + " x" + mob.getCount();
-    }
-
-    public String getStartSpell() {
-        return startSpell;
-    }
-
-    @Override
-    public void setStartSpell(String startSpell) {
-        this.startSpell = startSpell;
-    }
-
-    public String getEndSpell() {
-        return endSpell;
-    }
-
-    @Override
-    public void setEndSpell(String endSpell) {
-        this.endSpell = endSpell;
-    }
-
-    @Override
-    public void addMobSpawn(Location location) {
-        mobSpawns.add(location.clone());
-    }
-
-    @Override
-    public Location removeMobSpawn(Location location) {
-        int rangeSquared = 3 * 3;
-        for (Location spawn : mobSpawns) {
-            if (spawn.distanceSquared(location) < rangeSquared) {
-                mobSpawns.remove(spawn);
-                return spawn;
-            }
-        }
-
-        return null;
-    }
-
-    public List<Location> getMobSpawns() {
-        if (mobSpawns.size() == 0) {
-            List<Location> centerList = new ArrayList<Location>();
-            centerList.add(arena.getCenter());
-            return centerList;
-        }
-
-        return mobSpawns;
+        super.describe(sender);
     }
 
     public void start() {
@@ -366,10 +185,6 @@ public void checkAggro(Entity mob) {
         reset();
     }
 
-    public boolean hasMobs() {
-        return !mobs.isEmpty();
-    }
-
     public boolean isFinished() {
         checkSpawns();
         return spawned.isEmpty();
@@ -412,11 +227,8 @@ public void checkAggro(Entity mob) {
     @Override
     public void setName(String name) {
         this.name = name;
-    }
-
-    @Override
-    public Arena getArena() {
-        return arena;
+        configuration.set("name", name);
+        arena.saveStages();
     }
 
     public int getNumber() {
@@ -433,30 +245,6 @@ public void checkAggro(Entity mob) {
         spawned.clear();
     }
 
-    @Override
-    public void setRandomizeMobSpawn(Vector vector) {
-        randomizeMobSpawn = vector;
-    }
-
-    @Override
-    public void setWinXP(int xp) {
-        winXP = Math.max(xp, 0);
-    }
-
-    @Override
-    public void setWinSP(int sp) {
-        winSP = Math.max(sp, 0);
-    }
-
-    @Override
-    public void setWinMoney(int money) {
-        winMoney = Math.max(money, 0);
-    }
-
-    public List<ArenaMobSpawner> getMobSpawners() {
-        return mobs;
-    }
-
     public int getActiveMobs() {
         checkSpawns();
         return spawned.size();
@@ -466,38 +254,8 @@ public void checkAggro(Entity mob) {
         this.index = index;
     }
 
-    @Override
-    public Collection<EntityData> getSpawns() {
-        List<EntityData> spawns = new ArrayList<>();
-        List<ArenaMobSpawner> spawners = getMobSpawners();
-        for (ArenaMobSpawner spawner : spawners) {
-            if (spawner.isValid()) {
-                spawns.add(spawner.getEntity());
-            }
-        }
-        return spawns;
-    }
-
-    @Override
-    public void setDuration(int duration) {
-        this.duration = duration;
-    }
-
-    @Override
-    public void setRespawnDuration(int duration) {
-        this.respawnDuration = duration;
-    }
-
-    public long getRespawnDuration() {
-        return respawnDuration;
-    }
-
     public boolean isRespawning() {
         return (arena.hasDeadPlayers() && respawnDuration > 0);
-    }
-
-    public boolean isRespawnEnabled() {
-        return respawnDuration > 0;
     }
 
     public void tick() {

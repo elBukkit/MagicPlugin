@@ -3,7 +3,9 @@ package com.elmakers.mine.bukkit.magic.command;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -24,6 +26,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.arena.Arena;
 import com.elmakers.mine.bukkit.arena.ArenaController;
 import com.elmakers.mine.bukkit.arena.ArenaPlayer;
+import com.elmakers.mine.bukkit.arena.ArenaTemplate;
+import com.elmakers.mine.bukkit.arena.DefaultStage;
 import com.elmakers.mine.bukkit.arena.EditingStage;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -33,7 +37,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
     };
 
     private static final String[] STAGE_PROPERTIES = {
-        "sp_win", "xp_win", "money_win", "randomize", "spell_start", "spell_end", "add", "remove",
+        "win_xs", "win_xp", "win_money", "randomize", "spell_start", "spell_end", "add", "remove",
         "duration", "respawn_duration"
     };
 
@@ -55,10 +59,10 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         "add", "remove", "randomize", "name", "description", "portal_damage",
         "portal_enter_damage", "portal_death_message", "leaderboard_games_required",
         "leaderboard_size", "leaderboard_record_size", "max_teleport_distance",
-        "xp_win", "xp_lose", "xp_draw", "countdown", "countdown_max", "op_check", "allow_interrupt",
-        "announcer_range", "sp_win", "sp_lose", "sp_draw", "duration", "sudden_death",
+        "win_xp", "lose_xp", "draw_xp", "countdown", "countdown_max", "op_check", "allow_interrupt",
+        "announcer_range", "win_xs", "lose_sp", "draw_sp", "duration", "sudden_death",
         "sudden_death_effect", "start_commands", "end_commands", "border", "keep_inventory", "keep_level",
-        "money_win", "money_lose", "money_draw", "item_wear",
+        "win_money", "lose_money", "draw_money", "item_wear",
         "allow_consuming", "leaderboard_sign_type", "allow_melee", "allow_projectiles"
     };
 
@@ -89,13 +93,21 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         } else if (args.length == 2 && args[0].equalsIgnoreCase("leave")) {
             options.addAll(arenaController.getMagic().getPlayerNames());
         } else if (args.length == 2) {
-            Collection<Arena> arenas = arenaController.getArenas();
-            for (Arena arena : arenas) {
-                options.add(arena.getKey());
+            if (args[0].equalsIgnoreCase("add")) {
+                Set<String> unusedTemplates = new HashSet<>(controller.getArenaTemplateKeys());
+                unusedTemplates.removeAll(arenaController.getArenaKeys());
+                options.addAll(unusedTemplates);
+            } else {
+                Collection<Arena> arenas = arenaController.getArenas();
+                for (Arena arena : arenas) {
+                    options.add(arena.getKey());
+                }
+                if (args[0].equalsIgnoreCase("reset")) {
+                    options.add("ALL");
+                }
             }
-            if (args[0].equalsIgnoreCase("reset")) {
-                options.add("ALL");
-            }
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("add")) {
+            options.addAll(controller.getArenaTemplateKeys());
         } else if (args.length == 3 && args[0].equalsIgnoreCase("stage")) {
             options.addAll(Arrays.asList(STAGE_COMMANDS));
         } else if (args.length == 3 && args[0].equalsIgnoreCase("configure")) {
@@ -119,6 +131,10 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 || args[2].equalsIgnoreCase("allow_interrupt")
                 )) {
             options.addAll(Arrays.asList(BOOLEAN_PROPERTIES));
+        } else if (args.length == 3 && args[0].equalsIgnoreCase("configure") && args[2].equalsIgnoreCase("template")) {
+            for (String templateKey : arenaController.getArenaTemplateKeys()) {
+                options.add(templateKey);
+            }
         } else if (args.length == 4 && args[0].equalsIgnoreCase("configure") && (args[2].equalsIgnoreCase("add") || args[2].equalsIgnoreCase("remove")) && args[3].equalsIgnoreCase("magic_block")) {
             for (MagicBlock magicBlock : controller.getMagicBlocks()) {
                 options.add(magicBlock.getName());
@@ -267,13 +283,18 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             }
             Player player = (Player) sender;
             Location location = player.getLocation();
-            String templateKey = arenaName.toLowerCase();
+            ArenaTemplate template = null;
             if (args.length > 2) {
-                templateKey = args[2];
+                template = arenaController.getTemplate(args[2]);
+                if (template == null) {
+                    sender.sendMessage(ChatColor.RED + "Unknown arena template: " + ChatColor.WHITE + args[2]);
+                    return true;
+                }
+            } else {
+                template = arenaController.getTemplate(arenaName);
             }
             if (arena == null) {
-                arena = arenaController.addArena(arenaName, templateKey, location);
-                arena.saveTemplate();
+                arena = arenaController.addArena(arenaName, template, location);
                 player.sendMessage(ChatColor.AQUA + "Arena Created: " + arena.getName());
             } else {
                 sender.sendMessage(ChatColor.AQUA + "Arena already exists!");
@@ -433,7 +454,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 onNameArenaStage(sender, arena, args);
                 break;
             case "all":
-                onAllArenaStage(sender, arena);
+                onDefaultArenaStage(sender, arena);
                 break;
             case "go":
                 onGoArenaStage(sender, arena, args);
@@ -477,19 +498,16 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
     protected void onAddAfterArenaStage(CommandSender sender, Arena arena) {
         arena.addStageAfterCurrent();
         showCurrentStage(sender, arena);
-        arena.saveTemplate();
     }
 
     protected void onAddBeforeArenaStage(CommandSender sender, Arena arena) {
         arena.addStageBeforeCurrent();
         showCurrentStage(sender, arena);
-        arena.saveTemplate();
     }
 
     protected void onAddArenaStage(CommandSender sender, Arena arena) {
         arena.addStage();
         showCurrentStage(sender, arena);
-        arena.saveTemplate();
     }
 
     protected void onRemoveArenaStage(CommandSender sender, Arena arena) {
@@ -502,7 +520,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         arena.removeStage();
         sender.sendMessage(ChatColor.AQUA + "Removed stage: " + ChatColor.DARK_AQUA + stage.getFullName());
         showCurrentStage(sender, arena);
-        arena.saveTemplate();
     }
 
     protected void showCurrentStage(CommandSender sender, Arena arena) {
@@ -602,13 +619,17 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         arena.describeStages(sender);
     }
 
-    protected void onAllArenaStage(CommandSender sender, Arena arena) {
-        arena.setEditAllStages(true);
-        sender.sendMessage("Arena " + ChatColor.AQUA + arena.getName() + ChatColor.WHITE + " now editing all stages at once");
+    protected void onDefaultArenaStage(CommandSender sender, Arena arena) {
+        arena.setEditDefaultStage(true);
+        sender.sendMessage("Arena " + ChatColor.AQUA + arena.getName() + ChatColor.WHITE + " now editing stage defaults");
     }
 
     protected void onNameArenaStage(CommandSender sender, Arena arena, String[] args) {
         EditingStage stage = arena.getEditingStage();
+        if (stage instanceof DefaultStage) {
+            sender.sendMessage(ChatColor.RED + "Can't rename default stage");
+            return;
+        }
         if (args.length == 0) {
             stage.setName(null);
             sender.sendMessage("Cleared name of " + ChatColor.YELLOW + stage.getName());
@@ -617,7 +638,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         String name = StringUtils.join(args, " ");
         stage.setName(name);
         sender.sendMessage("Set name to " + ChatColor.YELLOW + stage.getName());
-        arena.saveTemplate();
     }
 
     protected void onConfigureArenaStage(CommandSender sender, EditingStage stage, String[] args) {
@@ -648,7 +668,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                     sender.sendMessage(ChatColor.AQUA + "Set randomized mob_spawn of " + stage.getFullName() + " to " + vector);
                     stage.setRandomizeMobSpawn(vector);
                 }
-                arena.saveTemplate();
                 return;
             }
 
@@ -677,12 +696,10 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
 
                     if (isAdd) {
                         stage.addMobSpawn(location);
-                        arena.saveTemplate();
                         sender.sendMessage(ChatColor.AQUA + "You have added a mob spawn location!");
                     } else {
                         Location removed = stage.removeMobSpawn(location);
                         if (removed != null) {
-                            arena.saveTemplate();
                             sender.sendMessage(ChatColor.AQUA + "You have removed a mob spawn location at: " + removed.toVector());
                         } else {
                             sender.sendMessage(ChatColor.RED + "No nearby mob spawn locations");
@@ -712,7 +729,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                         return;
                     }
                     stage.addMob(mobType, count);
-                    arena.saveTemplate();
                     sender.sendMessage(ChatColor.AQUA + "Added " + ChatColor.YELLOW + count + ChatColor.BLUE
                             + " " + mobType.describe() + ChatColor.AQUA + " to " + ChatColor.GOLD + stage.getFullName());
                     return;
@@ -729,7 +745,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                         return;
                     }
                     stage.removeMob(mobType);
-                    arena.saveTemplate();
                     sender.sendMessage(ChatColor.AQUA + "Removed " + ChatColor.BLUE
                             + mobType.describe() + ChatColor.AQUA + " from " + ChatColor.GOLD + stage.getFullName());
                     return;
@@ -754,7 +769,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.AQUA + "Changed name of " + stage.getFullName() + " to " + propertyValue);
             }
             stage.setName(propertyValue);
-            arena.saveTemplate();
             return;
         }
 
@@ -765,7 +779,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             } else {
                 sender.sendMessage(ChatColor.AQUA + "Set start spell for " + stage.getFullName());
             }
-            arena.saveTemplate();
             return;
         }
 
@@ -776,7 +789,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             } else {
                 sender.sendMessage(ChatColor.AQUA + "Set end spell for " + stage.getFullName());
             }
-            arena.saveTemplate();
             return;
         }
 
@@ -796,35 +808,30 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         if (propertyName.equalsIgnoreCase("duration")) {
             stage.setDuration(intValue * 1000);
             sender.sendMessage(ChatColor.AQUA + "Set duration of " + stage.getFullName() + " to " + intValue + " seconds");
-            arena.saveTemplate();
             return;
         }
 
         if (propertyName.equalsIgnoreCase("respawn_duration")) {
             stage.setRespawnDuration(intValue * 1000);
             sender.sendMessage(ChatColor.AQUA + "Set respawn duration of " + stage.getFullName() + " to " + intValue + " seconds");
-            arena.saveTemplate();
             return;
         }
 
-        if (propertyName.equalsIgnoreCase("sp_win")) {
+        if (propertyName.equalsIgnoreCase("win_xs")) {
             stage.setWinSP(intValue);
             sender.sendMessage(ChatColor.AQUA + "Set winning SP of " + stage.getFullName() + " to " + intValue);
-            arena.saveTemplate();
             return;
         }
 
-        if (propertyName.equalsIgnoreCase("xp_win")) {
+        if (propertyName.equalsIgnoreCase("win_xp")) {
             stage.setWinXP(intValue);
             sender.sendMessage(ChatColor.AQUA + "Set winning XP of " + stage.getFullName() + " to " + intValue);
-            arena.saveTemplate();
             return;
         }
 
-        if (propertyName.equalsIgnoreCase("money_win")) {
+        if (propertyName.equalsIgnoreCase("win_money")) {
             stage.setWinMoney(intValue);
             sender.sendMessage(ChatColor.AQUA + "Set winning money of " + stage.getFullName() + " to " + intValue);
-            arena.saveTemplate();
             return;
         }
 
@@ -854,7 +861,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                     sender.sendMessage(ChatColor.AQUA + "Set randomized spawn of " + arena.getName() + " to " + vector);
                     arena.setRandomizeSpawn(vector);
                 }
-                arena.saveTemplate();
                 return;
             }
 
@@ -889,12 +895,10 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
 
                     if (isAdd) {
                         arena.addSpawn(location);
-                        arena.saveTemplate();
                         sender.sendMessage(ChatColor.AQUA + "You have added a spawn location!");
                     } else {
                         Location removed = arena.removeSpawn(location);
                         if (removed != null) {
-                            arena.saveTemplate();
                             sender.sendMessage(ChatColor.AQUA + "You have removed a spawn location at: " + removed.toVector());
                         } else {
                             sender.sendMessage(ChatColor.RED + "No nearby spawn locations");
@@ -918,12 +922,10 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                         }
                         magicBlock.disable();
                         arena.addMagicBlock(blockKey);
-                        arena.saveTemplate();
                         sender.sendMessage(ChatColor.AQUA + "You have added a magic block to this arena: " + ChatColor.DARK_AQUA + blockKey);
                     } else {
                         boolean removed = arena.removeMagicBlock(blockKey);
                         if (removed) {
-                            arena.saveTemplate();
                             sender.sendMessage(ChatColor.AQUA + "You have removed the magic block: " + ChatColor.DARK_AQUA + blockKey);
                         } else {
                             sender.sendMessage(ChatColor.RED + "This arena doesn't have a magic block " + ChatColor.YELLOW + blockKey);
@@ -947,27 +949,21 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
 
             if (propertyName.equalsIgnoreCase("lobby")) {
                 arena.setLobby(location);
-                arena.saveTemplate();
                 sender.sendMessage(ChatColor.AQUA + "You have set the lobby!");
             } else if (propertyName.equalsIgnoreCase("spawn")) {
                 arena.setSpawn(location);
-                arena.saveTemplate();
                 sender.sendMessage(ChatColor.AQUA + "You have set the spawn location!");
             } else if (propertyName.equalsIgnoreCase("exit")) {
                 arena.setExit(location);
-                arena.saveTemplate();
                 sender.sendMessage(ChatColor.AQUA + "You have set the exit location!");
             } else if (propertyName.equalsIgnoreCase("center")) {
                 arena.setCenter(location);
-                arena.saveTemplate();
                 sender.sendMessage(ChatColor.AQUA + "You have set the center location!");
             } else if (propertyName.equalsIgnoreCase("lose")) {
                 arena.setLoseLocation(location);
-                arena.saveTemplate();
                 sender.sendMessage(ChatColor.AQUA + "You have set the spectating room!");
             } else if (propertyName.equalsIgnoreCase("win")) {
                 arena.setWinLocation(location);
-                arena.saveTemplate();
                 sender.sendMessage(ChatColor.AQUA + "You have set the treasure room!");
             }
 
@@ -985,7 +981,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.AQUA + "Changed name of " + arena.getName() + " to " + propertyValue);
             }
             arena.setName(propertyValue);
-            arena.saveTemplate();
             return;
         }
         if (propertyName.equalsIgnoreCase("description")) {
@@ -995,7 +990,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.AQUA + "Change description of " + arena.getName() + " to " + propertyValue);
             }
             arena.setDescription(propertyValue);
-            arena.saveTemplate();
             return;
         }
 
@@ -1007,7 +1001,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.AQUA + "Change portal death message of " + arena.getName() + " to " + propertyValue);
             }
             arena.setPortalDeathMessage(propertyValue);
-            arena.saveTemplate();
             return;
         }
 
@@ -1027,7 +1020,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             } else {
                 sender.sendMessage(ChatColor.AQUA + "Set start commands for " + arena.getName());
             }
-            arena.saveTemplate();
             return;
         }
 
@@ -1038,7 +1030,22 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             } else {
                 sender.sendMessage(ChatColor.AQUA + "Set end commands for " + arena.getName());
             }
-            arena.saveTemplate();
+            return;
+        }
+
+        if (propertyName.equalsIgnoreCase("template")) {
+            if (propertyValue == null) {
+                arena.setTemplate(null);
+                sender.sendMessage(ChatColor.YELLOW + "Cleared template for " + ChatColor.GOLD + arena.getName());
+                return;
+            }
+            ArenaTemplate template = arenaController.getTemplate(propertyValue);
+            if (template == null) {
+                sender.sendMessage(ChatColor.RED + "Unknown arena tempalte " + ChatColor.YELLOW + propertyValue);
+                return;
+            }
+            arena.setTemplate(template);
+            sender.sendMessage(ChatColor.AQUA + "Set template to " + ChatColor.DARK_AQUA + propertyValue);
             return;
         }
 
@@ -1066,7 +1073,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
 
                 }
                 arena.setBorder(min, max);
-                arena.saveTemplate();
                 sender.sendMessage(ChatColor.AQUA + "Set border for " + arena.getName() + " to " + max + "-" + min);
             }
             return;
@@ -1086,7 +1092,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.AQUA + "Disabled OP check for " + arena.getName());
             }
             arena.setOpCheck(checkOn);
-            arena.saveTemplate();
             return;
         }
 
@@ -1099,7 +1104,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.AQUA + "Don't allow joining mid-match for " + arena.getName());
             }
             arena.setAllowInterrupt(checkOn);
-            arena.saveTemplate();
             return;
         }
 
@@ -1112,7 +1116,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Disabled keep inventory for " + arena.getName());
             }
             arena.setKeepInventory(keepOn);
-            arena.saveTemplate();
             return;
         }
 
@@ -1125,7 +1128,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Disabled item wear for " + arena.getName());
             }
             arena.setItemWear(wear);
-            arena.saveTemplate();
             return;
         }
 
@@ -1138,7 +1140,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Disabled consuming for " + arena.getName());
             }
             arena.setAllowConsuming(consume);
-            arena.saveTemplate();
             return;
         }
 
@@ -1151,7 +1152,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Disabled melee for " + arena.getName());
             }
             arena.setAllowMelee(allow);
-            arena.saveTemplate();
             return;
         }
 
@@ -1164,7 +1164,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Disabled projectile weapons for " + arena.getName());
             }
             arena.setAllowProjectiles(allow);
-            arena.saveTemplate();
             return;
         }
 
@@ -1175,7 +1174,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 arena.setLeaderboardSignType(signMaterial);
                 sender.sendMessage(ChatColor.RED + "Set leaderboard sign type to " + signMaterial.name().toLowerCase());
                 arena.updateLeaderboard();
-                arena.saveTemplate();
             } catch (Exception ex) {
                 sender.sendMessage(ChatColor.RED + "Invalid sign type: " + propertyValue);
             }
@@ -1191,7 +1189,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Disabled keep XP levels for " + arena.getName());
             }
             arena.setKeepLevel(keepOn);
-            arena.saveTemplate();
             return;
         }
 
@@ -1199,9 +1196,9 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             || propertyName.equalsIgnoreCase("portal_damage") || propertyName.equalsIgnoreCase("portal_enter_damage")
             || propertyName.equalsIgnoreCase("leaderboard_games_required") || propertyName.equalsIgnoreCase("leaderboard_size")
             || propertyName.equalsIgnoreCase("leaderboard_record_size") || propertyName.equalsIgnoreCase("max_teleport_distance")
-            || propertyName.equalsIgnoreCase("xp_win") || propertyName.equalsIgnoreCase("xp_lose") || propertyName.equalsIgnoreCase("xp_draw")
-            || propertyName.equalsIgnoreCase("sp_win") || propertyName.equalsIgnoreCase("sp_lose") || propertyName.equalsIgnoreCase("sp_draw")
-            || propertyName.equalsIgnoreCase("money_win") || propertyName.equalsIgnoreCase("money_lose") || propertyName.equalsIgnoreCase("money_draw")
+            || propertyName.equalsIgnoreCase("win_xp") || propertyName.equalsIgnoreCase("lose_xp") || propertyName.equalsIgnoreCase("draw_xp")
+            || propertyName.equalsIgnoreCase("win_xs") || propertyName.equalsIgnoreCase("lose_sp") || propertyName.equalsIgnoreCase("draw_sp")
+            || propertyName.equalsIgnoreCase("win_money") || propertyName.equalsIgnoreCase("lose_money") || propertyName.equalsIgnoreCase("draw_money")
             || propertyName.equalsIgnoreCase("countdown") || propertyName.equalsIgnoreCase("countdown_max") || propertyName.equalsIgnoreCase("announcer_range")
             || propertyName.equalsIgnoreCase("duration") || propertyName.equalsIgnoreCase("sudden_death")
         ) {
@@ -1220,154 +1217,132 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             if (propertyName.equalsIgnoreCase("duration")) {
                 arena.setDuration(intValue * 1000);
                 sender.sendMessage(ChatColor.AQUA + "Set duration of " + arena.getName() + " to " + intValue + " seconds");
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("sudden_death")) {
                 arena.setSuddenDeath(intValue * 1000);
                 sender.sendMessage(ChatColor.AQUA + "Set sudden death time of " + arena.getName() + " to " + intValue + " seconds before end");
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("countdown")) {
                 arena.setCountdown(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set countdown of " + arena.getName() + " to " + intValue + " seconds");
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("countdown_max")) {
                 arena.setCountdownMax(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set max countdown of " + arena.getName() + " to " + intValue + " seconds");
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("max_teleport_distance")) {
                 arena.setMaxTeleportDistance(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set max teleport distance of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("announcer_range")) {
                 arena.setAnnouncerRange(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set announcer range of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("leaderboard_games_required")) {
                 arena.setLeaderboardGamesRequired(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set # games required for leaderboard on " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("leaderboard_size")) {
                 arena.setLeaderboardSize(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set leaderboard size of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("leaderboard_record_size")) {
                 arena.setLeaderboardRecordSize(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set leaderboard record size of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("min")) {
                 arena.setMinPlayers(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set min players of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("max")) {
                 arena.setMaxPlayers(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set max players of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("xp_win")) {
+            if (propertyName.equalsIgnoreCase("win_xp")) {
                 arena.setWinXP(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set winning XP of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("xp_lose")) {
+            if (propertyName.equalsIgnoreCase("lose_xp")) {
                 arena.setLoseXP(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set losing XP of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("xp_draw")) {
+            if (propertyName.equalsIgnoreCase("draw_xp")) {
                 arena.setDrawXP(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set draw XP of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("sp_win")) {
+            if (propertyName.equalsIgnoreCase("win_xs")) {
                 arena.setWinSP(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set winning SP of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("sp_lose")) {
+            if (propertyName.equalsIgnoreCase("lose_sp")) {
                 arena.setLoseSP(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set losing SP of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("sp_draw")) {
+            if (propertyName.equalsIgnoreCase("draw_sp")) {
                 arena.setDrawSP(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set draw SP of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("money_win")) {
+            if (propertyName.equalsIgnoreCase("win_money")) {
                 arena.setWinMoney(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set winning money of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("money_lose")) {
+            if (propertyName.equalsIgnoreCase("lose_money")) {
                 arena.setLoseMoney(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set losing money of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("money_draw")) {
+            if (propertyName.equalsIgnoreCase("draw_money")) {
                 arena.setDrawMoney(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set draw money of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("portal_damage")) {
                 arena.setPortalDamage(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set portal damage of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
 
             if (propertyName.equalsIgnoreCase("portal_enter_damage")) {
                 arena.setPortalEnterDamage(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set portal entry damage of " + arena.getName() + " to " + intValue);
-                arena.saveTemplate();
                 return;
             }
         }

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
+import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -29,7 +30,6 @@ public class ArenaController implements Runnable {
     private final Map<Entity, Arena> arenaMobs = new WeakHashMap<>();
     private final Plugin plugin;
     private final MageController magic;
-    private final Object saveLock = new Object();
 
     public ArenaController(MageController magic) {
         this.magic = magic;
@@ -41,20 +41,15 @@ public class ArenaController implements Runnable {
         scheduler.runTaskTimer(plugin, this, 1, 10);
     }
 
-    public Arena addArena(String arenaName, String templateKey, Location location) {
-        ArenaTemplate template = getTemplate(templateKey);
+    public Arena addArena(String arenaName, ArenaTemplate template, Location location) {
         Arena arena = new Arena(arenaName, template, this, location);
         arenas.put(arenaName, arena);
         return arena;
     }
 
+    @Nullable
     public ArenaTemplate getTemplate(String templateKey) {
-        ArenaTemplate arenaTemplate = templates.get(templateKey);
-        if (arenaTemplate == null) {
-            arenaTemplate = new ArenaTemplate(templateKey);
-            templates.put(templateKey, arenaTemplate);
-        }
-        return arenaTemplate;
+        return templates.get(templateKey);
     }
 
     public void saveData(ConfigurationSection configuration) {
@@ -143,7 +138,7 @@ public class ArenaController implements Runnable {
     public void remove(String arenaName) {
         Arena arena = arenas.remove(arenaName);
         if (arena != null) {
-            arena.delete();
+            arena.remove();
         }
     }
 
@@ -260,7 +255,6 @@ public class ArenaController implements Runnable {
             Arena arena = new Arena(arenaKey, template, this);
             arena.load(saveData);
             arenas.put(arenaKey, arena);
-            arena.saveTemplate();
             sender.sendMessage(ChatColor.AQUA + "Imported " + arenaKey);
         }
         magic.getAPI().save();
