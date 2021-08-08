@@ -18,11 +18,9 @@ import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 
 public class TrivialLibsDisguiseManager implements LibsDisguiseManager {
-    private final Plugin plugin;
     private final Plugin disguisePlugin;
 
     public TrivialLibsDisguiseManager(Plugin owningPlugin, Plugin disguisePlugin) {
-        this.plugin = owningPlugin;
         this.disguisePlugin = disguisePlugin;
     }
 

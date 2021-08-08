@@ -275,7 +275,6 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             for (String levelKey : levelKeys) {
                 try {
                     int level = Integer.parseInt(levelKey);
-                    int maxLevel = progressionLevels.size();
                     ConfigurationSection thisConfig = levelConfig.getConfigurationSection(levelKey);
                     ProgressionLevel progressionLevel = new ProgressionLevel(controller, level, thisConfig);
                     if (progressionLevels.isEmpty()) {

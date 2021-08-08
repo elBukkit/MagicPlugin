@@ -17,7 +17,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 public class CreateNPCAction extends BaseSpellAction {
     private String name;
     private String keyItem;
-    private String keyBookContents;
     private String npcTemplate;
     private ConfigurationSection keyItemOverrides;
     private ConfigurationSection npcConfiguration;
@@ -27,7 +26,6 @@ public class CreateNPCAction extends BaseSpellAction {
         super.prepare(context, parameters);
         name = parameters.getString("name", "NPC");
         keyItem = parameters.getString("key_item");
-        keyBookContents = parameters.getString("key_book_contents");
         keyItemOverrides = parameters.getConfigurationSection("key_overrides");
         npcTemplate = parameters.getString("npc_template");
         npcConfiguration = parameters.getConfigurationSection("npc_parameters");

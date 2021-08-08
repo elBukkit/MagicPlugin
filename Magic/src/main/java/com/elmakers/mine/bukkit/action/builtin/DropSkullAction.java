@@ -6,7 +6,6 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,15 +18,10 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class DropSkullAction extends BaseSpellAction
 {
-    private boolean allowEntities;
-    private boolean allowBlocks;
-
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
-        allowEntities = parameters.getBoolean("allow_entities", true);
-        allowBlocks = parameters.getBoolean("allow_blocks", true);
     }
 
     @Override
@@ -49,9 +43,7 @@ public class DropSkullAction extends BaseSpellAction
 
         LivingEntity li = (LivingEntity)targetEntity;
         String itemName = CompatibilityLib.getDeprecatedUtils().getDisplayName(li) + " Head";
-        EntityType replaceType = null;
 
-        Location targetLocation = targetEntity.getLocation();
         dropHead(context, targetEntity, itemName);
 
         return SpellResult.CAST;

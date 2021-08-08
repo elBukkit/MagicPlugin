@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {

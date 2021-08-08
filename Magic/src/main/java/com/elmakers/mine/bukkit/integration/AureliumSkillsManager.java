@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.integration;
 
 import java.util.ArrayList;
-import java.util.EventListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;

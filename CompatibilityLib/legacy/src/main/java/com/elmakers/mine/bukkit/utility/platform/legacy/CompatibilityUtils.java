@@ -201,7 +201,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void setRemoveWhenFarAway(Entity entity, boolean flag) {
         if (NMSUtils.class_LivingEntity_setRemoveWhenFarAway == null || !(entity instanceof LivingEntity)) return;
         try {
-            Object handle = NMSUtils.getHandle(entity);
             NMSUtils.class_LivingEntity_setRemoveWhenFarAway.invoke(entity, flag);
         } catch (Exception ex) {
             ex.printStackTrace();

@@ -368,9 +368,6 @@ public class ConfigUtils {
             double max = Double.parseDouble(pieces[2].trim());
             return random.nextDouble() * (max - min) + min;
         }
-        if (firstChar == '#') {
-            String equation = s.substring(1);
-        }
 
         return Double.parseDouble(s);
     }

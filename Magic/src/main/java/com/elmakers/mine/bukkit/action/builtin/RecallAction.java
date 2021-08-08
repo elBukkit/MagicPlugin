@@ -13,7 +13,6 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -146,7 +145,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         public final boolean maintainDirection;
         public final String warpName;
         public final String serverName;
-        public final int markerNumber;
         public UUID friendId;
         public boolean unavailable = false;
 
@@ -173,7 +171,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.opPlayer = false;
             this.asConsole = false;
             this.maintainDirection = maintainDirection;
-            this.markerNumber = 0;
             serverName = null;
             warpName = null;
         }
@@ -191,43 +188,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             this.opPlayer = false;
             this.asConsole = false;
             this.maintainDirection = false;
-            this.markerNumber = 0;
-            serverName = null;
-            warpName = null;
-        }
-
-        public Waypoint(RecallType type, String warpName, String serverName, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
-            this.name = CompatibilityLib.getCompatibilityUtils().translateColors(name);
-            this.type = type;
-            this.location = null;
-            this.warpName = warpName;
-            this.serverName = serverName;
-            this.message = message;
-            this.description = description == null ? null : CompatibilityLib.getCompatibilityUtils().translateColors(description);;
-            this.failMessage = failMessage;
-            this.icon = icon == null ? defaultMaterial : icon;
-            this.iconURL = iconURL;
-            this.command = null;
-            this.opPlayer = false;
-            this.asConsole = false;
-            this.maintainDirection = false;
-            this.markerNumber = 0;
-        }
-
-        public Waypoint(RecallType type, String command, boolean opPlayer, boolean asConsole, String name, String message, String failMessage, String description, MaterialAndData icon, String iconURL) {
-            this.name = CompatibilityLib.getCompatibilityUtils().translateColors(name);
-            this.type = type;
-            this.location = null;
-            this.message = message;
-            this.description = description == null ? null : CompatibilityLib.getCompatibilityUtils().translateColors(description);;
-            this.failMessage = failMessage;
-            this.icon = icon == null ? defaultMaterial : icon;
-            this.iconURL = iconURL;
-            this.command = command;
-            this.opPlayer = opPlayer;
-            this.asConsole = asConsole;
-            this.maintainDirection = false;
-            this.markerNumber = 0;
             serverName = null;
             warpName = null;
         }
@@ -264,7 +224,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             MaterialAndData defaultUnavailableIcon = ConfigurationUtils.getMaterialAndData(parameters, "unavailable_icon");
             boolean defaultShowUnavailable = parameters.getBoolean("show_unavailable", false);
             Location location = null;
-            int markerNumber = 0;
             boolean defaultMaintainDirection = false;
             boolean defaultSafe = true;
 
@@ -296,8 +255,8 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 defaultFailMessage = context.getMessage("no_target_warp", "");
                 defaultUnavailableMessage = context.getMessage("unavailable_warp_description", "");
                 break;
-            case MARKER:
-                markerNumber = configuration.getInt("marker", 1);
+            case MARKER: {
+                int markerNumber = configuration.getInt("marker", 1);
                 location = ConfigurationUtils.getLocation(mage.getData(), getMarkerKey(markerNumber));
                 defaultTitle = context.getMessage("title_marker", "Marker #$number").replace("$number", Integer.toString(markerNumber));
                 defaultMessage = context.getMessage("cast_marker", "").replace("$number", Integer.toString(markerNumber));
@@ -306,6 +265,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 defaultIcon = getIcon(context, parameters, "icon_marker");
                 defaultMaintainDirection = true;
                 break;
+            }
             case DEATH:
                 location = mage.getLastDeathLocation();
                 defaultTitle = context.getMessage("title_death", "Last Death");
@@ -373,7 +333,6 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             locked = configuration.getBoolean("locked", false);
             permission = configuration.getString("permission");
             this.location = location;
-            this.markerNumber = markerNumber;
         }
 
         @Override

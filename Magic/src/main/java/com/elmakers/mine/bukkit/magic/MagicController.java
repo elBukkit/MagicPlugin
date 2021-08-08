@@ -558,7 +558,6 @@ public class MagicController implements MageController {
     private String editorURL = null;
     private boolean reloadVerboseLogging = true;
     private boolean hasShopkeepers = false;
-    private AJParkourManager ajParkourManager = null;
     private CitadelManager citadelManager = null;
     private ResidenceManager residenceManager = null;
     private RedProtectManager redProtectManager = null;
@@ -7752,7 +7751,7 @@ public class MagicController implements MageController {
         if (ajParkourConfiguration.getBoolean("enabled")) {
             if (pluginManager.isPluginEnabled("ajParkour")) {
                 try {
-                    ajParkourManager = new AJParkourManager(this);
+                    new AJParkourManager(this);
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with ajParkour", ex);
                 }

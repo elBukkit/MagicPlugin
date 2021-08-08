@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Collection;
 import java.util.List;
 
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;

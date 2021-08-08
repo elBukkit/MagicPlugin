@@ -29,7 +29,6 @@ public class ArenaController implements Runnable {
     private final Map<Entity, Arena> arenaMobs = new WeakHashMap<>();
     private final Plugin plugin;
     private final MageController magic;
-    private final Object saveLock = new Object();
 
     public ArenaController(MageController magic) {
         this.magic = magic;

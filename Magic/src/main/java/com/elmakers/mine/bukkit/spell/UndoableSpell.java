@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.spell;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;

@@ -1903,7 +1903,7 @@ public class Arena {
     }
 
     protected void createLeaderboardIcon(Integer rank, ArenaPlayer player, ItemUpdatedCallback callback) {
-        ItemStack playerItem = controller.getMagic().getSkull(player.getUUID(),
+        controller.getMagic().getSkull(player.getUUID(),
                 ChatColor.GOLD + player.getDisplayName(),
                 new ItemUpdatedCallback() {
                     @Override

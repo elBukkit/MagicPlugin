@@ -1303,38 +1303,4 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
         */
     }
-
-    @SuppressWarnings("unchecked")
-    private boolean areDifferent(Object configValue, Object defaultValue) {
-        if (defaultValue == null) return true;
-
-        if (configValue instanceof ConfigurationSection || configValue instanceof Map) {
-            if (!(defaultValue instanceof ConfigurationSection) && !(defaultValue instanceof Map)) return true;
-
-            Map<String, Object> configMap = configValue instanceof ConfigurationSection
-                    ? CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)configValue)
-                    : (Map<String, Object>)configValue;
-
-            Map<String, Object> defaultMap = defaultValue instanceof ConfigurationSection
-                    ? CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)defaultValue)
-                    : (Map<String, Object>)defaultValue;
-
-            return !configMap.equals(defaultMap);
-        }
-        if (configValue instanceof List) {
-             if (!(defaultValue instanceof List)) return true;
-
-            List<Object> configList = (List<Object>)configValue;
-            List<Object> defaultList = (List<Object>)defaultValue;
-            if (configList.size() != defaultList.size()) return true;
-
-            for (int i = 0; i < configList.size(); i++) {
-                if (areDifferent(configList.get(i), defaultList.get(i))) return true;
-            }
-
-            return false;
-        }
-
-        return !defaultValue.equals(configValue);
-    }
 }

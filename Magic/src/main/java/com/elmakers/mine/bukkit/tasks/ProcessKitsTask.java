@@ -10,14 +10,10 @@ import com.elmakers.mine.bukkit.magic.Mage;
 
 public class ProcessKitsTask implements Runnable {
     private final Mage mage;
-    private final World fromWorld;
-    private final World toWorld;
     private final List<MagicKit> kits = new ArrayList<>();
 
     public ProcessKitsTask(Mage mage, World fromWorld, World toWorld) {
         this.mage = mage;
-        this.fromWorld = fromWorld;
-        this.toWorld = toWorld;
     }
 
     public void addKit(MagicKit kit) {

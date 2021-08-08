@@ -2,9 +2,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
