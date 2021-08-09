@@ -1,0 +1,4 @@
+iconwand:
+  inherit: wand
+  name: Icon Wand
+  action_bar: "\uF901\uF900\uF902\uF903\uF900\uF904\uF905"
