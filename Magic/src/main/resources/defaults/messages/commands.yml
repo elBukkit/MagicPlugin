@@ -69,7 +69,7 @@ commands:
           success: "&bSet base example to &2$example"
           multiple: "&bSet base example to &2$example&f\n&r&bSet added examples to &2$examples"
           clear_added: "&bSet base example to &2$example&f\n&r&bCleared added examples"
-          clear: "&bCleared base example.&f\n&r&bUse &g/mconfig example remove all&b if you have added examples you want to remove"
+          clear: "&bCleared base example.&f\n&r&bUse &7/mconfig example remove all&b if you have added examples you want to remove"
       disable:
         usage: "&cUsage: /mconfig disable [$options] [key]"
         nokey: "&cInvalid type: $type, options: $options"
