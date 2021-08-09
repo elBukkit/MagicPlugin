@@ -56,6 +56,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.google.common.base.Strings;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -230,8 +231,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
         protected int limit = 0;
 
-        protected @Nonnull String[] allCostTypes = null;
-        protected @Nonnull String[] fallbackCostTypes = null;
+        protected @Nullable String[] allCostTypes = null;
+        protected @Nullable String[] fallbackCostTypes = null;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
             parseIcon(configuration);
@@ -250,13 +251,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected void parse(ConfigurationSection configuration) {
             applyToWand = configuration.getBoolean("apply_to_wand", applyToWand);
             applyToCaster = configuration.getBoolean("apply_to_caster", applyToCaster);
-            applyToClass = configuration.getString("apply_to_class", applyToClass);
+            applyToClass = Strings.emptyToNull(configuration.getString("apply_to_class", applyToClass));
             putInHand = configuration.getBoolean("put_in_hand", putInHand);
             warpKey = configuration.getString("warp", warpKey);
             castSpell = configuration.getString("cast_spell", castSpell);
             castSpellParameters = configuration.isConfigurationSection("cast_spell_parameters")
                 ? configuration.getConfigurationSection("cast_spell_parameters") : castSpellParameters;
-            unlockClass = configuration.getString("unlock_class", unlockClass);
+            unlockClass = Strings.emptyToNull(
+                    configuration.getString("unlock_class", unlockClass));
             lockClasses = ConfigurationUtils.getStringList(configuration, "lock_classes", lockClasses);
             String lockClass = configuration.getString("lock_class");
             if (lockClass != null && !lockClass.isEmpty()) {
@@ -265,7 +267,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
                 lockClasses.add(lockClass);
             }
-            if (lockClasses != null && unlockClass != null && !unlockClass.isEmpty()) {
+            if (lockClasses != null && unlockClass != null) {
                 lockClasses = new ArrayList<>(lockClasses);
                 lockClasses.remove(unlockClass);
             }
@@ -276,7 +278,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
             allowAttributeReduction = configuration.getBoolean("allow_attribute_reduction", allowAttributeReduction);
             if (configuration.contains("switch_class")) {
                 switchClass = true;
-                unlockClass = configuration.getString("switch_class");
+                unlockClass = Strings.emptyToNull(
+                        configuration.getString("switch_class"));
             }
             String applyToString = configuration.getString("apply_to", applyTo == null ? null : applyTo.name());
             if (applyToString != null && !applyToString.isEmpty()) {
@@ -531,7 +534,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
         public boolean has(CastContext context) {
             Mage mage = context.getMage();
-            if (unlockClass != null && !unlockClass.isEmpty()) {
+            if (unlockClass != null) {
                 if (mage.hasClassUnlocked(unlockClass)) {
                     return true;
                 }
@@ -552,7 +555,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 return new RequirementsResult(SpellResult.NO_TARGET, getMessage("at_limit").replace("$limit", Integer.toString(limit)));
             }
 
-            if (unlockClass != null && !unlockClass.isEmpty()) {
+            if (unlockClass != null) {
                 if (mage.hasClassUnlocked(unlockClass)) {
                     return new RequirementsResult(SpellResult.NO_TARGET, getMessage("has_class").replace("$class", unlockClass));
                 }
@@ -675,7 +678,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             name = configuration.getString("name", name);
 
             MageController controller = context.getController();
-            if (name.isEmpty() && unlockClass != null && !unlockClass.isEmpty()) {
+            if (name.isEmpty() && unlockClass != null) {
                 MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
                 name = getMessage("unlock_class");
                 if (mageClass != null) {
@@ -969,7 +972,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                         amount = (int)Math.floor(currentAmount);
                     } else {
                         double newValue = attributeAmount + currentAmount;
-                        boolean allowed = attribute == null || attribute.inRange(newValue);
+                        boolean allowed = attribute.inRange(newValue);
                         if (!allowAttributeReduction && startingAttributeValue != null && newValue < startingAttributeValue) {
                             allowed = false;
                         }
@@ -983,7 +986,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 icon.setAmount(Math.max(1, amount));
             }
 
-            if (icon == null && unlockClass != null && !unlockClass.isEmpty()) {
+            if (icon == null && unlockClass != null) {
                 MageClassTemplate mageClass = controller.getMageClassTemplate(unlockClass);
                 if (mageClass != null) {
                     if (iconDisabledKey == null) {
@@ -1163,7 +1166,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 return SpellResult.NO_ACTION;
             }
 
-            if (unlockClass != null && !unlockClass.isEmpty()) {
+            if (unlockClass != null) {
                 if (mage.hasClassUnlocked(unlockClass)) {
                     String hasClassMessage = getMessage("has_class").replace("$class", name);
                     context.showMessage(hasClassMessage);
@@ -1423,7 +1426,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 if (properties instanceof CasterProperties) {
                     caster = (CasterProperties)properties;
                 }
-            } else if (applyToClass != null && !applyToClass.isEmpty()) {
+            } else if (applyToClass != null) {
                 caster = mage.getClass(applyToClass);
             } else if (applyToWand) {
                 caster = wand;
@@ -1812,13 +1815,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
             return "";
         }
         String costType = defaultConfiguration.getCostType();
-        com.elmakers.mine.bukkit.item.Cost cost = new com.elmakers.mine.bukkit.item.Cost(context.getController(), costType, 1);
+        MageController controller = context.getController();
+        com.elmakers.mine.bukkit.item.Cost cost = new com.elmakers.mine.bukkit.item.Cost(controller, costType, 1);
         if (defaultConfiguration.costOverride != null) {
-            cost.convert(context.getController(), defaultConfiguration.costOverride);
+            cost.convert(controller, defaultConfiguration.costOverride);
         }
-        cost.checkSupported(context.getController(), defaultConfiguration.getCostTypeFallbacks());
+        cost.checkSupported(controller, defaultConfiguration.getCostTypeFallbacks());
         cost.setAmount(cost.getBalance(mage, context.getWand()));
-        return cost.getFullDescription(context.getController().getMessages());
+        return cost.getFullDescription(controller.getMessages());
     }
 
     protected Inventory getInventory(CastContext context)

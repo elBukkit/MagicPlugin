@@ -80,7 +80,7 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
     @Override
     public int getTimeRemaining() {
         long now = System.currentTimeMillis();
-        return (int)(getLong("last_reset") + (long)getDuration() - now);
+        return (int)(getLong("last_reset") + getDuration() - now);
     }
 
     @Override

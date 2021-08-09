@@ -137,7 +137,7 @@ public class MageContext extends EffectContext implements com.elmakers.mine.bukk
     @Nullable
     public Double getVariable(String variable) {
         ConfigurationSection mageVariables = mage.getVariables();
-        if (mageVariables != null && mageVariables.contains(variable)) {
+        if (mageVariables.contains(variable)) {
             return mageVariables.getDouble(variable);
         }
         return null;

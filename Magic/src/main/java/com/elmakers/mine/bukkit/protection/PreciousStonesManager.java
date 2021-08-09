@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.protection;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -137,7 +136,7 @@ public class PreciousStonesManager implements BlockBuildManager, BlockBreakManag
     @Nullable
     @Override
     public Collection<PlayerWarp> getWarps(@Nonnull Player player) {
-        if (!enabled || api == null || player == null)
+        if (!enabled || api == null)
             return null;
         return api.getFieldLocations(player);
     }

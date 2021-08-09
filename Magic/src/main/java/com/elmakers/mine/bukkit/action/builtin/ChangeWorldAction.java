@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -152,9 +151,6 @@ public class ChangeWorldAction extends BaseTeleportAction
         }
 
         Location playerLocation = entity.getLocation();
-        if (targetLocation == null) {
-            return SpellResult.NO_TARGET;
-        }
 
         // Sanity check!
         targetLocation.setX(Math.min(targetLocation.getX(), 3.0E7D));

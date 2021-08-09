@@ -60,6 +60,7 @@ public class ArenaStage extends ArenaStageTemplate {
         name = configuration.getString("name");
     }
 
+    @Override
     public void describe(CommandSender sender) {
         sender.sendMessage(ChatColor.AQUA + getName() + ChatColor.GRAY + " (" + ChatColor.DARK_AQUA + getNumber() + ChatColor.GRAY + ")");
         super.describe(sender);

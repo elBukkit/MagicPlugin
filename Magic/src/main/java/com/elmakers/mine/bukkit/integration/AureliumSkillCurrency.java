@@ -10,12 +10,10 @@ import com.elmakers.mine.bukkit.economy.BaseMagicCurrency;
 
 public class AureliumSkillCurrency extends BaseMagicCurrency {
     private final Skills skill;
-    private final AureliumSkillsManager aureliumSkills;
 
     public AureliumSkillCurrency(AureliumSkillsManager aureliumSkills, Skills skill, ConfigurationSection configuration) {
         super(aureliumSkills.getController(), skill.name(), configuration);
         this.skill = skill;
-        this.aureliumSkills = aureliumSkills;
     }
 
     @Override

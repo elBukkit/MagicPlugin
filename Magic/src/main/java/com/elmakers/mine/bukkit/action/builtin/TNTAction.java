@@ -14,7 +14,6 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.action.BaseProjectileAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
@@ -47,7 +46,6 @@ public class TNTAction extends BaseProjectileAction
     public SpellResult start(CastContext context) {
         Mage mage = context.getMage();
         LivingEntity living = mage.getLivingEntity();
-        MageController controller = context.getController();
         int size = (int)(mage.getRadiusMultiplier() * this.size);
 
         Location loc = context.getEyeLocation();

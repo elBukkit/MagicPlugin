@@ -65,20 +65,16 @@ public class ItemController {
     public void loadItem(String itemKey, ConfigurationSection configuration) {
         try {
             ItemData magicItem = new ItemData(itemKey, configuration, controller);
-            if (magicItem != null) {
-                itemKeys.add(itemKey);
-                items.put(itemKey, magicItem);
-                if (magicItem.isReplaceOnEquip()) {
-                    Material type = magicItem.getType();
-                    Map<Integer, ItemData> mapped = replaceOnEquip.get(type);
-                    if (mapped == null) {
-                        mapped = new HashMap<>();
-                        replaceOnEquip.put(type, mapped);
-                    }
-                    mapped.put(magicItem.getCustomModelData(), magicItem);
+            itemKeys.add(itemKey);
+            items.put(itemKey, magicItem);
+            if (magicItem.isReplaceOnEquip()) {
+                Material type = magicItem.getType();
+                Map<Integer, ItemData> mapped = replaceOnEquip.get(type);
+                if (mapped == null) {
+                    mapped = new HashMap<>();
+                    replaceOnEquip.put(type, mapped);
                 }
-            } else {
-                controller.getLogger().warning("Could not create item with key " + itemKey);
+                mapped.put(magicItem.getCustomModelData(), magicItem);
             }
         } catch (Throwable ex) {
             controller.getLogger().log(Level.WARNING, "An error occurred while processing the item: " + itemKey, ex);

@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.api.block;
 
 import java.util.Map;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Material;
@@ -63,7 +64,8 @@ public interface MaterialAndData {
     Material getMaterial();
     String getKey();
     String getName();
-    String getName(Messages messages);
+    @Nonnull
+    String getName(@Nullable Messages messages);
     @Nullable
     String getBaseName();
     boolean is(Block block);

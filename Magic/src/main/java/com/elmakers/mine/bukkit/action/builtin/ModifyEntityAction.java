@@ -104,7 +104,6 @@ public class ModifyEntityAction extends BaseSpellAction
             return SpellResult.FAIL;
         }
 
-        MageController controller = context.getController();
         // Special check to assign ownership
         if (entity instanceof AreaEffectCloud) {
             ((AreaEffectCloud)entity).setSource(context.getLivingEntity());

@@ -122,7 +122,6 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.decoration.HangingEntity;
-import net.minecraft.world.entity.decoration.Motive;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
@@ -137,7 +136,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
 public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16.CompatibilityUtils {
-    private final Map<String, net.minecraft.world.entity.EntityType> projectileEntityTypes = new HashMap<>();
+    private final Map<String, net.minecraft.world.entity.EntityType<?>> projectileEntityTypes = new HashMap<>();
     private final Map<String, Class<? extends net.minecraft.world.entity.projectile.Projectile>> projectileClasses = new HashMap<>();
 
     public CompatibilityUtils(Platform platform) {
@@ -264,10 +263,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         }
         BlockPos blockLocation = new BlockPos(location.getX(), location.getY(), location.getZ());
         net.minecraft.world.entity.decoration.Painting newEntity = new net.minecraft.world.entity.decoration.Painting(level, blockLocation, directionEnum);
-        if (newEntity != null) {
-            Motive notchArt = CraftArt.BukkitToNotch(art);
-            newEntity.motive = notchArt;
-        }
+        newEntity.motive = CraftArt.BukkitToNotch(art);
         Entity bukkitEntity = newEntity.getBukkitEntity();
         if (bukkitEntity != null && bukkitEntity instanceof Painting) {
             newPainting = (Painting)bukkitEntity;
@@ -351,7 +347,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                 return;
             }
 
-            net.minecraft.world.entity.Entity targetHandle = target == null ? null : ((CraftEntity)target).getHandle();
+            net.minecraft.world.entity.Entity targetHandle = ((CraftEntity)target).getHandle();
             if (targetHandle == null) return;
 
             net.minecraft.world.entity.Entity sourceHandle = source == null ? null : ((CraftEntity)source).getHandle();
@@ -1192,6 +1188,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public String getBlockData(Material material, byte data) {
+        @SuppressWarnings("deprecation")
         BlockData blockData = platform.getDeprecatedUtils().getUnsafe().fromLegacy(material, data);
         return blockData == null ? null : blockData.getAsString();
     }

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.block;
 
+import static com.google.common.base.Verify.verifyNotNull;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -67,7 +69,7 @@ public class BlockList implements com.elmakers.mine.bukkit.api.block.BlockList {
     protected BlockData get(Block block) {
         long id = com.elmakers.mine.bukkit.block.BlockData.getBlockId(block);
         add(block);
-        return blockQueue.get(id);
+        return verifyNotNull(blockQueue.get(id));
     }
 
     @Override

@@ -201,7 +201,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void setRemoveWhenFarAway(Entity entity, boolean flag) {
         if (NMSUtils.class_LivingEntity_setRemoveWhenFarAway == null || !(entity instanceof LivingEntity)) return;
         try {
-            Object handle = NMSUtils.getHandle(entity);
             NMSUtils.class_LivingEntity_setRemoveWhenFarAway.invoke(entity, flag);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1141,7 +1140,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             Object handle = NMSUtils.getHandle(projectile);
             NMSUtils.class_EntityArrow_damageField.set(handle, damage);
         } catch (Exception ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
         }
     }
 
@@ -1155,7 +1154,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 NMSUtils.class_EntityArrow_lifeField.set(handle, ticks);
             }
         } catch (Exception ex) {
-            ex.printStackTrace();;
+            ex.printStackTrace();
         }
     }
 
@@ -1416,7 +1415,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut) {
         // TODO: New Player.sendTitle in 1.11
         player.sendTitle(title, subTitle);
@@ -1553,7 +1551,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
         if (!(projectile instanceof Arrow)) return false;
-        if (projectile == null || pickupStatus == null || NMSUtils.class_Arrow_setPickupStatusMethod == null || NMSUtils.class_PickupStatus == null) return false;
+        if (pickupStatus == null || NMSUtils.class_Arrow_setPickupStatusMethod == null || NMSUtils.class_PickupStatus == null) return false;
 
         try {
             Enum enumValue = Enum.valueOf(NMSUtils.class_PickupStatus, pickupStatus.toUpperCase());
@@ -1709,7 +1707,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public Material fromLegacy(org.bukkit.material.MaterialData materialData) {
         if (NMSUtils.class_UnsafeValues_fromLegacyDataMethod != null) {
             try {
@@ -2245,8 +2242,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         if (ingredient == null) return false;
         if (NMSUtils.class_RecipeChoice_ExactChoice == null) {
             if (platform.isLegacy()) {
-                @SuppressWarnings("deprecation")
-                org.bukkit.material.MaterialData material = ingredient == null ? null : ingredient.getData();
+                org.bukkit.material.MaterialData material = ingredient.getData();
                 if (material == null) {
                     return false;
                 }
@@ -2581,7 +2577,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean performDoorAction(Block[] doorBlocks, DoorActionType actionType) {
         BlockState blockState = doorBlocks[0].getState();
         MaterialData data = blockState.getData();

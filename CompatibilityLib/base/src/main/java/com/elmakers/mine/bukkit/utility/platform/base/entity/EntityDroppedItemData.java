@@ -48,7 +48,6 @@ public class EntityDroppedItemData extends EntityExtraData {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public SpawnedEntityExtraData spawn(Location location) {
         Entity newEntity = null;
         if (!PlatformInterpreter.getPlatform().getItemUtils().isEmpty(item)) {

@@ -27,7 +27,7 @@ import com.google.common.collect.ImmutableSet;
 public class BaseMagicProperties implements MagicProperties {
 
     protected final @Nonnull MagicController controller;
-    protected ConfigurationSection configuration = ConfigurationUtils.newConfigurationSection();
+    protected @Nonnull ConfigurationSection configuration = ConfigurationUtils.newConfigurationSection();
 
     // TODO: Separate these out into wand vs class properties
     public static final ImmutableSet<String> PROPERTY_KEYS = ImmutableSet.of(

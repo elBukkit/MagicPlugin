@@ -235,7 +235,7 @@ public class ResourcePackManager {
         }
         Player player = mage.getPlayer();
         String message = controller.getMessages().get("resource_pack.sending");
-        if (message != null && !message.isEmpty()) {
+        if (!message.isEmpty()) {
             TextUtils.sendMessage(player, controller.getMessagePrefix(), message);
         }
 

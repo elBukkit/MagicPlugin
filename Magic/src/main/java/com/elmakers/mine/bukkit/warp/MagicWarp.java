@@ -49,6 +49,7 @@ public class MagicWarp implements Warp {
         }
     }
 
+    @SuppressWarnings("null") // setLocation
     public MagicWarp(String key, Location location) {
         this.key = key;
         setLocation(location);

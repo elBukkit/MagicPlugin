@@ -62,7 +62,8 @@ import com.elmakers.mine.bukkit.utility.random.WeightedPair;
  * This class stores information about an Entity.
  *
  */
-public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityData {
+public class EntityData
+        implements com.elmakers.mine.bukkit.api.entity.EntityData, Cloneable {
     protected static Map<UUID, WeakReference<Entity>> respawned = new HashMap<>();
 
     public static boolean isSpawning = false;
@@ -621,7 +622,6 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     }
 
     @Nullable
-    @SuppressWarnings("deprecation")
     protected Entity trySpawn(CreatureSpawnEvent.SpawnReason reason) {
         Entity spawned = null;
         boolean addedToWorld = false;
@@ -673,14 +673,12 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public EntityData getRelativeTo(Location center) {
         EntityData copy = this.clone();
-        if (copy != null)
-        {
-            if (relativeLocation != null) {
-                copy.location = center.clone().add(relativeLocation);
-            } else if (location != null) {
-                copy.location = location.clone();
-            }
+        if (relativeLocation != null) {
+            copy.location = center.clone().add(relativeLocation);
+        } else if (location != null) {
+            copy.location = location.clone();
         }
+
         return copy;
     }
 
@@ -725,9 +723,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         Entity entity = trySpawn(reason);
         if (entity != null && mageData != null) {
             Mage mage = controller.getMage(entity);
-            if (mage != null) {
-                mageData.trigger(mage, "spawn");
-            }
+            mageData.trigger(mage, "spawn");
         }
         return entity;
     }
@@ -754,9 +750,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
             }
             if (entity != null && mageData != null) {
                 Mage mage = controller.getMage(entity);
-                if (mage != null) {
-                    mageData.trigger(mage, "respawn");
-                }
+                mageData.trigger(mage, "respawn");
             }
             setEntity(entity);
         } else if (entity != null) {
@@ -770,9 +764,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         boolean success = modify(entity, true);
         if (success && mageData != null) {
             Mage mage = controller.getMage(entity);
-            if (mage != null) {
-                mageData.trigger(mage, "respawn");
-            }
+            mageData.trigger(mage, "respawn");
         }
         return success;
     }
@@ -781,9 +773,7 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
         Entity entity = spawn();
         if (entity != null && mageData != null) {
             Mage mage = controller.getMage(entity);
-            if (mage != null) {
-                mageData.trigger(mage, "respawn");
-            }
+            mageData.trigger(mage, "respawn");
         }
         return entity;
     }
@@ -1153,13 +1143,10 @@ public class EntityData implements com.elmakers.mine.bukkit.api.entity.EntityDat
     @Override
     public EntityData clone() {
         try {
-            return (EntityData)super.clone();
+            return (EntityData) super.clone();
         } catch (CloneNotSupportedException e) {
-            e.printStackTrace();
+            throw new AssertionError("Clone not supported", e);
         }
-
-        // I feel like this should never happen, so instead of breaking the @Nonnull contract we'll return a reference
-        return this;
     }
 
     public boolean isRespawn() {

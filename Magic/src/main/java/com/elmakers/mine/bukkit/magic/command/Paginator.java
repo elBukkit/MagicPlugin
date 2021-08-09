@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.magic.command;
 
 import java.util.List;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -9,7 +10,7 @@ import org.bukkit.command.CommandSender;
 public abstract class Paginator<T> {
     private int rowsPerPage = 8;
 
-    @Nonnull
+    @Nullable // TODO: Avoid?
     protected abstract List<T> getList(CommandSender sender);
     @Nonnull
     protected abstract String describe(T item);

@@ -37,7 +37,6 @@ public interface InventoryUtils {
     Object wrapInTag(Object value)
             throws IllegalAccessException, InvocationTargetException, InstantiationException;
 
-    @SuppressWarnings("unchecked")
     Set<String> getTagKeys(Object tag);
 
     Object getMetaObject(Object tag, String key);

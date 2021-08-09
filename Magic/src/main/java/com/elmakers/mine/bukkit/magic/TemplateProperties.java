@@ -40,6 +40,7 @@ public abstract class TemplateProperties extends BaseMagicProperties {
         return null;
     }
 
+    @Override
     @Nonnull
     public ConfigurationSection getPropertyConfiguration(String key) {
         TemplateProperties parent = getParent();

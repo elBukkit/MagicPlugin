@@ -104,7 +104,7 @@ public class ConfigUtils {
             try {
                 double d;
                 if (value instanceof Double) d = (Double) value;
-                else if (value instanceof Float) d = (double) (Float) value;
+                else if (value instanceof Float) d = (Float) value;
                 else d = Double.parseDouble(value.toString());
                 node.set(path, d);
             } catch (Exception ex2) {
@@ -367,9 +367,6 @@ public class ConfigUtils {
             double min = Double.parseDouble(pieces[1].trim());
             double max = Double.parseDouble(pieces[2].trim());
             return random.nextDouble() * (max - min) + min;
-        }
-        if (firstChar == '#') {
-            String equation = s.substring(1);
         }
 
         return Double.parseDouble(s);

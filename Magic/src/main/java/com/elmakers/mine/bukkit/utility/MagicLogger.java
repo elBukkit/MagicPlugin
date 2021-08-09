@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashMap;

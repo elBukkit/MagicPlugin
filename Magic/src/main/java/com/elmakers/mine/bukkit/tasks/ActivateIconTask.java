@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.tasks;
 
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.magic.Mage;

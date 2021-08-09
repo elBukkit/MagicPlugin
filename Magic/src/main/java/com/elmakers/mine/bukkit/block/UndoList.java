@@ -245,7 +245,9 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
             Thread.dumpStack();
         }
         if (bypass) return true;
-        if (!controller.isUndoable(blockData.getMaterial())) {
+
+        Material mat = blockData.getMaterial();
+        if (mat != null && !controller.isUndoable(mat)) {
             return false;
         }
         if (!super.add(blockData)) {
@@ -1207,20 +1209,16 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public void addDamage(Block block, double damage) {
         BlockData blockData = get(block);
-        if (blockData != null) {
-            blockData.addDamage(damage);
-        }
+        blockData.addDamage(damage);
     }
 
     @Override
     public void registerFakeBlock(Block block, Collection<WeakReference<Player>> players) {
         if (contains(block)) return;
-        BlockData blockData = get(block);
-        if (blockData != null) {
-            blockData.setFake(players);
-        }
-    }
 
+        BlockData blockData = get(block);
+        blockData.setFake(players);
+    }
 
     @Override
     public Collection<Entity> getAllEntities() {

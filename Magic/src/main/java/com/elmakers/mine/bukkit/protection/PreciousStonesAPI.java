@@ -2,9 +2,7 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -231,7 +229,6 @@ public class PreciousStonesAPI implements BlockBuildManager, BlockBreakManager, 
         return !event.isCancelled();
     }
 
-    @SuppressWarnings("deprecation")
     public boolean rentField(Location signLocation, Player player, String rent, String timePeriod, BlockFace signDirection) {
         Block signBlock = signLocation.getBlock();
         Material signMaterial = DefaultMaterials.getGroundSignBlock();

@@ -385,7 +385,6 @@ public class ConstructBatch extends BrushBatch {
         return success;
     }
 
-    @SuppressWarnings("deprecation")
     public boolean constructBlock(int dx, int dy, int dz)
     {
         // Special-case hackiness..

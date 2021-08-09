@@ -237,7 +237,6 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
      * A helper function to get an ItemStack from a MapView.
      *
      * @param name The display name to give the new item. Optional.
-     * @return
      */
     public ItemStack getMapItem(String name, int mapId) {
         ItemStack newMapItem = createMap(mapId);

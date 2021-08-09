@@ -854,7 +854,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
-    @SuppressWarnings("deprecation")
     protected void performEffects(DynamicLocation source, DynamicLocation target) {
         Location sourceLocation = source == null ? null : source.getLocation();
         if (sourceLocation == null) return;

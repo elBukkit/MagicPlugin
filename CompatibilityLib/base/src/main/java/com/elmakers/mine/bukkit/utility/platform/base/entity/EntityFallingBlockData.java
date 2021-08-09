@@ -22,10 +22,6 @@ public class EntityFallingBlockData extends EntityExtraData {
     private Boolean dropItem;
     private Boolean hurtEntities;
 
-    private EntityFallingBlockData(MaterialAndData material) {
-        this.material = material;
-    }
-
     public EntityFallingBlockData(ConfigurationSection configuration, MageController controller) {
         String materialKey = configuration.getString("material");
         if (materialKey != null && !materialKey.isEmpty()) {

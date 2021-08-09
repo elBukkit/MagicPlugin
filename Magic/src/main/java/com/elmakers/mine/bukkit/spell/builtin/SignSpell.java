@@ -24,7 +24,6 @@ import com.elmakers.mine.bukkit.utility.Target;
 public class SignSpell extends BlockSpell
 {
     @Override
-    @SuppressWarnings("deprecation")
     public SpellResult onCast(ConfigurationSection parameters)
     {
         String typeString = parameters.getString("type", "");

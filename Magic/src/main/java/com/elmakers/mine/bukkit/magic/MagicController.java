@@ -558,7 +558,6 @@ public class MagicController implements MageController {
     private String editorURL = null;
     private boolean reloadVerboseLogging = true;
     private boolean hasShopkeepers = false;
-    private AJParkourManager ajParkourManager = null;
     private CitadelManager citadelManager = null;
     private ResidenceManager residenceManager = null;
     private RedProtectManager redProtectManager = null;
@@ -1371,9 +1370,6 @@ public class MagicController implements MageController {
                 ex.printStackTrace();
             }
         });
-        if (schematic == null) {
-            getLogger().warning("Could not load schematic: " + schematicName);
-        }
 
         return schematic;
     }
@@ -2201,7 +2197,7 @@ public class MagicController implements MageController {
                 exampleKey = example;
             }
             String exampleInstructions = messages.get("examples." + exampleKey + ".instructions", "");
-            if (exampleInstructions != null && !exampleInstructions.isEmpty()) {
+            if (!exampleInstructions.isEmpty()) {
                 instructions.add(exampleInstructions);
             }
         }
@@ -2287,6 +2283,7 @@ public class MagicController implements MageController {
         return activeBlocks.get(id);
     }
 
+    @Override
     @Nullable
     public MagicBlock getMagicBlock(String name) {
         for (Map<Long, MagicBlock> chunk : magicBlocks.values()) {
@@ -3175,7 +3172,6 @@ public class MagicController implements MageController {
             Object dataStore = dataStoreClass.getDeclaredConstructor().newInstance();
             if (dataStore == null || !(dataStore instanceof MageDataStore)) {
                 getLogger().log(Level.WARNING, "Invalid player_data_store class " + dataStoreClassName + ", does it implement MageDataStore? Player data saving is disabled!");
-                mageDataStore = null;
             } else {
                 mageDataStore = (MageDataStore) dataStore;
                 mageDataStore.initialize(this, configuration);
@@ -4455,7 +4451,9 @@ public class MagicController implements MageController {
 
     @Nullable
     @Override
-    public Collection<PlayerWarp> getPlayerWarps(Player player, String key) {
+    public Collection<PlayerWarp> getPlayerWarps(@Nonnull Player player, String key) {
+        checkNotNull(player, "player");
+
         PlayerWarpManager manager = playerWarpManagers.get(key);
         if (manager == null) {
             return null;
@@ -5170,12 +5168,12 @@ public class MagicController implements MageController {
         } else if (spell.showUndoable()) {
             if (spell.isUndoable()) {
                 String undoable = messages.get("spell.undoable", "");
-                if (undoable != null && !undoable.isEmpty()) {
+                if (!undoable.isEmpty()) {
                     lines.add(undoable);
                 }
             } else {
                 String notUndoable = messages.get("spell.not_undoable", "");
-                if (notUndoable != null && !notUndoable.isEmpty()) {
+                if (!notUndoable.isEmpty()) {
                     lines.add(notUndoable);
                 }
             }
@@ -5261,6 +5259,7 @@ public class MagicController implements MageController {
         return undoEntityTypes;
     }
 
+    @Nonnull
     @Override
     public String describeItem(ItemStack item) {
         return messages.describeItem(item);
@@ -5676,7 +5675,7 @@ public class MagicController implements MageController {
             meta.setDisplayName(template.getString("name"));
         } else {
             String name = messages.get("wands." + key + ".name");
-            if (name != null && !name.isEmpty()) {
+            if (!name.isEmpty()) {
                 meta.setDisplayName(name);
             }
         }
@@ -5685,7 +5684,7 @@ public class MagicController implements MageController {
             lore.add(template.getString("description"));
         } else {
             String description = messages.get("wands." + key + ".description");
-            if (description != null && !description.isEmpty()) {
+            if (!description.isEmpty()) {
                 lore.add(description);
             }
         }
@@ -6176,7 +6175,7 @@ public class MagicController implements MageController {
         if (mobType != null && !mobType.isEmpty()) {
             mob = getMob(mobType);
         }
-        if (mob != null && parameters != null && !parameters.getKeys(false).isEmpty()) {
+        if (mob != null && !parameters.getKeys(false).isEmpty()) {
             mob = mob.clone();
             ConfigurationSection effectiveParameters = parameters;
             ConfigurationSection defaultConfig = mob.getConfiguration();
@@ -6348,7 +6347,7 @@ public class MagicController implements MageController {
                 }
                 return null;
             }
-            return (double) wand.getWorth() / toCurrency.getWorth();
+            return wand.getWorth() / toCurrency.getWorth();
         }
 
         return configuredItem.getWorth() * amount / toCurrency.getWorth();
@@ -7753,7 +7752,7 @@ public class MagicController implements MageController {
         if (ajParkourConfiguration.getBoolean("enabled")) {
             if (pluginManager.isPluginEnabled("ajParkour")) {
                 try {
-                    ajParkourManager = new AJParkourManager(this);
+                    new AJParkourManager(this);
                 } catch (Throwable ex) {
                     getLogger().log(Level.WARNING, "Error integrating with ajParkour", ex);
                 }
@@ -8459,7 +8458,6 @@ public class MagicController implements MageController {
         return null;
     }
 
-    @Nullable
     @Override
     public Double getMythicMobLevel(Entity entity) {
         if (mythicMobManager != null) {

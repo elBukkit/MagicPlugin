@@ -189,7 +189,7 @@ public class DamageAction extends BaseSpellAction
                 knockBackAttribute.setBaseValue(previousKnockbackResistance);
             }
         }
-        if (cancelOnKillTarget && targetEntity != null && targetEntity.isDead()) {
+        if (cancelOnKillTarget && targetEntity.isDead()) {
             return SpellResult.STOP;
         }
 

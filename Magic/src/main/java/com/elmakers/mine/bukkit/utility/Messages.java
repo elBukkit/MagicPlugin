@@ -15,7 +15,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringEscapeUtils;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -158,6 +157,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         return result;
     }
 
+    @Nonnull
     @Override
     public String describeItem(ItemStack item) {
         if (item == null) return "?";

@@ -63,11 +63,8 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
         mage = controller.getMagic().getMage(player);
         displayName = player.getDisplayName();
 
-        path = null;
         CasterProperties mageClass = mage.getActiveProperties();
-        if (mageClass != null) {
-            path = mageClass.getPath();
-        }
+        path = mageClass.getPath();
 
         wins = get("won");
         losses = get("lost");

@@ -24,7 +24,6 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
 import com.google.common.collect.Multimap;
 
-@SuppressWarnings("deprecation")
 public class InventoryUtils extends InventoryUtilsBase {
     public InventoryUtils(Platform platform) {
         super(platform);
@@ -112,13 +111,13 @@ public class InventoryUtils extends InventoryUtilsBase {
         if (value instanceof Boolean) {
             wrappedValue = NMSUtils.class_NBTTagByte_constructor.newInstance((byte)((boolean)value ? 1 : 0));
         } else if (value instanceof Double) {
-            wrappedValue = NMSUtils.class_NBTTagDouble_constructor.newInstance((Double)value);
+            wrappedValue = NMSUtils.class_NBTTagDouble_constructor.newInstance(value);
         } else if (value instanceof Float) {
-            wrappedValue = NMSUtils.class_NBTTagFloat_constructor.newInstance((Float)value);
+            wrappedValue = NMSUtils.class_NBTTagFloat_constructor.newInstance(value);
         } else if (value instanceof Integer) {
-            wrappedValue = NMSUtils.class_NBTTagInt_constructor.newInstance((Integer)value);
+            wrappedValue = NMSUtils.class_NBTTagInt_constructor.newInstance(value);
         } else if (value instanceof Long) {
-            wrappedValue = NMSUtils.class_NBTTagLong_constructor.newInstance((Long)value);
+            wrappedValue = NMSUtils.class_NBTTagLong_constructor.newInstance(value);
         } else if (value instanceof ConfigurationSection) {
             wrappedValue = NMSUtils.class_NBTTagCompound_constructor.newInstance();
             saveTagsToNBT((ConfigurationSection)value, wrappedValue, null);

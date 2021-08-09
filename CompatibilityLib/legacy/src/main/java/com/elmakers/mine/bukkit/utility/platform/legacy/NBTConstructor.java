@@ -10,9 +10,8 @@ import java.lang.reflect.Method;
  * <p>This is here to bridge the static construction method of 1.15, while falling back to direct constructor access,
  * including private constructors.
  */
-@SuppressWarnings({ "rawtypes", "unchecked" })
 public class NBTConstructor {
-    private Constructor constructor;
+    private Constructor<?> constructor;
     private Method staticConstructor;
 
     public NBTConstructor(Class<?> tagClass, Class<?> typeClass) throws NoSuchMethodException {

@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import java.lang.ref.WeakReference;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;

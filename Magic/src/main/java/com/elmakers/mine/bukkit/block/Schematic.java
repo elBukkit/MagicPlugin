@@ -32,7 +32,7 @@ public class Schematic extends AbstractSchematic implements LoadableSchematic {
         loadEntities(entityData, origin);
         loadTileEntities(tileEntityData);
 
-        if (blockTypes != null && palette != null) {
+        if (blockTypes != null) {
             for (int y = 0; y < height; y++) {
                 for (int z = 0; z < length; z++) {
                     for (int x = 0; x < width; x++) {

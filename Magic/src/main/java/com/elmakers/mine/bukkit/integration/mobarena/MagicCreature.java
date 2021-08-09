@@ -16,12 +16,10 @@ import com.garbagemule.MobArena.waves.WaveUtils;
 
 public class MagicCreature extends MACreature {
     private final EntityData entityData;
-    private final MageController controller;
 
     public MagicCreature(MageController controller, String name, EntityData magicMob) {
         super(name, magicMob.getType());
         this.entityData = magicMob;
-        this.controller = controller;
     }
 
     @Nullable

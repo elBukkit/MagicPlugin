@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.logging.Level;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
@@ -372,6 +373,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         return controller.getMage(entity);
     }
 
+    @Nonnull
     @Override
     public String describeItem(ItemStack item) {
         return controller.describeItem(item);

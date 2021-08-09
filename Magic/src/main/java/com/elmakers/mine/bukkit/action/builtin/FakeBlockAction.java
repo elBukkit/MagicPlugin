@@ -28,7 +28,6 @@ public class FakeBlockAction extends BaseSpellAction {
         radius = parameters.getDouble("player_radius", 0);
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public SpellResult perform(CastContext context) {
         MaterialBrush brush = context.getBrush();

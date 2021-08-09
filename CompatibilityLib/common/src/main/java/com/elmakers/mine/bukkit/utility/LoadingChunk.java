@@ -34,7 +34,6 @@ public class LoadingChunk {
     public boolean equals(Object o) {
         if (!(o instanceof LoadingChunk)) return false;
         LoadingChunk other = (LoadingChunk) o;
-        ;
         return worldName.equals(other.worldName) && chunkX == other.chunkX && chunkZ == other.chunkZ;
     }
 

@@ -115,10 +115,6 @@ public class CustomTrigger extends Trigger {
         }
     }
 
-    private void cast(Mage mage, String castSpell) {
-        cast(mage, castSpell, null);
-    }
-
     private void cast(Mage mage, String castSpell, ConfigurationSection parameters) {
         if (castSpell.isEmpty() || castSpell.equalsIgnoreCase("none")) {
             return;

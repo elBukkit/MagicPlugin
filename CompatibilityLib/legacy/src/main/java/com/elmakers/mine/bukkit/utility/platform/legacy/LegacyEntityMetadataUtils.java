@@ -81,7 +81,7 @@ public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
     public void remove(Entity entity, MetaKey<?> key) {
         Map<String, Object> values = metadata.get(entity.getUniqueId().toString());
         if (values != null) {
-            values.remove(key);
+            values.remove(key.getName());
         }
     }
 }

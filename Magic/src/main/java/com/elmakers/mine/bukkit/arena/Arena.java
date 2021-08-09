@@ -55,12 +55,12 @@ public class Arena {
     private long started;
     private long lastTick;
     private long lastDeath;
-    private Queue<ArenaPlayer> queue = new LinkedList<ArenaPlayer>();
-    private Set<ArenaPlayer> players = new HashSet<ArenaPlayer>();
-    private Set<ArenaPlayer> deadPlayers = new HashSet<ArenaPlayer>();
+    private Queue<ArenaPlayer> queue = new LinkedList<>();
+    private Set<ArenaPlayer> players = new HashSet<>();
+    private Set<ArenaPlayer> deadPlayers = new HashSet<>();
 
-    private List<Location> spawns = new ArrayList<Location>();
-    private List<ArenaStage> stages = new ArrayList<ArenaStage>();
+    private List<Location> spawns = new ArrayList<>();
+    private List<ArenaStage> stages = new ArrayList<>();
     private DefaultStage defaultStage;
     private int currentStage = 0;
     private int editingStage = 0;
@@ -110,7 +110,7 @@ public class Arena {
     private int borderMax = 0;
     private List<String> magicBlocks;
 
-    private List<ArenaPlayer> leaderboard = new ArrayList<ArenaPlayer>();
+    private List<ArenaPlayer> leaderboard = new ArrayList<>();
     private Location leaderboardLocation;
     private BlockFace leaderboardFacing;
     private Material signMaterial;
@@ -1045,14 +1045,14 @@ public class Arena {
     }
 
     protected Collection<ArenaPlayer> getAllPlayers() {
-        List<ArenaPlayer> allPlayers = new ArrayList<ArenaPlayer>(players);
+        List<ArenaPlayer> allPlayers = new ArrayList<>(players);
         allPlayers.addAll(queue);
         allPlayers.addAll(deadPlayers);
         return allPlayers;
     }
 
     protected Collection<ArenaPlayer> getNextRoundPlayers() {
-        List<ArenaPlayer> allPlayers = new ArrayList<ArenaPlayer>();
+        List<ArenaPlayer> allPlayers = new ArrayList<>();
         for (ArenaPlayer queuedPlayer : queue) {
             if (allPlayers.size() >= maxPlayers) break;
             allPlayers.add(queuedPlayer);
@@ -1302,7 +1302,6 @@ public class Arena {
         setLeaderboardSize(leaderboardSize);
     }
 
-    @SuppressWarnings("deprecation")
     public void updateLeaderboard() {
         MaterialAndData skullMaterial = DefaultMaterials.getPlayerSkullWallBlock();
         Block leaderboardBlock = getLeaderboardBlock();
@@ -1425,7 +1424,7 @@ public class Arena {
 
     public void setLeaderboardGamesRequired(int required) {
         leaderboardGamesRequired = required;
-        Collection<ArenaPlayer> currentLeaderboard = new ArrayList<ArenaPlayer>(leaderboard);
+        Collection<ArenaPlayer> currentLeaderboard = new ArrayList<>(leaderboard);
         leaderboard.clear();
         for (ArenaPlayer player : currentLeaderboard) {
             updateLeaderboard(player);
@@ -1586,13 +1585,13 @@ public class Arena {
     }
 
     protected void createLeaderboardIcon(Integer rank, ArenaPlayer player, ItemUpdatedCallback callback) {
-        ItemStack playerItem = controller.getMagic().getSkull(player.getUUID(),
+        controller.getMagic().getSkull(player.getUUID(),
                 ChatColor.GOLD + player.getDisplayName(),
                 new ItemUpdatedCallback() {
                     @Override
                     public void updated(ItemStack itemStack) {
                         ItemMeta meta = itemStack.getItemMeta();
-                        List<String> lore = new ArrayList<String>();
+                        List<String> lore = new ArrayList<>();
 
                         if (rank != null) {
                             lore.add(ChatColor.DARK_PURPLE + "Ranked " + ChatColor.AQUA + "#" + Integer.toString(rank) + ChatColor.DARK_PURPLE + " for " + ChatColor.GOLD + getName());

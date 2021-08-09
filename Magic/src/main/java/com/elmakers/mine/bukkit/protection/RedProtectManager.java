@@ -45,7 +45,6 @@ public class RedProtectManager implements BlockBreakManager, BlockBuildManager, 
     // TODO: "allowed-wands", "blocked-wands", "spell-overrides", "magic-tags",
     //        "destructible", "reflective"
 
-    @SuppressWarnings({ "unchecked" })
     public RedProtectManager(Plugin residencePlugin, MageController controller, ConfigurationSection configuration) {
         this.controller = controller;
         this.redProtect = RedProtect.get().getAPI();

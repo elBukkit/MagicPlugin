@@ -111,7 +111,7 @@ public class EquipAction extends BaseSpellAction
             }
             equipItem = itemInHand;
         } else {
-            String materialName = null;
+            String materialName;
 
             // Create an item as a copy of an existing template
             if (item != null) {
@@ -158,12 +158,10 @@ public class EquipAction extends BaseSpellAction
             // Legacy support
             String displayName = context.getMessage("hat_name", "");
             displayName = context.getMessage("wear_name", displayName);
-            if (materialName == null || materialName.isEmpty())
-            {
+            if (materialName.isEmpty()) {
                 materialName = "?";
             }
-            if (displayName != null && !displayName.isEmpty())
-            {
+            if (!displayName.isEmpty()) {
                 meta.setDisplayName(displayName.replace("$hat", materialName).replace("$item", materialName));
             }
             List<String> lore = new ArrayList<>();

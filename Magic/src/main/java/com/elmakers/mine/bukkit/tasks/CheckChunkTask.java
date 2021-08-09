@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.tasks;
 import org.bukkit.Chunk;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.listener.ChunkLoadListener;
 

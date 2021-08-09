@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -73,7 +72,7 @@ public class MessageAction extends BaseSpellAction
             if (targetEntity == null || !(targetEntity instanceof Player)) {
                 return SpellResult.NO_TARGET;
             }
-            sendMessage(context, (Player)targetEntity);
+            sendMessage(context, targetEntity);
             return SpellResult.CAST;
         }
         Mage mage = context.getMage();

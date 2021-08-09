@@ -85,7 +85,6 @@ public class EntityItemFrameData extends EntityExtraData {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public SpawnedEntityExtraData spawn(Location location) {
         Entity newEntity = PlatformInterpreter.getPlatform().getCompatibilityUtils().createItemFrame(location, facing, rotation, item);
         return new SpawnedEntityExtraData(newEntity, false);
@@ -123,7 +122,7 @@ public class EntityItemFrameData extends EntityExtraData {
 
         ItemFrame itemFrame = (ItemFrame)entity;
         ItemStack frameItem = itemFrame.getItem();
-        CompatibilityUtils compatibilityUtils = PlatformInterpreter.getPlatform().getCompatibilityUtils();;
+        CompatibilityUtils compatibilityUtils = PlatformInterpreter.getPlatform().getCompatibilityUtils();
         if (frameItem == null || !compatibilityUtils.isFilledMap(frameItem.getType())) {
             return false;
         }

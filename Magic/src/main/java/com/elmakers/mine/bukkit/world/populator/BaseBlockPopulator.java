@@ -13,7 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.BlockResult;
-import com.elmakers.mine.bukkit.world.spawn.SpawnResult;
 
 public abstract class BaseBlockPopulator extends MagicChunkPopulator {
     private int maxY = 255;

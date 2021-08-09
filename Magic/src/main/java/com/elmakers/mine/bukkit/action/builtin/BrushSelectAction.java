@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -124,7 +123,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                 ItemStack[] contents = inventory.getStorageContents();
                 int count = 0;
                 for (int i = 0; i < contents.length; i++) {
-                    if (blockCurrency == null || mage.isAtMaxCurrency(blockCurrency.getKey())) break;
+                    if (mage.isAtMaxCurrency(blockCurrency.getKey())) break;
                     ItemStack itemStack = contents[i];
                     if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) continue;
                     if (itemStack.hasItemMeta()) continue;
@@ -325,7 +324,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         Currency blockCurrency = controller.getBlockExchangeCurrency();
         if (blockCurrency == null) return;
         String message = context.getController().getMessages().get("brush.absorb");
-        if (message == null || message.isEmpty()) return;
+        if (message.isEmpty()) return;
         ItemStack plain = new ItemStack(itemStack.getType());
         Double worth = controller.getWorth(plain, blockCurrency.getKey());
         if (worth == null || worth == 0) return;

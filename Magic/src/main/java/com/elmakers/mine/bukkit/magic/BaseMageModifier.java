@@ -170,7 +170,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
                 attributeKey = modifierConfig.getString("attribute", attributeKey);
                 value = modifierConfig.getDouble("value");
                 String operationType = modifierConfig.getString("operation");
-                if (operationType.equalsIgnoreCase("base")) {
+                if (operationType != null && operationType.equalsIgnoreCase("base")) {
                     base = value;
                 } else if (operationType != null && !operationType.isEmpty()) {
                     try {
@@ -361,7 +361,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
             triggers = ArrayListMultimap.create();
             for (String triggerKey : triggerKeys) {
                 ConfigurationSection config = triggerConfig.getConfigurationSection(triggerKey);
-                if (triggerConfig == null) {
+                if (config == null) {
                     controller.getLogger().warning("Invalid trigger specified in " + getKey() + ": " + triggerKey);
                     continue;
                 }

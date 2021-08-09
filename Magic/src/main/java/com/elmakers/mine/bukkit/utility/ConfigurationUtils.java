@@ -116,6 +116,7 @@ public class ConfigurationUtils extends ConfigUtils {
          }
      }
 
+    @Nonnull
     public static ConfigurationSection cloneEmptyConfiguration(ConfigurationSection section)
     {
         if (section instanceof SpellParameters) {
@@ -139,6 +140,7 @@ public class ConfigurationUtils extends ConfigUtils {
         return ConfigurationUtils.newConfigurationSection();
     }
 
+    @Nonnull
     public static ConfigurationSection cloneConfiguration(ConfigurationSection section)
     {
         ConfigurationSection copy = cloneEmptyConfiguration(section);
@@ -244,9 +246,15 @@ public class ConfigurationUtils extends ConfigUtils {
         return addConfigurations(first, second, override, requireExisting, false);
     }
 
-    public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second, boolean override, boolean requireExisting, boolean isUserConfig)
-    {
-        if (second == null) return first;
+    @Nonnull
+    public static ConfigurationSection addConfigurations(
+            @Nonnull ConfigurationSection first,
+            @Nullable ConfigurationSection second,
+            boolean override, boolean requireExisting, boolean isUserConfig) {
+        if (second == null) {
+            return first;
+        }
+
         override = override || second.getBoolean("override");
         Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(second);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -593,7 +601,7 @@ public class ConfigurationUtils extends ConfigUtils {
     @Nullable
     public static Set<Biome> loadBiomes(List<String> biomeNames, Logger logger, String logContext) {
         if (biomeNames == null || biomeNames.isEmpty()) return null;
-        Set<Biome> set = new HashSet<Biome>();
+        Set<Biome> set = new HashSet<>();
         for (String biomeName : biomeNames) {
             try {
                 Biome biome = Biome.valueOf(biomeName.trim().toUpperCase());

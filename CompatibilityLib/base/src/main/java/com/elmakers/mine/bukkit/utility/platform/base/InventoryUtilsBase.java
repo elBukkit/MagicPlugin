@@ -154,7 +154,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     protected Long convertToLong(Object o) {
         if (o == null) return null;
         if (o instanceof Long) return (Long)o;
-        if (o instanceof Integer) return (long)(int)(Integer)o;
+        if (o instanceof Integer) return (long)(Integer)o;
         if (o instanceof Byte) return (long)(Byte)o;
         if (o instanceof Double) return (long)(double)(Double)o;
         if (o instanceof String) return Long.parseLong((String)o);
@@ -180,7 +180,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         if (o == null) return null;
         if (o instanceof Double) return (Double)o;
         if (o instanceof Integer) return (double)(Integer)o;
-        if (o instanceof Long) return (double)(long)(Long)o;
+        if (o instanceof Long) return (double)(Long)o;
         if (o instanceof Byte) return (double)(Byte)o;
         if (o instanceof String) return Double.parseDouble((String)o);
         return null;
@@ -275,14 +275,13 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void applyEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
         if (item == null) return;
 
         Set<Enchantment> keep = null;
         if (enchantConfig != null) {
             keep = new HashSet<>();
-            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();;
+            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys)
             {
@@ -308,7 +307,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean addEnchantments(ItemStack item, ConfigurationSection enchantConfig) {
         if (item == null) return false;
         ItemMeta meta = item.getItemMeta();
@@ -316,7 +314,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
         boolean addedAny = false;
         if (enchantConfig != null) {
-            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();;
+            CompatibilityUtils compatibilityUtils = platform.getCompatibilityUtils();
             Collection<String> enchantKeys = enchantConfig.getKeys(false);
             for (String enchantKey : enchantKeys) {
                 try {
@@ -380,7 +378,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public int getMapId(ItemStack mapItem) {
         if (platform.isCurrentVersion()) {
             return platform.getNBTUtils().getMetaInt(mapItem, "map", 0);
@@ -390,7 +387,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void setMapId(ItemStack mapItem, int id) {
         if (platform.isCurrentVersion()) {
             platform.getNBTUtils().setMetaInt(mapItem, "map", id);

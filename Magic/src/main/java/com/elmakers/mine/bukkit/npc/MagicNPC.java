@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.npc;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Verify.verifyNotNull;
+
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -40,11 +43,11 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     private String worldName;
     @Nonnull
     private EntityData entityData;
-    @Nonnull
+    @Nullable
     private String mobKey;
     @Nonnull
-    private String name;
-    @Nonnull
+    private String name = "";
+    @Nullable
     private UUID entityId;
     @Nullable
     private String templateKey;
@@ -57,34 +60,39 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Nonnull
     private ConfigurationSection parameters;
 
-    private MagicNPC(MagicController controller) {
-        this.controller = controller;
-    }
-
+    @SuppressWarnings("null") // Handled by load
     public MagicNPC(MagicController controller, ConfigurationSection configuration) {
-        this(controller);
+        this.controller = controller;
         load(configuration);
+
+        verifyNotNull(entityData);
     }
 
-    public MagicNPC(MagicController controller, Mage creator, Location location, String name, EntityData template) {
-        this(controller);
+    @SuppressWarnings("null") // Handled by createEntityData
+    private MagicNPC(MagicController controller, Mage creator, Location location, @Nullable String name, @Nullable EntityData template) {
+        checkArgument(
+                name != null || template != null,
+                "Name and template cannot both be null");
+
+        this.controller = controller;
         this.setLocation(location);
-        this.name = name;
+        this.name = name != null ? name : template.getName();
         this.createdAt = System.currentTimeMillis();
         this.creatorId = creator.getId();
         this.creatorName = creator.getName();
         id = UUID.randomUUID();
         if (template != null) {
-            if (this.name == null) {
-                this.name = template.getName();
-            }
             templateKey = template.getKey();
             mobKey = template.getKey();
         } else {
             templateKey = DEFAULT_NPC_KEY;
         }
+
+        parameters = ConfigurationUtils.newConfigurationSection();
         createEntityData();
         update();
+
+        verifyNotNull(entityData);
     }
 
     public MagicNPC(MagicController controller, Mage creator, Location location, EntityData template) {
@@ -145,11 +153,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         createEntityData();
     }
 
-    protected void createEntityData() {
-        // Kind of hacky to have this here, but it's a common initialization point
-        if (parameters == null) {
-            parameters = ConfigurationUtils.newConfigurationSection();
-        }
+    private void createEntityData() {
         boolean hasMobKey = mobKey != null && !mobKey.isEmpty();
         EntityData entity = hasMobKey ? controller.getMob(mobKey) : null;
         if (entity == null) {
@@ -187,7 +191,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     }
 
     public boolean isValid() {
-        return entityData != null && isLocationValid();
+        return isLocationValid();
     }
 
     public long getBlockId() {
@@ -214,7 +218,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             return false;
         }
         this.templateKey = templateKey;
-        setType(mobKey);
+        if (mobKey != null) {
+            setType(mobKey);
+        }
         return true;
     }
 
@@ -371,7 +377,6 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     @Nonnull
     public String getName() {
-        String name = this.name == null ? "" : this.name;
         return CompatibilityLib.getCompatibilityUtils().translateColors(name);
     }
 
@@ -387,16 +392,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         return id;
     }
 
-    @Nonnull
+    @Nullable
     @Override
     public UUID getEntityId() {
-        return entityId;
-    }
-
-    @Nonnull
-    @Override
-    @Deprecated
-    public UUID getUUID() {
         return entityId;
     }
 
@@ -404,9 +402,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public void configure(String key, Object value) {
         value = ConfigurationUtils.convertProperty(value);
         parameters.set(key, value);
-        if (entityData != null) {
-            entityData.getConfiguration().set(key, value);
-        }
+        entityData.getConfiguration().set(key, value);
         update();
     }
 
@@ -480,6 +476,6 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     }
 
     public boolean isStatic() {
-        return entityData != null ? entityData.isStatic() : true;
+        return entityData.isStatic();
     }
 }

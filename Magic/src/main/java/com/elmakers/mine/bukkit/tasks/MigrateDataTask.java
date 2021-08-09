@@ -42,7 +42,7 @@ public class MigrateDataTask implements Runnable {
     public void run() {
         final int count = ids.size();
         int index = 0;
-        int interval = (int)Math.ceil((double)count / 20.0);
+        int interval = (int)Math.ceil(count / 20.0);
         MageDataCallback loadCallback = new MageDataCallback() {
             @Override
             public void run(MageData data) {
