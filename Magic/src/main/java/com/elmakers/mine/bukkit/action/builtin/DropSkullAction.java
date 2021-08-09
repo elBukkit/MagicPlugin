@@ -19,12 +19,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 public class DropSkullAction extends BaseSpellAction
 {
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
-    {
-        super.prepare(context, parameters);
-    }
-
-    @Override
     public SpellResult perform(CastContext context)
     {
         Entity targetEntity = context.getTargetEntity();
