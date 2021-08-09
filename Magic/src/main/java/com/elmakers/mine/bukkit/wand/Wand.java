@@ -4574,6 +4574,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    protected void clearActionBar() {
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player == null || actionBarMessage == null || actionBarMana) {
+            return;
+        }
+        CompatibilityLib.getCompatibilityUtils().sendActionBar(player, "");
+    }
+
     protected void updateActionBar() {
         Player player = mage == null ? null : mage.getPlayer();
         if (player == null || actionBarMessage == null) {
@@ -4681,6 +4689,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Remove boss bar if we have one
         removeBossBar();
+
+        // Clear action bar immediately
+        clearActionBar();
 
         // Play deactivate FX
         playPassiveEffects("deactivate");
