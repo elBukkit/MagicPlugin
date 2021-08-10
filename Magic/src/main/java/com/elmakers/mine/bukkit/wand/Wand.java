@@ -91,9 +91,11 @@ import com.elmakers.mine.bukkit.tasks.OpenWandTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
+import com.elmakers.mine.bukkit.utility.Replacer;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
-public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand {
+public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand, Replacer {
     public static final int OFFHAND_SLOT = 40;
     public static final int INVENTORY_SIZE = 27;
     public static final int PLAYER_INVENTORY_SIZE = 36;
@@ -2799,80 +2801,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected List<String> getCustomLore(Collection<String> loreTemplate) {
         List<String> lore = new ArrayList<>();
         for (String line : loreTemplate) {
-            if (line == null) line = "";
-            if (line.startsWith("$")) {
-                switch (line) {
-                    case "$description":
-                        addDescriptionLore(lore);
-                        break;
-                    case "$path":
-                        String pathTemplate = getMessage("path_lore", "");
-                        String pathName = getPathName();
-                        if (pathName != null && !pathTemplate.isEmpty()) {
-                            lore.add(pathTemplate.replace("$path", pathName));
-                        }
-                        break;
-                    case "$owner":
-                        addOwnerDescription(lore);
-                        break;
-                    case "$spells":
-                        int spellCount = getSpells().size();
-                        if (spellCount > 0) {
-                            ConfigurationUtils.addIfNotEmpty(getMessage("spell_count").replace("$count", Integer.toString(spellCount)), lore);
-                        }
-                        break;
-                    case "$brushes":
-                        int materialCount = getBrushes().size();
-                        if (materialCount > 0) {
-                            ConfigurationUtils.addIfNotEmpty(getMessage("material_count").replace("$count", Integer.toString(materialCount)), lore);
-                        }
-                        break;
-                    case "$uses":
-                        addUseLore(lore);
-                        break;
-                    case "$mana_max":
-                        if (usesMana()) {
-                            float manaMax = getManaMax();
-                            if (effectiveManaMax != manaMax) {
-                                String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
-                                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString((int)Math.ceil(effectiveManaMax))), lore);
-                            } else {
-                                ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
-                            }
-                        }
-                        break;
-                    case "$mana_regeneration":
-                        if (usesMana()) {
-                            double manaRegeneration = getManaRegeneration();
-                            if (manaRegeneration > 0) {
-                                if (effectiveManaRegeneration != manaRegeneration) {
-                                    String fullMessage = getLevelString("mana_regeneration_boosted", (int)Math.ceil(manaRegeneration), controller.getMaxManaRegeneration());
-                                    ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString((int)Math.ceil(effectiveManaRegeneration))), lore);
-                                } else {
-                                    ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", (int)Math.ceil(manaRegeneration), controller.getMaxManaRegeneration()), lore);
-                                }
-                            }
-                        }
-                        break;
-                    default:
-                        if (mage != null) {
-                            line = mage.parameterize(line);
-                        }
-                        lore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
-                }
-            } else {
-                if (mage != null) {
-                    line = mage.parameterize(line);
-                }
-                lore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
+            if (line == null || line.isEmpty()) {
+                lore.add("");
+                continue;
             }
+            line = parameterize(line);
+            line = CompatibilityLib.getCompatibilityUtils().translateColors(line);
+            CompatibilityLib.getInventoryUtils().wrapText(line, lore);
         }
         return lore;
-    }
-
-    protected void addDescriptionLore(List<String> lore) {
-        String description = getAndUpdateDescription();
-        CompatibilityLib.getInventoryUtils().wrapText(description, lore);
     }
 
     protected String getAndUpdateDescription() {
@@ -2929,16 +2866,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return pathName;
     }
 
-    protected void addOwnerDescription(List<String> lore) {
+    @Nonnull
+    protected String getOwnerDescription() {
+        String ownerDescription = "";
         if (owner != null && owner.length() > 0) {
             if (bound) {
-                String ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
-                ConfigurationUtils.addIfNotEmpty(ownerDescription, lore);
+                ownerDescription = getMessage("bound_description", "$name").replace("$name", owner);
             } else {
-                String ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
-                ConfigurationUtils.addIfNotEmpty(ownerDescription, lore);
+                ownerDescription = getMessage("owner_description", "$name").replace("$name", owner);
             }
         }
+        return ownerDescription;
+    }
+
+    protected void addOwnerDescription(List<String> lore) {
+        ConfigurationUtils.addIfNotEmpty(getOwnerDescription(), lore);
     }
 
     @SuppressWarnings("unchecked")
@@ -3081,17 +3023,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void addUseLore(List<String> lore) {
+        String message = getUseLore();
+        ConfigurationUtils.addIfNotEmpty(message, lore);
+    }
+
+    @Nonnull
+    protected String getUseLore() {
+        String message = "";
         int remaining = getRemainingUses();
         if (!isSingleUse && remaining > 0) {
             if (isUpgrade) {
-                String message = (remaining == 1) ? getMessage("upgrade_uses_singular") : getMessage("upgrade_uses");
-                ConfigurationUtils.addIfNotEmpty(message.replace("$count", Integer.toString(remaining)), lore);
+                message = (remaining == 1) ? getMessage("upgrade_uses_singular") : getMessage("upgrade_uses");
+                message = message.replace("$count", Integer.toString(remaining));
             } else {
-                String message = (remaining == 1) ? getMessage("uses_remaining_singular") : getMessage("uses_remaining_brief");
-                ConfigurationUtils.addIfNotEmpty(message.replace("$count", Integer.toString(remaining)), lore);
+                message = (remaining == 1) ? getMessage("uses_remaining_singular") : getMessage("uses_remaining_brief");
+                message = message.replace("$count", Integer.toString(remaining));
             }
         }
+        return message;
     }
+
 
     protected void updateLore() {
         findItem();
@@ -4596,8 +4547,73 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             lastActionBarFullMana = fullMana;
         }
-        String message = mage.parameterize(actionBarMessage);
+        String message = parameterize(actionBarMessage);
         CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
+    }
+
+    private String parameterize(String message) {
+        if (message == null || message.isEmpty()) return "";
+        message = TextUtils.parameterize(message, this);
+        if (mage != null) {
+            message = mage.parameterize(message);
+        }
+        return message;
+    }
+
+    @Override
+    public String getReplacement(String line, boolean integerValues) {
+        switch (line) {
+            case "description":
+                return getAndUpdateDescription();
+            case "path":
+                String pathTemplate = getMessage("path_lore", "");
+                String pathName = getPathName();
+                if (pathName != null && !pathTemplate.isEmpty()) {
+                    return pathTemplate.replace("$path", pathName);
+                }
+                return "";
+            case "owner":
+                return getOwnerDescription();
+            case "spells":
+                int spellCount = getSpells().size();
+                if (spellCount > 0) {
+                    return getMessage("spell_count").replace("$count", Integer.toString(spellCount));
+                }
+                return "";
+            case "brushes":
+                int materialCount = getBrushes().size();
+                if (materialCount > 0) {
+                    return getMessage("material_count").replace("$count", Integer.toString(materialCount));
+                }
+                return "";
+            case "uses":
+                return getUseLore();
+            case "mana_max":
+                if (usesMana()) {
+                    float manaMax = getManaMax();
+                    if (effectiveManaMax != manaMax) {
+                        String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
+                        return fullMessage.replace("$mana", Integer.toString((int)Math.ceil(effectiveManaMax)));
+                    } else {
+                        return getLevelString("mana_amount", manaMax, controller.getMaxMana());
+                    }
+                }
+                return "";
+            case "mana_regeneration":
+                if (usesMana()) {
+                    double manaRegeneration = getManaRegeneration();
+                    if (manaRegeneration > 0) {
+                        if (effectiveManaRegeneration != manaRegeneration) {
+                            String fullMessage = getLevelString("mana_regeneration_boosted", (int)Math.ceil(manaRegeneration), controller.getMaxManaRegeneration());
+                            return fullMessage.replace("$mana", Integer.toString((int)Math.ceil(effectiveManaRegeneration)));
+                        } else {
+                            return getLevelString("mana_regeneration", (int)Math.ceil(manaRegeneration), controller.getMaxManaRegeneration());
+                        }
+                    }
+                }
+                return "";
+        }
+        return null;
     }
 
     public void updateXPBar() {
@@ -5798,6 +5814,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     protected String parameterizeMessage(String message) {
+        // TODO: Should this route to paramterize() ?
         return message.replace("$wand", getName());
     }
 
