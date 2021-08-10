@@ -12,6 +12,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class BossBarConfiguration {
@@ -103,8 +104,20 @@ public class BossBarConfiguration {
         return bossBar;
     }
 
+    public BossBar createBossBar(Wand wand) {
+        String title = wand.parameterize(this.title);
+        BossBar bossBar = wand.getController().getPlugin().getServer().createBossBar(title, color, style, flags);
+        bossBar.setVisible(true);
+        return bossBar;
+    }
+
     public void updateTitle(BossBar bossBar, CastContext context) {
         String title = context.parameterize(this.title);
+        bossBar.setTitle(title);
+    }
+
+    public void updateTitle(BossBar bossBar, Wand wand) {
+        String title = wand.parameterize(this.title);
         bossBar.setTitle(title);
     }
 

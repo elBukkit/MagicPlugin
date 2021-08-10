@@ -2526,11 +2526,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (player == null || bossBarConfiguration == null) return;
         if (!bossBarDisplayMode.isEnabled(this)) return;
         if (bossBar == null) {
-            bossBar = bossBarConfiguration.createBossBar(mage);
+            bossBar = bossBarConfiguration.createBossBar(this);
             bossBar.addPlayer(player);
         }
         double progress = bossBarDisplayMode.getProgress(this);
         bossBar.setProgress(Math.min(1, Math.max(0, progress)));
+        bossBarConfiguration.updateTitle(bossBar, this);
     }
 
     private void removeBossBar() {
@@ -4592,7 +4593,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
     }
 
-    private String parameterize(String message) {
+    @Override
+    public String parameterize(String message) {
         if (message == null || message.isEmpty()) return "";
         message = TextUtils.parameterize(message, this);
         if (mage != null) {

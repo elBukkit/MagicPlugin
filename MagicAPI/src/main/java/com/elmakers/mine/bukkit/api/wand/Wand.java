@@ -282,4 +282,5 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     @Nonnull
     Map<Enchantment, Integer> getEnchantments();
     void showInstructions();
+    String parameterize(String command);
 }
