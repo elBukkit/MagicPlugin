@@ -74,4 +74,12 @@ public interface Messages {
     String getRangeDescription(double range, @Nonnull String messagesKey);
     @Nonnull
     Collection<String> getAllKeys();
+
+    /**
+     * This relies on the negative space font RP:
+     * https://github.com/AmberWat/NegativeSpaceFont
+     * And specific mappings defined in messages, in the gui.space section
+     */
+    @Nonnull
+    String getSpace(int pixels);
 }

@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,10 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private Map<String, List<String>> listMap = new HashMap<>();
     private Map<String, List<String>> randomized = new HashMap<>();
 
+    private Map<Integer, String> spaceAmounts = new HashMap<>();
+    private List<Integer> negativeSpace = new ArrayList<>();
+    private List<Integer> positiveSpace = new ArrayList<>();
+
     private NumberFormat formatter = new DecimalFormat("#0.00");
 
     public Messages() {
@@ -62,6 +67,29 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 listMap.put(key, messages.getStringList(key));
             }
         }
+
+        // Special mapping of negative space values
+        ConfigurationSection spaceSection = messages.getConfigurationSection("gui.space");
+        Set<String> spaceKeys = spaceSection.getKeys(false);
+        for (String spaceKey : spaceKeys) {
+            try {
+                Integer spaceAmount = Integer.parseInt(spaceKey);
+                // There shouldn't be a zero
+                if (spaceAmount == 0) continue;
+                if (spaceAmount < 0) {
+                    negativeSpace.add(spaceAmount);
+                } else {
+                    positiveSpace.add(spaceAmount);
+                }
+                spaceAmounts.put(spaceAmount, spaceSection.getString(spaceKey));
+            } catch (Exception ignore) {
+            }
+        }
+
+        // These need to go in order from largest magnitude to smallest
+        Collections.sort(negativeSpace);
+        Collections.sort(positiveSpace);
+        Collections.reverse(positiveSpace);
     }
 
     @Override
@@ -406,5 +434,51 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     @Nonnull
     public String getRangeDescription(double range, @Nonnull String messagesKey) {
         return get(messagesKey).replace("$range", RANGE_FORMATTER.format(range));
+    }
+
+    /**
+     * This relies on the negative space font RP:
+     * https://github.com/AmberWat/NegativeSpaceFont
+     */
+    @Nonnull
+    @Override
+    public String getSpace(int pixels) {
+        if (pixels == 0) {
+            return "";
+        }
+
+        if (spaceAmounts.containsKey(pixels)) {
+            return spaceAmounts.get(pixels);
+        }
+
+        int totalPixels = pixels;
+        int absPixels = Math.abs(pixels);
+        List<Integer> spaceValues = pixels > 0 ? positiveSpace : negativeSpace;
+        StringBuilder output = new StringBuilder();
+
+        for (Integer spaceValue : spaceValues) {
+            int absValue = Math.abs(spaceValue);
+            // See if we can fit this space in
+            if (absPixels < absValue) continue;
+
+            // Append as many of these as we can
+            String entryGlyph = spaceAmounts.get(spaceValue);
+            int amount = absPixels / absValue;
+            for (int i = 0; i < amount; i++) {
+                output.append(entryGlyph);
+            }
+
+            // Subtract off the amount of space we just added
+            pixels = pixels - (amount * spaceValue);
+
+            // See if we are done
+            absPixels = Math.abs(pixels);
+            if (absPixels == 0) break;
+        }
+
+        // Cache this string so we don't have to recompute it later
+        String result = output.toString();
+        spaceAmounts.put(totalPixels, result);
+        return result;
     }
 }
