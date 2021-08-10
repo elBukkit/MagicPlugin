@@ -25,6 +25,7 @@
  - Fix casting cost of Workbench being too high for a Beginner to cast
  - Fix stacked wand upgrades absorbing the full stack when dropping on a wand
  - Fix unintentionally overriding Mythic mob or naturally spawned mob properties when applying Magic mob behaviors to them
+ - Fix Drop block break/place rule not being able to drop wands
 
 ## Additions
  

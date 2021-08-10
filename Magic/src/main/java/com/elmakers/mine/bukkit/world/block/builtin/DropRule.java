@@ -42,7 +42,7 @@ public class DropRule extends BlockRule {
         } catch (Exception ignore) {
         }
 
-        ItemData itemData = controller.getItem(itemKey);
+        ItemData itemData = controller.getOrCreateItem(itemKey);
         ItemStack itemStack = itemData == null ? null : itemData.getItemStack();
         if (itemStack == null) {
             controller.getLogger().warning("Invalid item key in drop rule: " + itemKey);
