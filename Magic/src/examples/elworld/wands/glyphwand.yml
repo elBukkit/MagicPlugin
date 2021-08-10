@@ -3,4 +3,4 @@ glyphwand:
   name: Experimental
   action_bar: "$hotbar"
   drop: toggle
-  right_click: cycle
+  right_click: cycle_active_hotbar

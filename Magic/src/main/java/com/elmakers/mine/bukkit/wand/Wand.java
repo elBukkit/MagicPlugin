@@ -3972,6 +3972,34 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    public void cycleActiveHotbar(int direction) {
+        WandInventory hotbar = getActiveHotbar();
+        if (hotbar == null) return;
+
+        int spellIndex = 0;
+        if (activeSpell != null) {
+            for (int i = 0; i < hotbar.getSize(); i++) {
+                ItemStack hotbarItem = hotbar.getItem(i);
+                String hotbarSpellKey = getSpell(hotbarItem);
+                if (hotbarSpellKey != null && hotbarSpellKey.equals(activeSpell)) {
+                    spellIndex = i;
+                    break;
+                }
+            }
+        }
+
+        int tryIndex = (spellIndex + direction + hotbar.getSize()) % hotbar.getSize();
+        while (tryIndex != spellIndex) {
+            ItemStack hotbarItem = hotbar.getItem(tryIndex);
+            String hotbarSpellKey = getSpell(hotbarItem);
+            if (hotbarSpellKey != null) {
+                setActiveSpell(hotbarSpellKey);
+                break;
+            }
+            tryIndex = (tryIndex + direction + hotbar.getSize()) % hotbar.getSize();
+        }
+    }
+
     public void toggleInventory() {
         if (mage != null && mage.cancelSelection()) {
             mage.playSoundEffect(noActionSound);
@@ -4568,6 +4596,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String getHotbarGlyphs() {
         Messages messages = controller.getMessages();
         WandInventory hotbar = getActiveHotbar();
+        if (hotbar == null) return "";
         boolean skipEmpty = getBoolean("glyph_skip_empty", true);
         int hotbarSlotWidth = getInt("glyph_slot_width", 20);
         int iconWidth = getInt("glyph_icon_width", 18);
@@ -4583,7 +4612,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String hotbarIconPaddingLeft = messages.getSpace(iconPaddingLeft);
         String hotbarIconPaddingRight = messages.getSpace(iconPaddingRight);
         String slotSpacing = messages.getSpace(slotSpacingWidth);
-        if (hotbar == null) return "";
         String glyphs = "";
         String hotbarSlot = messages.get("gui.icons.gui.hotbar_slot");
         String hotbarSlotActive = messages.get("gui.icons.gui.hotbar_slot_active");
@@ -6329,6 +6357,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 break;
             case CYCLE_REVERSE:
                 cycleActive(-1);
+                break;
+            case CYCLE_ACTIVE_HOTBAR:
+                cycleActiveHotbar(1);
+                break;
+            case CYCLE_ACTIVE_HOTBAR_REVERSE:
+                cycleActiveHotbar(-1);
                 break;
             case CYCLE_HOTBAR:
                 if (mode != WandMode.INVENTORY || !isInventoryOpen()) return false;
