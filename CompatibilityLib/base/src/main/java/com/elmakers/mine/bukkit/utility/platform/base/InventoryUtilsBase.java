@@ -434,6 +434,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public void wrapText(String text, String prefix, int maxLength, Collection<String> list) {
+        if (text == null || text.isEmpty()) return;
         String colorPrefix = "";
         String[] lines = StringUtils.split(text, "\n\r");
         for (String line : lines) {
