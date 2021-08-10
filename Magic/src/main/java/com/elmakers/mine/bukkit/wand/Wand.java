@@ -4625,8 +4625,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         boolean skipEmpty = getBoolean("glyph_skip_empty", true);
         int hotbarSlotWidth = getInt("glyph_slot_width", 20);
         int iconWidth = getInt("glyph_icon_width", 18);
-        int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 19);
-        int activeSlotSpacing = getInt("glyph_active_slot_spacing", -2);
+        int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 22);
+        int activeSlotSpacing = getInt("glyph_active_slot_spacing", -4);
         int iconPaddingLeft = (hotbarSlotWidth - iconWidth) / 2;
         int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
         int slotSpacingWidth = getInt("glyph_slot_spacing", 0);
