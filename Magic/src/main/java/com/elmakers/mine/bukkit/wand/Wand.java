@@ -297,6 +297,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private Inventory storedInventory = null;
     private int heldSlot = 0;
     private boolean isActive = false;
+    private long activationTimestamp;
 
     // XP bar
     protected WandDisplayMode xpBarDisplayMode = WandDisplayMode.MANA;
@@ -313,6 +314,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected String actionBarMessage;
     protected String actionBarOpenMessage;
     protected int actionBarInterval;
+    protected int actionBarDelay;
     protected long lastActionBar;
     protected boolean actionBarMana;
     protected boolean lastActionBarFullMana;
@@ -2485,6 +2487,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 actionBarMessage = null;
             } else {
                 actionBarInterval = config.getInt("interval", 1000);
+                actionBarDelay = config.getInt("delay", 0);
                 actionBarMana = config.getBoolean("uses_mana");
             }
             lastActionBar = 0;
@@ -4572,6 +4575,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (player == null || actionBarMessage == null) {
             return;
         }
+        if (actionBarDelay > 0 && System.currentTimeMillis() < activationTimestamp + actionBarDelay) {
+            return;
+        }
         if (actionBarMana) {
             double mana = mage.getMana();
             double manaMax = mage.getEffectiveManaMax();
@@ -5383,6 +5389,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return false;
         }
         isActive = true;
+        activationTimestamp = System.currentTimeMillis();
         this.isInOffhand = offhand;
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
 

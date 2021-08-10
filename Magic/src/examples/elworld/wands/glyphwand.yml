@@ -5,6 +5,7 @@ glyphwand:
     message: "$hotbar"
     open_message: ""
     interval: 250
+    delay: 1500
   drop: toggle
   right_click_sneak: cycle_active_hotbar_reverse
   right_click: cycle_active_hotbar
