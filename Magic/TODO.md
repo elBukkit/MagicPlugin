@@ -1,12 +1,27 @@
 # TODO
 
-# MythicMobs
+# Glyph Wand
 
- - Need to really make sure all EntityData parameters are nullable and optional, aka
-   Does having a default mob assigned prevent them from becoming babies? Probably best to clean that up...
-   
+ - Get icons to actually align, including selection box
+ - New wand mode, cycle_in_hotbar or something
+ - Option to not use active wand name unless spell inventory is open
+ - General system for not stomping on action bar messages 
+   (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
+ - Option to not show action bar unless spell inventory is (or is not) open
+ - More general instructions in wand lore along the lines of the "Spell inventory is open" section
+ - Option to delay showing action bar (give the wand name time to disappear)
+ - Resource pack response handling, special behavior if RP isn't accepted
+
 # Important
 
+ - Change icon for vengeance, also see why it goes in your offhaand
+ - Stage names not working  
+ - Item attributes on wand template configs don't know about player attributes
+   In general, templates don't use mage parameters. Two options:
+   1. follow the MageClass pattern, create a new WandTemplate copy for every wand instance, to bind MageConfiguration
+   2. Collapse template config into wand config as an effective config ... this may be a better route since
+      right now wand property queries walk down the entire template inheritance chain
+      but if changing it to work this way, it may be worth looking at making mage clases work that way too?
  - Test applying infinity to a sword, is it allowed? Enchantable should bypass vanilla restrictions
  - Ability to enchant sticks and such?
  - Enchantment levels as variables in spell and wand configs would be very cool

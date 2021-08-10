@@ -49,7 +49,9 @@ public abstract class WandProperties extends TemplatedProperties {
             "slot", "slots", "slotted", "swappable_slots",
             "use_active_name", "interactible", "craftable", "unswappable", "worth", "glow", "spell_glow",
             "boss_bar", "level_display", "xp_display", "action_bar", "placeable", "infinity_cost_free",
-            "allowed_enchantments"
+            "allowed_enchantments",
+            "glyph_skip_empty", "glyph_slot_width", "glyph_active_slot_width",  "glyph_slot_spacing",
+            "glyph_icon_width", "glyph_active_slot_spacing"
         ).build();
     protected BaseMagicProperties wandTemplate;
     protected MageClass mageClass;

@@ -1,0 +1,6 @@
+glyphwand:
+  inherit: wand
+  name: Experimental
+  action_bar: "$hotbar"
+  drop: toggle
+  right_click: cycle

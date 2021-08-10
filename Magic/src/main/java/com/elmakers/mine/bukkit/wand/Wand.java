@@ -4560,9 +4560,75 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return message;
     }
 
+    private WandInventory getActiveHotbar() {
+        if (hotbars.isEmpty()) return null;
+        return hotbars.get(currentHotbar);
+    }
+
+    private String getHotbarGlyphs() {
+        Messages messages = controller.getMessages();
+        WandInventory hotbar = getActiveHotbar();
+        boolean skipEmpty = getBoolean("glyph_skip_empty", true);
+        int hotbarSlotWidth = getInt("glyph_slot_width", 20);
+        int iconWidth = getInt("glyph_icon_width", 18);
+        int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 19);
+        int activeSlotSpacing = getInt("glyph_active_slot_spacing", -2);
+        int iconPaddingLeft = (hotbarSlotWidth - iconWidth) / 2;
+        int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
+        int slotSpacingWidth = getInt("glyph_slot_spacing", 0);
+
+        String hotbarSlotReverse = messages.getSpace(-hotbarSlotWidth);
+        String hotbarActiveSlotReverse = messages.getSpace(-hotbarActiveSlotWidth);
+        String hotbarActiveSlotSpacing = messages.getSpace(activeSlotSpacing);
+        String hotbarIconPaddingLeft = messages.getSpace(iconPaddingLeft);
+        String hotbarIconPaddingRight = messages.getSpace(iconPaddingRight);
+        String slotSpacing = messages.getSpace(slotSpacingWidth);
+        if (hotbar == null) return "";
+        String glyphs = "";
+        String hotbarSlot = messages.get("gui.icons.gui.hotbar_slot");
+        String hotbarSlotActive = messages.get("gui.icons.gui.hotbar_slot_active");
+        String emptyIcon = messages.get("gui.icons.gui.empty_icon");
+        for (ItemStack hotbarItem : hotbar.items) {
+            String spellKey = getSpell(hotbarItem);
+            String icon;
+            if (spellKey == null) {
+                if (skipEmpty) continue;
+                icon = emptyIcon;
+            } else {
+                spellKey = new SpellKey(spellKey).getKey();
+                icon = messages.get("gui.icons.spells." + spellKey);
+                if (icon == null) {
+                    icon = messages.get("gui.icons.spells.default");
+                }
+            }
+
+            // Add hotbar slot background
+            glyphs += hotbarSlot;
+            glyphs += hotbarSlotReverse;
+
+            // Add icon with padding
+            glyphs += hotbarIconPaddingLeft;
+            glyphs += icon;
+            glyphs += hotbarIconPaddingRight;
+
+            // Add active overlay
+            if (spellKey != null && activeSpell != null && spellKey.equals(activeSpell)) {
+                glyphs += hotbarActiveSlotReverse;
+                glyphs += hotbarSlotActive;
+                glyphs += hotbarActiveSlotSpacing;
+            }
+
+            // Add space in between each slot
+            glyphs += slotSpacing;
+        }
+        return glyphs;
+    }
+
     @Override
     public String getReplacement(String line, boolean integerValues) {
         switch (line) {
+            case "hotbar":
+                return getHotbarGlyphs();
             case "description":
                 return getAndUpdateDescription();
             case "path":
