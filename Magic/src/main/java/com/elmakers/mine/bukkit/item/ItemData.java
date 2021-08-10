@@ -363,7 +363,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                     pending = new ArrayList<>();
                 }
                 if (item == null) {
-                    controller.getLogger().warning("Invalid material key: " + materialKey);
+                    controller.getLogger().warning("Invalid item key: " + materialKey);
                     item = new ItemStack(Material.AIR);
                 }
             }
