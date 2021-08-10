@@ -2,7 +2,6 @@
 
 # Glyph Wand
 
- - Option to not use active wand name unless spell inventory is open
  - General system for not stomping on action bar messages 
    (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
  - Option to not show action bar unless spell inventory is (or is not) open

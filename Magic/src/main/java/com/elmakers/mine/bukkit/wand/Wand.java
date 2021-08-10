@@ -172,6 +172,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean hasId = false;
     private boolean showCycleModeLore = true;
     private boolean useActiveName = false;
+    private boolean useActiveNameWhenClosed = false;
     private int inventoryRows = 1;
     private Vector castLocation;
 
@@ -2037,6 +2038,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         inventoryRows = getInt("inventory_rows", 5);
         showCycleModeLore = getBoolean("show_cycle_lore", true);
         useActiveName = getBoolean("use_active_name", false);
+        useActiveNameWhenClosed = getBoolean("use_active_name_when_closed", true);
         if (inventoryRows <= 0) inventoryRows = 1;
 
         resetManaOnActivate = null;
@@ -2673,6 +2675,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public void updateName(boolean isActive, boolean stripColors) {
         String name;
+        findItem();
         if (isActive || useActiveName) {
             name = !isUpgrade ? getActiveWandName() :
                     CompatibilityLib.getCompatibilityUtils().translateColors(getMessage("upgrade_prefix")) + getDisplayName();
@@ -2694,7 +2697,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private void updateName() {
-        updateName(isActive);
+        updateName(useActiveNameWhenClosed ? isActive : inventoryIsOpen);
     }
 
     protected static String convertToHTML(String line) {
