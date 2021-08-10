@@ -3312,6 +3312,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
+    public static String getSpellBaseKey(ItemStack item) {
+        String spellKey = getSpell(item);
+        if (spellKey != null) {
+            SpellKey key = new SpellKey(spellKey);
+            spellKey = key.getBaseKey();
+        }
+        return spellKey;
+    }
+
+    @Nullable
     public static String getSpell(ItemStack item) {
         if (CompatibilityLib.getItemUtils().isEmpty(item)) return null;
         Object spellNode = CompatibilityLib.getNBTUtils().getNode(item, "spell");
@@ -3990,7 +4000,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (activeSpell != null) {
             for (int i = 0; i < hotbar.getSize(); i++) {
                 ItemStack hotbarItem = hotbar.getItem(i);
-                String hotbarSpellKey = getSpell(hotbarItem);
+                String hotbarSpellKey = getSpellBaseKey(hotbarItem);
                 if (hotbarSpellKey != null && hotbarSpellKey.equals(activeSpell)) {
                     spellIndex = i;
                     break;
@@ -4001,7 +4011,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int tryIndex = (spellIndex + direction + hotbar.getSize()) % hotbar.getSize();
         while (tryIndex != spellIndex) {
             ItemStack hotbarItem = hotbar.getItem(tryIndex);
-            String hotbarSpellKey = getSpell(hotbarItem);
+            String hotbarSpellKey = getSpellBaseKey(hotbarItem);
             if (hotbarSpellKey != null) {
                 setActiveSpell(hotbarSpellKey);
                 break;
@@ -4632,16 +4642,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String hotbarSlotActive = messages.get("gui.icons.gui.hotbar_slot_active");
         String emptyIcon = messages.get("gui.icons.gui.empty_icon");
         for (ItemStack hotbarItem : hotbar.items) {
-            String spellKey = getSpell(hotbarItem);
+            String spellKey = getSpellBaseKey(hotbarItem);
             String icon;
             if (spellKey == null) {
                 if (skipEmpty) continue;
                 icon = emptyIcon;
             } else {
                 spellKey = new SpellKey(spellKey).getKey();
-                icon = messages.get("gui.icons.spells." + spellKey);
+                icon = messages.get("gui.icons.spells." + spellKey, null);
                 if (icon == null) {
-                    icon = messages.get("gui.icons.spells.default");
+                    icon = messages.get("gui.icons.spells.default", "");
                 }
             }
 
