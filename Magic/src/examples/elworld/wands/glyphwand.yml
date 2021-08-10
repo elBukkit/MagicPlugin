@@ -1,7 +1,11 @@
 glyphwand:
   inherit: wand
   name: Experimental
-  action_bar: "$hotbar"
+  action_bar:
+    message: "$hotbar"
+    open_message: ""
+    interval: 250
   drop: toggle
+  right_click_sneak: cycle_active_hotbar_reverse
   right_click: cycle_active_hotbar
   use_active_name_when_closed: false

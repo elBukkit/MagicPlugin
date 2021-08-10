@@ -311,6 +311,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     // Action bar
     protected String actionBarMessage;
+    protected String actionBarOpenMessage;
     protected int actionBarInterval;
     protected long lastActionBar;
     protected boolean actionBarMana;
@@ -2479,6 +2480,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         config = getConfigurationSection("action_bar");
         if (config != null) {
             actionBarMessage = config.getString("message");
+            actionBarOpenMessage = config.getString("open_message", actionBarMessage);
             if (actionBarMessage.isEmpty()) {
                 actionBarMessage = null;
             } else {
@@ -2488,6 +2490,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             lastActionBar = 0;
         } else {
             actionBarMessage = getString("action_bar");
+            actionBarOpenMessage = actionBarMessage;
         }
         if (actionBarMessage == null) {
             actionBarMana = false;
@@ -4578,7 +4581,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             lastActionBarFullMana = fullMana;
         }
-        String message = parameterize(actionBarMessage);
+        String useMessage = inventoryIsOpen ? actionBarOpenMessage : actionBarMessage;
+        String message = parameterize(useMessage);
         CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
     }
 

@@ -4,7 +4,6 @@
 
  - General system for not stomping on action bar messages 
    (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
- - Option to not show action bar unless spell inventory is (or is not) open
  - More general instructions in wand lore along the lines of the "Spell inventory is open" section
  - Option to delay showing action bar (give the wand name time to disappear)
  - Resource pack response handling, special behavior if RP isn't accepted
