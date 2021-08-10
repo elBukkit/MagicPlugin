@@ -839,7 +839,7 @@ commands:
     description: Load multiple maps from one image
     permission: Magic.commands.mmap.slice
     usage: |
-      /mmap slice [url] <name> <horizontal slices> <vertical slices>
+      /mmap slice [url] [name] [horizontal slices] [vertical slices]
       /mmap slice https://i.imgur.com/nuRGWw7.png Magic 2 1
   "mmap player":
     description: Load a new map from a player skil

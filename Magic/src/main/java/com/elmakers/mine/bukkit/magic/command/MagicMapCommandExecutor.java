@@ -269,31 +269,23 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
         }
         else if (subCommand.equalsIgnoreCase("slice"))
         {
-            if (args.length == 1) {
+            if (args.length != 5) {
                 sender.sendMessage("Usage: mmap slice <file/url> [name] [horizontal slices] [vertical slices]");
                 return true;
             }
             int xSlices = 0;
             int ySlices = 0;
             Integer priority = null;
-            String mapName = null;
-
-            if (args.length > 2) {
-                mapName = args[2];
+            String mapName = args[2];
+            try {
+                xSlices = Integer.parseInt(args[3]);
+            } catch (Exception ex) {
+                sender.sendMessage("Invalid horizontal slices: " + args[3]);
             }
-            if (args.length > 3) {
-                try {
-                    xSlices = Integer.parseInt(args[3]);
-                } catch (Exception ex) {
-                    sender.sendMessage("Invalid horizontal slices: " + args[3]);
-                }
-            }
-            if (args.length > 4) {
-                try {
-                    ySlices = Integer.parseInt(args[4]);
-                } catch (Exception ex) {
-                    sender.sendMessage("Invalid vertical slices: " + args[4]);
-                }
+            try {
+                ySlices = Integer.parseInt(args[4]);
+            } catch (Exception ex) {
+                sender.sendMessage("Invalid vertical slices: " + args[4]);
             }
             onMapSlice(sender, world, args[1], mapName, xSlices, ySlices, priority);
         }
