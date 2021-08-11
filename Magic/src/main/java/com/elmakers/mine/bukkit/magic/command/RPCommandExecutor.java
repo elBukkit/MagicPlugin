@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.rp.ResourcePackPreference;
 import com.elmakers.mine.bukkit.magic.Mage;
 
 public class RPCommandExecutor extends MagicTabExecutor {
@@ -47,7 +48,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
         }
 
         String subCommand = args.length > 0 ? args[0] : "";
-        if (subCommand.equalsIgnoreCase("url") || subCommand.equalsIgnoreCase("download")) {
+        if (subCommand.equalsIgnoreCase("url")) {
             sender.sendMessage(controller.getResourcePackURL(sender));
             return true;
         }
@@ -63,40 +64,44 @@ public class RPCommandExecutor extends MagicTabExecutor {
         }
 
         Mage mage = (Mage)controller.getMage(sender);
+        if (subCommand.equalsIgnoreCase("download")) {
+            String message = controller.getMessages().get("commands.getrp.download");
+            message = message.replace("$url", controller.getResourcePackURL(sender));
+            mage.sendMessage(message);
+            mage.setResourcePackPreference(ResourcePackPreference.DOWNLOADED);
+            return true;
+        }
         if (subCommand.equalsIgnoreCase("auto")) {
-            mage.setResourcePackEnabled(true);
+            mage.setResourcePackPreference(ResourcePackPreference.AUTOMATIC);
             controller.sendResourcePack((Player)sender);
-            sender.sendMessage(controller.getMessages().get("commands.getrp.auto"));
+            mage.sendMessage(controller.getMessages().get("commands.getrp.auto"));
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("off")) {
-            mage.setResourcePackEnabled(false);
-            mage.setResourcePackPrompt(false);
-            sender.sendMessage(controller.getMessages().get("commands.getrp.turnoff"));
+            mage.setResourcePackPreference(ResourcePackPreference.DISABLED);
+            mage.sendMessage(controller.getMessages().get("commands.getrp.turnoff"));
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("manual")) {
-            mage.setResourcePackEnabled(false);
-            mage.setResourcePackPrompt(true);
-            sender.sendMessage(controller.getMessages().get("commands.getrp.manual"));
+            mage.setResourcePackPreference(ResourcePackPreference.MANUAL);
+            mage.sendMessage(controller.getMessages().get("commands.getrp.manual"));
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("default")) {
             sender.sendMessage(controller.getMessages().get("commands.getrp.default"));
-            mage.setResourcePackPrompt(true);
-            mage.setResourcePackEnabled(null);
+            mage.setResourcePackPreference(ResourcePackPreference.DEFAULT);
             mage.setPreferredResourcePack(null);
             controller.sendResourcePack((Player)sender);
             return true;
         }
 
         if (controller.getAlternateResourcePacks().contains(subCommand)) {
-            sender.sendMessage(controller.getMessages().get("commands.getrp.preference").replace("$pack", subCommand));
-            if (!mage.isResourcePackEnabledSet()) {
-                sender.sendMessage(controller.getMessages().get("commands.getrp.noauto"));
+            mage.sendMessage(controller.getMessages().get("commands.getrp.preference").replace("$pack", subCommand));
+            if (mage.getResourcePackPreference() != ResourcePackPreference.AUTOMATIC) {
+                mage.sendMessage(controller.getMessages().get("commands.getrp.noauto"));
             }
             mage.setPreferredResourcePack(subCommand);
             controller.sendResourcePack((Player)sender);
@@ -105,7 +110,7 @@ public class RPCommandExecutor extends MagicTabExecutor {
 
         String message = controller.getMessages().get("commands.unknown_command");
         message = message.replace("$command", subCommand);
-        sender.sendMessage(message);
+        mage.sendMessage(message);
 
         return true;
     }

@@ -84,6 +84,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
+import com.elmakers.mine.bukkit.api.rp.ResourcePackPreference;
 import com.elmakers.mine.bukkit.api.spell.CastParameter;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
@@ -223,8 +224,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private boolean costFreeOverride = false;
     private boolean cooldownFreeOverride = false;
-    private boolean resourcePackPrompt = true;
-    private Boolean resourcePackEnabled = null;
+    private ResourcePackPreference resourcePackPreference = ResourcePackPreference.DEFAULT;
     private String preferredResourcePack = null;
     private boolean hasResourcePack = false;
 
@@ -1257,8 +1257,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 fallProtection = System.currentTimeMillis() + fallProtection;
             }
 
-            resourcePackEnabled = data.getResourcePackEnabled();
-            resourcePackPrompt = data.getResourcePackPrompt();
+            resourcePackPreference = data.getResourcePackPreference();
             preferredResourcePack = data.getPreferredResourcePack();
             gaveWelcomeWand = data.getGaveWelcomeWand();
             playerName = data.getName();
@@ -1564,8 +1563,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
             }
             data.setGaveWelcomeWand(gaveWelcomeWand);
-            data.setResourcePackEnabled(resourcePackEnabled);
-            data.setResourcePackPrompt(resourcePackPrompt);
+            data.setResourcePackPreference(resourcePackPreference);
             data.setPreferredResourcePack(preferredResourcePack);
             data.setExtraData(this.data);
             data.setProperties(properties.getConfiguration());
@@ -5436,28 +5434,51 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isResourcePackEnabled() {
-        return resourcePackEnabled == null ? controller.isResourcePackEnabledByDefault() : resourcePackEnabled;
+        switch (resourcePackPreference) {
+            case DEFAULT:
+                return controller.isResourcePackEnabledByDefault();
+            case AUTOMATIC:
+                return true;
+            case MANUAL:
+            case DISABLED:
+            case DOWNLOADED:
+            default:
+                return false;
+        }
+    }
+
+    public boolean isResourcePackDisabled() {
+        switch (resourcePackPreference) {
+            case DEFAULT:
+                return !controller.isResourcePackEnabledByDefault();
+            case DISABLED:
+                return true;
+            case DOWNLOADED:
+            case MANUAL:
+            case AUTOMATIC:
+            default:
+                return false;
+        }
     }
 
     @Override
     public boolean hasResourcePack() {
+        if (resourcePackPreference == ResourcePackPreference.DOWNLOADED) {
+            return true;
+        }
         return hasResourcePack && isResourcePackEnabled();
     }
 
-    public boolean isResourcePackEnabledSet() {
-        return resourcePackEnabled != null;
+    public ResourcePackPreference getResourcePackPreference() {
+        return resourcePackPreference;
     }
 
-    public void setResourcePackEnabled(Boolean enable) {
-        resourcePackEnabled = enable;
-    }
-
-    public void setResourcePackPrompt(boolean prompt) {
-        resourcePackPrompt = prompt;
+    public void setResourcePackPreference(ResourcePackPreference resourcePackPreference) {
+        this.resourcePackPreference = resourcePackPreference;
     }
 
     public boolean isResourcePackPrompt() {
-        return resourcePackPrompt;
+        return resourcePackPreference == ResourcePackPreference.MANUAL;
     }
 
     public void setPreferredResourcePack(String pack) {

@@ -51,6 +51,9 @@
  - Broomstick upgrades can be swapped out
  - Changed how arenas and their templates interact to work more like other magic configs/instances
  - Added `default_stage` properties to arena, to set default stage properties
+ - Players will now be instructed how to turn on the RP if their client declines it. 
+   They can disable this message with `/getrp off` and are prompted to do so
+   If you still don't want the nagging, you can use `/mconfig configure message resource_pack.declined ""`
 
 # 9.4.4
 

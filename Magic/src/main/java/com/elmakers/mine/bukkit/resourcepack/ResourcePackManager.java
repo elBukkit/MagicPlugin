@@ -429,7 +429,7 @@ public class ResourcePackManager {
         if (!controller.isResourcePackEnabled()) return;
 
         Mage mage = controller.getRegisteredMage(player);
-        if (mage == null || !mage.isResourcePackEnabled()) return;
+        if (mage == null || mage.isResourcePackDisabled()) return;
         String message;
         switch (status) {
             case UNKNOWN:

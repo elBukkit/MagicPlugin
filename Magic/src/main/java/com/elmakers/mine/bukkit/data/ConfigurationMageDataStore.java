@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.api.data.SerializedLocation;
 import com.elmakers.mine.bukkit.api.data.SpellData;
 import com.elmakers.mine.bukkit.api.data.UndoData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.rp.ResourcePackPreference;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class ConfigurationMageDataStore implements MageDataStore {
@@ -151,8 +152,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         saveFile.set("level", mage.getStoredLevel());
         saveFile.set("open_wand", mage.isOpenWand());
         saveFile.set("gave_welcome_wand", mage.getGaveWelcomeWand());
-        saveFile.set("resource_pack_preference", mage.getResourcePackEnabled());
-        saveFile.set("resource_pack_prompt", mage.getResourcePackPrompt());
+        saveFile.set("resource_pack_preference", mage.getResourcePackPreference().name().toLowerCase());
         saveFile.set("preferred_resource_pack", mage.getPreferredResourcePack());
 
         ConfigurationSection extraData = mage.getExtraData();
@@ -433,10 +433,30 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         }
         data.setOpenWand(saveFile.getBoolean("open_wand", false));
         data.setGaveWelcomeWand(saveFile.getBoolean("gave_welcome_wand", false));
-        if (saveFile.contains("resource_pack_preference")) {
-            data.setResourcePackEnabled(saveFile.getBoolean("resource_pack_preference"));
+        ResourcePackPreference resourcePackPreference = ResourcePackPreference.DEFAULT;
+
+        // First check for legacy boolean data
+        if (saveFile.contains("resource_pack_preference") && saveFile.isBoolean("resource_pack_preference")) {
+            boolean prompt = saveFile.getBoolean("resource_pack_prompt", true);
+            boolean preference = saveFile.getBoolean("resource_pack_preference");
+            if (preference) {
+                resourcePackPreference = ResourcePackPreference.AUTOMATIC;
+            } else {
+                if (prompt) {
+                    resourcePackPreference = ResourcePackPreference.MANUAL;
+                } else {
+                    resourcePackPreference = ResourcePackPreference.DISABLED;
+                }
+            }
+        } else {
+            String preferenceKey = saveFile.getString("resource_pack_preference");
+            try {
+                resourcePackPreference = ResourcePackPreference.valueOf(preferenceKey.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid resource pack preference key in player data file for id " + id + ": " + preferenceKey);
+            }
         }
-        data.setResourcePackPrompt(saveFile.getBoolean("resource_pack_prompt", true));
+        data.setResourcePackPreference(resourcePackPreference);
         data.setPreferredResourcePack(saveFile.getString("preferred_resource_pack"));
         data.setHealth(saveFile.getDouble("health"));
 

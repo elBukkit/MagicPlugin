@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.rp.ResourcePackPreference;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public class MageData {
@@ -41,8 +42,7 @@ public class MageData {
     private Integer storedLevel;
     private boolean openWand;
     private boolean gaveWelcomeWand;
-    private boolean resourcePackPrompt;
-    private Boolean resourcePackEnabled;
+    private ResourcePackPreference resourcePackPreference;
     private String preferredResourcePack;
     private long created;
     private double health;
@@ -261,22 +261,13 @@ public class MageData {
         this.gaveWelcomeWand = gaveWelcomeWand;
     }
 
-    public Boolean getResourcePackEnabled() {
-        return resourcePackEnabled;
+    public ResourcePackPreference getResourcePackPreference() {
+        return resourcePackPreference;
     }
 
-    public void setResourcePackEnabled(Boolean resourcePackEnabled) {
-        this.resourcePackEnabled = resourcePackEnabled;
+    public void setResourcePackPreference(ResourcePackPreference resourcePackPreference) {
+        this.resourcePackPreference = resourcePackPreference;
     }
-
-    public boolean getResourcePackPrompt() {
-        return resourcePackPrompt;
-    }
-
-    public void setResourcePackPrompt(boolean resourcePackPrompt) {
-        this.resourcePackPrompt = resourcePackPrompt;
-    }
-
 
     public String getPreferredResourcePack() {
         return preferredResourcePack;
