@@ -13,8 +13,8 @@
 
 # Important
 
- - Change icon for vengeance, also see why it goes in your offhaand
- - Stage names not working  
+ - Enchanting an unenchantable wand still consumes XP (? __Mr_Crazy__)
+ - Spell icons that are shields will go to the offhand when shift+clicked 
  - Item attributes on wand template configs don't know about player attributes
    In general, templates don't use mage parameters. Two options:
    1. follow the MageClass pattern, create a new WandTemplate copy for every wand instance, to bind MageConfiguration
