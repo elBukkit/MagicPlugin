@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
@@ -29,5 +30,10 @@ public abstract class ModernPlatform extends PlatformBase {
     @Override
     protected SchematicUtils createSchematicUtils() {
         return new ModernSchematicUtils(this);
+    }
+
+    @Override
+    protected DeprecatedUtils createDeprecatedUtils() {
+        return new ModernDeprecatedUtils(this);
     }
 }

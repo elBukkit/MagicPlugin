@@ -4,10 +4,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
-import com.elmakers.mine.bukkit.utility.platform.modern.PersistentEntityMetadataUtils;
 
 public class Platform extends ModernPlatform {
 
@@ -33,11 +30,6 @@ public class Platform extends ModernPlatform {
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils createCompatibilityUtils() {
         return new CompatibilityUtils(this);
-    }
-
-    @Override
-    protected com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils createDeprecatedUtils() {
-        return new DeprecatedUtils(this);
     }
 
     @Override
