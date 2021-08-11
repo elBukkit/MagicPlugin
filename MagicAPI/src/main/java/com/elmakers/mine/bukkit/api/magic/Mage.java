@@ -796,6 +796,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     List<CastParameter> getOverrides(String spellKey);
     boolean isResourcePackEnabled();
+    boolean hasResourcePack();
     @Nullable
     String getPreferredResourcePack();
     boolean isUrlIconsEnabled();

@@ -854,4 +854,5 @@ public interface MageController {
     Double getMythicMobLevel(Entity entity);
     void setMythicMobLevel(Entity entity, double level);
     boolean isMythicMobKey(String mythicMobKey);
+    void onResourcePackStatus(Player player, boolean accepted, boolean failed);
 }

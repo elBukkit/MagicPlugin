@@ -19,7 +19,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -422,5 +422,25 @@ public class ResourcePackManager {
 
     public Collection<String> getAlternateResourcePacks() {
         return alternateResourcePacks.getKeys(false);
+    }
+
+    public void onResourcePackStatus(Player player, boolean accepted, boolean failed) {
+        if (!controller.isResourcePackEnabled()) return;
+
+        Mage mage = controller.getRegisteredMage(player);
+        if (mage == null || !mage.isResourcePackEnabled()) return;
+
+        mage.setHasResourcePack(accepted && !failed);
+
+        if (failed) {
+            String message = controller.getMessages().get("resource_pack.failed");
+            mage.sendMessage(message);
+            return;
+        }
+        if (!accepted) {
+            String message = controller.getMessages().get("resource_pack.declined");
+            mage.sendMessage(message);
+            return;
+        }
     }
 }

@@ -674,6 +674,11 @@ public class MagicController implements MageController {
         }
     }
 
+    @Override
+    public void onResourcePackStatus(Player player, boolean accepted, boolean failed) {
+        resourcePacks.onResourcePackStatus(player, accepted, failed);
+    }
+
     @Nullable
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getRegisteredMage(String mageId) {

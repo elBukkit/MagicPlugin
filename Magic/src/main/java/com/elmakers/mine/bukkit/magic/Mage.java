@@ -226,6 +226,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean resourcePackPrompt = true;
     private Boolean resourcePackEnabled = null;
     private String preferredResourcePack = null;
+    private boolean hasResourcePack = false;
 
     protected boolean isVanished = false;
     protected long superProtectionExpiration = 0;
@@ -5438,6 +5439,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return resourcePackEnabled == null ? controller.isResourcePackEnabledByDefault() : resourcePackEnabled;
     }
 
+    @Override
+    public boolean hasResourcePack() {
+        return hasResourcePack && isResourcePackEnabled();
+    }
+
     public boolean isResourcePackEnabledSet() {
         return resourcePackEnabled != null;
     }
@@ -5462,6 +5468,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     public String getPreferredResourcePack() {
         return preferredResourcePack;
+    }
+
+    public void setHasResourcePack(boolean has) {
+        this.hasResourcePack = has;
     }
 
     @Override
