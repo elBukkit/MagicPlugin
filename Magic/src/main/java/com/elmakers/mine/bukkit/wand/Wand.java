@@ -4014,6 +4014,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             String hotbarSpellKey = getSpellBaseKey(hotbarItem);
             if (hotbarSpellKey != null) {
                 setActiveSpell(hotbarSpellKey);
+                updateActionBar();
                 break;
             }
             tryIndex = (tryIndex + direction + hotbar.getSize()) % hotbar.getSize();
