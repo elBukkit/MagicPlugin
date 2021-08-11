@@ -16,11 +16,6 @@ public class Platform extends ModernPlatform {
     }
 
     @Override
-    protected com.elmakers.mine.bukkit.utility.platform.SchematicUtils createSchematicUtils() {
-        return new SchematicUtils(this);
-    }
-
-    @Override
     protected com.elmakers.mine.bukkit.utility.platform.NBTUtils createNBTUtils() {
         return new NBTUtils(this);
     }

@@ -31,6 +31,18 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
+    public short getMetaShort(Object node, String tag, short defaultValue) {
+        Short meta = getMetaShort(node, tag);
+        return meta == null ? defaultValue : meta;
+    }
+
+    @Override
+    public int getMetaInt(Object node, String tag, int defaultValue) {
+        Integer meta = getMetaInt(node, tag);
+        return meta == null ? defaultValue : meta;
+    }
+
+    @Override
     public int getMetaInt(ItemStack stack, String tag, int defaultValue) {
         if (platform.getItemUtils().isEmpty(stack)) return defaultValue;
         int result = defaultValue;

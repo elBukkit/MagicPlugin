@@ -1,5 +1,10 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Collection;
+import java.util.Set;
+
 import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {
@@ -28,7 +33,13 @@ public interface NBTUtils {
 
     Byte getMetaByte(Object node, String tag);
 
+    Short getMetaShort(Object node, String tag);
+
+    short getMetaShort(Object node, String tag, short defaultValue);
+
     Integer getMetaInt(Object node, String tag);
+
+    int getMetaInt(Object node, String tag, int defaultValue);
 
     int getMetaInt(ItemStack stack, String tag, int defaultValue);
 
@@ -37,6 +48,10 @@ public interface NBTUtils {
     boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue);
 
     Boolean getMetaBoolean(Object node, String tag);
+
+    byte[] getByteArray(Object tag, String key);
+
+    int[] getIntArray(Object tag, String key);
 
     void setMetaTyped(Object node, String tag, String value);
 
@@ -60,9 +75,27 @@ public interface NBTUtils {
 
     void setMetaInt(ItemStack stack, String tag, int value);
 
+    void setMetaShort(Object node, String tag, short value);
+
+    void putIntArray(Object tag, String key, int[] value);
+
+    void putByteArray(Object tag, String key, byte[] value);
+
+    void putEmptyList(Object tag, String key);
+
     void removeMeta(Object node, String tag);
 
     void removeMeta(ItemStack stack, String tag);
 
     void addToList(Object listObject, Object node);
+
+    Object readTagFromStream(InputStream input);
+
+    boolean writeTagToStream(Object tag, OutputStream output);
+
+    Set<String> getAllKeys(Object tag);
+
+    Collection<Object> getTagList(Object tag, String key);
+
+    Object newCompoundTag();
 }

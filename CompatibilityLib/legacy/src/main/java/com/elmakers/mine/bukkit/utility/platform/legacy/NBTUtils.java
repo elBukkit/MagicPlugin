@@ -1,7 +1,15 @@
 package com.elmakers.mine.bukkit.utility.platform.legacy;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
+import java.util.logging.Level;
+
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
 
@@ -134,6 +142,18 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
+    public Short getMetaShort(Object node, String tag) {
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
+        Short meta = null;
+        try {
+            meta = (Short) NMSUtils.class_NBTTagCompound_getShortMethod.invoke(node, tag);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return meta;
+    }
+
+    @Override
     public Double getMetaDouble(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Double meta = null;
@@ -226,6 +246,31 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
+    public void setMetaShort(Object node, String tag, short value) {
+        if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
+        try {
+            NMSUtils.class_NBTTagCompound_setShortMethod.invoke(node, tag, value);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void putIntArray(Object tag, String key, int[] value) {
+        // Not in legacy versions
+    }
+
+    @Override
+    public void putByteArray(Object tag, String key, byte[] value) {
+        // Not in legacy versions
+    }
+
+    @Override
+    public void putEmptyList(Object tag, String key) {
+        // Not in legacy versions
+    }
+
+    @Override
     public void removeMeta(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
@@ -282,5 +327,85 @@ public class NBTUtils extends NBTUtilsBase {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public Object readTagFromStream(InputStream input) {
+        Object tag = null;
+        try {
+            tag = NMSUtils.class_NBTCompressedStreamTools_loadFileMethod.invoke(null, input);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error reading from NBT input stream", ex);
+        }
+        return tag;
+    }
+
+    @Override
+    public boolean writeTagToStream(Object tag, OutputStream output) {
+        // Not in legacy versions
+        return false;
+    }
+
+    @Override
+    public byte[] getByteArray(Object tag, String key) {
+        byte[] a = null;
+        try {
+            a = (byte[]) NMSUtils.class_NBTTagCompound_getByteArrayMethod.invoke(tag, key);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error reading byte array from tag", ex);
+        }
+        return a;
+    }
+
+    @Override
+    public int[] getIntArray(Object tag, String key) {
+        int[] a = null;
+        try {
+            a = (int[]) NMSUtils.class_NBTTagCompound_getIntArrayMethod.invoke(tag, key);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error reading int array from tag", ex);
+        }
+        return a;
+    }
+
+    @Override
+    public Set<String> getAllKeys(Object nbtBase) {
+        Set<String> keys = null;
+        try {
+            keys = (Set<String>) NMSUtils.class_NBTTagCompound_getKeysMethod.invoke(nbtBase);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error reading keys from tag", ex);
+        }
+        return keys;
+    }
+
+    @Override
+    public Collection<Object> getTagList(Object tag, String key) {
+        Collection<Object> list = new ArrayList<>();
+
+        try {
+            Object listTag = NMSUtils.class_NBTTagCompound_getListMethod.invoke(tag, key, CompatibilityConstants.NBT_TYPE_COMPOUND);
+            if (listTag != null) {
+                int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(listTag);
+                for (int i = 0; i < size; i++) {
+                    Object entity = NMSUtils.class_NBTTagList_getMethod.invoke(listTag, i);
+                    list.add(entity);
+                }
+            }
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error reading list from tag", ex);
+        }
+        return list;
+    }
+
+    @Override
+    public Object newCompoundTag() {
+        Object tag = null;
+        try {
+            tag = NMSUtils.class_NBTTagCompound_constructor.newInstance();
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error creating new Compoundtag", ex);
+        }
+        return tag;
     }
 }
