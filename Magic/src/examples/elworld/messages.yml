@@ -103,7 +103,7 @@ spells:
     unlock_warp: "t:&r&6$name\n&d&oUnlocked in Recall"
 
 resource_pack:
-    off_prompt: "&6This server is best experienced with resource packs enabled!\n&eUse &b/getrp &eto download the resource pack.\nMake sure you have added this server to your server list and have resource packs enabled.\n&6Use &b/getrp off&e to disable this message."
+    off_prompt: "&6This server is best experienced with resource packs enabled!\n&eUse &b/getrp &eto download the resource pack.\n&6Use &b/getrp off&e to disable this message."
 
 kits:
   gold_kit:
