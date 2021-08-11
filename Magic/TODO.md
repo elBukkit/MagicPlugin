@@ -2,8 +2,6 @@
 
 # Glyph Wand
 
- - Covers up armor- move it up, maybe it won' conflict with item name
- - Default spell icon (vengeance) not working  
  - General system for not stomping on action bar messages 
    (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
  - More general instructions in wand lore along the lines of the "Spell inventory is open" section

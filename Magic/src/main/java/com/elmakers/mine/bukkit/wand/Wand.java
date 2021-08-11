@@ -4650,8 +4650,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 icon = emptyIcon;
             } else {
                 spellKey = new SpellKey(spellKey).getKey();
-                icon = messages.get("gui.icons.spells." + spellKey, null);
-                if (icon == null) {
+                icon = messages.get("gui.icons.spells." + spellKey, "");
+                if (icon.isEmpty()) {
                     icon = messages.get("gui.icons.spells.default", "");
                 }
             }
