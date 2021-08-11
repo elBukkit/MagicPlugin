@@ -121,6 +121,7 @@ import com.elmakers.mine.bukkit.api.protection.PlayerWarpProvider;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProvider;
+import com.elmakers.mine.bukkit.api.rp.ResourcePackStatus;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -675,8 +676,8 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public void onResourcePackStatus(Player player, boolean accepted, boolean failed) {
-        resourcePacks.onResourcePackStatus(player, accepted, failed);
+    public void onResourcePackStatus(Player player, ResourcePackStatus status) {
+        resourcePacks.onResourcePackStatus(player, status);
     }
 
     @Nullable

@@ -19,6 +19,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.rp.ResourcePackStatus;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
@@ -424,23 +425,28 @@ public class ResourcePackManager {
         return alternateResourcePacks.getKeys(false);
     }
 
-    public void onResourcePackStatus(Player player, boolean accepted, boolean failed) {
+    public void onResourcePackStatus(Player player, ResourcePackStatus status) {
         if (!controller.isResourcePackEnabled()) return;
 
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null || !mage.isResourcePackEnabled()) return;
-
-        mage.setHasResourcePack(accepted && !failed);
-
-        if (failed) {
-            String message = controller.getMessages().get("resource_pack.failed");
-            mage.sendMessage(message);
-            return;
-        }
-        if (!accepted) {
-            String message = controller.getMessages().get("resource_pack.declined");
-            mage.sendMessage(message);
-            return;
+        String message;
+        switch (status) {
+            case UNKNOWN:
+                break;
+            case LOADED:
+                mage.setHasResourcePack(true);
+                break;
+            case DECLINED:
+                mage.setHasResourcePack(false);
+                message = controller.getMessages().get("resource_pack.declined");
+                mage.sendMessage(message);
+                break;
+            case FAILED:
+                mage.setHasResourcePack(false);
+                message = controller.getMessages().get("resource_pack.failed");
+                mage.sendMessage(message);
+                break;
         }
     }
 }

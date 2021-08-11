@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerResourcePackStatusEvent;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.rp.ResourcePackStatus;
 
 public class ResourcePackListener implements Listener {
     private final MageController controller;
@@ -15,22 +16,22 @@ public class ResourcePackListener implements Listener {
 
     @EventHandler
     public void onResourcePackStatus(PlayerResourcePackStatusEvent event) {
-        boolean accepted = false;
-        boolean failed = false;
+        ResourcePackStatus status = ResourcePackStatus.UNKNOWN;
         controller.info("Got resource pack status from player " + event.getPlayer().getName() + ": " + event.getStatus(), 15);
         switch (event.getStatus()) {
             case SUCCESSFULLY_LOADED:
-                accepted = true;
+                status = ResourcePackStatus.LOADED;
                 break;
             case DECLINED:
+                status = ResourcePackStatus.DECLINED;
                 break;
             case FAILED_DOWNLOAD:
-                failed = true;
+                status = ResourcePackStatus.FAILED;
                 break;
             default:
                 // Don't notify otherwise
                 return;
         }
-        controller.onResourcePackStatus(event.getPlayer(), accepted, failed);
+        controller.onResourcePackStatus(event.getPlayer(), status);
     }
 }

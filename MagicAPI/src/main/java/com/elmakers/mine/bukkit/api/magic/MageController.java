@@ -47,6 +47,7 @@ import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.npc.MagicNPC;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.rp.ResourcePackStatus;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
@@ -854,5 +855,5 @@ public interface MageController {
     Double getMythicMobLevel(Entity entity);
     void setMythicMobLevel(Entity entity, double level);
     boolean isMythicMobKey(String mythicMobKey);
-    void onResourcePackStatus(Player player, boolean accepted, boolean failed);
+    void onResourcePackStatus(Player player, ResourcePackStatus status);
 }
