@@ -2678,4 +2678,17 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         org.bukkit.material.Sign signData = (org.bukkit.material.Sign)data;
         return signData.getFacing();
     }
+
+    @Override
+    public void openSign(Player player, Location signBlock) {
+        try {
+            Object tileEntity = platform.getCompatibilityUtils().getTileEntity(signBlock);
+            Object playerHandle = NMSUtils.getHandle(player);
+            if (tileEntity != null && playerHandle != null) {
+                NMSUtils.class_EntityPlayer_openSignMethod.invoke(playerHandle, tileEntity);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
 }

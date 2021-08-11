@@ -12,10 +12,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import org.bukkit.Location;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -344,18 +342,5 @@ public class InventoryUtils extends InventoryUtilsBase {
         }
 
         return false;
-    }
-
-    @Override
-    public void openSign(Player player, Location signBlock) {
-        try {
-            Object tileEntity = platform.getCompatibilityUtils().getTileEntity(signBlock);
-            Object playerHandle = NMSUtils.getHandle(player);
-            if (tileEntity != null && playerHandle != null) {
-                NMSUtils.class_EntityPlayer_openSignMethod.invoke(playerHandle, tileEntity);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 }

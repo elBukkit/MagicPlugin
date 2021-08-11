@@ -7,10 +7,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.Location;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -74,8 +72,6 @@ public interface InventoryUtils {
     boolean hasItem(Inventory inventory, String itemName);
 
     ItemStack getItem(Inventory inventory, String itemName);
-
-    void openSign(Player player, Location signBlock);
 
     void makeKeep(ItemStack itemStack);
 

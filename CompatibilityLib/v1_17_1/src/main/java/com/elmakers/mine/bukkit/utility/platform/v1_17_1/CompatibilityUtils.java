@@ -132,6 +132,7 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SignBlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
@@ -1637,5 +1638,18 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     @Override
     public Object getProfile(Player player) {
         return ((CraftPlayer)player).getProfile();
+    }
+
+    @Override
+    public void openSign(Player player, Location signBlock) {
+        try {
+            Object tileEntity = platform.getCompatibilityUtils().getTileEntity(signBlock);
+            ServerPlayer playerHandle = ((CraftPlayer)player).getHandle();
+            if (tileEntity != null && playerHandle != null && tileEntity instanceof SignBlockEntity) {
+                playerHandle.openTextEdit((SignBlockEntity) tileEntity);
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 }

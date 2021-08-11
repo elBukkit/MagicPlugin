@@ -112,7 +112,7 @@ public class SignSpell extends BlockSpell
 
                 if (editSign && sourceEntity instanceof Player) {
                     Player player = (Player)sourceEntity;
-                    CompatibilityLib.getInventoryUtils().openSign(player, targetBlock.getLocation());
+                    CompatibilityLib.getCompatibilityUtils().openSign(player, targetBlock.getLocation());
                 }
 
                 return SpellResult.CAST;

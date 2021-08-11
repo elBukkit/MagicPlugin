@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import org.bukkit.Location;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -334,18 +333,5 @@ public class InventoryUtils extends InventoryUtilsBase {
     @Override
     public boolean setSkullProfile(Skull state, Object data) {
         return ReflectionUtils.setPrivate(platform.getLogger(), state, state.getClass(), "profile", data);
-    }
-
-    @Override
-    public void openSign(Player player, Location signBlock) {
-        try {
-            Object tileEntity = platform.getCompatibilityUtils().getTileEntity(signBlock);
-            ServerPlayer playerHandle = ((CraftPlayer)player).getHandle();
-            if (tileEntity != null && playerHandle != null && tileEntity instanceof SignBlockEntity) {
-                playerHandle.openTextEdit((SignBlockEntity) tileEntity);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 }
