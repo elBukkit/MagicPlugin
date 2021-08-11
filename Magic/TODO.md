@@ -2,12 +2,16 @@
 
 # Glyph Wand
 
+ - Covers up armor- move it up, maybe it won' conflict with item name
+ - Default spell icon (vengeance) not working  
  - General system for not stomping on action bar messages 
    (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
  - More general instructions in wand lore along the lines of the "Spell inventory is open" section
  - Resource pack response handling, special behavior if RP isn't accepted
  - Cooldown and disabled overlays
  - SFX for spell cycling, if that's not already a thing
+ - A way to specify the glyph to use.. how about a consolidated icon repository that groups
+   item icons, legacy item icons, url icons and glyphs?
 
 # Important
 

@@ -29,7 +29,7 @@ public class BossBarConfiguration {
     }
 
     public BossBarConfiguration(MageController controller, ConfigurationSection parameters, String defaultTitle) {
-        title = parameters.getString("bar_title", defaultTitle);
+        title = parameters.getString("bar_title", parameters.getString("title", defaultTitle));
         String colorString = parameters.getString("bar_color");
         if (colorString != null && !colorString.isEmpty()) {
             try {
@@ -41,7 +41,7 @@ public class BossBarConfiguration {
         if (color == null) {
             color = BarColor.BLUE;
         }
-        String styleString = parameters.getString("bar_style");
+        String styleString = parameters.getString("bar_style", parameters.getString("style"));
         if (styleString != null && !styleString.isEmpty()) {
             try {
                 style = BarStyle.valueOf(styleString.toUpperCase());
@@ -53,6 +53,9 @@ public class BossBarConfiguration {
             style = BarStyle.SOLID;
         }
         List<String> flagList = ConfigurationUtils.getStringList(parameters, "bar_flags");
+        if (flagList == null) {
+            flagList = ConfigurationUtils.getStringList(parameters, "flags");
+        }
         if (flagList != null && !flagList.isEmpty()) {
             this.flags = new BarFlag[flagList.size()];
             int index = 0;
@@ -66,9 +69,9 @@ public class BossBarConfiguration {
         } else {
             this.flags = new BarFlag[0];
         }
-        radius = parameters.getDouble("bar_radius", 32);
-        updateInterval = parameters.getLong("bar_interval", 10000);
-        updateIntervalRandomization = parameters.getInt("bar_interval_randomization", 1000);
+        radius = parameters.getDouble("bar_radius", parameters.getDouble("radius", 32));
+        updateInterval = parameters.getLong("bar_interval", parameters.getLong("interval", 10000));
+        updateIntervalRandomization = parameters.getInt("bar_interval_randomization", parameters.getInt("interval_randomization", 1000));
     }
 
     @Nullable
