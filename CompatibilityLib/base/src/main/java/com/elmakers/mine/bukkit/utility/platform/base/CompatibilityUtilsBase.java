@@ -130,9 +130,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         Object tag = platform.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
-        Object displayNode = platform.getNBTUtils().createNode(tag, "display");
+        Object displayNode = platform.getNBTUtils().createTag(tag, "display");
         if (displayNode == null) return false;
-        platform.getNBTUtils().setMeta(displayNode, "Name", displayName);
+        platform.getNBTUtils().setString(displayNode, "Name", displayName);
         return true;
     }
 
@@ -393,7 +393,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public void applyItemData(ItemStack item, Block block) {
         try {
-            Object entityDataTag = platform.getNBTUtils().getNode(item, "BlockEntityTag");
+            Object entityDataTag = platform.getNBTUtils().getTag(item, "BlockEntityTag");
             if (entityDataTag == null) return;
             setTileEntityData(block.getLocation(), entityDataTag);
         } catch (Exception ex) {

@@ -34,11 +34,11 @@ public class ModernSchematicUtils extends SchematicUtilsBase {
                 return false;
             }
 
-            short width = nbtUtils.getMetaShort(nbtData, "Width", (short)0);
-            short height = nbtUtils.getMetaShort(nbtData, "Height", (short)0);
-            short length = nbtUtils.getMetaShort(nbtData, "Length", (short)0);
+            short width = nbtUtils.getShort(nbtData, "Width", (short)0);
+            short height = nbtUtils.getShort(nbtData, "Height", (short)0);
+            short length = nbtUtils.getShort(nbtData, "Length", (short)0);
 
-            Object palette = nbtUtils.getNode(nbtData,"Palette");
+            Object palette = nbtUtils.getTag(nbtData,"Palette");
             byte[] blockData = nbtUtils.getByteArray(nbtData, "BlockData");
             int[] blockMap = null;
             Map<Integer, String> paletteMap = null;
@@ -48,7 +48,7 @@ public class ModernSchematicUtils extends SchematicUtilsBase {
                 paletteMap = new HashMap<>();
                 Set<String> keys = nbtUtils.getAllKeys(palette);
                 for (String key : keys) {
-                    int index = nbtUtils.getMetaInt(palette, key, 0);
+                    int index = nbtUtils.getInt(palette, key, 0);
                     paletteMap.put(index, key);
                 }
             }
@@ -139,19 +139,19 @@ public class ModernSchematicUtils extends SchematicUtilsBase {
         // Save palette to NBT
         Object palette = nbtUtils.newCompoundTag();
         for (Map.Entry<String, Integer> entry : paletteLookup.entrySet()) {
-            nbtUtils.setMetaInt(palette, entry.getKey(), entry.getValue());
+            nbtUtils.setInt(palette, entry.getKey(), entry.getValue());
         }
-        nbtUtils.setMetaNode(nbtData, "Palette", palette);
+        nbtUtils.setTag(nbtData, "Palette", palette);
 
         // Save block list to NBT
         byte[] blockArray = Bytes.toArray(blockList);
-        nbtUtils.putByteArray(nbtData, "BlockData", blockArray);
+        nbtUtils.setByteArray(nbtData, "BlockData", blockArray);
 
         // Add empty lists so they exist
-        nbtUtils.putEmptyList(nbtData, "Entities");
-        nbtUtils.putEmptyList(nbtData, "BlockEntities");
+        nbtUtils.setEmptyList(nbtData, "Entities");
+        nbtUtils.setEmptyList(nbtData, "BlockEntities");
         int[] offset = {0, 0, 0};
-        nbtUtils.putIntArray(nbtData, "Offset", offset);
+        nbtUtils.setIntArray(nbtData, "Offset", offset);
         return nbtUtils.writeTagToStream(nbtData, output);
     }
 
@@ -167,15 +167,15 @@ public class ModernSchematicUtils extends SchematicUtilsBase {
             }
 
             // Version check
-            String materials = nbtUtils.getMetaString(nbtData, "Materials");
+            String materials = nbtUtils.getString(nbtData, "Materials");
             if (!materials.equals("Alpha")) {
                 Bukkit.getLogger().warning("Schematic is not in Alpha format");
                 return false;
             }
 
-            short width = nbtUtils.getMetaShort(nbtData, "Width", (short)0);
-            short height = nbtUtils.getMetaShort(nbtData, "Height", (short)0);
-            short length = nbtUtils.getMetaShort(nbtData, "Length", (short)0);
+            short width = nbtUtils.getShort(nbtData, "Width", (short)0);
+            short height = nbtUtils.getShort(nbtData, "Height", (short)0);
+            short length = nbtUtils.getShort(nbtData, "Length", (short)0);
 
             byte[] blockIds = nbtUtils.getByteArray(nbtData, "Blocks");
 
@@ -183,7 +183,7 @@ public class ModernSchematicUtils extends SchematicUtilsBase {
             // Thanks to the WorldEdit team for showing me how to do this.
             int[] blocks = new int[blockIds.length];
             byte[] addBlocks = new byte[0];
-            if (nbtUtils.containsNode(nbtData, "AddBlocks")) {
+            if (nbtUtils.contains(nbtData, "AddBlocks")) {
                 addBlocks = nbtUtils.getByteArray(nbtData,"AddBlocks");
             }
             for (int index = 0; index < blocks.length; index++) {
@@ -203,9 +203,9 @@ public class ModernSchematicUtils extends SchematicUtilsBase {
             Collection<Object> tileEntityData = nbtUtils.getTagList(nbtData, "Entities");
             Collection<Object> entityData = nbtUtils.getTagList(nbtData, "TileEntities");
 
-            int originX = nbtUtils.getMetaInt(nbtData, "WEOriginX", 0);
-            int originY = nbtUtils.getMetaInt(nbtData, "WEWEOriginYOriginX", 0);
-            int originZ = nbtUtils.getMetaInt(nbtData, "WEOriginZ", 0);
+            int originX = nbtUtils.getInt(nbtData, "WEOriginX", 0);
+            int originY = nbtUtils.getInt(nbtData, "WEWEOriginYOriginX", 0);
+            int originZ = nbtUtils.getInt(nbtData, "WEOriginZ", 0);
 
             schematic.load(width, height, length, blocks, data, null, tileEntityData, entityData, new Vector(originX, originY, originZ));
         } catch (Exception ex) {

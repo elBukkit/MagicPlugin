@@ -13,43 +13,43 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public boolean hasMeta(ItemStack stack, String tag) {
+    public boolean containsTag(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return false;
-        return getNode(stack, tag) != null;
+        return getTag(stack, tag) != null;
     }
 
     @Override
-    public String getMetaString(ItemStack stack, String tag, String defaultValue) {
-        String result = getMetaString(stack, tag);
+    public String getString(ItemStack stack, String tag, String defaultValue) {
+        String result = getString(stack, tag);
         return result == null ? defaultValue : result;
     }
 
     @Override
-    public String getMetaString(Object node, String tag, String defaultValue) {
-        String meta = getMetaString(node, tag);
+    public String getString(Object node, String tag, String defaultValue) {
+        String meta = getString(node, tag);
         return meta == null || meta.length() == 0 ? defaultValue : meta;
     }
 
     @Override
-    public short getMetaShort(Object node, String tag, short defaultValue) {
-        Short meta = getMetaShort(node, tag);
+    public short getShort(Object node, String tag, short defaultValue) {
+        Short meta = getOptionalShort(node, tag);
         return meta == null ? defaultValue : meta;
     }
 
     @Override
-    public int getMetaInt(Object node, String tag, int defaultValue) {
-        Integer meta = getMetaInt(node, tag);
+    public int getInt(Object node, String tag, int defaultValue) {
+        Integer meta = getOptionalInt(node, tag);
         return meta == null ? defaultValue : meta;
     }
 
     @Override
-    public int getMetaInt(ItemStack stack, String tag, int defaultValue) {
+    public int getInt(ItemStack stack, String tag, int defaultValue) {
         if (platform.getItemUtils().isEmpty(stack)) return defaultValue;
         int result = defaultValue;
         try {
             Object tagObject = platform.getItemUtils().getTag(stack);
             if (tagObject == null) return defaultValue;
-            Integer value = getMetaInt(tagObject, tag);
+            Integer value = getOptionalInt(tagObject, tag);
             result = value == null ? defaultValue : value;
         } catch (Throwable ex) {
             ex.printStackTrace();
@@ -58,14 +58,14 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public void setMetaInt(ItemStack stack, String tag, int value) {
+    public void setInt(ItemStack stack, String tag, int value) {
         if (platform.getItemUtils().isEmpty(stack)) return;
         try {
             Object craft = platform.getItemUtils().getHandle(stack);
             if (craft == null) return;
             Object tagObject = platform.getItemUtils().getTag(craft);
             if (tagObject == null) return;
-            setMetaInt(tagObject, tag, value);
+            setInt(tagObject, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -87,7 +87,7 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public void setMetaTyped(Object node, String tag, String value) {
+    public void parseAndSet(Object node, String tag, String value) {
         if (value == null) {
             removeMeta(node, tag);
             return;
@@ -96,53 +96,48 @@ public abstract class NBTUtilsBase implements NBTUtils {
         boolean isTrue = value.equals("true");
         boolean isFalse = value.equals("false");
         if (isTrue || isFalse) {
-            setMetaBoolean(node, tag, isTrue);
+            setBoolean(node, tag, isTrue);
         } else {
             try {
                 Integer i = Integer.parseInt(value);
-                setMetaInt(node, tag, i);
+                setInt(node, tag, i);
             } catch (Exception ex) {
                 try {
                     Double d = Double.parseDouble(value);
-                    setMetaDouble(node, tag, d);
+                    setDouble(node, tag, d);
                 } catch (Exception ex2) {
-                    setMeta(node, tag, value);
+                    setString(node, tag, value);
                 }
             }
         }
     }
 
     @Override
-    public void setMetaBoolean(ItemStack stack, String tag, boolean value) {
+    public void setBoolean(ItemStack stack, String tag, boolean value) {
         if (platform.getItemUtils().isEmpty(stack)) return;
         try {
             Object craft = platform.getItemUtils().getHandle(stack);
             if (craft == null) return;
             Object tagObject = platform.getItemUtils().getTag(craft);
             if (tagObject == null) return;
-            setMetaBoolean(tagObject, tag, value);
+            setBoolean(tagObject, tag, value);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
     }
 
     @Override
-    public boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue) {
+    public boolean getBoolean(ItemStack stack, String tag, boolean defaultValue) {
         if (platform.getItemUtils().isEmpty(stack)) return defaultValue;
         boolean result = defaultValue;
         try {
             Object tagObject = platform.getItemUtils().getTag(stack);
             if (tagObject == null) return defaultValue;
-            Boolean value = getMetaBoolean(tagObject, tag);
+            Boolean value = getOptionalBoolean(tagObject, tag);
             result = value == null ? defaultValue : value;
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
         return result;
-    }
-
-    @Override
-    public String getMeta(Object node, String tag) {
-        return getMetaString(node, tag);
     }
 }

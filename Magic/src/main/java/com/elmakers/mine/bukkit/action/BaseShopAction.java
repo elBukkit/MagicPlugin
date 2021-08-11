@@ -345,14 +345,14 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
-        if (item == null || !CompatibilityLib.getNBTUtils().hasMeta(item, "shop")) {
+        if (item == null || !CompatibilityLib.getNBTUtils().containsTag(item, "shop")) {
             if (!autoClose) {
                 mage.deactivateGUI();
             }
             return;
         }
 
-        int slotIndex = Integer.parseInt(CompatibilityLib.getNBTUtils().getMetaString(item, "shop"));
+        int slotIndex = Integer.parseInt(CompatibilityLib.getNBTUtils().getString(item, "shop"));
         MageController controller = context.getController();
         Wand wand = mage.getActiveWand();
 
@@ -360,7 +360,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
         if (shopItem == null) {
             return;
         }
-        String unpurchasableMessage = CompatibilityLib.getNBTUtils().getMetaString(shopItem.getItem(), "unpurchasable");
+        String unpurchasableMessage = CompatibilityLib.getNBTUtils().getString(shopItem.getItem(), "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
             mage.deactivateGUI();
@@ -377,7 +377,7 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             context.showMessage(costString);
         } else {
             String itemName = formatItemAmount(controller, item, item.getAmount());
-            if (CompatibilityLib.getNBTUtils().hasMeta(item, "confirm")) {
+            if (CompatibilityLib.getNBTUtils().containsTag(item, "confirm")) {
                 String inventoryTitle = context.getMessage("confirm_title", getDefaultMessage(context, "confirm_title")).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, 9, inventoryTitle);
                 CompatibilityLib.getNBTUtils().removeMeta(item, "confirm");
@@ -641,9 +641,9 @@ public abstract class BaseShopAction extends BaseSpellAction implements GUIActio
             meta.setLore(lore);
             item.setItemMeta(meta);
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            CompatibilityLib.getNBTUtils().setMeta(item, "shop", Integer.toString(currentSlot));
+            CompatibilityLib.getNBTUtils().setString(item, "shop", Integer.toString(currentSlot));
             if (showConfirmation) {
-                CompatibilityLib.getNBTUtils().setMeta(item, "confirm", "true");
+                CompatibilityLib.getNBTUtils().setString(item, "confirm", "true");
             }
             this.showingItems.put(currentSlot, shopItem);
             itemStacks.add(item);

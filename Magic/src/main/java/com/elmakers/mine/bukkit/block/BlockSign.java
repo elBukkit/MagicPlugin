@@ -21,7 +21,7 @@ public class BlockSign extends MaterialExtraData {
 
     public BlockSign(Object tag) {
         for (int i = 0; i < 4; ++i) {
-            String line = CompatibilityLib.getNBTUtils().getMetaString(tag, "Text" + (i + 1));
+            String line = CompatibilityLib.getNBTUtils().getString(tag, "Text" + (i + 1));
             if (line != null && !line.startsWith("{")) {
                 try {
                     if (gson == null) {

@@ -69,7 +69,7 @@ public class CaptureAction extends BaseSpellAction {
         spawnEgg = CompatibilityLib.getItemUtils().makeReal(spawnEgg);
 
         // Add entity type attribute
-        CompatibilityLib.getNBTUtils().setMeta(savedEntity, "id", entityTypeString);
+        CompatibilityLib.getNBTUtils().setString(savedEntity, "id", entityTypeString);
 
         // Remove instance-specific attributes
         CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "Pos");
@@ -80,7 +80,7 @@ public class CaptureAction extends BaseSpellAction {
         CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "UUID");
         CompatibilityLib.getNBTUtils().removeMeta(savedEntity, "PortalCooldown");
 
-        if (!CompatibilityLib.getNBTUtils().setMetaNode(spawnEgg, "EntityTag", savedEntity)) {
+        if (!CompatibilityLib.getNBTUtils().setTag(spawnEgg, "EntityTag", savedEntity)) {
             return SpellResult.FAIL;
         }
         targetEntity.getWorld().dropItemNaturally(targetEntity.getLocation(), spawnEgg);

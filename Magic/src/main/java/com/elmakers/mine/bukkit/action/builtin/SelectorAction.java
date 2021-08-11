@@ -1081,7 +1081,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             if (unavailable) {
                 if (unavailableMessage != null && !unavailableMessage.isEmpty()) {
-                    CompatibilityLib.getNBTUtils().setMeta(icon, "unpurchasable", unavailableMessage);
+                    CompatibilityLib.getNBTUtils().setString(icon, "unpurchasable", unavailableMessage);
                 } else {
                     // We're not going to show unavailable items without a reason.
                     showUnavailable = false;
@@ -1089,7 +1089,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             if (showConfirmation) {
-                CompatibilityLib.getNBTUtils().setMeta(icon, "confirm", "true");
+                CompatibilityLib.getNBTUtils().setString(icon, "confirm", "true");
             }
         }
 
@@ -1243,7 +1243,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
                             option.updateIcon(context);
                             ItemStack icon = option.getIcon();
-                            CompatibilityLib.getNBTUtils().setMeta(icon, "slot", Integer.toString(entry.getKey()));
+                            CompatibilityLib.getNBTUtils().setString(icon, "slot", Integer.toString(entry.getKey()));
                             displayInventory.setItem(entry.getKey(), icon);
                         }
                     }
@@ -1551,14 +1551,14 @@ public class SelectorAction extends CompoundAction implements GUIAction
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
-        if (item == null || !CompatibilityLib.getNBTUtils().hasMeta(item, "slot")) {
+        if (item == null || !CompatibilityLib.getNBTUtils().containsTag(item, "slot")) {
             if (defaultConfiguration.autoClose) {
                 mage.deactivateGUI();
             }
             return;
         }
 
-        int slotIndex = Integer.parseInt(CompatibilityLib.getNBTUtils().getMetaString(item, "slot"));
+        int slotIndex = Integer.parseInt(CompatibilityLib.getNBTUtils().getString(item, "slot"));
         MageController controller = context.getController();
 
         SelectorOption option = showingItems.get(slotIndex);
@@ -1566,7 +1566,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             return;
         }
 
-        String unpurchasableMessage = CompatibilityLib.getNBTUtils().getMetaString(item, "unpurchasable");
+        String unpurchasableMessage = CompatibilityLib.getNBTUtils().getString(item, "unpurchasable");
         if (unpurchasableMessage != null && !unpurchasableMessage.isEmpty()) {
             context.showMessage(unpurchasableMessage);
             if (option.autoClose) {
@@ -1592,7 +1592,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             context.showMessage(costDescription);
         } else {
             String itemName = option.getName();
-            if (CompatibilityLib.getNBTUtils().hasMeta(item, "confirm")) {
+            if (CompatibilityLib.getNBTUtils().containsTag(item, "confirm")) {
                 String inventoryTitle = getConfirmTitle(option).replace("$item", itemName);
                 Inventory confirmInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, 9, inventoryTitle);
                 CompatibilityLib.getNBTUtils().removeMeta(item, "confirm");
@@ -1843,7 +1843,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         for (Map.Entry<Integer, SelectorOption> entry : showingItems.entrySet()) {
             ItemStack icon = entry.getValue().getIcon();
-            CompatibilityLib.getNBTUtils().setMeta(icon, "slot", Integer.toString(entry.getKey()));
+            CompatibilityLib.getNBTUtils().setString(icon, "slot", Integer.toString(entry.getKey()));
             displayInventory.setItem(entry.getKey(), icon);
         }
 

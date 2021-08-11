@@ -9,79 +9,77 @@ import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {
 
-    boolean hasMeta(ItemStack stack, String tag);
+    boolean containsTag(ItemStack stack, String tag);
 
-    Object getNode(ItemStack stack, String tag);
+    Object getTag(ItemStack stack, String tag);
 
-    Object getNode(Object nbtBase, String tag);
+    Object getTag(Object nbtBase, String tag);
 
-    Object createNode(Object nbtBase, String tag);
+    Object createTag(Object nbtBase, String tag);
 
-    Object createNode(ItemStack stack, String tag);
+    Object createTag(ItemStack stack, String tag);
 
-    boolean containsNode(Object nbtBase, String tag);
+    boolean contains(Object nbtBase, String tag);
 
-    String getMetaString(Object node, String tag, String defaultValue);
+    String getString(Object node, String tag, String defaultValue);
 
-    String getMetaString(Object node, String tag);
+    String getString(Object node, String tag);
 
-    String getMetaString(ItemStack stack, String tag);
+    String getString(ItemStack stack, String tag);
 
-    String getMetaString(ItemStack stack, String tag, String defaultValue);
+    String getString(ItemStack stack, String tag, String defaultValue);
 
-    String getMeta(Object node, String tag);
+    Byte getOptionalByte(Object node, String tag);
 
-    Byte getMetaByte(Object node, String tag);
+    Short getOptionalShort(Object node, String tag);
 
-    Short getMetaShort(Object node, String tag);
+    short getShort(Object node, String tag, short defaultValue);
 
-    short getMetaShort(Object node, String tag, short defaultValue);
+    Integer getOptionalInt(Object node, String tag);
 
-    Integer getMetaInt(Object node, String tag);
+    int getInt(Object node, String tag, int defaultValue);
 
-    int getMetaInt(Object node, String tag, int defaultValue);
+    int getInt(ItemStack stack, String tag, int defaultValue);
 
-    int getMetaInt(ItemStack stack, String tag, int defaultValue);
+    Double getOptionalDouble(Object node, String tag);
 
-    Double getMetaDouble(Object node, String tag);
+    boolean getBoolean(ItemStack stack, String tag, boolean defaultValue);
 
-    boolean getMetaBoolean(ItemStack stack, String tag, boolean defaultValue);
-
-    Boolean getMetaBoolean(Object node, String tag);
+    Boolean getOptionalBoolean(Object node, String tag);
 
     byte[] getByteArray(Object tag, String key);
 
     int[] getIntArray(Object tag, String key);
 
-    void setMetaTyped(Object node, String tag, String value);
+    void parseAndSet(Object node, String tag, String value);
 
-    void setMetaNode(Object node, String tag, Object child);
+    void setTag(Object node, String tag, Object child);
 
-    boolean setMetaNode(ItemStack stack, String tag, Object child);
+    boolean setTag(ItemStack stack, String tag, Object child);
 
-    void setMeta(ItemStack stack, String tag, String value);
+    void setString(ItemStack stack, String tag, String value);
 
-    void setMeta(Object node, String tag, String value);
+    void setString(Object node, String tag, String value);
 
-    void setMetaLong(Object node, String tag, long value);
+    void setLong(Object node, String tag, long value);
 
-    void setMetaBoolean(Object node, String tag, boolean value);
+    void setBoolean(Object node, String tag, boolean value);
 
-    void setMetaBoolean(ItemStack stack, String tag, boolean value);
+    void setBoolean(ItemStack stack, String tag, boolean value);
 
-    void setMetaDouble(Object node, String tag, double value);
+    void setDouble(Object node, String tag, double value);
 
-    void setMetaInt(Object node, String tag, int value);
+    void setInt(Object node, String tag, int value);
 
-    void setMetaInt(ItemStack stack, String tag, int value);
+    void setInt(ItemStack stack, String tag, int value);
 
     void setMetaShort(Object node, String tag, short value);
 
-    void putIntArray(Object tag, String key, int[] value);
+    void setIntArray(Object tag, String key, int[] value);
 
-    void putByteArray(Object tag, String key, byte[] value);
+    void setByteArray(Object tag, String key, byte[] value);
 
-    void putEmptyList(Object tag, String key);
+    void setEmptyList(Object tag, String key);
 
     void removeMeta(Object node, String tag);
 

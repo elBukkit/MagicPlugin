@@ -1218,14 +1218,14 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             if (tag == null) return false;
 
             String attributeName = toMinecraftAttribute(attribute);
-            Object attributesNode = platform.getNBTUtils().getNode(tag, "AttributeModifiers");
+            Object attributesNode = platform.getNBTUtils().getTag(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
             }
             int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(attributesNode);
             for (int i = 0; i < size; i++) {
                 Object candidate = NMSUtils.class_NBTTagList_getMethod.invoke(attributesNode, i);
-                String key = platform.getNBTUtils().getMetaString(candidate, "AttributeName");
+                String key = platform.getNBTUtils().getString(candidate, "AttributeName");
                 if (key.equals(attributeName)) {
                     if (size == 1) {
                         platform.getNBTUtils().removeMeta(tag, "AttributeModifiers");
@@ -1250,7 +1250,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             Object tag = platform.getItemUtils().getTag(handle);
             if (tag == null) return false;
 
-            Object attributesNode = platform.getNBTUtils().getNode(tag, "AttributeModifiers");
+            Object attributesNode = platform.getNBTUtils().getTag(tag, "AttributeModifiers");
             if (attributesNode == null) {
                 return false;
             }
@@ -1311,7 +1311,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             Object tag = platform.getItemUtils().getTag(handle);
             if (tag == null) return false;
 
-            Object attributesNode = platform.getNBTUtils().getNode(tag, "AttributeModifiers");
+            Object attributesNode = platform.getNBTUtils().getTag(tag, "AttributeModifiers");
             Object attributeNode = null;
 
             String attributeName = toMinecraftAttribute(attribute);
@@ -1322,7 +1322,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
                 int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(attributesNode);
                 for (int i = 0; i < size; i++) {
                     Object candidate = NMSUtils.class_NBTTagList_getMethod.invoke(attributesNode, i);
-                    String key = platform.getNBTUtils().getMetaString(candidate, "AttributeName");
+                    String key = platform.getNBTUtils().getString(candidate, "AttributeName");
                     if (key.equals(attributeName)) {
                         attributeNode = candidate;
                         break;
@@ -1331,18 +1331,18 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
             if (attributeNode == null) {
                 attributeNode = NMSUtils.class_NBTTagCompound_constructor.newInstance();
-                platform.getNBTUtils().setMeta(attributeNode, "AttributeName", attributeName);
-                platform.getNBTUtils().setMeta(attributeNode, "Name", "Equipment Modifier");
-                platform.getNBTUtils().setMetaInt(attributeNode, "Operation", attributeOperation);
-                platform.getNBTUtils().setMetaLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
-                platform.getNBTUtils().setMetaLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
+                platform.getNBTUtils().setString(attributeNode, "AttributeName", attributeName);
+                platform.getNBTUtils().setString(attributeNode, "Name", "Equipment Modifier");
+                platform.getNBTUtils().setInt(attributeNode, "Operation", attributeOperation);
+                platform.getNBTUtils().setLong(attributeNode, "UUIDMost", attributeUUID.getMostSignificantBits());
+                platform.getNBTUtils().setLong(attributeNode, "UUIDLeast", attributeUUID.getLeastSignificantBits());
                 if (slot != null) {
-                    platform.getNBTUtils().setMeta(attributeNode, "Slot", slot);
+                    platform.getNBTUtils().setString(attributeNode, "Slot", slot);
                 }
 
                 platform.getNBTUtils().addToList(attributesNode, attributeNode);
             }
-            platform.getNBTUtils().setMetaDouble(attributeNode, "Amount", value);
+            platform.getNBTUtils().setDouble(attributeNode, "Amount", value);
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;

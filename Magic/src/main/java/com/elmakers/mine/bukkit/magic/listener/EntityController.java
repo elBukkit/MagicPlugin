@@ -372,7 +372,7 @@ public class EntityController implements Listener {
             }
 
             // Save "keep" items to return on respawn
-            boolean keepItem = CompatibilityLib.getNBTUtils().getMetaBoolean(itemStack, "keep", false);
+            boolean keepItem = CompatibilityLib.getNBTUtils().getBoolean(itemStack, "keep", false);
             if (!keepItem && keepWandsOnDeath && Wand.isWand(itemStack)) keepItem = true;
             if (keepItem) {
                 mage.addToRespawnInventory(index, itemStack);

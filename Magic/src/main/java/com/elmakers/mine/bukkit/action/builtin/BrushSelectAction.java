@@ -78,7 +78,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             }
 
             ItemStack item = event.getCurrentItem();
-            String set = CompatibilityLib.getNBTUtils().getMetaString(item, "brush_set", null);
+            String set = CompatibilityLib.getNBTUtils().getString(item, "brush_set", null);
             if (set != null) {
                 if (set.equals("schematics")) {
                     String inventoryTitle = context.getMessage("schematics_title", "Schematics");
@@ -92,7 +92,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     mage.activateGUI(this, displayInventory);
                     return;
                 } else if (set.equals("variants")) {
-                    MaterialAndData baseMaterial = new MaterialAndData(CompatibilityLib.getNBTUtils().getMetaString(item, "variant_key"));
+                    MaterialAndData baseMaterial = new MaterialAndData(CompatibilityLib.getNBTUtils().getString(item, "variant_key"));
                     String baseName = getBaseName(baseMaterial);
                     String inventoryTitle = context.getMessage("variants_title", "$variant Types").replace("$variant", baseName);
                     Collection<ItemStack> variantList = variants.get(baseMaterial.getMaterial());
@@ -110,7 +110,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
 
             mage.deactivateGUI();
             Currency blockCurrency = context.getController().getBlockExchangeCurrency();
-            if (event.isRightClick() && blockCurrency != null && CompatibilityLib.getNBTUtils().getMetaBoolean(item, "absorb", false) && !mage.isDead()) {
+            if (event.isRightClick() && blockCurrency != null && CompatibilityLib.getNBTUtils().getBoolean(item, "absorb", false) && !mage.isDead()) {
                 Messages messages = context.getController().getMessages();
                 if (mage.isAtMaxCurrency(blockCurrency.getKey())) {
                     String limitMessage = messages.get("currency." + blockCurrency.getKey() + ".limit", messages.get("currency.default.limit"));
@@ -251,8 +251,8 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             lore.add(description.replace("$variant", materialName));
             meta.setLore(lore);
             category.setItemMeta(meta);
-            CompatibilityLib.getNBTUtils().setMeta(category, "brush_set", "variants");
-            CompatibilityLib.getNBTUtils().setMeta(category, "variant_key", key);
+            CompatibilityLib.getNBTUtils().setString(category, "brush_set", "variants");
+            CompatibilityLib.getNBTUtils().setString(category, "variant_key", key);
             brushes.add(category);
         }
 
@@ -278,7 +278,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
             lore.add(context.getMessage("schematics_description", "Choose a schematic"));
             meta.setLore(lore);
             schematicItem.setItemMeta(meta);
-            CompatibilityLib.getNBTUtils().setMeta(schematicItem, "brush_set", "schematics");
+            CompatibilityLib.getNBTUtils().setString(schematicItem, "brush_set", "schematics");
         }
         if (schematicItem != null) {
             brushes.add(schematicItem);
@@ -337,7 +337,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         CompatibilityLib.getInventoryUtils().wrapText(message, lore);
         meta.setLore(lore);
         itemStack.setItemMeta(meta);
-        CompatibilityLib.getNBTUtils().setMetaBoolean(itemStack, "absorb", true);
+        CompatibilityLib.getNBTUtils().setBoolean(itemStack, "absorb", true);
     }
 
     private String getBaseName(MaterialAndData material) {

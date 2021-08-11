@@ -387,7 +387,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     }
 
     public int getCustomModelData() {
-        return CompatibilityLib.getNBTUtils().getMetaInt(getOrCreateItemStack(), "CustomModelData", 0);
+        return CompatibilityLib.getNBTUtils().getInt(getOrCreateItemStack(), "CustomModelData", 0);
     }
 
     @Nullable

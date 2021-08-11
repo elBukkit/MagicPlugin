@@ -111,7 +111,7 @@ public class ItemUtils extends ItemUtilsBase {
         try {
             Object tagObject = getTag(stack);
             if (tagObject == null) return false;
-            unbreakableFlag = platform.getNBTUtils().getMetaBoolean(tagObject, "Unbreakable");
+            unbreakableFlag = platform.getNBTUtils().getOptionalBoolean(tagObject, "Unbreakable");
         } catch (Throwable ex) {
             ex.printStackTrace();
         }

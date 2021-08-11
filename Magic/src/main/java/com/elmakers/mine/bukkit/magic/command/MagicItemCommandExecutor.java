@@ -350,14 +350,14 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         if (args.length == 1) {
             int i = 0;
             while (node != null && i < path.length - 1) {
-                node = CompatibilityLib.getNBTUtils().getNode(node, path[i]);
+                node = CompatibilityLib.getNBTUtils().getTag(node, path[i]);
                 i++;
             }
             if (node == null) {
                 sender.sendMessage(ChatColor.RED + "Item does not have path: " + ChatColor.DARK_RED + tag);
                 return true;
             }
-            if (!CompatibilityLib.getNBTUtils().containsNode(node, path[path.length - 1])) {
+            if (!CompatibilityLib.getNBTUtils().contains(node, path[path.length - 1])) {
                 sender.sendMessage(ChatColor.RED + "Item does not have tag: " + ChatColor.DARK_RED + tag);
                 return true;
             }
@@ -374,9 +374,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             if (i < path.length - 1) {
-                node = CompatibilityLib.getNBTUtils().createNode(node, key);
+                node = CompatibilityLib.getNBTUtils().createTag(node, key);
             } else {
-                CompatibilityLib.getNBTUtils().setMetaTyped(node, key, value);
+                CompatibilityLib.getNBTUtils().parseAndSet(node, key, value);
             }
         }
         item.setItemMeta(newItem.getItemMeta());

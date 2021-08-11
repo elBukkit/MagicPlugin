@@ -329,7 +329,7 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
             meta.setLore(lore);
             spellItem.setItemMeta(meta);
 
-            if (unpurchasableMessage != null) CompatibilityLib.getNBTUtils().setMeta(spellItem, "unpurchasable", unpurchasableMessage);
+            if (unpurchasableMessage != null) CompatibilityLib.getNBTUtils().setString(spellItem, "unpurchasable", unpurchasableMessage);
         }
 
         return new ShopItem(spellItem, worth);

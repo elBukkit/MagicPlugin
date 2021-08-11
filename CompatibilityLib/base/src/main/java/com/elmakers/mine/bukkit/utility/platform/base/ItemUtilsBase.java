@@ -45,17 +45,17 @@ public abstract class ItemUtilsBase implements ItemUtils {
 
     @Override
     public void makeTemporary(ItemStack itemStack, String message) {
-        platform.getNBTUtils().setMeta(itemStack, "temporary", message);
+        platform.getNBTUtils().setString(itemStack, "temporary", message);
     }
 
     @Override
     public boolean isTemporary(ItemStack itemStack) {
-        return platform.getNBTUtils().hasMeta(itemStack, "temporary");
+        return platform.getNBTUtils().containsTag(itemStack, "temporary");
     }
 
     @Override
     public void makeUnplaceable(ItemStack itemStack) {
-        platform.getNBTUtils().setMeta(itemStack, "unplaceable", "true");
+        platform.getNBTUtils().setString(itemStack, "unplaceable", "true");
     }
 
     @Override
@@ -65,24 +65,24 @@ public abstract class ItemUtilsBase implements ItemUtils {
 
     @Override
     public boolean isUnplaceable(ItemStack itemStack) {
-        return platform.getNBTUtils().hasMeta(itemStack, "unplaceable");
+        return platform.getNBTUtils().containsTag(itemStack, "unplaceable");
     }
 
     @Override
     public String getTemporaryMessage(ItemStack itemStack) {
-        return platform.getNBTUtils().getMetaString(itemStack, "temporary");
+        return platform.getNBTUtils().getString(itemStack, "temporary");
     }
 
     @Override
     public void setReplacement(ItemStack itemStack, ItemStack replacement) {
         YamlConfiguration configuration = new YamlConfiguration();
         configuration.set("item", replacement);
-        platform.getNBTUtils().setMeta(itemStack, "replacement", configuration.saveToString());
+        platform.getNBTUtils().setString(itemStack, "replacement", configuration.saveToString());
     }
 
     @Override
     public ItemStack getReplacement(ItemStack itemStack) {
-        String serialized = platform.getNBTUtils().getMetaString(itemStack, "replacement");
+        String serialized = platform.getNBTUtils().getString(itemStack, "replacement");
         if (serialized == null || serialized.isEmpty()) {
             return null;
         }

@@ -171,7 +171,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         // TODO: Could/should this store ALL custom tag data?
         if (item.hasItemMeta()) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            int customModelData = CompatibilityLib.getNBTUtils().getMetaInt(item, "CustomModelData", 0);
+            int customModelData = CompatibilityLib.getNBTUtils().getInt(item, "CustomModelData", 0);
             if (customModelData > 0) {
                 tags = new HashMap<>();
                 tags.put("CustomModelData", customModelData);
@@ -854,7 +854,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (getData() != CompatibilityLib.getDeprecatedUtils().getItemDamage(itemStack)) return true;
         if (tags != null) {
             Object customModelData = tags.get("CustomModelData");
-            int itemModelData = CompatibilityLib.getNBTUtils().getMetaInt(itemStack, "CustomModelData", 0);
+            int itemModelData = CompatibilityLib.getNBTUtils().getInt(itemStack, "CustomModelData", 0);
             if (customModelData == null && itemModelData != 0) return true;
             if (customModelData != null && customModelData instanceof Integer && itemModelData != (Integer)customModelData) return true;
         }

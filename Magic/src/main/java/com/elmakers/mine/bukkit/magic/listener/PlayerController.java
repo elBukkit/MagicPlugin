@@ -196,7 +196,7 @@ public class PlayerController implements Listener {
 
         // Immovable items don't disappear when equipped, this is to match with click behavior
         // Also allows temporary items to be held, like with the broom handle
-        if (CompatibilityLib.getItemUtils().isTemporary(next) && !CompatibilityLib.getNBTUtils().getMetaBoolean(next, "unmoveable", false)) {
+        if (CompatibilityLib.getItemUtils().isTemporary(next) && !CompatibilityLib.getNBTUtils().getBoolean(next, "unmoveable", false)) {
             ItemStack replacement = CompatibilityLib.getItemUtils().getReplacement(next);
             inventory.setItem(event.getNewSlot(), replacement);
             mage.checkWand();
@@ -277,7 +277,7 @@ public class PlayerController implements Listener {
             mage.sendDebugMessage("SWAP ITEM: " + (main == null ? "(Nothing)" : main.getType().name())
                 + " with " + (offhand == null ? "(Nothing)" : offhand.getType().name()), DEBUG_LEVEL);
         }
-        if (CompatibilityLib.getNBTUtils().getMetaBoolean(offhand, "unswappable", false) || CompatibilityLib.getNBTUtils().getMetaBoolean(main, "unswappable", false)) {
+        if (CompatibilityLib.getNBTUtils().getBoolean(offhand, "unswappable", false) || CompatibilityLib.getNBTUtils().getBoolean(main, "unswappable", false)) {
             event.setCancelled(true);
         }
         mage.trigger("swap");
@@ -409,7 +409,7 @@ public class PlayerController implements Listener {
             }
         }
         if (!cancelEvent) {
-            cancelEvent = CompatibilityLib.getNBTUtils().getMetaBoolean(droppedItem, "undroppable", false);
+            cancelEvent = CompatibilityLib.getNBTUtils().getBoolean(droppedItem, "undroppable", false);
         }
         if (cancelEvent) {
             // Work around a Spigot bug that would make the item disappear if the player's inventory is full
@@ -460,8 +460,8 @@ public class PlayerController implements Listener {
         } else {
             ItemStack mainHand = player.getInventory().getItemInMainHand();
             ItemStack offhand = player.getInventory().getItemInOffHand();
-            if (CompatibilityLib.getNBTUtils().getMetaBoolean(mainHand, "undroppable", false)
-                || (CompatibilityLib.getItemUtils().isEmpty(mainHand) && CompatibilityLib.getNBTUtils().getMetaBoolean(offhand, "undroppable", false))) {
+            if (CompatibilityLib.getNBTUtils().getBoolean(mainHand, "undroppable", false)
+                || (CompatibilityLib.getItemUtils().isEmpty(mainHand) && CompatibilityLib.getNBTUtils().getBoolean(offhand, "undroppable", false))) {
                 event.setCancelled(true);
                 return;
             }
@@ -631,8 +631,8 @@ public class PlayerController implements Listener {
             } else {
                 ItemStack mainHand = player.getInventory().getItemInMainHand();
                 ItemStack offhand = player.getInventory().getItemInOffHand();
-                if (CompatibilityLib.getNBTUtils().getMetaBoolean(mainHand, "undroppable", false)
-                    || (CompatibilityLib.getItemUtils().isEmpty(mainHand) && CompatibilityLib.getNBTUtils().getMetaBoolean(offhand, "undroppable", false))) {
+                if (CompatibilityLib.getNBTUtils().getBoolean(mainHand, "undroppable", false)
+                    || (CompatibilityLib.getItemUtils().isEmpty(mainHand) && CompatibilityLib.getNBTUtils().getBoolean(offhand, "undroppable", false))) {
                     event.setCancelled(true);
                     return;
                 }

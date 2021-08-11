@@ -295,7 +295,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
         ItemStack mapItem = CompatibilityLib.getDeprecatedUtils().createItemStack(DefaultMaterials.getFilledMap(), 1, durability);
         if (CompatibilityLib.isCurrentVersion()) {
             mapItem = CompatibilityLib.getItemUtils().makeReal(mapItem);
-            CompatibilityLib.getNBTUtils().setMetaInt(mapItem, "map", mapId);
+            CompatibilityLib.getNBTUtils().setInt(mapItem, "map", mapId);
         }
         return mapItem;
     }

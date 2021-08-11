@@ -38,17 +38,17 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     public CurrencyAmount getCurrencyAmount(ItemStack item) {
         if (platform.getItemUtils().isEmpty(item)) return null;
 
-        Object currency = platform.getNBTUtils().getNode(item, "currency");
+        Object currency = platform.getNBTUtils().getTag(item, "currency");
         if (currency != null) {
-            String currencyType = platform.getNBTUtils().getMetaString(currency, "type");
+            String currencyType = platform.getNBTUtils().getString(currency, "type");
             if (currencyType != null) {
-                return new CurrencyAmount(currencyType, platform.getNBTUtils().getMetaInt(currency, "amount"));
+                return new CurrencyAmount(currencyType, platform.getNBTUtils().getOptionalInt(currency, "amount"));
             }
             return null;
         }
 
         // Support for legacy SP items
-        int spAmount = platform.getNBTUtils().getMetaInt(item, "sp", 0);
+        int spAmount = platform.getNBTUtils().getInt(item, "sp", 0);
         if (spAmount > 0) {
             return new CurrencyAmount("sp", spAmount);
         }
@@ -84,25 +84,25 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         Object tag = platform.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
-        platform.getNBTUtils().setMetaBoolean(tag, "skill", true);
+        platform.getNBTUtils().setBoolean(tag, "skill", true);
 
-        Object spellNode = platform.getNBTUtils().getNode(skillItem, "spell");
+        Object spellNode = platform.getNBTUtils().getTag(skillItem, "spell");
         if (skillClass != null && spellNode != null) {
-            platform.getNBTUtils().setMeta(spellNode, "class", skillClass);
+            platform.getNBTUtils().setString(spellNode, "class", skillClass);
         }
         if (skillConfig == null) {
             return true;
         }
 
         if (skillConfig.getBoolean("undroppable", false)) {
-            platform.getNBTUtils().setMetaBoolean(tag, "undroppable", true);
+            platform.getNBTUtils().setBoolean(tag, "undroppable", true);
         }
         if (skillConfig.getBoolean("keep", false)) {
-            platform.getNBTUtils().setMetaBoolean(tag, "keep", true);
+            platform.getNBTUtils().setBoolean(tag, "keep", true);
         }
         boolean quickCast = skillConfig.getBoolean("quick_cast", true);
         if (!quickCast && spellNode != null) {
-            platform.getNBTUtils().setMetaBoolean(spellNode, "quick_cast", false);
+            platform.getNBTUtils().setBoolean(spellNode, "quick_cast", false);
         }
 
         return true;
@@ -208,8 +208,8 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
         try {
             itemStack = platform.getItemUtils().makeReal(itemStack);
-            Object skullOwner = platform.getNBTUtils().createNode(itemStack, "SkullOwner");
-            platform.getNBTUtils().setMeta(skullOwner, "Name", ownerName);
+            Object skullOwner = platform.getNBTUtils().createTag(itemStack, "SkullOwner");
+            platform.getNBTUtils().setString(skullOwner, "Name", ownerName);
             return setSkullURL(itemStack, url, id);
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -225,12 +225,12 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public void makeKeep(ItemStack itemStack) {
-        platform.getNBTUtils().setMetaBoolean(itemStack, "keep", true);
+        platform.getNBTUtils().setBoolean(itemStack, "keep", true);
     }
 
     @Override
     public boolean isKeep(ItemStack itemStack) {
-        return platform.getNBTUtils().hasMeta(itemStack, "keep");
+        return platform.getNBTUtils().containsTag(itemStack, "keep");
     }
 
     @Override
@@ -380,7 +380,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     @Override
     public int getMapId(ItemStack mapItem) {
         if (platform.isCurrentVersion()) {
-            return platform.getNBTUtils().getMetaInt(mapItem, "map", 0);
+            return platform.getNBTUtils().getInt(mapItem, "map", 0);
         }
 
         return mapItem.getDurability();
@@ -389,7 +389,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     @Override
     public void setMapId(ItemStack mapItem, int id) {
         if (platform.isCurrentVersion()) {
-            platform.getNBTUtils().setMetaInt(mapItem, "map", id);
+            platform.getNBTUtils().setInt(mapItem, "map", id);
         } else {
             mapItem.setDurability((short)id);
         }

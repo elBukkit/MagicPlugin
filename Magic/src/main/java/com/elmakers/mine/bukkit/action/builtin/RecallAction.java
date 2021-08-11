@@ -392,14 +392,14 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return;
         }
         ItemStack item = event.getCurrentItem();
-        if (CompatibilityLib.getNBTUtils().hasMeta(item, "placeholder") || CompatibilityLib.getNBTUtils().hasMeta(item, "unavailable"))
+        if (CompatibilityLib.getNBTUtils().containsTag(item, "placeholder") || CompatibilityLib.getNBTUtils().containsTag(item, "unavailable"))
         {
             context.getMage().deactivateGUI();
             return;
         }
-        if (CompatibilityLib.getNBTUtils().hasMeta(item, "move_marker"))
+        if (CompatibilityLib.getNBTUtils().containsTag(item, "move_marker"))
         {
-            int markerNumber = CompatibilityLib.getNBTUtils().getMetaInt(item, "move_marker", 1);
+            int markerNumber = CompatibilityLib.getNBTUtils().getInt(item, "move_marker", 1);
             if (placeMarker(context.getLocation().getBlock(), markerNumber))
             {
                 context.sendMessageKey("target_selected");
@@ -948,13 +948,13 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 waypointItem.setItemMeta(meta);
                 waypointItem = CompatibilityLib.getItemUtils().makeReal(waypointItem);
                 CompatibilityLib.getItemUtils().hideFlags(waypointItem, 63);
-                CompatibilityLib.getNBTUtils().setMeta(waypointItem, "waypoint", "true");
+                CompatibilityLib.getNBTUtils().setString(waypointItem, "waypoint", "true");
                 CompatibilityLib.getItemUtils().makeUnbreakable(waypointItem);
                 if (isPlaceholder) {
-                    CompatibilityLib.getNBTUtils().setMetaBoolean(waypointItem, "placeholder", true);
+                    CompatibilityLib.getNBTUtils().setBoolean(waypointItem, "placeholder", true);
                 }
                 if (isUnavailable) {
-                    CompatibilityLib.getNBTUtils().setMetaBoolean(waypointItem, "unavailable", true);
+                    CompatibilityLib.getNBTUtils().setBoolean(waypointItem, "unavailable", true);
                 }
             }
             displayInventory.setItem(index, waypointItem);
@@ -997,7 +997,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             markerItem.setItemMeta(meta);
             markerItem = CompatibilityLib.getItemUtils().makeReal(markerItem);
             CompatibilityLib.getItemUtils().hideFlags(markerItem, 63);
-            CompatibilityLib.getNBTUtils().setMetaInt(markerItem, "move_marker", marker);
+            CompatibilityLib.getNBTUtils().setInt(markerItem, "move_marker", marker);
 
             displayInventory.setItem(inventoryIndex, markerItem);
             context.getMage().activateGUI(this, displayInventory);

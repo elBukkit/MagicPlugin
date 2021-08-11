@@ -417,7 +417,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         }
 
         ItemStack item = mage.getPlayer().getInventory().getItemInMainHand();
-        if (CompatibilityLib.getNBTUtils().hasMeta(item, "npc")) {
+        if (CompatibilityLib.getNBTUtils().containsTag(item, "npc")) {
             BookMeta meta = (BookMeta)item.getItemMeta();
             List<String> pages = meta.getPages();
             boolean isEmpty = true;
@@ -464,7 +464,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
         selections.highlight(npc);
         book.setItemMeta(meta);
         book = CompatibilityLib.getItemUtils().makeReal(book);
-        CompatibilityLib.getNBTUtils().setMeta(book, "npc", npc.getId().toString());
+        CompatibilityLib.getNBTUtils().setString(book, "npc", npc.getId().toString());
         mage.giveItem(book);
         mage.sendMessage(ChatColor.GREEN + "Edit the script book and use this command again while holding the book to set the NPC's chat dialog");
     }

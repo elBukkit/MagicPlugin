@@ -217,7 +217,7 @@ public class EquipAction extends BaseSpellAction
             } else if (existingItem != null) {
                 CompatibilityLib.getItemUtils().setReplacement(equipItem, existingItem);
                 if (returnOnFinish) {
-                    CompatibilityLib.getNBTUtils().setMetaBoolean(equipItem, "return_on_death", true);
+                    CompatibilityLib.getNBTUtils().setBoolean(equipItem, "return_on_death", true);
                 }
             }
         } else if (useItem) {

@@ -207,7 +207,7 @@ public class CraftingController implements Listener {
             if (!allowWandsAsIngredients) {
                 return false;
             }
-            return CompatibilityLib.getNBTUtils().getMetaBoolean(item, "craftable", false);
+            return CompatibilityLib.getNBTUtils().getBoolean(item, "craftable", false);
         }
         return true;
     }

@@ -19,7 +19,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Object getNode(ItemStack stack, String tag) {
+    public Object getTag(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
         Object meta = null;
         try {
@@ -33,7 +33,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Object getNode(Object nbtBase, String tag) {
+    public Object getTag(Object nbtBase, String tag) {
         if (nbtBase == null) return null;
         Object meta = null;
         try {
@@ -45,7 +45,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public boolean containsNode(Object nbtBase, String tag) {
+    public boolean contains(Object nbtBase, String tag) {
         if (nbtBase == null) return false;
         Boolean result = false;
         try {
@@ -57,7 +57,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Object createNode(Object nbtBase, String tag) {
+    public Object createTag(Object nbtBase, String tag) {
         if (nbtBase == null) return null;
         Object meta = null;
         try {
@@ -70,9 +70,9 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Object createNode(ItemStack stack, String tag) {
+    public Object createTag(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
-        Object outputObject = getNode(stack, tag);
+        Object outputObject = getTag(stack, tag);
         if (outputObject == null) {
             try {
                 Object craft = platform.getItemUtils().getHandle(stack);
@@ -92,7 +92,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public String getMetaString(Object node, String tag) {
+    public String getString(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         String meta = null;
         try {
@@ -104,7 +104,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public String getMetaString(ItemStack stack, String tag) {
+    public String getString(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
         String meta = null;
         try {
@@ -118,7 +118,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Byte getMetaByte(Object node, String tag) {
+    public Byte getOptionalByte(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Byte meta = null;
         try {
@@ -130,7 +130,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Integer getMetaInt(Object node, String tag) {
+    public Integer getOptionalInt(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Integer meta = null;
         try {
@@ -142,7 +142,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Short getMetaShort(Object node, String tag) {
+    public Short getOptionalShort(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Short meta = null;
         try {
@@ -154,7 +154,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Double getMetaDouble(Object node, String tag) {
+    public Double getOptionalDouble(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Double meta = null;
         try {
@@ -166,7 +166,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public Boolean getMetaBoolean(Object node, String tag) {
+    public Boolean getOptionalBoolean(Object node, String tag) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return null;
         Boolean meta = null;
         try {
@@ -178,7 +178,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public void setMeta(Object node, String tag, String value) {
+    public void setString(Object node, String tag, String value) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             if (value == null || value.length() == 0) {
@@ -192,7 +192,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public void setMeta(ItemStack stack, String tag, String value) {
+    public void setString(ItemStack stack, String tag, String value) {
         if (platform.getItemUtils().isEmpty(stack)) return;
         try {
             Object craft = platform.getItemUtils().getHandle(stack);
@@ -206,7 +206,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public void setMetaLong(Object node, String tag, long value) {
+    public void setLong(Object node, String tag, long value) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setLongMethod.invoke(node, tag, value);
@@ -216,7 +216,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public void setMetaBoolean(Object node, String tag, boolean value) {
+    public void setBoolean(Object node, String tag, boolean value) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setBooleanMethod.invoke(node, tag, value);
@@ -226,7 +226,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public void setMetaDouble(Object node, String tag, double value) {
+    public void setDouble(Object node, String tag, double value) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setDoubleMethod.invoke(node, tag, value);
@@ -236,7 +236,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public void setMetaInt(Object node, String tag, int value) {
+    public void setInt(Object node, String tag, int value) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             NMSUtils.class_NBTTagCompound_setIntMethod.invoke(node, tag, value);
@@ -256,17 +256,17 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public void putIntArray(Object tag, String key, int[] value) {
+    public void setIntArray(Object tag, String key, int[] value) {
         // Not in legacy versions
     }
 
     @Override
-    public void putByteArray(Object tag, String key, byte[] value) {
+    public void setByteArray(Object tag, String key, byte[] value) {
         // Not in legacy versions
     }
 
     @Override
-    public void putEmptyList(Object tag, String key) {
+    public void setEmptyList(Object tag, String key) {
         // Not in legacy versions
     }
 
@@ -281,7 +281,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public void setMetaNode(Object node, String tag, Object child) {
+    public void setTag(Object node, String tag, Object child) {
         if (node == null || !NMSUtils.class_NBTTagCompound.isInstance(node)) return;
         try {
             if (child == null) {
@@ -295,7 +295,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public boolean setMetaNode(ItemStack stack, String tag, Object child) {
+    public boolean setTag(ItemStack stack, String tag, Object child) {
         if (platform.getItemUtils().isEmpty(stack)) return false;
         try {
             Object craft = platform.getItemUtils().getHandle(stack);
