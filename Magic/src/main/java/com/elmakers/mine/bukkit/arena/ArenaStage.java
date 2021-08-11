@@ -51,7 +51,7 @@ public class ArenaStage extends ArenaStageTemplate {
         ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(configuration);
         DefaultStage defaultStage = arena.getDefaultStage();
         ConfigurationUtils.addConfigurations(effectiveConfiguration, defaultStage.configuration, false);
-        super.load(effectiveConfiguration);
+        load(effectiveConfiguration);
     }
 
     @Override
