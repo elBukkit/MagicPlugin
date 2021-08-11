@@ -8,6 +8,7 @@ import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
+import com.elmakers.mine.bukkit.utility.platform.v1_16.PersistentEntityMetadataUtils;
 
 public abstract class ModernPlatform extends PlatformBase {
 

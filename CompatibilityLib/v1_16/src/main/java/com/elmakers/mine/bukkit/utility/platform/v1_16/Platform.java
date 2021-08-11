@@ -5,7 +5,6 @@ import java.util.logging.Logger;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
-import com.elmakers.mine.bukkit.utility.platform.modern.PersistentEntityMetadataUtils;
 
 public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_15.Platform {
 
