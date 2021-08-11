@@ -1588,4 +1588,9 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         WallSign sign = (WallSign)blockData;
         return sign.getFacing();
     }
+
+    @Override
+    public Object getProfile(Player player) {
+        return ((CraftPlayer)player).getProfile();
+    }
 }

@@ -1,11 +1,10 @@
-package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
+package com.elmakers.mine.bukkit.utility.platform.modern;
 
 import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
@@ -20,9 +19,9 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
-public class SkinUtils extends SkinUtilsBase {
+public class ModernSkinUtils extends SkinUtilsBase {
 
-    public SkinUtils(Platform platform) {
+    public ModernSkinUtils(Platform platform) {
         super(platform);
     }
 
@@ -53,7 +52,7 @@ public class SkinUtils extends SkinUtilsBase {
 
     @Override
     public Object getProfile(Player player) {
-        return ((CraftPlayer)player).getProfile();
+        return platform.getCompatibilityUtils().getProfile(player);
     }
 
     @Override
@@ -107,7 +106,8 @@ public class SkinUtils extends SkinUtilsBase {
             platform.getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
         }
         if (CompatibilityConstants.DEBUG) {
-            platform.getLogger().info("Got profile: " + gameProfile + ": " + platform.getSkinUtils().getProfileURL(gameProfile));
+            platform.getLogger().info("Got profile: " + gameProfile);
+            platform.getLogger().info(platform.getSkinUtils().getProfileURL(gameProfile));
         }
         return gameProfile;
     }

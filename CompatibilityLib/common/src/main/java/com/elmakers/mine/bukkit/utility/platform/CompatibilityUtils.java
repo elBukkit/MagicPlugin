@@ -503,4 +503,6 @@ public interface CompatibilityUtils {
     }
 
     default void setAware(Entity entity, boolean aware) {}
+
+    default Object getProfile(Player player) { return null; }
 }

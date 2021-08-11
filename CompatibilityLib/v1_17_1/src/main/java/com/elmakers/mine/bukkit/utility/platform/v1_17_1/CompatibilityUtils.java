@@ -1633,4 +1633,9 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         }
         ((org.bukkit.entity.Mob)entity).setAware(aware);
     }
+
+    @Override
+    public Object getProfile(Player player) {
+        return ((CraftPlayer)player).getProfile();
+    }
 }
