@@ -215,6 +215,14 @@ attributewand:
   mana_max: intelligence*10
   mana_regeneration: wisdom*2
 
+healthsword:
+  name: Health Sword
+  icon: netherite_sword
+  item_attribute_slot: mainhand
+  item_attributes:
+    generic_attack_damage: 1 + health
+  item_flags: []
+
 cyclewand:
   inherit: wand
   name: Cycle Wand

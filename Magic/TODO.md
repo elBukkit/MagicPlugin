@@ -142,6 +142,7 @@
 
 ## Suggestions
 
+ - A way to have wands update item attributes on an interval, such as with healthsword
  - disable_health_regeneration: true/false
  - Spell option to carry over CastContext
  - BetonQuest, expand integration - NPC quest dialog, class and cast count support
