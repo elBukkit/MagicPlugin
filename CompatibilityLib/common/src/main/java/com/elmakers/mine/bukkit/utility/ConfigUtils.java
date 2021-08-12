@@ -35,8 +35,8 @@ public class ConfigUtils {
 
     public static Random random = new Random();
 
-    public static Collection<ConfigurationSection> getNodeList(ConfigurationSection node, String path) {
-        Collection<ConfigurationSection> results = new ArrayList<>();
+    public static List<ConfigurationSection> getNodeList(ConfigurationSection node, String path) {
+        List<ConfigurationSection> results = new ArrayList<>();
         List<Map<?, ?>> mapList = node.getMapList(path);
         for (Map<?, ?> map : mapList) {
             results.add(toConfigurationSection(node, map));
