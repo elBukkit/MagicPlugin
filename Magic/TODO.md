@@ -4,8 +4,6 @@
 
  - General system for not stomping on action bar messages 
    (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
- - More general instructions in wand lore along the lines of the "Spell inventory is open" section
- - Resource pack response handling, special behavior if RP isn't accepted
  - Cooldown and disabled overlays
  - SFX for spell cycling, if that's not already a thing
  - A way to specify the glyph to use.. how about a consolidated icon repository that groups
@@ -101,6 +99,7 @@
 
 # Bugs
 
+ - Adding RPG configs prevents you from using a survival wand?
  - `/mconfig apply` doesn't work without a slug, after starting a new editor session
  - Tag wand spell icons so they're not droppable!
    .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :(

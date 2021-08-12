@@ -174,6 +174,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean showCycleModeLore = true;
     private boolean useActiveName = false;
     private boolean useActiveNameWhenClosed = false;
+    private boolean instructions = true;
+    private boolean instructionsLore = true;
     private int inventoryRows = 1;
     private Vector castLocation;
 
@@ -992,7 +994,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void showInstructions(boolean forceBound) {
-        if (mage == null) return;
+        if (mage == null || !instructions) return;
         startWandInstructions();
         if (forceBound) {
             doShowBoundInstructions();
@@ -2074,8 +2076,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         showCycleModeLore = getBoolean("show_cycle_lore", true);
         useActiveName = getBoolean("use_active_name", false);
         useActiveNameWhenClosed = getBoolean("use_active_name_when_closed", true);
-        if (inventoryRows <= 0) inventoryRows = 1;
-
         resetManaOnActivate = null;
         if (hasProperty("reset_mana_on_activate")) {
             String asString = getString("reset_mana_on_activate");
@@ -2463,6 +2463,31 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         if (actionBarMessage == null) {
             actionBarMana = false;
+        }
+
+        // Automatically decide if instruction messages and lore should be used
+        if (inventoryRows <= 0) inventoryRows = 1;
+
+        instructions = bound || usesSP() || usesMana() || hasInventory;
+        instructionsLore = hasInventory;
+        instructionsLore = instructionsLore || needsInstructions(rightClickAction);
+        instructionsLore = instructionsLore || needsInstructions(leftClickAction);
+        instructionsLore = instructionsLore || needsInstructions(dropAction);
+        instructionsLore = instructionsLore || needsInstructions(swapAction);
+
+        instructions = getBoolean("instructions", instructions);
+        instructionsLore = getBoolean("lore_instructions", instructionsLore);
+    }
+
+    private boolean needsInstructions(WandAction action) {
+        switch (action) {
+            case TOGGLE:
+            case CYCLE:
+            case CYCLE_HOTBAR:
+            case CYCLE_ACTIVE_HOTBAR:
+                return true;
+            default:
+                return false;
         }
     }
 
@@ -2978,20 +3003,45 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
-        if (isInventoryOpen() && inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
-            CompatibilityLib.getInventoryUtils().wrapText(inventoryOpenLore, lore);
+        if (instructionsLore && spellCount > 1) {
+            String header = getMessage("lore_instructions_header", "");
+            CompatibilityLib.getInventoryUtils().wrapText(header, lore);
+            if (isInventoryOpen() && inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
+                CompatibilityLib.getInventoryUtils().wrapText(inventoryOpenLore, lore);
 
-            String cycleMessage = getMessage("inventory_open_cycle", "");
-            if (!cycleMessage.isEmpty() &&  inventories.size() > 1) {
-                CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
-            }
+                String cycleMessage = getMessage("inventory_open_cycle", "");
+                if (!cycleMessage.isEmpty() &&  inventories.size() > 1) {
+                    CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
+                }
 
-            cycleMessage = getMessage("inventory_open_cycle_hotbar", "");
-            if (!cycleMessage.isEmpty() &&  hotbars.size() > 1) {
-                CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
+                cycleMessage = getMessage("inventory_open_cycle_hotbar", "");
+                if (!cycleMessage.isEmpty() &&  hotbars.size() > 1) {
+                    CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
+                }
             }
+            addInstructionLore("left_click", leftClickAction, lore);
+            addInstructionLore("right_click", rightClickAction, lore);
+            addInstructionLore("drop", dropAction, lore);
+            addInstructionLore("swap", swapAction, lore);
         }
         return lore;
+    }
+
+    private void addInstructionLore(String key, WandAction action, List<String> lore) {
+        if (action == WandAction.NONE) return;
+        String line = getMessage("lore_" + action.name().toLowerCase() + "_instructions", "");
+        if (isInventoryOpen()) {
+            line = getMessage("inventory_open_" + action.name().toLowerCase() + "_instructions", line);
+        }
+        if (line.isEmpty()) {
+            return;
+        }
+        String controlKey = controller.getMessages().get("controls." + key);
+        if (controlKey.isEmpty()) {
+            return;
+        }
+        line = line.replace("$button", controlKey);
+        CompatibilityLib.getInventoryUtils().wrapText(line, lore);
     }
 
     public String getSlot() {
@@ -4510,6 +4560,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean hasSpellProgression()
     {
         return hasSpellProgression;
+    }
+
+    public boolean usesInstructions() {
+        return instructions;
     }
 
     @Override

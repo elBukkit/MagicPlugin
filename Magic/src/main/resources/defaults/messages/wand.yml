@@ -306,11 +306,23 @@ wand:
     spell_prefix: "&6"
     brush_prefix: "&7"
     chest_inventory_title: "$wand"
+    # The following will be shown in wand lore if lore_instructions is set
+    # Lore instructions are on by default for any wand with a spell inventory
+    # or complex control scheme.
+    lore_instructions_header: "&8------------------------"
+
+    lore_cast_instructions: "&b&bull; &f$button &7to cast spells"
+    lore_toggle_instructions: "&b&bull; &f$button &7to open the spell inventory"
+    lore_cycle_instructions: "&b&bull; &f$button &7to cycle the active spell"
+    lore_cycle_active_hotbar_instructions: "&b&bull; &f$button &7to cycle the active spell"
+
     # You can use this to update wand lore when the spell inventory is open
     # but note that this will cause the wand to "bob" when opened or closed.
-    inventory_open: "&8------------------------\n&7Spell Inventory Open"
-    inventory_open_cycle: '&b&bull; &fClick &7to cycle inventory pages'
-    inventory_open_cycle_hotbar: '&b&bull; &fRight-Click &7to cycle hotbars'
+    inventory_open: "&6Spell Inventory Open"
+    inventory_open_toggle_instructions: "&b&bull; &f$button &7to close the spell inventory"
+    inventory_open_cycle: '&b&bull; &fClick on this item &7to cycle inventory pages'
+    inventory_open_cycle_hotbar: '&b&bull; &fRight-Click on this item &7to cycle hotbars'
+    inventory_open_cycle_hotbar_instructions: "&b&bull; &f$button &7to cycle the active hotbar"
 
     # You can use this to show an action bar message whenever the player cycles their hotbar
     #hotbar_changed: "a:Switched hotbars"

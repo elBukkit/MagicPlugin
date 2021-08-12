@@ -6,7 +6,7 @@ experimental:
   creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
   # Name and description may be added here and will appear in lore for this wand.
   name: Hybrid Wand
-  description: "&bTesting an experimental new wand mode!\nResource pack REQUIRED\nRight-click to cycle the active spell\nDrop button (Q) to toggle spell inventory"
+  description: "&bTesting an experimental new wand mode!\nResource pack REQUIRED"
   # Inherit from the base_wand template to get basic wand functionality
   # Such as spell inventory and key bindings
   # Other options include: basic_wand, base_bound, base_magic

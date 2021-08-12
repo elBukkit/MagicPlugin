@@ -79,8 +79,8 @@ resource_pack:
 
 controls:
   drop: Drop (Q)
-  right_click: Right-Click
-  left_click: Left-Click
+  right_click: Interact (Right-Click)
+  left_click: Swing (Left-Click)
   swap: Swap (F)
 
 skillapi:

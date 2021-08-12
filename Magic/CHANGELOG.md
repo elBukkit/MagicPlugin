@@ -46,6 +46,7 @@
  - Boss bar configurations can omit the `bar__` prefix in parameters (this kept confusing me)
  - Add `resource_pack: true` requirement option
  - Add `requirement_properties` wand feature, allows wands to vary their properties based on the player passing some requirements
+ - Add wand instructions to wand item lore. Use `lore_instructions: false` in wand config to turn this off.
 
 ## Changes
 
