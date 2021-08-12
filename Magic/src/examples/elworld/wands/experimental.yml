@@ -11,12 +11,16 @@ experimental:
   # Such as spell inventory and key bindings
   # Other options include: basic_wand, base_bound, base_magic
   inherit: master
-  action_bar:
-    message: "$hotbar"
-    open_message: ""
-    interval: 250
-    delay: 1500
   drop: toggle
   right_click_sneak: cycle_active_hotbar_reverse
   right_click: cycle_active_hotbar
-  use_active_name_when_closed: false
+  requirement_properties:
+    requirement:
+      resource_pack: true
+    properties:
+      use_active_name_when_closed: false
+      action_bar:
+        message: "$hotbar"
+        open_message: ""
+        interval: 250
+        delay: 1500
