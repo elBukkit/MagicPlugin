@@ -62,12 +62,12 @@ public abstract class WandProperties extends TemplatedProperties {
     }
 
     public void setWandTemplate(WandTemplate template) {
-        super.setTemplate(template);
         Mage mage = getMage();
         if (mage != null) {
             template = template.getMageTemplate(mage);
         }
         this.wandTemplate = template;
+        super.setTemplate(template);
     }
 
     public void setMageClass(MageClass mageClass) {
