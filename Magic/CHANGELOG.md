@@ -45,6 +45,7 @@
  - Add Selector support for simple shortcuts `newrow` and `none`
  - Boss bar configurations can omit the `bar__` prefix in parameters (this kept confusing me)
  - Add `resource_pack: true` requirement option
+ - Add `requirement_properties` wand feature, allows wands to vary their properties based on the player passing some requirements
 
 ## Changes
 

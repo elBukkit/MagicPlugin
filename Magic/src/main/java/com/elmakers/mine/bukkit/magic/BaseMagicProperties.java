@@ -215,6 +215,12 @@ public class BaseMagicProperties implements MagicProperties {
         return ConfigurationUtils.getStringList(value);
     }
 
+    @Override
+    @Nullable
+    public List<ConfigurationSection> getSectionList(String key) {
+        return ConfigurationUtils.getNodeList(getPropertyConfiguration(key), key);
+    }
+
     @Nullable
     public String getIcon(boolean legacy) {
         return getIcon(legacy, "icon");

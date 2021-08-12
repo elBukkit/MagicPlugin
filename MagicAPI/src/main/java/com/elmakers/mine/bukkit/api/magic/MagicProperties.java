@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 
 public interface MagicProperties {
     /**
@@ -89,4 +90,6 @@ public interface MagicProperties {
     String getString(String key);
     @Nullable
     List<String> getStringList(String key);
+    @Nullable
+    List<ConfigurationSection> getSectionList(String key);
 }

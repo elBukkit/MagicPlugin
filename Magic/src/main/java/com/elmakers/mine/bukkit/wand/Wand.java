@@ -64,6 +64,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
@@ -249,6 +250,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private List<Wand> slotted = null;
     private ConfigurationSection slottedConfiguration = null;
     private Set<String> swappableSlots = null;
+
+    // Other property overrides
+    private ConfigurationSection requirementConfiguration = null;
+    private List<RequirementProperties> requirementProperties = null;
 
     // Transient state
 
@@ -1943,6 +1948,32 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
             updateSlotted();
+        }
+
+        // Requirements upgrades come next
+        if (hasProperty("requirement_properties")) {
+            List<ConfigurationSection> requirementList = getSectionList("requirement_properties");
+            if (requirementList.isEmpty()) {
+                ConfigurationSection singleRequirement = getConfigurationSection("requirement_properties");
+                if (singleRequirement != null) {
+                    requirementList.add(singleRequirement);
+                }
+            }
+            if (!requirementList.isEmpty()) {
+                requirementProperties = new ArrayList<>();
+                for (ConfigurationSection requirementConfig : requirementList) {
+                    RequirementProperties requirement = new RequirementProperties(requirementConfig);
+                    if (!requirement.isEmpty()) {
+                        requirementProperties.add(requirement);
+                    }
+                }
+                if (mage != null) {
+                    updateRequirementConfiguration();
+                }
+            } else {
+                requirementProperties = null;
+                requirementConfiguration = null;
+            }
         }
 
         // Read path first since it can be used to override any other property
@@ -5055,12 +5086,40 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (!isInOffhand) {
             updateHotbarStatus();
         }
+        updateRequirements();
 
-        if (!worn)
-        {
+        if (!worn) {
             updateEffects();
         }
         checkBossBar();
+    }
+
+    protected boolean updateRequirementConfiguration() {
+        if (mage == null) {
+            requirementConfiguration = null;
+            return false;
+        }
+        MageContext context = getContext();
+        boolean changed = false;
+        for (RequirementProperties properties : requirementProperties) {
+            if (properties.hasChanged(context)) {
+                changed = true;
+            }
+        }
+        if (changed) {
+            requirementConfiguration = ConfigurationUtils.newConfigurationSection();
+            for (RequirementProperties properties : requirementProperties) {
+                ConfigurationUtils.addConfigurations(requirementConfiguration, properties.getProperties(), false);
+            }
+        }
+        return changed;
+    }
+
+    protected void updateRequirements() {
+        if (requirementProperties == null) return;
+        if (updateRequirementConfiguration()) {
+            loadProperties();
+        }
     }
 
     @Override
@@ -6817,6 +6876,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (slottedConfiguration != null && slottedConfiguration.contains(key)) {
             return true;
         }
+        if (requirementConfiguration != null && requirementConfiguration.contains(key)) {
+            return true;
+        }
         return hasOwnProperty(key);
     }
 
@@ -6831,6 +6893,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public ConfigurationSection getPropertyConfiguration(String key) {
         if (slottedConfiguration != null && slottedConfiguration.contains(key)) {
             return slottedConfiguration;
+        }
+        if (requirementConfiguration != null && requirementConfiguration.contains(key)) {
+            return requirementConfiguration;
         }
         return super.getPropertyConfiguration(key);
     }
