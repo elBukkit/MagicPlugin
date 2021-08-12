@@ -48,6 +48,7 @@
  - Add `requirement_properties` wand feature, allows wands to vary their properties based on the player passing some requirements
  - Add wand instructions to wand item lore. Use `lore_instructions: false` in wand config to turn this off.
  - The `ModifyBlock` action can now spawn falling blocks of any type, rather than only spawning them from destroyed blocks
+ - Added `cycle_spell` and `cycle_hotbar` wand effect options
 
 ## Changes
 

@@ -5,7 +5,6 @@
  - General system for not stomping on action bar messages 
    (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
  - Cooldown and disabled overlays
- - SFX for spell cycling, if that's not already a thing
  - A way to specify the glyph to use.. how about a consolidated icon repository that groups
    item icons, legacy item icons, url icons and glyphs?
 

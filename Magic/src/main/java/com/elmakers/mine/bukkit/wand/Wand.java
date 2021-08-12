@@ -4006,6 +4006,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else {
             cycleSpells(direction);
         }
+        playPassiveEffects("cycle_spell");
     }
 
     public void cycleActiveHotbar(int direction) {
@@ -4031,6 +4032,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (hotbarSpellKey != null) {
                 setActiveSpell(hotbarSpellKey);
                 updateActionBar();
+                playPassiveEffects("cycle_spell");
                 break;
             }
             tryIndex = (tryIndex + direction + hotbar.getSize()) % hotbar.getSize();
@@ -4114,7 +4116,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             int hotbarCount = hotbars.size();
             setCurrentHotbar(hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount);
             updateHotbar();
-            if (!playPassiveEffects("cycle") && inventoryCycleSound != null) {
+            if (!playPassiveEffects("cycle_hotbar") && inventoryCycleSound != null) {
                 mage.playSoundEffect(inventoryCycleSound);
             }
             sendMessage("hotbar_changed");
