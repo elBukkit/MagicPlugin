@@ -5466,7 +5466,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (resourcePackPreference == ResourcePackPreference.DOWNLOADED) {
             return true;
         }
-        return hasResourcePack && isResourcePackEnabled();
+        return hasResourcePack && !isResourcePackDisabled();
     }
 
     public ResourcePackPreference getResourcePackPreference() {
