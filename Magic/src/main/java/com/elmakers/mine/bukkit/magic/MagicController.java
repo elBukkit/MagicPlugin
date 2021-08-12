@@ -1942,10 +1942,6 @@ public class MagicController implements MageController {
         logger.setContext("finalizingLoad");
         finishLoad(sender);
 
-        // Register managers from other plugins
-        logger.setContext("registerManagers");
-        registerManagers();
-
         // Notify plugins that we've finished loading.
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
@@ -2035,6 +2031,10 @@ public class MagicController implements MageController {
         loaded = true;
         loading = false;
 
+        // Register managers from other plugins
+        logger.setContext("registerManagers");
+        registerManagers();
+
         // Activate/load any active player Mages
         Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
         for (Player player : allPlayers) {
@@ -2051,10 +2051,13 @@ public class MagicController implements MageController {
             notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
         }
 
+        if (sender instanceof Player && reloadingMage != null) {
+            reloadingMage = getMage(sender);
+        }
         if (reloadingMage != null) {
             Player player = reloadingMage.getPlayer();
             if (!player.hasPermission("Magic.notify")) {
-                player.sendMessage(ChatColor.AQUA + "Spells reloaded.");
+                player.sendMessage(ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
             }
             reloadingMage.deactivate();
             reloadingMage.checkWand();
