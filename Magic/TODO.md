@@ -13,6 +13,7 @@
 
 # Important
 
+ - Make sure slotted upgrades still work
  - Enchanting an unenchantable wand still consumes XP (? __Mr_Crazy__)
  - Spell icons that are shields will go to the offhand when shift+clicked 
  - Item attributes on wand template configs don't know about player attributes

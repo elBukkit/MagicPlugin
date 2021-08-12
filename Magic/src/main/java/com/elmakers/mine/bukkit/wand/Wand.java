@@ -441,6 +441,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             randomize();
         }
 
+        updateItem();
         updateName();
         updateLore();
         saveState();
@@ -2278,77 +2279,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             setIcon(new MaterialAndData(DefaultWandMaterial));
         }
 
-        // Add unstashable, unmoveable, etc tags
-        if (getBoolean("unswappable")) {
-            CompatibilityLib.getNBTUtils().setBoolean(item, "unswappable", true);
-        } else {
-            CompatibilityLib.getNBTUtils().removeMeta(item, "unswappable");
-        }
-        if (getBoolean("unstashable") || (undroppable && Unstashable)) {
-            CompatibilityLib.getNBTUtils().setBoolean(item, "unstashable", true);
-        } else {
-            CompatibilityLib.getNBTUtils().removeMeta(item, "unstashable");
-        }
-
-        if (getBoolean("craftable")) {
-            CompatibilityLib.getNBTUtils().setBoolean(item, "craftable", true);
-        } else {
-            CompatibilityLib.getNBTUtils().removeMeta(item, "craftable");
-        }
-        if (getBoolean("unmoveable")) {
-            CompatibilityLib.getNBTUtils().setBoolean(item, "unmoveable", true);
-        } else {
-            CompatibilityLib.getNBTUtils().removeMeta(item, "unmoveable");
-        }
-        if (undroppable) {
-            CompatibilityLib.getNBTUtils().setBoolean(item, "undroppable", true);
-        } else {
-            CompatibilityLib.getNBTUtils().removeMeta(item, "undroppable");
-        }
-        if (keep) {
-            CompatibilityLib.getNBTUtils().setBoolean(item, "keep", true);
-        } else {
-            CompatibilityLib.getNBTUtils().removeMeta(item, "keep");
-        }
-
-        // Add vanilla enchantments
-        ConfigurationSection enchantments = getConfigurationSection("enchantments");
-        if (enchantments == null) {
-            List<String> enchantmentList = getStringList("enchantments");
-            if (enchantmentList != null && !enchantmentList.isEmpty()) {
-                enchantments = ConfigurationUtils.newConfigurationSection();
-                for (String enchantKey : enchantmentList) {
-                    int level = 1;
-                    String[] pieces = StringUtils.split(enchantKey, ":");
-                    if (pieces.length > 1) {
-                        try {
-                            level = Integer.parseInt(pieces[1]);
-                            enchantKey = pieces[0];
-                        } catch (Exception ex) {
-                            controller.getLogger().warning("Invalid enchantment level: " + enchantKey);
-                            continue;
-                        }
-                    }
-                    enchantments.set(enchantKey, level);
-                }
-            }
-        }
-
         isCostFree = false;
-        CompatibilityLib.getInventoryUtils().applyEnchantments(item, enchantments);
         if (getBoolean("infinity_cost_free", false)) {
             ItemMeta itemMeta = item.getItemMeta();
             if (itemMeta != null && itemMeta.hasEnchant(Enchantment.ARROW_INFINITE)) {
                 isCostFree = true;
-            }
-        }
-
-        // Add enchantment glow
-        if (enchantments == null || enchantments.getKeys(false).isEmpty()) {
-            if (glow) {
-                CompatibilityLib.getItemUtils().addGlow(item);
-            } else {
-                CompatibilityLib.getItemUtils().removeGlow(item);
             }
         }
 
@@ -4864,6 +4799,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         showActiveIcon(false);
         mage.deactivateWand(this);
         this.mage = null;
+        // Update any item attributes or enchants that rely on player attributes
+        setTemplate(template);
+        updateItem();
         updateMaxMana(true);
     }
 
@@ -5416,10 +5354,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         discoverRecipes("discover_recipes");
 
-        // Add vanilla attributes
-        // This is done here instead of in the Wand constructor because it will modify the ItemStack
-        CompatibilityLib.getInventoryUtils().applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
-
         mage.setLastActivatedSlot(player.getInventory().getHeldItemSlot());
 
         // Check for replacement template
@@ -5590,7 +5524,79 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // This double-load here is not really ideal.
         // Seems hard to prevent without merging Wand construction and activation, though.
         loadProperties();
+        updateItem();
         return true;
+    }
+
+    private void updateItem() {
+        // Add vanilla attributes
+        CompatibilityLib.getInventoryUtils().applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
+
+        // Add unstashable, unmoveable, etc tags
+        if (getBoolean("unswappable")) {
+            CompatibilityLib.getNBTUtils().setBoolean(item, "unswappable", true);
+        } else {
+            CompatibilityLib.getNBTUtils().removeMeta(item, "unswappable");
+        }
+        if (getBoolean("unstashable") || (undroppable && Unstashable)) {
+            CompatibilityLib.getNBTUtils().setBoolean(item, "unstashable", true);
+        } else {
+            CompatibilityLib.getNBTUtils().removeMeta(item, "unstashable");
+        }
+
+        if (getBoolean("craftable")) {
+            CompatibilityLib.getNBTUtils().setBoolean(item, "craftable", true);
+        } else {
+            CompatibilityLib.getNBTUtils().removeMeta(item, "craftable");
+        }
+        if (getBoolean("unmoveable")) {
+            CompatibilityLib.getNBTUtils().setBoolean(item, "unmoveable", true);
+        } else {
+            CompatibilityLib.getNBTUtils().removeMeta(item, "unmoveable");
+        }
+        if (undroppable) {
+            CompatibilityLib.getNBTUtils().setBoolean(item, "undroppable", true);
+        } else {
+            CompatibilityLib.getNBTUtils().removeMeta(item, "undroppable");
+        }
+        if (keep) {
+            CompatibilityLib.getNBTUtils().setBoolean(item, "keep", true);
+        } else {
+            CompatibilityLib.getNBTUtils().removeMeta(item, "keep");
+        }
+
+        // Add vanilla enchantments
+        ConfigurationSection enchantments = getConfigurationSection("enchantments");
+        if (enchantments == null) {
+            List<String> enchantmentList = getStringList("enchantments");
+            if (enchantmentList != null && !enchantmentList.isEmpty()) {
+                enchantments = ConfigurationUtils.newConfigurationSection();
+                for (String enchantKey : enchantmentList) {
+                    int level = 1;
+                    String[] pieces = StringUtils.split(enchantKey, ":");
+                    if (pieces.length > 1) {
+                        try {
+                            level = Integer.parseInt(pieces[1]);
+                            enchantKey = pieces[0];
+                        } catch (Exception ex) {
+                            controller.getLogger().warning("Invalid enchantment level: " + enchantKey);
+                            continue;
+                        }
+                    }
+                    enchantments.set(enchantKey, level);
+                }
+            }
+        }
+        CompatibilityLib.getInventoryUtils().applyEnchantments(item, enchantments);
+
+        // Add enchantment glow
+        if (enchantments == null || enchantments.getKeys(false).isEmpty()) {
+            if (glow) {
+                CompatibilityLib.getItemUtils().addGlow(item);
+            } else {
+                CompatibilityLib.getItemUtils().removeGlow(item);
+            }
+        }
     }
 
     private void replaceTemplate(String newTemplate) {
@@ -6817,12 +6823,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     @Nullable
     public Object getProperty(String key) {
-        if (slottedConfiguration != null) {
-            Object slottedOverride = slottedConfiguration.get(key);
-            if (slottedOverride != null) {
-                return slottedOverride;
-            }
-        }
         return getPropertyConfiguration(key).get(key);
     }
 
