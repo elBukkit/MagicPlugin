@@ -1932,6 +1932,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public void loadProperties() {
         super.loadProperties();
+        // Slotted upgrades can override anything else
+        List<String> slottedKeys = getStringList("slotted");
+        if (slottedKeys != null && !slottedKeys.isEmpty()) {
+            slotted = new ArrayList<>();
+            for (String slottedKey : slottedKeys) {
+                Wand slottedWand = controller.createWand(slottedKey);
+                if (slottedWand != null) {
+                    slotted.add(slottedWand);
+                }
+            }
+            updateSlotted();
+        }
+
         // Read path first since it can be used to override any other property
         path = getString("path");
         locked = getBoolean("locked", locked);
@@ -1985,19 +1998,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             mageClassKeys.add(singleClass);
         } else {
             mageClassKeys = getStringList("classes");
-        }
-
-        // Load slotted wands
-        List<String> slottedKeys = getStringList("slotted");
-        if (slottedKeys != null && !slottedKeys.isEmpty()) {
-            slotted = new ArrayList<>();
-            for (String slottedKey : slottedKeys) {
-                Wand slottedWand = controller.createWand(slottedKey);
-                if (slottedWand != null) {
-                    slotted.add(slottedWand);
-                }
-            }
-            updateSlotted();
         }
 
         // Check for single-use wands
