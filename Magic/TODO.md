@@ -141,6 +141,7 @@
 
 ## Suggestions
 
+ - Chat trigger
  - A way to have wands update item attributes on an interval, such as with healthsword
  - disable_health_regeneration: true/false
  - Spell option to carry over CastContext

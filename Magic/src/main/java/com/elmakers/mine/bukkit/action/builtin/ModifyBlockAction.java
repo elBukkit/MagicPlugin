@@ -107,8 +107,9 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
-        Material previousMaterial = block.getType();
-        byte previousData = block.getData();
+        Material fallingMaterial = block.getType();
+        String fallingData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
+        byte fallingLegacyData = block.getData();
 
         Mage mage = context.getMage();
         brush.update(mage, context.getTargetSourceLocation());
@@ -141,43 +142,51 @@ public class ModifyBlockAction extends BaseSpellAction {
             }
         }
 
-        if (!commit) {
-            context.registerForUndo(block);
-            if (brush.isErase() && !DefaultMaterials.isAir(block.getType())) {
-                context.clearAttachables(block);
-            }
-        }
-        UndoList undoList = context.getUndoList();
-        if (undoList != null) {
-            undoList.setApplyPhysics(applyPhysics);
-        }
-        BlockState prior = block.getState();
-        brush.modify(block, applyPhysics);
-        if (undoList != null && !undoList.isScheduled()) {
-            context.getController().logBlockChange(context.getMage(), prior, block.getState());
-        }
-
-        if (autoBlockState) {
-            Location targetLocation = context.getTargetLocation();
-            Block hitBlock = targetLocation.getBlock();
-            BlockFace direction = hitBlock.getFace(block);
-            if (direction == BlockFace.SELF) {
-                direction = BlockFace.UP;
-            }
-            CompatibilityLib.getCompatibilityUtils().setAutoBlockState(block, targetLocation, direction, applyPhysics, context.getMage().getPlayer());
-            /*
-            BlockFace[] neighbors = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.DOWN};
-            for (BlockFace blockFace : neighbors) {
-                Block neighbor = block.getRelative(blockFace);
-                CompatibilityUtils.forceUpdate(neighbor, applyPhysics);
-            }
-            */
-        }
-
-        boolean spawnFalling = spawnFallingBlocks && !DefaultMaterials.isAir(previousMaterial);
+        boolean spawnFalling = spawnFallingBlocks;
         if (spawnFalling && fallingProbability < 1) {
             spawnFalling = context.getRandom().nextDouble() < fallingProbability;
         }
+
+        if (spawnFalling && !brush.isErase()) {
+            fallingMaterial = brush.getMaterial();
+            fallingData = brush.getModernBlockData();
+            Byte data = brush.getBlockData();
+            fallingLegacyData = data == null ? 0 : data;
+        } else {
+            if (!commit) {
+                context.registerForUndo(block);
+                if (brush.isErase() && !DefaultMaterials.isAir(block.getType())) {
+                    context.clearAttachables(block);
+                }
+            }
+            UndoList undoList = context.getUndoList();
+            if (undoList != null) {
+                undoList.setApplyPhysics(applyPhysics);
+            }
+            BlockState prior = block.getState();
+            brush.modify(block, applyPhysics);
+            if (undoList != null && !undoList.isScheduled()) {
+                context.getController().logBlockChange(context.getMage(), prior, block.getState());
+            }
+
+            if (autoBlockState) {
+                Location targetLocation = context.getTargetLocation();
+                Block hitBlock = targetLocation.getBlock();
+                BlockFace direction = hitBlock.getFace(block);
+                if (direction == BlockFace.SELF) {
+                    direction = BlockFace.UP;
+                }
+                CompatibilityLib.getCompatibilityUtils().setAutoBlockState(block, targetLocation, direction, applyPhysics, context.getMage().getPlayer());
+                /*
+                BlockFace[] neighbors = {BlockFace.WEST, BlockFace.EAST, BlockFace.NORTH, BlockFace.SOUTH, BlockFace.UP, BlockFace.DOWN};
+                for (BlockFace blockFace : neighbors) {
+                    Block neighbor = block.getRelative(blockFace);
+                    CompatibilityUtils.forceUpdate(neighbor, applyPhysics);
+                }
+                */
+            }
+        }
+        spawnFalling = spawnFalling && !DefaultMaterials.isAir(fallingMaterial);
         if (spawnFalling)
         {
             Location blockLocation = block.getLocation();
@@ -201,20 +210,24 @@ public class ModifyBlockAction extends BaseSpellAction {
             {
                 fallingBlockVelocity = null;
             }
-            boolean spawned = false;
-            if (!spawned) {
-                FallingBlock falling = block.getWorld().spawnFallingBlock(blockCenter, previousMaterial, previousData);
-                falling.setDropItem(false);
-                if (fallingBlockVelocity != null) {
-                    SafetyUtils.setVelocity(falling, fallingBlockVelocity);
-                }
-                if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
-                    CompatibilityLib.getCompatibilityUtils().setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
-                } else {
-                    falling.setHurtEntities(fallingBlocksHurt);
-                }
-                context.registerForUndo(falling);
+
+            // If not using erase, spawn falling block instead of placing a block
+            FallingBlock falling;
+            if (fallingData != null) {
+                falling = CompatibilityLib.getCompatibilityUtils().spawnFallingBlock(blockCenter, fallingMaterial, fallingData);
+            } else {
+                falling = CompatibilityLib.getDeprecatedUtils().spawnFallingBlock(blockCenter, fallingMaterial, fallingLegacyData);
             }
+            falling.setDropItem(false);
+            if (fallingBlockVelocity != null) {
+                SafetyUtils.setVelocity(falling, fallingBlockVelocity);
+            }
+            if (fallingBlockMaxDamage > 0 && fallingBlockFallDamage > 0) {
+                CompatibilityLib.getCompatibilityUtils().setFallingBlockDamage(falling, fallingBlockFallDamage, fallingBlockMaxDamage);
+            } else {
+                falling.setHurtEntities(fallingBlocksHurt);
+            }
+            context.registerForUndo(falling);
         }
 
         if (breakable > 0) {
