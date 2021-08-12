@@ -27,6 +27,7 @@
  - Fix unintentionally overriding Mythic mob or naturally spawned mob properties when applying Magic mob behaviors to them
  - Fix Drop block break/place rule not being able to drop wands
  - Fix mage attributes not being taken into account on a wand's vanilla item attributes
+ - Fix right-click mode controls menu option turning off a wand's ability to cycle hotbars
 
 ## Additions
  
