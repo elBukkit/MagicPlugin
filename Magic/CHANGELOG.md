@@ -43,6 +43,7 @@
  - Add `magic_blocks` list to arenas, arena will turn the magic block on/off when the arena starts/stops
  - Add Selector support for simple shortcuts `newrow` and `none`
  - Boss bar configurations can omit the `bar__` prefix in parameters (this kept confusing me)
+ - Add `resource_pack: true` requirement option
 
 ## Changes
 

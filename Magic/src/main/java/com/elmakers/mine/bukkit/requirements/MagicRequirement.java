@@ -58,6 +58,7 @@ public class MagicRequirement {
     private @Nullable ClientPlatform clientPlatform = null;
     private int castTimeout = 0;
     private @Nonnull String currencyType = "currency";
+    private boolean requireResourcePack = false;
     private boolean requireWand = false;
     private boolean ignoreMissing = false;
     private boolean indoors = false;
@@ -73,6 +74,7 @@ public class MagicRequirement {
         requiresCompletedPath = configuration.getString("path_end");
         requiredTemplate = configuration.getString("wand");
         requireWand = configuration.getBoolean("holding_wand");
+        requireResourcePack = configuration.getBoolean("resource_pack");
         mageClass = ConfigurationUtils.getStringList(configuration, "class");
         activeClass = ConfigurationUtils.getStringList(configuration, "active_class");
         wandTags = ConfigurationUtils.getStringList(configuration, "wand_tags");
@@ -189,6 +191,9 @@ public class MagicRequirement {
         }
         Wand wand = context.getWand();
         if (wand == null && requireWand) {
+            return false;
+        }
+        if (requireResourcePack && !mage.hasResourcePack()) {
             return false;
         }
 
@@ -432,6 +437,10 @@ public class MagicRequirement {
         Wand wand = context.getWand();
         if (wand == null && requireWand) {
             return getMessage(context, "no_wand");
+        }
+
+        if (requireResourcePack && !mage.hasResourcePack()) {
+            return getMessage(context, "no_resource_pack");
         }
 
         Location location = mage.getLocation();
