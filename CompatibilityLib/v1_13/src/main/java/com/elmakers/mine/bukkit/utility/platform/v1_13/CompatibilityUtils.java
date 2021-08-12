@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_13;
 
+import javax.annotation.Nonnull;
+
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,11 +15,15 @@ import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Dispenser;
 import org.bukkit.block.data.type.Door;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 
 public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_12.CompatibilityUtils {
 
@@ -226,5 +232,16 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         } else {
             super.sendBlockChange(player, location, material, blockData);
         }
+    }
+
+    @Override
+    @Nonnull
+    public FallingBlock spawnFallingBlock(Location location, Material material, String blockDataString) {
+        if (blockDataString != null && !blockDataString.isEmpty()) {
+            BlockData blockData = PlatformInterpreter.getPlatform().getPlugin().getServer().createBlockData(blockDataString);
+            return location.getWorld().spawnFallingBlock(location, blockData);
+        }
+
+        return super.spawnFallingBlock(location, material, blockDataString);
     }
 }

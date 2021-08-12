@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import javax.annotation.Nonnull;
 
 import org.bukkit.Art;
 import org.bukkit.Chunk;
@@ -507,4 +508,7 @@ public interface CompatibilityUtils {
     default Object getProfile(Player player) { return null; }
 
     void openSign(Player player, Location signBlock);
+
+    @Nonnull
+    FallingBlock spawnFallingBlock(Location location, Material material, String blockData);
 }

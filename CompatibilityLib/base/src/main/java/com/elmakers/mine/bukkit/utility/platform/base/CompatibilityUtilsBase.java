@@ -15,6 +15,7 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.logging.Level;
+import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -38,6 +39,7 @@ import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
@@ -871,5 +873,12 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @SuppressWarnings("deprecation")
     public void sendBlockChange(Player player, Location location, Material material, String blockData) {
         player.sendBlockChange(location, material, (byte)0);
+    }
+
+    @Override
+    @Nonnull
+    @SuppressWarnings("deprecation")
+    public FallingBlock spawnFallingBlock(Location location, Material material, String blockData) {
+        return location.getWorld().spawnFallingBlock(location, material, (byte)0);
     }
 }
