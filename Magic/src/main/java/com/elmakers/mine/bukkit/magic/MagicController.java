@@ -2051,7 +2051,7 @@ public class MagicController implements MageController {
             notify(sender, ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
         }
 
-        if (sender instanceof Player && reloadingMage != null) {
+        if (sender instanceof Player && reloadingMage == null) {
             reloadingMage = getMage(sender);
         }
         if (reloadingMage != null) {
