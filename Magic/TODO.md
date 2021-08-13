@@ -10,6 +10,9 @@
 
 # Important
 
+ - Prevent blaze fireballs from doing damage?
+   Arenas always auto-rollback fireballs and stuff from mobs?
+   Auto-rollback all spells from players after arena is done
  - Make sure slotted upgrades still work
  - Enchanting an unenchantable wand still consumes XP (? __Mr_Crazy__)
  - Spell icons that are shields will go to the offhand when shift+clicked 
@@ -61,14 +64,12 @@
 
 # New API
 
- - Handle RP response event, prompt players if RP is enabled but their client declined
+ - Use keybind localizations in wand instructions
  - Possible to change sky color?
  - Item frame fixed/visible official API
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/9a6a5a664c15127db80ae154523f9f8b9afd51ba
  - Non-Collidable modifier
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/ad52a4ec1d7b7254e3fe68ca497b2cc63afac373
- - aware vs ai
-   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/97aeae56caee016136a81e34404f397e2d47a4dc#src/main/java/org/bukkit/entity/Mob.java
 
 # Resource pack changes near-term
 
