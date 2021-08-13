@@ -825,7 +825,8 @@ public class PlayerController implements Listener {
                 wand.closeInventory();
             }
         }
-        if (!isLeftClick && !mage.checkLastClick(clickCooldown)) {
+        boolean isClickBlock = action == Action.RIGHT_CLICK_BLOCK || action == Action.LEFT_CLICK_BLOCK;
+        if (isClickBlock && !isLeftClick && !mage.checkLastClick(clickCooldown)) {
             return;
         }
         if (isRightClick) {
