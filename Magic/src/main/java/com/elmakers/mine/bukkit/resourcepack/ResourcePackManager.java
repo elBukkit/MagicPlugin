@@ -25,6 +25,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.tasks.RPCheckTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.google.common.io.BaseEncoding;
 
 public class ResourcePackManager {
     private static final String RP_FILE = "resourcepack";
@@ -244,7 +245,13 @@ public class ResourcePackManager {
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
             @Override
             public void run() {
-                controller.info("Sending resource pack " + url + " to " + player.getName(), 10);
+                String hashString;
+                try {
+                    hashString = hash == null ? "(none)" : BaseEncoding.base64().encode(hash);
+                } catch (Exception ex) {
+                    hashString = "(Error";
+                }
+                controller.info("Sending resource pack " + url + " to " + player.getName() + " with hash " + hashString, 10);
                 CompatibilityLib.getCompatibilityUtils().setResourcePack(player, url, hash);
             }
         }, resourcePackDelay * 20 / 1000);
