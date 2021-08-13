@@ -74,7 +74,7 @@ resource_pack:
     # This is sent anytime the RP is sent
     # sending: "t:&3Please Wait\n&bsending resource pack"
     sending: ""
-    failed: "&cThe resource pack failed to download!&fYou can use &b/getrp&f to try again."
+    failed: "&cThe resource pack failed to download!\n&fYou can use &b/getrp&f to try again."
     declined: "&eSee: &f&nhttps://tinyurl.com/elmakers&f for &bresource pack&f instructions.\n&fUse &7/getrp download&f if you prefer to download the RP.\n&fUse &7/getrp off&f to permanently disable this message."
 
 controls:
