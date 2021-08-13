@@ -4,11 +4,9 @@
 
  - General system for not stomping on action bar messages 
    (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
- - Cooldown and disabled overlays  
  - A way to specify the glyph to use.. how about a consolidated icon repository that groups
    item icons, legacy item icons, url icons and glyphs?
  - Check 1.16 ... does it work? Do we need to prevent it? Or maybe update the 1.16 RP?
- - Figure out why spell cycling is not spammable
  - Update controls menu
 
 # Important

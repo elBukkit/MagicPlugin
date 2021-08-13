@@ -158,6 +158,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean undroppable = false;
     private boolean keep = false;
     private boolean worn = false;
+    private boolean swappable = true;
     private WandUseMode useMode = WandUseMode.SUCCESS;
     private boolean autoOrganize = false;
     private boolean autoAlphabetize = false;
@@ -2062,6 +2063,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         glow = getBoolean("glow");
         spellGlow = getBoolean("spell_glow");
         undroppable = getBoolean("undroppable");
+        swappable = getBoolean("swappable", true);
         isHeroes = getBoolean("heroes");
         bound = getBoolean("bound");
         boundDisplayName = getString("bound_name", "display").equals("display");
@@ -6543,28 +6545,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 cycleActive(-1);
                 break;
             case CYCLE_ACTIVE_HOTBAR:
+                if (mode != WandMode.INVENTORY) return false;
                 cycleActiveHotbar(1);
                 break;
             case CYCLE_ACTIVE_HOTBAR_REVERSE:
+                if (mode != WandMode.INVENTORY) return false;
                 cycleActiveHotbar(-1);
                 break;
             case CYCLE_HOTBAR:
-                if (mode != WandMode.INVENTORY || !isInventoryOpen()) return false;
-                if (getHotbarCount() > 1) {
-                    cycleHotbar(1);
-                } else {
-                    closeInventory();
-                }
+                if (mode != WandMode.INVENTORY) return false;
+                if (getHotbarCount() <= 1) return false;
+                cycleHotbar(1);
                 break;
             case CYCLE_HOTBAR_REVERSE:
                 if (mode != WandMode.INVENTORY) return false;
-                if (getHotbarCount() > 1) {
-                    cycleHotbar(-1);
-                } else if (isInventoryOpen()) {
-                    closeInventory();
-                } else {
-                    return false;
-                }
+                if (getHotbarCount() <= 1) return false;
+                cycleHotbar(-1);
                 break;
             case REPLACE:
                 // Check for replacement template
@@ -7004,5 +7000,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean isPlaceable() {
         return getBoolean("placeable");
+    }
+
+    public boolean isSwappable() {
+        return swappable;
     }
 }

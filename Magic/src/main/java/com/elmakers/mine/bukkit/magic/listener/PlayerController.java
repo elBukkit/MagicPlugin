@@ -286,12 +286,21 @@ public class PlayerController implements Listener {
 
         if (activeWand == null && offhandWand == null) return;
 
-        if (activeWand != null && activeWand.performAction(activeWand.getSwapAction())) {
-            event.setCancelled(true);
-        } else if (activeWand != null && activeWand.isInventoryOpen()) {
-            activeWand.closeInventory();
-            event.setCancelled(true);
-        } else if (activeWand != null || offhandWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem())) {
+        if (activeWand != null) {
+            boolean swappable = activeWand.isSwappable();
+            if (swappable && activeWand.isInventoryOpen()) {
+                swappable = !activeWand.performAction(activeWand.getSwapAction());
+            } else if (!swappable) {
+                activeWand.performAction(activeWand.getSwapAction());
+            }
+            if (!swappable) {
+                event.setCancelled(true);
+            } else if (activeWand.isInventoryOpen()) {
+                activeWand.closeInventory();
+                event.setCancelled(true);
+            }
+        }
+        if (!event.isCancelled() && (activeWand != null || offhandWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem()))) {
             // Make sure to save changes to the active and offhand wands
             boolean checkWand = false;
             if (activeWand != null && Wand.isWand(event.getOffHandItem())) {

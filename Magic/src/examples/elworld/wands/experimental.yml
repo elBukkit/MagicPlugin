@@ -14,6 +14,7 @@ experimental:
   drop: toggle
   right_click_sneak: cycle_active_hotbar_reverse
   right_click: cycle_active_hotbar
+  swappable: false
   requirement_properties:
     requirement:
       resource_pack: true

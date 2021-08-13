@@ -4,17 +4,29 @@
 
 ## New Features
 
- - MythicMobs support: 
-   - Mythic mobs can be referred to by name in any configs or `/mmob` command.
-   - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities
-   - Use `mythic_mob` in a magic mob config to make it build on a mythic mob
-   - use `mythic_mob_level` in a config or spawn parameters to set the MM level
+ - Wand Mechanics re-work)
+   (currently in experimental phase, not yet applied to default wand)
+   - Right-click now cycles the active spell, drop button (Q) toggles spell inventory
+   - 1.17 has a new 2nd hotbar display when the spell inventory is closed and the player has the resource pack
+   - Downstream changes:  
+      - Add `requirement_properties` wand feature, allows wands to vary their properties based on the player passing some requirements
+      - Add `resource_pack: true` requirement option
+      - Added `cycle_spell` and `cycle_hotbar` wand effect options
+      - Add `swappable: false` wand option, which allows you to use the swap key while the wand inventory is closed.
+      - Allow cycling hotbars with the wand inventory closed
+      - Add wand instructions to wand item lore. Use `lore_instructions: false` in wand config to turn this off.
 
  - Magic Bow re-work
    - Light arrow rebalance
    - Now requires 2 magic hearts to craft, no nether star
    - Can be enchanted, only the infinity enchantment, which will make it cost-free
    - Added Grapple arrow to Archer path
+
+ - MythicMobs support: 
+   - Mythic mobs can be referred to by name in any configs or `/mmob` command.
+   - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities
+   - Use `mythic_mob` in a magic mob config to make it build on a mythic mob
+   - use `mythic_mob_level` in a config or spawn parameters to set the MM level
 
 ## Fixes
 
@@ -44,11 +56,7 @@
  - Add `magic_blocks` list to arenas, arena will turn the magic block on/off when the arena starts/stops
  - Add Selector support for simple shortcuts `newrow` and `none`
  - Boss bar configurations can omit the `bar__` prefix in parameters (this kept confusing me)
- - Add `resource_pack: true` requirement option
- - Add `requirement_properties` wand feature, allows wands to vary their properties based on the player passing some requirements
- - Add wand instructions to wand item lore. Use `lore_instructions: false` in wand config to turn this off.
  - The `ModifyBlock` action can now spawn falling blocks of any type, rather than only spawning them from destroyed blocks
- - Added `cycle_spell` and `cycle_hotbar` wand effect options
 
 ## Changes
 
