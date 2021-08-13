@@ -4713,12 +4713,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (hotbar == null || mage == null) return "";
         boolean skipEmpty = getBoolean("glyph_skip_empty", true);
         int hotbarSlotWidth = getInt("glyph_slot_width", 22);
-        int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 24);
+        int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 22);
         int hotbarActivePaddingLeft = (hotbarActiveSlotWidth - hotbarSlotWidth) / 2;
         int iconWidth = getInt("glyph_icon_width", 16);
         int iconPaddingLeft = (hotbarSlotWidth - iconWidth) / 2;
         int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
-        int slotSpacingWidth = getInt("glyph_slot_spacing", -2);
+        int slotSpacingWidth = getInt("glyph_slot_spacing", -1);
 
         // Icon width + 1 pixel padding, to reverse back over the icon (for applying cooldown)
         String iconReverse = messages.getSpace(-(iconWidth + 1));
