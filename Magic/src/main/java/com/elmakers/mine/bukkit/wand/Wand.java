@@ -1022,6 +1022,45 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
     }
 
+    private void showSecondSpellInstructions(int spellCount) {
+        String headerMessage = getMessage("spell_count_instructions");
+        if (headerMessage.isEmpty()) return;
+        mage.sendMessage(headerMessage);
+
+        if (rightClickAction == WandAction.CYCLE_ACTIVE_HOTBAR
+            || leftClickAction == WandAction.CYCLE_ACTIVE_HOTBAR
+            || dropAction == WandAction.CYCLE_ACTIVE_HOTBAR
+            || swapAction == WandAction.CYCLE_ACTIVE_HOTBAR) {
+
+            String cycleMessage = getMessage("cycle_active_hotbar_instructions");
+            String controlKey = getControlKey(WandAction.CYCLE_ACTIVE_HOTBAR);
+            controlKey = controller.getMessages().get("controls." + controlKey);
+            if (controlKey != null) {
+                cycleMessage = cycleMessage.replace("$button", controlKey);
+                mage.sendMessage(cycleMessage);
+            }
+        } else {
+            showModeControlsInstructions(spellCount);
+        }
+    }
+
+    private void showNinthSpellInstructions(int spellCount) {
+        String headerMessage = getMessage("spell_count_instructions_9");
+        if (headerMessage.isEmpty()) return;
+        mage.sendMessage(headerMessage);
+        showModeControlsInstructions(spellCount);
+    }
+
+    private void showModeControlsInstructions(int spellCount) {
+        String controlKey = getInventoryKey();
+        String inventoryMessage = getControlMessage(spellCount);
+        if (controlKey != null && inventoryMessage != null) {
+            controlKey = controller.getMessages().get("controls." + controlKey);
+            mage.sendMessage(getMessage(inventoryMessage, "")
+                    .replace("$wand", getName()).replace("$toggle", controlKey).replace("$cycle", controlKey));
+        }
+    }
+
     private void showSpellInstructions() {
         String spellKey = getActiveSpellKey();
         SpellTemplate spellTemplate = spellKey != null && !spellKey.isEmpty() ? controller.getSpellTemplate(spellKey) : null;
@@ -1038,13 +1077,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     mage.sendMessage(message);
                 }
 
-                String controlKey = getInventoryKey();
-                String inventoryMessage = getControlMessage();
-                if (controlKey != null && inventoryMessage != null) {
-                    controlKey = controller.getMessages().get("controls." + controlKey);
-                    mage.sendMessage(getMessage(inventoryMessage, "")
-                        .replace("$wand", getName()).replace("$toggle", controlKey).replace("$cycle", controlKey));
-                }
+                showModeControlsInstructions(spellCount);
             }
         }
     }
@@ -5962,6 +5995,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (path != null && !path.containsSpell(spellKey.getBaseKey())) return false;
         }
         checkSpellLevelsAndInventory();
+        int inventoryCount = inventories.size();
+        int spellCount = spells.size();
         if (!super.forceAddSpell(spellName)) {
             return false;
         }
@@ -5972,8 +6007,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return false;
         }
         int level = spellKey.getLevel();
-        int inventoryCount = inventories.size();
-        int spellCount = spells.size();
 
         // Look for existing spells for spell upgrades
         Integer inventorySlot = spellInventory.get(spellKey.getBaseKey());
@@ -5996,15 +6029,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (mage != null)
         {
             if (spells.size() != spellCount) {
-                // This is a little hackily tied to the send method logic
-                // This will also cause the spell instructions to get shown again when you get a new page
-                // But I think that's an OK reminder
-                boolean sendInstructions = (spellCount == 0 && leftClickAction == WandAction.CAST)
-                        || spellCount == 1 || (inventoryCount == 1 && inventories.size() > 1);
-                if (sendInstructions) {
+                // Did we get another page?
+                if (inventoryCount == 1 && inventories.size() > 1) {
                     startWandInstructions();
                     showSpellInstructions();
                     showPageInstructions();
+                    endWandInstructions();
+                } else if (spellCount == 1) {
+                    // We got a second spell
+                    startWandInstructions();
+                    showSecondSpellInstructions(spells.size());
+                    endWandInstructions();
+                } else if (spellCount == 8) {
+                    // We got a second hotbar of spells
+                    startWandInstructions();
+                    showNinthSpellInstructions(spells.size());
                     endWandInstructions();
                 }
             }
@@ -6030,19 +6069,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
-    private String getControlMessage() {
+    private String getControlMessage(int spellCount) {
         String inventoryMessage = null;
         switch (getMode()) {
         case INVENTORY:
+            if (spellCount < 2) return null;
             inventoryMessage = "inventory_instructions";
             break;
         case CHEST:
+            if (spellCount < 2) return null;
             inventoryMessage = "chest_instructions";
             break;
         case SKILLS:
             inventoryMessage = "skills_instructions";
             break;
         case CYCLE:
+            if (spellCount < 2) return null;
             inventoryMessage = "cycle_instructions";
             break;
         case CAST:

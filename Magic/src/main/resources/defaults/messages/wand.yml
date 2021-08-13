@@ -292,9 +292,15 @@ wand:
       &8| &7> &fUse &6number keys &fto cast the desired spell
     cycle_instructions: |-
       &8| &7> &6$cycle &fto switch your active spell
+    cycle_active_hotbar_instructions: |-
+      &8| &7> &6$button &fto switch your active spell
     brush_instructions: |-
       &8| &7> &6Material brushes &fhave been added to your &a$wand
       &8| &7> &6Shift+$toggle &fto select a brush.
+    spell_count_instructions: |-
+      &8| &7> &eYou now know more than one spell!
+    spell_count_instructions_9: |-
+      &8| &7> &eYou now know more than eight spells!
     hotbar_changed: ""
     spell_activated: "$spell"
     upgrade_prefix: "&6"

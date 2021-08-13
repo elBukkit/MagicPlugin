@@ -9,6 +9,7 @@
    - Right-click now cycles the active spell, drop button (Q) toggles spell inventory
    - 1.17 has a new 2nd hotbar display when the spell inventory is closed and the player has the resource pack
    - Controls menu streamlined
+   - Wand instructions improved and streamlined, `instructions: false` added to wand config to easily turn them off
    - Downstream changes:  
       - Add `requirement_properties` wand feature, allows wands to vary their properties based on the player passing some requirements
       - Add `resource_pack: true` requirement option
