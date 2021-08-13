@@ -2,6 +2,11 @@
 
 # 9.5
 
+ - `6` and `7` examples have been removed. If you still need them, please download the configs
+   and place them in your `plugins/Magic` folder.
+   https://github.com/elBukkit/MagicPlugin/tree/5f3942e89deb758ad0df1fd1bafe53cb2ff8fc30/Magic/src/main/resources/examples/6
+   https://github.com/elBukkit/MagicPlugin/tree/a6004374fd857b62e0f83c02c3be8f7c7a6ba015/Magic/src/main/resources/examples/7
+   
  - Arena start/end commands delimiter changed to ; (from ,)
 
 # 9.4
