@@ -7,7 +7,6 @@
  - A way to specify the glyph to use.. how about a consolidated icon repository that groups
    item icons, legacy item icons, url icons and glyphs?
  - Check 1.16 ... does it work? Do we need to prevent it? Or maybe update the 1.16 RP?
- - Update controls menu
 
 # Important
 

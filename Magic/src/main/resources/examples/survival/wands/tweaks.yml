@@ -1,3 +1,101 @@
+hybridmode:
+    icon: music_disc_wait{CustomModelData:18001}
+    legacy_icon: diamond_axe:205
+    upgrade: true
+    mode: inventory
+    drop: toggle
+    right_click: cycle_active_hotbar
+    right_click_sneak: cycle_active_hotbar_reverse
+    swappable: false
+    requirement_properties:
+        requirement:
+            resource_pack: true
+        properties:
+            use_active_name_when_closed: false
+            action_bar:
+                message: "$hotbar"
+                open_message: ""
+                interval: 250
+                delay: 1500
+
+chestmode:
+    icon: chest{CustomModelData:18001}
+    legacy_icon: diamond_axe:205
+    upgrade: true
+    mode: chest
+    drop: toggle
+    right_click: toggle
+    right_click_sneak: ""
+    swappable: true
+    requirement_properties: ""
+
+inventorymode:
+    icon: oak_sign{CustomModelData:18001}
+    legacy_icon: spell_icon:214
+    upgrade: true
+    indestructible: false
+    mode: inventory
+    drop: toggle
+    right_click: toggle
+    right_click_sneak: ""
+    swappable: true
+    requirement_properties: ""
+
+# Not used anymore
+cyclemode:
+    icon: music_disc_wait{CustomModelData:18001}
+    legacy_icon: diamond_axe:215
+    upgrade: true
+    indestructible: false
+    mode: cycle
+
+organizer:
+    icon: crimson_sign{CustomModelData:18001}
+    legacy_icon: diamond_axe:216
+    upgrade: true
+    indestructible: false
+    organize: true
+alphabetizer:
+    icon: warped_sign{CustomModelData:18001}
+    legacy_icon: diamond_axe:217
+    upgrade: true
+    indestructible: false
+    alphabetize: true
+
+particles:
+    icon: music_disc_blocks{CustomModelData:18001}
+    legacy_icon: diamond_axe:218
+    upgrade: true
+    ignore_particles: false
+
+noparticles:
+    icon: music_disc_11{CustomModelData:18001}
+    legacy_icon: diamond_axe:220
+    upgrade: true
+    ignore_particles: true
+
+# Messaging control, no longer part of the controlsmenu
+
+loud:
+    icon: music_disc_blocks{CustomModelData:18001}
+    legacy_icon: diamond_axe:218
+    upgrade: true
+    indestructible: false
+    quiet: 0
+quiet:
+    icon: music_disc_stal{CustomModelData:18001}
+    legacy_icon: diamond_axe:219
+    upgrade: true
+    indestructible: false
+    quiet: 1
+silent:
+    icon: music_disc_11{CustomModelData:18001}
+    legacy_icon: diamond_axe:220
+    upgrade: true
+    indestructible: false
+    quiet: 2
+
+# No longer part of the controlsmenu, stll available in tweakshop
 quickcast_enable:
     icon: warped_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:206
@@ -23,6 +121,7 @@ quickcast_normal:
     force: true
     quick_cast: normal
 
+# No longer part of the controlsmenu, stll available in tweakshop
 mode_drop:
     icon: birch_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:210
@@ -63,66 +162,3 @@ mode_swap:
     left_click: cast
     swap: toggle
     quick_cast: false
-
-chestmode:
-    icon: chest{CustomModelData:18001}
-    legacy_icon: diamond_axe:205
-    upgrade: true
-    indestructible: false
-    mode: chest
-inventorymode:
-    icon: oak_sign{CustomModelData:18001}
-    legacy_icon: spell_icon:214
-    upgrade: true
-    indestructible: false
-    mode: inventory
-cyclemode:
-    icon: music_disc_wait{CustomModelData:18001}
-    legacy_icon: diamond_axe:215
-    upgrade: true
-    indestructible: false
-    mode: cycle
-
-organizer:
-    icon: crimson_sign{CustomModelData:18001}
-    legacy_icon: diamond_axe:216
-    upgrade: true
-    indestructible: false
-    organize: true
-alphabetizer:
-    icon: warped_sign{CustomModelData:18001}
-    legacy_icon: diamond_axe:217
-    upgrade: true
-    indestructible: false
-    alphabetize: true
-
-loud:
-    icon: music_disc_blocks{CustomModelData:18001}
-    legacy_icon: diamond_axe:218
-    upgrade: true
-    indestructible: false
-    quiet: 0
-quiet:
-    icon: music_disc_stal{CustomModelData:18001}
-    legacy_icon: diamond_axe:219
-    upgrade: true
-    indestructible: false
-    quiet: 1
-silent:
-    icon: music_disc_11{CustomModelData:18001}
-    legacy_icon: diamond_axe:220
-    upgrade: true
-    indestructible: false
-    quiet: 2
-
-particles:
-    icon: music_disc_blocks{CustomModelData:18001}
-    legacy_icon: diamond_axe:218
-    upgrade: true
-    ignore_particles: false
-
-noparticles:
-    icon: music_disc_11{CustomModelData:18001}
-    legacy_icon: diamond_axe:220
-    upgrade: true
-    ignore_particles: true

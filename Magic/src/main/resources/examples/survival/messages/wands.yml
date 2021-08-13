@@ -260,13 +260,16 @@ wands:
         description: Makes your wand undroppable
     chestmode:
         name: Chest Mode
-        description: A simpler wand mechanic
+        description: "&bRight-click&b or &bDrop&f to &6open spell selection menu"
     cyclemode:
         name: Cycle Mode
         description: The simplest wand mechanic
     inventorymode:
         name: Inventory Mode
-        description: For expert wizards
+        description: "&bRight-click&b or &bDrop&f to &6open spell inventory"
+    hybridmode:
+        name: Hybrid Mode
+        description: "&bRight-click&b to &6cycle spells&f, &bDrop&f to &6open spell inventory"
     particles:
         name: Show Particles
         description: Turn on the display of all particles from spells
