@@ -37,7 +37,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
     };
 
     private static final String[] STAGE_PROPERTIES = {
-        "win_xs", "win_xp", "win_money", "randomize", "spell_start", "spell_end", "add", "remove",
+        "win_sp", "win_xp", "win_money", "randomize", "spell_start", "spell_end", "add", "remove",
         "duration", "respawn_duration"
     };
 
@@ -60,7 +60,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         "portal_enter_damage", "portal_death_message", "leaderboard_games_required",
         "leaderboard_size", "leaderboard_record_size", "max_teleport_distance",
         "win_xp", "lose_xp", "draw_xp", "countdown", "countdown_max", "op_check", "allow_interrupt",
-        "announcer_range", "win_xs", "lose_sp", "draw_sp", "duration", "sudden_death",
+        "announcer_range", "win_sp", "lose_sp", "draw_sp", "duration", "sudden_death",
         "sudden_death_effect", "start_commands", "end_commands", "border", "keep_inventory", "keep_level",
         "win_money", "lose_money", "draw_money", "item_wear",
         "allow_consuming", "leaderboard_sign_type", "allow_melee", "allow_projectiles"
@@ -817,7 +817,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        if (propertyName.equalsIgnoreCase("win_xs")) {
+        if (propertyName.equalsIgnoreCase("win_sp")) {
             stage.setWinSP(intValue);
             sender.sendMessage(ChatColor.AQUA + "Set winning SP of " + stage.getFullName() + " to " + intValue);
             return;
@@ -1197,7 +1197,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             || propertyName.equalsIgnoreCase("leaderboard_games_required") || propertyName.equalsIgnoreCase("leaderboard_size")
             || propertyName.equalsIgnoreCase("leaderboard_record_size") || propertyName.equalsIgnoreCase("max_teleport_distance")
             || propertyName.equalsIgnoreCase("win_xp") || propertyName.equalsIgnoreCase("lose_xp") || propertyName.equalsIgnoreCase("draw_xp")
-            || propertyName.equalsIgnoreCase("win_xs") || propertyName.equalsIgnoreCase("lose_sp") || propertyName.equalsIgnoreCase("draw_sp")
+            || propertyName.equalsIgnoreCase("win_sp") || propertyName.equalsIgnoreCase("lose_sp") || propertyName.equalsIgnoreCase("draw_sp")
             || propertyName.equalsIgnoreCase("win_money") || propertyName.equalsIgnoreCase("lose_money") || propertyName.equalsIgnoreCase("draw_money")
             || propertyName.equalsIgnoreCase("countdown") || propertyName.equalsIgnoreCase("countdown_max") || propertyName.equalsIgnoreCase("announcer_range")
             || propertyName.equalsIgnoreCase("duration") || propertyName.equalsIgnoreCase("sudden_death")
@@ -1298,7 +1298,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 return;
             }
 
-            if (propertyName.equalsIgnoreCase("win_xs")) {
+            if (propertyName.equalsIgnoreCase("win_sp")) {
                 arena.setWinSP(intValue);
                 sender.sendMessage(ChatColor.AQUA + "Set winning SP of " + arena.getName() + " to " + intValue);
                 return;
