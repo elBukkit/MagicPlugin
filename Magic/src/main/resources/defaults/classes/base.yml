@@ -15,8 +15,3 @@ base:
     spells: class
     brushes: class
     hotbar_count: subclass
-
-    # Attributes are primarily stored on the mage
-    # But attributes can also be set on wands to provide attribute buffs.
-    attributes: mage,wand
-
