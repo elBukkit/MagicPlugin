@@ -4646,22 +4646,36 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Messages messages = controller.getMessages();
         WandInventory hotbar = getActiveHotbar();
         if (hotbar == null || mage == null) return "";
-        Location location = mage.getLocation();
         boolean skipEmpty = getBoolean("glyph_skip_empty", true);
-        int hotbarSlotWidth = getInt("glyph_slot_width", 20);
-        int iconWidth = getInt("glyph_icon_width", 18);
-        int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 22);
-        int activeSlotSpacing = getInt("glyph_active_slot_spacing", -4);
+        int hotbarSlotWidth = getInt("glyph_slot_width", 22);
+        int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 24);
+        int hotbarActivePaddingLeft = (hotbarActiveSlotWidth - hotbarSlotWidth) / 2;
+        int iconWidth = getInt("glyph_icon_width", 16);
         int iconPaddingLeft = (hotbarSlotWidth - iconWidth) / 2;
         int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
         int slotSpacingWidth = getInt("glyph_slot_spacing", 0);
 
-        String iconReverse = messages.getSpace(-iconWidth);
-        String hotbarSlotReverse = messages.getSpace(-hotbarSlotWidth);
-        String hotbarActiveSlotReverse = messages.getSpace(-hotbarActiveSlotWidth);
-        String hotbarActiveSlotSpacing = messages.getSpace(activeSlotSpacing);
+        // Icon width + 1 pixel padding, to reverse back over the icon (for applying cooldown)
+        String iconReverse = messages.getSpace(-(iconWidth + 1));
+
+        // Hotbar slot border + 1 pixel padding, to reverse back over the hotbar slot
+        String hotbarSlotReverse = messages.getSpace(-(hotbarSlotWidth + 1));
+
+        // Padding between icon and the slot border on either side
         String hotbarIconPaddingLeft = messages.getSpace(iconPaddingLeft);
         String hotbarIconPaddingRight = messages.getSpace(iconPaddingRight);
+
+        // Amount to reverse back past a hotbar slot background start before placing
+        // The active slot overlay
+        // Generally the active slot overlay is larger than the slot, so we have to back up
+        // farther and then go forward farther as well
+        // Also need to add in one extra pixel of space as usual
+        String hotbarActiveSlotStart = messages.getSpace(-hotbarActivePaddingLeft);
+
+        // How far to move back after adding the active overlay, to the beginner of the hotbar slot background
+        String hotbarActiveSlotEnd = messages.getSpace(-(1 + hotbarActiveSlotWidth + hotbarActivePaddingLeft));
+
+        // Configurable space between each slot
         String slotSpacing = messages.getSpace(slotSpacingWidth);
         String glyphs = "";
         String hotbarSlot = messages.get("gui.hotbar.hotbar_slot");
@@ -4686,6 +4700,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             glyphs += hotbarSlot;
             glyphs += hotbarSlotReverse;
 
+            // Add active overlay
+            if (spellKey != null && activeSpell != null && spellKey.equals(activeSpell) && !hotbarSlotActive.isEmpty()) {
+                glyphs += hotbarActiveSlotStart;
+                glyphs += hotbarSlotActive;
+                glyphs += hotbarActiveSlotEnd;
+            }
+
             // Add icon with padding
             glyphs += hotbarIconPaddingLeft;
             glyphs += icon;
@@ -4708,13 +4729,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
             glyphs += hotbarIconPaddingRight;
-
-            // Add active overlay
-            if (spellKey != null && activeSpell != null && spellKey.equals(activeSpell) && !hotbarSlotActive.isEmpty()) {
-                glyphs += hotbarActiveSlotReverse;
-                glyphs += hotbarSlotActive;
-                glyphs += hotbarActiveSlotSpacing;
-            }
 
             // Add space in between each slot
             glyphs += slotSpacing;
