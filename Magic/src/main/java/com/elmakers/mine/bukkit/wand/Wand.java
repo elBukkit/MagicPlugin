@@ -2741,11 +2741,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private String getPropertyString(String templateName, float value) {
-        return getPropertyString(templateName, value, 1);
+        return getPropertyString(templateName, value, 1, false);
     }
 
-    private String getPropertyString(String templateName, float value, float max) {
-        String propertyTemplate = getBoolean("stack") ? "property_stack" : "property_value";
+    private String getPropertyString(String templateName, float value, float max, boolean defaultStack) {
+        String propertyTemplate = getBoolean("stack", defaultStack) ? "property_stack" : "property_value";
         if (value < 0) {
             propertyTemplate = propertyTemplate + "_negative";
         }
@@ -3266,7 +3266,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         }
                     }
 
-                    label = getPropertyString("attributes", value, max).replace("$attribute", label);
+                    label = getPropertyString("attributes", value, max, true).replace("$attribute", label);
                     lore.add(label);
                 }
             }
