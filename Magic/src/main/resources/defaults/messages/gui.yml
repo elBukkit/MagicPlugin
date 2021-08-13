@@ -63,11 +63,28 @@ gui:
     256: "\uF83D"
     512: "\uF83E"
     1024: "\uF83F"
+  cooldown:
+    16: "\uE716"
+    15: "\uE715"
+    14: "\uE714"
+    13: "\uE713"
+    12: "\uE712"
+    11: "\uE711"
+    10: "\uE710"
+    9: "\uE709"
+    8: "\uE708"
+    7: "\uE707"
+    6: "\uE706"
+    5: "\uE705"
+    4: "\uE704"
+    3: "\uE703"
+    2: "\uE702"
+    1: "\uE701"
+  hotbar:
+    hotbar_slot: "\uE741"
+    hotbar_slot_active: "\uE742"
   icons:
-    gui:
-      empty_icon: "\uE700"
-      hotbar_slot: "\uE701"
-      hotbar_slot_active: "\uE702"
+    empty: "\uE700"
     brushes:
       default: "\uE800"
       clone: "\uE801"

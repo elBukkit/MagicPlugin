@@ -66,6 +66,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -4644,7 +4645,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String getHotbarGlyphs() {
         Messages messages = controller.getMessages();
         WandInventory hotbar = getActiveHotbar();
-        if (hotbar == null) return "";
+        if (hotbar == null || mage == null) return "";
+        Location location = mage.getLocation();
         boolean skipEmpty = getBoolean("glyph_skip_empty", true);
         int hotbarSlotWidth = getInt("glyph_slot_width", 20);
         int iconWidth = getInt("glyph_icon_width", 18);
@@ -4654,6 +4656,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
         int slotSpacingWidth = getInt("glyph_slot_spacing", 0);
 
+        String iconReverse = messages.getSpace(-iconWidth);
         String hotbarSlotReverse = messages.getSpace(-hotbarSlotWidth);
         String hotbarActiveSlotReverse = messages.getSpace(-hotbarActiveSlotWidth);
         String hotbarActiveSlotSpacing = messages.getSpace(activeSlotSpacing);
@@ -4661,11 +4664,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String hotbarIconPaddingRight = messages.getSpace(iconPaddingRight);
         String slotSpacing = messages.getSpace(slotSpacingWidth);
         String glyphs = "";
-        String hotbarSlot = messages.get("gui.icons.gui.hotbar_slot");
-        String hotbarSlotActive = messages.get("gui.icons.gui.hotbar_slot_active");
-        String emptyIcon = messages.get("gui.icons.gui.empty_icon");
+        String hotbarSlot = messages.get("gui.hotbar.hotbar_slot");
+        String hotbarSlotActive = messages.get("gui.hotbar.hotbar_slot_active");
+        String emptyIcon = messages.get("gui.icons.empty");
         for (ItemStack hotbarItem : hotbar.items) {
-            String spellKey = getSpellBaseKey(hotbarItem);
+            String fullSpellKey = getSpellBaseKey(hotbarItem);
+            String spellKey = fullSpellKey;
             String icon;
             if (spellKey == null) {
                 if (skipEmpty) continue;
@@ -4685,10 +4689,28 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             // Add icon with padding
             glyphs += hotbarIconPaddingLeft;
             glyphs += icon;
+
+            // Add cooldown/disabled indicators
+            int cooldownLevel = 0;
+            Spell spell = getSpell(fullSpellKey);
+            Long timeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getTimeToCast() : null;
+            Long maxTimeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getMaxTimeToCast() : null;
+            if (timeToCast == null || maxTimeToCast == null || maxTimeToCast == 0)  {
+                cooldownLevel = 16;
+            } else {
+                cooldownLevel = (int)Math.ceil(16.0 * timeToCast / maxTimeToCast);
+            }
+            if (cooldownLevel > 0) {
+                String cooldownIcon = messages.get("gui.cooldown." + cooldownLevel, "");
+                if (!cooldownIcon.isEmpty()) {
+                    glyphs += iconReverse;
+                    glyphs += cooldownIcon;
+                }
+            }
             glyphs += hotbarIconPaddingRight;
 
             // Add active overlay
-            if (spellKey != null && activeSpell != null && spellKey.equals(activeSpell)) {
+            if (spellKey != null && activeSpell != null && spellKey.equals(activeSpell) && !hotbarSlotActive.isEmpty()) {
                 glyphs += hotbarActiveSlotReverse;
                 glyphs += hotbarSlotActive;
                 glyphs += hotbarActiveSlotSpacing;
