@@ -4031,9 +4031,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int tryIndex = (spellIndex + direction + hotbar.getSize()) % hotbar.getSize();
         while (tryIndex != spellIndex) {
             ItemStack hotbarItem = hotbar.getItem(tryIndex);
-            String hotbarSpellKey = getSpellBaseKey(hotbarItem);
-            if (hotbarSpellKey != null) {
-                setActiveSpell(hotbarSpellKey);
+            if (activateIcon(hotbarItem)) {
                 updateActionBar();
                 playPassiveEffects("cycle_spell");
                 break;
@@ -4114,18 +4112,50 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (!hasInventory || getMode() != WandMode.INVENTORY) {
             return;
         }
-        if (isInventoryOpen() && mage != null && hotbars.size() > 1) {
-            saveInventory();
+        boolean isInventoryOpen = isInventoryOpen();
+        if (mage != null && hotbars.size() > 1) {
+            if (isInventoryOpen) {
+                saveInventory();
+            }
             int hotbarCount = hotbars.size();
+            int previousHotbar = currentHotbar;
             setCurrentHotbar(hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount);
-            updateHotbar();
+            if (isInventoryOpen) {
+                updateHotbar();
+            }
             if (!playPassiveEffects("cycle_hotbar") && inventoryCycleSound != null) {
                 mage.playSoundEffect(inventoryCycleSound);
             }
             sendMessage("hotbar_changed");
-            updateHotbarStatus();
-            CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
+            if (isInventoryOpen) {
+                updateHotbarStatus();
+                CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
+            } else if (activeSpell != null) {
+                WandInventory previous = hotbars.get(previousHotbar);
+                for (int slot = 0; slot < previous.getSize(); slot++) {
+                    ItemStack hotbarItem = previous.getItem(slot);
+                    if (activeSpell != null) {
+                        String spellKey = getSpellBaseKey(hotbarItem);
+                        if (spellKey != null && spellKey.equals(activeSpell)) {
+                            activateIcon(hotbars.get(currentHotbar).getItem(slot));
+                            break;
+                        }
+                    }
+                }
+            }
         }
+    }
+
+    private boolean activateIcon(ItemStack item) {
+        if (CompatibilityLib.getItemUtils().isEmpty(item)) return false;
+
+        String hotbarSpellKey = getSpellBaseKey(item);
+        if (hotbarSpellKey == null) {
+            return false;
+        }
+        // I feel like supporting brushes here would be annoying
+        setActiveSpell(hotbarSpellKey);
+        return true;
     }
 
     public void openInventory() {
