@@ -1,4 +1,0 @@
-spells:
-  mine:
-    mine|3:
-      upgrade_description: "Mines more blocks"

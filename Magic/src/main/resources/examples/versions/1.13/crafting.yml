@@ -1,6 +1,3 @@
-magictorch:
-  requires: LightAPI
-
 zombie_leather:
   type: shaped
   group: ""
