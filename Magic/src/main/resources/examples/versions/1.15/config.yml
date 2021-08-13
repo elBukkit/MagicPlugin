@@ -1,3 +1,15 @@
-inherit: legacy
+# This may seem confusing, but we want all the changes from *future* versions
+# The closer we are to current, the fewer changes are required.
+inherit: 1.16
+
+# Use legacy icons for backwards-compatibility with combined resource packs
+legacy_icons_enabled: true
+
+# Turn back on free wand interval casting
+cast_interval_cost_free: true
+
+# Turn back on spammy console casting
+cast_console_feedback: true
+
 resource_pack: "http://rp.elmakers.com/Magic-RP-1.15.zip"
 add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-1.15.zip"
