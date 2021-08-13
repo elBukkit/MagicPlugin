@@ -402,8 +402,7 @@ public class InventoryController implements Listener {
 
         if (isWandInventoryOpen)
         {
-            if (clickedSpell && clickedItem.getAmount() != 1)
-            {
+            if (clickedSpell && clickedItem.getAmount() != 1) {
                 clickedItem.setAmount(1);
             }
 
@@ -425,6 +424,18 @@ public class InventoryController implements Listener {
             }
 
             // Check for page/hotbar cycling by clicking the active wand
+            if (clickedWand) {
+                event.setCancelled(true);
+                if ((dropChangesPages && isDrop) || isLeftClick) {
+                    activeWand.cycleInventory();
+                } else {
+                    activeWand.cycleHotbar(1);
+                }
+                return;
+            }
+
+            // Prevent certain things in inventory and chest mode, mainly to avoid
+            // Players getting spell items out
             if (activeWand.getMode() == WandMode.INVENTORY) {
                 // Don't allow the offhand slot to be messed with while the spell inventory is open
                 if (event.getRawSlot() == 45)
@@ -434,21 +445,10 @@ public class InventoryController implements Listener {
                 }
 
                 // Don't allow putting spells in a crafting slot
-                if (slotType == InventoryType.SlotType.CRAFTING && heldSpell)
-                {
+                if (slotType == InventoryType.SlotType.CRAFTING && heldSpell) {
                     event.setCancelled(true);
                     return;
                 }
-                if (clickedWand) {
-                    event.setCancelled(true);
-                    if ((dropChangesPages && isDrop) || isLeftClick) {
-                        activeWand.cycleInventory();
-                    } else {
-                        activeWand.cycleHotbar(1);
-                    }
-                    return;
-                }
-
 
                 // So many ways to try and move the wand around, that we have to watch for!
                 if (isHotbar && Wand.isWand(player.getInventory().getItem(event.getHotbarButton()))) {
