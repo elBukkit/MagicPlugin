@@ -605,7 +605,7 @@ public class ConfigurationLoadTask implements Runnable {
         int majorVersion = serverVersion[0];
         int minorVersion = serverVersion[1];
         String versionExample = majorVersion + "." + minorVersion;
-        String versionFileName = "examples/" + versionExample + "/" + fileName + ".yml";
+        String versionFileName = "examples/versions/" + versionExample + "/" + fileName + ".yml";
         InputStream versionInput = plugin.getResource(versionFileName);
         if (versionInput != null)  {
             try {
