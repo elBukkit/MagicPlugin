@@ -1,4 +1,5 @@
 marigold:
+  requires: ModelEngine
   inherit: base_npc
   name: Marigold
   type: axolotl
