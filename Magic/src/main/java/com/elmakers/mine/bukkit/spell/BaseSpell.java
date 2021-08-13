@@ -3536,9 +3536,10 @@ public class BaseSpell implements MageSpell, Cloneable {
         return false;
     }
 
-    public long getMaxTimeToCast(Mage mage) {
+    @Override
+    public long getMaxTimeToCast() {
         long maxTimeToCast = cooldown;
-        if (costs != null) {
+        if (costs != null && mage != null) {
             for (CastingCost cost : costs) {
                 int mana = cost.getMana();
                 if (mana > 0) {
@@ -3553,7 +3554,11 @@ public class BaseSpell implements MageSpell, Cloneable {
         return maxTimeToCast;
     }
 
-    public Long getTimeToCast(Mage mage) {
+    @Override
+    public Long getTimeToCast() {
+        if (mage == null) {
+            return null;
+        }
         Location location = mage.getLocation();
         if (!canCast(location)) {
             return null;
@@ -3567,7 +3572,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             timeToCast = 0L;
         } else {
             // TODO: These Wand flags are really ugly, can we move these to spell?
-            timeToCast = com.elmakers.mine.bukkit.wand.Wand.LiveHotbarCooldown ? remainingCooldown : null;
+            timeToCast = com.elmakers.mine.bukkit.wand.Wand.LiveHotbarCooldown ? remainingCooldown : 0;
             if (com.elmakers.mine.bukkit.wand.Wand.LiveHotbarCharges && timeToRecharge > 0) {
                 timeToCast = timeToCast == null ? timeToRecharge : Math.max(timeToCast, timeToRecharge);
             }

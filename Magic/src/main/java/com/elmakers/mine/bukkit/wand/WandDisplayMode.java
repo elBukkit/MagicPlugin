@@ -7,9 +7,9 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
+import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
-import com.elmakers.mine.bukkit.spell.BaseSpell;
 
 public class WandDisplayMode {
     public static WandDisplayMode NONE = new WandDisplayMode(DisplayType.NONE);
@@ -116,10 +116,10 @@ public class WandDisplayMode {
         double progress = 1;
         switch (displayType) {
             case COOLDOWN:
-                if (spell != null && spell instanceof BaseSpell) {
-                    BaseSpell baseSpell = (BaseSpell)spell;
-                    long timeToCast = baseSpell.getTimeToCast(mage);
-                    long maxTimeToCast = baseSpell.getMaxTimeToCast(mage);
+                if (spell != null && spell instanceof MageSpell) {
+                    MageSpell mageSpell = (MageSpell)spell;
+                    long timeToCast = mageSpell.getTimeToCast();
+                    long maxTimeToCast = mageSpell.getMaxTimeToCast();
                     if (maxTimeToCast > 0) {
                         progress = (double)(maxTimeToCast - timeToCast) / maxTimeToCast;
                     }
@@ -167,9 +167,9 @@ public class WandDisplayMode {
         Spell spell = wand.getActiveSpell();
         switch (displayType) {
             case COOLDOWN:
-                if (spell != null && spell instanceof BaseSpell) {
-                    BaseSpell baseSpell = (BaseSpell)spell;
-                    value = baseSpell.getTimeToCast(mage) / 1000;
+                if (spell != null && spell instanceof MageSpell) {
+                    MageSpell mageSpell = (MageSpell)spell;
+                    value = mageSpell.getTimeToCast() / 1000;
                 }
                 break;
             case CHARGES:

@@ -4641,10 +4641,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         }
                         if (mageClass != null) {
                             baseSpell.setMageClass(mageClass);
-                            timeToCast = baseSpell.getTimeToCast(this);
+                            timeToCast = baseSpell.getTimeToCast();
                             baseSpell.setMageClass(null);
                         } else {
-                            timeToCast = baseSpell.getTimeToCast(this);
+                            timeToCast = baseSpell.getTimeToCast();
                         }
 
                         boolean canCastSpell = timeToCast != null;

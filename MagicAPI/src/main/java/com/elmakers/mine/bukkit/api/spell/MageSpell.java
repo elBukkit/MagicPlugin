@@ -55,6 +55,10 @@ public interface MageSpell extends Spell, CostReducer {
      */
     void updateTemplateParameters();
 
+    @Nullable
+    Long getTimeToCast();
+    long getMaxTimeToCast();
+
     /**
      * This method is no longer used, and was never called correctly.
      * Spells should use getVariables instead if they need to store custom data.
