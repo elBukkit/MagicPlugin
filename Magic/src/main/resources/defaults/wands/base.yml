@@ -39,6 +39,9 @@ base_magic:
         sound_volume: 0.1
         sound_broadcast: false
     cycle_hotbar:
+      - sound: magic.paperturn
+        sound_broadcast: false
+        sound_volume: 0.1
       - sound: item_spyglass_use
         sound_pitch: 0.3
         sound_volume: 1.5
