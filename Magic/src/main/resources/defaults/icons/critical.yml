@@ -1,0 +1,8 @@
+railgun:
+  item: 'nether_wart{CustomModelData:18001}'
+  item_disabled: 'nether_wart{CustomModelData:18002}'
+  legacy_item: spell_icon:161
+  legacy_item_disabled: spell_icon_disabled:161
+  url: http://textures.minecraft.net/texture/436cb244bd2a9c1734f2db6517a973a91b1773f02ca4b481af5f24d17bb1496
+  type: spell
+  glyph: "\uE992"

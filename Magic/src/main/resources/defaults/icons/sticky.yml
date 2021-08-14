@@ -1,0 +1,8 @@
+sticky:
+  item: 'baked_potato{CustomModelData:18001}'
+  item_disabled: 'baked_potato{CustomModelData:18002}'
+  legacy_item: spell_icon:165
+  legacy_item_disabled: spell_icon_disabled:165
+  url: http://textures.minecraft.net/texture/f873525428823bffa57b74bdb1251de6e7c49660b35c995d2bf5d04a1ff34b8f
+  type: spell
+  glyph: "\uE9B2"

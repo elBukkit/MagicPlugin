@@ -1,0 +1,8 @@
+day:
+  item: 'honeycomb{CustomModelData:18001}'
+  item_disabled: 'honeycomb{CustomModelData:18002}'
+  legacy_item: spell_icon:84
+  legacy_item_disabled: spell_icon_disabled:84
+  url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
+  type: spell
+  glyph: "\uE934"

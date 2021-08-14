@@ -1,0 +1,8 @@
+kill:
+  item: 'bone{CustomModelData:18003}'
+  item_disabled: 'bone{CustomModelData:18004}'
+  legacy_item: spell_icon:170
+  legacy_item_disabled: spell_icon_disabled:170
+  url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
+  type: spell
+  glyph: "\uE963"

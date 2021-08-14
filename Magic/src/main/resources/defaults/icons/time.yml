@@ -1,0 +1,8 @@
+time:
+  item: 'pumpkin_pie{CustomModelData:18001}'
+  item_disabled: 'pumpkin_pie{CustomModelData:18002}'
+  legacy_item: spell_icon:86
+  legacy_item_disabled: spell_icon_disabled:86
+  url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
+  type: spell
+  glyph: "\uE9D1"

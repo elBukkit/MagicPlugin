@@ -1,0 +1,8 @@
+boom:
+  item: 'blaze_powder{CustomModelData:18001}'
+  item_disabled: 'blaze_powder{CustomModelData:18002}'
+  legacy_item: spell_icon:35
+  legacy_item_disabled: spell_icon_disabled:35
+  url: http://textures.minecraft.net/texture/70df3afc6a6035b189f83d2cfc84ff9ffe33750273247d1e41acb5a805f54
+  type: spell
+  glyph: "\uE91A"

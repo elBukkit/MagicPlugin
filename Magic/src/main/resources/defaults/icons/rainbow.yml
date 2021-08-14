@@ -1,0 +1,6 @@
+rainbow:
+  item: spell_icon:193
+  item_disabled: spell_icon_disabled:193
+  url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
+  type: spell
+  glyph: "\uE993"

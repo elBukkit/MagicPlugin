@@ -1,0 +1,8 @@
+fury:
+  item: 'seagrass{CustomModelData:18001}'
+  item_disabled: 'seagrass{CustomModelData:18002}'
+  legacy_item: spell_icon:162
+  legacy_item_disabled: spell_icon_disabled:162
+  url: http://textures.minecraft.net/texture/c64f6eeb78485e49b219f40a9d6a8131c539fef932f1cbb5f379adfebdd8c31
+  type: spell
+  glyph: "\uE94D"

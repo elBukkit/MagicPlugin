@@ -1,0 +1,8 @@
+curse:
+  item: 'rotten_flesh{CustomModelData:18001}'
+  item_disabled: 'rotten_flesh{CustomModelData:18002}'
+  legacy_item: spell_icon:9
+  legacy_item_disabled: spell_icon_disabled:9
+  url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+  type: spell
+  glyph: "\uE933"

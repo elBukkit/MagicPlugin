@@ -1,0 +1,8 @@
+cage:
+  item: 'iron_bars{CustomModelData:18001}'
+  item_disabled: 'iron_bars{CustomModelData:18002}'
+  legacy_item: spell_icon:157
+  legacy_item_disabled: spell_icon_disabled:157
+  url: http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943
+  type: spell
+  glyph: "\uE925"

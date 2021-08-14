@@ -1,0 +1,8 @@
+cluster:
+  item: 'pumpkin_seeds{CustomModelData:18001}'
+  item_disabled: 'pumpkin_seeds{CustomModelData:18002}'
+  legacy_item: spell_icon:92
+  legacy_item_disabled: spell_icon_disabled:92
+  url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
+  type: spell
+  glyph: "\uE92C"

@@ -1,0 +1,8 @@
+recall:
+  item: 'jungle_door{CustomModelData:18001}'
+  item_disabled: 'jungle_door{CustomModelData:18002}'
+  legacy_item: spell_icon:149
+  legacy_item_disabled: spell_icon_disabled:149
+  url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
+  type: spell
+  glyph: "\uE996"

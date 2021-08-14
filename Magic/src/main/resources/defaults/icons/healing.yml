@@ -1,0 +1,6 @@
+healing:
+  item: spell_icon:46
+  item_disabled: spell_icon_disabled:46
+  url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
+  type: spell
+  glyph: "\uE95C"

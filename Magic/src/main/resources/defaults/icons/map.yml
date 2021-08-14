@@ -1,0 +1,6 @@
+map:
+  item: spell_icon:154
+  item_disabled: spell_icon_disabled:154
+  url: http://textures.minecraft.net/texture/c36adcbe21b520b7355936c89cd2b335ca5318e68173eaaa82e62f5fb986
+  type: spell
+  glyph: "\uE96E"

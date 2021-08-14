@@ -1,0 +1,8 @@
+lift:
+  item: 'green_dye{CustomModelData:18001}'
+  item_disabled: 'green_dye{CustomModelData:18002}'
+  legacy_item: spell_icon:181
+  legacy_item_disabled: spell_icon_disabled:181
+  url: http://textures.minecraft.net/texture/111de372969a39e34c3af5e6d2392e7876a1f13cf7a37d7513ad60c168bfd7b9
+  type: spell
+  glyph: "\uE969"

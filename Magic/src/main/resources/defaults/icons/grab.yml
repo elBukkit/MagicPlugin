@@ -1,0 +1,6 @@
+grab:
+  item: spell_icon:34
+  item_disabled: spell_icon_disabled:34
+  url: http://textures.minecraft.net/texture/e13e9af0957a9dd4995811ef3e869b4ad8fbb59ca7474e4c84ce7f6019b079
+  type: spell
+  glyph: "\uE956"

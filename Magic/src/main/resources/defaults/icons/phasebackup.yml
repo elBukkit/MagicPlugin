@@ -1,0 +1,6 @@
+phasebackup:
+  item: spell_icon:73
+  item_disabled: spell_icon_disabled:73
+  url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
+  type: spell
+  glyph: "\uE97F"

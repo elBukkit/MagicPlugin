@@ -1,0 +1,8 @@
+peek:
+  item: 'glass_pane{CustomModelData:18001}'
+  item_disabled: 'glass_pane{CustomModelData:18002}'
+  legacy_item: spell_icon:121
+  legacy_item_disabled: spell_icon_disabled:121
+  url: http://textures.minecraft.net/texture/42fe4273a62118f32881159ab3d6eded9fac90748deedbdb16204d107f843
+  type: spell
+  glyph: "\uE97B"

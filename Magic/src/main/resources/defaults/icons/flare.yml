@@ -1,0 +1,8 @@
+flare:
+  item: 'firework_star{CustomModelData:18001}'
+  item_disabled: 'firework_star{CustomModelData:18002}'
+  legacy_item: spell_icon:148
+  legacy_item_disabled: spell_icon_disabled:148
+  url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
+  type: spell
+  glyph: "\uE945"

@@ -1,0 +1,8 @@
+phase:
+  item: 'crimson_door{CustomModelData:18001}'
+  item_disabled: 'crimson_door{CustomModelData:18002}'
+  legacy_item: spell_icon:72
+  legacy_item_disabled: spell_icon_disabled:72
+  url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
+  type: spell
+  glyph: "\uE97E"

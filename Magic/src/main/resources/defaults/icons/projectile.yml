@@ -1,0 +1,8 @@
+projectile:
+  item: 'prismarine_shard{CustomModelData:18005}'
+  item_disabled: 'prismarine_shard{CustomModelData:18006}'
+  legacy_item: spell_icon:197
+  legacy_item_disabled: spell_icon_disabled:197
+  url: http://textures.minecraft.net/texture/d8532e9a6994e828df3a7236a7b3686194eba57dae3eb10789d98915cbb3336
+  type: spell
+  glyph: "\uE988"

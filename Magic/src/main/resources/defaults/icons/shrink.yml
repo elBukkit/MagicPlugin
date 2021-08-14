@@ -1,0 +1,8 @@
+shrink:
+  item: 'red_mushroom{CustomModelData:18001}'
+  item_disabled: 'red_mushroom{CustomModelData:18002}'
+  legacy_item: spell_icon:146
+  legacy_item_disabled: spell_icon_disabled:146
+  url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
+  type: spell
+  glyph: "\uE9A4"

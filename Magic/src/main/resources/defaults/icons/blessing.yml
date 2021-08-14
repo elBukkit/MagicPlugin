@@ -1,0 +1,8 @@
+blessing:
+  item: 'honey_bottle{CustomModelData:18001}'
+  item_disabled: 'honey_bottle{CustomModelData:18002}'
+  legacy_item: spell_icon:10
+  legacy_item_disabled: spell_icon_disabled:10
+  url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
+  type: spell
+  glyph: "\uE915"

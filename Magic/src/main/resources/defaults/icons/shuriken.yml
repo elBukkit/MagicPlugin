@@ -1,0 +1,8 @@
+shuriken:
+  item: 'emerald{CustomModelData:18002}'
+  item_disabled: 'emerald{CustomModelData:18003}'
+  legacy_item: spell_icon:194
+  legacy_item_disabled: spell_icon_disabled:194
+  url: http://textures.minecraft.net/texture/c79a5d6fbb1fe7435edbb9e72cb1d02f6e91597eb4b79d818ae583cda21f
+  type: spell
+  glyph: "\uE9A5"

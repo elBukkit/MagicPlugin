@@ -1,0 +1,8 @@
+flamethrower:
+  item: 'campfire{CustomModelData:18001}'
+  item_disabled: 'campfire{CustomModelData:18002}'
+  legacy_item: spell_icon:144
+  legacy_item_disabled: spell_icon_disabled:144
+  url: http://textures.minecraft.net/texture/92d331289b5e527c540652d61561a2e90f52a8755c1c7d0cd1a1a98f49de450
+  type: spell
+  glyph: "\uE944"

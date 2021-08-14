@@ -1,0 +1,8 @@
+silence:
+  item: 'music_disc_11{CustomModelData:18002}'
+  item_disabled: 'music_disc_11{CustomModelData:18003}'
+  legacy_item: spell_icon:8
+  legacy_item_disabled: spell_icon_disabled:8
+  url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
+  type: spell
+  glyph: "\uE9A6"

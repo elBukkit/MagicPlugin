@@ -1,0 +1,8 @@
+disarm:
+  item: 'warped_fungus_on_a_stick{CustomModelData:18001}'
+  item_disabled: 'warped_fungus_on_a_stick{CustomModelData:18002}'
+  legacy_item: spell_icon:43
+  legacy_item_disabled: spell_icon_disabled:43
+  url: http://textures.minecraft.net/texture/ff418f5c02c74f8e54645d05897b954c568f22753eea5fb559b898322aa79
+  type: spell
+  glyph: "\uE936"

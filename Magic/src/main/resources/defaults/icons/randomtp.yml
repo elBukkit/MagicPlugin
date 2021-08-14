@@ -1,0 +1,6 @@
+randomtp:
+  item: spell_icon:201
+  item_disabled: spell_icon_disabled:201
+  url: http://textures.minecraft.net/texture/1adaf6e6e387bc18567671bb82e948488bbacff97763ee5985442814989f5d
+  type: spell
+  glyph: "\uE995"

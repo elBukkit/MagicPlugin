@@ -1,0 +1,8 @@
+testdummy:
+  item: 'totem_of_undying{CustomModelData:18001}'
+  item_disabled: 'totem_of_undying{CustomModelData:18002}'
+  legacy_item: spell_icon:65
+  legacy_item_disabled: spell_icon_disabled:65
+  url: http://textures.minecraft.net/texture/f6f3e3c8aeff6128b1194ccf7e3eaddcf438e1938471a66ef76a09d4a3a1932
+  type: spell
+  glyph: "\uE9D0"

@@ -1,0 +1,8 @@
+tame:
+  item: 'salmon{CustomModelData:18001}'
+  item_disabled: 'salmon{CustomModelData:18002}'
+  legacy_item: spell_icon:50
+  legacy_item_disabled: spell_icon_disabled:50
+  url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d
+  type: spell
+  glyph: "\uE9CD"

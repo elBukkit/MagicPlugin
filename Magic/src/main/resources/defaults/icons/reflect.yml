@@ -1,0 +1,8 @@
+reflect:
+  item: 'pink_dye{CustomModelData:18001}'
+  item_disabled: 'pink_dye{CustomModelData:18002}'
+  legacy_item: spell_icon:23
+  legacy_item_disabled: spell_icon_disabled:23
+  url: http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc
+  type: spell
+  glyph: "\uE998"

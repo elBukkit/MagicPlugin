@@ -1,0 +1,8 @@
+portal:
+  item: 'crying_obsidian{CustomModelData:18001}'
+  item_disabled: 'crying_obsidian{CustomModelData:18002}'
+  legacy_item: spell_icon:71
+  legacy_item_disabled: spell_icon_disabled:71
+  url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
+  type: spell
+  glyph: "\uE987"

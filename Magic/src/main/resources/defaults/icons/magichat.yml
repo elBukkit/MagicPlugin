@@ -1,0 +1,6 @@
+magichat:
+  item: spell_icon:138
+  item_disabled: spell_icon_disabled:138
+  url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
+  type: spell
+  glyph: "\uE96D"

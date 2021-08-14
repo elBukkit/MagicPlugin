@@ -1,0 +1,6 @@
+wear:
+  item: spell_icon:137
+  item_disabled: spell_icon_disabled:137
+  url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
+  type: spell
+  glyph: "\uE9E2"

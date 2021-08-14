@@ -1,0 +1,6 @@
+earth:
+  item: spell_icon:141
+  item_disabled: spell_icon_disabled:141
+  url: http://textures.minecraft.net/texture/5d9ddb39f5cd587f63bb175dfaf55baaa917c1a2a3ca987a18d90c9e1a578d
+  type: spell
+  glyph: "\uE939"
