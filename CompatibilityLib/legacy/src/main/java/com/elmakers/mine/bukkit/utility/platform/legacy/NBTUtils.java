@@ -368,6 +368,7 @@ public class NBTUtils extends NBTUtilsBase {
         return a;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Set<String> getAllKeys(Object nbtBase) {
         Set<String> keys = null;
