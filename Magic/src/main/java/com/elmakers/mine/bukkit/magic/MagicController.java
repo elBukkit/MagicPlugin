@@ -8483,7 +8483,6 @@ public class MagicController implements MageController {
         }
     }
 
-    @Nullable
     @Override
     public boolean isMythicMobKey(String mythicMobKey) {
         if (mythicMobManager != null) {
