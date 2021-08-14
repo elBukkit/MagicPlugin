@@ -228,7 +228,7 @@ public abstract class ArenaStageTemplate implements EditingStage  {
 
     public List<Location> getMobSpawns() {
         if (mobSpawns.size() == 0) {
-            List<Location> centerList = new ArrayList<Location>();
+            List<Location> centerList = new ArrayList<>();
             centerList.add(arena.getCenter());
             return centerList;
         }
