@@ -673,6 +673,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/defaults/icons.defaults.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/defaults/icons">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
 
                                 <!-- Automata Configs -->
 

@@ -40,6 +40,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.integration.ModelEngine;
+import com.elmakers.mine.bukkit.api.item.Icon;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.kit.Kit;
@@ -856,4 +857,10 @@ public interface MageController {
     void setMythicMobLevel(Entity entity, double level);
     boolean isMythicMobKey(String mythicMobKey);
     void onResourcePackStatus(Player player, ResourcePackStatus status);
+    @Nonnull
+    Set<String> getIconKeys();
+    @Nullable
+    Icon getIcon(String key);
+    @Nonnull
+    Icon getDefaultIcon();
 }

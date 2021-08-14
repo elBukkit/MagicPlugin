@@ -82,6 +82,7 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.item.Cost;
+import com.elmakers.mine.bukkit.item.Icon;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -188,10 +189,9 @@ public class BaseSpell implements MageSpell, Cloneable {
     private Set<String> requiredUpgradeTags;
     private Collection<PrerequisiteSpell> requiredSpells;
     private List<SpellKey> removesSpells;
-    private MaterialAndData icon =  null;
-    private MaterialAndData disabledIcon = null;
-    private String iconURL = null;
-    private String iconDisabledURL = null;
+    private MaterialAndData iconMaterial =  null;
+    private MaterialAndData disabledIconMaterial = null;
+    private com.elmakers.mine.bukkit.api.item.Icon icon;
     protected Set<EntityType> friendlyEntityTypes = null;
     private double requiredHealth;
     private List<CastingCost> costs = null;
@@ -1047,16 +1047,22 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
 
         // Load basic properties
-        boolean legacyIcons = controller.isLegacyIconsEnabled();
-        icon = loadIcon(ConfigurationUtils.getIcon(node, legacyIcons));
-        disabledIcon = loadIcon(ConfigurationUtils.getIcon(node, legacyIcons, "icon_disabled"));
-
-        iconURL = node.getString("icon_url");
-        iconDisabledURL = node.getString("icon_disabled_url");
-
-        if (icon == null && (iconURL == null || iconURL.isEmpty())) {
-            icon = new com.elmakers.mine.bukkit.block.MaterialAndData(DEFAULT_SPELL_ICON);
+        String iconReference = node.getString("icon");
+        com.elmakers.mine.bukkit.api.item.Icon defaultIcon = controller.getDefaultIcon();
+        icon = controller.getIcon(iconReference);
+        if (icon == null) {
+            // We will assume the "icon" requested is an item, so use it as the default
+            icon = new Icon(defaultIcon, node, iconReference);
+        } else {
+            // Merge in defaults
+            icon = new Icon(defaultIcon, icon);
+            // Allow overriding via this config
+            // The default item can still be overridden by "icon_item"
+            icon = new Icon(icon, node, null);
         }
+        boolean legacyIcons = controller.isLegacyIconsEnabled();
+        iconMaterial = icon.getItemMaterial(legacyIcons);
+        disabledIconMaterial = icon.getItemDisabledMaterial(legacyIcons);
 
         color = ConfigurationUtils.getColor(node, "color", null);
         if (node.contains("worth_sp")) {
@@ -2315,18 +2321,18 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public final com.elmakers.mine.bukkit.api.block.MaterialAndData getIcon()
     {
-        return icon;
+        return iconMaterial;
     }
 
     @Override
     public final com.elmakers.mine.bukkit.api.block.MaterialAndData getDisabledIcon()
     {
-        return disabledIcon;
+        return disabledIconMaterial;
     }
 
     @Override
     public boolean hasIcon() {
-        return icon != null && icon.getMaterial() != Material.AIR;
+        return iconMaterial != null && iconMaterial.getMaterial() != Material.AIR;
     }
 
     @Override
@@ -2910,13 +2916,18 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     @Override
+    public String getGlyph() {
+        return icon.getGlyph();
+    }
+
+    @Override
     public String getIconURL() {
-        return iconURL;
+        return icon.getUrl();
     }
 
     @Override
     public String getDisabledIconURL() {
-        return iconDisabledURL == null ? DEFAULT_DISABLED_ICON_URL : iconDisabledURL;
+        return icon.getUrlDisabled();
     }
 
     @Override

@@ -3384,7 +3384,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Nullable
     @Override
     public Spell getSpell(String spellKey, com.elmakers.mine.bukkit.api.magic.Mage mage) {
-        if (mage == null) {
+        if (mage == null || spellKey == null) {
             return null;
         }
         if (!hasSpell(spellKey)) return null;
@@ -4747,18 +4747,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String hotbarSlotActive = messages.get("gui.hotbar.hotbar_slot_active");
         String emptyIcon = messages.get("gui.icons.empty");
         for (ItemStack hotbarItem : hotbar.items) {
-            String fullSpellKey = getSpellBaseKey(hotbarItem);
-            String spellKey = fullSpellKey;
             String icon;
-            if (spellKey == null) {
+            Spell spell = getSpell(getSpell(hotbarItem));
+            String spellKey = null;
+            if (spell == null) {
                 if (skipEmpty) continue;
                 icon = emptyIcon;
             } else {
-                spellKey = new SpellKey(spellKey).getKey();
-                icon = messages.get("gui.icons.spells." + spellKey, "");
-                if (icon.isEmpty()) {
-                    icon = messages.get("gui.icons.spells.default", "");
-                }
+                icon = spell.getGlyph();
+                spellKey = spell.getSpellKey().getBaseKey();
             }
 
             // Add hotbar slot background
@@ -4778,7 +4775,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
             // Add cooldown/disabled indicators
             int cooldownLevel = 0;
-            Spell spell = getSpell(fullSpellKey);
             Long timeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getTimeToCast() : null;
             Long maxTimeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getMaxTimeToCast() : null;
             if (timeToCast == null || maxTimeToCast == null || maxTimeToCast == 0)  {

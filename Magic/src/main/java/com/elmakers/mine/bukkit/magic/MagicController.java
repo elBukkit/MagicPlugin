@@ -176,6 +176,7 @@ import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.SkriptManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
+import com.elmakers.mine.bukkit.item.Icon;
 import com.elmakers.mine.bukkit.kit.KitController;
 import com.elmakers.mine.bukkit.kit.MagicKit;
 import com.elmakers.mine.bukkit.magic.command.MagicTabExecutor;
@@ -323,6 +324,7 @@ public class MagicController implements MageController {
     private final Map<String, SpellData> templateDataMap = new HashMap<>();
     private final Map<String, SpellCategory> categories = new HashMap<>();
     private final Map<String, MagicAttribute> attributes = new HashMap<>();
+    private final Map<String, Icon> icons = new HashMap<>();
     private final Set<String> registeredAttributes = new HashSet<>();
     private final Map<String, com.elmakers.mine.bukkit.magic.Mage> mages = Maps.newConcurrentMap();
     private final Set<Mage> pendingConstruction = new HashSet<>();
@@ -1865,16 +1867,19 @@ public class MagicController implements MageController {
         // Register currencies and other preload integrations
         registerPreLoad(loader.getMainConfiguration());
 
+        // Load icons, which are used by spells
+        logger.setContext("icons");
+        loadIcons(loader.getIcons());
+        log("Loaded " + icons.size() + " icons");
+
         // Load spells, which will throw errors and warnings if done before registering attributes
         logger.setContext("spells");
         loadSpells(sender, loader.getSpells());
-        logger.setContext(null);
         log("Loaded " + spells.size() + " spells");
 
         // Load paths, which will throw warnings if done before spells
         logger.setContext("paths");
         loadPaths(loader.getPaths());
-        logger.setContext(null);
         log("Loaded " + getPathCount() + " progression paths");
 
         // Load recipes last, since we can craft most anything
@@ -4902,6 +4907,39 @@ public class MagicController implements MageController {
             }
         }
         return spell;
+    }
+
+    protected void loadIcons(ConfigurationSection iconConfigs) {
+        icons.clear();
+        for (String key : iconConfigs.getKeys(false)) {
+            ConfigurationSection iconConfig = iconConfigs.getConfigurationSection(key);
+            if (iconConfig == null) continue;
+            Icon icon = new Icon(this, iconConfig);
+            icons.put(key, icon);
+        }
+    }
+
+    @Nullable
+    @Override
+    public Icon getIcon(String iconKey) {
+        return icons.get(iconKey);
+    }
+
+    @Nonnull
+    public Icon getDefaultIcon() {
+        Icon defaultIcon = icons.get("default");
+        // This shouldn't really happen unless something's gone horribly wrong
+        // with the default configs.
+        if (defaultIcon == null) {
+            defaultIcon = new Icon(this);
+        }
+        return defaultIcon;
+    }
+
+    @Nonnull
+    @Override
+    public Set<String> getIconKeys() {
+        return icons.keySet();
     }
 
     protected void loadSpells(CommandSender sender, ConfigurationSection spellConfigs) {

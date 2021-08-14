@@ -63,6 +63,8 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
     MaterialAndData getDisabledIcon();
     String getIconURL();
     String getDisabledIconURL();
+    @Nullable
+    String getGlyph();
     boolean hasIcon();
     boolean hasCastPermission(CommandSender sender);
 

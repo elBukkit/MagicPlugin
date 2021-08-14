@@ -18,6 +18,8 @@ public class NewSessionRequest extends Session {
     protected List<String> spells;
     protected List<String> wands;
     protected List<String> currencies;
+    protected List<String> arenas;
+    protected List<String> icons;
 
     public NewSessionRequest(MageController controller, String type) {
         this.type = type;
@@ -34,6 +36,8 @@ public class NewSessionRequest extends Session {
         spells = new ArrayList<>(controller.getSpellTemplateKeys());
         wands = new ArrayList<>(controller.getWandTemplateKeys());
         currencies = new ArrayList<>(controller.getCurrencyKeys());
+        arenas = new ArrayList<>(controller.getArenaKeys());
+        icons = new ArrayList<>(controller.getIconKeys());
     }
 
     public List<String> getAttributes() {
@@ -130,5 +134,21 @@ public class NewSessionRequest extends Session {
 
     public void setCurrencies(List<String> currencies) {
         this.currencies = currencies;
+    }
+
+    public List<String> getArenas() {
+        return arenas;
+    }
+
+    public void setArenas(List<String> arenas) {
+        this.arenas = arenas;
+    }
+
+    public List<String> getIcons() {
+        return icons;
+    }
+
+    public void setIcons(List<String> icons) {
+        this.icons = icons;
     }
 }

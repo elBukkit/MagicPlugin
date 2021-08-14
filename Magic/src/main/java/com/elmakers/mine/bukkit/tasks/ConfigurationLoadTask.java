@@ -39,7 +39,7 @@ public class ConfigurationLoadTask implements Runnable {
     private boolean verboseLogging;
 
     private static final String[] CONFIG_FILES = {"messages", "materials", "attributes", "effects", "spells", "paths",
-            "classes", "wands", "items", "kits", "crafting", "mobs", "blocks", "modifiers", "worlds", "arenas"};
+            "classes", "wands", "items", "kits", "crafting", "mobs", "blocks", "modifiers", "worlds", "arenas", "icons"};
 
     private static final ImmutableSet<String> DEFAULT_ON = ImmutableSet.of("messages", "materials");
 
@@ -1015,6 +1015,10 @@ public class ConfigurationLoadTask implements Runnable {
 
     public ConfigurationSection getArenas() {
         return loadedConfigurations.get("arenas");
+    }
+
+    public ConfigurationSection getIcons() {
+        return loadedConfigurations.get("icons");
     }
 
     public boolean isSuccessful() {
