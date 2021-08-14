@@ -646,7 +646,6 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        Arena arena = stage.getArena();
         String propertyName = args[0];
         args = Arrays.copyOfRange(args, 1, args.length);
         if (propertyName.equalsIgnoreCase("randomize")) {

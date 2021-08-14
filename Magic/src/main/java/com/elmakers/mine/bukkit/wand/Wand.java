@@ -1034,10 +1034,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             String cycleMessage = getMessage("cycle_active_hotbar_instructions");
             String controlKey = getControlKey(WandAction.CYCLE_ACTIVE_HOTBAR);
             controlKey = controller.getMessages().get("controls." + controlKey);
-            if (controlKey != null) {
-                cycleMessage = cycleMessage.replace("$button", controlKey);
-                mage.sendMessage(cycleMessage);
-            }
+            cycleMessage = cycleMessage.replace("$button", controlKey);
+            mage.sendMessage(cycleMessage);
         } else {
             showModeControlsInstructions(spellCount);
         }

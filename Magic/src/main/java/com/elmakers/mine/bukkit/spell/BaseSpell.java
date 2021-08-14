@@ -3567,14 +3567,14 @@ public class BaseSpell implements MageSpell, Cloneable {
         CastingCost requiredCost = getRequiredCost();
         long timeToRecharge = spellData.getTimeToRecharge(rechargeRate, maxCharges);
 
-        Long timeToCast = null;
+        long timeToCast;
         if (remainingCooldown == 0 && requiredCost == null && timeToRecharge == 0) {
             timeToCast = 0L;
         } else {
             // TODO: These Wand flags are really ugly, can we move these to spell?
             timeToCast = com.elmakers.mine.bukkit.wand.Wand.LiveHotbarCooldown ? remainingCooldown : 0;
             if (com.elmakers.mine.bukkit.wand.Wand.LiveHotbarCharges && timeToRecharge > 0) {
-                timeToCast = timeToCast == null ? timeToRecharge : Math.max(timeToCast, timeToRecharge);
+                timeToCast = Math.max(timeToCast, timeToRecharge);
             }
             if (com.elmakers.mine.bukkit.wand.Wand.LiveHotbarMana && requiredCost != null) {
                 int mana = requiredCost.getMana();
@@ -3585,11 +3585,7 @@ public class BaseSpell implements MageSpell, Cloneable {
                     if (mage.getEffectiveManaRegeneration() > 0) {
                         float remainingMana = mana - mage.getMana();
                         long targetManaTime = (long)(1000.0 * remainingMana / mage.getEffectiveManaRegeneration());
-                        if (timeToCast == null) {
-                            timeToCast = targetManaTime;
-                        } else {
-                            timeToCast = Math.max(targetManaTime, timeToCast);
-                        }
+                        timeToCast = Math.max(targetManaTime, timeToCast);
                     }
                 }
             }

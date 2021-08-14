@@ -18,7 +18,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 
 public class BrushAction extends CompoundAction {
-    private List<String> brushes = new ArrayList<>();
+    private final List<String> brushes = new ArrayList<>();
     private boolean sample = false;
     private String brushMod;
     private Map<Material, MaterialAndData> materialMap;
@@ -82,9 +82,7 @@ public class BrushAction extends CompoundAction {
                 MaterialBrush brush = new MaterialBrush(mage, targetBlock);
                 actionContext.setBrush(brush);
             }
-        }
-        else if (brushes != null)
-        {
+        } else {
             String brushKey = brushes.get(context.getRandom().nextInt(brushes.size()));
             MaterialBrush brush = null;
             if (brushMod != null) {
