@@ -121,6 +121,7 @@ public abstract class ArenaStageTemplate implements EditingStage  {
         saveMobs();
     }
 
+    @Override
     public void describe(CommandSender sender) {
         int mobSpawnSize = mobSpawns.size();
         if (mobSpawnSize == 1) {
