@@ -267,6 +267,9 @@
             <property name="customImportOrderRules" value="STATIC###STANDARD_JAVA_PACKAGE###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE"/>
             <property name="severity" value="error"/>
         </module>
+        <module name="UnusedImports">
+            <property name="severity" value="error"/>
+        </module>
 
         <module name="MethodParamPad">
             <property name="severity" value="error"/>
