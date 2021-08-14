@@ -1,0 +1,6 @@
+brush_clone:
+  item: 'repeater{CustomModelData:18001}'
+  legacy_item: diamond_axe:3
+  url: http://textures.minecraft.net/texture/b635f01b8b4cd9f44436154be3dd5d735e4487617089d3dadda39b4dada14
+  type: brush
+  glyph: "\uE801"
