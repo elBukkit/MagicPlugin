@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.magic.command.config;
 
+import javax.annotation.concurrent.GuardedBy;
+
 import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -7,7 +9,8 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 public class UpdateAllExamplesCallback implements ExampleUpdatedCallback {
     private final CommandSender sender;
     private final MagicController controller;
-    private volatile int loadingCount = 0;
+    @GuardedBy("this")
+    private int loadingCount = 0;
 
     public UpdateAllExamplesCallback(CommandSender sender, MagicController controller) {
         this.controller = controller;
