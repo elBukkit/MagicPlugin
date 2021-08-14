@@ -20,11 +20,9 @@ import com.google.common.collect.ImmutableSet;
  * Concrete implementation of a material set.
  */
 final class SimpleMaterialSet implements MaterialSet {
-    protected final @Nonnull
-    ImmutableList<MaterialSet> parents;
-    protected final @Nonnull
-    ImmutableSet<Material> materials;
-    protected final @Nonnull ImmutableList<MaterialAndData> materialAndDatas;
+    final @Nonnull ImmutableList<MaterialSet> parents;
+    final @Nonnull ImmutableSet<Material> materials;
+    final @Nonnull ImmutableList<MaterialAndData> materialAndDatas;
 
     private transient MaterialSet inverse;
 

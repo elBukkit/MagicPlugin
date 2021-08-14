@@ -146,7 +146,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 if (name == null) continue;
                 options.add(name.toLowerCase());
             }
-        } else if (args.length == 4 && args[0].equalsIgnoreCase("configure") && (args[2].equalsIgnoreCase("spell_start") || args[2].equalsIgnoreCase("spell_start"))) {
+        } else if (args.length == 4 && args[0].equalsIgnoreCase("configure") && args[2].equalsIgnoreCase("spell_start")) {
             Collection<SpellTemplate> spells = arenaController.getMagic().getSpellTemplates();
             for (SpellTemplate spell : spells) {
                 options.add(spell.getKey());

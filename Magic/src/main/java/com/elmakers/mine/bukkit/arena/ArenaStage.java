@@ -16,6 +16,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
