@@ -4777,9 +4777,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             int cooldownLevel = 0;
             Long timeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getTimeToCast() : null;
             Long maxTimeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getMaxTimeToCast() : null;
-            if (timeToCast == null || maxTimeToCast == null || maxTimeToCast == 0)  {
+
+            if (timeToCast == null || maxTimeToCast == null) {
                 cooldownLevel = 16;
-            } else {
+            } else if (maxTimeToCast > 0) {
                 cooldownLevel = (int)Math.ceil(16.0 * timeToCast / maxTimeToCast);
             }
             if (cooldownLevel > 0) {
