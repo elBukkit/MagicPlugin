@@ -1,0 +1,8 @@
+protection_fire:
+  item: 'shield{18016}'
+  item_disabled: 'shield{18017}'
+  legacy_item: spell_icon:237
+  legacy_item_disabled: spell_icon_disabled:237
+  url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  type: spell
+  glyph: "\uE98C"

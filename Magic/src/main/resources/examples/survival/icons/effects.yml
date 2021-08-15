@@ -1,0 +1,7 @@
+effects:
+  item: 'orange_dye{18001}'
+  item_disabled: 'orange_dye{18002}'
+  legacy_item: spell_icon:126
+  legacy_item_disabled: spell_icon_disabled:126
+  type: spell
+  glyph: "\uE9B5"

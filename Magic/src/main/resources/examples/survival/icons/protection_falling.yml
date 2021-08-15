@@ -1,0 +1,8 @@
+protection_falling:
+  item: 'shield{18014}'
+  item_disabled: 'shield{18015}'
+  legacy_item: spell_icon:236
+  legacy_item_disabled: spell_icon_disabled:236
+  url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  type: spell
+  glyph: "\uE98B"
