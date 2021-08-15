@@ -1,9 +1,6 @@
 bridge:
-    icon: blackstone_slab{CustomModelData:18001}
-    icon_disabled: blackstone_slab{CustomModelData:18002}
-    legacy_icon: spell_icon:87
-    legacy_icon_disabled: spell_icon_disabled:87
-    icon_url: http://textures.minecraft.net/texture/328d3a15afbc7f95d64179bb6154aa2e9ce7212462145c3344fda754b12c61e7
+    # This refers to an icon defined in the icons folder/config
+    icon: bridge
     category: engineering
     tags: noduel
     worth: 1000

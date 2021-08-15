@@ -1,10 +1,7 @@
 superfly:
-    icon: bone_meal{CustomModelData:18005}
-    icon_disabled: bone_meal{CustomModelData:18006}
-    legacy_icon: spell_icon:174
-    legacy_icon_disabled: spell_icon_disabled:174
+    # This refers to an icon defined in the icons folder/config
+    icon: superfly
     hidden: true
-    icon_url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
     quick_cast: true
     category: staff
     worth: 1500

@@ -1,10 +1,7 @@
 rollback:
-    icon: bell{CustomModelData:18001}
-    icon_disabled: bell{CustomModelData:18002}
-    legacy_icon: spell_icon:117
-    legacy_icon_disabled: spell_icon_disabled:117
+    # This refers to an icon defined in the icons folder/config
+    icon: rollback
     alias: undo
-    icon_url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
     category: engineering
     tags: noduel
     worth: 9999

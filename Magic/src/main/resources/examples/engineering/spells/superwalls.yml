@@ -1,6 +1,6 @@
 superwalls:
     inherit: supercylinder
-    icon: flower_pot{CustomModelData:18001}
+    icon: flower_pot{18001}
     icon_disabled: flower_pot{CustomModelData:18002}
     upgrade_required_casts: 50
     parameters:
