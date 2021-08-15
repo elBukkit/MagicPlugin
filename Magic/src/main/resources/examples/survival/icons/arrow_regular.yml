@@ -1,0 +1,5 @@
+arrow_regular:
+  item: 'arrow{18001}'
+  item_disabled: 'arrow{18002}'
+  legacy_item: arrow
+  type: spell

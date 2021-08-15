@@ -1,0 +1,7 @@
+arrow_fire:
+  item: 'spectral_arrow{CustomModelData:18018,Potion:fire_resistance}'
+  item_disabled: 'spectral_arrow{CustomModelData:18019,Potion:fire_resistance}'
+  legacy_item: spell_icon:246
+  legacy_item_disabled: spell_icon_disabled:246
+  url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
+  type: spell
