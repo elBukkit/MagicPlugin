@@ -1,5 +1,5 @@
 brush_clone:
-  item: 'brick{CustomModelData:18001}'
+  item: 'brick{18001}'
   legacy_item: diamond_axe:1
   url: http://textures.minecraft.net/texture/da486c55dfcb8d3f1e38e05ec924c7952811851869d9d92df236a313370ceb1
   type: brush

@@ -1,5 +1,5 @@
 brush_copy:
-  item: 'netherite_scrap{CustomModelData:18001}'
+  item: 'netherite_scrap{18001}'
   legacy_item: diamond_axe:2
   url: http://textures.minecraft.net/texture/13e19c4f02f72d16191c1647c5e7cbd79974e642cd3458f553648632893cb9
   type: brush
