@@ -1,0 +1,5 @@
+toggleair:
+  item: 'birch_door{18001}'
+  item_disabled: 'birch_door{18002}'
+  type: spell
+  glyph: "\uE9D2"

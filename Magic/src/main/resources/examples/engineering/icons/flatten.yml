@@ -1,0 +1,8 @@
+flatten:
+  item: 'oak_slab{18001}'
+  item_disabled: 'oak_slab{18002}'
+  legacy_item: spell_icon:87
+  legacy_item_disabled: spell_icon_disabled:87
+  url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
+  type: spell
+  glyph: "\uE947"

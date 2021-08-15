@@ -1,0 +1,8 @@
+superring:
+  item: 'music_disc_strad{18001}'
+  item_disabled: 'music_disc_strad{18002}'
+  legacy_item: spell_icon:26
+  legacy_item_disabled: spell_icon_disabled:26
+  url: http://textures.minecraft.net/texture/94d8a4b21f84bb65fb9f3a656d4518f0662fcabc44d01c1e435787ca542a9dd
+  type: spell
+  glyph: "\uE9C9"

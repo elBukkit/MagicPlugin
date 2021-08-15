@@ -1,0 +1,8 @@
+superbackup:
+  item: 'warped_sign{18004}'
+  item_disabled: 'warped_sign{18005}'
+  legacy_item: spell_icon:102
+  legacy_item_disabled: spell_icon_disabled:102
+  url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
+  type: spell
+  glyph: "\uE9B6"

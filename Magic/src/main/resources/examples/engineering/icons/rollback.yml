@@ -1,0 +1,8 @@
+rollback:
+  item: 'bell{18001}'
+  item_disabled: 'bell{18002}'
+  legacy_item: spell_icon:117
+  legacy_item_disabled: spell_icon_disabled:117
+  url: http://textures.minecraft.net/texture/9be3ca3c869345a6f2a3be3391615dca1ea1c631d86e3938dbff57f11cbb61
+  type: spell
+  glyph: "\uE99D"

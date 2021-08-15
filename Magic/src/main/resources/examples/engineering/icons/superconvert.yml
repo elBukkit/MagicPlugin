@@ -1,0 +1,8 @@
+superconvert:
+  item: 'brain_coral_fan{18001}'
+  item_disabled: 'brain_coral_fan{18002}'
+  legacy_item: spell_icon:113
+  legacy_item_disabled: spell_icon_disabled:113
+  url: http://textures.minecraft.net/texture/2734f67095a837ec19069f23cae3e82516fab4e29afc157bd99d370179ca0c3
+  type: spell
+  glyph: "\uE9BB"

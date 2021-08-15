@@ -1,0 +1,8 @@
+superfly:
+  item: 'bone_meal{18005}'
+  item_disabled: 'bone_meal{18006}'
+  legacy_item: spell_icon:174
+  legacy_item_disabled: spell_icon_disabled:174
+  url: http://textures.minecraft.net/texture/d02585f4a2b47524541d67ae253cf21fde8eea1c21494f61df5f4929a76e0
+  type: spell
+  glyph: "\uE9C1"

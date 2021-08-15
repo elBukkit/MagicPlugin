@@ -1,0 +1,8 @@
+supercube:
+  item: 'gold_ingot{18001}'
+  item_disabled: 'gold_ingot{18002}'
+  legacy_item: spell_icon:100
+  legacy_item_disabled: spell_icon_disabled:100
+  url: http://textures.minecraft.net/texture/b02fa9c938deafc7777eefefc6b614a68423e1c4a899a993f78ef7817517f9
+  type: spell
+  glyph: "\uE9BC"

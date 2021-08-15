@@ -1,0 +1,8 @@
+supertorch:
+  item: 'lantern{18001}'
+  item_disabled: 'lantern{18002}'
+  legacy_item: spell_icon:61
+  legacy_item_disabled: spell_icon_disabled:61
+  url: http://textures.minecraft.net/texture/15f098d4bc88ca9b11ddb6b3acb08dad7a3fc62929ec27adcedb667c61faa3
+  type: spell
+  glyph: "\uE9CB"

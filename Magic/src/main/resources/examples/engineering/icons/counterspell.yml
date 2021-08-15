@@ -1,0 +1,8 @@
+counterspell:
+  item: 'music_disc_pigstep{18001}'
+  item_disabled: 'music_disc_pigstep{18002}'
+  legacy_item: spell_icon:119
+  legacy_item_disabled: spell_icon_disabled:119
+  url: http://textures.minecraft.net/texture/36cf36693ac95c88c8dd92e1d5a54c92f593e802b3ae834c6bd87628b1b83
+  type: spell
+  glyph: "\uE931"

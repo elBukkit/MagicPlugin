@@ -1,0 +1,8 @@
+light:
+  item: 'shroomlight{18001}'
+  item_disabled: 'shroomlight{18002}'
+  legacy_item: spell_icon:228
+  legacy_item_disabled: spell_icon_disabled:228
+  url: http://textures.minecraft.net/texture/4abfe52d50f710f4103bc650b5e972d49832ea419841d9fa24e16ce617c716
+  type: spell
+  glyph: "\uE96A"

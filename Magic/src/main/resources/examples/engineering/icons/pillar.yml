@@ -1,0 +1,8 @@
+pillar:
+  item: 'sea_pickle{18001}'
+  item_disabled: 'sea_pickle{18002}'
+  legacy_item: spell_icon:88
+  legacy_item_disabled: spell_icon_disabled:88
+  url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
+  type: spell
+  glyph: "\uE981"

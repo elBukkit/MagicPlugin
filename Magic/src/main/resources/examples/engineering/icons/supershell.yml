@@ -1,0 +1,8 @@
+supershell:
+  item: 'bowl{18001}'
+  item_disabled: 'bowl{18002}'
+  legacy_item: spell_icon:27
+  legacy_item_disabled: spell_icon_disabled:27
+  url: http://textures.minecraft.net/texture/281923adf47a8ca699f6d09593e36d154acc707735eb25fd89d282f1f3bb2078
+  type: spell
+  glyph: "\uE9CA"

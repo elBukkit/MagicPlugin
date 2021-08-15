@@ -1,0 +1,8 @@
+superrepair:
+  item: 'golden_pickaxe{18001}'
+  item_disabled: 'golden_pickaxe{18002}'
+  legacy_item: spell_icon:104
+  legacy_item_disabled: spell_icon_disabled:104
+  url: http://textures.minecraft.net/texture/2298724dfb9d1599590f4e8c3647c2c5532e8fae48fca12fe32a410bb4437a9
+  type: spell
+  glyph: "\uE9C8"

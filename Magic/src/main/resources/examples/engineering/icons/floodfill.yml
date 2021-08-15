@@ -1,0 +1,8 @@
+floodfill:
+  item: 'water_bucket{18001}'
+  item_disabled: 'water_bucket{18002}'
+  legacy_item: spell_icon:82
+  legacy_item_disabled: spell_icon_disabled:82
+  url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
+  type: spell
+  glyph: "\uE949"

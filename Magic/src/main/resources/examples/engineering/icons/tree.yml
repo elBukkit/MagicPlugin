@@ -1,0 +1,8 @@
+tree:
+  item: 'jungle_sapling{18001}'
+  item_disabled: 'jungle_sapling{18002}'
+  legacy_item: spell_icon:41
+  legacy_item_disabled: spell_icon_disabled:41
+  url: http://textures.minecraft.net/texture/789e28cfb955a3bf9eafee3eabeca3e8bec87fc7e7489abb6281860289cec43
+  type: spell
+  glyph: "\uE9D9"

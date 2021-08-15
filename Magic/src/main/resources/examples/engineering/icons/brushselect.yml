@@ -1,0 +1,8 @@
+brushselect:
+  item: 'jungle_sign{18001}'
+  item_disabled: 'jungle_sign{18002}'
+  legacy_item: spell_icon:188
+  legacy_item_disabled: spell_icon_disabled:188
+  url: http://textures.minecraft.net/texture/a653c2daf990459d641e5b8f6e62ef8af24b1a2da49c9ce8d9f68ab682905112
+  type: spell
+  glyph: "\uE922"

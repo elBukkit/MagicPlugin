@@ -1,0 +1,8 @@
+fill:
+  item: 'netherite_ingot{18001}'
+  item_disabled: 'netherite_ingot{18002}'
+  legacy_item: spell_icon:80
+  legacy_item_disabled: spell_icon_disabled:80
+  url: http://textures.minecraft.net/texture/ce31cd14d873d1579b633646be683b5e1201512e593ca61595e33a5ef17b374
+  type: spell
+  glyph: "\uE941"

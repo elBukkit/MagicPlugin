@@ -1,0 +1,8 @@
+place:
+  item: 'kelp{18001}'
+  item_disabled: 'kelp{18002}'
+  legacy_item: spell_icon:89
+  legacy_item_disabled: spell_icon_disabled:89
+  url: http://textures.minecraft.net/texture/c79136be2c1ed4c89e21bfc7846486c516d9b4d32965edfd5877fafa8aeb6
+  type: spell
+  glyph: "\uE982"

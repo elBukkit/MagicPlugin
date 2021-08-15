@@ -1,0 +1,8 @@
+superblast:
+  item: 'glowstone_dust{18001}'
+  item_disabled: 'glowstone_dust{18002}'
+  legacy_item: spell_icon:111
+  legacy_item_disabled: spell_icon_disabled:111
+  url: http://textures.minecraft.net/texture/eab81081362ed39651bb47e8650dc6bbc3d8a1db56827c186267e546df0743f
+  type: spell
+  glyph: "\uE9B7"

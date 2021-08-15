@@ -1,0 +1,8 @@
+convert:
+  item: 'fire_coral_fan{18001}'
+  item_disabled: 'fire_coral_fan{18002}'
+  legacy_item: spell_icon:112
+  legacy_item_disabled: spell_icon_disabled:112
+  url: http://textures.minecraft.net/texture/b55a449b825c375ab91571e7e8a67856d212f756824bdfe43178eaea035bc
+  type: spell
+  glyph: "\uE930"

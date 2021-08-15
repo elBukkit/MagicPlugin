@@ -1,0 +1,8 @@
+paste:
+  item: 'white_stained_glass{18001}'
+  item_disabled: 'white_stained_glass{18002}'
+  legacy_item: spell_icon:169
+  legacy_item_disabled: spell_icon_disabled:169
+  url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
+  type: spell
+  glyph: "\uE97A"
