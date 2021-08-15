@@ -4740,16 +4740,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Animation when showing extra message
         int collapseSpace = 0;
+        int finalSpace = 0;
         if (extraActionBarMessage != null && actionBarExtraAnimationTime > 0) {
             long now = System.currentTimeMillis();
             int collapsedWidth = getInt("glyph_collapsed_width", 6);
+            int collapsedFinalWidth = getInt("glyph_collapsed_spacing", 12);
             if (now < lastActionBarExtra + actionBarExtraAnimationTime) {
                 collapseSpace = (int)Math.ceil((hotbarSlotWidth - collapsedWidth) * (now - lastActionBarExtra) / actionBarExtraAnimationTime);
+                finalSpace = (int)Math.ceil(collapsedFinalWidth * (now - lastActionBarExtra) / actionBarExtraAnimationTime);
             } else {
                 collapseSpace = hotbarSlotWidth - collapsedWidth;
+                finalSpace = collapsedFinalWidth;
             }
         }
         String collapseReverse = messages.getSpace(-collapseSpace);
+        String finalPadding = messages.getSpace(finalSpace);
 
         // Icon width + 1 pixel padding, to reverse back over the icon (for applying cooldown)
         String iconReverse = messages.getSpace(-(iconWidth + 1));
@@ -4831,6 +4836,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             // Add space in between each slot
             glyphs += slotSpacing;
         }
+        if (finalSpace != 0) {
+            glyphs += finalPadding;
+        }
         return glyphs;
     }
 
@@ -4843,7 +4851,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     if (now < lastActionBarExtra + actionBarExtraDelay) {
                         // If animating, wait for animation but don't clear the message
                         if (now < lastActionBarExtra + actionBarExtraAnimationTime) {
-                            return "";
+                            int length = (int)Math.floor(extraActionBarMessage.length() * (now - lastActionBarExtra) / actionBarExtraAnimationTime);
+                            return extraActionBarMessage.substring(0, length);
                         }
                         return extraActionBarMessage;
                     }
