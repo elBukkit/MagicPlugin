@@ -1,6 +1,6 @@
 neutron:
-  item: 'phantom_membrane{CustomModelData:18001}'
-  item_disabled: 'phantom_membrane{CustomModelData:18002}'
+  item: 'phantom_membrane{18001}'
+  item_disabled: 'phantom_membrane{18002}'
   legacy_item: spell_icon:52
   legacy_item_disabled: spell_icon_disabled:52
   url: http://textures.minecraft.net/texture/1eed1e4d70522ccd538b75ded4baa680e3dfe55426c560ff7b521be5cdf614f

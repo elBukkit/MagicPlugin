@@ -1,6 +1,6 @@
 flashbang:
-  item: 'soul_campfire{CustomModelData:18001}'
-  item_disabled: 'soul_campfire{CustomModelData:18002}'
+  item: 'soul_campfire{18001}'
+  item_disabled: 'soul_campfire{18002}'
   legacy_item: spell_icon:58
   legacy_item_disabled: spell_icon_disabled:58
   url: http://textures.minecraft.net/texture/964590674dbaf76126bd87694bfe97575be8de19aac4a8d9aa5579f8f01ed1

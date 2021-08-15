@@ -1,6 +1,6 @@
 hat:
-  item: 'leather_helmet{CustomModelData:18001}'
-  item_disabled: 'leather_helmet{CustomModelData:18002}'
+  item: 'leather_helmet{18001}'
+  item_disabled: 'leather_helmet{18002}'
   legacy_item: spell_icon:136
   legacy_item_disabled: spell_icon_disabled:136
   url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369

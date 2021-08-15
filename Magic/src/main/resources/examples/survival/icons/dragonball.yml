@@ -1,6 +1,6 @@
 dragonball:
-  item: 'dragon_head{CustomModelData:18001}'
-  item_disabled: 'dragon_head{CustomModelData:18002}'
+  item: 'dragon_head{18001}'
+  item_disabled: 'dragon_head{18002}'
   legacy_item: spell_icon:152
   legacy_item_disabled: spell_icon_disabled:152
   url: http://textures.minecraft.net/texture/c52264ac4e5621668c43e87aed7918ed6b883abc5018769c9536d27b77f

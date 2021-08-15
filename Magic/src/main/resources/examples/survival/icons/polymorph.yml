@@ -1,6 +1,6 @@
 polymorph:
-  item: 'pufferfish_bucket{CustomModelData:18001}'
-  item_disabled: 'pufferfish_bucket{CustomModelData:18002}'
+  item: 'pufferfish_bucket{18001}'
+  item_disabled: 'pufferfish_bucket{18002}'
   legacy_item: spell_icon:176
   legacy_item_disabled: spell_icon_disabled:176
   url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188

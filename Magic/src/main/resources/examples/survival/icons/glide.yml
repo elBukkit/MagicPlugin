@@ -1,6 +1,6 @@
 glide:
-  item: 'elytra{CustomModelData:18001}'
-  item_disabled: 'elytra{CustomModelData:18002}'
+  item: 'elytra{18001}'
+  item_disabled: 'elytra{18002}'
   legacy_item: spell_icon:202
   legacy_item_disabled: spell_icon_disabled:202
   url: http://textures.minecraft.net/texture/0da6cb9e9cd875794b8b9f3a4b77227a18adb963b42af21d52d58d2ef24e47

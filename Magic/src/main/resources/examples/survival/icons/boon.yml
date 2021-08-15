@@ -1,6 +1,6 @@
 boon:
-  item: 'chorus_fruit{CustomModelData:18001}'
-  item_disabled: 'chorus_fruit{CustomModelData:18002}'
+  item: 'chorus_fruit{18001}'
+  item_disabled: 'chorus_fruit{18002}'
   legacy_item: spell_icon:11
   legacy_item_disabled: spell_icon_disabled:11
   url: http://textures.minecraft.net/texture/15987e49e7ed16df536f4dbf685e7720b88b4de6deaf614d84ab9f9884725c

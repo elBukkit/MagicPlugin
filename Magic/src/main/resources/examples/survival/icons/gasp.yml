@@ -1,6 +1,6 @@
 gasp:
-  item: 'glass_bottle{CustomModelData:18001}'
-  item_disabled: 'glass_bottle{CustomModelData:18002}'
+  item: 'glass_bottle{18001}'
+  item_disabled: 'glass_bottle{18002}'
   legacy_item: spell_icon:186
   legacy_item_disabled: spell_icon_disabled:186
   url: http://textures.minecraft.net/texture/c28bdd34810f866527daaf283da71826a8378286b2a43a626615fa1b3639e

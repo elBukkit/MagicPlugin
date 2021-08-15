@@ -1,6 +1,6 @@
 breach:
-  item: 'acacia_door{CustomModelData:18001}'
-  item_disabled: 'acacia_door{CustomModelData:18002}'
+  item: 'acacia_door{18001}'
+  item_disabled: 'acacia_door{18002}'
   legacy_item: spell_icon:120
   legacy_item_disabled: spell_icon_disabled:120
   url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4

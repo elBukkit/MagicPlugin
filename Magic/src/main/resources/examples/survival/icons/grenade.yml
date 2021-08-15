@@ -1,6 +1,6 @@
 grenade:
-  item: 'tnt{CustomModelData:18001}'
-  item_disabled: 'tnt{CustomModelData:18002}'
+  item: 'tnt{18001}'
+  item_disabled: 'tnt{18002}'
   legacy_item: spell_icon:91
   legacy_item_disabled: spell_icon_disabled:91
   url: http://textures.minecraft.net/texture/c6a7fcfee0ffebae25b69bd16f55c993898ba72791d3a89e58736e7bad0faa3

@@ -1,6 +1,6 @@
 familiar:
-  item: 'egg{CustomModelData:18001}'
-  item_disabled: 'egg{CustomModelData:18002}'
+  item: 'egg{18001}'
+  item_disabled: 'egg{18002}'
   legacy_item: spell_icon:63
   legacy_item_disabled: spell_icon_disabled:63
   url: http://textures.minecraft.net/texture/621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4

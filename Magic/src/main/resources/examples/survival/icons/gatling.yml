@@ -1,6 +1,6 @@
 gatling:
-  item: 'chain{CustomModelData:18001}'
-  item_disabled: 'chain{CustomModelData:18002}'
+  item: 'chain{18001}'
+  item_disabled: 'chain{18002}'
   legacy_item: spell_icon:55
   legacy_item_disabled: spell_icon_disabled:55
   url: http://textures.minecraft.net/texture/7134aed98232d9946f9dbd738a37e68f36a9a773a863dde206bb9115b993d78

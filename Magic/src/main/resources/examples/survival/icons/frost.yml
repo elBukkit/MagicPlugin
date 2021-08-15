@@ -1,6 +1,6 @@
 frost:
-  item: 'snowball{CustomModelData:18001}'
-  item_disabled: 'snowball{CustomModelData:18002}'
+  item: 'snowball{18001}'
+  item_disabled: 'snowball{18002}'
   legacy_item: spell_icon:37
   legacy_item_disabled: spell_icon_disabled:37
   url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a

@@ -1,6 +1,6 @@
 wolf:
-  item: 'beef{CustomModelData:18001}'
-  item_disabled: 'beef{CustomModelData:18002}'
+  item: 'beef{18001}'
+  item_disabled: 'beef{18002}'
   legacy_item: spell_icon:69
   legacy_item_disabled: spell_icon_disabled:69
   url: http://textures.minecraft.net/texture/f73d8d925fd45eee331437cc496403f96516a5d35a8e62189990d8beee6a14

@@ -1,6 +1,6 @@
 wave:
-  item: 'light_blue_dye{CustomModelData:18001}'
-  item_disabled: 'light_blue_dye{CustomModelData:18002}'
+  item: 'light_blue_dye{18001}'
+  item_disabled: 'light_blue_dye{18002}'
   legacy_item: spell_icon:195
   legacy_item_disabled: spell_icon_disabled:195
   url: http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac

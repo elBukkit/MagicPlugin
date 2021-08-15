@@ -1,6 +1,6 @@
 torch:
-  item: 'torch{CustomModelData:18001}'
-  item_disabled: 'torch{CustomModelData:18002}'
+  item: 'torch{18001}'
+  item_disabled: 'torch{18002}'
   legacy_item: spell_icon:62
   legacy_item_disabled: spell_icon_disabled:62
   url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097

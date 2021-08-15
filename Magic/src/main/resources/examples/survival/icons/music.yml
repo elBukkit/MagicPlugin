@@ -1,6 +1,6 @@
 music:
-  item: 'music_disc_mellohi{CustomModelData:18001}'
-  item_disabled: 'music_disc_mellohi{CustomModelData:18002}'
+  item: 'music_disc_mellohi{18001}'
+  item_disabled: 'music_disc_mellohi{18002}'
   legacy_item: spell_icon:47
   legacy_item_disabled: spell_icon_disabled:47
   url: http://textures.minecraft.net/texture/a2ea21c79fa115b9a63625a2c9c5ec3dd92e1d1a7024162790237da9d98ee28

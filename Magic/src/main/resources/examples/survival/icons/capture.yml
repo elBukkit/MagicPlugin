@@ -1,6 +1,6 @@
 capture:
-  item: 'turtle_egg{CustomModelData:18001}'
-  item_disabled: 'turtle_egg{CustomModelData:18002}'
+  item: 'turtle_egg{18001}'
+  item_disabled: 'turtle_egg{18002}'
   legacy_item: spell_icon:251
   legacy_item_disabled: spell_icon_disabled:251
   type: spell

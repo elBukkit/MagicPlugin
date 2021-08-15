@@ -1,6 +1,6 @@
 tracking:
-  item: 'ender_eye{CustomModelData:18001}'
-  item_disabled: 'ender_eye{CustomModelData:18002}'
+  item: 'ender_eye{18001}'
+  item_disabled: 'ender_eye{18002}'
   legacy_item: spell_icon:189
   legacy_item_disabled: spell_icon_disabled:189
   url: http://textures.minecraft.net/texture/3bc9de58822a3f7c6c23e212cf954fc728a6b2e45c54a89b4af5e453d39b1

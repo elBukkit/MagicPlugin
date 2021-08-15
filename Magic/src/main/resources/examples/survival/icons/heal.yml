@@ -1,6 +1,6 @@
 heal:
-  item: 'apple{CustomModelData:18001}'
-  item_disabled: 'apple{CustomModelData:18002}'
+  item: 'apple{18001}'
+  item_disabled: 'apple{18002}'
   legacy_item: spell_icon:45
   legacy_item_disabled: spell_icon_disabled:45
   url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc

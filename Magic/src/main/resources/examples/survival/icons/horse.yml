@@ -1,6 +1,6 @@
 horse:
-  item: 'saddle{CustomModelData:18001}'
-  item_disabled: 'saddle{CustomModelData:18002}'
+  item: 'saddle{18001}'
+  item_disabled: 'saddle{18002}'
   legacy_item: spell_icon:49
   legacy_item_disabled: spell_icon_disabled:49
   url: http://textures.minecraft.net/texture/ddb5db33eac28ccfce38f179044575cb9de8195bc1ed843d4345da5f13b63d

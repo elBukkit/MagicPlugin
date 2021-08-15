@@ -1,6 +1,6 @@
 chainlightning:
-  item: 'sweet_berries{CustomModelData:18001}'
-  item_disabled: 'sweet_berries{CustomModelData:18002}'
+  item: 'sweet_berries{18001}'
+  item_disabled: 'sweet_berries{18002}'
   legacy_item: spell_icon:164
   legacy_item_disabled: spell_icon_disabled:164
   url: http://textures.minecraft.net/texture/1e5b76818c576079939b5a4b033ddfb5c2364fc9f764e573c59508b811e365

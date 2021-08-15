@@ -1,6 +1,6 @@
 stash:
-  item: 'ender_chest{CustomModelData:18001}'
-  item_disabled: 'ender_chest{CustomModelData:18002}'
+  item: 'ender_chest{18001}'
+  item_disabled: 'ender_chest{18002}'
   legacy_item: spell_icon:106
   legacy_item_disabled: spell_icon_disabled:106
   url: http://textures.minecraft.net/texture/a6cc486c2be1cb9dfcb2e53dd9a3e9a883bfadb27cb956f1896d602b4067

@@ -1,6 +1,6 @@
 blob:
-  item: 'clay_ball{CustomModelData:18001}'
-  item_disabled: 'clay_ball{CustomModelData:18002}'
+  item: 'clay_ball{18001}'
+  item_disabled: 'clay_ball{18002}'
   legacy_item: spell_icon:128
   legacy_item_disabled: spell_icon_disabled:128
   url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14

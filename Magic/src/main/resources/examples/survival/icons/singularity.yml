@@ -1,6 +1,6 @@
 singularity:
-  item: 'coal{CustomModelData:18001}'
-  item_disabled: 'coal{CustomModelData:18002}'
+  item: 'coal{18001}'
+  item_disabled: 'coal{18002}'
   legacy_item: spell_icon:190
   legacy_item_disabled: spell_icon_disabled:190
   url: http://textures.minecraft.net/texture/ac60643368ba49652b36989878bf296e25d5b3d7526f283ef8cd7470a7a51e8

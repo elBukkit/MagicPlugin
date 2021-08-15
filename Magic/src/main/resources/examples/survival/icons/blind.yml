@@ -1,6 +1,6 @@
 blind:
-  item: 'ink_sac{CustomModelData:18001}'
-  item_disabled: 'ink_sac{CustomModelData:18002}'
+  item: 'ink_sac{18001}'
+  item_disabled: 'ink_sac{18002}'
   legacy_item: spell_icon:166
   legacy_item_disabled: spell_icon_disabled:166
   url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560

@@ -1,6 +1,6 @@
 entangle:
-  item: 'birch_fence{CustomModelData:18001}'
-  item_disabled: 'birch_fence{CustomModelData:18002}'
+  item: 'birch_fence{18001}'
+  item_disabled: 'birch_fence{18002}'
   legacy_item: spell_icon:177
   legacy_item_disabled: spell_icon_disabled:177
   url: http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5

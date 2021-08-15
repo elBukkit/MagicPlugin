@@ -1,6 +1,6 @@
 missile:
-  item: 'prismarine_shard{CustomModelData:18001}'
-  item_disabled: 'prismarine_shard{CustomModelData:18002}'
+  item: 'prismarine_shard{18001}'
+  item_disabled: 'prismarine_shard{18002}'
   legacy_item: spell_icon:160
   legacy_item_disabled: spell_icon_disabled:160
   url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac

@@ -1,6 +1,6 @@
 fire:
-  item: 'flint_and_steel{CustomModelData:18001}'
-  item_disabled: 'flint_and_steel{CustomModelData:18002}'
+  item: 'flint_and_steel{18001}'
+  item_disabled: 'flint_and_steel{18002}'
   legacy_item: spell_icon:75
   legacy_item_disabled: spell_icon_disabled:75
   url: http://textures.minecraft.net/texture/7dbb7f75e74ad4218d2af7191752b5952144436ce8aa2bb6fb27168e6f28af

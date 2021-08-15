@@ -1,6 +1,6 @@
 anvil:
-  item: 'anvil{CustomModelData:18001}'
-  item_disabled: 'anvil{CustomModelData:18002}'
+  item: 'anvil{18001}'
+  item_disabled: 'anvil{18002}'
   legacy_item: spell_icon:90
   legacy_item_disabled: spell_icon_disabled:90
   url: http://textures.minecraft.net/texture/505b8ba793c372d9fb45db20df80c1606b19b7421a9bbcc258ae2a65d65ea7

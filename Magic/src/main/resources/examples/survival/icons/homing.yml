@@ -1,6 +1,6 @@
 homing:
-  item: 'lime_dye{CustomModelData:18001}'
-  item_disabled: 'lime_dye{CustomModelData:18002}'
+  item: 'lime_dye{18001}'
+  item_disabled: 'lime_dye{18002}'
   legacy_item: spell_icon:163
   legacy_item_disabled: spell_icon_disabled:163
   url: http://textures.minecraft.net/texture/e3152dba6ee22b6e89e88878acc5a01f5964946b8938e9a1470dfabbeeca

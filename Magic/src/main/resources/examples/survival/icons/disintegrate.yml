@@ -1,6 +1,6 @@
 disintegrate:
-  item: 'cocoa_beans{CustomModelData:18001}'
-  item_disabled: 'cocoa_beans{CustomModelData:18002}'
+  item: 'cocoa_beans{18001}'
+  item_disabled: 'cocoa_beans{18002}'
   legacy_item: spell_icon:133
   legacy_item_disabled: spell_icon_disabled:133
   url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae

@@ -1,6 +1,6 @@
 rocket:
-  item: 'firework_rocket{CustomModelData:18001}'
-  item_disabled: 'firework_rocket{CustomModelData:18002}'
+  item: 'firework_rocket{18001}'
+  item_disabled: 'firework_rocket{18002}'
   legacy_item: spell_icon:191
   legacy_item_disabled: spell_icon_disabled:191
   url: http://textures.minecraft.net/texture/5a532e9d2221b1a2ffdbc701578331c8da41c36d1487696fefa584373572

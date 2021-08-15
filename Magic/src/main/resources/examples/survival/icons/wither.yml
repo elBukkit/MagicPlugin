@@ -1,6 +1,6 @@
 wither:
-  item: 'wither_skeleton_skull{CustomModelData:18001}'
-  item_disabled: 'wither_skeleton_skull{CustomModelData:18002}'
+  item: 'wither_skeleton_skull{18001}'
+  item_disabled: 'wither_skeleton_skull{18002}'
   legacy_item: spell_icon:53
   legacy_item_disabled: spell_icon_disabled:53
   url: http://textures.minecraft.net/texture/ac90eba543a9b9609c4815542e88274e50c152c837a22d3f5f64847b95e2

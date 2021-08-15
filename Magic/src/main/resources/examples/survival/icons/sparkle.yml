@@ -1,5 +1,5 @@
 sparkle:
-  item: 'glowstone_dust{CustomModelData:18003}'
-  item_disabled: 'glowstone_dust{CustomModelData:18004}'
+  item: 'glowstone_dust{18003}'
+  item_disabled: 'glowstone_dust{18004}'
   type: spell
   glyph: "\uE9AD"

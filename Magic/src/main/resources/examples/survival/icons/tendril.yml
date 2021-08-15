@@ -1,6 +1,6 @@
 tendril:
-  item: 'cooked_mutton{CustomModelData:18001}'
-  item_disabled: 'cooked_mutton{CustomModelData:18002}'
+  item: 'cooked_mutton{18001}'
+  item_disabled: 'cooked_mutton{18002}'
   legacy_item: spell_icon:129
   legacy_item_disabled: spell_icon_disabled:129
   url: http://textures.minecraft.net/texture/564e7e4b718a7136188385cae256de87a6cb29c85744c9c123509a4c7cec69d0
