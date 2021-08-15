@@ -1,6 +1,6 @@
 feed:
-    icon: milk_bucket{CustomModelData:18001}
-    icon_disabled: milk_bucket{CustomModelData:18002}
+    # This refers to an icon defined in the icons folder/config
+    icon: cure
     category: staff
     quick_cast: true
     actions:

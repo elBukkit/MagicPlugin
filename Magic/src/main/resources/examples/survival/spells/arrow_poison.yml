@@ -1,9 +1,6 @@
 arrow_poison:
-    icon: spectral_arrow{CustomModelData:18016,Potion:poison}
-    icon_disabled: spectral_arrow{CustomModelData:18017,Potion:poison}
-    legacy_icon: spell_icon:245
-    legacy_icon_disabled: spell_icon_disabled:245
-    icon_url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
+    # This refers to an icon defined in the icons folder/config
+    icon: arrow_poison
     category: combat
     worth: 500
     earns: 8

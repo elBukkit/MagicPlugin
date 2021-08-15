@@ -1,7 +1,6 @@
 vanish:
-    icon: spell_icon:116
-    icon_disabled: spell_icon_disabled:116
-    icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+    # This refers to an icon defined in the icons folder/config
+    icon: vanish
     category: staff
     tags: noduel
     toggle: undo

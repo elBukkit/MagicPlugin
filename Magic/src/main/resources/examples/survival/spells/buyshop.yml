@@ -1,5 +1,6 @@
 buyshop:
-    icon: sulphur
+    # This refers to an icon defined in the icons folder/config
+    icon: buyshop
     category: shop
     hidden: true
     actions:

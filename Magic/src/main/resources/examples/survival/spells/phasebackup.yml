@@ -1,7 +1,6 @@
 phasebackup:
-    icon: spell_icon:73
-    icon_disabled: spell_icon_disabled:73
-    icon_url: http://textures.minecraft.net/texture/3186699cf52cb2f732b7948784b262a49d43a57c801368f776e3c9a88151d
+    # This refers to an icon defined in the icons folder/config
+    icon: phasebackup
     category: staff
     worth: 1000
     earns: 2

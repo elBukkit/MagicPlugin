@@ -1,9 +1,6 @@
 lift:
-    icon: green_dye{CustomModelData:18001}
-    icon_disabled: green_dye{CustomModelData:18002}
-    legacy_icon: spell_icon:181
-    legacy_icon_disabled: spell_icon_disabled:181
-    icon_url: http://textures.minecraft.net/texture/111de372969a39e34c3af5e6d2392e7876a1f13cf7a37d7513ad60c168bfd7b9
+    # This refers to an icon defined in the icons folder/config
+    icon: lift
     category: utility
     worth: 150
     earns: 5

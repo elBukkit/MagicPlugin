@@ -1,9 +1,8 @@
 wandbuffshop:
-  icon: shield{CustomModelData:18010}
-  icon_disabled: shield{CustomModelData:18011}
+  # This refers to an icon defined in the icons folder/config
+  icon: protection_all
   legacy_legacy_icon: spell_icon:234
   legacy_legacy_icon_disabled: spell_icon_disabled:234
-  icon_url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   category: npc
   hidden: true
   actions:

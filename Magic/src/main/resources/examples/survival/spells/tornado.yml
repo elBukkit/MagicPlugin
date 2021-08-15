@@ -1,11 +1,8 @@
 tornado:
-    icon: hopper{CustomModelData:18001}
-    icon_disabled: hopper{CustomModelData:18002}
-    legacy_icon: spell_icon:192
-    legacy_icon_disabled: spell_icon_disabled:192
+    # This refers to an icon defined in the icons folder/config
+    icon: tornado
     upgrade_required_path: master
     upgrade_required_casts: 50
-    icon_url: http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27
     category: elemental
     pvp_restricted: true
     worth: 900

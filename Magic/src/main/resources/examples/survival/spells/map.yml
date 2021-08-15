@@ -1,8 +1,7 @@
 map:
-    icon: spell_icon:154
-    icon_disabled: spell_icon_disabled:154
+    # This refers to an icon defined in the icons folder/config
+    icon: map
     hidden: true
-    icon_url: http://textures.minecraft.net/texture/c36adcbe21b520b7355936c89cd2b335ca5318e68173eaaa82e62f5fb986
     worth: 50
     category: utility
     class: MapSpell

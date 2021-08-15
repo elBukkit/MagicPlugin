@@ -1,9 +1,6 @@
 volley:
-    icon: wheat_seeds{CustomModelData:18001}
-    icon_disabled: wheat_seeds{CustomModelData:18002}
-    legacy_icon: spell_icon:31
-    legacy_icon_disabled: spell_icon_disabled:31
-    icon_url: http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab
+    # This refers to an icon defined in the icons folder/config
+    icon: volley
     category: engineering
     tags: noduel
     worth: 300

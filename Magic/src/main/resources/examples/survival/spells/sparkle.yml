@@ -1,7 +1,7 @@
 sparkle:
   creator: TheBugWhisperer
-  icon: glowstone_dust{CustomModelData:18003}
-  icon_disabled: glowstone_dust{CustomModelData:18004}
+  # This refers to an icon defined in the icons folder/config
+  icon: sparkle
   worth: 50
   actions:
     cast:

@@ -1,7 +1,6 @@
 gills:
-    icon: spell_icon:83
-    icon_disabled: spell_icon_disabled:83
-    icon_url: http://textures.minecraft.net/texture/b47a2ebba3629cd387581f7b4b2bd471bc793f9d3b353862da8e9198e18c3193
+    # This refers to an icon defined in the icons folder/config
+    icon: gills
     category: light
     worth: 100
     actions:

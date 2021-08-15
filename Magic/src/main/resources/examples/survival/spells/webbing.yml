@@ -1,8 +1,7 @@
 webbing:
-    icon: spell_icon:203
-    icon_disabled: spell_icon_disabled:203
+    # This refers to an icon defined in the icons folder/config
+    icon: webbing
     hidden: true
-    icon_url: http://textures.minecraft.net/texture/672e0c305074a7acf671e7644291d7f745baecf05743395e28d1f04cbbb4
     category: combat
     actions:
       cast:

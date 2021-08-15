@@ -3,15 +3,12 @@
 missile:
     # This will determine the icon used to represent the spell.
     # Try to use a vanilla item that will be recognizable so players not using the RP can still find the spell.
-    icon: prismarine_shard{CustomModelData:18001}
+    # This refers to an icon defined in the icons folder/config
+    icon: missile
     # This icon is used when the spell can't be cast due to cooldown, mana or permissions
     # This generally doesn't change unless the player is using the resource pack.
-    icon_disabled: prismarine_shard{CustomModelData:18002}
     # Legacy icons are used in MC versions prior to 1.16, where the resource pack still uses damage predicates
-    legacy_icon: spell_icon:160
-    legacy_icon_disabled: spell_icon_disabled:160
     # Some setups use players skulls as icons instead of items.
-    icon_url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
     # Some spells have levels and will upgrade themselves automatically when used.
     # This can be gated by a specific progression path, meaning a player has to advance overall before the spell
     # will level up.

@@ -1,9 +1,6 @@
 familiar:
-    icon: egg{CustomModelData:18001}
-    icon_disabled: egg{CustomModelData:18002}
-    legacy_icon: spell_icon:63
-    legacy_icon_disabled: spell_icon_disabled:63
-    icon_url: http://textures.minecraft.net/texture/621668ef7cb79dd9c22ce3d1f3f4cb6e2559893b6df4a469514e667c16aa4
+    # This refers to an icon defined in the icons folder/config
+    icon: familiar
     category: elemental
     worth: 100
     actions:

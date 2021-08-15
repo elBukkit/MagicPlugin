@@ -1,9 +1,6 @@
 hulkleap:
-    icon: feather{CustomModelData:18001}
-    icon_disabled: feather{CustomModelData:18002}
-    legacy_icon: spell_icon:60
-    legacy_icon_disabled: spell_icon_disabled:60
-    icon_url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
+    # This refers to an icon defined in the icons folder/config
+    icon: fling
     category: utility
     tags: nojail
     actions:

@@ -1,8 +1,6 @@
 wandshop:
-    icon: blaze_rod{CustomModelData:18045}
-    icon_disabled: blaze_rod{CustomModelData:18046}
-    legacy_icon: spell_icon:233
-    legacy_icon_disabled: spell_icon_disabled:233
+    # This refers to an icon defined in the icons folder/config
+    icon: wand
     category: npc
     hidden: true
     inherit: buyshop

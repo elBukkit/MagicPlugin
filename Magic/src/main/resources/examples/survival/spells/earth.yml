@@ -1,7 +1,6 @@
 earth:
-    icon: spell_icon:141
-    icon_disabled: spell_icon_disabled:141
-    icon_url: http://textures.minecraft.net/texture/5d9ddb39f5cd587f63bb175dfaf55baaa917c1a2a3ca987a18d90c9e1a578d
+    # This refers to an icon defined in the icons folder/config
+    icon: earth
     category: combat
     pvp_restricted: true
     worth: 150

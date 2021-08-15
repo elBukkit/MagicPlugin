@@ -1,9 +1,6 @@
 torch:
-    icon: torch{CustomModelData:18001}
-    icon_disabled: torch{CustomModelData:18002}
-    legacy_icon: spell_icon:62
-    legacy_icon_disabled: spell_icon_disabled:62
-    icon_url: http://textures.minecraft.net/texture/08f4793551132fad5bdb5d185269881a8de6fa4b86c6bde92c2bf467e097
+    # This refers to an icon defined in the icons folder/config
+    icon: torch
     category: utility
     tags: noduel
     worth: 200

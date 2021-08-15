@@ -1,6 +1,6 @@
 vengeance:
-  icon: shield{CustomModelData:18020}
-  icon_disabled: shield{CustomModelData:18021}
+  # This refers to an icon defined in the icons folder/config
+  icon: protection_projectiles
   earns: 6
   worth: 400
   upgrade_required_casts: 50

@@ -1,9 +1,6 @@
 petrify:
-    icon: light_gray_dye{CustomModelData:18001}
-    icon_disabled: light_gray_dye{CustomModelData:18002}
-    legacy_icon: spell_icon:175
-    legacy_icon_disabled: spell_icon_disabled:175
-    icon_url: http://textures.minecraft.net/texture/7e453aa5908121dcf1cd8cf9f04459741f7879d99c01fb71bf243c25c3188
+    # This refers to an icon defined in the icons folder/config
+    icon: petrify
     category: combat
     worth: 300
     earns: 8

@@ -1,5 +1,5 @@
 colorshop:
-    icon: red_dye{CustomModelData:18001}
+    icon: red_dye{18001}
     icon_disabled: red_dye{CustomModelData:18002}
     legacy_icon: spell_icon:125
     legacy_icon_disabled: spell_icon_disabled:125

@@ -1,5 +1,5 @@
 wandinstructions:
-    icon: warped_sign{CustomModelData:18001}
+    icon: warped_sign{18001}
     icon_disabled: warped_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:217
     legacy_icon_disabled: diamond_axe:217
