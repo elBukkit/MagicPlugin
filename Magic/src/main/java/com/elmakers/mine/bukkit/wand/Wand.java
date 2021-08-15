@@ -321,6 +321,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     // Action bar
     protected String actionBarMessage;
+    protected String extraActionBarMessage;
+    protected long lastActionBarExtra;
+    protected int actionBarExtraDelay;
+    protected int actionBarExtraAnimationTime;
     protected String actionBarOpenMessage;
     protected int actionBarInterval;
     protected int actionBarDelay;
@@ -2490,6 +2494,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             } else {
                 actionBarInterval = config.getInt("interval", 1000);
                 actionBarDelay = config.getInt("delay", 0);
+                actionBarExtraDelay = config.getInt("extra_display_time", 2000);
+                actionBarExtraAnimationTime = config.getInt("extra_animate_time", 500);
                 actionBarMana = config.getBoolean("uses_mana");
             }
             lastActionBar = 0;
@@ -4692,6 +4698,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
     }
 
+    public boolean handleActionBar(String message) {
+        if (actionBarMessage == null || !actionBarMessage.contains("$extra")) {
+            return false;
+        }
+        if (extraActionBarMessage == null) {
+            lastActionBarExtra = System.currentTimeMillis();
+        }
+        extraActionBarMessage = message;
+        return true;
+    }
+
     @Override
     public String parameterize(String message) {
         if (message == null || message.isEmpty()) return "";
@@ -4711,6 +4728,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Messages messages = controller.getMessages();
         WandInventory hotbar = getActiveHotbar();
         if (hotbar == null || mage == null) return "";
+
         boolean skipEmpty = getBoolean("glyph_skip_empty", true);
         int hotbarSlotWidth = getInt("glyph_slot_width", 22);
         int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 22);
@@ -4719,6 +4737,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int iconPaddingLeft = (hotbarSlotWidth - iconWidth) / 2;
         int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
         int slotSpacingWidth = getInt("glyph_slot_spacing", -1);
+
+        // Animation when showing extra message
+        int collapseSpace = 0;
+        if (extraActionBarMessage != null && actionBarExtraAnimationTime > 0) {
+            long now = System.currentTimeMillis();
+            int collapsedWidth = getInt("glyph_collapsed_width", 6);
+            if (now < lastActionBarExtra + actionBarExtraAnimationTime) {
+                collapseSpace = (int)Math.ceil((hotbarSlotWidth - collapsedWidth) * (now - lastActionBarExtra) / actionBarExtraAnimationTime);
+            } else {
+                collapseSpace = hotbarSlotWidth - collapsedWidth;
+            }
+        }
+        String collapseReverse = messages.getSpace(-collapseSpace);
 
         // Icon width + 1 pixel padding, to reverse back over the icon (for applying cooldown)
         String iconReverse = messages.getSpace(-(iconWidth + 1));
@@ -4792,6 +4823,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             glyphs += hotbarIconPaddingRight;
 
+            // Animation if collapses
+            if (collapseSpace != 0) {
+                glyphs += collapseReverse;
+            }
+
             // Add space in between each slot
             glyphs += slotSpacing;
         }
@@ -4801,6 +4837,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public String getReplacement(String line, boolean integerValues) {
         switch (line) {
+            case "extra":
+                if (extraActionBarMessage != null) {
+                    long now = System.currentTimeMillis();
+                    if (now < lastActionBarExtra + actionBarExtraDelay) {
+                        // If animating, wait for animation but don't clear the message
+                        if (now < lastActionBarExtra + actionBarExtraAnimationTime) {
+                            return "";
+                        }
+                        return extraActionBarMessage;
+                    }
+                }
+                extraActionBarMessage = null;
+                return "";
             case "hotbar":
                 return getHotbarGlyphs();
             case "description":
@@ -5220,15 +5269,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public void tick() {
         if (mage == null) return;
-
         Player player = mage.getPlayer();
         if (player == null) return;
 
         super.tick();
         updateXPBar();
         long now = System.currentTimeMillis();
-        if (actionBarMessage != null && now > lastActionBar + actionBarInterval) {
-            lastActionBar = System.currentTimeMillis();
+        // Always tick action bar while animating
+        if (actionBarMessage != null
+            && (now > lastActionBar + actionBarInterval
+            || (extraActionBarMessage != null && now <= lastActionBarExtra + actionBarExtraAnimationTime))) {
+            lastActionBar = now;
             updateActionBar();
         }
 

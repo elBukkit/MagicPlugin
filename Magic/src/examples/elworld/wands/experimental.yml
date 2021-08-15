@@ -21,7 +21,7 @@ experimental:
     properties:
       use_active_name_when_closed: false
       action_bar:
-        message: "$hotbar"
+        message: "$hotbar $extra"
         open_message: ""
         interval: 250
         delay: 1500

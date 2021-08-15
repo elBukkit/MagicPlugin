@@ -117,6 +117,7 @@ import com.elmakers.mine.bukkit.tasks.CheckWandTask;
 import com.elmakers.mine.bukkit.tasks.MageLoadTask;
 import com.elmakers.mine.bukkit.tasks.SendCurrencyMessageTask;
 import com.elmakers.mine.bukkit.tasks.TeleportTask;
+import com.elmakers.mine.bukkit.utility.ActionBarSender;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
@@ -129,7 +130,7 @@ import com.google.common.collect.ImmutableList;
 
 import de.slikey.effectlib.util.VectorUtils;
 
-public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage, Replacer {
+public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mage, Replacer, ActionBarSender {
     protected static int AUTOMATA_ONLINE_TIMEOUT = 5000;
     public static int CHANGE_WORLD_EQUIP_COOLDOWN = 1000;
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
@@ -930,7 +931,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void sendMessage(String prefix, String message) {
         if (message == null || message.length() == 0 || quiet || !controller.showMessages()) return;
-        TextUtils.sendMessage(getCommandSender(), getPlayer(), prefix, message);
+        TextUtils.sendMessage(getCommandSender(), getPlayer(), prefix, message, this);
     }
 
     public void clearBuildingMaterial() {
@@ -5723,5 +5724,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public boolean isOnPortalCooldown() {
         return System.currentTimeMillis() < portalsDisabledUntil;
+    }
+
+    @Override
+    public void sendToActionBar(String message) {
+        Wand wand = getActiveWand();
+        if (wand != null && wand.handleActionBar(message)) {
+            return;
+        }
+        Player player = getPlayer();
+        if (player != null) {
+            CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
+        } else {
+            CommandSender sender = getCommandSender();
+            if (sender != null) {
+                sendMessage(message);
+            }
+        }
     }
 }

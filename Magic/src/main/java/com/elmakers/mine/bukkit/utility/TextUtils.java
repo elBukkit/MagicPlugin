@@ -130,10 +130,10 @@ public class TextUtils
     }
 
     public static void sendMessage(CommandSender target, String prefix, String message) {
-        sendMessage(target, target instanceof Player ? (Player)target : null, prefix, message);
+        sendMessage(target, target instanceof Player ? (Player)target : null, prefix, message, null);
     }
 
-    public static void sendMessage(CommandSender sender, Player player, String prefix, String message) {
+    public static void sendMessage(CommandSender sender, Player player, String prefix, String message, ActionBarSender actionBarSender) {
         if (message == null || message.length() == 0 || sender == null) return;
         boolean isTitle = false;
         boolean isActionBar = false;
@@ -179,7 +179,9 @@ public class TextUtils
 
             isActionBar = false;
             String fullMessage = prefix + line;
-            if (lineIsActionBar && player != null) {
+            if (lineIsActionBar && actionBarSender != null) {
+                actionBarSender.sendToActionBar(fullMessage);
+            } else if (lineIsActionBar && player != null) {
                 CompatibilityLib.getCompatibilityUtils().sendActionBar(player, fullMessage);
             } else {
                 sender.sendMessage(fullMessage);

@@ -2,10 +2,12 @@
 
 # Glyph Wand
 
+ - Change glyph_ parameters to a section
  - General system for not stomping on action bar messages 
    (not enough mana, cooldown - wand should wait a bit before re-upping the action bar)
  - Check 1.16 ... does it work? Do we need to prevent it? Or maybe update the 1.16 RP?
  - Make brushes work (swing to use)
+ - Control schemes would work better as invisible slotted upgrades
 
 # Important
 
