@@ -64,6 +64,7 @@ gui:
     512: "\uF83E"
     1024: "\uF83F"
   cooldown:
+    wait: "\uE711"
     16: "\uE710"
     15: "\uE70F"
     14: "\uE70E"
@@ -81,6 +82,7 @@ gui:
     2: "\uE702"
     1: "\uE701"
   mana:
+    insufficient: "\uE771"
     32: "\uE770"
     31: "\uE76F"
     30: "\uE76E"

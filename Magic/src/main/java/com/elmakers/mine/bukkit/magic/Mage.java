@@ -86,6 +86,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.rp.ResourcePackPreference;
 import com.elmakers.mine.bukkit.api.spell.CastParameter;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -5741,5 +5742,29 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 sendMessage(message);
             }
         }
+    }
+
+    public boolean handleInsufficientResources(Spell spell, CastingCost cost) {
+        Wand wand = getActiveWand();
+        if (wand == null) {
+            return false;
+        }
+        return wand.handleInsufficientResources(spell, cost);
+    }
+
+    public boolean handleCooldown(Spell spell) {
+        Wand wand = getActiveWand();
+        if (wand == null) {
+            return false;
+        }
+        return wand.handleCooldown(spell);
+    }
+
+    public boolean handleInsufficientCharges(Spell spell) {
+        Wand wand = getActiveWand();
+        if (wand == null) {
+            return false;
+        }
+        return wand.handleInsufficientCharges(spell);
     }
 }

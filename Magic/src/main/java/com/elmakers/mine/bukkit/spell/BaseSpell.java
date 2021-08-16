@@ -1439,8 +1439,16 @@ public class BaseSpell implements MageSpell, Cloneable {
         long cooldownRemaining = getRemainingCooldown();
         String timeDescription = "";
         if (cooldownRemaining > 0) {
-            timeDescription = controller.getMessages().getTimeDescription(cooldownRemaining, "wait", "cooldown");
-            sendMessageKey("cooldown", getMessage("cooldown").replace("$time", timeDescription));
+            // TODO: API?
+            boolean handled = false;
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                com.elmakers.mine.bukkit.magic.Mage implMage = (com.elmakers.mine.bukkit.magic.Mage)mage;
+                handled = implMage.handleCooldown(this);
+            }
+            if (!handled) {
+                timeDescription = controller.getMessages().getTimeDescription(cooldownRemaining, "wait", "cooldown");
+                sendMessageKey("cooldown", getMessage("cooldown").replace("$time", timeDescription));
+            }
             processResult(SpellResult.COOLDOWN, workingParameters);
             sendCastDebugMessage(SpellResult.COOLDOWN, " (no cast)");
             return false;
@@ -1448,18 +1456,34 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         CastingCost required = getRequiredCost();
         if (required != null) {
-            String baseMessage = getMessage("insufficient_resources");
-            String costDescription = required.getDescription(controller.getMessages(), mage);
-            sendMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
+            // TODO: API?
+            boolean handled = false;
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                com.elmakers.mine.bukkit.magic.Mage implMage = (com.elmakers.mine.bukkit.magic.Mage)mage;
+                handled = implMage.handleInsufficientResources(this, required);
+            }
+            if (!handled) {
+                String baseMessage = getMessage("insufficient_resources");
+                String costDescription = required.getDescription(controller.getMessages(), mage);
+                sendMessageKey("insufficient_resources", baseMessage.replace("$cost", costDescription));
+            }
             processResult(SpellResult.INSUFFICIENT_RESOURCES, workingParameters);
             sendCastDebugMessage(SpellResult.INSUFFICIENT_RESOURCES, " (no cast)");
             return false;
         }
 
         if (!isCooldownFree() && !spellData.useCharge(rechargeRate, maxCharges)) {
-            long timeRemaining = spellData.getTimeToRecharge(rechargeRate, maxCharges);
-            timeDescription = controller.getMessages().getTimeDescription(timeRemaining, "wait", "charge");
-            sendMessageKey("charge", getMessage("charge").replace("$time", timeDescription));
+            // TODO: API?
+            boolean handled = false;
+            if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+                com.elmakers.mine.bukkit.magic.Mage implMage = (com.elmakers.mine.bukkit.magic.Mage)mage;
+                handled = implMage.handleInsufficientCharges(this);
+            }
+            if (!handled) {
+                long timeRemaining = spellData.getTimeToRecharge(rechargeRate, maxCharges);
+                timeDescription = controller.getMessages().getTimeDescription(timeRemaining, "wait", "charge");
+                sendMessageKey("charge", getMessage("charge").replace("$time", timeDescription));
+            }
             processResult(SpellResult.INSUFFICIENT_CHARGES, workingParameters);
             sendCastDebugMessage(SpellResult.INSUFFICIENT_CHARGES, " (no cast)");
             return false;

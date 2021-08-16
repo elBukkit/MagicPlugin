@@ -64,7 +64,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
-import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -331,6 +331,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected long lastActionBar;
     protected boolean actionBarMana;
     protected boolean lastActionBarFullMana;
+    protected long lastInsufficientResource;
+    protected long lastInsufficientCharges;
+    protected long lastCooldown;
+    protected Spell lastCooldownSpell;
 
     public Wand(MagicController controller) {
         super(controller);
@@ -4709,6 +4713,34 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return true;
     }
 
+    public boolean handleInsufficientResources(Spell spell, CastingCost cost) {
+        if (cost.getMana() == 0) {
+            return false;
+        }
+        if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
+            return false;
+        }
+        lastInsufficientResource = System.currentTimeMillis();
+        return true;
+    }
+
+    public boolean handleCooldown(Spell spell) {
+        if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
+            return false;
+        }
+        lastCooldown = System.currentTimeMillis();
+        lastCooldownSpell = spell;
+        return true;
+    }
+
+    public boolean handleInsufficientCharges(Spell spell) {
+        if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
+            return false;
+        }
+        lastInsufficientCharges = System.currentTimeMillis();
+        return true;
+    }
+
     @Override
     public String parameterize(String message) {
         if (message == null || message.isEmpty()) return "";
@@ -4738,13 +4770,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
         int slotSpacingWidth = getInt("glyph_slot_spacing", -1);
         int manaBarWidth = getInt("glyph_mana_width", 128);
+        int flashTime = getInt("glyph_flash_duration", 300);
 
         // Animation when showing extra message
         int collapseSpace = 0;
         int finalSpace = 0;
+        long now = System.currentTimeMillis();
         boolean hasExtraMessage = extraActionBarMessage != null && actionBarExtraAnimationTime > 0;
         if (hasExtraMessage) {
-            long now = System.currentTimeMillis();
             int collapsedWidth = getInt("glyph_collapsed_width", 6);
             int collapsedFinalWidth = getInt("glyph_collapsed_spacing", 12);
             if (now < lastActionBarExtra + actionBarExtraAnimationTime) {
@@ -4815,22 +4848,32 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             glyphs += icon;
 
             // Add cooldown/disabled indicators
-            int cooldownLevel = 0;
-            Long timeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getTimeToCast() : null;
-            Long maxTimeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getMaxTimeToCast() : null;
-
-            if (timeToCast == null || maxTimeToCast == null) {
-                cooldownLevel = 16;
-            } else if (maxTimeToCast > 0) {
-                cooldownLevel = (int)Math.ceil(16.0 * timeToCast / maxTimeToCast);
-            }
-            if (cooldownLevel > 0) {
-                String cooldownIcon = messages.get("gui.cooldown." + cooldownLevel, "");
+            if (flashTime > 0 && now < lastCooldown + flashTime && lastCooldownSpell != null && lastCooldownSpell.getSpellKey().equals(spell.getSpellKey())) {
+                String cooldownIcon = messages.get("gui.cooldown.wait", "");
                 if (!cooldownIcon.isEmpty()) {
                     glyphs += iconReverse;
                     glyphs += cooldownIcon;
                 }
+            } else {
+                int cooldownLevel = 0;
+                Long timeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getTimeToCast() : null;
+                Long maxTimeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getMaxTimeToCast() : null;
+
+                if (timeToCast == null || maxTimeToCast == null) {
+                    cooldownLevel = 16;
+                } else if (maxTimeToCast > 0) {
+                    cooldownLevel = (int)Math.ceil(16.0 * timeToCast / maxTimeToCast);
+                }
+                if (cooldownLevel > 0) {
+                    String cooldownIcon = messages.get("gui.cooldown." + cooldownLevel, "");
+                    if (!cooldownIcon.isEmpty()) {
+                        glyphs += iconReverse;
+                        glyphs += cooldownIcon;
+                    }
+                }
             }
+
+            // Final icon padding to align to the slot frame
             glyphs += hotbarIconPaddingRight;
 
             // Animation if collapses
@@ -4854,6 +4897,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             glyphs += manaReverse;
             int manaWidth = (int)Math.floor(mode.getProgress(this) * manaSlots);
             glyphs += messages.get("gui.mana." + manaWidth);
+
+            // Currently treating charges the same as mana
+            if (flashTime > 0 && (now < lastInsufficientResource + flashTime || now < lastInsufficientCharges + flashTime)) {
+                glyphs += messages.getSpace(-(manaBarWidth + 1));
+                glyphs += messages.get("gui.mana.insufficient");
+            }
         }
 
         if (finalSpace != 0) {
