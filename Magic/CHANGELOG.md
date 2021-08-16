@@ -64,6 +64,7 @@
  - Add Selector support for simple shortcuts `newrow` and `none`
  - Boss bar configurations can omit the `bar__` prefix in parameters (this kept confusing me)
  - The `ModifyBlock` action can now spawn falling blocks of any type, rather than only spawning them from destroyed blocks
+ - Add `self_destruct` wand property, for a wand that will be destroyed when held
 
 ## Changes
 

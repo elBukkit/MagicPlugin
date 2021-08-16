@@ -39,7 +39,7 @@ public abstract class WandProperties extends TemplatedProperties {
             "keep", "locked", "quiet", "force", "rename", "rename_description",
             "power", "heroes",
             "enchant_count", "max_enchant_count", "cast_location",
-            "quick_cast",
+            "quick_cast", "self_destruct",
             "left_click", "right_click", "drop", "swap",
             "left_click_sneak", "right_click_sneak", "drop_sneak", "swap_sneak",
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",

@@ -5515,6 +5515,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         if (!controller.hasWandPermission(player, this)) return false;
 
+        if (getBoolean("self_destruct")) {
+            mage.sendMessageKey("wand.self_destruct");
+            if (offhand) {
+                player.getInventory().setItemInOffHand(null);
+            } else {
+                player.getInventory().setItemInMainHand(null);
+            }
+            return false;
+        }
+
         InventoryView openInventory = player.getOpenInventory();
         InventoryType inventoryType = openInventory.getType();
         if (inventoryType == InventoryType.ENCHANTING
@@ -5709,6 +5719,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         return true;
+    }
+
+    // This should be used sparingly, if at all... currently only
+    // used when applying an upgrade to a wand while not held
+    public void setMage(Mage mage) {
+        this.mage = mage;
     }
 
     private boolean setMage(Mage mage, boolean offhand, Player player) {

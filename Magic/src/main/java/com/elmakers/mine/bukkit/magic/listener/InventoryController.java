@@ -665,7 +665,7 @@ public class InventoryController implements Listener {
                 activeWand.deactivate();
             }
             Wand wand = controller.createWand(clickedItem);
-            wand.activate(mage);
+            wand.setMage(mage);
             CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(heldItem);
             if (wand.addItem(heldItem)) {
                 event.setCancelled(true);
