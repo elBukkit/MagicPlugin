@@ -267,9 +267,15 @@ wands:
     inventorymode:
         name: Inventory Mode
         description: "&bRight-click&b or &bDrop&f to &6open spell inventory"
-    hybridmode:
-        name: Hybrid Mode
+    controls_hybrid:
+        name: Hybrid Controls
         description: "&bRight-click&b to &6cycle spells&f, &bDrop&f to &6open spell inventory"
+    controls_inventory:
+        name: Inventory Controls
+        description: "&bRight-click&b or &bDrop&f to &6open spell inventory"
+    controls_chest:
+        name: Chest Controls
+        description: "&bRight-click&b or &bDrop&f to &6open spell selection menu"
     particles:
         name: Show Particles
         description: Turn on the display of all particles from spells

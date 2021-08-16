@@ -12,6 +12,7 @@ uberwand:
   mode: inventory
   effect_particle: ENCHANTMENT_TABLE
   level_spells: true
+  slots: controls
   potion_effects:
     - SATURATION
     - REGENERATION

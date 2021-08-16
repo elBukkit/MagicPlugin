@@ -1,6 +1,7 @@
-hybridmode:
+controls_hybrid:
     icon: music_disc_wait{CustomModelData:18001}
     legacy_icon: diamond_axe:205
+    slot: controls
     upgrade: true
     mode: inventory
     drop: toggle
@@ -18,10 +19,11 @@ hybridmode:
                 interval: 250
                 delay: 1500
 
-chestmode:
+controls_chest:
     icon: chest{CustomModelData:18001}
     legacy_icon: diamond_axe:205
     upgrade: true
+    slot: controls
     mode: chest
     drop: toggle
     right_click: toggle
@@ -29,11 +31,11 @@ chestmode:
     swappable: true
     requirement_properties: ""
 
-inventorymode:
+controls_inventory:
     icon: oak_sign{CustomModelData:18001}
     legacy_icon: spell_icon:214
     upgrade: true
-    indestructible: false
+    slot: controls
     mode: inventory
     drop: toggle
     right_click: toggle
@@ -42,7 +44,22 @@ inventorymode:
     requirement_properties: ""
 
 # Not used anymore
+chestmode:
+    hidden: true
+    icon: chest{CustomModelData:18001}
+    legacy_icon: diamond_axe:205
+    upgrade: true
+    indestructible: false
+    mode: chest
+inventorymode:
+    hidden: true
+    icon: oak_sign{CustomModelData:18001}
+    legacy_icon: spell_icon:214
+    upgrade: true
+    indestructible: false
+    mode: inventory
 cyclemode:
+    hidden: true
     icon: music_disc_wait{CustomModelData:18001}
     legacy_icon: diamond_axe:215
     upgrade: true
@@ -77,18 +94,21 @@ noparticles:
 # Messaging control, no longer part of the controlsmenu
 
 loud:
+    hidden: true
     icon: music_disc_blocks{CustomModelData:18001}
     legacy_icon: diamond_axe:218
     upgrade: true
     indestructible: false
     quiet: 0
 quiet:
+    hidden: true
     icon: music_disc_stal{CustomModelData:18001}
     legacy_icon: diamond_axe:219
     upgrade: true
     indestructible: false
     quiet: 1
 silent:
+    hidden: true
     icon: music_disc_11{CustomModelData:18001}
     legacy_icon: diamond_axe:220
     upgrade: true
@@ -97,24 +117,28 @@ silent:
 
 # No longer part of the controlsmenu, stll available in tweakshop
 quickcast_enable:
+    hidden: true
     icon: warped_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:206
     upgrade: true
     force: true
     quick_cast: true
 quickcast_disable:
+    hidden: true
     icon: crimson_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:207
     upgrade: true
     force: true
     quick_cast: disable
 quickcast_manual:
+    hidden: true
     icon: acacia_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:208
     upgrade: true
     force: true
     quick_cast: manual
 quickcast_normal:
+    hidden: true
     icon: oak_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:209
     upgrade: true
@@ -123,6 +147,7 @@ quickcast_normal:
 
 # No longer part of the controlsmenu, stll available in tweakshop
 mode_drop:
+    hidden: true
     icon: birch_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:210
     upgrade: true
@@ -133,6 +158,7 @@ mode_drop:
     swap: cycle_hotbar
     quick_cast: false
 mode_rightclick:
+    hidden: true
     icon: dark_oak_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:211
     upgrade: true
@@ -143,6 +169,7 @@ mode_rightclick:
     swap: none
     quick_cast: false
 mode_sword:
+    hidden: true
     icon: diamond_sword{CustomModelData:18106}
     legacy_icon: diamond_axe:212
     upgrade: true
@@ -153,6 +180,7 @@ mode_sword:
     swap: cycle_hotbar
     quick_cast: true
 mode_swap:
+    hidden: true
     icon: acacia_sign{CustomModelData:18001}
     legacy_icon: diamond_axe:213
     upgrade: true

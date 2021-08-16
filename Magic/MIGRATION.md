@@ -9,6 +9,9 @@
    
  - Arena start/end commands delimiter changed to ; (from ,)
 
+ - Wand controls menu has changed to a slotted system. If you have custom wands with the "tweakable" tag and you'd
+   still like to be able to change their controls, add `slot: controls` to the wand config.
+
 # 9.4
 
  - The `beginner` wand has been made into a demo wand and no longer turns into `wand`

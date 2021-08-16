@@ -12,11 +12,11 @@ controlsmenu:
     parameters:
         apply_to_wand: true
         requirements:
-        - wand_tags: tweakable
+        - wand_slot: controls
         options:
-          - item: hybridmode
-          - item: inventorymode
-          - item: chestmode
+          - item: controls_hybrid
+          - item: controls_inventory
+          - item: controls_chest
           - item: none
           - item: organizer
             selected: "You organized your spell inventory"
