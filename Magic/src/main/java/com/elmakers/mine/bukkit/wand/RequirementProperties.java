@@ -12,14 +12,19 @@ public class RequirementProperties {
     private final Collection<Requirement> requirements;
     private final ConfigurationSection properties;
     private boolean status;
+    private boolean invert;
 
     public RequirementProperties(ConfigurationSection configuration) {
         requirements = ConfigurationUtils.getRequirements(configuration);
         properties = configuration.getConfigurationSection("properties");
+        invert = configuration.getBoolean("invert", false);
     }
 
     public boolean check(MageContext context) {
         status = context.getController().checkRequirements(context, requirements) == null;
+        if (invert) {
+            status = !status;
+        }
         return status;
     }
 
@@ -30,6 +35,10 @@ public class RequirementProperties {
 
     public boolean isEmpty() {
         return requirements == null || requirements.isEmpty() || properties == null || properties.getKeys(false).isEmpty();
+    }
+
+    public boolean isAllowed() {
+        return status;
     }
 
     public ConfigurationSection getProperties() {

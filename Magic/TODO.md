@@ -2,14 +2,9 @@
 
 # Glyph Wand
 
- - Hitting right-click while in the spell inventory should close it (?)
-   Do this with generic "if inventory is open" requirement
-   Make requirements update use a reduced set of parameters, loadParameters() 
-   avoid re-parsing everything?
- - Need a way to turn off the xp bar and level displays while inventory is closed
-   This could be part of the above behavior
  - Check 1.16 ... does it work? Do we need to prevent it? Or maybe update the 1.16 RP?
  - Make brushes work (swing to use)
+ - Get rid of useActiveNameWhenClosed paramter, fold into requirements
 
 # Important
 

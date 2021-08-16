@@ -1983,6 +1983,147 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return materialData instanceof MaterialAndData ? (MaterialAndData)materialData : null;
     }
 
+    protected void loadParameters() {
+        // These should only be parameters to are OK and safe (performance-wise in particular)
+        // to change on the fly without fully reloading the wand
+        consumeReduction = getFloat("consume_reduction");
+        cooldownReduction = getFloat("cooldown_reduction");
+        costReduction = getFloat("cost_reduction");
+        power = getFloat("power");
+        blockChance = getFloat("block_chance");
+        blockReflectChance = getFloat("block_reflect_chance");
+        blockFOV = getFloat("block_fov");
+        blockMageCooldown = getInt("block_mage_cooldown");
+        blockCooldown = getInt("block_cooldown");
+
+        manaPerDamage = getFloat("mana_per_damage");
+        earnMultiplier = getFloat("earn_multiplier", getFloat("sp_multiplier", 1));
+        quietLevel = getInt("quiet");
+        effectBubbles = getBoolean("effect_bubbles");
+        superPowered = getBoolean("powered");
+        superProtected = getBoolean("protected");
+        glow = getBoolean("glow");
+        spellGlow = getBoolean("spell_glow");
+        undroppable = getBoolean("undroppable");
+        swappable = getBoolean("swappable", true);
+        maxEnchantCount = getInt("max_enchant_count");
+        showCycleModeLore = getBoolean("show_cycle_lore", true);
+        useActiveName = getBoolean("use_active_name", false);
+        useActiveNameWhenClosed = getBoolean("use_active_name_when_closed", true);
+
+        activeEffectsOnly = getBoolean("active_effects");
+        effectParticleData = getFloat("effect_particle_data");
+        effectParticleCount = getInt("effect_particle_count");
+        effectParticleRadius = getDouble("effect_particle_radius");
+        effectParticleOffset = getDouble("effect_particle_offset");
+        effectParticleInterval = getInt("effect_particle_interval");
+        effectParticleMinVelocity = getDouble("effect_particle_min_velocity");
+        effectSoundInterval =  getInt("effect_sound_interval");
+        castLocation = getVector("cast_location");
+
+        castInterval = getInt("cast_interval");
+        castMinVelocity = getDouble("cast_min_velocity");
+        castVelocityDirection = getVector("cast_velocity_direction");
+        castSpell = getString("cast_spell");
+        String castParameterString = getString("cast_parameters", null);
+        if (castParameterString != null && !castParameterString.isEmpty()) {
+            castParameters = ConfigurationUtils.newConfigurationSection();
+            ConfigurationUtils.addParameters(StringUtils.split(castParameterString, ' '), castParameters);
+        } else {
+            castParameters = null;
+        }
+
+        leftClickAction = parseWandAction(getString("left_click"), leftClickAction);
+        rightClickAction = parseWandAction(getString("right_click"), rightClickAction);
+        dropAction = parseWandAction(getString("drop"), dropAction);
+        swapAction = parseWandAction(getString("swap"), swapAction);
+        leftClickSneakAction = parseWandAction(getString("left_click_sneak"), leftClickSneakAction);
+        rightClickSneakAction = parseWandAction(getString("right_click_sneak"), rightClickSneakAction);
+        dropSneakAction = parseWandAction(getString("drop_sneak"), dropSneakAction);
+        swapSneakAction = parseWandAction(getString("swap_sneak"), swapSneakAction);
+
+        // Update glyph bar configuration
+        glyphHotbar.load(getConfigurationSection("glyph_hotbar"));
+
+        // Boss bar, can be a simple boolean or a config
+        bossBarConfiguration = null;
+        if (getBoolean("boss_bar", false)) {
+            bossBarConfiguration = new BossBarConfiguration(controller, ConfigurationUtils.newConfigurationSection());
+        } else {
+            ConfigurationSection config = getConfigurationSection("boss_bar");
+            if (config != null) {
+                bossBarDisplayMode = parseDisplayMode(config, WandDisplayMode.COOLDOWN);
+                if (bossBarDisplayMode != WandDisplayMode.NONE) {
+                    bossBarConfiguration = new BossBarConfiguration(controller, config, "$wand");
+                }
+            } else {
+                String bossBarMode = getString("boss_bar");
+                bossBarDisplayMode = parseDisplayMode(bossBarMode, WandDisplayMode.NONE);
+                if (bossBarDisplayMode != WandDisplayMode.NONE) {
+                    bossBarConfiguration = new BossBarConfiguration(controller, ConfigurationUtils.newConfigurationSection());
+                }
+            }
+        }
+
+        ConfigurationSection config = getConfigurationSection("xp_display");
+        if (config != null) {
+            xpBarDisplayMode = parseDisplayMode(config, WandDisplayMode.MANA);
+        } else {
+            String displayMode = getString("xp_display");
+            xpBarDisplayMode = parseDisplayMode(displayMode, WandDisplayMode.MANA);
+        }
+
+        config = getConfigurationSection("level_display");
+        if (config != null) {
+            levelDisplayMode = parseDisplayMode(config, WandDisplayMode.SP);
+        } else {
+            // Backwards-compatibility
+            String currencyDisplay = getString("currency_display", "sp");
+            if (!currencyDisplay.equals("sp")) {
+                if (currencyDisplay.isEmpty()) {
+                    levelDisplayMode = WandDisplayMode.NONE;
+                } else {
+                    levelDisplayMode = WandDisplayMode.getCurrency(currencyDisplay);
+                }
+            } else {
+                String displayMode = getString("level_display");
+                levelDisplayMode = parseDisplayMode(displayMode, WandDisplayMode.SP);
+            }
+        }
+
+        config = getConfigurationSection("action_bar");
+        if (config != null) {
+            actionBarMessage = config.getString("message");
+            actionBarOpenMessage = config.getString("open_message", actionBarMessage);
+            if (actionBarMessage.isEmpty()) {
+                actionBarMessage = null;
+            } else {
+                actionBarInterval = config.getInt("interval", 1000);
+                actionBarDelay = config.getInt("delay", 0);
+                actionBarMana = config.getBoolean("uses_mana");
+            }
+            lastActionBar = 0;
+        } else {
+            actionBarMessage = getString("action_bar");
+            actionBarOpenMessage = actionBarMessage;
+        }
+        if (actionBarMessage == null) {
+            actionBarMana = false;
+        }
+
+        // Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
+        // so try to keep defaults as 0/0.0/false.
+        if (effectSound == null) {
+            effectSoundInterval = 0;
+        } else {
+            effectSoundInterval = (effectSoundInterval == 0) ? 5 : effectSoundInterval;
+        }
+
+        if (effectParticle == null) {
+            effectParticleInterval = 0;
+        }
+    }
+
     @Override
     public void loadProperties() {
         super.loadProperties();
@@ -2052,10 +2193,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         locked = getBoolean("locked", locked);
         autoAbsorb = getBoolean("auto_absorb", false);
         lockedAllowUpgrades = getBoolean("locked_allow_upgrades", false);
-        consumeReduction = getFloat("consume_reduction");
-        cooldownReduction = getFloat("cooldown_reduction");
-        costReduction = getFloat("cost_reduction");
-        power = getFloat("power");
         inventoryOpenLore = getMessage("inventory_open", "");
 
         ConfigurationSection protectionConfig = getConfigurationSection("protection");
@@ -2077,16 +2214,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         hasId = getBoolean("unique", false);
-
-        blockChance = getFloat("block_chance");
-        blockReflectChance = getFloat("block_reflect_chance");
-        blockFOV = getFloat("block_fov");
-        blockMageCooldown = getInt("block_mage_cooldown");
-        blockCooldown = getInt("block_cooldown");
-
-        manaPerDamage = getFloat("mana_per_damage");
-        earnMultiplier = getFloat("earn_multiplier", getFloat("sp_multiplier", 1));
-
         String interactibleMaterialKey = getString("interactible");
         if (interactibleMaterialKey != null) {
             interactibleMaterials = controller.getMaterialSetManager().fromConfigEmpty(interactibleMaterialKey);
@@ -2120,17 +2247,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         id = getString("id");
         isUpgrade = getBoolean("upgrade");
-        quietLevel = getInt("quiet");
-        effectBubbles = getBoolean("effect_bubbles");
         keep = getBoolean("keep");
         worn = getBoolean("worn", getBoolean("passive"));
         indestructible = getBoolean("indestructible");
-        superPowered = getBoolean("powered");
-        superProtected = getBoolean("protected");
-        glow = getBoolean("glow");
-        spellGlow = getBoolean("spell_glow");
-        undroppable = getBoolean("undroppable");
-        swappable = getBoolean("swappable", true);
         isHeroes = getBoolean("heroes");
         bound = getBoolean("bound");
         boundDisplayName = getString("bound_name", "display").equals("display");
@@ -2141,11 +2260,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         rename = getBoolean("rename");
         renameDescription = getBoolean("rename_description");
         enchantCount = getInt("enchant_count");
-        maxEnchantCount = getInt("max_enchant_count");
         inventoryRows = getInt("inventory_rows", 5);
-        showCycleModeLore = getBoolean("show_cycle_lore", true);
-        useActiveName = getBoolean("use_active_name", false);
-        useActiveNameWhenClosed = getBoolean("use_active_name_when_closed", true);
         resetManaOnActivate = null;
         if (hasProperty("reset_mana_on_activate")) {
             String asString = getString("reset_mana_on_activate");
@@ -2166,27 +2281,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             effectSound = ConfigurationUtils.toSoundEffect(getString("effect_sound"));
         } else {
             effectSound = null;
-        }
-        activeEffectsOnly = getBoolean("active_effects");
-        effectParticleData = getFloat("effect_particle_data");
-        effectParticleCount = getInt("effect_particle_count");
-        effectParticleRadius = getDouble("effect_particle_radius");
-        effectParticleOffset = getDouble("effect_particle_offset");
-        effectParticleInterval = getInt("effect_particle_interval");
-        effectParticleMinVelocity = getDouble("effect_particle_min_velocity");
-        effectSoundInterval =  getInt("effect_sound_interval");
-        castLocation = getVector("cast_location");
-
-        castInterval = getInt("cast_interval");
-        castMinVelocity = getDouble("cast_min_velocity");
-        castVelocityDirection = getVector("cast_velocity_direction");
-        castSpell = getString("cast_spell");
-        String castParameterString = getString("cast_parameters", null);
-        if (castParameterString != null && !castParameterString.isEmpty()) {
-            castParameters = ConfigurationUtils.newConfigurationSection();
-            ConfigurationUtils.addParameters(StringUtils.split(castParameterString, ' '), castParameters);
-        } else {
-            castParameters = null;
         }
 
         WandMode newMode = parseWandMode(getString("mode"), controller.getDefaultWandMode());
@@ -2249,14 +2343,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 manualQuickCastDisabled = false;
             }
         }
-        leftClickAction = parseWandAction(getString("left_click"), leftClickAction);
-        rightClickAction = parseWandAction(getString("right_click"), rightClickAction);
-        dropAction = parseWandAction(getString("drop"), dropAction);
-        swapAction = parseWandAction(getString("swap"), swapAction);
-        leftClickSneakAction = parseWandAction(getString("left_click_sneak"), leftClickSneakAction);
-        rightClickSneakAction = parseWandAction(getString("right_click_sneak"), rightClickSneakAction);
-        dropSneakAction = parseWandAction(getString("drop_sneak"), dropSneakAction);
-        swapSneakAction = parseWandAction(getString("swap_sneak"), swapSneakAction);
 
         owner = getString("owner");
         ownerId = getString("owner_id");
@@ -2455,88 +2541,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             updateSpellInventory();
         }
 
-        // Some cleanup and sanity checks. In theory we don't need to store any non-zero value (as it is with the traders)
-        // so try to keep defaults as 0/0.0/false.
-        if (effectSound == null) {
-            effectSoundInterval = 0;
-        } else {
-            effectSoundInterval = (effectSoundInterval == 0) ? 5 : effectSoundInterval;
-        }
-
-        if (effectParticle == null) {
-            effectParticleInterval = 0;
-        }
-
         checkActiveMaterial();
-
-        // Update glyph bar configuration
-        glyphHotbar.load(getConfigurationSection("glyph_hotbar"));
-
-        // Boss bar, can be a simple boolean or a config
-        bossBarConfiguration = null;
-        if (getBoolean("boss_bar", false)) {
-            bossBarConfiguration = new BossBarConfiguration(controller, ConfigurationUtils.newConfigurationSection());
-        } else {
-            ConfigurationSection config = getConfigurationSection("boss_bar");
-            if (config != null) {
-                bossBarDisplayMode = parseDisplayMode(config, WandDisplayMode.COOLDOWN);
-                if (bossBarDisplayMode != WandDisplayMode.NONE) {
-                    bossBarConfiguration = new BossBarConfiguration(controller, config, "$wand");
-                }
-            } else {
-                String bossBarMode = getString("boss_bar");
-                bossBarDisplayMode = parseDisplayMode(bossBarMode, WandDisplayMode.NONE);
-                if (bossBarDisplayMode != WandDisplayMode.NONE) {
-                    bossBarConfiguration = new BossBarConfiguration(controller, ConfigurationUtils.newConfigurationSection());
-                }
-            }
-        }
-
-        ConfigurationSection config = getConfigurationSection("xp_display");
-        if (config != null) {
-            xpBarDisplayMode = parseDisplayMode(config, WandDisplayMode.MANA);
-        } else {
-            String displayMode = getString("xp_display");
-            xpBarDisplayMode = parseDisplayMode(displayMode, WandDisplayMode.MANA);
-        }
-
-        config = getConfigurationSection("level_display");
-        if (config != null) {
-            levelDisplayMode = parseDisplayMode(config, WandDisplayMode.SP);
-        } else {
-            // Backwards-compatiiblity
-            String currencyDisplay = getString("currency_display", "sp");
-            if (!currencyDisplay.equals("sp")) {
-                if (currencyDisplay.isEmpty()) {
-                    levelDisplayMode = WandDisplayMode.NONE;
-                } else {
-                    levelDisplayMode = WandDisplayMode.getCurrency(currencyDisplay);
-                }
-            } else {
-                String displayMode = getString("level_display");
-                levelDisplayMode = parseDisplayMode(displayMode, WandDisplayMode.SP);
-            }
-        }
-
-        config = getConfigurationSection("action_bar");
-        if (config != null) {
-            actionBarMessage = config.getString("message");
-            actionBarOpenMessage = config.getString("open_message", actionBarMessage);
-            if (actionBarMessage.isEmpty()) {
-                actionBarMessage = null;
-            } else {
-                actionBarInterval = config.getInt("interval", 1000);
-                actionBarDelay = config.getInt("delay", 0);
-                actionBarMana = config.getBoolean("uses_mana");
-            }
-            lastActionBar = 0;
-        } else {
-            actionBarMessage = getString("action_bar");
-            actionBarOpenMessage = actionBarMessage;
-        }
-        if (actionBarMessage == null) {
-            actionBarMana = false;
-        }
+        loadParameters();
 
         // Automatically decide if instruction messages and lore should be used
         if (inventoryRows <= 0) inventoryRows = 1;
@@ -4239,6 +4245,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (hasStoredInventory()) return;
             if (storeInventory()) {
                 inventoryIsOpen = true;
+                updateRequirements();
                 showActiveIcon(true);
                 if (!playPassiveEffects("open") && inventoryOpenSound != null) {
                     mage.playSoundEffect(inventoryOpenSound);
@@ -4282,6 +4289,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (!useActiveNameWhenClosed) {
                 updateName();
             }
+            updateRequirements();
             updateActionBar();
             if (mage != null) {
                 if (!playPassiveEffects("close") && inventoryCloseSound != null) {
@@ -5263,9 +5271,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
         if (changed) {
-            requirementConfiguration = ConfigurationUtils.newConfigurationSection();
+            requirementConfiguration = null;
             for (RequirementProperties properties : requirementProperties) {
-                ConfigurationUtils.addConfigurations(requirementConfiguration, properties.getProperties(), false);
+                if (properties.isAllowed()) {
+                    if (requirementConfiguration == null) {
+                        requirementConfiguration = ConfigurationUtils.newConfigurationSection();
+                    }
+                    ConfigurationUtils.addConfigurations(requirementConfiguration, properties.getProperties(), false);
+                }
             }
         }
         return changed;
@@ -5274,7 +5287,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected void updateRequirements() {
         if (requirementProperties == null) return;
         if (updateRequirementConfiguration()) {
-            loadProperties();
+            loadParameters();
         }
     }
 
@@ -7066,11 +7079,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     @Nonnull
     public ConfigurationSection getPropertyConfiguration(String key) {
-        if (slottedConfiguration != null && slottedConfiguration.contains(key)) {
-            return slottedConfiguration;
-        }
         if (requirementConfiguration != null && requirementConfiguration.contains(key)) {
             return requirementConfiguration;
+        }
+        if (slottedConfiguration != null && slottedConfiguration.contains(key)) {
+            return slottedConfiguration;
         }
         return super.getPropertyConfiguration(key);
     }
