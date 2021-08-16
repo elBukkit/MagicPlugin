@@ -9,6 +9,10 @@
    
  - Arena start/end commands delimiter changed to ; (from ,)
 
+ - Wand controls changed to new hybrid mode by default.
+   Use `/mconfig configure config wand_slots.controls.default_slotted controls_inventory` to put the default
+   back to the old mode.
+
  - Wand controls menu has changed to a slotted system. If you have custom wands with the "tweakable" tag and you'd
    still like to be able to change their controls, add `slot: controls` to the wand config.
 

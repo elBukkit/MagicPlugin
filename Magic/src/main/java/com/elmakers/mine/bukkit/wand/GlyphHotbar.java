@@ -22,6 +22,7 @@ public class GlyphHotbar {
     private int flashTime;
     private int collapsedWidth;
     private int collapsedFinalSpacing;
+    private int collapsedMaxMessageLength;
     private WandDisplayMode barMode;
     private int barSlotPadding;
     private boolean showCooldown;
@@ -57,6 +58,7 @@ public class GlyphHotbar {
         collapsedWidth = configuration.getInt("collapsed_slot_width", 6);
         collapsedFinalSpacing = configuration.getInt("collapsed_spacing", 12);
         showCooldown = configuration.getBoolean("show_cooldown", true);
+        collapsedMaxMessageLength = configuration.getInt("collapsed_message_max_length", 20);
 
         barMode = WandDisplayMode.parse(wand.getController(), configuration, "bar_mode", WandDisplayMode.MANA);
     }
@@ -77,11 +79,17 @@ public class GlyphHotbar {
         long now = System.currentTimeMillis();
         boolean hasExtraMessage = extraMessage != null && extraAnimationTime > 0;
         if (hasExtraMessage) {
+            int useCollapsedWidth = collapsedWidth;
+            int messageLength = extraMessage.length();
+            if (messageLength < collapsedMaxMessageLength) {
+                int widthDelta = hotbarSlotWidth - collapsedWidth;
+                useCollapsedWidth = hotbarSlotWidth - (int)Math.ceil((double)widthDelta * messageLength / collapsedMaxMessageLength);
+            }
             if (now < lastExtraMessage + extraAnimationTime) {
-                collapseSpace = (int)Math.ceil((hotbarSlotWidth - collapsedWidth) * (now - lastExtraMessage) / extraAnimationTime);
+                collapseSpace = (int)Math.ceil((hotbarSlotWidth - useCollapsedWidth) * (now - lastExtraMessage) / extraAnimationTime);
                 finalSpace = (int)Math.ceil(collapsedFinalSpacing * (now - lastExtraMessage) / extraAnimationTime);
             } else {
-                collapseSpace = hotbarSlotWidth - collapsedWidth;
+                collapseSpace = hotbarSlotWidth - useCollapsedWidth;
                 finalSpace = collapsedFinalSpacing;
             }
         }
