@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.wand;
 
 import java.util.Collection;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -72,7 +74,17 @@ public class WandDisplayMode {
         }
     }
 
+    @Nonnull
+    public static WandDisplayMode parse(MageController controller, ConfigurationSection config, String modeKey, WandDisplayMode defaultMode) {
+        WandDisplayMode parsed = parse(controller, config, modeKey);
+        return parsed == null ? defaultMode : parsed;
+    }
+
+    @Nullable
     public static WandDisplayMode parse(MageController controller, ConfigurationSection config, String modeKey) {
+        if (config == null) {
+            return null;
+        }
         String displayMode = config.getString(modeKey);
         if (displayMode == null || displayMode.isEmpty()) {
             return null;

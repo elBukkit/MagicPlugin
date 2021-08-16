@@ -22,6 +22,8 @@ public class GlyphHotbar {
     private int flashTime;
     private int collapsedWidth;
     private int collapsedFinalSpacing;
+    private WandDisplayMode barMode;
+    private boolean showCooldown;
 
     protected String extraMessage;
     protected long lastExtraMessage;
@@ -46,12 +48,15 @@ public class GlyphHotbar {
         hotbarActiveSlotWidth = configuration.getInt("active_slot_width", 22);
         iconWidth = configuration.getInt("icon_width", 16);
         slotSpacingWidth = configuration.getInt("slot_spacing", -1);
-        manaBarWidth = configuration.getInt("mana_bar_width", 128);
+        manaBarWidth = configuration.getInt("bar_width", 128);
         flashTime = configuration.getInt("flash_duration", 300);
         extraMessageDelay = configuration.getInt("extra_display_time", 2000);
         extraAnimationTime = configuration.getInt("extra_animate_time", 500);
         collapsedWidth = configuration.getInt("collapsed_slot_width", 6);
         collapsedFinalSpacing = configuration.getInt("collapsed_spacing", 12);
+        showCooldown = configuration.getBoolean("show_cooldown", true);
+
+        barMode = WandDisplayMode.parse(wand.getController(), configuration, "bar_mode", WandDisplayMode.MANA);
     }
 
     public String getGlyphs() {
@@ -139,27 +144,29 @@ public class GlyphHotbar {
             glyphs += icon;
 
             // Add cooldown/disabled indicators
-            if (flashTime > 0 && now < lastCooldown + flashTime && lastCooldownSpell != null && lastCooldownSpell.getSpellKey().equals(spell.getSpellKey())) {
-                String cooldownIcon = messages.get("gui.cooldown.wait", "");
-                if (!cooldownIcon.isEmpty()) {
-                    glyphs += iconReverse;
-                    glyphs += cooldownIcon;
-                }
-            } else {
-                int cooldownLevel = 0;
-                Long timeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getTimeToCast() : null;
-                Long maxTimeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getMaxTimeToCast() : null;
-
-                if (timeToCast == null || maxTimeToCast == null) {
-                    cooldownLevel = 16;
-                } else if (maxTimeToCast > 0) {
-                    cooldownLevel = (int)Math.ceil(16.0 * timeToCast / maxTimeToCast);
-                }
-                if (cooldownLevel > 0) {
-                    String cooldownIcon = messages.get("gui.cooldown." + cooldownLevel, "");
+            if (showCooldown) {
+                if (flashTime > 0 && now < lastCooldown + flashTime && lastCooldownSpell != null && lastCooldownSpell.getSpellKey().equals(spell.getSpellKey())) {
+                    String cooldownIcon = messages.get("gui.cooldown.wait", "");
                     if (!cooldownIcon.isEmpty()) {
                         glyphs += iconReverse;
                         glyphs += cooldownIcon;
+                    }
+                } else {
+                    int cooldownLevel = 0;
+                    Long timeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getTimeToCast() : null;
+                    Long maxTimeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getMaxTimeToCast() : null;
+
+                    if (timeToCast == null || maxTimeToCast == null) {
+                        cooldownLevel = 16;
+                    } else if (maxTimeToCast > 0) {
+                        cooldownLevel = (int)Math.ceil(16.0 * timeToCast / maxTimeToCast);
+                    }
+                    if (cooldownLevel > 0) {
+                        String cooldownIcon = messages.get("gui.cooldown." + cooldownLevel, "");
+                        if (!cooldownIcon.isEmpty()) {
+                            glyphs += iconReverse;
+                            glyphs += cooldownIcon;
+                        }
                     }
                 }
             }
@@ -178,15 +185,14 @@ public class GlyphHotbar {
         }
 
         // Create the mana bar
-        if (manaBarWidth > 0 && !hasExtraMessage) {
-            WandDisplayMode mode = WandDisplayMode.MANA;
+        if (manaBarWidth > 0 && !hasExtraMessage && barMode != WandDisplayMode.NONE) {
             int manaSlots = 32;
             int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + 1);
             int manaBarPaddingLeft = (hotbarWidth - manaBarWidth) / 2;
             int manaBarReverseAmount = hotbarWidth - manaBarPaddingLeft;
             String manaReverse = messages.getSpace(-manaBarReverseAmount);
             glyphs += manaReverse;
-            int manaWidth = (int)Math.floor(mode.getProgress(wand) * manaSlots);
+            int manaWidth = (int)Math.floor(barMode.getProgress(wand) * manaSlots);
             glyphs += messages.get("gui.mana." + manaWidth);
 
             // Currently treating charges the same as mana
