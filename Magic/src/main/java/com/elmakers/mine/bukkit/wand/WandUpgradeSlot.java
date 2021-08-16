@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.wand;
 
-import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
