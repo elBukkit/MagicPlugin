@@ -4697,12 +4697,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             lastActionBarFullMana = fullMana;
         }
-        String useMessage = inventoryIsOpen ? actionBarOpenMessage : actionBarMessage;
+        String useMessage = getActionBarMessage();
         String message = parameterize(useMessage);
         CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
     }
 
+    protected String getActionBarMessage() {
+        return inventoryIsOpen ? actionBarOpenMessage : actionBarMessage;
+    }
+
+    protected boolean isActionBarActive() {
+        String message = getActionBarMessage();
+        return message != null && !message.isEmpty();
+    }
+
     public boolean handleActionBar(String message) {
+        String actionBarMessage = getActionBarMessage();
         if (actionBarMessage == null || !actionBarMessage.contains("$extra")) {
             return false;
         }
@@ -4717,6 +4727,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (cost.getMana() == 0) {
             return false;
         }
+        String actionBarMessage = getActionBarMessage();
         if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
             return false;
         }
@@ -4725,6 +4736,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public boolean handleCooldown(Spell spell) {
+        String actionBarMessage = getActionBarMessage();
         if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
             return false;
         }
@@ -4734,6 +4746,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public boolean handleInsufficientCharges(Spell spell) {
+        String actionBarMessage = getActionBarMessage();
         if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
             return false;
         }
@@ -5354,7 +5367,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateXPBar();
         long now = System.currentTimeMillis();
         // Always tick action bar while animating
-        if (actionBarMessage != null
+        if (isActionBarActive()
             && (now > lastActionBar + actionBarInterval
             || (extraActionBarMessage != null && now <= lastActionBarExtra + actionBarExtraAnimationTime))) {
             lastActionBar = now;
