@@ -2065,6 +2065,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
+        WandDisplayMode previousXP = xpBarDisplayMode;
+        WandDisplayMode previousLevel = levelDisplayMode;
         ConfigurationSection config = getConfigurationSection("xp_display");
         if (config != null) {
             xpBarDisplayMode = parseDisplayMode(config, WandDisplayMode.MANA);
@@ -2089,6 +2091,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 String displayMode = getString("level_display");
                 levelDisplayMode = parseDisplayMode(displayMode, WandDisplayMode.SP);
             }
+        }
+
+        if ((previousXP != xpBarDisplayMode && xpBarDisplayMode == WandDisplayMode.NONE)
+            || (previousLevel != levelDisplayMode && levelDisplayMode == WandDisplayMode.NONE)) {
+            resetXPDisplay();
         }
 
         config = getConfigurationSection("action_bar");
@@ -4859,6 +4866,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return "";
         }
         return null;
+    }
+
+    protected void resetXPDisplay() {
+        Player player = mage == null ? null : mage.getPlayer();
+        if (player == null) return;
+        mage.sendExperience(player.getExp(), player.getLevel());
     }
 
     public void updateXPBar() {
