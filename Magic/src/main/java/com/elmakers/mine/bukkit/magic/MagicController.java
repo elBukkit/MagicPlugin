@@ -5998,7 +5998,13 @@ public class MagicController implements MageController {
 
     @Override
     public boolean isDisguised(Entity entity) {
-        return libsDisguiseEnabled && libsDisguiseManager != null && entity != null && libsDisguiseManager.isDisguised(entity);
+        try {
+            return libsDisguiseEnabled && libsDisguiseManager != null && entity != null && libsDisguiseManager.isDisguised(entity);
+        } catch (Throwable ex) {
+            getLogger().log(Level.SEVERE, "Error checking for a disguised mob, disabling libsDisguises integration until next restart", ex);
+            libsDisguiseEnabled = false;
+        }
+        return false;
     }
 
     @Override
@@ -6011,7 +6017,13 @@ public class MagicController implements MageController {
         if (!libsDisguiseEnabled || libsDisguiseManager == null || entity == null) {
             return false;
         }
-        return libsDisguiseManager.disguise(entity, configuration);
+        try {
+            return libsDisguiseManager.disguise(entity, configuration);
+        } catch (Throwable ex) {
+            getLogger().log(Level.SEVERE, "Error trying to disguise a mob, disabling libsDisguises integration until next restart", ex);
+            libsDisguiseEnabled = false;
+        }
+        return false;
     }
 
     @Deprecated
