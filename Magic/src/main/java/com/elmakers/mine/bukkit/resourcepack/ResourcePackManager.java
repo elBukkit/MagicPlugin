@@ -247,14 +247,17 @@ public class ResourcePackManager {
         Bukkit.getScheduler().runTaskLater(controller.getPlugin(), new Runnable() {
             @Override
             public void run() {
+                String sendURL = url;
                 String hashString;
                 try {
                     hashString = BaseEncoding.base64().encode(hash);
+                    // MC 1.17 got super dumb about RPs changing their hash without a new URL :(
+                    sendURL += "#" + hashString;
                 } catch (Exception ex) {
                     hashString = "(Error";
                 }
-                controller.info("Sending resource pack " + url + " to " + player.getName() + " with hash " + hashString, 10);
-                CompatibilityLib.getCompatibilityUtils().setResourcePack(player, url, hash);
+                controller.info("Sending resource pack " + sendURL + " to " + player.getName() + " with hash " + hashString, 10);
+                CompatibilityLib.getCompatibilityUtils().setResourcePack(player, sendURL, hash);
             }
         }, resourcePackDelay * 20 / 1000);
 
