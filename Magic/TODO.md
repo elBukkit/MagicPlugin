@@ -1,5 +1,13 @@
 # TODO
 
+# Importanter
+
+ - Having an attribute set on Mage data as well as class data makes things go really wrong when 
+   adding to that attribute
+
+ - Take some timings and spark profiles (during club, ideally), consider impact
+   of possibly changing mage_update_interval to 1
+
 # Glyph Wand
 
  - Check 1.16 ... does it work? Do we need to prevent it? Or maybe update the 1.16 RP?
@@ -26,6 +34,13 @@
    support Power on a magic bow?
  - Dying at the end of an arena puts you in a broken state (maybe fixed?)
  - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
+
+# Magic Help System
+
+ - /mhelp command, prompt ops on first join (via permission)
+ - require ChatCompoment support
+ - config-driven, example-specific trees
+ - give books in-game for complex end responses
 
 # Undo / Build Issues
 

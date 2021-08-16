@@ -106,7 +106,7 @@ public abstract class TemplatedProperties extends CasterProperties {
         if (configuration.contains(key) || template == null) {
             return configuration;
         }
-        return template.getPropertyConfiguration(key);
+        return template.getConfiguration();
     }
 
     @Override
