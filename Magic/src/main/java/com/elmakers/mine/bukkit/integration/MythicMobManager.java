@@ -31,7 +31,7 @@ public class MythicMobManager {
         }
 
         api = MythicMobs.inst();
-        return true;
+        return api != null;
     }
 
     public boolean isEnabled() {
