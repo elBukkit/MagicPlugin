@@ -59,6 +59,9 @@ public class WandDisplayMode {
         if (displayMode.equalsIgnoreCase("false")) {
             return WandDisplayMode.NONE;
         }
+        if (displayMode.equalsIgnoreCase("sp")) {
+            return WandDisplayMode.SP;
+        }
         DisplayType displayType = DisplayType.valueOf(displayMode.toUpperCase());
         switch (displayType) {
             case COOLDOWN:
