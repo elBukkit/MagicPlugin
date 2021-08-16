@@ -4737,11 +4737,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int iconPaddingLeft = (hotbarSlotWidth - iconWidth) / 2;
         int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
         int slotSpacingWidth = getInt("glyph_slot_spacing", -1);
+        int manaBarWidth = getInt("glyph_mana_width", 128);
 
         // Animation when showing extra message
         int collapseSpace = 0;
         int finalSpace = 0;
-        if (extraActionBarMessage != null && actionBarExtraAnimationTime > 0) {
+        boolean hasExtraMessage = extraActionBarMessage != null && actionBarExtraAnimationTime > 0;
+        if (hasExtraMessage) {
             long now = System.currentTimeMillis();
             int collapsedWidth = getInt("glyph_collapsed_width", 6);
             int collapsedFinalWidth = getInt("glyph_collapsed_spacing", 12);
@@ -4779,6 +4781,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Configurable space between each slot
         String slotSpacing = messages.getSpace(slotSpacingWidth);
         String glyphs = "";
+
+        // Create the hotbar
+        int hotbarSlots = 0;
         String hotbarSlot = messages.get("gui.hotbar.hotbar_slot");
         String hotbarSlotActive = messages.get("gui.hotbar.hotbar_slot_active");
         String emptyIcon = messages.get("gui.icons.empty");
@@ -4835,7 +4840,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
             // Add space in between each slot
             glyphs += slotSpacing;
+            hotbarSlots++;
         }
+
+        // Create the mana bar
+        if (manaBarWidth > 0 && !hasExtraMessage) {
+            WandDisplayMode mode = WandDisplayMode.MANA;
+            int manaSlots = 32;
+            int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + 1);
+            int manaBarPaddingLeft = (hotbarWidth - manaBarWidth) / 2;
+            int manaBarReverseAmount = hotbarWidth - manaBarPaddingLeft;
+            String manaReverse = messages.getSpace(-manaBarReverseAmount);
+            glyphs += manaReverse;
+            int manaWidth = (int)Math.floor(mode.getProgress(this) * manaSlots);
+            glyphs += messages.get("gui.mana." + manaWidth);
+        }
+
         if (finalSpace != 0) {
             glyphs += finalPadding;
         }
