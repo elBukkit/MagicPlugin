@@ -18,11 +18,12 @@ public class GlyphHotbar {
     private int hotbarActiveSlotWidth;
     private int iconWidth;
     private int slotSpacingWidth;
-    private int manaBarWidth;
+    private int barWidth;
     private int flashTime;
     private int collapsedWidth;
     private int collapsedFinalSpacing;
     private WandDisplayMode barMode;
+    private int barSlotPadding;
     private boolean showCooldown;
 
     protected String extraMessage;
@@ -48,7 +49,8 @@ public class GlyphHotbar {
         hotbarActiveSlotWidth = configuration.getInt("active_slot_width", 22);
         iconWidth = configuration.getInt("icon_width", 16);
         slotSpacingWidth = configuration.getInt("slot_spacing", -1);
-        manaBarWidth = configuration.getInt("bar_width", 128);
+        barWidth = configuration.getInt("bar_width", 128);
+        barSlotPadding = configuration.getInt("bar_slot_padding", 1);
         flashTime = configuration.getInt("flash_duration", 300);
         extraMessageDelay = configuration.getInt("extra_display_time", 2000);
         extraAnimationTime = configuration.getInt("extra_animate_time", 500);
@@ -185,10 +187,11 @@ public class GlyphHotbar {
         }
 
         // Create the mana bar
-        if (manaBarWidth > 0 && !hasExtraMessage && barMode != WandDisplayMode.NONE) {
+        if (barWidth > 0 && !hasExtraMessage && barMode != WandDisplayMode.NONE) {
             int manaSlots = 32;
-            int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + 1);
-            int manaBarPaddingLeft = (hotbarWidth - manaBarWidth) / 2;
+            // Why does this need this barSlotPadding fudge factor?
+            int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + barSlotPadding);
+            int manaBarPaddingLeft = (hotbarWidth - barWidth) / 2;
             int manaBarReverseAmount = hotbarWidth - manaBarPaddingLeft;
             String manaReverse = messages.getSpace(-manaBarReverseAmount);
             glyphs += manaReverse;
@@ -197,7 +200,7 @@ public class GlyphHotbar {
 
             // Currently treating charges the same as mana
             if (flashTime > 0 && (now < lastInsufficientResource + flashTime || now < lastInsufficientCharges + flashTime)) {
-                glyphs += messages.getSpace(-(manaBarWidth + 1));
+                glyphs += messages.getSpace(-(barWidth + 1));
                 glyphs += messages.get("gui.mana.insufficient");
             }
         }
