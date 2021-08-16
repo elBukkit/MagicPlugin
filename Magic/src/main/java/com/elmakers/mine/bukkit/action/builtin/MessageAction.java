@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.ActionBarSender;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class MessageAction extends BaseSpellAction
@@ -118,7 +119,11 @@ public class MessageAction extends BaseSpellAction
                 if (player == null) {
                     return SpellResult.PLAYER_REQUIRED;
                 }
-                if (!CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message)) {
+                Mage targetMage = context.getController().getRegisteredMage(player);
+                if (targetMage != null && targetMage instanceof ActionBarSender) {
+                    ActionBarSender actionBarSender = (ActionBarSender)targetMage;
+                    actionBarSender.sendToActionBar(message);
+                } else if (!CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message)) {
                     player.sendMessage(message);
                 }
                 break;
