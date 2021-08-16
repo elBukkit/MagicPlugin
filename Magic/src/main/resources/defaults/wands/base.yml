@@ -89,6 +89,7 @@ base_wand:
     drop: toggle
     right_click: toggle
     swap: cycle_hotbar
+    swap_sneak: cycle_hotbar_reverse
     quiet: 1
     effect_bubbles: false
     item_attributes:
