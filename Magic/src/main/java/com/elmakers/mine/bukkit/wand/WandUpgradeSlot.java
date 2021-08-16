@@ -8,6 +8,7 @@ public class WandUpgradeSlot {
     private final String slotType;
     private boolean hidden = false;
     private boolean swappable = false;
+    private boolean replaceable = false;
     private Wand slotted;
 
     public WandUpgradeSlot(String slotType) {
@@ -18,6 +19,7 @@ public class WandUpgradeSlot {
         slotType = config.getString("type", configKey);
         hidden = config.getBoolean("hidden", false);
         swappable = config.getBoolean("swappable", false);
+        replaceable = config.getBoolean("replaceable", false);
     }
 
     public Wand getSlotted() {
@@ -32,7 +34,7 @@ public class WandUpgradeSlot {
         if (!slotType.equals(slotType)) {
             return false;
         }
-        if (slotted == null) {
+        if (slotted == null || replaceable) {
             slotted = upgrade;
             return true;
         }
