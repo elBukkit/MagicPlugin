@@ -323,6 +323,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected WandDisplayMode bossBarDisplayMode = WandDisplayMode.COOLDOWN;
 
     // Action bar
+    protected String lastActionBarMessage;
     protected String actionBarMessage;
     protected String actionBarOpenMessage;
     protected int actionBarInterval;
@@ -4252,6 +4253,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
                     updateLore();
                 }
+                if (!useActiveNameWhenClosed) {
+                    updateName();
+                }
+                updateActionBar();
             }
         }
     }
@@ -4279,6 +4284,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             updateSpellInventory();
             updateBrushInventory();
             inventoryIsOpen = false;
+            if (!useActiveNameWhenClosed) {
+                updateName();
+            }
+            updateActionBar();
             if (mage != null) {
                 if (!playPassiveEffects("close") && inventoryCloseSound != null) {
                     mage.playSoundEffect(inventoryCloseSound);
@@ -4701,7 +4710,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     protected void updateActionBar() {
         Player player = mage == null ? null : mage.getPlayer();
-        if (player == null || actionBarMessage == null) {
+        if (player == null) {
+            return;
+        }
+        String useMessage = getActionBarMessage();
+        if (useMessage == null || useMessage.isEmpty()) {
+            // Clear immediately if we just turned off the message
+            if (lastActionBarMessage != null && !lastActionBarMessage.isEmpty()) {
+                clearActionBar();
+                lastActionBarMessage = useMessage;
+            }
             return;
         }
         if (actionBarDelay > 0 && System.currentTimeMillis() < activationTimestamp + actionBarDelay) {
@@ -4716,9 +4734,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             lastActionBarFullMana = fullMana;
         }
-        String useMessage = getActionBarMessage();
         String message = parameterize(useMessage);
         CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
+        lastActionBarMessage = message;
     }
 
     protected String getActionBarMessage() {
