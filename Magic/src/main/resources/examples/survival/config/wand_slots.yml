@@ -1,0 +1,7 @@
+wand_slots:
+  broom_upgrade:
+    swappable: true
+  controls:
+    hidden: true
+    replaceable: true
+    default_slotted: controls_hybrid

@@ -410,6 +410,7 @@ public class MagicController implements MageController {
     MaterialSet climbableMaterials = MaterialSets.empty();
     private @Nonnull
     MaterialSet undoableMaterials = MaterialSets.wildcard();
+    private ConfigurationSection wandSlotConfigurations;
     private boolean backupInventories = true;
     private int undoQueueDepth = 256;
     private int pendingQueueDepth = 16;
@@ -7904,6 +7905,7 @@ public class MagicController implements MageController {
         CompatibilityLib.getCompatibilityUtils().load(properties);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
+        wandSlotConfigurations = properties.getConfigurationSection("wand_slots");
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         legacyIconsEnabled = properties.getBoolean("legacy_icons_enabled", legacyIconsEnabled);
         spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
@@ -8528,5 +8530,10 @@ public class MagicController implements MageController {
             return mythicMobManager.isMobKey(mythicMobKey);
         }
         return false;
+    }
+
+    @Nullable
+    public ConfigurationSection getWandSlotConfiguration(String slotKey) {
+        return wandSlotConfigurations == null ? null : wandSlotConfigurations.getConfigurationSection(slotKey);
     }
 }

@@ -1996,7 +1996,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (slotKeys != null && !slotKeys.isEmpty()) {
             slots = new ArrayList<>();
             for (String slotKey : slotKeys) {
-                slots.add(new WandUpgradeSlot(slotKey));
+                slots.add(new WandUpgradeSlot(controller, slotKey));
             }
         } else {
             ConfigurationSection slotConfig = getConfigurationSection("slots");
@@ -2005,7 +2005,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (!keys.isEmpty()) {
                     slots = new ArrayList<>();
                     for (String key : keys) {
-                        slots.add(new WandUpgradeSlot(key, slotConfig.getConfigurationSection(key)));
+                        slots.add(new WandUpgradeSlot(controller, key, slotConfig.getConfigurationSection(key)));
                     }
                 }
             }
@@ -2022,8 +2022,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     unslotted.add(slottedKey);
                 }
             }
-            updateSlotted();
         }
+        updateSlotted();
 
         // Requirements upgrades come next
         if (hasProperty("requirement_properties")) {
@@ -4467,6 +4467,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             slottedKeys = new ArrayList<>();
             if (slots != null) {
                 for (WandUpgradeSlot slot : slots) {
+                    if (slot.hasDefaultSlotted()) {
+                        continue;
+                    }
                     Wand slotted = slot.getSlotted();
                     if (slotted != null) {
                         slottedKeys.add(slotted.getKey());
@@ -4481,6 +4484,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void updateSlotted() {
+        if (slots == null || slots.isEmpty()) {
+            slottedConfiguration = null;
+            return;
+        }
         slottedConfiguration = ConfigurationUtils.newConfigurationSection();
         for (WandUpgradeSlot slot : slots) {
             Wand slotted = slot.getSlotted();

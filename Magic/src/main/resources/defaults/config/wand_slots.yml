@@ -1,0 +1,3 @@
+# This can be used to pre-configure wand slots with behavior, instead of having to
+# define the behavior in each wand's slot configs
+wand_slots: {}
