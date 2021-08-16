@@ -56,7 +56,7 @@
  - Selector name, description and lore now support placeholders
  - Add `not_brush` parameter to `CheckBlock`, use-case is only playing effects at a location where a block was modified (not the same as the brush)
  - The `ColorItem` action is now *mostly* undoable, though probably only suited for mob use (since players can move items around)
- - Add `swappable_slots` wand property, a list of slot types that can have their slotted items swapped out
+ - Expand wand slots feature, slots can be config sections now with properties like swappable (for slotted upgrades that can be swapped out) or hidden
  - Add `magic_blocks` list to arenas, arena will turn the magic block on/off when the arena starts/stops
  - Add Selector support for simple shortcuts `newrow` and `none`
  - Boss bar configurations can omit the `bar__` prefix in parameters (this kept confusing me)

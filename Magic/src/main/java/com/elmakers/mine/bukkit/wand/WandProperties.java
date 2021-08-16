@@ -46,7 +46,7 @@ public abstract class WandProperties extends TemplatedProperties {
             "unique", "track", "invulnerable", "immortal", "inventory_rows",
             "class", "classes", "consume_spell", "stack", "unstashable", "unmoveable",
             "page_free_space", "enchantable", "hide_flags", "item_flags",
-            "slot", "slots", "slotted", "swappable_slots",
+            "slot", "slots", "slotted",
             "use_active_name", "use_active_name_when_closed",
             "interactible", "craftable", "unswappable", "worth", "glow", "spell_glow",
             "boss_bar", "level_display", "xp_display", "action_bar", "placeable", "infinity_cost_free",
