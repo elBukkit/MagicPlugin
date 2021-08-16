@@ -171,6 +171,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     int getCurrentHotbar();
     void damageDealt(double damage, Entity target);
     boolean hasTag(String tag);
+    boolean hasSlot(String slot);
     void bind();
     void unbind();
     boolean isReflected(double angle);

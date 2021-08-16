@@ -10,6 +10,7 @@
    - 1.17 has a new 2nd hotbar display when the spell inventory is closed and the player has the resource pack
    - Controls menu streamlined
    - Wand instructions improved and streamlined, `instructions: false` added to wand config to easily turn them off
+   - Wand controls changed to use slot system, so controls can be changed after the fact
    - Downstream changes:  
       - Add `requirement_properties` wand feature, allows wands to vary their properties based on the player passing some requirements
       - Add `resource_pack: true` requirement option
@@ -17,6 +18,8 @@
       - Add `swappable: false` wand option, which allows you to use the swap key while the wand inventory is closed.
       - Allow cycling hotbars with the wand inventory closed
       - Add wand instructions to wand item lore. Use `lore_instructions: false` in wand config to turn this off.
+      - Wand slotted upgrades can be made hidden, swappable and replaceable
+      - Added requirements: wand_slots, spell_inventory_open
 
  - Magic Bow re-work
    - Light arrow rebalance

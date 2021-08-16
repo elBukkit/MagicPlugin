@@ -21,3 +21,4 @@ requirements:
   height: "Height"
   currency: "Currency"
   no_cast: "&cYou must cast $spell first"
+  no_spell_inventory: "&cYou must have your spell inventory open"

@@ -965,6 +965,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
+    public boolean hasSlot(String slotType) {
+        if (slots == null || slotType == null) {
+            return false;
+        }
+        for (WandUpgradeSlot slot : slots) {
+            if (slot.getType().equals(slotType)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
     public WandUpgradePath getPath() {
         String pathKey = path;
         if (pathKey == null || pathKey.length() == 0) {

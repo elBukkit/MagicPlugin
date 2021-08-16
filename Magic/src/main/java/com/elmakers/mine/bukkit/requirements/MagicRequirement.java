@@ -40,6 +40,8 @@ public class MagicRequirement {
     private @Nullable Set<String> requiredTemplates = null;
     private @Nullable List<String> requiredModifiers = null;
     private @Nullable List<String> wandTags = null;
+    private @Nullable List<String> wandSlots = null;
+    private boolean openSpellInventory = false;
     private @Nullable String requiresCompletedPath = null;
     private @Nullable String exactPath = null;
     private @Nullable List<String> mageClass = null;
@@ -78,6 +80,8 @@ public class MagicRequirement {
         mageClass = ConfigurationUtils.getStringList(configuration, "class");
         activeClass = ConfigurationUtils.getStringList(configuration, "active_class");
         wandTags = ConfigurationUtils.getStringList(configuration, "wand_tags");
+        wandSlots = ConfigurationUtils.getStringList(configuration, "wand_slots");
+        openSpellInventory = configuration.getBoolean("spell_inventory_open");
         ignoreMissing = configuration.getBoolean("ignore_missing", false);
         indoors = configuration.getBoolean("indoors", false);
         if (activeClass != null && mageClass == null) {
@@ -116,7 +120,7 @@ public class MagicRequirement {
             exactPath = requiresCompletedPath;
         }
 
-        if (requiredTemplate != null || requiredTemplates != null || wandProperties != null || wandTags != null) {
+        if (requiredTemplate != null || requiredTemplates != null || wandProperties != null || wandTags != null || wandSlots != null || openSpellInventory) {
             requireWand = true;
         }
         String clientPlatformKey = configuration.getString("client_platform");
@@ -262,6 +266,18 @@ public class MagicRequirement {
 
         if (wandTags != null) {
             if (!hasTags(wand)) {
+                return false;
+            }
+        }
+
+        if (wandSlots != null) {
+            if (!hasSlots(wand)) {
+                return false;
+            }
+        }
+
+        if (openSpellInventory) {
+            if (!wand.isInventoryOpen()) {
                 return false;
             }
         }
@@ -549,6 +565,18 @@ public class MagicRequirement {
             }
         }
 
+        if (wandSlots != null) {
+            if (!hasSlots(wand)) {
+                return getMessage(context, "no_template").replace("$wand", wand.getName());
+            }
+        }
+
+        if (openSpellInventory) {
+            if (!wand.isInventoryOpen()) {
+                return getMessage(context, "no_spell_inventory").replace("$wand", wand.getName());
+            }
+        }
+
         if (regionTags != null && !controller.inTaggedRegion(location, regionTags)) {
             return getMessage(context, "no_region");
         }
@@ -723,6 +751,16 @@ public class MagicRequirement {
     protected boolean hasTags(Wand wand) {
         for (String checkTag : wandTags) {
             if (wand.hasTag(checkTag)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    protected boolean hasSlots(Wand wand) {
+        for (String checkSlot : wandSlots) {
+            if (wand.hasSlot(checkSlot)) {
                 return true;
             }
         }

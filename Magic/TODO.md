@@ -2,7 +2,6 @@
 
 # Glyph Wand
 
- - Control schemes would work better as invisible slotted upgrades
  - Hitting right-click while in the spell inventory should close it (?)
    Do this with generic "if inventory is open" requirement
    Make requirements update use a reduced set of parameters, loadParameters() 
