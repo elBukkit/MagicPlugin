@@ -50,9 +50,7 @@ public abstract class WandProperties extends TemplatedProperties {
             "use_active_name", "use_active_name_when_closed",
             "interactible", "craftable", "unswappable", "worth", "glow", "spell_glow",
             "boss_bar", "level_display", "xp_display", "action_bar", "placeable", "infinity_cost_free",
-            "allowed_enchantments",
-            "glyph_skip_empty", "glyph_slot_width", "glyph_active_slot_width",  "glyph_slot_spacing",
-            "glyph_icon_width", "glyph_active_slot_spacing",
+            "allowed_enchantments", "glyph_hotbar",
             "instructions", "lore_instructions"
         ).build();
     protected BaseMagicProperties wandTemplate;

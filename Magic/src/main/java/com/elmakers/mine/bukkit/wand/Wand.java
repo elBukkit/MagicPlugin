@@ -308,6 +308,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean isActive = false;
     private long activationTimestamp;
 
+    // Glyph hotbar
+    private final GlyphHotbar glyphHotbar = new GlyphHotbar(this);
+
     // XP bar
     protected WandDisplayMode xpBarDisplayMode = WandDisplayMode.MANA;
 
@@ -321,20 +324,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     // Action bar
     protected String actionBarMessage;
-    protected String extraActionBarMessage;
-    protected long lastActionBarExtra;
-    protected int actionBarExtraDelay;
-    protected int actionBarExtraAnimationTime;
     protected String actionBarOpenMessage;
     protected int actionBarInterval;
     protected int actionBarDelay;
     protected long lastActionBar;
     protected boolean actionBarMana;
     protected boolean lastActionBarFullMana;
-    protected long lastInsufficientResource;
-    protected long lastInsufficientCharges;
-    protected long lastCooldown;
-    protected Spell lastCooldownSpell;
 
     public Wand(MagicController controller) {
         super(controller);
@@ -2443,6 +2438,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         checkActiveMaterial();
 
+        // Update glyph bar configuration
+        glyphHotbar.load(getConfigurationSection("glyph_hotbar"));
+
         // Boss bar, can be a simple boolean or a config
         bossBarConfiguration = null;
         if (getBoolean("boss_bar", false)) {
@@ -2498,8 +2496,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             } else {
                 actionBarInterval = config.getInt("interval", 1000);
                 actionBarDelay = config.getInt("delay", 0);
-                actionBarExtraDelay = config.getInt("extra_display_time", 2000);
-                actionBarExtraAnimationTime = config.getInt("extra_animate_time", 500);
                 actionBarMana = config.getBoolean("uses_mana");
             }
             lastActionBar = 0;
@@ -4716,23 +4712,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (actionBarMessage == null || !actionBarMessage.contains("$extra")) {
             return false;
         }
-        if (extraActionBarMessage == null) {
-            lastActionBarExtra = System.currentTimeMillis();
-        }
-        extraActionBarMessage = message;
-        return true;
+        return glyphHotbar.handleActionBar(message);
     }
 
     public boolean handleInsufficientResources(Spell spell, CastingCost cost) {
         if (cost.getMana() == 0) {
             return false;
         }
-        String actionBarMessage = getActionBarMessage();
-        if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
-            return false;
-        }
-        lastInsufficientResource = System.currentTimeMillis();
-        return true;
+        return glyphHotbar.handleInsufficientResources(spell, cost);
     }
 
     public boolean handleCooldown(Spell spell) {
@@ -4740,9 +4727,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
             return false;
         }
-        lastCooldown = System.currentTimeMillis();
-        lastCooldownSpell = spell;
-        return true;
+        return glyphHotbar.handleCooldown(spell);
     }
 
     public boolean handleInsufficientCharges(Spell spell) {
@@ -4750,8 +4735,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
             return false;
         }
-        lastInsufficientCharges = System.currentTimeMillis();
-        return true;
+        return glyphHotbar.handleInsufficientCharges(spell);
     }
 
     @Override
@@ -4764,183 +4748,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return message;
     }
 
-    private WandInventory getActiveHotbar() {
+    protected WandInventory getActiveHotbar() {
         if (hotbars.isEmpty()) return null;
         return hotbars.get(currentHotbar);
     }
 
     private String getHotbarGlyphs() {
-        Messages messages = controller.getMessages();
-        WandInventory hotbar = getActiveHotbar();
-        if (hotbar == null || mage == null) return "";
-
-        boolean skipEmpty = getBoolean("glyph_skip_empty", true);
-        int hotbarSlotWidth = getInt("glyph_slot_width", 22);
-        int hotbarActiveSlotWidth = getInt("glyph_active_slot_width", 22);
-        int hotbarActivePaddingLeft = (hotbarActiveSlotWidth - hotbarSlotWidth) / 2;
-        int iconWidth = getInt("glyph_icon_width", 16);
-        int iconPaddingLeft = (hotbarSlotWidth - iconWidth) / 2;
-        int iconPaddingRight = (hotbarSlotWidth - iconWidth) - iconPaddingLeft;
-        int slotSpacingWidth = getInt("glyph_slot_spacing", -1);
-        int manaBarWidth = getInt("glyph_mana_width", 128);
-        int flashTime = getInt("glyph_flash_duration", 300);
-
-        // Animation when showing extra message
-        int collapseSpace = 0;
-        int finalSpace = 0;
-        long now = System.currentTimeMillis();
-        boolean hasExtraMessage = extraActionBarMessage != null && actionBarExtraAnimationTime > 0;
-        if (hasExtraMessage) {
-            int collapsedWidth = getInt("glyph_collapsed_width", 6);
-            int collapsedFinalWidth = getInt("glyph_collapsed_spacing", 12);
-            if (now < lastActionBarExtra + actionBarExtraAnimationTime) {
-                collapseSpace = (int)Math.ceil((hotbarSlotWidth - collapsedWidth) * (now - lastActionBarExtra) / actionBarExtraAnimationTime);
-                finalSpace = (int)Math.ceil(collapsedFinalWidth * (now - lastActionBarExtra) / actionBarExtraAnimationTime);
-            } else {
-                collapseSpace = hotbarSlotWidth - collapsedWidth;
-                finalSpace = collapsedFinalWidth;
-            }
-        }
-        String collapseReverse = messages.getSpace(-collapseSpace);
-        String finalPadding = messages.getSpace(finalSpace);
-
-        // Icon width + 1 pixel padding, to reverse back over the icon (for applying cooldown)
-        String iconReverse = messages.getSpace(-(iconWidth + 1));
-
-        // Hotbar slot border + 1 pixel padding, to reverse back over the hotbar slot
-        String hotbarSlotReverse = messages.getSpace(-(hotbarSlotWidth + 1));
-
-        // Padding between icon and the slot border on either side
-        String hotbarIconPaddingLeft = messages.getSpace(iconPaddingLeft);
-        String hotbarIconPaddingRight = messages.getSpace(iconPaddingRight);
-
-        // Amount to reverse back past a hotbar slot background start before placing
-        // The active slot overlay
-        // Generally the active slot overlay is larger than the slot, so we have to back up
-        // farther and then go forward farther as well
-        // Also need to add in one extra pixel of space as usual
-        String hotbarActiveSlotStart = messages.getSpace(-hotbarActivePaddingLeft);
-
-        // How far to move back after adding the active overlay, to the beginner of the hotbar slot background
-        String hotbarActiveSlotEnd = messages.getSpace(-(1 + hotbarActiveSlotWidth + hotbarActivePaddingLeft));
-
-        // Configurable space between each slot
-        String slotSpacing = messages.getSpace(slotSpacingWidth);
-        String glyphs = "";
-
-        // Create the hotbar
-        int hotbarSlots = 0;
-        String hotbarSlot = messages.get("gui.hotbar.hotbar_slot");
-        String hotbarSlotActive = messages.get("gui.hotbar.hotbar_slot_active");
-        String emptyIcon = messages.get("gui.icons.empty");
-        for (ItemStack hotbarItem : hotbar.items) {
-            String icon;
-            Spell spell = getSpell(getSpell(hotbarItem));
-            String spellKey = null;
-            if (spell == null) {
-                if (skipEmpty) continue;
-                icon = emptyIcon;
-            } else {
-                icon = spell.getGlyph();
-                spellKey = spell.getSpellKey().getBaseKey();
-            }
-
-            // Add hotbar slot background
-            glyphs += hotbarSlot;
-            glyphs += hotbarSlotReverse;
-
-            // Add active overlay
-            if (spellKey != null && activeSpell != null && spellKey.equals(activeSpell) && !hotbarSlotActive.isEmpty()) {
-                glyphs += hotbarActiveSlotStart;
-                glyphs += hotbarSlotActive;
-                glyphs += hotbarActiveSlotEnd;
-            }
-
-            // Add icon with padding
-            glyphs += hotbarIconPaddingLeft;
-            glyphs += icon;
-
-            // Add cooldown/disabled indicators
-            if (flashTime > 0 && now < lastCooldown + flashTime && lastCooldownSpell != null && lastCooldownSpell.getSpellKey().equals(spell.getSpellKey())) {
-                String cooldownIcon = messages.get("gui.cooldown.wait", "");
-                if (!cooldownIcon.isEmpty()) {
-                    glyphs += iconReverse;
-                    glyphs += cooldownIcon;
-                }
-            } else {
-                int cooldownLevel = 0;
-                Long timeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getTimeToCast() : null;
-                Long maxTimeToCast = spell != null && spell instanceof MageSpell ? ((MageSpell)spell).getMaxTimeToCast() : null;
-
-                if (timeToCast == null || maxTimeToCast == null) {
-                    cooldownLevel = 16;
-                } else if (maxTimeToCast > 0) {
-                    cooldownLevel = (int)Math.ceil(16.0 * timeToCast / maxTimeToCast);
-                }
-                if (cooldownLevel > 0) {
-                    String cooldownIcon = messages.get("gui.cooldown." + cooldownLevel, "");
-                    if (!cooldownIcon.isEmpty()) {
-                        glyphs += iconReverse;
-                        glyphs += cooldownIcon;
-                    }
-                }
-            }
-
-            // Final icon padding to align to the slot frame
-            glyphs += hotbarIconPaddingRight;
-
-            // Animation if collapses
-            if (collapseSpace != 0) {
-                glyphs += collapseReverse;
-            }
-
-            // Add space in between each slot
-            glyphs += slotSpacing;
-            hotbarSlots++;
-        }
-
-        // Create the mana bar
-        if (manaBarWidth > 0 && !hasExtraMessage) {
-            WandDisplayMode mode = WandDisplayMode.MANA;
-            int manaSlots = 32;
-            int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + 1);
-            int manaBarPaddingLeft = (hotbarWidth - manaBarWidth) / 2;
-            int manaBarReverseAmount = hotbarWidth - manaBarPaddingLeft;
-            String manaReverse = messages.getSpace(-manaBarReverseAmount);
-            glyphs += manaReverse;
-            int manaWidth = (int)Math.floor(mode.getProgress(this) * manaSlots);
-            glyphs += messages.get("gui.mana." + manaWidth);
-
-            // Currently treating charges the same as mana
-            if (flashTime > 0 && (now < lastInsufficientResource + flashTime || now < lastInsufficientCharges + flashTime)) {
-                glyphs += messages.getSpace(-(manaBarWidth + 1));
-                glyphs += messages.get("gui.mana.insufficient");
-            }
-        }
-
-        if (finalSpace != 0) {
-            glyphs += finalPadding;
-        }
-        return glyphs;
+        return glyphHotbar.getGlyphs();
     }
 
     @Override
     public String getReplacement(String line, boolean integerValues) {
         switch (line) {
             case "extra":
-                if (extraActionBarMessage != null) {
-                    long now = System.currentTimeMillis();
-                    if (now < lastActionBarExtra + actionBarExtraDelay) {
-                        // If animating, wait for animation but don't clear the message
-                        if (now < lastActionBarExtra + actionBarExtraAnimationTime) {
-                            int length = (int)Math.floor(extraActionBarMessage.length() * (now - lastActionBarExtra) / actionBarExtraAnimationTime);
-                            return extraActionBarMessage.substring(0, length);
-                        }
-                        return extraActionBarMessage;
-                    }
-                }
-                extraActionBarMessage = null;
-                return "";
+                return glyphHotbar.getExtraMessage();
             case "hotbar":
                 return getHotbarGlyphs();
             case "description":
@@ -5159,6 +4980,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return controller.getSpellTemplate(baseKey.getKey());
     }
 
+    public String getBaseActiveSpell() {
+        return activeSpell;
+    }
+
     @Override
     public String getActiveSpellKey() {
         String activeSpellKey = activeSpell;
@@ -5368,8 +5193,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         long now = System.currentTimeMillis();
         // Always tick action bar while animating
         if (isActionBarActive()
-            && (now > lastActionBar + actionBarInterval
-            || (extraActionBarMessage != null && now <= lastActionBarExtra + actionBarExtraAnimationTime))) {
+            && (now > lastActionBar + actionBarInterval || glyphHotbar.isAnimating())) {
             lastActionBar = now;
             updateActionBar();
         }
