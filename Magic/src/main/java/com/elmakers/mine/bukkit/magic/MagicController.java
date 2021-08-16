@@ -3756,7 +3756,7 @@ public class MagicController implements MageController {
 
     @Nullable
     public UndoList getEntityUndo(Entity entity) {
-        UndoList blockList = null;
+        UndoList blockList;
         if (entity == null) return null;
         blockList = com.elmakers.mine.bukkit.block.UndoList.getUndoList(entity);
         if (blockList != null) return blockList;
@@ -8535,7 +8535,6 @@ public class MagicController implements MageController {
         }
     }
 
-    @Nullable
     @Override
     public boolean isMythicMobKey(String mythicMobKey) {
         if (mythicMobManager != null) {

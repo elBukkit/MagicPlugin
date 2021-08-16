@@ -14,8 +14,7 @@ import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.google.common.collect.ImmutableList;
 
 final class NegatedMaterialSet implements MaterialSet {
-    private final @Nonnull
-    MaterialSet delegate;
+    private final @Nonnull MaterialSet delegate;
 
     public NegatedMaterialSet(MaterialSet delegate) {
         this.delegate = checkNotNull(delegate, "delegate");

@@ -1708,7 +1708,6 @@ public class SelectorAction extends CompoundAction implements GUIAction
         super.prepare(context, parameters);
     }
 
-    @SuppressWarnings("unchecked")
     protected void addOption(Object option, List<SelectorOption> options, ConfigurationSection configRoot) {
         if (option instanceof Map) {
             option = ConfigurationUtils.toConfigurationSection(configRoot, (Map<?,?>)option);

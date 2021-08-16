@@ -2092,7 +2092,7 @@ public class Arena {
 
     public List<Location> getSpawns() {
         if (spawns.size() == 0) {
-            List<Location> centerList = new ArrayList<Location>();
+            List<Location> centerList = new ArrayList<>();
             centerList.add(center);
             return centerList;
         }

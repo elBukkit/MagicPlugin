@@ -8,7 +8,7 @@ public class MetaKey<T> {
 
     public MetaKey(Class<T> type, String name) {
         this.type = Preconditions.checkNotNull(type, "type");
-        this.name = Preconditions.checkNotNull(name, name);
+        this.name = Preconditions.checkNotNull(name, "name");
     }
 
     public Class<T> getType() {

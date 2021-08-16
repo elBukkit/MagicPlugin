@@ -64,7 +64,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
-import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -1052,10 +1051,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             String cycleMessage = getMessage("cycle_active_hotbar_instructions");
             String controlKey = getControlKey(WandAction.CYCLE_ACTIVE_HOTBAR);
             controlKey = controller.getMessages().get("controls." + controlKey);
-            if (controlKey != null) {
-                cycleMessage = cycleMessage.replace("$button", controlKey);
-                mage.sendMessage(cycleMessage);
-            }
+            cycleMessage = cycleMessage.replace("$button", controlKey);
+            mage.sendMessage(cycleMessage);
         } else {
             showModeControlsInstructions(spellCount);
         }

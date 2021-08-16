@@ -105,8 +105,9 @@ public class ResourcePackManager {
             if (mage != null && !mage.isResourcePackEnabled()) {
                 skipped++;
                 continue;
+            } else if (mage != null) {
+                sendResourcePack(mage);
             }
-            sendResourcePack(mage);
             sent++;
         }
         if (sender != null) {
@@ -205,7 +206,8 @@ public class ResourcePackManager {
         return sendResourcePack(mage, rp);
     }
 
-    public ResourcePack getPreferredResourcePack(final Mage mage) { String url = getResourcePackUrl(mage.getPreferredResourcePack());
+    public ResourcePack getPreferredResourcePack(Mage mage) {
+        String url = getResourcePackUrl(mage.getPreferredResourcePack());
         if (url == null) {
             url = resourcePack;
         }
@@ -247,7 +249,7 @@ public class ResourcePackManager {
             public void run() {
                 String hashString;
                 try {
-                    hashString = hash == null ? "(none)" : BaseEncoding.base64().encode(hash);
+                    hashString = BaseEncoding.base64().encode(hash);
                 } catch (Exception ex) {
                     hashString = "(Error";
                 }

@@ -254,7 +254,7 @@ public final class SimpleMaterialSetManager
         return union.build();
     }
 
-    protected void warning(String message) {
+    private void warning(String message) {
         if (log != null) {
             log.warning(message);
         }
