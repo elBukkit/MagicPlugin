@@ -111,10 +111,6 @@ public abstract class WandProperties extends TemplatedProperties {
             ConfigurationSection parentConfiguration = wandTemplate.getConfiguration();
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
         }
-        if (mageClass != null) {
-            ConfigurationSection classConfiguration = mageClass.getConfiguration();
-            ConfigurationUtils.overlayConfigurations(effectiveConfiguration, classConfiguration);
-        }
         return effectiveConfiguration;
     }
 
