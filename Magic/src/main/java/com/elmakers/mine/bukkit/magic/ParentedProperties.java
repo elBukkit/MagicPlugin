@@ -50,16 +50,6 @@ public abstract class ParentedProperties extends TemplatedProperties {
         return own;
     }
 
-    @Override
-    @Nullable
-    public Object getInheritedProperty(String key) {
-        Object value = super.getInheritedProperty(key);
-        if (value == null && parent != null) {
-            value = parent.getInheritedProperty(key);
-        }
-        return value;
-    }
-
     public ConfigurationSection getEffectiveConfiguration() {
         ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(getConfiguration());
         BaseMagicProperties template = getTemplate();

@@ -86,11 +86,6 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         }
     }
 
-    @Nullable
-    public Object getInheritedProperty(String key) {
-        return getProperty(key);
-    }
-
     protected void migrateProperty(String key, MagicPropertyType propertyType) {
         migrateProperty(key, propertyType, null);
     }

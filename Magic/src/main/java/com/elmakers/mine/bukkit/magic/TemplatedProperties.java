@@ -53,16 +53,6 @@ public abstract class TemplatedProperties extends CasterProperties {
         return hasOwnProperty(key) || (template != null && template.hasProperty(key));
     }
 
-    @Override
-    @Nullable
-    public Object getInheritedProperty(String key) {
-        Object value = super.getProperty(key);
-        if (value == null && template != null) {
-            value = template.getProperty(key);
-        }
-        return value;
-    }
-
     public void setTemplate(@Nonnull TemplateProperties template) {
         this.template = template;
     }

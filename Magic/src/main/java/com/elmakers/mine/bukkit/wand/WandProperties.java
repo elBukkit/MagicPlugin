@@ -79,16 +79,6 @@ public abstract class WandProperties extends TemplatedProperties {
         wandTemplate = null;
     }
 
-    @Override
-    @Nullable
-    public Object getInheritedProperty(String key) {
-        Object value = super.getInheritedProperty(key);
-        if (value == null && mageClass != null) {
-            value = mageClass.getInheritedProperty(key);
-        }
-        return value;
-    }
-
     @Nullable
     @Override
     public ConfigurationSection getConfigurationSection(String key) {
