@@ -767,7 +767,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         }
 
         MageClass activeClass = mage.getActiveClass();
-        CasterProperties attributeProperties = activeClass == null ? mage.getProperties() : activeClass;
+        CasterProperties attributeProperties = mage.getProperties();
+        if (activeClass != null && attributeProperties.getAttribute(key) == null) {
+            attributeProperties = activeClass;
+        }
 
         String value = args[1];
         for (int i = 2; i < args.length; i++) {
