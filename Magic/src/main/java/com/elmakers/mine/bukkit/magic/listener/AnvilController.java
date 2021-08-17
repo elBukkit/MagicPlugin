@@ -230,6 +230,8 @@ public class AnvilController implements Listener {
                 String newName = meta.getDisplayName();
 
                 Wand wand = controller.getWand(current);
+                // Reset enchantments on this item since the anvil will have modified it
+                wand.updateItem();
                 if (!wand.canUse(player)) {
                     event.setCancelled(true);
                     mage.sendMessage(controller.getMessages().get("wand.bound").replace("$name", wand.getOwner()));

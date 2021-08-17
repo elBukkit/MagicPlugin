@@ -5785,7 +5785,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return true;
     }
 
-    private void updateItem() {
+    public void updateItem() {
         // Add vanilla attributes
         CompatibilityLib.getInventoryUtils().applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
 
