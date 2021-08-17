@@ -264,7 +264,7 @@ wand:
     spell_instructions: |-
       &8| &7> &6Swing &fyour &a$wand &fto cast &d$spell
     mana_instructions: |-
-      &8| &7> &fSpells require &6mana &fto cast, shown in the &7Mana&f (or &f&5XP) bar
+      &8| &7> &fSpells require &6mana &fto cast, shown in the &7Mana&f (or &5XP&f) bar
     enchant_instructions: |-
       &8| &7> &fEarn &6Spell Points &fby casting spells
       &8| &7> &fLearn new spells by using &6SP &fat an &eenchanting table

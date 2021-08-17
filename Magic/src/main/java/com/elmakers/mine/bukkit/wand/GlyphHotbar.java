@@ -19,6 +19,7 @@ public class GlyphHotbar {
     private int iconWidth;
     private int slotSpacingWidth;
     private int barWidth;
+    private int barSteps;
     private int flashTime;
     private int collapsedWidth;
     private int collapsedFinalSpacing;
@@ -51,6 +52,7 @@ public class GlyphHotbar {
         iconWidth = configuration.getInt("icon_width", 16);
         slotSpacingWidth = configuration.getInt("slot_spacing", -1);
         barWidth = configuration.getInt("bar_width", 128);
+        barSteps = configuration.getInt("bar_steps", 32);
         barSlotPadding = configuration.getInt("bar_slot_padding", 1);
         flashTime = configuration.getInt("flash_duration", 300);
         extraMessageDelay = configuration.getInt("extra_display_time", 2000);
@@ -196,20 +198,43 @@ public class GlyphHotbar {
 
         // Create the mana bar
         if (barWidth > 0 && !hasExtraMessage && barMode != WandDisplayMode.NONE) {
-            int manaSlots = 32;
-            // Why does this need this barSlotPadding fudge factor?
-            int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + barSlotPadding);
-            int manaBarPaddingLeft = (hotbarWidth - barWidth) / 2;
-            int manaBarReverseAmount = hotbarWidth - manaBarPaddingLeft;
-            String manaReverse = messages.getSpace(-manaBarReverseAmount);
-            glyphs += manaReverse;
-            int manaWidth = (int)Math.floor(barMode.getProgress(wand) * manaSlots);
-            glyphs += messages.get("gui.mana." + manaWidth);
+            // The farthest-left element needs to tbe left first one.
+            // So we will need to choose at the end between the bar and the hotbar.
+            String hotbarPart = glyphs;
+            String barPart = "";
+
+            int barProgress = (int)Math.floor(barMode.getProgress(wand) * barSteps);
+            barPart += messages.get("gui.bar." + barProgress);
 
             // Currently treating charges the same as mana
             if (flashTime > 0 && (now < lastInsufficientResource + flashTime || now < lastInsufficientCharges + flashTime)) {
-                glyphs += messages.getSpace(-(barWidth + 1));
-                glyphs += messages.get("gui.mana.insufficient");
+                barPart += messages.getSpace(-(this.barWidth + 1));
+                barPart += messages.get("gui.bar.insufficient");
+            }
+
+            // Why does this need this barSlotPadding fudge factor?
+            int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + barSlotPadding);
+
+            // If this bar is longer than the hotbar, put the bar first
+            if (barWidth > hotbarWidth) {
+                glyphs = barPart;
+                // Add padding to center the hotbar within this bar
+                int barPaddingLeft = (barWidth - hotbarWidth) / 2;
+                // Back up to the beginning of the bar, plus the padding
+                glyphs += messages.getSpace(-(1 + barWidth - barPaddingLeft));
+                glyphs += hotbarPart;
+                // End even with bar
+                int barPaddingRight = (barWidth - hotbarWidth) - barPaddingLeft;
+                glyphs += messages.getSpace(barPaddingRight);
+            } else {
+                // Add padding to center this bar within the hotbar
+                int barPaddingLeft = (hotbarWidth - barWidth) / 2;
+                // Back up to the beginning of the hotbar, plus the padding
+                glyphs += messages.getSpace(-(1 + hotbarWidth - barPaddingLeft));
+                glyphs += barPart;
+                // End even with hotbar
+                int barPaddingRight = (hotbarWidth - barWidth) - barPaddingLeft;
+                glyphs += messages.getSpace(barPaddingRight);
             }
         }
 

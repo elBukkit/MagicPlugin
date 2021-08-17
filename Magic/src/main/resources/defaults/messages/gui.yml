@@ -81,7 +81,7 @@ gui:
     3: "\uE703"
     2: "\uE702"
     1: "\uE701"
-  mana:
+  bar:
     insufficient: "\uE771"
     32: "\uE770"
     31: "\uE76F"
