@@ -2,8 +2,7 @@
 
 # Importanter
 
- - Having an attribute set on Mage data as well as class data makes things go really wrong when 
-   adding to that attribute
+ - Anvil book combining is broken, takes XP, doesn't combine
 
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
@@ -154,6 +153,7 @@
 
 ## Suggestions
 
+ - A way to damage mobs as if from a looting weapon (increase drops)
  - Chat trigger
  - A way to have wands update item attributes on an interval, such as with healthsword
  - disable_health_regeneration: true/false

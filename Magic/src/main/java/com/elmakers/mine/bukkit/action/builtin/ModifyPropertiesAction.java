@@ -17,9 +17,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-
-import de.slikey.effectlib.math.EquationStore;
-import de.slikey.effectlib.math.EquationTransform;
+import com.elmakers.mine.bukkit.utility.SpellUtils;
 
 public class ModifyPropertiesAction extends BaseSpellAction
 {
@@ -49,6 +47,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
 
     private List<ModifyProperty> modify;
     private String modifyTarget;
+    private String originalVariable;
     private SpellParameters extraParameters;
     private boolean upgrade;
     private boolean bypassUndo;
@@ -75,6 +74,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
         modifyTarget = parameters.getString("modify_target", "wand");
         upgrade = parameters.getBoolean("upgrade", false);
         bypassUndo = parameters.getBoolean("bypass_undo", false);
+        originalVariable = parameters.getString("original_variable", "x");
 
         modify = new ArrayList<>();
         Object modifyObject = parameters.get("modify");
@@ -100,7 +100,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
     @Override
     public SpellResult perform(CastContext context)
     {
-        if (modify == null) {
+        if (modify == null || extraParameters == null) {
             return SpellResult.FAIL;
         }
         CasterProperties properties = context.getTargetCasterProperties(modifyTarget);
@@ -114,36 +114,17 @@ public class ModifyPropertiesAction extends BaseSpellAction
             Object newValue = property.value;
             if ((originalValue == null || originalValue instanceof Number) && property.value instanceof String) {
                 // Allow using attributes and variables here
-                EquationTransform transform = null;
-                if (extraParameters != null) {
-                    List<String> variables = new ArrayList<>(extraParameters.getParameters());
-                    variables.add("x");
-                    transform = new EquationTransform((String)property.value, variables);
-                    for (String parameterKey : variables) {
-                        transform.setVariable(parameterKey, extraParameters.getParameter(parameterKey));
-                    }
-                } else {
-                    // This probably won't happen anymore, but it *would* be more efficient
-                    transform = EquationStore.getInstance().getTransform((String)property.value);
-                }
-
-                originalValue = originalValue == null ? null : NumberConversions.toDouble(originalValue);
                 double defaultValue = property.defaultValue == null ? 0 : property.defaultValue;
-                if (transform.isValid()) {
-                    if (originalValue == null) {
-                        originalValue = defaultValue;
-                    }
-                    Double currentValue = (Double)originalValue;
-                    transform.setVariable("x", currentValue);
-                    double transformedValue = transform.get();
-                    if (Double.isNaN(transformedValue)) continue;
+                double originalDouble = originalValue == null ? defaultValue : NumberConversions.toDouble(originalValue);
 
+                Double transformedValue = SpellUtils.modifyProperty(originalDouble, (String)property.value, originalVariable, extraParameters);
+                if (transformedValue != null) {
                     if (property.max != null) {
-                        if (currentValue >= property.max && transformedValue >= property.max) continue;
+                        if (originalDouble >= property.max && transformedValue >= property.max) continue;
                         transformedValue = Math.min(transformedValue, property.max);
                     }
                     if (property.min != null) {
-                        if (currentValue <= property.min && transformedValue <= property.min) continue;
+                        if (originalDouble <= property.min && transformedValue <= property.min) continue;
                         transformedValue = Math.max(transformedValue, property.min);
                     }
                     newValue = transformedValue;
@@ -171,6 +152,7 @@ public class ModifyPropertiesAction extends BaseSpellAction
         super.getParameterNames(spell, parameters);
         parameters.add("modify");
         parameters.add("modify_target");
+        parameters.add("original_variable");
         parameters.add("upgrade");
     }
 

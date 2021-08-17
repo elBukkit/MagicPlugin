@@ -8,6 +8,9 @@ import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
+import de.slikey.effectlib.math.EquationTransform;
+import de.slikey.effectlib.math.EquationVariableProvider;
+
 public class SpellUtils {
     public static Mage getCastSource(EntityData.SourceType sourceType, Entity initiator, Entity target, Mage magicBlock, MageController controller, String loggerContext) {
         Entity sourceEntity = initiator;
@@ -67,5 +70,18 @@ public class SpellUtils {
             case NONE:
                 break;
         }
+    }
+
+    public static Double modifyProperty(double original, String equation, String originalVariable, EquationVariableProvider variableProvider) {
+        EquationTransform transform = new EquationTransform(equation, originalVariable);
+        transform.setVariableProvider(variableProvider);
+        if (transform.isValid()) {
+            transform.setVariable(originalVariable, original);
+            double transformedValue = transform.get();
+            if (!Double.isNaN(transformedValue)) {
+                return transformedValue;
+            }
+        }
+        return null;
     }
 }

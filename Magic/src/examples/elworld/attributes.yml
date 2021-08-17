@@ -1,0 +1,4 @@
+testattribute:
+  min: 3
+  max: 20
+  default: 5
