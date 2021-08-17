@@ -1,6 +1,7 @@
 butterfly:
   icon: feather
   passive: true
+  locked: true
   triggers:
     join:
       effects: butterfly
@@ -8,6 +9,7 @@ butterfly:
 crown:
   icon: gold_nugget
   passive: true
+  locked: true
   triggers:
     join:
       effects: crown
@@ -15,6 +17,7 @@ crown:
 tail:
   icon: leash
   passive: true
+  locked: true
   triggers:
     join:
       effects: tail
