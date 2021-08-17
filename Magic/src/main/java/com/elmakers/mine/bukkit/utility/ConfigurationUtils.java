@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.utility;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -145,92 +144,6 @@ public class ConfigurationUtils extends ConfigUtils {
     {
         ConfigurationSection copy = cloneEmptyConfiguration(section);
         return addConfigurations(copy, section);
-    }
-
-    private static Map<String, Object> replaceParameters(Map<String, Object> configuration, ConfigurationSection parameters)
-    {
-        if (configuration == null || configuration.isEmpty()) return configuration;
-
-        Map<String, Object> replaced = new HashMap<>();
-        for (Map.Entry<String, Object> entry : configuration.entrySet())
-        {
-            Object entryValue = entry.getValue();
-            Object replacement = replaceParameters(entryValue, parameters);
-            if (replacement != null) {
-                replaced.put(entry.getKey(), replacement);
-            }
-        }
-
-        return replaced;
-    }
-
-    @Nullable
-    private static Object replaceParameters(Object value, ConfigurationSection parameters) {
-        if (value == null) return null;
-        if (value instanceof Map)
-        {
-            @SuppressWarnings("unchecked")
-            Map<String, Object> map = (Map<String, Object>)value;
-            value = replaceParameters(map, parameters);
-        }
-        else if (value instanceof ConfigurationSection)
-        {
-            value = replaceParameters((ConfigurationSection)value, parameters);
-        }
-        else if (value instanceof List)
-        {
-            @SuppressWarnings("unchecked")
-            List<Object> list = (List<Object>)value;
-            value = replaceParameters(list, parameters);
-        }
-        else if (value instanceof String)
-        {
-            value = replaceParameter((String)value, parameters);
-        }
-
-        return value;
-    }
-
-    private static List<Object> replaceParameters(List<Object> configurations, ConfigurationSection parameters)
-    {
-        if (configurations == null || configurations.size() == 0) return configurations;
-
-        List<Object> replaced = new ArrayList<>();
-        for (Object value : configurations)
-        {
-            Object replacement = replaceParameters(value, parameters);
-            if (replacement != null) {
-                replaced.add(replacement);
-            }
-        }
-
-        return replaced;
-    }
-
-    @Nullable
-    public static ConfigurationSection replaceParameters(ConfigurationSection configuration, ConfigurationSection parameters) {
-        if (configuration == null) return null;
-
-        ConfigurationSection replaced = ConfigurationUtils.newConfigurationSection();
-        Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(configuration);
-        for (Map.Entry<String, Object> entry : map.entrySet()) {
-            Object value = entry.getValue();
-            if (value == null) continue;
-
-            Object replacement = replaceParameters(value, parameters);
-            if (replacement != null) {
-                replaced.set(entry.getKey(), replacement);
-            }
-        }
-
-        return replaced;
-    }
-
-    private static Object replaceParameter(String value, ConfigurationSection parameters)
-    {
-        if (value.length() < 2 || value.charAt(0) != '$') return value;
-        Object replaced = parameters.get(value.substring(1));
-        return replaced == null ? value : replaced;
     }
 
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
