@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageClass;
+import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicProperties;
@@ -425,7 +426,28 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                         || subCommand.equalsIgnoreCase("unlock")
                         || subCommand.equalsIgnoreCase("activate")
                         || subCommand.equalsIgnoreCase("switch")) {
-                    options.addAll(api.getController().getMageClassKeys());
+
+                    if (target != null) {
+                        Mage mage = controller.getMage(target);
+                        boolean isActivateCommand = subCommand.equalsIgnoreCase("activate");
+                        if (subCommand.equalsIgnoreCase("lock") || isActivateCommand) {
+                            for (String classKey : mage.getClassKeys()) {
+                                if (mage.hasClassUnlocked(classKey)) {
+                                    options.add(classKey);
+                                } else if (isActivateCommand) {
+                                    MageClassTemplate classTemplate = api.getController().getMageClassTemplate(classKey);
+                                    if (classTemplate != null && !classTemplate.isLocked()) {
+                                        options.add(classKey);
+                                    }
+                                }
+                            }
+                        }
+                        if (subCommand.equalsIgnoreCase("unlock") || subCommand.equalsIgnoreCase("switch")) {
+                            options.addAll(api.getController().getMageClassKeys());
+                        }
+                    } else {
+                        options.addAll(api.getController().getMageClassKeys());
+                    }
                 }
             }
         }

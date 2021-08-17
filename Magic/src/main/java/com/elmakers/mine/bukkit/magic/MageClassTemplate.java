@@ -66,6 +66,7 @@ public class MageClassTemplate extends TemplateProperties implements com.elmaker
         return parent != null;
     }
 
+    @Override
     public boolean isLocked() {
         if (isLocked) return true;
         if (parent != null) return parent.isLocked();

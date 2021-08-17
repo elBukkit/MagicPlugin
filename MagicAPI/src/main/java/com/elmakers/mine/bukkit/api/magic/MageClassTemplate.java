@@ -9,4 +9,5 @@ public interface MageClassTemplate extends MagicProperties {
     String getIconKey();
     @Nullable
     String getIconDisabledKey();
+    boolean isLocked();
 }
