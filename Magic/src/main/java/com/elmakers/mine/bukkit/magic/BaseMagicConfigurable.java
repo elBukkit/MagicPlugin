@@ -50,16 +50,9 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
 
                     try {
                         MagicPropertyType routeType = MagicPropertyType.valueOf(route.toUpperCase());
-                        if (routeType == type && hasOwnProperty(key)) {
+                        if (routeType == type) {
                             propertyType = routeType;
                             break;
-                        }
-                        if (routeType != type) {
-                            BaseMagicConfigurable storage = getStorage(routeType);
-                            if (storage != null && storage.hasOwnProperty(key)) {
-                                propertyType = routeType;
-                                break;
-                            }
                         }
                         if (propertyType == null) {
                             propertyType = routeType;
