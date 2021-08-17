@@ -72,6 +72,9 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
         workingParameters = getParameters();
         if (workingParameters == null || workingParameters.isEmpty()) return null;
 
+        // We don't currently use $ as an operator, and removing it lets us keep compatibility with
+        // the old system that let you reference parameters like $range
+        expression = expression.replace("$", "");
         EquationTransform transform = EquationStore.getInstance().getTransform(expression, workingParameters);
         transform.setVariableProvider(this);
         double value = transform.get();
