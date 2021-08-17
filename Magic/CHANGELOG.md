@@ -6,7 +6,7 @@
 
  - Wand Mechanics re-work, the default survival wand mechanics have changed
    - Right-click now cycles the active spell, drop button (Q) toggles spell inventory
-   - 1.17 has a new 2nd hotbar display when the spell inventory is closed and the player has the resource pack
+   - 1.16+ has a new 2nd hotbar display when the spell inventory is closed and the player has the resource pack
    - Wand instructions improved and streamlined, `instructions: false` added to wand config to easily turn them off
    - Wand controls changed to use slot system, so controls can be changed after the fact
    - Controls menu streamlined, now has hybrid/inventory (old)/chest options.

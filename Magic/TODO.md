@@ -2,14 +2,11 @@
 
 # Importanter
 
- - Anvil book combining is broken, takes XP, doesn't combine
-
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
 
 # Glyph Wand
 
- - Check 1.16 ... does it work? Do we need to prevent it? Or maybe update the 1.16 RP?
  - Make brushes work (swing to use)
  - Get rid of useActiveNameWhenClosed paramter, fold into requirements
 
