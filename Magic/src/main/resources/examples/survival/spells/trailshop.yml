@@ -9,8 +9,6 @@ trailshop:
   parameters:
     confirm: true
     auto_close: true
-    placeholder_icon: gray
-    confirm_filler: gray
     unlock_section: trails
     lock_classes:
       - butterfly
