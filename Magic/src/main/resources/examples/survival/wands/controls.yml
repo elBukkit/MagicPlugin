@@ -14,7 +14,7 @@ controls_hybrid:
     - requirement:
         resource_pack: true
       properties:
-        use_active_name_when_closed: false
+        use_active_name: false
         action_bar:
           message: "$hotbar $extra"
           open_message: ""
@@ -23,6 +23,7 @@ controls_hybrid:
     - requirement:
         spell_inventory_open: true
       properties:
+        use_active_name: true
         right_click: toggle
         right_click_sneak: toggle
         xp_display: mana

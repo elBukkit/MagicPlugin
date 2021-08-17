@@ -17,8 +17,8 @@
       - Add `swappable: false` wand option, which allows you to use the swap key while the wand inventory is closed.
       - Allow cycling hotbars with the wand inventory closed
       - Add wand instructions to wand item lore. Use `lore_instructions: false` in wand config to turn this off.
-      - Wand slotted upgrades can be made hidden, swappable and replaceable
-      - Added requirements: wand_slots, spell_inventory_open
+      - Wand slotted upgrades can be made hidden, swappable and replaceable (now used for controls selection)
+      - Added new true/false requirements: resource_pack, spell_inventory_open
 
  - Magic Bow re-work
    - Light arrow rebalance

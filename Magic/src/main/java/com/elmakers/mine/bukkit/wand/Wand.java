@@ -171,8 +171,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean isInOffhand = false;
     private boolean hasId = false;
     private boolean showCycleModeLore = true;
-    private boolean useActiveName = false;
-    private boolean useActiveNameWhenClosed = false;
+    private boolean alwaysUseActiveName = false;
+    private boolean neverUseActiveName = false;
     private boolean instructions = true;
     private boolean instructionsLore = true;
     private int inventoryRows = 1;
@@ -2008,8 +2008,16 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         swappable = getBoolean("swappable", true);
         maxEnchantCount = getInt("max_enchant_count");
         showCycleModeLore = getBoolean("show_cycle_lore", true);
-        useActiveName = getBoolean("use_active_name", false);
-        useActiveNameWhenClosed = getBoolean("use_active_name_when_closed", true);
+
+        alwaysUseActiveName = false;
+        neverUseActiveName = false;
+        if (hasProperty("use_active_name")) {
+            if (getBoolean("use_active_name")) {
+                alwaysUseActiveName = true;
+            } else {
+                neverUseActiveName = true;
+            }
+        }
 
         activeEffectsOnly = getBoolean("active_effects");
         effectParticleData = getFloat("effect_particle_data");
@@ -2717,7 +2725,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Messages messages = controller.getMessages();
         boolean showSpell = isModifiable() && hasSpellProgression();
         showSpell = !quickCast && (spells.size() > 1 || showSpell) && getMode() != WandMode.SKILLS;
-        showSpell = showSpell || useActiveName;
+        showSpell = showSpell || alwaysUseActiveName;
         if (spell != null && showSpell) {
             name = getSpellDisplayName(messages, spell, brush) + " (" + name + ChatColor.WHITE + ")";
         }
@@ -2760,7 +2768,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public void updateName(boolean isActive, boolean stripColors) {
         String name;
         findItem();
-        if (isActive || useActiveName) {
+        if (!neverUseActiveName && (isActive || alwaysUseActiveName)) {
             name = !isUpgrade ? getActiveWandName() :
                     CompatibilityLib.getCompatibilityUtils().translateColors(getMessage("upgrade_prefix")) + getDisplayName();
         } else {
@@ -2781,7 +2789,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private void updateName() {
-        updateName(useActiveNameWhenClosed ? isActive : inventoryIsOpen);
+        updateName(isActive);
     }
 
     protected static String convertToHTML(String line) {
@@ -4262,9 +4270,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
                     updateLore();
                 }
-                if (!useActiveNameWhenClosed) {
-                    updateName();
-                }
+                updateName();
                 updateActionBar();
             }
         }
@@ -4293,10 +4299,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             updateSpellInventory();
             updateBrushInventory();
             inventoryIsOpen = false;
-            if (!useActiveNameWhenClosed) {
-                updateName();
-            }
             updateRequirements();
+            updateName();
             updateActionBar();
             if (mage != null) {
                 if (!playPassiveEffects("close") && inventoryCloseSound != null) {
@@ -5290,7 +5294,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     if (requirementConfiguration == null) {
                         requirementConfiguration = ConfigurationUtils.newConfigurationSection();
                     }
-                    ConfigurationUtils.addConfigurations(requirementConfiguration, properties.getProperties(), false);
+                    ConfigurationUtils.addConfigurations(requirementConfiguration, properties.getProperties(), true);
                 }
             }
         }
@@ -5301,6 +5305,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (requirementProperties == null) return;
         if (updateRequirementConfiguration()) {
             loadParameters();
+            updateName();
+            updateLore();
         }
     }
 

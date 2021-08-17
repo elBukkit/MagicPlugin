@@ -8,22 +8,13 @@
 # Glyph Wand
 
  - Make brushes work (swing to use)
- - Get rid of useActiveNameWhenClosed paramter, fold into requirements
 
 # Important
 
  - Prevent blaze fireballs from doing damage?
    Arenas always auto-rollback fireballs and stuff from mobs?
    Auto-rollback all spells from players after arena is done
- - Make sure slotted upgrades still work
- - Enchanting an unenchantable wand still consumes XP (? __Mr_Crazy__)
  - Spell icons that are shields will go to the offhand when shift+clicked 
- - Item attributes on wand template configs don't know about player attributes
-   In general, templates don't use mage parameters. Two options:
-   1. follow the MageClass pattern, create a new WandTemplate copy for every wand instance, to bind MageConfiguration
-   2. Collapse template config into wand config as an effective config ... this may be a better route since
-      right now wand property queries walk down the entire template inheritance chain
-      but if changing it to work this way, it may be worth looking at making mage clases work that way too?
  - Test applying infinity to a sword, is it allowed? Enchantable should bypass vanilla restrictions
  - Ability to enchant sticks and such?
  - Enchantment levels as variables in spell and wand configs would be very cool
