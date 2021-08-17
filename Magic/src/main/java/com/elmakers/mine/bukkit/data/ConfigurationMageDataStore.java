@@ -450,10 +450,12 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
             }
         } else {
             String preferenceKey = saveFile.getString("resource_pack_preference");
-            try {
-                resourcePackPreference = ResourcePackPreference.valueOf(preferenceKey.toUpperCase());
-            } catch (Exception ex) {
-                controller.getLogger().warning("Invalid resource pack preference key in player data file for id " + id + ": " + preferenceKey);
+            if (preferenceKey != null) {
+                try {
+                    resourcePackPreference = ResourcePackPreference.valueOf(preferenceKey.toUpperCase());
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid resource pack preference key in player data file for id " + id + ": " + preferenceKey);
+                }
             }
         }
         data.setResourcePackPreference(resourcePackPreference);
