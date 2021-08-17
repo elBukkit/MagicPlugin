@@ -543,7 +543,7 @@ commands:
         /mage clear       Clear magic items from a player's inventory
         /mage unbind      Delete specific bound wands for a mage
         /mage levelspells Level up all spells for a mage
-        /mage deactivate  Close the player's wand inventory
+        /mage deactivate  Close the player's wand inventory, also can be used like /mage lock
         /mage skin        Dump to chat a player's skin for use in a disguise
         /mage forget      Clear knowledge of crafting recipes
   "mage configure":

@@ -424,13 +424,15 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
                 if (subCommand.equalsIgnoreCase("lock")
                         || subCommand.equalsIgnoreCase("unlock")
+                        || subCommand.equalsIgnoreCase("deactivate")
                         || subCommand.equalsIgnoreCase("activate")
                         || subCommand.equalsIgnoreCase("switch")) {
 
                     if (target != null) {
                         Mage mage = controller.getMage(target);
                         boolean isActivateCommand = subCommand.equalsIgnoreCase("activate");
-                        if (subCommand.equalsIgnoreCase("lock") || isActivateCommand) {
+                        if (subCommand.equalsIgnoreCase("lock")
+                            || subCommand.equalsIgnoreCase("deactivate") || isActivateCommand) {
                             for (String classKey : mage.getClassKeys()) {
                                 if (mage.hasClassUnlocked(classKey)) {
                                     options.add(classKey);
@@ -1011,6 +1013,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageDeactivate(CommandSender sender, Player player, String[] parameters)
     {
+        if (parameters.length > 0) {
+            return onMageLock(sender, player, parameters);
+        }
         Mage mage = controller.getMage(player);
         mage.deactivate();
         sender.sendMessage("Deactivated " + player.getName());
