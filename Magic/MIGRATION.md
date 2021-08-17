@@ -22,6 +22,10 @@
 
    If you want a wand to use certain class parameters, adjust the `storage` property (see `base` class)
    If you want a class to inherit from its parent, use `inherit: ` (as well as `parent: `)
+   
+ - The `base` class now defines mana as coming specifically from `subclass`. If you have a setup
+   with mana shared between classes and inheriting from `base`, you may need to adjust the `storage`
+   section to get mana properties from `class`.
 
 # 9.4
 

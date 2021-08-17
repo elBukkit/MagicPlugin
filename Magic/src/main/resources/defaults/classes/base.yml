@@ -3,10 +3,12 @@ base:
     # Path needs to be set first here so we can identify if mana is coming from the path or
     # The base class
     path: subclass
-    # mana can be provided by the subclass (path controlled)
-    # or by the base class (shared between subclasses)
-    mana_max: subclass,class
-    mana_regeneration: subclass,class
+    # mana is usually controlled by path progression, and so we should read
+    # it from that same place.
+    # This could be changed to class if we want to share mana between
+    # multiple classes.
+    mana_max: path
+    mana_regeneration: path
     # Current mana level and timestamp (controls regeneration
     # Should get stored in the same place that max/regen come from
     mana: mana_regeneration
