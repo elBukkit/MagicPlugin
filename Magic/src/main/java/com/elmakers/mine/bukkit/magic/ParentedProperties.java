@@ -36,9 +36,9 @@ public abstract class ParentedProperties extends TemplatedProperties {
 
     @Nullable
     @Override
-    public ConfigurationSection getConfigurationSection(String key) {
-        ConfigurationSection own = super.getConfigurationSection(key);
-        ConfigurationSection fromParent = parent == null ? null : parent.getConfigurationSection(key);
+    public ConfigurationSection getStorageConfiguration() {
+        ConfigurationSection own = super.getStorageConfiguration();
+        ConfigurationSection fromParent = parent == null ? null : parent.getStorageConfiguration();
 
         if (own == null) {
             return fromParent;

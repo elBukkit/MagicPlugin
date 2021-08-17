@@ -34,7 +34,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     public void loadProperties() {
-        ConfigurationSection routeConfig = getConfigurationSection("storage");
+        ConfigurationSection routeConfig = getStorageConfiguration();
         if (routeConfig != null) {
             Set<String> keys = routeConfig.getKeys(false);
             for (String key : keys) {
@@ -84,6 +84,11 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                 migrateProperty(key, propertyType);
             }
         }
+    }
+
+    @Nullable
+    protected ConfigurationSection getStorageConfiguration() {
+        return getConfigurationSection("storage");
     }
 
     protected void migrateProperty(String key, MagicPropertyType propertyType) {

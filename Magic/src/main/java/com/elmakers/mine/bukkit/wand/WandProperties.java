@@ -81,9 +81,9 @@ public abstract class WandProperties extends TemplatedProperties {
 
     @Nullable
     @Override
-    public ConfigurationSection getConfigurationSection(String key) {
-        ConfigurationSection own = super.getConfigurationSection(key);
-        ConfigurationSection fromClass = mageClass == null ? null : mageClass.getConfigurationSection(key);
+    protected ConfigurationSection getStorageConfiguration() {
+        ConfigurationSection own = super.getStorageConfiguration();
+        ConfigurationSection fromClass = mageClass == null ? null : mageClass.getStorageConfiguration();
 
         if (own == null) {
             return fromClass;

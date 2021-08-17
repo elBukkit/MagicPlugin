@@ -6,8 +6,6 @@
    and place them in your `plugins/Magic` folder.
    https://github.com/elBukkit/MagicPlugin/tree/5f3942e89deb758ad0df1fd1bafe53cb2ff8fc30/Magic/src/main/resources/examples/6
    https://github.com/elBukkit/MagicPlugin/tree/a6004374fd857b62e0f83c02c3be8f7c7a6ba015/Magic/src/main/resources/examples/7
-   
- - Arena start/end commands delimiter changed to ; (from ,)
 
  - Wand controls changed to new hybrid mode by default.
    Use `/mconfig configure config wand_slots.controls.default_slotted controls_inventory` to put the default
@@ -15,6 +13,15 @@
 
  - Wand controls menu has changed to a slotted system. If you have custom wands with the "tweakable" tag and you'd
    still like to be able to change their controls, add `slot: controls` to the wand config.
+
+ - Arena start/end commands delimiter changed to ; (from ,)
+
+ - Wands no longer inherit certain config sections like "attributes" from their classes, nor classes from their parents.
+   
+   This was never intended behavior, I hope this does not mess with anyone's configs but it had to be fixed.
+
+   If you want a wand to use certain class parameters, adjust the `storage` property (see `base` class)
+   If you want a class to inherit from its parent, use `inherit: ` (as well as `parent: `)
 
 # 9.4
 
