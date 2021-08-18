@@ -27,6 +27,8 @@ public class GlyphHotbar {
     private WandDisplayMode barMode;
     private int barSlotPadding;
     private boolean showCooldown;
+    private String barPrefix;
+    private String barSuffix;
 
     protected String extraMessage;
     protected long lastExtraMessage;
@@ -61,6 +63,8 @@ public class GlyphHotbar {
         collapsedFinalSpacing = configuration.getInt("collapsed_spacing", 12);
         showCooldown = configuration.getBoolean("show_cooldown", true);
         collapsedMaxMessageLength = configuration.getInt("collapsed_message_max_length", 20);
+        barPrefix = configuration.getString("bar_prefix", "&3");
+        barSuffix = configuration.getString("bar_suffix", "&f");
 
         barMode = WandDisplayMode.parse(wand.getController(), configuration, "bar_mode", WandDisplayMode.MANA);
     }
@@ -214,6 +218,10 @@ public class GlyphHotbar {
 
             // Why does this need this barSlotPadding fudge factor?
             int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + barSlotPadding);
+
+            // Add bar prefix/suffix, normally used for coloring .. using it for visible characters
+            // Will probably make things misalign
+            barPart = barPrefix + barPart + barSuffix;
 
             // If this bar is longer than the hotbar, put the bar first
             if (barWidth > hotbarWidth) {
