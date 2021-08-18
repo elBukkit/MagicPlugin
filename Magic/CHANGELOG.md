@@ -32,6 +32,7 @@
    - Use `mythic_mob` in a magic mob config to make it build on a mythic mob
    - use `mythic_mob_level` in a config or spawn parameters to set the MM level
 
+ - Improved in-game help system `/mhelp` command
 
  - Add support for JSON chat component messages, escaped with backticks such as
      ```

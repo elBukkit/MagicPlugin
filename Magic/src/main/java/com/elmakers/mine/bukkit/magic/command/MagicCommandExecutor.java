@@ -55,7 +55,7 @@ import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
-public class MagicCommandExecutor extends MagicTabExecutor {
+public class MagicCommandExecutor extends MagicHelpCommandExecutor {
 
     private RunnableJob runningTask = null;
 
@@ -72,7 +72,7 @@ public class MagicCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             sender.sendMessage("Magic " + getMagicVersion());
-            sender.sendMessage("Use /magic help for more info");
+            sender.sendMessage("Use /mhelp for help");
             return true;
         }
 
@@ -86,19 +86,8 @@ public class MagicCommandExecutor extends MagicTabExecutor {
         }
         if (subCommand.equalsIgnoreCase("help"))
         {
-            sender.sendMessage(controller.getMessages().get("commands.magic.help_header"));
-            if (controller instanceof MagicController) {
-                ((MagicController)controller).showExampleInstructions(sender);
-            }
-            if (sender instanceof Player) {
-                Mage mage = controller.getMage(sender);
-                Wand wand = mage.getActiveWand();
-                if (wand != null) {
-                    wand.showInstructions();
-                }
-            }
-            sender.sendMessage(controller.getMessages().get("commands.magic.help"));
-            sender.sendMessage(controller.getMessages().get("commands.magic.help_footer"));
+            String[] args2 = Arrays.copyOfRange(args, 1, args.length);
+            onMagicHelp(sender, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("rpcheck"))
@@ -815,6 +804,9 @@ public class MagicCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "Magic.commands.magic.", "rpsend");
             addIfPermissible(sender, options, "Magic.commands.magic.", "register");
             addIfPermissible(sender, options, "Magic.commands.magic.", "logs");
+            addIfPermissible(sender, options, "Magic.commands.magic.", "help");
+        } else if (args.length > 1 && args[0].equals("help")) {
+            super.onTabComplete(sender, "mhelp", args);
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("list")) {
                 addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
