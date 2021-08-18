@@ -897,8 +897,15 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     protected void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage) {
         for (Map.Entry<String,Object> entry : mapped.entrySet()) {
-            // TODO: Handle colors?
-            if (entry.getKey().equals("text")) {
+            if (entry.getKey().equals("color")) {
+                String colorKey = entry.getValue().toString();
+                try {
+                    ChatColor color = ChatColor.valueOf(colorKey.toUpperCase());
+                    plainMessage.append(color);
+                } catch (Exception ex) {
+                    platform.getLogger().warning("Invalid color in json message: " + colorKey);
+                }
+            } if (entry.getKey().equals("text")) {
                 plainMessage.append(entry.getValue());
             } else if (entry.getKey().equals("keybind")) {
                 String key = entry.getValue().toString().replace("key.", "");

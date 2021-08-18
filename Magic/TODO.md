@@ -2,6 +2,8 @@
 
 # Importanter
 
+ - Test wand instructions in 1.14, 1.16
+
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
