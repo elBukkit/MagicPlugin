@@ -165,6 +165,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
 
     boolean isToggleable();
     boolean isPassive();
+    boolean isQuiet();
 
     @Nullable
     Collection<Trigger> getTriggers();

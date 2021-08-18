@@ -336,7 +336,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 }
             } else {
                 // This is a little hacky, but it is here to fix duplicate spell messages from the spellshop.
-                if (mage.getActiveGUI() == null)
+                if (mage.getActiveGUI() == null && !template.isQuiet())
                     sendAddMessage("spell_added", template.getName());
 
                 if (!mage.isLoading()) {

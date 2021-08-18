@@ -3627,4 +3627,9 @@ public class BaseSpell implements MageSpell, Cloneable {
         }
         return timeToCast;
     }
+
+    @Override
+    public boolean isQuiet() {
+        return quiet;
+    }
 }
