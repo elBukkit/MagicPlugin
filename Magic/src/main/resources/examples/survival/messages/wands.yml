@@ -443,7 +443,7 @@ wands:
         description: An Automata-Fighting Wand
     magictorch:
       name: Magic Torch
-      description: Creates light as you hold it
+      description: A light source in your hand
     gauntlet:
       name: Infinity Gauntlet
       description: Harness all of the powers of the Universe
