@@ -8,6 +8,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.bukkit.NamespacedKey;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Fox;
@@ -32,7 +33,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
-    public void sendChatComponents(Player player, String containsJson) {
+    public void sendChatComponents(CommandSender sender, String containsJson) {
         List<BaseComponent> components = new ArrayList<>();
         String[] pieces = getComponents(containsJson);
         for (String component : pieces) {
@@ -45,13 +46,17 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                 }
                 addToComponent.setExtra(addToComponents);
             }
-            if (component.startsWith("{")) {
-                addToComponents.addAll(Arrays.asList(ComponentSerializer.parse(component)));
-            } else {
-                addToComponents.addAll(Arrays.asList(TextComponent.fromLegacyText(component)));
+            try {
+                if (component.startsWith("{")) {
+                    addToComponents.addAll(Arrays.asList(ComponentSerializer.parse(component)));
+                } else {
+                    addToComponents.addAll(Arrays.asList(TextComponent.fromLegacyText(component)));
+                }
+            } catch (Exception ex) {
+                platform.getLogger().log(Level.SEVERE, "Error parsing chat components from: " + component, ex);
             }
         }
-        player.spigot().sendMessage(components.toArray(new BaseComponent[0]));
+        sender.spigot().sendMessage(components.toArray(new BaseComponent[0]));
     }
 
     @Override

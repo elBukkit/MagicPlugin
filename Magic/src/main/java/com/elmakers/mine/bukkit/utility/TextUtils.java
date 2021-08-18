@@ -184,7 +184,7 @@ public class TextUtils {
                 CompatibilityLib.getCompatibilityUtils().sendActionBar(player, fullMessage);
             } else {
                 if (fullMessage.contains("`{")) {
-                    CompatibilityLib.getCompatibilityUtils().sendChatComponents(player, fullMessage);
+                    CompatibilityLib.getCompatibilityUtils().sendChatComponents(sender, fullMessage);
                 } else {
                     sender.sendMessage(fullMessage);
                 }

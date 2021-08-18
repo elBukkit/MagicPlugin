@@ -30,6 +30,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -930,7 +931,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void sendChatComponents(Player player, String containsJson) {
+    public void sendChatComponents(CommandSender sender, String containsJson) {
         String[] components = getComponents(containsJson);
         StringBuilder plainMessage = new StringBuilder();
         for (String component : components) {
@@ -947,7 +948,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
                 plainMessage.append(component);
             }
         }
-        player.sendMessage(plainMessage.toString());
+        sender.sendMessage(plainMessage.toString());
     }
 
     @Override

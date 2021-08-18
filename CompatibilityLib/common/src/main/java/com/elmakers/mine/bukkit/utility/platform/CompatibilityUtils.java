@@ -252,7 +252,7 @@ public interface CompatibilityUtils {
 
     boolean sendActionBar(Player player, String message);
 
-    void sendChatComponents(Player player, String containsJson);
+    void sendChatComponents(CommandSender sender, String containsJson);
 
     void setMessages(Messages messages);
 
