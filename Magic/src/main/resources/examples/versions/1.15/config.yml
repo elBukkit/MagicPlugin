@@ -1,6 +1,6 @@
 # This may seem confusing, but we want all the changes from *future* versions
 # The closer we are to current, the fewer changes are required.
-inherit: 1.16
+inherit: versions/1.16
 
 # Use legacy icons for backwards-compatibility with combined resource packs
 legacy_icons_enabled: true

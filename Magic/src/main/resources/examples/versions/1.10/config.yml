@@ -1,5 +1,5 @@
 # This may seem confusing, but we want all the changes from *future* versions
 # The closer we are to current, the fewer changes are required.
-inherit: 1.11
+inherit: versions/1.11
 resource_pack: "http://rp.elmakers.com/Magic-RP-7.zip"
 add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-7.zip"
