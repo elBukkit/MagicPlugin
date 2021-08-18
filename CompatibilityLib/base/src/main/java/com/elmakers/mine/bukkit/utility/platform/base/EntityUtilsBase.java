@@ -16,6 +16,7 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Rabbit;
+import org.bukkit.entity.Sheep;
 import org.bukkit.entity.Slime;
 import org.bukkit.entity.Villager;
 import org.bukkit.entity.Wolf;
@@ -36,6 +37,7 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityHorseData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityItemFrameData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPaintingData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityRabbitData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySheepData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySlimeData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityVillagerData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityWolfData;
@@ -79,6 +81,8 @@ public abstract class EntityUtilsBase implements EntityUtils {
             extraData = new EntityItemFrameData(entity);
         } else if (entity instanceof Item) {
             extraData = new EntityDroppedItemData(entity);
+        } else if (entity instanceof Sheep) {
+            extraData = new EntitySheepData(entity);
         }
         return extraData;
     }
@@ -116,6 +120,8 @@ public abstract class EntityUtilsBase implements EntityUtils {
                 return new EntityItemFrameData(parameters, controller);
             case DROPPED_ITEM:
                 return new EntityDroppedItemData(parameters, controller);
+            case SHEEP:
+                return new EntitySheepData(parameters, controller);
             default:
                 return null;
         }
