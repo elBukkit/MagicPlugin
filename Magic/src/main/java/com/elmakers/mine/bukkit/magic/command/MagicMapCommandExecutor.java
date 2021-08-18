@@ -8,10 +8,13 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.zip.InflaterInputStream;
 
 import org.apache.commons.lang.StringUtils;
@@ -25,13 +28,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
-public class MagicMapCommandExecutor extends MagicMapExecutor {
+public class MagicMapCommandExecutor extends MagicTabExecutor {
     public MagicMapCommandExecutor(MagicAPI api) {
         super(api, "mmap");
     }
@@ -73,7 +77,7 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
                 if (i != 1) keyword = keyword + " ";
                 keyword = keyword + args[i];
             }
-            onMapList(sender, keyword);
+            onMapList(api.getController(), sender, keyword);
         }
         else if (subCommand.equalsIgnoreCase("give"))
         {
@@ -668,5 +672,53 @@ public class MagicMapCommandExecutor extends MagicMapExecutor {
             }
         }
         return options;
+    }
+
+    public static void onMapList(MageController controller, CommandSender sender, String keyword) {
+        Pattern pattern = null;
+        boolean positive = true;
+        if (!keyword.isEmpty()) {
+            if (keyword.startsWith("-")) {
+                keyword = keyword.substring(1);
+                positive = false;
+            }
+            pattern = Pattern.compile(keyword);
+        }
+        int shown = 0;
+        boolean limited = false;
+        List<URLMap> maps = controller.getMaps().getAll();
+        Collections.reverse(maps);
+        for (URLMap map : maps) {
+            int mapId = map.getId();
+            String source = map.getName() + " " + map.getURL() + " " + map.getId();
+            Matcher matcher = pattern == null ? null : pattern.matcher(source);
+            if (matcher == null || matcher.find() == positive) {
+                shown++;
+                String name = map.getName();
+                name = (name == null ? "(None)" : name);
+                name = ChatColor.AQUA + "" + mapId + ChatColor.WHITE + ": "
+                        + name + " => " + ChatColor.GRAY + map.getURL();
+                if (map.isSlice()) {
+                    name = name + ChatColor.BLUE + " Slice: " + ChatColor.WHITE + (map.getX() + 1) + " " + (map.getY() + 1);
+                }
+                sender.sendMessage(name);
+                if (shown > 100) {
+                    limited = true;
+                    break;
+                }
+            }
+        }
+        if (shown == 0) {
+            sender.sendMessage("No maps found" + (keyword.length() > 0 ? " matching " + keyword : "") + ", use /mmap load to add more maps");
+        } else if (keyword.isEmpty()) {
+            if (limited) {
+                sender.sendMessage("Results limited to 100, use /mmap list <keyword> to narrow your search");
+            } else {
+                sender.sendMessage(shown + " maps found");
+            }
+        } else {
+            String limitedMessage = limited ? " (+ more)" : "";
+            sender.sendMessage(shown + " maps found matching " + keyword + limitedMessage);
+        }
     }
 }

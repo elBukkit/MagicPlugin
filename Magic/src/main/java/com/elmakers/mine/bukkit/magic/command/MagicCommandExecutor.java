@@ -55,7 +55,7 @@ import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
-public class MagicCommandExecutor extends MagicMapExecutor {
+public class MagicCommandExecutor extends MagicTabExecutor {
 
     private RunnableJob runningTask = null;
 
@@ -562,7 +562,7 @@ public class MagicCommandExecutor extends MagicMapExecutor {
                 if (i != 2) keyword = keyword + " ";
                 keyword = keyword + args[i];
             }
-            onMapList(sender, keyword);
+            MagicMapCommandExecutor.onMapList(api.getController(), sender, keyword);
             return true;
         }
 
