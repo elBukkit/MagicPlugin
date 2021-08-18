@@ -262,7 +262,7 @@ wand:
     bound_instructions: |-
       &8| &7> &fYour &a$wand &fis &9bound &fto you, and is &9undroppable
     spell_instructions: |-
-      &8| &7> &6Swing &fyour &a$wand &fto cast &d$spell
+      &8| &7> $cast &fyour &a$wand &fto cast &d$spell
     mana_instructions: |-
       &8| &7> &fSpells require &6mana &fto cast, shown in the &7Mana&f (or &5XP&f) bar
     enchant_instructions: |-
@@ -281,7 +281,7 @@ wand:
       &8| &7> &6$cycle_hotbar &fto swap between your hotbars
     inventory_instructions: |-
       &8| &7> &6$toggle &fto open and close the &espell inventory
-      &8| &7> &6Open your inventory (E) &fto manage hotbar spells
+      &8| &7> &6Open your inventory &7(`{"keybind":"key.inventory"}`&7) &fto manage hotbar spells
       &8| &7> &fUse &6number keys &fto select the desired spell
     chest_instructions: |-
       &8| &7> &6$toggle &fto open and close the &espell inventory
