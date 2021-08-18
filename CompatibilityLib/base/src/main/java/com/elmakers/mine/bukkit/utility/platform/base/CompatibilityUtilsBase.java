@@ -935,10 +935,14 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         StringBuilder plainMessage = new StringBuilder();
         for (String component : components) {
             if (component.startsWith("{")) {
-                JsonReader reader = new JsonReader(new StringReader(containsJson));
-                reader.setLenient(true);
-                Map<String,Object> mapped = getGson().fromJson(reader, Map.class);
-                getSimpleMessage(mapped, plainMessage);
+                try {
+                    JsonReader reader = new JsonReader(new StringReader(component));
+                    reader.setLenient(true);
+                    Map<String, Object> mapped = getGson().fromJson(reader, Map.class);
+                    getSimpleMessage(mapped, plainMessage);
+                } catch (Exception ex) {
+                    plainMessage.append(component);
+                }
             } else {
                 plainMessage.append(component);
             }

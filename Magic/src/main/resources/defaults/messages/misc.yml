@@ -88,7 +88,7 @@ keybind:
   inventory: E
   use: Right-Click
   attack: Left-Click
-  swap: F
+  swapOffhand: F
   drop: Q
 
 skillapi:
