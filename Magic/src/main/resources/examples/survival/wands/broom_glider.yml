@@ -3,6 +3,5 @@ broom_glider:
     upgrade: true
     locked: true
     slot: broom_upgrade
-    class: broomrider
     overrides:
         duration: 0

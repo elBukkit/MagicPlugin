@@ -3,7 +3,6 @@ broom_booster:
     upgrade: true
     locked: true
     slot: broom_upgrade
-    class: broomrider
     overrides:
         max_speed: 1.5
         max_acceleration: 0.02
