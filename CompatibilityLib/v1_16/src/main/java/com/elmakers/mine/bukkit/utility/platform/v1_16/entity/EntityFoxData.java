@@ -17,10 +17,6 @@ public class EntityFoxData extends com.elmakers.mine.bukkit.utility.platform.v1_
     private UUID firstTrusted;
     private UUID secondTrusted;
 
-    public EntityFoxData() {
-
-    }
-
     public EntityFoxData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         Logger log = controller.getLogger();

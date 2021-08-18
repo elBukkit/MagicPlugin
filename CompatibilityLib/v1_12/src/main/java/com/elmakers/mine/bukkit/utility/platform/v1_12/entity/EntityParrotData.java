@@ -12,10 +12,6 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 public class EntityParrotData extends EntityAnimalData {
     public Parrot.Variant variant;
 
-    public EntityParrotData() {
-
-    }
-
     public EntityParrotData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         Logger log = controller.getLogger();

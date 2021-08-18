@@ -13,10 +13,6 @@ import com.elmakers.mine.bukkit.entity.EntityExtraData;
 public class EntityEnderDragonData extends EntityExtraData {
     public Phase phase;
 
-    public EntityEnderDragonData() {
-
-    }
-
     public EntityEnderDragonData(ConfigurationSection parameters, MageController controller) {
         Logger log = controller.getLogger();
         String phaseName = parameters.getString("phase");

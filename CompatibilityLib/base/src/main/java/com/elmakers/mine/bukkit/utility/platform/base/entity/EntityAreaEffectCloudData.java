@@ -29,10 +29,6 @@ public class EntityAreaEffectCloudData extends EntityExtraData {
     private int reapplicationDelay;
     private int waitTime;
 
-    public EntityAreaEffectCloudData() {
-
-    }
-
     public EntityAreaEffectCloudData(ConfigurationSection parameters, MageController controller) {
         if (parameters.contains("color")) {
             ColorHD colorHD = new ColorHD(parameters.getString("color"));

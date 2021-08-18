@@ -20,10 +20,6 @@ public class EntityAnimalData extends EntityExtraData {
     private Boolean tamed;
     protected Boolean sitting;
 
-    public EntityAnimalData() {
-
-    }
-
     public EntityAnimalData(ConfigurationSection parameters, MageController controller) {
         Logger log = controller.getLogger();
         String tamer = parameters.getString("owner");

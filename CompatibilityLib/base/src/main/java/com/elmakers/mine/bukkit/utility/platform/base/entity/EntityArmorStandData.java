@@ -30,10 +30,6 @@ public class EntityArmorStandData extends EntityExtraData {
     public Boolean hasBasePlate;
     public Integer disabledSlots;
 
-    public EntityArmorStandData() {
-
-    }
-
     public EntityArmorStandData(ArmorStand armorStand) {
         EntityEquipment equipment = armorStand.getEquipment();
         itemInHand = equipment.getItemInMainHand();

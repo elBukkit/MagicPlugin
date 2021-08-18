@@ -10,10 +10,6 @@ import com.elmakers.mine.bukkit.entity.EntityExtraData;
 public class EntityShulkerData extends EntityExtraData {
     private DyeColor color;
 
-    public EntityShulkerData() {
-
-    }
-
     public EntityShulkerData(ConfigurationSection parameters) {
         String colorString = parameters.getString("color");
         if (colorString != null) {

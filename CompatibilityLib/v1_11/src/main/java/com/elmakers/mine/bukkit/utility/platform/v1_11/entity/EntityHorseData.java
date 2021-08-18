@@ -16,10 +16,6 @@ public class EntityHorseData extends EntityAbstractHorseData {
     public ItemData armor;
     public ItemData saddle;
 
-    public EntityHorseData() {
-
-    }
-
     public EntityHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         Logger log = controller.getLogger();

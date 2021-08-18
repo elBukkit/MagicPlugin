@@ -13,10 +13,6 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 public class EntityAxolotlData extends EntityAnimalData {
     public Axolotl.Variant variant;
 
-    public EntityAxolotlData() {
-
-    }
-
     public EntityAxolotlData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         Logger log = controller.getLogger();

@@ -14,10 +14,6 @@ public class EntityVillagerData extends EntityExtraData {
     protected Villager.Profession profession;
     protected boolean randomProfession;
 
-    public EntityVillagerData() {
-
-    }
-
     public EntityVillagerData(ConfigurationSection parameters, MageController controller) {
         String professionKey = parameters.getString("villager_profession");
         if (professionKey != null && !professionKey.isEmpty()) {

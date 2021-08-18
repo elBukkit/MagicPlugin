@@ -12,10 +12,6 @@ public class EntitySheepData extends EntityAnimalData {
     private DyeColor color;
     private Boolean sheared;
 
-    public EntitySheepData() {
-
-    }
-
     public EntitySheepData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
 

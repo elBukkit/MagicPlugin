@@ -12,10 +12,6 @@ public class EntityWolfData extends EntityAnimalData {
     private Boolean isAngry;
     private DyeColor collarColor;
 
-    public EntityWolfData() {
-
-    }
-
     public EntityWolfData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
 

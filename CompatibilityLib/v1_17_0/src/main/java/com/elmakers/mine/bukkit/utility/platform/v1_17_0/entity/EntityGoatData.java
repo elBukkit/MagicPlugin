@@ -11,10 +11,6 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 public class EntityGoatData extends EntityAnimalData {
     public Boolean screaming;
 
-    public EntityGoatData() {
-
-    }
-
     public EntityGoatData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         screaming = ConfigUtils.getOptionalBoolean(parameters, "screaming");

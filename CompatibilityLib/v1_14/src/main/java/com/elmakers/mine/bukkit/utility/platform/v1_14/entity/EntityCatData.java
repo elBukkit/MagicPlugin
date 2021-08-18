@@ -14,10 +14,6 @@ public class EntityCatData extends EntityAnimalData {
     private Cat.Type type;
     private DyeColor collarColor;
 
-    public EntityCatData() {
-
-    }
-
     public EntityCatData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
 

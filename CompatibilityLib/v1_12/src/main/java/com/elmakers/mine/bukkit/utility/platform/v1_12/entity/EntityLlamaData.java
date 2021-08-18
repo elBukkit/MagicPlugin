@@ -14,10 +14,6 @@ public class EntityLlamaData extends EntityChestedHorseData {
     private Llama.Color color;
     private Integer strength;
 
-    public EntityLlamaData() {
-
-    }
-
     public EntityLlamaData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         Logger log = controller.getLogger();

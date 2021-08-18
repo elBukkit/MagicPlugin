@@ -10,10 +10,6 @@ public class EntityAbstractHorseData extends EntityAnimalData {
     public Integer maxDomestication;
     public Double jumpStrength;
 
-    public EntityAbstractHorseData() {
-
-    }
-
     public EntityAbstractHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
 

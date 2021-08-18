@@ -7,10 +7,6 @@ import org.bukkit.entity.Entity;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class EntityAbstractHorseData extends com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAbstractHorseData {
-    public EntityAbstractHorseData() {
-
-    }
-
     public EntityAbstractHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
     }

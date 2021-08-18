@@ -16,10 +16,6 @@ public class EntityChestedHorseData extends EntityAbstractHorseData {
     private Boolean hasChest;
     private ItemStack[] inventory;
 
-    public EntityChestedHorseData() {
-
-    }
-
     public EntityChestedHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         hasChest = ConfigUtils.getOptionalBoolean(parameters, "has_chest");

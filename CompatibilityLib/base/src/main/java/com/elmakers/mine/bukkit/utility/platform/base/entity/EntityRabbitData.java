@@ -12,10 +12,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 public class EntityRabbitData extends EntityAnimalData {
     private Rabbit.Type type;
 
-    public EntityRabbitData() {
-
-    }
-
     public EntityRabbitData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         Logger log = controller.getLogger();

@@ -15,10 +15,6 @@ public class EntityFoxData extends EntityAnimalData {
     private Fox.Type type;
     private Boolean crouching;
 
-    public EntityFoxData() {
-
-    }
-
     public EntityFoxData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         Logger log = controller.getLogger();
