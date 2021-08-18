@@ -32,6 +32,12 @@
    - Use `mythic_mob` in a magic mob config to make it build on a mythic mob
    - use `mythic_mob_level` in a config or spawn parameters to set the MM level
 
+
+ - Add support for JSON chat component messages, escaped with backticks such as
+     ```
+     &6Swing &7(&b`{"keybind":"key.attack"}`&7) &fyour &a$wand
+     ```
+
 ## Fixes
 
  - Fix behavior of wand magic attribute stacking
@@ -68,10 +74,6 @@
  - Spell parameters can now be used inside of equations within that spell
  - The `ModifyAttribute` action now supports an `x` variable holding the current attribute value, just like `ModifyProperties`
  - The `/mage deactivate` command can now be used as an alias for `/mage lock`
- - Add support for JSON chat component messages, escaped with backticks such as
-   ```
-   &6Swing &7(&b`{"keybind":"key.attack"}`&7) &fyour &a$wand
-   ```
 
 ## Changes
 
