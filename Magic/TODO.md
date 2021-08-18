@@ -18,6 +18,7 @@
 
 # Important
 
+ - Allow slotted upgrades to rename (rename and rename_description options)
  - Prevent blaze fireballs from doing damage?
    Arenas always auto-rollback fireballs and stuff from mobs?
    Auto-rollback all spells from players after arena is done

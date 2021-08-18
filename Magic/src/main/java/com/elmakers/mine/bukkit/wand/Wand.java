@@ -1036,22 +1036,30 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         mage.sendMessage(getMessage("bound_instructions", "").replace("$wand", getName()));
     }
 
+    private boolean showCycleActiveInstructions(int spellCount) {
+        if (spellCount > 1) {
+            if (rightClickAction == WandAction.CYCLE_ACTIVE_HOTBAR
+                    || leftClickAction == WandAction.CYCLE_ACTIVE_HOTBAR
+                    || dropAction == WandAction.CYCLE_ACTIVE_HOTBAR
+                    || swapAction == WandAction.CYCLE_ACTIVE_HOTBAR) {
+
+                String cycleMessage = getMessage("cycle_active_hotbar_instructions");
+                String controlKey = getControlKey(WandAction.CYCLE_ACTIVE_HOTBAR);
+                controlKey = controller.getMessages().get("controls." + controlKey);
+                cycleMessage = cycleMessage.replace("$button", controlKey);
+                mage.sendMessage(cycleMessage);
+                return true;
+            }
+        }
+        return false;
+    }
+
     private void showSecondSpellInstructions(int spellCount) {
         String headerMessage = getMessage("spell_count_instructions");
         if (headerMessage.isEmpty()) return;
         mage.sendMessage(headerMessage);
 
-        if (rightClickAction == WandAction.CYCLE_ACTIVE_HOTBAR
-            || leftClickAction == WandAction.CYCLE_ACTIVE_HOTBAR
-            || dropAction == WandAction.CYCLE_ACTIVE_HOTBAR
-            || swapAction == WandAction.CYCLE_ACTIVE_HOTBAR) {
-
-            String cycleMessage = getMessage("cycle_active_hotbar_instructions");
-            String controlKey = getControlKey(WandAction.CYCLE_ACTIVE_HOTBAR);
-            controlKey = controller.getMessages().get("controls." + controlKey);
-            cycleMessage = cycleMessage.replace("$button", controlKey);
-            mage.sendMessage(cycleMessage);
-        } else {
+        if (!showCycleActiveInstructions(spellCount)) {
             showModeControlsInstructions(spellCount);
         }
     }
@@ -1089,6 +1097,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         .replace("$cast", castControlKey)
                         .replace("$spell", spellTemplate.getName());
                 mage.sendMessage(message);
+                showCycleActiveInstructions(spellCount);
                 showModeControlsInstructions(spellCount);
             }
         }
