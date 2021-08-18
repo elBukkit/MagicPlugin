@@ -1,5 +1,8 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_16;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,6 +21,7 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_15.CompatibilityUtils {
@@ -28,9 +32,26 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
-    public void sendChatComponents(Player player, String json) {
-        BaseComponent[] components = ComponentSerializer.parse(json);
-        player.spigot().sendMessage(components);
+    public void sendChatComponents(Player player, String containsJson) {
+        List<BaseComponent> components = new ArrayList<>();
+        String[] pieces = getComponents(containsJson);
+        for (String component : pieces) {
+            List<BaseComponent> addToComponents = components;
+            if (!components.isEmpty()) {
+                BaseComponent addToComponent = components.get(components.size() - 1);
+                addToComponents = addToComponent.getExtra();
+                if (addToComponents == null) {
+                    addToComponents = new ArrayList<>();
+                }
+                addToComponent.setExtra(addToComponents);
+            }
+            if (component.startsWith("{")) {
+                addToComponents.addAll(Arrays.asList(ComponentSerializer.parse(component)));
+            } else {
+                addToComponents.addAll(Arrays.asList(TextComponent.fromLegacyText(component)));
+            }
+        }
+        player.spigot().sendMessage(components.toArray(new BaseComponent[0]));
     }
 
     @Override

@@ -898,6 +898,8 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             // TODO: Handle colors?
             if (entry.getKey().equals("text")) {
                 plainMessage.append(entry.getValue());
+            } else if (entry.getKey().equals("keybind")) {
+                plainMessage.append(entry.getValue().toString().replace("key.", ""));
             } else if (entry.getKey().equals("extra")) {
                 Object rawExtra = entry.getValue();
                 if (rawExtra instanceof List) {
@@ -910,13 +912,24 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
     }
 
+    protected String[] getComponents(String containsJson) {
+        return StringUtils.split(containsJson, "`");
+    }
+
     @Override
-    public void sendChatComponents(Player player, String json) {
+    public void sendChatComponents(Player player, String containsJson) {
+        String[] components = getComponents(containsJson);
         StringBuilder plainMessage = new StringBuilder();
-        JsonReader reader = new JsonReader(new StringReader(json));
-        reader.setLenient(true);
-        Map<String,Object> mapped = getGson().fromJson(reader, Map.class);
-        getSimpleMessage(mapped, plainMessage);
+        for (String component : components) {
+            if (component.startsWith("{")) {
+                JsonReader reader = new JsonReader(new StringReader(containsJson));
+                reader.setLenient(true);
+                Map<String,Object> mapped = getGson().fromJson(reader, Map.class);
+                getSimpleMessage(mapped, plainMessage);
+            } else {
+                plainMessage.append(component);
+            }
+        }
         player.sendMessage(plainMessage.toString());
     }
 }

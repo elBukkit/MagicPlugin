@@ -17,8 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
-public class TextUtils
-{
+public class TextUtils {
+    private static final Pattern simpleJsonPattern = Pattern.compile(".*\\{.+:.+\\}.*");
     private static final NumberFormat[] formatters = {
         new DecimalFormat("#0"),
         new DecimalFormat("#0.0"),
@@ -184,7 +184,7 @@ public class TextUtils
             } else if (lineIsActionBar && player != null) {
                 CompatibilityLib.getCompatibilityUtils().sendActionBar(player, fullMessage);
             } else {
-                if (line.startsWith("{")) {
+                if (simpleJsonPattern.matcher(line).matches()) {
                     CompatibilityLib.getCompatibilityUtils().sendChatComponents(player, line);
                 } else {
                     sender.sendMessage(fullMessage);

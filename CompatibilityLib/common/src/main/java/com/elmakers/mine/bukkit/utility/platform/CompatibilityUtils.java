@@ -251,7 +251,7 @@ public interface CompatibilityUtils {
 
     boolean sendActionBar(Player player, String message);
 
-    void sendChatComponents(Player player, String json);
+    void sendChatComponents(Player player, String containsJson);
 
     float getDurability(Material material);
 
