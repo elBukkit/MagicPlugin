@@ -47,10 +47,10 @@ public class WandUpgradeSlot {
 
     public boolean addSlotted(Wand upgrade, Mage mage) {
         String slotType = upgrade.getSlot();
-        if (slotType == null || slotType.isEmpty()) {
+        if (slotType == null || slotType.isEmpty() || this.slotType == null) {
             return false;
         }
-        if (!slotType.equals(slotType)) {
+        if (!slotType.equals(this.slotType)) {
             return false;
         }
         if (slotted == null || replaceable) {
