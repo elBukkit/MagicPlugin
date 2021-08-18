@@ -83,6 +83,14 @@ controls:
   left_click: '&6Swing &7(&b`{"keybind":"key.attack"}`&7)'
   swap: '&6Swap &7(&b`{"keybind":"key.swapOffhand"}`&7)'
 
+# Used as replacements when chat components are not available
+keybind:
+  inventory: E
+  use: Right-Click
+  attack: Left-Click
+  swap: F
+  drop: Q
+
 skillapi:
   required_skill: "&cRequired Skill: &4$skill"
   required_class: "&cRequired Class: &4$class"

@@ -2081,6 +2081,7 @@ public class MagicController implements MageController {
     private void processMessages() {
         BaseMagicCurrency.formatter = new DecimalFormat(messages.get("numbers.decimal", "#,###.00"));
         BaseMagicCurrency.intFormatter = new DecimalFormat(messages.get("numbers.integer", "#,###"));
+        CompatibilityLib.getCompatibilityUtils().setMessages(messages);
     }
 
     private void registerManagers() {

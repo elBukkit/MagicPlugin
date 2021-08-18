@@ -63,6 +63,7 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 
@@ -252,6 +253,8 @@ public interface CompatibilityUtils {
     boolean sendActionBar(Player player, String message);
 
     void sendChatComponents(Player player, String containsJson);
+
+    void setMessages(Messages messages);
 
     float getDurability(Material material);
 

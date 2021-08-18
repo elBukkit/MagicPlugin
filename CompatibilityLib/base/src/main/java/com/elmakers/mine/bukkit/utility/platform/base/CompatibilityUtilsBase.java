@@ -61,6 +61,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
 import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
@@ -90,6 +91,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected final Map<World, WeakReference<ThrownPotion>> worldPotions = new WeakHashMap<>();
     public Map<Integer, Material> materialIdMap;
     protected final Platform platform;
+    private Messages messages;
 
     protected CompatibilityUtilsBase(final Platform platform) {
         this.platform = platform;
@@ -899,7 +901,11 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             if (entry.getKey().equals("text")) {
                 plainMessage.append(entry.getValue());
             } else if (entry.getKey().equals("keybind")) {
-                plainMessage.append(entry.getValue().toString().replace("key.", ""));
+                String key = entry.getValue().toString().replace("key.", "");
+                if (messages != null) {
+                    key = messages.get("keybind." + key, key);
+                }
+                plainMessage.append(key);
             } else if (entry.getKey().equals("extra")) {
                 Object rawExtra = entry.getValue();
                 if (rawExtra instanceof List) {
@@ -931,5 +937,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             }
         }
         player.sendMessage(plainMessage.toString());
+    }
+
+    @Override
+    public void setMessages(Messages messages) {
+        this.messages = messages;
     }
 }
