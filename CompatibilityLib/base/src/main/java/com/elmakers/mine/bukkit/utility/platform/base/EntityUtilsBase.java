@@ -105,7 +105,7 @@ public abstract class EntityUtilsBase implements EntityUtils {
                 return new EntityArmorStandData(parameters);
             case SLIME:
             case MAGMA_CUBE:
-                new EntitySlimeData(parameters);
+                return new EntitySlimeData(parameters);
             case FALLING_BLOCK:
                 return new EntityFallingBlockData(parameters, controller);
             case ENDER_DRAGON:
