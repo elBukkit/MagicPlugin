@@ -184,7 +184,11 @@ public class TextUtils
             } else if (lineIsActionBar && player != null) {
                 CompatibilityLib.getCompatibilityUtils().sendActionBar(player, fullMessage);
             } else {
-                sender.sendMessage(fullMessage);
+                if (line.startsWith("{")) {
+                    CompatibilityLib.getCompatibilityUtils().sendChatComponents(player, line);
+                } else {
+                    sender.sendMessage(fullMessage);
+                }
             }
         }
     }

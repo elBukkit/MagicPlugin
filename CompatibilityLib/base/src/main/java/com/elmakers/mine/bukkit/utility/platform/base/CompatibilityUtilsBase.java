@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -66,6 +67,8 @@ import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
@@ -77,6 +80,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected static int BLOCK_BREAK_RANGE = 64;
 
     protected final UUID emptyUUID = new UUID(0L, 0L);
+    protected Gson gson;
     protected ItemStack dummyItem;
     protected boolean hasDumpedStack = false;
     protected boolean teleporting = false;
@@ -89,6 +93,13 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     protected CompatibilityUtilsBase(final Platform platform) {
         this.platform = platform;
+    }
+
+    protected Gson getGson() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        return gson;
     }
 
     @Override
@@ -880,5 +891,32 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @SuppressWarnings("deprecation")
     public FallingBlock spawnFallingBlock(Location location, Material material, String blockData) {
         return location.getWorld().spawnFallingBlock(location, material, (byte)0);
+    }
+
+    protected void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage) {
+        for (Map.Entry<String,Object> entry : mapped.entrySet()) {
+            // TODO: Handle colors?
+            if (entry.getKey().equals("text")) {
+                plainMessage.append(entry.getValue());
+            } else if (entry.getKey().equals("extra")) {
+                Object rawExtra = entry.getValue();
+                if (rawExtra instanceof List) {
+                    List<Map<String, Object>> mapList = (List<Map<String, Object>>)rawExtra;
+                    for (Map<String, Object> child : mapList) {
+                        getSimpleMessage(child, plainMessage);
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void sendChatComponents(Player player, String json) {
+        StringBuilder plainMessage = new StringBuilder();
+        JsonReader reader = new JsonReader(new StringReader(json));
+        reader.setLenient(true);
+        Map<String,Object> mapped = getGson().fromJson(reader, Map.class);
+        getSimpleMessage(mapped, plainMessage);
+        player.sendMessage(plainMessage.toString());
     }
 }

@@ -2,6 +2,11 @@
 
 # Importanter
 
+ - All the zombies on my demo server seem to be named...
+   or are these left over from mooses?
+   
+ - base_trap and blind_trap now throwing errors about their variables
+
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
 

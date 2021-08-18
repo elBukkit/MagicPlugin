@@ -17,12 +17,20 @@ import org.bukkit.inventory.SmithingRecipe;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 
 public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_15.CompatibilityUtils {
     private final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
 
     public CompatibilityUtils(Platform platform) {
         super(platform);
+    }
+
+    @Override
+    public void sendChatComponents(Player player, String json) {
+        BaseComponent[] components = ComponentSerializer.parse(json);
+        player.spigot().sendMessage(components);
     }
 
     @Override
