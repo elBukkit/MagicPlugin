@@ -16,6 +16,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
@@ -23,6 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.google.gson.Gson;
 
 public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private static String PARAMETER_PATTERN_STRING = "\\$([a-zA-Z0-9]+)";
@@ -36,6 +38,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     public static DecimalFormat MOMENT_MILLISECONDS_FORMATTER = new DecimalFormat("0");
     public static DecimalFormat MOMENT_SECONDS_FORMATTER = new DecimalFormat("0.##");
 
+    private Map<String, String> macros = new HashMap<>();
     private Map<String, String> messageMap = new HashMap<>();
     private Map<String, List<String>> listMap = new HashMap<>();
     private Map<String, List<String>> randomized = new HashMap<>();
@@ -45,12 +48,22 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private List<Integer> positiveSpace = new ArrayList<>();
 
     private NumberFormat formatter = new DecimalFormat("#0.00");
+    private final Gson gson;
 
     public Messages() {
-
+        gson = new Gson();
     }
 
     public void load(ConfigurationSection messages) {
+        // Preload the macros section so it can be used in the following messages
+        ConfigurationSection macros = messages.getConfigurationSection("macros");
+        if (macros != null) {
+            messages.set("macros", null);
+            for (String macroKey : macros.getKeys(true)) {
+                this.macros.put(macroKey, macros.getString(macroKey));
+            }
+        }
+
         Collection<String> keys = messages.getKeys(true);
         for (String key : keys) {
             if (key.equals("randomized")) {
@@ -61,6 +74,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 }
             } else if (messages.isString(key)) {
                 String value = messages.getString(key);
+                value = processMacros(value);
                 value = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(value));
                 messageMap.put(key, value);
             } else if (messages.isList(key)) {
@@ -90,6 +104,37 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         Collections.sort(negativeSpace);
         Collections.sort(positiveSpace);
         Collections.reverse(positiveSpace);
+    }
+
+    private String processMacros(String message) {
+        if (!message.contains("`<")) return message;
+        String[] pieces = StringUtils.split(message, "`");
+        for (int i = 0; i < pieces.length; i++) {
+            String piece = pieces[i];
+            if (!piece.startsWith("<") && !piece.endsWith(">")) continue;
+            piece = "{" + piece.substring(1, piece.length() - 1) + "}";
+            try {
+                Map<String, Object> mapped = gson.fromJson(piece, Map.class);
+                Object macroKey = mapped.get("macro");
+                if (macroKey == null || !(macroKey instanceof String)) {
+                    continue;
+                }
+                String macro = macros.get((String)macroKey);
+                if (macro == null) {
+                    continue;
+                }
+                for (Map.Entry<String, Object> entry : mapped.entrySet()) {
+                    String macroParameter = entry.getKey();
+                    if (macroParameter.equals("macro")) continue;
+                    macro = macro.replace("$" + macroParameter, entry.getValue().toString());
+                }
+                pieces[i] = macro;
+            } catch (Exception ex) {
+                continue;
+            }
+        }
+
+        return StringUtils.join(pieces, "`");
     }
 
     @Override
