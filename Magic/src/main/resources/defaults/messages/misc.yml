@@ -78,10 +78,10 @@ resource_pack:
     declined: "&eSee: &f&nhttps://tinyurl.com/elmakers&f for &bresource pack&f instructions.\n&fUse &7/getrp download&f if you prefer to download the RP.\n&fUse &7/getrp off&f to permanently disable this message."
 
 controls:
-  drop: '&6Drop &7(&b`{"keybind":"key.drop"}`&7)'
-  right_click: '&6Interact &7(&b`{"keybind":"key.use"}`&7)'
-  left_click: '&6Swing &7(&b`{"keybind":"key.attack"}`&7)'
-  swap: '&6Swap &7(&b`{"keybind":"key.swapOffhand"}`&7)'
+  drop: '&fDrop &7(&a`{"keybind":"key.drop"}`&7)'
+  right_click: '&fInteract &7(&a`{"keybind":"key.use"}`&7)'
+  left_click: '&fSwing &7(&a`{"keybind":"key.attack"}`&7)'
+  swap: '&fSwap &7(&a`{"keybind":"key.swapOffhand"}`&7)'
 
 # Used as replacements when chat components are not available
 keybind:
