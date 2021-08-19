@@ -18,6 +18,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 import de.slikey.effectlib.Effect;
 import de.slikey.effectlib.EffectManager;
@@ -156,7 +157,7 @@ public class EffectLibManager {
             }
             if (colorOverride != null && colorOverrideName != null)
             {
-                String hexColor = Integer.toHexString(colorOverride.asRGB());
+                String hexColor = TextUtils.toHexString(colorOverride.asRGB());
                 parameters.set(colorOverrideName, hexColor);
             }
         }

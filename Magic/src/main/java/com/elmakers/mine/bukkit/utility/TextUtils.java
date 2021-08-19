@@ -202,4 +202,9 @@ public class TextUtils {
         }
         return itemStack.getType().name();
     }
+
+    // This is mainly meant for colors, since it only uses 6 characters for RGB
+    public static String toHexString(int i) {
+        return String.format("%06X", i);
+    }
 }

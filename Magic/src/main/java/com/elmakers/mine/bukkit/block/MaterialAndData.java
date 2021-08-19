@@ -42,6 +42,7 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -753,16 +754,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 if (extraData != null && extraData instanceof LeatherArmorData) {
                     Color color = ((LeatherArmorData)extraData).getColor();
                     if (data != 0) {
-                        materialKey += ",#" + Integer.toHexString(color.asRGB());
+                        materialKey += ",#" + TextUtils.toHexString(color.asRGB());
                     } else {
-                        materialKey += ":#" + Integer.toHexString(color.asRGB());
+                        materialKey += ":#" + TextUtils.toHexString(color.asRGB());
                     }
                 }
             } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW || this.material == DefaultMaterials.getFireworkStar()) {
                 if (extraData != null && extraData instanceof ColoredData) {
                     Color color = ((ColoredData)extraData).getColor();
                     if (color != null) {
-                        materialKey += ":" + Integer.toHexString(color.asRGB());
+                        materialKey += ":" + TextUtils.toHexString(color.asRGB());
                     }
                 }
             } else if (extraData != null && extraData instanceof EnchantmentData) {
