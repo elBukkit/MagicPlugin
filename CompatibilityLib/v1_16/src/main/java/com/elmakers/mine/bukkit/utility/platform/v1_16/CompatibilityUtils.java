@@ -35,22 +35,28 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     @Override
     public void sendChatComponents(CommandSender sender, String containsJson) {
         List<BaseComponent> components = new ArrayList<>();
+        List<BaseComponent> addToComponents = components;
         String[] pieces = getComponents(containsJson);
+        BaseComponent addToComponent = null;
         for (String component : pieces) {
-            List<BaseComponent> addToComponents = components;
-            if (!components.isEmpty()) {
-                BaseComponent addToComponent = components.get(components.size() - 1);
-                addToComponents = addToComponent.getExtra();
-                if (addToComponents == null) {
-                    addToComponents = new ArrayList<>();
-                }
-                addToComponent.setExtra(addToComponents);
-            }
             try {
+                List<BaseComponent> addComponents;
                 if (component.startsWith("{")) {
-                    addToComponents.addAll(Arrays.asList(ComponentSerializer.parse(component)));
+                    addComponents = Arrays.asList(ComponentSerializer.parse(component));
                 } else {
-                    addToComponents.addAll(Arrays.asList(TextComponent.fromLegacyText(component)));
+                    addComponents = Arrays.asList(TextComponent.fromLegacyText(component));
+                }
+                if (!addComponents.isEmpty()) {
+                    addToComponents.addAll(addComponents);
+                    if (addToComponent != null) {
+                        addToComponent.setExtra(addToComponents);
+                    }
+
+                    addToComponent = addToComponents.get(addToComponents.size() - 1);
+                    addToComponents = addToComponent.getExtra();
+                    if (addToComponents == null) {
+                        addToComponents = new ArrayList<>();
+                    }
                 }
             } catch (Exception ex) {
                 platform.getLogger().log(Level.SEVERE, "Error parsing chat components from: " + component, ex);
