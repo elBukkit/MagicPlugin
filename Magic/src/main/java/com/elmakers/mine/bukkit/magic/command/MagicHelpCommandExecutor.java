@@ -14,7 +14,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class MagicHelpCommandExecutor extends MagicTabExecutor {
-    private final MagicController controller;
+    protected final MagicController controller;
 
     public MagicHelpCommandExecutor(MagicAPI api) {
         super(api, "mhelp");
@@ -40,7 +40,7 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
     protected void onMagicHelp(CommandSender sender, String[] args) {
         Mage mage = controller.getMage(sender);
         if (args.length == 0) {
-            mage.sendMessage(controller.getMessages().get("commands.magic.help_header"));
+            mage.sendMessage(controller.getMessages().get("commands.mhelp.header"));
 
             // TODO: wand instructions
             Wand wand = mage.getActiveWand();
@@ -77,7 +77,7 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
         }
 
         String topic = StringUtils.join(args, " ");
-        String unknownMessage = controller.getMessages().get("commands.magic.help.unknown");
+        String unknownMessage = controller.getMessages().get("commands.mhelp.unknown");
         mage.sendMessage(unknownMessage.replace("$topic", topic));
     }
 

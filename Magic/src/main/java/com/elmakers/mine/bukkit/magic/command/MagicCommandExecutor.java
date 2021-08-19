@@ -40,13 +40,11 @@ import org.bukkit.util.Vector;
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.UndoList;
-import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
@@ -201,9 +199,9 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
             }
             return onMagicRegister((Player)sender, args[1]);
         }
-        if (subCommand.equalsIgnoreCase("migrate") && controller instanceof MagicController)
+        if (subCommand.equalsIgnoreCase("migrate"))
         {
-            ((MagicController)controller).migratePlayerData(sender);
+            controller.migratePlayerData(sender);
             return true;
         }
         if (subCommand.equalsIgnoreCase("cancel"))
@@ -268,9 +266,9 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
 
             return true;
         }
-        if (subCommand.equalsIgnoreCase("logs") && controller instanceof MagicController) {
+        if (subCommand.equalsIgnoreCase("logs")) {
 
-            MagicLogger magicLogger = ((MagicController) api.getController()).getLogger();
+            MagicLogger magicLogger = controller.getLogger();
 
             List<LogMessage> logs = new ArrayList<>();
             String type = args.length >= 2 ? args[1] : subCommand.toLowerCase();
@@ -325,22 +323,18 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
         {
             sender.sendMessage(ChatColor.GRAY + "For more specific information, add 'tasks', 'wands', 'maps', 'schematics', 'entities', 'blocks' or 'automata' parameter.");
 
-            MageController apiController = api.getController();
-            if (apiController != null && apiController instanceof MagicController) {
-                MagicController controller = (MagicController)apiController;
-                long timeout = controller.getPhysicsTimeout();
-                if (timeout > 0) {
-                    long seconds = (timeout - System.currentTimeMillis()) / 1000;
-                    sender.sendMessage(ChatColor.GREEN + "Physics handler active for another " + ChatColor.DARK_GREEN + seconds + ChatColor.GREEN + " seconds");
-                }
-                int spawnsProcessed = controller.getWorlds().getSpawnListener().getProcessedSpawns();
-                if (spawnsProcessed > 0) {
-                    sender.sendMessage(ChatColor.AQUA + "Spawns Replaced: " + ChatColor.LIGHT_PURPLE + spawnsProcessed);
-                }
-                int chunkSpawnsProcessed = controller.getWorlds().getSpawnListener().getProcessedChunkSpawns();
-                if (chunkSpawnsProcessed > 0) {
-                    sender.sendMessage(ChatColor.AQUA + "Chunk Gen Spawns Replaced: " + ChatColor.LIGHT_PURPLE + chunkSpawnsProcessed);
-                }
+            long timeout = controller.getPhysicsTimeout();
+            if (timeout > 0) {
+                long seconds = (timeout - System.currentTimeMillis()) / 1000;
+                sender.sendMessage(ChatColor.GREEN + "Physics handler active for another " + ChatColor.DARK_GREEN + seconds + ChatColor.GREEN + " seconds");
+            }
+            int spawnsProcessed = controller.getWorlds().getSpawnListener().getProcessedSpawns();
+            if (spawnsProcessed > 0) {
+                sender.sendMessage(ChatColor.AQUA + "Spawns Replaced: " + ChatColor.LIGHT_PURPLE + spawnsProcessed);
+            }
+            int chunkSpawnsProcessed = controller.getWorlds().getSpawnListener().getProcessedChunkSpawns();
+            if (chunkSpawnsProcessed > 0) {
+                sender.sendMessage(ChatColor.AQUA + "Chunk Gen Spawns Replaced: " + ChatColor.LIGHT_PURPLE + chunkSpawnsProcessed);
             }
 
             Collection<Mage> mages = controller.getMages();
@@ -404,14 +398,13 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
                         + ChatColor.GRAY + ") ("
                         + ChatColor.YELLOW + names + ChatColor.GRAY + ")");
             }
-            ((MagicController)api.getController()).checkLogs(sender);
+            controller.checkLogs(sender);
             return true;
         }
         if (listCommand.equalsIgnoreCase("schematics")) {
             List<String> schematics = new ArrayList<>();
             try {
                 Plugin plugin = (Plugin)api;
-                MagicController controller = (MagicController)api.getController();
 
                 // Find built-in schematics
                 CodeSource src = MagicAPI.class.getProtectionDomain().getCodeSource();

@@ -14,19 +14,9 @@ commands:
       unknown_player: "&cNo targets matched: &f$player"
       cooldown: "You must wait $time."
       no_requirements: "You are not allowed to use that kit"
-    magic:
-        help_header: |-
-          &8 ----------------------------------------------------
-          &8|
-          &8|   &b&lMAGIC HELP
-          &8|
-        help_footer: |-
-          &8|
-          &8 ----------------------------------------------------
-        help: |-
-          &8| &7> &fSee help for Magic commands with &6/help magic
-          &8| &7> &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
-          &8| &7> &fHelp: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
+    mhelp:
+      unknown: "&cUnknown help topic: &f$topic"
+      header: "  \uE971   &b&lMAGIC HELP   \uE971"
     mconfig:
       write_failed: "&cCould not write to file $file"
       example:
