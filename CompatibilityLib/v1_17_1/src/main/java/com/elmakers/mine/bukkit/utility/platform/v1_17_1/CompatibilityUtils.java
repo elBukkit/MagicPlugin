@@ -1648,15 +1648,54 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     protected BaseComponent collapseComponents(List<BaseComponent> list) {
-        if (list.size() == 1) {
-            return list.get(0);
+        if (list.isEmpty()) {
+            return new ComponentBuilder("").create()[0];
+        }
+        BaseComponent single = list.get(0);
+
+        // See if we need to reproduce the "reset vanilla italics in lore" behavior
+        // that is normally handled in CraftChatMessage.StringMessage
+        boolean needsReset = single.hasFormatting() && !single.isItalic();
+
+        // If this is just a single component and doesn't need a format reset,
+        // we can just return it.
+        if (list.size() == 1 && !needsReset) {
+            return single;
         }
 
         BaseComponent wrapper = new ComponentBuilder("").create()[0];
-        if (!list.isEmpty()) {
-            wrapper.setExtra(list);
+        if (needsReset) {
+            wrapper.setItalic(false);
         }
+        wrapper.setExtra(list);
         return wrapper;
+    }
+
+    protected BaseComponent[] resetItalics(BaseComponent[] components) {
+        // Apparently spigot has some behavior where it automatically adds a reset at the start
+        // of item lore if you have specified a color there.
+        // So we need to reproduce this behavior for compatibility.
+        // Unfortunate, fromLegacyText does not seem to handle &r correctly, it only
+        // resets color but none of the other formatting, so just prepending &r is not sufficient.
+        // This is why we always handle it at the component level.
+        boolean needsReset = false;
+        if (components.length == 0) return components;
+        BaseComponent first = components[0];
+        if (first instanceof TextComponent) {
+            TextComponent text = (TextComponent)first;
+            Boolean italicRaw = text.isItalicRaw();
+            if (italicRaw == null && text.hasFormatting()) {
+                needsReset = true;
+            }
+        }
+        if (needsReset) {
+            BaseComponent[] reset = new ComponentBuilder("").italic(false).create();
+            if (reset.length > 0) {
+                reset[reset.length - 1].setExtra(Arrays.asList(components));
+                components = reset;
+            }
+        }
+        return components;
     }
 
     @Override
@@ -1698,9 +1737,14 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                         platform.getLogger().log(Level.SEVERE, "Error parsing chat components from: " + component, ex);
                     }
                 }
+                // resetItalics is done implicitly as part of collapsing
                 serializedLore.add(ComponentSerializer.toString(collapseComponents(components)));
             } else {
-                serializedLore.add(ComponentSerializer.toString(TextComponent.fromLegacyText(line)));
+                // Reproduce some oddly specific spigot behavior I didn't realize was a thing,
+                // but was forcing all the wand and spell lore from being italicized
+                BaseComponent[] components = TextComponent.fromLegacyText(line);
+                components = resetItalics(components);
+                serializedLore.add(ComponentSerializer.toString(components));
             }
         }
 
