@@ -2,18 +2,19 @@
 
 # Importanter
 
- - Test wand instructions in 1.14, 1.16
-
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
- - base_trap and blind_trap now throwing errors about their variables
-
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
 
 # Glyph Wand
 
+ - Make mana bar color match custom wand color
+   ... got to figure out why hex colors don't work.
+   It works on the action bar via /title using chat component json
+   it works via configs with & codes
+   are we sure hex color parsing isn't just broken?
  - Make brushes work (swing to use)
 
 # Important

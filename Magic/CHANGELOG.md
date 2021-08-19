@@ -90,6 +90,7 @@
  - Players will now be instructed how to turn on the RP if their client declines it. 
    They can disable this message with `/getrp off` and are prompted to do so
    If you still don't want the nagging, you can use `/mconfig configure message resource_pack.declined ""`
+ - Rebalance Magic Missile to make earlier progression easier  
 
 # 9.4.4
 

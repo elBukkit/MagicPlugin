@@ -27,7 +27,8 @@ missile:
     # This is kind of irrelevant for missile in the default configs since you start with it.
     worth: 150
     # How many Spell Points this spell earns on a successful cast.
-    earns: 7
+    # This number starts out high for Magic  Missile and lowers as the spell levels up.
+    earns: 20
     # How often the player may earn SP from casting this spell.
     # Magic Missile is the only spell in the default configs that overrides this value, so that a player
     # May progress more quickly at the beginning.
@@ -243,8 +244,9 @@ missile:
 # Spell level configs override the parameters of the base spell
 missile|2:
     upgrade_required_casts: 50
-    # We are gradually restoring earns_cooldown to the default value
+    # We are gradually restoring earns_cooldown  and earns to the default value
     earns_cooldown_scale: 0.1
+    earns: 15
     parameters:
         range: 32
         player_damage: 2.5
@@ -257,8 +259,9 @@ missile|2:
 missile|3:
     upgrade_required_path: student
     upgrade_required_casts: 50
-    # The PS earn cooldown is now back to the default value
+    # The earn cooldown is now back to the default value
     earns_cooldown_scale: 1
+    earns: 10
     parameters:
         range: 48
         player_damage: 3
@@ -266,10 +269,11 @@ missile|3:
         target_breakables: 2
         break_durability: 4
     costs:
-        mana: 30
+        mana: 25
 
 missile|4:
     upgrade_required_path: apprentice
+    earns: 7
     parameters:
         range: 64
         player_damage: 4
@@ -277,7 +281,7 @@ missile|4:
         target_breakables: 3
         break_durability: 5
     costs:
-        mana: 40
+        mana: 30
 
 missile|5:
     upgrade_required_path: apprentice
