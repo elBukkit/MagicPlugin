@@ -114,7 +114,17 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         String[] pieces = StringUtils.split(message, "`");
         for (int i = 0; i < pieces.length; i++) {
             String piece = pieces[i];
-            if (!piece.startsWith("<") && !piece.endsWith(">")) continue;
+            String defaultReplace = piece;
+            if (i != 0) {
+                defaultReplace = "`" + defaultReplace;
+            }
+            if (i != pieces.length - 1) {
+                defaultReplace += "`";
+            }
+            if (!piece.startsWith("<") && !piece.endsWith(">")) {
+                pieces[i] = defaultReplace;
+                continue;
+            }
             // Auto-insert commas
             StringBuffer json = new StringBuffer();
             Matcher m = macroJsonPattern.matcher(piece);
@@ -130,10 +140,12 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 Map<String, Object> mapped = gson.fromJson(reader, Map.class);
                 Object macroKey = mapped.get("macro");
                 if (macroKey == null || !(macroKey instanceof String)) {
+                    pieces[i] = defaultReplace;
                     continue;
                 }
                 String macro = macros.get((String)macroKey);
                 if (macro == null) {
+                    pieces[i] = defaultReplace;
                     continue;
                 }
                 for (Map.Entry<String, Object> entry : mapped.entrySet()) {
@@ -147,7 +159,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             }
         }
 
-        return StringUtils.join(pieces, "`");
+        return StringUtils.join(pieces);
     }
 
     @Override

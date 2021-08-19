@@ -1,5 +1,5 @@
 # These can be used to expand shortcuts in other messages
 # For instance `<macro:"help" ref:"topic1" text:"Some help topic">` will expand
-# to {"text":"Some help topic","hoverEvent":{"action":"show_text","contents":"Click to navigate"}, "clickEvent":{"action":"run_command","value":"/mhelp second"}}
+# to `{"text":"Some help topic","hoverEvent":{"action":"show_text","contents":"Click to navigate"}, "clickEvent":{"action":"run_command","value":"/mhelp second"}}`
 macros:
-  help: '{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to navigate"}, "clickEvent":{"action":"run_command","value":"/mhelp $topic"}}'
+  help: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to navigate"}, "clickEvent":{"action":"run_command","value":"/mhelp $topic"}}`'
