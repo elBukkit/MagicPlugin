@@ -5,7 +5,11 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.inventory.ItemStack;
+
 public class ReflectionUtils {
+    private static Field itemStackHandleField;
+
     public static Object getPrivate(Logger logger, Object o, Class<?> c, String field) {
         try {
             Field access = c.getDeclaredField(field);
@@ -13,6 +17,19 @@ public class ReflectionUtils {
             return access.get(o);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Error getting private member of " + o.getClass().getName() + "." + field, ex);
+        }
+        return null;
+    }
+
+    public static Object getHandle(Logger logger, ItemStack itemStack, Class<?> c) {
+        try {
+            if (itemStackHandleField == null) {
+                itemStackHandleField = c.getDeclaredField("handle");
+                itemStackHandleField.setAccessible(true);
+            }
+            return itemStackHandleField.get(itemStack);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Error getting handle of " + itemStack.getClass().getName(), ex);
         }
         return null;
     }

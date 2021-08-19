@@ -27,8 +27,7 @@ public class ItemUtils extends ItemUtilsBase {
         if (stack == null || !(stack instanceof CraftItemStack)) {
             return null;
         }
-        // This may be a performance issue
-        return ReflectionUtils.getPrivate(platform.getLogger(), stack, CraftItemStack.class, "handle");
+        return ReflectionUtils.getHandle(platform.getLogger(), stack, CraftItemStack.class);
     }
 
     @Override
