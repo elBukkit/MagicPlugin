@@ -218,7 +218,12 @@ skill_inventory_max_rows: 6
 mskills_spell: skills
 
 # Control word-wrapping in various lore texts
-lore_wrap_limit: 32
+# Set to 0 to disable wrapping
+lore_wrap_limit: 48
+
+# A prefix to use for wrapped lines, this is used to indent
+# but can be turned off by making it an empty string
+lore_wrap_prefix: " "
 
 # This will hide all flags on a wand.
 # If you want enchantments to show, use
