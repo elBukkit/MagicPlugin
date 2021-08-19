@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 import net.md_5.bungee.api.ChatColor;
+import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
@@ -33,8 +34,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         super(platform);
     }
 
-    @Override
-    public void sendChatComponents(CommandSender sender, String containsJson) {
+    protected BaseComponent[] parseChatComponents(String containsJson) {
         List<BaseComponent> components = new ArrayList<>();
         List<BaseComponent> addToComponents = components;
         String[] pieces = ChatUtils.getComponents(containsJson);
@@ -63,7 +63,12 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                 platform.getLogger().log(Level.SEVERE, "Error parsing chat components from: " + component, ex);
             }
         }
-        sender.spigot().sendMessage(components.toArray(new BaseComponent[0]));
+        return components.toArray(new BaseComponent[0]);
+    }
+
+    @Override
+    public void sendChatComponents(CommandSender sender, String containsJson) {
+        sender.spigot().sendMessage(parseChatComponents(containsJson));
     }
 
     @Override
@@ -106,5 +111,20 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             platform.getLogger().log(Level.SEVERE, "Error creating smithing recipe", ex);
         }
         return null;
+    }
+
+    @Override
+    public void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut) {
+        player.sendTitle(title, subTitle, fadeIn, stay, fadeOut);
+    }
+
+    @Override
+    public boolean sendActionBar(Player player, String message) {
+        if (message.contains("`{")) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, parseChatComponents(message));
+        } else {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
+        }
+        return true;
     }
 }

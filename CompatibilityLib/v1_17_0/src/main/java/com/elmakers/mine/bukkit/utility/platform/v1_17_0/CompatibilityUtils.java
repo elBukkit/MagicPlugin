@@ -99,8 +99,6 @@ import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.google.common.collect.Multimap;
 
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -937,17 +935,6 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             return;
         }
         ((LivingEntity)entity).swingMainHand();
-    }
-
-    @Override
-    public void sendTitle(Player player, String title, String subTitle, int fadeIn, int stay, int fadeOut) {
-        player.sendTitle(title, subTitle, fadeIn, stay, fadeOut);
-    }
-
-    @Override
-    public boolean sendActionBar(Player player, String message) {
-        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
-        return true;
     }
 
     @Override

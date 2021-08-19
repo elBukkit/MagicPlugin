@@ -38,7 +38,7 @@
      ```
      &6Swing &7(&b`{"keybind":"key.attack"}`&7) &fyour &a$wand
      ```
-   - Can be used in wand lore, Message action and any in-agme messages.yml text
+   - Can be used in wand lore, Message action, action bar and any in-game messages.yml text
 
 ## Fixes
 
