@@ -106,6 +106,11 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public void setMessages(Messages messages) {
+        this.messages = messages;
+    }
+
+    @Override
     public boolean isDamaging() {
         return isDamaging.isInside();
     }
@@ -137,35 +142,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             entity.addPotionEffect(effect, true);
         }
         return applyEffect;
-    }
-
-    @Override
-    public boolean setDisplayNameRaw(ItemStack itemStack, String displayName) {
-        Object handle = platform.getItemUtils().getHandle(itemStack);
-        if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
-        if (tag == null) return false;
-
-        Object displayNode = platform.getNBTUtils().createTag(tag, "display");
-        if (displayNode == null) return false;
-        platform.getNBTUtils().setString(displayNode, "Name", displayName);
-        return true;
-    }
-
-    @Override
-    public boolean setDisplayName(ItemStack itemStack, String displayName) {
-        ItemMeta meta = itemStack.getItemMeta();
-        meta.setDisplayName(displayName);
-        itemStack.setItemMeta(meta);
-        return true;
-    }
-
-    @Override
-    public boolean setLore(ItemStack itemStack, List<String> lore) {
-        ItemMeta meta = itemStack.getItemMeta();
-        meta.setLore(lore);
-        itemStack.setItemMeta(meta);
-        return true;
     }
 
     @Override
@@ -926,12 +902,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
     }
 
-    protected String[] getComponents(String containsJson) {
-        return StringUtils.split(containsJson, "`");
-    }
-
-    @Override
-    public void sendChatComponents(CommandSender sender, String containsJson) {
+    protected String getSimpleMessage(String containsJson) {
         String[] components = getComponents(containsJson);
         StringBuilder plainMessage = new StringBuilder();
         for (String component : components) {
@@ -948,11 +919,51 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
                 plainMessage.append(component);
             }
         }
-        sender.sendMessage(plainMessage.toString());
+        return plainMessage.toString();
+    }
+
+    protected String[] getComponents(String containsJson) {
+        return StringUtils.split(containsJson, "`");
     }
 
     @Override
-    public void setMessages(Messages messages) {
-        this.messages = messages;
+    public void sendChatComponents(CommandSender sender, String containsJson) {
+        sender.sendMessage(getSimpleMessage(containsJson));
+    }
+
+    @Override
+    public boolean setDisplayNameRaw(ItemStack itemStack, String displayName) {
+        Object handle = platform.getItemUtils().getHandle(itemStack);
+        if (handle == null) return false;
+        Object tag = platform.getItemUtils().getTag(handle);
+        if (tag == null) return false;
+
+        Object displayNode = platform.getNBTUtils().createTag(tag, "display");
+        if (displayNode == null) return false;
+        platform.getNBTUtils().setString(displayNode, "Name", displayName);
+        return true;
+    }
+
+    @Override
+    public boolean setDisplayName(ItemStack itemStack, String displayName) {
+        ItemMeta meta = itemStack.getItemMeta();
+        meta.setDisplayName(displayName);
+        itemStack.setItemMeta(meta);
+        return true;
+    }
+
+    @Override
+    public boolean setLore(ItemStack itemStack, List<String> lore) {
+        ItemMeta meta = itemStack.getItemMeta();
+        // Convert chat components
+        for (int i = 0; i < lore.size(); i++) {
+            String line = lore.get(i);
+            if (line.contains("`{")) {
+                lore.set(i, getSimpleMessage(line));
+            }
+        }
+        meta.setLore(lore);
+        itemStack.setItemMeta(meta);
+        return true;
     }
 }
