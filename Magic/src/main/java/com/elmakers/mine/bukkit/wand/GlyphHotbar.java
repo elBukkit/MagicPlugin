@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.wand;
 
+import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
@@ -10,6 +11,7 @@ import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.MageSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class GlyphHotbar {
     private final Wand wand;
@@ -27,8 +29,7 @@ public class GlyphHotbar {
     private WandDisplayMode barMode;
     private int barSlotPadding;
     private boolean showCooldown;
-    private String barPrefix;
-    private String barSuffix;
+    private String barTemplate;
 
     protected String extraMessage;
     protected long lastExtraMessage;
@@ -63,8 +64,7 @@ public class GlyphHotbar {
         collapsedFinalSpacing = configuration.getInt("collapsed_spacing", 12);
         showCooldown = configuration.getBoolean("show_cooldown", true);
         collapsedMaxMessageLength = configuration.getInt("collapsed_message_max_length", 20);
-        barPrefix = configuration.getString("bar_prefix", "&3");
-        barSuffix = configuration.getString("bar_suffix", "&f");
+        barTemplate = configuration.getString("bar_template", "`{\"text\": \"$glyph\", \"color\":\"#$color\"}`");
 
         barMode = WandDisplayMode.parse(wand.getController(), configuration, "bar_mode", WandDisplayMode.MANA);
     }
@@ -208,7 +208,12 @@ public class GlyphHotbar {
             String barPart = "";
 
             int barProgress = (int)Math.floor(barMode.getProgress(wand) * barSteps);
-            barPart += messages.get("gui.bar." + barProgress);
+            String barGlyph = messages.get("gui.bar." + barProgress);
+            Color wandColor = wand.getEffectColor();
+            if (wandColor == null) {
+                wandColor = Color.WHITE;
+            }
+            barPart += barTemplate.replace("$glyph", barGlyph).replace("$color", TextUtils.toHexString(wandColor.asRGB()));
 
             // Currently treating charges the same as mana
             if (flashTime > 0 && (now < lastInsufficientResource + flashTime || now < lastInsufficientCharges + flashTime)) {
@@ -218,10 +223,6 @@ public class GlyphHotbar {
 
             // Why does this need this barSlotPadding fudge factor?
             int hotbarWidth = hotbarSlots * (hotbarSlotWidth + slotSpacingWidth + barSlotPadding);
-
-            // Add bar prefix/suffix, normally used for coloring .. using it for visible characters
-            // Will probably make things misalign
-            barPart = barPrefix + barPart + barSuffix;
 
             // If this bar is longer than the hotbar, put the bar first
             if (barWidth > hotbarWidth) {
