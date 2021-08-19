@@ -80,6 +80,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
@@ -2081,7 +2082,7 @@ public class MagicController implements MageController {
     private void processMessages() {
         BaseMagicCurrency.formatter = new DecimalFormat(messages.get("numbers.decimal", "#,###.00"));
         BaseMagicCurrency.intFormatter = new DecimalFormat(messages.get("numbers.integer", "#,###"));
-        CompatibilityLib.getCompatibilityUtils().setMessages(messages);
+        ChatUtils.initialize(messages, getLogger());
     }
 
     private void registerManagers() {
@@ -8053,6 +8054,7 @@ public class MagicController implements MageController {
         skillInventoryRows = properties.getInt("skill_inventory_max_rows", skillInventoryRows);
         skillsSpell = properties.getString("mskills_spell", skillsSpell);
         CompatibilityConstants.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", CompatibilityConstants.MAX_LORE_LENGTH);
+        CompatibilityConstants.LORE_WRAP_PREFIX = properties.getString("lore_wrap_prefix", CompatibilityConstants.LORE_WRAP_PREFIX);
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);

@@ -18,6 +18,7 @@ import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.SmithingRecipe;
 
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 import net.md_5.bungee.api.ChatColor;
@@ -36,7 +37,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     public void sendChatComponents(CommandSender sender, String containsJson) {
         List<BaseComponent> components = new ArrayList<>();
         List<BaseComponent> addToComponents = components;
-        String[] pieces = getComponents(containsJson);
+        String[] pieces = ChatUtils.getComponents(containsJson);
         BaseComponent addToComponent = null;
         for (String component : pieces) {
             try {

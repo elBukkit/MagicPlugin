@@ -94,6 +94,7 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
@@ -1684,7 +1685,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                 List<BaseComponent> components = new ArrayList<>();
                 List<BaseComponent> addToComponents = components;
                 BaseComponent addToComponent = null;
-                String[] pieces = getComponents(line);
+                String[] pieces = ChatUtils.getComponents(line);
                 for (String component : pieces) {
                     try {
                         List<BaseComponent> addComponents;

@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility.platform.base;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -21,6 +22,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
@@ -437,22 +439,73 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         if (text == null || text.isEmpty()) return;
         String colorPrefix = "";
         String[] lines = StringUtils.split(text, "\n\r");
+        if (maxLength == 0) {
+            list.addAll(Arrays.asList(lines));
+            return;
+        }
+        final String wrapPrefix = CompatibilityConstants.LORE_WRAP_PREFIX;
         for (String line : lines) {
             line = prefix + line;
-            while (line.length() > maxLength)
-            {
-                int spaceIndex = line.lastIndexOf(' ', maxLength);
-                if (spaceIndex <= 0) {
-                    list.add(colorPrefix + line);
-                    return;
+
+            // Parse escaped chat components
+            String[] components = StringUtils.split(line, "`");
+            StringBuilder currentLine = new StringBuilder();
+            int currentLength = 0;
+            for (int i = 0; i < components.length; i++) {
+                String component = components[i];
+                // Don't break up components at all
+                if (component.startsWith("{")) {
+                    // Get cleaned length
+                    int length = ChatColor.stripColor(ChatUtils.getSimpleMessage(component)).length();
+                    // If this can not fit on the current line, map a new one
+                    if (currentLength != 0 && currentLength + length > maxLength) {
+                        // Add current line to lore, start new line
+                        list.add(colorPrefix + currentLine);
+                        currentLine.setLength(0);
+                        currentLine.append(wrapPrefix);
+                        currentLength = wrapPrefix.length();
+                    }
+                    // Re-escape, we parsed this away in the split()
+                    currentLine.append('`');
+                    currentLine.append(component);
+                    currentLine.append('`');
+                    // Track cleaned length
+                    currentLength += length;
+                    continue;
                 }
-                String colorText = colorPrefix + line.substring(0, spaceIndex);
-                colorPrefix = ChatColor.getLastColors(colorText);
-                list.add(colorText);
-                line = line.substring(spaceIndex);
+
+                // Build lines one word at a time
+                boolean hasWord = false;
+                String[] words = StringUtils.split(component, " ");
+                for (String word : words) {
+                    int length = ChatColor.stripColor(word).length();
+
+                    // If this can not fit on the current line, map a new one
+                    if (currentLength != 0 && currentLength + length > maxLength) {
+                        // Build new line from current color prefix and builder
+                        String newLine = colorPrefix + currentLine;
+                        // Record current color prefix to carry it over to the next line
+                        colorPrefix = ChatColor.getLastColors(newLine);
+                        // Add current line to lore, start new line
+                        list.add(newLine);
+                        currentLine.setLength(0);
+                        currentLine.append(wrapPrefix);
+                        currentLength = wrapPrefix.length();
+                    } else if (hasWord) {
+                        // If we've already added a word, then add a space between
+                        currentLine.append(" ");
+                    }
+                    // Add word to line
+                    currentLine.append(word);
+                    currentLength += length;
+                    hasWord = true;
+                }
             }
 
-            list.add(colorPrefix + line);
+            // Add anything left over on this line
+            if (currentLength > 0) {
+                list.add(colorPrefix + currentLine);
+            }
         }
     }
 

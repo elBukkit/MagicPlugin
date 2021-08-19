@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -62,15 +61,13 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
-import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
 import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.google.gson.Gson;
-import com.google.gson.stream.JsonReader;
 
 public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
@@ -82,7 +79,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected static int BLOCK_BREAK_RANGE = 64;
 
     protected final UUID emptyUUID = new UUID(0L, 0L);
-    protected Gson gson;
     protected ItemStack dummyItem;
     protected boolean hasDumpedStack = false;
     protected boolean teleporting = false;
@@ -92,22 +88,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected final Map<World, WeakReference<ThrownPotion>> worldPotions = new WeakHashMap<>();
     public Map<Integer, Material> materialIdMap;
     protected final Platform platform;
-    private Messages messages;
 
     protected CompatibilityUtilsBase(final Platform platform) {
         this.platform = platform;
-    }
-
-    protected Gson getGson() {
-        if (gson == null) {
-            gson = new Gson();
-        }
-        return gson;
-    }
-
-    @Override
-    public void setMessages(Messages messages) {
-        this.messages = messages;
     }
 
     @Override
@@ -872,63 +855,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return location.getWorld().spawnFallingBlock(location, material, (byte)0);
     }
 
-    protected void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage) {
-        for (Map.Entry<String,Object> entry : mapped.entrySet()) {
-            if (entry.getKey().equals("color")) {
-                String colorKey = entry.getValue().toString();
-                try {
-                    ChatColor color = ChatColor.valueOf(colorKey.toUpperCase());
-                    plainMessage.append(color);
-                } catch (Exception ex) {
-                    platform.getLogger().warning("Invalid color in json message: " + colorKey);
-                }
-            } if (entry.getKey().equals("text")) {
-                plainMessage.append(entry.getValue());
-            } else if (entry.getKey().equals("keybind")) {
-                String key = entry.getValue().toString().replace("key.", "");
-                if (messages != null) {
-                    key = messages.get("keybind." + key, key);
-                }
-                plainMessage.append(key);
-            } else if (entry.getKey().equals("extra")) {
-                Object rawExtra = entry.getValue();
-                if (rawExtra instanceof List) {
-                    List<Map<String, Object>> mapList = (List<Map<String, Object>>)rawExtra;
-                    for (Map<String, Object> child : mapList) {
-                        getSimpleMessage(child, plainMessage);
-                    }
-                }
-            }
-        }
-    }
-
-    protected String getSimpleMessage(String containsJson) {
-        String[] components = getComponents(containsJson);
-        StringBuilder plainMessage = new StringBuilder();
-        for (String component : components) {
-            if (component.startsWith("{")) {
-                try {
-                    JsonReader reader = new JsonReader(new StringReader(component));
-                    reader.setLenient(true);
-                    Map<String, Object> mapped = getGson().fromJson(reader, Map.class);
-                    getSimpleMessage(mapped, plainMessage);
-                } catch (Exception ex) {
-                    plainMessage.append(component);
-                }
-            } else {
-                plainMessage.append(component);
-            }
-        }
-        return plainMessage.toString();
-    }
-
-    protected String[] getComponents(String containsJson) {
-        return StringUtils.split(containsJson, "`");
-    }
-
     @Override
     public void sendChatComponents(CommandSender sender, String containsJson) {
-        sender.sendMessage(getSimpleMessage(containsJson));
+        sender.sendMessage(ChatUtils.getSimpleMessage(containsJson));
     }
 
     @Override
@@ -959,7 +888,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         for (int i = 0; i < lore.size(); i++) {
             String line = lore.get(i);
             if (line.contains("`{")) {
-                lore.set(i, getSimpleMessage(line));
+                lore.set(i, ChatUtils.getSimpleMessage(line));
             }
         }
         meta.setLore(lore);
