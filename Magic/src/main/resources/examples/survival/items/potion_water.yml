@@ -1,0 +1,10 @@
+potion_water:
+  worth: 2.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2730
+    type: POTION
+    meta:
+      ==: ItemMeta
+      meta-type: POTION
+      potion-type: minecraft:water
