@@ -36,10 +36,7 @@ public class ChatUtils {
                 try {
                     ChatColor color = ChatColor.valueOf(colorKey.toUpperCase());
                     plainMessage.append(color);
-                } catch (Exception ex) {
-                    if (logger != null) {
-                        logger.warning("Invalid color in json message: " + colorKey);
-                    }
+                } catch (Exception ignore) {
                 }
             } if (entry.getKey().equals("text")) {
                 plainMessage.append(entry.getValue());
