@@ -216,7 +216,7 @@ aurelium_skills:
   enabled: true
   # Set this to true to switch Magic to use AS mana.
   # Since mana in AS is much lower you will need to make some adjustments to really make this work.
-  use_mana: true
+  use_mana: false
   # This will scale the casting costs of all spells down to 25% of what they would normally be
   # (a 75% reduction)
   # This will make spell costs more in line with how Aurelium mana progresses, though there may still

@@ -93,6 +93,9 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
             statusString += StringUtils.join(integrations, ",");
         }
         controller.getLogger().info("AureliumSkills found" + statusString);
+        if (!useMana) {
+            controller.getLogger().info("  If you want Magic spells to use AureliumSkills mana, use &7/mconfig configure config aurelium_skills.use_mana true");
+        }
     }
 
     public void register(ConfigurationSection currencyConfiguration) {

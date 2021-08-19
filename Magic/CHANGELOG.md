@@ -90,7 +90,9 @@
  - Players will now be instructed how to turn on the RP if their client declines it. 
    They can disable this message with `/getrp off` and are prompted to do so
    If you still don't want the nagging, you can use `/mconfig configure message resource_pack.declined ""`
- - Rebalance Magic Missile to make earlier progression easier  
+ - Rebalance Magic Missile to make earlier progression easier
+ - Turn AureliumSkills mana back off by default, it's way too much of a mess. If you'd like to back on, use
+   `/mconfig configure config aurelium_skills.use_mana true`
 
 # 9.4.4
 
