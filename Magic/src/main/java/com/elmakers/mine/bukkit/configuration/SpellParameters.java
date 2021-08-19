@@ -30,11 +30,6 @@ public class SpellParameters extends MageParameters {
         if (superParameters != null) {
             this.allParameters.addAll(superParameters);
         }
-        // Only do this one, parameters don't change
-        ConfigurationSection spellParameters = spell.getWorkingParameters();
-        if (spellParameters != null) {
-            this.allParameters.addAll(spellParameters.getKeys(false));
-        }
         this.castVariables = variables;
     }
 
@@ -91,6 +86,10 @@ public class SpellParameters extends MageParameters {
         this.allParameters.addAll(spellVariables.getKeys(false));
         if (mageVariables != null) {
             this.allParameters.addAll(mageVariables.getKeys(false));
+        }
+        ConfigurationSection spellParameters = spell.getWorkingParameters();
+        if (spellParameters != null) {
+            this.allParameters.addAll(spellParameters.getKeys(false));
         }
         return allParameters;
     }
