@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.google.gson.Gson;
+import com.google.gson.stream.JsonReader;
 
 public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private static String PARAMETER_PATTERN_STRING = "\\$([a-zA-Z0-9]+)";
@@ -114,7 +116,9 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             if (!piece.startsWith("<") && !piece.endsWith(">")) continue;
             piece = "{" + piece.substring(1, piece.length() - 1) + "}";
             try {
-                Map<String, Object> mapped = gson.fromJson(piece, Map.class);
+                JsonReader reader = new JsonReader(new StringReader(piece));
+                reader.setLenient(true);
+                Map<String, Object> mapped = gson.fromJson(reader, Map.class);
                 Object macroKey = mapped.get("macro");
                 if (macroKey == null || !(macroKey instanceof String)) {
                     continue;
