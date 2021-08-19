@@ -218,7 +218,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             || subCommand.equals("editor")
             || subCommand.equals("reset"))) {
 
-            if (subCommand.equals("configure") && fileType.equals("config")) {
+            if ((subCommand.equals("configure") || subCommand.equals("reset")) && fileType.equals("config")) {
                 options.add("language");
                 File pluginFolder = api.getPlugin().getDataFolder();
                 File defaultsFile = new File(pluginFolder, "defaults/config.defaults.yml");
