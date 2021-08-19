@@ -2645,7 +2645,8 @@ public class MagicController implements MageController {
         if (npcData != null) {
             Collection<ConfigurationSection> list = ConfigurationUtils.getNodeList(npcData, "npcs");
             int npcCount = loadNPCs(list);
-            if (npcCount > 0) {
+            // If we are just starting up,these NPCs will get restored as part of the deferred chunk load check
+            if (npcCount > 0 && dataLoaded) {
                 for (World world : Bukkit.getWorlds()) {
                     for (Chunk chunk : world.getLoadedChunks()) {
                         restoreNPCs(chunk);

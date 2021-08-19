@@ -55,7 +55,8 @@
  - Fix right-click mode controls menu option turning off a wand's ability to cycle hotbars
  - Fix switching spell inventory pages on Bedrock (tapping on the spellbook should now work)
  - Fix spawning colored sheep
- - Fix slime and magma cube magic mobs 
+ - Fix slime and magma cube magic mobs
+ - Fix "invalid NPC" spam on startup from NPCs in spawn chunks
 
 ## Additions
  
