@@ -50,6 +50,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private List<Integer> positiveSpace = new ArrayList<>();
 
     private NumberFormat formatter = new DecimalFormat("#0.00");
+    private static final Pattern macroJsonPattern = Pattern.compile("\" ([a-zA-Z])");
     private final Gson gson;
 
     public Messages() {
@@ -114,6 +115,14 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         for (int i = 0; i < pieces.length; i++) {
             String piece = pieces[i];
             if (!piece.startsWith("<") && !piece.endsWith(">")) continue;
+            // Auto-insert commas
+            StringBuffer json = new StringBuffer();
+            Matcher m = macroJsonPattern.matcher(piece);
+            while (m.find()) {
+                m.appendReplacement(json, "\"," + m.group(1));
+            }
+            m.appendTail(json);
+            piece = json.toString();
             piece = "{" + piece.substring(1, piece.length() - 1) + "}";
             try {
                 JsonReader reader = new JsonReader(new StringReader(piece));
