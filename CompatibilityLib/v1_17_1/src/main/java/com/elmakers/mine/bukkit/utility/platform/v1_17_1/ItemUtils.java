@@ -144,7 +144,7 @@ public class ItemUtils extends ItemUtilsBase {
         return mcItem.isEmpty();
     }
 
-    protected Object getTagString(String value) {
+    protected StringTag getTagString(String value) {
         return StringTag.valueOf(value);
     }
 
@@ -152,15 +152,15 @@ public class ItemUtils extends ItemUtilsBase {
     public Object setStringList(Object nbtBase, String tag, Collection<String> values) {
         if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return null;
         CompoundTag compoundTag = (CompoundTag)nbtBase;
-        ListTag listMeta = new ListTag();
+        ListTag listTag = new ListTag();
 
         for (String value : values) {
-            Object nbtString = getTagString(value);
-            platform.getNBTUtils().addToList(listMeta, nbtString);
+            StringTag nbtString = getTagString(value);
+            listTag.add(nbtString);
         }
 
-        compoundTag.put(tag, listMeta);
-        return listMeta;
+        compoundTag.put(tag, listTag);
+        return listTag;
     }
 
     @Override

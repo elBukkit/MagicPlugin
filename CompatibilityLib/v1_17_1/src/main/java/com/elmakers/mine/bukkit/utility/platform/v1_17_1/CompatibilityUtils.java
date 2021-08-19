@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -97,11 +98,15 @@ import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.google.common.collect.Multimap;
 
 import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
+import net.md_5.bungee.chat.ComponentSerializer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -1651,5 +1656,71 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    protected BaseComponent collapseComponents(List<BaseComponent> list) {
+        if (list.size() == 1) {
+            return list.get(0);
+        }
+
+        BaseComponent wrapper = new ComponentBuilder("").create()[0];
+        if (!list.isEmpty()) {
+            wrapper.setExtra(list);
+        }
+        return wrapper;
+    }
+
+    @Override
+    public boolean setLore(ItemStack itemStack, List<String> lore) {
+        ItemUtils itemUtils = platform.getItemUtils();
+        Object handle = itemUtils.getHandle(itemStack);
+        if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) {
+            return false;
+        }
+        List<String> serializedLore = new ArrayList<>(lore.size());
+        for (int i = 0; i < lore.size(); i++) {
+            String line = lore.get(i);
+            if (line.contains("`{")) {
+                List<BaseComponent> components = new ArrayList<>();
+                List<BaseComponent> addToComponents = components;
+                BaseComponent addToComponent = null;
+                String[] pieces = getComponents(line);
+                for (String component : pieces) {
+                    try {
+                        List<BaseComponent> addComponents;
+                        if (component.startsWith("{")) {
+                            addComponents = Arrays.asList(ComponentSerializer.parse(component));
+                        } else {
+                            addComponents = Arrays.asList(TextComponent.fromLegacyText(component));
+                        }
+                        if (!addComponents.isEmpty()) {
+                            addToComponents.addAll(addComponents);
+                            if (addToComponent != null) {
+                                addToComponent.setExtra(addToComponents);
+                            }
+
+                            addToComponent = addToComponents.get(addToComponents.size() - 1);
+                            addToComponents = addToComponent.getExtra();
+                            if (addToComponents == null) {
+                                addToComponents = new ArrayList<>();
+                            }
+                        }
+                    } catch (Exception ex) {
+                        platform.getLogger().log(Level.SEVERE, "Error parsing chat components from: " + component, ex);
+                    }
+                }
+                serializedLore.add(ComponentSerializer.toString(collapseComponents(components)));
+            } else {
+                serializedLore.add(ComponentSerializer.toString(TextComponent.fromLegacyText(line)));
+            }
+        }
+
+        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)handle;
+        CompoundTag tag = mcItemStack.getTag();
+        if (tag == null) return false;
+
+        CompoundTag displayNode = tag.getCompound("display");
+        itemUtils.setStringList(displayNode, "Lore", serializedLore);
+        return true;
     }
 }

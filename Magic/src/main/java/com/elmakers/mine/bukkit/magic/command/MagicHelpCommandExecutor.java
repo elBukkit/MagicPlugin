@@ -4,9 +4,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -14,12 +14,16 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class MagicHelpCommandExecutor extends MagicTabExecutor {
+    private final MagicController controller;
+
     public MagicHelpCommandExecutor(MagicAPI api) {
         super(api, "mhelp");
+        controller = ((MagicController)api.getController());
     }
 
     protected MagicHelpCommandExecutor(MagicAPI api, String command) {
         super(api, command);
+        controller = ((MagicController)api.getController());
     }
 
     @Override
@@ -34,19 +38,47 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onMagicHelp(CommandSender sender, String[] args) {
-        sender.sendMessage(controller.getMessages().get("commands.magic.help_header"));
-        if (controller instanceof MagicController) {
-            ((MagicController)controller).showExampleInstructions(sender);
+        Mage mage = controller.getMage(sender);
+        if (args.length == 0) {
+            mage.sendMessage(controller.getMessages().get("commands.magic.help_header"));
+
+            // TODO: wand instructions
+            Wand wand = mage.getActiveWand();
+            if (wand != null) {
+                // Click action for wand
+            }
+            mage.sendMessage(controller.getMessages().get("help.main"));
+            return;
         }
-        if (sender instanceof Player) {
-            Mage mage = controller.getMage(sender);
+
+        String exactMessage = controller.getMessages().get("help." + args[0], "");
+        if (!exactMessage.isEmpty()) {
+            mage.sendMessage(exactMessage);
+            return;
+        }
+
+        // TODO: Search topics
+
+
+        // TODO: Example instructions
+        if (args[0].equals("examples")) {
+            controller.showExampleInstructions(sender);
+            return;
+        }
+
+        // TODO: wand instructions
+
+        if (args[0].equals("wand")) {
             Wand wand = mage.getActiveWand();
             if (wand != null) {
                 wand.showInstructions();
             }
+            return;
         }
-        sender.sendMessage(controller.getMessages().get("commands.magic.help"));
-        sender.sendMessage(controller.getMessages().get("commands.magic.help_footer"));
+
+        String topic = StringUtils.join(args, " ");
+        String unknownMessage = controller.getMessages().get("commands.magic.help.unknown");
+        mage.sendMessage(unknownMessage.replace("$topic", topic));
     }
 
     @Override
@@ -54,7 +86,11 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
         Set<String> options = new HashSet<>();
         if (!sender.hasPermission("Magic.commands.magic.help")) return options;
 
-        // TODO
+        for (String messageKey : controller.getMessages().getAllKeys()) {
+            if (messageKey.startsWith("help.")) {
+                options.add(messageKey.substring(5));
+            }
+        }
 
         return options;
     }
