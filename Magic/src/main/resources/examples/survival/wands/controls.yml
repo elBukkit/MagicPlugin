@@ -28,6 +28,11 @@ controls_hybrid:
         right_click_sneak: toggle
         xp_display: mana
         level_display: sp
+    - requirement:
+        resource_pack: true
+      invert: true
+      properties:
+        use_active_name: true
 
 controls_chest:
   icon: chest{CustomModelData:18001}
