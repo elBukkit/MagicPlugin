@@ -25,6 +25,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.item.Icon;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -58,7 +59,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         gson = new Gson();
     }
 
-    public void load(ConfigurationSection messages) {
+    public void load(ConfigurationSection messages, Map<String, Icon> icons) {
         // Preload the macros section so it can be used in the following messages
         ConfigurationSection macros = messages.getConfigurationSection("macros");
         if (macros != null) {
@@ -78,7 +79,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 }
             } else if (messages.isString(key)) {
                 String value = messages.getString(key);
-                value = processMacros(value);
+                value = processMacros(value, icons);
                 value = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(value));
                 messageMap.put(key, value);
             } else if (messages.isList(key)) {
@@ -110,7 +111,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         Collections.reverse(positiveSpace);
     }
 
-    private String processMacros(String message) {
+    private String processMacros(String message, Map<String, Icon> icons) {
         if (!message.contains("`<")) return message;
         String[] pieces = StringUtils.split(message, "`");
         for (int i = 0; i < pieces.length; i++) {
@@ -171,10 +172,22 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                     pieces[i] = defaultReplace;
                     continue;
                 }
-                for (Map.Entry<String, Object> entry : mapped.entrySet()) {
-                    String macroParameter = entry.getKey();
-                    if (macroParameter.equals("macro")) continue;
-                    macro = macro.replace("$" + macroParameter, entry.getValue().toString());
+                // Check for special hard-coded macros
+                if (macroKey.equals("icon")) {
+                    Object iconKey = mapped.get("key");
+                    Icon icon = iconKey == null || !(iconKey instanceof String) ? null : icons.get((String)iconKey);
+                    String glyph = icon == null ? null : icon.getGlyph();
+                    if (glyph == null) {
+                        pieces[i] = defaultReplace;
+                        continue;
+                    }
+                    macro = macro.replace("$glyph", glyph);
+                } else {
+                    for (Map.Entry<String, Object> entry : mapped.entrySet()) {
+                        String macroParameter = entry.getKey();
+                        if (macroParameter.equals("macro")) continue;
+                        macro = macro.replace("$" + macroParameter, entry.getValue().toString());
+                    }
                 }
                 pieces[i] = macro;
             } catch (Exception ex) {

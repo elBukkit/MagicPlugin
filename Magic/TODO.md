@@ -2,6 +2,8 @@
 
 # Importanter
 
+ - Adding on the safe example does not work, it can't disable spells when added perhaps?
+
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    

@@ -16,7 +16,10 @@ commands:
       no_requirements: "You are not allowed to use that kit"
     mhelp:
       unknown: "&cUnknown help topic: &f$topic"
-      header: "  \uE971   &b&lMAGIC HELP   \uE971"
+      header: |-
+        &8                                .
+        &f`<icon key="missile">`   &b&lMAGIC HELP  &f`<icon key="missile">`
+        &8                                .
     mconfig:
       write_failed: "&cCould not write to file $file"
       example:

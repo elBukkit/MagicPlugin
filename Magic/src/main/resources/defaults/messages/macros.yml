@@ -3,4 +3,8 @@
 # to `{"text":"Some help topic","hoverEvent":{"action":"show_text","contents":"Click to navigate"}, "clickEvent":{"action":"run_command","value":"/mhelp second"}}`
 macros:
   help: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to navigate"}, "clickEvent":{"action":"run_command","value":"/mhelp $topic"}}`'
-  glyph: '`{"text":"$code","font":"magic"}`'
+  glyph: '`{"text":"\u$code","font":"magic"}`'
+
+  # This is a special semi-hard-coded macro, $glyph will be replaced with the glyph defined by the specified icon
+  # Use like: `<icon key="missile">`
+  icon: '`{"text":"$glyph","font":"magic"}`'

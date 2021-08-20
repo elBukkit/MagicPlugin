@@ -1873,11 +1873,6 @@ public class MagicController implements MageController {
         // Register currencies and other preload integrations
         registerPreLoad(loader.getMainConfiguration());
 
-        // Load icons, which are used by spells
-        logger.setContext("icons");
-        loadIcons(loader.getIcons());
-        log("Loaded " + icons.size() + " icons");
-
         // Load spells, which will throw errors and warnings if done before registering attributes
         logger.setContext("spells");
         loadSpells(sender, loader.getSpells());
@@ -1982,9 +1977,18 @@ public class MagicController implements MageController {
         finalizeAttributes();
 
         // Configurations that don't rely on any external integrations
+
+        // Load icons, which can be referenced in messages
+        logger.setContext("icons");
+        loadIcons(loader.getIcons());
+        log("Loaded " + icons.size() + " icons");
+
+        // Load localization messages
         logger.setContext("messages");
-        messages.load(loader.getMessages());
+        messages.load(loader.getMessages(), icons);
         processMessages();
+
+        // Load material sets
         logger.setContext("materials");
         loadMaterials(loader.getMaterials());
 
