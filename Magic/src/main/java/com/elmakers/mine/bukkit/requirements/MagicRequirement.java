@@ -764,13 +764,31 @@ public class MagicRequirement {
             return getMessage(context, "property_requirement")
                 .replace("$property", name).replace("$value", Double.toString(requirement.value));
         }
-        if (requirement.min != null && (value == null || value <= requirement.min)) {
-            return getMessage(context, "property_min")
-                .replace("$property", name).replace("$value", Double.toString(requirement.min));
+        if (requirement.min != null) {
+            if (requirement.inclusive) {
+                if (value == null || value < requirement.min) {
+                    return getMessage(context, "property_min_inclusive")
+                            .replace("$property", name).replace("$value", Double.toString(requirement.min));
+                }
+            } else {
+                 if (value == null || value <= requirement.min) {
+                     return getMessage(context, "property_min")
+                             .replace("$property", name).replace("$value", Double.toString(requirement.min));
+                 }
+            }
         }
-        if (requirement.max != null && (value != null && value >= requirement.max)) {
-            return getMessage(context, "property_max")
-                .replace("$property", name).replace("$value", Double.toString(requirement.max));
+        if (requirement.max != null) {
+            if (requirement.inclusive) {
+                if (value != null && value > requirement.max) {
+                    return getMessage(context, "property_max_inclusve")
+                            .replace("$property", name).replace("$value", Double.toString(requirement.max));
+                }
+            } else {
+                if (value != null && value >= requirement.max) {
+                    return getMessage(context, "property_max")
+                            .replace("$property", name).replace("$value", Double.toString(requirement.max));
+                }
+            }
         }
 
         return null;
