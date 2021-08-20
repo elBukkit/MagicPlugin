@@ -1,6 +1,6 @@
 help:
   main: |-
-    &b&bull; &f`<macro:"help" topic:"second" text:"Some help topic goes here">`
+    &b&bull; &f`<help topic="second" text="Some help topic goes here">`
     &7> &fSee help for Magic commands with &6/help magic
     &7> &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
     &7> &fHelp: &6https://github.com/elBukkit/MagicPlugin/wiki/Support

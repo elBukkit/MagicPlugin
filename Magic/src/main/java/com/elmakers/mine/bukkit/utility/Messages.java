@@ -50,7 +50,8 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private List<Integer> positiveSpace = new ArrayList<>();
 
     private NumberFormat formatter = new DecimalFormat("#0.00");
-    private static final Pattern macroJsonPattern = Pattern.compile("\" ([a-zA-Z])");
+    private static final Pattern macroSpacesPattern = Pattern.compile("\" ([a-zA-Z0-9])");
+    private static final Pattern macroEqualsPattern = Pattern.compile("([a-zA-Z0-9])\\=\"");
     private final Gson gson;
 
     public Messages() {
@@ -125,15 +126,37 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 pieces[i] = defaultReplace;
                 continue;
             }
-            // Auto-insert commas
+
+            // Remove brackets
+            piece = piece.substring(1, piece.length() - 1);
+
+            // Auto-replace = with :
             StringBuffer json = new StringBuffer();
-            Matcher m = macroJsonPattern.matcher(piece);
+            Matcher m = macroEqualsPattern.matcher(piece);
+            while (m.find()) {
+                m.appendReplacement(json, m.group(1) + ":\"");
+            }
+            m.appendTail(json);
+            piece = json.toString();
+
+            // Check for macro type shortcut
+            int firstSpace = piece.indexOf(" ");
+            int firstColon = piece.indexOf(":");
+            if (firstColon < 0 || firstColon > firstSpace) {
+                piece = "macro:\"" + piece.substring(0, firstSpace) + "\"" + piece.substring(firstSpace);
+            }
+
+            // Auto-insert commas
+            json = new StringBuffer();
+            m = macroSpacesPattern.matcher(piece);
             while (m.find()) {
                 m.appendReplacement(json, "\"," + m.group(1));
             }
             m.appendTail(json);
             piece = json.toString();
-            piece = "{" + piece.substring(1, piece.length() - 1) + "}";
+
+            // JSON-ify
+            piece = "{" + piece + "}";
             try {
                 JsonReader reader = new JsonReader(new StringReader(piece));
                 reader.setLenient(true);
