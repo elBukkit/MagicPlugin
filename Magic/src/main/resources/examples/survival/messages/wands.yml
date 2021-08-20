@@ -90,7 +90,7 @@ wands:
         description: "$path &rMagic Bow"
     magiccrossbow:
         name: Magic Crosswow
-        description: "$path &rMagic Crossbow"
+        description: "$path &rMagic Crossbow\n&4It doesn't work, sorry! Maybe one day..."
     mastersword:
         name: Master Sword
         description: The legendary sword that seals the darkness
