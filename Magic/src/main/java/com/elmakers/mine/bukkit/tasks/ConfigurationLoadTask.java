@@ -66,6 +66,7 @@ public class ConfigurationLoadTask implements Runnable {
     private Collection<String> addExamples = null;
     private Set<String> allExamples = new HashSet<>();
 
+    private final ConfigurationSection helpTopics;
     private ConfigurationSection mainConfiguration;
 
     private Set<String> resolvingKeys = new LinkedHashSet<>();
@@ -77,6 +78,7 @@ public class ConfigurationLoadTask implements Runnable {
         this.sender = sender;
         plugin = controller.getPlugin();
         configFolder = controller.getConfigFolder();
+        helpTopics = ConfigurationUtils.newConfigurationSection();
     }
 
     private Logger getLogger() {
@@ -111,6 +113,7 @@ public class ConfigurationLoadTask implements Runnable {
         ConfigurationSection exampleConfig = exampleConfigurations.get(examplesPrefix);
         if (exampleConfig == null) {
             boolean isMainConfig = examplesPrefix.endsWith("config");
+            boolean isMessagesConfig = examplesPrefix.endsWith("messages");
             String examplesFileName = examplesPrefix + ".yml";
             File externalFolder = new File(plugin.getDataFolder(), examplesPrefix);
             File externalFile = new File(plugin.getDataFolder(), examplesFileName);
@@ -160,6 +163,8 @@ public class ConfigurationLoadTask implements Runnable {
             }
             if (exampleConfig == null) {
                 exampleConfig = ConfigurationUtils.newConfigurationSection();
+            } else if (isMessagesConfig) {
+                processMessageExample(exampleConfig);
             }
             exampleConfigurations.put(examplesPrefix, exampleConfig);
         }
@@ -508,7 +513,8 @@ public class ConfigurationLoadTask implements Runnable {
         addVersionConfigs(config, fileName);
 
         // Apply language overrides, but only to the messages config
-        if (fileName.equals("messages") && languageOverride != null && !languageOverride.isEmpty() && !languageOverride.equalsIgnoreCase("EN")) {
+        boolean isMessages = fileName.equals("messages");
+        if (isMessages && languageOverride != null && !languageOverride.isEmpty() && !languageOverride.equalsIgnoreCase("EN")) {
             String languageFilePrefix = "examples/localizations/messages." + languageOverride;
             ConfigurationSection languageConfig = loadExampleConfiguration(languageFilePrefix, "localizations");
             try {
@@ -518,6 +524,11 @@ public class ConfigurationLoadTask implements Runnable {
                 getLogger().severe("Error loading file: " + languageFilePrefix);
                 throw ex;
             }
+        }
+
+        // Process help topics if this is messages
+        if (isMessages) {
+            processHelpTopics(config);
         }
 
         // Apply overrides after loading defaults and examples
@@ -547,6 +558,31 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         return config;
+    }
+
+    private void processHelpTopics(ConfigurationSection messagesConfig) {
+        ConfigurationSection mainHelp = messagesConfig.getConfigurationSection("help");
+        // This shouldn't ever happen since there's a help section in defaults, but still.
+        if (mainHelp == null) {
+            mainHelp.set("help", helpTopics);
+            return;
+        }
+
+        ConfigurationUtils.mergeText(mainHelp, helpTopics);
+    }
+
+    private void processMessageExample(ConfigurationSection example) {
+        // Hacky special handling for the help system
+        // This lets examples add new content to existing help topics.
+        ConfigurationSection exampleHelp = example.getConfigurationSection("help");
+        if (exampleHelp == null) {
+            return;
+        }
+        ConfigurationUtils.mergeText(helpTopics, exampleHelp);
+
+        // Need to make sure we don't end up overwriting the merged text with the example
+        // loadExampleConfiguration returns a clone, so this should be OK to do.
+        example.set("help", null);
     }
 
     private ConfigurationSection loadLegacyConfigFile(String fileName, String modernFilename, ConfigurationSection mainConfiguration) {

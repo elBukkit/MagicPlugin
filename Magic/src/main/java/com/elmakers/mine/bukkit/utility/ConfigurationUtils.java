@@ -220,6 +220,17 @@ public class ConfigurationUtils extends ConfigUtils {
         return addConfigurations(first, second, false);
     }
 
+    public static void mergeText(ConfigurationSection first, ConfigurationSection second) {
+        for (String key : second.getKeys(true)) {
+            String value = second.getString(key);
+            String firstValue = first.getString(key);
+            if (firstValue != null && !firstValue.isEmpty()) {
+                value = firstValue + "\n" + value;
+            }
+            first.set(key, value);
+        }
+    }
+
     public static void addParameters(String[] extraParameters, ConfigurationSection parameters)
     {
         if (extraParameters != null)
