@@ -10,11 +10,12 @@
 
 # Glyph Wand
 
- - Breaks if the MC client is set to force unicode .. would a custom font help with that?
  - Make brushes work (swing to use)
 
 # Important
 
+ - Add "inventory_item" requirement, for checking if a player has a specific item
+ - Autumn Builds: offhand casting should use the wand's actions, including sneaking, instead of always casting
  - Allow slotted upgrades to rename (rename and rename_description options)
  - Prevent blaze fireballs from doing damage?
    Arenas always auto-rollback fireballs and stuff from mobs?

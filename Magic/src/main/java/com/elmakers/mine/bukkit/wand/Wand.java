@@ -323,6 +323,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected String lastActionBarMessage;
     protected String actionBarMessage;
     protected String actionBarOpenMessage;
+    protected String actionBarFont;
     protected int actionBarInterval;
     protected int actionBarDelay;
     protected long lastActionBar;
@@ -2125,6 +2126,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 actionBarInterval = config.getInt("interval", 1000);
                 actionBarDelay = config.getInt("delay", 0);
                 actionBarMana = config.getBoolean("uses_mana");
+                actionBarFont = config.getString("font");
             }
             lastActionBar = 0;
         } else {
@@ -4762,7 +4764,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             lastActionBarFullMana = fullMana;
         }
         String message = parameterize(useMessage);
-        CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message);
+        CompatibilityLib.getCompatibilityUtils().sendActionBar(player, message, actionBarFont);
         lastActionBarMessage = message;
     }
 

@@ -2,9 +2,12 @@ iconwand:
   inherit: wand
   slotted: controls_inventory
   name: "Icon Wand"
+  description: "&#FF2288 Hello?           \uE75F"
+  # description: '`{"text":"\uE754","color":"#FF2288"}`'
   # name: "\uF81DIcon Wand"
   # action_bar: "\uF807\uF809\uE701\uF80C\uF80B\uF828\uF824\uE901\uF823\uE700\uF823\uE902\uF823\uE903\uF823\uE700\uF823\uE904\uF823\uE700\uF823\uE905"
   # action_bar: "\uF80B\uE770\uF80B\uF808\uF803\uE741"
-  #action_bar: "\uE741\uF80A\uE770"
+  # action_bar: "\uE741\uF80A\uE770"
   # action_bar: "\uE770\uF80B\uF808\uF804\uE741\uF809\uF807\uE742\uF809\uF807\uF823\uE971\uF823\uF801"
-  action_bar: "\uE770\uF80B\uE741\uF82B\uF809"
+  # action_bar: '`{"font":"magic","text":"\uE75F"}`'
+  action_bar: "&4Regular &6Old &3Colored &2Text"

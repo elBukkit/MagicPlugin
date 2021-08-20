@@ -17,6 +17,7 @@ controls_hybrid:
         use_active_name: false
         action_bar:
           message: "$hotbar $extra"
+          font: "magic"
           open_message: ""
           interval: 250
           delay: 1500
