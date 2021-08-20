@@ -13,6 +13,7 @@ selector:
   selected: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
   sold: "&d&oYou sold &r&6$item &r&d&ofor &r&a$earn"
   unlocked: "&d&oYou unlocked &r&6$item &r&d&ofor &r&a$cost"
+  unlocked_earn: "&d&oYou earned &r&a$earn &r&d&ofrom &r&6$item"
   selected_free: "&d&oYou chose &r&6$item"
   not_applicable: "You already have $item"
   cast_fail: "&cSorry, please try again!"

@@ -1,3 +1,4 @@
 shops:
   title: "Shop ($balance&0)"
   selected: "&d&oYou bought &r&6$item &r&d&ofor &r&a$cost"
+  sold: "&d&oYou sold &r&6$item &r&d&ofor &r&a$earn"

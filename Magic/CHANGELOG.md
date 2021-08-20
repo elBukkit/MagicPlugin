@@ -81,6 +81,7 @@
  - Add macro system to messaging, useful for making shortcuts for chat components
  - Add `item` requirement, for checking if a player has an item (similar to CheckInventory action)
  - Allow a `messages` section on a spell config. to embed messages right in a spell (useful for Selector, Shop or other text-heavy spells)
+ - Add `unlock_earns` parameter to Selector, rewardshop example of single-time requirement-base rewards
 
 ## Changes
 

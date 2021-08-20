@@ -194,6 +194,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable String selectedMessage = null;
         protected @Nullable String selectedFreeMessage = null;
         protected @Nullable String unlockKey = null;
+        protected boolean unlockEarns = false;
         protected @Nullable String actions = null;
         protected @Nonnull String unlockSection = "unlocked";
         protected @Nullable Collection<Requirement> requirements;
@@ -295,6 +296,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             attributeKey = configuration.getString("attribute", attributeKey);
             limit = configuration.getInt("limit", limit);
             unlockKey = configuration.getString("unlock", unlockKey);
+            unlockEarns = configuration.getBoolean("unlock_earns", false);
             unlockSection = configuration.getString("unlock_section", unlockSection);
             showConfirmation = configuration.getBoolean("confirm", showConfirmation);
             costType = configuration.getString("cost_type", costType);
@@ -618,6 +620,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.putInHand = defaults.putInHand;
             this.limit = defaults.limit;
             this.unlockKey = defaults.unlockKey;
+            this.unlockEarns = defaults.unlockEarns;
             this.unlockSection = defaults.unlockSection;
             this.showConfirmation = defaults.showConfirmation;
             this.unbreakableIcon = defaults.unbreakableIcon;
@@ -845,6 +848,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
+            // See if this is locked
+            boolean locked = unlockKey != null && !unlockKey.isEmpty() && !unlocked;
+
             // Don't show costs if unavailable
             if (costs != null && !unavailable) {
                 String costHeading = getMessage("cost_heading");
@@ -867,7 +873,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     costDescription = costDescription.replace("$cost", cost.getFullDescription(context.getController().getMessages()));
                     CompatibilityLib.getInventoryUtils().wrapText(costDescription, lore);
                 }
-            } else if (unlockKey != null && !unlockKey.isEmpty() && !unlocked) {
+            } else if (locked && (earns == null || !unlockEarns)) {
                 unavailable = true;
                 String lockedMessage = getMessage("locked");
                 if (!lockedMessage.isEmpty()) {
@@ -878,8 +884,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
-            // Add earn lore
-            if (earns != null) {
+            // Add earn lore, unless we earned already on unlock
+            if (earns != null && (locked || !unlockEarns)) {
                 String costHeading = getMessage("earn_heading");
                 if (!costHeading.isEmpty()) {
                     CompatibilityLib.getInventoryUtils().wrapText(costHeading, lore);
@@ -1298,7 +1304,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (unlockKey != null && !unlockKey.isEmpty()) {
                 ConfigurationSection unlocks = mage.getData().getConfigurationSection(unlockSection);
                 if (unlocks != null && !unlocks.getBoolean(unlockKey)) {
-                    String unlockMessage = getMessage("unlocked");
+                    String unlockMessage = unlockEarns ? getMessage("unlocked_earn") : getMessage("unlocked");
                     context.showMessage(getCostsMessage(unlockMessage));
                 }
                 if (unlocks == null) {

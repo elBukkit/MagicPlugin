@@ -1,0 +1,27 @@
+rewardgui:
+  actions:
+    cast:
+      - class: Selector
+  messages:
+    property_min_inclusive: "&r&cYou must have &4@value &6$propertys"
+    unlocked_lore: "&4Claimed"
+    selected_free: ""
+  parameters:
+    # This is used to store player's lock/unlock status, and
+    # generally should be unique among your UIs
+    unlock_section: rewards
+    earn_type: currency
+    show_unavailable: true
+    options:
+      - icon: appearance_beginner
+        name: Reach Beginner For These Rewards!
+        earn: 200
+        requirements:
+          - path: beginner
+          - item: diamond 10
+        # This is the lock/unlock key for this particular option
+        # So in /mage getdata this would be rewards.reached_beginner
+        unlock: reached_beginner_12
+        # This means we earn when unlocking, not that we get to keep earning
+        # over and over when purchasing it after unlocking
+        unlock_earns: true
