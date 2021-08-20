@@ -4,7 +4,6 @@ wither:
     upgrade_required_path: apprentice
     upgrade_required_casts: 50
     category: dark
-    pvp_restricted: true
     worth: 350
     earns: 10
     actions:
