@@ -895,4 +895,13 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         itemStack.setItemMeta(meta);
         return true;
     }
+
+    @Override
+    public boolean sendActionBar(Player player, String message, String font) {
+        // We can't support fonts here
+        if (font != null && !font.isEmpty()) {
+            return false;
+        }
+        return sendActionBar(player, message);
+    }
 }

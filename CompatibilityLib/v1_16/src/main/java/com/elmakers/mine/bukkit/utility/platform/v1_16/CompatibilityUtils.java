@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.BaseComponent;
+import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
@@ -125,6 +126,22 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         } else {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
         }
+        return true;
+    }
+
+    @Override
+    public boolean sendActionBar(Player player, String message, String font) {
+        if (font == null || font.isEmpty()) {
+            return sendActionBar(player, message);
+        }
+        BaseComponent[] components;
+        if (message.contains("`{")) {
+            components = parseChatComponents(message);
+        } else {
+            components = new BaseComponent[]{new TextComponent(message)};
+        }
+        BaseComponent[] fontComponent = new ComponentBuilder("").font(font).append(components).create();
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, fontComponent);
         return true;
     }
 }
