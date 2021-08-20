@@ -42,6 +42,7 @@ import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.batch.Batch;
 import com.elmakers.mine.bukkit.api.batch.SpellBatch;
+import com.elmakers.mine.bukkit.api.block.BlockData;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -242,18 +243,16 @@ public class BlockController implements Listener, ChunkLoadListener {
 
     @EventHandler
     public void onPistonRetract(BlockPistonRetractEvent event) {
-        Block piston = event.getBlock();
-        Block block = piston.getRelative(event.getDirection());
-        UndoList undoList = controller.getPendingUndo(block.getLocation());
-        if (undoList != null) {
-            // This block is the piston head
-            undoList.add(block);
-            // This block stores the state of the piston (er, I think?)
-            undoList.add(piston);
-            block = piston.getRelative(event.getDirection());
-            // This is the block we will pull if it's not empty
-            if (!DefaultMaterials.isAir(block.getType())) {
-                undoList.add(block);
+        // Immediately undo or commit any blocks involved
+        for (Block block : event.getBlocks()) {
+            BlockData undoData = controller.getUndoData(block.getLocation());
+            if (undoData != null) {
+                UndoList undoList = undoData.getUndoList();
+                if (undoList.isScheduled()) {
+                    undoData.undo(false);
+                } else {
+                    undoData.commit();
+                }
             }
         }
     }
