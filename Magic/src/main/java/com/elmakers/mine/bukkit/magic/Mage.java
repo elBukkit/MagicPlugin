@@ -4445,6 +4445,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public double getCurrency(String type) {
         Currency currency = controller.getCurrency(type);
+        if (currency == null) {
+            return 0;
+        }
         if (currency instanceof CustomCurrency) {
             return data.getDouble(type, currency.getDefaultValue());
         }
