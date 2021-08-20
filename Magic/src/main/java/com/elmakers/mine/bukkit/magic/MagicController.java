@@ -2213,6 +2213,20 @@ public class MagicController implements MageController {
         }
     }
 
+    public void showExampleInstructions(CommandSender sender, String example) {
+        Mage mage = getMage(sender);
+        String exampleKey = exampleKeyNames.get(example);
+        if (exampleKey == null || exampleKey.isEmpty()) {
+            exampleKey = example;
+        }
+        String exampleInstructions = messages.get("examples." + exampleKey + ".instructions", "");
+        if (exampleInstructions.isEmpty()) {
+            mage.sendMessage(messages.get("examples.not_found"));
+            return;
+        }
+        mage.sendMessage(exampleInstructions);
+    }
+
     public void showExampleInstructions(CommandSender sender) {
         Mage mage = getMage(sender);
         List<String> instructions = new ArrayList<>();

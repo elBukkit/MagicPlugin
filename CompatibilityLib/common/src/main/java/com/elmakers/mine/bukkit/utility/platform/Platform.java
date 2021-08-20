@@ -48,4 +48,6 @@ public interface Platform {
 
     @Nullable
     PaperUtils getPaperUtils();
+
+    default boolean hasChatComponents() { return false; }
 }

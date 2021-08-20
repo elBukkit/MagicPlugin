@@ -39,4 +39,9 @@ public class Platform extends com.elmakers.mine.bukkit.utility.platform.v1_15.Pl
         ResourcePackListener timeListener = new ResourcePackListener(controller);
         pm.registerEvents(timeListener, controller.getPlugin());
     }
+
+    @Override
+    public boolean hasChatComponents() {
+        return true;
+    }
 }

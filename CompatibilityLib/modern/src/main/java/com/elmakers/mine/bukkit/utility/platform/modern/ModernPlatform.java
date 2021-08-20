@@ -46,4 +46,9 @@ public abstract class ModernPlatform extends PlatformBase {
         ResourcePackListener timeListener = new ResourcePackListener(controller);
         pm.registerEvents(timeListener, controller.getPlugin());
     }
+
+    @Override
+    public boolean hasChatComponents() {
+        return true;
+    }
 }

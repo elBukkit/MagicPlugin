@@ -114,6 +114,10 @@ public class CompatibilityLib extends PlatformInterpreter {
         return compatibilityUtils == null ? false : compatibilityUtils.hasLegacyMaterials();
     }
 
+    public static boolean hasChatComponents() {
+        return platform == null ? false : platform.hasChatComponents();
+    }
+
     public static boolean hasJumpEvent() {
         return platform == null ? false : platform.getPaperUtils() != null;
     }

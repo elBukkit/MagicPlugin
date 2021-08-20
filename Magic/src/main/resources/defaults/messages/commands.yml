@@ -16,6 +16,13 @@ commands:
       no_requirements: "You are not allowed to use that kit"
     mhelp:
       unknown: "&cUnknown help topic: &f$topic"
+      unavailable: |-
+          &8| &7> &4Your server version does not support the interactive help system
+          &8| &7> &fSee help for Magic commands with &6/help magic
+          &8| &7> &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
+          &8| &7> &fHelp: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
+      separator: "&8---------------------------"
+      no_wand: "&4You must be holding a wand!"
       header: |-
         &8                                .
         &f`<icon key="missile">`   &b&lMAGIC HELP  &f`<icon key="missile">`

@@ -10,8 +10,10 @@ import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class MagicHelpCommandExecutor extends MagicTabExecutor {
     protected final MagicController controller;
@@ -38,47 +40,57 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onMagicHelp(CommandSender sender, String[] args) {
+        Messages messages = controller.getMessages();
         Mage mage = controller.getMage(sender);
-        if (args.length == 0) {
-            mage.sendMessage(controller.getMessages().get("commands.mhelp.header"));
-
-            // TODO: wand instructions
-            Wand wand = mage.getActiveWand();
-            if (wand != null) {
-                // Click action for wand
-            }
-            mage.sendMessage(controller.getMessages().get("help.main"));
+        if (!CompatibilityLib.hasChatComponents()) {
+            mage.sendMessage(messages.get("commands.mhelp.header"));
+            mage.sendMessage(messages.get("commands.mhelp.unavailable"));
             return;
         }
 
-        String exactMessage = controller.getMessages().get("help." + args[0], "");
+        if (args.length == 0) {
+            mage.sendMessage(messages.get("commands.mhelp.header"));
+            mage.sendMessage(messages.get("help.main"));
+            mage.sendMessage(messages.get("commands.mhelp.separator"));
+            return;
+        }
+
+        // Some special cases:
+        if (args[0].startsWith("instructions")) {
+            String[] pieces = StringUtils.split(args[0], ".");
+            if (pieces.length > 1) {
+                if (pieces[1].equals("wand")) {
+                    Wand wand = mage.getActiveWand();
+                    if (wand != null) {
+                        wand.showInstructions();
+                    } else {
+                        mage.sendMessage(messages.get("commands.mhelp.no_wand"));
+                    }
+                    return;
+                } else if (pieces[1].equals("example")) {
+                    if (pieces.length > 2) {
+                        controller.showExampleInstructions(sender, pieces[2]);
+                    } else {
+                        controller.showExampleInstructions(sender);
+                    }
+                    return;
+                }
+            }
+        }
+
+        String exactMessage = messages.get("help." + args[0], "");
         if (!exactMessage.isEmpty()) {
             mage.sendMessage(exactMessage);
+            mage.sendMessage(messages.get("commands.mhelp.separator"));
             return;
         }
 
         // TODO: Search topics
 
-
-        // TODO: Example instructions
-        if (args[0].equals("examples")) {
-            controller.showExampleInstructions(sender);
-            return;
-        }
-
-        // TODO: wand instructions
-
-        if (args[0].equals("wand")) {
-            Wand wand = mage.getActiveWand();
-            if (wand != null) {
-                wand.showInstructions();
-            }
-            return;
-        }
-
         String topic = StringUtils.join(args, " ");
-        String unknownMessage = controller.getMessages().get("commands.mhelp.unknown");
+        String unknownMessage = messages.get("commands.mhelp.unknown");
         mage.sendMessage(unknownMessage.replace("$topic", topic));
+        mage.sendMessage(messages.get("commands.mhelp.separator"));
     }
 
     @Override
