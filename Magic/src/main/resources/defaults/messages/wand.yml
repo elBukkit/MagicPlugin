@@ -317,7 +317,7 @@ wand:
     # or complex control scheme.
     lore_instructions_header: "&8------------------------"
 
-    lore_cast_instructions: "&b&bull; &f$button &7to cast spells"
+    lore_cast_instructions: "&b&bull; &f$button &7to cast &6$spell"
     lore_toggle_instructions: "&b&bull; &f$button &7to open the spell inventory"
     lore_cycle_instructions: "&b&bull; &f$button &7to cycle the active spell"
     lore_cycle_active_hotbar_instructions: "&b&bull; &f$button &7to cycle the active spell"

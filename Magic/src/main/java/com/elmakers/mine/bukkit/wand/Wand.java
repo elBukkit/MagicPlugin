@@ -3132,6 +3132,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return;
         }
         line = line.replace("$button", controlKey);
+        line = line.replace("$wand", getName());
+        Spell spell = getActiveSpell();
+        String spellName = spell == null ? "" : spell.getName();
+        line = line.replace("$spell", spellName);
         CompatibilityLib.getInventoryUtils().wrapText(line, lore);
     }
 
