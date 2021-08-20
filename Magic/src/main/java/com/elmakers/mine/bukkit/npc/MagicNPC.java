@@ -160,12 +160,12 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             ConfigurationSection templateParameters = getTemplateParameters();
             String defaultType = templateParameters == null ? "villager" : templateParameters.getString("type", "villager");
             if (hasMobKey) {
-                controller.getLogger().warning("NPC has unknown mob type: " + mobKey + ", will change to " + defaultType);
+                controller.getLogger().warning("NPC " + getLabel() + " has unknown mob type: " + mobKey + ", will change to " + defaultType);
             }
             entity = controller.getMob(defaultType);
         }
         if (entity == null) {
-            controller.getLogger().warning("NPC has unknown mob type: " + mobKey + ", and no deafult mob type was available. Defaulting to villager.");
+            controller.getLogger().warning("NPC " + getLabel() + " has unknown mob type: " + mobKey + ", and no default mob type was available. Defaulting to villager.");
             entity = new EntityData(controller, EntityType.VILLAGER);
         }
         setEntityData(entity);
@@ -378,6 +378,16 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Nonnull
     public String getName() {
         return CompatibilityLib.getCompatibilityUtils().translateColors(name);
+    }
+
+    protected String getLabel() {
+        if (name != null &&  !name.isEmpty()) {
+            return name;
+        }
+        if (templateKey != null && !templateKey.isEmpty()) {
+            return ":" + templateKey;
+        }
+        return id.toString();
     }
 
     @Override
