@@ -19,6 +19,7 @@ requirements:
   light: "Light Level"
   time: "Time of Day"
   height: "Height"
-  currency: "Currency"
+  currency: "$currency"
+  item: "$item"
   no_cast: "&cYou must cast $spell first"
   no_spell_inventory: "&cYou must have your spell inventory open"

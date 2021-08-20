@@ -6,24 +6,31 @@ class RangedRequirement {
     public Double max;
     public Double min;
     public Double value;
+    public boolean inclusive = false;
 
     public RangedRequirement(String value) {
-        if (value.startsWith("<")) {
-            try {
-                max = Double.parseDouble(value.substring(1));
-            } catch (Exception ignore) {
-            }
-        } else if (value.startsWith(">")) {
-            try {
-                min = Double.parseDouble(value.substring(1));
-            } catch (Exception ignore) {
-            }
-        }
-        if (value.startsWith("=")) {
-            value = value.substring(1);
-        }
         try {
-            this.value = Double.parseDouble(value);
+            if (value.startsWith("<")) {
+                if (value.startsWith("<=")) {
+                    max = Double.parseDouble(value.substring(2));
+                    inclusive = true;
+                } else {
+                    max = Double.parseDouble(value.substring(1));
+                }
+            } else if (value.startsWith(">")) {
+                if (value.startsWith(">=")) {
+                    min = Double.parseDouble(value.substring(2));
+                    inclusive = true;
+                } else {
+                    min = Double.parseDouble(value.substring(1));
+                }
+            } else if (value.startsWith("=")) {
+                this.value = Double.parseDouble(value.substring(1));
+            } else {
+                // Default to >= which is what we normally mean
+                this.min = Double.parseDouble(value);
+                this.inclusive = true;
+            }
         } catch (Exception ignore) {
         }
     }
@@ -38,12 +45,18 @@ class RangedRequirement {
         if (configuration.contains("value")) {
             value = configuration.getDouble("value");
         }
+        inclusive = configuration.getBoolean("inclusive");
     }
 
     public boolean check(Double value) {
         if (this.value != null && (value == null || !value.equals(this.value))) return false;
-        if (this.min != null && (value == null || value <= this.min)) return false;
-        if (this.max != null && (value != null && value >= this.max)) return false;
+        if (inclusive)  {
+            if (this.min != null && (value == null || value < this.min)) return false;
+            if (this.max != null && (value != null && value > this.max)) return false;
+        } else {
+            if (this.min != null && (value == null || value <= this.min)) return false;
+            if (this.max != null && (value != null && value >= this.max)) return false;
+        }
         return true;
     }
 

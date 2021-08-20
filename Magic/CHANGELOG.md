@@ -79,6 +79,7 @@
  - The `ModifyAttribute` action now supports an `x` variable holding the current attribute value, just like `ModifyProperties`
  - The `/mage deactivate` command can now be used as an alias for `/mage lock`
  - Add macro system to messaging, useful for making shortcuts for chat components
+ - Add `item` requirement, for checking if a player has an item (similar to CheckInventory action)
 
 ## Changes
 

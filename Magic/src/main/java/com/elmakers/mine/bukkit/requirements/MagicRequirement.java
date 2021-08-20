@@ -13,7 +13,9 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.integration.ClientPlatform;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -54,12 +56,12 @@ public class MagicRequirement {
     private @Nullable RangedRequirement lightLevel = null;
     private @Nullable RangedRequirement timeOfDay = null;
     private @Nullable RangedRequirement height = null;
-    private @Nullable RangedRequirement currency = null;
+    private @Nullable CurrencyRequirement currency = null;
+    private @Nullable ItemRequirement item = null;
     private @Nullable String weather = null;
     private @Nullable String castSpell = null;
     private @Nullable ClientPlatform clientPlatform = null;
     private int castTimeout = 0;
-    private @Nonnull String currencyType = "currency";
     private boolean requireResourcePack = false;
     private boolean requireWand = false;
     private boolean ignoreMissing = false;
@@ -109,8 +111,9 @@ public class MagicRequirement {
         timeOfDay = parseRangedRequirement(configuration, "time");
         weather = configuration.getString("weather");
         height = parseRangedRequirement(configuration, "height");
-        currency = parseRangedRequirement(configuration, "currency");
-        currencyType = configuration.getString("currency_type", "currency");
+        String defaultCurrencyType = configuration.getString("currency_type", "currency");
+        currency = CurrencyRequirement.parse(configuration, "currency", defaultCurrencyType);
+        item = ItemRequirement.parse(configuration, "item");
 
         castSpell = configuration.getString("cast_spell");
         castTimeout = configuration.getInt("cast_timeout", 0);
@@ -250,7 +253,12 @@ public class MagicRequirement {
             }
         }
         if (currency != null) {
-            if (location == null || !currency.check(mage.getCurrency(currencyType))) {
+            if (location == null || !currency.check(mage)) {
+                return false;
+            }
+        }
+        if (item != null) {
+            if (location == null || !item.check(mage)) {
                 return false;
             }
         }
@@ -510,7 +518,23 @@ public class MagicRequirement {
             }
         }
         if (currency != null) {
-            String message = checkRequiredProperty(context, currency, getMessage(context, "currency"), mage.getCurrency(currencyType));
+            String currencyMessage = getMessage(context, "currency");
+            String currencyKey = currency.getKey();
+            Currency currencyType = controller.getCurrency(currencyKey);
+            currencyKey = currencyType == null ? "?" : currencyType.getName(controller.getMessages());
+            currencyMessage = currencyMessage.replace("$currency", currencyKey);
+            String message = checkRequiredProperty(context, currency, currencyMessage, mage.getCurrency(currencyKey));
+            if (message != null) {
+                return message;
+            }
+        }
+        if (item != null) {
+            String itemMessage = getMessage(context, "item");
+            ItemStack itemStack = item.getItemStack(controller);
+            String itemName = itemStack == null ? "?" : controller.describeItem(itemStack);
+            itemMessage = itemMessage.replace("$item", itemName);
+            Double count = itemStack == null ? null : (double)mage.getItemCount(itemStack);
+            String message = checkRequiredProperty(context, item, itemMessage, count);
             if (message != null) {
                 return message;
             }
