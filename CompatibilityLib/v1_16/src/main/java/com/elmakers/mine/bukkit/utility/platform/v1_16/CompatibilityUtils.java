@@ -43,7 +43,8 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         for (String component : pieces) {
             try {
                 List<BaseComponent> addComponents;
-                if (component.startsWith("{")) {
+                boolean isJson = component.startsWith("{");
+                if (isJson) {
                     addComponents = Arrays.asList(ComponentSerializer.parse(component));
                 } else {
                     addComponents = Arrays.asList(TextComponent.fromLegacyText(component));
@@ -54,10 +55,15 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
                         addToComponent.setExtra(addToComponents);
                     }
 
-                    addToComponent = addToComponents.get(addToComponents.size() - 1);
-                    addToComponents = addToComponent.getExtra();
-                    if (addToComponents == null) {
-                        addToComponents = new ArrayList<>();
+                    // If this is a legacy text string, append to it to keep the legacy
+                    // behavior of formatting affecting everything after it.
+                    // if this is a json block, formatting only affects what is in that block.
+                    if (!isJson) {
+                        addToComponent = addToComponents.get(addToComponents.size() - 1);
+                        addToComponents = addToComponent.getExtra();
+                        if (addToComponents == null) {
+                            addToComponents = new ArrayList<>();
+                        }
                     }
                 }
             } catch (Exception ex) {
