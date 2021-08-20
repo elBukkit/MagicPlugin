@@ -135,8 +135,12 @@ public class MagicRequirement {
 
     @Nullable
     private RangedRequirement parseRangedRequirement(ConfigurationSection configuration, String key) {
+        ConfigurationSection rangedConfig = ConfigurationUtils.getConfigurationSection(configuration, key);
+        if (rangedConfig != null) {
+            return new RangedRequirement(rangedConfig);
+        }
         if (configuration.contains(key)) {
-            return new RangedRequirement(ConfigurationUtils.getConfigurationSection(configuration, key));
+            return new RangedRequirement(configuration.getString(key));
         }
         return null;
     }

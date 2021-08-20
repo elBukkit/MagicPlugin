@@ -7,6 +7,27 @@ class RangedRequirement {
     public Double min;
     public Double value;
 
+    public RangedRequirement(String value) {
+        if (value.startsWith("<")) {
+            try {
+                max = Double.parseDouble(value.substring(1));
+            } catch (Exception ignore) {
+            }
+        } else if (value.startsWith(">")) {
+            try {
+                min = Double.parseDouble(value.substring(1));
+            } catch (Exception ignore) {
+            }
+        }
+        if (value.startsWith("=")) {
+            value = value.substring(1);
+        }
+        try {
+            this.value = Double.parseDouble(value);
+        } catch (Exception ignore) {
+        }
+    }
+
     public RangedRequirement(ConfigurationSection configuration) {
         if (configuration.contains("min")) {
             min = configuration.getDouble("min");
