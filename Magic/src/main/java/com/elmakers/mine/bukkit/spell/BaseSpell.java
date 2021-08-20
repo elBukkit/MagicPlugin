@@ -197,6 +197,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> costs = null;
     private List<CastingCost> activeCosts = null;
     private List<Trigger> triggers = null;
+    private ConfigurationSection messages = null;
 
     // Variable default definitions
     // For convenience, these can be provide as a list of configurations, or as a map to objects
@@ -956,6 +957,9 @@ public class BaseSpell implements MageSpell, Cloneable {
         // Owner information for editor use and fill_wand_creator
         creatorName = node.getString("creator");
         creatorId = node.getString("creator_id");
+
+        // Embedded messages, will override anything in the messages configs
+        messages = node.getConfigurationSection("messages");
 
         // Upgrade path information
         // The actual upgrade spell will be set externally.
@@ -1827,6 +1831,10 @@ public class BaseSpell implements MageSpell, Cloneable {
     }
 
     public String getMessage(String messageKey, String def) {
+        String embedded = messages == null ? null : messages.getString(messageKey);
+        if (embedded != null) {
+            return CompatibilityLib.getCompatibilityUtils().translateColors(embedded);
+        }
         String message = getMessageRaw(messageKey, def);
         if (currentCast != null && currentCast.getAlternateResult().isAlternate()) {
             message = getMessageRaw(currentCast.getAlternateResult().toString().toLowerCase() + "_" + messageKey, message);
