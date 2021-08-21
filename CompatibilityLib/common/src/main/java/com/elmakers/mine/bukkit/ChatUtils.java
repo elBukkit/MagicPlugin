@@ -38,8 +38,21 @@ public class ChatUtils {
                     plainMessage.append(color);
                 } catch (Exception ignore) {
                 }
-            } if (entry.getKey().equals("text")) {
+            } else if (entry.getKey().equals("text")) {
                 plainMessage.append(entry.getValue());
+            } else if (entry.getKey().equals("clickEvent")) {
+                Map<String,Object> properties = (Map<String,Object>)entry.getValue();
+                if (properties.containsKey("action") && properties.containsKey("value")) {
+                    String value = properties.get("value").toString();
+                    String action = properties.get("action").toString();
+                    switch (action) {
+                        case "open_url":
+                        case "run_command":
+                        case "suggest_command":
+                            plainMessage.append(ChatColor.RESET + " " + ChatColor.GRAY + value);
+                            break;
+                    }
+                }
             } else if (entry.getKey().equals("keybind")) {
                 String key = entry.getValue().toString().replace("key.", "");
                 if (messages != null) {

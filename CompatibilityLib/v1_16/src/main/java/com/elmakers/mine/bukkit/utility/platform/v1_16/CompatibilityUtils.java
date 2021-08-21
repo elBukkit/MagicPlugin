@@ -75,7 +75,11 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public void sendChatComponents(CommandSender sender, String containsJson) {
-        sender.spigot().sendMessage(parseChatComponents(containsJson));
+        if (sender instanceof Player) {
+            sender.spigot().sendMessage(parseChatComponents(containsJson));
+        } else {
+            sender.sendMessage(ChatUtils.getSimpleMessage(containsJson));
+        }
     }
 
     @Override
