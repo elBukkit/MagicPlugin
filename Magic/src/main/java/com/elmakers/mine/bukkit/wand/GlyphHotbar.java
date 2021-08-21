@@ -30,6 +30,7 @@ public class GlyphHotbar {
     private int barSlotPadding;
     private boolean showCooldown;
     private String barTemplate;
+    private String hotbarPrefix;
 
     protected String extraMessage;
     protected long lastExtraMessage;
@@ -64,6 +65,7 @@ public class GlyphHotbar {
         collapsedFinalSpacing = configuration.getInt("collapsed_spacing", 12);
         showCooldown = configuration.getBoolean("show_cooldown", true);
         collapsedMaxMessageLength = configuration.getInt("collapsed_message_max_length", 20);
+        hotbarPrefix = configuration.getString("hotbar_prefix", "&f");
         barTemplate = configuration.getString("bar_template", "`{\"text\": \"$glyph\", \"color\":\"#$color\"}`");
 
         barMode = WandDisplayMode.parse(wand.getController(), configuration, "bar_mode", WandDisplayMode.MANA);
@@ -204,7 +206,7 @@ public class GlyphHotbar {
         if (barWidth > 0 && !hasExtraMessage && barMode != WandDisplayMode.NONE) {
             // The farthest-left element needs to tbe left first one.
             // So we will need to choose at the end between the bar and the hotbar.
-            String hotbarPart = glyphs;
+            String hotbarPart = hotbarPrefix + glyphs;
             String barPart = "";
 
             int barProgress = (int)Math.floor(barMode.getProgress(wand) * barSteps);
