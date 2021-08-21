@@ -2,13 +2,16 @@
 
 # Importanter
 
- - Adding on the safe example does not work, it can't disable spells when added perhaps?
-
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
+   
+# Magic Help System
+
+ - Prompt ops on join?
+ - Use first line of each section as a title? Would improve search.
 
 # Glyph Wand
 
@@ -17,7 +20,6 @@
 # Important
 
  - Add "inventory_item" requirement, for checking if a player has a specific item
- - Autumn Builds: offhand casting should use the wand's actions, including sneaking, instead of always casting
  - Allow slotted upgrades to rename (rename and rename_description options)
  - Prevent blaze fireballs from doing damage?
    Arenas always auto-rollback fireballs and stuff from mobs?
@@ -29,13 +31,6 @@
    support Power on a magic bow?
  - Dying at the end of an arena puts you in a broken state (maybe fixed?)
  - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
-
-# Magic Help System
-
- - /mhelp command, prompt ops on first join (via permission)
- - require ChatCompoment support
- - config-driven, example-specific trees
- - give books in-game for complex end responses
 
 # Undo / Build Issues
 
@@ -57,6 +52,7 @@
 
 ## Arenas
 
+ - Arena won't let you join next round if you are dead
  - Add option to save inventory and class layout
    - Mage stored inventories need to be by key
    - Restore all inventories on login, if restoring inventories remove any spells

@@ -665,7 +665,7 @@ public class ConfigurationLoadTask implements Runnable {
             processInheritance(versionExample, versionConfig, fileName, getMainConfiguration(versionExample));
             if (!versionConfig.getKeys(false).isEmpty()) {
                 ConfigurationUtils.addConfigurations(config, versionConfig, true, true);
-                getLogger().info(" Using inherited compatibility configs: " + versionFileName);
+                getLogger().info(" Using inherited compatibility configs for: " + versionFileName);
             }
         }
     }
