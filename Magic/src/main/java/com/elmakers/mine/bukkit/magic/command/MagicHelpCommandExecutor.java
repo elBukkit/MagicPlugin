@@ -1,13 +1,18 @@
 package com.elmakers.mine.bukkit.magic.command;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -17,6 +22,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class MagicHelpCommandExecutor extends MagicTabExecutor {
     protected final MagicController controller;
+    protected Map<String,String> helpTopics;
 
     public MagicHelpCommandExecutor(MagicAPI api) {
         super(api, "mhelp");
@@ -42,14 +48,12 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
     protected void onMagicHelp(CommandSender sender, String[] args) {
         Messages messages = controller.getMessages();
         Mage mage = controller.getMage(sender);
-        if (!CompatibilityLib.hasChatComponents()) {
-            mage.sendMessage(messages.get("commands.mhelp.header"));
-            mage.sendMessage(messages.get("commands.mhelp.unavailable"));
-            return;
-        }
 
         if (args.length == 0) {
             mage.sendMessage(messages.get("commands.mhelp.header"));
+            if (!CompatibilityLib.hasChatComponents()) {
+                mage.sendMessage(messages.get("commands.mhelp.unavailable"));
+            }
             mage.sendMessage(messages.get("help.main"));
             mage.sendMessage(messages.get("commands.mhelp.separator"));
             return;
@@ -85,12 +89,77 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        // TODO: Search topics
+        // Search through topics for text matches
+        Map<String,String> helpTopics = getHelpTopics();
+        List<String> topicMatches = new ArrayList<>();
+        List<String> partialMatches = new ArrayList<>();
+        List<String> lowerArgs = new ArrayList<>();
+        for (String arg : args) {
+            lowerArgs.add(arg.toLowerCase());
+        }
 
-        String topic = StringUtils.join(args, " ");
-        String unknownMessage = messages.get("commands.mhelp.unknown");
-        mage.sendMessage(unknownMessage.replace("$topic", topic));
+        for (Map.Entry<String,String> entry : helpTopics.entrySet()) {
+            boolean hasAny = false;
+            boolean hasAll = true;
+            for (String arg : lowerArgs) {
+                if (entry.getKey().contains(arg) || entry.getValue().contains(arg)) {
+                    hasAny = true;
+                } else {
+                    hasAll = false;
+                }
+            }
+            if (hasAll) {
+                topicMatches.add(entry.getKey());
+            } else if (hasAny) {
+                partialMatches.add(entry.getKey());
+            }
+        }
+
+        topicMatches.addAll(partialMatches);
+        if (topicMatches.isEmpty()) {
+            String topic = StringUtils.join(args, " ");
+            String unknownMessage = messages.get("commands.mhelp.unknown");
+            mage.sendMessage(unknownMessage.replace("$topic", topic));
+        } else {
+            String foundMessage = messages.get("commands.mhelp.found");
+            mage.sendMessage(foundMessage.replace("$count", Integer.toString(topicMatches.size())));
+            String template = messages.get("commands.mhelp.match");
+            for (String topicMatch : topicMatches) {
+                String[] lines = StringUtils.split(helpTopics.get(topicMatch), "\n");
+                String summary = null;
+                for (String line : lines) {
+                    for (String arg : lowerArgs) {
+                        if (line.contains(arg)) {
+                            summary = line;
+                            break;
+                        }
+                    }
+                    if (summary != null) break;
+                }
+                if (summary == null) {
+                    summary = lines[0];
+                }
+                topicMatch = template
+                    .replace("$topic", topicMatch)
+                    .replace("$summary", summary);
+                mage.sendMessage(topicMatch);
+            }
+        }
         mage.sendMessage(messages.get("commands.mhelp.separator"));
+    }
+
+    public Map<String,String> getHelpTopics() {
+        if (helpTopics == null) {
+            helpTopics = new HashMap<>();
+            Messages messages = controller.getMessages();
+            for (String messageKey : messages.getAllKeys()) {
+                if (messageKey.startsWith("help.")) {
+                    helpTopics.put(messageKey.substring(5), ChatUtils.getSimpleMessage(messages.get(messageKey).toLowerCase()));
+                }
+            }
+
+        }
+        return helpTopics;
     }
 
     @Override
@@ -98,11 +167,8 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
         Set<String> options = new HashSet<>();
         if (!sender.hasPermission("Magic.commands.magic.help")) return options;
 
-        for (String messageKey : controller.getMessages().getAllKeys()) {
-            if (messageKey.startsWith("help.")) {
-                options.add(messageKey.substring(5));
-            }
-        }
+        // Get all help topics from messages
+        options.addAll(getHelpTopics().keySet());
 
         // Add special-cases
         options.add("instructions.wand");

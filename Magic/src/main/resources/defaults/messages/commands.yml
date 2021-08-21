@@ -15,9 +15,11 @@ commands:
       cooldown: "You must wait $time."
       no_requirements: "You are not allowed to use that kit"
     mhelp:
-      unknown: "&cUnknown help topic: &f$topic"
+      unknown: "&cNo matches for: &f$topic"
+      found: "&fFound &b$count &fmatches:"
+      match: '&b&bull; &6`<help topic="$topic" text="$topic">`&7: &f$summary'
       unavailable: |-
-          &8| &7> &4Your server version does not support the interactive help system
+          &8| &7> &4Your server version does not fully support the interactive help system
           &8| &7> &fSee help for Magic commands with &6/help magic
           &8| &7> &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
           &8| &7> &fHelp: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
