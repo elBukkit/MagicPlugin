@@ -16,7 +16,7 @@ controls_hybrid:
       properties:
         use_active_name: false
         action_bar:
-          message: "$hotbar $extra"
+          message: '$hotbar `{font:"default",text:"$extra"}`'
           font: "magic"
           open_message: ""
           interval: 250
