@@ -1,8 +1,25 @@
 help:
   main: |-
-    &b&bull; &f`<help topic="second" text="Some help topic goes here">`
-    &7> &fSee help for Magic commands with &6/help magic
-    &7> &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
-    &7> &fHelp: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
-  second: |-
-    &b&nSome new help topic goes here
+    &b&bull; &f`<help topic="commands" text="Help with commands">`
+    &b&bull; &f`<help topic="examples.main" text="Help with loaded examples">` &7(e.g. survival)
+    &b&bull; &f`<help topic="resourcepack" text="Help with the resource pack">`
+    &b&bull; &f`<help topic="links" text="Links to web help and support">`
+  links: |-
+    &b&bull; &fSurvival wands and spells: &6https://survival.elmakers.com/
+    &b&bull; &fConfiguration reference: &6https://reference.elmakers.com/
+    &b&bull; &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
+    &b&bull; &fSupport: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
+  commands: |-
+    &b&bull; &f`<command command="/help magic" text="See full command help">`
+    &b&bull; &f`<command command="/mage promote" text="Rank yourself up">`
+    &b&bull; &f`<command command="/getrp url" text="Get a download URL for the resource pack">`
+    &b&bull; &f`<command command="/mgive @p sp 1000" text="Give yourself some SP">`
+    &b&bull; &f`<command command="/mage reset @p caster" text="Reset your survival progress">`
+    &b&bull; &f`<command command="/mage reset @p" text="Completely reset your magic player data">`
+  resourcepack: |-
+    &b&bull; &f`<command command="/getrp url" text="Get a download URL for the resource pack">`
+    &b&bull; &f`<link text="Resource pack issues guide" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
+    &b&bull; &f`<command command="/mconfig configure config enable_resource_pack false" text="Disable the resource pack completely for the whole server">`
+  examples:
+    main: |-
+      &b&bull; &f`<help topic="instructions.example" text="Show all loaded examples">`

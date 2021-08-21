@@ -4,6 +4,8 @@
 macros:
   help: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to navigate"}, "clickEvent":{"action":"run_command","value":"/mhelp $topic"}}`'
   glyph: '`{"text":"\u$code","font":"magic"}`'
+  command: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to run command"}, "clickEvent":{"action":"suggest_command","value":"$command"}}`'
+  link: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to open in your web browser"}, "clickEvent":{"action":"open_url","value":"$url"}}`'
 
   # This is a special semi-hard-coded macro, $glyph will be replaced with the glyph defined by the specified icon
   # Use like: `<icon key="missile">`
