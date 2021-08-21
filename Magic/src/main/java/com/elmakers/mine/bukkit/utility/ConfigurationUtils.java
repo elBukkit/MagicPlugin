@@ -222,6 +222,8 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static void mergeText(ConfigurationSection first, ConfigurationSection second) {
         for (String key : second.getKeys(true)) {
+            // Skip over sections
+            if (!second.isString(key)) continue;
             String value = second.getString(key);
             String firstValue = first.getString(key);
             if (firstValue != null && !firstValue.isEmpty()) {
