@@ -711,6 +711,56 @@ public class PlayerController implements Listener {
         wand.performAction(wand.getLeftClickAction());
     }
 
+    private void onOffhandInteract(PlayerInteractEvent event) {
+        if (!allowOffhandCasting) {
+            return;
+        }
+        Action action = event.getAction();
+        if (action != Action.RIGHT_CLICK_AIR && action != Action.RIGHT_CLICK_BLOCK) {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        Mage mage = controller.getMage(player);
+        Wand wand = mage.checkOffhandWand();
+
+        if (wand == null || !canUse(mage, wand)) {
+            return;
+        }
+
+        // this prevents offhand casting when we had to close the wand inventory instead
+        if (!mage.checkLastClick(clickCooldown)) {
+            return;
+        }
+
+        if (allowOffhandCasting && mage.offhandCast(wand)) {
+            // Kind of weird but the intention is to avoid normal "left click" actions,
+            // which in the offhand case are right-click actions.
+            if (cancelInteractOnLeftClick) {
+                event.setCancelled(true);
+            }
+        }
+    }
+
+    private boolean canUse(Mage mage, Wand wand) {
+        if (wand == null) {
+            return true;
+        }
+        Player player = mage.getPlayer();
+        if (!controller.hasWandPermission(player)) {
+            return false;
+        }
+
+        // Check for region or wand-specific permissions
+        if (!controller.hasWandPermission(player, wand)) {
+            Messages messages = controller.getMessages();
+            wand.deactivate();
+            mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
+            return false;
+        }
+        return true;
+    }
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent event)
     {
@@ -738,6 +788,12 @@ public class PlayerController implements Listener {
                 + ", block: " + (clickedBlock == null ? "(Nothing)" : clickedBlock.getType().name()) + " at " + System.currentTimeMillis(), DEBUG_LEVEL);
         }
 
+        // Check for the separate offhand event
+        if (event.getHand() == EquipmentSlot.OFF_HAND) {
+            onOffhandInteract(event);
+            return;
+        }
+
         // Check for locked items
         if (!mage.canUse(itemInHand)) {
             mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
@@ -746,22 +802,8 @@ public class PlayerController implements Listener {
         }
 
         Wand wand = mage.checkWand();
-
-        // Check for wand permission if a wand is being held
-        if (wand != null) {
-            Messages messages = controller.getMessages();
-            if (!controller.hasWandPermission(player))
-            {
-                return;
-            }
-
-            // Check for region or wand-specific permissions
-            if (!controller.hasWandPermission(player, wand))
-            {
-                wand.deactivate();
-                mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
-                return;
-            }
+        if (!canUse(mage, wand)) {
+            return;
         }
 
         // If wand needs to be closed then always allow a right-click
@@ -769,14 +811,18 @@ public class PlayerController implements Listener {
         if (!closingWand) {
             closingWand = isLeftClick && wand != null && wand.getLeftClickAction() == WandAction.TOGGLE && wand.isInventoryOpen();
         }
+
         // Check for offhand casting
-        if (!closingWand && isRightClick && allowOffhandCasting && mage.offhandCast()) {
-            // Kind of weird but the intention is to avoid normal "left click" actions,
-            // which in the offhand case are right-click actions.
-            if (cancelInteractOnLeftClick) {
-                event.setCancelled(true);
+        if (!closingWand && isRightClick && allowOffhandCasting) {
+            Wand offhandWand = mage.checkOffhandWand();
+            if (offhandWand != null && offhandWand.getLeftClickAction() != WandAction.NONE) {
+                // Kind of weird but the intention is to avoid normal "left click" actions,
+                // which in the offhand case are right-click actions.
+                if (cancelInteractOnLeftClick) {
+                    event.setCancelled(true);
+                }
+                return;
             }
-            return;
         }
 
         // Don't allow interacting while holding spells, brushes or upgrades
@@ -838,6 +884,12 @@ public class PlayerController implements Listener {
         if (isClickBlock && !isLeftClick && !mage.checkLastClick(clickCooldown)) {
             return;
         }
+
+        // Prevent offhand casting when closing the wand inventory
+        if (closingWand) {
+            mage.checkLastClick(clickCooldown);
+        }
+
         if (isRightClick) {
             mage.trigger("right_click");
         }

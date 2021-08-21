@@ -1678,37 +1678,32 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return checkMainhandWand();
     }
 
-    public boolean offhandCast() {
+    public boolean offhandCast(Wand wand) {
         long now = System.currentTimeMillis();
         if (lastOffhandCast > 0 && now < lastOffhandCast + OFFHAND_CAST_COOLDOWN) {
             return false;
         }
         lastOffhandCast = now;
+        if (isLoading() || wand == null) return false;
 
-        Player player = getPlayer();
-        if (isLoading() || player == null) return false;
+        WandAction leftClickAction = wand.getLeftClickAction();
+        if (leftClickAction != WandAction.NONE) {
+            offhandCast = true;
+            boolean castResult = false;
+            try {
+                wand.tickMana();
+                wand.setActiveMage(this);
+                castResult = wand.cast();
 
-        ItemStack itemInOffhand = player.getInventory().getItemInOffHand();
-        if (Wand.isWand(itemInOffhand)) {
-            if (offhandWand != null && (offhandWand.getLeftClickAction() == WandAction.CAST || offhandWand.getRightClickAction() == WandAction.CAST)) {
-                offhandCast = true;
-                Wand castingWand = offhandWand;
-                boolean castResult = false;
-                try {
-                    castingWand.tickMana();
-                    castingWand.setActiveMage(this);
-                    castResult = castingWand.cast();
-
-                    // Don't swing arm is cast is from right-click
-                    if (castingWand.getRightClickAction() != WandAction.CAST) {
-                        CompatibilityLib.getCompatibilityUtils().swingOffhand(player);
-                    }
-                } catch (Exception ex) {
-                    controller.getLogger().log(Level.WARNING, "Error casting from offhand wand", ex);
+                Player player = getPlayer();
+                if (player != null) {
+                    CompatibilityLib.getCompatibilityUtils().swingOffhand(player);
                 }
-                offhandCast = false;
-                return castResult;
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Error casting from offhand wand", ex);
             }
+            offhandCast = false;
+            return castResult;
         }
 
         return false;
@@ -1721,7 +1716,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     @Nullable
-    private Wand checkOffhandWand() {
+    public Wand checkOffhandWand() {
         Player player = getPlayer();
         if (isLoading() || player == null) return null;
         ItemStack itemInHand = player.getInventory().getItemInOffHand();

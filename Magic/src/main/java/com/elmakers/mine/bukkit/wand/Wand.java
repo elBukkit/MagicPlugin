@@ -5265,29 +5265,31 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (player == null) return;
 
         super.tick();
-        updateXPBar();
-        long now = System.currentTimeMillis();
-        // Always tick action bar while animating
-        if (isActionBarActive()
-            && (now > lastActionBar + actionBarInterval || glyphHotbar.isAnimating())) {
-            lastActionBar = now;
-            updateActionBar();
+
+        updateRequirements();
+
+        // Update UIs, if not in offhand
+        if (!isInOffhand) {
+            updateXPBar();
+            long now = System.currentTimeMillis();
+            // Always tick action bar while animating
+            if (isActionBarActive()
+                    && (now > lastActionBar + actionBarInterval || glyphHotbar.isAnimating())) {
+                lastActionBar = now;
+                updateActionBar();
+            }
+            updateHotbarStatus();
+            checkBossBar();
         }
 
+        // Check for blocking cooldown
         if (player.isBlocking() && blockMageCooldown > 0) {
             mage.setRemainingCooldown(blockMageCooldown);
         }
 
-        // Update hotbar glow
-        if (!isInOffhand) {
-            updateHotbarStatus();
-        }
-        updateRequirements();
-
         if (!worn) {
             updateEffects();
         }
-        checkBossBar();
     }
 
     protected boolean updateRequirementConfiguration() {

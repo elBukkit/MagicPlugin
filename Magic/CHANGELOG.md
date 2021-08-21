@@ -97,6 +97,7 @@
  - Rebalance Magic Missile to make earlier progression easier
  - Turn AureliumSkills mana back off by default, it's way too much of a mess. If you'd like to back on, use
    `/mconfig configure config aurelium_skills.use_mana true`
+ - Changes and improvements to offhand casting, left-swing action always used
 
 # 9.4.4
 
