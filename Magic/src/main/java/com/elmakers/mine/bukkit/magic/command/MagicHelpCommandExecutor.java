@@ -104,6 +104,13 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
             }
         }
 
+        // Add special-cases
+        options.add("instructions.wand");
+        options.add("instructions.example");
+        for (String exampleKey : controller.getLoadedExamples()) {
+            options.add("instructions.example." + exampleKey);
+        }
+
         return options;
     }
 }
