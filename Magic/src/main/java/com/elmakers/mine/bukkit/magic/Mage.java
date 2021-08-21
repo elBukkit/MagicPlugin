@@ -4657,35 +4657,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                             targetAmount = (int)Math.ceil((double)timeToCast / 1000);
                         }
                         targetAmount = Math.max(Math.min(targetAmount, 99), 1);
-
-                        MaterialAndData disabledIcon = spell.getDisabledIcon();
-                        MaterialAndData spellIcon = spell.getIcon();
-                        String urlIcon = spell.getIconURL();
-                        String disabledUrlIcon = spell.getDisabledIconURL();
-                        boolean usingURLIcon = (isUrlIconsEnabled() || spellIcon == null || spellIcon.getMaterial() == Material.AIR) && urlIcon != null && !urlIcon.isEmpty();
-                        if (disabledIcon != null && spellIcon != null && !usingURLIcon) {
-                            if (!canCast || !spell.isEnabled()) {
-                                if (disabledIcon.isValid() && disabledIcon.isDifferent(spellItem)) {
-                                    disabledIcon.applyToItem(spellItem);
-                                }
-                            } else {
-                                if (spellIcon.isValid() && spellIcon.isDifferent(spellItem)) {
-                                    spellIcon.applyToItem(spellItem);
-                                }
-                            }
-                        } else if (usingURLIcon && disabledUrlIcon != null && !disabledUrlIcon.isEmpty() && DefaultMaterials.isSkull(spellItem.getType())) {
-                            String currentURL = CompatibilityLib.getInventoryUtils().getSkullURL(spellItem);
-                            if (!canCast) {
-                                if (!disabledUrlIcon.equals(currentURL)) {
-                                    spellItem = CompatibilityLib.getInventoryUtils().setSkullURL(spellItem, disabledUrlIcon);
-                                    player.getInventory().setItem(i, spellItem);
-                                }
-                            } else {
-                                if (!urlIcon.equals(currentURL)) {
-                                    spellItem = CompatibilityLib.getInventoryUtils().setSkullURL(spellItem, urlIcon);
-                                    player.getInventory().setItem(i, spellItem);
-                                }
-                            }
+                        ItemStack newItem = baseSpell.updateItem(spellItem, canCast);
+                        if (newItem != null) {
+                            spellItem = newItem;
+                            player.getInventory().setItem(i, spellItem);
                         }
 
                         if (spellItem.getAmount() != targetAmount) {

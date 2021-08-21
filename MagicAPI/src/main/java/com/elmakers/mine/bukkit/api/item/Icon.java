@@ -19,4 +19,6 @@ public interface Icon {
 
     @Nullable
     MaterialAndData getItemDisabledMaterial(boolean isLegacy);
+
+    boolean forceUrl();
 }

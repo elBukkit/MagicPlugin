@@ -18,6 +18,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
     private final String url;
     private final String urlDisabled;
     private final String glyph;
+    private final boolean useUrl;
 
     public Icon(MageController controller) {
         this.controller = controller;
@@ -28,6 +29,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         url = null;
         urlDisabled = BaseSpell.DEFAULT_DISABLED_ICON_URL;
         glyph = null;
+        useUrl = false;
     }
 
     public Icon(MageController controller, ConfigurationSection configuration) {
@@ -39,6 +41,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         url = configuration.getString("url");
         urlDisabled = configuration.getString("url_disabled");
         glyph = configuration.getString("glyph");
+        useUrl = configuration.getBoolean("force_url", false);
     }
 
     public Icon(com.elmakers.mine.bukkit.api.item.Icon defaultAPI, com.elmakers.mine.bukkit.api.item.Icon baseAPI) {
@@ -55,6 +58,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         url = baseIcon.url != null ? baseIcon.url : defaultIcon.url;
         urlDisabled = baseIcon.urlDisabled != null ? baseIcon.urlDisabled : defaultIcon.urlDisabled;
         glyph = baseIcon.glyph != null ? baseIcon.glyph : defaultIcon.glyph;
+        useUrl = baseIcon.useUrl;
     }
 
     public Icon(com.elmakers.mine.bukkit.api.item.Icon baseIcon, ConfigurationSection configuration, String itemIcon) {
@@ -70,6 +74,8 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         url = configuration.getString("icon_url", other.url);
         urlDisabled = configuration.getString("icon_disabled_url", other.urlDisabled);
         glyph = configuration.getString("glyph", other.glyph);
+        boolean onlyHasUrl = configuration.contains("icon_url") && itemIcon == null;
+        useUrl = configuration.getBoolean("force_url", onlyHasUrl);
     }
 
     @Override
@@ -88,6 +94,11 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
     @Nullable
     public String getGlyph() {
         return glyph;
+    }
+
+    @Override
+    public boolean forceUrl() {
+        return useUrl;
     }
 
     private MaterialAndData getItem(String key) {

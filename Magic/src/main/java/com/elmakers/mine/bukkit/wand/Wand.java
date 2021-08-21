@@ -1713,38 +1713,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Nullable
     public static ItemStack createSpellItem(SpellTemplate spell, String args, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
-        if (spell == null) return null;
-        String iconURL = spell.getIconURL();
-
-        ItemStack itemStack = null;
-        boolean urlIcons = mage == null ? controller.isUrlIconsEnabled() : mage.isUrlIconsEnabled();
-        if (iconURL != null && (urlIcons || spell.getIcon() == null || !spell.getIcon().isValid() || spell.getIcon().getMaterial() == Material.AIR))
-        {
-            itemStack = controller.getURLSkull(iconURL);
-        }
-
-        if (itemStack == null)
-        {
-            ItemStack originalItemStack = null;
-            com.elmakers.mine.bukkit.api.block.MaterialAndData icon = spell.getIcon();
-            if (icon == null) {
-                controller.getLogger().warning("Unable to create spell icon for " + spell.getName() + ", missing material");
-                return null;
-            }
-            try {
-                originalItemStack = icon.getItemStack(1);
-                itemStack = CompatibilityLib.getItemUtils().makeReal(originalItemStack);
-            } catch (Exception ex) {
-                itemStack = null;
-            }
-
-            if (itemStack == null) {
-                if (icon.getMaterial() != Material.AIR) {
-                    String iconName = icon.getName();
-                    controller.getLogger().warning("Unable to create spell icon for " + spell.getKey() + " with material " + iconName);
-                }
-                return originalItemStack;
-            }
+        if (spell == null || !(spell instanceof BaseSpell)) return null;
+        ItemStack itemStack = ((BaseSpell)spell).createItem(mage);
+        if (itemStack == null) {
+            return null;
         }
         CompatibilityLib.getItemUtils().makeUnbreakable(itemStack);
         CompatibilityLib.getItemUtils().hideFlags(itemStack, HIDE_FLAGS);

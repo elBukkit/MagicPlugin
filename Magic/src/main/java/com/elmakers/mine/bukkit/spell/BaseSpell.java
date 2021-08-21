@@ -39,6 +39,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -3639,5 +3640,84 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean isQuiet() {
         return quiet;
+    }
+
+    public boolean useUrlIcon(Mage mage) {
+        String iconURL = getIconURL();
+        if (iconURL == null || iconURL.isEmpty()) {
+            return false;
+        }
+        com.elmakers.mine.bukkit.api.block.MaterialAndData icon = getIcon();
+        boolean urlIcons = mage == null ? controller.isUrlIconsEnabled() : mage.isUrlIconsEnabled();
+        return this.icon.forceUrl() || urlIcons || icon == null || !icon.isValid() || icon.getMaterial() == Material.AIR;
+    }
+
+    @Nullable
+    public ItemStack createItem(com.elmakers.mine.bukkit.api.magic.Mage mage) {
+        String iconURL = getIconURL();
+        ItemStack itemStack = null;
+        com.elmakers.mine.bukkit.api.block.MaterialAndData icon = getIcon();
+        if (useUrlIcon(mage)) {
+            itemStack = controller.getURLSkull(iconURL);
+        }
+
+        if (itemStack == null) {
+            ItemStack originalItemStack = null;
+            if (icon == null) {
+                controller.getLogger().warning("Unable to create spell icon for " + getKey() + ", missing material");
+                return null;
+            }
+            try {
+                originalItemStack = icon.getItemStack(1);
+                itemStack = CompatibilityLib.getItemUtils().makeReal(originalItemStack);
+            } catch (Exception ex) {
+                itemStack = null;
+            }
+
+            if (itemStack == null) {
+                if (icon.getMaterial() != Material.AIR) {
+                    String iconName = icon.getName();
+                    controller.getLogger().warning("Unable to create spell icon for " + getKey() + " with material " + iconName);
+                }
+                return originalItemStack;
+            }
+        }
+
+        return itemStack;
+    }
+
+    // Returns non-null if the item needs an update... not sure this is needed, looks like it's just for skulls though
+    public ItemStack updateItem(ItemStack spellItem, boolean canCast) {
+        ItemStack needsUpdate = null;
+        MaterialAndData disabledIcon = getDisabledIcon();
+        MaterialAndData spellIcon = getIcon();
+        String urlIcon = getIconURL();
+        String disabledUrlIcon = getDisabledIconURL();
+        boolean usingURLIcon = useUrlIcon(mage);
+        if (disabledIcon != null && spellIcon != null && !usingURLIcon) {
+            if (!canCast || !isEnabled()) {
+                if (disabledIcon.isValid() && disabledIcon.isDifferent(spellItem)) {
+                    disabledIcon.applyToItem(spellItem);
+                }
+            } else {
+                if (spellIcon.isValid() && spellIcon.isDifferent(spellItem)) {
+                    spellIcon.applyToItem(spellItem);
+                }
+            }
+        } else if (usingURLIcon && disabledUrlIcon != null && !disabledUrlIcon.isEmpty() && DefaultMaterials.isSkull(spellItem.getType())) {
+            String currentURL = CompatibilityLib.getInventoryUtils().getSkullURL(spellItem);
+            if (!canCast) {
+                if (!disabledUrlIcon.equals(currentURL)) {
+                    spellItem = CompatibilityLib.getInventoryUtils().setSkullURL(spellItem, disabledUrlIcon);
+                    needsUpdate = spellItem;
+                }
+            } else {
+                if (!urlIcon.equals(currentURL)) {
+                    spellItem = CompatibilityLib.getInventoryUtils().setSkullURL(spellItem, urlIcon);
+                    needsUpdate = spellItem;
+                }
+            }
+        }
+        return needsUpdate;
     }
 }
