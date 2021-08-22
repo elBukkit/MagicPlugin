@@ -5,6 +5,8 @@ help:
     &b&bull; &f`<command command="/mgive wand" text="Get the default survival wand">`
   resourcepack: |-
     &b&bull; &f`<command command="/mconfig example add robes" text="Enable the robes textures and recipes">`
+  links: |-
+    &b&bull; &fSurvival wands and spells: &6https://survival.elmakers.com/
   examples:
     main: |-
       &b&bull; &f`<help topic="examples.survival.main" text="Survival (the default example)">`
@@ -13,6 +15,7 @@ help:
         `<title text="Survival">`
         &b&bull; &f`<help topic="instructions.example.survival" text="Show basic survival instructions">`
         &b&bull; &f`<help topic="examples.survival.wands" text="Help getting and using wands">`
+        &b&bull; &f`<help topic="examples.survival.broomstick" text="My broomsticks do not work!">`
         &b&bull; &f`<help topic="examples.survival.recipes" text="Help with crafting">`
         &b&bull; &f`<help topic="examples.survival.progression" text="Help with progression">`
       wands: |-
@@ -23,6 +26,15 @@ help:
         &b&bull; &f`<command command="/mgive uberwand" text="Get an OP testing wand">`
         &b&bull; &f`<command command="/wand add recall" text="Add a spell to a testing wand">`
         &b&bull; &f`<command command="/mage add blink" text="Learn a spell, adding it to your survival wand">`
+      broomstick: |-
+        `<title text="Broomsticks">`
+        &b&bull; &fBroomsticks work by moving invisible armor stands around. If you have anything on your server that might prevent moving armor stands, they will not work.
+        &b&bull; &fIn particular, if you use &6Paper&f make sure you have &barmor-stands-tick&f set to &btrue&f in &bpaper.yml&f
+        &b&bull; &fBroomsticks improve with use, player's &6broom skill&f will level up and handling will improve
+        &b&bull; &6`<command command="/mgive broom_booster" text="Broom booster">` &fand &6`<command command="/mgive broom_glider" text="Glider">`&f upgrades can be crafted and applied to a broom
+        &b&bull; &fEach broom can only have &eone &fupgrade at a time.
+        &b&bull; &fWhile in your inventory, click to pick up a broom upgrade and then click it on your broomstick to add it.
+        &b&bull; &f`<command command="/mgive broomstick" text="Get a broomstick">`
       recipes: |-
         `<title text="Survival Recipes">`
         &b&bull; &f`<help topic="examples.survival.wand_crafting" text="Wand crafting instructions">`
@@ -30,10 +42,27 @@ help:
         &b&bull; &fSurvival recipes: &6https://survival.elmakers.com/#crafting
       wand_crafting: |-
         `<title text="Wand Crafting">`
-        &6Wands &fcan be crafted using a &bMagic Heart&f and a &estick&f.
-        A &bMagic Heart&f is crafted with an &eemerald &fand 4 &bdiamonds&f.
-        The recipes for both will appear in your in-game &bknowledge book&f.
-        The knowledge book may not correctly recognize custom recipe ingredients, so make sure to select "Show All".
-      progresson: |-
+        &6Wands &fcan be crafted using a &b<command command="/mgive magicheart" text="Magic Heart">&f and a &e<command command="/mgive stick" text="stick">&f.
+        &fA &bMagic Heart&f is crafted with a &e<command command="/mgive diamond" text="diamond"> &fand 4 &b<command command="/mgive emerald 4" text="emeralds">&f.
+        &fThe recipes for both will appear in your in-game &bknowledge book&f.
+        &fThe knowledge book may not correctly recognize custom recipe ingredients, so make sure to select "Show All".
+      progression: |-
         `<title text="Survival Progression">`
+        &b&bull; &f`<help topic="examples.survival.spellpoints" text="About spell points">`
+        &b&bull; &f`<help topic="examples.survival.paths" text="About progression paths">`
+      spellpoints: |-
+        `<title text="Spell Points">`
+        &6Spell points&f are earned whenever a player &osuccessfully&f casts a spell. For most spells, &bsuccess&f is determined by hitting a valid mob or player target.
+        &6Spell points&f have a &ecooldown &ffor earning. This cooldown is specific to each spell, and defaults to &e15 minutes&f.
+        &fThe &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get palyers going.
+        &fOnce players have more than one spell they can earn SP much faster by using all of their spells frequently.
         &b&bull; &f`<command command="/mgive @p sp 1000" text="Give yourself some SP">`
+        &b&bull; &f`<command command="/mconfig configure spell default earns_cooldown 30 seconds" text="Reduce SP cooldown to 30 seconds">`
+        &b&bull; &f`<link url="https://github.com/elBukkit/MagicPlugin/wiki/SpellPoints#balancing-sp" text="See the wiki for more info">
+      paths: |-
+        `<title text="Progression Paths">`
+        &fPlayers progress through survival ranks as they collect spells.
+        &fSurvival Progression: &6Beginner&f, &6Student&f, &6Apprentice&f, &6Wizard &7(&fAKA &6Master&7)
+        &fPlayers must &bcollect every spell&f at their current rank to progress to the next
+        &fThere are some spells, sorted to the end of the &bspellshop&f list, that are not required and are labelled as such.
+        &b&bull; &f`<command command="/mage promote" text="Promote yourself to the next rank">`

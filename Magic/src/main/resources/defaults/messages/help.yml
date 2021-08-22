@@ -2,12 +2,13 @@ help:
   main: |-
     `<title text="General Help">`
     &b&bull; &f`<help topic="commands" text="Help with commands">`
+    &b&bull; &f`<help topic="permissions" text="Help with permissions">`
     &b&bull; &f`<help topic="examples.main" text="Help with loaded examples">` &7(e.g. survival)
     &b&bull; &f`<help topic="resourcepack" text="Help with the resource pack">`
+    &b&bull; &f`<help topic="integration" text="Integration with other plugins">`
     &b&bull; &f`<help topic="links" text="Links to web help and support">`
   links: |-
     `<title text="Links">`
-    &b&bull; &fSurvival wands and spells: &6https://survival.elmakers.com/
     &b&bull; &fConfiguration reference: &6https://reference.elmakers.com/
     &b&bull; &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
     &b&bull; &fSupport: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
@@ -19,6 +20,24 @@ help:
     &b&bull; &f`<command command="/mgive @p sp 1000" text="Give yourself some SP">`
     &b&bull; &f`<command command="/mage reset @p caster" text="Reset your survival progress">`
     &b&bull; &f`<command command="/mage reset @p" text="Completely reset your magic player data">`
+    &b&bull; &fCommands on wiki: &6https://github.com/elBukkit/MagicPlugin/wiki/Commands
+  permissions: |-
+    `<title text="Permissions">`
+    &b&bull; &fPlayers &edo not &fneed &oany &fpermissions to use wands or cast spells
+    &b&bull; &fGive mods &6magic.commands.* &fto allow them to use any Magic command
+    &b&bull; &f&6Command&f permissions all follow the same format, e.g. &6magic.commands.mgive
+    &b&bull; &f&6Spell&f casting permissions can be set to false to deny specific spells, e.g. &6magic.cast.blink
+    &b&bull; &f&6Wand&f permissions can be set to false to deny using specific wands, e.g. &6magic.wand.use.wolf
+  integration: |-
+    `<title text="Integration">`
+    &b&bull; &fMagic will respect PvP and build/break permissions from: WorldGuard, PreciousStones, RedProtect, Factions, GriefPrevention, PvPManager, Multiverse, Citadel and others
+    &b&bull; &fMagic adds `<help topic="worldguard" text="custom WorldGuard flags">` to control spell casting in specific regions
+    &b&bull; &fIf your favorite protection plugin isn't listed, you can try `<command command="/meditor config generic_protection" text="adding it to the generic_protection list">`
+  worldguard: |-
+    `<title text="WorldGuard">`
+    &b&bull; &fYou can `<command command="/region flag someregion blocked-spells fling,blink" text="block a few spells in someregion">`
+    &b&bull; &fYou can `<command command="/region flag someregion blocked-spells *" text="block all spells in someregion">`
+    &b&bull; &fYou can `<command command="/region flag someregion allowed-spells *" text="allow all spells in someregion to break blocks">`
   resourcepack: |-
     `<title text="Resource Pack">`
     &b&bull; &f`<command command="/getrp url" text="Get a download URL for the resource pack">`
