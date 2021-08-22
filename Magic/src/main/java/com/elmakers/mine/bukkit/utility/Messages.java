@@ -79,7 +79,9 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
 
         // Process help first, don't store it as regular messages
         help.load(messages.getConfigurationSection("help"));
-        messages.set("help", null);
+
+        // Leave the help messages in here for editor purposes
+        // messages.set("help", null);
 
         Collection<String> keys = messages.getKeys(true);
         for (String key : keys) {
