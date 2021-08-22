@@ -110,6 +110,11 @@ public class ConfigurationLoadTask implements Runnable {
 
     @Nonnull
     private ConfigurationSection loadExampleConfiguration(String examplesPrefix, String exampleKey) {
+        return loadExampleConfiguration(examplesPrefix, exampleKey, true);
+    }
+
+    @Nonnull
+    private ConfigurationSection loadExampleConfiguration(String examplesPrefix, String exampleKey, boolean processMessages) {
         ConfigurationSection exampleConfig = exampleConfigurations.get(examplesPrefix);
         if (exampleConfig == null) {
             boolean isMainConfig = examplesPrefix.endsWith("config");
@@ -163,7 +168,7 @@ public class ConfigurationLoadTask implements Runnable {
             }
             if (exampleConfig == null) {
                 exampleConfig = ConfigurationUtils.newConfigurationSection();
-            } else if (isMessagesConfig) {
+            } else if (isMessagesConfig && processMessages) {
                 processMessageExample(exampleConfig);
             }
             exampleConfigurations.put(examplesPrefix, exampleConfig);
@@ -512,11 +517,19 @@ public class ConfigurationLoadTask implements Runnable {
         // Apply version-specific configs
         addVersionConfigs(config, fileName);
 
-        // Apply language overrides, but only to the messages config
+        // Special processing for the messages files
         boolean isMessages = fileName.equals("messages");
+
+        // Process help topics if this is messages
+        if (isMessages) {
+            processHelpTopics(config);
+        }
+
+        // Apply language overrides, but only to the messages config
+        // These will completely replace merged help topics, and so should include all examples if possible
         if (isMessages && languageOverride != null && !languageOverride.isEmpty() && !languageOverride.equalsIgnoreCase("EN")) {
             String languageFilePrefix = "examples/localizations/messages." + languageOverride;
-            ConfigurationSection languageConfig = loadExampleConfiguration(languageFilePrefix, "localizations");
+            ConfigurationSection languageConfig = loadExampleConfiguration(languageFilePrefix, "localizations", false);
             try {
                 ConfigurationUtils.addConfigurations(config, languageConfig);
                 info(" Using " + languageFilePrefix);
@@ -524,11 +537,6 @@ public class ConfigurationLoadTask implements Runnable {
                 getLogger().severe("Error loading file: " + languageFilePrefix);
                 throw ex;
             }
-        }
-
-        // Process help topics if this is messages
-        if (isMessages) {
-            processHelpTopics(config);
         }
 
         // Apply overrides after loading defaults and examples
