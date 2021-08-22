@@ -2,6 +2,8 @@
 
 # Importanter
 
+ - `/mgive fling` while holding a wand gives a wand-named spell
+
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
@@ -11,7 +13,6 @@
 # Magic Help System
 
  - Prompt ops on join?
- - Use first line of each section as a title? Would improve search.
 
 # Glyph Wand
 

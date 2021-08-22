@@ -26,6 +26,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.item.Icon;
+import com.elmakers.mine.bukkit.utility.help.Help;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
@@ -50,16 +51,23 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     private List<Integer> negativeSpace = new ArrayList<>();
     private List<Integer> positiveSpace = new ArrayList<>();
 
+    private Map<String, Icon> icons;
+
     private NumberFormat formatter = new DecimalFormat("#0.00");
     private static final Pattern macroSpacesPattern = Pattern.compile("\" ([a-zA-Z0-9])");
     private static final Pattern macroEqualsPattern = Pattern.compile("([a-zA-Z0-9])\\=\"");
     private final Gson gson;
+    private final Help help;
 
     public Messages() {
         gson = new Gson();
+        help = new Help(this);
     }
 
     public void load(ConfigurationSection messages, Map<String, Icon> icons) {
+        // Set icons so we can use them in macro processing
+        this.icons = icons;
+
         // Preload the macros section so it can be used in the following messages
         ConfigurationSection macros = messages.getConfigurationSection("macros");
         if (macros != null) {
@@ -68,6 +76,10 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 this.macros.put(macroKey, macros.getString(macroKey));
             }
         }
+
+        // Process help first, don't store it as regular messages
+        help.load(messages.getConfigurationSection("help"));
+        messages.set("help", null);
 
         Collection<String> keys = messages.getKeys(true);
         for (String key : keys) {
@@ -79,7 +91,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 }
             } else if (messages.isString(key)) {
                 String value = messages.getString(key);
-                value = processMacros(value, icons);
+                value = processMacros(value);
                 value = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(value));
                 messageMap.put(key, value);
             } else if (messages.isList(key)) {
@@ -111,8 +123,19 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         Collections.reverse(positiveSpace);
     }
 
-    private String processMacros(String message, Map<String, Icon> icons) {
-        if (!message.contains("`<")) return message;
+    @Nonnull
+    public Help getHelp() {
+        return help;
+    }
+
+    private String processMacros(String message) {
+        return expandMacros(message).getText();
+    }
+
+    @Nonnull
+    public MacroExpansion expandMacros(String message) {
+        if (!message.contains("`<")) return new MacroExpansion(message);
+        String title = null;
         String[] pieces = StringUtils.split(message, "`");
         for (int i = 0; i < pieces.length; i++) {
             String piece = pieces[i];
@@ -183,10 +206,13 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                     }
                     macro = macro.replace("$glyph", glyph);
                 } else {
+                    boolean isTitle = macroKey.equals("title");
                     for (Map.Entry<String, Object> entry : mapped.entrySet()) {
                         String macroParameter = entry.getKey();
                         if (macroParameter.equals("macro")) continue;
-                        macro = macro.replace("$" + macroParameter, entry.getValue().toString());
+                        String value = entry.getValue().toString();
+                        if (isTitle && macroParameter.equals("text")) title = value;
+                        macro = macro.replace("$" + macroParameter, value);
                     }
                 }
                 pieces[i] = macro;
@@ -195,7 +221,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             }
         }
 
-        return StringUtils.join(pieces);
+        return new MacroExpansion(StringUtils.join(pieces), title);
     }
 
     @Override

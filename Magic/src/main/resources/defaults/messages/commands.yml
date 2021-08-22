@@ -17,9 +17,10 @@ commands:
     mhelp:
       unknown: "&cNo matches for: &f$topic"
       found: "&fFound &b$count &fmatches:"
-      match: '&b&bull; &6`<help topic="$topic" text="$topic">`&7: &f$summary'
+      match: '&b&bull; &6`<help topic="$topic" text="$title">`&7: &f$summary'
       unavailable: |-
           &8| &7> &4Your server version does not fully support the interactive help system
+          &8| &7> &fPlease type the &7/mhelp&f commands as shown to navigate help
           &8| &7> &fSee help for Magic commands with &6/help magic
           &8| &7> &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
           &8| &7> &fHelp: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
@@ -29,6 +30,11 @@ commands:
         &8                                .
         &f`<icon key="missile">`   &b&lMAGIC HELP  &f`<icon key="missile">`
         &8                                .
+      player_header: |-
+        &a  Click &7to navigate through help
+      console_header: |-
+        &e  &fPlease type the &7/mhelp&f commands as shown to navigate help
+        &e  Works better in-game!
     mconfig:
       write_failed: "&cCould not write to file $file"
       example:

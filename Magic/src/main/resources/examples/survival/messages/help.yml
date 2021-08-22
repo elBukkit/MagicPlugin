@@ -3,16 +3,20 @@ help:
     &b&bull; &f`<help topic="examples.survival.wands" text="Help getting and using wands">`
   commands: |-
     &b&bull; &f`<command command="/mgive wand" text="Get the default survival wand">`
+  resourcepack: |-
+    &b&bull; &f`<command command="/mconfig example add robes" text="Enable the robes textures and recipes">`
   examples:
     main: |-
       &b&bull; &f`<help topic="examples.survival.main" text="Survival (the default example)">`
     survival:
       main: |-
+        `<title text="Survival">`
         &b&bull; &f`<help topic="instructions.example.survival" text="Show basic survival instructions">`
         &b&bull; &f`<help topic="examples.survival.wands" text="Help getting and using wands">`
         &b&bull; &f`<help topic="examples.survival.recipes" text="Help with crafting">`
         &b&bull; &f`<help topic="examples.survival.progression" text="Help with progression">`
       wands: |-
+        `<title text="Survival Wands">`
         &b&bull; &f`<help topic="instructions.wand" text="Help with the wand I'm holding">`
         &b&bull; &f`<command command="/mgive wand" text="Get the default survival wand">`
         &b&bull; &f`<command command="/mgive master" text="Get a maxed-out survival wand">`
@@ -20,13 +24,16 @@ help:
         &b&bull; &f`<command command="/wand add recall" text="Add a spell to a testing wand">`
         &b&bull; &f`<command command="/mage add blink" text="Learn a spell, adding it to your survival wand">`
       recipes: |-
+        `<title text="Survival Recipes">`
         &b&bull; &f`<help topic="examples.survival.wand_crafting" text="Wand crafting instructions">`
         &b&bull; &f`<command command="/mgive recipe:*" text="Learn all recipes">`
         &b&bull; &fSurvival recipes: &6https://survival.elmakers.com/#crafting
       wand_crafting: |-
+        `<title text="Wand Crafting">`
         &6Wands &fcan be crafted using a &bMagic Heart&f and a &estick&f.
         A &bMagic Heart&f is crafted with an &eemerald &fand 4 &bdiamonds&f.
         The recipes for both will appear in your in-game &bknowledge book&f.
         The knowledge book may not correctly recognize custom recipe ingredients, so make sure to select "Show All".
       progresson: |-
+        `<title text="Survival Progression">`
         &b&bull; &f`<command command="/mgive @p sp 1000" text="Give yourself some SP">`

@@ -1,15 +1,18 @@
 help:
   main: |-
+    `<title text="General Help">`
     &b&bull; &f`<help topic="commands" text="Help with commands">`
     &b&bull; &f`<help topic="examples.main" text="Help with loaded examples">` &7(e.g. survival)
     &b&bull; &f`<help topic="resourcepack" text="Help with the resource pack">`
     &b&bull; &f`<help topic="links" text="Links to web help and support">`
   links: |-
+    `<title text="Links">`
     &b&bull; &fSurvival wands and spells: &6https://survival.elmakers.com/
     &b&bull; &fConfiguration reference: &6https://reference.elmakers.com/
     &b&bull; &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
     &b&bull; &fSupport: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
   commands: |-
+    `<title text="Commands">`
     &b&bull; &f`<command command="/help magic" text="See full command help">`
     &b&bull; &f`<command command="/mage promote" text="Rank yourself up">`
     &b&bull; &f`<command command="/getrp url" text="Get a download URL for the resource pack">`
@@ -17,9 +20,11 @@ help:
     &b&bull; &f`<command command="/mage reset @p caster" text="Reset your survival progress">`
     &b&bull; &f`<command command="/mage reset @p" text="Completely reset your magic player data">`
   resourcepack: |-
+    `<title text="Resource Pack">`
     &b&bull; &f`<command command="/getrp url" text="Get a download URL for the resource pack">`
     &b&bull; &f`<link text="Resource pack issues guide" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
     &b&bull; &f`<command command="/mconfig configure config enable_resource_pack false" text="Disable the resource pack completely for the whole server">`
   examples:
     main: |-
+      `<title text="Examples">`
       &b&bull; &f`<help topic="instructions.example" text="Show all loaded examples">`
