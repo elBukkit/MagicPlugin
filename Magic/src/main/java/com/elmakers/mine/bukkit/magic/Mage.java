@@ -115,7 +115,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
 import com.elmakers.mine.bukkit.tasks.CheckWandTask;
-import com.elmakers.mine.bukkit.tasks.MageLoadTask;
+import com.elmakers.mine.bukkit.tasks.MageFinishLoadTask;
 import com.elmakers.mine.bukkit.tasks.SendCurrencyMessageTask;
 import com.elmakers.mine.bukkit.tasks.TeleportTask;
 import com.elmakers.mine.bukkit.utility.ActionBarSender;
@@ -1163,7 +1163,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     protected void finishLoad(MageData data) {
-        MageLoadTask loadTask = new MageLoadTask(this, data);
+        MageFinishLoadTask loadTask = new MageFinishLoadTask(this, data);
         Bukkit.getScheduler().scheduleSyncDelayedTask(controller.getPlugin(), loadTask, 1);
     }
 

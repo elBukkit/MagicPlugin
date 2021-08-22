@@ -235,6 +235,7 @@ import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.LoadDataTask;
 import com.elmakers.mine.bukkit.tasks.LogNotifyTask;
 import com.elmakers.mine.bukkit.tasks.LogWatchdogTask;
+import com.elmakers.mine.bukkit.tasks.MageLoadTask;
 import com.elmakers.mine.bukkit.tasks.MageQuitTask;
 import com.elmakers.mine.bukkit.tasks.MageUpdateTask;
 import com.elmakers.mine.bukkit.tasks.MagicBlockUpdateTask;
@@ -879,7 +880,8 @@ public class MagicController implements MageController {
         getMageData(mage.getId(), new MageDataCallback() {
             @Override
             public void run(MageData data) {
-                mage.load(data);
+                // need to move back to the main thread for this part
+                plugin.getServer().getScheduler().runTask(plugin, new MageLoadTask(mage, data));
             }
         });
     }
