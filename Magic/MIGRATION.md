@@ -26,6 +26,8 @@
  - The `base` class now defines mana as coming specifically from `subclass`. If you have a setup
    with mana shared between classes and inheriting from `base`, you may need to adjust the `storage`
    section to get mana properties from `class`.
+   
+ - All permission nodes changed to lowercase (magic.) GMs don't seem to care, but let me know if this causes trouble for you!
 
 # 9.4
 
