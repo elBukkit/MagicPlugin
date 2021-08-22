@@ -3,7 +3,7 @@ help:
     `<title text="General Help">`
     &b&bull; &f`<help topic="commands" text="Help with commands">`
     &b&bull; &f`<help topic="permissions" text="Help with permissions">`
-    &b&bull; &f`<help topic="examples.main" text="Help with loaded examples">` &7(e.g. survival)
+    &b&bull; &f`<help topic="examples.main" text="Help with examples">` &7(inluding survival)
     &b&bull; &f`<help topic="resourcepack" text="Help with the resource pack">`
     &b&bull; &f`<help topic="integration" text="Integration with other plugins">`
     &b&bull; &f`<help topic="links" text="Links to web help and support">`
@@ -25,9 +25,9 @@ help:
     `<title text="Permissions">`
     &b&bull; &fPlayers &edo not &fneed &oany &fpermissions to use wands or cast spells
     &b&bull; &fGive mods &6magic.commands.* &fto allow them to use any Magic command
-    &b&bull; &f&6Command&f permissions all follow the same format, e.g. &6magic.commands.mgive
-    &b&bull; &f&6Spell&f casting permissions can be set to false to deny specific spells, e.g. &6magic.cast.blink
-    &b&bull; &f&6Wand&f permissions can be set to false to deny using specific wands, e.g. &6magic.wand.use.wolf
+    &b&bull; &f&bCommand&f permissions all follow the same format, e.g. &6magic.commands.mgive
+    &b&bull; &f&bSpell&f casting permissions can be set to false to deny specific spells, e.g. &6magic.cast.blink
+    &b&bull; &f&bWand&f permissions can be set to false to deny using specific wands, e.g. &6magic.wand.use.wolf
   integration: |-
     `<title text="Integration">`
     &b&bull; &fMagic will respect PvP and build/break permissions from: WorldGuard, PreciousStones, RedProtect, Factions, GriefPrevention, PvPManager, Multiverse, Citadel and others
@@ -35,15 +35,43 @@ help:
     &b&bull; &fIf your favorite protection plugin isn't listed, you can try `<command command="/meditor config generic_protection" text="adding it to the generic_protection list">`
   worldguard: |-
     `<title text="WorldGuard">`
-    &b&bull; &fYou can `<command command="/region flag someregion blocked-spells fling,blink" text="block a few spells in someregion">`
-    &b&bull; &fYou can `<command command="/region flag someregion blocked-spells *" text="block all spells in someregion">`
-    &b&bull; &fYou can `<command command="/region flag someregion allowed-spells *" text="allow all spells in someregion to break blocks">`
+    &b&bull; &fYou can `<command command="/region flag someregion blocked-spells fling,blink" text="block a few spells in a region">`
+    &b&bull; &fYou can `<command command="/region flag someregion blocked-spells *" text="block all spells in a region">`
+    &b&bull; &fYou can `<command command="/region flag someregion allowed-spells *" text="allow all spells in a region to break blocks">`
   resourcepack: |-
     `<title text="Resource Pack">`
     &b&bull; &f`<command command="/getrp url" text="Get a download URL for the resource pack">`
     &b&bull; &f`<link text="Resource pack issues guide" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
     &b&bull; &f`<command command="/mconfig configure config enable_resource_pack false" text="Disable the resource pack completely for the whole server">`
+    &b&bull; &f`<command command="/getrp hires" text="Get the hi-res (less blocky) resource pack">`
+    &b&bull; &f`<command command="/mconfig configure config resource_pack hires" text="Set the hi-res resource pack as the default for your server">`
+    &b&bull; &f`<help topic="resourcepacks" text="See all builtin resource packs">`
+  resourcepacks: |-
+    `<title text="Resource Packs">`
+    &b&bull; &6`<command command="/getrp default" text="default">`&f: The blocky, Minecrafty less-resource intensive pack, used by Magic 9 and up
+    &b&bull; &6`<command command="/getrp borders" text="borders">`&f: A different set of spell icons with borders on the︎m
+    &b&bull; &6`<command command="/getrp painterly" text="painterly">`&f: A more &oartistic&f set of spell icons
+    &b&bull; &6`<command command="/getrp lowres" text="lowres">`&f: The low-resolution spell icons used in Magic 5 and below, same as the skull textures
+    &b&bull; &6`<command command="/getrp skulls" text="skulls">`&f: Use player heads instead of resource pack icons
+    &b&bull; &6`<command command="/getrp all" text="all">`&f: Combines the httyd, survival, war and robes RPs into one
   examples:
     main: |-
       `<title text="Examples">`
       &b&bull; &f`<help topic="instructions.example" text="Show all loaded examples">`
+      &b&bull; &f`<help topic="instructions.examples.all" text="Show all available examples">`
+      &b&bull; &f`<command command="/mconfig example set survival none" text="Reset to default survival example">`
+    all: |-
+      `<title text="Available Examples">`
+      &b&bull; &6`<command command="/mconfig example add survival" text="survival">`&f: The default example with craftable wands and items
+      &b&bull; &6`<command command="/mconfig example add engineering" text="engineering">`&f: A survival add-on with 3 more ranks for magical building
+      &b&bull; &6`<command command="/mconfig example add potter" text="potter">`&f: A Harry Potter themed example
+      &b&bull; &6`<command command="/mconfig example add war" text="war">`&f: A GTA or Counter-Strike themed example with guns and vehicles
+      &b&bull; &6`<command command="/mconfig example add stars" text="stars">`&f: A Star Wars themed example with functional light sabers and force powers
+      &b&bull; &6`<command command="/mconfig example add bending" text="bending">`&f: A very minimal Avatar/Bending example
+      &b&bull; &b`<command command="/mconfig example add spawnmobs" text="spawnmobs">`&f: Enable natural &aMagic Mob&f spawning
+      &b&bull; &b`<command command="/mconfig example add automata" text="automata">`&f: Add spawnable cellular automaton block monsters
+      &b&bull; &b`<command command="/mconfig example add otherside" text="otherside">`&f: Add an alternate dimension full of dangerous mobs and automata
+      &b&bull; &b`<command command="/mconfig example add netherside" text="netherside">`&f: Add an alternate nethery dimension
+      &b&bull; &a`<command command="/mconfig example fetch extramobs" text="extramobs">`&f: Add a variety of naturally spawning animals and bosses
+      &b&bull; &a`<command command="/mconfig example fetch httyd" text="httyd">`&f: A How To Train Your Dragon inspired example
+      &b&bull; &a`<command command="/mconfig example fetch potterplus" text="potterplus">`&f: A more complete and advanced Harry Potter example

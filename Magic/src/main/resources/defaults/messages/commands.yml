@@ -35,7 +35,7 @@ commands:
         &f`<icon key="missile">`   &b&lMAGIC HELP  &f`<icon key="missile">`
         &8                                .
       player_header: |-
-        &a  Click &7to navigate through help
+        &a  `<rawmessage text="Click" message="{\\\"text\\\":\\\"Yahaha you found me!\\\",\\\"color\\\":\\\"green\\\"}">` &7to navigate through help
       console_header: |-
         &e  &fPlease type the &7/mhelp&f commands as shown to navigate help
         &e  Works better in-game!
