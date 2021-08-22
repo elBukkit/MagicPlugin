@@ -2,6 +2,10 @@ commands:
     no_permission: "&cYou are not allowed to use that command."
     in_game: "&cThis command may only be used in-game."
     unknown_command: "&cUnknown command: &f$command"
+    magic:
+      help: |-
+        &fUse &7/mhelp&f for help
+        &fSearch help topics with &7/mhelp broom not working&f
     mage:
       reward:
         received: "&eYou have been awarded &6$item"

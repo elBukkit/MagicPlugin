@@ -70,7 +70,7 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
                 return true;
             }
             sender.sendMessage("Magic " + getMagicVersion());
-            sender.sendMessage("Use /mhelp for help");
+            sender.sendMessage(api.getMessages().get("commands.magic.help"));
             return true;
         }
 
