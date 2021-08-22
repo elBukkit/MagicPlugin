@@ -3520,6 +3520,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
+        // Just act like there's no wand if this is going to be an item
+        if (isItem) {
+            wand = null;
+        }
+
         updateSpellName(messages, itemStack, spell, wand, activeMaterial);
         List<String> lore = new ArrayList<>();
         addSpellLore(messages, spell, lore, mage, wand);
