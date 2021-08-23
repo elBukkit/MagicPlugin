@@ -16,6 +16,15 @@ help:
     &b&bull; &f`<help topic="warp" text="Help with warps">`
     &b&bull; &f`<help topic="arena" text="Help with arenas">`
     &b&bull; &f`<help topic="shops" text="Working with Magic shops">`
+    &b&bull; &f`<help topic="maps" text="Putting images on to maps">`
+  maps: |-
+    `<title text="Magic Maps">`
+    &b&bull; &f`<command command="/mmap load https://i.imgur.com/C9zLu1v.png Marigold" text="Load an image from imgur into a map">`
+    &b&bull; &f`<command command="/mmap load https://s3-us-west-2.amazonaws.com/elmakers/mario.gif Mario" text="Load an animated gif into a map">`
+    &b&bull; &f`<command command="/mmap slice https://i.imgur.com/ijyvZDJ.png Mint 2 3" text="Slice a large map into 2x3 (6 total) maps">`
+    &b&bull; &f`<command command="/mmap list Mint" text="List maps, or find maps by name">`
+    &b&bull; &f`<command command="/mmap give 1" text="Give a specific map by id">`
+    &b&bull; &f`<command command="/mgive invisible_item_frame 6" text="Give yourself invisible item frames for map hanging">`
   faq: |-
     `<title text="Common Problems and Solutions">`
     &b&bull; &f`<command command="/wandp @p restore" text="Restore a player's lost wands">`
