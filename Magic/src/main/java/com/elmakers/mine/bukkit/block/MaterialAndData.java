@@ -680,13 +680,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     spawner.setCreatureTypeByName(spawnerData.mobName);
                     spawner.update();
                 }
-            } else if (blockState != null && blockState instanceof Sign && extraData != null && extraData instanceof BlockSign) {
-                BlockSign signData = (BlockSign)extraData;
-                Sign sign = (Sign)blockState;
-                for (int i = 0; i < signData.lines.length; i++) {
-                    sign.setLine(i, signData.lines[i]);
-                }
-                sign.update();
             }
         } catch (Exception ex) {
             Bukkit.getLogger().warning("[Magic] Error updating block state");
@@ -1113,14 +1106,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     @Override
     public void setRawData(Object data) {
-        if (DefaultMaterials.isSign(material))
-        {
-            this.extraData = new BlockSign(data);
-        }
-        else
-        {
-            this.extraData = new BlockTileEntity(data);
-        }
+        this.extraData = new BlockTileEntity(data);
     }
 
     public boolean matches(Material material, short data) {
