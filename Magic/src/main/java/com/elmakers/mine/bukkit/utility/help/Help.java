@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.help;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,6 +63,7 @@ public class Help {
             keywords.add(arg.toLowerCase());
         }
         List<HelpTopicMatch> matches = findMatches(keywords);
+        Collections.sort(matches);
 
         // This is called async, move back to the main thread to do messaging
         ShowTopicsTask showTask = new ShowTopicsTask(mage, keywords, matches);

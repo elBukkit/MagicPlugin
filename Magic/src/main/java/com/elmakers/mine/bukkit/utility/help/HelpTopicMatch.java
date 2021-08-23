@@ -14,7 +14,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
 
     @Override
     public int compareTo(HelpTopicMatch o) {
-        return o.matchCount > matchCount ? -1 : (o.matchCount < matchCount ? 1 : 0);
+        return o.matchCount > matchCount ? 1 : (o.matchCount < matchCount ? -1 : 0);
     }
 
     @Nonnull
