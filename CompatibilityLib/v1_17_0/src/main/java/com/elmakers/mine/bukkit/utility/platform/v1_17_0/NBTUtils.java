@@ -267,7 +267,7 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public Collection<Object> getTagList(Object tag, String key) {
         Collection<Object> list = new ArrayList<>();
-        if (tag == null || !(tag instanceof ListTag)) {
+        if (tag == null || !(tag instanceof CompoundTag)) {
             return list;
         }
 

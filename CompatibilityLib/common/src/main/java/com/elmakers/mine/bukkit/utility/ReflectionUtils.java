@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class ReflectionUtils {
     private static Field itemStackHandleField;
+    private static Method nbtListGetMethod;
 
     public static Object getPrivate(Logger logger, Object o, Class<?> c, String field) {
         try {
@@ -30,6 +31,18 @@ public class ReflectionUtils {
             return itemStackHandleField.get(itemStack);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Error getting handle of " + itemStack.getClass().getName(), ex);
+        }
+        return null;
+    }
+
+    public static Object getListItem(Logger logger, Object listTag, int index) {
+        try {
+            if (nbtListGetMethod == null) {
+                nbtListGetMethod = listTag.getClass().getMethod("get", Integer.TYPE);
+            }
+            return nbtListGetMethod.invoke(listTag, index);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Error getting list item from " + listTag.getClass().getName(), ex);
         }
         return null;
     }

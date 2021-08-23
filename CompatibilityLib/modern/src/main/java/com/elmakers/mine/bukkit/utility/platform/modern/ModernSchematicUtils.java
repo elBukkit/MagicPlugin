@@ -75,12 +75,13 @@ public class ModernSchematicUtils extends SchematicUtilsBase {
             }
 
             // Load entities
-            Collection<Object> tileEntityData = new ArrayList<>();
-            Collection<Object> entityData = new ArrayList<>();
-
-            // TODO: Re-enable this once mappings are fixed
-            // Collection<Object> tileEntityData = nbtUtils.getTagList(nbtData, "Entities");
-            // Collection<Object> entityData = nbtUtils.getTagList(nbtData, "TileEntities");
+            Collection<Object> entityData = nbtUtils.getTagList(nbtData, "Entities");
+            Collection<Object> tileEntityData;
+            if (nbtUtils.contains(nbtData, "BlockEntities")) {
+                tileEntityData = nbtUtils.getTagList(nbtData, "BlockEntities");
+            } else {
+                tileEntityData = nbtUtils.getTagList(nbtData, "TileEntities");
+            }
 
             Vector origin = new Vector(0, 0, 0);
             int[] offset = nbtUtils.getIntArray(nbtData, "Offset");
@@ -200,8 +201,8 @@ public class ModernSchematicUtils extends SchematicUtilsBase {
 
             byte[] data = nbtUtils.getByteArray(nbtData, "Data");
 
-            Collection<Object> tileEntityData = nbtUtils.getTagList(nbtData, "Entities");
-            Collection<Object> entityData = nbtUtils.getTagList(nbtData, "TileEntities");
+            Collection<Object> entityData = nbtUtils.getTagList(nbtData, "Entities");
+            Collection<Object> tileEntityData = nbtUtils.getTagList(nbtData, "TileEntities");
 
             int originX = nbtUtils.getInt(nbtData, "WEOriginX", 0);
             int originY = nbtUtils.getInt(nbtData, "WEWEOriginYOriginX", 0);

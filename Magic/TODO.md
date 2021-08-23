@@ -2,8 +2,6 @@
 
 # Importanter
 
- - Mars automata and world are failing to load?
-
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
@@ -42,6 +40,7 @@
  - Per-spell setting for dynmap
  - Add requirements to path progression
  - Look at to_otherside warp, absolutely insane mob spawning (turn mob spawning back on after)
+   ... it's the silverfish rule, but I think it may be unavoidable since the fish will just die? idk
  - Wand active_properties
  - Base modifier "allow_melee", and move reflect parameters from wand
  - Save spell can make upside-down schematics
@@ -64,7 +63,6 @@
 
 # New API
 
- - Use keybind localizations in wand instructions
  - Possible to change sky color?
  - Item frame fixed/visible official API
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/9a6a5a664c15127db80ae154523f9f8b9afd51ba
@@ -78,7 +76,6 @@
 # Near-Term Hopeful List
 
  - Can't offset `target: self` using py or ty (?)
- - An option to be able to replace slotted upgrades, pop the old one out
  - Add editor support for the variables section, it's very confusing
  - Need a way to duplicate NPCs
  - Creative mode should maybe consume PS blocks when placed? idk
@@ -92,13 +89,9 @@
  - Would be cool to represent automata as mobs, maybe just need entity-less mob spawning ability? 
    .. make sure it gets tracked for `/mmob list` and `remove` functionality
 
-# Revert Some Hacks
-
- - BufferedMapCanvas revert change to bound palette indexes when 1.17 is fixed
- - Turn schematic entity loading back on once 1.17 fixes NBTList access
-
 # Bugs
 
+ - Should /mmap load not reload an existing image? Or maybe it's too hard to match cropping/etc
  - Adding RPG configs prevents you from using a survival wand?
  - `/mconfig apply` doesn't work without a slug, after starting a new editor session
  - Tag wand spell icons so they're not droppable!

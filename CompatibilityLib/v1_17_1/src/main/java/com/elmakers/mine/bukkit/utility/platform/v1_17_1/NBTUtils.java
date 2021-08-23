@@ -6,10 +6,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
+import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
 
@@ -267,15 +269,20 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public Collection<Object> getTagList(Object tag, String key) {
         Collection<Object> list = new ArrayList<>();
-        if (tag == null || !(tag instanceof ListTag)) {
+        if (tag == null || !(tag instanceof CompoundTag)) {
             return list;
         }
 
         ListTag listTag = ((CompoundTag)tag).getList(key, CompatibilityConstants.NBT_TYPE_COMPOUND);
+
         if (listTag != null) {
+            Logger logger = platform.getLogger();
             int size = listTag.size();
             for (int i = 0; i < size; i++) {
-                Tag entry = listTag.get(i);
+                // Doesn't seem like this is ever going to get resolved, mappings issue:
+                // https://hub.spigotmc.org/jira/browse/SPIGOT-6550
+                // Tag entry = listTag.get(i);
+                Tag entry = (Tag)ReflectionUtils.getListItem(logger, listTag, i);
                 list.add(entry);
             }
         }
