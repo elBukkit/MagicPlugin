@@ -8,6 +8,13 @@
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
    
+## Offhand issues:
+
+Also, offhand casting for magic bows and crossbows is completely broken rn (In the latest dev build)
+Both require no charge-up to cast, and occasionally shoot vanilla arrows
+Also side note, having a wand in your offhand makes you unable to eat for some reason
+Kinda like that feature, but it'd be nice to have it be a toggle option in the editor
+
 # Magic Help System
 
  - Prompt ops on join?

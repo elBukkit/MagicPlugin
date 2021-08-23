@@ -1,0 +1,6 @@
+lootshop:
+  inherit: base_npc
+  interact_spell: lootshop
+  villager_profession: fletcher
+  dialog:
+    - I'll pay ye for yer mob drops!

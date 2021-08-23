@@ -21,6 +21,7 @@ commands:
     mhelp:
       unknown: "&cNo matches for: &f$topic"
       found: "&fFound &b$count &fmatches:"
+      found_limit: "&fFound &b$count &fmatches &7(Showing top &f$limit&7)&f:"
       match: '&b&bull; &6`<help topic="$topic" text="$title">`&7: &f$summary'
       unavailable: |-
           &8| &7> &4Your server version does not fully support the interactive help system

@@ -5,19 +5,113 @@ help:
     &b&bull; &f`<help topic="permissions" text="Help with permissions">`
     &b&bull; &f`<help topic="examples.main" text="Help with examples">` &7(inluding survival)
     &b&bull; &f`<help topic="resourcepack" text="Help with the resource pack">`
+    &b&bull; &f`<help topic="faq" text="Common Problems and Solutions">`
+    &b&bull; &f`<help topic="customization" text="Customization, localization and languages">`
     &b&bull; &f`<help topic="integration" text="Integration with other plugins">`
+    &b&bull; &f`<help topic="features" text="Other Magic features">`
     &b&bull; &f`<help topic="links" text="Links to web help and support">`
+  features: |-
+    `<title text="Other Features">`
+    &b&bull; &f`<help topic="npc" text="Help with NPCs">`
+    &b&bull; &f`<help topic="warp" text="Help with warps">`
+    &b&bull; &f`<help topic="arena" text="Help with arenas">`
+    &b&bull; &f`<help topic="shops" text="Working with Magic shops">`
+  faq: |-
+    `<title text="Common Problems and Solutions">`
+    &b&bull; &f`<command command="/wandp @p restore" text="Restore a player's lost wands">`
+    &b&bull; &f`<help topic="players" text="Managing Magic player data">`
+  shops: |-
+    `<title text="Magic Shops">`
+    &dMagic &fshops use a shared economy configuration for item pricing. Prices can be customized in &bitems&f configuration, or in-game.
+    &b&bull; &f`<command command="/mgive diamond" text="Give yourself a diamond">`
+    &b&bull; &f`<command command="/mitem save diamond 1000" text="Save the item in your hand as a diamond with a value of 1000">`
+    &b&bull; &f`<command command="/cast lootshop" text="Test the mob loot sell shop">`
+    &b&bull; &f`<command command="/mnpc add lootshop" text="Add a loot shop NPC">`
+    &b&bull; &f`<help topic="playershops" text="About player shops">`
+  playershops: |-
+    `<title text="Player Shops">`
+    &dMagic &fincludes a basic system for &bNPC-based player shops&f.
+    &fPlayers use a &6`<command command="/mgive shoptoken" text="Shop Token">` to create a &bShopkeeper&f NPC.
+    &fPlayers select a chest to use as their shop inventory. and place items in that chest.
+    &fIt is recomended to protect this chest with a `<help topic="protection" text="protection">` plugin, or the &6Secure&f spell.
+    &fThe &bShopkeeper&f will sell items from the player's chest, and the players will earn money from the sales.
+  players: |-
+    `<title text="Magic Player Data">`
+    &b&bull; &f`<command command="/mage reset NathanWolf" text="Completely reset a player's progress">`
+    &b&bull; &f`<command command="/mage reset NathanWolf survival" text="Reset a player's caster class (survival) progress">`
+  npc: |-
+    `<title text="NPCs">`
+    &dMagic &fintegrates with &bCitizens&f, and also has a &6builtin&f NPC system.
+    &b&bull; &f`<help topic="citizens" text="Help with Citizens NPCs">`
+    &b&bull; &f`<command command="/mnpc add spellshop" text="Add a spell shop NPC">`
+    &b&bull; &f`<command command="/mnpc remove" text="Remove the selected Magic NPC">`
+    &b&bull; &f`<command command="/mnpc list" text="List Magic NPCs">`
+    &b&bull; &f`<command command="/mnpc cast heal" text="Change NPC to a healer">`
+    &b&bull; &f`<command command="/mnpc add testdummy" text="Add a practice dummy NPC">`
+  citizens: |-
+    `<title text="Citizens Integration">`
+    &b&bull; &f`<command command="/trait magic" text="Add the Magic trait to your selected Citizens NPC">`
+    &b&bull; &f`<command command="/mtrait spell spellshop" text="Make your selected Citizens NPC a spellshop">`
+    &b&bull; &f`<link url="https://github.com/elBukkit/MagicPlugin/wiki/Citizens" text="More help on the wiki">`
+  warp: |-
+    `<title text="Warps">`
+    &dMagic &fintegrates with &bEssentials&f and &bCommandBook&f for warps, and also has a &6builtin&f warp system.
+    &b&bull; &f`<help topic="recall" text="Add warps to Recall">`
+    &b&bull; &f`<command command="/mwarp add testing" text="Create a new Magic warp">`
+    &b&bull; &f`<command command="/mwarp configure testing marker_icon tree" text="Add Magic warp to Dynmap">`
+    &b&bull; &f`<command command="/mwarp remove testing" text="Remove a Magic warp">`
+    &b&bull; &f`<command command="/mwarp go testing" text="Go to a Magic warp">`
+  recall: |-
+    `<title text="The Recall Spell">`
+    &fThe &bRecall&f action, used by the &bRecall&f spell in the &bsurvival&fexample, can warp players to various locations.
+    &dMagic &fWarps can be added to Recall simply by giving them an &bicon&f.
+    &b&bull; &f`<command command="/mwarp add testing" text="Create a new Magic warp">`
+    &b&bull; &f`<command command="/mwarp configure testing icon diamond" text="Add Magic warp to Recall with a diamond icon">`
+    &b&bull; &f`<command command="/mwarp remove testing" text="Remove a Magic warp">`
+    &b&bull; &f`<command command="/mwarp go testing" text="Go to a Magic warp">`
+    &b&bull; &f`<command command="/mwarp configure testing locked true" text="Make a warp locked, so it must be unlocked">`
+    &b&bull; &f`<command command="/cast warpunlock unlock testing" text="Unlock a locked warp">`
+    See `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Recall" text="the wiki">` for information on setting up &bEssentials&f and &bCommandBook&f warps, as well as setting up &bregion-unlocked&f warps.
+  arena: |-
+    `<title text="Arenas">`
+    &b&bull; &f`<command command="/marena add testing" text="Create a new arena">`, 2 player PvP by default
+    &b&bull; &f`<command command="/marena configure testing max 4" text="Allow up to 4 players in this arena">`
+    &b&bull; &f`<command command="/marena configure testing add spawn" text="Add a new player spawn location">`
+    &b&bull; &f`<command command="/marena configure testing lobby" text="Set the lobby location, where players wait before joining">`
+    &b&bull; &f`<command command="/marena configure testing exit" text="Set the exit location">`
   links: |-
     `<title text="Links">`
     &b&bull; &fConfiguration reference: &6https://reference.elmakers.com/
     &b&bull; &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
     &b&bull; &fSupport: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
+  customization: |-
+    `<title text="Customization">`
+    &b&bull; &f`<help text="Change language or localize text" topic="localization">`
+    &b&bull; &f`<command command="/meditor spell mynewspell" text="Create a new spell using the editor">`
+    &b&bull; &f`<command command="/meditor spell missile" text="See the config of the Magic Missile spell">`
+    &b&bull; &f`<command command="/config reset spell missile" text="Reset a spell to its default configuration">`
+    &b&bull; &f`<command command="/meditor spell mynewwand" text="Create a new wand using the editor">`
+    &b&bull; &f`<command command="/meditor recipe newrecipe" text="Create a new crafting recipe">`
+    &b&bull; &f`<help topic="common_customizations" text="Other common customizations">`
+    &b&bull; &f`<link text="Customization wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Customization">`
+  common_customizations: |-
+    &b&bull; &f`<command command="/mconfig configure spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
+    &b&bull; &f`<command command="/mconfig configure spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
+  localization: |-
+    `<title text="Localization">`
+    &b&bull; &f`<command command="/mconfig language RU" text="Изменить на русский">` &7(Russian)
+    &b&bull; &f`<command command="/mconfig language FR" text="Changer en français">` &7(French)
+    &b&bull; &f`<command command="/mconfig language ES" text="Cambiar a español">` &7(Spanish)
+    &b&bull; &f`<command command="/mconfig language CN" text="更改为中文">` &7(Chinese)
+    &b&bull; &f`<command command="/mconfig language JP" text="日本語に変更">` &7(Japanese)
+    &b&bull; &f`<command command="/meditor messages" text="Edit all in-game text">`
+    &b&bull; &f`<link text="Localization wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Messages">`
   commands: |-
     `<title text="Commands">`
     &b&bull; &f`<command command="/help magic" text="See full command help">`
     &b&bull; &f`<command command="/mage promote" text="Rank yourself up">`
     &b&bull; &f`<command command="/getrp url" text="Get a download URL for the resource pack">`
-    &b&bull; &f`<command command="/mgive @p sp 1000" text="Give yourself some SP">`
+    &b&bull; &f`<command command="/mgive @p sp 1000" text="Give yourself some Spell Points">`
     &b&bull; &f`<command command="/mage reset @p caster" text="Reset your survival progress">`
     &b&bull; &f`<command command="/mage reset @p" text="Completely reset your magic player data">`
     &b&bull; &fCommands on wiki: &6https://github.com/elBukkit/MagicPlugin/wiki/Commands
@@ -30,6 +124,13 @@ help:
     &b&bull; &f&bWand&f permissions can be set to false to deny using specific wands, e.g. &6magic.wand.use.wolf
   integration: |-
     `<title text="Integration">`
+    &b&bull; &fMagic integrates with several `<help topic="protection" text="protection plugins">` to keep spells from griefing and trolling
+    &b&bull; &fMagic integrates with Essentials and CommandBook for `<help topic="warps" text="warps">`
+    &b&bull; &fMagic integrates with `<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">` for mob and spell disguises
+    &b&bull; &fMagic integrates with MythicMobs for mythic mob spawning
+    &b&bull; &fMagic integrates with `<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">` to show warps, spell casts and lost wands on maps
+  protection: |-
+    `<title text="Protection">`
     &b&bull; &fMagic will respect PvP and build/break permissions from: WorldGuard, PreciousStones, RedProtect, Factions, GriefPrevention, PvPManager, Multiverse, Citadel and others
     &b&bull; &fMagic adds `<help topic="worldguard" text="custom WorldGuard flags">` to control spell casting in specific regions
     &b&bull; &fIf your favorite protection plugin isn't listed, you can try `<command command="/meditor config generic_protection" text="adding it to the generic_protection list">`
@@ -59,7 +160,9 @@ help:
       `<title text="Examples">`
       &b&bull; &f`<help topic="instructions.example" text="Show all loaded examples">`
       &b&bull; &f`<help topic="instructions.examples.all" text="Show all available examples">`
+      &b&bull; &f`<command command="/mconfig example list" text="Show all active examples">`
       &b&bull; &f`<command command="/mconfig example set survival none" text="Reset to default survival example">`
+      &b&bull; &f`<link url="https://github.com/elBukkit/MagicPlugin/wiki/Examples" text="Examples wiki">`
     all: |-
       `<title text="Available Examples">`
       &b&bull; &6`<command command="/mconfig example add survival" text="survival">`&f: The default example with craftable wands and items
@@ -69,6 +172,7 @@ help:
       &b&bull; &6`<command command="/mconfig example add stars" text="stars">`&f: A Star Wars themed example with functional light sabers and force powers
       &b&bull; &6`<command command="/mconfig example add bending" text="bending">`&f: A very minimal Avatar/Bending example
       &b&bull; &b`<command command="/mconfig example add spawnmobs" text="spawnmobs">`&f: Enable natural &aMagic Mob&f spawning
+      &b&bull; &b`<command command="/mconfig example add safe" text="safe">`&f: Turn off all block-breaking
       &b&bull; &b`<command command="/mconfig example add automata" text="automata">`&f: Add spawnable cellular automaton block monsters
       &b&bull; &b`<command command="/mconfig example add otherside" text="otherside">`&f: Add an alternate dimension full of dangerous mobs and automata
       &b&bull; &b`<command command="/mconfig example add netherside" text="netherside">`&f: Add an alternate nethery dimension
