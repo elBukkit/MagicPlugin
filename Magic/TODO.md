@@ -2,22 +2,13 @@
 
 # Importanter
 
+ - Mars automata and world are failing to load?
+
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
-   
-## Offhand issues:
-
-Also, offhand casting for magic bows and crossbows is completely broken rn (In the latest dev build)
-Both require no charge-up to cast, and occasionally shoot vanilla arrows
-Also side note, having a wand in your offhand makes you unable to eat for some reason
-Kinda like that feature, but it'd be nice to have it be a toggle option in the editor
-
-# Magic Help System
-
- - Prompt ops on join?
 
 # Glyph Wand
 
@@ -25,7 +16,6 @@ Kinda like that feature, but it'd be nice to have it be a toggle option in the e
 
 # Important
 
- - Add "inventory_item" requirement, for checking if a player has a specific item
  - Allow slotted upgrades to rename (rename and rename_description options)
  - Prevent blaze fireballs from doing damage?
    Arenas always auto-rollback fireballs and stuff from mobs?

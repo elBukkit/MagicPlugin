@@ -649,13 +649,21 @@ public class EntityController implements Listener {
             return;
         }
         Wand wand = mage.getActiveWand();
+        Material wandIcon = wand == null ? null : wand.getIcon().getMaterial();
+        if (wandIcon == null || (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW"))) {
+            wand = mage.getOffhandWand();
+            if (wand != null) {
+                wandIcon = wand.getIcon().getMaterial();
+                if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) {
+                    wand = null;
+                }
+            }
+        }
+
         if (wand == null) {
             checkArrowLaunch(mage, projectile, event);
             return;
         }
-
-        Material wandIcon = wand.getIcon().getMaterial();
-        if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) return;
         double minPull = wand.getDouble("cast_min_bowpull");
 
         double pull = mage.getLastBowPull();
