@@ -1994,12 +1994,6 @@ public class MagicController implements MageController {
         logger.setContext("materials");
         loadMaterials(loader.getMaterials());
 
-        // Load worlds
-        logger.setContext("worlds");
-        loadWorlds(loader.getWorlds());
-        logger.setContext(null);
-        log("Loaded " + worldController.getCount() + " customized worlds");
-
         logger.setContext("effects");
         loadEffects(loader.getEffects());
         logger.setContext(null);
@@ -2039,6 +2033,12 @@ public class MagicController implements MageController {
         loadBlockTemplates(loader.getBlocks());
         logger.setContext(null);
         log("Loaded " + magicBlockTemplates.size() + " automata templates");
+
+        // Load worlds, which may use mobs, blocks or spells
+        logger.setContext("worlds");
+        loadWorlds(loader.getWorlds());
+        logger.setContext(null);
+        log("Loaded " + worldController.getCount() + " customized worlds");
 
         logger.setContext(null);
     }
