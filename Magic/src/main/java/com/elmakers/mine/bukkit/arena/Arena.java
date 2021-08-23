@@ -548,11 +548,11 @@ public class Arena {
     }
 
     public Location getLoseLocation() {
-        return lose == null ? center : lose;
+        return lose == null ? getExit() : lose;
     }
 
     public Location getWinLocation() {
-        return win == null ? center : win;
+        return win == null ? getExit() : win;
     }
 
     public Location getCenter() {
@@ -560,7 +560,7 @@ public class Arena {
     }
 
     public Location getExit() {
-        return exit == null ? center : exit;
+        return exit == null ? getLobby() : exit;
     }
 
     public boolean isReady() {
