@@ -25,6 +25,7 @@ public class MagicLogger extends ColoredLogger {
 
     private static int MAX_ERRORS = 50;
     private Plugin plugin;
+    private boolean notify = false;
     private String context = null;
     private boolean capture = false;
     private final Set<LogMessage> warnings = Collections.newSetFromMap(new LinkedHashMap<LogMessage, Boolean>() {
@@ -152,6 +153,7 @@ public class MagicLogger extends ColoredLogger {
 
     public void checkNotify(Messages messages) {
         if (pendingErrorCount == 0 && pendingWarningCount == 0) return;
+        if (!notify) return;
         boolean sent = false;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
@@ -173,5 +175,9 @@ public class MagicLogger extends ColoredLogger {
         pendingErrorCount = 0;
         pendingWarningCount = 0;
         lastMessageSent = System.currentTimeMillis();
+    }
+
+    public void setNotify(boolean notify) {
+        this.notify = notify;
     }
 }

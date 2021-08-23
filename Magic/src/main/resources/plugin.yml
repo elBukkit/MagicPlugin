@@ -2031,7 +2031,7 @@ permissions:
     type: boolean
   magic.notify:
     description: A player will be notified of errors, warnings and other events
-    default: false
+    default: op
     type: boolean
   magic.commands.marena:
     description: Player may use the base /marena command
