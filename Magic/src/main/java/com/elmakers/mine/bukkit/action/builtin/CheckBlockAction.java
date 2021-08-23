@@ -37,6 +37,7 @@ public class CheckBlockAction extends CheckAction {
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters)
     {
+        useTarget = parameters.getBoolean("use_target", true);
         allowed = spell.getController().getMaterialSetManager()
                 .fromConfig(parameters.getString("allowed"));
         allowedBiomes = ConfigurationUtils.loadBiomes(ConfigurationUtils.getStringList(parameters, "biomes"), spell.getController().getLogger(), "spell " + spell.getKey());
@@ -199,6 +200,6 @@ public class CheckBlockAction extends CheckAction {
 
     @Override
     public boolean requiresTarget() {
-        return true;
+        return useTarget;
     }
 }
