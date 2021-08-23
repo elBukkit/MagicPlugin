@@ -176,6 +176,9 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         if (kits != null && !kits.getKeys(false).isEmpty()) {
             saveFile.set("kits", kits);
         }
+        if (mage.getShownHelp()) {
+            saveFile.set("shown_help", true);
+        }
 
         Map<String, ConfigurationSection> classProperties = mage.getClassProperties();
         if (classProperties != null) {
@@ -264,6 +267,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
         data.setProperties(saveFile.getConfigurationSection("properties"));
         data.setVariables(saveFile.getConfigurationSection("variables"));
         data.setKits(saveFile.getConfigurationSection("kits"));
+        data.setShownHelp(saveFile.getBoolean("shown_help"));
 
         // Load classes
         Map<String, ConfigurationSection> classProperties = new HashMap<>();

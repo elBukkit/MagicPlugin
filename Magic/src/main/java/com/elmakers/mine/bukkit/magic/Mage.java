@@ -256,6 +256,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean isAutomaton = false;
     private boolean allowContainerCopy = false;
 
+    private boolean shownHelp = false;
     private boolean gaveWelcomeWand = false;
 
     private GUIAction gui = null;
@@ -1129,10 +1130,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (!player.isDead()) {
                     restoreRespawnInventories();
                 }
+
+                // Check for mhelp prompting
+                if (!shownHelp && player.hasPermission("magic.notify") && player.hasPermission("magic.commands.mhelp")) {
+                    sendMessage(controller.getMessages().get("commands.mhelp.prompt"));
+                }
             }
 
             loading = false;
-
 
             // Re-activate wand if it was active on logout
             checkWand();
@@ -1180,6 +1185,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             this.properties.loadProperties();
             this.variables = data.getVariables();
             this.loadKits(data.getKits());
+            this.shownHelp = data.getShownHelp();
 
             boundWands.clear();
             Map<String, ItemStack> boundWandItems = data.getBoundWands();
@@ -1571,6 +1577,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setProperties(properties.getConfiguration());
             data.setVariables(variables);
             data.setKits(saveKits());
+            data.setShownHelp(shownHelp);
 
             Map<String, ConfigurationSection> classProperties = new HashMap<>();
             for (Map.Entry<String, MageClass> entry : classes.entrySet()) {
@@ -5739,5 +5746,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return false;
         }
         return wand.handleInsufficientCharges(spell);
+    }
+
+    public void setShownHelp() {
+        this.shownHelp = true;
     }
 }

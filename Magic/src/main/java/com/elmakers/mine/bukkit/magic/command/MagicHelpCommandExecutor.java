@@ -11,10 +11,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.help.Help;
@@ -49,6 +49,7 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
     protected void onMagicHelp(CommandSender sender, String[] args) {
         Messages messages = controller.getMessages();
         Mage mage = controller.getMage(sender);
+        mage.setShownHelp();
 
         if (args.length == 0) {
             mage.sendMessage(messages.get("commands.mhelp.header"));

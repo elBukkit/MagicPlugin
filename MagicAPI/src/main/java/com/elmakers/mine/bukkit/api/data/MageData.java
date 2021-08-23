@@ -46,6 +46,7 @@ public class MageData {
     private String preferredResourcePack;
     private long created;
     private double health;
+    private boolean shownHelp;
 
     // Transient
     private long cachedTimestamp;
@@ -357,5 +358,13 @@ public class MageData {
 
     public long getCachedTimestamp() {
         return cachedTimestamp;
+    }
+
+    public boolean getShownHelp() {
+        return shownHelp;
+    }
+
+    public void setShownHelp(boolean shownHelp) {
+        this.shownHelp = shownHelp;
     }
 }
