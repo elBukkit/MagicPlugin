@@ -148,7 +148,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             options.addAll(controller.getExamples());
         }
 
-        if (args.length == 3 && subCommand.equals("language")) {
+        if (args.length == 2 && subCommand.equals("language")) {
             options.addAll(controller.getLocalizations());
         }
 
