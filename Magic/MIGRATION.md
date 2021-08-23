@@ -29,6 +29,10 @@
    
  - All permission nodes changed to lowercase (magic.) GMs don't seem to care, but let me know if this causes trouble for you!
 
+ - Setting `url_icons_enabled: true` will now force all spell icons to use url skulls, even if it has no url. A
+   default icon will be used. This replaces the old behavior of falling back to an item icon.
+   This behavior can be changed by `/meditor icon default` and setting `url: ""`.
+
 # 9.4
 
  - The `beginner` wand has been made into a demo wand and no longer turns into `wand`
