@@ -1,0 +1,8 @@
+vengeance:
+  item: 'spider_eye{18001}'
+  item_disabled: 'spider_eye{18002}'
+  legacy_item: spell_icon:239
+  legacy_item_disabled: spell_icon_disabled:239
+  url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
+  type: spell
+  glyph: "\uE98E"

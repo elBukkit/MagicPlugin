@@ -1,6 +1,6 @@
 vengeance:
   # This refers to an icon defined in the icons folder/config
-  icon: protection_projectiles
+  icon: vengeance
   earns: 6
   worth: 400
   upgrade_required_casts: 50
