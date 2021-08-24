@@ -67,32 +67,35 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
             return;
         }
 
-        // Some special cases:
-        if (args[0].startsWith("instructions")) {
-            String[] pieces = StringUtils.split(args[0], ".");
-            if (pieces.length > 1) {
-                if (pieces[1].equals("wand")) {
-                    Wand wand = mage.getActiveWand();
-                    if (wand != null) {
-                        wand.showInstructions();
-                    } else {
-                        mage.sendMessage(messages.get("commands.mhelp.no_wand"));
+        // If we only have one arg, look for an exact topic match first
+        if (args.length == 1) {
+            // Some special cases:
+            if (args[0].startsWith("instructions")) {
+                String[] pieces = StringUtils.split(args[0], ".");
+                if (pieces.length > 1) {
+                    if (pieces[1].equals("wand")) {
+                        Wand wand = mage.getActiveWand();
+                        if (wand != null) {
+                            wand.showInstructions();
+                        } else {
+                            mage.sendMessage(messages.get("commands.mhelp.no_wand"));
+                        }
+                        return;
+                    } else if (pieces[1].equals("example")) {
+                        if (pieces.length > 2) {
+                            controller.showExampleInstructions(sender, pieces[2]);
+                        } else {
+                            controller.showExampleInstructions(sender);
+                        }
+                        return;
                     }
-                    return;
-                } else if (pieces[1].equals("example")) {
-                    if (pieces.length > 2) {
-                        controller.showExampleInstructions(sender, pieces[2]);
-                    } else {
-                        controller.showExampleInstructions(sender);
-                    }
-                    return;
                 }
             }
-        }
 
-        if (help.showTopic(mage, args[0])) {
-            mage.sendMessage(messages.get("commands.mhelp.separator"));
-            return;
+            if (help.showTopic(mage, args[0])) {
+                mage.sendMessage(messages.get("commands.mhelp.separator"));
+                return;
+            }
         }
 
         // Search through topics for text matches, do this async since we're
