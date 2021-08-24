@@ -51,6 +51,7 @@ overworld_mobs:
         cube: 20
         werewolf: 10
         madscientist: 1
+        archer: 5
 
 nether_mobs:
   world: world_nether
