@@ -175,6 +175,7 @@ import com.elmakers.mine.bukkit.integration.NPCSupplierSet;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.SkriptManager;
+import com.elmakers.mine.bukkit.integration.TokenManagerController;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.item.Icon;
@@ -570,6 +571,7 @@ public class MagicController implements MageController {
     private RequirementsController requirementsController = null;
     private HeroesManager heroesManager = null;
     private AureliumSkillsManager aureliumSkillsManager = null;
+    private TokenManagerController tokenManager = null;
     private LibsDisguiseManager libsDisguiseManager = null;
     private ModelEngineManager modelEngineManager = null;
     private SkillAPIManager skillAPIManager = null;
@@ -1851,6 +1853,10 @@ public class MagicController implements MageController {
             ConfigurationSection aureliumSkillsConfiguration = configuration.getConfigurationSection("aurelium_skills");
             aureliumSkillsManager.load(aureliumSkillsConfiguration);
             costReduction += aureliumSkillsManager.getManaCostReduction();
+        }
+        if (tokenManager != null) {
+            ConfigurationSection tokenManagerConfiguration = configuration.getConfigurationSection("token_manager");
+            tokenManager.load(tokenManagerConfiguration);
         }
         if (heroesManager != null) {
             heroesManager.load(configuration);
@@ -3464,6 +3470,9 @@ public class MagicController implements MageController {
 
         if (aureliumSkillsManager != null) {
             aureliumSkillsManager.register(currencyConfiguration);
+        }
+        if (tokenManager != null) {
+            tokenManager.register(currencyConfiguration);
         }
 
         // Configured currencies override everything else
@@ -7536,6 +7545,18 @@ public class MagicController implements MageController {
                 aureliumSkillsManager = new AureliumSkillsManager(this);
             } else {
                 aureliumSkillsManager = null;
+            }
+        } catch (Throwable ex) {
+            getLogger().warning(ex.getMessage());
+        }
+
+        // Try to link to TokenManager:
+        try {
+            Plugin tokenManagerPlugin = pluginManager.getPlugin("TokenManager");
+            if (tokenManagerPlugin != null) {
+                tokenManager = new TokenManagerController(this, tokenManagerPlugin);
+            } else {
+                tokenManager = null;
 
             }
         } catch (Throwable ex) {

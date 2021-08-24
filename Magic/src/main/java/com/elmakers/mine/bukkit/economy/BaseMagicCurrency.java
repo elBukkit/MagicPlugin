@@ -28,9 +28,13 @@ public abstract class BaseMagicCurrency implements Currency {
     protected final MaterialAndData icon;
 
     protected BaseMagicCurrency(MageController controller, String key, ConfigurationSection configuration) {
+        this(controller, key, configuration, "");
+    }
+
+    protected BaseMagicCurrency(MageController controller, String key, ConfigurationSection configuration, String defaultName) {
         this.key = key;
         worth = configuration.getDouble("worth", 1);
-        name = controller.getMessages().get("currency." + key + ".name");
+        name = controller.getMessages().get("currency." + key + ".name", defaultName);
         singularName = controller.getMessages().get("currency." + key + ".name_singular", name);
         shortName = controller.getMessages().get("currency." + key + ".name_short", singularName);
         amountTemplate = controller.getMessages().get("currency." + key + ".amount", "$amount " + shortName);

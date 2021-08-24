@@ -1,6 +1,10 @@
 # TODO
 
 # Importanter
+
+ - Growth doesn't work on sugar cane
+ 
+ - Magic welcome header looks broken in elTest .. it's 1.17 not sure what's up
  
  - Still some offhand bow issues: but the min_bowpull option seems to be broken
 
@@ -82,6 +86,7 @@
 
 # Near-Term Hopeful List
 
+ - Vivecraft integration: https://github.com/jrbudda/Vivecraft_Spigot_Extensions#metadata
  - Separate cooldown for fail/no_target
  - Can't offset `target: self` using py or ty (?)
  - Add editor support for the variables section, it's very confusing

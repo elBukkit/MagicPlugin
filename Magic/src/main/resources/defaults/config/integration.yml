@@ -211,6 +211,11 @@ use_heroes_parties: true
 # This can be used to avoid conflicts with public or other skills
 heroes_skill_prefix: ""
 
+# TokenManager integration
+token_manager:
+  # Set this to false if you don't want to register tokens as a magic currency
+  enabled: true
+
 # AureliumSkills integration
 aurelium_skills:
   enabled: true

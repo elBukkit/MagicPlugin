@@ -42,6 +42,7 @@ softdepend:
   - AureliumSkills
   - PerWorldInventory
   - MythicMobs
+  - TokenManager
 loadbefore:
   - Scavenger
   - Quests
