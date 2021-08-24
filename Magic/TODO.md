@@ -4,6 +4,8 @@
  
  - Still some offhand bow issues: but the min_bowpull option seems to be broken
 
+ - Spells that disable mana regen need to constantly reset the mana catchup timestamp
+
  - CheckInventory action doesn't work with a stack of items
    https://github.com/elBukkit/MagicPlugin/issues/943
 

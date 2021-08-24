@@ -104,19 +104,39 @@ help:
     &b&bull; &fConfiguration reference: &6https://reference.elmakers.com/
     &b&bull; &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
     &b&bull; &fSupport: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
+  support: |-
+    `<title text=Support">`
+    &b&bull; &f`<link text="Join the Magic Discord for live help and support" url=""https://discord.com/invite/Vk5nK5h"">`
+    &b&bull; &f`<link text="Use github issues for bugs and feature requests" url="https://github.com/elBukkit/MagicPlugin/issues">`
+    &b&bull; &f`<link text="More support links on wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Support">`
   customization: |-
     `<title text="Customization">`
     &b&bull; &f`<help text="Change language or localize text" topic="localization">`
     &b&bull; &f`<help text="Change mana" topic="mana_customization">`
+    &b&bull; &f`<help text="Creating new spells, wands and other configs" topic="creating_configs">`
+    &b&bull; &f`<command command="/config reset spell missile" text="Reset a spell to its default configuration">`
+    &b&bull; &f`<help topic="common_customizations" text="Other common customizations">`
+    &b&bull; &f`<link text="Customization wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Customization">`
+  creating_configs: |-
+    `<title text="Creating New Configs">`
+    &dMagic&f is a completely customizable framework that you can make your own. You will need to be comfortable &blearning by example&f!
+    &fYou can also always seek support through the available &b`<help topic="support" text="available support channels">`
     &b&bull; &f`<command command="/meditor spell mynewspell" text="Create a new spell using the editor">`
     &b&bull; &f`<command command="/meditor spell missile" text="See the config of the Magic Missile spell">`
     &b&bull; &f`<command command="/meditor spell singularity" text="See the Singularly spell, a more complex example">`
     &b&bull; &f`<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival" text="See all survival spell configs">`
-    &b&bull; &f`<command command="/config reset spell missile" text="Reset a spell to its default configuration">`
     &b&bull; &f`<command command="/meditor spell mynewwand" text="Create a new wand using the editor">`
     &b&bull; &f`<command command="/meditor recipe newrecipe" text="Create a new crafting recipe">`
-    &b&bull; &f`<help topic="common_customizations" text="Other common customizations">`
-    &b&bull; &f`<link text="Customization wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Customization">`
+    &b&bull; &f`<help topic="sandbox" text="Using the sandbox editor">`
+    &b&bull; &f`<link url="https://github.com/elBukkit/MagicPlugin/wiki/Custom-Spells" text="Spell creation guide on wiki">`
+  sandbox: |-
+    `<title text="The Magic Sandbox Editor">`
+    &dMagic&f hosts a public &bsandbox&f server where you can try out making your own spells.
+    &fFirst, go to &bhttps://sandbox.elmakers.com&f in your web browser.
+    &fThen log in to &7sandbox.elmakers.com&f in Minecraft.
+    &fUsing the same web editor as the &7/meditor&f command uses, you can make your own spells.
+    &fSaving a spell in the editor forces configs to reload on the server.
+    &fYour &6Sandbox Wand&f will contain all of the spells that you've made in the sandbox editor.
   common_customizations: |-
     `<title text="Common Customization">`
     &b&bull; &f`<command command="/mconfig configure spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
@@ -133,7 +153,7 @@ help:
     &fYou can use the &b`<command command="/mgive uberwand" text="Uberwand">` &ffor testing if you want unlimited mana.
   mana: |-
     `<title text="Mana">`
-    &6Magic &fuses a &bmana&f system in many of its configs, including survival, stars bending and even war (as ammo).
+    &dMagic &fuses a &bmana&f system in many of its configs, including survival, stars bending and even war (as ammo).
     &fMana is a shared resource pool across all spells in a class (e.g. survival mana is separate from bending energy)
     &fMana regenerates over time, up to a max value. &bWands&f show mana in custom mana bars, the XP display or other places as configured.
     &bSpells&f each require a different amount of mana to cast.
@@ -167,15 +187,15 @@ help:
     &b&bull; &f&bWand&f permissions can be set to false to deny using specific wands, e.g. &6magic.wand.use.wolf
   integration: |-
     `<title text="Integration">`
-    &b&bull; &fMagic integrates with several `<help topic="protection" text="protection plugins">` to keep spells from griefing and trolling
-    &b&bull; &fMagic integrates with Essentials and CommandBook for `<help topic="warps" text="warps">`
-    &b&bull; &fMagic integrates with `<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">` for mob and spell disguises
-    &b&bull; &fMagic integrates with MythicMobs for mythic mob spawning
-    &b&bull; &fMagic integrates with `<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">` to show warps, spell casts and lost wands on maps
+    &b&bull; &dMagic integrates with several `<help topic="protection" text="protection plugins">` to keep spells from griefing and trolling
+    &b&bull; &dMagic integrates with Essentials and CommandBook for `<help topic="warps" text="warps">`
+    &b&bull; &dMagic integrates with `<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">` for mob and spell disguises
+    &b&bull; &dMagic integrates with MythicMobs for mythic mob spawning
+    &b&bull; &dMagic integrates with `<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">` to show warps, spell casts and lost wands on maps
   protection: |-
     `<title text="Protection">`
-    &b&bull; &fMagic will respect PvP and build/break permissions from: WorldGuard, PreciousStones, RedProtect, Factions, GriefPrevention, PvPManager, Multiverse, Citadel and others
-    &b&bull; &fMagic adds `<help topic="worldguard" text="custom WorldGuard flags">` to control spell casting in specific regions
+    &b&bull; &dMagic will respect PvP and build/break permissions from: WorldGuard, PreciousStones, RedProtect, Factions, GriefPrevention, PvPManager, Multiverse, Citadel and others
+    &b&bull; &dMagic adds `<help topic="worldguard" text="custom WorldGuard flags">` to control spell casting in specific regions
     &b&bull; &fIf your favorite protection plugin isn't listed, you can try `<command command="/meditor config generic_protection" text="adding it to the generic_protection list">`
   worldguard: |-
     `<title text="WorldGuard">`
@@ -193,7 +213,7 @@ help:
     &b&bull; &f`<help topic="resourcepacks" text="See all builtin resource packs">`
   bedrock: |-
     `<title text="Playing on Bedrock via Geyser">`
-    &6Magic &fcan work for &bBedrock&f players, using the &b`<link url="https://geysermc.org" text="Geyser">`&f plugin.
+    &dMagic &fcan work for &bBedrock&f players, using the &b`<link url="https://geysermc.org" text="Geyser">`&f plugin.
     &fSince it can be hard to swing an item in Bedrock, it is recommended that these players use a &6Spellbook&f for spell casting.
     &fUnfortunately at this time there is &4no way&f to get the resource pack to work for Bedrock players.
   resourcepacks: |-
