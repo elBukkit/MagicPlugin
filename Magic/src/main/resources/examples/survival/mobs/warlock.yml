@@ -31,4 +31,5 @@ warlock:
     gold_nugget@16: 100
     gold_nugget@12: 50
     gold_nugget@8: 20
+    warlock_wand: 5
   - sp:16

@@ -62,8 +62,18 @@ dark_wizard:
         petrify: 10
         none: 20
   drops:
-  - gold_ingot@24
-  - sp:100
+    - diamond: 10
+      emerald: 15
+      gold_nugget@18: 50
+      gold_nugget@16: 100
+      gold_nugget@12: 50
+      gold_nugget@8: 20
+      warlock_wand: 5
+    - diamond: 10
+      emerald: 15
+      gold_ingot@2: 5
+      gold_ingot: 1
+    - sp:100
   potion_effects:
   - type: speed
     amplifier: 1

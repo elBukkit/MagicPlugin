@@ -1,0 +1,15 @@
+lootshop:
+  parameters:
+    add_options:
+      warlock_wand:
+        slot: 20
+        item: warlock_wand
+      wizard_wand:
+        slot: 21
+        item: wizard_wand
+      archer_bow:
+        slot: 23
+        item: archer_bow
+      madscientist_wand:
+        slot: 24
+        item: madscientist_wand
