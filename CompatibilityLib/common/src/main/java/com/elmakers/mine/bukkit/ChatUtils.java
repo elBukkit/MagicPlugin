@@ -29,17 +29,33 @@ public class ChatUtils {
         return gson;
     }
 
-    protected static void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage) {
+    protected static void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage, boolean onlyText) {
         for (Map.Entry<String,Object> entry : mapped.entrySet()) {
-            if (entry.getKey().equals("color")) {
+            if (entry.getKey().equals("text")) {
+                plainMessage.append(entry.getValue());
+            } else if (entry.getKey().equals("extra")) {
+                Object rawExtra = entry.getValue();
+                if (rawExtra instanceof List) {
+                    List<Map<String, Object>> mapList = (List<Map<String, Object>>)rawExtra;
+                    for (Map<String, Object> child : mapList) {
+                        getSimpleMessage(child, plainMessage, onlyText);
+                    }
+                }
+            } else if (entry.getKey().equals("keybind")) {
+                String key = entry.getValue().toString().replace("key.", "");
+                if (messages != null) {
+                    key = messages.get("keybind." + key, key);
+                }
+                plainMessage.append(key);
+            } else if (onlyText) {
+                continue;
+            } else if (entry.getKey().equals("color")) {
                 String colorKey = entry.getValue().toString();
                 try {
                     ChatColor color = ChatColor.valueOf(colorKey.toUpperCase());
                     plainMessage.append(color);
                 } catch (Exception ignore) {
                 }
-            } else if (entry.getKey().equals("text")) {
-                plainMessage.append(entry.getValue());
             } else if (entry.getKey().equals("clickEvent")) {
                 Map<String,Object> properties = (Map<String,Object>)entry.getValue();
                 if (properties.containsKey("action") && properties.containsKey("value")) {
@@ -53,25 +69,15 @@ public class ChatUtils {
                             break;
                     }
                 }
-            } else if (entry.getKey().equals("keybind")) {
-                String key = entry.getValue().toString().replace("key.", "");
-                if (messages != null) {
-                    key = messages.get("keybind." + key, key);
-                }
-                plainMessage.append(key);
-            } else if (entry.getKey().equals("extra")) {
-                Object rawExtra = entry.getValue();
-                if (rawExtra instanceof List) {
-                    List<Map<String, Object>> mapList = (List<Map<String, Object>>)rawExtra;
-                    for (Map<String, Object> child : mapList) {
-                        getSimpleMessage(child, plainMessage);
-                    }
-                }
             }
         }
     }
 
     public static String getSimpleMessage(String containsJson) {
+        return getSimpleMessage(containsJson, false);
+    }
+
+    public static String getSimpleMessage(String containsJson, boolean onlyText) {
         String[] components = getComponents(containsJson);
         StringBuilder plainMessage = new StringBuilder();
         for (String component : components) {
@@ -80,7 +86,7 @@ public class ChatUtils {
                     JsonReader reader = new JsonReader(new StringReader(component));
                     reader.setLenient(true);
                     Map<String, Object> mapped = getGson().fromJson(reader, Map.class);
-                    getSimpleMessage(mapped, plainMessage);
+                    getSimpleMessage(mapped, plainMessage, onlyText);
                 } catch (Exception ex) {
                     plainMessage.append(component);
                 }

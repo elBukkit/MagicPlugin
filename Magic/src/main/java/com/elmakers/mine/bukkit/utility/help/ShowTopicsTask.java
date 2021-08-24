@@ -41,9 +41,10 @@ public class ShowTopicsTask implements Runnable {
             int shown = 0;
             String template = messages.get("commands.mhelp.match");
             for (HelpTopicMatch topicMatch : matches) {
-                String summary = topicMatch.getSummary(keywords);
+                String title = topicMatch.getTopic().getTitle();
+                String summary = topicMatch.getSummary(keywords, title);
                 String message = template
-                        .replace("$title", topicMatch.getTopic().getTitle())
+                        .replace("$title", title)
                         .replace("$topic", topicMatch.getTopic().getKey())
                         .replace("$summary", summary);
                 mage.sendMessage(message);

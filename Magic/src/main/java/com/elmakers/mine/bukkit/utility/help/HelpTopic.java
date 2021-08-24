@@ -6,6 +6,7 @@ import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 
 import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -16,8 +17,8 @@ public class HelpTopic {
     private final String key;
     private final String title;
     private final String text;
-    private final String simpleText;
     private final String searchText;
+    private final String[] lines;
 
     public HelpTopic(Messages messages, String key, String text) {
         this.key = key;
@@ -25,9 +26,17 @@ public class HelpTopic {
         text = expansion.getText();
         text = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(text));
         this.text = text;
-        this.simpleText = ChatUtils.getSimpleMessage(text);
+        String simpleText = ChatColor.stripColor(ChatUtils.getSimpleMessage(text, true));
         this.searchText = simpleText.toLowerCase();
         this.title = expansion.getTitle();
+
+        // Pre-split simple description lines, remove title if present
+        String[] allLines = StringUtils.split(simpleText, "\n");
+        if (!title.isEmpty() && allLines.length > 1) {
+            lines = Arrays.copyOfRange(allLines, 1, allLines.length);
+        } else {
+            lines = allLines;
+        }
     }
 
     @Nonnull
@@ -54,10 +63,6 @@ public class HelpTopic {
     }
 
     public String[] getLines() {
-        String[] lines = StringUtils.split(simpleText, "\n");
-        if (!title.isEmpty() && lines.length > 1) {
-            lines = Arrays.copyOfRange(lines, 1, lines.length);
-        }
         return lines;
     }
 
