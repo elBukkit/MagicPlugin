@@ -139,15 +139,19 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         if (!message.contains("`<")) return new MacroExpansion(message);
         String title = null;
         String[] pieces = StringUtils.split(message, "`");
+        String previousPiece = null;
         for (int i = 0; i < pieces.length; i++) {
             String piece = pieces[i];
             String defaultReplace = piece;
-            if (i != 0) {
+            // Some weird logic to put back ` if they weren't actually part of the `<...>` escape sequence
+            if (previousPiece != null && !previousPiece.endsWith(">")) {
                 defaultReplace = "`" + defaultReplace;
             }
-            if (i != pieces.length - 1) {
+            if (i != pieces.length - 1 && !pieces[i + 1].startsWith("<")) {
                 defaultReplace += "`";
             }
+            // Have to save this because we may blank it out before the next piece can look at it
+            previousPiece = piece;
             if (!piece.startsWith("<") && !piece.endsWith(">")) {
                 pieces[i] = defaultReplace;
                 continue;
@@ -203,7 +207,8 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                     Icon icon = iconKey == null || !(iconKey instanceof String) ? null : icons.get((String)iconKey);
                     String glyph = icon == null ? null : icon.getGlyph();
                     if (glyph == null) {
-                        pieces[i] = defaultReplace;
+                        // Just blank this out, we may have unloaded survival and don't have the icons
+                        pieces[i] = "";
                         continue;
                     }
                     macro = macro.replace("$glyph", glyph);

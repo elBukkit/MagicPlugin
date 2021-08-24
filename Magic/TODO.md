@@ -25,6 +25,12 @@
 
  - Make brushes work (swing to use)
 
+# Vivecraft
+ 
+ - Config option to turn on/off
+ - Use wand offset somehow to make casts come from wand
+ - Handle "seated: true" case, I *think* it should just turn off the hand code
+
 # Important
 
  - Allow slotted upgrades to rename (rename and rename_description options)
