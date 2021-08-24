@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,6 +19,7 @@ import com.elmakers.mine.bukkit.utility.Messages;
 public class Help {
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
+    private final Set<String> words = new HashSet<>();
 
     public Help(Messages messages) {
         this.messages = messages;
@@ -27,8 +29,18 @@ public class Help {
         Collection<String> keys = helpSection.getKeys(true);
         for (String key : keys) {
             String value = helpSection.getString(key);
-            topics.put(key, new HelpTopic(messages, key, value));
+            HelpTopic helpTopic = new HelpTopic(messages, key, value);
+            topics.put(key, helpTopic);
+            for (String word : helpTopic.getWords()) {
+                if (word.length() > 1) {
+                    words.add(word);
+                }
+            }
         }
+    }
+
+    public Set<String> getWords() {
+        return words;
     }
 
     public Set<String> getTopicKeys() {

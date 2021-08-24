@@ -107,15 +107,8 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
         Set<String> options = new HashSet<>();
         if (!sender.hasPermission("Magic.commands.magic.help")) return options;
 
-        // Get all help topics from messages
-        options.addAll(help.getTopicKeys());
-
-        // Add special-cases
-        options.add("instructions.wand");
-        options.add("instructions.example");
-        for (String exampleKey : controller.getLoadedExamples()) {
-            options.add("instructions.example." + exampleKey);
-        }
+        // Get all words in all help topics
+        options.addAll(help.getWords());
 
         return options;
     }

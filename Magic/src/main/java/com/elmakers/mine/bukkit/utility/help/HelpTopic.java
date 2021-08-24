@@ -62,6 +62,10 @@ public class HelpTopic {
         return matchCount;
     }
 
+    public String[] getWords() {
+        return ChatUtils.getWords(searchText);
+    }
+
     public String[] getLines() {
         return lines;
     }

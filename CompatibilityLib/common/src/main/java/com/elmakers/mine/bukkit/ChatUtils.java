@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -13,6 +14,8 @@ import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 
 public class ChatUtils {
+    // Remove some standard java punctuation, plus the unicode range from "Number Forms" to "Miscellaneous symbols"
+    private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("[\\s0-9\\p{Punct}\\p{IsPunctuation}\u2150-\u2BFF\uE000-\uFFFF]"); // Sorry for the unicode escapes
     private static Messages messages;
     private static Logger logger;
     private static Gson gson;
@@ -99,5 +102,9 @@ public class ChatUtils {
 
     public static String[] getComponents(String containsJson) {
         return StringUtils.split(containsJson, "`");
+    }
+
+    public static String[] getWords(String text) {
+        return PUNCTUATION_PATTERN.split(text);
     }
 }
