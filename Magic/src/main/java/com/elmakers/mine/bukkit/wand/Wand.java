@@ -87,6 +87,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.tasks.ApplyWandIconTask;
 import com.elmakers.mine.bukkit.tasks.CancelEffectsContextTask;
 import com.elmakers.mine.bukkit.tasks.OpenWandTask;
+import com.elmakers.mine.bukkit.utility.BukkitMetadataUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
@@ -6757,6 +6758,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public Location getLocation() {
         if (mage == null) {
             return null;
+        }
+        // Vive support
+        // TODO: Allow offsetting this, ideally hackily using the wand offset vector similar to below, but maybe
+        // only using the y-component?
+        // Want it to look like it's coming from the tip of the wand, not the hand.
+        // Also don't we account for lefties somewher ein here? Maybe in getOffsetLocation? Handle it.
+        Location handLocation = BukkitMetadataUtils.getLocation(mage.getPlayer(), isInOffhand ? "lefthand.pos" : "righthand.pos");
+        if (handLocation != null) {
+            return handLocation;
         }
         Location wandLocation = mage.getEyeLocation();
         wandLocation = mage.getOffsetLocation(wandLocation, isInOffhand, castLocation == null ? DEFAULT_CAST_OFFSET : castLocation);

@@ -119,6 +119,7 @@ import com.elmakers.mine.bukkit.tasks.MageFinishLoadTask;
 import com.elmakers.mine.bukkit.tasks.SendCurrencyMessageTask;
 import com.elmakers.mine.bukkit.tasks.TeleportTask;
 import com.elmakers.mine.bukkit.utility.ActionBarSender;
+import com.elmakers.mine.bukkit.utility.BukkitMetadataUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
@@ -2102,6 +2103,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public Location getEyeLocation() {
         Entity entity = getEntity();
         if (entity != null) {
+            // Vive support, only for players
+            Location eyeLocation = BukkitMetadataUtils.getLocation(getPlayer(), "head.pos");
+            if (eyeLocation != null) {
+                return eyeLocation;
+            }
             return CompatibilityLib.getCompatibilityUtils().getEyeLocation(entity);
         }
 

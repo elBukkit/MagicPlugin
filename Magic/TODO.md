@@ -3,10 +3,12 @@
 # Importanter
 
  - Growth doesn't work on sugar cane
+
+ - Test the test.yml spell, aim downwards does it not work?
  
  - Magic welcome header looks broken in elTest .. it's 1.17 not sure what's up
  
- - Still some offhand bow issues: but the min_bowpull option seems to be broken
+ - Still some offhand bow issues: the min_bowpull option seems to be broken
 
  - Spells that disable mana regen need to constantly reset the mana catchup timestamp
 
@@ -101,6 +103,7 @@
  - Some indicator for long-running engineering casts?
  - Would be cool to represent automata as mobs, maybe just need entity-less mob spawning ability? 
    .. make sure it gets tracked for `/mmob list` and `remove` functionality
+ - Custom portal-making via spells, use block metadata to allow portal destinations or spells  
 
 # Bugs
 

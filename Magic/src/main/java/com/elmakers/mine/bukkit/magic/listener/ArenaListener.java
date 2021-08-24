@@ -29,6 +29,7 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.MetadataValue;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -37,6 +38,7 @@ import com.elmakers.mine.bukkit.arena.Arena;
 import com.elmakers.mine.bukkit.arena.ArenaController;
 import com.elmakers.mine.bukkit.arena.ArenaPlayer;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.utility.BukkitMetadataUtils;
 
 public class ArenaListener implements Listener {
     private final ArenaController controller;
@@ -77,12 +79,10 @@ public class ArenaListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerRespawn(PlayerRespawnEvent e) {
         Player player = e.getPlayer();
-        if (player.hasMetadata("respawnLocation")) {
-            Collection<MetadataValue> metadata = player.getMetadata("respawnLocation");
-            for (MetadataValue value : metadata) {
-                e.setRespawnLocation((Location)value.value());
-            }
-            player.removeMetadata("respawnLocation", controller.getPlugin());
+        Plugin plugin = controller.getPlugin();
+        Location respawnLocation = BukkitMetadataUtils.getLocation(player, "respawnLocation", plugin);
+        if (respawnLocation != null) {
+            player.removeMetadata("respawnLocation", plugin);
         }
     }
 
