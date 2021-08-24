@@ -7083,6 +7083,35 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return hasOwnProperty(key);
     }
 
+    @Nullable
+    @Override
+    public ConfigurationSection getConfigurationSection(String key) {
+        // Special override to handle merging slotted configurations
+        ConfigurationSection base = super.getConfigurationSection(key);
+        ConfigurationSection slotted = slottedConfiguration != null ? slottedConfiguration.getConfigurationSection(key) : null;
+        ConfigurationSection requirement = requirementConfiguration != null ? requirementConfiguration.getConfigurationSection(key) : null;
+
+        ConfigurationSection merged;
+        if (slotted != null) {
+            merged = slotted;
+        } else if (requirement != null) {
+            merged = requirement;
+        } else {
+            // Just return the base if we have no overrides
+            return base;
+        }
+
+        // If we have both slotted and requirement, then we start with slotted and layer over requirement, not overriding
+        if (slotted != null && requirement != null) {
+            ConfigurationUtils.overlayConfigurations(merged, requirement);
+        }
+        // Finally if we have a base, that goes on last (again because not overridding)
+        if (base != null) {
+            ConfigurationUtils.overlayConfigurations(merged, base);
+        }
+        return merged;
+    }
+
     @Override
     @Nullable
     public Object getProperty(String key) {
@@ -7092,10 +7121,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     @Nonnull
     public ConfigurationSection getPropertyConfiguration(String key) {
-        if (requirementConfiguration != null && requirementConfiguration.contains(key)) {
+        // ConfigurationSections get merged in getConfigurationSection, we always need to return
+        // the base in that case.
+        if (requirementConfiguration != null && requirementConfiguration.contains(key) && !requirementConfiguration.isConfigurationSection(key)) {
             return requirementConfiguration;
         }
-        if (slottedConfiguration != null && slottedConfiguration.contains(key)) {
+        if (slottedConfiguration != null && slottedConfiguration.contains(key) && !slottedConfiguration.isConfigurationSection(key)) {
             return slottedConfiguration;
         }
         return super.getPropertyConfiguration(key);

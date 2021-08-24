@@ -2,6 +2,13 @@
 
 # Importanter
 
+ - Using add_options on a shop gets weird, see if you can make spawnmobs lootshop work
+ 
+ - Still some offhand bow issues: but the min_bowpull option seems to be broken
+
+ - CheckInventory action doesn't work with a stack of items
+   https://github.com/elBukkit/MagicPlugin/issues/943
+
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
