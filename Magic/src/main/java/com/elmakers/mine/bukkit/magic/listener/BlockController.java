@@ -231,7 +231,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockFade(BlockFadeEvent event) {
         Block block = event.getBlock();
         UndoList undoList = controller.getPendingUndo(block.getLocation());
@@ -241,7 +241,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPistonRetract(BlockPistonRetractEvent event) {
         // Immediately undo or commit any blocks involved
         for (Block block : event.getBlocks()) {
@@ -257,7 +257,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onPistonExtend(BlockPistonExtendEvent event) {
         Block piston = event.getBlock();
         Block block = piston.getRelative(event.getDirection());
@@ -298,7 +298,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockFromTo(BlockFromToEvent event) {
         Block targetBlock = event.getToBlock();
         Block sourceBlock = event.getBlock();
@@ -344,7 +344,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockBurn(BlockBurnEvent event) {
         Block targetBlock = event.getBlock();
         UndoList undoList = controller.getPendingUndo(targetBlock.getLocation());
@@ -381,7 +381,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockIgnite(BlockIgniteEvent event) {
         BlockIgniteEvent.IgniteCause cause = event.getCause();
         if (cause == BlockIgniteEvent.IgniteCause.ENDER_CRYSTAL || cause == BlockIgniteEvent.IgniteCause.FLINT_AND_STEEL)
@@ -416,7 +416,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onBlockDamage(BlockDamageEvent event) {
         Player damager = event.getPlayer();
         Mage damagerMage = controller.getRegisteredMage(damager);
@@ -428,7 +428,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         }
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onEntityChangeBlockEvent(EntityChangeBlockEvent event) {
         Entity entity = event.getEntity();
 
@@ -559,7 +559,7 @@ public class BlockController implements Listener, ChunkLoadListener {
         controller.checkNPCs(e.getWorld());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true) // Is cancellable in <1.13
     public void onChunkUnload(ChunkUnloadEvent e) {
         controller.pauseMagicBlocks(e.getChunk());
     }
