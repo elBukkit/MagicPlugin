@@ -2,12 +2,10 @@ help:
   main: |-
     `<title text="General Help">`
     &b&bull; &f`<help topic="commands" text="Help with commands">`
-    &b&bull; &f`<help topic="permissions" text="Help with permissions">`
     &b&bull; &f`<help topic="examples.main" text="Help with examples">` &7(inluding survival)
     &b&bull; &f`<help topic="resourcepack" text="Help with the resource pack">`
     &b&bull; &f`<help topic="faq" text="Common Problems and Solutions">`
     &b&bull; &f`<help topic="customization" text="Customization, localization and languages">`
-    &b&bull; &f`<help topic="integration" text="Integration with other plugins">`
     &b&bull; &f`<help topic="features" text="Other Magic features">`
     &b&bull; &f`<help topic="links" text="Links to web help and support">`
   features: |-
@@ -26,9 +24,20 @@ help:
     &b&bull; &f`<command command="/mmap give 1" text="Give a specific map by id">`
     &b&bull; &f`<command command="/mgive invisible_item_frame 6" text="Give yourself invisible item frames for map hanging">`
   faq: |-
-    `<title text="Common Problems and Solutions">`
+    `<title text="FAQ: Common Problems and Solutions">`
     &b&bull; &f`<command command="/wandp @p restore" text="Restore a player's lost wands">`
+    &b&bull; &f`<help topic="mana" text="About the mana system">`
     &b&bull; &f`<help topic="players" text="Managing Magic player data">`
+    &b&bull; &f`<help topic="missing_spells" text="My spells have gone missing from my wand inventory">`
+    &b&bull; &f`<help topic="integration" text="Integration with other plugins">`
+    &b&bull; &f`<command command="/wand fill" text="Add ALL spells to my wand">`
+  missing_spells: |-
+    `<title text="Missing Spells">`
+    &fIt is usually &overy rare&f that &6spells&f actually go missing!
+    &fThere are a few common events that make it hard to find your spells:
+    &b&bull; &6More than 8 spells&f: Once you have more than 8 spells, you need to &bopen the spell inventory&f &7(&b`{"keybind":"key.drop"}`&7) &fto see all of your spells.
+    &b&bull; &6New hotbar&f: At the &bStudent&f rank you get a second hotbar. Use the swap key &7(&b`{"keybind":"key.swapOffhand"}`&7) &fto switch to your new hotbar.
+    &b&bull; &6Second page of spells&f: Once you have more than 30 (or so) spells, you need to &bopen the spell inventory&f and then &bclick on your wand&f to change pages.
   shops: |-
     `<title text="Magic Shops">`
     &dMagic &fshops use a shared economy configuration for item pricing. Prices can be customized in &bitems&f configuration, or in-game.
@@ -36,6 +45,8 @@ help:
     &b&bull; &f`<command command="/mitem save diamond 1000" text="Save the item in your hand as a diamond with a value of 1000">`
     &b&bull; &f`<command command="/cast lootshop" text="Test the mob loot sell shop">`
     &b&bull; &f`<command command="/mnpc add lootshop" text="Add a loot shop NPC">`
+    &b&bull; &f`<command command="/meditor spell glassshop" text="Edit a shop, prices can be set directly in the shop config">`
+    &b&bull; &f`<link url="https://github.com/elBukkit/MagicPlugin/wiki/Shops" text="More shop information on the wiki">`
     &b&bull; &f`<help topic="playershops" text="About player shops">`
   playershops: |-
     `<title text="Player Shops">`
@@ -96,16 +107,38 @@ help:
   customization: |-
     `<title text="Customization">`
     &b&bull; &f`<help text="Change language or localize text" topic="localization">`
+    &b&bull; &f`<help text="Change mana" topic="mana_customization">`
     &b&bull; &f`<command command="/meditor spell mynewspell" text="Create a new spell using the editor">`
     &b&bull; &f`<command command="/meditor spell missile" text="See the config of the Magic Missile spell">`
+    &b&bull; &f`<command command="/meditor spell singularity" text="See the Singularly spell, a more complex example">`
+    &b&bull; &f`<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival" text="See all survival spell configs">`
     &b&bull; &f`<command command="/config reset spell missile" text="Reset a spell to its default configuration">`
     &b&bull; &f`<command command="/meditor spell mynewwand" text="Create a new wand using the editor">`
     &b&bull; &f`<command command="/meditor recipe newrecipe" text="Create a new crafting recipe">`
     &b&bull; &f`<help topic="common_customizations" text="Other common customizations">`
     &b&bull; &f`<link text="Customization wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Customization">`
   common_customizations: |-
+    `<title text="Common Customization">`
     &b&bull; &f`<command command="/mconfig configure spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
     &b&bull; &f`<command command="/mconfig configure spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
+  mana_customization: |-
+    `<title text="Mana Customization">`
+    &fStand-alone (demo) wands can have their mana set directly:
+    &b&bull; &f`<command command="/wand configure mana_max 1000" text="Configure max mana on a demo wand">`
+    &b&bull; &f`<command command="/wand configure mana_regeneration 100" text="Configure mana regeneration per second on a demo wand">`
+    &fClass-based wands (such as the &bsurvival&f and other builtin examples' wands) have their mana controlled by &bprogression&f and can not be directly changed.
+    &fMana for these classes and wands is controlled by the &bpath&f config, players mana max and regeneration changes as they &brank up&f.
+    &fUse &b`<command command="/meditor path beginner" text="the editor">` &fto change the &7override_properties&f section.
+    &fYou will need to repeat this for each path &7(&6student,apprentice,master&7) &fto fully change the mana progression for all players.
+    &fYou can use the &b`<command command="/mgive uberwand" text="Uberwand">` &ffor testing if you want unlimited mana.
+  mana: |-
+    `<title text="Mana">`
+    &6Magic &fuses a &bmana&f system in many of its configs, including survival, stars bending and even war (as ammo).
+    &fMana is a shared resource pool across all spells in a class (e.g. survival mana is separate from bending energy)
+    &fMana regenerates over time, up to a max value. &bWands&f show mana in custom mana bars, the XP display or other places as configured.
+    &bSpells&f each require a different amount of mana to cast.
+    &fSome special items, such as the &b`<command command="/mgive talisman" text="Mana Talisman">`&f and &b`<command command="/mgive wizardhelmet" text="Wizard armor">`&f can increase your mana stats.
+    &b&bull; &f`<help topic="mana_customization" text="Customizing mana and progressions">`
   localization: |-
     `<title text="Localization">`
     &b&bull; &f`<command command="/mconfig language RU" text="Изменить на русский">` &7(Russian)
@@ -123,6 +156,7 @@ help:
     &b&bull; &f`<command command="/mgive @p sp 1000" text="Give yourself some Spell Points">`
     &b&bull; &f`<command command="/mage reset @p caster" text="Reset your survival progress">`
     &b&bull; &f`<command command="/mage reset @p" text="Completely reset your magic player data">`
+    &b&bull; &f`<help topic="permissions" text="Help with permissions">`
     &b&bull; &fCommands on wiki: &6https://github.com/elBukkit/MagicPlugin/wiki/Commands
   permissions: |-
     `<title text="Permissions">`
@@ -154,8 +188,14 @@ help:
     &b&bull; &f`<link text="Resource pack issues guide" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
     &b&bull; &f`<command command="/mconfig configure config enable_resource_pack false" text="Disable the resource pack completely for the whole server">`
     &b&bull; &f`<command command="/getrp hires" text="Get the hi-res (less blocky) resource pack">`
-    &b&bull; &f`<command command="/mconfig configure config resource_pack hires" text="Set the hi-res resource pack as the default for your server">`
+    &b&bull; &f`<command command="/mconfig configure config resource_pack hires" text="Set the hi-res resource pack your server default">`
+    &b&bull; &f`<help topic="bedrock" text="Questions about Bedrock players">`
     &b&bull; &f`<help topic="resourcepacks" text="See all builtin resource packs">`
+  bedrock: |-
+    `<title text="Playing on Bedrock via Geyser">`
+    &6Magic &fcan work for &bBedrock&f players, using the &b`<link url="https://geysermc.org" text="Geyser">`&f plugin.
+    &fSince it can be hard to swing an item in Bedrock, it is recommended that these players use a &6Spellbook&f for spell casting.
+    &fUnfortunately at this time there is &4no way&f to get the resource pack to work for Bedrock players.
   resourcepacks: |-
     `<title text="Resource Packs">`
     &b&bull; &6`<command command="/getrp default" text="default">`&f: The blocky, Minecrafty less-resource intensive pack, used by Magic 9 and up
