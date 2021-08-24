@@ -159,7 +159,7 @@ help:
   resourcepacks: |-
     `<title text="Resource Packs">`
     &b&bull; &6`<command command="/getrp default" text="default">`&f: The blocky, Minecrafty less-resource intensive pack, used by Magic 9 and up
-    &b&bull; &6`<command command="/getrp borders" text="borders">`&f: A different set of spell icons with borders on the︎m
+    &b&bull; &6`<command command="/getrp borders" text="borders">`&f: A different set of spell icons with borders on them
     &b&bull; &6`<command command="/getrp painterly" text="painterly">`&f: A more &oartistic&f set of spell icons
     &b&bull; &6`<command command="/getrp lowres" text="lowres">`&f: The low-resolution spell icons used in Magic 5 and below, same as the skull textures
     &b&bull; &6`<command command="/getrp skulls" text="skulls">`&f: Use player heads instead of resource pack icons
