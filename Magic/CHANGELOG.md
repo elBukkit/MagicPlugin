@@ -265,7 +265,7 @@
  - Rebalance example wands to better match paths, turn off SP earn for them
    You should not be using these wands for anything other than demoing, but if you need to undo this change you can
    `/mconfig configure wand beginner earn_multiplier 1`
- - The `close_wand_on_world_change` option is now true by default if PerWorldInventory is detected, and
+ - The `close_wand_on_world_change` option is now true by default if PerWorldInventory or Multiverse-Inventories is detected, and
    also applies to game mode changes.
  - Wands now show instructions in lore while the wand inventory is open. This causes wands to "bounce" when
    opening them. If you don't like that effect, set `wand.inventory_open` to "" in messages

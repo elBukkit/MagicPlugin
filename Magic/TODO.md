@@ -1,8 +1,6 @@
 # TODO
 
 # Importanter
-
- - Using add_options on a shop gets weird, see if you can make spawnmobs lootshop work
  
  - Still some offhand bow issues: but the min_bowpull option seems to be broken
 
@@ -82,6 +80,7 @@
 
 # Near-Term Hopeful List
 
+ - Separate cooldown for fail/no_target
  - Can't offset `target: self` using py or ty (?)
  - Add editor support for the variables section, it's very confusing
  - Need a way to duplicate NPCs

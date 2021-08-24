@@ -8272,6 +8272,7 @@ public class MagicController implements MageController {
         String closeWandVariable = properties.getString("close_wand_on_world_change", variableBoolean);
         if (closeWandVariable.equalsIgnoreCase(variableBoolean)) {
             boolean hasPerWorldInventory = plugin.getServer().getPluginManager().getPlugin("PerWorldInventory") != null;
+            hasPerWorldInventory = hasPerWorldInventory || plugin.getServer().getPluginManager().getPlugin("Multiverse-Inventories") != null;
             if (hasPerWorldInventory) {
                 info("PerWorldInventory found, will close spell inventories on game mode or world change");
             }
