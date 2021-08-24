@@ -141,6 +141,15 @@ help:
     `<title text="Common Customization">`
     &b&bull; &f`<command command="/mconfig configure spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
     &b&bull; &f`<command command="/mconfig configure spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
+    &b&bull; &f`<help topic="donator_shops" text="How to set up a donator shop">`
+  donator_shops: |-
+    `<title text="Donator Shops">`
+    &dMagic &fcan be used to set up &bdonator shops&f with a variety of EULA-compliant vanity items.
+    &fWand appearances, effect colors, trails and hats are all possibilities.
+    &dMagic shops&f can handle the unlocking directly in-game, using a custom magic currency, or TokenManager integration.
+    &fCommands can also be used to perform unlocks directly if you'd prefer a web-based storefront to do the unlocking.
+    &fOnce unlocked a player can use a &dMagic shop&f menu to select their vanity items at any time.
+    &b&bull; &f`<link text="See Vanity Items on the wiki for more information" url="https://github.com/elBukkit/MagicPlugin/wiki/Vanity-Items">`
   mana_customization: |-
     `<title text="Mana Customization">`
     &fStand-alone (demo) wands can have their mana set directly:
