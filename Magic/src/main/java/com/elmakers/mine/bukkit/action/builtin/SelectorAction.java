@@ -55,6 +55,7 @@ import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.google.common.base.Strings;
 
@@ -209,6 +210,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable String kitKey;
         protected boolean allowAttributeReduction = false;
         protected int attributeAmount = 0;
+        protected boolean isSell = false;
         protected boolean applyToWand = false;
         protected boolean applyToCaster = false;
         protected MagicPropertyType applyTo = null;
@@ -236,6 +238,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected @Nullable String[] fallbackCostTypes = null;
 
         public SelectorConfiguration(ConfigurationSection configuration) {
+            parseOverrides(configuration);
             parseIcon(configuration);
             parse(configuration);
         }
@@ -243,10 +246,22 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected SelectorConfiguration() {
         }
 
+        protected void parseOverrides(ConfigurationSection configuration) {
+            // Sell shop overrides
+            isSell = configuration.getBoolean("sell", isSell);
+            if (isSell) {
+                convertToSell(configuration);
+            }
+
+        }
+
         protected void parseIcon(ConfigurationSection configuration) {
             iconPlaceholderKey = configuration.getString("placeholder_icon", iconPlaceholderKey);
             iconKey = configuration.getString("icon");
             iconDisabledKey = configuration.getString("icon_disabled");
+        }
+
+        protected void convertToSell(ConfigurationSection configuration) {
         }
 
         protected void parse(ConfigurationSection configuration) {
@@ -603,6 +618,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.costs = defaults.costs;
             this.earnScale = defaults.earnScale;
             this.costScale = defaults.costScale;
+            this.isSell = defaults.isSell;
             this.warpKey = defaults.warpKey;
             this.castSpell = defaults.castSpell;
             this.castSpellParameters = defaults.castSpellParameters;
@@ -647,6 +663,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             this.showFree = defaults.showFree;
             this.lore = configuration.contains("lore") ? configuration.getStringList("lore") : new ArrayList<>();
 
+            parseOverrides(configuration);
             parseIcon(configuration);
             placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
             if (placeholder) {
@@ -782,6 +799,46 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             updateIcon(context);
+        }
+
+        @Override
+        protected void convertToSell(ConfigurationSection configuration) {
+            // Support scale parameter
+            if (configuration.contains("scale") && !configuration.contains("earn_scale")) {
+                configuration.set("earn_scale", configuration.get("scale"));
+                configuration.set("scale", null);
+            }
+
+            // Supply selected message
+            if (!configuration.contains("selected")) {
+                configuration.set("selected", context.getController().getMessages().get("shops.sold"));
+            }
+
+            String itemName = configuration.getString("item");
+            if (itemName == null || itemName.equalsIgnoreCase("none")) return;
+
+            configuration.set("item", null);
+            configuration.set("icon", itemName);
+            ItemStack item = parseItem(itemName);
+            if (item == null) return;
+
+            Object costs = configuration.get("cost");
+            if (costs != null) {
+                configuration.set("earn", costs);
+                configuration.set("cost", null);
+            } else {
+                Double worth = context.getController().getEarns(item, defaultConfiguration.earnType);
+                if (worth != null && worth > 0) {
+                    configuration.set("earn", worth);
+                }
+            }
+            ConfigurationSection costSection = configuration.createSection("costs");
+            CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
+            if (currency != null) {
+                costSection.set(currency.getType(), currency.getAmount());
+            } else {
+                costSection.set(itemName, item.getAmount());
+            }
         }
 
         private void makePlaceholder() {

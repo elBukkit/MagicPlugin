@@ -11,7 +11,6 @@ import java.util.Set;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -21,9 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
-import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
-import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 
 public class ShopAction extends SelectorAction {
     private boolean showNoPermission;
@@ -46,20 +43,6 @@ public class ShopAction extends SelectorAction {
         parameters.set("items", null);
 
         // Sell shop overrides
-        boolean isSellShop = parameters.getBoolean("sell");
-        if (isSellShop) {
-            // Support scale parameter
-            if (parameters.contains("scale") && !parameters.contains("earn_scale")) {
-                parameters.set("earn_scale", parameters.get("scale"));
-                parameters.set("scale", null);
-            }
-
-            // Supply selected message
-            if (!parameters.contains("selected")) {
-                parameters.set("selected", context.getController().getMessages().get("shops.sold"));
-            }
-        }
-
         if (!parameters.contains("cost_type") && (showPath || showExtra || showRequired || parameters.contains("spells"))) {
             parameters.set("cost_type", "sp");
         }
@@ -107,6 +90,7 @@ public class ShopAction extends SelectorAction {
         }
 
         if (addSellShop) {
+            boolean isSellShop = parameters.getBoolean("sell");
             int startNextLine = ((int)Math.floor(getNumSlots() / 9)) * 9;
             int buttonSlot = startNextLine + 8;
             ConfigurationSection sellShopConfig = ConfigurationUtils.newConfigurationSection();
@@ -135,7 +119,8 @@ public class ShopAction extends SelectorAction {
             Collection<ConfigurationSection> addOptionConfigs = new ArrayList<>();
             Set<String> keys = addOptions.getKeys(false);
             for (String key : keys) {
-                addOptionConfigs.add(addOptions.getConfigurationSection(key));
+                ConfigurationSection optionConfig = addOptions.getConfigurationSection(key);
+                addOptionConfigs.add(optionConfig);
             }
             loadOptions(addOptionConfigs, parameters);
         }
@@ -284,35 +269,6 @@ public class ShopAction extends SelectorAction {
                 }
             }
 
-            if (parameters.getBoolean("sell", false)) {
-                for (ConfigurationSection itemConfig : itemConfigs) {
-                    String itemName = itemConfig.getString("item");
-                    if (itemName == null || itemName.equalsIgnoreCase("none")) continue;
-
-                    itemConfig.set("item", null);
-                    itemConfig.set("icon", itemName);
-                    ItemStack item = parseItem(itemName);
-                    if (item == null) continue;
-
-                    Object costs = itemConfig.get("cost");
-                    if (costs != null) {
-                        itemConfig.set("earn", costs);
-                        itemConfig.set("cost", null);
-                    } else {
-                        Double worth = context.getController().getEarns(item, defaultConfiguration.earnType);
-                        if (worth != null && worth > 0) {
-                            itemConfig.set("earn", worth);
-                        }
-                    }
-                    ConfigurationSection costSection = itemConfig.createSection("costs");
-                    CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
-                    if (currency != null) {
-                        costSection.set(currency.getType(), currency.getAmount());
-                    } else {
-                        costSection.set(itemName, item.getAmount());
-                    }
-                }
-            }
             loadOptions(itemConfigs);
         }
     }
