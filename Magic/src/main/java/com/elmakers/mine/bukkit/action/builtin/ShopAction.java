@@ -72,6 +72,14 @@ public class ShopAction extends SelectorAction {
             parameters.set("apply_name_to_item", true);
         }
 
+        // Allow adding options into this shop
+        // This has to be done after adding all of the shop items, though, so we will
+        // save it for later and clear it for now
+        ConfigurationSection addOptions = parameters.getConfigurationSection("add_options");
+        if (addOptions != null) {
+            parameters.set("add_options", null);
+        }
+
         super.prepare(context, parameters);
 
         // Restore items list. This is kind of messy, but so is this whole action.
@@ -120,6 +128,16 @@ public class ShopAction extends SelectorAction {
             List<ConfigurationSection> buttonConfigs = new ArrayList<>();
             buttonConfigs.add(sellShopConfig);
             loadOptions(buttonConfigs);
+        }
+
+        // Add any extra options after all shop items
+        if (addOptions != null) {
+            Collection<ConfigurationSection> addOptionConfigs = new ArrayList<>();
+            Set<String> keys = addOptions.getKeys(false);
+            for (String key : keys) {
+                addOptionConfigs.add(addOptions.getConfigurationSection(key));
+            }
+            loadOptions(addOptionConfigs, parameters);
         }
     }
 
