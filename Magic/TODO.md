@@ -26,7 +26,8 @@
  - Make brushes work (swing to use)
 
 # Vivecraft
- 
+
+ - Vivecraft integration: https://github.com/jrbudda/Vivecraft_Spigot_Extensions#metadata
  - Config option to turn on/off
  - Use wand offset somehow to make casts come from wand
  - Handle "seated: true" case, I *think* it should just turn off the hand code
@@ -94,7 +95,6 @@
 
 # Near-Term Hopeful List
 
- - Vivecraft integration: https://github.com/jrbudda/Vivecraft_Spigot_Extensions#metadata
  - Separate cooldown for fail/no_target
  - Can't offset `target: self` using py or ty (?)
  - Add editor support for the variables section, it's very confusing

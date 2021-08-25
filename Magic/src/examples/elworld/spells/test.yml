@@ -1,0 +1,63 @@
+frostmanipulationcast:
+  icon: diamond_pickaxe:31
+  icon_disabled: diamond_pickaxe:331
+  upgrade_required_path: waterexpert
+  category: waterbending
+  worth: 2500
+  actions:
+    cast:
+      - class: CheckBlock
+        direction: down
+        use_target: false
+        set_target: true
+        allowed: frost
+        actions:
+          - class: Brush
+            sample: true
+            actions:
+              - class: PlayEffects
+                effects: castsuccess
+              - class: EntityProjectile
+                type: falling_block
+                use_target_location: false
+                hitbox_size: 0.50
+                hitbox: true
+                actions:
+                  - class: Damage
+                    player_damage: 3.0
+                    entity_damage: 3.0
+                    actions:
+                      - class: Velocity
+                        speed: 100
+        fail:
+          - class: ApplyCooldown
+            spells: frostmanipulationcast
+            duration: 2000
+          - class: PlayEffects
+            effects: fail
+          - class: Message
+            message: "&bFailed to perform the move! You must be standing on snow or ice."
+  effects:
+    castsuccess:
+      - class: EffectSingle
+        sound: bending.air1
+        sound_pitch: 0
+        location: both
+    fail:
+      - class: EffectSingle
+        location: origin
+        sound: block_note_block_bass
+        sound_broadcast: false
+        sound_volume: 0.7
+        sound_pitch: 1.2
+  parameters:
+    target: other
+    target_self: false
+    range: 40
+    undo: 10000
+    #    cooldown: 7000
+    #    velocity: 100
+    message_type: action_bar
+    message_target: false
+  costs:
+    mana: 200

@@ -3004,6 +3004,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return offhandWand;
     }
 
+    // Gets the main hand wand if it is a bow or crossbow, otherwise gets the offhand wand
+    public Wand getProjectileWand() {
+        Wand wand = getActiveWand();
+        if (wand != null) {
+            Material wandIcon = wand.getIcon().getMaterial();
+            if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) {
+                wand = null;
+            }
+        }
+        if (wand == null) {
+            wand = getOffhandWand();
+            if (wand != null) {
+                Material wandIcon = wand.getIcon().getMaterial();
+                if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) {
+                    wand = null;
+                }
+            }
+        }
+        return wand;
+    }
+
     @Override
     public com.elmakers.mine.bukkit.api.block.MaterialBrush getBrush() {
         return brush;
