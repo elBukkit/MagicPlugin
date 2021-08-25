@@ -28,6 +28,7 @@ public class Help {
     public void load(ConfigurationSection helpSection) {
         Collection<String> keys = helpSection.getKeys(true);
         for (String key : keys) {
+            if (helpSection.isConfigurationSection(key)) continue;
             String value = helpSection.getString(key);
             HelpTopic helpTopic = new HelpTopic(messages, key, value);
             topics.put(key, helpTopic);

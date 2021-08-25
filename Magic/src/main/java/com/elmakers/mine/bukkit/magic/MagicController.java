@@ -2229,7 +2229,7 @@ public class MagicController implements MageController {
         }
         String exampleInstructions = messages.get("examples." + exampleKey + ".instructions", "");
         if (exampleInstructions.isEmpty()) {
-            mage.sendMessage(messages.get("examples.not_found"));
+            mage.sendMessage(messages.get("examples.not_found").replace("$example", exampleKey));
             return;
         }
         mage.sendMessage(exampleInstructions);
