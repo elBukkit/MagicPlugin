@@ -86,6 +86,7 @@
  - Allow a `messages` section on a spell config. to embed messages right in a spell (useful for Selector, Shop or other text-heavy spells)
  - Add `unlock_earns` parameter to Selector, rewardshop example of single-time requirement-base rewards
  - The `spawnmobs` example magic mobs will rarely drop special loot that can be sold in the `lootshop`
+ - Add `use_brush: helmet` option to `ArmorStandProjectile` so it can put a sampled block on the armor stand
 
 ## Changes
 

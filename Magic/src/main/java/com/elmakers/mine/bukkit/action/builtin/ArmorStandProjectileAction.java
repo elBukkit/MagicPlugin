@@ -13,6 +13,7 @@ import org.bukkit.util.EulerAngle;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -52,6 +53,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
 
     private InventorySlot wandSlot;
     private boolean useWand;
+    private String useBrushItem;
     private ItemStack wandItem;
     private int slotNumber;
 
@@ -104,6 +106,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         unbreakableItems = parameters.getBoolean("unbreakable_items", false);
         visibleDelayTicks = parameters.getInt("visible_delay_ticks", 1);
         useWand = parameters.getBoolean("mount_wand", false);
+        useBrushItem = parameters.getString("use_brush");
 
         String wandSlotString = parameters.getString("wand_slot", "HELMET");
         wandSlot = InventorySlot.parse(wandSlotString);
@@ -122,6 +125,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     @Override
     public SpellResult start(CastContext context) {
         MageController controller = context.getController();
+        checkItems(context);
         Location location = adjustStartLocation(sourceLocation.getLocation(context));
         ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityLib.getCompatibilityUtils().createArmorStand(location));
         armorStand.setMarker(armorStandMarker);
@@ -234,6 +238,37 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         }
         stepCount++;
         return result;
+    }
+
+    @Nullable
+    private void checkItems(CastContext context) {
+        if (useBrushItem != null) {
+            MaterialBrush brush = context.getBrush();
+            if (brush == null || !brush.isValid()) {
+                return;
+            }
+            ItemData brushItem = context.getController().getOrCreateItem(brush.getKey());
+            if (brushItem == null) {
+                return;
+            }
+            switch (useBrushItem) {
+                case "right_arm":
+                    rightArmItem = brushItem;
+                    break;
+                case "helmet":
+                    helmetItem = brushItem;
+                    break;
+                case "chestplate":
+                    chestplateItem = brushItem;
+                    break;
+                case "leggings":
+                    leggingsItem = brushItem;
+                    break;
+                case "boots":
+                    bootsItem = brushItem;
+                    break;
+            }
+        }
     }
 
     @Nullable

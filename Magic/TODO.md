@@ -2,8 +2,6 @@
 
 # Importanter
 
- - Growth doesn't work on sugar cane
-
  - Spells that disable mana regen need to constantly reset the mana catchup timestamp (idk, looks like they do...)
 
  - All the zombies on my demo server seem to be named...
@@ -21,8 +19,6 @@
 # Vivecraft
 
  - Vivecraft integration: https://github.com/jrbudda/Vivecraft_Spigot_Extensions#metadata
- - Config option to turn on/off
- - Use wand offset somehow to make casts come from wand
  - Handle "seated: true" case, I *think* it should just turn off the hand code
 
 # Important
