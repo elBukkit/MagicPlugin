@@ -255,6 +255,7 @@
  - Add pose parameters to armor stands
  - Add TokenManager integration, adds `tokens` currency
  - Add Vivecraft support, using hand and head locations (WIP, sadly I can't even test it myself!)
+ - Add `no_bowpull` action on wands, for bows to take an action when you don't pull the bow back far enough
 
 ## Changes
 

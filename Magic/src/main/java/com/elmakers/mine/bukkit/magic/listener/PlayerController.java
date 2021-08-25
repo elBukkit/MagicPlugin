@@ -724,7 +724,8 @@ public class PlayerController implements Listener {
         Mage mage = controller.getMage(player);
         Wand wand = mage.checkOffhandWand();
 
-        if (wand == null || !canUse(mage, wand)) {
+        // Bow casting is handled on projectile launch
+        if (wand == null || !canUse(mage, wand) || DefaultMaterials.isBow(wand.getIcon().getMaterial())) {
             return;
         }
 

@@ -82,6 +82,7 @@ controls:
   right_click: '&fInteract &7(&a`{"keybind":"key.use"}`&7)'
   left_click: '&fSwing &7(&a`{"keybind":"key.attack"}`&7)'
   swap: '&fSwap &7(&a`{"keybind":"key.swapOffhand"}`&7)'
+  no_bowpull: '&fPull the bow back &oslightly'
 
 # Used as replacements when chat components are not available
 keybind:

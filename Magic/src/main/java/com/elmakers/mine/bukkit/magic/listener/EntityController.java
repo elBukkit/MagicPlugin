@@ -657,7 +657,10 @@ public class EntityController implements Listener {
         double minPull = wand.getDouble("cast_min_bowpull");
         double pull = mage.getLastBowPull();
         if (minPull > 0 && pull < minPull) {
+            // Need to cancel this if wand inventory is open otherwise we consume arrow icons
             if (wand.isInventoryOpen()) event.setCancelled(true);
+            // Also cancel if the wand has an action bound
+            if (wand.performAction(wand.getNoBowpullAction())) event.setCancelled(true);
             return;
         }
 

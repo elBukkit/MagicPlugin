@@ -185,10 +185,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private WandAction rightClickAction = WandAction.NONE;
     private WandAction dropAction = WandAction.NONE;
     private WandAction swapAction = WandAction.NONE;
+    private WandAction noBowpullAction = WandAction.NONE;
     private WandAction leftClickSneakAction = WandAction.NONE;
     private WandAction rightClickSneakAction = WandAction.NONE;
     private WandAction dropSneakAction = WandAction.NONE;
     private WandAction swapSneakAction = WandAction.NONE;
+    private WandAction noBowpullSneakAction = WandAction.NONE;
 
     private MaterialAndData icon = null;
     private MaterialAndData inactiveIcon = null;
@@ -1208,6 +1210,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             controlKey = "left_click";
         } else if (swapAction == action) {
             controlKey = "swap";
+        } else if (noBowpullAction == action) {
+            controlKey = "no_bowpull";
         }
 
         return controlKey;
@@ -2030,10 +2034,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         rightClickAction = parseWandAction(getString("right_click"), rightClickAction);
         dropAction = parseWandAction(getString("drop"), dropAction);
         swapAction = parseWandAction(getString("swap"), swapAction);
+        noBowpullAction = parseWandAction(getString("no_bowpull"), leftClickAction);
         leftClickSneakAction = parseWandAction(getString("left_click_sneak"), leftClickSneakAction);
         rightClickSneakAction = parseWandAction(getString("right_click_sneak"), rightClickSneakAction);
         dropSneakAction = parseWandAction(getString("drop_sneak"), dropSneakAction);
         swapSneakAction = parseWandAction(getString("swap_sneak"), swapSneakAction);
+        noBowpullSneakAction = parseWandAction(getString("no_bowpull_sneak"), noBowpullSneakAction);
 
         // Update glyph bar configuration
         glyphHotbar.load(getConfigurationSection("glyph_hotbar"));
@@ -3091,6 +3097,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             addInstructionLore("right_click", rightClickAction, lore);
             addInstructionLore("drop", dropAction, lore);
             addInstructionLore("swap", swapAction, lore);
+            addInstructionLore("no_bowpull", noBowpullAction, lore);
         }
         return lore;
     }
@@ -6618,6 +6625,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return swapSneakAction != WandAction.NONE && mage != null && mage.isSneaking() ? swapSneakAction : swapAction;
     }
 
+    public WandAction getNoBowpullAction() {
+        return noBowpullSneakAction != WandAction.NONE && mage != null && mage.isSneaking() ? noBowpullSneakAction : noBowpullAction;
+    }
+
     @Override
     public boolean performAction(WandAction action) {
         WandMode mode = getMode();
@@ -6690,6 +6701,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     deactivate();
                     mage.checkWandNextTick();
                 }
+                break;
+            case CANCEL:
+                // Just here to return true
                 break;
             default:
                 return false;
@@ -6976,7 +6990,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else if (key.equals("left_click") || key.equals("right_click")
                 || key.equals("drop") || key.equals("swap")
                 || key.equals("left_click_sneak") || key.equals("right_click_sneak")
-                || key.equals("drop_sneak") || key.equals("swap_sneak")) {
+                || key.equals("drop_sneak") || key.equals("swap_sneak")
+                || key.equals("no_bowpull") || key.equals("no_bowpull_sneak")) {
             for (WandAction action : WandAction.values()) {
                 options.add(action.name().toLowerCase());
             }

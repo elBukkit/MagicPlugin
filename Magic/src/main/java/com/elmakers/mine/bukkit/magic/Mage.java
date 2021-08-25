@@ -1702,7 +1702,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             try {
                 wand.tickMana();
                 wand.setActiveMage(this);
-                castResult = wand.cast();
+                castResult = wand.performAction(leftClickAction);
 
                 Player player = getPlayer();
                 if (player != null) {
@@ -3012,7 +3012,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Wand wand = getActiveWand();
         if (wand != null) {
             Material wandIcon = wand.getIcon().getMaterial();
-            if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) {
+            if (!DefaultMaterials.isBow(wandIcon)) {
                 wand = null;
             }
         }
@@ -3020,7 +3020,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             wand = getOffhandWand();
             if (wand != null) {
                 Material wandIcon = wand.getIcon().getMaterial();
-                if (wandIcon != Material.BOW && !wandIcon.name().equals("CROSSBOW")) {
+                if (!DefaultMaterials.isBow(wandIcon)) {
                     wand = null;
                 }
             }

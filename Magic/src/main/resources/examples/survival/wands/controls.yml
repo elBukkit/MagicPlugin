@@ -35,6 +35,16 @@ controls_hybrid:
       properties:
         use_active_name: true
 
+controls_bow_hybrid:
+  inherit: controls_hybrid
+  left_click: cycle_active_hotbar
+  left_click_sneak: cycle_active_hotbar_reverse
+  right_click: none
+  right_click_sneak: none
+  swappable: true
+  swap: none
+  hotbar_count: 1
+
 controls_chest:
   icon: chest{CustomModelData:18001}
   legacy_icon: diamond_axe:205

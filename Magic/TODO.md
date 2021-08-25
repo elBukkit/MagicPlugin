@@ -7,8 +7,6 @@
  - Test the test.yml spell, aim downwards does it not work?
  
  - Magic welcome header looks broken in elTest .. it's 1.17 not sure what's up
- 
- - Still some offhand bow issues: the min_bowpull option seems to be broken
 
  - Spells that disable mana regen need to constantly reset the mana catchup timestamp
 

@@ -409,4 +409,8 @@ public class DefaultMaterials {
     public static boolean isAir(Material material) {
         return getInstance().air.testMaterial(material);
     }
+
+    public static boolean isBow(Material material) {
+        return material == Material.BOW || material.name().equals("CROSSBOW");
+    }
 }
