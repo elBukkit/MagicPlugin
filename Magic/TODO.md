@@ -10,8 +10,6 @@
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
    
- - Modifiers should work on armor
-
 # Glyph Wand
 
  - Make brushes work (swing to use)

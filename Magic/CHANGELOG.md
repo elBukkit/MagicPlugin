@@ -103,6 +103,8 @@
  - Turn AureliumSkills mana back off by default, it's way too much of a mess. If you'd like to back on, use
    `/mconfig configure config aurelium_skills.use_mana true`
  - Changes and improvements to offhand casting, left-swing action always used
+ - Modifiers can now be used on magic armor, however this required changing the save data format for modifiers, so
+   any modifiers you have manually applied via `/mage modifier add` will need to be re-applied.
 
 # 9.4.4
 

@@ -40,11 +40,10 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
         trigger("removed");
     }
 
-    public void onAdd(int duration) {
+    public void onAdd() {
         setProperty("last_add", System.currentTimeMillis());
         activate();
         giveItems("items");
-        reset(duration);
         trigger("added");
     }
 

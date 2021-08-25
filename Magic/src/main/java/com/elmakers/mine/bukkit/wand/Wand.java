@@ -4979,14 +4979,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Play deactivate FX
         playPassiveEffects("deactivate");
 
-        // Remove modifiers
-        List<String> modifiers = getStringList("modifiers");
-        if (modifiers != null) {
-            for (String key : modifiers) {
-                mage.removeModifier(key);
-            }
-        }
-
         // Cancel effects
         if (wandContext != null) {
             int cancelDelay = getInt("cancel_effects_delay", 0);
@@ -5607,14 +5599,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         activationTimestamp = System.currentTimeMillis();
         this.isInOffhand = offhand;
         this.heldSlot = offhand ? OFFHAND_SLOT : player.getInventory().getHeldItemSlot();
-
-        // Add modifiers
-        List<String> modifiers = getStringList("modifiers");
-        if (modifiers != null) {
-            for (String key : modifiers) {
-                mage.addModifier(key);
-            }
-        }
 
         discoverRecipes("discover_recipes");
 

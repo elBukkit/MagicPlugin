@@ -1,0 +1,5 @@
+invisible:
+  name: Helm of Invisibility
+  icon: chainmail_helmet
+  modifiers: hidden
+  passive: true

@@ -191,7 +191,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
 
         Map<String, ConfigurationSection> modifierProperties = mage.getModifierProperties();
         if (modifierProperties != null) {
-            ConfigurationSection modifiersSection = saveFile.createSection("modifiers");
+            ConfigurationSection modifiersSection = saveFile.createSection("transient_modifiers");
             for (Map.Entry<String, ConfigurationSection> entry : modifierProperties.entrySet()) {
                 ConfigurationSection modifierSection = modifiersSection.createSection(entry.getKey());
                 ConfigurationUtils.addConfigurations(modifierSection, entry.getValue());
@@ -283,7 +283,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
 
         // Load modifiers
         Map<String, ConfigurationSection> modifierProperties = new HashMap<>();
-        ConfigurationSection modifiers = saveFile.getConfigurationSection("modifiers");
+        ConfigurationSection modifiers = saveFile.getConfigurationSection("transient_modifiers");
         if (modifiers != null) {
             Set<String> modifierKeys = modifiers.getKeys(false);
             for (String modifierKey : modifierKeys) {

@@ -155,7 +155,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final @Nonnull MageProperties properties;
     private final Map<String, MageClass> classes = new HashMap<>();
     private final Map<String, MageModifier> modifiers = new HashMap<>();
-    private final Set<MageModifier> removeModifiers = new HashSet<>();
+    private final Map<String, MageModifier> transientModifiers = new HashMap<>();
     private final Map<String, Double> attributes = new HashMap<>();
     private ConfigurationSection variables;
     private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
@@ -1217,7 +1217,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 classes.put(mageClassKey, newClass);
             }
 
-            this.modifiers.clear();
+            this.transientModifiers.clear();
             Map<String, ConfigurationSection> modifierProperties = data.getModifierProperties();
             for (Map.Entry<String, ConfigurationSection> entry : modifierProperties.entrySet()) {
                 String modifierKey = entry.getKey();
@@ -1225,7 +1225,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (template != null) {
                     MageModifier newModifier = new MageModifier(this, template);
                     newModifier.load(entry.getValue());
-                    modifiers.put(modifierKey, newModifier);
+                    transientModifiers.put(modifierKey, newModifier);
                 }
             }
 
@@ -1249,6 +1249,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             setActiveClass(data.getActiveClass());
 
             // Re-activate unlocked classes
+            updateModifiers();
             activateClasses();
             activateModifiers();
 
@@ -1588,7 +1589,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             data.setClassProperties(classProperties);
 
             Map<String, ConfigurationSection> modifierProperties = new HashMap<>();
-            for (Map.Entry<String, MageModifier> entry : modifiers.entrySet()) {
+            for (Map.Entry<String, MageModifier> entry : transientModifiers.entrySet()) {
                 modifierProperties.put(entry.getKey(), entry.getValue().getConfiguration());
             }
             data.setModifierProperties(modifierProperties);
@@ -1859,17 +1860,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         // Check for expired modifiers
-        for (MageModifier modifier : modifiers.values()) {
+        // Passive modifiers (from wands, armor and classes) don't expire
+        boolean needsUpdate = false;
+        Iterator<Map.Entry<String, MageModifier>> modifierIterator = transientModifiers.entrySet().iterator();
+        while (modifierIterator.hasNext()) {
+            MageModifier modifier = modifierIterator.next().getValue();
             if (modifier.hasDuration() && modifier.getTimeRemaining() <= 0) {
-                removeModifiers.add(modifier);
+                modifierIterator.remove();
+                needsUpdate = true;
             }
         }
-        for (MageModifier modifier : removeModifiers) {
-            modifiers.remove(modifier.getKey());
-            modifier.onRemoved();
-        }
-        if (!removeModifiers.isEmpty()) {
-            removeModifiers.clear();
+        if (needsUpdate) {
             updatePassiveEffects();
         }
 
@@ -4220,9 +4221,68 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return Math.min(1, stackValue + currentValue);
     }
 
+    protected void addModifiers(CasterProperties properties, Set<String> modifierKeys) {
+        List<String> modifiers = properties.getStringList("modifiers");
+        if (modifiers != null) {
+            modifierKeys.addAll(modifiers);
+        }
+    }
+
+    private void updateModifiers() {
+        Set<String> modifierKeys = new HashSet<>();
+        addModifiers(properties, modifierKeys);
+        if (activeClass != null) {
+            addModifiers(activeClass, modifierKeys);
+        }
+        for (MageClass mageClass : classes.values()) {
+            if (mageClass != activeClass && !mageClass.isLocked() && mageClass.isPassive()) {
+                addModifiers(mageClass, modifierKeys);
+            }
+        }
+        if (activeWand != null && !activeWand.isWorn()) {
+            addModifiers(activeWand, modifierKeys);
+        }
+        if (offhandWand != null && !offhandWand.isWorn()) {
+            addModifiers(offhandWand, modifierKeys);
+        }
+        for (Wand armorWand : activeArmor.values()) {
+            if (armorWand != null) {
+                addModifiers(armorWand, modifierKeys);
+            }
+        }
+
+        // Resolve any modifiers we need to add or remove
+        Set<String> currentKeys = modifiers.keySet();
+
+        // Add new modifiers
+        for (String modifierKey : modifierKeys) {
+            if (!currentKeys.contains(modifierKey)) {
+                applyModifier(modifierKey);
+            }
+        }
+
+        // Now take transient modifiers into account
+        modifierKeys.addAll(transientModifiers.keySet());
+
+        // Remove any modifiers that are now gone
+        for (String currentKey : currentKeys) {
+            if (!modifierKeys.contains(currentKey)) {
+                unapplyModifier(currentKey);
+            }
+        }
+
+        // Finally add transient modifiers(
+        for (Map.Entry<String, MageModifier> entry : transientModifiers.entrySet()) {
+            applyModifier(entry.getKey(), entry.getValue());
+        }
+    }
+
     @Override
     public void updatePassiveEffects() {
-        // Need to do attributes first, in case they are used by any of the other properties
+        // Do modifiers first, since they could modify attribute values
+        updateModifiers();
+
+        // Need to do attributes next, in case they are used by any of the other properties
         attributes.clear();
         double previousHealthScale = healthScale;
         healthScale = 0;
@@ -5298,6 +5358,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean addModifier(@Nonnull String key, int duration, @Nullable ConfigurationSection properties) {
+        // Check all modifiers, we don't apply a transient modifier if there is a permanent one already
         MageModifier modifier = modifiers.get(key);
         // TODO: Property diff/stacking?
         if (modifier != null) {
@@ -5308,6 +5369,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return false;
             }
             modifier.reset(duration);
+            // Don't need to update passive effects here, all we did was extend the duration
+            if (!transientModifiers.containsKey(key)) {
+                // This shouldn't really happen, this means we have a permanent but timed modifier?
+                // I'd like to know if it happens
+                controller.getLogger().warning("Modifier seems to have been applied incorrectly, is permanent but has a duration " + key);
+            }
             return true;
         }
         ModifierTemplate template = controller.getModifierTemplate(key);
@@ -5319,18 +5386,56 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         template = template.getMageTemplate(this);
         modifier = new MageModifier(this, template);
         modifier.loadProperties();
-        modifiers.put(key, modifier);
-        modifier.onAdd(duration);
+        modifier.reset(duration);
+        transientModifiers.put(key, modifier);
         updatePassiveEffects();
+        return true;
+    }
+
+    public boolean applyModifier(@Nonnull String key) {
+        return applyModifier(key, null);
+    }
+
+    public boolean applyModifier(@Nonnull String key, MageModifier transientTemplate) {
+        MageModifier modifier = modifiers.get(key);
+        // At this point the only modifier that should be applied already here would be a permanent one
+        if (modifier != null) {
+            if (modifier.hasDuration()) {
+                controller.getLogger().warning("Unexpected duplicate timed modifier: " + key);
+            }
+            return false;
+        }
+
+        // Use the transient modifier directly, or create a new permanent one
+        modifier = transientTemplate;
+        if (modifier == null) {
+            ModifierTemplate template = controller.getModifierTemplate(key);
+            if (template == null) {
+                controller.getLogger().warning("Invalid modifier key: " + key);
+                return false;
+            }
+
+            template = template.getMageTemplate(this);
+            modifier = new MageModifier(this, template);
+        }
+        modifiers.put(key, modifier);
+        modifier.onAdd();
         return true;
     }
 
     @Override
     public MageModifier removeModifier(@Nonnull String key) {
+        MageModifier modifier = transientModifiers.remove(key);
+        if (modifier != null) {
+            updatePassiveEffects();
+        }
+        return modifier;
+    }
+
+    public MageModifier  unapplyModifier(@Nonnull String key) {
         MageModifier modifier = modifiers.remove(key);
         if (modifier != null) {
             modifier.onRemoved();
-            updatePassiveEffects();
         }
         return modifier;
     }

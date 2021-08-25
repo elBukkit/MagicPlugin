@@ -32,6 +32,9 @@
  - Setting `url_icons_enabled: true` will now force all spell icons to use url skulls, even if it has no url. A
    default icon will be used. This replaces the old behavior of falling back to an item icon.
    This behavior can be changed by `/meditor icon default` and setting `url: ""`.
+   
+ - The way magic modifiers are saved was changed, any long-running or permanent (via `/mage modifier add`) modifiers
+   will need to be re-applied. I apologize for any inconvenience this causes, let me know if it's a big problem for you.
 
 # 9.4
 
