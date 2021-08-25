@@ -15,11 +15,12 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.logging.Level;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -69,6 +70,8 @@ import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
+import net.md_5.bungee.api.ChatColor;
+
 public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
     // (for instance when undoing a spell in an unloaded chunk that threw a ton of different falling blocks)
@@ -79,6 +82,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected static int BLOCK_BREAK_RANGE = 64;
 
     protected final UUID emptyUUID = new UUID(0L, 0L);
+    protected final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
     protected ItemStack dummyItem;
     protected boolean hasDumpedStack = false;
     protected boolean teleporting = false;
@@ -741,8 +745,20 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         // This event can't be cancelled in this version of Spigot
     }
 
+    protected String getHexColor(String hexCode) {
+        // Just blanking them out for now, not going to try to match
+        return "";
+    }
+
     @Override
     public String translateColors(String message) {
+        Matcher matcher = hexColorPattern.matcher(message);
+        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
+        while (matcher.find()) {
+            String match = matcher.group(1);
+            matcher.appendReplacement(buffer, getHexColor(match));
+        }
+        message = matcher.appendTail(buffer).toString();
         return ChatColor.translateAlternateColorCodes('&', message);
     }
 

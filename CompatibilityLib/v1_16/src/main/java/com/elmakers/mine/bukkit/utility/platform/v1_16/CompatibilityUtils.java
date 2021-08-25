@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -29,8 +27,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.chat.ComponentSerializer;
 
 public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_15.CompatibilityUtils {
-    private final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
-
     public CompatibilityUtils(Platform platform) {
         super(platform);
     }
@@ -83,15 +79,8 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
-    public String translateColors(String message) {
-        message = super.translateColors(message);
-        Matcher matcher = hexColorPattern.matcher(message);
-        StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
-        while (matcher.find()) {
-            String match = matcher.group(1);
-            matcher.appendReplacement(buffer, ChatColor.of(match).toString());
-        }
-        return matcher.appendTail(buffer).toString();
+    protected String getHexColor(String hexCode) {
+        return ChatColor.of(hexCode).toString();
     }
 
     @Override
