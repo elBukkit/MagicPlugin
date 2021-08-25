@@ -60,7 +60,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
         if (args[0].equalsIgnoreCase("delete"))
         {
-            if (!api.hasPermission(sender, "Magic.commands.mitem.delete")) {
+            if (!api.hasPermission(sender, "magic.commands.mitem.delete")) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -74,7 +74,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         if (args[0].equalsIgnoreCase("spawn"))
         {
-            if (!api.hasPermission(sender, "Magic.commands.mitem.spawn")) {
+            if (!api.hasPermission(sender, "magic.commands.mitem.spawn")) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -117,29 +117,29 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 1)
         {
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "add");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "remove");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "name");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "configure");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "describe");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "desc");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "duplicate");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "save");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "delete");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "destroy");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "clean");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "worth");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "earns");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "type");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "damage");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "skull");
-            addIfPermissible(sender, options, "Magic.commands.mitem.", "spawn");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "add");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "remove");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "name");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "configure");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "describe");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "desc");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "duplicate");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "save");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "delete");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "destroy");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "clean");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "worth");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "earns");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "type");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "damage");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "skull");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "spawn");
         }
 
         if (args.length == 2)
         {
             String subCommand = args[0];
-            String subCommandPNode = "Magic.commands.mitem." + subCommand;
+            String subCommandPNode = "magic.commands.mitem." + subCommand;
 
             if (!api.hasPermission(sender, subCommandPNode)) {
                 return options;
@@ -170,22 +170,22 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             }
 
             if (subCommand.equalsIgnoreCase("spawn")) {
-                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
                 for (SpellTemplate spell : spellList) {
-                    addIfPermissible(sender, options, "Magic.create.", spell.getKey());
+                    addIfPermissible(sender, options, "magic.create.", spell.getKey());
                 }
                 Collection<String> allWands = api.getWandKeys();
                 for (String wandKey : allWands) {
-                    addIfPermissible(sender, options, "Magic.create.", wandKey);
+                    addIfPermissible(sender, options, "magic.create.", wandKey);
                 }
                 for (Material material : Material.values()) {
-                    addIfPermissible(sender, options, "Magic.create.", material.name().toLowerCase());
+                    addIfPermissible(sender, options, "magic.create.", material.name().toLowerCase());
                 }
                 Collection<String> allItems = api.getController().getItemKeys();
                 for (String itemKey : allItems) {
-                    addIfPermissible(sender, options, "Magic.create.", itemKey);
+                    addIfPermissible(sender, options, "magic.create.", itemKey);
                 }
-                addIfPermissible(sender, options, "Magic.create.", "sp");
+                addIfPermissible(sender, options, "magic.create.", "sp");
             }
 
             if (subCommand.equalsIgnoreCase("damage")) {
@@ -211,7 +211,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             String subCommand = args[0];
             String subCommand2 = args[1];
 
-            String commandPNode = "Magic.commands.mitem." + subCommand;
+            String commandPNode = "magic.commands.mitem." + subCommand;
 
             if (!api.hasPermission(sender, commandPNode)) {
                 return options;
@@ -269,7 +269,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
     protected boolean processItemCommand(CommandSender sender, Player player, ItemStack item, String subCommand, String[] args)
     {
-        if (!api.hasPermission(sender, "Magic.commands.mitem." + subCommand)) {
+        if (!api.hasPermission(sender, "magic.commands.mitem." + subCommand)) {
             sendNoPermission(sender);
             return true;
         }
@@ -680,8 +680,8 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         boolean hasPermission = true;
         if (sender instanceof Player) {
             Player player = (Player)sender;
-            if (!player.hasPermission("Magic.item.overwrite")) {
-                if (player.hasPermission("Magic.item.overwrite_own")) {
+            if (!player.hasPermission("magic.item.overwrite")) {
+                if (player.hasPermission("magic.item.overwrite_own")) {
                     String creatorId = existing.getCreatorId();
                     hasPermission = creatorId != null && creatorId.equalsIgnoreCase(player.getUniqueId().toString());
                 } else {
@@ -717,9 +717,9 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         String template = parameters[0];
         ItemData existing = controller.getItem(template);
         String creatorId = existing == null ? null : existing.getCreatorId();
-        if (creatorId != null && !player.hasPermission("Magic.item.overwrite")) {
+        if (creatorId != null && !player.hasPermission("magic.item.overwrite")) {
             boolean isCreator = creatorId.equalsIgnoreCase(player.getUniqueId().toString());
-            if (!player.hasPermission("Magic.item.overwrite_own") || !isCreator) {
+            if (!player.hasPermission("magic.item.overwrite_own") || !isCreator) {
                 sender.sendMessage(ChatColor.RED + "The " + template + " item already exists and you don't have permission (Magic.item.overwrite) to overwrite it.");
                 return true;
             }
@@ -877,7 +877,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
             return true;
         }
-        if (!player.hasPermission("Magic.item.enchant.extreme")) {
+        if (!player.hasPermission("magic.item.enchant.extreme")) {
             if (level < 0 || level > 10) {
                 sender.sendMessage(ChatColor.RED + "Invalid enchantment level: " + ChatColor.WHITE + enchantValue);
                 return true;
@@ -885,7 +885,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         }
 
         ItemMeta itemMeta = item.getItemMeta();
-        boolean allowUnsafe = player.hasPermission("Magic.item.enchant.unsafe");
+        boolean allowUnsafe = player.hasPermission("magic.item.enchant.unsafe");
         if (itemMeta.addEnchant(enchantment, level, allowUnsafe)) {
             item.setItemMeta(itemMeta);
             sender.sendMessage(api.getMessages().get("item.enchant_added").replace("$enchant", compatibilityUtils.getEnchantmentKey(enchantment)));

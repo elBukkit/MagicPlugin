@@ -56,7 +56,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
         }
 
         List<Player> players = new ArrayList<>();
-        if (playerName != null && sender.hasPermission("Magic.commands.mkit.others")) {
+        if (playerName != null && sender.hasPermission("magic.commands.mkit.others")) {
             List<Entity> targets = CompatibilityLib.getCompatibilityUtils().selectEntities(sender, playerName);
             if (targets != null) {
                 for (Entity entity : targets) {
@@ -102,9 +102,9 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         Set<String> options = new HashSet<>();
-        if (!sender.hasPermission("Magic.commands.mkit")) return options;
+        if (!sender.hasPermission("magic.commands.mkit")) return options;
 
-        if (args.length == 1 && sender.hasPermission("Magic.commands.mkit.others")) {
+        if (args.length == 1 && sender.hasPermission("magic.commands.mkit.others")) {
             options.addAll(api.getPlayerNames());
         }
 

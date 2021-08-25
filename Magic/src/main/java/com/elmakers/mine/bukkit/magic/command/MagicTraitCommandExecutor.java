@@ -98,7 +98,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         List<String> options = new ArrayList<>();
-        if (!sender.hasPermission("Magic.commands.mtrait")) return options;
+        if (!sender.hasPermission("magic.commands.mtrait")) return options;
 
         String lastParameter = "";
         if (args.length > 1) {
@@ -107,9 +107,9 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
 
         if (lastParameter.equalsIgnoreCase("spell"))
         {
-            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
-                addIfPermissible(sender, options, "Magic.cast.", spell.getKey());
+                addIfPermissible(sender, options, "magic.cast.", spell.getKey());
             }
         }
         else if (lastParameter.equalsIgnoreCase("parameters"))
@@ -118,7 +118,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         }
         else if (lastParameter.equalsIgnoreCase("hat") || lastParameter.equalsIgnoreCase("requires"))
         {
-            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
                 options.add(spell.getKey());
             }
@@ -164,9 +164,9 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("mob");
             options.add("requires");
 
-            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
-                addIfPermissible(sender, options, "Magic.cast.", spell.getKey());
+                addIfPermissible(sender, options, "magic.cast.", spell.getKey());
             }
         }
 

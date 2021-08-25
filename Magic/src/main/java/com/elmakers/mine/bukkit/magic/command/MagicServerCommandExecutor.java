@@ -60,7 +60,7 @@ public class MagicServerCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         List<String> options = new ArrayList<>();
-        if (!sender.hasPermission("Magic.commands.mserver")) return options;
+        if (!sender.hasPermission("magic.commands.mserver")) return options;
 
         if (args.length == 1) {
             options.addAll(api.getPlayerNames());

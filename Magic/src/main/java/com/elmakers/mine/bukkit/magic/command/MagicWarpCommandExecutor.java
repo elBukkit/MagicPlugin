@@ -41,7 +41,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
 
         String subCommand = args[0];
 
-        if (!api.hasPermission(sender, "Magic.commands.mwarp." + subCommand)) {
+        if (!api.hasPermission(sender, "magic.commands.mwarp." + subCommand)) {
             sendNoPermission(sender);
             return true;
         }
@@ -341,17 +341,17 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         MagicController magic = (MagicController)controller;
         List<String> options = new ArrayList<>();
-        if (!sender.hasPermission("Magic.commands.mwarp")) return options;
+        if (!sender.hasPermission("magic.commands.mwarp")) return options;
         if (args.length == 1) {
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "add");
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "remove");
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "replace");
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "go");
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "send");
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "import");
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "list");
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "configure");
-            addIfPermissible(sender, options, "Magic.commands.mwarp.", "map");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "add");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "remove");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "replace");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "go");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "send");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "import");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "list");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "configure");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "map");
         } else if (args.length == 2) {
             String subCommand = args[0];
             if (subCommand.equals("remove") || subCommand.equals("go") || subCommand.equals("replace") || subCommand.equals("configure")) {

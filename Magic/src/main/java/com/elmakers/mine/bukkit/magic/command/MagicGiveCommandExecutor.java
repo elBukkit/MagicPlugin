@@ -74,13 +74,13 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             }
         }
 
-        if (!api.hasPermission(sender, "Magic.create." + itemName) && !api.hasPermission(sender, "Magic.create.*")) {
+        if (!api.hasPermission(sender, "magic.create." + itemName) && !api.hasPermission(sender, "magic.create.*")) {
             sender.sendMessage(ChatColor.RED + "You do not have permission to create " + itemName);
             return true;
         }
 
         List<Player> players = new ArrayList<>();
-        if (playerName != null && sender.hasPermission("Magic.commands.mgive.others")) {
+        if (playerName != null && sender.hasPermission("magic.commands.mgive.others")) {
             List<Entity> targets = CompatibilityLib.getCompatibilityUtils().selectEntities(sender, playerName);
             if (targets != null) {
                 for (Entity entity : targets) {
@@ -145,51 +145,51 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         Set<String> options = new HashSet<>();
-        if (!sender.hasPermission("Magic.commands.mgive")) return options;
+        if (!sender.hasPermission("magic.commands.mgive")) return options;
 
-        if (args.length == 1 && sender.hasPermission("Magic.commands.mgive.others")) {
+        if (args.length == 1 && sender.hasPermission("magic.commands.mgive.others")) {
             options.addAll(api.getPlayerNames());
         }
 
         if (args.length == 1 || args.length == 2) {
-            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+            Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
-                addIfPermissible(sender, options, "Magic.create.", spell.getKey());
+                addIfPermissible(sender, options, "magic.create.", spell.getKey());
             }
             Collection<String> allWands = api.getWandKeys();
             for (String wandKey : allWands) {
-                addIfPermissible(sender, options, "Magic.create.", wandKey);
+                addIfPermissible(sender, options, "magic.create.", wandKey);
             }
             for (Material material : Material.values()) {
-                addIfPermissible(sender, options, "Magic.create.", material.name().toLowerCase());
+                addIfPermissible(sender, options, "magic.create.", material.name().toLowerCase());
             }
             Collection<String> allItems = api.getController().getItemKeys();
             for (String itemKey : allItems) {
-                addIfPermissible(sender, options, "Magic.create.", itemKey);
+                addIfPermissible(sender, options, "magic.create.", itemKey);
             }
             Collection<String> currencies = api.getController().getCurrencyKeys();
             for (String currency : currencies) {
-                addIfPermissible(sender, options, "Magic.create.", currency);
+                addIfPermissible(sender, options, "magic.create.", currency);
             }
             Collection<String> recipes = controller.getRecipeKeys();
             for (String recipe : recipes) {
-                addIfPermissible(sender, options, "Magic.create.", "recipe:" + recipe);
+                addIfPermissible(sender, options, "magic.create.", "recipe:" + recipe);
             }
             Collection<String> classKeys = controller.getMageClassKeys();
             for (String magicClass : classKeys) {
-                addIfPermissible(sender, options, "Magic.create.", "recipes:" + magicClass);
+                addIfPermissible(sender, options, "magic.create.", "recipes:" + magicClass);
             }
             Collection<String> mobKeys = controller.getMobKeys();
             for (String mobKey : mobKeys) {
-                addIfPermissible(sender, options, "Magic.create.", "egg:" + mobKey);
+                addIfPermissible(sender, options, "magic.create.", "egg:" + mobKey);
             }
             for (EntityType entityType : EntityType.values()) {
                 String mobKey = entityType.name().toLowerCase();
-                addIfPermissible(sender, options, "Magic.create.", "egg:" + mobKey);
+                addIfPermissible(sender, options, "magic.create.", "egg:" + mobKey);
             }
-            addIfPermissible(sender, options, "Magic.create.", "recipe:*");
-            addIfPermissible(sender, options, "Magic.create.", "recipes:*");
-            if (api.hasPermission(sender, "Magic.create.book")) {
+            addIfPermissible(sender, options, "magic.create.", "recipe:*");
+            addIfPermissible(sender, options, "magic.create.", "recipes:*");
+            if (api.hasPermission(sender, "magic.create.book")) {
                 options.add("book:all");
                 options.add("book:categories");
             }

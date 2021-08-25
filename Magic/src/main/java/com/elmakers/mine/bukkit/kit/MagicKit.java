@@ -164,7 +164,7 @@ public class MagicKit implements Kit, Comparable<MagicKit> {
     public long getRemainingCooldown(com.elmakers.mine.bukkit.api.magic.Mage apiMage) {
         Mage mage = (Mage)apiMage;
         if (cooldown == 0) return 0;
-        if (bypasses(mage, "Magic.bypass_kit_cooldown")) {
+        if (bypasses(mage, "magic.bypass_kit_cooldown")) {
             return 0;
         }
         MageKit kit = mage.getKit(key);
@@ -179,13 +179,13 @@ public class MagicKit implements Kit, Comparable<MagicKit> {
             return true;
         }
         Player player = mage.getPlayer();
-        return player != null && (player.hasPermission(node) || player.hasPermission("Magic.bypass"));
+        return player != null && (player.hasPermission(node) || player.hasPermission("magic.bypass"));
     }
 
     @Override
     public boolean isAllowed(com.elmakers.mine.bukkit.api.magic.Mage apiMage) {
         Mage mage = (Mage)apiMage;
-        if (!bypasses(mage, "Magic.bypass_kit_requirements") && controller.checkRequirements(mage.getContext(), requirements) != null) {
+        if (!bypasses(mage, "magic.bypass_kit_requirements") && controller.checkRequirements(mage.getContext(), requirements) != null) {
             return false;
         }
         if (isWelcomeWand && mage.hasGivenWelcomeWand()) {

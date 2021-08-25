@@ -450,7 +450,7 @@ public class TargetingSpell extends BaseSpell {
         if (entity instanceof Player)
         {
             Player player = (Player)entity;
-            if (checkProtection && player.hasPermission("Magic.protected." + this.getKey())) {
+            if (checkProtection && player.hasPermission("magic.protected." + this.getKey())) {
                 mage.sendDebugMessage("Entity has Magic.protected perm", 30);
                 return false;
             }

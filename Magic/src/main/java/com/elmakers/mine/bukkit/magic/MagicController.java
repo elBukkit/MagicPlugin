@@ -1224,7 +1224,7 @@ public class MagicController implements MageController {
     public boolean hasBuildPermission(Player player, Block block) {
         // Check all protection plugins
         if (bypassBuildPermissions) return true;
-        if (player != null && player.hasPermission("Magic.bypass_build")) return true;
+        if (player != null && player.hasPermission("magic.bypass_build")) return true;
         if (hasBypassPermission(player)) return true;
 
         boolean allowed = true;
@@ -1240,7 +1240,7 @@ public class MagicController implements MageController {
     public boolean hasBreakPermission(Player player, Block block) {
         // This is the same has hasBuildPermission for everything but Towny!
         if (bypassBreakPermissions) return true;
-        if (player != null && player.hasPermission("Magic.bypass_break")) return true;
+        if (player != null && player.hasPermission("magic.bypass_break")) return true;
         if (hasBypassPermission(player)) return true;
 
         boolean allowed = true;
@@ -1264,7 +1264,7 @@ public class MagicController implements MageController {
     public boolean isPVPAllowed(Player player, Location location) {
         if (location == null) return true;
         if (bypassPvpPermissions) return true;
-        if (player != null && player.hasPermission("Magic.bypass_pvp")) return true;
+        if (player != null && player.hasPermission("magic.bypass_pvp")) return true;
 
         boolean allowed = true;
         for (PVPManager manager : pvpManagers) {
@@ -1782,7 +1782,7 @@ public class MagicController implements MageController {
             sender.sendMessage(message);
         }
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player != sender && player.hasPermission("Magic.notify")) {
+            if (player != sender && player.hasPermission("magic.notify")) {
                 player.sendMessage(message);
             }
         }
@@ -2079,7 +2079,7 @@ public class MagicController implements MageController {
         }
         if (reloadingMage != null) {
             Player player = reloadingMage.getPlayer();
-            if (!player.hasPermission("Magic.notify")) {
+            if (!player.hasPermission("magic.notify")) {
                 player.sendMessage(ChatColor.AQUA + "Magic " + ChatColor.DARK_AQUA + "configuration reloaded.");
             }
             reloadingMage.deactivate();
@@ -3639,17 +3639,17 @@ public class MagicController implements MageController {
     }
 
     public boolean hasWandPermission(Player player) {
-        return hasPermission(player, "Magic.wand.use");
+        return hasPermission(player, "magic.wand.use");
     }
 
     public boolean hasWandPermission(Player player, Wand wand) {
         if (hasBypassPermission(player)) return true;
-        if (wand.isSuperPowered() && !player.hasPermission("Magic.wand.use.powered")) return false;
-        if (wand.isSuperProtected() && !player.hasPermission("Magic.wand.use.protected")) return false;
+        if (wand.isSuperPowered() && !player.hasPermission("magic.wand.use.powered")) return false;
+        if (wand.isSuperProtected() && !player.hasPermission("magic.wand.use.protected")) return false;
 
         String template = wand.getTemplateKey();
         if (template != null && !template.isEmpty()) {
-            String pNode = "Magic.use." + template;
+            String pNode = "magic.use." + template;
             if (!hasPermission(player, pNode)) return false;
         }
         Location location = player.getLocation();
@@ -3711,7 +3711,7 @@ public class MagicController implements MageController {
     @Override
     public boolean hasBypassPermission(CommandSender sender) {
         if (sender == null) return false;
-        if (sender instanceof Player && sender.hasPermission("Magic.bypass")) return true;
+        if (sender instanceof Player && sender.hasPermission("magic.bypass")) return true;
         Mage mage = getRegisteredMage(sender);
         if (mage == null) return false;
         return mage.isBypassEnabled();

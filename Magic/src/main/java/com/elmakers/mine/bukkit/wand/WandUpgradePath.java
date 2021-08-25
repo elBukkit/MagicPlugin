@@ -610,8 +610,8 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             location = mage.getLocation();
         }
         Player player = mage != null ? mage.getPlayer() : null;
-        boolean shouldRunCommands = (player == null || !player.hasPermission("Magic.bypass_upgrade_commands"));
-        boolean shouldBroadcast = (player == null || !player.hasPermission("Magic.bypass_upgrade_broadcast"));
+        boolean shouldRunCommands = (player == null || !player.hasPermission("magic.bypass_upgrade_commands"));
+        boolean shouldBroadcast = (player == null || !player.hasPermission("magic.bypass_upgrade_broadcast"));
         if (upgradeCommands != null && shouldRunCommands) {
             for (String command : upgradeCommands) {
                 if (command.contains("@uuid") || command.contains("@pn") || command.contains("@pd")) {

@@ -501,14 +501,14 @@ public class InventoryController implements Listener {
                 event.setCancelled(true);
                 return;
             }
-            if (isContainer && CompatibilityLib.getNBTUtils().getBoolean(destinationItem, "unstashable", false) && !player.hasPermission("Magic.wand.override_stash")) {
+            if (isContainer && CompatibilityLib.getNBTUtils().getBoolean(destinationItem, "unstashable", false) && !player.hasPermission("magic.wand.override_stash")) {
                 event.setCancelled(true);
                 return;
             }
         }
 
         // Check for unstashable wands
-        if (isContainer && !isContainerSlot && !player.hasPermission("Magic.wand.override_stash")) {
+        if (isContainer && !isContainerSlot && !player.hasPermission("magic.wand.override_stash")) {
             if (CompatibilityLib.getNBTUtils().getBoolean(clickedItem, "unstashable", false)) {
                 event.setCancelled(true);
                 return;

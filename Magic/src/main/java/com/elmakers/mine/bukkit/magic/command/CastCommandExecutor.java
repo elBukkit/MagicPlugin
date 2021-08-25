@@ -35,7 +35,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
         String commandName = command.getName();
         if (commandName.equalsIgnoreCase("castp"))
         {
-            if (!api.hasPermission(sender, "Magic.commands.castp")) {
+            if (!api.hasPermission(sender, "magic.commands.castp")) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -142,7 +142,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
 
         if (commandName.equalsIgnoreCase("cast"))
         {
-            if (!api.hasPermission(sender, "Magic.commands.cast")) {
+            if (!api.hasPermission(sender, "magic.commands.cast")) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -159,7 +159,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
         }
 
         String spellName = castParameters[0];
-        if (sender != null && !controller.hasPermission(sender, "Magic.cast_via_command." + spellName)) {
+        if (sender != null && !controller.hasPermission(sender, "magic.cast_via_command." + spellName)) {
             sender.sendMessage("You do not have permission to do that");
             return true;
         }
@@ -170,7 +170,7 @@ public class CastCommandExecutor extends MagicTabExecutor {
             return false;
         }
 
-        if (sender == null || sender.hasPermission("Magic.commands.cast.parameters")) {
+        if (sender == null || sender.hasPermission("magic.commands.cast.parameters")) {
             castParameters = Arrays.copyOfRange(castParameters, 1, castParameters.length);
         } else {
             castParameters = null;
@@ -213,11 +213,11 @@ public class CastCommandExecutor extends MagicTabExecutor {
         if (args.length == 1) {
             Collection<SpellTemplate> spellList = api.getController().getSpellTemplates(true);
             for (SpellTemplate spell : spellList) {
-                addIfPermissible(sender, options, "Magic." + permissionKey + ".", spell.getKey());
+                addIfPermissible(sender, options, "magic." + permissionKey + ".", spell.getKey());
             }
         }
 
-        if (args.length > 1 && sender.hasPermission("Magic.commands.cast.parameters"))
+        if (args.length > 1 && sender.hasPermission("magic.commands.cast.parameters"))
         {
             String spellName = args[0];
             SpellTemplate spell = api.getSpellTemplate(spellName);

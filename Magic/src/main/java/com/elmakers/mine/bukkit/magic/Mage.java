@@ -2595,7 +2595,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public boolean isRestricted(Material material) {
         Player player = getPlayer();
         if (controller.hasBypassPermission(player)) return false;
-        if (player != null && player.hasPermission("Magic.bypass_restricted"))
+        if (player != null && player.hasPermission("magic.bypass_restricted"))
             return false;
         return controller.isRestricted(material);
     }
@@ -2604,7 +2604,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public boolean isRestricted(Material material, Short data) {
         Player player = getPlayer();
         if (controller.hasBypassPermission(player)) return false;
-        if (player != null && player.hasPermission("Magic.bypass_restricted"))
+        if (player != null && player.hasPermission("magic.bypass_restricted"))
             return false;
         return controller.isRestricted(material, data);
     }
@@ -3661,8 +3661,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     + ChatColor.YELLOW + " at " + TextUtils.printBlockLocation(location));
             }
             hasBypass = controller.hasBypassPermission(player);
-            hasPVPBypass = player.hasPermission("Magic.bypass_pvp");
-            hasBuildBypass = player.hasPermission("Magic.bypass_build");
+            hasPVPBypass = player.hasPermission("magic.bypass_pvp");
+            hasBuildBypass = player.hasPermission("magic.bypass_build");
             sender.sendMessage(ChatColor.AQUA + " Has bypass: " + formatBoolean(hasBypass, true, null));
             sender.sendMessage(ChatColor.AQUA + " Has PVP bypass: " + formatBoolean(hasPVPBypass, true, null));
             sender.sendMessage(ChatColor.AQUA + " Has Build bypass: " + formatBoolean(hasBuildBypass, true, null));
@@ -5747,9 +5747,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void discoverRecipes(Collection<String> recipes) {
         if (recipes == null) return;
         Player player = getPlayer();
-        if (player != null && controller.hasPermission(player, "Magic.wand.craft")) {
+        if (player != null && controller.hasPermission(player, "magic.wand.craft")) {
             for (String recipe : recipes) {
-                if (controller.hasPermission(player, "Magic.craft." + recipe)) {
+                if (controller.hasPermission(player, "magic.craft." + recipe)) {
                     CompatibilityLib.getCompatibilityUtils().discoverRecipe(player,  recipe);
                 }
             }

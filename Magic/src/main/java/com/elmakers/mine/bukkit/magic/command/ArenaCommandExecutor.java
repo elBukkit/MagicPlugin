@@ -188,7 +188,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             return false;
         }
 
-        if (!sender.hasPermission("Magic.commands.marena")) {
+        if (!sender.hasPermission("magic.commands.marena")) {
             sendNoPermission(sender);
             return true;
         }
@@ -209,7 +209,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         }
 
         String subCommand = args[0];
-        if (!sender.hasPermission("Magic.commands.marena." + subCommand)) {
+        if (!sender.hasPermission("magic.commands.marena." + subCommand)) {
             sendNoPermission(sender);
             return true;
         }

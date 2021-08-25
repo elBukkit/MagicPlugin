@@ -47,7 +47,7 @@ public class AbsorbAction extends BaseSpellAction
         {
             return SpellResult.NO_TARGET;
         }
-        if (!mage.getCommandSender().hasPermission("Magic.bypass_restricted") && (!buildingMaterials.testBlock(target) || restrictedMaterials.testBlock(target)))
+        if (!mage.getCommandSender().hasPermission("magic.bypass_restricted") && (!buildingMaterials.testBlock(target) || restrictedMaterials.testBlock(target)))
         {
             return SpellResult.NO_TARGET;
         }

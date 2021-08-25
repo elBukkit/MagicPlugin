@@ -37,7 +37,7 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.magic.help")) {
+        if (!api.hasPermission(sender, "magic.commands.magic.help")) {
             sendNoPermission(sender);
             return true;
         }
@@ -108,7 +108,7 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         Set<String> options = new HashSet<>();
-        if (!sender.hasPermission("Magic.commands.magic.help")) return options;
+        if (!sender.hasPermission("magic.commands.magic.help")) return options;
 
         // Get all words in all help topics
         options.addAll(help.getWords());

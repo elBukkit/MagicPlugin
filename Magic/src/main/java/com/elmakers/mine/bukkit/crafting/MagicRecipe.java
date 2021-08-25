@@ -111,7 +111,7 @@ public abstract class MagicRecipe {
     public void crafted(HumanEntity entity, MageController controller) {
         if (discover == null) return;
         for (String key : discover) {
-            if (controller.hasPermission(entity, "Magic.craft." + key)) {
+            if (controller.hasPermission(entity, "magic.craft." + key)) {
                 CompatibilityLib.getCompatibilityUtils().discoverRecipe(entity, key);
             }
         }

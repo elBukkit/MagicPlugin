@@ -549,7 +549,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
             property = args[args.length - 2];
         }
 
-        if (!sender.hasPermission("Magic.commands.mblock")) return options;
+        if (!sender.hasPermission("magic.commands.mblock")) return options;
         if (args.length == 1) {
             options.add("add");
             options.add("list");

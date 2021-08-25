@@ -157,7 +157,7 @@ public class MagicLogger extends ColoredLogger {
         boolean sent = false;
 
         for (Player player : Bukkit.getOnlinePlayers()) {
-            if (player.hasPermission("Magic.notify")) {
+            if (player.hasPermission("magic.notify")) {
                 notify(messages, player);
                 String message = messages.get("logs.notify_instructions");
                 if (!message.isEmpty()) {

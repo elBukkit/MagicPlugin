@@ -63,7 +63,7 @@ public class MagicSaveCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         List<String> options = new ArrayList<>();
-        if (!sender.hasPermission("Magic.commands.msave")) return options;
+        if (!sender.hasPermission("magic.commands.msave")) return options;
 
         if (args.length == 1) {
             options.addAll(api.getPlayerNames());

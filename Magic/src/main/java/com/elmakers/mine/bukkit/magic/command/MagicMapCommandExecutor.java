@@ -55,7 +55,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
         }
 
         String subCommand = args[0];
-        if (!api.hasPermission(sender, "Magic.commands.mmap." + subCommand))
+        if (!api.hasPermission(sender, "magic.commands.mmap." + subCommand))
         {
             sendNoPermission(sender);
             return true;
@@ -620,7 +620,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         List<String> options = new ArrayList<>();
-        if (!sender.hasPermission("Magic.commands.mmap")) return options;
+        if (!sender.hasPermission("magic.commands.mmap")) return options;
 
         if (args.length == 1) {
             options.add("give");

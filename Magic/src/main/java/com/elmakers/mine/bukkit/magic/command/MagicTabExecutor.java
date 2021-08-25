@@ -165,6 +165,6 @@ public abstract class MagicTabExecutor implements TabExecutor {
     }
 
     protected String getPermissionNode() {
-        return "Magic.commands." + commands[0];
+        return "magic.commands." + commands[0];
     }
 }

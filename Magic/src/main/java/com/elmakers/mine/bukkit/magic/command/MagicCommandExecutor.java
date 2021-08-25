@@ -77,7 +77,7 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
         String subCommand = args[0];
         if (sender instanceof Player)
         {
-            if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand)) {
+            if (!api.hasPermission(sender, "magic.commands.magic." + subCommand)) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -314,7 +314,7 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
         if (args.length > 1)
         {
             listCommand = args[1];
-            if (!api.hasPermission(sender, "Magic.commands.magic." + subCommand + "." + listCommand)) {
+            if (!api.hasPermission(sender, "magic.commands.magic." + subCommand + "." + listCommand)) {
                 sendNoPermission(sender);
                 return false;
             }
@@ -783,33 +783,33 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         List<String> options = new ArrayList<>();
         if (args.length == 1) {
-            addIfPermissible(sender, options, "Magic.commands.magic.", "clean");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "clearcache");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "cancel");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "load");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "save");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "commit");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "give");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "worth");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "sell");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "list");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "rpcheck");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "rpsend");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "register");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "logs");
-            addIfPermissible(sender, options, "Magic.commands.magic.", "help");
+            addIfPermissible(sender, options, "magic.commands.magic.", "clean");
+            addIfPermissible(sender, options, "magic.commands.magic.", "clearcache");
+            addIfPermissible(sender, options, "magic.commands.magic.", "cancel");
+            addIfPermissible(sender, options, "magic.commands.magic.", "load");
+            addIfPermissible(sender, options, "magic.commands.magic.", "save");
+            addIfPermissible(sender, options, "magic.commands.magic.", "commit");
+            addIfPermissible(sender, options, "magic.commands.magic.", "give");
+            addIfPermissible(sender, options, "magic.commands.magic.", "worth");
+            addIfPermissible(sender, options, "magic.commands.magic.", "sell");
+            addIfPermissible(sender, options, "magic.commands.magic.", "list");
+            addIfPermissible(sender, options, "magic.commands.magic.", "rpcheck");
+            addIfPermissible(sender, options, "magic.commands.magic.", "rpsend");
+            addIfPermissible(sender, options, "magic.commands.magic.", "register");
+            addIfPermissible(sender, options, "magic.commands.magic.", "logs");
+            addIfPermissible(sender, options, "magic.commands.magic.", "help");
         } else if (args.length > 1 && args[0].equals("help")) {
             super.onTabComplete(sender, "mhelp", args);
         } else if (args.length == 2) {
             if (args[0].equalsIgnoreCase("list")) {
-                addIfPermissible(sender, options, "Magic.commands.magic.list", "maps");
-                addIfPermissible(sender, options, "Magic.commands.magic.list", "wands");
-                addIfPermissible(sender, options, "Magic.commands.magic.list", "automata");
-                addIfPermissible(sender, options, "Magic.commands.magic.list", "schematics");
-                addIfPermissible(sender, options, "Magic.commands.magic.list", "entities");
-                addIfPermissible(sender, options, "Magic.commands.magic.list", "tasks");
-                addIfPermissible(sender, options, "Magic.commands.magic.list", "blocks");
-                addIfPermissible(sender, options, "Magic.commands.magic.list", "mages");
+                addIfPermissible(sender, options, "magic.commands.magic.list", "maps");
+                addIfPermissible(sender, options, "magic.commands.magic.list", "wands");
+                addIfPermissible(sender, options, "magic.commands.magic.list", "automata");
+                addIfPermissible(sender, options, "magic.commands.magic.list", "schematics");
+                addIfPermissible(sender, options, "magic.commands.magic.list", "entities");
+                addIfPermissible(sender, options, "magic.commands.magic.list", "tasks");
+                addIfPermissible(sender, options, "magic.commands.magic.list", "blocks");
+                addIfPermissible(sender, options, "magic.commands.magic.list", "mages");
             } else if (args[0].equalsIgnoreCase("logs")) {
                 options.add("errors");
                 options.add("warnings");
@@ -817,7 +817,7 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
                 options.add("wand");
                 options.add("material");
                 options.add("upgrade");
-                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
                 for (SpellTemplate spell : spellList) {
                     options.add(spell.getKey());
                 }

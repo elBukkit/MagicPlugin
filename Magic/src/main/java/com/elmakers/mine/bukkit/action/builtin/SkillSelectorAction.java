@@ -85,7 +85,7 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         }
 
         if (controller.usePermissionSkills()) {
-            boolean bypassHidden = player.hasPermission("Magic.bypass_hidden");
+            boolean bypassHidden = player.hasPermission("magic.bypass_hidden");
             Collection<SpellTemplate> spells = controller.getSpellTemplates(bypassHidden);
             for (SpellTemplate spell : spells) {
                 SpellKey key = spell.getSpellKey();

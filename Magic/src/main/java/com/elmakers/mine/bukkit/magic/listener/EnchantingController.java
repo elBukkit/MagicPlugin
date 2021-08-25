@@ -40,7 +40,7 @@ public class EnchantingController implements Listener {
         if (wand == null) return;
         if (wand.isEnchantable()) {
             Player player = event.getEnchanter();
-            if (player == null || !controller.hasPermission(player, "Magic.wand.enchant_vanilla")) {
+            if (player == null || !controller.hasPermission(player, "magic.wand.enchant_vanilla")) {
                 event.setCancelled(true);
                 return;
             }
@@ -49,7 +49,7 @@ public class EnchantingController implements Listener {
             return;
         } else if (enchantingEnabled) {
             Player player = event.getEnchanter();
-            if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
+            if (player == null || !controller.hasPermission(player, "magic.wand.enchant")) {
                 event.setCancelled(true);
                 return;
             }
@@ -84,7 +84,7 @@ public class EnchantingController implements Listener {
         // The non-enchantable ones might go through the old enchanting progression system though.
         if (wand.isEnchantable()) {
             Player player = event.getEnchanter();
-            if (player == null || !controller.hasPermission(player, "Magic.wand.enchant_vanilla")) {
+            if (player == null || !controller.hasPermission(player, "magic.wand.enchant_vanilla")) {
                 event.setCancelled(true);
                 return;
             }
@@ -94,7 +94,7 @@ public class EnchantingController implements Listener {
                 return;
             }
             Player player = event.getEnchanter();
-            if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
+            if (player == null || !controller.hasPermission(player, "magic.wand.enchant")) {
                 event.setCancelled(true);
                 return;
             }
@@ -153,7 +153,7 @@ public class EnchantingController implements Listener {
         if (enchantingEnabled) {
             HumanEntity clicker = event.getWhoClicked();
             Player player = clicker instanceof Player ? (Player)clicker : null;
-            if (player == null || !controller.hasPermission(player, "Magic.wand.enchant")) {
+            if (player == null || !controller.hasPermission(player, "magic.wand.enchant")) {
                 return;
             }
 

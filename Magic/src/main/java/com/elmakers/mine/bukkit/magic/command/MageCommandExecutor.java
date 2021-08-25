@@ -60,7 +60,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         String subCommand = args[0];
         if (sender instanceof Player)
         {
-            if (!api.hasPermission(sender, "Magic.commands.mage." + subCommand)) {
+            if (!api.hasPermission(sender, "magic.commands.mage." + subCommand)) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -69,7 +69,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         int argStart = 1;
         List<Player> players = new ArrayList<>();
         String playerName = args.length > 1 ? args[1] : null;
-        if (playerName != null && sender.hasPermission("Magic.commands.mage.others")) {
+        if (playerName != null && sender.hasPermission("magic.commands.mage.others")) {
             List<Entity> targets = CompatibilityLib.getCompatibilityUtils().selectEntities(sender, playerName);
             if (targets != null) {
                 argStart = 2;
@@ -265,32 +265,32 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         List<String> options = new ArrayList<>();
         String[] originalArgs = args;
         if (args.length == 1) {
-            addIfPermissible(sender, options, "Magic.commands.mage.", "add");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "reward");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "remove");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "configure");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "describe");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "desc");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "upgrade");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "modifier");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "getdata");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "setdata");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "check");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "debug");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "reset");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "clear");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "unbind");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "activate");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "deactivate");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "unlock");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "lock");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "switch");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "levelspells");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "attribute");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "bypass");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "promote");
-            addIfPermissible(sender, options, "Magic.commands.mage.", "forget");
-        } else if (args.length == 2 && sender.hasPermission("Magic.commands.mage.others")) {
+            addIfPermissible(sender, options, "magic.commands.mage.", "add");
+            addIfPermissible(sender, options, "magic.commands.mage.", "reward");
+            addIfPermissible(sender, options, "magic.commands.mage.", "remove");
+            addIfPermissible(sender, options, "magic.commands.mage.", "configure");
+            addIfPermissible(sender, options, "magic.commands.mage.", "describe");
+            addIfPermissible(sender, options, "magic.commands.mage.", "desc");
+            addIfPermissible(sender, options, "magic.commands.mage.", "upgrade");
+            addIfPermissible(sender, options, "magic.commands.mage.", "modifier");
+            addIfPermissible(sender, options, "magic.commands.mage.", "getdata");
+            addIfPermissible(sender, options, "magic.commands.mage.", "setdata");
+            addIfPermissible(sender, options, "magic.commands.mage.", "check");
+            addIfPermissible(sender, options, "magic.commands.mage.", "debug");
+            addIfPermissible(sender, options, "magic.commands.mage.", "reset");
+            addIfPermissible(sender, options, "magic.commands.mage.", "clear");
+            addIfPermissible(sender, options, "magic.commands.mage.", "unbind");
+            addIfPermissible(sender, options, "magic.commands.mage.", "activate");
+            addIfPermissible(sender, options, "magic.commands.mage.", "deactivate");
+            addIfPermissible(sender, options, "magic.commands.mage.", "unlock");
+            addIfPermissible(sender, options, "magic.commands.mage.", "lock");
+            addIfPermissible(sender, options, "magic.commands.mage.", "switch");
+            addIfPermissible(sender, options, "magic.commands.mage.", "levelspells");
+            addIfPermissible(sender, options, "magic.commands.mage.", "attribute");
+            addIfPermissible(sender, options, "magic.commands.mage.", "bypass");
+            addIfPermissible(sender, options, "magic.commands.mage.", "promote");
+            addIfPermissible(sender, options, "magic.commands.mage.", "forget");
+        } else if (args.length == 2 && sender.hasPermission("magic.commands.mage.others")) {
             options.addAll(api.getPlayerNames());
         }
 
@@ -306,7 +306,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
             }
 
-            String subCommandPNode = "Magic.commands.mage." + subCommand;
+            String subCommandPNode = "magic.commands.mage." + subCommand;
             if (subCommand.equalsIgnoreCase("setdata") || subCommand.equalsIgnoreCase("getdata")) {
                 if (target != null) {
                     Mage mage = controller.getMage(target);
@@ -361,7 +361,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
             if (args.length < 4) {
                 if (subCommand.equalsIgnoreCase("add")) {
-                    Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                    Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
                     for (SpellTemplate spell : spellList) {
                         addIfPermissible(sender, options, subCommandPNode, spell.getKey());
                     }
@@ -371,7 +371,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                     if (args.length > 1) {
                          options.addAll(controller.getCurrencyKeys());
                     } else {
-                        Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                        Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
                         for (SpellTemplate spell : spellList) {
                             addIfPermissible(sender, options, subCommandPNode, spell.getKey());
                         }
@@ -392,7 +392,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
 
                 if (subCommand.equalsIgnoreCase("add")) {
-                    Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                    Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
                     for (SpellTemplate spell : spellList) {
                         addIfPermissible(sender, options, subCommandPNode, spell.getKey());
                     }

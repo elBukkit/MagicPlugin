@@ -17,7 +17,7 @@ public class MagicEditorCommandExecutor extends MagicConfigCommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String alias, String[] args) {
-        if (!api.hasPermission(sender, "Magic.commands.mconfig.editor")) {
+        if (!api.hasPermission(sender, "magic.commands.mconfig.editor")) {
             sendNoPermission(sender);
             return true;
         }
@@ -29,7 +29,7 @@ public class MagicEditorCommandExecutor extends MagicConfigCommandExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         Set<String> options = new HashSet<>();
-        if (!sender.hasPermission("Magic.commands.mconfig.editor")) return options;
+        if (!sender.hasPermission("magic.commands.mconfig.editor")) return options;
 
         if (args.length == 1) {
             options.addAll(availableFileMap.keySet());

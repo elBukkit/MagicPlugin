@@ -1997,7 +1997,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         {
             Player magePlayer = mage.getPlayer();
             boolean checkPvP = selfTargetingRequiresPvP ? true : magePlayer != entity;
-            if (magePlayer != null && !magePlayer.hasPermission("Magic.bypass_pvp") && checkPvP)
+            if (magePlayer != null && !magePlayer.hasPermission("magic.bypass_pvp") && checkPvP)
             {
                 // Check that the other player does not have PVP disabled for fairness
                 if (!controller.isPVPAllowed((Player)entity, entity.getLocation())) {
@@ -2166,7 +2166,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public String getPermissionNode()
     {
-        return "Magic.cast." + spellKey.getBaseKey();
+        return "magic.cast." + spellKey.getBaseKey();
     }
 
     @Override
@@ -2175,7 +2175,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (category == null) {
             return null;
         }
-        return "Magic.allowed_spell_categories." + category.getKey();
+        return "magic.allowed_spell_categories." + category.getKey();
     }
 
     /**

@@ -32,7 +32,7 @@ public class WandPaginator extends Paginator<WandTemplate> {
                 return wand1.getKey().compareTo(wand2.getKey());
             }
         });
-        if (!sender.hasPermission("Magic.bypass_hidden")) {
+        if (!sender.hasPermission("magic.bypass_hidden")) {
             Iterator<WandTemplate> it = templates.iterator();
             while (it.hasNext()) {
                 ConfigurationSection configuration = it.next().getConfiguration();

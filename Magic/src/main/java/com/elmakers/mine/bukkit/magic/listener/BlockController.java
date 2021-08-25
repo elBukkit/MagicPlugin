@@ -225,7 +225,7 @@ public class BlockController implements Listener, ChunkLoadListener {
                     }
                 }
             }
-            if (!event.isCancelled() && applySpawnerData && DefaultMaterials.isMobSpawner(block.getType()) && event.getItemInHand() != null && DefaultMaterials.isMobSpawner(event.getItemInHand().getType()) && player.hasPermission("Magic.spawners")) {
+            if (!event.isCancelled() && applySpawnerData && DefaultMaterials.isMobSpawner(block.getType()) && event.getItemInHand() != null && DefaultMaterials.isMobSpawner(event.getItemInHand().getType()) && player.hasPermission("magic.spawners")) {
                 CompatibilityLib.getCompatibilityUtils().applyItemData(event.getItemInHand(), block);
             }
         }

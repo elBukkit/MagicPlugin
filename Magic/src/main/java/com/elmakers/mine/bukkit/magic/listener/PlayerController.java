@@ -1012,7 +1012,7 @@ public class PlayerController implements Listener {
         // In case of rapid relog, this mage may have been marked for removal already
         mage.setUnloading(false);
         controller.checkVanished(player);
-        if (player.hasPermission("Magic.migrate")) {
+        if (player.hasPermission("magic.migrate")) {
            controller.checkForMigration(player);
         }
     }

@@ -574,7 +574,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         List<String> options = new ArrayList<>();
-        if (!sender.hasPermission("Magic.commands.mnpc")) return options;
+        if (!sender.hasPermission("magic.commands.mnpc")) return options;
 
         if (args.length == 1) {
             options.add("add");

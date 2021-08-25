@@ -24,7 +24,7 @@ public class SpellsPaginator extends Paginator<SpellTemplate> {
     @Nonnull
     @Override
     protected List<SpellTemplate> getList(CommandSender sender) {
-        Collection<SpellTemplate> spells = controller.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+        Collection<SpellTemplate> spells = controller.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
         List<SpellTemplate> list = new ArrayList<>(spells);
         Collections.sort(list, new Comparator<SpellTemplate>() {
             @Override

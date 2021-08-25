@@ -6003,7 +6003,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean canUse(Player player) {
         if (!bound || ownerId == null || ownerId.length() == 0) return true;
-        if (controller.hasPermission(player, "Magic.wand.override_bind")) return true;
+        if (controller.hasPermission(player, "magic.wand.override_bind")) return true;
 
         String playerId = controller.getMageIdentifier().fromEntity(player);
         if (ownerId.equalsIgnoreCase(playerId)) {

@@ -97,19 +97,19 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     @Override
     public Collection<String> onTabComplete(CommandSender sender, String commandName, String[] args) {
         Set<String> options = new HashSet<>();
-        if (!sender.hasPermission("Magic.commands.mconfig")) return options;
+        if (!sender.hasPermission("magic.commands.mconfig")) return options;
 
         if (args.length == 1) {
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "clean");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "disable");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "enable");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "configure");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "reset");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "editor");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "load");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "apply");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "example");
-            addIfPermissible(sender, options, "Magic.commands.mconfig.", "language");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "clean");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "disable");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "enable");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "configure");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "reset");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "editor");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "load");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "apply");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "example");
+            addIfPermissible(sender, options, "magic.commands.mconfig.", "language");
         }
         String subCommand = args[0];
         if (args.length == 3 && subCommand.equals("example") && (args[1].equals("fetch") || args[1].equals("unfetch"))) {
@@ -359,7 +359,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         String subCommand = args[0];
-        if (!api.hasPermission(sender, "Magic.commands.mconfig." + subCommand)) {
+        if (!api.hasPermission(sender, "magic.commands.mconfig." + subCommand)) {
             sendNoPermission(sender);
             return true;
         }

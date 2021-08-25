@@ -76,7 +76,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
         if (commandName.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("list"))
         {
-            if (!api.hasPermission(sender, "Magic.commands.wand.list")) {
+            if (!api.hasPermission(sender, "magic.commands.wand.list")) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -87,7 +87,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
         if (commandName.equalsIgnoreCase("wand") && args.length > 0 && args[0].equalsIgnoreCase("delete"))
         {
-            if (!api.hasPermission(sender, "Magic.commands.wand.delete")) {
+            if (!api.hasPermission(sender, "magic.commands.wand.delete")) {
                 sendNoPermission(sender);
                 return true;
             }
@@ -136,39 +136,39 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         }
 
         if (args.length == 1) {
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "add");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "remove");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "name");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "fill");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "configure");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "override");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "organize");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "alphabetize");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "combine");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "upgrade");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "describe");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "desc");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "enchant");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "create");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "destroy");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "duplicate");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "restore");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unlock");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "bind");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "unbind");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "save");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "delete");
-            addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".", "levelspells");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "add");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "remove");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "name");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "fill");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "configure");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "override");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "organize");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "alphabetize");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "combine");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "upgrade");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "describe");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "desc");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "enchant");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "create");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "destroy");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "duplicate");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "restore");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "unlock");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "bind");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "unbind");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "save");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "delete");
+            addIfPermissible(sender, options, "magic.commands." + permissionKey + ".", "levelspells");
 
             Collection<String> allWands = api.getWandKeys();
             for (String wandKey : allWands) {
-                addIfPermissible(sender, options, "Magic.create.", wandKey);
+                addIfPermissible(sender, options, "magic.create.", wandKey);
             }
         }
 
         if (args.length == 2) {
             String subCommand = args[0];
-            String subCommandPNode = "Magic.commands." + permissionKey + "." + subCommand;
+            String subCommandPNode = "magic.commands." + permissionKey + "." + subCommand;
 
             if (!api.hasPermission(sender, subCommandPNode)) {
                 return options;
@@ -177,7 +177,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             subCommandPNode += ".";
 
             if (subCommand.equalsIgnoreCase("add")) {
-                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("Magic.bypass_hidden"));
+                Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
                 for (SpellTemplate spell : spellList) {
                     addIfPermissible(sender, options, subCommandPNode, spell.getKey());
                 }
@@ -241,7 +241,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             if (subCommand.equalsIgnoreCase("combine")) {
                 Collection<String> allWands = api.getWandKeys();
                 for (String wandKey : allWands) {
-                    addIfPermissible(sender, options, "Magic.commands." + permissionKey + ".combine.", wandKey);
+                    addIfPermissible(sender, options, "magic.commands." + permissionKey + ".combine.", wandKey);
                 }
             }
 
@@ -263,7 +263,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             String subCommand = args[0];
             String subCommand2 = args[1];
 
-            String commandPNode = "Magic.commands." + permissionKey + "." + subCommand;
+            String commandPNode = "magic.commands." + permissionKey + "." + subCommand;
 
             if (!api.hasPermission(sender, commandPNode)) {
                 return options;
@@ -285,7 +285,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
                 com.elmakers.mine.bukkit.wand.Wand.addParameterValues(api.getController(), subCommand2, options);
             }
 
-            String subCommandPNode = "Magic.commands." + permissionKey + "." + subCommand + "." + subCommand2;
+            String subCommandPNode = "magic.commands." + permissionKey + "." + subCommand + "." + subCommand2;
             if (!api.hasPermission(sender, subCommandPNode)) {
                 return options;
             }
@@ -327,33 +327,33 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         }
         if (subCommand.equalsIgnoreCase("list"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
             onWandList(sender, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("add"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
             onWandAdd(sender, player, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("configure"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandConfigure(sender, player, args2, false);
             return true;
         }
         if (subCommand.equalsIgnoreCase("override"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandOverride(sender, player, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("enchant"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             String levels = args2.length > 0 ? args2[0] : "1";
             onWandEnchant(sender, player, levels);
@@ -361,111 +361,111 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         }
         if (subCommand.equalsIgnoreCase("create"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
             onWandCreate(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("destroy"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandDestroy(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("bind"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandBind(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("unbind"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandUnbind(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("duplicate"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandDuplicate(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("save"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandSave(sender, player, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("restore"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandRestore(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("unlock"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandUnlock(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("organize"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandOrganize(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("alphabetize"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandAlphabetize(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("combine"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandCombine(sender, player, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("describe") || subCommand.equalsIgnoreCase("desc"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandDescribe(sender, player, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("upgrade"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandConfigure(sender, player, args2, true);
             return true;
         }
         if (subCommand.equalsIgnoreCase("organize"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandOrganize(sender, player);
             return true;
         }
         if (subCommand.equalsIgnoreCase("levelspells"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandLevelSpells(sender, player, args2);
             return true;
         }
         if (subCommand.equalsIgnoreCase("fill"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
             int maxLevel = api.getController().getMaxWandFillLevel();
             if (args2.length > 0) {
                 if (args2[0].equalsIgnoreCase("max")) {
@@ -484,7 +484,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         }
         if (subCommand.equalsIgnoreCase("remove"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandRemove(sender, player, args2);
             return true;
@@ -492,26 +492,26 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
 
         if (subCommand.equalsIgnoreCase("name"))
         {
-            if (!api.hasPermission(sender, "Magic.commands." + command + "." + subCommand)) return true;
+            if (!api.hasPermission(sender, "magic.commands." + command + "." + subCommand)) return true;
 
             onWandName(sender, player, args2);
             return true;
         }
 
-        if (!api.hasPermission(sender, "Magic.commands." + command)) return true;
+        if (!api.hasPermission(sender, "magic.commands." + command)) return true;
         if (subCommand.length() == 0)
         {
-            if (!api.hasPermission(sender, "Magic.create.default")
-                && !api.hasPermission(sender, "Magic.create." + api.getController().getDefaultWandTemplate())
-                && !api.hasPermission(sender, "Magic.create.*")) {
+            if (!api.hasPermission(sender, "magic.create.default")
+                && !api.hasPermission(sender, "magic.create." + api.getController().getDefaultWandTemplate())
+                && !api.hasPermission(sender, "magic.create.*")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to create the default wand");
                 return true;
             }
         }
         else
         {
-            if (!api.hasPermission(sender, "Magic.create." + subCommand)
-                && !api.hasPermission(sender, "Magic.create.*")) {
+            if (!api.hasPermission(sender, "magic.create." + subCommand)
+                && !api.hasPermission(sender, "magic.create.*")) {
                 sender.sendMessage(ChatColor.RED + "You do not have permission to create the wand \"" + subCommand + "\"");
                 return true;
             }
@@ -876,7 +876,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         Wand wand = mage.getActiveWand();
         boolean bypassLocked;
         if (sender instanceof Player) {
-            bypassLocked = api.hasPermission(sender, "Magic.wand.override_locked");
+            bypassLocked = api.hasPermission(sender, "magic.wand.override_locked");
         } else {
             bypassLocked = CONSOLE_BYPASS_LOCKED;
         }
@@ -976,8 +976,8 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         boolean hasPermission = true;
         if (sender instanceof Player) {
             Player player = (Player)sender;
-            if (!player.hasPermission("Magic.wand.overwrite")) {
-                if (player.hasPermission("Magic.wand.overwrite_own")) {
+            if (!player.hasPermission("magic.wand.overwrite")) {
+                if (player.hasPermission("magic.wand.overwrite_own")) {
                     String creatorId = existing.getCreatorId();
                     hasPermission = creatorId != null && creatorId.equalsIgnoreCase(player.getUniqueId().toString());
                 } else {
@@ -1019,10 +1019,10 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         String template = parameters[0];
 
         WandTemplate existing = controller.getWandTemplate(template);
-        if (existing != null && !player.hasPermission("Magic.wand.overwrite")) {
+        if (existing != null && !player.hasPermission("magic.wand.overwrite")) {
             String creatorId = existing.getCreatorId();
             boolean isCreator = creatorId != null && creatorId.equalsIgnoreCase(player.getUniqueId().toString());
-            if (!player.hasPermission("Magic.wand.overwrite_own") || !isCreator) {
+            if (!player.hasPermission("magic.wand.overwrite_own") || !isCreator) {
                 sender.sendMessage(ChatColor.RED + "The " + template + " wand already exists and you don't have permission to overwrite it.");
                 return true;
             }
