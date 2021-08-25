@@ -110,9 +110,7 @@ public class SourceLocation {
             }
         }
 
-        if (!CompatibilityConstants.USE_METADATA_LOCATIONS) {
-            orientToTarget = configuration.getBoolean("use_target_location", configuration.getBoolean("orient", isSource));
-        }
+        orientToTarget = configuration.getBoolean("use_target_location", configuration.getBoolean("orient", isSource));
         // This is a special-case here for CustomProjectile
         if (configuration.getBoolean("reorient", false)) {
             orientToTarget = false;
@@ -198,8 +196,18 @@ public class SourceLocation {
         if (location == null) {
             location = feetLocation;
         }
+
+        // Orient the source location to point to the target
+        // Unless this player has a metadata location (Vivecraft support)
         Location targetLocation = isSource ? context.getTargetLocation() : context.getLocation();
-        if (orientToTarget && targetLocation != null && location != null) {
+        boolean doOrient = orientToTarget;
+        if (doOrient && CompatibilityConstants.USE_METADATA_LOCATIONS && mage != null) {
+            Entity entity = mage.getEntity();
+            if (entity != null && entity.hasMetadata("head.pos")) {
+                doOrient = false;
+            }
+        }
+        if (doOrient && targetLocation != null && location != null) {
             Vector direction = targetLocation.toVector().subtract(location.toVector()).normalize();
             if (MathUtils.isFinite(direction.getX()) && MathUtils.isFinite(direction.getY()) && MathUtils.isFinite(direction.getZ())) {
                 location.setDirection(direction);
