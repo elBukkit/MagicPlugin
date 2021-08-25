@@ -1,0 +1,16 @@
+bowcaster:
+  inherit: base_bound
+  icon: bow{CustomModelData:18001}
+  legacy_icon: bow_icon:1
+  class: mage
+  mode: inventory
+  left_click: cycle_active_hotbar
+  drop: toggle
+  right_click: none
+  cast_min_bowpull: 0.9
+  cast_location: 0.2,0,0.35
+  enchantable: true
+  slots: controls
+  slotted: controls_bow_hybrid
+  tags:
+    - transformablebow

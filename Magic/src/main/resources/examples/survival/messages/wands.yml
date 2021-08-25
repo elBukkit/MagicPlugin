@@ -88,6 +88,9 @@ wands:
     magicbow:
         name: Magic Bow
         description: "$path &rMagic Bow"
+    bowcaster:
+        name: Bowcaster
+        description: "$path &rBowcaster"
     magiccrossbow:
         name: Magic Crosswow
         description: "$path &rMagic Crossbow\n&4It doesn't work, sorry! Maybe one day..."
