@@ -110,7 +110,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
                 entityData.setMaterial(brush);
             }
 
-            Location location = adjustLocation(sourceLocation.getLocation(context));
+            Location location = adjustStartLocation(sourceLocation.getLocation(context));
             Entity spawned = entityData.spawn(location, spawnReason);
             if (spawned != null) {
                 context.registerForUndo(spawned);
@@ -123,12 +123,14 @@ public class EntityProjectileAction extends CustomProjectileAction {
         return super.start(context);
     }
 
-    protected Location adjustLocation(Location target) {
+    @Override
+    protected Location adjustStartLocation(Location location) {
+        super.adjustStartLocation(location);
         // TODO: locationOffset and velocityOffset should be made relative
         if (locationOffset != null) {
-            target = target.clone().add(locationOffset);
+            location = location.clone().add(locationOffset);
         }
-        return target;
+        return location;
     }
 
     @Override
@@ -138,9 +140,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             return SpellResult.CAST;
         }
 
-        // Note that in testing it somehow doesn't seem to matter if we adjust the location here
-        // I really have no idea why, but it seems to work OK if we adjust it on spawn.
-        Location target = adjustLocation(actionContext.getTargetLocation());
+        Location target = actionContext.getTargetLocation();
         if (doTeleport) {
             if (orient) {
                 target.setDirection(velocity);

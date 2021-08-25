@@ -350,6 +350,15 @@ public class CustomProjectileAction extends CompoundAction
         return super.start(context);
     }
 
+    // This is used by EntityProjectile when first spawning the entity
+    protected Location adjustStartLocation(Location location) {
+        if (startDistance != 0) {
+            Vector velocity = location.getDirection().clone().normalize();
+            location.add(velocity.clone().multiply(startDistance));
+        }
+        return location;
+    }
+
     @Override
     public SpellResult step(CastContext context) {
         long now = System.currentTimeMillis();

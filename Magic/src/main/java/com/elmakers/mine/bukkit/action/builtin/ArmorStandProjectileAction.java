@@ -122,7 +122,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
     @Override
     public SpellResult start(CastContext context) {
         MageController controller = context.getController();
-        Location location = adjustLocation(sourceLocation.getLocation(context));
+        Location location = adjustStartLocation(sourceLocation.getLocation(context));
         ArmorStand armorStand = (ArmorStand)setEntity(controller, CompatibilityLib.getCompatibilityUtils().createArmorStand(location));
         armorStand.setMarker(armorStandMarker);
         armorStand.setVisible(!armorStandInvisible);

@@ -4,10 +4,6 @@
 
  - Growth doesn't work on sugar cane
 
- - Test the test.yml spell, aim downwards does it not work?
- 
- - Magic welcome header looks broken in elTest .. it's 1.17 not sure what's up
-
  - Spells that disable mana regen need to constantly reset the mana catchup timestamp
 
  - CheckInventory action doesn't work with a stack of items
