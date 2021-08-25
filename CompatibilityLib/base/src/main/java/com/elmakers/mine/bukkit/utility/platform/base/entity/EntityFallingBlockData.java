@@ -19,7 +19,7 @@ import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 public class EntityFallingBlockData extends EntityExtraData {
     @Nullable
     private MaterialAndData material;
-    private Boolean dropItem;
+    private boolean dropItem;
     private Boolean hurtEntities;
 
     public EntityFallingBlockData(ConfigurationSection configuration, MageController controller) {
@@ -27,7 +27,7 @@ public class EntityFallingBlockData extends EntityExtraData {
         if (materialKey != null && !materialKey.isEmpty()) {
             material = controller.createMaterialAndData(materialKey);
         }
-        dropItem = ConfigUtils.getOptionalBoolean(configuration, "drop_items");
+        dropItem = configuration.getBoolean("drop_items", false);
         hurtEntities = ConfigUtils.getOptionalBoolean(configuration, "hurt_entities");
     }
 
@@ -50,9 +50,9 @@ public class EntityFallingBlockData extends EntityExtraData {
 
     @Override
     public void apply(Entity entity) {
-        if (entity instanceof  FallingBlock) {
+        if (entity instanceof FallingBlock) {
             FallingBlock fallingBlock = (FallingBlock)entity;
-            if (dropItem != null) fallingBlock.setDropItem(dropItem);
+            fallingBlock.setDropItem(dropItem);
             if (hurtEntities != null) fallingBlock.setHurtEntities(hurtEntities);
         }
     }
