@@ -1988,6 +1988,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         manaPerDamage = getFloat("mana_per_damage");
         earnMultiplier = getFloat("earn_multiplier", getFloat("sp_multiplier", 1));
         quietLevel = getInt("quiet");
+        if (quietLevel == 0 && getBoolean("quiet")) {
+            quietLevel = 1;
+        }
         effectBubbles = getBoolean("effect_bubbles");
         superPowered = getBoolean("powered");
         superProtected = getBoolean("protected");
