@@ -59,6 +59,7 @@
  - Fix spawning colored sheep
  - Fix slime and magma cube magic mobs
  - Fix "invalid NPC" spam on startup from NPCs in spawn chunks
+ - Fix `CheckInventory` not detecting a stack of items
 
 ## Additions
  

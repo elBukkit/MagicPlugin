@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.action.builtin;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -82,8 +81,11 @@ public class CheckInventoryAction extends CheckAction {
                 return false;
             }
             ItemStack item = mage.getItem(slotNumber);
-            if (this.item != null && Objects.equals(item, this.item)) {
-                return true;
+            if (this.item != null) {
+                if (item == null) {
+                    return false;
+                }
+                return item.isSimilar(this.item) && item.getAmount() >= this.item.getAmount();
             }
             ItemMeta meta = item == null ? null : item.getItemMeta();
             if (blockedEnchantments != null) {

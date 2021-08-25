@@ -4,10 +4,7 @@
 
  - Growth doesn't work on sugar cane
 
- - Spells that disable mana regen need to constantly reset the mana catchup timestamp
-
- - CheckInventory action doesn't work with a stack of items
-   https://github.com/elBukkit/MagicPlugin/issues/943
+ - Spells that disable mana regen need to constantly reset the mana catchup timestamp (idk, looks like they do...)
 
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
