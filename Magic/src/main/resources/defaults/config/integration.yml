@@ -252,6 +252,10 @@ aurelium_skills:
 vivecraft:
   enabled: true
 
+# MythicMobs integration, allows using mythicmobs in magic commands and configs
+mythicmobs:
+  enabled: true
+
 # Indirect integration with other protection plugins.
 # Add a plugin here to have Magic send it fake Block/Break events to check for permission.
 # This may have strange behavior, use with caution.

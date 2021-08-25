@@ -551,6 +551,7 @@ public class MagicController implements MageController {
     private boolean citizensEnabled = true;
     private boolean logBlockEnabled = true;
     private boolean libsDisguiseEnabled = true;
+    private boolean mythicMobsEnabled = true;
     private boolean skillAPIEnabled = true;
     private boolean placeholdersEnabled = true;
     private boolean lightAPIEnabled = true;
@@ -1613,7 +1614,7 @@ public class MagicController implements MageController {
                             valueMap.put("PreciousStones", controller.preciousStonesManager.isEnabled() ? 1 : 0);
                             valueMap.put("Lockette", controller.locketteManager.isEnabled() ? 1 : 0);
                             valueMap.put("NoCheatPlus", controller.ncpManager.isEnabled() ? 1 : 0);
-                            valueMap.put("MythicMobs", controller.mythicMobManager.isEnabled() ? 1 : 0);
+                            valueMap.put("MythicMobs", controller.mythicMobManager != null ? 1 : 0);
                             return valueMap;
                         }
                     });
@@ -7496,6 +7497,7 @@ public class MagicController implements MageController {
                 getLogger().info("LibsDisguises found, mob disguises and disguise_restricted features enabled");
             } else {
                 getLogger().warning("LibsDisguises integration failed");
+                libsDisguiseManager = null;
             }
         } else {
             libsDisguiseManager = null;
@@ -7581,12 +7583,18 @@ public class MagicController implements MageController {
         // Mythic Mobs
         Plugin mythicMobsPlugin = pluginManager.getPlugin("MythicMobs");
         if (mythicMobsPlugin != null) {
-            mythicMobManager = new MythicMobManager(this, mythicMobsPlugin);
+            if (mythicMobsEnabled) {
+                mythicMobManager = new MythicMobManager(this, mythicMobsPlugin);
 
-            if (mythicMobManager.initialize()) {
-                getLogger().info("MythicMobs found, mobs can be spawned in arenas, spells, actions, etc.");
+                if (mythicMobManager.initialize()) {
+                    getLogger().info("MythicMobs found, mobs can be spawned in arenas, spells, actions, etc.");
+                } else {
+                    getLogger().warning("MythicMobs integration failed");
+                    mythicMobManager = null;
+                }
             } else {
-                getLogger().warning("MythicMobs integration failed");
+                mythicMobManager = null;
+                getLogger().info("MythicMobs integration disabled");
             }
         }
     }
@@ -8103,6 +8111,7 @@ public class MagicController implements MageController {
         CompatibilityConstants.MAX_LORE_LENGTH = properties.getInt("lore_wrap_limit", CompatibilityConstants.MAX_LORE_LENGTH);
         CompatibilityConstants.LORE_WRAP_PREFIX = properties.getString("lore_wrap_prefix", CompatibilityConstants.LORE_WRAP_PREFIX);
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
+        mythicMobsEnabled = properties.getBoolean("mythicmobs.enabled", mythicMobsEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
