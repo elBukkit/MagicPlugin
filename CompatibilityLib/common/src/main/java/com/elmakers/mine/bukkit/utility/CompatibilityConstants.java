@@ -20,6 +20,7 @@ public class CompatibilityConstants {
     public static String LORE_WRAP_PREFIX = " ";
     public static int MAX_LORE_LENGTH = 24;
     public static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
+    public static boolean USE_METADATA_LOCATIONS;
 
     public static String getVersionPrefix() {
         String versionPrefix = "";

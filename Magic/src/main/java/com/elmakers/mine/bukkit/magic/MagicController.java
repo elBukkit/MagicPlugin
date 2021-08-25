@@ -8113,6 +8113,7 @@ public class MagicController implements MageController {
         residenceConfiguration = properties.getConfigurationSection("residence");
         redProtectConfiguration = properties.getConfigurationSection("redprotect");
         ajParkourConfiguration = properties.getConfigurationSection("ajparkour");
+        CompatibilityConstants.USE_METADATA_LOCATIONS = properties.getBoolean("vivecraft.enabled");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);
         }

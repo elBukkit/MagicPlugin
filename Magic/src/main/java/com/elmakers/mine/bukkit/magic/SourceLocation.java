@@ -11,6 +11,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.effect.EffectContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 
 import de.slikey.effectlib.util.MathUtils;
 
@@ -109,7 +110,9 @@ public class SourceLocation {
             }
         }
 
-        orientToTarget = configuration.getBoolean("use_target_location", configuration.getBoolean("orient", isSource));
+        if (!CompatibilityConstants.USE_METADATA_LOCATIONS) {
+            orientToTarget = configuration.getBoolean("use_target_location", configuration.getBoolean("orient", isSource));
+        }
         // This is a special-case here for CustomProjectile
         if (configuration.getBoolean("reorient", false)) {
             orientToTarget = false;
