@@ -1,0 +1,4 @@
+help:
+  examples:
+    main: |-
+      &b&bull; &f`<help topic="instructions.example.netherside" text="The Netherside">`
