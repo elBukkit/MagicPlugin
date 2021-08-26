@@ -505,8 +505,10 @@ public class ConfigurationLoadTask implements Runnable {
                     processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
                     reenableAll(config, exampleConfig);
                     // Don't override messages or config when adding an example, but allow other config overrides
-                    ConfigurationUtils.addConfigurations(config, exampleConfig, !isUnkeyedConfig);
-                    info(" Added " + examplesFilePrefix);
+                    // Unless otherwise specified
+                    boolean override = exampleConfig.getBoolean("example_override", false);
+                    ConfigurationUtils.addConfigurations(config, exampleConfig, !isUnkeyedConfig || override);
+                    info(" Added " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
                 } catch (Exception ex) {
                     getLogger().severe("Error loading file: " + examplesFilePrefix);
                     throw ex;
