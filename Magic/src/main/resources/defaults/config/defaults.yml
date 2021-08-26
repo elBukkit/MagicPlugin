@@ -652,8 +652,8 @@ despawn_magic_mobs: false
 # Hopefully it will not be needed any more, NPCs are automatically tagged and cleaned up as necessary
 remove_invulnerable_mobs: false
 
-# Set this to false to disallow wand commands modifying locked wands when used from the console or command blocks
-console_bypass_locked_wands: true
+# Set this to false to disallow wand commands modifying unmodifiable wands when used from the console or command blocks
+console_bypass_modifiable: true
 
 # Set this to false to turn off all vanilla sounds by default
 # They can be turned on/off for each effect using enable_vanilla_sounds on the effect config as well

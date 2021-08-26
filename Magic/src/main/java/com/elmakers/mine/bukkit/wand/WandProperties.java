@@ -36,7 +36,7 @@ public abstract class WandProperties extends TemplatedProperties {
             "icon_inactive", "icon_inactive_delay", "mode",
             "active_effects", "cancel_effects_delay",
             "brush_mode",
-            "keep", "locked", "quiet", "force", "rename", "rename_description",
+            "keep", "locked", "modifiable", "quiet", "force", "rename", "rename_description",
             "power", "heroes",
             "enchant_count", "max_enchant_count", "cast_location",
             "quick_cast", "self_destruct",

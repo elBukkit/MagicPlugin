@@ -50,3 +50,7 @@ enable_organizing: false
 # Players keep their wands when they die
 # This is better confrolled via the "keep" property on wand configs.
 keep_wands_on_death: false
+
+# Set this to true to restore the old behavior of the wand "locked" property.
+# This may interfere with builtin configs
+old_wand_locked_behavior: false

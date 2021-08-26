@@ -66,7 +66,9 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     @Override
     void describe(CommandSender sender);
     void unenchant();
+    @Deprecated
     void unlock();
+    void makeModifiable();
     Wand duplicate();
     @Override
     Spell getSpell(String key);
@@ -80,6 +82,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean hasSpell(SpellKey spellKey);
     @Override
     boolean hasBrush(String key);
+    boolean isModifiable();
     boolean isLocked();
     boolean canUse(Player player);
     boolean fill(Player player);

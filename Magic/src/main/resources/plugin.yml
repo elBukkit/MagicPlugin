@@ -1905,8 +1905,8 @@ permissions:
     description: A player may put wands in chests.
     default: false
     type: boolean
-  magic.wand.override_locked:
-    description: A player may modify locked wands with wand commands.
+  magic.wand.override_modifiable:
+    description: A player may modify unmodifiable wands with wand commands.
     default: op
     type: boolean
   magic.bypass_pvp:

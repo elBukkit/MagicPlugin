@@ -34,7 +34,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
-    public static boolean CONSOLE_BYPASS_LOCKED = true;
+    public static boolean CONSOLE_BYPASS_MODIFIABLE = true;
     private final WandPaginator wandPaginator;
 
     public WandCommandExecutor(MagicAPI api) {
@@ -776,7 +776,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
         }
         Mage mage = controller.getMage(player);
 
-        wand.unlock();
+        wand.makeModifiable();
         wand.saveState();
         mage.sendMessage(api.getMessages().get("wand.unlocked"));
         if (sender != player) {
@@ -874,17 +874,17 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
     protected Wand checkWand(CommandSender sender, Player player, boolean skipModifiable, boolean skipBound, boolean quiet) {
         Mage mage = controller.getMage(player);
         Wand wand = mage.getActiveWand();
-        boolean bypassLocked;
+        boolean bypassModifiable;
         if (sender instanceof Player) {
-            bypassLocked = api.hasPermission(sender, "magic.wand.override_locked");
+            bypassModifiable = api.hasPermission(sender, "magic.wand.override_modifiable");
         } else {
-            bypassLocked = CONSOLE_BYPASS_LOCKED;
+            bypassModifiable = CONSOLE_BYPASS_MODIFIABLE;
         }
         if (wand == null) {
             ItemStack item = player.getInventory().getItemInMainHand();
             if (api.isUpgrade(item)) {
                 wand = api.getWand(item);
-            } else if (bypassLocked && api.isWand(item)) {
+            } else if (bypassModifiable && api.isWand(item)) {
                 wand = api.getWand(item);
             }
         }
@@ -896,7 +896,7 @@ public class WandCommandExecutor extends MagicConfigurableExecutor {
             }
             return null;
         }
-        if (!skipModifiable && wand.isLocked() && !bypassLocked) {
+        if (!skipModifiable && !wand.isModifiable() && !bypassModifiable) {
             if (!quiet) mage.sendMessage(api.getMessages().get("wand.unmodifiable"));
             if (sender != player) {
                 sender.sendMessage(api.getMessages().getParameterized("wand.player_unmodifiable", "$name", player.getName()));

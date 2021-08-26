@@ -113,7 +113,7 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
 
         ProgressionPath currentPath = caster.getPath();
 
-        if (!castsSpells && !allowLocked && wand != null && wand.isLocked()) {
+        if (!castsSpells && !allowLocked && wand != null && !wand.isModifiable()) {
             context.showMessage(context.getMessage("no_path", getDefaultMessage(context, "no_path")).replace("$wand", wand.getName()));
             return null;
         }

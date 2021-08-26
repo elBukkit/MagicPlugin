@@ -43,6 +43,17 @@
    If you think this will have a performance impact on your server, use 
    `/mconfig configure config mage_update_frequency 4`
    to change it back
+   
+ - Changed the meaning of the `locked` tag on wands, to match the behavior of items, classes and recipes
+   Removed this tag from all builtin wands
+   This now makes a wand that can not be used unless the player has a class or modifier that allows it
+   Use "modifiable: false" for the same behavior as "locked: true" used to have
+   If this is a big issue to update, use `/mconfig configure config old_wand_locked_behavior true`
+    - The `locked_allow_upgrades` option was removed from wands. Please transition to the slotted upgrade system
+      or match up your wand/upgrades via paths  
+    - The `magic.wand.override_locked` permission was changed to `magic.wand.override_modifiable`
+    - The `console_bypass_locked_wands` parameter was changed to `console_bypass_modifiable` 
+      but should use the old name if present in your configs
 
 # 9.4
 

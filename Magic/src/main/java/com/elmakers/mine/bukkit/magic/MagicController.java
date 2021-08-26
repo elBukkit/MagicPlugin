@@ -8011,6 +8011,7 @@ public class MagicController implements MageController {
         fillingEnabled = properties.getBoolean("fill_wands", fillingEnabled);
         Wand.FILL_CREATOR = properties.getBoolean("fill_wand_creator", Wand.FILL_CREATOR);
         Wand.CREATIVE_CHEST_MODE = properties.getBoolean("wand_creative_chest_switch", Wand.CREATIVE_CHEST_MODE);
+        Wand.OLD_WAND_LOCKED = properties.getBoolean("old_wand_locked_behavior", Wand.OLD_WAND_LOCKED);
         maxFillLevel = properties.getInt("fill_wand_level", maxFillLevel);
         welcomeWand = properties.getString("welcome_wand", "");
         maxDamagePowerMultiplier = (float) properties.getDouble("max_power_damage_multiplier", maxDamagePowerMultiplier);
@@ -8027,7 +8028,7 @@ public class MagicController implements MageController {
         loadMobEggs(properties.getConfigurationSection("mob_eggs"));
         loadSkulls(properties.getConfigurationSection("skulls"));
         loadOtherMaterials(properties);
-        WandCommandExecutor.CONSOLE_BYPASS_LOCKED = properties.getBoolean("console_bypass_locked_wands", true);
+        WandCommandExecutor.CONSOLE_BYPASS_MODIFIABLE = properties.getBoolean("console_bypass_modifiable", properties.getBoolean("console_bypass_locked_wands", true));
 
         maxPower = (float) properties.getDouble("max_power", maxPower);
         ConfigurationSection damageTypes = properties.getConfigurationSection("damage_types");

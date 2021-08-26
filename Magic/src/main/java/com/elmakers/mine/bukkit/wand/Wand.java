@@ -108,6 +108,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public static Vector DEFAULT_CAST_OFFSET = new Vector(0, 0, 0.5);
     public static String DEFAULT_WAND_TEMPLATE = "default";
     public static boolean CREATIVE_CHEST_MODE = false;
+    public static boolean OLD_WAND_LOCKED = false;
 
     private static final Random random = new Random();
 
@@ -214,9 +215,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private int enchantCount = 0;
 
     private boolean hasInventory = false;
-    private boolean locked = false;
+    private boolean modifiable = true;
+    private boolean locked = true;
     private boolean autoAbsorb = false;
-    private boolean lockedAllowUpgrades = false;
     private boolean forceUpgrade = false;
     private boolean isHeroes = false;
     private int uses = 0;
@@ -444,11 +445,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Enchant, if an enchanting level was provided
         if (level > 0) {
-            // Account for randomized locked wands
-            boolean wasLocked = locked;
-            locked = false;
+            // Account for randomized unmodifiable wands
+            boolean wasModifiable = modifiable;
+            modifiable = true;
             randomize(level, null, true);
-            locked = wasLocked;
+            modifiable = wasModifiable;
         }
 
         // Don't randomize now if set to randomize later
@@ -793,8 +794,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return id;
     }
 
+    @Override
     public boolean isModifiable() {
-        return !locked;
+        return modifiable;
     }
 
     public boolean isAutoAbsorb() {
@@ -2200,9 +2202,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Read path first since it can be used to override any other property
         path = getString("path");
-        locked = getBoolean("locked", locked);
+        if (OLD_WAND_LOCKED) {
+            // Can't support locked wands this way
+            locked = false;
+            modifiable = getBoolean("locked", false);
+        } else {
+            locked = getBoolean("locked", false);
+            modifiable = getBoolean("modifiable", true);
+        }
         autoAbsorb = getBoolean("auto_absorb", false);
-        lockedAllowUpgrades = getBoolean("locked_allow_upgrades", false);
         inventoryOpenLore = getMessage("inventory_open", "");
 
         ConfigurationSection protectionConfig = getConfigurationSection("protection");
@@ -5987,13 +5995,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public boolean upgradesAllowed() {
-        return !this.locked || this.lockedAllowUpgrades;
+        return this.modifiable;
     }
 
     @Override
     public void unlock() {
-        locked = false;
-        setProperty("locked", false);
+        makeModifiable();
+    }
+
+    @Override
+    public void makeModifiable() {
+        modifiable = true;
+        setProperty("modifiable", true);
     }
 
     public boolean isWorn() {
