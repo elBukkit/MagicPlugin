@@ -384,8 +384,8 @@ compass:
   worth: 26.58
 composter:
   worth: 0.41
-conduit:
-  worth: 7458.79
+# This one is discover_recipes
+#conduit:
 cooked_beef:
   worth: 0.6
 cooked_chicken:
@@ -532,8 +532,8 @@ dark_prismarine_slab:
   worth: 95.67
 dark_prismarine_stairs:
   worth: 287.5
-daylight_detector:
-  worth: 3
+# This one is discover_recipes
+# daylight_detector:
 dead_brain_coral:
   worth: 0.69
 dead_brain_coral_block:
@@ -1360,8 +1360,8 @@ peony:
   worth: 7.9
 petrified_oak_slab:
   worth: 0
-phantom_membrane:
-  worth: 183.93
+# This one is discover_recipes
+#phantom_membrane:
 phantom_spawn_egg:
   worth: 500
 pig_spawn_egg:
@@ -1580,8 +1580,9 @@ purple_terracotta:
   worth: 2.47
 purple_wall_banner:
   worth: 6.46
-purple_wool:
-  worth: 3.43
+
+# This one is discover_recipes
+# purple_wool:
 purpur_block:
   worth: 4.67
 purpur_pillar:
@@ -2144,11 +2145,12 @@ zombified_piglin_spawn_egg:
 # 1.17
 
 amethyst_block:
-  worth: 100
+  worth: 400
 amethyst_cluster:
-  worth: 100
-amethyst_shard:
-  worth: 100
+  worth: 500
+
+# This one is discover_recipes
+# amethyst_shard:
 
 axolotl_bucket:
   worth: 100

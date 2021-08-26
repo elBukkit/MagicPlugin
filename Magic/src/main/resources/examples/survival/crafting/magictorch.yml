@@ -4,8 +4,8 @@ magictorch:
   output_type: wand
 
   materials:
-    o: magicheart
-    i: torch
+    o: glow_ink_sac
+    i: end_rod
 
   row_1: o
   row_2: i

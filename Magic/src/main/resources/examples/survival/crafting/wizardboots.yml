@@ -3,9 +3,10 @@ wizardboots:
   output: wizardboots
   output_type: wand
   materials:
-    o: magicheart
-    i: white_wool
-  row_1: ""
+    o: amethyst_shard
+    i: purple_wool
+    d: diamond
+  row_1: d d
   row_2: o o
   row_3: i i
 

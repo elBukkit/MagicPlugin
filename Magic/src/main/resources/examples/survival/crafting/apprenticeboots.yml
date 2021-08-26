@@ -5,7 +5,7 @@ apprenticeboots:
   discover:
     - wizardboots
   materials:
-    o: magicheart
+    o: amethyst_shard
     i: white_wool
   row_1: ""
   row_2: i i

@@ -5,7 +5,7 @@ apprenticeleggings:
   discover:
     - wizardleggings
   materials:
-    o: magicheart
+    o: amethyst_shard
     i: white_wool
   row_1: iii
   row_2: i i

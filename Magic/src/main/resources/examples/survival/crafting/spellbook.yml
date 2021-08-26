@@ -4,9 +4,11 @@ spellbook:
   group: "Wands"
 
   materials:
-    o: magicheart
+    o: amethyst_shard
+    d: diamond
+    e: emerald
     i: book
 
-  row_1: o
-  row_2: i
-  row_3: ""
+  row_1: " o "
+  row_2: "die"
+  row_3:

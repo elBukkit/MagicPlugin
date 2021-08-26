@@ -3,9 +3,9 @@ mirrorshield:
   output_type: wand
 
   materials:
-    o: magicheart
+    o: amethyst_shard
     i: shield
 
-  row_1: o
-  row_2: i
-  row_3: ""
+  row_1: " o"
+  row_2: "io"
+  row_3: " o"

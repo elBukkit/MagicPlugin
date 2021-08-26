@@ -2,10 +2,8 @@ divinghelmet:
   output: divinghelmet
   output_type: wand
   materials:
-    o: heart_of_the_sea
-    i: stained_glass
-    h: magicheart
+    o: conduit
+    i: light_blue_stained_glass
   row_1: iii
   row_2: ioi
-  row_3: ihi
-
+  row_3: i i

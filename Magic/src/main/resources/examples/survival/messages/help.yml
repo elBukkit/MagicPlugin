@@ -42,10 +42,8 @@ help:
         &b&bull; &fSurvival recipes: &6https://survival.elmakers.com/#crafting
       wand_crafting: |-
         `<title text="Wand Crafting">`
-        &6Wands &fcan be crafted using a &b`<command command="/mgive magicheart" text="Magic Heart">`&f and a &e`<command command="/mgive stick" text="stick">`&f.
-        &fA &bMagic Heart&f is crafted with a &e`<command command="/mgive diamond" text="diamond">` &fand 4 &b`<command command="/mgive emerald 4" text="emeralds">`&f.
-        &fThe recipes for both will appear in your in-game &bknowledge book&f.
-        &fThe knowledge book may not correctly recognize custom recipe ingredients, so make sure to select "Show All".
+        &6Wands &fcan be crafted using an &d`<command command="/mgive amethyst_shard" text="Amethyst Shard">`&f, a &e`<command command="/mgive stick" text="stick">`&f and &b`<command command="/mgive diamond 2" text="2 diamonds">`&f.
+        &fThe recipe will appear in your in-game &bknowledge book once you have acquired an &damethyst shard&f.
       progression: |-
         `<title text="Survival Progression">`
         &b&bull; &f`<help topic="examples.survival.spellpoints" text="About spell points">`

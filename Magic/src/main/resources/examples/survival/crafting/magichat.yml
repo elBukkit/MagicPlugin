@@ -2,8 +2,9 @@ magichat:
   output: magichat
   output_type: wand
   materials:
-    o: magicheart
-    i: leather_helmet
-  row_1: o
-  row_2: i
-  row_3: ""
+    o: amethyst_shard
+    i: blue_wool
+    e: end_rod
+  row_1: ioi
+  row_2: i i
+  row_3: e e

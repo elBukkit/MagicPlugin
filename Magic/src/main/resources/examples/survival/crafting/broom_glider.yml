@@ -5,7 +5,7 @@ broom_glider:
   group: "Broomsticks"
   materials:
     i: elytra
-    h: magicheart
-  row_1: " h "
+    h: slime_ball
+  row_1: "hhh"
   row_2: " i "
   row_3: ""

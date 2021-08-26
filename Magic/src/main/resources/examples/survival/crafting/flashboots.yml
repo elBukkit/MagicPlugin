@@ -3,10 +3,10 @@ flashboots:
   output: flashboots
   output_type: wand
   materials:
-    o: magicheart
+    o: fire_charge
     i: wool
     f: feather
-  row_1: ""
-  row_2: i i
-  row_3: fof
+  row_1: i i
+  row_2: o o
+  row_3: f f
 

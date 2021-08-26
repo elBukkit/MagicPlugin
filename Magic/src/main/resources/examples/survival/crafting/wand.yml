@@ -4,24 +4,21 @@ wand:
   # This makes sure you get the wand version, in case of name collisions
   # Probably not necessary
   output_type: wand
+
+  # This will group this recipe with others in the Knowledge Book
+  # This is used to group the main "primary spellcasting" items together
   group: "Wands"
 
-  # Used as a substitute item when the wand item is naturally crafted
-  # This is mainly for the resource pack, so players don't craft a wood hoe
-  # and get some weird non-wand but wand-looking item.
-  # This means that, by default, crafting a wood hoe will get you an iron hoe.
-  # substitute: iron_hoe
-
-  # Don't disable the default recipe
-  disable_default: false
-
-  # This defines the materials that will be required to craft this wand
-  materials:
-    o: magicheart
+  # This defines the ingredients that will be required to craft this wand
+  # Each ingredient is mapped to a symbol used in the crafting rows below
+  ingredients:
+    o: amethyst_shard
+    d: diamond
+    e: emerald
     i: stick
 
   # This defines the shape of the recipe, row_1 is the top. Each row may
   # have up to 3 characters that map to the materials listed above.
-  row_1: o
-  row_2: i
+  row_1: " o "
+  row_2: "die"
   row_3: ""

@@ -5,7 +5,7 @@ apprenticechestplate:
   discover:
     - wizardchestplate
   materials:
-    o: magicheart
+    o: amethyst_shard
     i: white_wool
   row_1: ioi
   row_2: iii

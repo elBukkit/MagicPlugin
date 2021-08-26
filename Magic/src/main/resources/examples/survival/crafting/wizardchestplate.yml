@@ -3,8 +3,8 @@ wizardchestplate:
   output: wizardchestplate
   output_type: wand
   materials:
-    o: magicheart
-    i: white_wool
+    o: amethyst_shard
+    i: purple_wool
   row_1: i i
   row_2: ioi
   row_3: iii

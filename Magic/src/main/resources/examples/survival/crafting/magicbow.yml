@@ -3,7 +3,7 @@ magicbow:
   output_type: wand
   materials:
     i: bow
-    h: magicheart
+    h: amethyst_shard
   row_1: h
   row_2: i
   row_3: h

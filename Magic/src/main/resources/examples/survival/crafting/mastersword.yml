@@ -3,7 +3,7 @@ mastersword:
   output: mastersword
   output_type: wand
   materials:
-    o: magicheart
+    o: amethyst_shard
     i: diamond_sword
   row_1: ""
   row_2: o
