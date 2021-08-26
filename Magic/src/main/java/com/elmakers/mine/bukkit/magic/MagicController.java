@@ -1902,6 +1902,7 @@ public class MagicController implements MageController {
         log("Loaded " + crafting.getCount() + " crafting recipes");
 
         // Create ItemStacks for all ItemData so we can do reverse-lookups
+        logger.setContext("Finalize items");
         items.finalizeItems();
 
         // Integrate with any plugins that don't need to be done at startup
@@ -1961,7 +1962,7 @@ public class MagicController implements MageController {
         LoadEvent loadEvent = new LoadEvent(this);
         Bukkit.getPluginManager().callEvent(loadEvent);
 
-        logger.setContext("postLoad");
+        logger.setContext(null);
     }
 
     public void processConfigurations(ConfigurationLoadTask loader, CommandSender sender) {
@@ -5035,6 +5036,7 @@ public class MagicController implements MageController {
         }
 
         // Update registered mages so their spells are current
+        logger.setContext("Reload Mage spells");
         for (Mage mage : mages.values()) {
             if (mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
                 ((com.elmakers.mine.bukkit.magic.Mage) mage).loadSpells(spellConfigs);
