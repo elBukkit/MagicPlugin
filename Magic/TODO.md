@@ -8,8 +8,6 @@
    have no crafting at all, because they inherit survival's crafting
    The inherit is only there for people who use "mconfig example set robes", there must be a better way
    
- - negative mana regen boosts show weird in lore, see: diving helmet
-
  - Convert all example instructions to header / bullet format
 
  - Use macros for instruction bullet/prefix/indent
@@ -20,6 +18,8 @@
 
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
+   
+ - Add some help instructions in survival crafting section for enabling wand recipe auto-discover
    
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
