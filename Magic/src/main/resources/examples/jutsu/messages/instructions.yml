@@ -1,5 +1,5 @@
 examples:
   jutsu:
     instructions: |-
-      &8| &3&nJUTSU &r
-      &8|   &fWork-in-progress &r
+      `<title text="Jutsu">`
+      `<p>`Work-(not so)-in-progress &r

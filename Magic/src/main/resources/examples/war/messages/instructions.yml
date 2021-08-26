@@ -1,6 +1,6 @@
 examples:
   war:
     instructions: |-
-      &8| &3&nWAR &r
-      &8|   &fUse &6/mnpc add gunshop &fto buy guns &r
-      &8|   &fAnd &6/mnpc add carshop &ffor cars &r
+      `<title text="War">`
+      `<p>`Use &6/mnpc add gunshop &fto buy guns &r
+      `<p>`And &6/mnpc add carshop &ffor cars &r

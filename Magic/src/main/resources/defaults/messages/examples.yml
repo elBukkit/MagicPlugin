@@ -5,6 +5,5 @@ examples:
       &8|
       &8|   &b&lEXAMPLE INSTRUCTIONS
       &8|
-    instructions_footer: |-
-      &8|
       &8 ----------------------------------------------------
+    instructions_footer: ""

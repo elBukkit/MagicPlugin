@@ -30,7 +30,7 @@ wands:
         wand_instructions_header: |-
             &8 ----------------------------------------------------
             &8|
-            &8|   &b&lSWORD INSTRUCTIONS
+            `<p>`&b&lSWORD INSTRUCTIONS
             &8|
         spell_instructions: |-
             &8| &7> &fUse the &6number keys &fto cast &d$spell
@@ -41,7 +41,7 @@ wands:
         wand_instructions_header: |-
             &8 ----------------------------------------------------
             &8|
-            &8|   &b&lBOW INSTRUCTIONS
+            `<p>`&b&lBOW INSTRUCTIONS
             &8|
         spell_instructions: |-
             &8| &7> &6Loose an arrow &fto cast &d$spell
@@ -60,7 +60,7 @@ wands:
         wand_instructions_header: |-
             &8 ----------------------------------------------------
             &8|
-            &8|   &b&lBROOMSTICK INSTRUCTIONS
+            `<p>`&b&lBROOMSTICK INSTRUCTIONS
             &8|
         spell_instructions: |-
             &8| &7> &fUse your broom to fly through the air!
@@ -74,7 +74,7 @@ wands:
         wand_instructions_header: |-
             &8 ----------------------------------------------------
             &8|
-            &8|   &b&lSPELL BOOK INSTRUCTIONS
+            `<p>`&b&lSPELL BOOK INSTRUCTIONS
             &8|
         spell_instructions: |-
             &8| &7> &f&bUse the &6number keys &fto cast &d$spell

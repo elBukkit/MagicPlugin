@@ -1,6 +1,6 @@
 examples:
   slimefun:
     instructions: |-
-      &8| &3&nSLIMEFUN &r
-      &8|   &fThis changes the default RP to use one that has Slimefun &r
-      &8|   &fcustom models merged in from https://www.planetminecraft.com/texture-pack/slimefun-texture-by-raulh22/ &r
+      `<title text="Slimefun Integration">`
+      `<p>`This changes the default RP to use one that has Slimefun &r
+      `<p>`custom models merged in from https://www.planetminecraft.com/texture-pack/slimefun-texture-by-raulh22/ &r

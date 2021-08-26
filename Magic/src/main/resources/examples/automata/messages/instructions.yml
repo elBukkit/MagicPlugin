@@ -1,8 +1,7 @@
 examples:
   automata:
     instructions: |-
-      &8| &3&nAUTOMATA &r
-      &8|   &fUse &6/cast birth_hunter &fto spawn a hunter &r
-      &8|   &fSee the wiki for more info: &r
-      &8|   &fhttps://github.com/elBukkit/MagicPlugin/wiki/Automata &r
-
+      `<title text="Automata">`
+      `<p>`Use &6/cast birth_hunter &fto spawn a hunter &r
+      `<p>`See the wiki for more info: &r
+      `<p>`https://github.com/elBukkit/MagicPlugin/wiki/Automata &r

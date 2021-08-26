@@ -3,7 +3,7 @@ wands:
         wand_instructions_header: |-
             &8 ----------------------------------------------------
             &8|
-            &8|   &b&lBENDING INSTRUCTIONS
+            `<p>`&b&lBENDING INSTRUCTIONS
             &8|
         # This is blank because we start with a spell inventory, and so inventory_instructions is shown right away
         spell_instructions: ""

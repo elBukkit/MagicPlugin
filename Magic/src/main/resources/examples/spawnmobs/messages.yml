@@ -1,11 +1,11 @@
 examples:
   magicmobs:
     instructions: |-
-      &8| &3&nMAGIC MOBS &r
-      &8|   &fMagic mobs will now spawn naturally, rarely, in place &r
-      &8|   &fof some vanilla mob spawns. &r
-      &8|   &fIf your default world is not called &6world&f you will &r
-      &8|   &fneed to customize your configuration using &r
-      &8|   &7/mconfig configure world overworld_mobs world yourworld &r
-      &8|   &7/mconfig configure world nether_mobs world yournether &r
-      &8|   &7/mconfig configure world end_mobs world yourend &r
+      `<title text="Magic Mob Spawning">`
+      `<p>`Magic mobs will now spawn naturally, rarely, in place &r
+      `<p>`of some vanilla mob spawns. &r
+      `<p>`If your default world is not called &6world&f you will &r
+      `<p>`need to customize your configuration using &r
+      `<p>`&7/mconfig configure world overworld_mobs world yourworld &r
+      `<p>`&7/mconfig configure world nether_mobs world yournether &r
+      `<p>`&7/mconfig configure world end_mobs world yourend &r
