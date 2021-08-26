@@ -1,14 +1,30 @@
 # TODO
 
-# Importanter
+# For 10.0 Release
 
- - Spells that disable mana regen need to constantly reset the mana catchup timestamp (on ... wands.. hrm)
+ - Inheritance bahhhh!
+   Can we make like "requires:" instead of "inherit" or something?
+   Add-on configs like engineering or spawnmobs can override robes even though they
+   have no crafting at all, because they inherit survival's crafting
+   The inherit is only there for people who use "mconfig example set robes", there must be a better way
+   
+ - negative mana regen boosts show weird in lore, see: diving helmet
+
+ - Convert all example instructions to header / bullet format
+
+ - Use macros for instruction bullet/prefix/indent
+
+ - Need to handle magic blocks in unloaded worlds, keep them around and then retry when the world loads
+
+ - Change behavior of "locked" on wands to match items? Maybe a config switch to change it back?
 
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
+   
+ - Test recipes on 1.16 and 1.9
    
 # Glyph Wand
 
@@ -32,6 +48,7 @@ set_bonus_properties:
 
 # Important
 
+ - Spells that disable mana regen need to constantly reset the mana catchup timestamp (on ... wands.. hrm)
  - Allow slotted upgrades to rename (rename and rename_description options)
  - Prevent blaze fireballs from doing damage?
    Arenas always auto-rollback fireballs and stuff from mobs?
@@ -43,6 +60,7 @@ set_bonus_properties:
    support Power on a magic bow?
  - Dying at the end of an arena puts you in a broken state (maybe fixed?)
  - Buy/sell shops get inaccurate if they don't auto-close, need to refresh lore after each purchase
+ - Add support for nms.SnowballEntity.setItemStack, for custom snowball projectiles in Projectile action
 
 # Undo / Build Issues
 
