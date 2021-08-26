@@ -320,8 +320,11 @@ public class ConfigurationLoadTask implements Runnable {
         inherited.add(exampleKey);
         List<String> inherits = ConfigurationUtils.getStringList(mainConfiguration, "inherit");
         if (inherits != null) {
-            List<String> skip = ConfigurationUtils.getStringList(mainConfiguration, "skip_inherited");
-            if (skip == null || !skip.contains(fileName)) {
+            List<String> skipList = ConfigurationUtils.getStringList(mainConfiguration, "skip_inherited");
+            List<String> includeList = ConfigurationUtils.getStringList(mainConfiguration, "include_inherited");
+            boolean skip = skipList != null && skipList.contains(fileName);
+            boolean include = includeList == null || includeList.contains(fileName);
+            if (!skip && include) {
                 for (String inheritFrom : inherits) {
                     String inheritFilePrefix = "examples/" + inheritFrom + "/" + fileName;
 

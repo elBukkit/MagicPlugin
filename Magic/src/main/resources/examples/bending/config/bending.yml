@@ -5,16 +5,11 @@
 # This is a modifier on the default survival configs
 inherit: survival
 
-# Turn off the survival spells, but allow them to be inherited from
+# Include only survival spells, but disable them so we can inherit without them being available
+include_inhertied:
+  - spells
 disable_inherited:
  - spells
-
-skip_inherited:
- - wands
- - paths
- - crafting
- - classes
- - mobs
 
 # Don't allow crafting
 enable_crafting: false
