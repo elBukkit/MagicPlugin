@@ -38,6 +38,11 @@
 
  - Crafting recipes changed again, magic heart is gone. 
    Use `/mconfig example add magicheart` to bring it back.
+   
+ - Changed `mage_update_frequency` default value to 1, for smoother GUI animations
+   If you think this will have a performance impact on your server, use 
+   `/mconfig configure config mage_update_frequency 4`
+   to change it back
 
 # 9.4
 
