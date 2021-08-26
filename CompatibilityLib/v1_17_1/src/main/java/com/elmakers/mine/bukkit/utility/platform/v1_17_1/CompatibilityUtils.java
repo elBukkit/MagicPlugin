@@ -1708,7 +1708,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         List<String> serializedLore = new ArrayList<>(lore.size());
         for (int i = 0; i < lore.size(); i++) {
             String line = lore.get(i);
-            if (line.contains("`{")) {
+            if (ChatUtils.hasJSON(line)) {
                 List<BaseComponent> components = new ArrayList<>();
                 List<BaseComponent> addToComponents = components;
                 BaseComponent addToComponent = null;

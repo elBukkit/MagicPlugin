@@ -120,7 +120,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public boolean sendActionBar(Player player, String message) {
-        if (message.contains("`{")) {
+        if (ChatUtils.hasJSON(message)) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, parseChatComponents(message));
         } else {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, new TextComponent(message));
@@ -134,7 +134,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             return sendActionBar(player, message);
         }
         BaseComponent[] components;
-        if (message.contains("`{")) {
+        if (ChatUtils.hasJSON(message)) {
             components = parseChatComponents(message);
         } else {
             components = new BaseComponent[]{new TextComponent(message)};

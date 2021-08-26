@@ -903,7 +903,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         // Convert chat components
         for (int i = 0; i < lore.size(); i++) {
             String line = lore.get(i);
-            if (line.contains("`{")) {
+            if (ChatUtils.hasJSON(line)) {
                 lore.set(i, ChatUtils.getSimpleMessage(line));
             }
         }

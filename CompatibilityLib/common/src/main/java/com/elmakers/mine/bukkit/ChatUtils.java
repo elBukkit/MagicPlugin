@@ -107,4 +107,8 @@ public class ChatUtils {
     public static String[] getWords(String text) {
         return PUNCTUATION_PATTERN.split(text);
     }
+
+    public static boolean hasJSON(String text) {
+        return text.contains("`{");
+    }
 }

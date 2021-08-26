@@ -17,6 +17,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.ChatUtils;
+
 public class TextUtils {
     private static final NumberFormat[] formatters = {
         new DecimalFormat("#0"),
@@ -183,7 +185,7 @@ public class TextUtils {
             } else if (lineIsActionBar && player != null) {
                 CompatibilityLib.getCompatibilityUtils().sendActionBar(player, fullMessage);
             } else {
-                if (fullMessage.contains("`{")) {
+                if (ChatUtils.hasJSON(fullMessage)) {
                     CompatibilityLib.getCompatibilityUtils().sendChatComponents(sender, fullMessage);
                 } else {
                     sender.sendMessage(fullMessage);
