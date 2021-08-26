@@ -15,8 +15,6 @@
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
- - Add some help instructions in survival crafting section for enabling wand recipe auto-discover
-   
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
    
