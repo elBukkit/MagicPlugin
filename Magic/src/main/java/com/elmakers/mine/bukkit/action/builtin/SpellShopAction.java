@@ -82,10 +82,14 @@ public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAct
         showUpgrades = parameters.getBoolean("show_upgrades", false);
         allowLocked = parameters.getBoolean("allow_locked", false);
         requiresCastCounts = parameters.getBoolean("upgrade_requires_casts", false);
+
+        // When not casting, make applying mutually exclusive
         if (!castsSpells) {
             if (requireWand && !applyToCaster) {
-                applyToWand = false;
+                applyToWand = true;
+                applyToCaster = false;
             } else {
+                applyToWand = false;
                 applyToCaster = true;
             }
         }
