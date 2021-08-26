@@ -3254,6 +3254,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_regeneration_boost", manaRegenerationBoost, 1, true), lore);
         }
 
+        if (earnMultiplier > 1) {
+            String earnDescription = getPropertyString("earn_multiplier", earnMultiplier - 1);
+            String earnType = getController().getMessages().get("currency.sp.name_short", "SP");
+            earnDescription = earnDescription.replace("$type", earnType);
+            ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
+        }
+
         if (castSpell != null) {
             SpellTemplate spell = controller.getSpellTemplate(castSpell);
             if (spell != null)
@@ -3315,13 +3322,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             for (String key : keys) {
                 addDamageTypeLore("strength", key, strengthConfig.getDouble(key), lore);
             }
-        }
-
-        if (earnMultiplier > 1) {
-            String earnDescription = getPropertyString("earn_multiplier", earnMultiplier - 1);
-            String earnType = getController().getMessages().get("currency.sp.name_short", "SP");
-            earnDescription = earnDescription.replace("$type", earnType);
-            ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
         }
         ConfigurationSection attributes = getConfigurationSection("attributes");
         if (attributes != null) {
