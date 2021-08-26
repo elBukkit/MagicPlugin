@@ -1,5 +1,5 @@
 # This is a modifier on the default survival configs
-inherit: survival
+require: survival
 
 # This resource pack is identical to survival except is also includes the flat skull model
 resource_pack: skulls

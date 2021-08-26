@@ -1,5 +1,5 @@
 # This is a modifier on the default survival configs
-inherit: survival
+require: survival
 
 resource_pack: robes
 add_resource_pack: robes

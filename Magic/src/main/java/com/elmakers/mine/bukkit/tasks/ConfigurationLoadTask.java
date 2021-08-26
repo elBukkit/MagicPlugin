@@ -63,7 +63,7 @@ public class ConfigurationLoadTask implements Runnable {
 
     private String exampleDefaults = null;
     private String languageOverride = null;
-    private Collection<String> addExamples = null;
+    private List<String> addExamples = null;
     private Set<String> allExamples = new HashSet<>();
 
     private final ConfigurationSection helpTopics;
@@ -263,6 +263,50 @@ public class ConfigurationLoadTask implements Runnable {
                     getLogger().severe("Error loading: " + examplesFilePrefix);
                     throw ex;
                 }
+            }
+        }
+
+        // Look for any missing required configurations
+        List<String> requirements = new ArrayList<>();
+        for (Map.Entry<String, ConfigurationSection> entry : mainConfigurations.entrySet()) {
+            List<String> requires = ConfigurationUtils.getStringList(entry.getValue(), "require");
+            if (requires == null) continue;
+            String exampleKey = entry.getKey();
+            for (String require : requires) {
+                // If we have requirements, we can't really be the main config
+                // This will not handle ordering multiple chains of requirements, so.. don't do that
+                boolean isMainConfig = exampleDefaults != null && exampleDefaults.equals(exampleKey);
+                if (isMainConfig) {
+                    info("Switching main example from " + exampleKey + " to required example " + require + "");
+                    exampleDefaults = require;
+                    addExamples.remove(require);
+                    addExamples.add(exampleKey);
+
+                }
+                if (!mainConfigurations.containsKey(require)) {
+                    requirements.add(require);
+                    if (!isMainConfig) {
+                        addExamples.add(0, require);
+                    }
+                    info("Force-loading " + require + " because it is required by " + exampleKey);
+                }
+            }
+        }
+
+        for (String example : requirements) {
+            examplesFilePrefix = "examples/" + example + "/" + fileName;
+
+            ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
+            try {
+                boolean override = exampleConfig.getBoolean("example_override", false);
+                exampleConfig.set("example_override", null);
+                info(" Adding " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
+                processInheritance(example, exampleConfig, fileName, exampleConfig);
+                mainConfigurations.put(example, exampleConfig);
+                ConfigurationUtils.addConfigurations(config, exampleConfig, override);
+            } catch (Exception ex) {
+                getLogger().severe("Error loading: " + examplesFilePrefix);
+                throw ex;
             }
         }
 
