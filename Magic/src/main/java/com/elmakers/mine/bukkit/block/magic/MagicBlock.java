@@ -50,6 +50,7 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
     private List<WeakReference<Entity>> spawned;
     private long lastSpawn;
     private EffectContext effectContext;
+    private boolean pendingWorldLoad;
     private boolean isActive;
     private boolean enabled = true;
 
@@ -83,7 +84,10 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         }
         World world = Bukkit.getWorld(worldName);
         if (world == null) {
-            controller.getLogger().warning("Automaton has unknown world: " + worldName + ", will be removed!");
+            pendingWorldLoad = true;
+            // Fill in a world for now so we have a non-null valid Location, but
+            // nothing should use it if we're marked as pending load.
+            world = Bukkit.getWorlds().iterator().next();
         }
         location = new Location(world, x, y, z, yaw, pitch);
     }
@@ -240,6 +244,7 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
     }
 
     @Override
+    @Nonnull
     public Location getLocation() {
         return location;
     }
@@ -337,8 +342,8 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         return BlockData.getBlockId(getLocation());
     }
 
-    public boolean isValid() {
-        return location.getWorld() != null; // FIXME
+    public boolean isPendingWorldLoad() {
+        return pendingWorldLoad;
     }
 
     @Override

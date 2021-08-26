@@ -2747,7 +2747,7 @@ public class MagicController implements MageController {
         try {
             for (ConfigurationSection node : list) {
                 MagicBlock magicBlock = new MagicBlock(this, node);
-                if (!magicBlock.isValid()) {
+                if (magicBlock.isPendingWorldLoad()) {
                     invalidMagicBlocks.add(node);
                     continue;
                 }
