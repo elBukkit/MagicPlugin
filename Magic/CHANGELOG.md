@@ -92,6 +92,7 @@
  - Add `unlock_earns` parameter to Selector, rewardshop example of single-time requirement-base rewards
  - The `spawnmobs` example magic mobs will rarely drop special loot that can be sold in the `lootshop`
  - Add `use_brush: helmet` option to `ArmorStandProjectile` so it can put a sampled block on the armor stand
+ - Item configurations can now have a `discover_recipes` list, learned by players when they hold the item
 
 ## Changes
 

@@ -6341,6 +6341,16 @@ public class MagicController implements MageController {
         return items.getKeys();
     }
 
+    @Nullable
+    public ItemData getItemByMaterial(ItemStack itemStack) {
+        if (itemStack == null) return null;
+        ItemData data = getItem(itemStack);
+        if (data == null) {
+            data = getItem(itemStack.getType().name().toLowerCase());
+        }
+        return data;
+    }
+
     @Override
     @Nullable
     public ItemData getItem(String key) {
@@ -6387,11 +6397,7 @@ public class MagicController implements MageController {
 
     @Nullable
     public String getLockKey(ItemStack itemStack) {
-        if (itemStack == null) return null;
-        ItemData data = getItem(itemStack);
-        if (data == null) {
-            data = getItem(itemStack.getType().name().toLowerCase());
-        }
+        ItemData data = getItemByMaterial(itemStack);
         if (data != null && data.isLocked()) {
             return data.getKey();
         }

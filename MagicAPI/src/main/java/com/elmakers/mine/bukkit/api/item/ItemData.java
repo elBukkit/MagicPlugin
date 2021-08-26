@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.item;
 
+import java.util.Collection;
 import java.util.Set;
 import javax.annotation.Nullable;
 
@@ -33,6 +34,8 @@ public interface ItemData {
     boolean isExactIngredient();
     int getDurability();
     int getAmount();
+    @Nullable
+    Collection<String> getDiscoverRecipes();
 
     @Nullable
     @Deprecated

@@ -59,6 +59,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.item.Cost;
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
@@ -185,6 +186,10 @@ public class PlayerController implements Listener {
             mage.sendDebugMessage("EQUIP " + event.getNewSlot() + " from " + event.getPreviousSlot(), DEBUG_LEVEL);
         }
         controller.updateOnEquip(next);
+        ItemData itemData = controller.getItemByMaterial(next);
+        if (itemData != null) {
+            mage.discoverRecipes(itemData.getDiscoverRecipes());
+        }
 
         // Check for self-destructing and temporary items
         if (Wand.isSelfDestructWand(next)) {

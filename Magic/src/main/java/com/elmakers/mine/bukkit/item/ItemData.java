@@ -56,6 +56,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private boolean loaded;
     private boolean exactIngredient;
     private boolean replaceOnEquip;
+    private List<String> discoverRecipes;
     private List<PendingUpdate> pending = null;
 
     public ItemData(ItemStack itemStack, MageController controller) {
@@ -95,6 +96,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         locked = configuration.getBoolean("locked");
         replaceOnEquip = configuration.getBoolean("replace_on_equip");
         exactIngredient = configuration.getBoolean("exact_ingredient");
+        discoverRecipes = ConfigurationUtils.getStringList(configuration, "discover_recipes");
+        // Slightly more efficient if this has been overridden to an empty list
+        if (discoverRecipes != null && discoverRecipes.isEmpty()) {
+            discoverRecipes = null;
+        }
 
         Collection<String> categoriesList = ConfigurationUtils.getStringList(configuration, "categories");
         if (categoriesList != null) {
@@ -462,5 +468,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     public int getMaxDurability() {
         ItemStack itemStack = getItemStack();
         return itemStack == null ? 0 : itemStack.getType().getMaxDurability();
+    }
+
+    @Nullable
+    public Collection<String> getDiscoverRecipes() {
+        return discoverRecipes;
     }
 }
