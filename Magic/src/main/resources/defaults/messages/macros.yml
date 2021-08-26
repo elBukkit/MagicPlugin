@@ -9,6 +9,7 @@ macros:
   message: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to see message"}, "clickEvent":{"action":"run_command","value":"/tellraw @s \"$message\"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
   rawmessage: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to see message"}, "clickEvent":{"action":"run_command","value":"/tellraw @s $message"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
   link: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to open in your web browser"}, "clickEvent":{"action":"open_url","value":"$url"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
+  keybind: '`{"keybind":"key.$key"}`'
 
   # This is a special semi-hard-coded macro, $glyph will be replaced with the glyph defined by the specified icon
   # Use like: `<icon key="missile">`
