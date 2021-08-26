@@ -22,7 +22,7 @@ commands:
       unknown: "&cNo matches for: &f$topic"
       found: "&fFound &b$count &fmatches:"
       found_limit: "&fFound &b$count &fmatches &7(Showing top &f$limit&7)&f:"
-      match: '&b&bull; &6`<help topic="$topic" text="$title">`&7: &f$summary'
+      match: '`<li>` &6`<help topic="$topic" text="$title">`&7: &f$summary'
       prompt: |-
         &8                                .
         &f`<icon key="counterspell">`        &bWelcome to &dMagic&f!        &f`<icon key="counterspell">`

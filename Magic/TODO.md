@@ -10,8 +10,6 @@
    
  - Convert all example instructions to header / bullet format
 
- - Use macros for instruction bullet/prefix/indent
-
  - Need to handle magic blocks in unloaded worlds, keep them around and then retry when the world loads
 
  - Change behavior of "locked" on wands to match items? Maybe a config switch to change it back?

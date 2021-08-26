@@ -17,7 +17,7 @@ spell:
     description_lore: "&b$description"
     level_lore: "&6$level"
     toggle: "&aCast to toggle on and off"
-    upgrade_description_prefix: "&r&b&bull; &6"
+    upgrade_description_prefix: "&r`<li>` &6"
     passive: "&2Passive"
     disabled: "&eDeactivated"
     # This can be used to show who created a spell in spell lore

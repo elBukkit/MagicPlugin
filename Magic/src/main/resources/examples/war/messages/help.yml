@@ -1,4 +1,4 @@
 help:
   examples:
     main: |-
-      &b&bull; &f`<help topic="instructions.example.war" text="War">`
+      `<li>``<help topic="instructions.example.war" text="War">`

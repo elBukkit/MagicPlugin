@@ -1,5 +1,5 @@
 help:
   examples:
     main: |-
-      &b&bull; &f`<help topic="instructions.examples.automata" text="Automata (block monsters)">`
+      `<li>``<help topic="instructions.examples.automata" text="Automata (block monsters)">`
 

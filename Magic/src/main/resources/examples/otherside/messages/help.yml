@@ -1,4 +1,4 @@
 help:
   examples:
     main: |-
-      &b&bull; &f`<help topic="instructions.example.otherside" text="The Other Side">`
+      `<li>``<help topic="instructions.example.otherside" text="The Other Side">`

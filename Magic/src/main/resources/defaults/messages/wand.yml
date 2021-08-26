@@ -317,18 +317,18 @@ wand:
     # or complex control scheme.
     lore_instructions_header: "&8------------------------"
 
-    lore_cast_instructions: "&b&bull; &f$button &7to cast &6$spell"
-    lore_toggle_instructions: "&b&bull; &f$button &7to open the spell inventory"
-    lore_cycle_instructions: "&b&bull; &f$button &7to cycle the active spell"
-    lore_cycle_active_hotbar_instructions: "&b&bull; &f$button &7to cycle the active spell"
+    lore_cast_instructions: "`<li>`$button &7to cast &6$spell"
+    lore_toggle_instructions: "`<li>`$button &7to open the spell inventory"
+    lore_cycle_instructions: "`<li>`$button &7to cycle the active spell"
+    lore_cycle_active_hotbar_instructions: "`<li>`$button &7to cycle the active spell"
 
     # You can use this to update wand lore when the spell inventory is open
     # but note that this will cause the wand to "bob" when opened or closed.
     inventory_open: "&6Spell Inventory Open"
-    inventory_open_toggle_instructions: "&b&bull; &f$button &7to close the spell inventory"
-    inventory_open_cycle: '&b&bull; &fClick on this item &7to cycle inventory pages'
-    inventory_open_cycle_hotbar: '&b&bull; &fRight-Click on this item &7to cycle hotbars'
-    inventory_open_cycle_hotbar_instructions: "&b&bull; &f$button &7to cycle the active hotbar"
+    inventory_open_toggle_instructions: "`<li>`$button &7to close the spell inventory"
+    inventory_open_cycle: '`<li>`Click on this item &7to cycle inventory pages'
+    inventory_open_cycle_hotbar: '`<li>`Right-Click on this item &7to cycle hotbars'
+    inventory_open_cycle_hotbar_instructions: "`<li>`$button &7to cycle the active hotbar"
 
     # You can use this to show an action bar message whenever the player cycles their hotbar
     #hotbar_changed: "a:Switched hotbars"

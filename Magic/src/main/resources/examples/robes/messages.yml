@@ -1,11 +1,11 @@
 help:
   examples:
     main: |-
-      &b&bull; &f`<help topic="instructions.example.robes" text="Robes">`
+      `<li>``<help topic="instructions.example.robes" text="Robes">`
 
 examples:
   robes:
     instructions: |-
       `<title text="Robes">`
-      &6Wizard robes &fcan be crafted using &d`<command command="/mgive purple_dye" text="Purple Dye">`&f and a variety of other ingredients..
-      &fThe recipe will appear in your in-game &aknowledge book&f once you have acquired some &dpurple dye&f.
+      `<p>`&6Wizard robes &fcan be crafted using &d`<command command="/mgive purple_dye" text="Purple Dye">`&f and a variety of other ingredients..
+      `<p>`The recipe will appear in your in-game &aknowledge book&f once you have acquired some &dpurple dye&f.
