@@ -1,0 +1,8 @@
+magicheart:
+  indestructible: true
+  craftable: true
+  discover_recipes:
+    - spellbook
+    - wand
+  right_click: none
+  active_spell: ""

@@ -562,6 +562,7 @@
                     <exclude>**/examples/automata/**/*.yml</exclude>
                     <exclude>**/examples/bending/**/*.yml</exclude>
                     <exclude>**/examples/engineering/**/*.yml</exclude>
+                    <exclude>**/examples/magicheart/**/*.yml</exclude>
                     <exclude>**/examples/netherside/**/*.yml</exclude>
                     <exclude>**/examples/otherside/**/*.yml</exclude>
                     <exclude>**/examples/potter/**/*.yml</exclude>
@@ -796,6 +797,29 @@
                                 </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/engineering/icons.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/engineering/icons">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+
+                                <!-- Magic Heart Configs -->
+
+                                <concat destfile="${project.build.directory}/classes/examples/magicheart/config.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/magicheart/config">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/magicheart/crafting.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/magicheart/crafting">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/magicheart/messages.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/magicheart/messages">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/magicheart/wands.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/magicheart/wands">
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>

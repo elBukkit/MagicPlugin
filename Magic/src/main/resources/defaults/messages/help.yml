@@ -244,6 +244,7 @@ help:
     all: |-
       `<title text="Available Examples">`
       &b&bull; &6`<command command="/mconfig example add survival" text="survival">`&f: The default example with craftable wands and items
+      &b&bull; &6`<command command="/mconfig example add magicheart" text="magicheart">`&f: Bring back the &6Magic Heart&f crafting recipes
       &b&bull; &6`<command command="/mconfig example add engineering" text="engineering">`&f: A survival add-on with 3 more ranks for magical building
       &b&bull; &6`<command command="/mconfig example add potter" text="potter">`&f: A Harry Potter themed example
       &b&bull; &6`<command command="/mconfig example add war" text="war">`&f: A GTA or Counter-Strike themed example with guns and vehicles

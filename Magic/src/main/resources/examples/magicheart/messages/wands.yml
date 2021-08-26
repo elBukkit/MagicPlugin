@@ -1,0 +1,9 @@
+# Allow this to override survival text when added on as an extra example
+# Normally the main configuration and messages are not allowed to do this
+# Unless this is set as the main example
+example_override: true
+
+wands:
+  magicheart:
+    name: Heart of Magic
+    description: Used for crafting magic items
