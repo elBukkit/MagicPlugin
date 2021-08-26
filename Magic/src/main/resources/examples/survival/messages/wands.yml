@@ -365,8 +365,10 @@ wands:
         name: Mana Talisman
         description: Gives a mana bonus when held
     magicheart:
-        name: Heart of Magic
-        description: Used for crafting magic items
+        name: "&4Heart of Magic"
+        description: |-
+            &fA relic of days long past
+            &fUse &b`<keybind key="use">`&f to smash it to pieces
     appearance_beginner:
         name: Beginner Wand Appearance
         description: A good starter wand

@@ -36,6 +36,9 @@
  - The way magic modifiers are saved was changed, any long-running or permanent (via `/mage modifier add`) modifiers
    will need to be re-applied. I apologize for any inconvenience this causes, let me know if it's a big problem for you.
 
+ - Crafting recipes changed again, magic heart is gone. 
+   Use `/mconfig example add magicheart` to bring it back.
+
 # 9.4
 
  - The `beginner` wand has been made into a demo wand and no longer turns into `wand`

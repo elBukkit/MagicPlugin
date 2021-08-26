@@ -1496,3 +1496,7 @@ spells:
     warp:
         name: Warp
         description: For using with commands or spellcasting configs, e.g. "/cast warp warp castle"
+    magicheartrefund:
+        name: Magic Heart Refund
+        description: Get back what you gave
+        refunded: "a:&4The magical stone crumbles to dust revealing a set of gemstones"

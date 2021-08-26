@@ -2,7 +2,7 @@
 
 # Importanter
 
- - Spells that disable mana regen need to constantly reset the mana catchup timestamp (idk, looks like they do...)
+ - Spells that disable mana regen need to constantly reset the mana catchup timestamp (on ... wands.. hrm)
 
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
@@ -18,6 +18,17 @@
 
  - Vivecraft integration: https://github.com/jrbudda/Vivecraft_Spigot_Extensions#metadata
  - Handle "seated: true" case, I *think* it should just turn off the hand code
+
+# Set Bonuses
+Sample config:
+```
+sets: dwarven,elven
+set_requirements: 4
+set_bonus_properties:
+   modifiers: hidden
+   potion_effects:
+      haste: 1
+```
 
 # Important
 

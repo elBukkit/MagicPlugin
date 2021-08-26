@@ -19,10 +19,15 @@
       - Add wand instructions to wand item lore. Use `lore_instructions: false` in wand config to turn this off.
       - Wand slotted upgrades can be made hidden, swappable and replaceable (now used for controls selection)
       - Added new true/false requirements: resource_pack, spell_inventory_open
+   
+ - Survival Crafting Recipes Changed (again)
+   - The Magic Heart is no more, the client-side Knowledge Book just does not handle it well enough
+   - New recipes with the same balance for all magic items
+   - Players can right-click any magic hearts they currently have to get a refund  
+   - You can bring the hearts back with `/mconfig example add magicheart`
 
  - Magic Bow re-work
    - Light arrow rebalance
-   - Now requires 2 magic hearts to craft, no nether star
    - Can be enchanted, only the infinity enchantment, which will make it cost-free
    - Added Grapple arrow to Archer path
 

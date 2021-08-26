@@ -1,0 +1,16 @@
+magicheartrefund:
+  hidden: true
+  actions:
+    cast:
+    - class: StashWand
+    - class: GiveItem
+      item: diamond
+      item_count: 1
+    - class: GiveItem
+      item: emerald
+      item_count: 4
+    - class: Message
+  parameters:
+    target: self
+    bypass_undoable: true
+    message_key: refunded
