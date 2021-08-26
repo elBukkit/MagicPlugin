@@ -169,7 +169,7 @@ public class ConfigurationLoadTask implements Runnable {
             if (exampleConfig == null) {
                 exampleConfig = ConfigurationUtils.newConfigurationSection();
             } else if (isMessagesConfig && processMessages) {
-                processMessageExample(exampleConfig);
+                processMessageExample(exampleConfig, exampleConfig.getBoolean("example_override", false));
             }
             exampleConfigurations.put(examplesPrefix, exampleConfig);
         }
@@ -583,14 +583,18 @@ public class ConfigurationLoadTask implements Runnable {
         ConfigurationUtils.mergeText(mainHelp, helpTopics);
     }
 
-    private void processMessageExample(ConfigurationSection example) {
+    private void processMessageExample(ConfigurationSection example, boolean override) {
         // Hacky special handling for the help system
         // This lets examples add new content to existing help topics.
         ConfigurationSection exampleHelp = example.getConfigurationSection("help");
         if (exampleHelp == null) {
             return;
         }
-        ConfigurationUtils.mergeText(helpTopics, exampleHelp);
+        if (override) {
+            ConfigurationUtils.addConfigurations(helpTopics, exampleHelp, true);
+        } else {
+            ConfigurationUtils.mergeText(helpTopics, exampleHelp);
+        }
 
         // Need to make sure we don't end up overwriting the merged text with the example
         // loadExampleConfiguration returns a clone, so this should be OK to do.
