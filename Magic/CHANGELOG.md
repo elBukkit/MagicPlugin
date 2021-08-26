@@ -111,6 +111,7 @@
  - Changes and improvements to offhand casting, left-swing action always used
  - Modifiers can now be used on magic armor, however this required changing the save data format for modifiers, so
    any modifiers you have manually applied via `/mage modifier add` will need to be re-applied.
+ - Nerf wizard armor protection a little so it's not as strong as vanilla chainmail  
 
 # 9.4.4
 

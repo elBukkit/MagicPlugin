@@ -11,3 +11,7 @@ wizardboots:
         speed: 0
     protection:
       magic: 0.1
+    item_attribute_slot: feet
+    item_attributes:
+        generic_armor: 1
+        generic_armor_toughness: 1

@@ -9,3 +9,7 @@ wizardchestplate:
     hide_flags: 61
     protection:
       magic: 0.1
+    item_attribute_slot: chest
+    item_attributes:
+        generic_armor: 3
+        generic_armor_toughness: 1

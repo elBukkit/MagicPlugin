@@ -9,3 +9,7 @@ wizardleggings:
     hide_flags: 61
     protection:
       magic: 0.1
+    item_attribute_slot: legs
+    item_attributes:
+        generic_armor: 2
+        generic_armor_toughness: 1

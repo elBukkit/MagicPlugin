@@ -9,4 +9,7 @@ wizardhelmet:
     hide_flags: 61
     protection:
       magic: 0.1
-      drowning: 0.2
+    item_attribute_slot: head
+    item_attributes:
+        generic_armor: 1
+        generic_armor_toughness: 1
