@@ -5646,12 +5646,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return overrides;
     }
 
-    @Override
-    public boolean canUse(ItemStack itemStack) {
-        String lockKey = controller.getLockKey(itemStack);
-        if (lockKey == null) {
-            return true;
-        }
+    public boolean canUse(String lockKey) {
         MageClass activeClass = getActiveClass();
         if (activeClass != null && activeClass.canUse(lockKey)) {
             return true;
@@ -5667,6 +5662,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         return false;
+    }
+
+    @Override
+    public boolean canUse(ItemStack itemStack) {
+        String lockKey = controller.getLockKey(itemStack);
+        if (lockKey == null) {
+            return true;
+        }
+        return canUse(lockKey);
     }
 
     @Override

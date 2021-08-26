@@ -6015,6 +6015,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public boolean canUse(Player player) {
+        if (locked) {
+            Mage mage = controller.getMage(player);
+            if (!mage.canUse(getTemplateKey())) {
+                return false;
+            }
+        }
         if (!bound || ownerId == null || ownerId.length() == 0) return true;
         if (controller.hasPermission(player, "magic.wand.override_bind")) return true;
 

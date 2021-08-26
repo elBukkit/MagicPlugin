@@ -7,8 +7,6 @@
    Add-on configs like engineering or spawnmobs can override robes even though they
    have no crafting at all, because they inherit survival's crafting
    The inherit is only there for people who use "mconfig example set robes", there must be a better way
-   
- - Change behavior of "locked" on wands to match items? Maybe a config switch to change it back?
 
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
