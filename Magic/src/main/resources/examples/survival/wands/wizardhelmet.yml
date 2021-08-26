@@ -1,6 +1,5 @@
 wizardhelmet:
     icon: chainmail_helmet
-    locked: true
     keep: true
     mana_max_boost: 0.1
     mana_regeneration_boost: 0.05

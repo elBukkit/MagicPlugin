@@ -13,7 +13,6 @@ wands:
     active_spell: stash
     icon: glass_bottle
     indestructible: false
-    locked: true
 
 spells:
   stash:

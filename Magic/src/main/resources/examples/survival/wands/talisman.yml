@@ -10,5 +10,4 @@ talisman:
     poison: 0.1
   color: random
   keep: true
-  locked: true
   glow: true

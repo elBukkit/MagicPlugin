@@ -1,7 +1,6 @@
 camohelmet:
     icon: "leather_helmet:#random"
     indestructible: false
-    locked: true
     keep: true
     cast_spell: camohelmet
     cast_interval: 100

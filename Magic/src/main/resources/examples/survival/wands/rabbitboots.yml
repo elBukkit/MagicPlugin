@@ -1,7 +1,6 @@
 rabbitboots:
     icon: leather_boots
     indestructible: false
-    locked: true
     keep: false
     worn: true
     mana_regeneration_boost: -0.1

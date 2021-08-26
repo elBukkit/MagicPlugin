@@ -6,6 +6,5 @@ ledger:
   keep: true
   indestructible: false
   mode: cast
-  locked: true
   spells:
   - ledger

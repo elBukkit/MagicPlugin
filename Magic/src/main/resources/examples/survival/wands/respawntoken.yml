@@ -3,7 +3,6 @@ respawntoken:
     active_spell: respawn
     icon: compass
     indestructible: false
-    locked: true
     uses: 10
     keep: true
     effect_color: 'FF0000'

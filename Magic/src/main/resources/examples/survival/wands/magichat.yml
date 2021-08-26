@@ -4,7 +4,6 @@ magichat:
     icon: lectern{CustomModelData:18017}
     legacy_icon: wand_icon:17
     indestructible: true
-    locked: true
     keep: true
     effect_color: '888888'
     mana_max_boost: 0.2

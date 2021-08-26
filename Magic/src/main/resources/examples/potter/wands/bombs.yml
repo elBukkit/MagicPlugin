@@ -4,7 +4,6 @@ bombs:
     active_spell: bombtastic
     icon: magma_cream
     indestructible: clay_ball
-    locked: true
     effect_color: 'FF0000'
     uses: 16
     spells:

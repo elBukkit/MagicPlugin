@@ -3,7 +3,6 @@ blaster:
     icon: wand_icon:12
     path: blaster
     mode: cast
-    locked: true
     hidden: true
     quiet: 2
     mana: 100

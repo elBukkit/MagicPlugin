@@ -6,7 +6,6 @@ firebolt:
     legacy_icon: wand_icon:29
     icon: birch_sapling{CustomModelData:18001}
     indestructible: true
-    locked: true
     effect_color: 'FF00FF'
     overrides: broom.mount_boost 3, broom.mount_boost_ticks 1200, broom.mount_health 20, broom.slow_ticks 3, broom.steer_speed 0.8, broom.slow_steer_speed 0.8, broom.mount_boost_per_jump 0.25
     spells:

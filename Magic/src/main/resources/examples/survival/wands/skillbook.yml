@@ -4,7 +4,6 @@ skillbook:
     icon: book{CustomModelData:18001}
     legacy_icon: book
     indestructible: false
-    locked: true
     spells:
     - skills
 

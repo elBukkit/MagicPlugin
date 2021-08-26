@@ -3,7 +3,6 @@
 #
 cursedmeat:
   icon: rotten_flesh
-  locked: true
   potion_effects: hunger:20
   spells: eat_food
   consume_spell: eat_food

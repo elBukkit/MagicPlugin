@@ -1,7 +1,6 @@
 broom_booster:
     icon: nether_star{CustomModelData:18002}
     upgrade: true
-    locked: true
     slot: broom_upgrade
     overrides:
         max_speed: 1.5

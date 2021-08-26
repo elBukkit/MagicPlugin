@@ -7,7 +7,6 @@ minister:
     legacy_icon: wand_icon:29
     icon: birch_sapling{CustomModelData:18001}
     indestructible: true
-    locked: true
     keep: true
     effect_color: '00AAFF'
     overrides:

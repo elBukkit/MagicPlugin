@@ -6,7 +6,6 @@ crudbroom:
     legacy_icon: wand_icon:11
     icon: acacia_sapling{CustomModelData:18001}
     indestructible: false
-    locked: true
     uses: 10
     effect_color: '000088'
     spells:

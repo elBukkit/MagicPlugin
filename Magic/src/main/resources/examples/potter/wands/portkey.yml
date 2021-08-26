@@ -6,7 +6,6 @@ portkey:
     active_spell: recall
     icon: flower_pot_item,bowl,glass_bottle,iron_axe,feather,compass
     indestructible: true
-    locked: true
     uses: 5
     keep: true
     quiet: 2

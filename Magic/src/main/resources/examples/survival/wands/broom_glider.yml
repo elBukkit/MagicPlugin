@@ -1,7 +1,6 @@
 broom_glider:
     icon: nether_star{CustomModelData:18003}
     upgrade: true
-    locked: true
     slot: broom_upgrade
     overrides:
         duration: 0

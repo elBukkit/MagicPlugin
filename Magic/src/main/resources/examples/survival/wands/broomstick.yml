@@ -3,7 +3,6 @@ broomstick:
     path: broom
     mode: cast
     keep: true
-    locked: true
     bound: false
     locked_allow_upgrades: true
     indestructible: true

@@ -1,7 +1,6 @@
 rocketboots:
     icon: diamond_boots
     indestructible: true
-    locked: true
     keep: true
     worn: true
     mana_regeneration_boost: -0.1

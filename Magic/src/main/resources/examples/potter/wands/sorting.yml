@@ -3,7 +3,6 @@ sorting:
     active_spell: recall
     icon: paper
     indestructible: true
-    locked: true
     keep: true
     uses: 1
     quiet: 2

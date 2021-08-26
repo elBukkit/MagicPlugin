@@ -4,7 +4,6 @@ squib:
     indestructible: false
     bound: false
     keep: false
-    locked: true
     mana: 100
     mana_max: 100
     mana_regeneration: 12

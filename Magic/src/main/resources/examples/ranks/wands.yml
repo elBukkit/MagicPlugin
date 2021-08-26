@@ -473,7 +473,6 @@ painter:
 
 decorator:
     inherit: basic_wand
-    locked: true
     cost_reduction: 1
     effect_color: '118811'
     active_spell: convert

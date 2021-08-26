@@ -3,7 +3,6 @@ rage:
     icon: diamond_sword
     effect_color: '11FF11'
     path: battle
-    locked: true
     mana_regeneration: 0
     mana_max: 200
     mana: 100

@@ -7,4 +7,3 @@ extinguisher:
     spells: extinguish
     uses: 10
     cost_reduction: 2
-    locked: true

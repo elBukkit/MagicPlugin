@@ -5,7 +5,6 @@ crackedbroomstick:
     migrate_icon: gold_spade
     legacy_icon: wand_icon:11
     icon: acacia_sapling{CustomModelData:18001}
-    locked: true
     keep: true
     effect_color: '220022'
     indestructible: true

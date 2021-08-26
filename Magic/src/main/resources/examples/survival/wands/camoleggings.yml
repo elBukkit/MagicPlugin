@@ -1,7 +1,6 @@
 camoleggings:
     icon: "leather_leggings:#random"
     indestructible: false
-    locked: true
     keep: true
     cast_spell: camoeleggings
     cast_interval: 100
