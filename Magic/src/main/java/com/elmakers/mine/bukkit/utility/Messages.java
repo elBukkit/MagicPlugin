@@ -172,7 +172,11 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             // Check for macro type shortcut
             int firstSpace = piece.indexOf(" ");
             int firstColon = piece.indexOf(":");
-            if (firstColon < 0 || firstColon > firstSpace) {
+            // If there is no colon nor space this a simple replaecment macro, such as <p> or <li>
+            if (firstSpace < 0 && firstColon < 0) {
+                piece = "macro:\"" + piece + "\"";
+            } else if (firstColon < 0 || firstColon > firstSpace) {
+                // Otherwise if there is no colon before the first space, expand the tag
                 piece = "macro:\"" + piece.substring(0, firstSpace) + "\"" + piece.substring(firstSpace);
             }
 
