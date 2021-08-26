@@ -254,6 +254,7 @@ public class ConfigurationLoadTask implements Runnable {
                 ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
                 try {
                     boolean override = exampleConfig.getBoolean("example_override", false);
+                    exampleConfig.set("example_override", null);
                     info(" Adding " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
                     processInheritance(example, exampleConfig, fileName, exampleConfig);
                     mainConfigurations.put(example, exampleConfig);
@@ -507,6 +508,7 @@ public class ConfigurationLoadTask implements Runnable {
                     // Don't override messages or config when adding an example, but allow other config overrides
                     // Unless otherwise specified
                     boolean override = exampleConfig.getBoolean("example_override", false);
+                    exampleConfig.set("example_override", null);
                     ConfigurationUtils.addConfigurations(config, exampleConfig, !isUnkeyedConfig || override);
                     info(" Added " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
                 } catch (Exception ex) {
