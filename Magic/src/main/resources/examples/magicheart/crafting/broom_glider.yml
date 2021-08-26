@@ -1,0 +1,13 @@
+broom_glider:
+  # Completely replace the normal recipe
+  inherit: false
+  output: broom_glider
+  output_type: wand
+  ignore_damage: true
+  group: "Broomsticks"
+  materials:
+    i: elytra
+    h: magicheart
+  row_1: " h "
+  row_2: " i "
+  row_3: ""

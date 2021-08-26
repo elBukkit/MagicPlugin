@@ -1,0 +1,11 @@
+magichat:
+  # Completely replace the normal recipe
+  inherit: false
+  output: magichat
+  output_type: wand
+  materials:
+    o: magicheart
+    i: leather_helmet
+  row_1: o
+  row_2: i
+  row_3: ""

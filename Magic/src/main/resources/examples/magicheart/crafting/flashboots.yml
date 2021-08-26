@@ -1,0 +1,14 @@
+flashboots:
+  # Completely replace the normal recipe
+  inherit: false
+  enabled: false
+  output: flashboots
+  output_type: wand
+  materials:
+    o: magicheart
+    i: wool
+    f: feather
+  row_1: ""
+  row_2: i i
+  row_3: fof
+

@@ -25,6 +25,8 @@
    of possibly changing mage_update_interval to 1
    
  - Test recipes on 1.16 and 1.9
+
+ - Test magicheart configs
    
 # Glyph Wand
 

@@ -1,0 +1,14 @@
+rabbitboots:
+  # Completely replace the normal recipe
+  inherit: false
+  enabled: false
+  output: rabbitboots
+  output_type: wand
+  materials:
+    i: rabbit_hide
+    r: rabbit_foot
+    o: magicheart
+  row_1: ""
+  row_2: i i
+  row_3: ror
+

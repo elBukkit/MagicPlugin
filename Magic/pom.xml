@@ -813,6 +813,11 @@
                                         <include name="**/*.yml"/>
                                     </fileset>
                                 </concat>
+                                <concat destfile="${project.build.directory}/classes/examples/magicheart/items.yml" overwrite="yes" fixlastline="yes">
+                                    <fileset dir="${project.basedir}/src/main/resources/examples/magicheart/items">
+                                        <include name="**/*.yml"/>
+                                    </fileset>
+                                </concat>
                                 <concat destfile="${project.build.directory}/classes/examples/magicheart/messages.yml" overwrite="yes" fixlastline="yes">
                                     <fileset dir="${project.basedir}/src/main/resources/examples/magicheart/messages">
                                         <include name="**/*.yml"/>

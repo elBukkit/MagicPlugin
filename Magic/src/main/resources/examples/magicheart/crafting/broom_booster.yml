@@ -1,0 +1,12 @@
+broom_booster:
+  # Completely replace the normal recipe
+  inherit: false
+  output: broom_booster
+  output_type: wand
+  group: "Broomsticks"
+  materials:
+    i: nether_star
+    h: magicheart
+  row_1: " h "
+  row_2: " i "
+  row_3: ""

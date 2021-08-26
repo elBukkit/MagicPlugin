@@ -1,0 +1,14 @@
+spellbook:
+  # Completely replace the normal recipe
+  inherit: false
+  output: spellbook
+  output_type: wand
+  group: "Wands"
+
+  materials:
+    o: magicheart
+    i: book
+
+  row_1: o
+  row_2: i
+  row_3: ""

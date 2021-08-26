@@ -1,0 +1,13 @@
+mirrorshield:
+  # Completely replace the normal recipe
+  inherit: false
+  output: mirrorshield
+  output_type: wand
+
+  materials:
+    o: magicheart
+    i: shield
+
+  row_1: o
+  row_2: i
+  row_3: ""

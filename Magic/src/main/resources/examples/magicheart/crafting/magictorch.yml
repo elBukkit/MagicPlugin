@@ -1,0 +1,14 @@
+magictorch:
+  # Completely replace the normal recipe
+  inherit: false
+  enabled: true
+  output: magictorch
+  output_type: wand
+
+  materials:
+    o: magicheart
+    i: torch
+
+  row_1: o
+  row_2: i
+  row_3: ""

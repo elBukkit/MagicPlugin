@@ -1,0 +1,11 @@
+talisman:
+  # Completely replace the normal recipe
+  inherit: false
+  output: talisman
+  output_type: wand
+  materials:
+    o: nether_star
+    i: magicheart
+  row_1: o
+  row_2: i
+  row_3: ""

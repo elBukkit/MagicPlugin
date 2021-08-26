@@ -1,0 +1,13 @@
+magicsword:
+  # Completely replace the normal recipe
+  inherit: false
+  output: magicsword
+  output_type: wand
+  ignore_damage: true
+  materials:
+    o: magicheart
+    i: netherite_sword
+  row_1: ""
+  row_2: o
+  row_3: i
+

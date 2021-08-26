@@ -1,0 +1,29 @@
+wand:
+  # Completely replace the normal recipe
+  inherit: false
+  # This defines the recipe output
+  output: wand
+  # This makes sure you get the wand version, in case of name collisions
+  # Probably not necessary
+  output_type: wand
+  group: "Wands"
+
+  # Used as a substitute item when the wand item is naturally crafted
+  # This is mainly for the resource pack, so players don't craft a wood hoe
+  # and get some weird non-wand but wand-looking item.
+  # This means that, by default, crafting a wood hoe will get you an iron hoe.
+  # substitute: iron_hoe
+
+  # Don't disable the default recipe
+  disable_default: false
+
+  # This defines the materials that will be required to craft this wand
+  materials:
+    o: magicheart
+    i: stick
+
+  # This defines the shape of the recipe, row_1 is the top. Each row may
+  # have up to 3 characters that map to the materials listed above.
+  row_1: o
+  row_2: i
+  row_3: ""

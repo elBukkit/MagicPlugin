@@ -1,0 +1,12 @@
+magicbow:
+  # Completely replace the normal recipe
+  inherit: false
+  output: magicbow
+  output_type: wand
+  materials:
+    i: bow
+    h: magicheart
+  row_1: h
+  row_2: i
+  row_3: h
+

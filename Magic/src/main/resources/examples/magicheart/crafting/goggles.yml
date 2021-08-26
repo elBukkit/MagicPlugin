@@ -1,0 +1,13 @@
+goggles:
+  # Completely replace the normal recipe
+  inherit: false
+  output: goggles
+  output_type: wand
+  materials:
+    o: emerald
+    i: magicheart
+    d: nether_fence
+  row_1: oio
+  row_2: d d
+  row_3: d d
+
