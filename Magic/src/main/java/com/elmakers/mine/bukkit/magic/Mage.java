@@ -252,6 +252,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long blockPlaceTimeout = 0;
     private Location lastDeathLocation = null;
     private final MaterialBrush brush;
+    private ItemStack lastHeldItem;
     private long fallProtection = 0;
     private long fallProtectionCount = 1;
     private BaseSpell fallingSpell = null;
@@ -1952,8 +1953,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return !pendingBatches.isEmpty();
     }
 
-    public void setLastHeldMapId(int mapId) {
-        brush.setMapId(mapId);
+    public void setLastHeldItem(ItemStack itemStack) {
+        if (DefaultMaterials.isFilledMap(itemStack.getType())) {
+            brush.setMapId(CompatibilityLib.getInventoryUtils().getMapId(itemStack));
+        }
+        lastHeldItem = itemStack;
     }
 
     @Override
@@ -4021,9 +4025,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (Wand.isWand(itemStack)) {
                 checkWand();
             } else {
-                if (DefaultMaterials.isFilledMap(itemStack.getType())) {
-                    setLastHeldMapId(CompatibilityLib.getInventoryUtils().getMapId(itemStack));
-                }
+                setLastHeldItem(itemStack);
             }
         } else {
             HashMap<Integer, ItemStack> returned = player.getInventory().addItem(itemStack);
@@ -5889,5 +5891,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     public void setShownHelp() {
         this.shownHelp = true;
+    }
+
+    public void messageNoUse(Wand wand) {
+        ItemStack item = wand.getItem();
+        if (lastHeldItem == null || !item.equals(lastHeldItem)) {
+            lastHeldItem = item;
+
+            String owner = wand.getOwner();
+            if (owner == null || owner.isEmpty()) {
+                sendMessage(controller.getMessages().get("mage.no_class").replace("$name", wand.getName()));
+            } else {
+                sendMessage(wand.getMessage("bound").replace("$name", owner));
+            }
+        }
     }
 }

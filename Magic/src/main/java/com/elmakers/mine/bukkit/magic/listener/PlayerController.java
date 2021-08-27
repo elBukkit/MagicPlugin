@@ -262,12 +262,10 @@ public class PlayerController implements Listener {
             mage.checkWandNextTick();
         }
 
-        // Check for map selection if no wand is active
+        // Check for map or item selection if no wand is active, unless this is a wand
         activeWand = mage.getActiveWand();
-        if (activeWand == null && next != null) {
-            if (DefaultMaterials.isFilledMap(next.getType())) {
-                mage.setLastHeldMapId(CompatibilityLib.getInventoryUtils().getMapId(next));
-            }
+        if (activeWand == null && next != null && !isWand) {
+            mage.setLastHeldItem(next);
         }
     }
 
@@ -1156,14 +1154,10 @@ public class PlayerController implements Listener {
         Player player = event.getPlayer();
         Mage mage = controller.getMage(player);
         // Remove lost wands from records
-        Messages messages = controller.getMessages();
         if (isWand) {
             Wand wand = controller.getWand(pickup);
             if (!wand.canUse(player)) {
-                if (lastDropWarn == 0 || System.currentTimeMillis() - lastDropWarn > 10000) {
-                    mage.sendMessage(messages.get("wand.bound").replace("$name", wand.getOwner()));
-                }
-                lastDropWarn = System.currentTimeMillis();
+                mage.messageNoUse(wand);
                 event.setCancelled(true);
                 return;
             }

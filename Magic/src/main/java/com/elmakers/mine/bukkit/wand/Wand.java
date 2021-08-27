@@ -5577,7 +5577,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         if (!canUse(player)) {
-            mage.sendMessage(getMessage("bound").replace("$name", getOwner()));
+            mage.messageNoUse(this);
             return false;
         }
 
@@ -6002,6 +6002,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
+    @Deprecated
     public void unlock() {
         makeModifiable();
     }
