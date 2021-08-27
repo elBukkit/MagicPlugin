@@ -2068,6 +2068,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         }
+        if (bossBarConfiguration == null && bossBar != null) {
+            removeBossBar();
+        }
 
         WandDisplayMode previousXP = xpBarDisplayMode;
         WandDisplayMode previousLevel = levelDisplayMode;
