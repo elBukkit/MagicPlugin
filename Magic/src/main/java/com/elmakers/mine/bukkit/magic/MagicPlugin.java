@@ -17,6 +17,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
@@ -169,12 +170,12 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     @Override
     public void onEnable() {
         if (controller == null) {
-            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[Magic] Something went wrong with some Deep Magic, plugin will not load.");
-            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_RED + "[Magic] Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!");
+            ChatUtils.sendToConsoleSender(ChatColor.RED + "[Magic] Something went wrong with some Deep Magic, plugin will not load.", getLogger());
+            ChatUtils.sendToConsoleSender(ChatColor.DARK_RED + "[Magic] Please make sure you are running a compatible version of " + ChatColor. RED + "Spigot (1.9 or Higher)!", getLogger());
         } else {
             Bukkit.getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
             if (CompatibilityLib.isLegacy()) {
-                Bukkit.getConsoleSender().sendMessage(ChatColor.YELLOW + "[Magic] Using backwards-compatibility layer. It is highly recommended that you update to the latest Spigot version and/or the latest Magic version.");
+                ChatUtils.sendToConsoleSender(ChatColor.YELLOW + "[Magic] Using backwards-compatibility layer. It is highly recommended that you update to the latest Spigot version and/or the latest Magic version.", getLogger());
             }
             if (!CompatibilityLib.isCurrentVersion()) {
                 CasterProperties.setLegacyVersion();

@@ -7,7 +7,9 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.google.gson.Gson;
@@ -114,5 +116,14 @@ public class ChatUtils {
 
     public static boolean isDefaultFont(String font) {
         return font == null || font.isEmpty() || font.equals("default");
+    }
+
+    public static void sendToConsoleSender(String message, Logger logger) {
+        CommandSender sender = Bukkit.getConsoleSender();
+        if (sender == null) {
+            logger.info(ChatColor.stripColor(message));
+        } else {
+            sender.sendMessage(message);
+        }
     }
 }
