@@ -143,4 +143,9 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, fontComponent);
         return true;
     }
+
+    @Override
+    public String translateAlternateColorCodes(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
 }

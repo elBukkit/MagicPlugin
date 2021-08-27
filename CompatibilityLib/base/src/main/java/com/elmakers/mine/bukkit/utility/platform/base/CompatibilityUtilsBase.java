@@ -750,6 +750,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return "";
     }
 
+    public String translateAlternateColorCodes(String message) {
+        return ChatColor.translateAlternateColorCodes('&', message);
+    }
+
     @Override
     public String translateColors(String message) {
         Matcher matcher = hexColorPattern.matcher(message);
@@ -759,7 +763,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             matcher.appendReplacement(buffer, getHexColor(match));
         }
         message = matcher.appendTail(buffer).toString();
-        return ChatColor.translateAlternateColorCodes('&', message);
+        return translateAlternateColorCodes(message);
     }
 
     @Override
