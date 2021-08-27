@@ -1,7 +1,7 @@
 magichat:
   output: magichat
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     i: blue_wool
     e: end_rod

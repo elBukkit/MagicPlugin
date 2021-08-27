@@ -2,7 +2,7 @@ camera:
   enabled: false
   output: camera
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     i: dispenser
     d: daylight_detector

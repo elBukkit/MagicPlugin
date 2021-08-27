@@ -3,7 +3,7 @@ emeraldsword:
   group: ""
   output_type: item
 
-  materials:
+  ingredients:
     o: stick
     i: emerald
 

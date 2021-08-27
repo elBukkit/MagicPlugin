@@ -3,7 +3,7 @@ magichat:
   inherit: false
   output: magichat
   output_type: wand
-  materials:
+  ingredients:
     o: magicheart
     i: leather_helmet
   row_1: o

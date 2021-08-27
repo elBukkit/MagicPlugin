@@ -4,7 +4,7 @@ name_tag:
   group: ""
   output: name_tag
   output_type: item
-  materials:
+  ingredients:
     d: diamond
     p: paper
     s: string

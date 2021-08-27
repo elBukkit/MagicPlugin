@@ -2,7 +2,7 @@ mastersword:
   enabled: false
   output: mastersword
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     i: diamond_sword
   row_1: ""

@@ -1,7 +1,7 @@
 ocarina:
   output: ocarina
   output_type: wand
-  materials:
+  ingredients:
     s: sugar_cane
     i: hard_clay
   row_1: "i i"

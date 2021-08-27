@@ -4,7 +4,7 @@ rocketboots:
   enabled: false
   output: rocketboots
   output_type: wand
-  materials:
+  ingredients:
     o: magicheart
     i: emerald
     f: firework

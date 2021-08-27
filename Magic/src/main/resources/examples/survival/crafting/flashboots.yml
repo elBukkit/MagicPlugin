@@ -2,7 +2,7 @@ flashboots:
   enabled: false
   output: flashboots
   output_type: wand
-  materials:
+  ingredients:
     o: fire_charge
     i: wool
     f: feather

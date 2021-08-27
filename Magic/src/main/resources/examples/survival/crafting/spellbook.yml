@@ -3,7 +3,7 @@ spellbook:
   output_type: wand
   group: "Wands"
 
-  materials:
+  ingredients:
     o: amethyst_shard
     d: diamond
     e: emerald

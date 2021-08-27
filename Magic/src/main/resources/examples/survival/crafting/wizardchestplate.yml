@@ -2,7 +2,7 @@ wizardchestplate:
   enabled: false
   output: wizardchestplate
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     i: purple_wool
   row_1: i i

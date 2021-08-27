@@ -1,14 +1,14 @@
 magictorch:
   requires: LightAPI
 
-  materials:
+  ingredients:
     o: glowstone_dust
     i: end_rod
 
 # To prevent collisions with emerald sword recipe, since we've aliased
 # amethyst shards ot emeralds here
 magicsword:
-  materials:
+  ingredients:
     o: emerald
     i: netherite_sword
   row_1: ""

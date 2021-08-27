@@ -3,7 +3,7 @@ arrow_blink:
   output: arrow_blink
   output_type: item
 
-  materials:
+  ingredients:
     o: ender_eye
     i: arrow
 
@@ -15,7 +15,7 @@ arrow_fire:
   output: arrow_fire
   output_type: item
 
-  materials:
+  ingredients:
     o: flint_and_steel
     i: arrow
 
@@ -27,7 +27,7 @@ arrow_bomb:
   output: arrow_bomb
   output_type: item
 
-  materials:
+  ingredients:
     o: sulphur
     i: arrow
 
@@ -39,7 +39,7 @@ arrow_grapple:
   output: arrow_grapple
   output_type: item
 
-  materials:
+  ingredients:
     o: leash
     i: arrow
 
@@ -51,7 +51,7 @@ arrow_ice:
   output: arrow_ice
   output_type: item
 
-  materials:
+  ingredients:
     o: snowball
     i: arrow
 
@@ -63,7 +63,7 @@ arrow_light:
   output: arrow_light
   output_type: item
 
-  materials:
+  ingredients:
     o: glowstone_dust
     i: arrow
 
@@ -75,7 +75,7 @@ arrow_poison:
   output: arrow_poison
   output_type: item
 
-  materials:
+  ingredients:
     o: spider_eye
     i: arrow
 
@@ -87,7 +87,7 @@ arrow_shock:
   output: arrow_shock
   output_type: item
 
-  materials:
+  ingredients:
     o: redstone
     i: arrow
 

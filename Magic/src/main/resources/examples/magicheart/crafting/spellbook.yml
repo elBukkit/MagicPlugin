@@ -5,7 +5,7 @@ spellbook:
   output_type: wand
   group: "Wands"
 
-  materials:
+  ingredients:
     o: magicheart
     i: book
 

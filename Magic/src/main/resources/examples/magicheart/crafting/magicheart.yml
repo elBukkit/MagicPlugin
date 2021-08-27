@@ -2,7 +2,7 @@ magicheart:
   output: magicheart
   output_type: wand
   auto_discover: true
-  materials:
+  ingredients:
     o: emerald
     O: diamond
   row_1: " o "

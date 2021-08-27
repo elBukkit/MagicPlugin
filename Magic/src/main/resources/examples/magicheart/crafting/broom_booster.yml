@@ -4,7 +4,7 @@ broom_booster:
   output: broom_booster
   output_type: wand
   group: "Broomsticks"
-  materials:
+  ingredients:
     i: nether_star
     h: magicheart
   row_1: " h "

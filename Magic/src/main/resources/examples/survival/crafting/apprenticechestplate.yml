@@ -4,7 +4,7 @@ apprenticechestplate:
   output_type: wand
   discover:
     - wizardchestplate
-  materials:
+  ingredients:
     o: amethyst_shard
     i: white_wool
   row_1: ioi

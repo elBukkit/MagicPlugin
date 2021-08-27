@@ -2,7 +2,7 @@ broomstick:
   output: broomstick
   output_type: wand
   group: "Broomsticks"
-  materials:
+  ingredients:
     i: stick
     o: phantom_membrane
     w: wheat

@@ -4,7 +4,7 @@ apprenticeleggings:
   output_type: wand
   discover:
     - wizardleggings
-  materials:
+  ingredients:
     o: amethyst_shard
     i: white_wool
   row_1: iii

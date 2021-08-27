@@ -1,7 +1,7 @@
 goggles:
   output: goggles
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     d: nether_fence
   row_1: odo

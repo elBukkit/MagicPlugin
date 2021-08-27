@@ -3,7 +3,7 @@ broom_glider:
   output_type: wand
   ignore_damage: true
   group: "Broomsticks"
-  materials:
+  ingredients:
     i: elytra
     h: slime_ball
   row_1: "hhh"

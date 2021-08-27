@@ -2,7 +2,7 @@ wizardhelmet:
   enabled: false
   output: wizardhelmet
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     i: purple_wool
   row_1: ioi

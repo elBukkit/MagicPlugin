@@ -3,7 +3,7 @@ talisman:
   inherit: false
   output: talisman
   output_type: wand
-  materials:
+  ingredients:
     o: nether_star
     i: magicheart
   row_1: o

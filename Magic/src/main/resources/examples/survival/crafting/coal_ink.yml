@@ -4,7 +4,7 @@ coal_ink:
   output_type: item
   auto_discover: true
   group: ""
-  materials:
+  ingredients:
     o: coal
     d: ink_sack:15
   row_1: " o "

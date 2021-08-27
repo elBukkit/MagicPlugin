@@ -3,7 +3,7 @@ magictorch:
   output: magictorch
   output_type: wand
 
-  materials:
+  ingredients:
     o: glow_ink_sac
     i: end_rod
 

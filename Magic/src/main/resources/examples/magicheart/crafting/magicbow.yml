@@ -3,7 +3,7 @@ magicbow:
   inherit: false
   output: magicbow
   output_type: wand
-  materials:
+  ingredients:
     i: bow
     h: magicheart
   row_1: h

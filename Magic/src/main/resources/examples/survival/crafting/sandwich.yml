@@ -5,7 +5,7 @@ sandwich:
   output: sandwich
 
   # This defines the materials that will be required to craft this wand
-  materials:
+  ingredients:
     s: bread_slice
     c: carrot
     b: beetroot

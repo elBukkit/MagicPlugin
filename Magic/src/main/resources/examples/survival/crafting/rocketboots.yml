@@ -2,7 +2,7 @@ rocketboots:
   enabled: false
   output: rocketboots
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     i: iron_inglot
     f: firework

@@ -4,7 +4,7 @@ saddle:
   group: ""
   output: saddle
   output_type: item
-  materials:
+  ingredients:
     d: diamond
     l: leather
   row_1: "d  "

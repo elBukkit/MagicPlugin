@@ -3,7 +3,7 @@ goggles:
   inherit: false
   output: goggles
   output_type: wand
-  materials:
+  ingredients:
     o: emerald
     i: magicheart
     d: nether_fence

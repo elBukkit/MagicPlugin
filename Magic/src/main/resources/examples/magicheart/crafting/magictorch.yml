@@ -5,7 +5,7 @@ magictorch:
   output: magictorch
   output_type: wand
 
-  materials:
+  ingredients:
     o: magicheart
     i: torch
 

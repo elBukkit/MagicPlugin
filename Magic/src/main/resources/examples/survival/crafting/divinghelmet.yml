@@ -1,7 +1,7 @@
 divinghelmet:
   output: divinghelmet
   output_type: wand
-  materials:
+  ingredients:
     o: conduit
     i: light_blue_stained_glass
   row_1: iii

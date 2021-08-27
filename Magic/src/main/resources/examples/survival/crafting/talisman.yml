@@ -1,7 +1,7 @@
 talisman:
   output: talisman
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     i: quartz
   row_1: " i "

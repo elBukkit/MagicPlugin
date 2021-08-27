@@ -1,7 +1,7 @@
 blaster_blue:
   output: blaster_blue
   output_type: wand
-  materials:
+  ingredients:
     p: stick
     i: iron_ingot
     g: diamond

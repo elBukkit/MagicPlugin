@@ -1,7 +1,7 @@
 magicbow:
   output: magicbow
   output_type: wand
-  materials:
+  ingredients:
     i: bow
     h: amethyst_shard
   row_1: h

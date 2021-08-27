@@ -5,7 +5,7 @@
 lightsaber_hilt:
   output: lightsaber_hilt
   output_type: item
-  materials:
+  ingredients:
     o: nether_star
     i: iron_ingot
     q: quartz

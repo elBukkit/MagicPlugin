@@ -2,6 +2,8 @@
 
 # For 10.0 Release
 
+ - Arena tp-on-death doesn't always work - ended up at spawn
+
  - Add help topic for spawners and magic blocks
 
  - All the zombies on my demo server seem to be named...

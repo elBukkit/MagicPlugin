@@ -5,7 +5,7 @@ broom_glider:
   output_type: wand
   ignore_damage: true
   group: "Broomsticks"
-  materials:
+  ingredients:
     i: elytra
     h: magicheart
   row_1: " h "

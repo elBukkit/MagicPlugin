@@ -1,7 +1,7 @@
 lightsaber_blue:
   output: lightsaber_blue
   output_type: wand
-  materials:
+  ingredients:
     i: lightsaber_hilt
     x: stained_glass:3
   row_1: ""

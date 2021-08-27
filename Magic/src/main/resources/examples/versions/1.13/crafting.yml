@@ -3,7 +3,7 @@ zombie_leather:
   group: ""
   output: leather
   output_type: item
-  materials:
+  ingredients:
     o: rotten_flesh
   row_1: oo
   row_2: oo

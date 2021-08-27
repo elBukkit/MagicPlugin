@@ -2,7 +2,7 @@ invisiblecloak:
   enabled: false
   output: invisiblecloak
   output_type: wand
-  materials:
+  ingredients:
     o: nether_star
     i: wool
     e: ender_pearl

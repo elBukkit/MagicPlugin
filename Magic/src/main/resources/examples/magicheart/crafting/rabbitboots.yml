@@ -4,7 +4,7 @@ rabbitboots:
   enabled: false
   output: rabbitboots
   output_type: wand
-  materials:
+  ingredients:
     i: rabbit_hide
     r: rabbit_foot
     o: magicheart

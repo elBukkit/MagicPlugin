@@ -16,7 +16,7 @@ heroes:
   disable_default: false
 
   # This defines the materials that will be required to craft this wand
-  materials:
+  ingredients:
     o: diamond
     i: stick
 
@@ -36,7 +36,7 @@ skillbook:
   disable_default: false
 
   # This defines the materials that will be required to craft this wand
-  materials:
+  ingredients:
     o: diamond
     i: book
 

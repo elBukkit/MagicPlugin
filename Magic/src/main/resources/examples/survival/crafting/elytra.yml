@@ -4,7 +4,7 @@ elytra:
   group: ""
   output: elytra
   output_type: item
-  materials:
+  ingredients:
     n: nether_star
     i: iron_ingot
     e: end_rod

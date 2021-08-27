@@ -2,7 +2,7 @@ wizardleggings:
   enabled: false
   output: wizardleggings
   output_type: wand
-  materials:
+  ingredients:
     o: amethyst_shard
     i: purple_wool
   row_1: oio

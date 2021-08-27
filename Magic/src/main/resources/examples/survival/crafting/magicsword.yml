@@ -2,7 +2,7 @@ magicsword:
   output: magicsword
   output_type: wand
   ignore_damage: true
-  materials:
+  ingredients:
     o: amethyst_shard
     i: stick
   row_1: o
