@@ -13,3 +13,8 @@ cast_console_feedback: true
 
 resource_pack: "http://rp.elmakers.com/Magic-RP-1.15.zip"
 add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-1.15.zip"
+
+# Change default control scheme back to old version since we can't use the new hotbar here
+wand_slots:
+  controls:
+    default_slotted: controls_inventory
