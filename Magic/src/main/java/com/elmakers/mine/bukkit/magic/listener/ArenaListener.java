@@ -83,6 +83,7 @@ public class ArenaListener implements Listener {
         Location respawnLocation = BukkitMetadataUtils.getLocation(player, "respawnLocation", plugin);
         if (respawnLocation != null) {
             player.removeMetadata("respawnLocation", plugin);
+            e.setRespawnLocation(respawnLocation);
         }
     }
 
