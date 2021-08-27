@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.crafting;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -83,11 +85,15 @@ public class MagicShapedRecipe extends MagicRecipe {
             }
         } else {
             ShapedRecipe shaped = CompatibilityLib.getCompatibilityUtils().createShapedRecipe(key, item);
+            // To make it easier to override recipes, we're just going to ignore any unused ingredients
+            Set<String> symbolsUsed = new HashSet<>();
             List<String> rows = new ArrayList<>();
             for (int i = 1; i <= 3; i++) {
                 String recipeRow = configuration.getString("row_" + i, "");
                 if (recipeRow.length() > 0) {
                     rows.add(recipeRow);
+                    // This split is hacky and will always add a space but that's ok since space is always a good ingredient
+                    symbolsUsed.addAll(Arrays.asList(recipeRow.split("")));
                 }
             }
             if (rows.size() > 0) {
@@ -99,6 +105,12 @@ public class MagicShapedRecipe extends MagicRecipe {
                 Set<String> keys = materials.getKeys(false);
                 for (String key : keys) {
                     String materialKey = materials.getString(key);
+                    // If we didn't actually use this ingredient, remove it so Spigot doesn't throw an exception
+                    // We'll print a warning though
+                    if (!symbolsUsed.contains(key)) {
+                        controller.getLogger().warning("Ingredient is not used in recipe " + getKey() + ", this may be normal if overriding an existing recipe or on an older server version, but if it is a custom recipe this may be a mistake " + key + ": " + materialKey);
+                        continue;
+                    }
                     ItemData ingredient = controller.getOrCreateItem(materialKey);
                     if (ingredient == null) {
                         controller.getLogger().warning("Invalid recipe ingredient " + materialKey);

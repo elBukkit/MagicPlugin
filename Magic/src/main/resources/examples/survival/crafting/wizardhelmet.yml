@@ -2,7 +2,6 @@ wizardhelmet:
   enabled: false
   output: wizardhelmet
   output_type: wand
-  ignore_damage: true
   materials:
     o: amethyst_shard
     i: purple_wool
