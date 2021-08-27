@@ -273,6 +273,11 @@ wands:
     controls_hybrid:
         name: Hybrid Controls
         description: "&bRight-click&b to &6cycle spells&f, &bDrop&f to &6open spell inventory"
+    controls_boss_hybrid:
+        name: Hybrid Controls (Boss Bar)
+        description: |-
+            &fJust like &bHybrid Controls&f, but using the &6Boss Bar&f instead of the &6Action Bar&f
+            &bRight-click&b to &6cycle spells&f, &bDrop&f to &6open spell inventory
     controls_inventory:
         name: Inventory Controls
         description: "&bRight-click&b or &bDrop&f to &6open spell inventory"

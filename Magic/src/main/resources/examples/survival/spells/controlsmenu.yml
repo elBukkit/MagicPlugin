@@ -15,6 +15,7 @@ controlsmenu:
         - wand_slot: controls
         options:
           - item: controls_hybrid
+          - item: controls_boss_hybrid
           - item: controls_inventory
           - item: controls_chest
           - item: none
@@ -22,7 +23,6 @@ controlsmenu:
             selected: "You organized your spell inventory"
           - item: alphabetizer
             selected: "You alphabetized your spell inventory"
-          - item: none
           - item: particles
             apply_to: mage
           - item: noparticles

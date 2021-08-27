@@ -21,11 +21,17 @@ help:
       wands: |-
         `<title text="Survival Wands">`
         `<li>``<help topic="instructions.wand" text="Help with the wand I'm holding">`
+        `<li>``<help topic="examples.survival.customizing" text="Help with customizing survival wands>`
         `<li>``<command command="/mgive wand" text="Get the default survival wand">`
         `<li>``<command command="/mgive master" text="Get a maxed-out survival wand">`
         `<li>``<command command="/mgive uberwand" text="Get an OP testing wand">`
         `<li>``<command command="/wand add recall" text="Add a spell to a testing wand">`
         `<li>``<command command="/mage add blink" text="Learn a spell, adding it to your survival wand">`
+      customizing: |-
+        `<title text="Customizing Survival">`
+        `<li>``<command command="/cast controlsmenu" text="Use the controlsmenu to tweak your own wand">`
+        `<li>``<command command="/mconfig configure config wand_slots.controls.default_slotted controls_inventory" text="Revert wand default to pre-10.0 inventory mode">`
+        `<li>``<command command="/mconfig configure config wand_slots.controls.default_slotted controls_boss_hybrid" text="Change wand default to use the boss bar instead of the action bar">`
       broomstick: |-
         `<title text="Broomsticks">`
         `<li>`Broomsticks work by moving invisible armor stands around. If you have anything on your server that might prevent moving armor stands, they will not work.

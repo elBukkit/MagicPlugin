@@ -35,6 +35,33 @@ controls_hybrid:
       properties:
         use_active_name: true
 
+controls_boss_hybrid:
+  inherit: controls_hybrid
+  # Unfortunately have to copy all of this since it's a list :(
+  requirement_properties:
+    - requirement:
+        resource_pack: true
+      properties:
+        use_active_name: false
+        boss_bar:
+          title: '$hotbar'
+          font: "magic"
+          open_message: ""
+          interval: 250
+    - requirement:
+        spell_inventory_open: true
+      properties:
+        use_active_name: true
+        right_click: toggle
+        right_click_sneak: toggle
+        xp_display: mana
+        level_display: sp
+    - requirement:
+        resource_pack: true
+      invert: true
+      properties:
+        use_active_name: true
+
 controls_bow_hybrid:
   inherit: controls_hybrid
   left_click: cycle_active_hotbar
