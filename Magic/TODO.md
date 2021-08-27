@@ -8,7 +8,7 @@
  - Take some timings and spark profiles (during club, ideally), consider impact
    of possibly changing mage_update_interval to 1
    
- - Test recipes on 1.16 and 1.9
+ - Test recipes on 1.9
 
  - Test magicheart configs
    
@@ -34,6 +34,8 @@ set_bonus_properties:
 
 # Important
 
+ - Maybe don't combine configs via ant anymore, merging them would be helpful and we have the tech now?
+   - If done, cleanup the items economy.yml and discover_recipes.yml mess
  - Spells that disable mana regen need to constantly reset the mana catchup timestamp (on ... wands.. hrm)
  - Allow slotted upgrades to rename (rename and rename_description options)
  - Prevent blaze fireballs from doing damage?

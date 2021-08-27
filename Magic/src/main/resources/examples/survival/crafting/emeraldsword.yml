@@ -1,6 +1,5 @@
 emeraldsword:
   output: emerald_sword
-  auto_discover: true
   group: ""
   output_type: item
 

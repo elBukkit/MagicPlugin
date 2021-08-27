@@ -27,3 +27,8 @@ daylight_detector:
   worth: 3
   discover_recipes:
     - camera
+
+emerald:
+  worth: 50
+  discover_recipes:
+    - emerald_sword

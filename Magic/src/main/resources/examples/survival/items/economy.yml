@@ -644,8 +644,8 @@ elder_guardian_spawn_egg:
   worth: 500
 elytra:
   worth: 769.23
-emerald:
-  worth: 50
+# Moved to discover_recipes
+# emerald:
 emerald_block:
   worth: 450
 emerald_ore:

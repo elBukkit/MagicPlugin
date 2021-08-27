@@ -1,3 +1,12 @@
 # This is here for 1.17 crafting recipes, kinda hacky but easier than tweaking all the recipes.
 amethyst_shard:
   item: emerald
+
+# This is copied from amethyst shard, I don't think we have item inheritance or any easy
+# way to share this list right now.
+emerald:
+  discover_recipes:
+    - emerald_sword
+    - wand
+    - spellbook
+    - magicsword
