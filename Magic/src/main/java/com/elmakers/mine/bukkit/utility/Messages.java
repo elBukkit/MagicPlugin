@@ -139,19 +139,15 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         if (!message.contains("`<")) return new MacroExpansion(message);
         String title = null;
         String[] pieces = StringUtils.split(message, "`");
-        String previousPiece = null;
+        boolean leftoverDelimiter = false;
         for (int i = 0; i < pieces.length; i++) {
             String piece = pieces[i];
             String defaultReplace = piece;
-            // Some weird logic to put back ` if they weren't actually part of the `<...>` escape sequence
-            if (previousPiece != null && !previousPiece.endsWith(">")) {
+            // Put back ` if it wasn't actually part of a `<...>` escape sequence
+            if (leftoverDelimiter) {
                 defaultReplace = "`" + defaultReplace;
             }
-            if (i != pieces.length - 1 && !pieces[i + 1].startsWith("<")) {
-                defaultReplace += "`";
-            }
-            // Have to save this because we may blank it out before the next piece can look at it
-            previousPiece = piece;
+            leftoverDelimiter = true;
             if (!piece.startsWith("<") && !piece.endsWith(">")) {
                 pieces[i] = defaultReplace;
                 continue;
@@ -205,6 +201,9 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                     pieces[i] = defaultReplace;
                     continue;
                 }
+                // At this point we are treating this like a macro and replacing it, so we are consuming
+                // the delimiter
+                leftoverDelimiter = false;
                 // Check for special hard-coded macros
                 if (macroKey.equals("icon")) {
                     Object iconKey = mapped.get("key");
