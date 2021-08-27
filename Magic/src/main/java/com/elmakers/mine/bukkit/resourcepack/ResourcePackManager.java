@@ -323,12 +323,13 @@ public class ResourcePackManager {
         return resourcePacksEnabled;
     }
 
-    public boolean checkResourcePack(final CommandSender sender, final boolean quiet, final boolean force, final boolean filenameChanged) {
+    public boolean checkResourcePack(final CommandSender sender, final boolean skipMessages, final boolean force, final boolean filenameChanged) {
         final Plugin plugin = controller.getPlugin();
         if (!plugin.isEnabled()) return false;
         final Server server = plugin.getServer();
         resourcePack = null;
         resourcePackHash = null;
+        final boolean quiet = sender == null || skipMessages;
 
         if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
             if (!quiet) sender.sendMessage("Resource pack in config.yml has been disabled, Magic skipping RP check");
