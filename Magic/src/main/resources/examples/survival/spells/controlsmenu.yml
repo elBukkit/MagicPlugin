@@ -14,16 +14,25 @@ controlsmenu:
         requirements:
         - wand_slot: controls
         options:
+          - item: none
           - item: controls_hybrid
           - item: controls_boss_hybrid
           - item: controls_inventory
+          - item: none
+          - item: controls_old
           - item: controls_chest
+          - item: none
+
           - item: none
           - item: organizer
             selected: "You organized your spell inventory"
           - item: alphabetizer
             selected: "You alphabetized your spell inventory"
+          - item: none
+          - item: none
+          - item: none
           - item: particles
             apply_to: mage
           - item: noparticles
             apply_to: mage
+          - item: none

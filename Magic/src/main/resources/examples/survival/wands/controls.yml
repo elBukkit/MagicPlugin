@@ -5,6 +5,8 @@ controls_hybrid:
   upgrade: true
   mode: inventory
   drop: toggle
+  swap: cycle_hotbar
+  swap_sneak: cycle_hotbar_reverse
   right_click: cycle_active_hotbar
   right_click_sneak: cycle_active_hotbar_reverse
   swappable: false
@@ -72,6 +74,7 @@ controls_bow_hybrid:
   right_click_sneak: none
   swappable: true
   swap: none
+  swap_sneak: none
   hotbar_count: 1
 
 controls_chest:
@@ -83,6 +86,8 @@ controls_chest:
   drop: toggle
   right_click: toggle
   right_click_sneak: ""
+  swap: none
+  swap_sneak: none
   swappable: true
   requirement_properties: ""
 
@@ -93,7 +98,24 @@ controls_inventory:
   slot: controls
   mode: inventory
   drop: toggle
+  swap: cycle_hotbar
+  swap_sneak: cycle_hotbar_reverse
   right_click: toggle
   right_click_sneak: ""
   swappable: true
+  requirement_properties: ""
+
+controls_old:
+  icon: oak_sign{CustomModelData:18001}
+  legacy_icon: spell_icon:214
+  upgrade: true
+  slot: controls
+  mode: inventory
+  drop: cycle_hotbar
+  drop_sneak: cycle_hotbar_reverse
+  swap: none
+  swap_sneak: none
+  swappable: true
+  right_click: toggle
+  right_click_sneak: ""
   requirement_properties: ""
