@@ -13,7 +13,7 @@ default_wand: potterwand
 inherit: survival
 
 # Include only survival spells, but disable them so we can inherit without them being available
-include_inhertied:
+include_inherited:
  - spells
 disable_inherited:
  - spells

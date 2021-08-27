@@ -379,6 +379,7 @@ public class ConfigurationLoadTask implements Runnable {
                         // These should not be inherited
                         inheritedConfig.set("disable_inherited", null);
                         inheritedConfig.set("skip_inherited", null);
+                        inheritedConfig.set("include_inherited", null);
                         inheritedConfig.set("example", null);
                         inheritedConfig.set("inherit", null);
                     }

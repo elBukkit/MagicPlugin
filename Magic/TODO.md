@@ -2,6 +2,8 @@
 
 # For 10.0 Release
 
+ - Add help topic for spawners and magic blocks
+
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
