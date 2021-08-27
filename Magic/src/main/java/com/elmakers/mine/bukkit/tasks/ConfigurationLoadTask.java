@@ -54,6 +54,8 @@ public class ConfigurationLoadTask implements Runnable {
     private final Map<String, ConfigurationSection> builtinConfigurations = new HashMap<>();
     private final Map<String, ConfigurationSection> loadedConfigurationFiles = new HashMap<>();
 
+    private final Map<String, ConfigurationSection> addDisabled = new HashMap<>();
+
     private static final Object loadLock = new Object();
 
     private boolean allPvpRestricted = false;
@@ -134,7 +136,7 @@ public class ConfigurationLoadTask implements Runnable {
                     if (exampleConfig == null) {
                         exampleConfig = ConfigurationUtils.newConfigurationSection();
                     }
-                    exampleConfig = loadConfigFolder(examplesPrefix, exampleConfig, externalFolder, false);
+                    exampleConfig = loadConfigFolder(examplesPrefix, exampleConfig, externalFolder);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + examplesFileName);
                 }
@@ -318,7 +320,7 @@ public class ConfigurationLoadTask implements Runnable {
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        loadConfigFolder(fileName, config, configSubFolder, false);
+        loadConfigFolder(fileName, config, configSubFolder);
 
         // Save default configs for inspection
         if (saveDefaultConfigs) {
@@ -355,9 +357,6 @@ public class ConfigurationLoadTask implements Runnable {
         boolean isUnkeyedConfig = isMainConfig || fileName.equals("messages") || fileName.equals("materials");
         if (inherited == null) {
             inherited = new LinkedHashSet<>();
-            if (!isUnkeyedConfig) {
-                enableAll(exampleConfig);
-            }
         } else {
             inherited = new LinkedHashSet<>(inherited);
         }
@@ -391,20 +390,19 @@ public class ConfigurationLoadTask implements Runnable {
                         }
                         List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
                         if (!isUnkeyedConfig && disable != null && disable.contains(fileName)) {
-                            disableAll(inheritedConfig);
+                            addDisabled(inheritFrom, inheritedConfig);
+                            ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
+                            info("   Example " + exampleKey + " inheriting from disabled " + inheritFrom);
+                        } else {
+                            ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
+                            info("   Example " + exampleKey + " inheriting from " + inheritFrom);
                         }
-                        ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
-                        info("   Example " + exampleKey + " inheriting from " + inheritFrom);
                     } catch (Exception ex) {
                         getLogger().severe("Error loading file: " + inheritFilePrefix);
                         throw ex;
                     }
                 }
             }
-        }
-        // Prepare this config to be merged with others that may have force-disabled some of this config via inheritance
-        if (!isUnkeyedConfig) {
-            enableAll(exampleConfig);
         }
     }
 
@@ -515,12 +513,12 @@ public class ConfigurationLoadTask implements Runnable {
         }
         String header = defaultConfig.options().header();
 
-        // Load defaults
+        // Load defaults, I kind of think we should always do this but I'm leaving this if here
+        // for backwards-compatibility
+        // I did remove the ability to disable defaults but there's really nothing in the defaults
+        // anymore so I don't think this should be a problem.
         if (loadDefaults) {
             info(" Based on defaults " + defaultsFileName);
-            if (disableDefaults) {
-                disableAll(defaultConfig);
-            }
             ConfigurationUtils.addConfigurations(config, defaultConfig);
         }
 
@@ -528,12 +526,14 @@ public class ConfigurationLoadTask implements Runnable {
         if (usingExample && loadDefaults) {
             ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, exampleDefaults);
             try {
-                if (disableDefaults) {
-                    disableAll(exampleConfig);
-                }
                 processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
-                ConfigurationUtils.addConfigurations(config, exampleConfig);
-                info(" Using " + examplesFilePrefix);
+                if (disableDefaults) {
+                    addDisabled(exampleDefaults, exampleConfig);
+                    info(" Using disabled " + examplesFilePrefix);
+                } else {
+                    ConfigurationUtils.addConfigurations(config, exampleConfig);
+                    info(" Using " + examplesFilePrefix);
+                }
             } catch (Exception ex) {
                 getLogger().severe("Error loading file: " + examplesFilePrefix);
                 throw ex;
@@ -552,13 +552,11 @@ public class ConfigurationLoadTask implements Runnable {
                 ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
                 try {
                     processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
-                    reenableAll(config, exampleConfig);
                     // Don't override messages or config when adding an example, but allow other config overrides
                     // Unless otherwise specified
                     boolean override = exampleConfig.getBoolean("example_override", false);
                     exampleConfig.set("example_override", null);
-                    // ConfigurationUtils.addConfigurations(config, exampleConfig, !isUnkeyedConfig || override);
-                    ConfigurationUtils.addConfigurations(config, exampleConfig, override);
+                    ConfigurationUtils.addConfigurations(config, exampleConfig, !isUnkeyedConfig || override);
                     info(" Added " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
                 } catch (Exception ex) {
                     getLogger().severe("Error loading file: " + examplesFilePrefix);
@@ -593,17 +591,14 @@ public class ConfigurationLoadTask implements Runnable {
         }
 
         // Apply overrides after loading defaults and examples
-        if (!isUnkeyedConfig) {
-            enableAll(overrides);
-        }
         ConfigurationUtils.addConfigurations(config, overrides, true, false, true);
 
         // Apply file overrides last
         File configSubFolder = new File(configFolder, fileName);
-        loadConfigFolder(fileName, config, configSubFolder, !isUnkeyedConfig);
+        loadConfigFolder(fileName, config, configSubFolder);
 
-        // Clear any enabled flags we added in to re-enable disabled inherited configs
-        clearEnabled(config);
+        // But actually really last, add in anything we need that was loaded as disabled
+        resolveDisabled(config);
 
         // Save defaults
         File savedDefaults = new File(configFolder, defaultsFileName);
@@ -617,6 +612,7 @@ public class ConfigurationLoadTask implements Runnable {
         } else  {
             deleteDefaults(defaultsFileName);
         }
+
 
         return config;
     }
@@ -665,12 +661,14 @@ public class ConfigurationLoadTask implements Runnable {
         if (usingExample && loadDefaults) {
             ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, exampleDefaults);
             try {
-                if (disableDefaults) {
-                    disableAll(exampleConfig);
-                }
                 processInheritance(exampleDefaults, exampleConfig, fileName, getMainConfiguration(exampleDefaults));
-                ConfigurationUtils.addConfigurations(config, exampleConfig);
-                info(" Using " + examplesFilePrefix);
+                if (disableDefaults) {
+                    addDisabled(exampleDefaults, exampleConfig);
+                    info(" Using disabled " + examplesFilePrefix);
+                } else {
+                    ConfigurationUtils.addConfigurations(config, exampleConfig);
+                    info(" Using " + examplesFilePrefix);
+                }
             } catch (Exception ex) {
                 getLogger().severe("Error loading file: " + examplesFilePrefix);
                 throw ex;
@@ -689,7 +687,6 @@ public class ConfigurationLoadTask implements Runnable {
                 ConfigurationSection exampleConfig = loadExampleConfiguration(examplesFilePrefix, example);
                 try {
                     processInheritance(example, exampleConfig, fileName, getMainConfiguration(example));
-                    reenableAll(config, exampleConfig);
                     ConfigurationUtils.addConfigurations(config, exampleConfig, false);
                     info(" Added " + examplesFilePrefix);
                 } catch (Exception ex) {
@@ -777,16 +774,26 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
-    private void clearEnabled(ConfigurationSection config) {
-        Set<String> keys = config.getKeys(false);
-        for (String key : keys) {
-            ConfigurationSection thisConfig = config.getConfigurationSection(key);
-            if (thisConfig == null || !thisConfig.getBoolean("enabled")) continue;
-            thisConfig.set("enabled", null);
+    private void resolveDisabled(ConfigurationSection config) {
+        for (Map.Entry<String, ConfigurationSection> entry : addDisabled.entrySet()) {
+            String key = entry.getKey();
+            ConfigurationSection disableConfig = entry.getValue();
+            disableAll(disableConfig);
+            ConfigurationSection existing = config.getConfigurationSection(key);
+            if (existing == null) {
+                config.set(key, disableConfig);
+            } else {
+                ConfigurationUtils.addConfigurations(existing, disableConfig, false);
+            }
         }
+        addDisabled.clear();
     }
 
-    private ConfigurationSection loadConfigFolder(String fileType, ConfigurationSection config, File configSubFolder, boolean reenable)
+    private void addDisabled(String exampleKey, ConfigurationSection configuration) {
+        addDisabled.put(exampleKey, configuration);
+    }
+
+    private ConfigurationSection loadConfigFolder(String fileType, ConfigurationSection config, File configSubFolder)
         throws IOException, InvalidConfigurationException {
         if (configSubFolder.exists()) {
             List<File> priorityFiles = new ArrayList<>();
@@ -794,7 +801,7 @@ public class ConfigurationLoadTask implements Runnable {
             for (File file : files) {
                 if (file.getName().startsWith(".")) continue;
                 if (file.isDirectory()) {
-                    config = loadConfigFolder(fileType, config, file, reenable);
+                    config = loadConfigFolder(fileType, config, file);
                 } else {
                     if (!file.getName().endsWith(".yml")) continue;
                     if (file.getName().startsWith("_")) {
@@ -804,9 +811,6 @@ public class ConfigurationLoadTask implements Runnable {
                     try {
                         ConfigurationSection fileOverrides = loadConfiguration(fileType, file);
                         info(" Loading " + file.getName());
-                        if (reenable) {
-                            enableAll(fileOverrides);
-                        }
                         config = ConfigurationUtils.addConfigurations(config, fileOverrides, true, false, true);
                     } catch (Exception ex) {
                         getLogger().severe("Error loading: " + file.getName());
@@ -818,9 +822,6 @@ public class ConfigurationLoadTask implements Runnable {
                 try {
                     ConfigurationSection fileOverrides = CompatibilityLib.getCompatibilityUtils().loadConfiguration(file);
                     info(" Loading " + file.getName());
-                    if (reenable) {
-                        enableAll(fileOverrides);
-                    }
                     config = ConfigurationUtils.addConfigurations(config, fileOverrides, true, false, true);
                 } catch (Exception ex) {
                     getLogger().severe("Error loading: " + file.getName());

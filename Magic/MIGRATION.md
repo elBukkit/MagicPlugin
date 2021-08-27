@@ -54,6 +54,9 @@
     - The `magic.wand.override_locked` permission was changed to `magic.wand.override_modifiable`
     - The `console_bypass_locked_wands` parameter was changed to `console_bypass_modifiable` 
       but should use the old name if present in your configs
+      
+ - If using some builtin configs but disabled, configs must now be explicitly re-enabled with `enabled: true`
+   I am hoping this doesn't affect anyone, the implicit re-enabling was a confusing and hard-to-maintain edge case.
 
 # 9.4
 

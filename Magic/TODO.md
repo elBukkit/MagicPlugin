@@ -36,6 +36,7 @@ set_bonus_properties:
 
 # Important
 
+ - Allow different actions for different click types in a selector option
  - Maybe don't combine configs via ant anymore, merging them would be helpful and we have the tech now?
    - If done, cleanup the items economy.yml and discover_recipes.yml mess
  - Spells that disable mana regen need to constantly reset the mana catchup timestamp (on ... wands.. hrm)
