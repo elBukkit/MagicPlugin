@@ -56,6 +56,8 @@ controls_boss_hybrid:
         right_click_sneak: toggle
         xp_display: mana
         level_display: sp
+        boss_bar:
+          mode: none
     - requirement:
         resource_pack: true
       invert: true
