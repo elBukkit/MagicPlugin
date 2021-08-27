@@ -130,7 +130,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
 
     @Override
     public boolean sendActionBar(Player player, String message, String font) {
-        if (font == null || font.isEmpty()) {
+        if (ChatUtils.isDefaultFont(font)) {
             return sendActionBar(player, message);
         }
         BaseComponent[] components;

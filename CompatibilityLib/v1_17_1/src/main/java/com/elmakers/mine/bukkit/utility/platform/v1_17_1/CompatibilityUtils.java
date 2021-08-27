@@ -36,6 +36,7 @@ import org.bukkit.block.Lectern;
 import org.bukkit.block.Lockable;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
@@ -50,6 +51,7 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftHanging;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftItem;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.util.CraftChatMessage;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
@@ -112,6 +114,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
@@ -121,6 +124,7 @@ import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
@@ -1755,5 +1759,59 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         CompoundTag displayNode = tag.getCompound("display");
         itemUtils.setStringList(displayNode, "Lore", serializedLore);
         return true;
+    }
+
+    private Component toNMS(BaseComponent[] components) {
+        if (components.length == 0) {
+            return null;
+        }
+        BaseComponent component = components.length == 1 ? components[0] : collapseComponents(Arrays.asList(components));
+        // Surely there must be a more efficient way to do this, but I could not find it.
+        String serialized = ComponentSerializer.toString(component);
+        if (serialized == null || serialized.isEmpty()) {
+            return null;
+        }
+        return CraftChatMessage.fromJSON(serialized);
+    }
+
+    @Override
+    public void setBossBarTitle(BossBar bossBar, String title) {
+        if (ChatUtils.hasJSON(title)) {
+            BaseComponent[] components = parseChatComponents(title);
+            setBossBarTitle(bossBar, components, title);
+        } else {
+            bossBar.setTitle(title);
+        }
+    }
+
+    private void setBossBarTitle(BossBar bossBar, BaseComponent[] components, String fallback) {
+        Object handle = ReflectionUtils.getHandle(platform.getLogger(), bossBar);
+        if (handle == null || !(handle instanceof ServerBossEvent)) {
+            bossBar.setTitle(fallback);
+            return;
+        }
+        ServerBossEvent bossEvent = (ServerBossEvent)handle;
+        Component component = toNMS(components);
+        if (component == null) {
+            bossBar.setTitle(fallback);
+        } else {
+            bossEvent.setName(component);
+        }
+    }
+
+    @Override
+    public void setBossBarTitle(BossBar bossBar, String title, String font) {
+        if (ChatUtils.isDefaultFont(font)) {
+            setBossBarTitle(bossBar, title);
+            return;
+        }
+        BaseComponent[] components;
+        if (ChatUtils.hasJSON(title)) {
+            components = parseChatComponents(title);
+        } else {
+            components = new BaseComponent[]{new TextComponent(title)};
+        }
+        BaseComponent[] fontComponent = new ComponentBuilder("").font(font).append(components).create();
+        setBossBarTitle(bossBar, fontComponent, title);
     }
 }

@@ -111,4 +111,8 @@ public class ChatUtils {
     public static boolean hasJSON(String text) {
         return text.contains("`{");
     }
+
+    public static boolean isDefaultFont(String font) {
+        return font == null || font.isEmpty() || font.equals("default");
+    }
 }

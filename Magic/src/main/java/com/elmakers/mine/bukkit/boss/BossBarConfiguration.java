@@ -9,10 +9,12 @@ import org.bukkit.boss.BarStyle;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class BossBarConfiguration {
@@ -23,6 +25,7 @@ public class BossBarConfiguration {
     private double radius;
     private long updateInterval;
     private int updateIntervalRandomization;
+    private String font;
 
     public BossBarConfiguration(MageController controller, ConfigurationSection parameters) {
         this(controller, parameters, "$spell");
@@ -30,6 +33,7 @@ public class BossBarConfiguration {
 
     public BossBarConfiguration(MageController controller, ConfigurationSection parameters, String defaultTitle) {
         title = parameters.getString("bar_title", parameters.getString("title", defaultTitle));
+        font = parameters.getString("font");
         String colorString = parameters.getString("bar_color");
         if (colorString != null && !colorString.isEmpty()) {
             try {
@@ -109,19 +113,28 @@ public class BossBarConfiguration {
 
     public BossBar createBossBar(Wand wand) {
         String title = wand.parameterize(this.title);
-        BossBar bossBar = wand.getController().getPlugin().getServer().createBossBar(title, color, style, flags);
+        String createTitle = title;
+        // Update the title in a separate step if it has json in it
+        boolean isJSON = ChatUtils.hasJSON(title) || !ChatUtils.isDefaultFont(font);
+        if (isJSON) {
+            createTitle = "";
+        }
+        BossBar bossBar = wand.getController().getPlugin().getServer().createBossBar(createTitle, color, style, flags);
+        if (isJSON) {
+            CompatibilityLib.getCompatibilityUtils().setBossBarTitle(bossBar, title, font);
+        }
         bossBar.setVisible(true);
         return bossBar;
     }
 
     public void updateTitle(BossBar bossBar, CastContext context) {
         String title = context.parameterize(this.title);
-        bossBar.setTitle(title);
+        CompatibilityLib.getCompatibilityUtils().setBossBarTitle(bossBar, title, font);
     }
 
     public void updateTitle(BossBar bossBar, Wand wand) {
         String title = wand.parameterize(this.title);
-        bossBar.setTitle(title);
+        CompatibilityLib.getCompatibilityUtils().setBossBarTitle(bossBar, title, font);
     }
 
     public BossBarTracker createTracker(Mage mage) {

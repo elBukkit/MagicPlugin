@@ -5,10 +5,12 @@ import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.boss.BossBar;
 import org.bukkit.inventory.ItemStack;
 
 public class ReflectionUtils {
     private static Field itemStackHandleField;
+    private static Field bossBarHandleField;
     private static Method nbtListGetMethod;
 
     public static Object getPrivate(Logger logger, Object o, Class<?> c, String field) {
@@ -18,6 +20,19 @@ public class ReflectionUtils {
             return access.get(o);
         } catch (Exception ex) {
             logger.log(Level.SEVERE, "Error getting private member of " + o.getClass().getName() + "." + field, ex);
+        }
+        return null;
+    }
+
+    public static Object getHandle(Logger logger, BossBar bossBar) {
+        try {
+            if (bossBarHandleField == null) {
+                bossBarHandleField = bossBar.getClass().getDeclaredField("handle");
+                bossBarHandleField.setAccessible(true);
+            }
+            return bossBarHandleField.get(bossBar);
+        } catch (Exception ex) {
+            logger.log(Level.SEVERE, "Error getting handle of " + bossBar.getClass().getName(), ex);
         }
         return null;
     }

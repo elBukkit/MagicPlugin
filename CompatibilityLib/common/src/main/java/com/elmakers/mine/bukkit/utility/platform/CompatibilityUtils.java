@@ -25,6 +25,7 @@ import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -252,6 +253,10 @@ public interface CompatibilityUtils {
     boolean sendActionBar(Player player, String message);
 
     boolean sendActionBar(Player player, String message, String font);
+
+    void setBossBarTitle(BossBar bossBar, String title);
+
+    void setBossBarTitle(BossBar bossBar, String title, String font);
 
     void sendChatComponents(CommandSender sender, String containsJson);
 

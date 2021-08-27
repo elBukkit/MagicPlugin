@@ -30,6 +30,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -915,9 +916,26 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean sendActionBar(Player player, String message, String font) {
         // We can't support fonts here
-        if (font != null && !font.isEmpty()) {
+        if (!ChatUtils.isDefaultFont(font)) {
             return false;
         }
         return sendActionBar(player, message);
+    }
+
+    @Override
+    public void setBossBarTitle(BossBar bossBar, String title) {
+        if (ChatUtils.hasJSON(title)) {
+            title = ChatUtils.getSimpleMessage(title);
+        }
+        bossBar.setTitle(title);
+    }
+
+    @Override
+    public void setBossBarTitle(BossBar bossBar, String title, String font) {
+        // We can't support fonts here
+        if (!ChatUtils.isDefaultFont(font)) {
+            return;
+        }
+        setBossBarTitle(bossBar, title);
     }
 }
