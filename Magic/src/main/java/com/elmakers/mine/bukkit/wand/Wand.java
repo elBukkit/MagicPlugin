@@ -3003,8 +3003,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (isUpgrade) {
             String slot = getString("slot");
             if (slot != null && !slot.isEmpty()) {
-                String slotName = controller.getMessages().get("slots." + slot + ".name", slot);
-                ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_slot").replace("$slot", slotName), lore);
+                WandUpgradeSlotTemplate wandSlot = new WandUpgradeSlotTemplate(controller, slot);
+                if (!wandSlot.isHidden()) {
+                    String slotName = controller.getMessages().get("slots." + slot + ".name", slot);
+                    ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_slot").replace("$slot", slotName), lore);
+                }
             }
         }
 

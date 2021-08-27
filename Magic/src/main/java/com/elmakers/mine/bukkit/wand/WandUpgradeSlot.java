@@ -5,31 +5,21 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 
-public class WandUpgradeSlot {
-    private final String slotType;
-    private boolean hidden = false;
-    private boolean swappable = false;
-    private boolean replaceable = false;
+public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
     private boolean hasDefaultSlotted = false;
     private Wand slotted;
 
     public WandUpgradeSlot(MagicController controller, String slotType) {
-        this.slotType = slotType;
-        ConfigurationSection defaultConfig = controller.getWandSlotConfiguration(slotType);
-        if (defaultConfig != null) {
-            load(controller, defaultConfig);
-        }
+        super(controller, slotType);
     }
 
     public WandUpgradeSlot(MagicController controller, String configKey, ConfigurationSection config) {
-        this(controller, config.getString("type", configKey));
-        load(controller, config);
+        super(controller, configKey, config);
     }
 
-    private void load(MagicController controller, ConfigurationSection config) {
-        hidden = config.getBoolean("hidden", hidden);
-        swappable = config.getBoolean("swappable", swappable);
-        replaceable = config.getBoolean("replaceable", replaceable);
+    @Override
+    protected void load(MagicController controller, ConfigurationSection config) {
+        super.load(controller, config);
         String defaultKey = config.getString("default_slotted");
         if (defaultKey != null && !defaultKey.isEmpty() && slotted == null) {
             slotted = controller.createWand(defaultKey);
@@ -65,13 +55,5 @@ public class WandUpgradeSlot {
         slotted = upgrade;
         hasDefaultSlotted = false;
         return true;
-    }
-
-    public boolean isHidden() {
-        return hidden;
-    }
-
-    public String getType() {
-        return slotType;
     }
 }
