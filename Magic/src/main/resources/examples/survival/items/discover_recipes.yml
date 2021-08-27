@@ -32,3 +32,11 @@ emerald:
   worth: 50
   discover_recipes:
     - emerald_sword
+    - wand
+    - spellbook
+
+diamond:
+  worth: 100
+  discover_recipes:
+    - wand
+    - spellbook

@@ -580,8 +580,8 @@ debug_stick:
   worth: 0
 detector_rail:
   worth: 8.59
-diamond:
-  worth: 100
+# Moved to discover_recipes
+# diamond:
 diamond_axe:
   worth: 300
 diamond_block:
