@@ -37,6 +37,18 @@ magictorch:
 rabbitboots:
   enabled: true
 
+toasted_sandwich:
+  enabled: true
+
+toast:
+  enabled: true
+
+sliced_bread:
+  enabled: true
+
+sandwich:
+  enabled: true
+
 ruby_sword:
   enabled: false
   output: rubysword
