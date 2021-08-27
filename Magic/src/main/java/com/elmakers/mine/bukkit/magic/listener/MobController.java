@@ -307,6 +307,12 @@ public class MobController implements Listener, ChunkLoadListener {
         Mage mage = controller.getRegisteredMage(source);
         if (mage == null) return;
 
+        if (target == null) {
+            com.elmakers.mine.bukkit.api.entity.EntityData mageMob = mage.getEntityData();
+            if (!mageMob.isRelentless()) {
+                return;
+            }
+        }
         Entity currentTarget = mage.getTopDamager();
         if (currentTarget != null && currentTarget != target) {
             event.setCancelled(true);

@@ -66,6 +66,8 @@
  - Fix slime and magma cube magic mobs
  - Fix "invalid NPC" spam on startup from NPCs in spawn chunks
  - Fix `CheckInventory` not detecting a stack of items
+ - Fix magic mobs continuing to track you no matter how far away you run
+   Use `relentless: true` on a mob config to restore this behavior.
 
 ## Additions
  

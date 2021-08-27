@@ -48,6 +48,7 @@ public interface EntityData extends Cloneable {
     void setHasMoved(boolean hasMoved);
     void setDamaged(boolean damaged);
     boolean isDocile();
+    boolean isRelentless();
     boolean isPreventProjectiles();
     boolean isPreventMelee();
     boolean isPreventDismount();

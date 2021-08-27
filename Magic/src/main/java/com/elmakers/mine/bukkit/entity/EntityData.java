@@ -102,6 +102,7 @@ public class EntityData
     protected Boolean hasAI;
     protected Boolean hasGravity;
     protected boolean isDocile;
+    protected boolean isRelentless;
     protected boolean transformable = true;
     protected boolean combustible = true;
     protected boolean isStatic = false;
@@ -327,6 +328,7 @@ public class EntityData
             persistentInvisible = invisible;
         }
         isDocile = parameters.getBoolean("docile");
+        isRelentless = parameters.getBoolean("relentless");
         transformable = parameters.getBoolean("transformable", true);
         combustible = parameters.getBoolean("combustible", true);
         preventProjectiles = parameters.getBoolean("prevent_projectiles", false);
@@ -1367,6 +1369,11 @@ public class EntityData
     @Override
     public boolean isDocile() {
         return isDocile;
+    }
+
+    @Override
+    public boolean isRelentless() {
+        return isRelentless;
     }
 
     @Override
