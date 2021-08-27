@@ -14,10 +14,6 @@ tutorial:
   starter: true
   worlds: world
   items:
-    - stick
-    - book
-    - emerald@8
-    - diamond@2
     - wooden_sword
     - wooden_pickaxe
     - wooden_shovel
@@ -34,6 +30,16 @@ tutorial:
     - item: leather_boots
       slot: boots
     - item: phome
+
+wandcrafting:
+  starter: true
+  worlds: world
+  items:
+    - stick
+    - book
+    - emerald@2
+    - diamond@2
+    - amethyst_shard@4
 
 navigator:
   enabled: true
