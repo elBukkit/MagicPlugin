@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
+import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 
 public abstract class PlatformBase implements Platform {
     private final Logger logger;
@@ -42,6 +43,7 @@ public abstract class PlatformBase implements Platform {
     @Nonnull
     protected final EntityUtils entityUtils;
     protected final PaperUtils paperUtils;
+    protected final SpigotUtils spigotUtils;
     @Nonnull
     protected final EntityMetadataUtils entityMetadataUtils;
     protected final boolean valid;
@@ -60,6 +62,7 @@ public abstract class PlatformBase implements Platform {
             this.schematicUtils = createSchematicUtils();
             this.skinUtils = createSkinUtils();
             this.paperUtils = createPaperUtils();
+            this.spigotUtils = createSpigotUtils();
             this.entityMetadataUtils = createEntityMetadataUtils();
             this.entityUtils = createEntityUtils();
         } else {
@@ -71,6 +74,7 @@ public abstract class PlatformBase implements Platform {
             this.schematicUtils = null;
             this.skinUtils = null;
             this.paperUtils = null;
+            this.spigotUtils = null;
             this.entityMetadataUtils = null;
             this.entityUtils = null;
         }
@@ -100,11 +104,25 @@ public abstract class PlatformBase implements Platform {
         try {
             World.class.getMethod("getChunkAtAsync", Integer.TYPE, Integer.TYPE, Boolean.TYPE, Consumer.class);
             logger.info("Async chunk loading API found");
-            return new com.elmakers.mine.bukkit.utility.paper.PaperUtils(this);
+            return new com.elmakers.mine.bukkit.utility.paper.PaperUtils();
         } catch (Throwable ignore) {
         }
         // null PaperUtils is OK
         return paperUtils;
+    }
+
+    protected SpigotUtils createSpigotUtils() {
+        // Is there a better way to check for Spigot?
+        try {
+            // We currently only use Spigot for chat component support, but maybe in the future
+            // we will need to look more closely
+            Class.forName("net.md_5.bungee.api.chat.BaseComponent");
+            logger.info("Chat component API found");
+            return new com.elmakers.mine.bukkit.utility.spigot.SpigotUtils(this);
+        } catch (Throwable ignore) {
+        }
+        // null SpigotUtils is OK
+        return spigotUtils;
     }
 
     protected SkinUtils createSkinUtils() {
@@ -217,6 +235,12 @@ public abstract class PlatformBase implements Platform {
     }
 
     @Override
+    @Nullable
+    public SpigotUtils getSpigotUtils() {
+        return spigotUtils;
+    }
+
+    @Override
     public EntityMetadataUtils getEnityMetadataUtils() {
         return entityMetadataUtils;
     }
@@ -224,5 +248,10 @@ public abstract class PlatformBase implements Platform {
     @Override
     public EntityUtils getEntityUtils() {
         return entityUtils;
+    }
+
+    @Override
+    public boolean hasChatComponents() {
+        return spigotUtils != null;
     }
 }

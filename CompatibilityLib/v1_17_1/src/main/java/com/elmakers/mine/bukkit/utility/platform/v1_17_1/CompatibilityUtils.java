@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -103,21 +102,21 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.google.common.collect.Multimap;
 
-import net.md_5.bungee.api.chat.BaseComponent;
-import net.md_5.bungee.api.chat.ComponentBuilder;
-import net.md_5.bungee.api.chat.TextComponent;
-import net.md_5.bungee.chat.ComponentSerializer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
+import net.minecraft.network.protocol.game.ClientboundChatPacket;
 import net.minecraft.network.protocol.game.ClientboundEntityEventPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
@@ -1651,107 +1650,18 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         }
     }
 
-    protected BaseComponent collapseComponents(List<BaseComponent> list) {
-        if (list.isEmpty()) {
-            return new ComponentBuilder("").create()[0];
-        }
-        BaseComponent single = list.get(0);
-
-        // See if we need to reproduce the "reset vanilla italics in lore" behavior
-        // that is normally handled in CraftChatMessage.StringMessage
-        boolean needsReset = single.hasFormatting() && !single.isItalic();
-
-        // If this is just a single component and doesn't need a format reset,
-        // we can just return it.
-        if (list.size() == 1 && !needsReset) {
-            return single;
-        }
-
-        BaseComponent wrapper = new ComponentBuilder("").create()[0];
-        if (needsReset) {
-            wrapper.setItalic(false);
-        }
-        wrapper.setExtra(list);
-        return wrapper;
-    }
-
-    protected BaseComponent[] resetItalics(BaseComponent[] components) {
-        // Apparently spigot has some behavior where it automatically adds a reset at the start
-        // of item lore if you have specified a color there.
-        // So we need to reproduce this behavior for compatibility.
-        // Unfortunate, fromLegacyText does not seem to handle &r correctly, it only
-        // resets color but none of the other formatting, so just prepending &r is not sufficient.
-        // This is why we always handle it at the component level.
-        boolean needsReset = false;
-        if (components.length == 0) return components;
-        BaseComponent first = components[0];
-        if (first instanceof TextComponent) {
-            TextComponent text = (TextComponent)first;
-            Boolean italicRaw = text.isItalicRaw();
-            if (italicRaw == null && text.hasFormatting()) {
-                needsReset = true;
-            }
-        }
-        if (needsReset) {
-            BaseComponent[] reset = new ComponentBuilder("").italic(false).create();
-            if (reset.length > 0) {
-                reset[reset.length - 1].setExtra(Arrays.asList(components));
-                components = reset;
-            }
-        }
-        return components;
-    }
-
     @Override
     public boolean setLore(ItemStack itemStack, List<String> lore) {
+        SpigotUtils spigot = platform.getSpigotUtils();
+        if (spigot == null) {
+            return super.setLore(itemStack, lore);
+        }
         ItemUtils itemUtils = platform.getItemUtils();
         Object handle = itemUtils.getHandle(itemStack);
         if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) {
             return false;
         }
-        List<String> serializedLore = new ArrayList<>(lore.size());
-        for (int i = 0; i < lore.size(); i++) {
-            String line = lore.get(i);
-            if (ChatUtils.hasJSON(line)) {
-                List<BaseComponent> components = new ArrayList<>();
-                List<BaseComponent> addToComponents = components;
-                BaseComponent addToComponent = null;
-                String[] pieces = ChatUtils.getComponents(line);
-                for (String component : pieces) {
-                    try {
-                        List<BaseComponent> addComponents;
-                        if (component.startsWith("{")) {
-                            addComponents = Arrays.asList(ComponentSerializer.parse(component));
-                        } else {
-                            addComponents = Arrays.asList(TextComponent.fromLegacyText(component));
-                        }
-                        if (!addComponents.isEmpty()) {
-                            addToComponents.addAll(addComponents);
-                            if (addToComponent != null) {
-                                addToComponent.setExtra(addToComponents);
-                            }
-
-                            addToComponent = addToComponents.get(addToComponents.size() - 1);
-                            addToComponents = addToComponent.getExtra();
-                            if (addToComponents == null) {
-                                addToComponents = new ArrayList<>();
-                            }
-                        }
-                    } catch (Exception ex) {
-                        platform.getLogger().log(Level.SEVERE, "Error parsing chat components from: " + component, ex);
-                    }
-                }
-                // resetItalics is done implicitly as part of collapsing
-                serializedLore.add(ComponentSerializer.toString(collapseComponents(components)));
-            } else {
-                // Reproduce some oddly specific spigot behavior I didn't realize was a thing,
-                // but was forcing all the wand and spell lore from being italicized
-                BaseComponent[] components = TextComponent.fromLegacyText(line);
-                components = resetItalics(components);
-                serializedLore.add(ComponentSerializer.toString(components));
-            }
-        }
-
+        List<String> serializedLore = spigot.serializeLore(lore);
         net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)handle;
         CompoundTag tag = mcItemStack.getTag();
         if (tag == null) return false;
@@ -1761,37 +1671,56 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         return true;
     }
 
-    private Component toNMS(BaseComponent[] components) {
-        if (components.length == 0) {
-            return null;
+    @Override
+    protected boolean sendActionBarPackets(Player player, String message) {
+        TextComponent component = new TextComponent(message);
+        ClientboundChatPacket packet = new ClientboundChatPacket(component, ChatType.GAME_INFO, emptyUUID);
+        try {
+            sendPacket(player, packet);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.SEVERE, "Error updating action bar", ex);
+            return false;
         }
-        BaseComponent component = components.length == 1 ? components[0] : collapseComponents(Arrays.asList(components));
-        // Surely there must be a more efficient way to do this, but I could not find it.
-        String serialized = ComponentSerializer.toString(component);
-        if (serialized == null || serialized.isEmpty()) {
-            return null;
-        }
-        return CraftChatMessage.fromJSON(serialized);
+        return true;
     }
 
     @Override
     public void setBossBarTitle(BossBar bossBar, String title) {
         if (ChatUtils.hasJSON(title)) {
-            BaseComponent[] components = parseChatComponents(title);
-            setBossBarTitle(bossBar, components, title);
+            SpigotUtils spigot = platform.getSpigotUtils();
+            if (spigot != null) {
+                setBossBarTitleComponents(bossBar, spigot.serializeBossBar(title), title);
+            } else {
+                bossBar.setTitle(ChatUtils.getSimpleMessage(title));
+            }
         } else {
             bossBar.setTitle(title);
         }
     }
 
-    private void setBossBarTitle(BossBar bossBar, BaseComponent[] components, String fallback) {
+    @Override
+    public boolean setBossBarTitle(BossBar bossBar, String title, String font) {
+        if (ChatUtils.isDefaultFont(font)) {
+            setBossBarTitle(bossBar, title);
+            return true;
+        }
+        SpigotUtils spigot = platform.getSpigotUtils();
+        if (spigot == null) {
+            // Can't do fonts without chat components
+            return false;
+        }
+        setBossBarTitleComponents(bossBar, spigot.serializeBossBar(title, font), title);
+        return true;
+    }
+
+    private void setBossBarTitleComponents(BossBar bossBar, String serialized, String fallback) {
         Object handle = ReflectionUtils.getHandle(platform.getLogger(), bossBar);
         if (handle == null || !(handle instanceof ServerBossEvent)) {
             bossBar.setTitle(fallback);
             return;
         }
         ServerBossEvent bossEvent = (ServerBossEvent)handle;
-        Component component = toNMS(components);
+        Component component = toNMSComponent(serialized);
         if (component == null) {
             bossBar.setTitle(fallback);
         } else {
@@ -1799,19 +1728,10 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         }
     }
 
-    @Override
-    public void setBossBarTitle(BossBar bossBar, String title, String font) {
-        if (ChatUtils.isDefaultFont(font)) {
-            setBossBarTitle(bossBar, title);
-            return;
+    private Component toNMSComponent(String serialized) {
+        if (serialized == null || serialized.isEmpty()) {
+            return null;
         }
-        BaseComponent[] components;
-        if (ChatUtils.hasJSON(title)) {
-            components = parseChatComponents(title);
-        } else {
-            components = new BaseComponent[]{new TextComponent(title)};
-        }
-        BaseComponent[] fontComponent = new ComponentBuilder("").font(font).append(components).create();
-        setBossBarTitle(bossBar, fontComponent, title);
+        return CraftChatMessage.fromJSON(serialized);
     }
 }

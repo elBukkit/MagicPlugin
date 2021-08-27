@@ -256,9 +256,9 @@ public interface CompatibilityUtils {
 
     void setBossBarTitle(BossBar bossBar, String title);
 
-    void setBossBarTitle(BossBar bossBar, String title, String font);
+    boolean setBossBarTitle(BossBar bossBar, String title, String font);
 
-    void sendChatComponents(CommandSender sender, String containsJson);
+    void sendMessage(CommandSender sender, String message);
 
     float getDurability(Material material);
 

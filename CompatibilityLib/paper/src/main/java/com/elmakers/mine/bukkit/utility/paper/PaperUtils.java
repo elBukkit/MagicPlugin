@@ -7,12 +7,8 @@ import org.bukkit.World;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 public class PaperUtils implements com.elmakers.mine.bukkit.utility.platform.PaperUtils {
-    public PaperUtils(Platform platform) {
-    }
-
     @Override
     public void loadChunk(World world, int x, int z, boolean generate, Consumer<Chunk> consumer) {
         world.getChunkAtAsync(x, z, generate, consumer);

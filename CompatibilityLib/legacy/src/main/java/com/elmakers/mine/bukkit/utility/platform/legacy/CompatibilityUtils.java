@@ -1443,7 +1443,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean sendActionBar(Player player, String message) {
+    protected boolean sendActionBarPackets(Player player, String message) {
         if (NMSUtils.class_PacketPlayOutChat == null) return false;
         try {
             Object chatComponent = NMSUtils.class_ChatComponentText_constructor.newInstance(message);

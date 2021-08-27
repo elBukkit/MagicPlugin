@@ -71,6 +71,7 @@ import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 
 public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
@@ -746,16 +747,17 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     protected String getHexColor(String hexCode) {
+        SpigotUtils spigot = platform.getSpigotUtils();
+        if (spigot != null) {
+            return spigot.getHexColor(hexCode);
+        }
         // Just blanking them out for now, not going to try to match
         return "";
     }
 
-    public String translateAlternateColorCodes(String message) {
-        return ChatColor.translateAlternateColorCodes('&', message);
-    }
-
     @Override
     public String translateColors(String message) {
+        // First handle custom hex color format
         Matcher matcher = hexColorPattern.matcher(message);
         StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
         while (matcher.find()) {
@@ -763,7 +765,14 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             matcher.appendReplacement(buffer, getHexColor(match));
         }
         message = matcher.appendTail(buffer).toString();
-        return translateAlternateColorCodes(message);
+
+        // Next translate color codes, including any hex color codes we just inserted
+        SpigotUtils spigot = platform.getSpigotUtils();
+        if (spigot != null) {
+            return spigot.translateColors(message);
+        }
+
+        return ChatColor.translateAlternateColorCodes('&', message);
     }
 
     @Override
@@ -876,8 +885,17 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void sendChatComponents(CommandSender sender, String containsJson) {
-        sender.sendMessage(ChatUtils.getSimpleMessage(containsJson));
+    public void sendMessage(CommandSender sender, String message) {
+        if (ChatUtils.hasJSON(message)) {
+            SpigotUtils spigot = platform.getSpigotUtils();
+            if (spigot == null) {
+                sender.sendMessage(ChatUtils.getSimpleMessage(message));
+            } else {
+                spigot.sendMessage(sender, message);
+            }
+        } else {
+            sender.sendMessage(message);
+        }
     }
 
     @Override
@@ -916,13 +934,30 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return true;
     }
 
+    protected boolean sendActionBarPackets(Player player, String message) {
+        return false;
+    }
+
+    @Override
+    public boolean sendActionBar(Player player, String message) {
+        SpigotUtils spigot = platform.getSpigotUtils();
+        if (spigot != null) {
+            return spigot.sendActionBar(player, message);
+        }
+        return sendActionBarPackets(player, message);
+    }
+
     @Override
     public boolean sendActionBar(Player player, String message, String font) {
-        // We can't support fonts here
-        if (!ChatUtils.isDefaultFont(font)) {
-            return false;
+        if (ChatUtils.isDefaultFont(font)) {
+            return sendActionBar(player, message);
         }
-        return sendActionBar(player, message);
+        SpigotUtils spigot = platform.getSpigotUtils();
+        if (spigot != null) {
+            return spigot.sendActionBar(player, message, font);
+        }
+        // We can't support fonts here
+        return false;
     }
 
     @Override
@@ -934,11 +969,12 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void setBossBarTitle(BossBar bossBar, String title, String font) {
+    public boolean setBossBarTitle(BossBar bossBar, String title, String font) {
         // We can't support fonts here
         if (!ChatUtils.isDefaultFont(font)) {
-            return;
+            return false;
         }
         setBossBarTitle(bossBar, title);
+        return true;
     }
 }

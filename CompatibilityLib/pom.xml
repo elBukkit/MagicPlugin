@@ -44,6 +44,7 @@
         <module>common</module>
         <module>base</module>
         <module>paper</module>
+        <module>spigot</module>
         <module>legacy</module>
         <module>v1_9</module>
         <module>v1_10</module>
