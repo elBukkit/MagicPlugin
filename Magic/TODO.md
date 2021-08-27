@@ -5,11 +5,18 @@
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
- - Take some timings and spark profiles (during club, ideally), consider impact
-   of possibly changing mage_update_interval to 1
-   
- - Test recipes on 1.9
- 
+# Optimization
+
+https://spark.lucko.me/1GkHWQL0OC
+https://timings.aikar.co/?id=a5bd174dc1ef462a9f72145b09dc6020
+
+ - Mage update / tick():
+   - Quicker way to see if two items are the same? Experiment with nms handle, maybe it doesn't change?
+     Affects Mage.checkWand -> controller.isSameItem
+   - Cache player region lookups in WorldGuardManager, maybe only re-query every X seconds (do this first)
+ - Animated maps are *crazy* hard on the server
+   - Would it be safe to draw them asynchronously?
+
 # Glyph Wand
 
  - Make brushes work (swing to use)
