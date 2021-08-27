@@ -384,12 +384,12 @@ public class ConfigurationLoadTask implements Runnable {
                         inheritedConfig.set("inherit", null);
                     }
                     try {
-                        List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
                         if (inherited.contains(inheritFrom)) {
                             getLogger().log(Level.WARNING, "    Circular dependency detected in configuration inheritance: " + StringUtils.join(inherited, " -> ") + " -> " + inheritFrom);
                         } else {
                             processInheritance(inheritFrom, inheritedConfig, fileName, getMainConfiguration(inheritFrom), inherited);
                         }
+                        List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
                         if (!isUnkeyedConfig && disable != null && disable.contains(fileName)) {
                             disableAll(inheritedConfig);
                         }
@@ -557,7 +557,8 @@ public class ConfigurationLoadTask implements Runnable {
                     // Unless otherwise specified
                     boolean override = exampleConfig.getBoolean("example_override", false);
                     exampleConfig.set("example_override", null);
-                    ConfigurationUtils.addConfigurations(config, exampleConfig, !isUnkeyedConfig || override);
+                    // ConfigurationUtils.addConfigurations(config, exampleConfig, !isUnkeyedConfig || override);
+                    ConfigurationUtils.addConfigurations(config, exampleConfig, override);
                     info(" Added " + examplesFilePrefix + (override ? ", allowing overrides" : ""));
                 } catch (Exception ex) {
                     getLogger().severe("Error loading file: " + examplesFilePrefix);
