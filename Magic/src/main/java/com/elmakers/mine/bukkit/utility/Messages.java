@@ -138,7 +138,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     public MacroExpansion expandMacros(String message) {
         if (!message.contains("`<")) return new MacroExpansion(message);
         String title = null;
-        String[] pieces = StringUtils.split(message, "`");
+        String[] pieces = StringUtils.splitPreserveAllTokens(message, "`");
         boolean leftoverDelimiter = false;
         for (int i = 0; i < pieces.length; i++) {
             String piece = pieces[i];
