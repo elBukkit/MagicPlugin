@@ -2039,7 +2039,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         rightClickAction = parseWandAction(getString("right_click"), rightClickAction);
         dropAction = parseWandAction(getString("drop"), dropAction);
         swapAction = parseWandAction(getString("swap"), swapAction);
-        noBowpullAction = parseWandAction(getString("no_bowpull"), leftClickAction);
+        noBowpullAction = parseWandAction(getString("no_bowpull"), noBowpullAction);
         leftClickSneakAction = parseWandAction(getString("left_click_sneak"), leftClickSneakAction);
         rightClickSneakAction = parseWandAction(getString("right_click_sneak"), rightClickSneakAction);
         dropSneakAction = parseWandAction(getString("drop_sneak"), dropSneakAction);
