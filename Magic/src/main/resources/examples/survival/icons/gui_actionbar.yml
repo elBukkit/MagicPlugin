@@ -1,0 +1,5 @@
+gui_actionbar:
+  item: 'warped_sign{18006}'
+  item_disabled: 'crimson_sign{18006}'
+  type: upgrade
+  glyph: "\uE743"

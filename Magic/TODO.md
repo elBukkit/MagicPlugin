@@ -2,6 +2,13 @@
 
 # For 10.0 Release
 
+ - Check 1.16 and 1.9 again, item lore and controlsmenu in particular
+ - Re-work controls menu
+   - Disable GUI modes when no RP (?)
+   - Add instuction lore on changing wand controls, maybe allow instruction lore on slotted upgrades
+   - Make hotbars work in chest+cycle mode
+   - Check bowcaster
+   
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    

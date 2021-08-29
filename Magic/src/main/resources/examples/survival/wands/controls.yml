@@ -1,4 +1,6 @@
-controls_hybrid:
+# Button mappings
+
+controls_cycle:
   icon: music_disc_wait{CustomModelData:18001}
   legacy_icon: diamond_axe:205
   slot: controls
@@ -10,8 +12,75 @@ controls_hybrid:
   right_click: cycle_active_hotbar
   right_click_sneak: cycle_active_hotbar_reverse
   swappable: false
+
+controls_hybrid:
+  icon: oak_sign{CustomModelData:18001}
+  legacy_icon: spell_icon:214
+  upgrade: true
+  slot: controls
+  mode: inventory
+  drop: cycle_hotbar
+  drop_sneak: cycle_hotbar_reverse
+  swap: cycle_active_hotbar
+  swap_sneak: cycle_active_hotbar_reverse
+  right_click: toggle
+  right_click_sneak: ""
+  swappable: false
+
+controls_inventory:
+  icon: oak_sign{CustomModelData:18001}
+  legacy_icon: spell_icon:214
+  upgrade: true
+  slot: controls
+  mode: inventory
+  drop: cycle_hotbar
+  drop_sneak: cycle_hotbar_reverse
+  swap: none
+  swap_sneak: none
+  swappable: true
+  right_click: toggle
+
+# Aliases for dev build controls
+controls_chest:
+  inherit: controls_2
+
+controls_old:
+  inherit: controls_3
+
+# Spell inventory modes
+spellmode_inventory:
+  icon: oak_sign{CustomModelData:18001}
+  mode: inventory
+  upgrade: true
+  slot: spellmode
+
+spellmode_chest:
+  icon: chest{CustomModelData:18001}
+  mode: chest
+  upgrade: true
+  slot: spellmode
+
+spellmode_cycle:
+  icon: music_disc_wait{CustomModelData:18001}
+  mode: cycle
+  upgrade: true
+  slot: spellmode
+
+# GUI display modes
+
+gui_none:
+  icon: gui_none
+  upgrade: true
+  xp_display: mana
+  level_display: sp
+  slot: gui
+
+gui_actionbar:
+  icon: gui_actionbar
+  upgrade: true
   xp_display: none
   level_display: none
+  slot: gui
   requirement_properties:
     - requirement:
         resource_pack: true
@@ -37,9 +106,12 @@ controls_hybrid:
       properties:
         use_active_name: true
 
-controls_boss_hybrid:
-  inherit: controls_hybrid
-  # Unfortunately have to copy all of this since it's a list :(
+gui_bossbar:
+  icon: gui_bossbar
+  upgrade: true
+  xp_display: none
+  level_display: none
+  slot: gui
   requirement_properties:
     - requirement:
         resource_pack: true
@@ -67,7 +139,6 @@ controls_boss_hybrid:
         use_active_name: true
 
 controls_bow_hybrid:
-  inherit: controls_hybrid
   left_click: cycle_active_hotbar
   left_click_sneak: cycle_active_hotbar_reverse
   right_click: none
@@ -76,46 +147,3 @@ controls_bow_hybrid:
   swap: none
   swap_sneak: none
   hotbar_count: 1
-
-controls_chest:
-  icon: chest{CustomModelData:18001}
-  legacy_icon: diamond_axe:205
-  upgrade: true
-  slot: controls
-  mode: chest
-  drop: toggle
-  right_click: toggle
-  right_click_sneak: ""
-  swap: none
-  swap_sneak: none
-  swappable: true
-  requirement_properties: ""
-
-controls_inventory:
-  icon: oak_sign{CustomModelData:18001}
-  legacy_icon: spell_icon:214
-  upgrade: true
-  slot: controls
-  mode: inventory
-  drop: toggle
-  swap: cycle_hotbar
-  swap_sneak: cycle_hotbar_reverse
-  right_click: toggle
-  right_click_sneak: ""
-  swappable: true
-  requirement_properties: ""
-
-controls_old:
-  icon: oak_sign{CustomModelData:18001}
-  legacy_icon: spell_icon:214
-  upgrade: true
-  slot: controls
-  mode: inventory
-  drop: cycle_hotbar
-  drop_sneak: cycle_hotbar_reverse
-  swap: none
-  swap_sneak: none
-  swappable: true
-  right_click: toggle
-  right_click_sneak: ""
-  requirement_properties: ""

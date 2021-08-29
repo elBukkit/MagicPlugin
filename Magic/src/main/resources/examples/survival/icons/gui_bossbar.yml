@@ -1,0 +1,5 @@
+gui_bossbar:
+  item: 'warped_sign{18007}'
+  item_disabled: 'crimson_sign{18007}'
+  type: upgrade
+  glyph: "\uE744"

@@ -18,3 +18,5 @@ add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-1.15.zip"
 wand_slots:
   controls:
     default_slotted: controls_inventory
+  gui:
+    default_slotted: gui_none

@@ -270,24 +270,76 @@ wands:
     inventorymode:
         name: Inventory Mode
         description: "&bRight-click&b or &bDrop&f to &6open spell inventory"
-    controls_hybrid:
-        name: Hybrid Controls
-        description: "&bRight-click&b to &6cycle spells&f, &bDrop&f to &6open spell inventory"
-    controls_boss_hybrid:
-        name: Hybrid Controls (Boss Bar)
+    controls_cycle:
+        name: Cycle/Inventory Controls
         description: |-
-            &fJust like &bHybrid Controls&f,
-            but using the &6Boss Bar&f instead of the &6Action Bar&f
-            &bRight-click&b to &6cycle spells&f, &bDrop&f to &6open spell inventory
-    controls_old:
-        name: Inventory Controls (Even Older)
-        description: "&bRight-click&b to &6open spell inventory, &bDrop&f to cycle hotbars"
+            &dBest scheme for GUI use and quick-cycle
+            &b`<keybind key="use">`&f to &6cycle spells
+            &b`<keybind key="drop">`&f to &6open spell inventory
+            &b`<keybind key="swapOffhand">`&f to &6cycle hotbars
+    controls_hybrid:
+        name: Inventory/Cycle Controls
+        description: |-
+            &dBest scheme for spell inventory users
+            &b`<keybind key="use">`&f to &6open spell inventory
+            &b`<keybind key="drop">`&f to &6cycle hotbar
+            &b`<keybind key="swapOffhand">`&f to &6cycle spells
     controls_inventory:
-        name: Inventory Controls (Old)
-        description: "&bRight-click&b or &bDrop&f to &6open spell inventory"
-    controls_chest:
-        name: Chest Controls
-        description: "&bRight-click&b or &bDrop&f to &6open spell selection menu"
+        name: Inventory-Only Controls
+        description: |-
+            &dAllow quick-swapping the wand into your offhand with &b`<keybind key="swapOffhand">`
+            &b`<keybind key="use">`&f to &6open spell inventory
+            &b`<keybind key="drop">`&f to &6cycle hotbars
+    spellmode_chest:
+        name: Chest Mode
+        description: "&dUse a menu to select your active spell"
+    spellmode_inventory:
+        name: Inventory Mode
+        description: "&dToggle your survival inventory to select your active spell"
+    spellmode_cycle:
+        name: Cycle-Only Mode
+        description: "&dNo spell inventory, will be hard to use with a lot of spells"
+    gui_actionbar:
+        name: Action Bar GUI
+        description: |-
+          &dShows your active hotbar and mana in the action bar area
+          &eRequires the resource pack and at least Minecraft 1.16
+          &f`<icon key="gui_actionbar">`
+
+
+
+
+
+
+
+              &bIf you can see the preview above, you're good to go!
+    gui_bossbar:
+        name: Boss Bar GUI
+        description: |-
+            &dShows your active hotbar and mana in the action bar area
+            &eRequires the resource pack and at least Minecraft 1.16
+            &f`<icon key="gui_bossbar">`
+
+
+
+
+
+
+
+            &bIf you can see the preview above, you're good to go!
+    gui_none:
+        name: No GUI
+        description: |-
+            &dTurn off the hotbar and mana GUI
+            &f`<icon key="gui_none">`
+
+
+
+
+
+
+
+            &bIf this preview above looks like a white rectangle, you may want to use this option to force the GUI off.
     particles:
         name: Show Particles
         description: Turn on the display of all particles from spells
@@ -328,11 +380,9 @@ wands:
         name: Wand Silencer
         description: Turn off all wand chat messages
     organizer:
-        name: The Organizer
-        description: Re-organizes your wand inventory
+        name: Organize your spell inventory
     alphabetizer:
-        name: The Alphabetizer
-        description: Alphabetizes your wand inventory
+        name: Alphabetize your spell inventory
     recalltoken:
         name: Recall Token
         description: Teleport to waypoints

@@ -4,4 +4,12 @@ wand_slots:
   controls:
     hidden: true
     replaceable: true
-    default_slotted: controls_hybrid
+    default_slotted: controls_1
+  gui:
+    hidden: true
+    replaceable: true
+    default_slotted: gui_actionbar
+  spellmode:
+    hidden: true
+    replaceable: true
+    default_slotted: spellmode_inventory

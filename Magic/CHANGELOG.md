@@ -10,7 +10,7 @@
    - This uses the action bar, but can be reconfigured to a boss bar if there are compatibility issues
    - Wand instructions improved and streamlined, `instructions: false` added to wand config to easily turn them off
    - Wand controls changed to use slot system, so controls can be changed after the fact
-   - Controls menu streamlined, now has hybrid/inventory (old)/chest options.
+   - Controls menu has detailed button mapping and GUI options
    - Downstream changes:  
       - Add `requirement_properties` wand feature, allows wands to vary their properties based on the player passing some requirements
       - Add `resource_pack: true` requirement option

@@ -9,7 +9,7 @@ bowcaster:
   right_click: none
   cast_location: 0.2,0,0.35
   enchantable: true
-  slots: controls
+  slots: controls,gui,spellmode
   slotted: controls_bow_hybrid
   quiet: true
   tags:

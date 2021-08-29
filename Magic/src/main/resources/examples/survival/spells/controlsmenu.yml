@@ -15,13 +15,29 @@ controlsmenu:
         - wand_slot: controls
         options:
           - item: none
+          - item: none
+          - item: none
+          - item: controls_cycle
           - item: controls_hybrid
-          - item: controls_boss_hybrid
           - item: controls_inventory
+          - nextrow
+
           - item: none
-          - item: controls_old
-          - item: controls_chest
           - item: none
+          - item: none
+          - item: spellmode_inventory
+          - item: spellmode_chest
+          - item: spellmode_cycle
+          - nextrow
+
+          - item: none
+          - item: none
+          - item: gui_actionbar
+          - item: gui_bossbar
+          - item: none
+          - item: none
+          - item: gui_none
+          - nextrow
 
           - item: none
           - item: organizer
