@@ -1,12 +1,18 @@
 package com.elmakers.mine.bukkit.wand;
 
+import java.util.Arrays;
+
 import org.bukkit.inventory.ItemStack;
 
 public class WandInventory {
     public final ItemStack[] items;
 
     public WandInventory(int size) {
-        items = new ItemStack[size];
+        this(new ItemStack[size]);
+    }
+
+    private WandInventory(ItemStack[] items) {
+        this.items = items;
     }
 
     public int getSize() {
@@ -42,5 +48,13 @@ public class WandInventory {
 
     public ItemStack[] getContents() {
         return items;
+    }
+
+    public WandInventory getRange(int start, int end) {
+        return new WandInventory(Arrays.copyOfRange(items, start, end));
+    }
+
+    public WandInventory getRow(int row, int rowCount) {
+        return getRange(row * rowCount, (row + 1) * rowCount - 1);
     }
 }

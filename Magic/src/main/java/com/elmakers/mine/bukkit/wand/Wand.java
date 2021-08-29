@@ -4122,9 +4122,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         playPassiveEffects("cycle_spell");
     }
 
-    public void cycleActiveHotbar(int direction) {
+    public boolean cycleActiveHotbar(int direction) {
         WandInventory hotbar = getActiveHotbar();
-        if (hotbar == null) return;
+        if (hotbar == null) return false;
 
         int spellIndex = 0;
         if (activeSpell != null) {
@@ -4144,10 +4144,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (activateIcon(hotbarItem)) {
                 updateActionBar();
                 playPassiveEffects("cycle_spell");
-                break;
+                return true;
             }
             tryIndex = (tryIndex + direction + hotbar.getSize()) % hotbar.getSize();
         }
+        return false;
     }
 
     public void toggleInventory() {
@@ -4835,6 +4836,19 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected WandInventory getActiveHotbar() {
+        WandMode mode = getMode();
+        switch (mode) {
+            case CHEST:
+                if (inventories.isEmpty()) return null;
+                int inventoryIndex = currentHotbar / inventoryRows;
+                if (inventoryIndex >= inventories.size()) {
+                    inventoryIndex = 0;
+                }
+                int inventoryRow = currentHotbar % inventoryRows;
+                return inventories.get(inventoryIndex).getRow(inventoryRow, inventoryRows);
+            default:
+                break;
+        }
         if (hotbars.isEmpty()) return null;
         return hotbars.get(currentHotbar);
     }
@@ -6697,13 +6711,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 cycleActive(-1);
                 break;
             case CYCLE_ACTIVE_HOTBAR:
-                if (mode != WandMode.INVENTORY) return false;
-                cycleActiveHotbar(1);
-                break;
+                return cycleActiveHotbar(1);
             case CYCLE_ACTIVE_HOTBAR_REVERSE:
-                if (mode != WandMode.INVENTORY) return false;
-                cycleActiveHotbar(-1);
-                break;
+                return cycleActiveHotbar(-1);
             case CYCLE_HOTBAR:
                 if (mode != WandMode.INVENTORY) return false;
                 if (getHotbarCount() <= 1) return false;
