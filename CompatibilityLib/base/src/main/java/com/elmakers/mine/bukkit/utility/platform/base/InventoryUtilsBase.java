@@ -438,17 +438,21 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     public void wrapText(String text, String prefix, int maxLength, Collection<String> list) {
         if (text == null || text.isEmpty()) return;
         String colorPrefix = "";
-        String[] lines = StringUtils.split(text, "\n\r");
+        String[] lines = StringUtils.splitPreserveAllTokens(text, "\n\r");
         if (maxLength == 0) {
             list.addAll(Arrays.asList(lines));
             return;
         }
         final String wrapPrefix = CompatibilityConstants.LORE_WRAP_PREFIX;
         for (String line : lines) {
+            if (line.isEmpty()) {
+                list.add(line);
+                continue;
+            }
             line = prefix + line;
 
             // Parse escaped chat components
-            String[] components = StringUtils.split(line, "`");
+            String[] components = StringUtils.splitPreserveAllTokens(line, "`");
             StringBuilder currentLine = new StringBuilder();
             int currentLength = 0;
             for (int i = 0; i < components.length; i++) {
