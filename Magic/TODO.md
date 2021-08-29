@@ -5,7 +5,6 @@
  - Check 1.16 and 1.9 again, item lore and controlsmenu in particular
  - Re-work controls menu
    - Disable GUI modes when no RP (?)
-   - Add instuction lore on changing wand controls, maybe allow instruction lore on slotted upgrades
    - Make hotbars work in cycle mode
    - Check bowcaster
    

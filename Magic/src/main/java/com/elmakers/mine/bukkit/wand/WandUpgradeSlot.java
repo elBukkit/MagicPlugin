@@ -62,7 +62,18 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
     }
 
     public void addInstructionLore(List<String> lore, Messages messages) {
-        String defaultInstructions = messages.getIfSet("wand_slots." + slotType + ".lore_instructions");
-        CompatibilityLib.getInventoryUtils().wrapText(defaultInstructions, lore);
+        String instructions = messages.getIfSet("wand_slots." + slotType + ".lore_instructions");
+        if (slotted != null) {
+            instructions = slotted.getMessage("slotted_lore_instructions", instructions);
+        }
+        CompatibilityLib.getInventoryUtils().wrapText(instructions, lore);
+    }
+
+    public void showControlInstructions(Mage mage, Messages messages) {
+        String instructions = messages.getIfSet("wand_slots." + slotType + ".control_instructions");
+        if (slotted != null) {
+            instructions = slotted.getMessage("slotted_control_instructions", instructions);
+        }
+        mage.sendMessage(instructions);
     }
 }

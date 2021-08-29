@@ -1089,6 +1089,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             mage.sendMessage(getMessage(inventoryMessage, "")
                     .replace("$wand", getName()).replace("$toggle", controlKey).replace("$cycle", controlKey));
         }
+
+        if (slots != null) {
+            for (WandUpgradeSlot slot : slots) {
+                slot.showControlInstructions(mage, controller.getMessages());
+            }
+        }
     }
 
     private void showSpellInstructions() {
@@ -3128,8 +3134,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             addInstructionLore("drop", dropAction, lore);
             addInstructionLore("swap", swapAction, lore);
             addInstructionLore("no_bowpull", noBowpullAction, lore);
-            for (WandUpgradeSlot slot : slots) {
-                slot.addInstructionLore(lore, controller.getMessages());
+            if (slots != null) {
+                for (WandUpgradeSlot slot : slots) {
+                    slot.addInstructionLore(lore, controller.getMessages());
+                }
             }
         }
         return lore;

@@ -3,3 +3,4 @@ wand_slots:
     name: Broom Upgrade
   controls:
     lore_instructions: "`<li>`&eChange controls using an &benchant table"
+    control_instructions: "&8| &7> &eChange controls using an &benchant table"
