@@ -54,7 +54,7 @@ public class WandInventory {
         return new WandInventory(Arrays.copyOfRange(items, start, end));
     }
 
-    public WandInventory getRow(int row, int rowCount) {
-        return getRange(row * rowCount, (row + 1) * rowCount - 1);
+    public WandInventory getRow(int row, int itemsPerRow) {
+        return getRange(row * itemsPerRow, (row + 1) * itemsPerRow);
     }
 }

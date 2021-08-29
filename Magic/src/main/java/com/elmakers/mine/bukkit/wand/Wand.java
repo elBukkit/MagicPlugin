@@ -101,6 +101,7 @@ import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 public class Wand extends WandProperties implements CostReducer, com.elmakers.mine.bukkit.api.wand.Wand, Replacer {
     public static final int OFFHAND_SLOT = 40;
     public static final int INVENTORY_SIZE = 27;
+    public static final int CHEST_ITEMS_PER_ROW = 9;
     public static final int PLAYER_INVENTORY_SIZE = 36;
     public static final int INVENTORY_ORGANIZE_BUFFER = 4;
     public static final int HOTBAR_SIZE = 9;
@@ -4219,42 +4220,87 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         cycleHotbar(1);
     }
 
-    public void cycleHotbar(int direction) {
-        if (!hasInventory || getMode() != WandMode.INVENTORY) {
-            return;
+    public boolean cycleHotbar(int direction) {
+        if (mage == null) {
+            return false;
         }
-        boolean isInventoryOpen = isInventoryOpen();
-        if (mage != null && hotbars.size() > 1) {
-            if (isInventoryOpen) {
-                saveInventory();
+        WandMode mode = getMode();
+        switch (mode) {
+            case INVENTORY:
+                return cycleHotbarInventory(direction);
+            case CHEST:
+                return cycleHotbarChest(direction);
+            default:
+                break;
+        }
+        return false;
+    }
+
+    private boolean cycleHotbarChest(int direction) {
+        int itemsPerInventory = inventoryRows * CHEST_ITEMS_PER_ROW;
+        int maxIndex = inventories.size() * itemsPerInventory - 1;
+        if (maxIndex == 0) {
+            return false;
+        }
+        for (; maxIndex >= 0; maxIndex--) {
+            int inventoryIndex = maxIndex / itemsPerInventory;
+            WandInventory inventory = inventories.get(inventoryIndex);
+            ItemStack item = inventory.getItem(maxIndex - (inventoryIndex * itemsPerInventory));
+            if (!CompatibilityLib.getItemUtils().isEmpty(item)) {
+                break;
             }
-            int hotbarCount = hotbars.size();
-            int previousHotbar = currentHotbar;
-            setCurrentHotbar(hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount);
-            if (isInventoryOpen) {
-                updateHotbar();
-            }
-            if (!playPassiveEffects("cycle_hotbar") && inventoryCycleSound != null) {
-                mage.playSoundEffect(inventoryCycleSound);
-            }
-            sendMessage("hotbar_changed");
-            if (isInventoryOpen) {
-                updateHotbarStatus();
-                CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
-            } else if (activeSpell != null) {
-                WandInventory previous = hotbars.get(previousHotbar);
-                for (int slot = 0; slot < previous.getSize(); slot++) {
-                    ItemStack hotbarItem = previous.getItem(slot);
-                    if (activeSpell != null) {
-                        String spellKey = getSpellBaseKey(hotbarItem);
-                        if (spellKey != null && spellKey.equals(activeSpell)) {
-                            activateIcon(hotbars.get(currentHotbar).getItem(slot));
-                            break;
-                        }
+        }
+        int hotbarCount = maxIndex / CHEST_ITEMS_PER_ROW + 1;
+        WandInventory previous = getActiveHotbar();
+        currentHotbar = (currentHotbar + direction + hotbarCount) % hotbarCount;
+        if (activeSpell != null && previous != null) {
+            for (int slot = 0; slot < previous.getSize(); slot++) {
+                ItemStack hotbarItem = previous.getItem(slot);
+                if (activeSpell != null) {
+                    String spellKey = getSpellBaseKey(hotbarItem);
+                    if (spellKey != null && spellKey.equals(activeSpell)) {
+                        activateIcon(getActiveHotbar().getItem(slot));
+                        break;
                     }
                 }
             }
         }
+        return true;
+    }
+
+    private boolean cycleHotbarInventory(int direction) {
+        if (!hasInventory || hotbars.isEmpty()) {
+            return false;
+        }
+        boolean isInventoryOpen = isInventoryOpen();
+        if (isInventoryOpen) {
+            saveInventory();
+        }
+        int hotbarCount = hotbars.size();
+        int previousHotbar = currentHotbar;
+        setCurrentHotbar(hotbarCount == 0 ? 0 : (currentHotbar + hotbarCount + direction) % hotbarCount);
+        if (isInventoryOpen) {
+            updateHotbar();
+        }
+        if (!playPassiveEffects("cycle_hotbar") && inventoryCycleSound != null) {
+            mage.playSoundEffect(inventoryCycleSound);
+        }
+        sendMessage("hotbar_changed");
+        if (isInventoryOpen) {
+            updateHotbarStatus();
+            CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
+        } else if (activeSpell != null) {
+            WandInventory previous = hotbars.get(previousHotbar);
+            for (int slot = 0; slot < previous.getSize(); slot++) {
+                ItemStack hotbarItem = previous.getItem(slot);
+                String spellKey = getSpellBaseKey(hotbarItem);
+                if (spellKey != null && spellKey.equals(activeSpell)) {
+                    activateIcon(hotbars.get(currentHotbar).getItem(slot));
+                    break;
+                }
+            }
+        }
+        return true;
     }
 
     private boolean activateIcon(ItemStack item) {
@@ -4845,7 +4891,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     inventoryIndex = 0;
                 }
                 int inventoryRow = currentHotbar % inventoryRows;
-                return inventories.get(inventoryIndex).getRow(inventoryRow, inventoryRows);
+                return inventories.get(inventoryIndex).getRow(inventoryRow, CHEST_ITEMS_PER_ROW);
             default:
                 break;
         }
@@ -6715,15 +6761,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             case CYCLE_ACTIVE_HOTBAR_REVERSE:
                 return cycleActiveHotbar(-1);
             case CYCLE_HOTBAR:
-                if (mode != WandMode.INVENTORY) return false;
-                if (getHotbarCount() <= 1) return false;
-                cycleHotbar(1);
-                break;
+                return cycleHotbar(1);
             case CYCLE_HOTBAR_REVERSE:
-                if (mode != WandMode.INVENTORY) return false;
-                if (getHotbarCount() <= 1) return false;
-                cycleHotbar(-1);
-                break;
+                return cycleHotbar(-1);
             case REPLACE:
                 // Check for replacement template
                 String replacementTemplate = getString("replacement", "");
@@ -6865,7 +6905,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public int getInventorySize() {
         WandMode mode = getMode();
         if (mode == WandMode.CHEST || mode == WandMode.SKILLS) {
-            return 9 * inventoryRows;
+            return CHEST_ITEMS_PER_ROW * inventoryRows;
         }
         return INVENTORY_SIZE;
     }
