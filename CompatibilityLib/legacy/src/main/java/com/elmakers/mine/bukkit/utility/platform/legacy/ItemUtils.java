@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.utility.platform.legacy;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.logging.Level;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -202,6 +205,26 @@ public class ItemUtils extends ItemUtilsBase {
             return null;
         }
         return listMeta;
+    }
+
+    @Override
+    public List<String> getStringList(Object nbtBase, String key) {
+        List<String> list = new ArrayList<>();
+        try {
+            Object listTag = NMSUtils.class_NBTTagCompound_getListMethod.invoke(nbtBase, key, CompatibilityConstants.NBT_TYPE_STRING);
+            if (listTag != null) {
+                int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(listTag);
+                for (int i = 0; i < size; i++) {
+                    Object entity = NMSUtils.class_NBTTagList_getMethod.invoke(listTag, i);
+                    if (NMSUtils.class_NBTTagString.isAssignableFrom(entity.getClass())) {
+                        list.add((String)NMSUtils.class_NBTTagString_dataField.get(entity));
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error reading list from tag", ex);
+        }
+        return list;
     }
 
     @Override

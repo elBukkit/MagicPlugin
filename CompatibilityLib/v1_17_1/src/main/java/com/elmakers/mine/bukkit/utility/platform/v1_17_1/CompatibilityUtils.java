@@ -1656,19 +1656,39 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         if (spigot == null) {
             return super.setLore(itemStack, lore);
         }
+        List<String> serializedLore = spigot.serializeLore(lore);
+        return setRawLore(itemStack, serializedLore);
+    }
+
+    @Override
+    public boolean setRawLore(ItemStack itemStack, List<String> lore) {
         ItemUtils itemUtils = platform.getItemUtils();
         Object handle = itemUtils.getHandle(itemStack);
         if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) {
             return false;
         }
-        List<String> serializedLore = spigot.serializeLore(lore);
         net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)handle;
         CompoundTag tag = mcItemStack.getTag();
         if (tag == null) return false;
 
         CompoundTag displayNode = tag.getCompound("display");
-        itemUtils.setStringList(displayNode, "Lore", serializedLore);
+        itemUtils.setStringList(displayNode, "Lore", lore);
         return true;
+    }
+
+    @Override
+    public List<String> getRawLore(ItemStack itemStack) {
+        ItemUtils itemUtils = platform.getItemUtils();
+        Object handle = itemUtils.getHandle(itemStack);
+        if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) {
+            return new ArrayList<>();
+        }
+        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)handle;
+        CompoundTag tag = mcItemStack.getTag();
+        if (tag == null) return new ArrayList<>();
+
+        CompoundTag displayNode = tag.getCompound("display");
+        return itemUtils.getStringList(displayNode, "Lore");
     }
 
     @Override

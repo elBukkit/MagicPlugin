@@ -476,15 +476,11 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     if (applyNameToItem && customName != null  && !customName.isEmpty()) {
                         meta.setDisplayName(CompatibilityLib.getCompatibilityUtils().translateColors(customName));
                     }
+                    item.setItemMeta(meta);
                     List<String> lore = configuration.contains("lore") ? configuration.getStringList("lore") : null;
                     if (applyLoreToItem && lore != null) {
-                        List<String> translated = new ArrayList<>();
-                        for (String line : lore) {
-                            translated.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
-                        }
-                        meta.setLore(translated);
+                        CompatibilityLib.getCompatibilityUtils().setLore(item, lore);
                     }
-                    item.setItemMeta(meta);
                 }
             }
 
@@ -972,12 +968,10 @@ public class SelectorAction extends CompoundAction implements GUIAction
                     icon.setItemMeta(meta);
                 } else if ((applyToWand || applyToCaster) && controller.isWandUpgrade(icon)) {
                     // This is a bit of a hack to get rid of the upgrade_item_description lore
-                    ItemMeta meta = icon.getItemMeta();
-                    List<String> iconLore = meta.getLore();
+                    List<String> iconLore = CompatibilityLib.getCompatibilityUtils().getRawLore(icon);
                     if (iconLore != null && !iconLore.isEmpty()) {
                         iconLore.remove(iconLore.size() - 1);
-                        meta.setLore(iconLore);
-                        icon.setItemMeta(meta);
+                        CompatibilityLib.getCompatibilityUtils().setRawLore(icon, iconLore);
                     }
                 }
             }
@@ -1124,18 +1118,11 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (removeLore) {
                 meta.setLore(new ArrayList<>());
             }
-            if (!lore.isEmpty()) {
-                List<String> itemLore = meta.getLore();
-                if (itemLore == null) {
-                    itemLore = new ArrayList<>();
-                }
-                for (String line : lore) {
-                    itemLore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
-                }
-                meta.setLore(itemLore);
-            }
             icon.setItemMeta(meta);
             icon = CompatibilityLib.getItemUtils().makeReal(icon);
+            if (!lore.isEmpty()) {
+                CompatibilityLib.getCompatibilityUtils().setLore(icon, lore);
+            }
 
             if (unbreakableIcon) {
                 CompatibilityLib.getItemUtils().makeUnbreakable(icon);

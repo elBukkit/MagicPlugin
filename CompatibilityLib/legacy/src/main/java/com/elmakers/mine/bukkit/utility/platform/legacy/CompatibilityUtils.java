@@ -82,6 +82,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker.Touchable;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 import com.google.common.io.BaseEncoding;
 
@@ -2690,5 +2691,32 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    @Override
+    public List<String> getRawLore(ItemStack itemStack) {
+        List<String> lore = new ArrayList<>();
+        Object displayNode = platform.getNBTUtils().getTag(itemStack, "display");
+        if (displayNode == null) {
+            return lore;
+        }
+        return platform.getItemUtils().getStringList(displayNode, "Lore");
+    }
+
+    @Override
+    public boolean setRawLore(ItemStack itemStack, List<String> lore) {
+        Object displayNode = platform.getNBTUtils().createTag(itemStack, "display");
+        platform.getItemUtils().setStringList(displayNode, "Lore", lore);
+        return true;
+    }
+
+    @Override
+    public boolean setLore(ItemStack itemStack, List<String> lore) {
+        SpigotUtils spigot = platform.getSpigotUtils();
+        if (spigot == null) {
+            return super.setLore(itemStack, lore);
+        }
+        List<String> serializedLore = spigot.serializeLore(lore);
+        return setRawLore(itemStack, serializedLore);
     }
 }

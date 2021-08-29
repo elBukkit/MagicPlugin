@@ -82,6 +82,10 @@ public interface CompatibilityUtils {
 
     boolean setLore(ItemStack itemStack, List<String> lore);
 
+    boolean setRawLore(ItemStack itemStack, List<String> lore);
+
+    List<String> getRawLore(ItemStack itemStack);
+
     boolean isInvulnerable(Entity entity);
 
     void setInvulnerable(Entity entity);

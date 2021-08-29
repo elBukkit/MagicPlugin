@@ -1,6 +1,9 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_17_R1.inventory.CraftItemStack;
@@ -16,6 +19,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
+import net.minecraft.nbt.Tag;
 
 public class ItemUtils extends ItemUtilsBase {
     public ItemUtils(Platform platform) {
@@ -161,6 +165,27 @@ public class ItemUtils extends ItemUtilsBase {
 
         compoundTag.put(tag, listTag);
         return listTag;
+    }
+
+    @Override
+    public List<String> getStringList(Object nbtBase, String key) {
+        List<String> list = new ArrayList<>();
+        if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return list;
+        CompoundTag compoundTag = (CompoundTag)nbtBase;
+        ListTag listTag = compoundTag.getList(key, CompatibilityConstants.NBT_TYPE_STRING);
+
+        if (listTag != null) {
+            Logger logger = platform.getLogger();
+            int size = listTag.size();
+            for (int i = 0; i < size; i++) {
+                // Doesn't seem like this is ever going to get resolved, mappings issue:
+                // https://hub.spigotmc.org/jira/browse/SPIGOT-6550
+                // Tag entry = listTag.get(i);
+                Tag entry = (Tag)ReflectionUtils.getListItem(logger, listTag, i);
+                list.add(entry.getAsString());
+            }
+        }
+        return list;
     }
 
     @Override

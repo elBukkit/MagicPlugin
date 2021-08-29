@@ -934,6 +934,17 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return true;
     }
 
+    @Override
+    public boolean setRawLore(ItemStack itemStack, List<String> lore) {
+        return setLore(itemStack, lore);
+    }
+
+    @Override
+    public List<String> getRawLore(ItemStack itemStack) {
+        ItemMeta meta = itemStack.getItemMeta();
+        return meta.getLore();
+    }
+
     protected boolean sendActionBarPackets(Player player, String message) {
         return false;
     }

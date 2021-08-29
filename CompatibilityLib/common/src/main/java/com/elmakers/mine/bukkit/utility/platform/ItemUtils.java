@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -46,6 +47,8 @@ public interface ItemUtils {
     boolean isEmpty(ItemStack itemStack);
 
     Object setStringList(Object nbtBase, String tag, Collection<String> values);
+
+    List<String> getStringList(Object nbtBase, String tag);
 
     ItemStack getItem(Object itemTag);
 
