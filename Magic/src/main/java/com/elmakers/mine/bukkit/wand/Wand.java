@@ -2210,6 +2210,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 requirementProperties = null;
                 requirementConfiguration = null;
             }
+        } else {
+            requirementProperties = null;
+            requirementConfiguration = null;
         }
 
         // Read path first since it can be used to override any other property
