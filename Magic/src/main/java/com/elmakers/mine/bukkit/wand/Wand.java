@@ -53,6 +53,7 @@ import com.elmakers.mine.bukkit.api.block.BrushMode;
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
+import com.elmakers.mine.bukkit.api.item.Icon;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageContext;
@@ -1953,6 +1954,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private MaterialAndData loadIcon(String key) {
         if (key == null || key.isEmpty()) {
             return null;
+        }
+
+        Icon icon = controller.getIcon(key);
+        if (icon != null) {
+            com.elmakers.mine.bukkit.api.block.MaterialAndData iconMaterial = icon.getItemMaterial(controller.isLegacyIconsEnabled());
+            if (iconMaterial != null && iconMaterial instanceof MaterialAndData) {
+                return (MaterialAndData)iconMaterial;
+            }
         }
 
         // This lets us use spell books as wands, which is a fancy way to make
