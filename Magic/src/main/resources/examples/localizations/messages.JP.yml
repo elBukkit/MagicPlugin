@@ -2972,6 +2972,6 @@ paths:
   archer:
     name: '&6アーチャー'
     description: 弓魔法使いの魔法です
-slots:
+wand_slots:
   broom_upgrade:
     name: ほうきアップグレード

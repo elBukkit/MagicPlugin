@@ -3941,7 +3941,7 @@ paths:
     name: '&3Conducto'
     description: Se puede manifestar bloques de energía pura
 ##################################################################################
-slots:
+wand_slots:
   broom_upgrade:
     name: Mejora de Escoba
 ##################################################################################

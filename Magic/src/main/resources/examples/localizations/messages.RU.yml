@@ -5120,7 +5120,7 @@ paths:
   conduit:
     name: Магистр
     description: Создает материю из чистой энергии
-slots:
+wand_slots:
   broom_upgrade:
     name: Улучшение метлы
 entities:
