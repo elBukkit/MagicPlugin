@@ -4140,7 +4140,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         int tryIndex = (spellIndex + direction + hotbar.getSize()) % hotbar.getSize();
-        while (tryIndex != spellIndex) {
+        // Try all slots, including the one we were already on in case we're stuck with one spell in the hotbar
+        for (int offset = 1; offset <= hotbar.getSize(); offset++) {
             ItemStack hotbarItem = hotbar.getItem(tryIndex);
             if (activateIcon(hotbarItem)) {
                 updateActionBar();
@@ -4252,20 +4253,36 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         int hotbarCount = maxIndex / CHEST_ITEMS_PER_ROW + 1;
         WandInventory previous = getActiveHotbar();
-        currentHotbar = (currentHotbar + direction + hotbarCount) % hotbarCount;
-        if (activeSpell != null && previous != null) {
-            for (int slot = 0; slot < previous.getSize(); slot++) {
-                ItemStack hotbarItem = previous.getItem(slot);
-                if (activeSpell != null) {
-                    String spellKey = getSpellBaseKey(hotbarItem);
-                    if (spellKey != null && spellKey.equals(activeSpell)) {
-                        activateIcon(getActiveHotbar().getItem(slot));
+        setCurrentHotbar((currentHotbar + direction + hotbarCount) % hotbarCount);
+        updateActiveSpellFromHotbarSwitch(previous, getActiveHotbar());
+        return true;
+    }
+
+    private void updateActiveSpellFromHotbarSwitch(WandInventory previousHotbar, WandInventory currentHotbar) {
+        if (previousHotbar == null || currentHotbar == null) return;
+        ItemStack newActiveSpell = null;
+        ItemStack fallbackSpell = null;
+        if (activeSpell != null) {
+            for (int slot = 0; slot < previousHotbar.getSize(); slot++) {
+                ItemStack hotbarItem = previousHotbar.getItem(slot);
+                String spellKey = getSpellBaseKey(hotbarItem);
+                if (spellKey != null && spellKey.equals(activeSpell)) {
+                    newActiveSpell = currentHotbar.getItem(slot);
+                    if (newActiveSpell != null || fallbackSpell != null) {
                         break;
                     }
+                } else if (fallbackSpell == null) {
+                    // Fall back to the first non-empty icon on the hotbar
+                    fallbackSpell = currentHotbar.getItem(slot);
                 }
             }
         }
-        return true;
+        if (newActiveSpell == null && fallbackSpell != null) {
+            newActiveSpell = fallbackSpell;
+        }
+        if (newActiveSpell != null) {
+            activateIcon(newActiveSpell);
+        }
     }
 
     private boolean cycleHotbarInventory(int direction) {
@@ -4289,16 +4306,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (isInventoryOpen) {
             updateHotbarStatus();
             CompatibilityLib.getDeprecatedUtils().updateInventory(mage.getPlayer());
-        } else if (activeSpell != null) {
+        } else {
             WandInventory previous = hotbars.get(previousHotbar);
-            for (int slot = 0; slot < previous.getSize(); slot++) {
-                ItemStack hotbarItem = previous.getItem(slot);
-                String spellKey = getSpellBaseKey(hotbarItem);
-                if (spellKey != null && spellKey.equals(activeSpell)) {
-                    activateIcon(hotbars.get(currentHotbar).getItem(slot));
-                    break;
-                }
-            }
+            WandInventory current = hotbars.get(currentHotbar);
+            updateActiveSpellFromHotbarSwitch(previous, current);
         }
         return true;
     }

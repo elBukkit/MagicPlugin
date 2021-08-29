@@ -6,11 +6,8 @@
  - Re-work controls menu
    - Disable GUI modes when no RP (?)
    - Add instuction lore on changing wand controls, maybe allow instruction lore on slotted upgrades
-   - Make hotbars work in chest+cycle mode
+   - Make hotbars work in cycle mode
    - Check bowcaster
-   - Chest-mode hotbar cycling gets lots when there isn't a spell in the target
-     right-clicking should always cycle to the active hotbar
-     maybe an issue with single-spell hotbars?
    
  - All the zombies on my demo server seem to be named...
    or are these left over from mooses?
