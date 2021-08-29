@@ -3128,6 +3128,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             addInstructionLore("drop", dropAction, lore);
             addInstructionLore("swap", swapAction, lore);
             addInstructionLore("no_bowpull", noBowpullAction, lore);
+            for (WandUpgradeSlot slot : slots) {
+                slot.addInstructionLore(lore, controller.getMessages());
+            }
         }
         return lore;
     }

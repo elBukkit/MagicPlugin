@@ -1,9 +1,13 @@
 package com.elmakers.mine.bukkit.wand;
 
+import java.util.List;
+
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
     private boolean hasDefaultSlotted = false;
@@ -55,5 +59,10 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
         slotted = upgrade;
         hasDefaultSlotted = false;
         return true;
+    }
+
+    public void addInstructionLore(List<String> lore, Messages messages) {
+        String defaultInstructions = messages.getIfSet("wand_slots." + slotType + ".lore_instructions");
+        CompatibilityLib.getInventoryUtils().wrapText(defaultInstructions, lore);
     }
 }
