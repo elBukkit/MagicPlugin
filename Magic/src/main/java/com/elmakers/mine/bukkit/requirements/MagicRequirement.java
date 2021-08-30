@@ -208,6 +208,12 @@ public class MagicRequirement {
         if (clientPlatform != null && mage.getClientPlatform() != clientPlatform) {
             return false;
         }
+        if (serverVersion != null) {
+            int[] versionPieces = CompatibilityLib.getServerVersion(controller.getPlugin());
+            if (versionPieces.length < 2 || !serverVersion.check((double)versionPieces[1])) {
+                return false;
+            }
+        }
         Wand wand = context.getWand();
         if (wand == null && requireWand) {
             return false;
@@ -257,12 +263,6 @@ public class MagicRequirement {
         }
         if (height != null) {
             if (location == null || !height.check(location.getY())) {
-                return false;
-            }
-        }
-        if (serverVersion != null) {
-            int[] versionPieces = CompatibilityLib.getServerVersion(controller.getPlugin());
-            if (versionPieces.length < 2 || !serverVersion.check((double)versionPieces[1])) {
                 return false;
             }
         }
@@ -476,6 +476,17 @@ public class MagicRequirement {
         if (clientPlatform != null && mage.getClientPlatform() != clientPlatform) {
             return context.getMessage("no_client_platform");
         }
+        if (serverVersion != null) {
+            Double majorVersion = null;
+            int[] versionPieces = CompatibilityLib.getServerVersion(controller.getPlugin());
+            if (versionPieces.length > 1) {
+                majorVersion = (double)versionPieces[1];
+            }
+            String message = checkRequiredProperty(context, serverVersion, getMessage(context, "server_version"), majorVersion);
+            if (message != null) {
+                return message;
+            }
+        }
         Wand wand = context.getWand();
         if (wand == null && requireWand) {
             return getMessage(context, "no_wand");
@@ -527,17 +538,6 @@ public class MagicRequirement {
         }
         if (height != null) {
             String message = checkRequiredProperty(context, height, getMessage(context, "height"), location == null ? null : location.getY());
-            if (message != null) {
-                return message;
-            }
-        }
-        if (serverVersion != null) {
-            Double majorVersion = null;
-            int[] versionPieces = CompatibilityLib.getServerVersion(controller.getPlugin());
-            if (versionPieces.length > 1) {
-                majorVersion = (double)versionPieces[1];
-            }
-            String message = checkRequiredProperty(context, serverVersion, getMessage(context, "server_version"), majorVersion);
             if (message != null) {
                 return message;
             }
