@@ -12,5 +12,5 @@ examples:
       `<p>`chunks generated after this example has been enabled. &r
       `<p>`If your default world is not called &6world&f you will &r
       `<p>`need to customize your configuration using &r
-      `<p>`&7/mconfig configure world overworld_chests world yourworld &r
-      `<p>`&7/mconfig configure world nether_chests world yournether &r
+      `<p>`&7/mconfig world overworld_chests world yourworld &r
+      `<p>`&7/mconfig world nether_chests world yournether &r

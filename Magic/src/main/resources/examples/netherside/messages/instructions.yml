@@ -10,5 +10,5 @@ examples:
       `<p>`To add block monsters to the nether side &r
       `<p>`If your default world is not called &6world&f you will &r
       `<p>`need to customize your configuration using &r
-      `<p>`&7/mconfig configure spell phase parameters.worlds.yourworld.target world_netherside &r
-      `<p>`&7/mconfig configure spell phase parameters.worlds.world_netherside.target yourworld &r
+      `<p>`&7/mconfig spell phase parameters.worlds.yourworld.target world_netherside &r
+      `<p>`&7/mconfig spell phase parameters.worlds.world_netherside.target yourworld &r

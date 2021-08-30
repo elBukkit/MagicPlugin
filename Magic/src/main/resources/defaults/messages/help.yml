@@ -47,7 +47,7 @@ help:
     `<p>`If you are getting this message from wands that worked prior to Magic 10, please check your wand configuration.
     `<p>`If you have &7locked: true&f, you need to remove it.
     `<p>`If you are concerned about the wand being modified, you can replace with `&7modifiable: false` `<testnomacro>` `<some ting wong`
-    `<p>`Alternately if this is all a big problem, you can `<command command="mconfig configure config old_wand_locked_behavior true" text="switch back to the old locked behavior">`
+    `<p>`Alternately if this is all a big problem, you can `<command command="/mconfig configure config old_wand_locked_behavior true" text="switch back to the old locked behavior">`
     `<p>`Keep in mind changing the behavior back this way may have an impact on builtin wands.
   missing_spells: |-
     `<title text="Missing Spells">`
@@ -158,8 +158,8 @@ help:
     `<p>`Your &6Sandbox Wand&f will contain all of the spells that you've made in the sandbox editor.
   common_customizations: |-
     `<title text="Common Customization">`
-    `<li>``<command command="/mconfig configure spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
-    `<li>``<command command="/mconfig configure spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
+    `<li>``<command command="/mconfig spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
+    `<li>``<command command="/mconfig spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
     `<li>``<help topic="donator_shops" text="How to set up a donator shop">`
   donator_shops: |-
     `<title text="Donator Shops">`
@@ -241,9 +241,9 @@ help:
     `<title text="Resource Pack">`
     `<li>``<command command="/getrp url" text="Get a download URL for the resource pack">`
     `<li>``<link text="Resource pack issues guide" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
-    `<li>``<command command="/mconfig configure config enable_resource_pack false" text="Disable the resource pack completely for the whole server">`
+    `<li>``<command command="/mconfig config enable_resource_pack false" text="Disable the resource pack completely for the whole server">`
     `<li>``<command command="/getrp hires" text="Get the hi-res (less blocky) resource pack">`
-    `<li>``<command command="/mconfig configure config resource_pack hires" text="Set the hi-res resource pack your server default">`
+    `<li>``<command command="/mconfig config resource_pack hires" text="Set the hi-res resource pack your server default">`
     `<li>``<help topic="bedrock" text="Questions about Bedrock players">`
     `<li>``<help topic="compatibility" text="Compatibility issues with other plugin resource packs">`
     `<li>``<help topic="resourcepacks" text="See all builtin resource packs">`

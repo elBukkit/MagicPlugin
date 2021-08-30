@@ -250,3 +250,55 @@ randompower:
   mana_regeneration: 50
   mana_max: 100
   spells: missile
+
+enhancer:
+  upgrade: true
+  craftable: true
+  glow: true
+  slot: Enhancer
+  icon: cauldron
+  name: Base Enhancer
+  description: '&b• &fDefault Enhancer'
+
+enhancer_speed:
+  inherit: enhancer
+  name: "Quicker than the Wind"
+  description: ""
+  force: true
+  potion_effects:
+    speed: 0
+
+basic_runestone:
+  name: Basic Runestone
+  description: '&b• &8Freshly Hewn'
+  inherit: base_keep
+  icon: emerald
+  # Mana
+  mana_max: 150
+  mana: 150
+  mana_regeneration: 5
+  max_spells: 35
+  effect_color: "#ffffff"
+  # Controls
+  left_click: cast
+  drop: toggle
+  mode: inventory
+  right_click: cycle
+  #Properties
+  locked: false
+  unique: true
+  enchantable: false
+  cast_location: 0.2,0,0.35
+  item_attribute_slot: mainhand, off_hand
+  tags:
+    - tweakable
+  slots:
+    - Attunement
+    - Capacitor
+    - Enhancer
+    - Cosmetic
+  spells:
+    - manabolt
+    - wandcontrolsmenu
+
+

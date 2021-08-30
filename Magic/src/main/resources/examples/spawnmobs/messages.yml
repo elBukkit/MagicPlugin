@@ -6,6 +6,6 @@ examples:
       `<p>`of some vanilla mob spawns. &r
       `<p>`If your default world is not called &6world&f you will &r
       `<p>`need to customize your configuration using &r
-      `<p>`&7/mconfig configure world overworld_mobs world yourworld &r
-      `<p>`&7/mconfig configure world nether_mobs world yournether &r
-      `<p>`&7/mconfig configure world end_mobs world yourend &r
+      `<p>`&7/mconfig world overworld_mobs world yourworld &r
+      `<p>`&7/mconfig world nether_mobs world yournether &r
+      `<p>`&7/mconfig world end_mobs world yourend &r
