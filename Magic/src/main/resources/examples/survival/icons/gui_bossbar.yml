@@ -1,5 +1,6 @@
 gui_bossbar:
   item: 'warped_sign{18007}'
   item_disabled: 'crimson_sign{18007}'
+  legacy_item: "diamond_axe:235"
   type: upgrade
   glyph: "\uE744"

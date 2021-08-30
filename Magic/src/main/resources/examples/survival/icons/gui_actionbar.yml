@@ -1,5 +1,7 @@
 gui_actionbar:
   item: 'warped_sign{18006}'
   item_disabled: 'crimson_sign{18006}'
+  legacy_item: "diamond_axe:235"
+  legacy_item_disabled: "diamond_axe:235"
   type: upgrade
   glyph: "\uE743"

@@ -1,5 +1,6 @@
 gui_none:
   item: 'warped_sign{18008}'
   item_disabled: 'crimson_sign{18008}'
+  legacy_item: "diamond_axe:234"
   type: upgrade
   glyph: "\uE745"

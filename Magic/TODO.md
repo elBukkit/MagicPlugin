@@ -2,9 +2,10 @@
 
 # For 10.0 Release
 
- - Default slotted lore
-
  - Add require_resource_pack option with customizable kick message
+
+ - Fix swappable icons in legacy Minecraft, maybe turn all
+   icon_ items into icons?
 
  - Check bowcaster
 

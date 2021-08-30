@@ -73,6 +73,7 @@ swappable_whenclosed:
 # Spell inventory modes
 spellmode_inventory:
   icon: oak_sign{CustomModelData:18001}
+  legacy_icon: spell_icon:214
   mode: inventory
   upgrade: true
   slot: spellmode
@@ -85,6 +86,7 @@ spellmode_chest:
 
 spellmode_cycle:
   icon: music_disc_wait{CustomModelData:18001}
+  legacy_icon: diamond_axe:205
   mode: cycle
   upgrade: true
   slot: spellmode
