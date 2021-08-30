@@ -215,9 +215,9 @@ public class ItemUtils extends ItemUtilsBase {
             if (listTag != null) {
                 int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(listTag);
                 for (int i = 0; i < size; i++) {
-                    Object entity = NMSUtils.class_NBTTagList_getMethod.invoke(listTag, i);
-                    if (NMSUtils.class_NBTTagString.isAssignableFrom(entity.getClass())) {
-                        list.add((String)NMSUtils.class_NBTTagString_dataField.get(entity));
+                    Object item = NMSUtils.class_NBTTagList_getStringMethod.invoke(listTag, i);
+                    if (item != null && item instanceof String) {
+                        list.add((String)item);
                     }
                 }
             }

@@ -177,6 +177,7 @@ public class NMSUtils {
 
     protected static Method class_NBTTagList_addMethod;
     protected static Method class_NBTTagList_getMethod;
+    protected static Method class_NBTTagList_getStringMethod;
     protected static Method class_NBTTagList_getDoubleMethod;
     protected static Method class_NBTTagList_sizeMethod;
     protected static Method class_NBTTagList_removeMethod;
@@ -597,6 +598,7 @@ public class NMSUtils {
             class_NBTTagString_dataField = class_NBTTagString.getDeclaredField("data");
             class_NBTTagString_dataField.setAccessible(true);
             class_NBTTagList_getMethod = class_NBTTagList.getMethod("get", Integer.TYPE);
+            class_NBTTagList_getStringMethod = class_NBTTagList.getMethod("getString", Integer.TYPE);
             class_NBTTagList_sizeMethod = class_NBTTagList.getMethod("size");
             class_NBTTagList_removeMethod = class_NBTTagList.getMethod("remove", Integer.TYPE);
             class_NBTTagCompound_setMethod = class_NBTTagCompound.getMethod("set", String.class, class_NBTBase);
@@ -1008,7 +1010,6 @@ public class NMSUtils {
                     logger.info("Couldn't bind to ItemDye bonemeal method, Bonemeal action will not work");
                 }
             }
-
 
             try {
                 class_NBTTagCompound_getIntArrayMethod = class_NBTTagCompound.getMethod("getIntArray", String.class);
