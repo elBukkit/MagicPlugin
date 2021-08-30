@@ -2,7 +2,6 @@
 
 # For 10.0 Release
 
- - Add "space" macro
  - Add custom placeholder support via messages, translate through Mage (load order issues?)
  - Add require_resource_pack option with customizable kick message
  - Add server version requirement

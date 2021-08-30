@@ -68,6 +68,30 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         // Set icons so we can use them in macro processing
         this.icons = icons;
 
+        // Special mapping of negative space values
+        // These can be used via the <space> macro so we need to read them first
+        ConfigurationSection spaceSection = messages.getConfigurationSection("glyphs.space");
+        Set<String> spaceKeys = spaceSection.getKeys(false);
+        for (String spaceKey : spaceKeys) {
+            try {
+                Integer spaceAmount = Integer.parseInt(spaceKey);
+                // There shouldn't be a zero
+                if (spaceAmount == 0) continue;
+                if (spaceAmount < 0) {
+                    negativeSpace.add(spaceAmount);
+                } else {
+                    positiveSpace.add(spaceAmount);
+                }
+                spaceAmounts.put(spaceAmount, spaceSection.getString(spaceKey));
+            } catch (Exception ignore) {
+            }
+        }
+
+        // These need to go in order from largest magnitude to smallest
+        Collections.sort(negativeSpace);
+        Collections.sort(positiveSpace);
+        Collections.reverse(positiveSpace);
+
         // Preload the macros section so it can be used in the following messages
         ConfigurationSection macros = messages.getConfigurationSection("macros");
         if (macros != null) {
@@ -100,29 +124,6 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 listMap.put(key, messages.getStringList(key));
             }
         }
-
-        // Special mapping of negative space values
-        ConfigurationSection spaceSection = messages.getConfigurationSection("gui.space");
-        Set<String> spaceKeys = spaceSection.getKeys(false);
-        for (String spaceKey : spaceKeys) {
-            try {
-                Integer spaceAmount = Integer.parseInt(spaceKey);
-                // There shouldn't be a zero
-                if (spaceAmount == 0) continue;
-                if (spaceAmount < 0) {
-                    negativeSpace.add(spaceAmount);
-                } else {
-                    positiveSpace.add(spaceAmount);
-                }
-                spaceAmounts.put(spaceAmount, spaceSection.getString(spaceKey));
-            } catch (Exception ignore) {
-            }
-        }
-
-        // These need to go in order from largest magnitude to smallest
-        Collections.sort(negativeSpace);
-        Collections.sort(positiveSpace);
-        Collections.reverse(positiveSpace);
     }
 
     @Nonnull
@@ -207,7 +208,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 // Check for special hard-coded macros
                 if (macroKey.equals("icon")) {
                     Object iconKey = mapped.get("key");
-                    Icon icon = iconKey == null || !(iconKey instanceof String) ? null : icons.get((String)iconKey);
+                    Icon icon = iconKey == null || !(iconKey instanceof String) ? null : icons.get((String) iconKey);
                     String glyph = icon == null ? null : icon.getGlyph();
                     if (glyph == null) {
                         // Just blank this out, we may have unloaded survival and don't have the icons
@@ -215,6 +216,16 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                         continue;
                     }
                     macro = macro.replace("$glyph", glyph);
+                } else if (macroKey.equals("space")) {
+                    Object widthValue = mapped.get("width");
+                    try {
+                        int width = Integer.parseInt(widthValue.toString());
+                        String glyph = getSpace(width);
+                        macro = macro.replace("$glyph", glyph);
+                    } catch (Exception ex) {
+                        pieces[i] = defaultReplace;
+                        continue;
+                    }
                 } else {
                     boolean isTitle = macroKey.equals("title");
                     for (Map.Entry<String, Object> entry : mapped.entrySet()) {

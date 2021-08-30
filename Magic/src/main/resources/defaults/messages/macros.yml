@@ -16,3 +16,5 @@ macros:
   # This is a special semi-hard-coded macro, $glyph will be replaced with the glyph defined by the specified icon
   # Use like: `<icon key="missile">`
   icon: '`{"text":"$glyph","font":"magic"}`'
+  # Can generate any amount of positive or negative horizontal space, width in pixels
+  space: '`{"text":"$glyph","font":"magic"}`'
