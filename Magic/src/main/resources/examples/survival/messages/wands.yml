@@ -304,7 +304,7 @@ wands:
         description: |-
           &dShows your active hotbar and mana in the action bar area
           &eRequires the resource pack and at least Minecraft 1.16
-          &f`<icon key="gui_actionbar">`
+          &f`<space width="64">``<icon key="gui_actionbar">`
 
 
 
@@ -318,7 +318,7 @@ wands:
         description: |-
             &dShows your active hotbar and mana in the action bar area
             &eRequires the resource pack and at least Minecraft 1.16
-            &f`<icon key="gui_bossbar">`
+            &f`<space width="64">``<icon key="gui_bossbar">`
 
 
 
@@ -331,7 +331,7 @@ wands:
         name: No GUI
         description: |-
             &dTurn off the hotbar and mana GUI
-            &f`<icon key="gui_none">`
+            &f`<space width="64">``<icon key="gui_none">`
 
 
 
@@ -339,7 +339,7 @@ wands:
 
 
 
-            &bIf this preview above looks like a white rectangle, you may want to use this option to force the GUI off.
+            &bIf this preview above looks like a bunch of white rectangles, you may want to use this option to force the GUI off.
     particles:
         name: Show Particles
         description: Turn on the display of all particles from spells
