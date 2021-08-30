@@ -2225,6 +2225,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         // Read path first since it can be used to override any other property
         path = getString("path");
+
+        // Reload base properties, this reloading is unfortunate but we need CasterProperties
+        // to be aware of slotted upgrades and requirements
+        super.loadProperties();
+
         if (OLD_WAND_LOCKED) {
             // Can't support locked wands this way
             locked = false;
