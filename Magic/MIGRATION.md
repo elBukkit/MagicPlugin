@@ -37,7 +37,7 @@
    will need to be re-applied. I apologize for any inconvenience this causes, let me know if it's a big problem for you.
 
  - Crafting recipes changed again, magic heart is gone. 
-   Use `/mconfig example add magicheart` to bring it back.
+   Use `/mexample add magicheart` to bring it back.
    
  - Changed `mage_update_frequency` default value to 1, for smoother GUI animations
    If you think this will have a performance impact on your server, use 

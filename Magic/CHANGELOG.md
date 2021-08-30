@@ -25,7 +25,7 @@
    - The Magic Heart is no more, the client-side Knowledge Book just does not handle it well enough
    - New recipes with the same balance for all magic items
    - Players can right-click any magic hearts they currently have to get a refund  
-   - You can bring the hearts back with `/mconfig example add magicheart`
+   - You can bring the hearts back with `/mexample add magicheart`
 
  - Magic Bow re-work
    - Light arrow rebalance

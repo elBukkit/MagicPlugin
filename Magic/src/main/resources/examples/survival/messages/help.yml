@@ -4,7 +4,7 @@ help:
   commands: |-
     `<li>``<command command="/mgive wand" text="Get the default survival wand">`
   resourcepack: |-
-    `<li>``<command command="/mconfig example add robes" text="Enable the robes textures and recipes">`
+    `<li>``<command command="/mexample add robes" text="Enable the robes textures and recipes">`
   links: |-
     `<li>`Survival wands and spells: &6https://survival.elmakers.com/
   examples:
@@ -59,7 +59,7 @@ help:
         `<p>`&6Wands &fcan be crafted using an &d`<command command="/mgive amethyst_shard" text="Amethyst Shard">`&f, a &e`<command command="/mgive stick" text="stick">`&f and &b`<command command="/mgive diamond 2" text="2 diamonds">`&f.
         `<p>`The recipe will appear in your in-game &bknowledge book once you have acquired an &damethyst shard&f.
         `<p>`If you prefer, you can have the recipe &b`<command text="auto-discover on login" command="/mconfig configure recipe wand auto_discover true">`
-        `<p>`Missing the &6magic hearts&f? You can &b`<command text="bring back the old recipes" command="/mconfig example add magicheart">` &fif you want.
+        `<p>`Missing the &6magic hearts&f? You can &b`<command text="bring back the old recipes" command="/mexample add magicheart">` &fif you want.
       progression: |-
         `<title text="Survival Progression">`
         `<li>``<help topic="examples.survival.spellpoints" text="About spell points">`

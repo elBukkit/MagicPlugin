@@ -256,23 +256,23 @@ help:
       `<title text="Examples">`
       `<li>``<help topic="instructions.example" text="Show all loaded examples">`
       `<li>``<help topic="instructions.examples.all" text="Show all available examples">`
-      `<li>``<command command="/mconfig example list" text="Show all active examples">`
-      `<li>``<command command="/mconfig example set survival none" text="Reset to default survival example">`
+      `<li>``<command command="/mexample list" text="Show all active examples">`
+      `<li>``<command command="/mexample set survival none" text="Reset to default survival example">`
       `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Examples" text="Examples wiki">`
     all: |-
       `<title text="Available Examples">`
-      `<li>` &6`<command command="/mconfig example add survival" text="survival">`&f: The default example with craftable wands and items
-      `<li>` &6`<command command="/mconfig example add magicheart" text="magicheart">`&f: Bring back the &6Magic Heart&f crafting recipes
-      `<li>` &6`<command command="/mconfig example add engineering" text="engineering">`&f: A survival add-on with 3 more ranks for magical building
-      `<li>` &6`<command command="/mconfig example add potter" text="potter">`&f: A Harry Potter themed example
-      `<li>` &6`<command command="/mconfig example add war" text="war">`&f: A GTA or Counter-Strike themed example with guns and vehicles
-      `<li>` &6`<command command="/mconfig example add stars" text="stars">`&f: A Star Wars themed example with functional light sabers and force powers
-      `<li>` &6`<command command="/mconfig example add bending" text="bending">`&f: A very minimal Avatar/Bending example
-      `<li>` &b`<command command="/mconfig example add spawnmobs" text="spawnmobs">`&f: Enable natural &aMagic Mob&f spawning
-      `<li>` &b`<command command="/mconfig example add safe" text="safe">`&f: Turn off all block-breaking
-      `<li>` &b`<command command="/mconfig example add automata" text="automata">`&f: Add spawnable cellular automaton block monsters
-      `<li>` &b`<command command="/mconfig example add otherside" text="otherside">`&f: Add an alternate dimension full of dangerous mobs and automata
-      `<li>` &b`<command command="/mconfig example add netherside" text="netherside">`&f: Add an alternate nethery dimension
-      `<li>` &a`<command command="/mconfig example fetch extramobs" text="extramobs">`&f: Add a variety of naturally spawning animals and bosses
-      `<li>` &a`<command command="/mconfig example fetch httyd" text="httyd">`&f: A How To Train Your Dragon inspired example
-      `<li>` &a`<command command="/mconfig example fetch potterplus" text="potterplus">`&f: A more complete and advanced Harry Potter example
+      `<li>` &6`<command command="/mexample add survival" text="survival">`&f: The default example with craftable wands and items
+      `<li>` &6`<command command="/mexample add magicheart" text="magicheart">`&f: Bring back the &6Magic Heart&f crafting recipes
+      `<li>` &6`<command command="/mexample add engineering" text="engineering">`&f: A survival add-on with 3 more ranks for magical building
+      `<li>` &6`<command command="/mexample add potter" text="potter">`&f: A Harry Potter themed example
+      `<li>` &6`<command command="/mexample add war" text="war">`&f: A GTA or Counter-Strike themed example with guns and vehicles
+      `<li>` &6`<command command="/mexample add stars" text="stars">`&f: A Star Wars themed example with functional light sabers and force powers
+      `<li>` &6`<command command="/mexample add bending" text="bending">`&f: A very minimal Avatar/Bending example
+      `<li>` &b`<command command="/mexample add spawnmobs" text="spawnmobs">`&f: Enable natural &aMagic Mob&f spawning
+      `<li>` &b`<command command="/mexample add safe" text="safe">`&f: Turn off all block-breaking
+      `<li>` &b`<command command="/mexample add automata" text="automata">`&f: Add spawnable cellular automaton block monsters
+      `<li>` &b`<command command="/mexample add otherside" text="otherside">`&f: Add an alternate dimension full of dangerous mobs and automata
+      `<li>` &b`<command command="/mexample add netherside" text="netherside">`&f: Add an alternate nethery dimension
+      `<li>` &a`<command command="/mexample fetch extramobs" text="extramobs">`&f: Add a variety of naturally spawning animals and bosses
+      `<li>` &a`<command command="/mexample fetch httyd" text="httyd">`&f: A How To Train Your Dragon inspired example
+      `<li>` &a`<command command="/mexample fetch potterplus" text="potterplus">`&f: A more complete and advanced Harry Potter example
