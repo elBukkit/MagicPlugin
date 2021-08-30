@@ -120,8 +120,15 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
     @Override
     @Nullable
     public MaterialAndData getItemDisabledMaterial(boolean isLegacy) {
-        String useKey = isLegacy && legacyItemDisabledKey != null && !legacyItemDisabledKey.isEmpty()
-            ? legacyItemDisabledKey : itemDisabledKey;
+        String useKey = null;
+        if (isLegacy) {
+            useKey = legacyItemDisabledKey != null && !legacyItemDisabledKey.isEmpty()
+                    ? legacyItemDisabledKey : legacyItemKey;
+        }
+        if (useKey == null) {
+            useKey = itemDisabledKey != null && !itemDisabledKey.isEmpty()
+                    ? itemDisabledKey : itemKey;
+        }
         return getItem(useKey);
     }
 }
