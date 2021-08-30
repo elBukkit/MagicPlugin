@@ -117,6 +117,8 @@ public abstract class PlatformBase implements Platform {
             // We currently only use Spigot for chat component support, but maybe in the future
             // we will need to look more closely
             Class.forName("net.md_5.bungee.api.chat.BaseComponent");
+            Class<?> bungeeColor = Class.forName("net.md_5.bungee.api.ChatColor");
+            bungeeColor.getMethod("of", String.class);
             logger.info("Chat component API found");
             return new com.elmakers.mine.bukkit.utility.spigot.SpigotUtils(this);
         } catch (Throwable ignore) {
