@@ -271,25 +271,26 @@ wands:
         name: Inventory Mode
         description: "&bRight-click&b or &bDrop&f to &6open spell inventory"
     controls_cycle:
-        name: Cycle/Inventory Controls
+        name: "&bCycle Mode"
         description: |-
             &dBest scheme for GUI use and quick-cycle
             &b`<keybind key="use">`&f to &6cycle spells
             &b`<keybind key="drop">`&f to &6open spell inventory
             &b`<keybind key="swapOffhand">`&f to &6cycle hotbars
-    controls_hybrid:
-        name: Inventory/Cycle Controls
+    controls_inventory:
+        name: "&bInventory Mode"
         description: |-
             &dBest scheme for spell inventory users
             &b`<keybind key="use">`&f to &6open spell inventory
             &b`<keybind key="drop">`&f to &6cycle hotbar
             &b`<keybind key="swapOffhand">`&f to &6cycle spells
-    controls_inventory:
-        name: Inventory-Only Controls
+    controls_hotbarswap:
+        name: "&bInventory Mode &7(&fSwap to Change Hotbars&7)"
         description: |-
-            &dAllow quick-swapping the wand into your offhand with &b`<keybind key="swapOffhand">`
+            &dHere for completeness
             &b`<keybind key="use">`&f to &6open spell inventory
-            &b`<keybind key="drop">`&f to &6cycle hotbars
+            &b`<keybind key="swapOffhand">`&f to &6cycle hotbar
+            &b`<keybind key="drop">`&f to &6cycle spells
     spellmode_chest:
         name: Chest Mode
         description: "&dUse a menu to select your active spell"
@@ -298,7 +299,22 @@ wands:
         description: "&dToggle your survival inventory to select your active spell"
     spellmode_cycle:
         name: Cycle-Only Mode
-        description: "&dNo spell inventory, will be hard to use with a lot of spells"
+        description: "&dNo spell inventory, only cycling"
+    swappable_false:
+        name: "&cNever Quick-Swappable"
+        description: |-
+            &fCan not be swapped into and out of your &6offhand&f
+            &fThe &b`<keybind key="swapOffhand">`&f key will be used for &6wand controls&f instead
+    swappable_whenclosed:
+        name: "&aQuick-Swappable &fWhen Closed"
+        description: |-
+            &fThe &b`<keybind key="swapOffhand">`&f key will be used for &6wand controls&f when the &aspell inventory&f is open
+            &fCan be swapped with your &6offhand&f item using &b`<keybind key="swapOffhand">` when the &aspell inventory&f is closed
+    swappable_always:
+        name: "&aAlways Quick-Swappable"
+        description: |-
+            &fCan be swapped with your &6offhand&f item using &b`<keybind key="swapOffhand">`
+            &fAny &6wand controls&f bound to &b`<keybind key="swapOffhand">`&f will be disabled
     gui_actionbar:
         name: Action Bar GUI
         description: |-
@@ -311,11 +327,11 @@ wands:
 
 
 
-              &bIf you can see the preview above, you can use this GUI!
+              &bIf you can see the preview, you can use this GUI!
     gui_bossbar:
         name: Boss Bar GUI
         description: |-
-            &dShows your active hotbar and mana in the action bar area
+            &dShows your active hotbar and mana in the boss bar area
             &f`<space width="64">``<icon key="gui_bossbar">`
 
 
@@ -324,7 +340,7 @@ wands:
 
 
 
-            &bIf you can see the preview above, you can use this GUI
+            &bIf you can see the preview, you can use this GUI!
     gui_none:
         name: No GUI
         description: |-

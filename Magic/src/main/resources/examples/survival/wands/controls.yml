@@ -11,21 +11,19 @@ controls_cycle:
   swap_sneak: cycle_hotbar_reverse
   right_click: cycle_active_hotbar
   right_click_sneak: cycle_active_hotbar_reverse
-  swappable: false
 
-controls_hybrid:
+controls_hotbarswap:
   icon: oak_sign{CustomModelData:18001}
   legacy_icon: spell_icon:214
   upgrade: true
   slot: controls
   mode: inventory
-  drop: cycle_hotbar
-  drop_sneak: cycle_hotbar_reverse
-  swap: cycle_active_hotbar
-  swap_sneak: cycle_active_hotbar_reverse
+  drop: cycle_active_hotbar
+  drop_sneak: cycle_active_hotbar_reverse
+  swap: cycle_hotbar
+  swap_sneak: cycle_hotbar_reverse
   right_click: toggle
-  right_click_sneak: ""
-  swappable: false
+  right_click_sneak: none
 
 controls_inventory:
   icon: oak_sign{CustomModelData:18001}
@@ -37,16 +35,40 @@ controls_inventory:
   drop_sneak: cycle_hotbar_reverse
   swap: none
   swap_sneak: none
-  swappable: true
   right_click: toggle
-  right_click_sneak: ""
+  right_click_sneak: none
 
 # Aliases for dev build controls
 controls_chest:
-  inherit: controls_hybrid
+  inherit: controls_inventory
 
 controls_old:
   inherit: controls_inventory
+
+controls_hybrid:
+  inherit: controls_inventory
+
+# Swappable or not, decided to make this a separate property
+swappable_always:
+  icon: icon_yes
+  swappable: true
+  upgrade: true
+  slot: swappable
+  swap: none
+  swap_sneak: none
+
+swappable_false:
+  icon: icon_no
+  swappable: false
+  upgrade: true
+  slot: swappable
+
+swappable_whenclosed:
+  icon: icon_yes
+  swappable: true
+  upgrade: true
+  slot: swappable
+
 
 # Spell inventory modes
 spellmode_inventory:

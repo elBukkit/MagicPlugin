@@ -12,7 +12,7 @@
    back to the old mode.
 
  - Wand controls menu has changed to a slotted system. If you have custom wands with the "tweakable" tag and you'd
-   still like to be able to change their controls, add `slots: controls,gui,spellmode` to the wand config.
+   still like to be able to change their controls, add `slots: controls,gui,spellmode,swappable` to the wand config.
 
  - Arena start/end commands delimiter changed to ; (from ,)
 

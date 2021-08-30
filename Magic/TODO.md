@@ -2,11 +2,9 @@
 
 # For 10.0 Release
 
- - Add require_resource_pack option with customizable kick message
+ - Default slotted lore
 
- - Add Swappable options to controls menu
-   - this will make the current inventory vs hybrid redundant
-     .. so maybe change the 3rd option to a different layout?
+ - Add require_resource_pack option with customizable kick message
 
  - Check bowcaster
 

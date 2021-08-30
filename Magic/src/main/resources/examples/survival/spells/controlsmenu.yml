@@ -19,8 +19,8 @@ controlsmenu:
           - item: none
           - item: none
           - item: controls_cycle
-          - item: controls_hybrid
           - item: controls_inventory
+          - item: controls_hotbarswap
           - nextrow
 
           - item: none
@@ -50,6 +50,15 @@ controlsmenu:
           - item: none
           - item: none
           - item: gui_none
+          - nextrow
+
+          - item: none
+          - item: none
+          - item: swappable_false
+          - item: none
+          - item: none
+          - item: swappable_whenclosed
+          - item: swappable_always
           - nextrow
 
           - item: none

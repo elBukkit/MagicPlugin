@@ -13,3 +13,7 @@ wand_slots:
     hidden: true
     replaceable: true
     default_slotted: spellmode_inventory
+  swappable:
+    hidden: true
+    replaceable: true
+    default_slotted: swappable_false

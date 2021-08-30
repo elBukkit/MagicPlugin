@@ -32,8 +32,7 @@ help:
         `<li>``<command command="/cast controlsmenu" text="Use the controls menu to tweak your own wand">`
         `<p>`&4This is available to all players in the &benchantment table&4 menu
         `<li>``<command command="/mconfig configure config wand_slots.gui.default_slotted gui_bossbar" text="Change wand default to use the boss bar GUI instead of the action bar">`
-        `<li>``<command command="/mconfig configure config wand_slots.controls.default_slotted controls_2" text="Set default controls to inventory/cycle">`
-        `<li>``<command command="/mconfig configure config wand_slots.controls.default_slotted controls_3" text="Set default controls to inventory-only">`
+        `<li>``<command command="/mconfig configure config wand_slots.controls.default_slotted controls_inventory" text="Set default controls to right-click to open spell inventory">`
         `<li>``<help topic="examples.survival.wandgui" text="Help or issues with the wand GUI">`
       wandgui: |-
         `<title text="Wand GUI">`
