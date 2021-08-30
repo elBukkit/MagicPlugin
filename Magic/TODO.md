@@ -2,6 +2,8 @@
 
 # For 10.0 Release
 
+ - What is causing the "recall got to doTeleport without waypoint" error?
+
  - Add require_resource_pack option with customizable kick message
 
  - Fix swappable icons in legacy Minecraft, maybe turn all
