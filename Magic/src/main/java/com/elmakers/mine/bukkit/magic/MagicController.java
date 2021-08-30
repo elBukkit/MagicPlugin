@@ -5444,6 +5444,12 @@ public class MagicController implements MageController {
 
     @Nullable
     @Override
+    public ItemStack createDisabledItem(String magicItemKey, Mage mage) {
+        return createItem(magicItemKey, mage, false, null, true);
+    }
+
+    @Nullable
+    @Override
     public ItemStack createItem(String magicItemKey, Mage mage) {
         return createItem(magicItemKey, mage, false, null);
     }
@@ -5463,6 +5469,11 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback) {
+        return createItem(magicItemKey, mage, brief, callback, false);
+    }
+
+    @Nullable
+    public ItemStack createItem(String magicItemKey, Mage mage, boolean brief, ItemUpdatedCallback callback, boolean disabled) {
         ItemStack itemStack = null;
         if (magicItemKey == null || magicItemKey.isEmpty()) {
             if (callback != null) {
@@ -5471,7 +5482,7 @@ public class MagicController implements MageController {
             return null;
         }
 
-        if (magicItemKey.contains("skill:")) {
+        if (magicItemKey.startsWith("skill:")) {
             String spellKey = magicItemKey.substring(6);
             itemStack = Wand.createSpellItem(spellKey, this, mage, null, false);
             CompatibilityLib.getNBTUtils().setString(itemStack, "skill", "true");
@@ -5501,6 +5512,16 @@ public class MagicController implements MageController {
             String itemData = pieces[1];
             try {
                 switch (itemKey) {
+                    case "icon": {
+                        Icon icon = getIcon(itemData);
+                        if (icon != null) {
+                            com.elmakers.mine.bukkit.api.block.MaterialAndData material = disabled ? icon.getItemDisabledMaterial(isLegacyIconsEnabled()) : icon.getItemMaterial(isLegacyIconsEnabled());
+                            if (material != null) {
+                                itemStack = material.getItemStack(1);
+                            }
+                        }
+                    }
+                    break;
                     case "egg": {
                         itemStack = getSpawnEgg(itemData);
                     }
@@ -5701,6 +5722,18 @@ public class MagicController implements MageController {
                 itemStack = createBrushItem(magicItemKey);
                 if (itemStack != null) {
                     itemStack.setAmount(amount);
+                }
+
+                // Finally look up icons, we have to do this last because there will be overlap
+                // between icons and spells
+                if (itemStack == null) {
+                    Icon icon = getIcon(magicItemKey);
+                    if (icon != null) {
+                        com.elmakers.mine.bukkit.api.block.MaterialAndData material = disabled ? icon.getItemDisabledMaterial(isLegacyIconsEnabled()) : icon.getItemMaterial(isLegacyIconsEnabled());
+                        if (material != null) {
+                            itemStack = material.getItemStack(1);
+                        }
+                    }
                 }
             } catch (Exception ex) {
                 getLogger().log(Level.WARNING, "Error creating item: " + magicItemKey, ex);

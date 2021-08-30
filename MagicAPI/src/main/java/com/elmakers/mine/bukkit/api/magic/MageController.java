@@ -139,6 +139,8 @@ public interface MageController {
     ItemStack createBrushItem(String brushKey);
     @Nullable
     ItemStack createBrushItem(String materialKey, Wand wand, boolean isItem);
+    @Nullable
+    ItemStack createDisabledItem(String magicItemKey, Mage mage);
 
     /**
      * Only returns a Wand instance of the item is already a wand.
