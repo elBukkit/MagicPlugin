@@ -437,6 +437,13 @@ commands:
       /meditor spell
       /meditor spell missile
       /meditor mob warlock
+  "mexample":
+    description: Add or remove magic examples (alias for /mconfig example)
+    permission: magic.commands.mconfig.example
+    usage: |
+      /mexample add stars
+      /mexample set survival robes
+      /mexample remove stars
   "mhelp":
     description: Interactive help with magic
     permission: magic.commands.magic.help

@@ -112,8 +112,10 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mconfig.", "language");
         }
         String subCommand = args[0];
-        if (args.length == 3 && subCommand.equals("example") && (args[1].equals("fetch") || args[1].equals("unfetch"))) {
-            options.addAll(controller.getExternalExamples());
+        if (subCommand.equals("example")) {
+            args = Arrays.copyOfRange(args, 1, args.length);
+            addExampleTabComplete(args, options);
+            return options;
         }
         if (args.length == 2 && (subCommand.equals("disable") || subCommand.equals("enable") || subCommand.equals("configure") || subCommand.equals("editor") || subCommand.equals("reset"))) {
             options.addAll(availableFileMap.keySet());
@@ -124,28 +126,6 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 options.remove("message");
                 options.add("messages");
             }
-        }
-        if (args.length == 2 && subCommand.equals("example")) {
-            options.addAll(exampleActions);
-        }
-        if (args.length == 3 && subCommand.equals("example")) {
-            String operation = args[1];
-            if (operation.equals("remove")) {
-                options.addAll(controller.getLoadedExamples());
-                options.add("all");
-            } else if (operation.equals("set")) {
-                options.add("none");
-                options.addAll(controller.getExamples());
-            }
-        }
-        if (args.length >= 3 && subCommand.equals("example") && args[1].equals("add")) {
-            options.addAll(controller.getExamples());
-        }
-        if (args.length > 3 && subCommand.equals("example") && args[1].equals("set") && !args[2].equals("none")) {
-            if (args.length == 4) {
-                options.add("none");
-            }
-            options.addAll(controller.getExamples());
         }
 
         if (args.length == 2 && subCommand.equals("language")) {
@@ -243,6 +223,33 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             addConfigureOptions(fileType, options);
         }
         return options;
+    }
+
+    protected void addExampleTabComplete(String[] args, Set<String> options) {
+        if (args.length < 2) {
+            options.addAll(exampleActions);
+            return;
+        }
+
+        String operation = args[0];
+        if (operation.equals("add")) {
+            options.addAll(controller.getExamples());
+        } else if (args.length > 2 && args[0].equals("set") && !args[1].equals("none")) {
+            if (args.length == 3) {
+                options.add("none");
+            }
+            options.addAll(controller.getExamples());
+        } else if (args.length == 2) {
+            if (operation.equals("fetch") || operation.equals("unfetch")) {
+                options.addAll(controller.getExternalExamples());
+            } else if (operation.equals("remove")) {
+                options.addAll(controller.getLoadedExamples());
+                options.add("all");
+            } else if (operation.equals("set")) {
+                options.add("none");
+                options.addAll(controller.getExamples());
+            }
+        }
     }
 
     protected void addConfigureOptions(String fileType, Collection<String> options) {

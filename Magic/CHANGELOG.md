@@ -98,6 +98,7 @@
  - Add `use_brush: helmet` option to `ArmorStandProjectile` so it can put a sampled block on the armor stand
  - Item configurations can now have a `discover_recipes` list, learned by players when they hold the item
  - Expanded PlaceholderAPI support, exposing all attributes and allowing for custom-defined placeholders
+ - Add `/mexample` command as an alias for `/mconfig example`
 
 ## Changes
 
