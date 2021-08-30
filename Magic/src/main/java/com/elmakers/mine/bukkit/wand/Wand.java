@@ -4115,22 +4115,77 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-    public void cycleActive(int direction) {
-        Player player = mage != null ? mage.getPlayer() : null;
-        if (player != null && player.isSneaking()) {
-            com.elmakers.mine.bukkit.api.spell.Spell activeSpell = getActiveSpell();
-            boolean cycleMaterials = false;
-            if (activeSpell != null) {
-                cycleMaterials = activeSpell.usesBrushSelection();
-            }
-            if (cycleMaterials) {
-                cycleMaterials(direction);
-            } else {
-                cycleSpells(direction);
-            }
-        } else {
-            cycleSpells(direction);
+    private int getInventoryItemCount() {
+        int itemCount = 0;
+        for (WandInventory inventory : inventories) {
+            itemCount += inventory.getSize();
         }
+        return itemCount;
+    }
+
+    private ItemStack getInventoryItem(int index) {
+        if (inventories.isEmpty()) return null;
+        int inventoryIndex = 0;
+        WandInventory inventory = inventories.get(inventoryIndex);
+        while (index >= inventory.getSize()) {
+            index -= inventory.getSize();
+            inventoryIndex++;
+            if (inventoryIndex >= inventories.size()) return null;
+            inventory = inventories.get(inventoryIndex);
+        }
+        return inventory.getItem(index);
+    }
+
+    public boolean cycleSpells(int direction) {
+        if (inventories.isEmpty()) return false;
+        int itemCount = getInventoryItemCount();
+        int spellIndex = 0;
+        for (int i = 0; i < itemCount; i++) {
+            ItemStack item = getInventoryItem(i);
+            String spellKey = getSpellBaseKey(item);
+            if (spellKey.equals(activeSpell)) {
+                spellIndex = i;
+                break;
+            }
+        }
+
+        int tryIndex = (spellIndex + direction + itemCount) % itemCount;
+        // Try all slots, including the one we were already on in case we're stuck with one spell in the hotbar
+        for (int offset = 1; offset <= itemCount; offset++) {
+            ItemStack item = getInventoryItem(tryIndex);
+            if (activateIcon(item)) {
+                currentHotbar = tryIndex / CHEST_ITEMS_PER_ROW;
+                updateActionBar();
+                playPassiveEffects("cycle_spell");
+                if (showCycleModeLore) {
+                    updateLore();
+                }
+                return true;
+            }
+            tryIndex = (tryIndex + direction + itemCount) % itemCount;
+        }
+        return false;
+    }
+
+    public void cycleBrushes(int direction) {
+        Set<String> materialsSet = getBrushes();
+        ArrayList<String> materials = new ArrayList<>(materialsSet);
+        if (materials.size() == 0) return;
+        if (activeBrush == null) {
+            setActiveBrush(StringUtils.split(materials.get(0), '@')[0]);
+            return;
+        }
+
+        int materialIndex = 0;
+        for (int i = 0; i < materials.size(); i++) {
+            if (StringUtils.split(materials.get(i),'@')[0].equals(activeBrush)) {
+                materialIndex = i;
+                break;
+            }
+        }
+
+        materialIndex = (materialIndex + direction) % materials.size();
+        setActiveBrush(StringUtils.split(materials.get(materialIndex), '@')[0]);
         playPassiveEffects("cycle_spell");
     }
 
@@ -4240,6 +4295,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         switch (mode) {
             case INVENTORY:
                 return cycleHotbarInventory(direction);
+            case CYCLE:
             case CHEST:
                 return cycleHotbarChest(direction);
             default:
@@ -4249,15 +4305,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     private boolean cycleHotbarChest(int direction) {
-        int itemsPerInventory = inventoryRows * CHEST_ITEMS_PER_ROW;
-        int maxIndex = inventories.size() * itemsPerInventory - 1;
-        if (maxIndex == 0) {
-            return false;
-        }
+        if (inventories.isEmpty()) return false;
+        int maxIndex = getInventoryItemCount() - 1;
         for (; maxIndex >= 0; maxIndex--) {
-            int inventoryIndex = maxIndex / itemsPerInventory;
-            WandInventory inventory = inventories.get(inventoryIndex);
-            ItemStack item = inventory.getItem(maxIndex - (inventoryIndex * itemsPerInventory));
+            ItemStack item = getInventoryItem(maxIndex);
             if (!CompatibilityLib.getItemUtils().isEmpty(item)) {
                 break;
             }
@@ -4906,6 +4957,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     protected WandInventory getActiveHotbar() {
         WandMode mode = getMode();
         switch (mode) {
+            case CYCLE:
             case CHEST:
                 if (inventories.isEmpty()) return null;
                 int inventoryIndex = currentHotbar / inventoryRows;
@@ -5435,50 +5487,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else if (super.updateMaxMana(mage) && updateLore) {
             updateLore();
         }
-    }
-
-    public void cycleSpells(int direction) {
-        ArrayList<String> spells = new ArrayList<>(this.spells);
-        if (spells.size() == 0) return;
-        if (activeSpell == null) {
-            setActiveSpell(spells.get(0));
-            return;
-        }
-
-        int spellIndex = 0;
-        for (int i = 0; i < spells.size(); i++) {
-            if (spells.get(i).equals(activeSpell)) {
-                spellIndex = i;
-                break;
-            }
-        }
-
-        spellIndex = (spellIndex + direction + spells.size()) % spells.size();
-        setActiveSpell(spells.get(spellIndex));
-        if (showCycleModeLore) {
-            updateLore();
-        }
-    }
-
-    public void cycleMaterials(int direction) {
-        Set<String> materialsSet = getBrushes();
-        ArrayList<String> materials = new ArrayList<>(materialsSet);
-        if (materials.size() == 0) return;
-        if (activeBrush == null) {
-            setActiveBrush(StringUtils.split(materials.get(0), '@')[0]);
-            return;
-        }
-
-        int materialIndex = 0;
-        for (int i = 0; i < materials.size(); i++) {
-            if (StringUtils.split(materials.get(i),'@')[0].equals(activeBrush)) {
-                materialIndex = i;
-                break;
-            }
-        }
-
-        materialIndex = (materialIndex + direction) % materials.size();
-        setActiveBrush(StringUtils.split(materials.get(materialIndex), '@')[0]);
     }
 
     @Nullable
@@ -6766,17 +6774,28 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 break;
             case TOGGLE:
                 if (mode == WandMode.CYCLE) {
-                    cycleActive(1);
+                    // TODO: Config-drive this special casing?
+                    if (mage != null && mage.isSneaking()) {
+                        cycleSpells(-1);
+                    } else {
+                        cycleSpells(1);
+                    }
                     return true;
                 }
                 if (mode != WandMode.CHEST && mode != WandMode.INVENTORY && mode != WandMode.SKILLS) return false;
                 toggleInventory();
                 break;
             case CYCLE:
-                cycleActive(1);
+                cycleSpells(1);
                 break;
             case CYCLE_REVERSE:
-                cycleActive(-1);
+                cycleSpells(-1);
+                break;
+            case CYCLE_BRUSH:
+                cycleBrushes(1);
+                break;
+            case CYCLE_BRUSH_REVERSE:
+                cycleBrushes(-1);
                 break;
             case CYCLE_ACTIVE_HOTBAR:
                 return cycleActiveHotbar(1);

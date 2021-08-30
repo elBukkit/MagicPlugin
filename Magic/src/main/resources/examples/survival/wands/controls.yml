@@ -39,6 +39,7 @@ controls_inventory:
   swap_sneak: none
   swappable: true
   right_click: toggle
+  right_click_sneak: ""
 
 # Aliases for dev build controls
 controls_chest:
@@ -96,8 +97,6 @@ gui_actionbar:
         spell_inventory_open: true
       properties:
         use_active_name: true
-        right_click: toggle
-        right_click_sneak: toggle
         xp_display: mana
         level_display: sp
     - requirement:
@@ -126,8 +125,6 @@ gui_bossbar:
         spell_inventory_open: true
       properties:
         use_active_name: true
-        right_click: toggle
-        right_click_sneak: toggle
         xp_display: mana
         level_display: sp
         boss_bar:

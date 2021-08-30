@@ -2,13 +2,18 @@
 
 # For 10.0 Release
 
- - Check 1.16 and 1.9 again, item lore and controlsmenu in particular
+ - Add "space" macro
+ - Add custom placeholder support via messages, translate through Mage (load order issues?)
+ - Add require_resource_pack option with customizable kick message
+ - Add server version requirement
+
  - Re-work controls menu
-   - Disable GUI modes when no RP (?)
-   - Make hotbars work in cycle mode
+   - Disable GUI modes when no RP or not correct server version
    - Check bowcaster
-   
- - All the zombies on my demo server seem to be named...
+
+ - Check 1.16 and 1.9 again, item lore and controlsmenu in particular
+  
+ - Still need to explain: All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
 # Optimization

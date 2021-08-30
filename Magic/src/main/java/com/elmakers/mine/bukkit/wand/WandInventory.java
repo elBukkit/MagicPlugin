@@ -20,7 +20,9 @@ public class WandInventory {
     }
 
     public ItemStack getItem(int index) {
-        if (index < 0 || index >= items.length) throw new IllegalArgumentException("WandInventory index out of range: " + index + " not between 0 and " + (items.length - 1));
+        if (index < 0 || index >= items.length) {
+            throw new IllegalArgumentException("WandInventory index out of range: " + index + " not between 0 and " + (items.length - 1));
+        }
         return items[index];
     }
 
