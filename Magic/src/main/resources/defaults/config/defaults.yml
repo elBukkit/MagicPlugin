@@ -219,7 +219,7 @@ mskills_spell: skills
 
 # Control word-wrapping in various lore texts
 # Set to 0 to disable wrapping
-lore_wrap_limit: 40
+lore_wrap_limit: 45
 
 # A prefix to use for wrapped lines, this is used to indent
 # but can be turned off by making it an empty string
