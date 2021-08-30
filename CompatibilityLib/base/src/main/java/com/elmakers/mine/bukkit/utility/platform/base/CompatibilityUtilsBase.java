@@ -758,6 +758,8 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public String translateColors(String message) {
+        if (message == null || message.isEmpty()) return message;
+
         // First handle custom hex color format
         Matcher matcher = hexColorPattern.matcher(message);
         StringBuffer buffer = new StringBuffer(message.length() + 4 * 8);
