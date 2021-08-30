@@ -40,7 +40,7 @@ public class ColorItemAction extends BaseSpellAction {
         private final MageController controller;
         private final Wand wand;
         private final WeakReference<Entity> entityRef;
-        private Map<InventorySlot, Color> slotColors;
+        private final Map<InventorySlot, Color> slotColors = new HashMap<>();
         private Color wandColor;
 
         public UndoColorItemTask(MageController controller, Entity entity, Wand wand) {
@@ -51,9 +51,6 @@ public class ColorItemAction extends BaseSpellAction {
 
         public void addSlot(InventorySlot slot, Color color) {
             if (color == null || slot == null) return;
-            if (slotColors == null) {
-                slotColors = new HashMap<>();
-            }
             slotColors.put(slot, color);
         }
 
@@ -85,7 +82,7 @@ public class ColorItemAction extends BaseSpellAction {
                 }
             }
 
-            if (entity instanceof LivingEntity && slotColors != null && !slotColors.isEmpty()) {
+            if (entity instanceof LivingEntity && !slotColors.isEmpty()) {
                 LivingEntity li = (LivingEntity)entity;
                 EntityEquipment equipment = li.getEquipment();
                 if (equipment != null) {
