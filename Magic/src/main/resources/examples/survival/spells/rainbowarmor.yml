@@ -7,7 +7,7 @@ rainbowarmor:
         target: self
         color_wand: true
         color:
-          h: "(epoch % 255.0) / 255.0"
+          h: "((epoch/100) % 255.0) / 255.0"
           s: 1
           v: 1
 
