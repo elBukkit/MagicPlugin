@@ -89,6 +89,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.tasks.ApplyWandIconTask;
 import com.elmakers.mine.bukkit.tasks.CancelEffectsContextTask;
 import com.elmakers.mine.bukkit.tasks.OpenWandTask;
+import com.elmakers.mine.bukkit.tasks.RestoreSpellIconTask;
 import com.elmakers.mine.bukkit.utility.BukkitMetadataUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -4191,7 +4192,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean cycleActiveHotbar(int direction) {
         WandInventory hotbar = getActiveHotbar();
-        if (hotbar == null) return false;
+        if (hotbar == null || mage == null) return false;
 
         int spellIndex = 0;
         if (activeSpell != null) {
@@ -4212,6 +4213,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (activateIcon(hotbarItem)) {
                 updateActionBar();
                 playPassiveEffects("cycle_spell");
+                Player player = mage.getPlayer();
+                if (isInventoryOpen() && player != null) {
+                    // Make the selected spell item bounce
+                    int hotbarIndex = tryIndex >= heldSlot ? tryIndex + 1 : tryIndex;
+                    ItemStack itemStack = player.getInventory().getItem(hotbarIndex);
+                    if (!CompatibilityLib.getItemUtils().isEmpty(itemStack)) {
+                        player.getInventory().setItem(hotbarIndex, null);
+                        Plugin plugin = controller.getPlugin();
+                        plugin.getServer().getScheduler().runTaskLater(plugin, new RestoreSpellIconTask(player, hotbarIndex, itemStack, this), 1);
+                    }
+                }
                 return true;
             }
             tryIndex = (tryIndex + direction + hotbar.getSize()) % hotbar.getSize();
