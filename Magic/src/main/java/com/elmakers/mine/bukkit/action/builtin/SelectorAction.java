@@ -1076,9 +1076,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
             }
 
             if (unavailable && iconDisabledKey != null) {
-                ItemData iconDisabled = controller.getItem(iconDisabledKey);
+                ItemStack iconDisabled = context.getController().createDisabledItem(iconDisabledKey, context.getMage());
                 if (iconDisabled != null) {
-                    icon = iconDisabled.getItemStack();
+                    icon = iconDisabled;
                 }
             }
 
