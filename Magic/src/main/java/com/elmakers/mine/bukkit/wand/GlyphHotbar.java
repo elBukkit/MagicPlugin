@@ -130,9 +130,9 @@ public class GlyphHotbar {
 
         // Create the hotbar
         int hotbarSlots = 0;
-        String hotbarSlot = messages.get("gui.hotbar.hotbar_slot");
-        String hotbarSlotActive = messages.get("gui.hotbar.hotbar_slot_active");
-        String emptyIcon = messages.get("gui.icons.empty");
+        String hotbarSlot = messages.get("glyphs.hotbar.hotbar_slot");
+        String hotbarSlotActive = messages.get("glyphs.hotbar.hotbar_slot_active");
+        String emptyIcon = messages.get("glyphs.icons.empty");
         for (ItemStack hotbarItem : hotbar.items) {
             String icon;
             Spell spell = wand.getSpell(Wand.getSpell(hotbarItem));
@@ -164,7 +164,7 @@ public class GlyphHotbar {
             // Add cooldown/disabled indicators
             if (showCooldown) {
                 if (flashTime > 0 && now < lastCooldown + flashTime && lastCooldownSpell != null && lastCooldownSpell.getSpellKey().equals(spell.getSpellKey())) {
-                    String cooldownIcon = messages.get("gui.cooldown.wait", "");
+                    String cooldownIcon = messages.get("glyphs.cooldown.wait", "");
                     if (!cooldownIcon.isEmpty()) {
                         glyphs += iconReverse;
                         glyphs += cooldownIcon;
@@ -180,7 +180,7 @@ public class GlyphHotbar {
                         cooldownLevel = (int)Math.ceil(16.0 * timeToCast / maxTimeToCast);
                     }
                     if (cooldownLevel > 0) {
-                        String cooldownIcon = messages.get("gui.cooldown." + cooldownLevel, "");
+                        String cooldownIcon = messages.get("glyphs.cooldown." + cooldownLevel, "");
                         if (!cooldownIcon.isEmpty()) {
                             glyphs += iconReverse;
                             glyphs += cooldownIcon;
@@ -210,7 +210,7 @@ public class GlyphHotbar {
             String barPart = "";
 
             int barProgress = (int)Math.floor(barMode.getProgress(wand) * barSteps);
-            String barGlyph = messages.get("gui.bar." + barProgress);
+            String barGlyph = messages.get("glyphs.bar." + barProgress);
             Color wandColor = wand.getEffectColor();
             if (wandColor == null) {
                 wandColor = Color.WHITE;
@@ -220,7 +220,7 @@ public class GlyphHotbar {
             // Currently treating charges the same as mana
             if (flashTime > 0 && (now < lastInsufficientResource + flashTime || now < lastInsufficientCharges + flashTime)) {
                 barPart += messages.getSpace(-(this.barWidth + 1));
-                barPart += messages.get("gui.bar.insufficient");
+                barPart += messages.get("glyphs.bar.insufficient");
             }
 
             // Why does this need this barSlotPadding fudge factor?

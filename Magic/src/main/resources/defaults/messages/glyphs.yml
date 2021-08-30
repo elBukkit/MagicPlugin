@@ -1,6 +1,6 @@
 # These are used to reference specific font overrides from the default resource pack
 # A similar system can be used with your own custom resource pack.
-gui:
+glyphs:
   space:
     -1: "\uF801"
     -2: "\uF802"
