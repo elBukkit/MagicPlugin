@@ -6,7 +6,7 @@ help:
     survival:
       wand_crafting: |-
         `<title text="Wand Crafting">`
-        &6Wands &fcan be crafted using a &b`<command command="/mgive magicheart" text="Magic Heart">`&f and a &e`<command command="/mgive stick" text="stick">`&f.
-        &fA &bMagic Heart&f is crafted with a &e`<command command="/mgive diamond" text="diamond">` &fand 4 &b`<command command="/mgive emerald 4" text="emeralds">`&f.
+        &6Wands &fcan be crafted using a &b`<command command="mgive magicheart" text="Magic Heart">`&f and a &e`<command command="mgive stick" text="stick">`&f.
+        &fA &bMagic Heart&f is crafted with a &e`<command command="mgive diamond" text="diamond">` &fand 4 &b`<command command="mgive emerald 4" text="emeralds">`&f.
         &fThe recipes for both will appear in your in-game &bknowledge book&f.
         &fThe knowledge book may not correctly recognize custom recipe ingredients, so make sure to select "Show All".

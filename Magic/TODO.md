@@ -2,6 +2,15 @@
 
 # For 10.0 Release
 
+ - IonTech : test slotted upgrades adding potion effects
+ - Test hires + robes configs, is order important?
+ - Test horse spell saddle on 1.12
+ - maybe do the WorldGuard region caching optimization, seems like an easy change for lots of gain
+
+# Maybe wait on:
+
+ - AzureBluet would like yaw/pitch (including target_) as attributes
+
  - What is causing the "recall got to doTeleport without waypoint" error?
 
  - Add require_resource_pack option with customizable kick message

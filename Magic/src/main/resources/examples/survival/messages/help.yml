@@ -2,9 +2,9 @@ help:
   main: |-
     `<li>``<help topic="examples.survival.wands" text="Help getting and using wands">`
   commands: |-
-    `<li>``<command command="/mgive wand" text="Get the default survival wand">`
+    `<li>``<command command="mgive wand" text="Get the default survival wand">`
   resourcepack: |-
-    `<li>``<command command="/mexample add robes" text="Enable the robes textures and recipes">`
+    `<li>``<command command="mexample add robes" text="Enable the robes textures and recipes">`
   links: |-
     `<li>`Survival wands and spells: &6https://survival.elmakers.com/
   examples:
@@ -22,17 +22,17 @@ help:
         `<title text="Survival Wands">`
         `<li>``<help topic="instructions.wand" text="Help with the wand I'm holding">`
         `<li>``<help topic="examples.survival.customizing" text="Help with customizing survival wands>`
-        `<li>``<command command="/mgive wand" text="Get the default survival wand">`
-        `<li>``<command command="/mgive master" text="Get a maxed-out survival wand">`
-        `<li>``<command command="/mgive uberwand" text="Get an OP testing wand">`
-        `<li>``<command command="/wand add recall" text="Add a spell to a testing wand">`
-        `<li>``<command command="/mage add blink" text="Learn a spell, adding it to your survival wand">`
+        `<li>``<command command="mgive wand" text="Get the default survival wand">`
+        `<li>``<command command="mgive master" text="Get a maxed-out survival wand">`
+        `<li>``<command command="mgive uberwand" text="Get an OP testing wand">`
+        `<li>``<command command="wand add recall" text="Add a spell to a testing wand">`
+        `<li>``<command command="mage add blink" text="Learn a spell, adding it to your survival wand">`
       customizing: |-
         `<title text="Customizing Survival">`
-        `<li>``<command command="/cast controlsmenu" text="Use the controls menu to tweak your own wand">`
+        `<li>``<command command="cast controlsmenu" text="Use the controls menu to tweak your own wand">`
         `<p>`&4This is available to all players in the &benchantment table&4 menu
-        `<li>``<command command="/mconfig config wand_slots.gui.default_slotted gui_bossbar" text="Change wand default to use the boss bar GUI instead of the action bar">`
-        `<li>``<command command="/mconfig config wand_slots.controls.default_slotted controls_inventory" text="Set default controls to right-click to open spell inventory">`
+        `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_bossbar" text="Change wand default to use the boss bar GUI instead of the action bar">`
+        `<li>``<command command="mconfig config wand_slots.controls.default_slotted controls_inventory" text="Set default controls to right-click to open spell inventory">`
         `<li>``<help topic="examples.survival.wandgui" text="Help or issues with the wand GUI">`
       wandgui: |-
         `<title text="Wand GUI">`
@@ -45,18 +45,18 @@ help:
         `<li>`Broomsticks work by moving invisible armor stands around. If you have anything on your server that might prevent moving armor stands, they will not work.
         `<li>`In particular, if you use &6Paper&f make sure you have &barmor-stands-tick&f set to &btrue&f in &bpaper.yml&f
         `<li>`Broomsticks improve with use, player's &6broom skill&f will level up and handling will improve
-        `<li>` &6`<command command="/mgive broom_booster" text="Broom booster">` &fand &6`<command command="/mgive broom_glider" text="Glider">`&f upgrades can be crafted and applied to a broom
+        `<li>` &6`<command command="mgive broom_booster" text="Broom booster">` &fand &6`<command command="mgive broom_glider" text="Glider">`&f upgrades can be crafted and applied to a broom
         `<li>`Each broom can only have &eone &fupgrade at a time.
         `<li>`While in your inventory, click to pick up a broom upgrade and then click it on your broomstick to add it.
-        `<li>``<command command="/mgive broomstick" text="Get a broomstick">`
+        `<li>``<command command="mgive broomstick" text="Get a broomstick">`
       recipes: |-
         `<title text="Survival Recipes">`
         `<li>``<help topic="examples.survival.wand_crafting" text="Wand crafting instructions">`
-        `<li>``<command command="/mgive recipe:*" text="Learn all recipes">`
+        `<li>``<command command="mgive recipe:*" text="Learn all recipes">`
         `<li>`Survival recipes: &6https://survival.elmakers.com/#crafting
       wand_crafting: |-
         `<title text="Wand Crafting">`
-        `<p>`&6Wands &fcan be crafted using an &d`<command command="/mgive amethyst_shard" text="Amethyst Shard">`&f, a &e`<command command="/mgive stick" text="stick">`&f and &b`<command command="/mgive diamond 2" text="2 diamonds">`&f.
+        `<p>`&6Wands &fcan be crafted using an &d`<command command="mgive amethyst_shard" text="Amethyst Shard">`&f, a &e`<command command="mgive stick" text="stick">`&f and &b`<command command="mgive diamond 2" text="2 diamonds">`&f.
         `<p>`The recipe will appear in your in-game &bknowledge book once you have acquired an &damethyst shard&f.
         `<p>`If you prefer, you can have the recipe &b`<command text="auto-discover on login" command="/mconfig recipe wand auto_discover true">`
         `<p>`Missing the &6magic hearts&f? You can &b`<command text="bring back the old recipes" command="/mexample add magicheart">` &fif you want.
@@ -70,8 +70,8 @@ help:
         `<p>`&6Spell points&f have a &ecooldown &ffor earning. This cooldown is specific to each spell, and defaults to &e15 minutes&f.
         `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get palyers going.
         `<p>`Once players have more than one spell they can earn SP much faster by using all of their spells frequently.
-        `<li>``<command command="/mgive @p sp 1000" text="Give yourself some SP">`
-        `<li>``<command command="/mconfig spell default earns_cooldown 30 seconds" text="Reduce SP cooldown to 30 seconds">`
+        `<li>``<command command="mgive @p sp 1000" text="Give yourself some SP">`
+        `<li>``<command command="mconfig spell default earns_cooldown 30 seconds" text="Reduce SP cooldown to 30 seconds">`
         `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/SpellPoints#balancing-sp" text="See the wiki for more info">
       paths: |-
         `<title text="Progression Paths">`
@@ -79,4 +79,4 @@ help:
         `<p>`Survival Progression: &6Beginner&f, &6Student&f, &6Apprentice&f, &6Wizard &7(&fAKA &6Master&7)
         `<p>`Players must &bcollect every spell&f at their current rank to progress to the next
         `<p>`There are some spells, sorted to the end of the &bspellshop&f list, that are not required and are labelled as such.
-        `<li>``<command command="/mage promote" text="Promote yourself to the next rank">`
+        `<li>``<command command="mage promote" text="Promote yourself to the next rank">`
