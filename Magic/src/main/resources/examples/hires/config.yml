@@ -2,6 +2,9 @@
 resource_pack: hires
 add_resource_pack: hires
 
+# Allow overriding so we can mix hires+robes in any order
+example_override: true
+
 # Override the all and robes RPs so they load the hires versions
 alternate_resource_packs:
   all:

@@ -73,7 +73,7 @@ public class ResourcePackUpdateRunnable implements Runnable {
                 if (modifiedDate.getTime() > modifiedTimestamp || resourcePackHash == null || (force && !hasModifiedTime)) {
                     final boolean isUnset = (resourcePackHash == null);
                     if (filenameChanged) {
-                       responses.add(ChatColor.YELLOW + "Resource pack changed, checking for updated hash");
+                       responses.add(ChatColor.YELLOW + "Resource pack changed, checking " + finalResourcePack + " for updated hash");
                     } else if (modifiedTimestamp <= 0) {
                         responses.add(ChatColor.YELLOW + "Checking resource pack for the first time");
                     } else if (isUnset) {
