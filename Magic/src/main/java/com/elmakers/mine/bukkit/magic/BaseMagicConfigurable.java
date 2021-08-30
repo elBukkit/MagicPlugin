@@ -191,14 +191,19 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         }
         if (effectsObject instanceof ConfigurationSection) {
             ConfigurationSection effectsConfig = (ConfigurationSection)effectsObject;
-            Set<String> keys = effectsConfig.getKeys(false);
-            for (String key : keys) {
-                PotionEffectType type = PotionEffectType.getByName(key.toUpperCase());
-                if (type != null) {
-                    effects.put(type, effectsConfig.getInt(key));
-                } else {
-                    controller.getLogger().log(Level.WARNING, "Invalid potion effect: " + key);
-                }
+            addPotionEffects(effects, effectsConfig);
+        }
+    }
+
+    protected void addPotionEffects(Map<PotionEffectType, Integer> effects, ConfigurationSection effectsConfig) {
+        if (effectsConfig == null) return;
+        Set<String> keys = effectsConfig.getKeys(false);
+        for (String key : keys) {
+            PotionEffectType type = PotionEffectType.getByName(key.toUpperCase());
+            if (type != null) {
+                effects.put(type, effectsConfig.getInt(key));
+            } else {
+                controller.getLogger().log(Level.WARNING, "Invalid potion effect: " + key);
             }
         }
     }
@@ -208,6 +213,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
     }
 
     protected void addPotionEffects(Map<PotionEffectType, Integer> effects, Collection<String> effectList) {
+        if (effectList == null) return;
         for (String effectString : effectList) {
             try {
                 effectString = effectString.trim();

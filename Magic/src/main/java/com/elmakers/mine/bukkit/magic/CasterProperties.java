@@ -1017,7 +1017,18 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
         potionEffects.clear();
         if (hasProperty("potion_effects")) {
-            addPotionEffects(potionEffects, getProperty("potion_effects"));
+            // Do this individual for all 3 types, so we use the merged configuration section
+            ConfigurationSection effectConfig = getConfigurationSection("potion_effects");
+            if (effectConfig != null) {
+                addPotionEffects(potionEffects, effectConfig);
+            } else {
+                List<String> effectList = getStringList("potion_effects");
+                if (effectList != null && !effectList.isEmpty()) {
+                    addPotionEffects(potionEffects, effectList);
+                } else {
+                    addPotionEffects(potionEffects, getString("potion_effects"));
+                }
+            }
         }
         if (hasProperty("effect_color")) {
             setEffectColor(getString("effect_color"));
