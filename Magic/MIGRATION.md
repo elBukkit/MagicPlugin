@@ -8,7 +8,7 @@
    https://github.com/elBukkit/MagicPlugin/tree/a6004374fd857b62e0f83c02c3be8f7c7a6ba015/Magic/src/main/resources/examples/7
 
  - Wand controls changed to new hybrid mode by default.
-   Use `/mconfig configure config wand_slots.controls.default_slotted controls_inventory` to put the default
+   Use `/mconfig config wand_slots.controls.default_slotted controls_inventory` to put the default
    back to the old mode.
 
  - Wand controls menu has changed to a slotted system. If you have custom wands with the "tweakable" tag and you'd
@@ -41,14 +41,14 @@
    
  - Changed `mage_update_frequency` default value to 1, for smoother GUI animations
    If you think this will have a performance impact on your server, use 
-   `/mconfig configure config mage_update_frequency 4`
+   `/mconfig config mage_update_frequency 4`
    to change it back
    
  - Changed the meaning of the `locked` tag on wands, to match the behavior of items, classes and recipes
    Removed this tag from all builtin wands
    This now makes a wand that can not be used unless the player has a class or modifier that allows it
    Use "modifiable: false" for the same behavior as "locked: true" used to have
-   If this is a big issue to update, use `/mconfig configure config old_wand_locked_behavior true`
+   If this is a big issue to update, use `/mconfig config old_wand_locked_behavior true`
     - The `locked_allow_upgrades` option was removed from wands. Please transition to the slotted upgrade system
       or match up your wand/upgrades via paths  
     - The `magic.wand.override_locked` permission was changed to `magic.wand.override_modifiable`
