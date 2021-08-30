@@ -341,7 +341,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             CompatibilityLib.getEntityMetadataUtils().setString(vehicle, MagicMetaKeys.NPC_ID, id.toString());
             vehicle = vehicle.getVehicle();
         }
-        if (entityData.useNPCName()) {
+        if (entityData.useNPCName() && name != null) {
             entity.setCustomName(getName());
         }
         this.entityId = entity.getUniqueId();
@@ -377,6 +377,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     @Nonnull
     public String getName() {
+        if (name == null) {
+            return "";
+        }
         return CompatibilityLib.getCompatibilityUtils().translateColors(name);
     }
 
