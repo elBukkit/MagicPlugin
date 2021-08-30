@@ -1,5 +1,5 @@
 base_dragon:
-  requires: LibsDiguises
+  requires: LibsDisguises
   hidden: true
   type: Ghast
   disguise:
