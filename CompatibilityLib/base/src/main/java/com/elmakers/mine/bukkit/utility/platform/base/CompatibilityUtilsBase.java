@@ -877,6 +877,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             case "falling_water":
             case "falling_obsidian_tear":
                 return Particle.DRIP_WATER;
+            case "falling_dust":
             case "dripping_honey":
             case "falling_honey":
             case "landing_honey":
@@ -896,6 +897,12 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
                 return Particle.SMOKE_NORMAL;
             case "snowflake":
                 return Particle.SNOWBALL;
+            case "spit":
+                return Particle.CLOUD;
+            case "totem":
+                return Particle.MOB_APPEARANCE;
+            case "flash":
+                return Particle.END_ROD;
         }
         return null;
     }
