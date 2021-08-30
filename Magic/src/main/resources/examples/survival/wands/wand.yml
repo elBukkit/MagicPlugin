@@ -25,7 +25,7 @@ wand:
         "wand_icon:44": stick{CustomModelData:18044}
     effect_color: random
     active_spell: missile
-    slots: controls,gui,spellmode,swappable
+    slots: gui,controls,spellmode,swappable
     tags:
     - buffable
     - transformable

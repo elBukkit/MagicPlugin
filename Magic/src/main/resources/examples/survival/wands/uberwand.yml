@@ -11,7 +11,7 @@ uberwand:
   sp_multiplier: 0
   effect_particle: ENCHANTMENT_TABLE
   level_spells: true
-  slots: controls,gui,spellmode,swappable
+  slots: gui,controls,spellmode,swappable
   tags: tweakable
   potion_effects:
     - SATURATION

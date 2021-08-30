@@ -24,6 +24,7 @@ controls_hotbarswap:
   swap_sneak: cycle_hotbar_reverse
   right_click: toggle
   right_click_sneak: none
+  use_active_name: true
 
 controls_inventory:
   icon: oak_sign{CustomModelData:18001}
@@ -106,11 +107,11 @@ gui_actionbar:
   xp_display: none
   level_display: none
   slot: gui
+  use_active_name: false
   requirement_properties:
     - requirement:
         resource_pack: true
       properties:
-        use_active_name: false
         action_bar:
           message: '$hotbar `{font:"default",text:"$extra"}`'
           font: "magic"
@@ -135,11 +136,11 @@ gui_bossbar:
   xp_display: none
   level_display: none
   slot: gui
+  use_active_name: false
   requirement_properties:
     - requirement:
         resource_pack: true
       properties:
-        use_active_name: false
         boss_bar:
           title: '$hotbar'
           font: "magic"

@@ -271,23 +271,23 @@ wands:
         name: Inventory Mode
         description: "&bRight-click&b or &bDrop&f to &6open spell inventory"
     controls_cycle:
-        name: "&bCycle Mode"
+        name: "&6Cycle Mode"
         description: |-
             &dBest scheme for GUI use and quick-cycle
             &b`<keybind key="use">`&f to &6cycle spells
             &b`<keybind key="drop">`&f to &6open spell inventory
             &b`<keybind key="swapOffhand">`&f to &6cycle hotbars
     controls_inventory:
-        name: "&bInventory Mode"
+        name: "&6Inventory Mode"
         description: |-
             &dBest scheme for spell inventory users
             &b`<keybind key="use">`&f to &6open spell inventory
             &b`<keybind key="drop">`&f to &6cycle hotbar
             &b`<keybind key="swapOffhand">`&f to &6cycle spells
     controls_hotbarswap:
-        name: "&bInventory Mode &7(&fSwap to Change Hotbars&7)"
+        name: "&6Inventory Mode &7(&bSwap &fto Change Hotbars&7)"
         description: |-
-            &dHere for completeness
+            &dShows the spell name while cycling
             &b`<keybind key="use">`&f to &6open spell inventory
             &b`<keybind key="swapOffhand">`&f to &6cycle hotbar
             &b`<keybind key="drop">`&f to &6cycle spells
@@ -318,7 +318,7 @@ wands:
     gui_actionbar:
         name: Action Bar GUI
         description: |-
-          &dShows your active hotbar and mana in the action bar area
+          &dShows your hotbar and mana in the action bar
           &f`<space width="64">``<icon key="gui_actionbar">`
 
 
@@ -331,7 +331,7 @@ wands:
     gui_bossbar:
         name: Boss Bar GUI
         description: |-
-            &dShows your active hotbar and mana in the boss bar area
+            &dShows your hotbar and mana in the boss bar
             &f`<space width="64">``<icon key="gui_bossbar">`
 
 
