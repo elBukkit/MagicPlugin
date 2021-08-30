@@ -1,0 +1,7 @@
+# Custom placeholders can be defined here
+# They are used with a magic_ prefix, such as %magic_hotbar%
+# Note that these are probably bad examples since they use chat components
+# that won't be parsed by whatever is reading this placeholder.
+placeholders:
+  hotbar: $hotbar
+  nathanwolf: '`<icon key="nathanwolf">`'

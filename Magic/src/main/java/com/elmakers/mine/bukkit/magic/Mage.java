@@ -83,6 +83,7 @@ import com.elmakers.mine.bukkit.api.magic.CastSourceLocation;
 import com.elmakers.mine.bukkit.api.magic.MagicAttribute;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.rp.ResourcePackPreference;
 import com.elmakers.mine.bukkit.api.spell.CastParameter;
@@ -5698,6 +5699,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     @Override
     public String getReplacement(String symbol, boolean integerValues) {
+        CasterProperties casterProperties = getActiveProperties();
         switch (symbol) {
             case "_": return " ";
             case "pd": return getDisplayName();
@@ -5706,11 +5708,33 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return getName();
             case "uuid": return getId();
             case "spell": {
-                Spell activeSpell = activeWand == null ? null : activeWand.getActiveSpell();
-                return activeSpell == null ? null : activeSpell.getName();
+                Spell spell = activeWand == null ? null : activeWand.getActiveSpell();
+                Player player = getPlayer();
+                if (spell == null && player != null) {
+                    ItemStack item = player.getInventory().getItemInMainHand();
+                    String spellKey = controller.getSpell(item);
+                    if (spellKey != null) {
+                        spell = getSpell(spellKey);
+                    }
+                }
+                if (spell == null && player != null) {
+                    ItemStack item = player.getInventory().getItemInOffHand();
+                    String spellKey = controller.getSpell(item);
+                    if (spellKey != null) {
+                        spell = getSpell(spellKey);
+                    }
+                }
+                return spell == null ? null : spell.getName();
             }
             case "wand": return activeWand == null ? null : activeWand.getName();
             case "class": return activeClass == null ? null : activeClass.getName();
+            case "path":
+                ProgressionPath path = casterProperties.getPath();
+                return path == null ? "" : path.getName();
+            case "sp":
+                return Integer.toString(getSkillPoints());
+            case "spell_count":
+                return Integer.toString(casterProperties.getSpells().size());
             default:
                 Double value = getAttribute(symbol);
                 if (value != null) {
@@ -5719,6 +5743,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     } else {
                         return Double.toString(value);
                     }
+                } else if (activeWand != null) {
+                    return activeWand.getReplacement(symbol, integerValues);
                 }
         }
         return null;
