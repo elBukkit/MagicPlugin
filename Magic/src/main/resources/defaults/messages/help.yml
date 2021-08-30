@@ -117,6 +117,7 @@ help:
     `<li>``<command command="/marena configure testing add spawn" text="Add a new player spawn location">`
     `<li>``<command command="/marena configure testing lobby" text="Set the lobby location, where players wait before joining">`
     `<li>``<command command="/marena configure testing exit" text="Set the exit location">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Arenas" text="Detailed isntructions, including a mob arena tutorial, on the wiki">`
   links: |-
     `<title text="Links">`
     `<li>`Configuration reference: &6https://reference.elmakers.com/
@@ -273,6 +274,7 @@ help:
       `<li>` &b`<command command="/mexample add automata" text="automata">`&f: Add spawnable cellular automaton block monsters
       `<li>` &b`<command command="/mexample add otherside" text="otherside">`&f: Add an alternate dimension full of dangerous mobs and automata
       `<li>` &b`<command command="/mexample add netherside" text="netherside">`&f: Add an alternate nethery dimension
+      `<li>` &b`<command command="/mexample add slimefun" text="slimefun">`&f: Enable a merged &aSlimefun&f resource pack
       `<li>` &a`<command command="/mexample fetch extramobs" text="extramobs">`&f: Add a variety of naturally spawning animals and bosses
       `<li>` &a`<command command="/mexample fetch httyd" text="httyd">`&f: A How To Train Your Dragon inspired example
       `<li>` &a`<command command="/mexample fetch potterplus" text="potterplus">`&f: A more complete and advanced Harry Potter example

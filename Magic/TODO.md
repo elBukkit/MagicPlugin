@@ -2,16 +2,12 @@
 
 # For 10.0 Release
 
- - Add `/mexample` command since you're always typing it
-
  - Add require_resource_pack option with customizable kick message
 
  - Fix swappable icons in legacy Minecraft, maybe turn all
    icon_ items into icons?
 
  - Check bowcaster
-
- - Add recent 2 or 3 github issues (or more?) to help topics
 
  - Check 1.16 and 1.9 again, item lore and controlsmenu in particular
   
