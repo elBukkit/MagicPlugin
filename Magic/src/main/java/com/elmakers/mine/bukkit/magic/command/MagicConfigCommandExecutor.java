@@ -50,6 +50,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ObjectArrays;
 import com.google.gson.Gson;
 
 public class MagicConfigCommandExecutor extends MagicTabExecutor {
@@ -110,8 +111,20 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mconfig.", "apply");
             addIfPermissible(sender, options, "magic.commands.mconfig.", "example");
             addIfPermissible(sender, options, "magic.commands.mconfig.", "language");
+            if (api.hasPermission(sender, "magic.commands.mconfig.configure")) {
+                for (String fileType : availableFileMap.keySet()) {
+                    options.add(fileType);
+                }
+            }
         }
         String subCommand = args[0];
+
+        // Handle shortcuts for config
+        if (availableFileMap.containsKey(subCommand) || availableFiles.contains(subCommand)) {
+            subCommand = "configure";
+            args = ObjectArrays.concat("configure", args);
+        }
+
         if (subCommand.equals("example")) {
             args = Arrays.copyOfRange(args, 1, args.length);
             addExampleTabComplete(args, options);
@@ -277,6 +290,9 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             for (SpellTemplate spell : spellList) {
                 options.add(spell.getKey());
             }
+            // Some special cases
+            options.add("default");
+            options.add("override");
         }
         if (fileType.equals("wands")) {
             Collection<WandTemplate> wandList = api.getController().getWandTemplates();
@@ -366,6 +382,13 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         String subCommand = args[0];
+
+        // Handle shortcuts for config
+        if (availableFileMap.containsKey(subCommand) || availableFiles.contains(subCommand)) {
+            subCommand = "configure";
+            args = ObjectArrays.concat("configure", args);
+        }
+
         if (!api.hasPermission(sender, "magic.commands.mconfig." + subCommand)) {
             sendNoPermission(sender);
             return true;
