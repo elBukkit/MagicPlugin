@@ -30,6 +30,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MagicRequirement {
@@ -56,11 +57,13 @@ public class MagicRequirement {
     private @Nullable RangedRequirement lightLevel = null;
     private @Nullable RangedRequirement timeOfDay = null;
     private @Nullable RangedRequirement height = null;
+    private @Nullable RangedRequirement serverVersion = null;
     private @Nullable CurrencyRequirement currency = null;
     private @Nullable ItemRequirement item = null;
     private @Nullable String weather = null;
     private @Nullable String castSpell = null;
     private @Nullable ClientPlatform clientPlatform = null;
+    private String messageSection = "";
     private int castTimeout = 0;
     private boolean requireResourcePack = false;
     private boolean requireWand = false;
@@ -71,6 +74,10 @@ public class MagicRequirement {
         this.controller = controller;
         ConfigurationSection configuration = requirement.getConfiguration();
 
+        messageSection = configuration.getString("message_section", "");
+        if (!messageSection.isEmpty()) {
+            messageSection = messageSection + ".";
+        }
         permissionNode = configuration.getString("permission");
         notPermissionNode = configuration.getString("not_permission");
         requiredPath = configuration.getString("path");
@@ -111,6 +118,7 @@ public class MagicRequirement {
         timeOfDay = parseRangedRequirement(configuration, "time");
         weather = configuration.getString("weather");
         height = parseRangedRequirement(configuration, "height");
+        serverVersion = parseRangedRequirement(configuration, "server_version");
         String defaultCurrencyType = configuration.getString("currency_type", "currency");
         currency = CurrencyRequirement.parse(configuration, "currency", defaultCurrencyType);
         item = ItemRequirement.parse(configuration, "item");
@@ -249,6 +257,12 @@ public class MagicRequirement {
         }
         if (height != null) {
             if (location == null || !height.check(location.getY())) {
+                return false;
+            }
+        }
+        if (serverVersion != null) {
+            int[] versionPieces = CompatibilityLib.getServerVersion(controller.getPlugin());
+            if (versionPieces.length < 2 || !serverVersion.check((double)versionPieces[1])) {
                 return false;
             }
         }
@@ -440,7 +454,7 @@ public class MagicRequirement {
     }
 
     protected String getMessage(MageContext context, String key) {
-        return context.getMessage(key, getDefaultMessage(context, key));
+        return context.getMessage(messageSection + key, getDefaultMessage(context, key));
     }
 
     protected String getDefaultMessage(MageContext context, String key) {
@@ -513,6 +527,17 @@ public class MagicRequirement {
         }
         if (height != null) {
             String message = checkRequiredProperty(context, height, getMessage(context, "height"), location == null ? null : location.getY());
+            if (message != null) {
+                return message;
+            }
+        }
+        if (serverVersion != null) {
+            Double majorVersion = null;
+            int[] versionPieces = CompatibilityLib.getServerVersion(controller.getPlugin());
+            if (versionPieces.length > 1) {
+                majorVersion = (double)versionPieces[1];
+            }
+            String message = checkRequiredProperty(context, serverVersion, getMessage(context, "server_version"), majorVersion);
             if (message != null) {
                 return message;
             }

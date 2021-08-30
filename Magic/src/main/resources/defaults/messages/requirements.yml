@@ -21,6 +21,7 @@ requirements:
   light: "Light Level"
   time: "Time of Day"
   height: "Height"
+  server_version: "Server Version"
   currency: "$currency"
   item: "$item"
   no_cast: "&cYou must cast $spell first"
