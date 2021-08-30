@@ -1563,11 +1563,6 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     }
 
     @Override
-    public String convertParticle(String particle) {
-        return particle;
-    }
-
-    @Override
     public BlockFace getSignFacing(Block signBlock) {
         BlockData blockData = signBlock.getBlockData();
         if (!(blockData instanceof WallSign)) {

@@ -26,6 +26,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Effect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -856,13 +857,47 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return null;
     }
 
+
+
     @Override
-    public String convertParticle(String particle) {
-        switch (particle.toLowerCase()) {
-            case "dust_color_transition":
-                return "redstone";
+    public Particle getParticle(String particleType) {
+        Particle particle;
+        try {
+            particle = Particle.valueOf(particleType.toUpperCase());
+        } catch (Exception ignored) {
+            particle = getParticleReplacement(particleType);
         }
         return particle;
+    }
+
+    public Particle getParticleReplacement(String particle) {
+        switch (particle.toLowerCase()) {
+            case "dust_color_transition":
+                return Particle.REDSTONE;
+            case "falling_water":
+            case "falling_obsidian_tear":
+                return Particle.DRIP_WATER;
+            case "dripping_honey":
+            case "falling_honey":
+            case "landing_honey":
+                return Particle.DRIP_LAVA;
+            case "vibration":
+                return Particle.SWEEP_ATTACK;
+            case "soul_fire_flame":
+            case "soul":
+                return Particle.FLAME;
+            case "bubble_column_up":
+            case "bubble_pop":
+            case "current_down":
+                return Particle.WATER_BUBBLE;
+            case "campfire_signal_smoke":
+                return Particle.SMOKE_LARGE;
+            case "campfire_cosy_smoke":
+                return Particle.SMOKE_NORMAL;
+            case "snowflake":
+                return Particle.SNOWBALL;
+        }
+        return null;
     }
 
     @Override

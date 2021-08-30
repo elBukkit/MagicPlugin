@@ -18,6 +18,7 @@ import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Particle;
 import org.bukkit.Rotation;
 import org.bukkit.Server;
 import org.bukkit.Sound;
@@ -496,7 +497,7 @@ public interface CompatibilityUtils {
 
     void setMaterialCooldown(Player player, Material material, int duration);
 
-    String convertParticle(String particle);
+    Particle getParticle(String particle);
 
     BlockFace getSignFacing(Block sign);
 
