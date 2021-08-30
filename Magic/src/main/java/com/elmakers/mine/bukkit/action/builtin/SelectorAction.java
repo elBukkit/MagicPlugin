@@ -1692,7 +1692,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         defaultConfiguration = new SelectorConfiguration(parameters);
         String fillerKey = parameters.getString("confirm_filler");
         if (fillerKey != null && !fillerKey.isEmpty()) {
-            confirmFillMaterial = context.getController().getItem(fillerKey);
+            confirmFillMaterial = context.getController().getOrCreateItem(fillerKey);
         }
         title = parameters.getString("title");
         if (title != null) {
