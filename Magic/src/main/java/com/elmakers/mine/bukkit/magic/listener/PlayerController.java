@@ -303,6 +303,9 @@ public class PlayerController implements Listener {
                 event.setCancelled(true);
             }
         }
+        if (!event.isCancelled() && offhand != null && !offhandWand.isSwappable()) {
+            event.setCancelled(true);
+        }
         if (!event.isCancelled() && (activeWand != null || offhandWand != null || Wand.isWand(event.getMainHandItem()) || Wand.isWand(event.getOffHandItem()))) {
             // Make sure to save changes to the active and offhand wands
             boolean checkWand = false;

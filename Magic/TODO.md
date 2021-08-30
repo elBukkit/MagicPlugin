@@ -7,6 +7,8 @@
  - Add require_resource_pack option with customizable kick message
  - Add server version requirement
 
+ - Add Swappable options to controls menu
+
  - Re-work controls menu
    - Disable GUI modes when no RP or not correct server version
    - Check bowcaster
