@@ -1,0 +1,8 @@
+nathanwolf:
+  item: crimson_sign{18003}
+  item_disabled: crimson_sign{CustomModelData:18004}
+  legacy_item: spell_icon:7
+  legacy_item_disabled: spell_icon_disabled:7
+  url: http://textures.minecraft.net/texture/4077aff230c0d496e5cb19f1b3984dd645992a761dcf8b49c7cb0ba230173354
+  glyph: "\uE746"
+  type: other

@@ -39,7 +39,7 @@ commands:
       no_wand: "&4You must be holding a wand!"
       header: |-
         &8                                .
-        &f`<icon key="missile">`   &b&lMAGIC HELP  &f`<icon key="missile">`
+        &f      `<icon key="nathanwolf">`   &b&lMAGIC HELP  &f`<icon key="missile">`
         &8                                .
       player_header: |-
         &a  `<rawmessage text="Click" message="{\\\"text\\\":\\\"Yahaha you found me!\\\",\\\"color\\\":\\\"green\\\"}">` &7to navigate through help

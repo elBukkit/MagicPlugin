@@ -1,8 +1,5 @@
 debugger:
-    icon: warped_sign{18003}
-    icon_disabled: warped_sign{CustomModelData:18003}
-    legacy_icon: spell_icon:7
-    legacy_icon_disabled: spell_icon_disabled:7
+    icon: nathanwolf
     hidden: true
     category: staff
     worth: 50
