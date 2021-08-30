@@ -9,6 +9,7 @@ public class WandUpgradeSlotTemplate {
     protected boolean hidden = false;
     protected boolean swappable = false;
     protected boolean replaceable = false;
+    protected String defaultSlottedKey;
 
     public WandUpgradeSlotTemplate(MagicController controller, String slotType) {
         this.slotType = slotType;
@@ -27,6 +28,7 @@ public class WandUpgradeSlotTemplate {
         hidden = config.getBoolean("hidden", hidden);
         swappable = config.getBoolean("swappable", swappable);
         replaceable = config.getBoolean("replaceable", replaceable);
+        defaultSlottedKey = config.getString("default_slotted");
     }
 
     public boolean isHidden() {
@@ -35,5 +37,9 @@ public class WandUpgradeSlotTemplate {
 
     public String getType() {
         return slotType;
+    }
+
+    public String getDefaultSlottedKey() {
+        return defaultSlottedKey;
     }
 }

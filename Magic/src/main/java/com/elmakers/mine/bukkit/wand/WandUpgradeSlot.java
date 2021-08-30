@@ -24,9 +24,8 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
     @Override
     protected void load(MagicController controller, ConfigurationSection config) {
         super.load(controller, config);
-        String defaultKey = config.getString("default_slotted");
-        if (defaultKey != null && !defaultKey.isEmpty() && slotted == null) {
-            slotted = controller.createWand(defaultKey);
+        if (defaultSlottedKey != null && !defaultSlottedKey.isEmpty() && slotted == null) {
+            slotted = controller.createWand(defaultSlottedKey);
             hasDefaultSlotted = true;
         }
     }
