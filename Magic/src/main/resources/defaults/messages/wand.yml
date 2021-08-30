@@ -61,6 +61,7 @@ wand:
     slots_header: "&6Upgrades&7:"
     empty_slot: " &8- &7(&2Empty &6$slot &2slot&7)"
     slotted: " &8- &7$slotted"
+    default_slotted: "&7(&3This is the Default&7)"
     item_attributes:
       GENERIC_ATTACK_DAMAGE: "Attack Damage"
     prefixes:

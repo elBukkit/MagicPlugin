@@ -3090,29 +3090,36 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         addUseLore(lore);
         addPropertyLore(lore, isSingleSpell);
-        if (isUpgrade) {
-            ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_item_description"), lore);
-        } else {
-            if (slots != null) {
-                boolean printedHeader = false;
-                for (WandUpgradeSlot slot : slots) {
-                    if (slot.isHidden()) {
-                        continue;
-                    }
-                    if (!printedHeader) {
-                        ConfigurationUtils.addIfNotEmpty(getMessage("slots_header").replace("$count", Integer.toString(slots.size())), lore);
-                        printedHeader = true;
-                    }
-                    Wand slotted = slot.getSlotted();
-                    if (slotted == null) {
-                        String slotName = controller.getMessages().get("slots." + slot.getType() + ".name", slot.getType());
-                        ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
-                    } else {
-                        ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slotted.getName()), lore);
-                    }
+        if (!isUpgrade && slots != null) {
+            boolean printedHeader = false;
+            for (WandUpgradeSlot slot : slots) {
+                if (slot.isHidden()) {
+                    continue;
+                }
+                if (!printedHeader) {
+                    ConfigurationUtils.addIfNotEmpty(getMessage("slots_header").replace("$count", Integer.toString(slots.size())), lore);
+                    printedHeader = true;
+                }
+                Wand slotted = slot.getSlotted();
+                if (slotted == null) {
+                    String slotName = controller.getMessages().get("slots." + slot.getType() + ".name", slot.getType());
+                    ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
+                } else {
+                    ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slotted.getName()), lore);
                 }
             }
         }
+
+        String slotType = getSlot();
+        if (slotType != null && !slotType.isEmpty()) {
+            WandUpgradeSlotTemplate template = new WandUpgradeSlotTemplate(controller, slotType);
+            String defaultSlotted = template == null ? null : template.getDefaultSlottedKey();
+            if (defaultSlotted != null && defaultSlotted.equals(getTemplateKey())) {
+                String slotName = controller.getMessages().get("slots." + slotType + ".name", slotType);
+                ConfigurationUtils.addIfNotEmpty(getMessage("default_slotted").replace("$slot", slotName), lore);
+            }
+        }
+
 
         if (instructionsLore && spellCount > 1) {
             String header = getMessage("lore_instructions_header", "");
@@ -3141,6 +3148,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
         }
+
+        // This should always be last
+        // Mainly for extremly hacky reasons, the shop removes this line when displaying upgrades.
+        // TODO: Make this less hacky, add some way to disable this lore explicitly when creating a wand icon
+        if (isUpgrade) {
+            ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_item_description"), lore);
+        }
+
         return lore;
     }
 
