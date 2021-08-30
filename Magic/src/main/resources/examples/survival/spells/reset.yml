@@ -23,8 +23,8 @@ reset:
           - class: ResetMage
   parameters:
     target: self
-    placeholder_icon: black
+    placeholder_icon: icon_black
     confirm: true
     auto_close: true
-    confirm_filler: black
+    confirm_filler: icon_black
     cooldown: 0
