@@ -303,7 +303,6 @@ wands:
         name: Action Bar GUI
         description: |-
           &dShows your active hotbar and mana in the action bar area
-          &eRequires the resource pack and at least Minecraft 1.16
           &f`<space width="64">``<icon key="gui_actionbar">`
 
 
@@ -312,12 +311,11 @@ wands:
 
 
 
-              &bIf you can see the preview above, you're good to go!
+              &bIf you can see the preview above, you can use this GUI!
     gui_bossbar:
         name: Boss Bar GUI
         description: |-
             &dShows your active hotbar and mana in the action bar area
-            &eRequires the resource pack and at least Minecraft 1.16
             &f`<space width="64">``<icon key="gui_bossbar">`
 
 
@@ -326,7 +324,7 @@ wands:
 
 
 
-            &bIf you can see the preview above, you're good to go!
+            &bIf you can see the preview above, you can use this GUI
     gui_none:
         name: No GUI
         description: |-

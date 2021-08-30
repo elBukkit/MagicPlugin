@@ -3,13 +3,12 @@
 # For 10.0 Release
 
  - Add require_resource_pack option with customizable kick message
- - Add server version requirement
 
  - Add Swappable options to controls menu
+   - this will make the current inventory vs hybrid redundant
+     .. so maybe change the 3rd option to a different layout?
 
- - Re-work controls menu
-   - Disable GUI modes when no RP or not correct server version
-   - Check bowcaster
+ - Check bowcaster
 
  - Check 1.16 and 1.9 again, item lore and controlsmenu in particular
   

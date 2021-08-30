@@ -10,6 +10,7 @@ controlsmenu:
         cast:
         -  class: Selector
     parameters:
+        show_unavailable: true
         apply_to_wand: true
         requirements:
         - wand_slot: controls
@@ -33,7 +34,19 @@ controlsmenu:
           - item: none
           - item: none
           - item: gui_actionbar
+            # Wands can't have disabled icons, it would be nice if this just worked out as expected though
+            # Instead we'll explicitly define a disabled icon
+            icon_disabled: icon:gui_actionbar
+            requirements:
+              - resource_pack: true
+                server_version: ">=16"
+                message_section: server_version
           - item: gui_bossbar
+            icon_disabled: icon:gui_bossbar
+            requirements:
+              - resource_pack: true
+                server_version: ">=16"
+                message_section: server_version
           - item: none
           - item: none
           - item: gui_none

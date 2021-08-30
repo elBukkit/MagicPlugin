@@ -1170,6 +1170,8 @@ spells:
         confirm_title: "Change to $item"
         selected: "&d&oYou changed to &r&6$item"
         no_template: "&cYou may not modify controls on $wand&c."
+        server_version:
+            property_min_inclusive: "&r&cYour &6$property &cmust be at least &41.@value"
     colorshop:
         name: Effect Colors
         description: Colorize your spell effects
