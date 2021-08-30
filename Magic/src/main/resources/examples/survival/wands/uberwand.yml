@@ -9,10 +9,10 @@ uberwand:
   cost_reduction: 2.0
   cooldown_reduction: 2.0
   sp_multiplier: 0
-  mode: inventory
   effect_particle: ENCHANTMENT_TABLE
   level_spells: true
-  slots: controls
+  slots: controls,gui,spellmode
+  tags: tweakable
   potion_effects:
     - SATURATION
     - REGENERATION

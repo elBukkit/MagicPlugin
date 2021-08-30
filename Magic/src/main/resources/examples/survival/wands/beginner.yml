@@ -19,7 +19,8 @@ beginner:
   mana: 50
   earn_multiplier: 0
   level_spells_to_path: beginner
-  slots: controls
+  slots: controls,gui,spellmode
+  tags: tweakable
   spells:
     # Hotbar
     - missile

@@ -4,7 +4,7 @@ wand_slots:
   controls:
     hidden: true
     replaceable: true
-    default_slotted: controls_1
+    default_slotted: controls_cycle
   gui:
     hidden: true
     replaceable: true

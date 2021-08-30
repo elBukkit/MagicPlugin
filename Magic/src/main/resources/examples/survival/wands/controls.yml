@@ -43,10 +43,10 @@ controls_inventory:
 
 # Aliases for dev build controls
 controls_chest:
-  inherit: controls_2
+  inherit: controls_hybrid
 
 controls_old:
-  inherit: controls_3
+  inherit: controls_inventory
 
 # Spell inventory modes
 spellmode_inventory:
