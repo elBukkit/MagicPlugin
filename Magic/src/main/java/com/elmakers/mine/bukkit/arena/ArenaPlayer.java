@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.arena;
 
+import java.lang.ref.WeakReference;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
@@ -15,8 +16,7 @@ import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class ArenaPlayer implements Comparable<ArenaPlayer> {
-    private Mage mage;
-    private ProgressionPath path;
+    private WeakReference<Mage> mage;
     private final Arena arena;
     private final UUID uuid;
     private String name;
@@ -60,17 +60,13 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
 
         ArenaController controller = arena.getController();
         name = player.getName();
-        mage = controller.getMagic().getMage(player);
+        mage = new WeakReference<>(controller.getMagic().getMage(player));
         displayName = player.getDisplayName();
-
-        CasterProperties mageClass = mage.getActiveProperties();
-        path = mageClass.getPath();
-
-        wins = get("won");
-        losses = get("lost");
-        quits = get("quit");
-        joins = get("joined");
-        draws = get("draw");
+        wins = get("won", wins);
+        losses = get("lost", losses);
+        quits = get("quit", quits);
+        joins = get("joined", joins);
+        draws = get("draw", draws);
     }
 
     public void save(ConfigurationSection config) {
@@ -85,20 +81,24 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
     }
 
     public boolean isValid() {
+        Mage mage = getMage();
         return mage == null ? false : mage.isValid();
     }
 
     public boolean isDead() {
+        Mage mage = getMage();
         return mage == null ? false : mage.isDead();
     }
 
     public Player getPlayer() {
+        Mage mage = getMage();
         return mage == null ? null : mage.getPlayer();
     }
 
     public String getDisplayName() {
         String display = displayName;
-        if (displayName == null) {
+        Mage mage = getMage();
+        if (displayName == null && mage != null) {
             displayName = mage.getDisplayName();
             display = displayName;
         }
@@ -107,6 +107,7 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
 
     public String getNameAndPath() {
         String display = getDisplayName();
+        ProgressionPath path = getPath();
         if (path != null) {
             display = display + " " + ChatColor.GRAY + "(" + ChatColor.GOLD + path.getName() + ChatColor.GRAY + ")";
         }
@@ -114,7 +115,8 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
     }
 
     public void won() {
-        Player player = getPlayer();
+        Mage mage = getMage();
+        Player player = mage == null ? null : mage.getPlayer();
         if (player != null) {
             int xp = arena.getWinXP();
             if (xp > 0) {
@@ -132,12 +134,13 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
                 mage.addVaultCurrency(money);
             }
 
-            wins = increment("won");
+            wins = increment("won", wins);
         }
     }
 
     public void lost() {
-        Player player = getPlayer();
+        Mage mage = getMage();
+        Player player = mage == null ? null : mage.getPlayer();
         if (player != null) {
             int xp = arena.getLoseXP();
             if (xp > 0) {
@@ -155,28 +158,23 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
                 mage.addVaultCurrency(money);
             }
 
-            losses = increment("lost");
+            losses = increment("lost", losses);
         }
     }
 
     public void quit() {
-        Player player = getPlayer();
-        if (player != null) {
-            quits = increment("quit");
-        }
+        quits = increment("quit", quits);
     }
 
     public void joined() {
-        Player player = getPlayer();
-        if (player != null) {
-            joins = increment("joined");
-        }
+        joins = increment("joined", joins);
     }
 
     public void draw() {
         heal();
         teleport(arena.getLoseLocation());
-        Player player = getPlayer();
+        Mage mage = getMage();
+        Player player = mage == null ? null : mage.getPlayer();
         if (player != null) {
             int xp = arena.getDrawXP();
             if (xp > 0) {
@@ -194,7 +192,7 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
                 mage.addVaultCurrency(money);
             }
 
-            draws = increment("draw");
+            draws = increment("draw", draws);
         }
     }
 
@@ -226,14 +224,16 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
         return arena;
     }
 
-    protected int increment(String statName) {
+    protected int increment(String statName, int defaultValue) {
+        Mage mage = getMage();
         if (mage == null) {
-            arena.getController().getPlugin().getLogger().warning("Cannot increment statistic " + statName + ", no mage present.");
-            return 0;
+            return defaultValue;
         }
 
         String arenaKey = "arena." + arena.getKey() + "." + statName;
         ConfigurationSection data = mage.getData();
+        // Note that defaultValue is only used if we lost our Mage reference, if we have it but the data is
+        // gone, it may have been an intentional reset
         int currentValue = data.getInt(arenaKey, 0);
         int newValue = currentValue + 1;
         data.set(arenaKey, newValue);
@@ -241,14 +241,16 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
         return newValue;
     }
 
-    protected int get(String statName) {
+    protected int get(String statName, int defaultValue) {
+        Mage mage = getMage();
         if (mage == null) {
-            arena.getController().getPlugin().getLogger().warning("Cannot get statistic " + statName + ", no mage present.");
-            return 0;
+            return defaultValue;
         }
 
         String arenaKey = "arena." + arena.getKey() + "." + statName;
         ConfigurationSection data = mage.getData();
+        // Note that defaultValue is only used if we lost our Mage reference, if we have it but the data is
+        // gone, it may have been an intentional reset
         return data.getInt(arenaKey, 0);
     }
 
@@ -343,7 +345,8 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
     }
 
     public void heal() {
-        Player player = getPlayer();
+        Mage mage = getMage();
+        Player player = mage == null ? null : mage.getPlayer();
         if (player != null && !player.isDead()) {
             double maxHealth = CompatibilityLib.getCompatibilityUtils().getMaxHealth(player);
             player.setHealth(maxHealth);
@@ -367,6 +370,7 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
         quits = 0;
         joins = 0;
         draws = 0;
+        Mage mage = getMage();
         if (mage != null) {
             String arenaKey = "arena." + arena.getKey();
             ConfigurationSection data = mage.getData();
@@ -375,7 +379,17 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
     }
 
     public Mage getMage() {
-        return mage;
+        return this.mage == null ? null : this.mage.get();
+    }
+
+    public ProgressionPath getPath() {
+        Mage mage = getMage();
+        if (mage == null) {
+            return null;
+        }
+
+        CasterProperties mageClass = mage.getActiveProperties();
+        return mageClass.getPath();
     }
 
     public boolean isBattling() {
