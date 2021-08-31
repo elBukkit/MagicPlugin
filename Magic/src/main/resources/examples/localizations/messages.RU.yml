@@ -296,7 +296,7 @@ currency:
 dynmap:
   spells_markerset: Использованные Заклинания
   wands_markerset: Палочки
-examples:
+example:
   instructions_header: |-
     &8 ----------------------------------------------------
     &8|
@@ -305,6 +305,7 @@ examples:
   instructions_footer: |-
     &8|
     &8 ----------------------------------------------------
+examples:
   survival:
     instructions: |-
       &8| &3&nSURVIVAL &r

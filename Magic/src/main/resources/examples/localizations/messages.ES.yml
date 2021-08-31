@@ -227,7 +227,7 @@ dynmap:
   spells_markerset: Lanzamientos de Hechizos
   wands_markerset: Varitas
 ##################################################################################
-examples:
+example:
   instructions_header: |-
     &8&m >>====================================================<<
     &8|
@@ -236,6 +236,7 @@ examples:
   instructions_footer: |-
     &8|
     &8&m >>====================================================<<
+examples:
   survival:
     instructions: |-
       &8| &3&nSupervivencia &r

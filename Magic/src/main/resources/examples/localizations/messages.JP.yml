@@ -236,7 +236,7 @@ currency:
 dynmap:
   spells_markerset: スペルキャスト
   wands_markerset: 杖
-examples:
+example:
   instructions_header: |-
     &8 ----------------------------------------------------
     &8|
@@ -245,6 +245,7 @@ examples:
   instructions_footer: |-
     &8|
     &8 ----------------------------------------------------
+examples:
   survival:
     instructions: |-
       &8| &3&nSURVIVAL &r

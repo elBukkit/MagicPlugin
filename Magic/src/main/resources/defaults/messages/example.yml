@@ -1,4 +1,4 @@
-examples:
+example:
     not_found: "&4Unknown or unloaded example: &f$example"
     instructions_header: |-
       &8 ----------------------------------------------------

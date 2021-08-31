@@ -14,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Help {
@@ -25,7 +26,13 @@ public class Help {
         this.messages = messages;
     }
 
-    public void load(ConfigurationSection helpSection) {
+    public void load(ConfigurationSection helpSection, ConfigurationSection examplesSection) {
+        ConfigurationSection helpExamples = helpSection.getConfigurationSection("examples");
+        if (helpExamples != null) {
+            ConfigurationUtils.addConfigurations(helpExamples, examplesSection);
+        } else {
+            helpSection.set("examples", examplesSection);
+        }
         Collection<String> keys = helpSection.getKeys(true);
         for (String key : keys) {
             if (helpSection.isConfigurationSection(key)) continue;
