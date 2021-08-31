@@ -1965,7 +1965,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         Icon icon = controller.getIcon(key);
-        if (icon != null) {
+        String iconType = icon == null ? null : icon.getType();
+        if (iconType != null && (iconType.equals("upgrade") || iconType.equals("wand"))) {
             com.elmakers.mine.bukkit.api.block.MaterialAndData iconMaterial = icon.getItemMaterial(controller.isLegacyIconsEnabled());
             if (iconMaterial != null && iconMaterial instanceof MaterialAndData) {
                 return (MaterialAndData)iconMaterial;
@@ -1994,6 +1995,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
             }
 
+        }
+
+        // try icon again if we still are invalid
+        if ((materialData == null || !materialData.isValid()) && icon != null) {
+            com.elmakers.mine.bukkit.api.block.MaterialAndData iconMaterial = icon.getItemMaterial(controller.isLegacyIconsEnabled());
+            if (iconMaterial != null && iconMaterial instanceof MaterialAndData) {
+                return (MaterialAndData)iconMaterial;
+            }
         }
         return materialData instanceof MaterialAndData ? (MaterialAndData)materialData : null;
     }

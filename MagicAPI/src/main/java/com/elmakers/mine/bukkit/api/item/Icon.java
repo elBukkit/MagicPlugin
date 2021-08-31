@@ -21,4 +21,7 @@ public interface Icon {
     MaterialAndData getItemDisabledMaterial(boolean isLegacy);
 
     boolean forceUrl();
+
+    @Nullable
+    String getType();
 }

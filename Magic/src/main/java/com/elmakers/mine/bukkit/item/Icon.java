@@ -18,6 +18,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
     private final String url;
     private final String urlDisabled;
     private final String glyph;
+    private final String type;
     private final boolean useUrl;
 
     public Icon(MageController controller) {
@@ -30,6 +31,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         urlDisabled = BaseSpell.DEFAULT_DISABLED_ICON_URL;
         glyph = null;
         useUrl = false;
+        type = null;
     }
 
     public Icon(MageController controller, ConfigurationSection configuration) {
@@ -42,6 +44,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         urlDisabled = configuration.getString("url_disabled");
         glyph = configuration.getString("glyph");
         useUrl = configuration.getBoolean("force_url", false);
+        type = configuration.getString("type");
     }
 
     public Icon(com.elmakers.mine.bukkit.api.item.Icon defaultAPI, com.elmakers.mine.bukkit.api.item.Icon baseAPI) {
@@ -59,6 +62,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         urlDisabled = baseIcon.urlDisabled != null ? baseIcon.urlDisabled : defaultIcon.urlDisabled;
         glyph = baseIcon.glyph != null ? baseIcon.glyph : defaultIcon.glyph;
         useUrl = baseIcon.useUrl;
+        type = baseIcon.type;
     }
 
     public Icon(com.elmakers.mine.bukkit.api.item.Icon baseIcon, ConfigurationSection configuration, String itemIcon) {
@@ -76,6 +80,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         glyph = configuration.getString("glyph", other.glyph);
         boolean onlyHasUrl = configuration.contains("icon_url") && itemIcon == null;
         useUrl = configuration.getBoolean("force_url", onlyHasUrl);
+        type = configuration.getString("type", other.type);
     }
 
     @Override
@@ -130,5 +135,11 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
                     ? itemDisabledKey : itemKey;
         }
         return getItem(useKey);
+    }
+
+    @Override
+    @Nullable
+    public String getType() {
+        return type;
     }
 }
