@@ -54,3 +54,7 @@ keep_wands_on_death: false
 # Set this to true to restore the old behavior of the wand "locked" property.
 # This may interfere with builtin configs
 old_wand_locked_behavior: false
+
+# This has been replaced by worldguard.enabled
+# This option, when set to false, will override the above for backwards-compatibility
+region_manager_enabled: true

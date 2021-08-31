@@ -21,9 +21,6 @@ dynmap_show_spells: true
 # Only show spell casts from players
 dynmap_only_player_spells: false
 
-# Enable worldguard protection against construction spells, and PVP
-region_manager_enabled: true
-
 # Enable Factions protection against construction spells
 factions_enabled: true
 
@@ -255,6 +252,17 @@ vivecraft:
 # MythicMobs integration, allows using mythicmobs in magic commands and configs
 mythicmobs:
   enabled: true
+
+# WorldGuard integration
+# Spells respect build and PvP restrictions
+# Custom flag integration
+worldguard:
+  enabled: true
+
+  # Cache region lookups for performance
+  # Set this to a larger duration (in milliseconds) to perform region checks less frequently
+  # Set this to 0 to disable caching
+  region_update_cache: 100
 
 # Indirect integration with other protection plugins.
 # Add a plugin here to have Magic send it fake Block/Break events to check for permission.

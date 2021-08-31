@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.protection;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
@@ -40,6 +42,9 @@ public class WorldGuardAPI {
     private StateFlag pvpFlag;
     private StateFlag exitFlag;
     private boolean initialized = false;
+    private int cacheDuration;
+    private long lastCacheClear;
+    private Map<Location, ApplicableRegionSet> cachedSets = new HashMap<>();
 
     public boolean isEnabled() {
         return worldGuardPlugin != null;
@@ -192,6 +197,17 @@ public class WorldGuardAPI {
 
     @Nullable
     private ApplicableRegionSet getRegionSet(Location location) {
+        long now = System.currentTimeMillis();
+        if (cacheDuration > 0) {
+            if (now > lastCacheClear + cacheDuration) {
+                cachedSets.clear();
+                lastCacheClear = now;
+            }
+            ApplicableRegionSet regionSet = cachedSets.get(location);
+            if (regionSet != null) {
+                return regionSet;
+            }
+        }
         RegionManager regionManager = getRegionManager(location.getWorld());
         if (regionManager == null) return null;
         // The Location version of this method is gone in 7.0
@@ -201,7 +217,11 @@ public class WorldGuardAPI {
             Object vector = vectorConstructorAsAMethodBecauseWhyNot == null
                     ? vectorConstructor.newInstance(location.getX(), location.getY(), location.getZ())
                     : vectorConstructorAsAMethodBecauseWhyNot.invoke(null, location.getX(), location.getY(), location.getZ());
-            return (ApplicableRegionSet)regionManagerGetMethod.invoke(regionManager, vector);
+            ApplicableRegionSet regionSet = (ApplicableRegionSet)regionManagerGetMethod.invoke(regionManager, vector);
+            if (cacheDuration > 0) {
+                cachedSets.put(location, regionSet);
+            }
+            return regionSet;
         } catch (Exception ex) {
             owningPlugin.getLogger().log(Level.WARNING, "An error occurred looking up a WorldGuard ApplicableRegionSet", ex);
         }
@@ -354,5 +374,10 @@ public class WorldGuardAPI {
             return customFlags.inTaggedRegion(Associables.constant(Association.NON_MEMBER), checkSet, tags);
         }
         return false;
+    }
+
+    public void setCacheDuration(int cacheDuration) {
+        this.cacheDuration = cacheDuration;
+        cachedSets.clear();
     }
 }

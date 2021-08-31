@@ -8225,7 +8225,12 @@ public class MagicController implements MageController {
         messagePrefix = CompatibilityLib.getCompatibilityUtils().translateColors(messagePrefix);
         castMessagePrefix = CompatibilityLib.getCompatibilityUtils().translateColors(castMessagePrefix);
 
-        worldGuardManager.setEnabled(properties.getBoolean("region_manager_enabled", worldGuardManager.isEnabled()));
+        ConfigurationSection worldGuardConfiguration = properties.getConfigurationSection("worldguard");
+        // Backwards-compatibility
+        if (!properties.getBoolean("region_manager_enabled", true)) {
+            worldGuardConfiguration.set("enabled", false);
+        }
+        worldGuardManager.load(worldGuardConfiguration);
         factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
         pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
         multiverseManager.setEnabled(properties.getBoolean("multiverse_enabled", multiverseManager.isEnabled()));

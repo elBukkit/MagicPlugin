@@ -7,6 +7,7 @@ import javax.annotation.Nullable;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
@@ -19,10 +20,12 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 
 public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager, CastPermissionManager {
     private boolean enabled = false;
+    private int cacheDuration = 0;
     private WorldGuardAPI worldGuard = null;
 
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void load(ConfigurationSection configuration) {
+        enabled = configuration.getBoolean("enabled", true);
+        cacheDuration = configuration.getInt("region_update_cache");
     }
 
     public boolean isEnabled() {
@@ -36,6 +39,7 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
             } else {
                 plugin.getLogger().info("WorldGuard found, will respect build permissions for construction spells");
                 worldGuard.checkFlagSupport();
+                worldGuard.setCacheDuration(cacheDuration);
             }
         } else {
             worldGuard = null;

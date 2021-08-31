@@ -2,8 +2,6 @@
 
 # For 10.0 Release
 
- - maybe do the WorldGuard region caching optimization, seems like an easy change for lots of gain
-
 # Maybe wait on:
 
  - AzureBluet would like yaw/pitch (including target_) as attributes
