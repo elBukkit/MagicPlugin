@@ -13,6 +13,7 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -1181,6 +1182,11 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         if (!teleport) {
             mage.enableSuperProtection(protectionTime);
         }
+
+        context.getMage().sendDebugMessage(ChatColor.DARK_GREEN + " Set new target location to "
+                + ChatColor.GRAY + targetLocation.getBlockX() + ChatColor.DARK_GRAY + ","
+                + ChatColor.GRAY + targetLocation.getBlockY() + ChatColor.DARK_GRAY + ","
+                + ChatColor.GRAY + targetLocation.getBlockZ() + ChatColor.DARK_GRAY, 6);
         context.setTargetLocation(targetLocation);
         selectedWaypoint = waypoint;
         return true;
