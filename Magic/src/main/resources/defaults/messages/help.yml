@@ -135,7 +135,17 @@ help:
     `<li>``<help text="Creating new spells, wands and other configs" topic="creating_configs">`
     `<li>``<command command="config reset spell missile" text="Reset a spell to its default configuration">`
     `<li>``<help topic="common_customizations" text="Other common customizations">`
-    `<li>``<link text="Customization wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Customization">`
+    `<li>``<help topic="general_customization" text="General Customization Questions">`&8(&7"Where are all the configs to edit?"&7)
+  general_customization: |-
+    `<title text="General Customization Guide">`
+    `<p>`&dMagic &fcan be very confusing to configure at first.
+    `<p>`People often go to edit &7plugins/Magic/config.yml&f or &7spells.yml&f and wonder where everything is.
+    `<p>`Because &dMagic&f is so configuration-driven, it is very important that configs can be updated every time the plugin updates.
+    `<p>`This would be difficult if everyone got a copy of &oall&f of the configs to edit every time they installed the plugin.
+    `<p>`While I understand this can be confusing and difficult to work with, it is not going to change any time soon!
+    `<p>`If you are intent on having configs to edit, you can &b`<command command="/meditor config" text="use the editor to build them for you">`
+    `<p>`Or, look in &7plugins/Magic/defaults&f and copy what you want to &7plugins/Magic&f
+    `<li>``<link text="Read more about how customization works on the wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Customization">`
   creating_configs: |-
     `<title text="Creating New Configs">`
     `<p>`&dMagic&f is a completely customizable framework that you can make your own. You will need to be comfortable &blearning by example&f!
