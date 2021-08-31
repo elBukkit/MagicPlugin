@@ -1,5 +1,5 @@
 examples:
-  magicmobs:
+  spawnmobs:
     instructions: |-
       `<title text="Magic Mob Spawning">`
       `<p>`Magic mobs will now spawn naturally, rarely, in place &r
@@ -9,3 +9,4 @@ examples:
       `<p>`&7/mconfig world overworld_mobs world yourworld &r
       `<p>`&7/mconfig world nether_mobs world yournether &r
       `<p>`&7/mconfig world end_mobs world yourend &r
+      `<p>`Or &b`<command command="meditor world overworld_mobs" text="use the editor">`
