@@ -117,8 +117,9 @@ public class TextUtils {
             boolean integerValue = prefix == '@';
             symbol = symbol.substring(1);
             String repString = replacer.getReplacement(symbol, integerValue);
-            if (repString != null)
-                m.appendReplacement(parameterized, repString);
+            if (repString != null) {
+                m.appendReplacement(parameterized, Matcher.quoteReplacement(repString));
+            }
         }
         m.appendTail(parameterized);
         return parameterized.toString();

@@ -181,7 +181,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             json = new StringBuffer();
             m = macroSpacesPattern.matcher(piece);
             while (m.find()) {
-                m.appendReplacement(json, "\"," + m.group(1));
+                m.appendReplacement(json, "\"," + Matcher.quoteReplacement(m.group(1)));
             }
             m.appendTail(json);
             piece = json.toString();
