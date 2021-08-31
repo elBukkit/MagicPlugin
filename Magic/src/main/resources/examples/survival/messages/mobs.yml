@@ -115,3 +115,5 @@ mobs:
     name: ATM
   marigold:
     name: "&6Marigold"
+  aggromite:
+    name: Aggromite
