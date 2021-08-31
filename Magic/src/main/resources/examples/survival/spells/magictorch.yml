@@ -8,7 +8,7 @@ magictorch:
         - class: ChangeContext
           target_offset: 0,2,0
           actions:
-            - class: FakeBlock
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -20,7 +20,6 @@ magictorch:
         undo: 500
         brush: light
         replace_same: true
-        player_radius: 32
 
 throwmagictorch:
     icon: spell_icon:62
@@ -31,7 +30,7 @@ throwmagictorch:
         cast:
         - class: ThrowItem
           tick:
-          - class: FakeBlock
+          - class: ModifyBlock
     effects:
         cast:
         -  class: EffectSingle
@@ -48,4 +47,3 @@ throwmagictorch:
         lifetime: 3600000
         brush: light
         replace_same: true
-        player_radius: 32
