@@ -6,6 +6,8 @@
 
  - AzureBluet would like yaw/pitch (including target_) as attributes
 
+ - Wand set bonuses
+
  - What is causing the "recall got to doTeleport without waypoint" error?
 
  - Add require_resource_pack option with customizable kick message

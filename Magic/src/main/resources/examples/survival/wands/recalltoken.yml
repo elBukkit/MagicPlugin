@@ -6,6 +6,8 @@ recalltoken:
     uses: 5
     keep: true
     effect_color: 'FF0000'
+    overrides:
+        allow_death: true
     spells:
         - recall
 
