@@ -5,6 +5,9 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.NamespacedKey;
+import org.bukkit.block.Block;
+import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.type.Slab;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.Entity;
 import org.bukkit.inventory.BlastingRecipe;
@@ -143,6 +146,18 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         if (recipe instanceof StonecuttingRecipe) {
             ((StonecuttingRecipe)recipe).setGroup(group);
             return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isTopBlock(Block block) {
+        // Yes this is an ugly way to do it.
+        BlockData blockData = block.getBlockData();
+        if (blockData instanceof Slab) {
+            Slab slab = (Slab)blockData;
+            Slab.Type slabType = slab.getType();
+            return slabType != Slab.Type.BOTTOM;
         }
         return false;
     }

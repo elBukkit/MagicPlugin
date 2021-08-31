@@ -569,9 +569,8 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean isTopBlock(Block block) {
-        // Yes this is an ugly way to do it.
-        String blockData = getBlockData(block);
-        return blockData != null && blockData.contains("type=top");
+        byte data = platform.getDeprecatedUtils().getData(block);
+        return (data & 0x8) == 0x8;
     }
 
     @Override
