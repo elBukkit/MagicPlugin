@@ -6,6 +6,7 @@ import java.util.Collection;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -93,8 +94,8 @@ public class OrientAction extends BaseSpellAction {
             if (targetLocation == null) {
                 return SpellResult.NO_TARGET;
             }
-            Location direction = targetLocation.clone().subtract(location);
-            location.setDirection(direction.toVector());
+            Vector direction = targetLocation.toVector().subtract(location.toVector());
+            location.setDirection(direction);
         }
         entity.teleport(location);
 
