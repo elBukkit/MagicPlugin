@@ -1,0 +1,69 @@
+locator:
+  cast_on_no_target: false
+  actions:
+    cast:
+      - class: Recall
+      - class: Orient
+        target_block: true
+      - class: ModifyCompass
+      - class: PlayEffects
+        effects: locate
+  effects:
+    locate:
+      -  class: EffectSingle
+         sound: magic.zap
+         location: origin
+         sound_volume: 0.1
+      -  class: EffectSingle
+         effectlib:
+           class: LineEffect
+           particle: redstone
+           particle_count: 5
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+           length: 10
+      -  class: EffectSingle
+         effectlib:
+           class: LineEffect
+           particle: redstone
+           color: "#00ced1"
+           particle_count: 5
+           particle_offset_x: 0.3
+           particle_offset_y: 0.3
+           particle_offset_z: 0.3
+           length: 10
+      - particle: vibration
+        particle_arrival_time: 40
+        particle_count: 8
+        particle_offset_x: 0.1
+        particle_offset_y: 0.1
+        particle_offset_z: 0.1
+  parameters:
+    target: none
+    options:
+      - type: home
+      - type: death
+      - type: town
+        show_unavailable: false
+      - type: spawn
+        show_unavailable: false
+    allow_spawn: false
+    allow_marker: false
+    allow_death: false
+    allow_souls: false
+    allow_wand: true
+    allow_home: true
+    allow_cross_world: true
+    allow_town: true
+    allow_fields: true
+    allow_friends: false
+    icon_death: skull_item
+    icon_soul: skeleton_skull
+    icon_field: wood_door
+    icon_spawn: wood_door
+    icon_home: bed
+    icon_town: iron_door
+    cooldown: 2000
+    teleport: false
+    loud: true

@@ -1,0 +1,4 @@
+locator:
+    mode: cast
+    active_spell: locator
+    icon: compass
