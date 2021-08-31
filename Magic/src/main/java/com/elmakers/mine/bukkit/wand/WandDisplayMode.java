@@ -133,9 +133,9 @@ public class WandDisplayMode {
             case COOLDOWN:
                 if (spell != null && spell instanceof MageSpell) {
                     MageSpell mageSpell = (MageSpell)spell;
-                    long timeToCast = mageSpell.getTimeToCast();
+                    Long timeToCast = mageSpell.getTimeToCast();
                     long maxTimeToCast = mageSpell.getMaxTimeToCast();
-                    if (maxTimeToCast > 0) {
+                    if (maxTimeToCast > 0 && timeToCast != null) {
                         progress = (double)(maxTimeToCast - timeToCast) / maxTimeToCast;
                     }
                 }
@@ -184,7 +184,10 @@ public class WandDisplayMode {
             case COOLDOWN:
                 if (spell != null && spell instanceof MageSpell) {
                     MageSpell mageSpell = (MageSpell)spell;
-                    value = mageSpell.getTimeToCast() / 1000;
+                    Long timeToCast = mageSpell.getTimeToCast();
+                    if (timeToCast != null) {
+                        value = timeToCast / 1000;
+                    }
                 }
                 break;
             case CHARGES:
