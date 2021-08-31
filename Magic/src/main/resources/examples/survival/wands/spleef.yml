@@ -8,6 +8,7 @@ spleef:
     mana_max: 100
     mana_regeneration: 10
     active_spell: blast
+    modifiable: false
     spells:
       - blast
       - collapse
