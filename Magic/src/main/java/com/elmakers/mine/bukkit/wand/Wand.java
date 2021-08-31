@@ -1987,6 +1987,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             materialData = itemData.getMaterialAndData();
         } else {
             materialData = new MaterialAndData(key);
+            if (!materialData.isValid()) {
+                ItemStack iconItem = controller.createItem(key, mage);
+                if (!CompatibilityLib.getItemUtils().isEmpty(iconItem)) {
+                    materialData = new MaterialAndData(iconItem);
+                }
+            }
+
         }
         return materialData instanceof MaterialAndData ? (MaterialAndData)materialData : null;
     }

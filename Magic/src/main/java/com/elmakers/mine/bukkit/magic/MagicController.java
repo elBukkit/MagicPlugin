@@ -5681,21 +5681,9 @@ public class MagicController implements MageController {
         // also as some fallbacks for wands and classes wtihout a prefix
         if (itemStack == null && items != null) {
             try {
-                ItemData customItem = items.get(magicItemKey);
-                if (customItem != null) {
-                    itemStack = customItem.getItemStack(amount);
-                    if (callback != null) {
-                        callback.updated(itemStack);
-                    }
-                    return itemStack;
-                }
-                MaterialAndData item = new MaterialAndData(magicItemKey);
-                if (item.isValid() && CompatibilityLib.getCompatibilityUtils().isLegacy(item.getMaterial())) {
-                    short convertData = (item.getData() == null ? 0 : item.getData());
-                    item = new MaterialAndData(CompatibilityLib.getCompatibilityUtils().migrateMaterial(item.getMaterial(), (byte) convertData));
-                }
-                if (item.isValid()) {
-                    return item.getItemStack(amount, callback);
+                ItemStack genericItem = getGenericItemStack(magicItemKey, amount, callback);
+                if (genericItem != null) {
+                    return genericItem;
                 }
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey, mage);
                 if (wand != null) {
@@ -5781,12 +5769,32 @@ public class MagicController implements MageController {
         return spawnEgg;
     }
 
+    protected ItemStack getGenericItemStack(String magicItemKey, int amount, ItemUpdatedCallback callback) {
+        ItemData customItem = items.get(magicItemKey);
+        if (customItem != null) {
+            ItemStack itemStack = customItem.getItemStack(amount);
+            if (callback != null) {
+                callback.updated(itemStack);
+            }
+            return itemStack;
+        }
+        MaterialAndData item = new MaterialAndData(magicItemKey);
+        if (item.isValid() && CompatibilityLib.getCompatibilityUtils().isLegacy(item.getMaterial())) {
+            short convertData = (item.getData() == null ? 0 : item.getData());
+            item = new MaterialAndData(CompatibilityLib.getCompatibilityUtils().migrateMaterial(item.getMaterial(), (byte) convertData));
+        }
+        if (item.isValid()) {
+            return item.getItemStack(amount, callback);
+        }
+        return null;
+    }
+
     @Nullable
     @Override
     public ItemStack createGenericItem(String key) {
         ConfigurationSection template = getWandTemplateConfiguration(key);
         if (template == null || !template.contains("icon")) {
-            return null;
+            return getGenericItemStack(key, 1, null);
         }
         MaterialAndData icon = ConfigurationUtils.toMaterialAndData(template.getString("icon"));
         ItemStack item = icon.getItemStack(1);
