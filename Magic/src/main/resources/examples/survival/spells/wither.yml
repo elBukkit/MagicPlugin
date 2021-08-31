@@ -14,6 +14,8 @@ wither:
             actions:
             - class: PotionEffect
             - class: Damage
+            - class: PlayEffects
+              effects: withered
     effects:
         cast:
         - sound: entity_wither_shoot
@@ -34,7 +36,23 @@ wither:
         - location: target
           sound: entity_wither_break_block
           sound_pitch: 0.8
-          source_location: body
+          effectlib:
+            class: Modified
+            disappear_with_origin_entity: true
+            duration: 750
+            parameters:
+              radius: "(t / i) * 1.5 + 0.1"
+            effect:
+              class: Sphere
+              particle: smoke_normal
+              particles: 20
+              particle_count: 5
+              particle_offset_x: 0.2
+              particle_offset_y: 0.2
+              particle_offset_z: 0.2
+        withered:
+        - location: target
+          target_location: body
           effectlib:
            class: Modified
            disappear_with_origin_entity: true
