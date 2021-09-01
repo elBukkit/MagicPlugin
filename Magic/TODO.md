@@ -1,12 +1,13 @@
 # TODO
 
-# For 10.0 Release
+# Next Up:
 
-# Maybe wait on:
-
- - AzureBluet would like yaw/pitch (including target_) as attributes
+ - 1.17 entity load fix
+   https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/ed7bba95fc031ca8b89d353426990b4bf7f9372f#src/main/java/org/bukkit/event/world/EntitiesLoadEvent.java
 
  - Wand set bonuses
+   
+ - AzureBluet would like yaw/pitch (including target_) as attributes
 
  - What is causing the "recall got to doTeleport without waypoint" error?
 
@@ -30,7 +31,6 @@ https://timings.aikar.co/?id=a5bd174dc1ef462a9f72145b09dc6020
  - Mage update / tick():
    - Quicker way to see if two items are the same? Experiment with nms handle, maybe it doesn't change?
      Affects Mage.checkWand -> controller.isSameItem
-   - Cache player region lookups in WorldGuardManager, maybe only re-query every X seconds (do this first)
  - Animated maps are *crazy* hard on the server
    - Would it be safe to draw them asynchronously?
 

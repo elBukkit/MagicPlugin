@@ -22,7 +22,8 @@ locator:
            particle_offset_x: 0.1
            particle_offset_y: 0.1
            particle_offset_z: 0.1
-           length: 10
+           max_length: 50
+           zig_zag: true
       -  class: EffectSingle
          effectlib:
            class: LineEffect
@@ -32,7 +33,8 @@ locator:
            particle_offset_x: 0.3
            particle_offset_y: 0.3
            particle_offset_z: 0.3
-           length: 10
+           max_length: 50
+           zig_zag: true
       - particle: vibration
         particle_arrival_time: 40
         particle_count: 8
