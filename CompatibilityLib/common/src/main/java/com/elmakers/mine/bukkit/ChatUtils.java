@@ -34,6 +34,7 @@ public class ChatUtils {
         return gson;
     }
 
+    @SuppressWarnings("unchecked")
     protected static void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage, boolean onlyText) {
         for (Map.Entry<String,Object> entry : mapped.entrySet()) {
             if (entry.getKey().equals("text")) {
