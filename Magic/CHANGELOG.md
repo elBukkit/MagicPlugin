@@ -2,6 +2,9 @@
 
 # 10.1
 
+ - Remove default tick_increase from Projectile action, magic arrows will now take the normal time to despawn
+   This was done to improve compatibility with server forks that mess with NMS mappings (Purpur)
+
 # 10.0
 
  - Please see change notes video for important update information: https://youtu.be/Xi6TpnBDgYU
