@@ -1,0 +1,6 @@
+wand_sets:
+  wizard_armor:
+    # The number of pieces required to get the set bonuses
+    required: 4
+    bonuses:
+      earn_multiplier: 1.5

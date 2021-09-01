@@ -9,6 +9,7 @@
    - Configure `sets` on each wand piece in the set
    - Overall or per-item bonuses can be applied once enough set pieces are worn at once
    - See survival `wizard_armor` set for example
+   - Wizard armor (including magic hat) now have an SP earn bonus when the full set is worn  
    - TODO: Wand lore
 
 ## Fixes

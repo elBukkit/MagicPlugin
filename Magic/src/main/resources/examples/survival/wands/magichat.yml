@@ -9,6 +9,10 @@ magichat:
     mana_max_boost: 0.2
     mana_regeneration_boost: 0.1
     wearable: helmet
+    sets:
+      wizard_armor:
+        bonuses:
+          # This replaces the default of 0.2
+          mana_max_boost: 0.3
     spells:
         - magichat
-

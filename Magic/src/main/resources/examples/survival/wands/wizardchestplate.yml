@@ -6,6 +6,7 @@ wizardchestplate:
     passive: true
     enchantable: true
     hide_flags: 61
+    sets: wizard_armor
     protection:
       magic: 0.1
     item_attribute_slot: chest
