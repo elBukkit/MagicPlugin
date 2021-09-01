@@ -3123,7 +3123,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 Wand slotted = slot.getSlotted();
                 if (slotted == null) {
-                    String slotName = controller.getMessages().get("slots." + slot.getType() + ".name", slot.getType());
+                    String slotName = controller.getMessages().get("wand_slots." + slot.getType() + ".name", slot.getType());
                     ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
                 } else {
                     ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slotted.getName()), lore);
