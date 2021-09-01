@@ -4292,7 +4292,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (String key : keys) {
             ActiveWandSet wandSet = wandSets.get(key);
             if (wandSet == null) {
-                wandSet = new ActiveWandSet(key);
+                wandSet = new ActiveWandSet();
                 wandSets.put(key, wandSet);
             }
             wandSet.add(wand, sets.getConfigurationSection(key));
@@ -4324,6 +4324,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         // Count up wand sets to look for bonuses before adding in wand properties
+        boolean hadSets = !wandSets.isEmpty();
         wandSets.clear();
         countSets(activeWand, false);
         countSets(offhandWand, false);
@@ -4340,6 +4341,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (activeSet.isActive(setTemplate)) {
                 setBonus = setTemplate == null ? null : setTemplate.getBonus();
                 activeSet.applyBonuses();
+            }
+        }
+
+        // If we had or have any set bonuses, we need to update wand lore just in case
+        // something has changed
+        if (hadSets || !wandSets.isEmpty()) {
+            if (activeWand != null) activeWand.updateLore();
+            if (offhandWand != null) offhandWand.updateLore();
+            for (Wand armorWand : activeArmor.values()) {
+                if (armorWand != null) {
+                    armorWand.updateLore();
+                }
             }
         }
 

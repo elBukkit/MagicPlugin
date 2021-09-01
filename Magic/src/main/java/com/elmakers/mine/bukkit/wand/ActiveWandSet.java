@@ -1,29 +1,34 @@
 package com.elmakers.mine.bukkit.wand;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ActiveWandSet {
-    private final String key;
     private ConfigurationSection configuration;
-    private final List<Wand> wands = new ArrayList<>();
-
-    public ActiveWandSet(String key) {
-        this.key = key;
-    }
+    private final Map<Wand, ConfigurationSection> wands = new HashMap<>();
 
     public void add(Wand wand, ConfigurationSection config) {
-        wands.add(wand);
+        // Pull out the bonus config, that is specific to each wand
+        ConfigurationSection bonusConfig = null;
         if (config != null) {
+            bonusConfig = config.getConfigurationSection("bonuses");
             if (configuration == null) {
-                configuration = ConfigurationUtils.newConfigurationSection();
+                configuration = ConfigurationUtils.cloneConfiguration(config);
+                configuration.set("bonuses", null);
+            } else {
+                // To avoid having to clone or modify config, pull this out and then put it back
+                ConfigurationSection templateBonus = configuration.getConfigurationSection("bonuses");
+                configuration.set("bonuses", null);
+                ConfigurationUtils.addConfigurations(configuration, config, false);
+                configuration.set("bonuses", templateBonus);
             }
-            ConfigurationUtils.addConfigurations(configuration, config, false);
         }
+
+        wands.put(wand, bonusConfig);
     }
 
     public ConfigurationSection getConfiguration() {
@@ -39,8 +44,8 @@ public class ActiveWandSet {
     }
 
     public void applyBonuses() {
-        for (Wand wand : wands) {
-            wand.applySetBonus(key);
+        for (Map.Entry<Wand,ConfigurationSection> entry : wands.entrySet()) {
+            entry.getKey().applySetBonus(entry.getValue());
         }
     }
 }

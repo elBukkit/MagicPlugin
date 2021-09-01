@@ -261,9 +261,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private List<WandUpgradeSlot> slots = null;
     private ConfigurationSection slottedConfiguration = null;
 
-    // Other property overrides
+    // Requirements-based property overrides
     private ConfigurationSection requirementConfiguration = null;
     private List<RequirementProperties> requirementProperties = null;
+
+    // Set bonus overrides
+    private ConfigurationSection setBonusConfiguration = null;
 
     // Transient state
 
@@ -395,7 +398,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (needsSave) {
             saveState();
             updateName();
-            updateLore();
+            findAndUpdateLore();
         }
     }
 
@@ -404,7 +407,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         load(config);
         loadProperties();
         updateName();
-        updateLore();
+        findAndUpdateLore();
         saveState();
     }
 
@@ -463,7 +466,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         updateItem();
         updateName();
-        updateLore();
+        findAndUpdateLore();
         saveState();
         this.mage = null;
     }
@@ -775,7 +778,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             CompatibilityLib.getNBTUtils().removeMeta(item, WAND_KEY);
             saveState();
             updateName(true);
-            updateLore();
+            findAndUpdateLore();
         }
     }
 
@@ -1003,7 +1006,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public void setDescription(String description) {
         this.description = description;
         setProperty("description", description);
-        updateLore();
+        findAndUpdateLore();
     }
 
     public boolean tryToOwn(Player player) {
@@ -1194,7 +1197,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         setProperty("owner", owner);
         setProperty("owner_id", ownerId);
-        updateLore();
+        findAndUpdateLore();
         saveState();
     }
 
@@ -1836,7 +1839,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (findItem()) {
             updateItemIcon();
             updateName();
-            updateLore();
+            findAndUpdateLore();
         }
 
         if (item == null || item.getType() == Material.AIR) return;
@@ -1909,7 +1912,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public void save() {
         saveState();
         updateName();
-        updateLore();
+        findAndUpdateLore();
     }
 
     public void updateBrushInventory() {
@@ -3226,10 +3229,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return message;
     }
 
-
-    protected void updateLore() {
-        findItem();
+    public void updateLore() {
         CompatibilityLib.getCompatibilityUtils().setLore(item, getLore());
+    }
+
+    protected void findAndUpdateLore() {
+        findItem();
+        updateLore();
     }
 
     public int getRemainingUses() {
@@ -3956,7 +3962,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         saveState();
         updateName();
-        updateLore();
+        findAndUpdateLore();
         return levels;
     }
 
@@ -4195,7 +4201,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 updateActionBar();
                 playPassiveEffects("cycle_spell");
                 if (showCycleModeLore) {
-                    updateLore();
+                    findAndUpdateLore();
                 }
                 return true;
             }
@@ -4467,7 +4473,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 updateInventory();
                 updateHotbarStatus();
                 if (inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
-                    updateLore();
+                    findAndUpdateLore();
                 }
                 updateName();
                 updateActionBar();
@@ -4509,7 +4515,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     restoreInventory();
                     showActiveIcon(false);
                     if (inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
-                        updateLore();
+                        findAndUpdateLore();
                     }
                 } else if (closePlayerInventory) {
                     mage.getPlayer().closeInventory();
@@ -4710,7 +4716,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             slottedConfiguration = null;
             return;
         }
-        slottedConfiguration = ConfigurationUtils.newConfigurationSection();
+        slottedConfiguration = ConfigurationUtils.newSection(configuration);
         for (WandUpgradeSlot slot : slots) {
             Wand slotted = slot.getSlotted();
             if (slotted != null) {
@@ -4809,7 +4815,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     if (spell != null) {
                         boolean costFree = getBoolean("cast_interval_cost_free", false);
                         if (castParameters == null) {
-                            castParameters = ConfigurationUtils.newConfigurationSection();
+                            castParameters = ConfigurationUtils.newSection(configuration);
                         }
                         castParameters.set("aura", true);
                         if (costFree) {
@@ -5149,7 +5155,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         setProperty("owner", null);
         setProperty("owner_id", null);
         saveState();
-        updateLore();
+        findAndUpdateLore();
         updateName();
     }
 
@@ -5299,7 +5305,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean cast(Spell spell, String[] parameterArguments) {
         ConfigurationSection parameters = null;
         if (parameterArguments != null && parameterArguments.length > 0) {
-            parameters = ConfigurationUtils.newConfigurationSection();
+            parameters = ConfigurationUtils.newSection(configuration);
             ConfigurationUtils.addParameters(parameterArguments, parameters);
         }
         return doCast(spell, parameters);
@@ -5322,7 +5328,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ConfigurationSection castParameters = null;
         Map<String, String> castOverrides = this.getOverrides();
         if (castOverrides != null && castOverrides.size() > 0) {
-            castParameters = ConfigurationUtils.newConfigurationSection();
+            castParameters = ConfigurationUtils.newSection(configuration);
             for (Map.Entry<String, String> entry : castOverrides.entrySet()) {
                 String[] key = StringUtils.split(entry.getKey(), ".", 2);
                 if (key.length == 0) continue;
@@ -5334,7 +5340,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         if (parameters != null) {
             if (castParameters == null) {
-                castParameters = ConfigurationUtils.newConfigurationSection();
+                castParameters = ConfigurationUtils.newSection(configuration);
             }
             ConfigurationUtils.addConfigurations(castParameters, parameters, true);
         }
@@ -5400,7 +5406,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 setProperty("uses", uses);
                 saveState();
                 updateName();
-                updateLore();
+                findAndUpdateLore();
             }
         }
 
@@ -5499,7 +5505,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             for (RequirementProperties properties : requirementProperties) {
                 if (properties.isAllowed()) {
                     if (requirementConfiguration == null) {
-                        requirementConfiguration = ConfigurationUtils.newConfigurationSection();
+                        requirementConfiguration = ConfigurationUtils.newSection(configuration);
                     }
                     ConfigurationUtils.addConfigurations(requirementConfiguration, properties.getProperties(), true);
                 }
@@ -5513,7 +5519,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (updateRequirementConfiguration()) {
             loadParameters();
             updateName();
-            updateLore();
+            findAndUpdateLore();
         }
     }
 
@@ -5530,10 +5536,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             effectiveManaMax = mageClass.getEffectiveManaMax();
             effectiveManaRegeneration = mageClass.getEffectiveManaRegeneration();
             if (updateLore) {
-                updateLore();
+                findAndUpdateLore();
             }
         } else if (super.updateMaxMana(mage) && updateLore) {
-            updateLore();
+            findAndUpdateLore();
         }
     }
 
@@ -5888,7 +5894,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         updateActiveMaterial();
         updateName();
-        updateLore();
+        findAndUpdateLore();
 
         // Play activate FX
         playPassiveEffects("activate");
@@ -5988,7 +5994,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (enchantments == null) {
             List<String> enchantmentList = getStringList("enchantments");
             if (enchantmentList != null && !enchantmentList.isEmpty()) {
-                enchantments = ConfigurationUtils.newConfigurationSection();
+                enchantments = ConfigurationUtils.newSection(configuration);
                 for (String enchantKey : enchantmentList) {
                     int level = 1;
                     String[] pieces = StringUtils.split(enchantKey, ":");
@@ -6138,7 +6144,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         updateMaxMana(false);
         updateName();
-        updateLore();
+        findAndUpdateLore();
         if (mage != null) {
             playPassiveEffects("activate");
         }
@@ -6238,7 +6244,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateInventory();
         updateHasInventory();
         saveState();
-        updateLore();
+        findAndUpdateLore();
 
         if (mage != null)
         {
@@ -6440,7 +6446,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         updateHasInventory();
         saveState();
-        updateLore();
+        findAndUpdateLore();
 
         if (mage != null) {
             // This is a little hackily tied to the send method logic
@@ -6546,7 +6552,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateBrushInventory();
         saveState();
         updateName();
-        updateLore();
+        findAndUpdateLore();
         return found;
     }
 
@@ -6585,7 +6591,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         updateSpellInventory();
         saveState();
         updateName();
-        updateLore();
+        findAndUpdateLore();
 
         return true;
     }
@@ -7192,7 +7198,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         } else {
             CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
-            ConfigurationSection enchantments = ConfigurationUtils.newConfigurationSection();
+            ConfigurationSection enchantments = ConfigurationUtils.newSection(configuration);
             for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
                 enchantments.set(compatibilityUtils.getEnchantmentKey(entry.getKey()), entry.getValue());
             }
@@ -7201,7 +7207,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 CompatibilityLib.getInventoryUtils().applyEnchantments(item, enchantments);
             }
             saveState();
-            updateLore();
+            findAndUpdateLore();
         }
     }
 
@@ -7224,7 +7230,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
-        ConfigurationSection enchantments = ConfigurationUtils.newConfigurationSection();
+        ConfigurationSection enchantments = ConfigurationUtils.newSection(configuration);
         for (Map.Entry<Enchantment, Integer> entry : enchants.entrySet()) {
             Enchantment enchantment = entry.getKey();
             if (allowed != null && !allowed.contains(enchantment)) continue;
@@ -7234,14 +7240,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             return false;
         }
         if (CompatibilityLib.getInventoryUtils().addEnchantments(item, enchantments)) {
-            enchantments = ConfigurationUtils.newConfigurationSection();
+            enchantments = ConfigurationUtils.newSection(configuration);
             Map<Enchantment, Integer> newEnchants = item.getItemMeta().getEnchants();
             for (Map.Entry<Enchantment, Integer> entry : newEnchants.entrySet()) {
                 enchantments.set(compatibilityUtils.getEnchantmentKey(entry.getKey()), entry.getValue());
             }
             setProperty("enchantments", enchantments);
             saveState();
-            updateLore();
+            findAndUpdateLore();
             return true;
         }
         return false;
@@ -7279,6 +7285,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (requirementConfiguration != null && requirementConfiguration.contains(key)) {
             return true;
         }
+        if (setBonusConfiguration != null && setBonusConfiguration.contains(key)) {
+            return true;
+        }
         return hasOwnProperty(key);
     }
 
@@ -7289,26 +7298,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ConfigurationSection base = super.getConfigurationSection(key);
         ConfigurationSection slotted = slottedConfiguration != null ? slottedConfiguration.getConfigurationSection(key) : null;
         ConfigurationSection requirement = requirementConfiguration != null ? requirementConfiguration.getConfigurationSection(key) : null;
+        ConfigurationSection setBonus = setBonusConfiguration != null ? setBonusConfiguration.getConfigurationSection(key) : null;
 
-        ConfigurationSection merged;
-        if (slotted != null) {
-            merged = slotted;
-        } else if (requirement != null) {
-            merged = requirement;
-        } else {
-            // Just return the base if we have no overrides
-            return base;
-        }
-
-        // If we have both slotted and requirement, then we start with slotted and layer over requirement, not overriding
-        if (slotted != null && requirement != null) {
-            ConfigurationUtils.overlayConfigurations(merged, requirement);
-        }
-        // Finally if we have a base, that goes on last (again because not overridding)
-        if (base != null) {
-            ConfigurationUtils.overlayConfigurations(merged, base);
-        }
-        return merged;
+        return ConfigurationUtils.mergeConfigurations(slotted, requirement, setBonus, base);
     }
 
     @Override
@@ -7327,6 +7319,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         if (slottedConfiguration != null && slottedConfiguration.contains(key) && !slottedConfiguration.isConfigurationSection(key)) {
             return slottedConfiguration;
+        }
+        if (setBonusConfiguration != null && setBonusConfiguration.contains(key) && !setBonusConfiguration.isConfigurationSection(key)) {
+            return setBonusConfiguration;
         }
         return super.getPropertyConfiguration(key);
     }
@@ -7354,7 +7349,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (setConfig == null) {
             List<String> setList = getStringList("sets");
             if (setList != null && !setList.isEmpty()) {
-                setConfig = ConfigurationUtils.newConfigurationSection();
+                setConfig = ConfigurationUtils.newSection(configuration);
                 for (String setKey : setList) {
                     setConfig.createSection(setKey);
                 }
@@ -7364,10 +7359,15 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void clearSetBonuses() {
-        // TODO: Implement me, clear set config
+        setBonusConfiguration = null;
     }
 
-    public void applySetBonus(String setKey) {
-        // TODO: Implement me, similar to slotted upgrades
+    public boolean applySetBonus(ConfigurationSection bonusConfig) {
+        if (bonusConfig == null) {
+            return false;
+        }
+        setBonusConfiguration = ConfigurationUtils.newSection(configuration);
+        ConfigurationUtils.overlayConfigurations(setBonusConfiguration, bonusConfig);
+        return true;
     }
 }

@@ -220,6 +220,19 @@ public class ConfigurationUtils extends ConfigUtils {
         return addConfigurations(first, second, false);
     }
 
+    public static ConfigurationSection mergeConfigurations(ConfigurationSection...configs) {
+        ConfigurationSection merged = null;
+        for (ConfigurationSection config : configs) {
+            if (config == null) continue;
+            if (merged == null) {
+                merged = cloneConfiguration(config);
+            } else {
+                ConfigurationUtils.overlayConfigurations(merged, config);
+            }
+        }
+        return merged;
+    }
+
     public static void mergeText(ConfigurationSection first, ConfigurationSection second) {
         for (String key : second.getKeys(true)) {
             // Skip over sections

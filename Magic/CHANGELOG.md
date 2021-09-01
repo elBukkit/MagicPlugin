@@ -2,6 +2,15 @@
 
 # 10.1
 
+## New Features
+
+ - Wand/armor set bonuses
+   - Configure `wand_sets` globally in config.yml
+   - Configure `sets` on each wand piece in the set
+   - Overall or per-item bonuses can be applied once enough set pieces are worn at once
+   - See survival `wizard_armor` set for example
+   - TODO: Wand lore
+
 ## Fixes
 
  - Remove default tick_increase from Projectile action, magic arrows will now take the normal time to despawn
