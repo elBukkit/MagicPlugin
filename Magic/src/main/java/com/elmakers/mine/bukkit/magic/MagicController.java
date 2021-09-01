@@ -2231,7 +2231,7 @@ public class MagicController implements MageController {
         }
         String exampleInstructions = messages.get("examples." + exampleKey + ".instructions", "");
         if (exampleInstructions.isEmpty()) {
-            mage.sendMessage(messages.get("examples.not_found").replace("$example", exampleKey));
+            mage.sendMessage(messages.get("example.not_found").replace("$example", exampleKey));
             return;
         }
         mage.sendMessage(exampleInstructions);
@@ -2251,11 +2251,11 @@ public class MagicController implements MageController {
             }
         }
         if (!instructions.isEmpty()) {
-            mage.sendMessage(messages.get("examples.instructions_header"));
+            mage.sendMessage(messages.get("example.instructions_header"));
             for (String exampleInstructions : instructions) {
                 mage.sendMessage(exampleInstructions);
             }
-            mage.sendMessage(messages.get("examples.instructions_footer"));
+            mage.sendMessage(messages.get("example.instructions_footer"));
         }
     }
 
