@@ -265,6 +265,7 @@ import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
 import com.elmakers.mine.bukkit.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.wand.WandUpgradeSlotTemplate;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
 import com.elmakers.mine.bukkit.warp.WarpController;
 import com.elmakers.mine.bukkit.world.MagicWorld;
@@ -413,7 +414,7 @@ public class MagicController implements MageController {
     MaterialSet climbableMaterials = MaterialSets.empty();
     private @Nonnull
     MaterialSet undoableMaterials = MaterialSets.wildcard();
-    private ConfigurationSection wandSlotConfigurations;
+    private final Map<String, WandUpgradeSlotTemplate> wandSlotTemplates = new HashMap<>();
     private boolean backupInventories = true;
     private int undoQueueDepth = 256;
     private int pendingQueueDepth = 16;
@@ -8029,7 +8030,7 @@ public class MagicController implements MageController {
         CompatibilityLib.getCompatibilityUtils().load(properties);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
-        wandSlotConfigurations = properties.getConfigurationSection("wand_slots");
+        loadWandSlotTemplates(properties.getConfigurationSection("wand_slots"));
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         legacyIconsEnabled = properties.getBoolean("legacy_icons_enabled", legacyIconsEnabled);
         spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
@@ -8665,8 +8666,17 @@ public class MagicController implements MageController {
         return false;
     }
 
+    private void loadWandSlotTemplates(ConfigurationSection configuration) {
+        wandSlotTemplates.clear();
+        if (configuration == null) return;
+        Set<String> keys = configuration.getKeys(false);
+        for (String key : keys) {
+            wandSlotTemplates.put(key, new WandUpgradeSlotTemplate(key, configuration.getConfigurationSection(key)));
+        }
+    }
+
     @Nullable
-    public ConfigurationSection getWandSlotConfiguration(String slotKey) {
-        return wandSlotConfigurations == null ? null : wandSlotConfigurations.getConfigurationSection(slotKey);
+    public WandUpgradeSlotTemplate getWandSlotTemplate(String slotKey) {
+        return wandSlotTemplates.get(slotKey);
     }
 }

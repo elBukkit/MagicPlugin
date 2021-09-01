@@ -14,16 +14,29 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
     private Wand slotted;
 
     public WandUpgradeSlot(MagicController controller, String slotType) {
-        super(controller, slotType);
+        this(controller, slotType, null);
     }
 
-    public WandUpgradeSlot(MagicController controller, String configKey, ConfigurationSection config) {
-        super(controller, configKey, config);
+    public WandUpgradeSlot(MagicController controller, String slotType, ConfigurationSection config) {
+        super(slotType);
+        WandUpgradeSlotTemplate template = controller.getWandSlotTemplate(slotType);
+        if (template != null) {
+            this.setTemplate(template);
+        }
+        if (config != null) {
+            load(controller, config);
+        }
     }
 
-    @Override
+    protected void setTemplate(WandUpgradeSlotTemplate template) {
+        hidden = template.hidden;
+        swappable = template.swappable;
+        replaceable = template.replaceable;
+        defaultSlottedKey = template.defaultSlottedKey;
+    }
+
     protected void load(MagicController controller, ConfigurationSection config) {
-        super.load(controller, config);
+        super.load(config);
         if (defaultSlottedKey != null && !defaultSlottedKey.isEmpty() && slotted == null) {
             slotted = controller.createWand(defaultSlottedKey);
             hasDefaultSlotted = true;
