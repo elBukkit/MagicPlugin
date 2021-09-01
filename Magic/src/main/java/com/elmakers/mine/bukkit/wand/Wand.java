@@ -7348,4 +7348,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public boolean isSwappable() {
         return swappable;
     }
+
+    public ConfigurationSection getSets() {
+        ConfigurationSection setConfig = getConfigurationSection("sets");
+        if (setConfig == null) {
+            List<String> setList = getStringList("sets");
+            if (setList != null && !setList.isEmpty()) {
+                setConfig = ConfigurationUtils.newConfigurationSection();
+                for (String setKey : setList) {
+                    setConfig.createSection(setKey);
+                }
+            }
+        }
+        return setConfig;
+    }
+
+    public void clearSetBonuses() {
+        // TODO: Implement me, clear set config
+    }
+
+    public void applySetBonus(String setKey) {
+        // TODO: Implement me, similar to slotted upgrades
+    }
 }

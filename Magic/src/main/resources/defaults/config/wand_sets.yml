@@ -1,0 +1,6 @@
+# This can be used to set up wands sets
+# When enough wands of a set are worn, they will apply a set bonus
+# The bonuses can be set here (will applied once globally to the player)
+# or in each individual wand, each getting their own bonus when the set
+# is complete.
+wand_sets: {}

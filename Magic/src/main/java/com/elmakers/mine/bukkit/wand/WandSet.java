@@ -1,0 +1,28 @@
+package com.elmakers.mine.bukkit.wand;
+
+import org.bukkit.configuration.ConfigurationSection;
+
+import com.elmakers.mine.bukkit.magic.MagicController;
+
+public class WandSet {
+    private final String key;
+    private Wand bonus;
+    private int requiredCount;
+
+    public WandSet(MagicController controller, String key, ConfigurationSection config) {
+        this.key = key;
+        requiredCount = config.getInt("required");
+        ConfigurationSection bonusConfig = config.getConfigurationSection("bonuses");
+        if (bonusConfig != null) {
+            bonus = new Wand(controller, bonusConfig);
+        }
+    }
+
+    public int getRequiredCount() {
+        return requiredCount;
+    }
+
+    public Wand getBonus() {
+        return bonus;
+    }
+}

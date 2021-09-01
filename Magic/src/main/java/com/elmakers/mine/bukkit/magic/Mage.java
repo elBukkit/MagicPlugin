@@ -127,8 +127,10 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.wand.ActiveWandSet;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandMode;
+import com.elmakers.mine.bukkit.wand.WandSet;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
 
@@ -158,6 +160,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Map<String, MageModifier> modifiers = new HashMap<>();
     private final Map<String, MageModifier> transientModifiers = new HashMap<>();
     private final Map<String, Double> attributes = new HashMap<>();
+    private final Map<String, ActiveWandSet> wandSets = new HashMap<>();
     private ConfigurationSection variables;
     private final Map<String, List<TriggeredSpell>> triggers = new HashMap<>();
     private final Set<String> triggeredSpells = new HashSet<>();
@@ -4280,6 +4283,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    private void countSets(Wand wand, boolean isArmor) {
+        if (wand == null || wand.isWorn() && !isArmor) return;
+        wand.clearSetBonuses();
+        ConfigurationSection sets = wand.getSets();
+        if (sets == null) return;
+        Set<String> keys = sets.getKeys(false);
+        for (String key : keys) {
+            ActiveWandSet wandSet = wandSets.get(key);
+            if (wandSet == null) {
+                wandSet = new ActiveWandSet(key);
+                wandSets.put(key, wandSet);
+            }
+            wandSet.add(wand, sets.getConfigurationSection(key));
+        }
+    }
+
     @Override
     public void updatePassiveEffects() {
         // Do modifiers first, since they could modify attribute values
@@ -4302,6 +4321,30 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
         for (MageModifier modifier : modifiers.values()) {
             addPassiveAttributes(modifier, true);
+        }
+
+        // Count up wand sets to look for bonuses before adding in wand properties
+        wandSets.clear();
+        countSets(activeWand, false);
+        countSets(offhandWand, false);
+        for (Wand armorWand : activeArmor.values()) {
+            countSets(armorWand, true);
+        }
+
+        // Process any set bonuses
+        Wand setBonus = null;
+        for (Map.Entry<String, ActiveWandSet> entry : wandSets.entrySet()) {
+            String setKey = entry.getKey();
+            WandSet setTemplate = controller.getWandSet(setKey);
+            ActiveWandSet activeSet = entry.getValue();
+            if (activeSet.isActive(setTemplate)) {
+                setBonus = setTemplate == null ? null : setTemplate.getBonus();
+                activeSet.applyBonuses();
+            }
+        }
+
+        if (setBonus != null) {
+            addPassiveAttributes(setBonus, true);
         }
 
         if (activeWand != null && !activeWand.isWorn()) {
@@ -4347,6 +4390,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         List<PotionEffectType> currentEffects = new ArrayList<>(effectivePotionEffects.keySet());
         LivingEntity entity = getLivingEntity();
         effectivePotionEffects.clear();
+
+        if (setBonus != null) {
+            addPassiveEffects(setBonus, false);
+        }
 
         addPassiveEffects(properties, true);
         if (activeClass != null) {

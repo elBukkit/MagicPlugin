@@ -263,6 +263,7 @@ import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandManaMode;
 import com.elmakers.mine.bukkit.wand.WandMode;
+import com.elmakers.mine.bukkit.wand.WandSet;
 import com.elmakers.mine.bukkit.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.wand.WandUpgradeSlotTemplate;
@@ -415,6 +416,7 @@ public class MagicController implements MageController {
     private @Nonnull
     MaterialSet undoableMaterials = MaterialSets.wildcard();
     private final Map<String, WandUpgradeSlotTemplate> wandSlotTemplates = new HashMap<>();
+    private final Map<String, WandSet> wandSets = new HashMap<>();
     private boolean backupInventories = true;
     private int undoQueueDepth = 256;
     private int pendingQueueDepth = 16;
@@ -8031,6 +8033,7 @@ public class MagicController implements MageController {
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
 
         loadWandSlotTemplates(properties.getConfigurationSection("wand_slots"));
+        loadWandSets(properties.getConfigurationSection("wand_sets"));
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         legacyIconsEnabled = properties.getBoolean("legacy_icons_enabled", legacyIconsEnabled);
         spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
@@ -8678,5 +8681,19 @@ public class MagicController implements MageController {
     @Nullable
     public WandUpgradeSlotTemplate getWandSlotTemplate(String slotKey) {
         return wandSlotTemplates.get(slotKey);
+    }
+
+    private void loadWandSets(ConfigurationSection configuration) {
+        wandSets.clear();
+        if (configuration == null) return;
+        Set<String> keys = configuration.getKeys(false);
+        for (String key : keys) {
+            wandSets.put(key, new WandSet(this, key, configuration.getConfigurationSection(key)));
+        }
+    }
+
+    @Nullable
+    public WandSet getWandSet(String setKey) {
+        return wandSets.get(setKey);
     }
 }
