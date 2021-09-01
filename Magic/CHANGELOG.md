@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 10.1
+
 # 10.0
 
  - Please see change notes video for important update information: https://youtu.be/Xi6TpnBDgYU
