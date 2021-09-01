@@ -45,6 +45,10 @@ public class ConfigUtils {
         return results;
     }
 
+    public static ConfigurationSection newSection(ConfigurationSection parent) {
+        return newSection(parent, "");
+    }
+
     public static ConfigurationSection newSection(ConfigurationSection parent, String path) {
         if (parent instanceof TranslatingConfigurationSection) {
             return ((TranslatingConfigurationSection)parent).newSection(path);
