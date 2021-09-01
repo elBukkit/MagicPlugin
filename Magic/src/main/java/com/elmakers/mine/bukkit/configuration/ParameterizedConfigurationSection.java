@@ -27,7 +27,7 @@ public class ParameterizedConfigurationSection extends TranslatingConfigurationS
     public int getInt(String path, int def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {
-            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val);
+            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val, path);
         }
         return (val instanceof Number) ? NumberConversions.toInt(val) : def;
     }
@@ -36,7 +36,7 @@ public class ParameterizedConfigurationSection extends TranslatingConfigurationS
     public double getDouble(String path, double def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {
-            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val);
+            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val, path);
         }
         return (val instanceof Number) ? NumberConversions.toDouble(val) : def;
     }
@@ -45,7 +45,7 @@ public class ParameterizedConfigurationSection extends TranslatingConfigurationS
     public long getLong(String path, long def) {
         Object val = get(path, def);
         if (val instanceof String && getRoot() instanceof ParameterizedConfiguration) {
-            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val);
+            val = ((ParameterizedConfiguration)getRoot()).evaluate((String)val, path);
         }
         return (val instanceof Number) ? toLong(val) : def;
     }

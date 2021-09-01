@@ -5,7 +5,9 @@
  - 1.17 entity load fix
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/ed7bba95fc031ca8b89d353426990b4bf7f9372f#src/main/java/org/bukkit/event/world/EntitiesLoadEvent.java
 
- - Wand set bonuses
+ - Wand set bonus lore
+
+ - Drag+drop repair, durability improving-upgrades
 
  - Improve materia absorbing, does rollback give you back weird blocks with NBT data?
    

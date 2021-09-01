@@ -21,6 +21,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
 
     private Options options;
     private String context;
+    private String contextField;
     private Set<String> workingParameters;
 
     protected ParameterizedConfiguration(String context) {
@@ -68,6 +69,14 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
     }
 
     @Nullable
+    protected Double evaluate(String expression, String field) {
+        contextField = field;
+        Double result = evaluate(expression);
+        contextField = null;
+        return result;
+    }
+
+    @Nullable
     protected Double evaluate(String expression) {
         workingParameters = getParameters();
         if (workingParameters == null || workingParameters.isEmpty()) return null;
@@ -81,7 +90,11 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
         transform.setVariableProvider(null);
         Exception ex = transform.getException();
         if (ex != null) {
-            warn("Error evaluating transform in '" + context + "': '" + expression + "': " + ex.getMessage());
+            String thisContext = context == null ? "unknown" : context;
+            if (contextField != null) {
+                thisContext += "." + contextField;
+            }
+            warn("Error evaluating transform in " + thisContext + ": '" + expression + "': " + ex.getMessage());
         }
         return Double.isNaN(value) || Double.isInfinite(value) ? 0 : value;
     }
