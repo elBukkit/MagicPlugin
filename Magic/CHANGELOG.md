@@ -2,11 +2,13 @@
 
 # 9.5
 
+ - Please see change notes video for important update information: https://youtu.be/Xi6TpnBDgYU
+
 ## New Features
 
- - Wand Mechanics re-work, the default survival wand mechanics have changed
+ - Wand Mechanics re-work, the default survival wand mechanics have changed (1.16+)
    - Right-click now cycles the active spell, drop button (Q) toggles spell inventory
-   - 1.16+ has a new 2nd hotbar display when the spell inventory is closed and the player has the resource pack
+   - There is a new 2nd hotbar display when the spell inventory is closed and the player has the resource pack
    - This uses the action bar, but can be reconfigured to a boss bar if there are compatibility issues
    - Wand instructions improved and streamlined, `instructions: false` added to wand config to easily turn them off
    - Wand controls changed to use slot system, so controls can be changed after the fact
@@ -35,18 +37,19 @@
  - MythicMobs support: 
    - Mythic mobs can be referred to by name in any configs or `/mmob` command.
    - Any Magic mob with the same name (key) as a Mythic mob will overlay abilities
-   - Use `mythic_mob` in a magic mob config to make it build on a mythic mob
-   - use `mythic_mob_level` in a config or spawn parameters to set the MM level
+   - Use `mythic_mob: (mob type)` in a magic mob config to make it build on a mythic mob
+   - use `mythic_mob_level: (level)` in a config or spawn parameters to set the MM level
 
  - Improved in-game help system `/mhelp` command
    - Ops or mods with `magic.notify` permission will be prompted to try it
    - Can search through help topics, or navigate with clickable chat links
+   - Please try it out before asking for support!
 
  - Add support for JSON chat component messages, escaped with backticks such as
      ```
      &6Swing &7(&b`{"keybind":"key.attack"}`&7) &fyour &a$wand
      ```
-   - Can be used in wand lore, Message action, action bar and any in-game messages.yml text
+   - Can be used in wand lore, Message action, action bar, boss bar titles and any in-game messages.yml text
 
 ## Fixes
 

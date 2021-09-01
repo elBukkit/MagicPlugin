@@ -2,14 +2,31 @@
 
 # 9.5
 
+ - Please see change notes video for important update information: https://youtu.be/Xi6TpnBDgYU
+
+ - Wand control defaults changed to new cycle mode to support GUI and ease the learning curve
+   Use `/mconfig config wand_slots.controls.default_slotted controls_inventory` to put the default back to the old mode.
+
+ - Crafting recipes changed again, magic heart is gone.
+   Use `/mexample add magicheart` to bring it back.
+
+ - All permission nodes changed to lowercase (magic.) GMs don't seem to care, but let me know if this causes trouble for you!
+
+ - Changed the meaning of the `locked` tag on wands, to match the behavior of items, classes and recipes
+   Removed this tag from all builtin wands
+   The "locked" properyy now makes a wand that can not be used unless the player has a class or modifier that allows it
+   Use "modifiable: false" for the same behavior as "locked: true" used to have
+   If this is a big issue to update, use `/mconfig config old_wand_locked_behavior true`
+   - The `locked_allow_upgrades` option was removed from wands. Please transition to the slotted upgrade system
+     or match up your wand/upgrades via paths
+   - The `magic.wand.override_locked` permission was changed to `magic.wand.override_modifiable`
+   - The `console_bypass_locked_wands` parameter was changed to `console_bypass_modifiable`
+     but should use the old name if present in your configs
+
  - `6` and `7` examples have been removed. If you still need them, please download the configs
    and place them in your `plugins/Magic` folder.
    https://github.com/elBukkit/MagicPlugin/tree/5f3942e89deb758ad0df1fd1bafe53cb2ff8fc30/Magic/src/main/resources/examples/6
    https://github.com/elBukkit/MagicPlugin/tree/a6004374fd857b62e0f83c02c3be8f7c7a6ba015/Magic/src/main/resources/examples/7
-
- - Wand controls changed to new hybrid mode by default.
-   Use `/mconfig config wand_slots.controls.default_slotted controls_inventory` to put the default
-   back to the old mode.
 
  - Wand controls menu has changed to a slotted system. If you have custom wands with the "tweakable" tag and you'd
    still like to be able to change their controls, add `slots: controls,gui,spellmode,swappable` to the wand config.
@@ -17,17 +34,15 @@
  - Arena start/end commands delimiter changed to ; (from ,)
 
  - Wands no longer inherit certain config sections like "attributes" from their classes, nor classes from their parents.
-   
+ 
    This was never intended behavior, I hope this does not mess with anyone's configs but it had to be fixed.
 
    If you want a wand to use certain class parameters, adjust the `storage` property (see `base` class)
    If you want a class to inherit from its parent, use `inherit: ` (as well as `parent: `)
-   
+
  - The `base` class now defines mana as coming specifically from `subclass`. If you have a setup
    with mana shared between classes and inheriting from `base`, you may need to adjust the `storage`
    section to get mana properties from `class`.
-   
- - All permission nodes changed to lowercase (magic.) GMs don't seem to care, but let me know if this causes trouble for you!
 
  - Setting `url_icons_enabled: true` will now force all spell icons to use url skulls, even if it has no url. A
    default icon will be used. This replaces the old behavior of falling back to an item icon.
@@ -35,25 +50,11 @@
    
  - The way magic modifiers are saved was changed, any long-running or permanent (via `/mage modifier add`) modifiers
    will need to be re-applied. I apologize for any inconvenience this causes, let me know if it's a big problem for you.
-
- - Crafting recipes changed again, magic heart is gone. 
-   Use `/mexample add magicheart` to bring it back.
    
  - Changed `mage_update_frequency` default value to 1, for smoother GUI animations
    If you think this will have a performance impact on your server, use 
    `/mconfig config mage_update_frequency 4`
    to change it back
-   
- - Changed the meaning of the `locked` tag on wands, to match the behavior of items, classes and recipes
-   Removed this tag from all builtin wands
-   This now makes a wand that can not be used unless the player has a class or modifier that allows it
-   Use "modifiable: false" for the same behavior as "locked: true" used to have
-   If this is a big issue to update, use `/mconfig config old_wand_locked_behavior true`
-    - The `locked_allow_upgrades` option was removed from wands. Please transition to the slotted upgrade system
-      or match up your wand/upgrades via paths  
-    - The `magic.wand.override_locked` permission was changed to `magic.wand.override_modifiable`
-    - The `console_bypass_locked_wands` parameter was changed to `console_bypass_modifiable` 
-      but should use the old name if present in your configs
       
  - If using some builtin configs but disabled, configs must now be explicitly re-enabled with `enabled: true`
    I am hoping this doesn't affect anyone, the implicit re-enabling was a confusing and hard-to-maintain edge case.
