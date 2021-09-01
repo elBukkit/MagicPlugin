@@ -576,6 +576,8 @@ public interface MageController {
     @Nullable
     Double getWorth(ItemStack item, String currency);
     @Nullable
+    Double getWorth(Material material, String currency);
+    @Nullable
     Double getEarns(ItemStack item);
     @Nullable
     Double getEarns(ItemStack item, String currency);

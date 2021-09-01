@@ -6465,6 +6465,12 @@ public class MagicController implements MageController {
 
     @Nullable
     @Override
+    public Double getWorth(Material material, String inCurrencyKey) {
+        return getWorth(new ItemStack(material), inCurrencyKey);
+    }
+
+    @Nullable
+    @Override
     public Double getWorth(ItemStack item, String inCurrencyKey) {
         Currency toCurrency = getCurrency(inCurrencyKey);
         if (toCurrency == null || toCurrency.getWorth() == 0) {

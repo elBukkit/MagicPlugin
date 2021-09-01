@@ -2,8 +2,11 @@
 
 # 10.1
 
+## Fixes
+
  - Remove default tick_increase from Projectile action, magic arrows will now take the normal time to despawn
    This was done to improve compatibility with server forks that mess with NMS mappings (Purpur)
+ - Fix materia-absorbing to match by block type only  
 
 # 10.0
 
