@@ -8688,7 +8688,11 @@ public class MagicController implements MageController {
         if (configuration == null) return;
         Set<String> keys = configuration.getKeys(false);
         for (String key : keys) {
-            wandSets.put(key, new WandSet(this, key, configuration.getConfigurationSection(key)));
+            try {
+                wandSets.put(key, new WandSet(this, key, configuration.getConfigurationSection(key)));
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "Error processing wand set `" + key + "`, is the config a section?", ex);
+            }
         }
     }
 
