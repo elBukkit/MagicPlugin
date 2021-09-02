@@ -15,6 +15,7 @@ inherit: survival
 # Include only survival spells, but disable them so we can inherit without them being available
 include_inherited:
  - spells
+ - icons
 disable_inherited:
  - spells
 

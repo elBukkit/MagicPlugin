@@ -4,4 +4,5 @@ inherit: survival
 # Don't load anything from survival but spells
 include_inherited:
  - spells
+ - icons
 

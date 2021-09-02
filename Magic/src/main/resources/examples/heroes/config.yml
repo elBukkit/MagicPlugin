@@ -3,6 +3,7 @@ inherit: survival
 
 include_inherited:
  - spells
+ - icons
 
 # Set this to true to add the cooldown timers on skills
 # This will involve scanning players' hotbars all the time, even
