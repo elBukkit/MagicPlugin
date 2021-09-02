@@ -170,7 +170,16 @@ help:
     `<title text="Common Customization">`
     `<li>``<command command="mconfig spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
     `<li>``<command command="mconfig spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
+    `<li>``<command command="mconfig config enable_crafting false" text="Disable all Magic crafting recipes">`
     `<li>``<help topic="donator_shops" text="How to set up a donator shop">`
+    `<li>``<help topic="customize_damage" text="How to customize spell damage">`
+  customize_damage: |-
+    `<title text="Customizing Spell Damage">`
+    `<p>`Customing spell damage can be tricky, most spells that deal damage &blevel up&f to deal more damage.
+    `<p>`In addition, the &7Damage&f action supports separate damage for mobs versus players.
+    `<p>``<command command="meditor spell missile" text="Use the editor to edit a spell">`
+    `<p>`Then look in the &bparameters&f section for damage-related properties.
+    `<p>`Scroll down (TODO: Add all levels to the file..) to find the levelled up version of the spell, and change damage parameters there too.
   donator_shops: |-
     `<title text="Donator Shops">`
     `<p>`&dMagic &fcan be used to set up &bdonator shops&f with a variety of EULA-compliant vanity items.

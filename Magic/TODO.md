@@ -9,6 +9,13 @@
 
  - Drag+drop repair, durability improving-upgrades
 
+ - Editing a spell should edit all levels
+   Merge existing individual level configs when editing
+
+ - Mysterious:
+   Mage class mage': 'allow': Unknown function or variable 'allow' at pos 0 in expression 'allow'
+   Try giving yourself a disabled spell? Or give it then disable it?
+
  - Improve materia absorbing, does rollback give you back weird blocks with NBT data?
    
  - AzureBluet would like yaw/pitch (including target_) as attributes
