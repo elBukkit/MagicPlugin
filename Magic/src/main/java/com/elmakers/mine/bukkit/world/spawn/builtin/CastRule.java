@@ -73,7 +73,7 @@ public class CastRule extends SpawnRule {
         }
         boolean casted = false;
         for (CastSpell spell : spells) {
-            if (spell.isEmpty()) {
+            if (spell == null || spell.isEmpty()) {
                 SpawnResult result = spell.getSpawnResult();
                 if (result != SpawnResult.SKIP) {
                     return result;

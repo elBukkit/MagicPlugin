@@ -76,6 +76,7 @@ public class ReplaceRule extends SpawnRule {
         if (replaceProbability != null) {
             option = RandomUtils.weightedRandom(replaceProbability);
         }
+        if (option == null) return SpawnResult.SKIP;
         if (option.getType() == SpawnResult.REPLACE) {
             EntityData replacement = option.getReplacement();
 
