@@ -431,6 +431,7 @@ commands:
         /mconfig language FR
         /mconfig language EN
   "meditor":
+    aliases: [/meditor]
     description: Launch a web editor (alias for /mconfig editor)
     permission: magic.commands.mconfig.editor
     usage: |
@@ -438,6 +439,7 @@ commands:
       /meditor spell missile
       /meditor mob warlock
   "mexample":
+    aliases: [/mexample]
     description: Add or remove magic examples (alias for /mconfig example)
     permission: magic.commands.mconfig.example
     usage: |
@@ -445,6 +447,7 @@ commands:
       /mexample set survival robes
       /mexample remove stars
   "mhelp":
+    aliases: [/mhelp]
     description: Interactive help with magic
     permission: magic.commands.magic.help
     usage: |
@@ -452,6 +455,7 @@ commands:
       /mhelp wands
       /mhelp resource pack
   magic:
+    aliases: [/magic]
     description: Administer the Magic plugin
     permission: magic.commands.magic
     usage: |
@@ -532,6 +536,7 @@ commands:
         /magic give material stone
         /magic give upgrade apprentice
   mage:
+    aliases: [/mage]
     description: Configure or inspect Magic player data
     permission: magic.commands.mage
     usage: |
@@ -934,6 +939,7 @@ commands:
     usage: /msave <Player> [command to run]
     permission: magic.commands.msave
   mwarp:
+    aliases: [/mwarp]
     description: Create and manage warps
     usage: |
         Use /help mwarp [subcommand] for more information
