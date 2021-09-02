@@ -547,7 +547,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         newSession.setMagicVersion(getMagicVersion());
         newSession.setMinecraftVersion(CompatibilityLib.getServerVersion(api.getPlugin()));
 
-        if ((editorType.equals("config") || editorType.equals("messages")) && parameters.length == 1) {
+        if ((editorType.equals("config") || editorType.equals("messages")) && parameters.length <= 1) {
             File pluginFolder = api.getPlugin().getDataFolder();
             File targetFile = new File(pluginFolder, editorType + ".yml");
             if (targetFile.exists()) {
