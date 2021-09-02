@@ -309,7 +309,7 @@ public class MobController implements Listener, ChunkLoadListener {
 
         if (target == null) {
             com.elmakers.mine.bukkit.api.entity.EntityData mageMob = mage.getEntityData();
-            if (!mageMob.isRelentless()) {
+            if (mageMob != null && !mageMob.isRelentless()) {
                 return;
             }
         }
