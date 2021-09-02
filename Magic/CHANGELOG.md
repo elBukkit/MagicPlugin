@@ -21,6 +21,7 @@
 # 10.0.1
 
  - Fix empty wand (broomstick) slot lore not using name from messages
+ - Fix camo armor coloring other armor worn at the same time
 
 # 10.0
 

@@ -392,31 +392,20 @@ camoarmor:
         b: current_b
   parameters:
     target: self
-    slots:
-    - helmet
-    - main_hand
-    - off_hand
-    - chestplate
-    - helmet
-    - leggings
-    - boots
+    color_wand: true
 
 camochestplate:
   inherit: camoarmor
   icon: "leather_chestplate:#random"
-  color_wand: true
 
 camoleggings:
   inherit: camoarmor
   icon: "leather_leggings:#random"
-  color_wand: true
 
 camoboots:
   inherit: camoarmor
   icon: "leather_boots:#random"
-  color_wand: true
 
 camohelmet:
   inherit: camoarmor
   icon: "leather_helmet:#random"
-  color_wand: true
