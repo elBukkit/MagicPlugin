@@ -2,6 +2,6 @@ camochestplate:
     icon: "leather_chestplate:#random"
     indestructible: false
     keep: true
-    cast_spell: biomechestplate
+    cast_spell: camochestplate
     cast_interval: 100
     passive: true
