@@ -2062,14 +2062,16 @@ public class MagicController implements MageController {
         loading = false;
 
         // Register managers from other plugins
-        logger.setContext("registerManagers");
+        logger.setContext("register managers");
         registerManagers();
 
         // Activate/load any active player Mages
+        logger.setContext("reactivate players");
         Collection<? extends Player> allPlayers = plugin.getServer().getOnlinePlayers();
         for (Player player : allPlayers) {
             getMage(player);
         }
+        logger.setContext(null);
 
         if (!(sender instanceof ConsoleCommandSender)) {
             getLogger().info("Finished loading configuration");
@@ -2192,21 +2194,27 @@ public class MagicController implements MageController {
     private void registerProviders() {
         // Attribute providers
         if (skillAPIManager != null) {
+            logger.setContext("skillapi");
             registerAttributes(skillAPIManager);
         }
         if (heroesManager != null) {
+            logger.setContext("heroes");
             registerAttributes(heroesManager);
         }
         if (aureliumSkillsManager != null && aureliumSkillsManager.useAttributes()) {
+            logger.setContext("aureliumskills");
             registerAttributes(aureliumSkillsManager);
         }
         if (mythicMobManager != null) {
+            logger.setContext("mythicmobs");
             mobs.registerMythicMobs(mythicMobManager.getMobKeys());
         }
+        logger.setContext("validate mobs");
         mobs.validate();
 
         // Requirements providers
         if (skillAPIManager != null) {
+            logger.setContext("skillapi");
             requirementProcessors.put("skillapi", skillAPIManager);
         }
 
@@ -2581,12 +2589,17 @@ public class MagicController implements MageController {
             getLogger().info("Magic did not load properly, skipping data load");
             return;
         }
+        logger.setContext("load spell data");
         loadSpellData();
+        logger.setContext("load lost wands");
         loadLostWands();
+        logger.setContext("load magic blocks");
         loadMagicBlocks();
+        logger.setContext("load NPCs");
         loadNPCs();
 
         // Load URL Map Data
+        logger.setContext("load image maps");
         try {
             maps.resetAll();
             maps.loadConfiguration();
@@ -2596,16 +2609,19 @@ public class MagicController implements MageController {
 
         ConfigurationSection warps = loadDataFile(WARPS_FILE);
         if (warps != null) {
+            logger.setContext("load warps");
             warpController.load(warps);
             info("Loaded " + warpController.getCustomWarps().size() + " warps");
         }
 
         ConfigurationSection arenas = loadDataFile(ARENAS_FILE);
         if (arenas != null) {
+            logger.setContext("load arenas");
             arenaController.loadArenas(arenas);
             info("Loaded arena data");
         }
 
+        logger.setContext(null);
         getLogger().info("Finished loading data.");
         dataLoaded = true;
     }
