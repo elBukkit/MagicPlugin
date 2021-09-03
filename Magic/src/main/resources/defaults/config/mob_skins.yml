@@ -1,7 +1,7 @@
 # These are player skins that represent mobs. Some are provided here
 # as official Mojang skins, but more can be added.
 mob_skins:
-  bat: MHF_Bat
+  bat: http://textures.minecraft.net/texture/6681a72da7263ca9aef066542ecca7a180c40e328c0463fcb114cb3b83057552
   bee: MHF_Bee
   blaze: MHF_Blaze
   cat: http://textures.minecraft.net/texture/6b253fc6b656988453a2d7138fca4d1f2752f47691f0c434e432183771cfe1
