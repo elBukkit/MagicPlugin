@@ -870,6 +870,14 @@ spells:
         cast: CLICK!
         cast_self: Selfie!
         cooldown: Camera is charging up
+    camera3d:
+        name: 3-D Camera
+        description: Take a 3-D portrait of yourself or others
+        cast_target: You print a model of $target
+        fail: Failed to create model
+        cast: CLICK!
+        cast_self: Selfie!
+        cooldown: 3-D Camera is charging up
     tornado:
         name: Tornado
         description: Spawn a destructive whirlwind

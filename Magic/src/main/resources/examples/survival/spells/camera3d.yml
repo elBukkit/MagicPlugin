@@ -1,13 +1,14 @@
-camera:
+camera3d:
     # This refers to an icon defined in the icons folder/config
     icon: camera
     hidden: true
     category: specialty
-    class: CameraSpell
-    worth: 80
     show_undoable: false
+    actions:
+      cast:
+        - class: DropSkull
     effects:
-        cast:
+      cast:
         - particle: smoke_large
           particle_count: 20
           particle_offset_x: 0.15
@@ -24,14 +25,14 @@ camera:
           relative_offset: 0.8,-0.8,-0.4
           location: origin
     parameters:
-        target_type: LivingEntity
-        target_npc: true
-        target_game_modes: all
-        cooldown: 5000
-        allow_max_range: false
-        range: 32
-        bypass_pvp: true
-        bypass_protection: true
+      target: any
+      range: 32
+      target_type: LivingEntity
+      target_game_modes: all
+      bypass_protection: true
+      bypass_pvp: true
+      target_npc: true
+      cooldown: 5000
+      drop_at_source: true
     costs:
-        paper: 1
-
+      clay_ball: 1

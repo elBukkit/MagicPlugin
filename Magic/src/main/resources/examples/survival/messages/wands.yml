@@ -109,6 +109,9 @@ wands:
     camera:
         name: Camera
         description: Take a portrait of yourself or others
+    camera3d:
+        name: 3-D Camera
+        description: Print a 3-D model of someone's head
     magichat:
         name: Magic Hat
         description: A true wizard's hat! Look straight up and right-click to wear it.

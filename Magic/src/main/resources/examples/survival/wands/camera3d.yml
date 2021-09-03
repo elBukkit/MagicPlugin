@@ -1,14 +1,13 @@
-camera:
+camera3d:
     mode: cast
-    active_spell: camera
+    active_spell: camera3d
     icon: skull:http://textures.minecraft.net/texture/e49b4f3261328c05350ee4031212d2fc7555f211af91c0f0278a5aaf9cec65
     indestructible: false
     effect_color: '888888'
     xp_display: cooldown
     spells:
-    - camera
+    - camera3d
     lore:
     - $description
     - "&3Takes 5 seconds to charge"
-    - "&bRequires 1 &fPaper"
-
+    - "&bRequires 1 &fClay Ball"
