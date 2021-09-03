@@ -298,7 +298,7 @@ public class MagicController implements MageController {
             "armor",  "luck",
             "knockback_resistance", "movement_speed",
             "attack_damage",
-            "location_x", "location_y", "location_z",
+            "location_x", "location_y", "location_z", "yaw", "pitch",
             "temperature", "humidity",
             "time", "moon",
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
@@ -310,6 +310,7 @@ public class MagicController implements MageController {
             "target_health", "target_health_max",
             "target_armor", "target_luck", "target_knockback_resistance",
             "target_location_x", "target_location_y", "target_location_z",
+            "target_yaw", "target_pitch",
             "target_mana", "target_mana_max",
             "target_air", "target_air_max", "target_hunger", "target_fall_distance",
             "target_humidity", "target_temperature"

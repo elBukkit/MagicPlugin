@@ -7,9 +7,7 @@
 
  - Finish wand set bonus lore ... individual property lore looks like
    it's gonna turn into a whole thing
-
- - Drag+drop repair, durability improving-upgrades
-
+   
  - Editing a spell should edit all levels
    Merge existing individual level configs when editing
 
@@ -18,22 +16,17 @@
    Try giving yourself a disabled spell? Or give it then disable it?
 
  - Improve materia absorbing, does rollback give you back weird blocks with NBT data?
-   
- - AzureBluet would like yaw/pitch (including target_) as attributes
 
  - What is causing the "recall got to doTeleport without waypoint" error?
 
  - Add require_resource_pack option with customizable kick message
 
- - Fix swappable icons in legacy Minecraft, maybe turn all
-   icon_ items into icons?
-
  - Check bowcaster
-
- - Check 1.16 and 1.9 again, item lore and controlsmenu in particular
-  
+ 
  - Still need to explain: All the zombies on my demo server seem to be named...
    or are these left over from mooses?
+   
+ - Ultimate Clans V3 support ... it's premium, says it has an API but I can't find any docs
    
 # Optimization
 

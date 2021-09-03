@@ -22,6 +22,7 @@
 ## Additions
 
  - Added craftable "Robe Patch" item to robes configs, for repairing robes
+ - Add yaw/pitch (and target_yaw,target_pitch) attributes
 
 # 10.0.2
 
