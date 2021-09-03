@@ -4714,7 +4714,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (!isModifiable() && !isUpgrade && currency == null) return false;
         if (isUpgrade) {
             Wand upgradeWand = controller.createWand(item);
-            
+
             // Check for upgrades that only apply to specific wands
             List<String> appliesTo = upgradeWand.getStringList("upgrades");
             if (appliesTo != null && !appliesTo.isEmpty() && !appliesTo.contains(getTemplateKey())) {

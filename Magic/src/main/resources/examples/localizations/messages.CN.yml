@@ -138,7 +138,7 @@ commands:
           &r&b清除了添加的示例
         clear: |-
           &b清除基础示例.&f
-          &r&b如果你已经添加了需要移除的示例,请使用 &g/mconfig example remove all&b 
+          &r&b如果你已经添加了需要移除的示例,请使用 &g/mconfig example remove all&b
     disable:
       usage: '&c用法: /mconfig disable [$options] [key]'
       nokey: '&c不可用的种类: $type, 不可用的配置项: $options'
@@ -196,7 +196,7 @@ commands:
       fail: '&c不能添加修改r &3$name &f到 &6$player, &f或许已经添加了?'
       invalid: '&c不可用的时效: &4$input'
     remove:
-      success: 从 &6$player &f处移除了修改 &3$name 
+      success: 从 &6$player &f处移除了修改 &3$name
       fail: '从 &6$player &f处&c移除修改 &3$name 失败,&f或许已经不存在了?'
   getrp:
     auto: 你会在登陆时自动接受到资源包
@@ -284,7 +284,7 @@ item:
   remove_unplaceable: 此物品禁止重新放置的设置已被删除
   no_enchants: 此物品无附魔
   no_enchant: 此物品不存在附魔 $enchant
-  enchant_removed: 清除了附魔 $enchant 
+  enchant_removed: 清除了附魔 $enchant
   enchant_added: '添加了附魔: $enchant 到手上物品'
   enchant_not_added: '并没有添加附魔: $enchant 到手上物品'
   enchant_unsafe: 你没有权限添加不安全的附魔
@@ -685,27 +685,27 @@ spells:
   arrow_light:
     name: 光之箭
     description: 发射一支纯净的光之箭
-    cast_player_message: a:$player 对你发射了 $spell 
+    cast_player_message: a:$player 对你发射了 $spell
   arrow_bomb:
     name: 爆炸箭
     description: 发射一支爆炸箭
-    cast_player_message: a:$player 对你发射了 $spell 
+    cast_player_message: a:$player 对你发射了 $spell
   arrow_poison:
     name: 毒之箭
     description: 发射一支散发着毒物的箭
-    cast_player_message: a:$player 对你发射了 $spell 
+    cast_player_message: a:$player 对你发射了 $spell
   arrow_regular:
     name: 普通箭
     description: 发射一支平平无奇箭
-    cast_player_message: a:$player 对你发射了 $spell 
+    cast_player_message: a:$player 对你发射了 $spell
   arrow_blink:
     name: 闪现箭
     description: 发射且传送到箭矢落地的位置
-    cast_player_message: a:$player 对你发射了 $spell 
+    cast_player_message: a:$player 对你发射了 $spell
   arrow_fire:
     name: 火之箭
     description: 在落地处引发火
-    cast_player_message: a:$player 对你发射了 $spell 
+    cast_player_message: a:$player 对你发射了 $spell
   arrow_ice:
     name: 冰之箭
     description: 冻结落地处区域
@@ -713,11 +713,11 @@ spells:
   arrow_shock:
     name: 震爆箭
     description: 让你的目标触电
-    cast_player_message: a:$player 对你发射了 $spell 
+    cast_player_message: a:$player 对你发射了 $spell
   arrow_grapple:
     name: 钩爪箭
     description: 发射箭并且会把目标朝你的位置拉
-    cast_player_message: a:$player 对你发射了 $spell 
+    cast_player_message: a:$player 对你发射了 $spell
   toss:
     name: 投掷
     description: 投掷一个方块
@@ -1094,7 +1094,7 @@ spells:
   blob:
     name: 涂抹
     description: 抹上一些什么
-    cast_finish: 抹上了 @blocks 个 $material 材质的方块 
+    cast_finish: 抹上了 @blocks 个 $material 材质的方块
   blob|2:
     upgrade_description: 现在用粘土了
   blob|3:
@@ -1104,7 +1104,7 @@ spells:
   walls:
     name: 墙
     description: 在你的目标周围造墙
-    cast_finish: 填充 @blocks 个 $material 材质的方块 
+    cast_finish: 填充 @blocks 个 $material 材质的方块
   tendril:
     name: 卷须
     description: 召唤黑暗能量的卷须
@@ -1144,7 +1144,7 @@ spells:
   blink|4:
     upgrade_description: 提高距离,可以从地下传上来
   blink|5:
-    upgrade_description: 提高距离,可以穿透固体物 
+    upgrade_description: 提高距离,可以穿透固体物
   blink|6:
     upgrade_description: 可以传到空气中
   hat:
@@ -1351,13 +1351,10 @@ spells:
     add_friend: '&b你已经添加了 &5$name &b作为 &6回传位置!'
     remove_friend: '&c已删除了 &5$name &c,不再作为&6回传位置!'
     invalid_description: |2-
-
       &c此位置不可用
     unavailable_description: |2-
-
       &e升级以解锁
     unavailable_warp_description: |2-
-
       &e已找到此位置以解锁!
     unavailable_name: '&c$name'
   recall|2:
@@ -1441,7 +1438,7 @@ spells:
   missile:
     name: 魔法导弹
     description: 发射纯粹的魔法弹
-    cast_target: a:你的导弹对 $target 造成了 @damage_dealt 
+    cast_target: a:你的导弹对 $target 造成了 @damage_dealt
     cast_player_message: a:$caster 通过 $spell 对你造成了 @damage_dealt 伤害
     cast: 你发射导弹
     no_target: 你发射导弹
@@ -1610,7 +1607,7 @@ spells:
   tracking:
     name: 追踪
     description: 追踪最近的实体
-    cast: 你探知到了 $target 
+    cast: 你探知到了 $target
     no_target: 附近真是安静!
     upgrade_description: 更远的搜查范围
   tracking|4:
@@ -1709,7 +1706,7 @@ spells:
     title: 轨迹 ($balance&0)
     selected: 你切换到了 $item
     not_applicable: 你已经拥有 $item
-    remove_trails: 删除当前轨迹    
+    remove_trails: 删除当前轨迹
   appearanceshop:
     name: 法杖外观
     description: 修改法杖外观
@@ -1774,11 +1771,11 @@ spells:
     cost_lore: 取款 $cost
     deducted: '&d&o你取款&r&a$cost'
     title: '&5存款机 &7(&2$balance&7)'
-    selected: ''    
+    selected: ''
   spshop:
     name: SP商店
     description: 把钱换成法术点
-   title: Spell Points   
+   title: Spell Points
   lootshop:
     name: 战利品商店
     description: 通过出售怪物掉落物换钱
@@ -2059,7 +2056,7 @@ spells:
     price_75_label: 将价格调整至 75%
     price_100_label: 将价格调整至 100%
     price_125_label: 将价格调整至 125%
-    price_150_label: 将价格调整至 150%    
+    price_150_label: 将价格调整至 150%
     confirm_title: $item
     selected_free: ''
     title: 商店管理
@@ -2084,7 +2081,7 @@ spells:
   warp:
     name: 地标
     description: 用于命令或施法配置,例如"/cast warp"
-      warp castle"  
+      warp castle"
 time:
   wait_seconds: $seconds 秒
   wait_minutes: $minutes 分钟
@@ -2256,7 +2253,7 @@ wand:
     aqua_affinity: 水下速掘
     quick_charge: 快速装填
     piercing: 穿透
-    soul_speed: 灵魂疾行   
+    soul_speed: 灵魂疾行
   potion_effect: '&b$effect $roman'
   super_powered: '&3超级充能'
   super_protected: '&3无敌'
@@ -2429,12 +2426,12 @@ wands:
     name: 大师法杖
     description: 演示用
       &c仅用于演示!
-      &e此法杖代表了一位收集齐所有大师法术的生存玩家.   
+      &e此法杖代表了一位收集齐所有大师法术的生存玩家.
   student:
     name: 学徒法杖
     description: 演示用
       &c仅用于演示!
-      &e此法杖代表了一位收集齐所有学徒法术的生存玩家.   
+      &e此法杖代表了一位收集齐所有学徒法术的生存玩家.
   apprentice:
     name: 新手法杖
     description: 演示用
@@ -2444,7 +2441,7 @@ wands:
     name: 弓箭手弓
     description: |-
       &c仅用于演示!!
-      &e此法杖代表了一位收集齐所有弓箭手法术的生存玩家.    
+      &e此法杖代表了一位收集齐所有弓箭手法术的生存玩家.
   rage:
     name: 怒火之剑
     description: 攻击敌人积攒能量
@@ -2692,7 +2689,7 @@ wands:
     description: 开启则显示所有法术的粒子
   noparticles:
     name: 隐藏粒子
-    description: 关闭则隐藏所有法术的粒子 
+    description: 关闭则隐藏所有法术的粒子
   quickcast_enable:
     name: 快速释放 (所有)
     description: 开启所有法术的快速释放
@@ -2884,7 +2881,7 @@ wands:
     name: 迷彩护腿
     spell_aura: ''
   camoboots:
-    name: 迷彩靴子    
+    name: 迷彩靴子
     spell_aura: ''
   iceskates:
     name: 溜冰鞋
@@ -3095,7 +3092,7 @@ classes:
     description: 好尖!
   crown:
     name: 皇冠
-    description: 你怎样都尊贵  
+    description: 你怎样都尊贵
 items:
   emerald_sword:
     name: 绿宝石剑
@@ -3106,7 +3103,7 @@ items:
   coffee2:
     name: Espresso
   coffee3:
-    name: Double Espresso    
+    name: Double Espresso
 kits:
   admin:
     name: 管理员工具包
@@ -3240,7 +3237,7 @@ mobs:
   atm:
     name: 存款机
   marigold:
-    name: '&6金盏花'    
+    name: '&6金盏花'
 modifiers:
   antiknockback:
     name: 防击退
