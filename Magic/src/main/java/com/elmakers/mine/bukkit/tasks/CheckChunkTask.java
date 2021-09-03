@@ -23,8 +23,22 @@ public class CheckChunkTask implements Runnable {
     @Override
     public void run() {
         // Ignore the event if the chunk already unloaded
-        if (this.chunk.isLoaded()) {
-            listener.onChunkLoad(this.chunk, getEntityList(chunk));
+        if (chunk.isLoaded()) {
+            call(listener, chunk);
+        }
+    }
+
+    protected static void call(ChunkLoadListener listener, Chunk chunk) {
+        call(listener, chunk, true);
+    }
+
+    protected static void call(ChunkLoadListener listener, Chunk chunk, boolean checkEntities) {
+        listener.onChunkLoad(chunk);
+        if (checkEntities) {
+            List<Entity> entityList = getEntityList(chunk);
+            if (entityList != null) {
+                listener.onEntitiesLoaded(chunk, entityList);
+            }
         }
     }
 
@@ -41,16 +55,21 @@ public class CheckChunkTask implements Runnable {
         // Wait until everything is loaded before we process these chunks
         if (!controller.isDataLoaded()) {
             // MagicController waits 2 ticks, so we'll wait a bit longer.
+            // TODO: What happens with entities here in 1.17?
             defer(controller.getPlugin(), listener, chunk, 5);
         } else {
             if (CompatibilityLib.hasDeferredEntityLoad()) {
                 // If we don't have the entities loaded event we need to wait 2 seconds to check this chunk
                 if (!CompatibilityLib.hasEntityLoadEvent()) {
                     defer(controller.getPlugin(), listener, chunk, 20 * 2);
+                } else {
+                    // We'll skip looking for entities here since we need to wait for the entities load
+                    // event, but we *will* trigger the chunk check right away
+                    call(listener, chunk, false);
                 }
             } else {
                 // If this is pre-1.17 the entities will be in the chunk already, so load them now
-                listener.onChunkLoad(chunk, getEntityList(chunk));
+                call(listener, chunk);
             }
         }
     }

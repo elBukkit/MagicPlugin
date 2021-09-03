@@ -51,8 +51,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
     }
 
     @Override
-    public void onChunkLoad(Chunk chunk, List<Entity> entities) {
-        if (entities == null) return;
+    public void onEntitiesLoaded(Chunk chunk, List<Entity> entities) {
         MagicWorld magicWorld = controller.getWorld(chunk.getWorld().getName());
         if (magicWorld == null) return;
 

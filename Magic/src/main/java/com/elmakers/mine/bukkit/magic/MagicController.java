@@ -8730,9 +8730,9 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public void onChunkLoaded(Chunk chunk, List<Entity> entities) {
-        blockController.onChunkLoad(chunk, entities);
-        mobs.onChunkLoad(chunk, entities);
-        worldController.onChunkLoad(chunk, entities);
+    public void onEntitiesLoaded(Chunk chunk, List<Entity> entities) {
+        blockController.onEntitiesLoaded(chunk, entities);
+        mobs.onEntitiesLoaded(chunk, entities);
+        worldController.getSpawnListener().onEntitiesLoaded(chunk, entities);
     }
 }

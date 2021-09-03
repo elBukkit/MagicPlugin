@@ -16,6 +16,6 @@ public class EntityLoadEventHandler implements Listener {
 
     @EventHandler(ignoreCancelled = true, priority = EventPriority.HIGHEST)
     public void onEntitiesLoadEvent(EntitiesLoadEvent event) {
-        controller.onChunkLoaded(event.getChunk(), event.getEntities());
+        controller.onEntitiesLoaded(event.getChunk(), event.getEntities());
     }
 }

@@ -543,9 +543,13 @@ public class BlockController implements Listener, ChunkLoadListener {
     }
 
     @Override
-    public void onChunkLoad(Chunk chunk, List<Entity> entities) {
-        controller.resumeMagicBlocks(chunk);
+    public void onEntitiesLoaded(Chunk chunk, List<Entity> entities) {
         controller.restoreNPCs(chunk, entities);
+    }
+
+    @Override
+    public void onChunkLoad(Chunk chunk) {
+        controller.resumeMagicBlocks(chunk);
     }
 
     @EventHandler

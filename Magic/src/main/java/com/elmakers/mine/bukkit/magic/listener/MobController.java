@@ -142,8 +142,7 @@ public class MobController implements Listener, ChunkLoadListener {
     }
 
     @Override
-    public void onChunkLoad(Chunk chunk, List<Entity> entities) {
-        if (entities == null) return;
+    public void onEntitiesLoaded(Chunk chunk, List<Entity> entities) {
         for (Entity entity : entities) {
             // Check for disconnected NPCs, we don't want to leave invulnerable entities around
             boolean removed = false;
