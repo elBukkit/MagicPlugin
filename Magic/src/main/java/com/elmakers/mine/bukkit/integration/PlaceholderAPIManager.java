@@ -46,6 +46,8 @@ public class PlaceholderAPIManager extends PlaceholderExpansion {
         String replacement = controller.getMessages().getIfSet("placeholders." + placeholder);
         if (replacement == null && mage instanceof Replacer) {
             replacement = ((Replacer)mage).getReplacement(placeholder, true);
+        } else if (replacement != null) {
+            replacement = mage.parameterize(replacement);
         }
         return replacement == null ? "" : replacement;
     }
