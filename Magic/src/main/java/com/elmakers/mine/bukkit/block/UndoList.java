@@ -585,6 +585,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
         if (blocking) {
             forceSynchronous = true;
+            speed = 0;
         }
 
         Batch batch = getBatch();
@@ -1312,5 +1313,8 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
 
     public void setSynchronous(boolean sync) {
         forceSynchronous = sync;
+        if (sync) {
+            speed = 0;
+        }
     }
 }
