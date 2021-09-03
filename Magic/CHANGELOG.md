@@ -18,6 +18,8 @@
    This was done to improve compatibility with server forks that mess with NMS mappings (Purpur)
  - Fix materia-absorbing to match by block type only  
 
+# 10.0.2
+
 # 10.0.1
 
  - Fix empty wand (broomstick) slot lore not using name from messages
