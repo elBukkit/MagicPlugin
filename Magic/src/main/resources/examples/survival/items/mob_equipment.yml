@@ -101,6 +101,6 @@ archer_bow:
       ==: ItemMeta
       meta-type: UNSPECIFIC
       Unbreakable: true
-      display-name: §aMagic Bow
+      display-name: §aArcher Bow
       lore:
       - It has lost its power
