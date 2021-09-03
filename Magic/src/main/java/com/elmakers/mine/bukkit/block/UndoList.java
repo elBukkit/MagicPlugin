@@ -527,7 +527,10 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         BlockData blockData = getFirst();
         Block block = blockData.getBlock();
         if (forceSynchronous && !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) {
-            block.getChunk().load();
+            if (!block.getChunk().load()) {
+                controller.getLogger().warning("Could not force-load chunk to fast-forward undo of block at " + block.getLocation());
+                return blockData;
+            }
         } else if (!CompatibilityLib.getCompatibilityUtils().checkChunk(blockData.getWorldLocation())) {
             // Skip through this undo if we need to start loading chunks
             speed = 0;
