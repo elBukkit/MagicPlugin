@@ -4,6 +4,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.inventory.ItemStack;
@@ -17,6 +18,14 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class DropSkullAction extends BaseSpellAction
 {
+    private boolean dropAtSource = false;
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        dropAtSource = parameters.getBoolean("drop_at_source");
+    }
+
     @Override
     public SpellResult perform(CastContext context)
     {
@@ -37,30 +46,21 @@ public class DropSkullAction extends BaseSpellAction
         LivingEntity li = (LivingEntity)targetEntity;
         String itemName = CompatibilityLib.getDeprecatedUtils().getDisplayName(li) + " Head";
 
-        dropHead(context, targetEntity, itemName);
+        Location location;
+        if (dropAtSource) {
+            location = context.getEyeLocation();
+        } else {
+            location = targetEntity instanceof LivingEntity ? ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
+        }
+        dropHead(context, targetEntity, location, itemName);
 
         return SpellResult.CAST;
     }
 
-    protected void dropHead(MageController controller, Location location, String ownerName, String itemName) {
-        controller.getSkull(ownerName, itemName, new ItemUpdatedCallback() {
-            @Override
-            public void updated(@Nullable ItemStack itemStack) {
-                if (!CompatibilityLib.getItemUtils().isEmpty(itemStack)) {
-                    location.setX(location.getX() + 0.5);
-                    location.setY(location.getY() + 0.5);
-                    location.setZ(location.getZ() + 0.5);
-                    location.getWorld().dropItemNaturally(location, itemStack);
-                }
-            }
-        });
-    }
-
-    protected void dropHead(CastContext context, Entity entity, String itemName) {
+    protected void dropHead(CastContext context, Entity entity, Location location, String itemName) {
         context.getController().getSkull(entity, itemName, new ItemUpdatedCallback() {
             @Override
             public void updated(@Nullable ItemStack itemStack) {
-                Location location = entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
                 location.getWorld().dropItemNaturally(location, itemStack);
             }
         });
