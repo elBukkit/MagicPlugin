@@ -43,7 +43,7 @@ public class PlaceholderAPIManager extends PlaceholderExpansion {
     @Override
     public String onPlaceholderRequest(Player player, String placeholder) {
         Mage mage = controller.getMage(player);
-        String replacement = controller.getMessages().get("placeholders." + placeholder);
+        String replacement = controller.getMessages().getIfSet("placeholders." + placeholder);
         if (replacement == null && mage instanceof Replacer) {
             replacement = ((Replacer)mage).getReplacement(placeholder, true);
         }

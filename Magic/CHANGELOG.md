@@ -23,6 +23,7 @@
  - Fix empty wand (broomstick) slot lore not using name from messages
  - Fix camo armor coloring other armor worn at the same time
  - Fix spells all having broken icons if using bending, potter or stars configs without survival loaded
+ - Fix PlaceholderAPI placeholders
 
 # 10.0
 
