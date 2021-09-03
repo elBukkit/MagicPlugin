@@ -28,6 +28,7 @@
 # 10.0.2
 
  - Fix photos of a bat being a green apple or something
+ - Fix wands from 10.0 dev build having a broken GUI until using the controls menu
 
 # 10.0.1
 

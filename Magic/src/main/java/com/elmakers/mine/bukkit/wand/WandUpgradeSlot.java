@@ -23,9 +23,7 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
         if (template != null) {
             this.setTemplate(template);
         }
-        if (config != null) {
-            load(controller, config);
-        }
+        load(controller, config);
     }
 
     protected void setTemplate(WandUpgradeSlotTemplate template) {
@@ -36,7 +34,9 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
     }
 
     protected void load(MagicController controller, ConfigurationSection config) {
-        super.load(config);
+        if (config != null) {
+            super.load(config);
+        }
         if (defaultSlottedKey != null && !defaultSlottedKey.isEmpty() && slotted == null) {
             slotted = controller.createWand(defaultSlottedKey);
             hasDefaultSlotted = true;
@@ -51,6 +51,12 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
         return slotted;
     }
 
+    protected void setSlotted(Wand upgrade) {
+        String slottedKey = upgrade.getKey();
+        hasDefaultSlotted = defaultSlottedKey != null && defaultSlottedKey.equals(slottedKey);
+        slotted = upgrade;
+    }
+
     public boolean addSlotted(Wand upgrade, Mage mage) {
         String slotType = upgrade.getSlot();
         if (slotType == null || slotType.isEmpty() || this.slotType == null) {
@@ -59,17 +65,19 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
         if (!slotType.equals(this.slotType)) {
             return false;
         }
+        String slottedKey = upgrade.getKey();
+        if (slotted != null && slotted.getKey().equals(slottedKey)) {
+            return false;
+        }
         if (slotted == null || replaceable) {
-            slotted = upgrade;
-            hasDefaultSlotted = false;
+            setSlotted(upgrade);
             return true;
         }
         if (!swappable || mage == null) {
             return false;
         }
         mage.giveItem(slotted.getItem());
-        slotted = upgrade;
-        hasDefaultSlotted = false;
+        setSlotted(upgrade);
         return true;
     }
 
