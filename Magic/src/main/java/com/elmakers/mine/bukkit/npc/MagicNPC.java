@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Verify.verifyNotNull;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -238,7 +239,10 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
 
         // Always keep entity type and name
-        effectiveParameters.set("type", entityData.getType().name());
+        EntityType entityType = entityData.getType();
+        if (entityType != null) {
+            effectiveParameters.set("type", entityType.name());
+        }
         effectiveParameters.set("name", name);
         entityData.load(effectiveParameters);
     }
@@ -316,11 +320,22 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Nullable
     public Entity restore() {
+        return restore(null);
+    }
+
+    @Nullable
+    public Entity restore(Map<UUID, Entity> entityMap) {
         if (location == null || !CompatibilityLib.getCompatibilityUtils().isChunkLoaded(location)) {
             return null;
         }
         Entity entity = getEntity();
-        if (entity == null || !entity.isValid()) {
+        boolean forceValid = false;
+        if ((entity == null || !entity.isValid()) && entityMap != null && entityId != null)  {
+            entity = entityMap.get(entityId);
+            // seems like entities can still be invalid here, guess we will trust that they won't be
+            forceValid = true;
+        }
+        if (entity == null || (!entity.isValid() && !forceValid)) {
             controller.setDisableSpawnReplacement(true);
             try {
                 entity = entityData.spawn(location);

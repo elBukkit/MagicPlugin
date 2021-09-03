@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.magic.listener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.WeakHashMap;
@@ -141,8 +142,9 @@ public class MobController implements Listener, ChunkLoadListener {
     }
 
     @Override
-    public void onChunkLoad(Chunk chunk) {
-        for (Entity entity : chunk.getEntities()) {
+    public void onChunkLoad(Chunk chunk, List<Entity> entities) {
+        if (entities == null) return;
+        for (Entity entity : entities) {
             // Check for disconnected NPCs, we don't want to leave invulnerable entities around
             boolean removed = false;
             String npcId = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID);

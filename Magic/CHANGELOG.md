@@ -17,6 +17,7 @@
  - Remove default tick_increase from Projectile action, magic arrows will now take the normal time to despawn
    This was done to improve compatibility with server forks that mess with NMS mappings (Purpur)
  - Fix materia-absorbing to match by block type only  
+ - Fixes for invalid NPCs in 1.17 (if you are on 1.17 please make sure to update to latest Paper/Spigot)
 
 ## Additions
 

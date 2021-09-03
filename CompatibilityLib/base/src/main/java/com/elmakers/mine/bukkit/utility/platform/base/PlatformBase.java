@@ -256,4 +256,14 @@ public abstract class PlatformBase implements Platform {
     public boolean hasChatComponents() {
         return spigotUtils != null;
     }
+
+    @Override
+    public boolean hasEntityLoadEvent() {
+        return false;
+    }
+
+    @Override
+    public boolean hasDeferredEntityLoad() {
+        return false;
+    }
 }

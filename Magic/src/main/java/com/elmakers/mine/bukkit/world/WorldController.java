@@ -2,15 +2,18 @@ package com.elmakers.mine.bukkit.world;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
@@ -19,11 +22,12 @@ import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.listener.ChunkLoadListener;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
 import com.elmakers.mine.bukkit.world.listener.WorldSpawnListener;
 
-public class WorldController implements Listener {
+public class WorldController implements Listener, ChunkLoadListener {
     private final Map<String, MagicWorld> magicWorlds = new HashMap<>();
     private final MagicController controller;
     private final WorldPlayerListener playerListener;
@@ -164,5 +168,10 @@ public class WorldController implements Listener {
 
     public WorldSpawnListener getSpawnListener() {
         return spawnListener;
+    }
+
+    @Override
+    public void onChunkLoad(Chunk chunk, List<Entity> entities) {
+        spawnListener.onChunkLoad(chunk, entities);
     }
 }

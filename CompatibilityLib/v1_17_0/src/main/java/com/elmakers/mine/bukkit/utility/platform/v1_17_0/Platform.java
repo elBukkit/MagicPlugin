@@ -36,4 +36,9 @@ public class Platform extends ModernPlatform {
     protected com.elmakers.mine.bukkit.utility.platform.EntityUtils createEntityUtils() {
         return new EntityUtils(this);
     }
+
+    @Override
+    public boolean hasDeferredEntityLoad() {
+        return true;
+    }
 }

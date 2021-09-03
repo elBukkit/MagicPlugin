@@ -867,4 +867,5 @@ public interface MageController {
     Icon getIcon(String key);
     @Nonnull
     Icon getDefaultIcon();
+    void onChunkLoaded(Chunk chunk, List<Entity> entities);
 }

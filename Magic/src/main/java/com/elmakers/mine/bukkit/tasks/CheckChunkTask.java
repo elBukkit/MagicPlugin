@@ -1,10 +1,15 @@
 package com.elmakers.mine.bukkit.tasks;
 
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Chunk;
+import org.bukkit.entity.Entity;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.listener.ChunkLoadListener;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class CheckChunkTask implements Runnable {
     private final ChunkLoadListener listener;
@@ -19,27 +24,38 @@ public class CheckChunkTask implements Runnable {
     public void run() {
         // Ignore the event if the chunk already unloaded
         if (this.chunk.isLoaded()) {
-            listener.onChunkLoad(this.chunk);
+            listener.onChunkLoad(this.chunk, getEntityList(chunk));
         }
+    }
+
+    private static List<Entity> getEntityList(Chunk chunk) {
+        Entity[] entities = chunk.getEntities();
+        List<Entity> entityList = null;
+        if (entities.length > 0) {
+            entityList = Arrays.asList(entities);
+        }
+        return entityList;
     }
 
     public static void process(MagicController controller, ChunkLoadListener listener, Chunk chunk) {
-        // This is hopefully temporary
-        // Works around async entity loading by waiting a bit to look for them.
-        defer(controller.getPlugin(), listener, chunk);
-        /*
+        // Wait until everything is loaded before we process these chunks
         if (!controller.isDataLoaded()) {
-            defer(controller.getPlugin(), listener, chunk);
+            // MagicController waits 2 ticks, so we'll wait a bit longer.
+            defer(controller.getPlugin(), listener, chunk, 5);
         } else {
-            listener.onChunkLoad(chunk);
+            if (CompatibilityLib.hasDeferredEntityLoad()) {
+                // If we don't have the entities loaded event we need to wait 2 seconds to check this chunk
+                if (!CompatibilityLib.hasEntityLoadEvent()) {
+                    defer(controller.getPlugin(), listener, chunk, 20 * 2);
+                }
+            } else {
+                // If this is pre-1.17 the entities will be in the chunk already, so load them now
+                listener.onChunkLoad(chunk, getEntityList(chunk));
+            }
         }
-        */
     }
 
-    private static void defer(Plugin plugin, ChunkLoadListener listener, Chunk chunk) {
-        // MagicController waits 2 ticks, so we'll wait a bit longer.
-        // This is kind of a hacky relationship, but I thought it preferable to retrying
-        // we are now waiting a full 2 seconds to work around issues in 1.17
-        plugin.getServer().getScheduler().runTaskLater(plugin, new CheckChunkTask(listener, chunk), 20 * 2);
+    private static void defer(Plugin plugin, ChunkLoadListener listener, Chunk chunk, int delay) {
+        plugin.getServer().getScheduler().runTaskLater(plugin, new CheckChunkTask(listener, chunk), delay);
     }
 }

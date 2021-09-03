@@ -16,6 +16,12 @@
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>${bukkit.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
             <version>${bukkit.version}</version>
             <classifier>remapped-mojang</classifier>

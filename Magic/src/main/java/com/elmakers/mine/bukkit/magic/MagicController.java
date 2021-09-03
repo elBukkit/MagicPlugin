@@ -32,6 +32,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -7320,11 +7321,21 @@ public class MagicController implements MageController {
     }
 
     public void restoreNPCs(final Chunk chunk) {
+        restoreNPCs(chunk, null);
+    }
+
+    public void restoreNPCs(final Chunk chunk, List<Entity> entities) {
         String chunkKey = getChunkKey(chunk);
         List<MagicNPC> chunkData = npcsByChunk.get(chunkKey);
         if (chunkData != null) {
+            Map<UUID, Entity> entityMap = null;
+            if (entities != null && !entities.isEmpty()) {
+                // Ok fine, streams are nice sometimes XD
+                entityMap = entities.stream()
+                        .collect(Collectors.toMap(Entity::getUniqueId, Function.identity()));
+            }
             for (MagicNPC npc : chunkData) {
-                npc.restore();
+                npc.restore(entityMap);
             }
         }
     }
@@ -8699,5 +8710,12 @@ public class MagicController implements MageController {
     @Nullable
     public WandSet getWandSet(String setKey) {
         return wandSets.get(setKey);
+    }
+
+    @Override
+    public void onChunkLoaded(Chunk chunk, List<Entity> entities) {
+        blockController.onChunkLoad(chunk, entities);
+        mobs.onChunkLoad(chunk, entities);
+        worldController.onChunkLoad(chunk, entities);
     }
 }

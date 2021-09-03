@@ -127,6 +127,14 @@ public class CompatibilityLib extends PlatformInterpreter {
         return platform == null ? false : platform.getPaperUtils() != null;
     }
 
+    public static boolean hasEntityLoadEvent() {
+        return platform == null ? false : platform.hasEntityLoadEvent();
+    }
+
+    public static boolean hasDeferredEntityLoad() {
+        return platform == null ? false : platform.hasDeferredEntityLoad();
+    }
+
     @Nonnull
     public static Logger getLogger() {
         Logger logger = platform == null ? null : platform.getLogger();

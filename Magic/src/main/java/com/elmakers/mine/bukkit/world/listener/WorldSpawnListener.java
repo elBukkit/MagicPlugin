@@ -51,13 +51,14 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
     }
 
     @Override
-    public void onChunkLoad(Chunk chunk) {
+    public void onChunkLoad(Chunk chunk, List<Entity> entities) {
+        if (entities == null) return;
         MagicWorld magicWorld = controller.getWorld(chunk.getWorld().getName());
         if (magicWorld == null) return;
 
         Plugin plugin = controller.getPlugin();
         controller.setDisableSpawnReplacement(true);
-        for (Entity testEntity : chunk.getEntities()) {
+        for (Entity testEntity : entities) {
             if (!(testEntity instanceof LivingEntity)) continue;
             if (testEntity instanceof Player) continue;
             LivingEntity entity = (LivingEntity)testEntity;

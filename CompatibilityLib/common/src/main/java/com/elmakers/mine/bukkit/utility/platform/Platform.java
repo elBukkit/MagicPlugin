@@ -53,4 +53,8 @@ public interface Platform {
     SpigotUtils getSpigotUtils();
 
     boolean hasChatComponents();
+
+    boolean hasEntityLoadEvent();
+
+    boolean hasDeferredEntityLoad();
 }
