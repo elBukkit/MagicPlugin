@@ -13,3 +13,10 @@ wizardhelmet:
 wizardleggings:
   override: true
   enabled: true
+
+robepatch:
+  output: robepatch
+  ingredients:
+    p: purple_wool
+  row_1: pp
+  row_2: pp

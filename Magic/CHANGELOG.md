@@ -18,6 +18,10 @@
    This was done to improve compatibility with server forks that mess with NMS mappings (Purpur)
  - Fix materia-absorbing to match by block type only  
 
+## Additions
+
+ - Added craftable "Robe Patch" item to robes configs, for repairing robes
+
 # 10.0.2
 
 # 10.0.1

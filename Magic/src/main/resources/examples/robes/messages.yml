@@ -9,3 +9,8 @@ examples:
       `<title text="Robes">`
       `<p>`&6Wizard robes &fcan be crafted using &d`<command command="mgive purple_wool" text="Purple Wool">`&f and a variety of other ingredients.
       `<p>`The recipe will appear in your in-game &aknowledge book&f once you have acquired some &dpurple wool&f.
+
+wands:
+  robepatch:
+    name: Robe Patch
+    upgrade_item_description: "&6Drop on a piece of &5Wizard Armor&6 to repair it"

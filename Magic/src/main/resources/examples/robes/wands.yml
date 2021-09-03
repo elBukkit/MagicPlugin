@@ -1,0 +1,10 @@
+robepatch:
+  icon: purple_carpet
+  add_durability: 100
+  upgrade: true
+  upgrades:
+    - wizardhelmet
+    - wizardchestplate
+    - wizardleggings
+    - wizardboots
+    - magichat
