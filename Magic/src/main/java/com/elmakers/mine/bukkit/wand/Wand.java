@@ -4710,9 +4710,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
         boolean isUpgrade = isUpgrade(item);
+        boolean upgraded = false;
         if (!isModifiable() && !isUpgrade && currency == null) return false;
         if (isUpgrade) {
             Wand upgradeWand = controller.createWand(item);
+            
+            // Check for upgrades that only apply to specific wands
+            List<String> appliesTo = upgradeWand.getStringList("upgrades");
+            if (appliesTo != null && !appliesTo.isEmpty() && !appliesTo.contains(getTemplateKey())) {
+                return false;
+            }
+
             String slot = upgradeWand.getSlot();
             // Make sure to not allow super.addItem to process this if it has a slot
             // Even if we can't add it via addSloted, it would be absorbed as an upgrade and permanently
@@ -4727,9 +4735,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 }
                 return added;
             }
+
+            // Check for durability upgrades
+            int durabilityUpgrade = upgradeWand.getInt("add_durability");
+            if (durabilityUpgrade > 0 && this.item != null) {
+                short itemDamage = this.item.getDurability();
+                short maxDurability = this.item.getType().getMaxDurability();
+                if (maxDurability > 0 && itemDamage > 0) {
+                    upgraded = true;
+                    itemDamage = (short)Math.max(0, itemDamage - durabilityUpgrade);
+                    this.item.setDurability(itemDamage);
+                }
+            }
         }
 
-        return super.addItem(item);
+        return super.addItem(item) || upgraded;
     }
 
     public boolean addSlotted(Wand upgradeWand) {
