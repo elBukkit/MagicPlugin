@@ -267,6 +267,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     // Set bonus overrides
     private ConfigurationSection setBonusConfiguration = null;
+    private Set<String> setBonusesActive = null;
 
     // Transient state
 
@@ -3114,22 +3115,68 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         addUseLore(lore);
         addPropertyLore(lore, isSingleSpell);
-        if (!isUpgrade && slots != null) {
-            boolean printedHeader = false;
-            for (WandUpgradeSlot slot : slots) {
-                if (slot.isHidden()) {
-                    continue;
+        if (!isUpgrade) {
+            if (slots != null) {
+                boolean printedHeader = false;
+                for (WandUpgradeSlot slot : slots) {
+                    if (slot.isHidden()) {
+                        continue;
+                    }
+                    if (!printedHeader) {
+                        ConfigurationUtils.addIfNotEmpty(getMessage("slots_header").replace("$count", Integer.toString(slots.size())), lore);
+                        printedHeader = true;
+                    }
+                    Wand slotted = slot.getSlotted();
+                    if (slotted == null) {
+                        String slotName = controller.getMessages().get("wand_slots." + slot.getType() + ".name", slot.getType());
+                        ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
+                    } else {
+                        ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slotted.getName()), lore);
+                    }
                 }
-                if (!printedHeader) {
-                    ConfigurationUtils.addIfNotEmpty(getMessage("slots_header").replace("$count", Integer.toString(slots.size())), lore);
-                    printedHeader = true;
-                }
-                Wand slotted = slot.getSlotted();
-                if (slotted == null) {
-                    String slotName = controller.getMessages().get("wand_slots." + slot.getType() + ".name", slot.getType());
-                    ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
-                } else {
-                    ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slotted.getName()), lore);
+            }
+
+            ConfigurationSection setsConfiguration = getSets();
+            if (setsConfiguration != null) {
+                Set<String> setKeys = setsConfiguration.getKeys(false);
+                for (String setKey : setKeys) {
+                    ConfigurationSection setConfiguration = setsConfiguration == null ? null : setsConfiguration.getConfigurationSection(setKey);
+                    ConfigurationSection setBonusConfiguration = setConfiguration == null ? null : setConfiguration.getConfigurationSection("bonuses");
+                    WandSet wandSet = controller.getWandSet(setKey);
+                    if (wandSet == null) continue;
+                    String setName = wandSet.getName(controller.getMessages());
+                    boolean isActive = setBonusesActive != null && setBonusesActive.contains(setKey);
+                    boolean printedHeader = false;
+                    Wand commonBonus = wandSet.getBonus();
+                    String setBonusTemplate = isActive ? getMessage("set_bonus_active") : getMessage("set_bonus_inactive");
+                    if (commonBonus != null && !setBonusTemplate.isEmpty()) {
+                        if (!printedHeader) {
+                            String headerKey = isActive ? "set_header_bonus_active" : "set_header_bonus_inactive";
+                            ConfigurationUtils.addIfNotEmpty(getMessage(headerKey).replace("$set", setName), lore);
+                            printedHeader = true;
+                        }
+                        List<String> propertiesLore = new ArrayList<>();
+                        commonBonus.addPropertyLore(propertiesLore);
+                        for (String propertyLore : propertiesLore) {
+                            if (!isActive) {
+                                propertyLore = ChatColor.stripColor(propertyLore);
+                            }
+                            lore.add(setBonusTemplate.replace("$bonus", propertyLore));
+                        }
+                    }
+                    if (setBonusConfiguration != null) {
+                        // TODO: Individual bonus .. this is going to be trickier, need to parse properties
+                        // as a wand.. maybe try to abstract the needed parts to WandProperties?
+                        // This could let us use WandProperties for slotted upgrades
+                        // and maybe a variety of other places, which would be great since we do a lot of
+                        // unnecessary item manipulation now for all these virtual wands
+                        // or maybe even move it all to CasterProperties if we're feeling saucy,
+                        // all this stuff should be shared by modifiers and classes, right?
+                        lore.add(ChatColor.DARK_GRAY + " ... super secret bonus (W.I.P.)");
+                    }
+                    if (!printedHeader) {
+                        ConfigurationUtils.addIfNotEmpty(getMessage("set_header").replace("$set", Integer.toString(slots.size())), lore);
+                    }
                 }
             }
         }
@@ -3298,6 +3345,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return CompatibilityLib.getNBTUtils().containsTag(item, "currency");
     }
 
+    protected void addPropertyLore(List<String> lore) {
+        addPropertyLore(lore, false);
+    }
+
     protected void addPropertyLore(List<String> lore, boolean isSingleSpell)
     {
         if (usesMana() && effectiveManaMax > 0) {
@@ -3351,6 +3402,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         for (Map.Entry<PotionEffectType, Integer> effect : getPotionEffects().entrySet()) {
             ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
+        }
+
+        if (getBoolean("ignored_by_mobs")) {
+            ConfigurationUtils.addIfNotEmpty(getMessage("ignored_by_mobs"), lore);
         }
 
         // If this is a passive wand, then reduction properties stack onto the mage when worn.
@@ -7360,13 +7415,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public void clearSetBonuses() {
         setBonusConfiguration = null;
+        setBonusesActive = null;
     }
 
-    public boolean applySetBonus(ConfigurationSection bonusConfig) {
+    public boolean applySetBonus(String setKey, ConfigurationSection bonusConfig) {
+        if (setBonusesActive == null) {
+            setBonusesActive = new HashSet<>();
+        }
+        setBonusesActive.add(setKey);
         if (bonusConfig == null) {
             return false;
         }
-        setBonusConfiguration = ConfigurationUtils.newSection(configuration);
+        if (setBonusConfiguration == null) {
+            setBonusConfiguration = ConfigurationUtils.newSection(configuration);
+        }
         ConfigurationUtils.overlayConfigurations(setBonusConfiguration, bonusConfig);
         return true;
     }

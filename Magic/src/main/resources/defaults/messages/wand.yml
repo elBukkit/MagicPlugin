@@ -313,6 +313,15 @@ wand:
     spell_prefix: "&6"
     brush_prefix: "&7"
     chest_inventory_title: "$wand"
+    ignored_by_mobs: "&6Invisible to Mobs"
+
+    # Wand set lore, for displaying wand sets and potential/active bonuses
+    set_header_bonus_inactive: "&5$set &8Set Bonus:"
+    set_header_bonus_active: "&5$set &fSet Bonus:"
+    set_header: "&5$set"
+    set_bonus_inactive: "&c \u2716 &8$bonus"
+    set_bonus_active: "&a \u2714 &r$bonus"
+
     # The following will be shown in wand lore if lore_instructions is set
     # Lore instructions are on by default for any wand with a spell inventory
     # or complex control scheme.

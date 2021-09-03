@@ -4292,7 +4292,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         for (String key : keys) {
             ActiveWandSet wandSet = wandSets.get(key);
             if (wandSet == null) {
-                wandSet = new ActiveWandSet();
+                wandSet = new ActiveWandSet(key);
                 wandSets.put(key, wandSet);
             }
             wandSet.add(wand, sets.getConfigurationSection(key));

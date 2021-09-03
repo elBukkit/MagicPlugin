@@ -8,8 +8,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class ActiveWandSet {
+    private final String key;
     private ConfigurationSection configuration;
     private final Map<Wand, ConfigurationSection> wands = new HashMap<>();
+
+    public ActiveWandSet(String key) {
+        this.key = key;
+    }
 
     public void add(Wand wand, ConfigurationSection config) {
         // Pull out the bonus config, that is specific to each wand
@@ -45,7 +50,7 @@ public class ActiveWandSet {
 
     public void applyBonuses() {
         for (Map.Entry<Wand,ConfigurationSection> entry : wands.entrySet()) {
-            entry.getKey().applySetBonus(entry.getValue());
+            entry.getKey().applySetBonus(key, entry.getValue());
         }
     }
 }

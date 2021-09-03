@@ -5,7 +5,8 @@
  - 1.17 entity load fix
    https://hub.spigotmc.org/stash/projects/SPIGOT/repos/bukkit/commits/ed7bba95fc031ca8b89d353426990b4bf7f9372f#src/main/java/org/bukkit/event/world/EntitiesLoadEvent.java
 
- - Wand set bonus lore
+ - Finish wand set bonus lore ... individual property lore looks like
+   it's gonna turn into a whole thing
 
  - Drag+drop repair, durability improving-upgrades
 
