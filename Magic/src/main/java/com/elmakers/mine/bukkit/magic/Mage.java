@@ -5094,11 +5094,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 Location location = getLocation();
                 return location == null ? null : location.getZ();
             }
-            case "location_yaw": {
+            case "yaw": {
                 Location location = getLocation();
                 return location == null ? null : (double)location.getYaw();
             }
-            case "location_pitch": {
+            case "pitch": {
                 Location location = getLocation();
                 return location == null ? null : (double)location.getPitch();
             }

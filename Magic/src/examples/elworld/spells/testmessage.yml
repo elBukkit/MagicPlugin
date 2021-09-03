@@ -2,6 +2,7 @@ testmessage:
   actions:
     cast:
     - class: Message
-      message: '`{"keybind":"key.attack","hoverEvent":{"action":"show_text","value":"Hi!"}}`'
   parameters:
+    # message: '`{"keybind":"key.attack","hoverEvent":{"action":"show_text","value":"Hi!"}}`'
+    message: "@yaw,@pitch"
     target: self
