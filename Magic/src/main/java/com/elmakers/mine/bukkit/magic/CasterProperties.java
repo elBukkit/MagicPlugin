@@ -451,7 +451,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return (level >= spellKey.getLevel());
     }
 
-    public Collection<String> getBaseSpells() {
+    public Set<String> getBaseSpells() {
         Object existingSpells = getObject("spells");
         Set<String> spells = new HashSet<>();
         if (existingSpells != null) {
@@ -492,7 +492,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
         SpellKey key = new SpellKey(spellKey);
         spellKey = key.getBaseKey();
-        Set<String> spells = getSpells();
+        Set<String> spells = getBaseSpells();
         if (!spells.contains(spellKey)) return null;
         Map<String, Integer> spellLevels = getSpellLevels();
         Integer level = spellLevels.get(spellKey);

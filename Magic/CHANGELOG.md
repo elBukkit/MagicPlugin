@@ -29,6 +29,7 @@
 
  - Fix photos of a bat being a green apple or something
  - Fix wands from 10.0 dev build having a broken GUI until using the controls menu
+ - Fix error using `/mage promote` when a player has levelled-up spells
 
 # 10.0.1
 
