@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
-import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.SkinUtilsBase;
 import com.google.gson.JsonArray;
