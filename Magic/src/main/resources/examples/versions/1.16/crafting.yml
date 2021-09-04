@@ -8,6 +8,7 @@ magictorch:
 # To prevent collisions with emerald sword recipe, since we've aliased
 # amethyst shards ot emeralds here
 magicsword:
+  ignore_damage: true
   ingredients:
     o: emerald
     i: netherite_sword
