@@ -30,6 +30,7 @@
  - Fix photos of a bat being a green apple or something
  - Fix wands from 10.0 dev build having a broken GUI until using the controls menu
  - Fix error using `/mage promote` when a player has levelled-up spells
+ - Fix error in EntitySelectAction when there are more than 54 entities in the menu (no pages for now...)
 
 # 10.0.1
 
