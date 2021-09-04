@@ -2,36 +2,6 @@
 
 # Next Up:
 
- - [13:55:56 INFO]: [Magic] Player Automaton NPC logging out, auto-undid 3 spells
-  ... over and over, is he keeping chunks loaded?
-   
- - Air strike error:
-
-java.lang.ArrayIndexOutOfBoundsException: Index 54 out of bounds for length 54
-
-at java.util.Arrays$ArrayList.set(Unknown Source) ~[?:?]
-
-at net.minecraft.core.NonNullList.set(NonNullList.java:54) ~[patched_1.17.1.jar:git-Paper-243]
-
-at org.bukkit.craftbukkit.v1_17_R1.inventory.CraftInventoryCustom$MinecraftInventory.setItem(CraftInventoryCustom.java:141) ~[patched_1.17.1.jar:git-Paper-243]
-
-at org.bukkit.craftbukkit.v1_17_R1.inventory.CraftInventory.setItem(CraftInventory.java:99) ~[patched_1.17.1.jar:git-Paper-243]
-
-at com.elmakers.mine.bukkit.action.builtin.EntitySelectAction$2.updated(EntitySelectAction.java:148) ~[Magic-9.4.4.jar:?]
-
-at com.elmakers.mine.bukkit.magic.MagicController.getSkull(MagicController.java:6606) ~[Magic-9.4.4.jar:?]
-
-
- - Mage promote error:
-
-Caused by: java.lang.NullPointerException: Cannot invoke "com.elmakers.mine.bukkit.api.spell.Spell.getName()" because "spell" is null
-
-at com.elmakers.mine.bukkit.wand.WandUpgradePath.checkUpgradeRequirements(WandUpgradePath.java:759) ~[Magic-9.4.4.jar:?]
-
-at com.elmakers.mine.bukkit.magic.CasterProperties.randomize(CasterProperties.java:850) ~[Magic-9.4.4.jar:?]
-
-at com.elmakers.mine.bukkit.magic
-
  - uh the lightsaber block model is broken
    
  - Finish wand set bonus lore ... individual property lore looks like
