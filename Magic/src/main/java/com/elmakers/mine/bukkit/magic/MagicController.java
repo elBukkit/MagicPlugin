@@ -221,6 +221,7 @@ import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.RedProtectManager;
 import com.elmakers.mine.bukkit.protection.ResidenceManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
+import com.elmakers.mine.bukkit.protection.UltimateClansManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.requirements.RequirementsController;
 import com.elmakers.mine.bukkit.resourcepack.ResourcePackManager;
@@ -567,6 +568,7 @@ public class MagicController implements MageController {
     private ConfigurationSection citadelConfiguration = null;
     private ConfigurationSection mobArenaConfiguration = null;
     private ConfigurationSection ajParkourConfiguration = null;
+    private ConfigurationSection ultimateClansConfiguration = null;
     private boolean castConsoleFeedback = false;
     private String editorURL = null;
     private boolean reloadVerboseLogging = true;
@@ -589,6 +591,7 @@ public class MagicController implements MageController {
     private EssentialsController essentialsController = null;
     private DeadSoulsManager deadSoulsController = null;
     private MythicMobManager mythicMobManager = null;
+    private UltimateClansManager ultimateClansManager = null;
     private boolean loading = false;
     private boolean showExampleInstructions = false;
     private int disableSpawnReplacement = 0;
@@ -2160,35 +2163,22 @@ public class MagicController implements MageController {
         if (redProtectManager != null) blockBreakManagers.add(redProtectManager);
 
         // Team providers
-        if (heroesManager != null && heroesManager.useParties()) {
-            teamProviders.add(heroesManager);
-        }
-        if (skillAPIManager != null && skillAPIManager.usesAllies()) {
-            teamProviders.add(skillAPIManager);
-        }
-        if (useScoreboardTeams) {
-            teamProviders.add(new ScoreboardTeamProvider());
-        }
+        if (heroesManager != null && heroesManager.useParties()) teamProviders.add(heroesManager);
+        if (skillAPIManager != null && skillAPIManager.usesAllies()) teamProviders.add(skillAPIManager);
+        if (useScoreboardTeams) teamProviders.add(new ScoreboardTeamProvider());
         if (permissionTeams != null && !permissionTeams.isEmpty()) {
             teamProviders.add(new PermissionsTeamProvider(permissionTeams));
         }
-        if (factionsManager != null) {
-            teamProviders.add(factionsManager);
-        }
-        if (battleArenaManager != null && useBattleArenaTeams) {
-            teamProviders.add(battleArenaManager);
-        }
+        if (factionsManager != null) teamProviders.add(factionsManager);
+        if (battleArenaManager != null && useBattleArenaTeams) teamProviders.add(battleArenaManager);
+        if (ultimateClansManager != null) teamProviders.add(ultimateClansManager);
 
         // Player warp providers
         if (preciousStonesManager != null && preciousStonesManager.isEnabled()) {
             playerWarpManagers.put("fields", preciousStonesManager);
         }
-        if (redProtectManager != null) {
-            playerWarpManagers.put("redprotect", redProtectManager);
-        }
-        if (residenceManager != null) {
-            playerWarpManagers.put("residence", residenceManager);
-        }
+        if (redProtectManager != null) playerWarpManagers.put("redprotect", redProtectManager);
+        if (residenceManager != null) playerWarpManagers.put("residence", residenceManager);
     }
 
     private void registerProviders() {
@@ -8010,6 +8000,20 @@ public class MagicController implements MageController {
             getLogger().info("RedProtect integration disabled.");
         }
 
+        // UltimateClans
+        if (ultimateClansConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("UltimateClans")) {
+                try {
+                    ultimateClansManager = new UltimateClansManager(this);
+                    getLogger().info("Integrated with UltimateClans for friendly fire checks");
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with UltimateClans", ex);
+                }
+            }
+        } else {
+            getLogger().info("RedProtect integration disabled.");
+        }
+
         // Set up the Mage update timer
         final MageUpdateTask mageTask = new MageUpdateTask(this);
         Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, mageTask, 0, mageUpdateFrequency);
@@ -8210,6 +8214,7 @@ public class MagicController implements MageController {
         residenceConfiguration = properties.getConfigurationSection("residence");
         redProtectConfiguration = properties.getConfigurationSection("redprotect");
         ajParkourConfiguration = properties.getConfigurationSection("ajparkour");
+        ultimateClansConfiguration = properties.getConfigurationSection("ultimate_clans");
         CompatibilityConstants.USE_METADATA_LOCATIONS = properties.getBoolean("vivecraft.enabled");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);

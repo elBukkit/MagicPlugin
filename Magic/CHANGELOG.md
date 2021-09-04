@@ -24,6 +24,7 @@
  - Added craftable "Robe Patch" item to robes configs, for repairing robes
  - Add yaw/pitch (and target_yaw,target_pitch) attributes
  - Add `drop_at_source` option to `DropSkull` action, for 3D camera (camera3D) item
+ - Added UltimateClans support (WIP, currently only team support)
 
 # 10.0.2
 
