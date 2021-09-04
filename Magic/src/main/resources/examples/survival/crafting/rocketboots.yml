@@ -4,7 +4,7 @@ rocketboots:
   output_type: wand
   ingredients:
     o: amethyst_shard
-    i: iron_inglot
+    i: iron_ingot
     f: firework
   row_1: o o
   row_2: i i
