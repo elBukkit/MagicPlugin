@@ -1,4 +1,5 @@
 skating:
+  hidden: true
   name: Skating
   actions:
     cast:

@@ -1,5 +1,6 @@
 snap:
   name: SNAP
+  hidden: true
   actions:
     cast:
       - class: Delay

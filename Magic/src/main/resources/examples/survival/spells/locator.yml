@@ -1,4 +1,5 @@
 locator:
+  hidden: true
   cast_on_no_target: false
   actions:
     cast:

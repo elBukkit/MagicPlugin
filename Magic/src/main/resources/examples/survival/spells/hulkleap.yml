@@ -1,5 +1,6 @@
 hulkleap:
     # This refers to an icon defined in the icons folder/config
+    hidden: true
     icon: fling
     category: utility
     tags: nojail

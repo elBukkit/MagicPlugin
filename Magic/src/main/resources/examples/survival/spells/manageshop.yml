@@ -1,4 +1,5 @@
 manageshop:
+  hidden: true
   actions:
     cast:
       - class: CheckBlock

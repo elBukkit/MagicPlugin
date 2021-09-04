@@ -1,5 +1,6 @@
 wearskates:
   name: Wear Ice Skates
+  hidden: true
   actions:
     cast:
       - class: Wear

@@ -1510,3 +1510,9 @@ spells:
         name: Magic Heart Refund
         description: Get back what you gave
         refunded: "a:&4The magical stone crumbles to dust revealing a set of gemstones"
+    commandspell:
+        name: Run a Command
+        description: Useful for running one or more commands, override the command parameter
+    eat_food:
+        name: Eat Food
+        description: Useful for putting on consumable items, override the feed or add_potion_effects parameters
