@@ -195,15 +195,16 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
 
         if (args.length == 0) {
             sender.sendMessage(ChatColor.YELLOW + "---------" +  ChatColor.WHITE  + "Help: MagicArenas " + ChatColor.YELLOW +   "--------");
-            sender.sendMessage("/arena add [name] <type> : Add a new arena");
-            sender.sendMessage("/arena remove [name] : Remove an existing arena");
-            sender.sendMessage("/arena start [name] : Manually start an arena");
-            sender.sendMessage("/arena stop [name] : Manually stop an arena");
-            sender.sendMessage("/arena describe [name] : List properties of an arena");
-            sender.sendMessage("/arena join [name] <player> : Force a player to join an arena");
-            sender.sendMessage("/arena leave [name] <player> : Force a player to leave an arena");
-            sender.sendMessage("/arena configure [name] [property] <value> : Reconfigure an arena");
-            sender.sendMessage("/arena stage [name] [command] <value> : Display or configure mob arena stages");
+            sender.sendMessage("/marena add [name] <type> : Add a new arena");
+            sender.sendMessage("/marena remove [name] : Remove an existing arena");
+            sender.sendMessage("/marena start [name] : Manually start an arena");
+            sender.sendMessage("/marena stop [name] : Manually stop an arena");
+            sender.sendMessage("/marena describe [name] : List properties of an arena");
+            sender.sendMessage("/marena join [name] <player> : Force a player to join an arena");
+            sender.sendMessage("/marena leave [name] <player> : Force a player to leave an arena");
+            sender.sendMessage("/marena configure [name] [property] <value> : Reconfigure an arena");
+            sender.sendMessage("/marena stage [name] [command] <value> : Display or configure mob arena stages");
+            sender.sendMessage("/marena import : Import arenas from MagicArenas");
             sender.sendMessage(ChatColor.YELLOW + "-----------------------------------------------");
             return true;
         }
@@ -563,7 +564,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             validStages += " - " + stageCount;
         }
         if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.YELLOW + "/arena stage move [" + validStages + "]");
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.YELLOW + "/marena stage move [" + validStages + "]");
             return;
         }
 
@@ -598,7 +599,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
             validStages += " - " + stageCount;
         }
         if (stageNumber <= 0) {
-            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.YELLOW + "/arena stage go [" + validStages + "]");
+            sender.sendMessage(ChatColor.RED + "Usage: " + ChatColor.YELLOW + "/marena stage go [" + validStages + "]");
             return;
         }
         int stageIndex = stageNumber - 1;
