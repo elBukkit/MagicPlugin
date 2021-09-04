@@ -34,6 +34,8 @@ help:
         `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_bossbar" text="Change wand default to use the boss bar GUI instead of the action bar">`
         `<li>``<command command="mconfig config wand_slots.controls.default_slotted controls_inventory" text="Set default controls to right-click to open spell inventory">`
         `<li>``<help topic="examples.survival.wandgui" text="Help or issues with the wand GUI">`
+        `<li>``<command command="meditor spell progressmenu" text="Edit the enchant table menu">`
+        `<li>``<command command="mconfig config enchant_click" text="Disable the enchant table menu">`
       wandgui: |-
         `<title text="Wand GUI">`
         `<p>`The &6wand&f hotbar and mana &bGUI&f uses custom font glyphs from the resource pack

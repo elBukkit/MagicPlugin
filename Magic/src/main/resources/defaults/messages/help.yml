@@ -175,7 +175,7 @@ help:
     `<li>``<help topic="customize_damage" text="How to customize spell damage">`
   customize_damage: |-
     `<title text="Customizing Spell Damage">`
-    `<p>`Customing spell damage can be tricky, most spells that deal damage &blevel up&f to deal more damage.
+    `<p>`Customizing spell damage can be tricky, most spells that deal damage &blevel up&f to deal more damage.
     `<p>`In addition, the &7Damage&f action supports separate damage for mobs versus players.
     `<p>``<command command="meditor spell missile" text="Use the editor to edit a spell">`
     `<p>`Then look in the &bparameters&f section for damage-related properties.
