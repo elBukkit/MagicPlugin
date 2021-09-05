@@ -2,8 +2,6 @@
 
 # Next Up:
 
- - Test importing arena configs
-
  - uh the lightsaber block model is broken
 
  - An action to damage armor?
