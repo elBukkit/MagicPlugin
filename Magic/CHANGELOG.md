@@ -37,6 +37,7 @@
  - Fix error using `/mage promote` when a player has levelled-up spells
  - Fix error in EntitySelectAction when there are more than 54 entities in the menu (no pages for now...)
  - Fix rocket boots crafting recipe
+ - Fix /marena import command
 
 # 10.0.1
 

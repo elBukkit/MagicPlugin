@@ -2,8 +2,10 @@ package com.elmakers.mine.bukkit.arena;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
@@ -248,10 +250,53 @@ public class ArenaController implements Runnable {
             templateConfiguration.set("minplayers", null);
             templateConfiguration.set("max_players", templateConfiguration.get("maxplayers"));
             templateConfiguration.set("maxplayers", null);
-            saveData.set("location", templateConfiguration.get("center"));
 
-            ArenaTemplate template = new ArenaTemplate(arenaKey, templateConfiguration);
-            templates.put(arenaKey, template);
+            // Copy center location to instance
+            saveData.set("location", templateConfiguration.get("center"));
+            Location center = ConfigurationUtils.toLocation(templateConfiguration.getString("center"));
+            if (center != null) {
+                // Remove location from template
+                templateConfiguration.set("center", null);
+
+                // Make locations relative to center
+                templateConfiguration.set("leaderboard_sign_location", ConfigurationUtils.fromLocation(ConfigurationUtils.toLocation(templateConfiguration.getString("leaderboard_sign_location"), center), center));
+                templateConfiguration.set("lose", ConfigurationUtils.fromLocation(ConfigurationUtils.toLocation(templateConfiguration.getString("lose"), center), center));
+                templateConfiguration.set("win", ConfigurationUtils.fromLocation(ConfigurationUtils.toLocation(templateConfiguration.getString("win"), center), center));
+                templateConfiguration.set("lobby", ConfigurationUtils.fromLocation(ConfigurationUtils.toLocation(templateConfiguration.getString("lobby"), center), center));
+                templateConfiguration.set("exit", ConfigurationUtils.fromLocation(ConfigurationUtils.toLocation(templateConfiguration.getString("exit"), center), center));
+
+                List<String> spawnList = ConfigurationUtils.getStringList(templateConfiguration, "spawns");
+                if (spawnList != null) {
+                    List<String> converted = new ArrayList<>();
+                    for (String spawnLocation : spawnList) {
+                        converted.add(ConfigurationUtils.fromLocation(ConfigurationUtils.toLocation(spawnLocation, center), center));
+                    }
+                    templateConfiguration.set("spawns", converted);
+                }
+                // Not going to do stages, I don't think anyone but me was using those in MagicArenas
+            }
+
+            ArenaTemplate template = templates.get(arenaKey);
+            if (template != null) {
+                sender.sendMessage(ChatColor.YELLOW + "Not replacing existing template " + arenaKey + ", imported arena will use existing template");
+            } else {
+                template = new ArenaTemplate(arenaKey, templateConfiguration);
+                templates.put(arenaKey, template);
+                File templateFile = new File(magic.getPlugin().getDataFolder(), "arenas/" + arenaKey + ".yml");
+                if (templateFile.exists()) {
+                    sender.sendMessage(ChatColor.YELLOW + "Skipping " + arenaKey + ", the template file exists already but isn't loaded, don't know what to do");
+                    continue;
+                }
+                YamlConfiguration yaml = new YamlConfiguration();
+                yaml.set(arenaKey, templateConfiguration);
+                try {
+                    yaml.save(templateFile);
+                } catch (Exception ex) {
+                    magic.getLogger().log(Level.SEVERE, "Error saving to " + templateFile.getAbsolutePath(), ex);
+                    sender.sendMessage(ChatColor.YELLOW + "Skipping " + arenaKey + ", the template file could not be written to, check logs");
+                    continue;
+                }
+            }
             Arena arena = new Arena(arenaKey, template, this);
             arena.load(saveData);
             arenas.put(arenaKey, arena);
