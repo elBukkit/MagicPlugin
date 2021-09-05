@@ -221,6 +221,7 @@ import com.elmakers.mine.bukkit.protection.PvPManagerManager;
 import com.elmakers.mine.bukkit.protection.RedProtectManager;
 import com.elmakers.mine.bukkit.protection.ResidenceManager;
 import com.elmakers.mine.bukkit.protection.TownyManager;
+import com.elmakers.mine.bukkit.protection.UltimateClansLandsManager;
 import com.elmakers.mine.bukkit.protection.UltimateClansManager;
 import com.elmakers.mine.bukkit.protection.WorldGuardManager;
 import com.elmakers.mine.bukkit.requirements.RequirementsController;
@@ -592,6 +593,7 @@ public class MagicController implements MageController {
     private DeadSoulsManager deadSoulsController = null;
     private MythicMobManager mythicMobManager = null;
     private UltimateClansManager ultimateClansManager = null;
+    private UltimateClansLandsManager landsManager = null;
     private boolean loading = false;
     private boolean showExampleInstructions = false;
     private int disableSpawnReplacement = 0;
@@ -2149,6 +2151,7 @@ public class MagicController implements MageController {
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBuildManagers.add(mobArenaManager);
         if (residenceManager != null) blockBuildManagers.add(residenceManager);
         if (redProtectManager != null) blockBuildManagers.add(redProtectManager);
+        if (landsManager != null) blockBuildManagers.add(landsManager);
 
         // Break Managers
         if (worldGuardManager.isEnabled()) blockBreakManagers.add(worldGuardManager);
@@ -2161,6 +2164,7 @@ public class MagicController implements MageController {
         if (citadelManager != null) blockBreakManagers.add(citadelManager);
         if (residenceManager != null) blockBreakManagers.add(residenceManager);
         if (redProtectManager != null) blockBreakManagers.add(redProtectManager);
+        if (landsManager != null) blockBreakManagers.add(landsManager);
 
         // Team providers
         if (heroesManager != null && heroesManager.useParties()) teamProviders.add(heroesManager);
@@ -8002,7 +8006,7 @@ public class MagicController implements MageController {
 
         // UltimateClans
         if (ultimateClansConfiguration.getBoolean("enabled")) {
-            if (pluginManager.isPluginEnabled("UltimateClans")) {
+            if (pluginManager.isPluginEnabled("UClans")) {
                 try {
                     ultimateClansManager = new UltimateClansManager(this);
                     getLogger().info("Integrated with UltimateClans for friendly fire checks");
@@ -8011,7 +8015,21 @@ public class MagicController implements MageController {
                 }
             }
         } else {
-            getLogger().info("RedProtect integration disabled.");
+            getLogger().info("UltimateClans integration disabled.");
+        }
+
+        // UltimateClans, Lands add on
+        if (ultimateClansConfiguration.getBoolean("lands.enabled")) {
+            if (pluginManager.isPluginEnabled("Lands-Addon")) {
+                try {
+                    landsManager = new UltimateClansLandsManager(this);
+                    getLogger().info("Integrated with UltimateClans Lands Add-on for break/build checks");
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with UltimateClans Lands add-on", ex);
+                }
+            }
+        } else {
+            getLogger().info("UltimateClans Lands integration disabled.");
         }
 
         // Set up the Mage update timer

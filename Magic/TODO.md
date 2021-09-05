@@ -2,6 +2,8 @@
 
 # Next Up:
 
+ - Disabling mana regen (cloak), only works if holding a wand? Or spellbook in offhand can still regen?
+
  - uh the lightsaber block model is broken
 
  - An action to damage armor?
