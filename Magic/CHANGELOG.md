@@ -26,6 +26,10 @@
  - Add `drop_at_source` option to `DropSkull` action, for 3D camera (camera3D) item
  - Added UltimateClans support (WIP, currently only team support)
 
+## Changes
+ 
+ - Using `/meditor spell` will include all levels of a spell (unless you have previously edited that spell)
+
 # 10.0.2
 
  - Fix photos of a bat being a green apple or something

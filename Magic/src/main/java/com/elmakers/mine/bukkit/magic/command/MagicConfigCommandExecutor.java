@@ -33,6 +33,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
+import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -660,9 +661,36 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                         isInheritSet = mainSection != null && mainSection.contains("inherit");
                         existingConfig = yaml.saveToString();
                     }
+
+                    // Add all spell levels
+                    if (editorType.equals("spells") && !targetItem.contains("|")) {
+                        int level = 2;
+                        while (true) {
+                            SpellKey spellKey = new SpellKey(targetItem, level);
+                            level++;
+                            ConfigurationSection levelConfig = defaultConfig.getConfigurationSection(spellKey.getKey());
+                            if (levelConfig == null) break;
+
+                            // If it already exists in its own file, skip it
+                            String levelFilename = spellKey.getKey().replace("|", "_");
+                            File levelFile = new File(customFolder, levelFilename + ".yml");
+                            if (levelFile.exists()) {
+                                existingConfig += "\n# " + spellKey.getKey() + " is defined in " + levelFilename + ".yml\n";
+                                existingConfig += "# To edit this level use /meditor spell " + spellKey.getKey() + "\n";
+                                existingConfig += "# If you copy the level config back into this main file, remove the level with\n";
+                                existingConfig += "# /mconfig reset spell " + spellKey.getKey() + "\n\n";
+                            } else {
+                                YamlConfiguration levelYaml = new YamlConfiguration();
+                                levelYaml.set(spellKey.getKey(), levelConfig);
+                                existingConfig += "\n" + levelYaml.saveToString() + "\n";
+                            }
+                        }
+                    }
+
+                    // Insert inherit: false
                     if (!isInheritSet && !editorType.equals("config") && !editorType.equals("messages")) {
                         List<String> newLines = new ArrayList<>();
-                        String[] lines = StringUtils.split(existingConfig, "\n");
+                        String[] lines = StringUtils.splitPreserveAllTokens(existingConfig, "\n");
                         for (int i = 0; i < lines.length; i++) {
                             String line = lines[i];
                             newLines.add(line);
@@ -1146,7 +1174,8 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         String key = parameters[1];
         File pluginFolder = api.getPlugin().getDataFolder();
         File customFolder = new File(pluginFolder, fileType);
-        File customFile = new File(customFolder, key + ".yml");
+        String fileKey = key.replace("|", "_");
+        File customFile = new File(customFolder, fileKey + ".yml");
         boolean deleted = false;
         boolean removed = false;
         if (customFile.exists()) {

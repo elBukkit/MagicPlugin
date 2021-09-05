@@ -10,9 +10,6 @@
    
  - Finish wand set bonus lore ... individual property lore looks like
    it's gonna turn into a whole thing
-   
- - Editing a spell should edit all levels
-   Merge existing individual level configs when editing
 
  - Mysterious:
    Mage class mage': 'allow': Unknown function or variable 'allow' at pos 0 in expression 'allow'

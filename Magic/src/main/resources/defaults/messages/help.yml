@@ -179,7 +179,7 @@ help:
     `<p>`In addition, the &7Damage&f action supports separate damage for mobs versus players.
     `<p>``<command command="meditor spell missile" text="Use the editor to edit a spell">`
     `<p>`Then look in the &bparameters&f section for damage-related properties.
-    `<p>`Scroll down (TODO: Add all levels to the file..) to find the levelled up version of the spell, and change damage parameters there too.
+    `<p>`Scroll down to find the levelled up version of the spell, and change damage parameters there too.
   donator_shops: |-
     `<title text="Donator Shops">`
     `<p>`&dMagic &fcan be used to set up &bdonator shops&f with a variety of EULA-compliant vanity items.
