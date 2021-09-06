@@ -114,7 +114,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 node.set("cooldown_expiration", spell.getCooldownExpiration());
                 node.set("active", spell.isActive() ? true : null);
                 node.set("enabled", spell.isEnabled() ? null : false);
-                node.set("charges_used", spell.getCharges());
+                node.set("charges", spell.getCharges());
             }
         }
 
@@ -363,6 +363,7 @@ public abstract class ConfigurationMageDataStore implements MageDataStore {
                 node.set("cooldown_expiration", null);
                 node.set("active", null);
                 node.set("enabled", null);
+                node.set("charges", null);
                 spellData.setVariables(node);
             }
             data.setSpellData(spellDataMap.values());
