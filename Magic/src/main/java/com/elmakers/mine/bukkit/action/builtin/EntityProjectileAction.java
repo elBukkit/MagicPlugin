@@ -28,6 +28,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     private boolean doTeleport = false;
     private boolean doVelocity = false;
     private boolean orient = false;
+    private boolean spawnActionsRun;
     private Vector velocityOffset;
     private Vector locationOffset;
     protected CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
@@ -43,6 +44,12 @@ public class EntityProjectileAction extends CustomProjectileAction {
     public void initialize(Spell spell, ConfigurationSection parameters) {
         super.initialize(spell, parameters);
         projectileEffects = ConfigurationUtils.getPotionEffects(parameters, "projectile_potion_effects", Integer.MAX_VALUE);
+    }
+
+    @Override
+    protected void addHandlers(Spell spell, ConfigurationSection parameters) {
+        super.addHandlers(spell, parameters);
+        addHandler(spell, "spawn");
     }
 
     protected boolean teleportByDefault() {
@@ -135,6 +142,15 @@ public class EntityProjectileAction extends CustomProjectileAction {
 
     @Override
     public SpellResult step(CastContext context) {
+        if (!spawnActionsRun) {
+            spawnActionsRun = true;
+            if (hasActions("spawn")) {
+                createActionContext(context);
+                actionContext.setTargetEntity(entity);
+                return startActions("spawn");
+            }
+        }
+
         SpellResult result = super.step(context);
         if (entity == null) {
             return SpellResult.CAST;
