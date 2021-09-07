@@ -3,5 +3,6 @@ mutant_villager:
   health: 10
   default_drops: false
   transformable: false
-  drops:
-  - gold_nugget@2
+  loot:
+    gold_nugget:
+      count: looting + 2

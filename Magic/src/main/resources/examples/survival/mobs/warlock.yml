@@ -27,9 +27,9 @@ warlock:
   drops:
   - diamond: 10
     emerald: 15
-    gold_nugget@18: 50
-    gold_nugget@16: 100
-    gold_nugget@12: 50
-    gold_nugget@8: 20
     warlock_wand: 5
+    none: 100
   - sp:16
+  loot:
+    gold_nugget:
+      count: looting * 2 + 4

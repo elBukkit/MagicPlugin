@@ -8,5 +8,6 @@ mutant:
   health: 20
   default_drops: false
   transformable: false
-  drops:
-  - gold_nugget@5
+  loot:
+    gold_nugget:
+      count: looting + 4

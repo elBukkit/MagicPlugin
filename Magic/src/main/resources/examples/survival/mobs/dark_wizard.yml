@@ -62,18 +62,16 @@ dark_wizard:
         petrify: 10
         none: 20
   drops:
-    - diamond: 10
-      emerald: 15
-      gold_nugget@18: 50
-      gold_nugget@16: 100
-      gold_nugget@12: 50
-      gold_nugget@8: 20
-      warlock_wand: 5
-    - diamond: 10
-      emerald: 15
+    - emerald: 15
       gold_ingot@2: 5
       gold_ingot: 1
     - sp:100
+  loot:
+    gold_nugget:
+      count: looting * 3 + 10
+    diamond:
+      probability: 0.5 + luck
+      count: 1 + looting / 3
   potion_effects:
   - type: speed
     amplifier: 1

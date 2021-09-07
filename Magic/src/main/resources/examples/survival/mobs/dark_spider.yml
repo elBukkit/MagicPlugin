@@ -10,8 +10,10 @@ dark_spider:
         poison|3: 100
         none: 50
   drops:
-  - gold_nugget@8
   - sp:8
+  loot:
+    gold_nugget:
+      count: looting + 2
   potion_effects:
   - type: speed
     amplifier: 0

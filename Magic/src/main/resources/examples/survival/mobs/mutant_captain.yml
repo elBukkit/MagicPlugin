@@ -9,8 +9,10 @@ mutant_captain:
   default_drops: false
   transformable: false
   drops:
-  - gold_nugget@10
   - sp:8
+  loot:
+    gold_nugget:
+      count: looting + 10
   potion_effects:
   - type: speed
     amplifier: 0

@@ -8,6 +8,9 @@ werewolf:
   drops:
   - bone@3
   - sp:5
+  loot:
+    gold_nugget:
+      count: looting + 2
   entity_attributes:
     generic_knockback_resistance: 1
     generic_attack_speed: 3
