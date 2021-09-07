@@ -172,7 +172,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     void cycleHotbar();
     void setCurrentHotbar(int hotbar);
     int getCurrentHotbar();
-    void damageDealt(double damage, Entity target);
     boolean hasTag(String tag);
     boolean hasSlot(String slot);
     void bind();
@@ -287,4 +286,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     Map<Enchantment, Integer> getEnchantments();
     void showInstructions();
     String parameterize(String command);
+
+    @Deprecated
+    void damageDealt(double damage, Entity target);
 }

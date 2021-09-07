@@ -244,6 +244,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean isInAir = false;
     private boolean isBlocking = false;
     private double lastFallDistance;
+    private float manaPerDamage;
 
     private Map<Integer, Wand> activeArmor = new HashMap<>();
 
@@ -540,6 +541,36 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         currentDamageDealtType = null;
         lastDamageDealtType = getDamageType(damageType, event.getCause());
         trigger("damage_dealt");
+
+        boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityLib.getCompatibilityUtils().isDamaging();
+        if (isMelee) {
+            float damage = (float)event.getDamage();
+            processMeleeDamage(damage);
+        }
+    }
+
+    protected void processMeleeDamage(float damage) {
+        playEffects("hit_entity");
+        if (manaPerDamage > 0) {
+            int manaMax = getEffectiveManaMax();
+            float mana = getMana();
+            if (manaMax > 0 && mana < manaMax) {
+                setMana(Math.min(manaMax, mana + damage * manaPerDamage));
+                updateMana();
+            }
+        }
+    }
+
+    public void playEffects(String effects) {
+        if (activeWand != null) {
+            activeWand.playEffects(effects);
+        }
+        if (offhandWand != null) {
+            offhandWand.playEffects(effects);
+        }
+        for (Wand armorWand : activeArmor.values()) {
+            armorWand.playEffects(effects);
+        }
     }
 
     public void onBlockBroken(Block block) {
@@ -4133,6 +4164,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         manaRegenerationBoost += properties.getFloat("mana_regeneration_boost", 0);
         manaMaxBoost += properties.getFloat("mana_max_boost", 0);
         healthScale = Math.max(healthScale, properties.getDouble("health_scale"));
+        manaPerDamage += properties.getFloat("mana_per_damage");
 
         boolean stack = properties.getBoolean("stack", false);
         addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
@@ -4306,9 +4338,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         // Need to do attributes next, in case they are used by any of the other properties
         attributes.clear();
+
+        // Reset all properties before adding in passive effects
         double previousHealthScale = healthScale;
         healthScale = 0;
         ignoreParticles = false;
+        manaPerDamage = 0.0f;
 
         addPassiveAttributes(properties);
         if (activeClass != null) {

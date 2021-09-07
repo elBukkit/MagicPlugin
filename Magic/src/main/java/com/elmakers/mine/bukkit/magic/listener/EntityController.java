@@ -289,10 +289,6 @@ public class EntityController implements Listener {
                     event.setCancelled(true);
                 }
             }
-            if (!event.isCancelled() && isMelee && activeWand != null) {
-                activeWand.playEffects("hit_entity");
-                activeWand.damageDealt(event.getDamage(), entity);
-            }
         } else {
             Targeting.checkTracking(damager, entity, null);
         }

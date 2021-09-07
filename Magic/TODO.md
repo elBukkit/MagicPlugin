@@ -7,6 +7,8 @@
  - uh the lightsaber block model is broken
 
  - An action to damage armor?
+
+ - Custom armor durability
    
  - Finish wand set bonus lore ... individual property lore looks like
    it's gonna turn into a whole thing

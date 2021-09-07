@@ -232,8 +232,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean limitBrushesToPath = false;
     private Double resetManaOnActivate = null;
 
-    private float manaPerDamage = 0;
-
     private Particle effectParticle = null;
     private float effectParticleData = 0;
     private int effectParticleCount = 0;
@@ -2024,7 +2022,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         blockMageCooldown = getInt("block_mage_cooldown");
         blockCooldown = getInt("block_cooldown");
 
-        manaPerDamage = getFloat("mana_per_damage");
         earnMultiplier = getFloat("earn_multiplier", getFloat("sp_multiplier", 1));
         quietLevel = getInt("quiet");
         if (quietLevel == 0 && getBoolean("quiet")) {
@@ -3368,6 +3365,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
                 }
             }
+            float manaPerDamage = getFloat("mana_per_damage");
             if (manaPerDamage > 0) {
                 ConfigurationUtils.addIfNotEmpty(getLevelString("mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()), lore);
             }
@@ -5347,15 +5345,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
+    @Deprecated
     public void damageDealt(double damage, Entity target) {
-        if (manaPerDamage > 0) {
-            int manaMax = getEffectiveManaMax();
-            float mana = getMana();
-            if (manaMax > 0 && mana < manaMax) {
-                setMana(Math.min(manaMax, mana + (float)damage * manaPerDamage));
-                updateMana();
-            }
-        }
     }
 
     public boolean alternateCast(int index) {
