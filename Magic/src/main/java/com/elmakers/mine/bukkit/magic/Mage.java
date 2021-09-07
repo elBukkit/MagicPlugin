@@ -307,6 +307,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private int blockMageCooldown = 0;
     private int blockCooldown = 0;
 
+    private float reflectFOV;
+    private float reflectChance;
+
     public Mage(String id, MagicController controller) {
         this.id = id;
         this.controller = controller;
@@ -4187,6 +4190,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         blockMageCooldown = Math.max(blockMageCooldown, properties.getInt("block_mage_cooldown"));
         blockCooldown = Math.max(blockCooldown, properties.getInt("block_cooldown"));
 
+        reflectChance = Math.max(reflectChance, properties.getFloat("reflect_chance"));
+        reflectFOV = Math.max(reflectFOV, properties.getFloat("reflect_fov"));
+
         boolean stack = properties.getBoolean("stack", false);
         addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
         addPassiveEffectsGroup(weakness, properties, "weakness", stack, 1.0);
@@ -4370,6 +4376,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         blockFOV = 0.0f;
         blockMageCooldown = 0;
         blockCooldown = 0;
+        reflectChance = 0;
+        reflectFOV = 0.0f;
 
         addPassiveAttributes(properties);
         if (activeClass != null) {
@@ -4911,16 +4919,17 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean isReflected(double angle) {
-        if (blockReflectChance == 0) return false;
+        if (blockReflectChance == 0 && reflectChance == 0) return false;
         if (blockFOV > 0 && angle > blockFOV) return false;
+        if (reflectFOV > 0 && angle > reflectFOV) return false;
         long now = System.currentTimeMillis();
         if (blockCooldown > 0 && lastBlockTime > 0 && lastBlockTime + blockCooldown > now) return false;
-        boolean isReflected = Math.random() <= blockReflectChance;
-        if (isReflected) {
-            playEffects("spell_reflected");
-            lastBlockTime = now;
-        }
-        return isReflected;
+        double r = Math.random();
+        if (blockReflectChance > 0 && r > blockReflectChance) return false;
+        if (reflectChance > 0 && r > reflectChance) return false;
+        playEffects("spell_reflected");
+        lastBlockTime = now;
+        return true;
     }
 
     @Override

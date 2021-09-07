@@ -42,7 +42,9 @@ public class BaseMagicProperties implements MagicProperties {
             "brushes", "brush_inventory", "spells", "spell_inventory", "spell_levels",
             "powered", "protected",
             "earn_multiplier",
-            "attributes", "tags", "ignored_by_mobs", "allow_container_copy", "ignore_particles"
+            "attributes", "tags", "ignored_by_mobs", "allow_container_copy", "ignore_particles",
+            "reflect_chance", "reflect_fov",
+            "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown"
     );
 
     public static final ImmutableSet<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(

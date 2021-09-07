@@ -42,7 +42,6 @@ public abstract class WandProperties extends TemplatedProperties {
             "quick_cast", "self_destruct",
             "left_click", "right_click", "drop", "swap", "no_bowpull",
             "left_click_sneak", "right_click_sneak", "drop_sneak", "swap_sneak", "no_bowpull_sneak",
-            "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown",
             "unique", "track", "invulnerable", "immortal", "inventory_rows",
             "class", "classes", "consume_spell", "stack", "unstashable", "unmoveable",
             "page_free_space", "enchantable", "hide_flags", "item_flags",
