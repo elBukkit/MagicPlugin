@@ -89,7 +89,7 @@ reflect|3:
         mana: 20
 
 reflect|4:
-  upgrade_required_path: master
+    upgrade_required_path: master
     parameters:
         radius: 2
         undo: 1100
@@ -106,5 +106,3 @@ reflect|5:
   parameters:
     add_modifiers: reflective
     duration: 1000
-
-
