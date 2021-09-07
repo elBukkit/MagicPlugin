@@ -105,7 +105,7 @@ set_bonus_properties:
  - Look at to_otherside warp, absolutely insane mob spawning (turn mob spawning back on after)
    ... it's the silverfish rule, but I think it may be unavoidable since the fish will just die? idk
  - Wand active_properties
- - Base modifier "allow_melee", and move reflect parameters from wand
+ - Base modifier "allow_melee"
  - Save spell can make upside-down schematics
 
 ## Arenas
@@ -209,7 +209,6 @@ set_bonus_properties:
    https://github.com/BetonQuest/BetonQuest
  - RideEntity action parameter to work on target mob (I think it has this already?)
  - Add requirements lists to wands
- - Some way to make a spell that uses the reflect behavior of shield wands (reflective modifiers)
  - AureliumSkills + path integration
  - Variable crafting recipe ingredients (e.g. all planks)
  - CheckMount action, klein_76 would like to detect when players are sitting down.. triggers?

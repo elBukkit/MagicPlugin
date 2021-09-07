@@ -25,6 +25,7 @@
  - Add yaw/pitch (and target_yaw,target_pitch) attributes
  - Add `drop_at_source` option to `DropSkull` action, for 3D camera (camera3D) item
  - Added UltimateClans support for teams, break and build permissions
+ - Allow block/reflect parameters on classes and modifiers
 
 ## Changes
  

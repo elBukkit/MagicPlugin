@@ -176,8 +176,6 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean hasSlot(String slot);
     void bind();
     void unbind();
-    boolean isReflected(double angle);
-    boolean isBlocked(double angle);
 
     /**
      * Save this Wand to a Configuration Section.
@@ -289,4 +287,8 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
 
     @Deprecated
     void damageDealt(double damage, Entity target);
+    @Deprecated
+    boolean isReflected(double angle);
+    @Deprecated
+    boolean isBlocked(double angle);
 }

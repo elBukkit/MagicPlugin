@@ -12,6 +12,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -70,7 +71,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public int getManaRegeneration() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return (int)Math.ceil(manaController.getManaRegen(getPlayer()));
+            return (int) Math.ceil(manaController.getManaRegen(getPlayer()));
         }
         return getInt("mana_regeneration", getInt("xp_regeneration"));
     }
@@ -79,7 +80,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public int getManaMax() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return (int)Math.ceil(manaController.getMaxMana(getPlayer()));
+            return (int) Math.ceil(manaController.getMaxMana(getPlayer()));
         }
         return getInt("mana_max", getInt("xp_max"));
     }
@@ -101,7 +102,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     @Deprecated
     public void setManaMax(int manaMax) {
-        setManaMax((float)manaMax);
+        setManaMax((float) manaMax);
     }
 
     @Override
@@ -112,7 +113,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     @Deprecated
     public void setManaRegeneration(int manaRegeneration) {
-        setManaRegeneration((float)manaRegeneration);
+        setManaRegeneration((float) manaRegeneration);
     }
 
     @Override
@@ -124,7 +125,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public float getMana() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return (float)manaController.getMana(getPlayer());
+            return (float) manaController.getMana(getPlayer());
         }
         return getFloat("mana", getFloat("xp"));
     }
@@ -166,18 +167,18 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public int getEffectiveManaMax() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return (int)Math.ceil(manaController.getMaxMana(getPlayer()));
+            return (int) Math.ceil(manaController.getMaxMana(getPlayer()));
         }
-        return (int)Math.ceil(effectiveManaMax);
+        return (int) Math.ceil(effectiveManaMax);
     }
 
     @Override
     public int getEffectiveManaRegeneration() {
         ManaController manaController = getManaController();
         if (manaController != null && isPlayer()) {
-            return (int)Math.ceil(manaController.getManaRegen(getPlayer()));
+            return (int) Math.ceil(manaController.getManaRegen(getPlayer()));
         }
-        return (int)Math.ceil(effectiveManaRegeneration);
+        return (int) Math.ceil(effectiveManaRegeneration);
     }
 
     protected long getLastManaRegeneration() {
@@ -197,8 +198,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         effectiveManaMax = getManaMax();
         effectiveManaRegeneration = getManaRegeneration();
         if (mage != null && getBoolean("boostable", true)) {
-            effectiveManaMax = (int)(effectiveManaMax * mage.getManaMaxMultiplier());
-            effectiveManaRegeneration = (int)(effectiveManaRegeneration * mage.getManaRegenerationMultiplier());
+            effectiveManaMax = (int) (effectiveManaMax * mage.getManaMaxMultiplier());
+            effectiveManaRegeneration = (int) (effectiveManaRegeneration * mage.getManaRegenerationMultiplier());
         }
 
         return (currentMana != effectiveManaMax || effectiveManaRegeneration != currentManaRegen);
@@ -216,8 +217,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (!getMage().isManaRegenerationDisabled()) {
                 int effectiveManaRegeneration = getEffectiveManaRegeneration();
                 long lastManaRegeneration = getLastManaRegeneration();
-                if (lastManaRegeneration > 0 && effectiveManaRegeneration > 0)
-                {
+                if (lastManaRegeneration > 0 && effectiveManaRegeneration > 0) {
                     long delta = now - lastManaRegeneration;
                     int effectiveManaMax = getEffectiveManaMax();
                     int manaMax = getManaMax();
@@ -225,7 +225,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                     if (effectiveManaMax == 0 && manaMax > 0) {
                         effectiveManaMax = manaMax;
                     }
-                    setMana(Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float)delta / 1000));
+                    setMana(Math.min(effectiveManaMax, mana + (float) effectiveManaRegeneration * (float) delta / 1000));
                     updated = true;
                 }
             }
@@ -249,7 +249,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public boolean setSpellLevel(String spellKey, int level) {
         BaseMagicConfigurable storage = getStorage("spell_levels");
         if (storage != this && storage != null && storage instanceof com.elmakers.mine.bukkit.api.magic.CasterProperties) {
-            return ((com.elmakers.mine.bukkit.api.magic.CasterProperties)storage).setSpellLevel(spellKey, level);
+            return ((com.elmakers.mine.bukkit.api.magic.CasterProperties) storage).setSpellLevel(spellKey, level);
         }
         if (!hasSpell(spellKey)) {
             return false;
@@ -316,8 +316,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
 
         Mage mage = getMage();
-        if (mage != null)
-        {
+        if (mage != null) {
             if (currentSpell != null) {
                 String levelDescription = template.getLevelDescription();
                 if (levelDescription == null || levelDescription.isEmpty()) {
@@ -366,12 +365,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
 
         Mage mage = getMage();
-        if (modified && mage != null)
-        {
+        if (modified && mage != null) {
             Messages messages = controller.getMessages();
             String materialName = MaterialBrush.getMaterialName(messages, brushKey);
-            if (materialName == null)
-            {
+            if (materialName == null) {
                 mage.getController().getLogger().warning("Invalid material: " + brushKey);
                 materialName = brushKey;
             }
@@ -459,7 +456,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 controller.getLogger().warning("Spell list in " + type + " is " + existingSpells.getClass().getName() + ", expected List");
             } else {
                 @SuppressWarnings("unchecked")
-                List<String> existingList = (List<String>)existingSpells;
+                List<String> existingList = (List<String>) existingSpells;
                 spells.addAll(existingList);
             }
         }
@@ -511,7 +508,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 controller.getLogger().warning("Brush list in " + type + " is " + existingBrushes.getClass().getName() + ", expected List");
             } else {
                 @SuppressWarnings("unchecked")
-                List<String> existingList = (List<String>)existingBrushes;
+                List<String> existingList = (List<String>) existingBrushes;
                 brushes.addAll(existingList);
             }
         }
@@ -574,7 +571,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public Double getAttribute(String attributeKey) {
         ConfigurationSection attributes = getConfigurationSection("attributes");
         Double value = attributes == null || !attributes.contains(attributeKey) ? null
-            : attributes.getDouble(attributeKey);
+                : attributes.getDouble(attributeKey);
         if (value == null) {
             MagicAttribute defaultSetting = controller.getAttribute(attributeKey);
             if (defaultSetting != null) {
@@ -631,7 +628,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (!(wandUpgrade instanceof Wand)) {
             return false;
         }
-        Wand wand = (Wand)wandUpgrade;
+        Wand wand = (Wand) wandUpgrade;
         ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(wand.getEffectiveConfiguration());
         cleanUpgradeConfig(upgradeConfig);
         return upgrade(upgradeConfig);
@@ -663,7 +660,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (mage != null) {
             CurrencyAmount currency = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
             if (currency != null && !mage.isAtMaxCurrency(currency.getType())) {
-                int amount = (int)Math.floor(mage.getEarnMultiplier(currency.getType()) * currency.getAmount() * item.getAmount());
+                int amount = (int) Math.floor(mage.getEarnMultiplier(currency.getType()) * currency.getAmount() * item.getAmount());
                 mage.addCurrency(currency.getType(), amount);
                 return true;
             }
@@ -722,8 +719,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public abstract boolean isPlayer();
+
     @Nullable
     public abstract Player getPlayer();
+
     @Nullable
     @Override
     public abstract Mage getMage();
@@ -731,7 +730,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     public MageController getController() {
         return controller;
-    };
+    }
+
+    ;
 
     @SuppressWarnings("unchecked")
     protected void migrateBrushes(ConfigurationSection configuration) {
@@ -740,9 +741,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             Map<String, ? extends Object> brushInventory = null;
             Map<String, Integer> newBrushInventory = new HashMap<>();
             if (brushInventoryRaw instanceof Map) {
-                brushInventory = (Map<String, ? extends Object>)brushInventoryRaw;
+                brushInventory = (Map<String, ? extends Object>) brushInventoryRaw;
             } else if (brushInventoryRaw instanceof ConfigurationSection) {
-                brushInventory = CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)brushInventoryRaw);
+                brushInventory = CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection) brushInventoryRaw);
             }
             if (brushInventory != null) {
                 for (Map.Entry<String, ? extends Object> brushEntry : brushInventory.entrySet()) {
@@ -750,7 +751,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                     if (slot != null && slot instanceof Integer) {
                         String materialKey = brushEntry.getKey();
                         materialKey = CompatibilityLib.getCompatibilityUtils().migrateMaterial(materialKey);
-                        newBrushInventory.put(materialKey, (Integer)slot);
+                        newBrushInventory.put(materialKey, (Integer) slot);
                     }
                 }
                 configuration.set("brush_inventory", newBrushInventory);
@@ -761,10 +762,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (brushesRaw != null) {
             Collection<String> brushes = null;
             if (brushesRaw instanceof String) {
-                String[] brushNames = StringUtils.split((String)brushesRaw, ',');
+                String[] brushNames = StringUtils.split((String) brushesRaw, ',');
                 brushes = Arrays.asList(brushNames);
             } else if (brushesRaw instanceof Collection) {
-                brushes = (Collection<String>)brushesRaw;
+                brushes = (Collection<String>) brushesRaw;
             }
 
             if (brushes != null) {
@@ -823,7 +824,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     public int randomize(int totalLevels, boolean addSpells) {
         Mage mage = getMage();
-        Wand wand = (this instanceof Wand) ? (Wand)this : (mage == null ? null : mage.getActiveWand());
+        Wand wand = (this instanceof Wand) ? (Wand) this : (mage == null ? null : mage.getActiveWand());
         ProgressionPath checkPath = getPath();
         if (checkPath == null || !(checkPath instanceof WandUpgradePath)) {
             if (mage != null && addSpells) {
@@ -831,7 +832,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             }
             return 0;
         }
-        WandUpgradePath path = (WandUpgradePath)checkPath;
+        WandUpgradePath path = (WandUpgradePath) checkPath;
 
         int minLevel = path.getMinLevel();
         if (totalLevels < minLevel) {
@@ -885,8 +886,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                     path = nextPath;
                 }
             } else if (path.canProgress(this)) {
-                if (mage != null && levels == 0 && addSpells)
-                {
+                if (mage != null && levels == 0 && addSpells) {
                     String message = getMessage("require_more_levels");
                     mage.sendMessage(message);
                 }
@@ -913,7 +913,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (overridesGeneric != null) {
                 castOverrides = new HashMap<>();
                 if (overridesGeneric instanceof String) {
-                    String overrides = (String)overridesGeneric;
+                    String overrides = (String) overridesGeneric;
                     if (!overrides.isEmpty()) {
                         // Support YML-List-As-String format
                         // May not really need this anymore.
@@ -925,12 +925,12 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                     }
                 } else if (overridesGeneric instanceof List) {
                     @SuppressWarnings("unchecked")
-                    List<String> overrideList = (List<String>)overridesGeneric;
+                    List<String> overrideList = (List<String>) overridesGeneric;
                     for (String override : overrideList) {
                         parseOverride(override, castOverrides);
                     }
                 } else if (overridesGeneric instanceof ConfigurationSection) {
-                    ConfigurationSection overridesSection = (ConfigurationSection)overridesGeneric;
+                    ConfigurationSection overridesSection = (ConfigurationSection) overridesGeneric;
                     Set<String> keys = overridesSection.getKeys(true);
                     for (String key : keys) {
                         Object leaf = overridesSection.get(key);
@@ -938,9 +938,9 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                             castOverrides.put(key, leaf.toString());
                         }
                     }
-                } else if (overridesGeneric instanceof  Map) {
+                } else if (overridesGeneric instanceof Map) {
                     @SuppressWarnings("unchecked")
-                    Map<String, String> cast = (Map<String, String>)overridesGeneric;
+                    Map<String, String> cast = (Map<String, String>) overridesGeneric;
                     castOverrides.putAll(cast);
                 }
             }
@@ -958,15 +958,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
     }
 
-    public void setOverrides(Map<String, String> overrides)
-    {
+    public void setOverrides(Map<String, String> overrides) {
         overrides = overrides != null && overrides.isEmpty() ? null : overrides;
         setProperty("overrides", overrides);
         updated();
     }
 
-    public void removeOverride(String key)
-    {
+    public void removeOverride(String key) {
         Map<String, String> castOverrides = getOverrides();
         if (castOverrides != null) {
             castOverrides.remove(key);
@@ -974,8 +972,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
     }
 
-    public void setOverride(String key, String value)
-    {
+    public void setOverride(String key, String value) {
         Map<String, String> castOverrides = getOverrides();
         if (castOverrides == null) {
             castOverrides = new HashMap<>();
@@ -989,8 +986,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Override
-    public boolean addOverride(String key, String value)
-    {
+    public boolean addOverride(String key, String value) {
         Map<String, String> castOverrides = getOverrides();
         if (castOverrides == null) {
             castOverrides = new HashMap<>();
@@ -1005,7 +1001,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             castOverrides.put(key, value);
         }
         if (modified) {
-           setOverrides(castOverrides);
+            setOverrides(castOverrides);
         }
 
         return modified;
@@ -1168,9 +1164,194 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         if (storage == null) {
             storage = this;
         }
-        if (storage instanceof MageClass)  {
-            manaClass = ((MageClass)storage).getKey();
+        if (storage instanceof MageClass) {
+            manaClass = ((MageClass) storage).getKey();
         }
         return controller.getManaController(manaClass);
+    }
+
+    public String getLevelString(String templateName, float amount) {
+        return controller.getMessages().getLevelString(getMessageKey(templateName), amount);
+    }
+
+    public String getLevelString(String templateName, float amount, float max) {
+        return controller.getMessages().getLevelString(getMessageKey(templateName), amount, max);
+    }
+
+    protected String getPropertyString(String templateName, float value) {
+        return getPropertyString(templateName, value, 1, false);
+    }
+
+    protected String getPropertyString(String templateName, float value, float max, boolean defaultStack) {
+        String propertyTemplate = getBoolean("stack", defaultStack) ? "property_stack" : "property_value";
+        if (value < 0) {
+            propertyTemplate = propertyTemplate + "_negative";
+        }
+        return controller.getMessages().getPropertyString(getMessageKey(templateName), value, max, getMessageKey(propertyTemplate));
+    }
+
+    protected String formatPropertyString(String message, float value, float max) {
+        String propertyTemplate = getBoolean("stack") ? "property_stack" : "property_value";
+        if (value < 0) {
+            propertyTemplate = propertyTemplate + "_negative";
+        }
+        return controller.getMessages().formatPropertyString(message, value, max, getMessage(propertyTemplate));
+    }
+
+    protected void addDamageTypeLore(String property, String propertyType, double amount, List<String> lore) {
+        addDamageTypeLore(property, propertyType, amount, 1, lore);
+    }
+
+    protected void addDamageTypeLore(String property, String propertyType, double amount, double max, List<String> lore) {
+        addDamageTypeLore(property, propertyType, amount, max, lore, null);
+    }
+
+    protected void addDamageTypeLore(String property, String propertyType, double amount, double max, List<String> lore, String unknownDefault) {
+        if (amount != 0) {
+            String prefix = getMessageKey("prefixes." + property);
+            prefix = controller.getMessages().get(prefix, "");
+            String templateKey = getMessageKey(property + "." + propertyType);
+            String template;
+            if (controller.getMessages().containsKey(templateKey)) {
+                template = controller.getMessages().get(templateKey);
+            } else {
+                templateKey = getMessageKey(property + ".unknown");
+                template = controller.getMessages().get(templateKey);
+                String pretty = propertyType.substring(0, 1).toUpperCase() + propertyType.substring(1);
+                template = template.replace("$type", pretty);
+                if (unknownDefault != null && !unknownDefault.isEmpty()) {
+                    // This is some special-case hackery, currently only used for enchantments
+                    unknownDefault = WordUtils.capitalize(unknownDefault.toLowerCase().replace("_", " "));
+                    template = template.replace("$name", unknownDefault);
+                }
+            }
+            template = formatPropertyString(prefix + template, (float)amount, (float)max);
+            ConfigurationUtils.addIfNotEmpty(template, lore);
+        }
+    }
+
+    protected void addPropertyLore(List<String> lore, boolean isSingleSpell) {
+        if (usesMana() && effectiveManaMax > 0) {
+            int manaMax = getManaMax();
+            if (effectiveManaMax != manaMax) {
+                String fullMessage = getLevelString("mana_amount_boosted", manaMax, controller.getMaxMana());
+                ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString((int) Math.ceil(effectiveManaMax))), lore);
+            } else {
+                ConfigurationUtils.addIfNotEmpty(getLevelString("mana_amount", manaMax, controller.getMaxMana()), lore);
+            }
+            int manaRegeneration = getManaRegeneration();
+            if (manaRegeneration > 0 && effectiveManaRegeneration > 0) {
+                if (effectiveManaRegeneration != manaRegeneration) {
+                    String fullMessage = getLevelString("mana_regeneration_boosted", manaRegeneration, controller.getMaxManaRegeneration());
+                    ConfigurationUtils.addIfNotEmpty(fullMessage.replace("$mana", Integer.toString((int) Math.ceil(effectiveManaRegeneration))), lore);
+                } else {
+                    ConfigurationUtils.addIfNotEmpty(getLevelString("mana_regeneration", manaRegeneration, controller.getMaxManaRegeneration()), lore);
+                }
+            }
+            float manaPerDamage = getFloat("mana_per_damage");
+            if (manaPerDamage > 0) {
+                ConfigurationUtils.addIfNotEmpty(getLevelString("mana_per_damage", manaPerDamage, controller.getMaxManaRegeneration()), lore);
+            }
+        }
+
+        float blockChance = getFloat("block_chance");
+        float blockReflectChance = getFloat("block_reflect_chance");
+        if (blockReflectChance > 0) {
+            ConfigurationUtils.addIfNotEmpty(getLevelString("reflect_chance", blockReflectChance), lore);
+        } else if (blockChance != 0) {
+            ConfigurationUtils.addIfNotEmpty(getLevelString("block_chance", blockChance), lore);
+        }
+
+        float earnMultiplier = getFloat("earn_multiplier", getFloat("sp_multiplier", 1));
+        if (earnMultiplier > 1) {
+            String earnDescription = getPropertyString("earn_multiplier", earnMultiplier - 1);
+            String earnType = getController().getMessages().get("currency.sp.name_short", "SP");
+            earnDescription = earnDescription.replace("$type", earnType);
+            ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
+        }
+        for (Map.Entry<PotionEffectType, Integer> effect : getPotionEffects().entrySet()) {
+            ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
+        }
+
+        if (getBoolean("ignored_by_mobs")) {
+            ConfigurationUtils.addIfNotEmpty(getMessage("ignored_by_mobs"), lore);
+        }
+
+        float consumeReduction = getFloat("consume_reduction");
+        if (consumeReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("consume_reduction", consumeReduction), lore);
+
+        float costReduction = getFloat("cost_reduction");
+        if (costReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("cost_reduction", costReduction), lore);
+        float cooldownReduction = getFloat("cooldown_reduction");
+        if (cooldownReduction != 0 && !isSingleSpell) ConfigurationUtils.addIfNotEmpty(getPropertyString("cooldown_reduction", cooldownReduction), lore);
+        float power = getFloat("power");
+        if (power > 0) ConfigurationUtils.addIfNotEmpty(getLevelString("power", power), lore);
+        boolean superProtected = getBoolean("protected");
+        if (superProtected) {
+            ConfigurationUtils.addIfNotEmpty(getMessage("super_protected"), lore);
+        } else {
+            Map<String, Double> protection = null;
+            ConfigurationSection protectionConfig = getConfigurationSection("protection");
+            if (protectionConfig != null) {
+                protection = new HashMap<>();
+                for (String protectionKey : protectionConfig.getKeys(false)) {
+                    protection.put(protectionKey, protectionConfig.getDouble(protectionKey));
+                }
+            }
+            if (protection != null) {
+                for (Map.Entry<String, Double> entry : protection.entrySet()) {
+                    String protectionType = entry.getKey();
+                    double amount = entry.getValue();
+                    addDamageTypeLore("protection", protectionType, amount, lore);
+                }
+            }
+        }
+        boolean superPowered = getBoolean("powered");
+        if (superPowered) {
+            ConfigurationUtils.addIfNotEmpty(getMessage("super_powered"), lore);
+        }
+
+        ConfigurationSection weaknessConfig = getConfigurationSection("weakness");
+        if (weaknessConfig != null) {
+            Set<String> keys = weaknessConfig.getKeys(false);
+            for (String key : keys) {
+                addDamageTypeLore("weakness", key, weaknessConfig.getDouble(key), lore);
+            }
+        }
+
+        ConfigurationSection strengthConfig = getConfigurationSection("strength");
+        if (strengthConfig != null) {
+            Set<String> keys = strengthConfig.getKeys(false);
+            for (String key : keys) {
+                addDamageTypeLore("strength", key, strengthConfig.getDouble(key), lore);
+            }
+        }
+        ConfigurationSection attributes = getConfigurationSection("attributes");
+        if (attributes != null) {
+            // Don't bother with the lore at all if the template has been blanked out
+            String template = getMessage("attributes");
+            if (!template.isEmpty()) {
+                Set<String> keys = attributes.getKeys(false);
+                for (String key : keys) {
+                    String label = controller.getMessages().get("attributes." + key + ".name", key);
+
+                    // We are only display attributes as integers for now
+                    int value = attributes.getInt(key);
+                    if (value == 0) continue;
+
+                    float max = 1;
+                    MagicAttribute attribute = controller.getAttribute(key);
+                    if (attribute != null) {
+                        Double maxValue = attribute.getMax();
+                        if (maxValue != null) {
+                            max = (float)(double)maxValue;
+                        }
+                    }
+
+                    label = getPropertyString("attributes", value, max, true).replace("$attribute", label);
+                    lore.add(label);
+                }
+            }
+        }
     }
 }

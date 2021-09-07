@@ -301,6 +301,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean bypassEnabled;
     private long portalsDisabledUntil;
 
+    private float blockFOV = 0;
+    private float blockChance = 0;
+    private float blockReflectChance = 0;
+    private int blockMageCooldown = 0;
+    private int blockCooldown = 0;
+
     public Mage(String id, MagicController controller) {
         this.id = id;
         this.controller = controller;
@@ -1852,6 +1858,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     private void updateBlocking(Player player) {
         boolean currentlyBlocking = player.isBlocking() || CompatibilityLib.getCompatibilityUtils().isHandRaised(player);
+
+        // Update flags and send triggers
         if (currentlyBlocking != isBlocking) {
             isBlocking = currentlyBlocking;
             if (isBlocking) {
@@ -1859,6 +1867,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             } else {
                 trigger("stop_block");
             }
+        }
+
+        // Check for blocking cooldown
+        if (currentlyBlocking && blockMageCooldown > 0) {
+            setRemainingCooldown(blockMageCooldown);
         }
     }
 
@@ -4166,6 +4179,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         healthScale = Math.max(healthScale, properties.getDouble("health_scale"));
         manaPerDamage += properties.getFloat("mana_per_damage");
 
+        // These should only be parameters to are OK and safe (performance-wise in particular)
+        // to change on the fly without fully reloading the wand
+        blockChance = Math.max(blockChance, properties.getFloat("block_chance"));
+        blockReflectChance = Math.max(blockReflectChance, properties.getFloat("block_reflect_chance"));
+        blockFOV = Math.max(blockFOV, properties.getFloat("block_fov"));
+        blockMageCooldown = Math.max(blockMageCooldown, properties.getInt("block_mage_cooldown"));
+        blockCooldown = Math.max(blockCooldown, properties.getInt("block_cooldown"));
+
         boolean stack = properties.getBoolean("stack", false);
         addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
         addPassiveEffectsGroup(weakness, properties, "weakness", stack, 1.0);
@@ -4344,6 +4365,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         healthScale = 0;
         ignoreParticles = false;
         manaPerDamage = 0.0f;
+        blockChance = 0.0f;
+        blockReflectChance = 0.0f;
+        blockFOV = 0.0f;
+        blockMageCooldown = 0;
+        blockCooldown = 0;
 
         addPassiveAttributes(properties);
         if (activeClass != null) {
@@ -4869,34 +4895,32 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
-    public long getLastBlockTime() {
-        return lastBlockTime;
-    }
-
-    public void setLastBlockTime(long ms) {
-        lastBlockTime = ms;
+    @Override
+    public boolean isBlocked(double angle) {
+        if (blockChance == 0) return false;
+        if (blockFOV > 0 && angle > blockFOV) return false;
+        long now = System.currentTimeMillis();
+        if (blockCooldown > 0 && lastBlockTime > 0 && lastBlockTime + blockCooldown > now) return false;
+        boolean isBlocked = Math.random() <= blockChance;
+        if (isBlocked) {
+            playEffects("spell_blocked");
+            lastBlockTime = now;
+        }
+        return isBlocked;
     }
 
     @Override
     public boolean isReflected(double angle) {
-        if (activeWand != null && activeWand.isReflected(angle)) {
-            return true;
+        if (blockReflectChance == 0) return false;
+        if (blockFOV > 0 && angle > blockFOV) return false;
+        long now = System.currentTimeMillis();
+        if (blockCooldown > 0 && lastBlockTime > 0 && lastBlockTime + blockCooldown > now) return false;
+        boolean isReflected = Math.random() <= blockReflectChance;
+        if (isReflected) {
+            playEffects("spell_reflected");
+            lastBlockTime = now;
         }
-        if (offhandWand != null && offhandWand.isReflected(angle)) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isBlocked(double angle) {
-        if (activeWand != null && activeWand.isBlocked(angle)) {
-            return true;
-        }
-        if (offhandWand != null && offhandWand.isBlocked(angle)) {
-            return true;
-        }
-        return false;
+        return isReflected;
     }
 
     @Override
