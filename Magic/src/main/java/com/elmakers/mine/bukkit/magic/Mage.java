@@ -5200,6 +5200,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
 
             default:
+                Player player = getPlayer();
+                if (player != null) {
+                    Enchantment enchantment = CompatibilityLib.getCompatibilityUtils().getEnchantmentByKey(attributeKey);
+                    if (enchantment != null) {
+                        // TODO: Check other slots/items?
+                        ItemStack item = player.getInventory().getItemInMainHand();
+                        if (item.hasItemMeta()) {
+                            ItemMeta meta = item.getItemMeta();
+                            return (double)meta.getEnchantLevel(enchantment);
+                        }
+                    }
+                }
                 return null;
         }
     }

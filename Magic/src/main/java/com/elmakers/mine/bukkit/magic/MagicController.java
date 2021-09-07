@@ -3526,6 +3526,9 @@ public class MagicController implements MageController {
         registeredAttributes.addAll(builtinMageAttributes);
         registeredAttributes.addAll(builtinAttributes);
         registeredAttributes.addAll(builtinTargetAttributes);
+        for (String enchantmentKey : CompatibilityLib.getCompatibilityUtils().getEnchantmentBaseKeys()) {
+            registeredAttributes.add(enchantmentKey);
+        }
         registerPlayerAttributes(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {
             Set<String> providerAttributes = provider.getAllAttributes();

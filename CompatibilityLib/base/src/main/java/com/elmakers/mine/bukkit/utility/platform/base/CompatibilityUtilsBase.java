@@ -783,8 +783,23 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public String getEnchantmentBaseKey(Enchantment enchantment) {
+        String[] pieces = StringUtils.split(getEnchantmentKey(enchantment), ":", 2);
+        return pieces[pieces.length - 1];
+    }
+
+    @Override
     public Enchantment getEnchantmentByKey(String key) {
         return Enchantment.getByName(key.toUpperCase());
+    }
+
+    @Override
+    public Collection<String> getEnchantmentBaseKeys() {
+        List<String> enchantmentKeys = new ArrayList<>();
+        for (Enchantment enchantment : Enchantment.values()) {
+            enchantmentKeys.add(getEnchantmentBaseKey(enchantment));
+        }
+        return enchantmentKeys;
     }
 
     @Override

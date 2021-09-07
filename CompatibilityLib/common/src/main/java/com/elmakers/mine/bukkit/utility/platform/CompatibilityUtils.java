@@ -475,7 +475,11 @@ public interface CompatibilityUtils {
 
     String getEnchantmentKey(Enchantment enchantment);
 
+    String getEnchantmentBaseKey(Enchantment enchantment);
+
     Enchantment getEnchantmentByKey(String key);
+
+    Collection<String> getEnchantmentBaseKeys();
 
     boolean checkDoorAction(Block[] doorBlocks, DoorActionType actionType);
 
