@@ -10,6 +10,10 @@
 
  - Custom armor durability
 
+ - Fix locked/modifiable wand properties in meta.json
+
+ - Check Air Strike with new mobs, add new mob skins but also make sure it works with a default icon
+
  - Convert slotted wand upgrades to WandProperties .. anything else that can use this so we're not messing about with
    items for no reason?
 
