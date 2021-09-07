@@ -9,9 +9,9 @@
  - An action to damage armor?
 
  - Custom armor durability
-   
- - Finish wand set bonus lore ... individual property lore looks like
-   it's gonna turn into a whole thing
+
+ - Convert slotted wand upgrades to WandProperties .. anything else that can use this so we're not messing about with
+   items for no reason?
 
  - Mysterious:
    Mage class mage': 'allow': Unknown function or variable 'allow' at pos 0 in expression 'allow'

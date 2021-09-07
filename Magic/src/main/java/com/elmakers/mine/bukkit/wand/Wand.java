@@ -3066,14 +3066,20 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         }
                     }
                     if (setBonusConfiguration != null) {
-                        // TODO: Individual bonus .. this is going to be trickier, need to parse properties
-                        // as a wand.. maybe try to abstract the needed parts to WandProperties?
-                        // This could let us use WandProperties for slotted upgrades
-                        // and maybe a variety of other places, which would be great since we do a lot of
-                        // unnecessary item manipulation now for all these virtual wands
-                        // or maybe even move it all to CasterProperties if we're feeling saucy,
-                        // all this stuff should be shared by modifiers and classes, right?
-                        lore.add(ChatColor.DARK_GRAY + " ... super secret bonus (W.I.P.)");
+                        WandProperties setBonusProperties = new WandProperties(controller, setBonusConfiguration);
+                        if (!printedHeader) {
+                            String headerKey = isActive ? "set_header_bonus_active" : "set_header_bonus_inactive";
+                            ConfigurationUtils.addIfNotEmpty(getMessage(headerKey).replace("$set", setName), lore);
+                            printedHeader = true;
+                        }
+                        List<String> propertiesLore = new ArrayList<>();
+                        setBonusProperties.addPropertyLore(propertiesLore);
+                        for (String propertyLore : propertiesLore) {
+                            if (!isActive) {
+                                propertyLore = ChatColor.stripColor(propertyLore);
+                            }
+                            lore.add(setBonusTemplate.replace("$bonus", propertyLore));
+                        }
                     }
                     if (!printedHeader) {
                         ConfigurationUtils.addIfNotEmpty(getMessage("set_header").replace("$set", Integer.toString(slots.size())), lore);
@@ -3246,11 +3252,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return CompatibilityLib.getNBTUtils().containsTag(item, "currency");
     }
 
-    protected void addPropertyLore(List<String> lore) {
+    public void addPropertyLore(List<String> lore) {
         addPropertyLore(lore, false);
     }
 
-    protected void addPropertyLore(List<String> lore, boolean isSingleSpell) {
+    public void addPropertyLore(List<String> lore, boolean isSingleSpell) {
         // If this is a passive wand, then reduction properties stack onto the mage when worn.
         // In this case we should show it as such in the lore.
         if (worn) isSingleSpell = false;

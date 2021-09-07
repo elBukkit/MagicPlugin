@@ -1230,7 +1230,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         }
     }
 
-    protected void addPropertyLore(List<String> lore, boolean isSingleSpell) {
+    public void addPropertyLore(List<String> lore) {
+        addPropertyLore(lore, false);
+    }
+
+    public void addPropertyLore(List<String> lore, boolean isSingleSpell) {
         if (usesMana() && effectiveManaMax > 0) {
             int manaMax = getManaMax();
             if (effectiveManaMax != manaMax) {

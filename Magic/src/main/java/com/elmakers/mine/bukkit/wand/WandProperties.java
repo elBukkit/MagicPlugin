@@ -4,17 +4,19 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.MageClass;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.TemplatedProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ImmutableSet;
 
-public abstract class WandProperties extends TemplatedProperties {
+public class WandProperties extends TemplatedProperties {
     public static final ImmutableSet<String> PROPERTY_KEYS = new ImmutableSet.Builder<String>()
         .addAll(BaseMagicProperties.PROPERTY_KEYS)
         .add(
@@ -57,6 +59,12 @@ public abstract class WandProperties extends TemplatedProperties {
 
     public WandProperties(MageController controller) {
         super(MagicPropertyType.WAND, controller);
+    }
+
+    public WandProperties(MagicController controller, ConfigurationSection config) {
+        this(controller);
+        load(config);
+        loadProperties();
     }
 
     public void setWandTemplate(WandTemplate template) {
@@ -106,5 +114,22 @@ public abstract class WandProperties extends TemplatedProperties {
     @Override
     protected Set<String> getAllPropertyKeys() {
         return PROPERTY_KEYS;
+    }
+
+    @Override
+    public boolean isPlayer() {
+        return false;
+    }
+
+    @Nullable
+    @Override
+    public Player getPlayer() {
+        return null;
+    }
+
+    @Nullable
+    @Override
+    public com.elmakers.mine.bukkit.magic.Mage getMage() {
+        return null;
     }
 }
