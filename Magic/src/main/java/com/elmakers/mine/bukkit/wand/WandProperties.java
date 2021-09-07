@@ -12,6 +12,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.magic.MageClass;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.magic.TemplateProperties;
 import com.elmakers.mine.bukkit.magic.TemplatedProperties;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ImmutableSet;
@@ -131,5 +132,22 @@ public class WandProperties extends TemplatedProperties {
     @Override
     public com.elmakers.mine.bukkit.magic.Mage getMage() {
         return null;
+    }
+
+    @Override
+    public String getMessageKey(String key) {
+        TemplateProperties template = getTemplate();
+        String templateKey = template == null ? null : template.getMessageKey(key);
+        if (templateKey != null) {
+            return templateKey;
+        }
+        // For performance reasons we will only look one level up
+        template = template == null ? null : template.getParent();
+        templateKey = template == null ? null : template.getMessageKey(key);
+        if (templateKey != null) {
+            return templateKey;
+        }
+
+        return "wand." + key;
     }
 }

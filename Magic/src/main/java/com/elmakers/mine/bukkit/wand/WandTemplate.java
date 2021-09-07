@@ -313,14 +313,15 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
         return null;
     }
 
-    public String getMessageKey(String key, MageController controller) {
+    @Override
+    public String getMessageKey(String key) {
         if (!messageKeys.containsKey(key)) {
             String wandKey = "wands." + this.getKey() + "." + key;
             if (controller.getMessages().containsKey(wandKey)) {
                 messageKeys.put(key, wandKey);
             } else {
-                WandTemplate parent = parentKey == null || parentKey.isEmpty() ? null : (WandTemplate)controller.getWandTemplate(parentKey);
-                String parentMessageKey = parent == null ? null : parent.getMessageKey(key, controller);
+                WandTemplate parent = parentKey == null || parentKey.isEmpty() ? null : controller.getWandTemplate(parentKey);
+                String parentMessageKey = parent == null ? null : parent.getMessageKey(key);
                 messageKeys.put(key, parentMessageKey);
             }
         }
