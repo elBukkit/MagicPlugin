@@ -26,6 +26,8 @@
  - Add `drop_at_source` option to `DropSkull` action, for 3D camera (camera3D) item
  - Added UltimateClans support for teams, break and build permissions
  - Allow block/reflect parameters on classes and modifiers
+ - Add reflect_chance/reflect_fov parameters for classes, wands and modifiers to reflect without blocking
+ - Added Reflect level 5, which makes the caster directly reflective
 
 ## Changes
  

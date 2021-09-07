@@ -1,0 +1,4 @@
+# This will cause a player to have a 50/50 chance of reflecting a spell
+# that hits them
+reflective:
+  reflect_chance: 0.5

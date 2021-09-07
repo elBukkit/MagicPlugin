@@ -89,9 +89,22 @@ reflect|3:
         mana: 20
 
 reflect|4:
+  upgrade_required_path: master
     parameters:
         radius: 2
         undo: 1100
         reflect_chance: 1
         breakable: 1
+
+reflect|5:
+  actions:
+    cast:
+      - class: Modifier
+      - class: Disc
+        actions:
+           - class: ModifyBlock
+  parameters:
+    add_modifiers: reflective
+    duration: 1000
+
 

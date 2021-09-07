@@ -114,6 +114,8 @@ spells:
         name: Reflect
         description: Reflect spells cast against you
         upgrade_description: "Increased size and reflectivity"
+    reflect|5:
+        upgrade_description: "Caster is now reflective as well"
     shell:
         name: Shell
         description: Create a reflective shell
