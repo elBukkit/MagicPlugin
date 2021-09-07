@@ -29,6 +29,8 @@
  - Add reflect_chance/reflect_fov parameters for classes, wands and modifiers to reflect without blocking
  - Added Reflect level 5, which makes the caster directly reflective
  - Added `spawn` sub-actions to EntityProjectile action
+ - Added `loot` option to mobs, a simpler way to specify drops with probability that also can use variables
+   (`drops` can not use variables, both can be used side-by-side on the same mob)
 
 ## Changes
  

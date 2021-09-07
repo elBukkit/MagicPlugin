@@ -247,4 +247,8 @@ public class RandomUtils {
     public static Random getRandom() {
         return random;
     }
+
+    public static boolean checkProbability(double probability) {
+        return probability >= random.nextDouble();
+    }
 }

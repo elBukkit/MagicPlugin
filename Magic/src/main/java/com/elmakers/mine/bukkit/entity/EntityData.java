@@ -48,6 +48,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
 import com.elmakers.mine.bukkit.boss.BossBarConfiguration;
 import com.elmakers.mine.bukkit.boss.BossBarTracker;
+import com.elmakers.mine.bukkit.configuration.MageParameters;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
@@ -150,6 +151,7 @@ public class EntityData
     protected boolean defaultDrops;
     protected boolean dropsRequirePlayerKiller;
     protected List<Deque<WeightedPair<String>>> drops;
+    protected ConfigurationSection loot;
     protected Set<String> tags;
     protected Set<String> removeMounts;
     protected String interactSpell;
@@ -475,6 +477,7 @@ public class EntityData
                 }
             }
         }
+        loot = parameters.getConfigurationSection("loot");
         cancelInteract = parameters.getBoolean("cancel_interact");
         List<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
         if (tagList != null) {
@@ -1220,6 +1223,35 @@ public class EntityData
                     if (item != null) {
                         dropList.add(item);
                     }
+                }
+            }
+        }
+        if (loot != null) {
+            ConfigurationSection processLoot = loot;
+            EntityDamageEvent lastDamage = event.getEntity().getLastDamageCause();
+            if (lastDamage instanceof EntityDamageByEntityEvent) {
+                Entity damager = ((EntityDamageByEntityEvent)lastDamage).getDamager();
+                damager = controller.getDamageSource(damager);
+                Mage mage = controller.getMage(damager);
+                processLoot = new MageParameters(mage, key + ".loot");
+                ConfigurationUtils.addConfigurations(processLoot, loot);
+            }
+            Set<String> keys = processLoot.getKeys(false);
+            for (String key : keys) {
+                int count = 1;
+                double probability;
+                ConfigurationSection config = processLoot.getConfigurationSection(key);
+                if (config != null) {
+                    probability = config.getDouble("probability", 1);
+                    count = config.getInt("count", 1);
+                } else {
+                    probability = processLoot.getDouble(key);
+                }
+                if (!RandomUtils.checkProbability(probability)) continue;
+                ItemStack item = controller.createItem(key);
+                item.setAmount(count);
+                if (item != null) {
+                    dropList.add(item);
                 }
             }
         }
