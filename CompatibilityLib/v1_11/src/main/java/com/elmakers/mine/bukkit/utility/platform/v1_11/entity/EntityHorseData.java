@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -15,6 +16,8 @@ public class EntityHorseData extends EntityAbstractHorseData {
     public Horse.Style style;
     public ItemData armor;
     public ItemData saddle;
+    protected boolean temporarySaddle;
+    protected boolean temporaryArmor;
 
     public EntityHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
@@ -41,7 +44,9 @@ public class EntityHorseData extends EntityAbstractHorseData {
             jumpStrength = parameters.getDouble("horse_jump_strength");
         }
         armor = controller.getOrCreateItem(parameters.getString("armor"));
+        temporaryArmor = parameters.getBoolean("armor_temporary");
         saddle = controller.getOrCreateItem(parameters.getString("saddle"));
+        temporarySaddle = parameters.getBoolean("saddle_temporary");
     }
 
     public EntityHorseData(Entity entity, MageController controller) {
@@ -62,10 +67,20 @@ public class EntityHorseData extends EntityAbstractHorseData {
         Horse horse = (Horse)entity;
 
         if (armor != null) {
-            horse.getInventory().setArmor(armor.getItemStack(1));
+            ItemStack armorItem = armor.getItemStack(1);
+            if (temporaryArmor) {
+                armorItem = getPlatform().getItemUtils().makeReal(armorItem);
+                getPlatform().getItemUtils().makeTemporary(armorItem, "");
+            }
+            horse.getInventory().setArmor(armorItem);
         }
         if (saddle != null) {
-            horse.getInventory().setSaddle(armor.getItemStack(1));
+            ItemStack saddleItem = saddle.getItemStack(1);
+            if (temporarySaddle) {
+                saddleItem = getPlatform().getItemUtils().makeReal(saddleItem);
+                getPlatform().getItemUtils().makeTemporary(saddleItem, "");
+            }
+            horse.getInventory().setSaddle(saddleItem);
         }
         if (color != null) {
             horse.setColor(color);

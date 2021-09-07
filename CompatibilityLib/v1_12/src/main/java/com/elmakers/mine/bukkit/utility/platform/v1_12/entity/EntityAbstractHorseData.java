@@ -3,16 +3,19 @@ package com.elmakers.mine.bukkit.utility.platform.v1_12.entity;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AbstractHorse;
 import org.bukkit.entity.Entity;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class EntityAbstractHorseData extends com.elmakers.mine.bukkit.utility.platform.v1_11.entity.EntityAbstractHorseData {
     public ItemData saddle;
+    protected boolean temporarySaddle;
 
     public EntityAbstractHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
         saddle = controller.getOrCreateItem(parameters.getString("saddle"));
+        temporarySaddle = parameters.getBoolean("saddle_temporary");
     }
 
     public EntityAbstractHorseData(Entity entity, MageController controller) {
@@ -29,7 +32,12 @@ public class EntityAbstractHorseData extends com.elmakers.mine.bukkit.utility.pl
         if (entity instanceof AbstractHorse) {
             AbstractHorse horse = (AbstractHorse)entity;
             if (saddle != null) {
-                horse.getInventory().setSaddle(saddle.getItemStack(1));
+                ItemStack saddleItem = saddle.getItemStack(1);
+                if (temporarySaddle) {
+                    saddleItem = getPlatform().getItemUtils().makeReal(saddleItem);
+                    getPlatform().getItemUtils().makeTemporary(saddleItem, "");
+                }
+                horse.getInventory().setSaddle(saddleItem);
             }
         }
     }

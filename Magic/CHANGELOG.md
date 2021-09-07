@@ -46,6 +46,7 @@
  - Fix error in EntitySelectAction when there are more than 54 entities in the menu (no pages for now...)
  - Fix rocket boots crafting recipe
  - Fix /marena import command
+ - Fix the saddle on the Horse spell horse being removeable
 
 # 10.0.1
 

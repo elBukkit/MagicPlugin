@@ -6,6 +6,7 @@ import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Horse;
+import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -14,6 +15,7 @@ public class EntityHorseData extends EntityAbstractHorseData {
     public Horse.Color color;
     public Horse.Style style;
     public ItemData armor;
+    protected boolean temporaryArmor;
 
     public EntityHorseData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
@@ -40,6 +42,7 @@ public class EntityHorseData extends EntityAbstractHorseData {
             jumpStrength = parameters.getDouble("horse_jump_strength");
         }
         armor = controller.getOrCreateItem(parameters.getString("armor"));
+        temporaryArmor = parameters.getBoolean("armor_temporary");
     }
 
     public EntityHorseData(Horse horse, MageController controller) {
@@ -56,7 +59,12 @@ public class EntityHorseData extends EntityAbstractHorseData {
         Horse horse = (Horse)entity;
 
         if (armor != null) {
-            horse.getInventory().setArmor(armor.getItemStack(1));
+            ItemStack armorItem = armor.getItemStack(1);
+            if (temporaryArmor) {
+                armorItem = getPlatform().getItemUtils().makeReal(armorItem);
+                getPlatform().getItemUtils().makeTemporary(armorItem, "");
+            }
+            horse.getInventory().setArmor(armorItem);
         }
         if (color != null) {
             horse.setColor(color);

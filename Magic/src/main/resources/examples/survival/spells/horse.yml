@@ -66,6 +66,7 @@ horse:
         set_target: true
         tamed: true
         saddle: saddle
+        saddle_temporary: true
         track: false
         type: horse
         allow_max_range: true
