@@ -22,7 +22,7 @@ public class MageModifier extends BaseMageModifier implements Comparable<MageMod
     }
 
     @Override
-    protected String getMessageKey(String key) {
+    public String getMessageKey(String key) {
         TemplateProperties template = getTemplate();
         if (template != null) {
             String mageKey = "modifiers." + template.getKey() + "." + key;

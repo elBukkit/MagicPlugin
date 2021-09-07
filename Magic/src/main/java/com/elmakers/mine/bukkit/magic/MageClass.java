@@ -27,7 +27,7 @@ public class MageClass extends BaseMageModifier implements com.elmakers.mine.buk
     }
 
     @Override
-    protected String getMessageKey(String key) {
+    public String getMessageKey(String key) {
         TemplateProperties template = getTemplate();
         if (template != null) {
             String mageKey = "classes." + template.getKey() + "." + key;
