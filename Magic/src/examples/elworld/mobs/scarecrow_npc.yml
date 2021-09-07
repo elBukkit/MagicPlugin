@@ -1,0 +1,10 @@
+scarecrow_npc:
+  inherit: base_npc
+  type: husk
+  name: Scarecrow
+  model: scarecrow
+  ai: true
+  leash_range: 16
+  triggers:
+    playdead:
+      cast: medeath
