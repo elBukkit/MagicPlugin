@@ -1265,6 +1265,14 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         } else if (blockChance != 0) {
             ConfigurationUtils.addIfNotEmpty(getLevelString("block_chance", blockChance), lore);
         }
+        float manaMaxBoost = getManaMaxBoost();
+        if (manaMaxBoost != 0) {
+            ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_boost", manaMaxBoost, 1, true), lore);
+        }
+        float manaRegenerationBoost = getManaRegenerationBoost();
+        if (manaRegenerationBoost != 0) {
+            ConfigurationUtils.addIfNotEmpty(getPropertyString("mana_regeneration_boost", manaRegenerationBoost, 1, true), lore);
+        }
 
         float earnMultiplier = getFloat("earn_multiplier", getFloat("sp_multiplier", 1));
         if (earnMultiplier > 1) {
