@@ -12,7 +12,9 @@
 
  - Fix locked/modifiable wand properties in meta.json
 
- - Check Air Strike with new mobs, add new mob skins but also make sure it works with a default icon
+ - Add new mob skins for axolotl and goat
+
+ - Test "cast_command_cost_reduction: 0.0", does it not work with item casting costs?
 
  - Convert slotted wand upgrades to WandProperties .. anything else that can use this so we're not messing about with
    items for no reason?

@@ -4708,7 +4708,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
         if (currency instanceof CustomCurrency) {
-            delta = doSetCurrency(currency, type, previousValue, previousValue + delta);
+            delta = doSetCurrency(currency, type, previousValue + delta);
         } else if (currency == null || !currency.give(this, delta)) {
             return;
         }
@@ -4741,7 +4741,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return;
         }
         if (currency instanceof CustomCurrency) {
-            delta = doSetCurrency(currency, type, previousValue, previousValue - delta);
+            delta = doSetCurrency(currency, type, previousValue - delta);
         } else {
             currency.deduct(this, delta);
         }
@@ -4766,10 +4766,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     // Returns the change, which may have been capped by min or max
     private double doSetCurrency(String key, double newValue) {
         Currency currency = initCurrency(key);
-        return doSetCurrency(currency, key, data.getDouble(key), newValue);
+        return doSetCurrency(currency, key, newValue);
     }
 
-    private double doSetCurrency(Currency currency, String type, double previousValue, double newValue) {
+    private double doSetCurrency(Currency currency, String type, double newValue) {
+        double delta;
         if (currency != null) {
             if (currency.hasMaxValue()) {
                 newValue = Math.min(newValue, currency.getMaxValue());
@@ -4777,9 +4778,22 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             if (currency.hasMinValue()) {
                 newValue = Math.max(newValue, currency.getMinValue());
             }
+            if (currency instanceof CustomCurrency) {
+                delta = newValue - data.getDouble(type);
+                data.set(type, newValue);
+            } else {
+                delta = newValue - currency.getBalance(this);
+                if (delta < 0)
+                    currency.deduct(this, -delta);
+                else if (delta > 0)
+                    currency.give(this, delta);
+            }
+        } else {
+            delta = newValue - data.getDouble(type);
+            data.set(type, newValue);
         }
-        data.set(type, newValue);
-        return newValue - previousValue;
+
+        return delta;
     }
 
     @Override
