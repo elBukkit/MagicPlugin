@@ -19,7 +19,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
     private final String urlDisabled;
     private final String glyph;
     private final String type;
-    private final boolean useUrl;
+    private final boolean forceUrl;
 
     public Icon(MageController controller) {
         this.controller = controller;
@@ -30,7 +30,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         url = null;
         urlDisabled = BaseSpell.DEFAULT_DISABLED_ICON_URL;
         glyph = null;
-        useUrl = false;
+        forceUrl = false;
         type = null;
     }
 
@@ -43,7 +43,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         url = configuration.getString("url");
         urlDisabled = configuration.getString("url_disabled");
         glyph = configuration.getString("glyph");
-        useUrl = configuration.getBoolean("force_url", false);
+        forceUrl = configuration.getBoolean("force_url", false);
         type = configuration.getString("type");
     }
 
@@ -61,7 +61,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         url = baseIcon.url != null ? baseIcon.url : defaultIcon.url;
         urlDisabled = baseIcon.urlDisabled != null ? baseIcon.urlDisabled : defaultIcon.urlDisabled;
         glyph = baseIcon.glyph != null ? baseIcon.glyph : defaultIcon.glyph;
-        useUrl = baseIcon.useUrl;
+        forceUrl = baseIcon.forceUrl;
         type = baseIcon.type;
     }
 
@@ -79,7 +79,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         urlDisabled = configuration.getString("icon_disabled_url", other.urlDisabled);
         glyph = configuration.getString("glyph", other.glyph);
         boolean onlyHasUrl = configuration.contains("icon_url") && itemIcon == null;
-        useUrl = configuration.getBoolean("force_url", onlyHasUrl);
+        forceUrl = configuration.getBoolean("force_url", onlyHasUrl);
         type = configuration.getString("type", other.type);
     }
 
@@ -103,7 +103,7 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
 
     @Override
     public boolean forceUrl() {
-        return useUrl;
+        return forceUrl;
     }
 
     private MaterialAndData getItem(String key) {
@@ -116,10 +116,35 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
 
     @Override
     @Nullable
+    public MaterialAndData getItemMaterial(MageController controller) {
+        if (forceUrl || controller.isUrlIconsEnabled()) {
+            if (url != null) {
+                return getItem("skull:" + url);
+            }
+        }
+        return getItemMaterial(controller.isLegacyIconsEnabled());
+    }
+
+    @Override
+    @Nullable
     public MaterialAndData getItemMaterial(boolean isLegacy) {
         String useKey = isLegacy && legacyItemKey != null && !legacyItemKey.isEmpty()
-            ? legacyItemKey : itemKey;
+                ? legacyItemKey : itemKey;
         return getItem(useKey);
+    }
+
+    @Override
+    @Nullable
+    public MaterialAndData getItemDisabledMaterial(MageController controller) {
+        if (forceUrl || controller.isUrlIconsEnabled()) {
+            if (urlDisabled != null) {
+                return getItem("skull:" + urlDisabled);
+            }
+            if (url != null) {
+                return getItem("skull:" + url);
+            }
+        }
+        return getItemDisabledMaterial(controller.isLegacyIconsEnabled());
     }
 
     @Override
