@@ -1,0 +1,8 @@
+rewards:
+  health: 1
+  type: husk
+  ai: false
+  triggers:
+    death:
+      cast:
+      - grant sp 100 money 10000

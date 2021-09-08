@@ -1,0 +1,13 @@
+grant:
+  actions:
+    cast:
+    - class: ModifyCurrencyAction
+      currency: currency
+      value: $money
+    - class: ModifyCurrencyAction
+      currency: sp
+      value: $sp
+  parameters:
+    target: damager
+    sp: 0
+    money: 0
