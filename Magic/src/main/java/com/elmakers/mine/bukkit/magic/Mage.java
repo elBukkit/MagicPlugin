@@ -4,6 +4,7 @@ import static com.google.common.base.Verify.verifyNotNull;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -13,6 +14,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -142,6 +144,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION = 0;
     public static int OFFHAND_CAST_COOLDOWN = 500;
     public static int CURRENCY_MESSAGE_DELAY = 1000;
+    public static int ACTION_BAR_QUEUE_INTERVAL = 3000;
+    public static int ACTION_BAR_QUEUE_MAX_DEPTH = 20;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
     public static boolean DEACTIVATE_WAND_ON_GAME_MODE_CHANGE = false;
     public static boolean COMMAND_BLOCKS_SUPERPOWERED = true;
@@ -168,6 +172,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Map<String, Long> lastTriggers = new HashMap<>();
     private final Map<String, MageKit> kits = new HashMap<>();
     private final Map<String, CurrencyMessage> currencyMessages = new HashMap<>();
+    private final Queue<String> actionBarQueue = new ArrayDeque<>();
+    private long lastActionBarSend;
     protected ConfigurationSection data = ConfigurationUtils.newConfigurationSection();
     protected Map<String, SpellData> spellData = new HashMap<>();
     protected WeakReference<Player> playerRef;
@@ -1934,6 +1940,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (player != null && player.isOnline()) {
             checkWand();
             updateBlocking(player);
+            checkActionBarQueue();
             if (activeWand != null) {
                 activeWand.tick();
             } else if (virtualExperience) {
@@ -6040,6 +6047,24 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void sendToActionBar(String message) {
+        if (!isPlayer()) return;
+
+        long now = System.currentTimeMillis();
+        if (now > lastActionBarSend + ACTION_BAR_QUEUE_INTERVAL || ACTION_BAR_QUEUE_INTERVAL == 0 || actionBarQueue.size() > ACTION_BAR_QUEUE_MAX_DEPTH) {
+            doSendToActionBar(message);
+        } else {
+            actionBarQueue.add(message);
+        }
+    }
+
+    protected void checkActionBarQueue() {
+        if (!actionBarQueue.isEmpty() && System.currentTimeMillis() > lastActionBarSend + ACTION_BAR_QUEUE_INTERVAL) {
+            doSendToActionBar(actionBarQueue.remove());
+        }
+    }
+
+    protected void doSendToActionBar(String message) {
+        lastActionBarSend = System.currentTimeMillis();
         Wand wand = getActiveWand();
         if (wand != null && wand.handleActionBar(message)) {
             return;

@@ -318,6 +318,10 @@ change_world_equip_cooldown: 1000
 # This lets multiple spends in a short interval (such as with engineering magic) add up and show one message
 currency_message_delay: 1000
 
+# How log to wait between action bar messages
+action_bar_queue_interval: 2000
+action_bar_queue_max_depth: 5
+
 # This can be used to fix compatibility with PerWorldInventory or other plugins that store players'
 # inventories on world change.
 # This makes sure wands close their inventory before players change worlds.
