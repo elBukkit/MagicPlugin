@@ -41,7 +41,13 @@ public class ModifyCurrencyAction extends BaseSpellAction {
         if (player == null) {
             return SpellResult.PLAYER_REQUIRED;
         }
-        mage.setCurrency(currencyKey, mage.getCurrency(currencyKey) + value);
+        if (value > 0) {
+            mage.addCurrency(currencyKey, value);
+        } else if (value < 0) {
+            mage.removeCurrency(currencyKey, -value);
+        } else {
+            return SpellResult.NO_ACTION;
+        }
         return SpellResult.CAST;
     }
 
