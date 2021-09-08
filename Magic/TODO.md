@@ -4,6 +4,9 @@
 
  - Disabling mana regen (cloak), only works if holding a wand? Or spellbook in offhand can still regen? (could not reproduce)
 
+ - Check: by flying an elytra and fireworks in the off hand + wand in main hand
+   for instance, the wand goes on your head (or maybe this is beceause a specifique spell is called that if aimed up will put the wand on your head) and spells get casted even though you don't left click + sometimes even spells from other pages
+
  - uh the lightsaber block model is broken
 
  - An action to damage armor?
