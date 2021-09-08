@@ -5882,12 +5882,7 @@ public class MagicController implements MageController {
     }
 
     public boolean isSameItem(ItemStack first, ItemStack second) {
-        if (first.getType() != second.getType()) return false;
-        DeprecatedUtils deprecatedUtils = CompatibilityLib.getDeprecatedUtils();
-        if (deprecatedUtils.getItemDamage(first) != deprecatedUtils.getItemDamage(second)) return false;
-        if (first.hasItemMeta() != second.hasItemMeta()) return false;
-        if (!first.hasItemMeta()) return true;
-        return first.getItemMeta().equals(second.getItemMeta());
+        return CompatibilityLib.getItemUtils().isSameItem(first, second);
     }
 
     @Override

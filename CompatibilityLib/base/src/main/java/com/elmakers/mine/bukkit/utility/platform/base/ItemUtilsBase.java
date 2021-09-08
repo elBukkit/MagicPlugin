@@ -1,10 +1,13 @@
 package com.elmakers.mine.bukkit.utility.platform.base;
 
+import java.util.Objects;
+
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
@@ -96,4 +99,15 @@ public abstract class ItemUtilsBase implements ItemUtils {
         }
         return replacement;
     }
+
+    @Override
+    public boolean isSameItem(ItemStack first, ItemStack second) {
+        if (first.getType() != second.getType()) return false;
+        DeprecatedUtils deprecatedUtils = platform.getDeprecatedUtils();
+        if (deprecatedUtils.getItemDamage(first) != deprecatedUtils.getItemDamage(second)) return false;
+        Object firstTag = getTag(first);
+        Object secondTag = getTag(second);
+        return Objects.equals(firstTag, secondTag);
+    }
 }
+
