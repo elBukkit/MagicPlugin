@@ -42,6 +42,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.WordUtils;
 import org.bstats.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -5118,7 +5119,7 @@ public class MagicController implements MageController {
         if (!localizedName.isEmpty()) {
             return localizedName;
         }
-        return target.getType().name().toLowerCase().replace('_', ' ');
+        return WordUtils.capitalize(target.getType().name().toLowerCase().replace('_', ' '));
     }
 
     public ItemStack getSpellBook(int count) {

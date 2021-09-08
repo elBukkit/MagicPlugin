@@ -21,6 +21,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
@@ -145,7 +146,7 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
             Entity targetEntity = entry.getValue().get();
             if (targetEntity == null) continue;
 
-            String displayName = CompatibilityLib.getDeprecatedUtils().getDisplayName(targetEntity);
+            String displayName = controller.getEntityName(targetEntity);
             final Integer slot = entry.getKey();
             if (slot >= displayInventory.getSize()) continue;
             controller.getSkull(targetEntity, displayName, new ItemUpdatedCallback() {
@@ -156,6 +157,11 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
                         if (icon != null) {
                             MaterialAndData defaultIcon = icon.getItemMaterial(controller);
                             defaultIcon.applyToItem(itemStack);
+                            if (displayName != null) {
+                                ItemMeta meta = itemStack.getItemMeta();
+                                meta.setDisplayName(displayName);
+                                itemStack.setItemMeta(meta);
+                            }
                         } else {
                             itemStack.setType(Wand.DefaultWandMaterial);
                         }
