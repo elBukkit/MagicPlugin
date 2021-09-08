@@ -1118,11 +1118,19 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (removeLore) {
                 meta.setLore(new ArrayList<>());
             }
+
+            if (!lore.isEmpty()) {
+                List<String> itemLore = meta.getLore();
+                if (itemLore == null) {
+                    itemLore = new ArrayList<>();
+                }
+                for (String line : lore) {
+                    itemLore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
+                }
+                meta.setLore(itemLore);
+            }
             icon.setItemMeta(meta);
             icon = CompatibilityLib.getItemUtils().makeReal(icon);
-            if (!lore.isEmpty()) {
-                CompatibilityLib.getCompatibilityUtils().setLore(icon, lore);
-            }
 
             if (unbreakableIcon) {
                 CompatibilityLib.getItemUtils().makeUnbreakable(icon);
