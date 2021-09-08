@@ -26,6 +26,8 @@ import org.bukkit.potion.PotionEffectType;
 import com.elmakers.mine.bukkit.action.CompoundAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.action.GUIAction;
+import com.elmakers.mine.bukkit.api.block.MaterialAndData;
+import com.elmakers.mine.bukkit.api.item.Icon;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -33,6 +35,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.wand.Wand;
 
 public class EntitySelectAction extends CompoundAction implements GUIAction
 {
@@ -40,6 +43,7 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
     private double radius;
     private int limit = 64;
     private boolean active = false;
+    private String defaultIcon;
     private WeakReference<Entity> target = null;
 
     @Override
@@ -87,6 +91,7 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
         super.prepare(context, parameters);
         radius = parameters.getDouble("radius", 32);
         limit = parameters.getInt("limit", 64);
+        defaultIcon = parameters.getString("default_icon", "default");
     }
 
     @Override
@@ -146,6 +151,15 @@ public class EntitySelectAction extends CompoundAction implements GUIAction
             controller.getSkull(targetEntity, displayName, new ItemUpdatedCallback() {
                 @Override
                 public void updated(@Nullable ItemStack itemStack) {
+                    if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) {
+                        Icon icon = controller.getIcon(defaultIcon);
+                        if (icon != null) {
+                            MaterialAndData defaultIcon = icon.getItemMaterial(controller);
+                            defaultIcon.applyToItem(itemStack);
+                        } else {
+                            itemStack.setType(Wand.DefaultWandMaterial);
+                        }
+                    }
                     displayInventory.setItem(slot, itemStack);
                 }
             });
