@@ -90,7 +90,6 @@ public class PlayerController implements Listener {
     private boolean cancelInteractOnRightClick = false;
     private boolean allowOffhandCasting = true;
     private boolean autoAbsorbSP = true;
-    private long lastDropWarn = 0;
     private int logoutDelay = 0;
 
     public PlayerController(MagicController controller) {
@@ -743,7 +742,7 @@ public class PlayerController implements Listener {
         if (allowOffhandCasting && mage.offhandCast(wand)) {
             // Kind of weird but the intention is to avoid normal "left click" actions,
             // which in the offhand case are right-click actions.
-            if (cancelInteractOnLeftClick) {
+            if (cancelInteractOnLeftClick || wand.getBoolean("cancel_interact_on_left_click")) {
                 event.setCancelled(true);
             }
         }
@@ -825,7 +824,7 @@ public class PlayerController implements Listener {
             if (offhandWand != null && offhandWand.getLeftClickAction() != WandAction.NONE) {
                 // Kind of weird but the intention is to avoid normal "left click" actions,
                 // which in the offhand case are right-click actions.
-                if (cancelInteractOnLeftClick) {
+                if (cancelInteractOnLeftClick || offhandWand.getBoolean("cancel_interact_on_left_click")) {
                     event.setCancelled(true);
                 }
                 return;
@@ -970,7 +969,7 @@ public class PlayerController implements Listener {
 
         if (isRightClick && wand.performAction(wand.getRightClickAction()))
         {
-            if (cancelInteractOnRightClick) {
+            if (cancelInteractOnRightClick || wand.getBoolean("cancel_interact_on_right_click")) {
                 event.setCancelled(true);
             } else {
                 // This prevents glitches when using block-based consumable wands
@@ -987,14 +986,15 @@ public class PlayerController implements Listener {
         }
 
         if (isLeftClick) {
+            boolean cancelInteract = cancelInteractOnLeftClick || wand.getBoolean("cancel_interact_on_left_click");
             if (!controller.useAnimationEvents(player)) {
                 wand.playEffects("swing");
                 if (!wand.isUpgrade()) {
-                    if (wand.performAction(wand.getLeftClickAction()) && cancelInteractOnLeftClick) {
+                    if (wand.performAction(wand.getLeftClickAction()) && cancelInteract) {
                         event.setCancelled(true);
                     }
                 }
-            } else if (!wand.isUpgrade() && wand.getLeftClickAction() != WandAction.NONE && cancelInteractOnLeftClick) {
+            } else if (!wand.isUpgrade() && wand.getLeftClickAction() != WandAction.NONE && cancelInteract) {
                 event.setCancelled(true);
             }
         }
