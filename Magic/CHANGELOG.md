@@ -38,6 +38,8 @@
  - Using `/meditor spell` will include all levels of a spell (unless you have previously edited that spell)
  - Many builtin magic mobs now respect looting (and in some cases luck) for loot drops
 
+# 10.0.3
+
 # 10.0.2
 
  - Fix photos of a bat being a green apple or something
