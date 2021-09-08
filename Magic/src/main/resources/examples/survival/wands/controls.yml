@@ -160,7 +160,8 @@ gui_bossbar:
       properties:
         use_active_name: true
 
-controls_bow_hybrid:
+controls_bowcaster:
+  slot: controls
   left_click: cycle_active_hotbar
   left_click_sneak: cycle_active_hotbar_reverse
   right_click: none
@@ -169,3 +170,7 @@ controls_bow_hybrid:
   swap: none
   swap_sneak: none
   hotbar_count: 1
+
+# Another dev-build-name
+controls_bow_hybrid:
+  inherit: controls_bowcaster

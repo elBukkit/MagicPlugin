@@ -10,7 +10,7 @@ bowcaster:
   cast_location: 0.2,0,0.35
   enchantable: true
   slots: gui,controls,spellmode,swappable
-  slotted: controls_bow_hybrid
+  slotted: controls_bowcaster
   quiet: true
   tags:
     - transformablebow

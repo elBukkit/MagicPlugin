@@ -2,7 +2,7 @@
 
 # Next Up:
 
- - Disabling mana regen (cloak), only works if holding a wand? Or spellbook in offhand can still regen?
+ - Disabling mana regen (cloak), only works if holding a wand? Or spellbook in offhand can still regen? (could not reproduce)
 
  - uh the lightsaber block model is broken
 
@@ -26,13 +26,9 @@
  - What is causing the "recall got to doTeleport without waypoint" error?
 
  - Add require_resource_pack option with customizable kick message
-
- - Check bowcaster
  
  - Still need to explain: All the zombies on my demo server seem to be named...
    or are these left over from mooses?
-   
- - Ultimate Clans V3 support ... it's premium, says it has an API but I can't find any docs
    
 # Automata Re-Work
 
