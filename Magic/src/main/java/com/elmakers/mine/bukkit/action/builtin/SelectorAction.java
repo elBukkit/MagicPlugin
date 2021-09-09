@@ -858,12 +858,6 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             unavailable = false;
             icon = parseItem(iconKey);
-            if (icon != null && icon.hasItemMeta()) {
-                ItemMeta meta = icon.getItemMeta();
-                meta.setLore(null);
-                icon.setItemMeta(meta);
-            }
-
             List<String> lore = new ArrayList<>();
             if (this.lore != null) {
                 for (String loreString : lore) {
