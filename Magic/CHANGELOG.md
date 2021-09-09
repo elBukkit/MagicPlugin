@@ -32,7 +32,8 @@
  - Added `spawn` sub-actions to EntityProjectile action
  - Added `loot` option to mobs, a simpler way to specify drops with probability that also can use variables
    (`drops` can not use variables, both can be used side-by-side on the same mob)
- - Expose enchantment levels as attributes, currently only works on the mainhand item  
+ - Expose enchantment levels as attributes, currently only works on the mainhand item
+ - Add axolotl and goat skins for shrink, airstrike and camera
 
 ## Changes
  

@@ -2,8 +2,6 @@
 
 # Next Up:
 
- - test crafting recipes with multiple outputs (e.g. bread@2)
-
  - Disabling mana regen (cloak), only works if holding a wand? Or spellbook in offhand can still regen? (could not reproduce)
 
  - Check: by flying an elytra and fireworks in the off hand + wand in main hand
@@ -16,8 +14,6 @@
  - Custom armor durability
 
  - Fix locked/modifiable wand properties in meta.json
-
- - Add new mob skins for axolotl and goat
 
  - Convert slotted wand upgrades to WandProperties .. anything else that can use this so we're not messing about with
    items for no reason?

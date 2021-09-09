@@ -1,6 +1,7 @@
 # These are player skins that represent mobs. Some are provided here
 # as official Mojang skins, but more can be added.
 mob_skins:
+  axolotl: http://textures.minecraft.net/texture/3b83a38a458c3cca0761e2c8210c6f5d2f3380e860d50d2f4756516a2642617d
   bat: http://textures.minecraft.net/texture/6681a72da7263ca9aef066542ecca7a180c40e328c0463fcb114cb3b83057552
   bee: MHF_Bee
   blaze: MHF_Blaze
@@ -19,6 +20,7 @@ mob_skins:
   evoker: MHF_Evoker
   fox: MHF_Fox
   ghast: MHF_Ghast
+  goat: http://textures.minecraft.net/texture/f03330398a0d833f53ae8c9a1cb393c74e9d31e18885870e86a2133d44f0c63c
   guardian: MHF_Guardian
   hoglin: http://textures.minecraft.net/texture/9bb9bc0f01dbd762a08d9e77c08069ed7c95364aa30ca1072208561b730e8d75
   horse: http://textures.minecraft.net/texture/450f992599a55a8311373a5412716bb7f91cf39afadea2517f415d72879a2
