@@ -661,7 +661,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             parseOverrides(configuration);
             parseIcon(configuration);
-            placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none");
+            placeholder = configuration.getBoolean("placeholder") || configuration.getString("item", "").equals("none") || (iconKey != null && (iconKey.equals("none") || iconKey.equals("air")));
             if (placeholder) {
                 makePlaceholder();
                 return;
