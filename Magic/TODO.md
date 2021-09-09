@@ -2,6 +2,8 @@
 
 # Next Up:
 
+ - test crafting recipes with multiple outputs (e.g. bread@2)
+
  - Disabling mana regen (cloak), only works if holding a wand? Or spellbook in offhand can still regen? (could not reproduce)
 
  - Check: by flying an elytra and fireworks in the off hand + wand in main hand

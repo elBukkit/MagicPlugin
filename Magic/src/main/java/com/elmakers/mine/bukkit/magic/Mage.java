@@ -4712,9 +4712,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public void addCurrency(String type, double delta, boolean quiet) {
         boolean isFirstEarn = !data.contains(type);
-        double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
         if (currency instanceof CustomCurrency) {
+            double previousValue = data.getDouble(type, currency.getDefaultValue());
             delta = doSetCurrency(currency, type, previousValue + delta);
         } else if (currency == null || !currency.give(this, delta)) {
             return;
@@ -4741,13 +4741,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void removeCurrency(String type, double delta, boolean quiet) {
-        double previousValue = data.getDouble(type);
         Currency currency = initCurrency(type);
         if (currency == null) {
             controller.getLogger().warning("Trying to deduct unknown currency type: " + type);
             return;
         }
         if (currency instanceof CustomCurrency) {
+            double previousValue = data.getDouble(type, currency.getDefaultValue());
             delta = doSetCurrency(currency, type, previousValue - delta);
         } else {
             currency.deduct(this, delta);
