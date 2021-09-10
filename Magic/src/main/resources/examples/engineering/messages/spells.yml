@@ -281,6 +281,7 @@ spells:
         fail: You must be holding a wand!
         variant_name: "&b$variant &3+Variants"
         variant_description: "Choose a type of $variant"
+        title: "&bBrushes &7(&d@materia &5Materia&7)"
     tree:
         name: Tree
         description: Instantly grow a tree

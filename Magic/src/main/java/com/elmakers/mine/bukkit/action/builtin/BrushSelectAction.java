@@ -305,9 +305,9 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         }
 
         String inventoryTitle = context.getMessage("title", "Brushes");
-        if (numPages > 1) {
-            inventoryTitle += " (" + page + "/" + numPages + ")";
-        }
+        inventoryTitle = context.parameterize(inventoryTitle);
+        inventoryTitle = inventoryTitle.replace("$page", Integer.toString(page));
+        inventoryTitle = inventoryTitle.replace("$pages", Integer.toString(numPages));
         int invSize = (int)Math.ceil(showBrushes.size() / 9.0f) * 9;
         Inventory displayInventory = CompatibilityLib.getCompatibilityUtils().createInventory(null, invSize, inventoryTitle);
         for (ItemStack brush : showBrushes)
