@@ -5908,13 +5908,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 return Integer.toString(casterProperties.getSpells().size());
             default:
                 Double value = getAttribute(symbol);
+                if (value == null) {
+                    Currency currency = controller.getCurrency(symbol);
+                    if (currency != null) {
+                        value = getCurrency(currency.getKey());
+                    }
+                }
                 if (value != null) {
                     if (integerValues) {
                         return Integer.toString((int)(double)value);
                     } else {
                         return Double.toString(value);
                     }
-                } else if (activeWand != null) {
+                }
+                if (activeWand != null) {
                     return activeWand.getReplacement(symbol, integerValues);
                 }
         }

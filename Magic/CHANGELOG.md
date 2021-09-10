@@ -34,6 +34,7 @@
    (`drops` can not use variables, both can be used side-by-side on the same mob)
  - Expose enchantment levels as attributes, currently only works on the mainhand item
  - Add axolotl and goat skins for shrink, airstrike and camera
+ - Player currency balance now available as placeholder variables, e.g. $currency or @materia
 
 ## Changes
  
