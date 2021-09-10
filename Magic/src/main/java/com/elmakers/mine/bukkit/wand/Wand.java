@@ -7126,7 +7126,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ConfigurationSection requirement = requirementConfiguration != null ? requirementConfiguration.getConfigurationSection(key) : null;
         ConfigurationSection setBonus = setBonusConfiguration != null ? setBonusConfiguration.getConfigurationSection(key) : null;
 
-        return ConfigurationUtils.mergeConfigurations(slotted, requirement, setBonus, base);
+        // This will be included in base but we want to layer it a second time so path overrides can supercede
+        // everything else.
+        // Some way to specify priority would be good here.
+        ConfigurationSection path = getPathConfigurationSection(key);
+
+        return ConfigurationUtils.mergeConfigurations(path, requirement, slotted, setBonus, base);
     }
 
     @Override

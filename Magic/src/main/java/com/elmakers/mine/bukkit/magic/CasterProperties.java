@@ -1097,6 +1097,12 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     @Nullable
+    public ConfigurationSection getPathConfigurationSection(String key) {
+        ConfigurationSection config = getPathPropertyConfiguration(key);
+        return config == null ? null : config.getConfigurationSection(key);
+    }
+
+    @Nullable
     public ConfigurationSection getPathPropertyConfiguration(String key) {
         if (key.equals("path")) return null;
         ProgressionPath path = getPath();
