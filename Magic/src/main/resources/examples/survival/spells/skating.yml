@@ -6,7 +6,6 @@ skating:
       - class: CheckBlock
         direction: down
         source_location: feet
-        allowed: ice,blue_ice,frosted_ice,packed_ice
         actions:
         - class: PlayEffects
           effects: start
@@ -38,3 +37,4 @@ skating:
     speed: 0.7
     delay: 50
     duration: 500
+    allowed: ice,blue_ice,frosted_ice,packed_ice
