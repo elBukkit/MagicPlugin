@@ -98,14 +98,17 @@ gui_none:
   icon: gui_none
   upgrade: true
   xp_display: mana
-  level_display: sp
+  level_display:
+    mode: currency
+    currency: sp
   slot: gui
 
 gui_actionbar:
   icon: gui_actionbar
   upgrade: true
   xp_display: none
-  level_display: none
+  level_display:
+    mode: none
   slot: gui
   use_active_name: false
   requirement_properties:
@@ -123,7 +126,9 @@ gui_actionbar:
       properties:
         use_active_name: true
         xp_display: mana
-        level_display: sp
+        level_display:
+          mode: currency
+          currency: sp
     - requirement:
         resource_pack: true
       invert: true
@@ -134,7 +139,8 @@ gui_bossbar:
   icon: gui_bossbar
   upgrade: true
   xp_display: none
-  level_display: none
+  level_display:
+    mode: none
   slot: gui
   use_active_name: false
   requirement_properties:
@@ -151,7 +157,9 @@ gui_bossbar:
       properties:
         use_active_name: true
         xp_display: mana
-        level_display: sp
+        level_display:
+          mode: currency
+          currency: sp
         boss_bar:
           mode: none
     - requirement:
