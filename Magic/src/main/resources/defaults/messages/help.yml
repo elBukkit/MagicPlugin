@@ -125,7 +125,7 @@ help:
     `<li>`Support: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
   support: |-
     `<title text="Support">`
-    `<li>``<link text="Join the Magic Discord for live help and support" url="https://discord.com/invite/Vk5nK5h">`
+    `<li>``<link text="Join the Magic Discord for live help and support" url="https://discord.elmakers.com">`
     `<li>``<link text="Use github issues for bugs and feature requests" url="https://github.com/elBukkit/MagicPlugin/issues">`
     `<li>``<link text="More support links on wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Support">`
   customization: |-
