@@ -47,6 +47,7 @@
 
  - Fix missing spellshop lore (shop lore in general, probably)
  - Fix absorbing blocks into material not giving credit for stacks of blocks
+ - Fix spell boss bar displays not properly showing duration remaining
 
 # 10.0.2
 

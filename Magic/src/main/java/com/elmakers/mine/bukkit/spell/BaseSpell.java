@@ -2860,7 +2860,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
             double durationRemaining = 1;
             if (duration > 0) {
-                durationRemaining = 1 - (System.currentTimeMillis() - spellData.getLastCast()) / duration;
+                durationRemaining = 1.0 - ((double)System.currentTimeMillis() - spellData.getLastCast()) / duration;
             }
             double costsRemaining = 1;
             if (activeCosts != null) {
