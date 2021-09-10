@@ -20,7 +20,7 @@ conduit:
         - place
         - paint
         - alter
-        - commit
+        - brushselect
         - rollback
 
         # Hotbar 2, brushes
@@ -60,6 +60,7 @@ conduit:
         - raise
         - flatten
         - tree
+        - commit
 
         - newpage
 

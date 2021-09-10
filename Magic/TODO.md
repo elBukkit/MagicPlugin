@@ -4,8 +4,6 @@
 
  - Some simpler damage multiplier (including damage taken and dealt, by type and overall) properties
 
- - Add brush select to conduit wand, or maybe change them to right-click mode
-
  - Absorbing materia doesn't handle stacks
 
  - Spell boss bar should use duration, even if it's just there for potion effects + modifiers 

@@ -20,7 +20,7 @@ engineer:
       - place
       - paint
       - alter
-      - commit
+      - brushselect
       - rollback
 
       # Hotbar 2, brushes
@@ -39,6 +39,7 @@ engineer:
       - raise
       - flatten
       - tree
+      - commit
     brushes:
       - erase@8
       - stone

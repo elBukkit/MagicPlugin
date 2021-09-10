@@ -19,7 +19,7 @@ architect:
         - place
         - paint
         - alter
-        - commit
+        - brushselect
         - rollback
 
         # Hotbar 2, brushes
@@ -49,6 +49,7 @@ architect:
         - raise
         - flatten
         - tree
+        - commit
 
         - newpage
 
