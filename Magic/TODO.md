@@ -4,11 +4,6 @@
 
  - Some simpler damage multiplier (including damage taken and dealt, by type and overall) properties
 
- - Absorbing materia doesn't handle stacks
-
- - Spell boss bar should use duration, even if it's just there for potion effects + modifiers 
-   (see: cloak with duration)
-
  - Change debug logging to be tag-based instead of levels
    - Maybe translate levels to tag sets
    - `/mage debug` will turn on all tags, prompt with usage for filtering
