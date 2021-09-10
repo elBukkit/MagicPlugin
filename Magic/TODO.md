@@ -2,6 +2,21 @@
 
 # Next Up:
 
+ - Some simpler damage multiplier (including damage taken and dealt, by type and overall) properties
+
+ - Add brush select to conduit wand, or maybe change them to right-click mode
+
+ - Absorbing materia doesn't handle stacks
+
+ - Spell boss bar should use duration, even if it's just there for potion effects + modifiers 
+   (see: cloak with duration)
+
+ - Change debug logging to be tag-based instead of levels
+   - Maybe translate levels to tag sets
+   - `/mage debug` will turn on all tags, prompt with usage for filtering
+   - Some automatic tags like passives
+   - Semi-related, add spell timing info log (end of spell cast, how long it took)
+
  - Disabling mana regen (cloak), only works if holding a wand? Or spellbook in offhand can still regen? (could not reproduce)
 
  - Check: by flying an elytra and fireworks in the off hand + wand in main hand
