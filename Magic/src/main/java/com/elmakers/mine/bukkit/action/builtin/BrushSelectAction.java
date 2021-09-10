@@ -130,6 +130,7 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
                     if (itemStack.getType() != item.getType()) continue;
                     Double worth = context.getController().getWorth(itemStack.getType(), blockCurrency.getKey());
                     if (worth == null || worth <= 0) continue;
+                    worth *= itemStack.getAmount();
                     mage.addCurrency(blockCurrency.getKey(), worth);
                     contents[i] = null;
                     count += itemStack.getAmount();

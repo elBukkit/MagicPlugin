@@ -43,6 +43,7 @@
 # 10.0.3
 
  - Fix missing spellshop lore (shop lore in general, probably)
+ - Fix absorbing blocks into material not giving credit for stacks of blocks
 
 # 10.0.2
 
