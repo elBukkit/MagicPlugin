@@ -16,6 +16,16 @@ help:
     `<li>``<help topic="shops" text="Working with Magic shops">`
     `<li>``<help topic="maps" text="Putting images on to maps">`
     `<li>``<help topic="magicblocks" text="Setting up mob spawners or other automated blocks">`
+    `<li>``<help topic="kits" text="Setting up kits, including starter kits">`
+  kits: |-
+    `<title text="Kits">`
+    `<p>`&dMagic&f has a simple &bkit&f system you can use for starter kits, kit shops, server navigation items, daily rewards and more.
+    `<li>``<command command="mnpc add dailykit" text="Add a daily rewards NPC">`
+    `<li>``<command command="meditor kit newkit" text="Create a new kit using the editor">`
+    `<li>``<command command="mconfig enable kit welcome" text="Enable a basic starter kit">`
+    `<li>``<command command="mkit starter" text="Give yourself the starter kit">`
+    `<li>``<command command="mconfig enable welcome" text="Give players a wand on join">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/kits" text="Look at the survival kits for other examples">`
   magicblocks: |-
     `<title text="Magic Blocks">`
     `<p>`&6Magic Blocks&f can be used to set up automated mob spawning or spell casting.
