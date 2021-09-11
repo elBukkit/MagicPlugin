@@ -557,17 +557,18 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public void clearItems(Location location) {
         if (NMSUtils.class_TileEntity_loadMethod == null || NMSUtils.class_TileEntity_updateMethod == null || NMSUtils.class_TileEntity_saveMethod == null) return;
         if (location == null) return;
+
         Object tileEntity = getTileEntity(location);
         if (tileEntity == null) return;
         try {
+            // Capture current tile entity snapshot
             Object entityData = NMSUtils.class_NBTTagCompound_constructor.newInstance();
             NMSUtils.class_TileEntity_saveMethod.invoke(tileEntity, entityData);
-            Object itemList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(entityData, "Items", CompatibilityConstants.NBT_TYPE_COMPOUND);
-            if (itemList != null) {
-                List<?> items = (List<?>) NMSUtils.class_NBTTagList_list.get(itemList);
-                items.clear();
-            }
-            NMSUtils.class_NBTTagCompound_removeMethod.invoke(entityData,"Item");
+
+            // Remove items
+            NMSUtils.class_NBTTagCompound_removeMethod.invoke(entityData, "Item");
+
+            // Reload tile entity
             if (NMSUtils.class_IBlockData != null) {
                 Object worldHandle = NMSUtils.getHandle(location.getWorld());
                 Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getBlockX(), location.getBlockY(), location.getBlockZ());
@@ -578,6 +579,21 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
             NMSUtils.class_TileEntity_updateMethod.invoke(tileEntity);
 
+            // Clear records from jukebox. Equivalent to
+            // if (tileEntity instanceof TileEntityRecordPlayer)
+            // >> tileEntity.record = null
+            if (NMSUtils.class_TileEntityRecordPlayer_record != null
+                    && NMSUtils.class_TileEntityRecordPlayer.isInstance(tileEntity)) {
+                // TODO: Move into ItemUtils
+                Object emptyStack = NMSUtils.class_CraftItemStack_copyMethod.invoke(
+                        null,
+                        new Object[] { null });
+                NMSUtils.class_TileEntityRecordPlayer_record.set(
+                        tileEntity,
+                        emptyStack);
+            }
+
+            // Clear loot table
             if (NMSUtils.class_Lootable_setLootTableMethod != null && NMSUtils.class_Lootable != null) {
                 Block block = location.getBlock();
                 BlockState blockState = block.getState();

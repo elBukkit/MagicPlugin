@@ -21,6 +21,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.block.CreatureSpawner;
+import org.bukkit.block.Jukebox;
 import org.bukkit.block.Sign;
 import org.bukkit.block.Skull;
 import org.bukkit.enchantments.Enchantment;
@@ -43,6 +44,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.google.common.base.Objects;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
@@ -516,7 +518,10 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         try {
             BlockState blockState = block.getState();
-            if (material == Material.FLOWER_POT || blockState instanceof InventoryHolder || blockState instanceof Sign) {
+            if (material == Material.FLOWER_POT
+                    || blockState instanceof InventoryHolder
+                    || blockState instanceof Sign
+                    || blockState instanceof Jukebox) {
                 extraData = new BlockTileEntity(CompatibilityLib.getCompatibilityUtils().getTileEntityData(block.getLocation()));
             } else if (blockState instanceof CommandBlock) {
                 // This seems to occasionally throw exceptions...
@@ -554,8 +559,25 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         isTargetValid = true;
     }
 
+    /**
+     * Determines whether items in a block state should be cleared before
+     * breaking a block.
+     *
+     * @param block
+     *            The block state to check.
+     * @return Whether
+     *         {@link CompatibilityUtils#clearItems(org.bukkit.Location)} should
+     *         be called before setting a block to air, to ensure no items will
+     *         be dropped.
+     */
+    public static boolean shouldClearItemsIn(@Nonnull BlockState block) {
+        return block instanceof InventoryHolder
+                || block instanceof Jukebox
+                || block.getType() == Material.FLOWER_POT;
+    }
+
     public static void clearItems(BlockState block) {
-        if (block != null && (block instanceof InventoryHolder || block.getType() == Material.FLOWER_POT)) {
+        if (block != null && shouldClearItemsIn(block)) {
             CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
         }
     }

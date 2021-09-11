@@ -31,6 +31,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Jukebox;
 import org.bukkit.block.Lectern;
 import org.bukkit.block.Lockable;
 import org.bukkit.block.data.BlockData;
@@ -495,6 +496,11 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             lectern.getInventory().setItem(0, new ItemStack(Material.AIR));
             blockState.update();
         }
+        if (blockState instanceof Jukebox) {
+            ((Jukebox) blockState).setRecord(null);
+            blockState.update();
+        }
+
         // TODO: Just clear inventory instead?
         BlockEntity tileEntity = getTileEntity(location);
         if (tileEntity == null) return;

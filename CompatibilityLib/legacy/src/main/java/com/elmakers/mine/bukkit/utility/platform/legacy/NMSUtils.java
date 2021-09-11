@@ -115,6 +115,7 @@ public class NMSUtils {
     protected static Class<?> class_TileEntity;
     protected static Class<?> class_IBlockData;
     protected static Class<?> class_TileEntitySign;
+    protected static Class<?> class_TileEntityRecordPlayer;
     protected static Class<?> class_TileEntityContainer;
     protected static Class<?> class_ChestLock;
     protected static Class<Enum> class_EnumDirection;
@@ -409,6 +410,7 @@ public class NMSUtils {
     protected static Field class_Entity_moveStrafingField;
     protected static Field class_Entity_moveForwardField;
     protected static Field class_TileEntityContainer_lock;
+    protected static Field class_TileEntityRecordPlayer_record;
     protected static Field class_ChestLock_key;
     protected static Field class_EntityPainting_art;
     protected static Field class_EntityHanging_blockPosition;
@@ -489,6 +491,11 @@ public class NMSUtils {
             class_CraftChunk = fixBukkitClass("org.bukkit.craftbukkit.CraftChunk");
             class_CraftEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftEntity");
             class_TileEntitySign = fixBukkitClass("net.minecraft.server.TileEntitySign");
+            try {
+                class_TileEntityRecordPlayer = fixBukkitClass("net.minecraft.server.TileEntityJukeBox");
+            } catch (ClassNotFoundException e) {
+                class_TileEntityRecordPlayer = fixBukkitClass("net.minecraft.server.BlockJukeBox$TileEntityRecordPlayer");
+            }
             class_CraftServer = fixBukkitClass("org.bukkit.craftbukkit.CraftServer");
             class_MinecraftServer = fixBukkitClass("net.minecraft.server.MinecraftServer");
             class_BlockPosition = fixBukkitClass("net.minecraft.server.BlockPosition");
@@ -1541,6 +1548,14 @@ public class NMSUtils {
                 logger.log(Level.WARNING, "An error occurred, chest locking and unlocking will not work", ex);
                 class_TileEntityContainer_setLock = null;
                 class_TileEntityContainer_getLock = null;
+            }
+
+            try {
+                class_TileEntityRecordPlayer_record = class_TileEntityRecordPlayer.getDeclaredField("record");
+                class_TileEntityRecordPlayer_record.setAccessible(true);
+            } catch (Throwable ex) {
+                logger.log(Level.WARNING, "Failed to find 'record' field in jukebox tile entity", ex);
+                class_TileEntityRecordPlayer_record = null;
             }
 
             try {

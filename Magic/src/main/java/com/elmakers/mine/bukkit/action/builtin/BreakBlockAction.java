@@ -7,7 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.InventoryHolder;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
@@ -15,6 +14,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
@@ -71,7 +71,7 @@ public class BreakBlockAction extends ModifyBlockAction {
             context.playEffects("break");
             CompatibilityLib.getCompatibilityUtils().clearBreaking(block);
             BlockState blockState = block.getState();
-            if (blockState != null && (blockState instanceof InventoryHolder || blockState.getType() == Material.FLOWER_POT)) {
+            if (blockState != null && MaterialAndData.shouldClearItemsIn(blockState)) {
                 CompatibilityLib.getCompatibilityUtils().clearItems(blockState.getLocation());
             }
             MaterialBrush brush = context.getBrush();
