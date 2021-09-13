@@ -8,12 +8,12 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
-public class MagicStonecuttnigRecipe extends MagicRecipe {
+public class MagicStonecuttingRecipe extends MagicRecipe {
     protected Recipe recipe;
     protected ItemData ingredient;
     protected String group;
 
-    protected MagicStonecuttnigRecipe(String key, MagicController controller) {
+    protected MagicStonecuttingRecipe(String key, MagicController controller) {
         super(key, controller);
     }
 

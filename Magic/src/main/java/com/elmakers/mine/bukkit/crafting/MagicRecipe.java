@@ -203,7 +203,7 @@ public abstract class MagicRecipe {
                     recipe = new MagicSmokingRecipe(key, controller);
                     break;
                 case "stonecutting":
-                    recipe = new MagicStonecuttnigRecipe(key, controller);
+                    recipe = new MagicStonecuttingRecipe(key, controller);
                     break;
                 case "smithing":
                     recipe = new MagicSmithingRecipe(key, controller);
