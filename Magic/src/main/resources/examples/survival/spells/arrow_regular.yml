@@ -20,6 +20,6 @@ arrow_regular:
       spread: "1 - bowpull"
       arrow_damage: "2 * bowpull"
       tick_increase: 0
-      pickup: allowed
+      pickup: disallowed
     costs:
       arrow: 1

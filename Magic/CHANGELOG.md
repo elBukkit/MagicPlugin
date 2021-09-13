@@ -42,6 +42,9 @@
  
  - Using `/meditor spell` will include all levels of a spell (unless you have previously edited that spell)
  - Many builtin magic mobs now respect looting (and in some cases luck) for loot drops
+ - Arrows shot by the "Regular arrow" magic bow spell can't be picked up. 
+   This is to prevent it being used to gain arrows with the infinity enchantment, though unfortunately
+   this means it will burn through arrows without the enchant. Will hopefully improve this in the future.
 
 # 10.0.3
 
