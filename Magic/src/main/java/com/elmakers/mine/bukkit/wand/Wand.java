@@ -331,6 +331,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         inventories = new ArrayList<>();
     }
 
+    public Wand(WandProperties properties) {
+        this((MagicController)properties.getController(), DefaultWandMaterial, (short)0);
+        ConfigurationSection config = properties.getConfiguration();
+        String templateKey = properties.getTemplateKey();
+        if (config != null) {
+            config.set("template", templateKey);
+            load(config);
+        } else {
+            setTemplate(templateKey);
+        }
+        loadProperties();
+        updateName();
+        findAndUpdateLore();
+        saveState();
+    }
+
     /**
      * @deprecated Use {@link MagicController#getWand(ItemStack)}.
      */
@@ -2173,7 +2189,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         List<String> slottedKeys = getStringList("slotted");
         if (slottedKeys != null && !slottedKeys.isEmpty()) {
             for (String slottedKey : slottedKeys) {
-                Wand slottedWand = controller.createWand(slottedKey);
+                WandProperties slottedWand = WandProperties.create(controller, slottedKey);
                 if (slottedWand == null || !addSlotted(slottedWand)) {
                     if (unslotted == null) {
                         unslotted = new ArrayList<>();
@@ -3027,7 +3043,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                         ConfigurationUtils.addIfNotEmpty(getMessage("slots_header").replace("$count", Integer.toString(slots.size())), lore);
                         printedHeader = true;
                     }
-                    Wand slotted = slot.getSlotted();
+                    WandProperties slotted = slot.getSlotted();
                     if (slotted == null) {
                         String slotName = controller.getMessages().get("wand_slots." + slot.getType() + ".name", slot.getType());
                         ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
@@ -3048,7 +3064,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     String setName = wandSet.getName(controller.getMessages());
                     boolean isActive = setBonusesActive != null && setBonusesActive.contains(setKey);
                     boolean printedHeader = false;
-                    Wand commonBonus = wandSet.getBonus();
+                    WandProperties commonBonus = wandSet.getBonus();
                     String setBonusTemplate = isActive ? getMessage("set_bonus_active") : getMessage("set_bonus_inactive");
                     if (commonBonus != null && !setBonusTemplate.isEmpty()) {
                         if (!printedHeader) {
@@ -3156,10 +3172,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         String spellName = spell == null ? "" : spell.getName();
         line = line.replace("$spell", spellName);
         CompatibilityLib.getInventoryUtils().wrapText(line, lore);
-    }
-
-    public String getSlot() {
-        return getString("slot");
     }
 
     protected void addUseLore(List<String> lore) {
@@ -4549,7 +4561,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return super.addItem(item) || upgraded;
     }
 
-    public boolean addSlotted(Wand upgradeWand) {
+    public boolean addSlotted(WandProperties upgradeWand) {
         if (slots == null || slots.isEmpty()) {
             return false;
         }
@@ -4570,7 +4582,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     if (slot.hasDefaultSlotted()) {
                         continue;
                     }
-                    Wand slotted = slot.getSlotted();
+                    WandProperties slotted = slot.getSlotted();
                     if (slotted != null) {
                         slottedKeys.add(slotted.getKey());
                     }
@@ -4590,7 +4602,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         slottedConfiguration = ConfigurationUtils.newSection(configuration);
         for (WandUpgradeSlot slot : slots) {
-            Wand slotted = slot.getSlotted();
+            WandProperties slotted = slot.getSlotted();
             if (slotted != null) {
                 ConfigurationSection upgradeConfig = ConfigurationUtils.cloneConfiguration(slotted.getEffectiveConfiguration());
                 cleanSlottedUpgradeConfig(upgradeConfig);
@@ -6754,12 +6766,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Override
+    @Deprecated
     public boolean isBlocked(double angle) {
         if (mage == null) return false;
         return mage.isBlocked(angle);
     }
 
     @Override
+    @Deprecated
     public boolean isReflected(double angle) {
         if (mage == null) return false;
         return mage.isReflected(angle);

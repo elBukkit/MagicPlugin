@@ -55,7 +55,6 @@ public class WandProperties extends TemplatedProperties {
             "allowed_enchantments", "glyph_hotbar",
             "instructions", "lore_instructions", "cancel_interact_on_left_click", "cancel_interact_on_right_click"
         ).build();
-    protected BaseMagicProperties wandTemplate;
     protected MageClass mageClass;
 
     public WandProperties(MageController controller) {
@@ -68,23 +67,27 @@ public class WandProperties extends TemplatedProperties {
         loadProperties();
     }
 
+    @Nullable
+    public static WandProperties create(MagicController controller, String templateKey) {
+        WandTemplate template = controller.getWandTemplate(templateKey);
+        if (template == null) {
+           return null;
+        }
+        WandProperties properties = new WandProperties(controller);
+        properties.setWandTemplate(template);
+        return properties;
+    }
+
     public void setWandTemplate(WandTemplate template) {
         Mage mage = getMage();
         if (mage != null) {
             template = template.getMageTemplate(mage);
         }
-        this.wandTemplate = template;
         super.setTemplate(template);
     }
 
     public void setMageClass(MageClass mageClass) {
         this.mageClass = mageClass;
-    }
-
-    @Override
-    public void clear() {
-        super.clear();
-        wandTemplate = null;
     }
 
     @Nullable
@@ -105,8 +108,9 @@ public class WandProperties extends TemplatedProperties {
 
     public ConfigurationSection getEffectiveConfiguration() {
         ConfigurationSection effectiveConfiguration = ConfigurationUtils.cloneConfiguration(getConfiguration());
-        if (wandTemplate != null) {
-            ConfigurationSection parentConfiguration = wandTemplate.getConfiguration();
+        TemplateProperties template = getTemplate();
+        if (template != null) {
+            ConfigurationSection parentConfiguration = template.getConfiguration();
             ConfigurationUtils.overlayConfigurations(effectiveConfiguration, parentConfiguration);
         }
         return effectiveConfiguration;
@@ -149,5 +153,14 @@ public class WandProperties extends TemplatedProperties {
         }
 
         return "wand." + key;
+    }
+
+    public String getSlot() {
+        return getString("slot");
+    }
+
+    public String getTemplateKey() {
+        TemplateProperties template = getTemplate();
+        return template == null ? "" : template.getKey();
     }
 }

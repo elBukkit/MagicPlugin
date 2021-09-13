@@ -311,7 +311,7 @@ public class BaseMagicProperties implements MagicProperties {
         return getMessage(messageKey, "");
     }
 
-    protected String getMessage(String messageKey, String defaultValue) {
+    public String getMessage(String messageKey, String defaultValue) {
         return parameterizeMessage(controller.getMessages().get(getMessageKey(messageKey), defaultValue));
     }
 

@@ -2,7 +2,13 @@
 
 # Next Up:
 
+ - API access is broken, need parent pom?
+
+ - Some flag (global or otherwise) to make it so "breakable" blocks aren't modifiable by ModifBlock spells
+
  - Some simpler damage multiplier (including damage taken and dealt, by type and overall) properties
+
+ - reflect_chance on classes not working (try testing reflect level 5)
 
  - Change debug logging to be tag-based instead of levels
    - Maybe translate levels to tag sets
@@ -22,9 +28,6 @@
  - Custom armor durability
 
  - Fix locked/modifiable wand properties in meta.json
-
- - Convert slotted wand upgrades to WandProperties .. anything else that can use this so we're not messing about with
-   items for no reason?
 
  - Mysterious:
    Mage class mage': 'allow': Unknown function or variable 'allow' at pos 0 in expression 'allow'

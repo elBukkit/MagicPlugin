@@ -132,6 +132,7 @@ import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.ActiveWandSet;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandMode;
+import com.elmakers.mine.bukkit.wand.WandProperties;
 import com.elmakers.mine.bukkit.wand.WandSet;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableList;
@@ -4409,7 +4410,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         // Process any set bonuses
-        Wand setBonus = null;
+        WandProperties setBonus = null;
         for (Map.Entry<String, ActiveWandSet> entry : wandSets.entrySet()) {
             String setKey = entry.getKey();
             WandSet setTemplate = controller.getWandSet(setKey);

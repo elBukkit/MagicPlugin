@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
     private boolean hasDefaultSlotted = false;
-    private Wand slotted;
+    private WandProperties slotted;
 
     public WandUpgradeSlot(MagicController controller, String slotType) {
         this(controller, slotType, null);
@@ -47,17 +47,17 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
         return hasDefaultSlotted;
     }
 
-    public Wand getSlotted() {
+    public WandProperties getSlotted() {
         return slotted;
     }
 
-    protected void setSlotted(Wand upgrade) {
+    protected void setSlotted(WandProperties upgrade) {
         String slottedKey = upgrade.getKey();
         hasDefaultSlotted = defaultSlottedKey != null && defaultSlottedKey.equals(slottedKey);
         slotted = upgrade;
     }
 
-    public boolean addSlotted(Wand upgrade, Mage mage) {
+    public boolean addSlotted(WandProperties upgrade, Mage mage) {
         String slotType = upgrade.getSlot();
         if (slotType == null || slotType.isEmpty() || this.slotType == null) {
             return false;
@@ -76,7 +76,7 @@ public class WandUpgradeSlot extends WandUpgradeSlotTemplate {
         if (!swappable || mage == null) {
             return false;
         }
-        mage.giveItem(slotted.getItem());
+        mage.giveItem(new Wand(slotted).getItem());
         setSlotted(upgrade);
         return true;
     }

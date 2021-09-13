@@ -7,7 +7,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 
 public class WandSet {
     private final String key;
-    private Wand bonus;
+    private WandProperties bonus;
     private int requiredCount;
 
     public WandSet(MagicController controller, String key, ConfigurationSection config) {
@@ -15,7 +15,7 @@ public class WandSet {
         requiredCount = config.getInt("required");
         ConfigurationSection bonusConfig = config.getConfigurationSection("bonuses");
         if (bonusConfig != null) {
-            bonus = new Wand(controller, bonusConfig);
+            bonus = new WandProperties(controller, bonusConfig);
         }
     }
 
@@ -23,7 +23,7 @@ public class WandSet {
         return requiredCount;
     }
 
-    public Wand getBonus() {
+    public WandProperties getBonus() {
         return bonus;
     }
 
