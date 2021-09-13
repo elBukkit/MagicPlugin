@@ -19,7 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.block.UndoList;
-import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
@@ -517,7 +516,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
     }
 
     @Override
-    public MageController getController() {
+    public MagicController getController() {
         return controller;
     }
 

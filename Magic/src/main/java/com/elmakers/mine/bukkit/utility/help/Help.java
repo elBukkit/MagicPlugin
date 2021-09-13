@@ -64,6 +64,10 @@ public class Help {
         return true;
     }
 
+    public HelpTopic getTopic(String key) {
+        return topics.get(key);
+    }
+
     @Nonnull
     public List<HelpTopicMatch> findMatches(List<String> keywords) {
         List<HelpTopicMatch> matches = new ArrayList<>();

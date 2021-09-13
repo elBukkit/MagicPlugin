@@ -27,11 +27,15 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     }
 
     public String getSummary(List<String> keywords, String title) {
+        return getSummary(keywords, title, MAX_WIDTH);
+    }
+
+    public String getSummary(List<String> keywords, String title, int maxWidth) {
         int titleLength = title.length();
-        if (titleLength > MAX_WIDTH - 4) {
+        if (titleLength > maxWidth - 4) {
             return "";
         }
-        int remainingLength = MAX_WIDTH - titleLength;
+        int remainingLength = maxWidth - titleLength;
         String[] lines = topic.getLines();
         if (lines.length == 0) {
             return "";
