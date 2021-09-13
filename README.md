@@ -1,6 +1,11 @@
 Magic
 ========
 
+
+[![](https://discord.com/api/guilds/580099743875727363/widget.png)](https://discord.elmakers.com "Discord")
+![](https://img.shields.io/github/languages/code-size/elBukkit/MagicPlugin.svg "Code size in bytes")
+[![](https://img.shields.io/github/license/elBukkit/MagicPlugin.svg)](https://github.com/elBukkit/MagicPlugin/blob/master/LICENSE "License")
+
 Magic plugin for CraftBukkit/Spigot. Adds powerful magic wands and items to your server.
 
 Players may obtain or craft wands that can past a variety of configurable spells.
