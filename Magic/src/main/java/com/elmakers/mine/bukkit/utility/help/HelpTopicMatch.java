@@ -31,6 +31,10 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     }
 
     public String getSummary(List<String> keywords, String title, int maxWidth) {
+        return getSummary(keywords, title, maxWidth, ChatColor.AQUA, ChatColor.RESET);
+    }
+
+    public String getSummary(List<String> keywords, String title, int maxWidth, String matchPrefix, String matchSuffix) {
         int titleLength = title.length();
         if (titleLength > maxWidth - 4) {
             return "";
@@ -45,6 +49,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         int summaryMatchCount = 0;
         String summary = null;
         for (String line : lines) {
+            if (line.trim().isEmpty()) continue;
             // Case-insensitive searching
             String matchLine = line.toLowerCase();
             // Match against each search keyword, keeping a range of text between them
@@ -52,6 +57,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             int lastMatchEnd = -1;
             int matchCount = 0;
             for (String arg : keywords) {
+                if (arg.trim().isEmpty()) continue;
                 int startIndex = matchLine.indexOf(arg);
                 if (startIndex >= 0) {
                     // Track match count
@@ -106,7 +112,8 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         }
         // Color matches
         for (String keyword : keywords) {
-            summary = summary.replaceAll("((?i)" + Pattern.quote(keyword) + ")", ChatColor.AQUA + "$1" + ChatColor.RESET);
+            if (keyword.trim().isEmpty()) continue;
+            summary = summary.replaceAll("((?i)" + Pattern.quote(keyword) + ")", matchPrefix + "$1" + matchSuffix);
         }
         return summary;
     }

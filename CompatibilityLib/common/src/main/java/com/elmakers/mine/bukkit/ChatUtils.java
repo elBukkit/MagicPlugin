@@ -34,8 +34,12 @@ public class ChatUtils {
         return gson;
     }
 
-    @SuppressWarnings("unchecked")
     protected static void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage, boolean onlyText) {
+        getSimpleMessage(mapped, plainMessage, onlyText, ChatColor.RESET + " " + ChatColor.GRAY, "");
+    }
+
+    @SuppressWarnings("unchecked")
+    protected static void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage, boolean onlyText, String commandPrefix, String commandSuffix) {
         for (Map.Entry<String,Object> entry : mapped.entrySet()) {
             if (entry.getKey().equals("text")) {
                 plainMessage.append(entry.getValue());
@@ -52,7 +56,7 @@ public class ChatUtils {
                 if (messages != null) {
                     key = messages.get("keybind." + key, key);
                 }
-                plainMessage.append(key);
+                plainMessage.append(commandPrefix + key + commandSuffix);
             } else if (onlyText) {
                 continue;
             } else if (entry.getKey().equals("color")) {
@@ -71,7 +75,7 @@ public class ChatUtils {
                         case "open_url":
                         case "run_command":
                         case "suggest_command":
-                            plainMessage.append(ChatColor.RESET + " " + ChatColor.GRAY + value);
+                            plainMessage.append(commandPrefix + value + commandSuffix);
                             break;
                     }
                 }
@@ -84,6 +88,10 @@ public class ChatUtils {
     }
 
     public static String getSimpleMessage(String containsJson, boolean onlyText) {
+        return getSimpleMessage(containsJson, onlyText, ChatColor.RESET + " " + ChatColor.GRAY, "");
+    }
+
+    public static String getSimpleMessage(String containsJson, boolean onlyText, String commandPrefix, String commandSuffix) {
         String[] components = getComponents(containsJson);
         StringBuilder plainMessage = new StringBuilder();
         for (String component : components) {
@@ -92,7 +100,7 @@ public class ChatUtils {
                     JsonReader reader = new JsonReader(new StringReader(component));
                     reader.setLenient(true);
                     Map<String, Object> mapped = getGson().fromJson(reader, Map.class);
-                    getSimpleMessage(mapped, plainMessage, onlyText);
+                    getSimpleMessage(mapped, plainMessage, onlyText, commandPrefix, commandSuffix);
                 } catch (Exception ex) {
                     plainMessage.append(component);
                 }
