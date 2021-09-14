@@ -57,7 +57,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             int lastMatchEnd = -1;
             int matchCount = 0;
             for (String arg : keywords) {
-                if (arg.trim().isEmpty()) continue;
+                if (arg.trim().length() < 2) continue;
                 int startIndex = matchLine.indexOf(arg);
                 if (startIndex >= 0) {
                     // Track match count
@@ -112,7 +112,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         }
         // Color matches
         for (String keyword : keywords) {
-            if (keyword.trim().isEmpty()) continue;
+            if (keyword.trim().length() < 2) continue;
             summary = summary.replaceAll("((?i)" + Pattern.quote(keyword) + ")", matchPrefix + "$1" + matchSuffix);
         }
         return summary;

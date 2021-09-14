@@ -55,7 +55,7 @@ public class HelpTopic {
     public int match(Collection<String> keywords) {
         int matchCount = 0;
         for (String arg : keywords) {
-            if (arg.trim().isEmpty()) continue;
+            if (arg.trim().length() < 2) continue;
             if (title.toLowerCase().contains(arg)) {
                 matchCount += arg.length();
             }

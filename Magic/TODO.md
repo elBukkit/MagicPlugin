@@ -4,6 +4,8 @@
 
  - API access is broken, need parent pom?
 
+ - Miniature Pets integration
+
  - Some flag (global or otherwise) to make it so "breakable" blocks aren't modifiable by ModifBlock spells
 
  - Some simpler damage multiplier (including damage taken and dealt, by type and overall) properties

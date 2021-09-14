@@ -111,7 +111,7 @@ help:
     `<li>``<command command="mwarp go testing" text="Go to a Magic warp">`
   recall: |-
     `<title text="The Recall Spell">`
-    `<p>`The &bRecall&f action, used by the &bRecall&f spell in the &bsurvival&fexample, can warp players to various locations.
+    `<p>`The &bRecall&f action, used by the &bRecall&f spell in the &bsurvival&f example, can warp players to various locations.
     `<p>`&dMagic &fWarps can be added to Recall simply by giving them an &bicon&f.
     `<li>``<command command="mwarp add testing" text="Create a new Magic warp">`
     `<li>``<command command="mwarp configure testing icon diamond" text="Add Magic warp to Recall with a diamond icon">`
