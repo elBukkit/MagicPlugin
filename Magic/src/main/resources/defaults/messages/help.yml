@@ -253,7 +253,7 @@ help:
   compatibility: |-
     `<title text="Compatibility">`
     `<li>`&dMagic&f can use a &4Slimefun&f-compatible resource pack using the &b`<command command="mexample add slimefun" text="slimefun">` &fexample
-    `<li>`&dMagic&f can work with &4ItemsAdder&f, use &7`<command command="getrp url" text="/getrp url>` &fto download the correct Magic RP, then unzip it into IA's &7resourcepacks&f folder
+    `<li>`&dMagic&f can work with &4ItemsAdder&f, use &7`<command command="getrp url" text="/getrp url">` &fto download the correct Magic RP, then unzip it into IA's &7resourcepacks&f folder
     `<li>`Other resource pack compatiblity issues can possibily be resolved using the `<link url="https://merge.elmakers.com" text="RP merge tool">`
     `<li>`Note if merging an ItemsAdder resource pack, you need to turn off the &7protect-file-from-unzip&f setting in ItemsAdder's config, or the merge tool can't read it
   protection: |-
