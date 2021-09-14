@@ -55,7 +55,13 @@ public class HelpTopic {
     public int match(Collection<String> keywords) {
         int matchCount = 0;
         for (String arg : keywords) {
-            if (key.contains(arg) || searchText.contains(arg) || title.contains(arg)) {
+            if (title.toLowerCase().contains(arg)) {
+                matchCount++;
+            }
+            if (key.contains(arg)) {
+                matchCount++;
+            }
+            if (searchText.contains(arg)) {
                 matchCount++;
             }
         }
