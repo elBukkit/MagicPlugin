@@ -56,7 +56,7 @@ help:
     `<title text="You Are Not Trained to Use This">`
     `<p>`If you are getting this message from wands that worked prior to Magic 10, please check your wand configuration.
     `<p>`If you have &7locked: true&f, you need to remove it.
-    `<p>`If you are concerned about the wand being modified, you can replace with `&7modifiable: false` `<testnomacro>` `<some ting wong`
+    `<p>`If you are concerned about the wand being modified, you can replace with &7modifiable: false
     `<p>`Alternately if this is all a big problem, you can `<command command="mconfig configure config old_wand_locked_behavior true" text="switch back to the old locked behavior">`
     `<p>`Keep in mind changing the behavior back this way may have an impact on builtin wands.
   missing_spells: |-
