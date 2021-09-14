@@ -834,18 +834,18 @@ public class CustomProjectileAction extends CompoundAction
 
     protected SpellResult hitEntity(Target target) {
         Entity hitEntity = target.getEntity();
+        Mage targetMage = actionContext.getController().getRegisteredMage(hitEntity);
         Location targetLocation = actionContext.getTargetLocation();
-        if (hitEntity instanceof Player) {
+        if (targetMage != null) {
             Player hitPlayer = (Player)hitEntity;
-            Mage targetMage = actionContext.getController().getMage(hitPlayer);
-            if (hitPlayer.isBlocking()) {
+            if (!bypassBackfire) {
                 double angle = velocity.angle(hitPlayer.getEyeLocation().getDirection().multiply(-1));
-                if ((reflectLimit < 0 || reflectCount < reflectLimit) && !bypassBackfire && targetMage.isReflected(angle)) {
+                if ((reflectLimit < 0 || reflectCount < reflectLimit) && targetMage.isReflected(angle)) {
                     velocity = hitPlayer.getEyeLocation().getDirection().normalize().multiply(velocity.length());
                     reflect(null, 0.5);
                     return SpellResult.PENDING;
                 }
-                if (targetMage.isBlocked(angle) && !bypassBackfire) {
+                if (targetMage.isBlocked(angle)) {
                     return miss();
                 }
             }

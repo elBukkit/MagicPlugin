@@ -99,7 +99,10 @@ reflect|4:
 reflect|5:
   actions:
     cast:
-      - class: Modifier
+      - class: ChangeContext
+        target_caster: true
+        actions:
+          - class: Modifier
       - class: Disc
         actions:
            - class: ModifyBlock

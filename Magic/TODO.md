@@ -8,8 +8,6 @@
 
  - Some simpler damage multiplier (including damage taken and dealt, by type and overall) properties
 
- - reflect_chance on classes not working (try testing reflect level 5)
-
  - Change debug logging to be tag-based instead of levels
    - Maybe translate levels to tag sets
    - `/mage debug` will turn on all tags, prompt with usage for filtering

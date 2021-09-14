@@ -207,6 +207,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private Location lastLocation;
     private Vector velocity = new Vector();
     private long lastBlockTime;
+    private long lastReflectTime;
     private long ignoreItemActivationUntil = 0;
     private boolean forget = false;
     private long disableWandOpenUntil = 0;
@@ -313,6 +314,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private float blockReflectChance = 0;
     private int blockMageCooldown = 0;
     private int blockCooldown = 0;
+    private int reflectCooldown = 0;
 
     private float reflectFOV;
     private float reflectChance;
@@ -4200,6 +4202,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
         reflectChance = Math.max(reflectChance, properties.getFloat("reflect_chance"));
         reflectFOV = Math.max(reflectFOV, properties.getFloat("reflect_fov"));
+        reflectCooldown = Math.max(reflectCooldown, properties.getInt("reflect_cooldown"));
 
         boolean stack = properties.getBoolean("stack", false);
         addPassiveEffectsGroup(protection, properties, "protection", stack, 1.0);
@@ -4925,8 +4928,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
     }
 
+    public boolean isBlocking() {
+        Player player = getPlayer();
+        return player != null && player.isBlocking();
+    }
+
     @Override
     public boolean isBlocked(double angle) {
+        if (!isBlocking()) return false;
         if (blockChance == 0) return false;
         if (blockFOV > 0 && angle > blockFOV) return false;
         long now = System.currentTimeMillis();
@@ -4942,15 +4951,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean isReflected(double angle) {
         if (blockReflectChance == 0 && reflectChance == 0) return false;
+        if (reflectChance == 0 && !isBlocking()) return false;
         if (blockFOV > 0 && angle > blockFOV) return false;
         if (reflectFOV > 0 && angle > reflectFOV) return false;
         long now = System.currentTimeMillis();
-        if (blockCooldown > 0 && lastBlockTime > 0 && lastBlockTime + blockCooldown > now) return false;
+        if (reflectChance == 0 && blockCooldown > 0 && lastBlockTime > 0 && lastBlockTime + blockCooldown > now) return false;
+        if (reflectCooldown > 0 && lastReflectTime > 0 && lastReflectTime + reflectCooldown > now) return false;
         double r = Math.random();
         if (blockReflectChance > 0 && r > blockReflectChance) return false;
         if (reflectChance > 0 && r > reflectChance) return false;
         playEffects("spell_reflected");
-        lastBlockTime = now;
+        if (reflectChance == 0) lastBlockTime = now;
+        lastReflectTime = now;
         return true;
     }
 
