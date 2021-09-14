@@ -78,6 +78,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -3529,6 +3530,9 @@ public class MagicController implements MageController {
         registeredAttributes.addAll(builtinTargetAttributes);
         for (String enchantmentKey : CompatibilityLib.getCompatibilityUtils().getEnchantmentBaseKeys()) {
             registeredAttributes.add(enchantmentKey);
+        }
+        for (PotionEffectType potionEffect : PotionEffectType.values()) {
+            registeredAttributes.add(potionEffect.getName().toLowerCase());
         }
         registerPlayerAttributes(this.attributes.keySet());
         for (AttributeProvider provider : attributeProviders) {

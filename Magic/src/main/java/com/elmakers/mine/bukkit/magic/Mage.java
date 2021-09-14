@@ -5244,7 +5244,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                             ItemMeta meta = item.getItemMeta();
                             return (double)meta.getEnchantLevel(enchantment);
                         }
+                        return 0.0;
                     }
+                }
+                LivingEntity living = getLivingEntity();
+                if (living != null) {
+                    PotionEffectType potionEffectType = PotionEffectType.getByName(attributeKey.toUpperCase());
+                    if (potionEffectType != null) {
+                        for (PotionEffect effect : living.getActivePotionEffects()) {
+                            if (effect.getType() == potionEffectType) {
+                                return (double)effect.getAmplifier();
+                            }
+                        }
+                    }
+                    return 0.0;
                 }
                 return null;
         }

@@ -34,6 +34,7 @@
  - Added `loot` option to mobs, a simpler way to specify drops with probability that also can use variables
    (`drops` can not use variables, both can be used side-by-side on the same mob)
  - Expose enchantment levels as attributes, currently only works on the mainhand item
+ - Expose active potion effects as atttributes  
  - Add axolotl and goat skins for shrink, airstrike and camera
  - Player currency balance now available as placeholder variables, e.g. $currency or @materia
  - Brush selector now shows materia balance in inventory title
