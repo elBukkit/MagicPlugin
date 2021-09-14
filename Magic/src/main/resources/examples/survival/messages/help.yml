@@ -21,7 +21,7 @@ help:
       wands: |-
         `<title text="Survival Wands">`
         `<li>``<help topic="instructions.wand" text="Help with the wand I'm holding">`
-        `<li>``<help topic="examples.survival.customizing" text="Help with customizing survival wands>`
+        `<li>``<help topic="examples.survival.customizing" text="Help with customizing survival wands">`
         `<li>``<command command="mgive wand" text="Get the default survival wand">`
         `<li>``<command command="mgive master" text="Get a maxed-out survival wand">`
         `<li>``<command command="mgive uberwand" text="Get an OP testing wand">`
