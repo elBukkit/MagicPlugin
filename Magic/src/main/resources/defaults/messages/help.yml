@@ -218,6 +218,7 @@ help:
     `<li>``<help topic="mana_customization" text="Customizing mana and progressions">`
   localization: |-
     `<title text="Localization">`
+    `<p>`&dMagic&f has been translated into several languages. You can also add translations yourself!
     `<li>``<command command="mconfig language RU" text="Изменить на русский">` &7(Russian)
     `<li>``<command command="mconfig language FR" text="Changer en français">` &7(French)
     `<li>``<command command="mconfig language ES" text="Cambiar a español">` &7(Spanish)

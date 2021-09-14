@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -22,11 +23,20 @@ public class ModifierAction extends BaseSpellAction {
     private List<String> removeModifiers;
     private Map<String, ConfigurationSection> addModifiers;
     private int duration;
+    private boolean removeOnFinish = false;
+    private List<String> added;
+
+    @Override
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
+        added = null;
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
 
+        removeOnFinish = parameters.getBoolean("remove_on_finish", false);
         removeModifiers = ConfigurationUtils.getStringList(parameters, "remove_modifiers");
         ConfigurationSection addSection = parameters.getConfigurationSection("add_modifiers");
         if (addSection == null) {
@@ -75,11 +85,30 @@ public class ModifierAction extends BaseSpellAction {
                 if (targetMage.addModifier(key, duration, configuration)) {
                     context.registerModifierForRemoval(targetEntity, key);
                     effected = true;
+                    if (removeOnFinish) {
+                        if (added == null) {
+                            added = new ArrayList<>();
+                        }
+                        added.add(key);
+                    }
                 }
             }
         }
 
         return effected ? SpellResult.CAST : SpellResult.NO_TARGET;
+    }
+
+    @Override
+    public void finish(CastContext context) {
+        super.finish(context);
+        Entity entity = context.getTargetEntity();
+        if (added != null && entity != null) {
+            Mage targetMage = context.getController().getMage(entity);
+            for (String modifier : added) {
+                targetMage.removeModifier(modifier);
+            }
+        }
+        added = null;
     }
 
     @Override

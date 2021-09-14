@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -29,7 +30,15 @@ public class PotionEffectAction extends BaseSpellAction
     private Integer duration;
     private boolean ambient = true;
     private boolean particles = true;
+    private boolean removeOnFinish = false;
     private int amplifier = 0;
+    private List<PotionEffectType> added;
+
+    @Override
+    public void initialize(Spell spell, ConfigurationSection parameters) {
+        super.initialize(spell, parameters);
+        added = null;
+    }
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -37,6 +46,7 @@ public class PotionEffectAction extends BaseSpellAction
         super.prepare(context, parameters);
 
         // Parse common properties
+        removeOnFinish = parameters.getBoolean("remove_on_finish", false);
         ambient = parameters.getBoolean("effects_ambient", true);
         particles = parameters.getBoolean("effects_particles", true);
         amplifier = parameters.getInt("amplifier", 0);
@@ -144,11 +154,30 @@ public class PotionEffectAction extends BaseSpellAction
             for (PotionEffect effect : addEffects) {
                 if (CompatibilityLib.getCompatibilityUtils().applyPotionEffect(targetEntity, effect)) {
                     context.registerPotionEffectForRemoval(targetEntity, effect.getType());
+                    if (removeOnFinish) {
+                        if (added == null) {
+                            added = new ArrayList<>();
+                        }
+                        added.add(effect.getType());
+                    }
                 }
             }
         }
 
         return effected ? SpellResult.CAST : SpellResult.NO_TARGET;
+    }
+
+    @Override
+    public void finish(CastContext context) {
+        super.finish(context);
+        Entity entity = context.getTargetEntity();
+        if (added != null && entity instanceof  LivingEntity) {
+            LivingEntity living = (LivingEntity)entity;
+            for (PotionEffectType effect : added) {
+                living.removePotionEffect(effect);
+            }
+        }
+        added = null;
     }
 
     @Override

@@ -6,8 +6,6 @@
 
  - Miniature Pets integration
 
- - Some flag (global or otherwise) to make it so "breakable" blocks aren't modifiable by ModifBlock spells
-
  - Some simpler damage multiplier (including damage taken and dealt, by type and overall) properties
 
  - reflect_chance on classes not working (try testing reflect level 5)
@@ -19,8 +17,6 @@
    - Semi-related, add spell timing info log (end of spell cast, how long it took)
 
  - Disabling mana regen (cloak), only works if holding a wand? Or spellbook in offhand can still regen? (could not reproduce)
-
- - Modifer and PotionEffect actions, option to cancel effects on spell end
 
  - Check: by flying an elytra and fireworks in the off hand + wand in main hand
    for instance, the wand goes on your head (or maybe this is beceause a specifique spell is called that if aimed up will put the wand on your head) and spells get casted even though you don't left click + sometimes even spells from other pages

@@ -37,6 +37,7 @@
  - Add axolotl and goat skins for shrink, airstrike and camera
  - Player currency balance now available as placeholder variables, e.g. $currency or @materia
  - Brush selector now shows materia balance in inventory title
+ - Add `remove_on_finish: true` option to `PotionEffect` and `Modifier` actions
 
 ## Changes
  
