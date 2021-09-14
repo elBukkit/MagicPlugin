@@ -270,6 +270,7 @@ help:
   resourcepack: |-
     `<title text="Resource Pack">`
     `<li>``<command command="getrp url" text="Get a download URL for the resource pack">`
+    `<li>``<command command="getrp auto" text="Automatically recieve the resource pack on join">`
     `<li>``<link text="Resource pack issues guide" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
     `<li>``<command command="mconfig config enable_resource_pack false" text="Disable the resource pack completely for the whole server">`
     `<li>``<command command="getrp hires" text="Get the hi-res (less blocky) resource pack">`

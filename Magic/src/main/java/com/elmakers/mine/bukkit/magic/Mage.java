@@ -4341,9 +4341,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         modifierKeys.addAll(transientModifiers.keySet());
 
         // Remove any modifiers that are now gone
-        for (String currentKey : currentKeys) {
-            if (!modifierKeys.contains(currentKey)) {
-                unapplyModifier(currentKey);
+        if (!currentKeys.isEmpty()) {
+            List<String> checkForRemoval = new ArrayList<>(currentKeys);
+            for (String currentKey : checkForRemoval) {
+                if (!modifierKeys.contains(currentKey)) {
+                    unapplyModifier(currentKey);
+                }
             }
         }
 
