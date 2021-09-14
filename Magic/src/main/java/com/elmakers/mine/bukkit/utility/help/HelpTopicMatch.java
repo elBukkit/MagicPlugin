@@ -58,12 +58,13 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             int matchCount = 0;
             for (String arg : keywords) {
                 arg = arg.trim();
-                if (arg.length() < 2) continue;
-                if (arg.length() < 4) arg = " " + arg + " ";
+                int len = arg.length();
+                if (len < 2) continue;
+                if (len < 4) arg = " " + arg + " ";
                 int startIndex = matchLine.indexOf(arg);
                 if (startIndex >= 0) {
                     // Track match count
-                    matchCount++;
+                    matchCount += len;
                     // Track range of all keywords
                     int endIndex = startIndex + arg.length();
                     if (firstMatchIndex == -1) {
