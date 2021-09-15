@@ -48,6 +48,7 @@
  - Arrows shot by the "Regular arrow" magic bow spell can't be picked up. 
    This is to prevent it being used to gain arrows with the infinity enchantment, though unfortunately
    this means it will burn through arrows without the enchant. Will hopefully improve this in the future.
+ - The Conduit rank will switch the wand display back to SP since materia is no longer needed
 
 # 10.0.3
 

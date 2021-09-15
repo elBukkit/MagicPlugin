@@ -17,6 +17,8 @@ conduit:
       consume_reduction: 1
       cost_reduction: 2
       allow_container_copy: true
+      level_display:
+        currency: sp
     spells:
       - portal
       - backup
