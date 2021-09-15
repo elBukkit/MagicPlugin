@@ -93,7 +93,7 @@ broom:
         warning_effects:
           confusion: 5
         cancel_on_no_permission: true
-        cancel_on_world_charge: true
+        cancel_on_world_change: true
         sound: magic.flying
         sound_interval: 500
         sound_max_volume: 0.25
