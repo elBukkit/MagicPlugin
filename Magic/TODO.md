@@ -4,6 +4,8 @@
 
  - API access is broken, need parent pom?
 
+ - What is alternate_resource_packs.default for? What pack does `/getrp default` give you?
+
  - Miniature Pets integration
 
  - Some simpler damage multiplier (including damage taken and dealt, by type and overall) properties
