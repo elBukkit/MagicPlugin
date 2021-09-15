@@ -1,0 +1,15 @@
+nojump:
+    icon: feather{CustomModelData:18001}
+    icon_disabled: feather{CustomModelData:18002}
+    passive: true
+    triggers: jump
+    actions:
+        cast:
+          - class: Repeat
+            actions:
+            - class: Velocity
+              direction: 0,-1,0
+            - class: Delay
+    parameters:
+      target: self
+      repeat: 5
