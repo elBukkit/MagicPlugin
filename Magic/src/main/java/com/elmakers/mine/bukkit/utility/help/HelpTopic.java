@@ -52,23 +52,23 @@ public class HelpTopic {
         return text;
     }
 
-    public int match(Collection<String> keywords) {
-        int matchCount = 0;
+    public double match(Help help, Collection<String> keywords) {
+        double relevance = 0;
         for (String arg : keywords) {
             arg = arg.trim();
             if (arg.length() < 2) continue;
             if (arg.length() < 4) arg = " " + arg + " ";
             if (title.toLowerCase().contains(arg)) {
-                matchCount += arg.length();
+                relevance += arg.length() * help.getWeight(arg);
             }
             if (key.contains(arg)) {
-                matchCount += arg.length();
+                relevance += arg.length() * help.getWeight(arg);
             }
             if (searchText.contains(arg)) {
-                matchCount += arg.length();
+                relevance += arg.length() * help.getWeight(arg);
             }
         }
-        return matchCount;
+        return relevance;
     }
 
     public String[] getWords() {

@@ -11,9 +11,11 @@ public class ShowTopicsTask implements Runnable {
     private static final int MAX_RESULTS = 10;
     private final List<HelpTopicMatch> matches;
     private final Mage mage;
+    private final Help help;
     private final List<String> keywords;
 
-    public ShowTopicsTask(Mage mage, List<String> keywords, List<HelpTopicMatch> matches) {
+    public ShowTopicsTask(Help help, Mage mage, List<String> keywords, List<HelpTopicMatch> matches) {
+        this.help = help;
         this.keywords = keywords;
         this.mage = mage;
         this.matches = matches;
@@ -42,7 +44,7 @@ public class ShowTopicsTask implements Runnable {
             String template = messages.get("commands.mhelp.match");
             for (HelpTopicMatch topicMatch : matches) {
                 String title = topicMatch.getTopic().getTitle();
-                String summary = topicMatch.getSummary(keywords, title);
+                String summary = topicMatch.getSummary(help, keywords, title);
                 String message = template
                         .replace("$title", title)
                         .replace("$topic", topicMatch.getTopic().getKey())

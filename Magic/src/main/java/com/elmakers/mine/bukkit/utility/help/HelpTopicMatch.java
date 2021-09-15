@@ -8,17 +8,17 @@ import org.geysermc.connector.common.ChatColor;
 
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     private static final int MAX_WIDTH = 50;
-    private final int matchCount;
+    private final double relevance;
     private final HelpTopic topic;
 
-    public HelpTopicMatch(HelpTopic topic, int matchCount) {
+    public HelpTopicMatch(HelpTopic topic, double relevance) {
         this.topic = topic;
-        this.matchCount = matchCount;
+        this.relevance = relevance;
     }
 
     @Override
     public int compareTo(HelpTopicMatch o) {
-        return o.matchCount > matchCount ? 1 : (o.matchCount < matchCount ? -1 : 0);
+        return o.relevance > relevance ? 1 : (o.relevance < relevance ? -1 : 0);
     }
 
     @Nonnull
@@ -26,15 +26,11 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         return topic;
     }
 
-    public String getSummary(List<String> keywords, String title) {
-        return getSummary(keywords, title, MAX_WIDTH);
+    public String getSummary(Help help, List<String> keywords, String title) {
+        return getSummary(help, keywords, title, MAX_WIDTH, ChatColor.AQUA, ChatColor.RESET);
     }
 
-    public String getSummary(List<String> keywords, String title, int maxWidth) {
-        return getSummary(keywords, title, maxWidth, ChatColor.AQUA, ChatColor.RESET);
-    }
-
-    public String getSummary(List<String> keywords, String title, int maxWidth, String matchPrefix, String matchSuffix) {
+    public String getSummary(Help help, List<String> keywords, String title, int maxWidth, String matchPrefix, String matchSuffix) {
         int titleLength = title.length();
         if (titleLength > maxWidth - 4) {
             return "";
@@ -46,7 +42,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         }
 
         // Look for matches on each line separately, tracking the number of matches
-        int summaryMatchCount = 0;
+        double mostRelevant = 0;
         String summary = null;
         for (String line : lines) {
             if (line.trim().isEmpty()) continue;
@@ -55,7 +51,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             // Match against each search keyword, keeping a range of text between them
             int firstMatchIndex = -1;
             int lastMatchEnd = -1;
-            int matchCount = 0;
+            double relevance = 0;
             for (String arg : keywords) {
                 arg = arg.trim();
                 int len = arg.length();
@@ -64,7 +60,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
                 int startIndex = matchLine.indexOf(arg);
                 if (startIndex >= 0) {
                     // Track match count
-                    matchCount += len;
+                    relevance += len * help.getWeight(arg);
                     // Track range of all keywords
                     int endIndex = startIndex + arg.length();
                     if (firstMatchIndex == -1) {
@@ -78,9 +74,9 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             }
 
             // If there are more matches than we currently have, use this line
-            if (matchCount > 0 && matchCount > summaryMatchCount) {
+            if (relevance > 0 && relevance > mostRelevant) {
                 boolean fitAllMatches = true;
-                summaryMatchCount = matchCount;
+                mostRelevant = relevance;
                 // Trim this line if it is too long
                 if (line.length() > remainingLength) {
                     // Trim from the start if we can fit everything
@@ -101,7 +97,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
                     }
                 }
                 summary = line;
-                if (fitAllMatches && summaryMatchCount == keywords.size()) break;
+                if (fitAllMatches && mostRelevant == keywords.size()) break;
             }
         }
         // Fall back to first line

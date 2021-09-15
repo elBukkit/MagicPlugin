@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -20,7 +19,8 @@ import com.elmakers.mine.bukkit.utility.Messages;
 public class Help {
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
-    private final Set<String> words = new HashSet<>();
+    private final Map<String, Integer> words = new HashMap<>();
+    private int maxCount = 0;
 
     public Help(Messages messages) {
         this.messages = messages;
@@ -41,14 +41,25 @@ public class Help {
             topics.put(key, helpTopic);
             for (String word : helpTopic.getWords()) {
                 if (word.length() > 1) {
-                    words.add(word);
+                    Integer count = words.get(word);
+                    if (count == null) count = 1;
+                    else count++;
+                    words.put(word, count);
+                    maxCount = Math.max(maxCount, count);
                 }
             }
         }
     }
 
     public Set<String> getWords() {
-        return words;
+        return words.keySet();
+    }
+
+    public double getWeight(String word) {
+        if (maxCount == 0) return 1;
+        Integer count = words.get(word);
+        if (count == null) return 0;
+        return (double)count / maxCount;
     }
 
     public Set<String> getTopicKeys() {
@@ -72,9 +83,9 @@ public class Help {
     public List<HelpTopicMatch> findMatches(List<String> keywords) {
         List<HelpTopicMatch> matches = new ArrayList<>();
         for (HelpTopic topic : topics.values()) {
-            int matchCount = topic.match(keywords);
-            if (matchCount > 0) {
-                matches.add(new HelpTopicMatch(topic, matchCount));
+            double relevance = topic.match(this, keywords);
+            if (relevance > 0) {
+                matches.add(new HelpTopicMatch(topic, relevance));
             }
         }
 
@@ -90,7 +101,7 @@ public class Help {
         Collections.sort(matches);
 
         // This is called async, move back to the main thread to do messaging
-        ShowTopicsTask showTask = new ShowTopicsTask(mage, keywords, matches);
+        ShowTopicsTask showTask = new ShowTopicsTask(this, mage, keywords, matches);
         Plugin plugin = mage.getController().getPlugin();
         plugin.getServer().getScheduler().runTask(plugin, showTask);
     }
