@@ -59,7 +59,7 @@ public class Help {
         if (maxCount == 0) return 1;
         Integer count = words.get(word);
         if (count == null) return 0;
-        return (double)count / maxCount;
+        return 1.0 - ((double)count / (maxCount + 1));
     }
 
     public Set<String> getTopicKeys() {
