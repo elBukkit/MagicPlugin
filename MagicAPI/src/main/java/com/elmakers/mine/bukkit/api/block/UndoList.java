@@ -92,6 +92,7 @@ public interface UndoList extends BlockList, Comparable<UndoList> {
     boolean isBypass();
     Collection<Entity> getAllEntities();
     boolean getApplyPhysics();
+    boolean isSynchronous();
 
     boolean isConsumed();
     void setConsumed(boolean consumed);

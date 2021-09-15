@@ -194,7 +194,8 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
         if (location == null) {
             return true;
         }
-        if (!CompatibilityLib.getCompatibilityUtils().checkChunk(location)) {
+        UndoList undoList = getUndoList();
+        if (undoList != null && !undoList.isSynchronous() && !CompatibilityLib.getCompatibilityUtils().checkChunk(location)) {
             return false;
         }
         Block block = getBlock();
