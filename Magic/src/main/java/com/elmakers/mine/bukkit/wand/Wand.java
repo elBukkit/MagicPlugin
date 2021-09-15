@@ -1423,7 +1423,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             int spellLevel = getSpellLevel(key);
             SpellKey spellKey = new SpellKey(key, spellLevel);
             SpellTemplate spell = mage == null ? controller.getSpellTemplate(spellKey.getKey()) : mage.getSpell(spellKey.getKey());
-            ItemStack itemStack = createSpellItem(spellKey.getKey(), "", false);
+            ItemStack itemStack = createSpellItem(spellKey.getKey());
             if (itemStack != null)
             {
                 Integer slot = spellInventory.get(spell.getSpellKey().getBaseKey());
@@ -1711,15 +1711,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     @Nullable
+    public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem, boolean brief) {
+        String[] split = spellKey.split(" ", 2);
+        return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, wand == null ? null : wand.getActiveMage(), wand, isItem, brief);
+    }
+
+    @Nullable
     public static ItemStack createSpellItem(String spellKey, MagicController controller, Wand wand, boolean isItem) {
         String[] split = spellKey.split(" ", 2);
         return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, wand == null ? null : wand.getActiveMage(), wand, isItem);
     }
 
     @Nullable
-    public static ItemStack createSpellItem(String spellKey, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
+    public static ItemStack createSpellItem(String spellKey, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem, boolean brief) {
         String[] split = spellKey.split(" ", 2);
-        return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, mage, wand, isItem);
+        return createSpellItem(controller.getSpellTemplate(split[0]), split.length > 1 ? split[1] : "", controller, mage, wand, isItem, brief);
     }
 
     @Nullable
@@ -1735,6 +1741,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Nullable
     public static ItemStack createSpellItem(SpellTemplate spell, String args, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem) {
+        return createSpellItem(spell, args, controller, mage, wand, isItem, false);
+    }
+
+    @Nullable
+    public static ItemStack createSpellItem(SpellTemplate spell, String args, MagicController controller, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, boolean isItem, boolean brief) {
         if (spell == null || !(spell instanceof BaseSpell)) return null;
         ItemStack itemStack = ((BaseSpell)spell).createItem(mage);
         if (itemStack == null) {
@@ -1742,7 +1753,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         CompatibilityLib.getItemUtils().makeUnbreakable(itemStack);
         CompatibilityLib.getItemUtils().hideFlags(itemStack, HIDE_FLAGS);
-        updateSpellItem(controller.getMessages(), itemStack, spell, args, mage, wand, wand == null ? null : wand.activeBrush, isItem);
+        updateSpellItem(controller.getMessages(), itemStack, spell, args, mage, wand, wand == null ? null : wand.activeBrush, isItem, brief);
 
         if (wand != null && wand.getMode() == WandMode.SKILLS && !isItem) {
             String mageClassKey = wand.getMageClassKey();
@@ -1773,6 +1784,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (BrushGlow || (isItem && BrushItemGlow))
         {
             CompatibilityLib.getItemUtils().addGlow(itemStack);
+        }
+        if (isItem) {
+            CompatibilityLib.getNBTUtils().setBoolean(itemStack, "absorb", true);
         }
         CompatibilityLib.getItemUtils().makeUnbreakable(itemStack);
         CompatibilityLib.getItemUtils().hideFlags(itemStack, HIDE_FLAGS);
@@ -3297,6 +3311,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
+    public static boolean isAbsorbable(ItemStack item) {
+        return item != null && CompatibilityLib.getNBTUtils().getBoolean(item, "absorb", false);
+    }
+
     public static boolean isSpell(ItemStack item) {
         return item != null && CompatibilityLib.getNBTUtils().containsTag(item, "spell");
     }
@@ -3440,7 +3458,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean updateIfMatch(ItemStack itemStack, Spell spell) {
         String spellKey = getSpell(itemStack);
         if (spellKey != null && spellKey.equals(spell.getKey())) {
-            updateSpellItem(controller.getMessages(), itemStack, spell, "", this, activeBrush, false);
+            updateSpellItem(controller.getMessages(), itemStack, spell, "", this, activeBrush, false, true);
             return true;
         }
         return false;
@@ -3473,11 +3491,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
     }
 
-    public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, Wand wand, String activeMaterial, boolean isItem) {
-        updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActiveMage(), wand, activeMaterial, isItem);
+    public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, Wand wand, String activeMaterial, boolean isItem, boolean brief) {
+        updateSpellItem(messages, itemStack, spell, args, wand == null ? null : wand.getActiveMage(), wand, activeMaterial, isItem, brief);
     }
 
-    public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem) {
+    public static void updateSpellItem(Messages messages, ItemStack itemStack, SpellTemplate spell, String args, com.elmakers.mine.bukkit.api.magic.Mage mage, Wand wand, String activeMaterial, boolean isItem, boolean brief) {
         // Just act like there's no wand if this is going to be an item
         if (isItem) {
             wand = null;
@@ -3487,7 +3505,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         List<String> lore = new ArrayList<>();
         addSpellLore(messages, spell, lore, mage, wand);
         if (isItem) {
-            ConfigurationUtils.addIfNotEmpty(messages.get("wand.spell_item_description"), lore);
+            if (!brief) {
+                ConfigurationUtils.addIfNotEmpty(messages.get("wand.spell_item_description"), lore);
+            }
+            CompatibilityLib.getNBTUtils().setBoolean(itemStack, "absorb", true);
         }
         CompatibilityLib.getCompatibilityUtils().setLore(itemStack, lore);
         Object spellNode = CompatibilityLib.getNBTUtils().createTag(itemStack, "spell");
@@ -3694,7 +3715,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         for (Map.Entry<String, Integer> entry : previousSlots.entrySet()) {
             if (!addedBack.contains(entry.getKey())) {
                 ItemStack current = openInventory.getItem(entry.getValue());
-                ItemStack itemStack = createSpellItem(entry.getKey(), "", false);
+                ItemStack itemStack = createSpellItem(entry.getKey());
                 if (current == null || current.getType() == Material.AIR) {
                     openInventory.setItem(entry.getValue(), itemStack);
                 } else {

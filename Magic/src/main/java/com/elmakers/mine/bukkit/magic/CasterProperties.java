@@ -636,23 +636,26 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public boolean addItem(ItemStack item) {
-        if (Wand.isSpell(item) && !Wand.isSkill(item)) {
-            String spell = Wand.getSpell(item);
-            SpellKey spellKey = new SpellKey(spell);
-            Integer spellLevel = null;
-            if (hasSpell(spellKey.getBaseKey())) {
-                spellLevel = getSpellLevel(spellKey.getBaseKey());
+        if (Wand.isAbsorbable(item)) {
+            if (Wand.isSpell(item) && !Wand.isSkill(item)) {
+                String spell = Wand.getSpell(item);
+                SpellKey spellKey = new SpellKey(spell);
+                Integer spellLevel = null;
+                if (hasSpell(spellKey.getBaseKey())) {
+                    spellLevel = getSpellLevel(spellKey.getBaseKey());
+                }
+                if ((spellLevel == null || spellLevel < spellKey.getLevel()) && addSpell(spell)) {
+                    return true;
+                }
+            } else if (Wand.isBrush(item)) {
+                String materialKey = Wand.getBrush(item);
+                Set<String> materials = getBrushes();
+                if (!materials.contains(materialKey) && addBrush(materialKey)) {
+                    return true;
+                }
             }
-            if ((spellLevel == null || spellLevel < spellKey.getLevel()) && addSpell(spell)) {
-                return true;
-            }
-        } else if (Wand.isBrush(item)) {
-            String materialKey = Wand.getBrush(item);
-            Set<String> materials = getBrushes();
-            if (!materials.contains(materialKey) && addBrush(materialKey)) {
-                return true;
-            }
-        } else if (Wand.isUpgrade(item)) {
+        }
+        if (Wand.isUpgrade(item)) {
             Wand wand = controller.getWand(item);
             return this.add(wand);
         }

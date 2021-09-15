@@ -1178,13 +1178,22 @@ public class PlayerController implements Listener {
         }
 
         // Wands will absorb spells and upgrade items
+        boolean isSpell = Wand.isSpell(pickup);
+        boolean isBrush = Wand.isBrush(pickup);
         Wand activeWand = mage.getActiveWand();
         if (activeWand != null
                 && activeWand.isAutoAbsorb()
                 && activeWand.isModifiable()
-                && (Wand.isSpell(pickup) || Wand.isBrush(pickup) || Wand.isUpgrade(pickup))
+                && (isSpell || isBrush || Wand.isUpgrade(pickup))
                 && activeWand.addItem(pickup)) {
             event.getItem().remove();
+            event.setCancelled(true);
+            return;
+        }
+
+        // Non-absorbable spells and brushes shouldn't exist
+        if ((isSpell || isBrush) && !Wand.isAbsorbable(pickup)) {
+            item.remove();
             event.setCancelled(true);
             return;
         }

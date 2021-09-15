@@ -1,5 +1,12 @@
 # Migration Notes
 
+# 10.1
+
+ - Spell and brush items now require a special NBT tag to be absorbed by a wand
+   This is to prevent glitched spells from being learnable
+   However, this means any spells or brushes you have saved somewhere, in a container
+   or perhaps a shop from another plugin, will need to be replaced.
+
 # 10.0
 
  - Please see change notes video for important update information: https://youtu.be/Xi6TpnBDgYU

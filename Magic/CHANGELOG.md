@@ -20,6 +20,7 @@
  - Fixes for invalid NPCs in 1.17 (if you are on 1.17 please make sure to update to latest Paper/Spigot)
  - Fix missing lore and broken air icons in selectors
  - Fix engineering wands not showing materia in level display
+ - Prevent spells that glitch out of a spell inventory being absorbable as spells
 
 ## Additions
 

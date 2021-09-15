@@ -1,0 +1,82 @@
+bouldersmash:
+  enabled: true
+  icon: diamond_pickaxe:10
+  icon_disabled: diamond_pickaxe:310
+  category: earthbending
+  worth: 2500
+  actions:
+    cast:
+      - class: Delay
+        duration: 4000
+      - class: Parallel
+        actions:
+          - class: ChangeContext
+            target_caster: true
+            ignore_result: true
+            target_offset: 0,-2,0
+            actions:
+              - class: CheckBlock
+              - class: Cancel
+                spells: earthsurf
+              - class: PotionEffect
+                effect_slow: 5
+                duration: 1000
+              - class: Delay
+                delay: 250
+              - class: Retarget
+          - class: ArmorStandProjectile
+            helmet_item: diamond_hoe:4
+            actions:
+              - class: Damage
+              - class: Velocity
+                push: 2.0
+
+  effects:
+    cast:
+      - class: EffectSingle
+        sound: bending.earth5
+        delay: 250
+        location: origin
+    hit:
+      - class: EffectSingle
+        location: target
+        particle: block_crack
+        material: stone
+        particle_count: 100
+        particle_offset_y: 0.8
+        particle_offset_x: 0.8
+        particle_offset_z: 0.8
+        particle_data: 0.5
+      - class: EffectSingle
+        location: target
+        particle: block_crack
+        material: stone
+        particle_count: 100
+        particle_offset_y: 0.6
+        particle_offset_x: 0.6
+        particle_offset_z: 0.6
+        particle_data: 0.3
+      - class: EffectSingle
+        sound: bending.earth1
+        sound_pitch: -1
+        location: target
+  parameters:
+    reorient: false
+    velocity: 16
+    target_type: LivingEntity
+    allow_max_range: true
+    range: 35
+    hitbox: true
+    destructible: solid
+    player_damage: 3.0
+    hitbox_size: 1.0
+    cooldown: 20000
+    duration: 5000
+    location_offset: 0,-1,0
+    orient_head: true
+    armor_stand_small: false
+    armor_stand_gravity: false
+    target_breakables: 3.0
+    unbreakable_items: true
+  costs:
+    mana: 200

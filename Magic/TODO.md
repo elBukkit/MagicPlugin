@@ -40,6 +40,8 @@
  - Still need to explain: All the zombies on my demo server seem to be named...
    or are these left over from mooses?
    
+ - Duplicate timed modifier, supposed to be an impossible state but seems to happen regularly
+   
 # Automata Re-Work
 
  - new EntityData class .. hopefully we've been pretty good about using the API version?
@@ -51,8 +53,8 @@
 
 # Optimization
 
-https://spark.lucko.me/1GkHWQL0OC
-https://timings.aikar.co/?id=a5bd174dc1ef462a9f72145b09dc6020
+  https://spark.lucko.me/1GkHWQL0OC
+  https://timings.aikar.co/?id=a5bd174dc1ef462a9f72145b09dc6020
 
  - Animated maps are *crazy* hard on the server
    - Would it be safe to draw them asynchronously?
@@ -132,7 +134,7 @@ https://timings.aikar.co/?id=a5bd174dc1ef462a9f72145b09dc6020
 
  - Configurable off-by-default RP load invulnerability window  
 
-# Near-Term Hopeful List
+# Near-Term Hopeful List (ha ha ha)
 
  - Separate cooldown for fail/no_target
  - Can't offset `target: self` using py or ty (?)
@@ -156,8 +158,6 @@ https://timings.aikar.co/?id=a5bd174dc1ef462a9f72145b09dc6020
  - Should /mmap load not reload an existing image? Or maybe it's too hard to match cropping/etc
  - Adding RPG configs prevents you from using a survival wand?
  - `/mconfig apply` doesn't work without a slug, after starting a new editor session
- - Tag wand spell icons so they're not droppable!
-   .. I had my spell inventory replace survival while configuring a wand.. see if I can reproduce that :(
  - PW having inventory loss issues (spells go into normal inventory)
  - /mmob remove doesn't remove mounts
  - Triggered spells need to track the wand they came from (think this is on the list somewhere already)

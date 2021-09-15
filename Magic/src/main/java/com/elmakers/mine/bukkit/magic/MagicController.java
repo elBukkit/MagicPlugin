@@ -4017,14 +4017,16 @@ public class MagicController implements MageController {
             // Update the item for proper naming and lore
             SpellTemplate spell = getSpellTemplate(spellKey);
             if (spell != null) {
-                Wand.updateSpellItem(messages, droppedItem, spell, "", null, null, true);
+                Wand.updateSpellItem(messages, droppedItem, spell, "", null, null, true, false);
             }
+            CompatibilityLib.getNBTUtils().setBoolean(droppedItem, "absorb", true);
         } else if (Wand.isBrush(droppedItem)) {
             String brushKey = Wand.getBrush(droppedItem);
             wand.removeBrush(brushKey);
 
             // Update the item for proper naming and lore
             Wand.updateBrushItem(getMessages(), droppedItem, brushKey, null);
+            CompatibilityLib.getNBTUtils().setBoolean(droppedItem, "absorb", true);
         }
         return droppedItem;
     }
@@ -5507,7 +5509,7 @@ public class MagicController implements MageController {
 
         if (magicItemKey.startsWith("skill:")) {
             String spellKey = magicItemKey.substring(6);
-            itemStack = Wand.createSpellItem(spellKey, this, mage, null, false);
+            itemStack = Wand.createSpellItem(spellKey, this, mage, null, true, true);
             CompatibilityLib.getNBTUtils().setString(itemStack, "skill", "true");
             if (callback != null) {
                 callback.updated(itemStack);
@@ -5862,7 +5864,7 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public ItemStack createSpellItem(String spellKey, boolean brief) {
-        return Wand.createSpellItem(spellKey, this, null, !brief);
+        return Wand.createSpellItem(spellKey, this, null, true, brief);
     }
 
     @Nullable
@@ -5870,7 +5872,7 @@ public class MagicController implements MageController {
     public ItemStack createSpellItem(String spellKey, Mage mage, boolean brief) {
         com.elmakers.mine.bukkit.api.wand.Wand apiWand = mage == null ? null : mage.getActiveWand();
         Wand wand = apiWand instanceof Wand ? (Wand)apiWand : null;
-        return Wand.createSpellItem(spellKey, this, mage, wand, !brief);
+        return Wand.createSpellItem(spellKey, this, mage, wand, true, brief);
     }
 
     @Nullable

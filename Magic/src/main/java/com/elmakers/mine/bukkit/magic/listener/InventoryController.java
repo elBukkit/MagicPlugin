@@ -365,6 +365,7 @@ public class InventoryController implements Listener {
 
         // Another check for wearing spells
         boolean clickedSpell = Wand.isSpell(clickedItem);
+        boolean clickedBrush = Wand.isBrush(clickedItem);
         boolean clickedWearable = controller.isWearable(clickedItem);
         if (tryingToWear && clickedSpell && clickedWearable)
         {
@@ -391,6 +392,13 @@ public class InventoryController implements Listener {
             if (!isDrop) {
                 event.setCancelled(true);
             }
+            return;
+        }
+
+        // Get rid of glitched spells and brushes
+        if (!isWandInventoryOpen && (clickedBrush || clickedSpell) && !Wand.isAbsorbable(clickedItem)) {
+            event.setCurrentItem(new ItemStack(Material.AIR));
+            event.setCancelled(true);
             return;
         }
 

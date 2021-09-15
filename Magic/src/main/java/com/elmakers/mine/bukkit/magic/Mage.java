@@ -1451,7 +1451,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (spell.isPassive()) {
             if (spell.isToggleable()) {
                 spell.setEnabled(!spell.isEnabled());
-                Wand.updateSpellItem(controller.getMessages(), skillItem, spell, "", null, null, false);
+                Wand.updateSpellItem(controller.getMessages(), skillItem, spell, "", null, null, false, true);
             }
             return true;
         }
