@@ -5259,8 +5259,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                                 return (double)effect.getAmplifier();
                             }
                         }
+                        return 0.0;
                     }
-                    return 0.0;
                 }
                 return null;
         }
