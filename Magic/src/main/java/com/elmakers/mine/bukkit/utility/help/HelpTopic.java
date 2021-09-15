@@ -42,7 +42,8 @@ public class HelpTopic {
     @Nonnull
     public String getTitle() {
         if (title.isEmpty()) {
-            return key;
+            String[] pieces = StringUtils.split(key, ".");
+            return pieces.length > 1 ? pieces[pieces.length - 1] : key;
         }
         return title;
     }
