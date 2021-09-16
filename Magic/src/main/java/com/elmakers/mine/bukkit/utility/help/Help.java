@@ -2,10 +2,12 @@ package com.elmakers.mine.bukkit.utility.help;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 import java.util.Set;
 import javax.annotation.Nonnull;
 
@@ -49,11 +51,11 @@ public class Help {
     }
 
     public void loadTopic(String key, String contents) {
-        loadTopic(key, contents, "");
+        loadTopic(key, contents, "", "");
     }
 
-    public void loadTopic(String key, String contents, String tags) {
-        HelpTopic helpTopic = new HelpTopic(messages, key, contents, tags);
+    public void loadTopic(String key, String contents, String tags, String topicType) {
+        HelpTopic helpTopic = new HelpTopic(messages, key, contents, tags, topicType);
         topics.put(key, helpTopic);
         for (String word : helpTopic.getWords()) {
             if (word.length() > 1) {
@@ -73,15 +75,15 @@ public class Help {
     }
 
     public void loadMetaActions(Map<String, Map<String, Object>> actions) {
-        loadMetaClassed(actions, "action", "action spell reference");
+        loadMetaClassed(actions, "action", "action spell", "reference");
     }
 
     public void loadMetaEffects(Map<String, Map<String, Object>> effects) {
-        loadMetaClassed(effects, "effect", "effectlib spell reference");
+        loadMetaClassed(effects, "effect", "effectlib spell", "reference");
     }
 
     @SuppressWarnings("unchecked")
-    private void loadMetaClassed(Map<String, Map<String, Object>> meta, String metaType, String tags) {
+    private void loadMetaClassed(Map<String, Map<String, Object>> meta, String metaType, String tags, String topicType) {
         String descriptionTemplate = metaTemplates.get(metaType + "_template");
         String defaultDescription = metaTemplates.get("default_description");
         String defaultParameterDescription = metaTemplates.get("default_parameter_description");
@@ -139,7 +141,7 @@ public class Help {
             }
 
             // hacky plural here, be warned
-            loadTopic("reference." + metaType + "s." + key, description, tags);
+            loadTopic("reference." + metaType + "s." + key, description, tags, topicType);
         }
     }
 
@@ -181,6 +183,35 @@ public class Help {
             }
         }
 
+        // Group by topic type, make sure to show at least one topic of each type
+        Map<String, Queue<HelpTopicMatch>> grouped = new HashMap<>();
+        for (HelpTopicMatch match : matches) {
+            String topicType = match.getTopic().getTopicType();
+            Queue<HelpTopicMatch> groupedList = grouped.get(topicType);
+            if (groupedList == null) {
+                groupedList = new PriorityQueue<>();
+                grouped.put(topicType, groupedList);
+            }
+            groupedList.add(match);
+        }
+
+        // Merge each list in
+        matches.clear();
+        while (!grouped.isEmpty()) {
+            Iterator<Queue<HelpTopicMatch>> it = grouped.values().iterator();
+            if (grouped.size() == 1) {
+                matches.addAll(it.next());
+                break;
+            }
+            while (it.hasNext()) {
+                Queue<HelpTopicMatch> typeMatches = it.next();
+                matches.add(typeMatches.remove());
+                if (typeMatches.isEmpty()) {
+                    it.remove();
+                }
+            }
+        }
+
         return matches;
     }
 
@@ -190,7 +221,6 @@ public class Help {
             keywords.add(arg.toLowerCase());
         }
         List<HelpTopicMatch> matches = findMatches(keywords);
-        Collections.sort(matches);
 
         // This is called async, move back to the main thread to do messaging
         ShowTopicsTask showTask = new ShowTopicsTask(this, mage, keywords, matches);
