@@ -1,0 +1,28 @@
+# This is an example of a passive spell, that is automatically triggered on sneaking
+sneaky:
+  name: Sneaky time
+  description: Go invisible when you sneak
+  icon: spell_icon:116
+  icon_disabled: spell_icon_disabled:116
+  passive: true
+  # This triggers when the player sneaks
+  triggers: sneak
+  actions:
+    cast:
+      # Invisibility is re-applied until they stop sneaking
+      - class: Interval
+        # You can put a max duration here
+        duration: 5 minutes
+        actions:
+        - class: PotionEffect
+        - class: CheckTrigger
+          trigger: stop_sneak
+          actions:
+            - class: Stop
+  parameters:
+    target: self
+    cooldown: 10 seconds
+    # this duration is for the effects, it can be small since we are re-applying every tick
+    # make it long enough to account for lag though
+    duration: 5 seconds
+    effect_invisibility: 5
