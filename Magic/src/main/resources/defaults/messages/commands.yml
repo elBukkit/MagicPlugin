@@ -19,9 +19,10 @@ commands:
       cooldown: "You must wait $time."
       no_requirements: "You are not allowed to use that kit"
     mhelp:
-      unknown: "&cNo matches for: &f$topic"
-      found: "&fFound &b$count &fmatches:"
-      found_limit: "&fFound &b$count &fmatches &7(Showing top &f$limit&7)&f:"
+      unknown: "&cI couldn't find any matches for: &f$topic"
+      found_single: "&fI found a good match:"
+      found: "&fI found &b$count &fmatches:"
+      found_limit: "&fI found &b$count &fmatches &7(Showing top &f$limit&7)&f:"
       match: '`<li>` &6`<help topic="$topic" text="$title">`&7: &f$summary'
       prompt: |-
         &8

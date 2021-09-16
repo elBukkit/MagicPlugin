@@ -30,6 +30,13 @@ public class ShowTopicsTask implements Runnable {
             mage.sendMessage(unknownMessage.replace("$topic", topic));
         } else {
             int size = matches.size();
+            if (size == 1) {
+                String foundMessage = messages.get("commands.mhelp.found_single");
+                mage.sendMessage(foundMessage);
+                HelpTopic topic = matches.get(0).getTopic();
+                mage.sendMessage(topic.getText());
+                return;
+            }
             if (size > MAX_RESULTS) {
                 String foundMessage = messages.get("commands.mhelp.found_limit");
                 mage.sendMessage(foundMessage
