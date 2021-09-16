@@ -35,7 +35,7 @@ public class ChatUtils {
     }
 
     protected static void getSimpleMessage(Map<String,Object> mapped, StringBuilder plainMessage, boolean onlyText) {
-        getSimpleMessage(mapped, plainMessage, onlyText, ChatColor.RESET + " " + ChatColor.GRAY, "");
+        getSimpleMessage(mapped, plainMessage, onlyText, ChatColor.RESET + " " + ChatColor.GRAY, ChatColor.RESET + " ");
     }
 
     @SuppressWarnings("unchecked")
@@ -88,7 +88,7 @@ public class ChatUtils {
     }
 
     public static String getSimpleMessage(String containsJson, boolean onlyText) {
-        return getSimpleMessage(containsJson, onlyText, ChatColor.RESET + " " + ChatColor.GRAY, "");
+        return getSimpleMessage(containsJson, onlyText, ChatColor.RESET + " " + ChatColor.GRAY, ChatColor.RESET + " ");
     }
 
     public static String getSimpleMessage(String containsJson, boolean onlyText, String commandPrefix, String commandSuffix) {
