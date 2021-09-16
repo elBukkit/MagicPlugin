@@ -51,7 +51,14 @@ help:
     `<li>``<help topic="missing_spells" text="My spells have gone missing from my wand inventory">`
     `<li>``<help topic="integration" text="Integration with other plugins">`
     `<li>``<help topic="nottrained" text="Some of my items are telling me I am not trained to use them">`
+    `<li>``<help topic="noflying" text="I get a 'flying is not enabled' error when using some spells">`
     `<li>``<command command="wand fill" text="Add ALL spells to my wand">`
+  noflying: |-
+    `<title text="Flying is not Enabled on This Server">`
+    `<p>`Survival players are usually not allowed to fly on a server by default.
+    `<p>`If you are getting this error from spells like Fly and Levitate, you may need to change your server settings.
+    `<p>`Set &7allow-flight: true&f in your &7server.properties&f file.
+    `<p>`This will require a server restart to take effect.
   nottrained: |-
     `<title text="You Are Not Trained to Use This">`
     `<p>`If you are getting this message from wands that worked prior to Magic 10, please check your wand configuration.
