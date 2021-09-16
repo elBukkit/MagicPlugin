@@ -24,7 +24,6 @@ public class HelpTopic {
 
     public HelpTopic(Messages messages, String key, String text, String tags, String topicType) {
         this.key = key;
-        this.tags = tags;
         this.topicType = topicType;
         MacroExpansion expansion = messages.expandMacros(text);
         text = expansion.getText();
@@ -33,6 +32,7 @@ public class HelpTopic {
         String simpleText = ChatColor.stripColor(ChatUtils.getSimpleMessage(text, true));
         this.searchText = simpleText.toLowerCase();
         this.title = expansion.getTitle();
+        this.tags = tags + " " + expansion.getTags();
 
         // Pre-split simple description lines, remove title if present
         String[] allLines = StringUtils.split(simpleText, "\n");

@@ -4,6 +4,7 @@
 macros:
   help: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to navigate"}, "clickEvent":{"action":"run_command","value":"/mhelp $topic"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
   title: '  &#01060d⎯&#030c1a⎯&#06152e⎯&#0a1f42&#0f2e61⎯&#154085⎯&#1c4d9c⎯&#255eba⎯&#2b6acf⎯  &l&n&#36a1e3$text  &r&#2b6acf⎯&#255eba⎯&#1c4d9c⎯&#154085⎯&#0f2e61⎯&#0a1f42⎯&#06152e⎯&#030c1a⎯&#01060d⎯'
+  tags: ''
   glyph: '`{"text":"\u$code","font":"magic"}`'
   command: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to run command"}, "clickEvent":{"action":"suggest_command","value":"/$command"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
   message: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"Click to see message"}, "clickEvent":{"action":"run_command","value":"/tellraw @s \"$message\"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'

@@ -146,6 +146,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     public MacroExpansion expandMacros(String message) {
         if (!message.contains("`<")) return new MacroExpansion(message);
         String title = null;
+        String tags = null;
         String[] pieces = StringUtils.splitPreserveAllTokens(message, "`");
         boolean leftoverDelimiter = false;
         for (int i = 0; i < pieces.length; i++) {
@@ -235,11 +236,13 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                     }
                 } else {
                     boolean isTitle = macroKey.equals("title");
+                    boolean isTags = macroKey.equals("tags");
                     for (Map.Entry<String, Object> entry : mapped.entrySet()) {
                         String macroParameter = entry.getKey();
                         if (macroParameter.equals("macro")) continue;
                         String value = entry.getValue().toString();
                         if (isTitle && macroParameter.equals("text")) title = value;
+                        if (isTags && macroParameter.equals("text")) tags = value;
                         macro = macro.replace("$" + macroParameter, value);
                     }
                 }
@@ -249,7 +252,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             }
         }
 
-        return new MacroExpansion(StringUtils.join(pieces), title);
+        return new MacroExpansion(StringUtils.join(pieces), title, tags);
     }
 
     @Override
