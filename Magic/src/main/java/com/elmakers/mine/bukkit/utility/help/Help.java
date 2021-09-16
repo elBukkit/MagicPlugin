@@ -88,6 +88,7 @@ public class Help {
         String parameterTemplate = metaTemplates.get("parameter_template");
         String parameterExtraLineTemplate = metaTemplates.get("parameter_extra_line");
         String parametersTemplate = metaTemplates.get("parameters_template");
+        String examplestemplate = metaTemplates.get("example_template");
         for (Map.Entry<String, Map<String, Object>> entry : meta.entrySet()) {
             Map<String, Object> action = entry.getValue();
             String key = entry.getKey();
@@ -104,6 +105,10 @@ public class Help {
             String metaCategory = (String)action.get("category");
             if (metaCategory != null && !metaCategory.isEmpty()) {
                 tags += " " + metaCategory;
+            }
+            Object rawExamples = action.get("examples");
+            if (rawExamples != null && rawExamples instanceof List) {
+                description += "\n" + examplestemplate.replace("$examples", StringUtils.join((List<String>)rawExamples, " "));
             }
             Object rawParameters = action.get("parameters");
             // The conversion process turns empty maps into empty lists
