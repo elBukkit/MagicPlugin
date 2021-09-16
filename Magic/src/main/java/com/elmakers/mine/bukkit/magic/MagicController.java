@@ -2008,6 +2008,11 @@ public class MagicController implements MageController {
         // Load localization messages
         logger.setContext("messages");
         messages.load(loader.getMessages(), icons);
+        try {
+            messages.loadMeta(plugin.getResource("meta.json"));
+        } catch (Exception ex) {
+            getLogger().log(Level.WARNING, "Error loading meta info, reference guide unavailable", ex);
+        }
         processMessages();
 
         // Load material sets

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
@@ -102,7 +104,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         }
 
         // Process help first, don't store it as regular messages
-        help.load(messages.getConfigurationSection("help"), messages.getConfigurationSection("examples"));
+        help.load(messages.getConfigurationSection("help"), messages.getConfigurationSection("examples"), messages.getConfigurationSection("meta"));
 
         // Leave the help messages in here for editor purposes
         // messages.set("help", null);
@@ -633,5 +635,16 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         String result = output.toString();
         spaceAmounts.put(totalPixels, result);
         return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void loadMeta(InputStream inputStream) throws Exception {
+        JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
+        Map<String, Object> meta = gson.fromJson(reader, Map.class);
+        Object classed = meta.get("classed");
+        if (classed == null || !(classed instanceof Map)) {
+            throw new Exception("Could not find classed section in meta file");
+        }
+        help.loadMetaActions((Map<String, Map<String, Object>>)((Map<String, Object>)classed).get("actions"));
     }
 }

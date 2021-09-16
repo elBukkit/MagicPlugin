@@ -1,0 +1,7 @@
+meta:
+  action_template: |-
+    `<title text="$action Action">`
+    `<p>`A spell action, used in a spell action handler with &7- class: $action
+    `<p>`$description
+    `<p>``<link url="https://reference.elmakers.com/#actions.$action" text="See this action in the reference guide">`
+  default_description: "&7(No description yes)"
