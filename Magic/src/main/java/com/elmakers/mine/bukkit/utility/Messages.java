@@ -646,5 +646,6 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
             throw new Exception("Could not find classed section in meta file");
         }
         help.loadMetaActions((Map<String, Map<String, Object>>)((Map<String, Object>)classed).get("actions"));
+        help.loadMetaEffects((Map<String, Map<String, Object>>)((Map<String, Object>)classed).get("effectlib_effects"));
     }
 }

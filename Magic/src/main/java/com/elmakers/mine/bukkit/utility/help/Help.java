@@ -44,12 +44,16 @@ public class Help {
         for (String key : keys) {
             if (helpSection.isConfigurationSection(key)) continue;
             String value = helpSection.getString(key);
-            load(key, value);
+            loadTopic(key, value);
         }
     }
 
-    public void load(String key, String contents) {
-        HelpTopic helpTopic = new HelpTopic(messages, key, contents);
+    public void loadTopic(String key, String contents) {
+        loadTopic(key, contents, "");
+    }
+
+    public void loadTopic(String key, String contents, String tags) {
+        HelpTopic helpTopic = new HelpTopic(messages, key, contents, tags);
         topics.put(key, helpTopic);
         for (String word : helpTopic.getWords()) {
             if (word.length() > 1) {
@@ -69,11 +73,20 @@ public class Help {
     }
 
     public void loadMetaActions(Map<String, Map<String, Object>> actions) {
-        String descriptionTemplate = metaTemplates.get("action_template");
+        loadMetaClassed(actions, "action", "action spell reference");
+    }
+
+    public void loadMetaEffects(Map<String, Map<String, Object>> effects) {
+        loadMetaClassed(effects, "effect", "effectlib spell reference");
+    }
+
+    @SuppressWarnings("unchecked")
+    private void loadMetaClassed(Map<String, Map<String, Object>> meta, String metaType, String tags) {
+        String descriptionTemplate = metaTemplates.get(metaType + "_template");
         String defaultDescription = metaTemplates.get("default_description");
-        for (Map.Entry<String, Map<String, Object>> entry : actions.entrySet()) {
+        for (Map.Entry<String, Map<String, Object>> entry : meta.entrySet()) {
             Map<String, Object> action = entry.getValue();
-            String actionKey = entry.getKey();
+            String key = entry.getKey();
             String shortClass = (String)action.get("short_class");
             if (shortClass == null) continue;
             List<String> descriptionList = (List<String>)action.get("description");
@@ -81,8 +94,15 @@ public class Help {
             if (description.isEmpty()) {
                 description = defaultDescription;
             }
-            description = descriptionTemplate.replace("$action", shortClass).replace("$description", description);
-            load("reference.actions." + actionKey, description);
+            description = descriptionTemplate.replace("$class", shortClass)
+                .replace("$description", description)
+                .replace("$key", key);
+            String metaCategory = (String)action.get("category");
+            if (metaCategory != null && !metaCategory.isEmpty()) {
+                tags += " " + metaCategory;
+            }
+            // hacky plural here, be warned
+            loadTopic("reference." + metaType + "s." + key, description, tags);
         }
     }
 

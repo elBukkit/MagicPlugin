@@ -18,10 +18,12 @@ public class HelpTopic {
     private final String title;
     private final String text;
     private final String searchText;
+    private final String tags;
     private final String[] lines;
 
-    public HelpTopic(Messages messages, String key, String text) {
+    public HelpTopic(Messages messages, String key, String text, String tags) {
         this.key = key;
+        this.tags = tags;
         MacroExpansion expansion = messages.expandMacros(text);
         text = expansion.getText();
         text = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(text));
@@ -63,10 +65,15 @@ public class HelpTopic {
                 relevance += arg.length() * help.getWeight(arg);
             }
             if (key.contains(arg)) {
-                relevance += arg.length() * help.getWeight(arg);
+                // tag matches are fully weighted
+                relevance += arg.length();
             }
             if (searchText.contains(arg)) {
                 relevance += arg.length() * help.getWeight(arg);
+            }
+            if (tags.contains(arg)) {
+                // tag matches are fully weighted
+                relevance += arg.length();
             }
         }
         return relevance;
