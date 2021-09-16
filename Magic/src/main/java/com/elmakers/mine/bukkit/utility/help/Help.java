@@ -32,13 +32,15 @@ public class Help {
 
     public void load(ConfigurationSection helpSection, ConfigurationSection examplesSection, ConfigurationSection metaSection) {
         loadMetaTemplates(metaSection);
-        ConfigurationSection helpExamples = helpSection.getConfigurationSection("examples");
-        if (helpExamples != null) {
-            ConfigurationUtils.addConfigurations(helpExamples, examplesSection);
-        } else {
-            helpSection.set("examples", examplesSection);
+        if (helpSection != null) {
+            ConfigurationSection helpExamples = helpSection.getConfigurationSection("examples");
+            if (helpExamples != null) {
+                ConfigurationUtils.addConfigurations(helpExamples, examplesSection);
+            } else {
+                helpSection.set("examples", examplesSection);
+            }
+            load(helpSection);
         }
-        load(helpSection);
     }
 
     public void load(ConfigurationSection helpSection) {
@@ -69,6 +71,7 @@ public class Help {
     }
 
     private void loadMetaTemplates(ConfigurationSection metaSection) {
+        if (metaSection == null) return;
         for (String key : metaSection.getKeys(true)) {
             metaTemplates.put(key, metaSection.getString(key));
         }

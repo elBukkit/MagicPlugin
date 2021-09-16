@@ -94,6 +94,11 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         Collections.sort(positiveSpace);
         Collections.reverse(positiveSpace);
 
+        // Everything else can be added via subsequent calls to load(String)
+        load(messages);
+    }
+
+    public void load(ConfigurationSection messages) {
         // Preload the macros section so it can be used in the following messages
         ConfigurationSection macros = messages.getConfigurationSection("macros");
         if (macros != null) {
