@@ -11,6 +11,9 @@
    - See survival `wizard_armor` set for example
    - Wizard armor (including magic hat) now have an SP earn bonus when the full set is worn  
    - TODO: Wand lore
+ - Reference Guide
+   - Spell action and effectlib effect reference information is now available via `/mhelp`
+   - I will attempt to improve the descriptions and information over time!
 
 ## Fixes
 

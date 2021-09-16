@@ -84,6 +84,10 @@ public class Help {
     private void loadMetaClassed(Map<String, Map<String, Object>> meta, String metaType, String tags) {
         String descriptionTemplate = metaTemplates.get(metaType + "_template");
         String defaultDescription = metaTemplates.get("default_description");
+        String defaultParameterDescription = metaTemplates.get("default_parameter_description");
+        String parameterTemplate = metaTemplates.get("parameter_template");
+        String parameterExtraLineTemplate = metaTemplates.get("parameter_extra_line");
+        String parametersTemplate = metaTemplates.get("parameters_template");
         for (Map.Entry<String, Map<String, Object>> entry : meta.entrySet()) {
             Map<String, Object> action = entry.getValue();
             String key = entry.getKey();
@@ -101,6 +105,34 @@ public class Help {
             if (metaCategory != null && !metaCategory.isEmpty()) {
                 tags += " " + metaCategory;
             }
+            Object rawParameters = action.get("parameters");
+            // The conversion process turns empty maps into empty lists
+            if (rawParameters != null && rawParameters instanceof Map) {
+                Map<String, Object> parameters = (Map<String, Object>)rawParameters;
+                if (parameters != null && !parameters.isEmpty()) {
+                    List<String> parameterLines = new ArrayList<>();
+                    for (Map.Entry<String, Object> parameterEntry : parameters.entrySet()) {
+                        String parameterDescription = parameterEntry.getValue().toString();
+                        if (parameterDescription.isEmpty()) {
+                            parameterDescription = defaultParameterDescription;
+                        }
+                        // This is delimited by an escaped \n
+                        String[] descriptionLines = StringUtils.split(parameterDescription, "\n");
+                        parameterLines.add(parameterTemplate
+                                .replace("$parameter", parameterEntry.getKey())
+                                .replace("$description", descriptionLines[0])
+                        );
+                        for (int i = 1; i < descriptionLines.length; i++) {
+                            parameterLines.add(parameterExtraLineTemplate
+                                    .replace("$parameter", parameterEntry.getKey())
+                                    .replace("$description", descriptionLines[i])
+                            );
+                        }
+                    }
+                    description += "\n" + parametersTemplate.replace("$parameters", StringUtils.join(parameterLines, "\n"));
+                }
+            }
+
             // hacky plural here, be warned
             loadTopic("reference." + metaType + "s." + key, description, tags);
         }

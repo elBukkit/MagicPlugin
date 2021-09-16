@@ -5,8 +5,16 @@ meta:
     `<p>`$description
     `<p>``<link url="https://reference.elmakers.com/#actions.$key" text="See this action in the reference guide">`
   effect_template: |-
-    `<title text="$class EffectLib Effect Class">`
+    `<title text="$class EffectLib Class">`
     `<p>`An EffectLib class, used in the &7effectlib:&f section of an &7effects:&f list with &7- class: $class
     `<p>`$description
     `<p>``<link url="https://reference.elmakers.com/#effectlib.$key" text="See this effect in the reference guide">`
+  parameters_template: |-
+    `<p>`&bParameters:
+    $parameters
+  parameter_template: |-
+    `<li>`&6$parameter&8: &7$description
+  parameter_extra_line: |-
+    `<p>`   &7$description
+  default_parameter_description: "&8?"
   default_description: "&7(No description yes)"

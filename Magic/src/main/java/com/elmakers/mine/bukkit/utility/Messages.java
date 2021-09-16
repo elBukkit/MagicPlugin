@@ -641,11 +641,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     public void loadMeta(InputStream inputStream) throws Exception {
         JsonReader reader = new JsonReader(new InputStreamReader(inputStream));
         Map<String, Object> meta = gson.fromJson(reader, Map.class);
-        Object classed = meta.get("classed");
-        if (classed == null || !(classed instanceof Map)) {
-            throw new Exception("Could not find classed section in meta file");
-        }
-        help.loadMetaActions((Map<String, Map<String, Object>>)((Map<String, Object>)classed).get("actions"));
-        help.loadMetaEffects((Map<String, Map<String, Object>>)((Map<String, Object>)classed).get("effectlib_effects"));
+        help.loadMetaActions((Map<String, Map<String, Object>>)meta.get("actions"));
+        help.loadMetaEffects((Map<String, Map<String, Object>>)meta.get("effectlib_effects"));
     }
 }
