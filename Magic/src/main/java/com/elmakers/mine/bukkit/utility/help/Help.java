@@ -117,7 +117,7 @@ public class Help {
                             parameterDescription = defaultParameterDescription;
                         }
                         // This is delimited by an escaped \n
-                        String[] descriptionLines = StringUtils.split(parameterDescription, "\n");
+                        String[] descriptionLines = parameterDescription.split("\\\\n");
                         parameterLines.add(parameterTemplate
                                 .replace("$parameter", parameterEntry.getKey())
                                 .replace("$description", descriptionLines[0])
