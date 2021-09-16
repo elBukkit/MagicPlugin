@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.help;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -200,19 +201,24 @@ public class Help {
 
         // Merge each list in
         matches.clear();
+        List<HelpTopicMatch> batch = new ArrayList<>();
         while (!grouped.isEmpty()) {
             Iterator<Queue<HelpTopicMatch>> it = grouped.values().iterator();
             if (grouped.size() == 1) {
                 matches.addAll(it.next());
                 break;
             }
+
             while (it.hasNext()) {
                 Queue<HelpTopicMatch> typeMatches = it.next();
-                matches.add(typeMatches.remove());
+                batch.add(typeMatches.remove());
                 if (typeMatches.isEmpty()) {
                     it.remove();
                 }
             }
+            Collections.sort(batch);
+            matches.addAll(batch);
+            batch.clear();
         }
 
         return matches;
