@@ -29,7 +29,7 @@ commands:
         &f`<icon key="counterspell">`        &bWelcome to &dMagic&f!        &f`<icon key="counterspell">`
         &8
         &fUse &7/mhelp &ffor help, and to disable this message.
-        &fOnly ops or admins with the &7magic.notify&f permission see this.
+        &dOnly &eops &dor &eadmins &dwith the &7magic.notify&d permission see this.
       unavailable: |-
           &8| &7> &4Your server version does not fully support the interactive help system
           &8| &7> &fPlease type the &7/mhelp&f commands as shown to navigate help

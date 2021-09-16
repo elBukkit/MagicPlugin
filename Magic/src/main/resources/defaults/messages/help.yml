@@ -140,12 +140,18 @@ help:
     `<li>``<link text="More support links on wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Support">`
   customization: |-
     `<title text="Customization">`
-    `<li>``<help text="Change language or localize text" topic="localization">`
+    `<li>``<help text="Customize any of the in-game messages and text" topic="messages">`
     `<li>``<help text="Change mana" topic="mana_customization">`
     `<li>``<help text="Creating new spells, wands and other configs" topic="creating_configs">`
     `<li>``<command command="config reset spell missile" text="Reset a spell to its default configuration">`
     `<li>``<help topic="common_customizations" text="Other common customizations">`
     `<li>``<help topic="general_customization" text="General Customization Questions">`&8(&7"Where are all the configs to edit?"&7)
+  messages: |-
+    `<title text="Messages">`
+    `<p>`All of the in-game text in &eMagic&f is completely customizeable.
+    `<p>`You can edit
+    `<li>``<command command="meditor messages" text="Edit all messages">`
+    `<li>``<help text="Change language or localize text" topic="localization">`
   general_customization: |-
     `<title text="General Customization Guide">`
     `<p>`&dMagic &fcan be very confusing to configure at first.
@@ -160,12 +166,16 @@ help:
     `<title text="Creating New Configs">`
     `<p>`&dMagic&f is a completely customizable framework that you can make your own. You will need to be comfortable &blearning by example&f!
     `<p>`You can also always seek support through the available &b`<help topic="support" text="available support channels">`
+    `<li>``<help topic="creating_spells" text="How to create new spells">`
+    `<li>``<command command="meditor spell mynewwand" text="Create a new wand using the editor">`
+    `<li>``<command command="meditor recipe newrecipe" text="Create a new crafting recipe">`
+  creating_spells: |-
+    `<title text="Creating New Spells">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Passive-and-Triggered-Spells" text="How to create passive and triggered spells">`
     `<li>``<command command="meditor spell mynewspell" text="Create a new spell using the editor">`
     `<li>``<command command="meditor spell missile" text="See the config of the Magic Missile spell">`
     `<li>``<command command="meditor spell singularity" text="See the Singularly spell, a more complex example">`
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival" text="See all survival spell configs">`
-    `<li>``<command command="meditor spell mynewwand" text="Create a new wand using the editor">`
-    `<li>``<command command="meditor recipe newrecipe" text="Create a new crafting recipe">`
     `<li>``<help topic="sandbox" text="Using the sandbox editor">`
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Custom-Spells" text="Spell creation guide on wiki">`
   sandbox: |-
@@ -272,7 +282,7 @@ help:
     `<li>``<command command="getrp url" text="Get a download URL for the resource pack">`
     `<li>``<command command="getrp auto" text="Automatically recieve the resource pack on join">`
     `<li>``<link text="Resource pack issues guide" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
-    `<li>``<command command="mconfig config enable_resource_pack false" text="Disable the resource pack completely for the whole server">`
+    `<li>``<command command="mconfig config enable_resource_pack false" text="Disable the resource pack, turn if off completely for the whole server">`
     `<li>``<command command="getrp hires" text="Get the hi-res (less blocky) resource pack">`
     `<li>``<command command="mconfig config resource_pack hires" text="Set the hi-res resource pack your server default">`
     `<li>``<help topic="bedrock" text="Questions about Bedrock players">`

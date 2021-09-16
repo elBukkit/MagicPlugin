@@ -70,6 +70,7 @@ help:
         `<title text="Spell Points">`
         `<p>`&6Spell points&f are earned whenever a player &osuccessfully&f casts a spell. For most spells, &bsuccess&f is determined by hitting a valid mob or player target.
         `<p>`&6Spell points&f have a &ecooldown &ffor earning. This cooldown is specific to each spell, and defaults to &e15 minutes&f.
+        `<p>`This means that once you have more than one spell, using each one frequently is the fastest way to earn SP!
         `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get palyers going.
         `<p>`Once players have more than one spell they can earn SP much faster by using all of their spells frequently.
         `<li>``<command command="mgive @p sp 1000" text="Give yourself some SP">`
