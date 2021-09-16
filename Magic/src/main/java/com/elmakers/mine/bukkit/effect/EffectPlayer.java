@@ -107,6 +107,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     protected MaterialAndData material;
 
     protected int delayTicks = 0;
+    protected double probability = 1;
 
     protected MaterialAndData material1;
     protected Color color1 = null;
@@ -238,6 +239,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
 
         Logger logger = getLogger();
+        probability = configuration.getDouble("probability", 1.0);
         broadcastSound = configuration.getBoolean("sound_broadcast", true);
         useParticleOverride = configuration.getString("particle_override", null);
         useColorOverride = configuration.getString("color_override", null);
@@ -490,6 +492,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             return;
         }
         if (noTargetEntity && (target != null && target.getEntity() != null)) {
+            return;
+        }
+        if (probability < 1 && Math.random() > probability) {
             return;
         }
         if (playAtOrigin && origin != null) {
