@@ -59,27 +59,25 @@ public class HelpTopic {
 
     public double match(Help help, Collection<String> keywords) {
         double relevance = 0;
-        for (String arg : keywords) {
-            arg = arg.trim();
-            if (arg.length() < 2) continue;
-            if (arg.length() < 4) arg = " " + arg + " ";
-            if (title.toLowerCase().contains(arg)) {
-                relevance += arg.length() * help.getWeight(arg);
+        for (String keyword : keywords) {
+            keyword = keyword.trim();
+            if (keyword.length() < 2) continue;
+            String search = keyword;
+            if (search.length() < 4) search = " " + search + " ";
+            if (title.toLowerCase().contains(search)) {
+                relevance += help.getWeight(keyword);
             }
-            if (key.contains(arg)) {
-                // tag matches are fully weighted
-                relevance += arg.length();
+            if (key.contains(search)) {
+                relevance += help.getWeight(keyword);
             }
-            if (searchText.contains(arg)) {
-                relevance += arg.length() * help.getWeight(arg);
+            if (searchText.contains(search)) {
+                relevance += help.getWeight(keyword);
             }
-            if (tags.contains(arg)) {
-                // tag matches are fully weighted
-                relevance += arg.length();
+            if (tags.contains(search)) {
+                relevance += help.getWeight(keyword);
             }
-            if (topicType.contains(arg)) {
-                // type matches are fully weighted
-                relevance += arg.length();
+            if (topicType.contains(search)) {
+                relevance += help.getWeight(keyword);
             }
         }
         return relevance;

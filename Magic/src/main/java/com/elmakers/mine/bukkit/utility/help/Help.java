@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Help {
+    private static final int WEIGHT_FACTOR = 5;
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
     private final Map<String, Integer> words = new HashMap<>();
@@ -156,8 +157,8 @@ public class Help {
     public double getWeight(String word) {
         if (maxCount == 0) return 1;
         Integer count = words.get(word);
-        if (count == null) return 0;
-        return 1.0 - ((double)count / (maxCount + 1));
+        if (count == null) return 1;
+        return Math.pow(1.0 - ((double)count / (maxCount + 1)), WEIGHT_FACTOR) * word.length();
     }
 
     public Set<String> getTopicKeys() {
