@@ -53,7 +53,16 @@ help:
     `<li>``<help topic="integration" text="Integration with other plugins">`
     `<li>``<help topic="nottrained" text="Some of my items are telling me I am not trained to use them">`
     `<li>``<help topic="noflying" text="I get a 'flying is not enabled' error when using some spells">`
+    `<li>``<help topic="default_configs" text="Where are the default spells and other configs?">`
     `<li>``<command command="wand fill" text="Add ALL spells to my wand">`
+  default_configs: |-
+    `<title text="Default Configs">`
+    `<p>`Magic will output the effective configs it is using to the &7plugins/Magic/defaults&f folder.
+    `<p>`This includes the default configs, any loaded examples (such as &bsurvival&f) and all of your customizations.
+    `<p>`These files can be useful to see how things work or what you can edit.
+    `<p>`However, please be aware they can not be edited directly. Magic will overwrite them every restart.
+    `<p>`This is a confusing point for most people looking to customize this plugin.
+    `<p>`Please see the `<help topic="general_customization" text="customization guide">` for more information!
   noflying: |-
     `<title text="Flying is not Enabled on This Server">`
     `<p>`Survival players are usually not allowed to fly on a server by default.
@@ -262,19 +271,30 @@ help:
     `<li>`Commands on wiki: &6https://github.com/elBukkit/MagicPlugin/wiki/Commands
   permissions: |-
     `<title text="Permissions">`
-    `<li>`Players &edo not &fneed &oany &fpermissions to use wands or cast spells
-    `<li>`Give mods &6magic.commands.* &fto allow them to use any Magic command
-    `<li>`&bCommand&f permissions all follow the same format, e.g. &6magic.commands.mgive
-    `<li>`&bSpell&f casting permissions can be set to false to deny specific spells, e.g. &6magic.cast.blink
-    `<li>`&bWand&f permissions can be set to false to deny using specific wands, e.g. &6magic.wand.use.wolf
+    `<p>`Players &edo not &fneed &oany &fpermissions to use wands or cast spells
+    `<p>`Give mods &6magic.commands.* &fto allow them to use any Magic command
+    `<p>`&bCommand&f permissions all follow the same format, e.g. &6magic.commands.mgive
+    `<p>`&bSpell&f casting permissions can be set to false to deny specific spells, e.g. &6magic.cast.blink
+    `<p>`&bWand&f permissions can be set to false to deny using specific wands, e.g. &6magic.wand.use.wolf
   integration: |-
     `<title text="Integration">`
     `<li>`&dMagic integrates with several `<help topic="protection" text="protection plugins">` to keep spells from griefing and trolling
-    `<li>`&dMagic integrates with Essentials and CommandBook for `<help topic="warps" text="warps">`
-    `<li>`&dMagic integrates with `<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">` for mob and spell disguises
-    `<li>`&dMagic integrates with MythicMobs for mythic mob spawning
-    `<li>`&dMagic integrates with `<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">` to show warps, spell casts and lost wands on maps
+    `<li>`&dMagic integrates with &bEssentials&f and &bCommandBook&f for `<help topic="warps" text="warps">`
+    `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell disguises
+    `<li>`&dMagic integrates with &bMythicMobs&f for mythic mob spawning
+    `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">`&f to show warps, spell casts and lost wands on maps
+    `<li>`You can use &6`<help topic="placeholders" text="placeholders">` via &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f to show magic properties in various places
     `<li>``<help topic="compatibility" text="Compatibility or issues with other plugins">`
+  placeholders: |-
+    `<title text="Placeholders">`
+    `<p>`&dMagic&f provides a variety of placeholders that can be used in messages sent with the &bMessage&f action
+    `<p>`or commands issued with the &bCommand&f action.
+    `<p>`For example &b$path&f, &b@mana_max&f or &sp&f. Any variable or attribute can be used as a placeholder.
+    `<p>`In general the &b$&f prefix shows the full value of a numeric attribute, while &b@&f will round.
+    `<p>`The &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f plugin can be used alongside compatible chat or other plugins to show &dMagic placeholders in other places.
+    `<p>`Use a &bmagic_&f prefix in PlaceholderAPI configs, such as &b%magic_path%&f.
+    `<p>`Example `<link url="https://www.spigotmc.org/resources/chatformat.74890/" text="ChatFormat">` chat prefix: &7'(%magic_path%) {PLAYER_NAME} > {SUFFIX}{MESSAGE}'&f
+    `<p>`See `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Placeholders" text="the wiki" for a list of available placeholders.
   compatibility: |-
     `<title text="Compatibility">`
     `<li>`&dMagic&f can use a &4Slimefun&f-compatible resource pack using the &b`<command command="mexample add slimefun" text="slimefun">` &fexample
@@ -373,7 +393,7 @@ help:
     `<li>``<link url="https://reference.elmakers.com/#effectlib" text="See all EffectLib effects in the reference guide">`
   wands: |-
     `<title text="Wands">`
-    `<p>`Wands in &eMagic&f are special items that can be used for casting spells, and may also grant the holder special effects or buffs.
+    `<p>`Wands in &dMagic&f are special items that can be used for casting spells, and may also grant the holder special effects or buffs.
     `<p>`Wands don't necessarily need to look or act like wands, they can take the form of armor, bows, swords or any other item.
     `<p>`The &7wand configure&f command can be used in-game to quickly change and test wand properties.
     `<li>``<command command="wand configure icon diamond" text="Change your wand to look like a diamond">`
@@ -393,7 +413,7 @@ help:
     `<li>``<link url="https://reference.elmakers.com/#modifiers" text="See all modifier properties in the reference guide">`
   mobs: |-
     `<title text="Magic Mobs">`
-    `<p>`&eMagic&f has a custom mob system for creating mobs that can cast spells or have other magical properties.
+    `<p>`&dMagic&f has a custom mob system for creating mobs that can cast spells or have other magical properties.
     `<p>`Magic mobs can also be used as an `<help topic="npc" text="NPC">` template.
     `<li>``<command command="mmob spawn warlock" text="Spawn a spellcasting warlock">`
     `<li>``<command command="mmob remove warlock" text="Remove all spawned warlocks">`
@@ -402,7 +422,7 @@ help:
     `<li>``<link url="https://reference.elmakers.com/#mobs" text="See all mob properties in the reference guide">`
   crafting: |-
     `<title text="Custom Crafting">`
-    `<p>`&eMagic&f has a completely customizable crafting system.
+    `<p>`&dMagic&f has a completely customizable crafting system.
     `<p>`Workbench, furnace, campfire and other recipe types are supported.
     `<p>`Custom, vanilla and magic `<help topic="wands" text="wands">` can be crafted and used as ingredients.
     `<p>`Note that the in-game &aKnowledge Book&f will not work very well with custom item ingredients,
