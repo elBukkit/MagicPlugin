@@ -54,6 +54,7 @@
    this means it will burn through arrows without the enchant. Will hopefully improve this in the future.
  - The Conduit rank will switch the wand display back to SP since materia is no longer needed
  - Nerf the wizard spell
+ - Don't allow Heal in arenas
 
 # 10.0.3
 
