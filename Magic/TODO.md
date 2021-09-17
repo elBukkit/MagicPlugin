@@ -38,9 +38,6 @@
  - What is causing the "recall got to doTeleport without waypoint" error?
 
  - Add require_resource_pack option with customizable kick message
- 
- - Still need to explain: All the zombies on my demo server seem to be named...
-   or are these left over from mooses?
    
  - Duplicate timed modifier, supposed to be an impossible state but seems to happen regularly
    

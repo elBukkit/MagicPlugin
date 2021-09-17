@@ -159,8 +159,7 @@ public class CheckBlockAction extends CheckAction {
         if (allowed != null && !allowed.testBlock(block)) {
             isAllowed = false;
         }
-        if (!isAllowed && checkPermissions) {
-            isAllowed = true;
+        if (checkPermissions) {
             if (brush != null && brush.isErase()) {
                 if (!context.hasBreakPermission(block)) {
                     isAllowed = false;
