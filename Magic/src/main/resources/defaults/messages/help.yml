@@ -13,6 +13,7 @@ help:
     `<li>``<help topic="npc" text="Help with NPCs">`
     `<li>``<help topic="warp" text="Help with warps">`
     `<li>``<help topic="arena" text="Help with arenas">`
+    `<li>``<help topic="mobs" text="Help with Magic mobs">`
     `<li>``<help topic="shops" text="Working with Magic shops">`
     `<li>``<help topic="maps" text="Putting images on to maps">`
     `<li>``<help topic="magicblocks" text="Setting up mob spawners or other automated blocks">`
@@ -150,6 +151,7 @@ help:
     `<li>``<help text="Customize any of the in-game messages and text" topic="messages">`
     `<li>``<help text="Change mana" topic="mana_customization">`
     `<li>``<help text="Creating new spells, wands and other configs" topic="creating_configs">`
+    `<li>``<help text="Customize or create crafting recipes" topic="crafting">`
     `<li>``<command command="config reset spell missile" text="Reset a spell to its default configuration">`
     `<li>``<help topic="common_customizations" text="Other common customizations">`
     `<li>``<help topic="general_customization" text="General Customization Questions">`&8(&7"Where are all the configs to edit?"&7)
@@ -166,7 +168,7 @@ help:
     `<p>`Because &dMagic&f is so configuration-driven, it is very important that configs can be updated every time the plugin updates.
     `<p>`This would be difficult if everyone got a copy of &oall&f of the configs to edit every time they installed the plugin.
     `<p>`While I understand this can be confusing and difficult to work with, it is not going to change any time soon!
-    `<p>`If you are intent on having configs to edit, you can &b`<command command="/meditor config" text="use the editor to build them for you">`
+    `<p>`If you are intent on having configs to edit, you can &b`<command command="meditor config" text="use the editor to build them for you">`
     `<p>`Or, look in &7plugins/Magic/defaults&f and copy what you want to &7plugins/Magic&f
     `<li>``<link text="Read more about how customization works on the wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Customization">`
   creating_configs: |-
@@ -183,6 +185,9 @@ help:
     `<li>``<command command="meditor spell missile" text="See the config of the Magic Missile spell">`
     `<li>``<command command="meditor spell singularity" text="See the Singularly spell, a more complex example">`
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival" text="See all survival spell configs">`
+    `<li>``<help topic="actions" text="How to use spell actions to change the behavior of a spell">`
+    `<li>``<help topic="spell_parameters" text="How spell parameters work">`
+    `<li>``<help topic="effects" text="How to customize the effects of a spell">`
     `<li>``<help topic="sandbox" text="Using the sandbox editor">`
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Custom-Spells" text="Spell creation guide on wiki">`
   sandbox: |-
@@ -194,7 +199,7 @@ help:
     `<p>`Saving a spell in the editor forces configs to reload on the server.
     `<p>`Your &6Sandbox Wand&f will contain all of the spells that you've made in the sandbox editor.
   common_customizations: |-
-    `<title text="Common Customization">`
+    `<title text="Common Customizations">`
     `<li>``<command command="mconfig spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
     `<li>``<command command="mconfig spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
     `<li>``<command command="mconfig config enable_crafting false" text="Disable all Magic crafting recipes">`
@@ -207,6 +212,8 @@ help:
     `<p>``<command command="meditor spell missile" text="Use the editor to edit a spell">`
     `<p>`Then look in the &bparameters&f section for damage-related properties.
     `<p>`Scroll down to find the levelled up version of the spell, and change damage parameters there too.
+    `<p>`Note that some spells, like &7Fireball&f, &7Boom&f, or &7Fire&f deal indirect damage and as such require special handling to change damage.
+    `<p>`For explosions, the &7size&f parameter deals more damage, but take care as a bigger explosion also means more blocks broken.
   donator_shops: |-
     `<title text="Donator Shops">`
     `<p>`&dMagic &fcan be used to set up &bdonator shops&f with a variety of EULA-compliant vanity items.
@@ -308,6 +315,101 @@ help:
     `<li>` &6`<command command="getrp lowres" text="lowres">`&f: The low-resolution spell icons used in Magic 5 and below, same as the skull textures
     `<li>` &6`<command command="getrp skulls" text="skulls">`&f: Use player heads instead of resource pack icons
     `<li>` &6`<command command="getrp all" text="all">`&f: Combines the httyd, survival, war and robes RPs into one
+  classes: |-
+    `<title text="Classes">`
+    `<p>`Classes in Magic are a way to associate a group of properties with a player.
+    `<p>`A player can have multiple classes.
+    `<p>`Wands can be assigned to classes, which means they can cast spells
+    `<p>`that a player has learned, rather than the spells being attached to a wand item.
+    `<p>`Classes can also add vanilla attributes, mana, protection, or other magic properties.
+    `<li>``<link url="https://reference.elmakers.com/#classes" text="See class properties in the reference guide">`
+  spell_properties: |-
+    `<title text="Spell Properties">`
+    `<p>`Spells have some top-level properties, such as their icon or casting costs.
+    `<p>`These properties can not be overridden by &7/cast&f parameters or &bwand overrides&f.
+    `<li>``<link url="https://reference.elmakers.com/#spellProperties" text="See spell properties in the reference guide">`
+  spell_parameters: |-
+    `<title text="Spell Parameters">`
+    `<p>`Spell parameters go in the &7parameters&f section of a spell.
+    `<p>`These parameters can be overridden by &7/cast&f parameters or &bwand overrides&f:
+    `<li>``<command command="cast missile block_hit_count 20" text="Cast a more powerful Magic Missile">`
+    `<li>``<command command="cast blob undo 1000" text="Cast a very short-lived Blob">`
+    `<p>`They can also be modified by a wand with overrides on it, such as:
+    `<li>``<command command="wand override missile.damage_multiplier 20" text="Make your wand cast a super-deadly Magic Missile">`
+    `<p>`Wand overrides can also be made to apply to all spells cast by that wand:
+    `<li>``<command command="wand override undo 0" text="Make all spells cast by your wand do permanent block damagee">`
+    `<p>`This can simplify spell testing, or allow you to make wands that cast spells in different ways.
+    `<p>``<help topic="actions" text="Spell actions">` read their parameters from the main parameters section, unless they are defined alongside the action.
+    `<p>`Spells also have several common base parameters that are not used by actions, such as &7target&f and &7cooldown&f.
+    `<li>``<link url="https://reference.elmakers.com/#spellParameters" text="See common spell parameters in the reference guide">`
+  actions: |-
+    `<title text="Spell Actions">`
+    `<p>`Actions are the building blocks of a spell's logic.
+    `<p>`Without actions, a spell does nothing except create particle effects or sounds.
+    `<p>`Action parameters can go in the "parameters" section of a spell's configuration, alongside `<help topic="spell_parameters" text="base spell parameters">`.
+    Action parameters in the "parameters" section can be overridden as normal by /cast commands or wand
+    overrides, but actions placed directly in the actions list can not.
+    <br/><br/>
+    In general it is good practice to put all parameters in the "parameters" section for easy reading, but there
+    are cases where it is necessary to put them in the actions list. Generally this would be because you have
+    two of the same actions in the logic that you want to use different parameters.
+    <br/><br/>
+    They can also go directly underneath the corresponding action in the "actions" list.<br/><br/>
+    `<li>``<link url="https://reference.elmakers.com/#effects" text="See all actions in the reference guide">`
+  effects: |-
+    `<title text="Sound and Particle Effects">`
+    `<p>`Effects are what make spells look and feel awesome.
+    `<p>`These are generally a combination of particle effects and sounds,
+    `<p>`though fireworks and basic Minecraft effects (like &7hurt&f) can also be used.
+    `<p>`Effects can also use `<help topic="effectlib" text="EffectLib effects">` for complex particle effects.
+    `<li>``<link url="https://reference.elmakers.com/#actions" text="See effect options in the reference guide">`
+  effectlib: |-
+    `<title text="EffectLib Effects">`
+    `<p>`EffectLib is integrated into Magic for complex special effects.
+    `<p>`Simply add an &7effectlib&f section to any effect to create an EffectLib effect.
+    `<p>`The only required parameter is &7class&f, which will determine which effect is used.
+    `<p>`Most affects have tweakable parameters, however, which will give your effects an extra customized look.
+    `<li>`<command command="cast fxdemo" text="View a demo of all effects">`
+    `<li>``<link url="https://reference.elmakers.com/#effectlib" text="See all EffectLib effects in the reference guide">`
+  wands: |-
+    `<title text="Wands">`
+    `<p>`Wands in &eMagic&f are special items that can be used for casting spells, and may also grant the holder special effects or buffs.
+    `<p>`Wands don't necessarily need to look or act like wands, they can take the form of armor, bows, swords or any other item.
+    `<p>`The &7wand configure&f command can be used in-game to quickly change and test wand properties.
+    `<li>``<command command="wand configure icon diamond" text="Change your wand to look like a diamond">`
+    `<li>``<command command="meditor spell mynewwand" text="Create a new wand using the editor">`
+    `<li>``<command command="mgive basic_wand" text="Give yourself a basic wand">`
+    `<li>``<command command="wand configure cost_reduction 2" text="Make a wand cost-free">` so it will not require or use mana
+    `<li>``<command command="wand configure cooldown_reduction 2" text="Make a wand ccooldown-free">`
+    `<li>``<link url="https://reference.elmakers.com/#wands" text="See all wand properties in the reference guide">`
+  modifiers: |-
+    `<title text="Modifiers">`
+    `<p>`Modifiers in Magic are like a temporary (or not) add-on class.
+    `<p>`They can be applied to a player from a wand or a spell using the &bModifier&f action.
+    `<p>`Modifiers can change player attributes, add temporary passive effects
+    `<p>`or do anything else a `<help topic="classes" text="class">` could do.
+    `<li>``<command command="mage modifier add hidden" text="Make yourself hidden from mobs">`
+    `<li>``<command command="mage modifier remove hidden" text="Remove the hidden modifier">`
+    `<li>``<link url="https://reference.elmakers.com/#modifiers" text="See all modifier properties in the reference guide">`
+  mobs: |-
+    `<title text="Magic Mobs">`
+    `<p>`&eMagic&f has a custom mob system for creating mobs that can cast spells or have other magical properties.
+    `<p>`Magic mobs can also be used as an `<help topic="npc" text="NPC">` template.
+    `<li>``<command command="mmob spawn warlock" text="Spawn a spellcasting warlock">`
+    `<li>``<command command="mmob remove warlock" text="Remove all spawned warlocks">`
+    `<li>``<command command="meditor mob warlock" text="Edit the warlock mob config">`
+    `<li>``<command command="meditor mob" text="Create a new mob">`
+    `<li>``<link url="https://reference.elmakers.com/#mobs" text="See all mob properties in the reference guide">`
+  crafting: |-
+    `<title text="Custom Crafting">`
+    `<p>`&eMagic&f has a completely customizable crafting system.
+    `<p>`Workbench, furnace, campfire and other recipe types are supported.
+    `<p>`Custom, vanilla and magic `<help topic="wands" text="wands">` can be crafted and used as ingredients.
+    `<p>`Note that the in-game &aKnowledge Book&f will not work very well with custom item ingredients,
+    `<p>`though custom item outputs are fine.
+    `<li>``<command command="meditor recipe wand" text="Edit the wand recipe">`
+    `<li>``<command command="meditor recipe" text="Create a new wand recipe">`
+    `<li>``<link url="https://reference.elmakers.com/#crafting" text="See all recipe properties in the reference guide">`
   examples:
     main: |-
       `<title text="Examples">`
