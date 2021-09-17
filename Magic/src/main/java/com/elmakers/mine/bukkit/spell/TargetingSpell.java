@@ -69,6 +69,7 @@ public class TargetingSpell extends BaseSpell {
     private boolean                             targetTamed             = true;
     private boolean                             targetMount             = false;
     private String                              targetDisplayName       = null;
+    private String                              ignoreDisplayName       = null;
     protected Class<?>                          targetEntityType        = null;
     protected Set<EntityType>                   targetEntityTypes       = null;
     protected Set<EntityType>                   ignoreEntityTypes       = null;
@@ -393,6 +394,10 @@ public class TargetingSpell extends BaseSpell {
         }
         if (targetDisplayName != null && (entity.getCustomName() == null || !entity.getCustomName().equals(targetDisplayName))) {
             mage.sendDebugMessage("Entity is not the specific display name we're looking for", 30);
+            return false;
+        }
+        if (ignoreDisplayName != null && entity.getCustomName() != null && entity.getCustomName().equals(ignoreDisplayName)) {
+            mage.sendDebugMessage("Entity has an ignored display name", 30);
             return false;
         }
         if (targetPermission != null && !controller.hasPermission(entity, targetPermission)) {
@@ -728,6 +733,7 @@ public class TargetingSpell extends BaseSpell {
         }
 
         targetDisplayName = parameters.getString("target_name", null);
+        ignoreDisplayName = parameters.getString("ignore_name", null);
         targetContents = ConfigurationUtils.getMaterial(parameters, "target_contents", null);
         originAtTarget = parameters.getBoolean("origin_at_target", false);
 

@@ -44,6 +44,7 @@
  - Brush selector now shows materia balance in inventory title
  - Add `remove_on_finish: true` option to `PotionEffect` and `Modifier` actions
  - Add `probability` option to effects
+ - Add `ignore_name` spell property to have spells ignore entities with a specific name
 
 ## Changes
  
@@ -61,7 +62,7 @@
 # 10.0.3
 
  - Fix missing spellshop lore (shop lore in general, probably)
- - Fix absorbing blocks into material not giving credit for stacks of blocks
+ - Fix absorbing blocks into materia not giving credit for stacks of blocks
  - Fix spell boss bar displays not properly showing duration remaining
  - Fix CheckBlock permission checks, when an `allowed` list is not used
 
