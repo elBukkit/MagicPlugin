@@ -2,11 +2,12 @@ examples:
   spawnmobs:
     instructions: |-
       `<title text="Magic Mob Spawning">`
-      `<p>`Magic mobs will now spawn naturally, rarely, in place &r
-      `<p>`of some vanilla mob spawns. &r
-      `<p>`If your default world is not called &6world&f you will &r
-      `<p>`need to customize your configuration using &r
-      `<p>`&7/mconfig world overworld_mobs world yourworld &r
-      `<p>`&7/mconfig world nether_mobs world yournether &r
-      `<p>`&7/mconfig world end_mobs world yourend &r
+      `<p>`Magic mobs will now spawn naturally, rarely, in place
+      `<p>`of some vanilla mob spawns.
+      `<p>`This includes warlocks, dragons and other dangerous mobs, be careful!
+      `<p>`If your default world is not called &6world&f you will
+      `<p>`need to customize your configuration using
+      `<p>`&7/mconfig world overworld_mobs world yourworld
+      `<p>`&7/mconfig world nether_mobs world yournether
+      `<p>`&7/mconfig world end_mobs world yourend
       `<p>`Or &b`<command command="meditor world overworld_mobs" text="use the editor">` to change worlds or spawn rates
