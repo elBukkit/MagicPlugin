@@ -10,6 +10,8 @@
 
  - API access is broken, need parent pom?
 
+ - Add shift+click, right-click, etc Selector options (e.g shift+click to buy a stack)
+
  - What is alternate_resource_packs.default for? What pack does `/getrp default` give you?
 
  - Miniature Pets integration

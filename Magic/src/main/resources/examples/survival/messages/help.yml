@@ -62,6 +62,8 @@ help:
         `<p>`The recipe will appear in your in-game &bknowledge book once you have acquired an &damethyst shard&f.
         `<p>`If you prefer, you can have the recipe &b`<command text="auto-discover on login" command="mconfig recipe wand auto_discover true">`
         `<p>`Missing the &6magic hearts&f? You can &b`<command text="bring back the old recipes" command="mexample add magicheart">` &fif you want.
+        `<p>`Don't want crafting? You can `<command text="Disable all magic crafting" command="mconfig config enable_crafting false">`
+        `<p>`Or `<command text="Disable an individual recipe" command="mconfig disable recipe wand">`
       progression: |-
         `<title text="Survival Progression">`
         `<li>``<help topic="examples.survival.spellpoints" text="About spell points">`
