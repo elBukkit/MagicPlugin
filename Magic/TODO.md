@@ -2,6 +2,10 @@
 
 # Next Up:
 
+ - Does fizzle (counterspell) not have any FX?
+
+ - Fix not being able to re-join an in-progress match
+
  - Do wand overrides not work for cast_spell wand casts? Seems like not (can't make fancy ice skates)
 
  - API access is broken, need parent pom?

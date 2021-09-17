@@ -76,8 +76,8 @@ wither:
         duration: 5000
         radius: 1
         count: 1
-        undo: 15000
-        cooldown: 5000
+        undo: 10000
+        cooldown: 15000
         start: 1
         break_blocks: false
         damage: 1
