@@ -56,6 +56,8 @@
  - Nerf the wizard spell
  - Don't allow Heal in arenas
 
+# 10.0.4
+
 # 10.0.3
 
  - Fix missing spellshop lore (shop lore in general, probably)
