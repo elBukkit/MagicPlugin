@@ -118,4 +118,8 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         }
         return summary;
     }
+
+    public double getRelevance() {
+        return relevance;
+    }
 }
