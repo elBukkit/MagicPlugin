@@ -2,6 +2,8 @@
 
 # Next Up:
 
+ - Do wand overrides not work for cast_spell wand casts? Seems like not (can't make fancy ice skates)
+
  - API access is broken, need parent pom?
 
  - What is alternate_resource_packs.default for? What pack does `/getrp default` give you?

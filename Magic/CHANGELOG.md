@@ -53,6 +53,7 @@
    This is to prevent it being used to gain arrows with the infinity enchantment, though unfortunately
    this means it will burn through arrows without the enchant. Will hopefully improve this in the future.
  - The Conduit rank will switch the wand display back to SP since materia is no longer needed
+ - Nerf the wizard spell
 
 # 10.0.3
 

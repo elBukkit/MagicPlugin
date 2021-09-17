@@ -72,9 +72,9 @@ wither:
     parameters:
         target: none
         projectile: WitherSkull
-        effect_wither: 2
+        effect_wither: 0
         duration: 5000
-        radius: 2
+        radius: 1
         count: 1
         undo: 15000
         cooldown: 5000
