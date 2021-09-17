@@ -16,7 +16,8 @@ meta:
     `<li>`&6$parameter&8: &7$description
   parameter_extra_line: |-
     `<p>`   &7$description
-  example_template: |-
+  examples_template: |-
     `<p>`&6Used in spells: &b$examples
+  example_template: '&b`<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/spells/$example.yml" text="$example">`&f'
   default_parameter_description: "&8?"
   default_description: "&7(No description yes)"

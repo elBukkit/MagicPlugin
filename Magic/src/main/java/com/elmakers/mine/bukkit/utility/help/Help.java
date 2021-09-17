@@ -87,6 +87,10 @@ public class Help {
         loadMetaClassed(effects, "effect", "effectlib spell", "reference");
     }
 
+    private String convertMetaDescription(String description) {
+        return description.replace("<li>", "`<li>`");
+    }
+
     @SuppressWarnings("unchecked")
     private void loadMetaClassed(Map<String, Map<String, Object>> meta, String metaType, String tags, String topicType) {
         String descriptionTemplate = metaTemplates.get(metaType + "_template");
@@ -95,7 +99,8 @@ public class Help {
         String parameterTemplate = metaTemplates.get("parameter_template");
         String parameterExtraLineTemplate = metaTemplates.get("parameter_extra_line");
         String parametersTemplate = metaTemplates.get("parameters_template");
-        String examplestemplate = metaTemplates.get("example_template");
+        String examplesTemplate = metaTemplates.get("examples_template");
+        String exampleTemplate = metaTemplates.get("example_template");
         for (Map.Entry<String, Map<String, Object>> entry : meta.entrySet()) {
             Map<String, Object> action = entry.getValue();
             String key = entry.getKey();
@@ -115,7 +120,11 @@ public class Help {
             }
             Object rawExamples = action.get("examples");
             if (rawExamples != null && rawExamples instanceof List) {
-                description += "\n" + examplestemplate.replace("$examples", StringUtils.join((List<String>)rawExamples, " "));
+                List<String> exampleList = (List<String>)rawExamples;
+                for (int i = 0; i < exampleList.size(); i++) {
+                    exampleList.set(i, exampleTemplate.replace("$example", exampleList.get(i)));
+                }
+                description += "\n" + examplesTemplate.replace("$examples", StringUtils.join(exampleList, " "));
             }
             Object rawParameters = action.get("parameters");
             // The conversion process turns empty maps into empty lists
@@ -145,6 +154,7 @@ public class Help {
                 }
             }
 
+            description = convertMetaDescription(description);
             // hacky plural here, be warned
             loadTopic("reference." + metaType + "s." + key, description, tags, topicType);
         }
