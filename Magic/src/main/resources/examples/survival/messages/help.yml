@@ -38,10 +38,12 @@ help:
         `<li>``<command command="mconfig config enchant_click" text="Disable the enchant table menu">`
       wandgui: |-
         `<title text="Wand GUI">`
-        `<p>`The &6wand&f hotbar and mana &bGUI&f uses custom font glyphs from the resource pack
+        `<p>`The &6wand&f second hotbar and mana &bGUI&f uses custom font glyphs from the resource pack
         `<p>`This means that the resource pack is &brequired&f, and this only works on &6Minecraft 1.16&f and above.
         `<p>`You will need to be using the official &aMagic&f resource pack, or you can `<link url="https://merge.elmakers.com" text="merge your own RP with the Magic RP">`
         `<p>`If you see squares instead of the hotbar glyphs, you have the &bwrong resource pack&f.
+        `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_bossbar" text="Change wand default to use the boss bar GUI instead of the action bar">`
+        `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_none" text="Turn off the wand GUI hotbar by default">`
       broomstick: |-
         `<title text="Broomsticks">`
         `<li>`Broomsticks work by moving invisible armor stands around. If you have anything on your server that might prevent moving armor stands, they will not work.
