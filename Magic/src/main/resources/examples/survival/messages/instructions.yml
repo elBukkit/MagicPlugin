@@ -2,5 +2,7 @@ examples:
   survival:
     instructions: |-
       `<title text="Survival">`
-      `<p>`Check for new crafting recipes, or use &6/mgive wand &r
-      `<p>`Use &6/mgive uberwand &ffor an OP testing wand &r
+      `<p>`Use &6/mgive wand &ffor a survival wand
+      `<p>`Use &6/mgive uberwand &ffor an OP testing wand
+      `<p>`The survival wand is craftable, players will learn the recipe
+      `<p>`when they find a &bdiamond&f, &4emerald&f or &eamethyst shard&f.
