@@ -2,6 +2,8 @@
 
 # Next Up:
 
+ - Using the swap (offhand) button in a shop gives a glitched-out offhand item
+
  - Does fizzle (counterspell) not have any FX?
 
  - Fix not being able to re-join an in-progress match
