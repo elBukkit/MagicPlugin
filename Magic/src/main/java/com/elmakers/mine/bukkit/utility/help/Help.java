@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
@@ -26,6 +27,8 @@ public class Help {
     private final Map<String, HelpTopic> topics = new HashMap<>();
     private final Map<String, Integer> words = new HashMap<>();
     private final Map<String, String> metaTemplates = new HashMap<>();
+    // We cheat and use one regex for both <li> and <link ...>
+    private static final Pattern linkPattern = Pattern.compile("([^`])(<li[^>]*>)([^`])");
     private int maxCount = 0;
 
     public Help(Messages messages) {
@@ -88,7 +91,7 @@ public class Help {
     }
 
     private String convertMetaDescription(String description) {
-        return description.replace("<li>", "`<li>`");
+        return linkPattern.matcher(description).replaceAll("$1`$2`$3");
     }
 
     @SuppressWarnings("unchecked")
