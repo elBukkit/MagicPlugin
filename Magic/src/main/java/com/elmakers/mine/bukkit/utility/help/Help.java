@@ -42,6 +42,15 @@ public class Help {
         this.messages = messages;
     }
 
+    public void reset() {
+        maxCount = 0;
+        maxTopicCount = 0;
+        maxLength = 0;
+        topics.clear();
+        words.clear();
+        metaTemplates.clear();
+    }
+
     public void load(ConfigurationSection helpSection, ConfigurationSection examplesSection, ConfigurationSection metaSection) {
         loadMetaTemplates(metaSection);
         if (helpSection != null) {

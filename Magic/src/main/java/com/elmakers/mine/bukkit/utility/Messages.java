@@ -67,6 +67,9 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     }
 
     public void load(ConfigurationSection messages, Map<String, Icon> icons) {
+        // Reset help
+        help.reset();
+
         // Set icons so we can use them in macro processing
         this.icons = icons;
 
