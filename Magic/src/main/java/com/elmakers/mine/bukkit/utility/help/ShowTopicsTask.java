@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility.help;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 
 import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -13,7 +14,7 @@ public class ShowTopicsTask implements Runnable {
     private static final int DEBUG_PADDING = 1;
     private static final int DEBUG_KEY_WIDTH = 8;
     private static final int DEBUG_NUMERIC_WIDTH = 8;
-    private static final String DEBUG_NUMERIC_FORMAT = "%5.2e";
+    private static final String DEBUG_NUMERIC_FORMAT = "%.3f";
     private final List<HelpTopicMatch> matches;
     private final Mage mage;
     private final Help help;
@@ -69,35 +70,51 @@ public class ShowTopicsTask implements Runnable {
             if (mage.getDebugLevel() >= 1000) {
                 mage.sendMessage(messages.get("commands.mhelp.separator"));
                 int matchCount = Math.min(MAX_RESULTS, matches.size());
-                String header = ChatUtils.getFixedWidth("", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                header += ChatUtils.getFixedWidth("*", DEBUG_NUMERIC_WIDTH);
-                header += StringUtils.repeat(" ", DEBUG_PADDING);
+                String header = ChatColor.GRAY + ChatUtils.getFixedWidth("", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                header += ChatUtils.getFixedWidth("*", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+
+                if (mage.getDebugLevel() >= 2000) {
+                    header += ChatUtils.getFixedWidth("r", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    header += ChatUtils.getFixedWidth("t", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    header += ChatUtils.getFixedWidth("l", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                }
+
                 for (int i = 0; i < matchCount; i++) {
                     header += ChatUtils.getFixedWidth(Integer.toString(i + 1), DEBUG_NUMERIC_WIDTH);
                     header += StringUtils.repeat(" ", DEBUG_PADDING);
                 }
                 mage.sendMessage(header);
-                mage.sendMessage(StringUtils.repeat("_", DEBUG_KEY_WIDTH + DEBUG_PADDING + matchCount * (DEBUG_NUMERIC_WIDTH + DEBUG_PADDING)));
+                int totalWidth = DEBUG_KEY_WIDTH + DEBUG_PADDING + (matchCount + 1) * (DEBUG_NUMERIC_WIDTH + DEBUG_PADDING);
+                if (mage.getDebugLevel() >= 2000) {
+                    totalWidth += 3 * (DEBUG_NUMERIC_WIDTH + DEBUG_PADDING);
+                }
+                mage.sendMessage(StringUtils.repeat("_", totalWidth));
 
-                String row = ChatUtils.getFixedWidth("*", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                String row = ChatColor.GRAY + ChatUtils.getFixedWidth("*", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                 row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                 for (int i = 0; i < matchCount; i++) {
                     HelpTopicMatch topicMatch = matches.get(i);
                     double relevance = topicMatch.getRelevance();
                     String value = relevance > 0 ? String.format(DEBUG_NUMERIC_FORMAT, relevance) : "";
-                    row += ChatUtils.getFixedWidth(value, DEBUG_NUMERIC_WIDTH);
+                    row += ChatColor.DARK_AQUA + ChatUtils.getFixedWidth(value, DEBUG_NUMERIC_WIDTH);
                     row += StringUtils.repeat(" ", DEBUG_PADDING);
                 }
                 mage.sendMessage(row);
 
                 for (String keyword : keywords) {
-                    row = ChatUtils.getFixedWidth(keyword, DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                    row += ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, help.getWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    row = ChatColor.WHITE + ChatUtils.getFixedWidth(keyword, DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    row += ChatColor.BLUE + ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+
+                    if (mage.getDebugLevel() >= 2000) {
+                        row += ChatColor.GREEN + ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getRarityWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                        row += ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getTopicWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                        row += ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getLengthWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    }
                     for (int i = 0; i < matchCount; i++) {
                         HelpTopicMatch topicMatch = matches.get(i);
                         double relevance = topicMatch.getTopic().getRelevance(help, keyword);
-                        String value = relevance > 0 ? String.format(DEBUG_NUMERIC_FORMAT, relevance) : "";
-                        row += ChatUtils.getFixedWidth(value, DEBUG_NUMERIC_WIDTH);
+                        String value = relevance > 0 ? String.format(DEBUG_NUMERIC_FORMAT, 100 * relevance) : "";
+                        row += ChatColor.AQUA + ChatUtils.getFixedWidth(value, DEBUG_NUMERIC_WIDTH);
                         row += StringUtils.repeat(" ", DEBUG_PADDING);
                     }
                     mage.sendMessage(row);

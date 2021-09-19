@@ -192,15 +192,42 @@ public class Help {
         return words.containsKey(word);
     }
 
-    public double getWeight(String word) {
-        if (maxCount == 0 || maxLength == 0 || maxTopicCount == 0) return DEFAULT_WEIGHT;
+    public double getRarityWeight(String word) {
         HelpTopicWord wordCount = words.get(word);
-        // TODO: find partial match?
+        if (wordCount == null) return DEFAULT_WEIGHT;
+        return getRarityWeight(wordCount);
+    }
+
+    protected double getRarityWeight(HelpTopicWord wordCount) {
         if (wordCount == null) return DEFAULT_WEIGHT;
         double rarityWeight = 1.0 - ((double)wordCount.getCount() / (maxCount + 1));
-        double topicRarityWeight = 1.0 - ((double)wordCount.getTopicCount() / (maxTopicCount + 1));
+        return Math.pow(rarityWeight, RARITY_FACTOR);
+    }
+
+    public double getLengthWeight(String word) {
         double lengthWeight = (double)word.length() / maxLength;
-        return Math.pow(rarityWeight, RARITY_FACTOR) * Math.pow(topicRarityWeight, TOPIC_RARITY_FACTOR) * Math.pow(lengthWeight, LENGTH_FACTOR);
+        return Math.pow(lengthWeight, LENGTH_FACTOR);
+    }
+
+    public double getTopicWeight(String word) {
+        HelpTopicWord wordCount = words.get(word);
+        return getTopicWeight(wordCount);
+    }
+
+    protected double getTopicWeight(HelpTopicWord wordCount) {
+        if (wordCount == null) return DEFAULT_WEIGHT;
+        double topicRarityWeight = 1.0 - ((double)wordCount.getTopicCount() / (maxTopicCount + 1));
+        return Math.pow(topicRarityWeight, TOPIC_RARITY_FACTOR);
+    }
+
+    public double getWeight(String word) {
+        if (maxCount == 0 || maxLength == 0 || maxTopicCount == 0) return DEFAULT_WEIGHT;
+
+        HelpTopicWord wordCount = words.get(word);
+        double rarityWeight = getRarityWeight(wordCount);
+        double topicRarityWeight = getTopicWeight(wordCount);
+        double lengthWeight = getLengthWeight(word);
+        return  rarityWeight * topicRarityWeight * lengthWeight;
     }
 
     public Set<String> getTopicKeys() {
