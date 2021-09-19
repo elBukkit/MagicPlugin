@@ -10,7 +10,6 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 
 public class ShowTopicsTask implements Runnable {
-    private static final int MAX_RESULTS = 10;
     private static final int DEBUG_PADDING = 1;
     private static final int DEBUG_KEY_WIDTH = 8;
     private static final int DEBUG_NUMERIC_WIDTH = 8;
@@ -19,12 +18,14 @@ public class ShowTopicsTask implements Runnable {
     private final Mage mage;
     private final Help help;
     private final List<String> keywords;
+    private final int maxTopics;
 
-    public ShowTopicsTask(Help help, Mage mage, List<String> keywords, List<HelpTopicMatch> matches) {
+    public ShowTopicsTask(Help help, Mage mage, List<String> keywords, List<HelpTopicMatch> matches, int maxTopics) {
         this.help = help;
         this.keywords = keywords;
         this.mage = mage;
         this.matches = matches;
+        this.maxTopics = maxTopics;
     }
 
     @Override
@@ -43,11 +44,11 @@ public class ShowTopicsTask implements Runnable {
                 mage.sendMessage(topic.getText());
                 return;
             }
-            if (size > MAX_RESULTS) {
+            if (size > maxTopics) {
                 String foundMessage = messages.get("commands.mhelp.found_limit");
                 mage.sendMessage(foundMessage
                     .replace("$count", Integer.toString(size))
-                    .replace("$limit", Integer.toString(MAX_RESULTS)));
+                    .replace("$limit", Integer.toString(maxTopics)));
             } else {
                 String foundMessage = messages.get("commands.mhelp.found");
                 mage.sendMessage(foundMessage.replace("$count", Integer.toString(size)));
@@ -64,12 +65,12 @@ public class ShowTopicsTask implements Runnable {
                         .replace("$summary", summary);
                 mage.sendMessage(message);
                 shown++;
-                if (shown >= MAX_RESULTS) break;
+                if (shown >= maxTopics) break;
             }
 
             if (mage.getDebugLevel() >= 1000) {
                 mage.sendMessage(messages.get("commands.mhelp.separator"));
-                int matchCount = Math.min(MAX_RESULTS, matches.size());
+                int matchCount = Math.min(maxTopics, matches.size());
                 String header = ChatColor.GRAY + ChatUtils.getFixedWidth("", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                 header += ChatUtils.getFixedWidth("*", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -248,7 +249,7 @@ public class Help {
     }
 
     @Nonnull
-    public List<HelpTopicMatch> findMatches(List<String> keywords) {
+    public List<HelpTopicMatch> findMatches(List<String> keywords, int listLength) {
         List<HelpTopicMatch> matches = new ArrayList<>();
         for (HelpTopic topic : topics.values()) {
             double relevance = topic.match(this, keywords);
@@ -272,35 +273,71 @@ public class Help {
         // Merge each list in
         matches.clear();
         List<HelpTopicMatch> batch = new ArrayList<>();
+        Set<String> addedThisPage = new HashSet<>();
+        int thisPageCount = 0;
         while (!grouped.isEmpty()) {
-            Iterator<Queue<HelpTopicMatch>> it = grouped.values().iterator();
+            Iterator<Map.Entry<String, Queue<HelpTopicMatch>>> it = grouped.entrySet().iterator();
             if (grouped.size() == 1) {
-                matches.addAll(it.next());
+                matches.addAll(it.next().getValue());
                 break;
             }
 
+            String bestMatchType = null;
+            HelpTopicMatch bestMatch = null;
             while (it.hasNext()) {
-                Queue<HelpTopicMatch> typeMatches = it.next();
-                batch.add(typeMatches.remove());
+                Map.Entry<String, Queue<HelpTopicMatch>> entry = it.next();
+                Queue<HelpTopicMatch> typeMatches = entry.getValue();
                 if (typeMatches.isEmpty()) {
                     it.remove();
+                    continue;
+                }
+                HelpTopicMatch match = typeMatches.peek();
+                if (bestMatch == null || match.getRelevance() > bestMatch.getRelevance()) {
+                    bestMatch = match;
+                    bestMatchType = entry.getKey();
                 }
             }
-            Collections.sort(batch);
-            matches.addAll(batch);
-            batch.clear();
+            if (bestMatch == null) break;
+
+            grouped.get(bestMatchType).remove();
+            addedThisPage.add(bestMatchType);
+            batch.add(bestMatch);
+            thisPageCount++;
+
+            // See if we should add at least one entry from each type we have not yet added
+            int haveNotAdded = grouped.size() - addedThisPage.size();
+            // Check for end of page, each page is sorted
+            if (thisPageCount >= listLength - haveNotAdded) {
+                if (haveNotAdded > 0) {
+                    for (Map.Entry<String, Queue<HelpTopicMatch>> entry : grouped.entrySet()) {
+                        if (!addedThisPage.contains(entry.getKey())) {
+                            batch.add(entry.getValue().remove());
+                        }
+                    }
+                }
+                Collections.sort(batch);
+                matches.addAll(batch);
+
+                // Reset state for next page
+                batch.clear();
+                addedThisPage.clear();;
+                thisPageCount = 0;
+            }
         }
+        // Add anything remaining
+        Collections.sort(batch);
+        matches.addAll(batch);
 
         return matches;
     }
 
-    public void search(Mage mage, String[] args) {
+    public void search(Mage mage, String[] args, int maxTopics) {
         // This may seem roundabout, but handles punctuation nicely
         List<String> keywords = Arrays.asList(ChatUtils.getWords(StringUtils.join(args, " ").toLowerCase()));
-        List<HelpTopicMatch> matches = findMatches(keywords);
+        List<HelpTopicMatch> matches = findMatches(keywords, maxTopics);
 
         // This is called async, move back to the main thread to do messaging
-        ShowTopicsTask showTask = new ShowTopicsTask(this, mage, keywords, matches);
+        ShowTopicsTask showTask = new ShowTopicsTask(this, mage, keywords, matches, maxTopics);
         Plugin plugin = mage.getController().getPlugin();
         plugin.getServer().getScheduler().runTask(plugin, showTask);
     }

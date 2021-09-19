@@ -21,6 +21,7 @@ import com.elmakers.mine.bukkit.utility.help.Help;
 import com.elmakers.mine.bukkit.utility.help.SearchHelpTask;
 
 public class MagicHelpCommandExecutor extends MagicTabExecutor {
+    private static final int MAX_RESULTS = 10;
     protected final MagicController controller;
     protected final Help help;
     protected Map<String,String> helpTopics;
@@ -100,7 +101,7 @@ public class MagicHelpCommandExecutor extends MagicTabExecutor {
 
         // Search through topics for text matches, do this async since we're
         // going to spin pretty hard looking through text (assuming help gets big)
-        SearchHelpTask searchTask = new SearchHelpTask(help, mage, args);
+        SearchHelpTask searchTask = new SearchHelpTask(help, mage, args, MAX_RESULTS);
         Plugin plugin = controller.getPlugin();
         plugin.getServer().getScheduler().runTaskAsynchronously(plugin, searchTask);
     }
