@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.utility.help;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -21,6 +23,7 @@ public class HelpTopic {
     private final String tags;
     private final String topicType;
     private final String[] lines;
+    private final Map<String, Integer> words;
 
     public HelpTopic(Messages messages, String key, String text, String tags, String topicType) {
         this.key = key;
@@ -40,6 +43,18 @@ public class HelpTopic {
             lines = Arrays.copyOfRange(allLines, 1, allLines.length);
         } else {
             lines = allLines;
+        }
+
+        // Track uses of individual words
+        words = new HashMap<>();
+        String[] helpTopicWords = ChatUtils.getWords(searchText);
+        for (String word : helpTopicWords) {
+            word = word.trim();
+            if (word.isEmpty()) continue;
+            Integer count = words.get(word);
+            if (count == null) count = 1;
+            else count++;
+            words.put(word, count);
         }
     }
 
@@ -61,30 +76,34 @@ public class HelpTopic {
         double relevance = 0;
         for (String keyword : keywords) {
             keyword = keyword.trim();
-            if (keyword.length() < 2) continue;
-            String search = keyword;
-            if (search.length() < 4 && !help.isWord(keyword)) continue;
-            if (title.toLowerCase().contains(search)) {
+            if (!isValidWord(keyword)) continue;
+            if (title.toLowerCase().contains(keyword)) {
                 relevance += help.getWeight(keyword);
             }
-            if (key.contains(search)) {
+            if (key.contains(keyword)) {
                 relevance += help.getWeight(keyword);
             }
-            if (searchText.contains(search)) {
+            if (searchText.contains(keyword)) {
                 relevance += help.getWeight(keyword);
             }
-            if (tags.contains(search)) {
+            if (tags.contains(keyword)) {
                 relevance += help.getWeight(keyword);
             }
-            if (topicType.contains(search)) {
+            if (topicType.contains(keyword)) {
                 relevance += help.getWeight(keyword);
             }
         }
         return relevance;
     }
 
-    public String[] getWords() {
-        return ChatUtils.getWords(searchText);
+    public boolean isValidWord(String keyword) {
+        if (keyword.length() < 2) return false;
+        if (keyword.length() < 4 && !words.containsKey(keyword)) return false;
+        return true;
+    }
+
+    public Map<String, Integer> getWordCounts() {
+        return words;
     }
 
     public String[] getLines() {

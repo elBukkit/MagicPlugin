@@ -22,14 +22,19 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Help {
-    private static final int WEIGHT_FACTOR = 5;
+    private static double DEFAULT_WEIGHT = 0.00001;
+    private static final int RARITY_FACTOR = 3;
+    private static final int TOPIC_RARITY_FACTOR = 5;
+    private static final int LENGTH_FACTOR = 2;
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
-    private final Map<String, Integer> words = new HashMap<>();
+    private final Map<String, HelpTopicWord> words = new HashMap<>();
     private final Map<String, String> metaTemplates = new HashMap<>();
     // We cheat and use one regex for both <li> and <link ...>
     private static final Pattern linkPattern = Pattern.compile("([^`])(<li[^>]*>)([^`])");
     private int maxCount = 0;
+    private int maxTopicCount = 0;
+    private int maxLength = 0;
 
     public Help(Messages messages) {
         this.messages = messages;
@@ -64,14 +69,19 @@ public class Help {
     public void loadTopic(String key, String contents, String tags, String topicType) {
         HelpTopic helpTopic = new HelpTopic(messages, key, contents, tags, topicType);
         topics.put(key, helpTopic);
-        for (String word : helpTopic.getWords()) {
-            if (word.length() > 1) {
-                Integer count = words.get(word);
-                if (count == null) count = 1;
-                else count++;
-                words.put(word, count);
-                maxCount = Math.max(maxCount, count);
+        // Index all words
+        Map<String, Integer> wordCounts = helpTopic.getWordCounts();
+        for (Map.Entry<String, Integer> wordEntry : wordCounts.entrySet()) {
+            String word = wordEntry.getKey();
+            HelpTopicWord wordCount = words.get(word);
+            if (wordCount == null) {
+                wordCount = new HelpTopicWord();
+                words.put(word, wordCount);
             }
+            wordCount.addTopic(wordEntry.getValue());
+            maxCount = Math.max(maxCount, wordCount.getCount());
+            maxTopicCount = Math.max(maxTopicCount, wordCount.getTopicCount());
+            maxLength = Math.max(maxLength, word.length());
         }
     }
 
@@ -172,10 +182,13 @@ public class Help {
     }
 
     public double getWeight(String word) {
-        if (maxCount == 0) return 1;
-        Integer count = words.get(word);
-        if (count == null) return 1;
-        return Math.pow(1.0 - ((double)count / (maxCount + 1)), WEIGHT_FACTOR) * word.length();
+        if (maxCount == 0 || maxLength == 0 || maxTopicCount == 0) return DEFAULT_WEIGHT;
+        HelpTopicWord wordCount = words.get(word);
+        // TODO: find partial match?
+        if (wordCount == null) return DEFAULT_WEIGHT;
+        double rarityWeight = 1.0 - ((double)wordCount.getCount() / (maxCount + 1));
+        double topicRarityWeight = 1.0 - ((double)wordCount.getTopicCount() / (maxTopicCount + 1));
+        return Math.pow(rarityWeight, RARITY_FACTOR) * Math.pow(topicRarityWeight, TOPIC_RARITY_FACTOR) * Math.pow((double)word.length() / maxLength, LENGTH_FACTOR);
     }
 
     public Set<String> getTopicKeys() {

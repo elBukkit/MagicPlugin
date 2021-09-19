@@ -55,14 +55,13 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             for (String arg : keywords) {
                 arg = arg.trim();
                 int len = arg.length();
-                if (len < 2) continue;
-                if (len < 4 && !help.isWord(arg)) continue;
+                if (!topic.isValidWord(arg)) continue;
                 int startIndex = matchLine.indexOf(arg);
                 if (startIndex >= 0) {
                     // Track match count
                     relevance += len * help.getWeight(arg);
                     // Track range of all keywords
-                    int endIndex = startIndex + arg.length();
+                    int endIndex = startIndex + len;
                     if (firstMatchIndex == -1) {
                         firstMatchIndex = startIndex;
                         lastMatchEnd = endIndex;
@@ -112,8 +111,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         // Highlight matches
         for (String keyword : keywords) {
             keyword = keyword.trim();
-            if (keyword.length() < 2) continue;
-            if (keyword.length() < 4 && !help.isWord(keyword)) continue;
+            if (!topic.isValidWord(keyword)) continue;
             summary = summary.replaceAll("((?i)" + Pattern.quote(keyword) + ")", matchPrefix + "$1" + matchSuffix);
         }
         return summary;
