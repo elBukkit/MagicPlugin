@@ -92,6 +92,13 @@ public class ShowTopicsTask implements Runnable {
 
                 String row = ChatColor.GRAY + ChatUtils.getFixedWidth("*", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                 row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+
+                if (mage.getDebugLevel() >= 2000) {
+                    row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                }
+
                 for (int i = 0; i < matchCount; i++) {
                     HelpTopicMatch topicMatch = matches.get(i);
                     double relevance = topicMatch.getRelevance();
