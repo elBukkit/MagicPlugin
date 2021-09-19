@@ -2,7 +2,9 @@ examples:
   survival:
     instructions: |-
       `<title text="Survival">`
-      `<p>`Use &6/mgive wand &ffor a survival wand
-      `<p>`Use &6/mgive uberwand &ffor an OP testing wand
+      `<p>`This is the example loaded by default.
+      `<p>`It is meant as a natural add-on to vanilla survival.
+      `<li>``<command command="mgive uberwand" text="Get an OP testing wand">`
+      `<li>``<command command="mgive wand" text="Get a survival wand">`
       `<p>`The survival wand is craftable, players will learn the recipe
       `<p>`when they find a &bdiamond&f, &4emerald&f or &eamethyst shard&f.
