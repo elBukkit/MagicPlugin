@@ -70,6 +70,8 @@ public class ShowTopicsTask implements Runnable {
                 mage.sendMessage(messages.get("commands.mhelp.separator"));
                 int matchCount = Math.min(MAX_RESULTS, matches.size());
                 String header = ChatUtils.getFixedWidth("", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                header += ChatUtils.getFixedWidth("*", DEBUG_NUMERIC_WIDTH);
+                header += StringUtils.repeat(" ", DEBUG_PADDING);
                 for (int i = 0; i < matchCount; i++) {
                     header += ChatUtils.getFixedWidth(Integer.toString(i + 1), DEBUG_NUMERIC_WIDTH);
                     header += StringUtils.repeat(" ", DEBUG_PADDING);
@@ -78,6 +80,7 @@ public class ShowTopicsTask implements Runnable {
                 mage.sendMessage(StringUtils.repeat("_", DEBUG_KEY_WIDTH + DEBUG_PADDING + matchCount * (DEBUG_NUMERIC_WIDTH + DEBUG_PADDING)));
 
                 String row = ChatUtils.getFixedWidth("*", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                 for (int i = 0; i < matchCount; i++) {
                     HelpTopicMatch topicMatch = matches.get(i);
                     double relevance = topicMatch.getRelevance();
@@ -89,6 +92,7 @@ public class ShowTopicsTask implements Runnable {
 
                 for (String keyword : keywords) {
                     row = ChatUtils.getFixedWidth(keyword, DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    row += ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, help.getWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                     for (int i = 0; i < matchCount; i++) {
                         HelpTopicMatch topicMatch = matches.get(i);
                         double relevance = topicMatch.getTopic().getRelevance(help, keyword);

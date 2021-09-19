@@ -25,9 +25,9 @@ import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Help {
     private static double DEFAULT_WEIGHT = 0.00001;
-    private static final int RARITY_FACTOR = 3;
-    private static final int TOPIC_RARITY_FACTOR = 5;
-    private static final int LENGTH_FACTOR = 2;
+    private static final double RARITY_FACTOR = 3;
+    private static final double TOPIC_RARITY_FACTOR = 5;
+    private static final double LENGTH_FACTOR = 0.2;
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
     private final Map<String, HelpTopicWord> words = new HashMap<>();
@@ -199,7 +199,8 @@ public class Help {
         if (wordCount == null) return DEFAULT_WEIGHT;
         double rarityWeight = 1.0 - ((double)wordCount.getCount() / (maxCount + 1));
         double topicRarityWeight = 1.0 - ((double)wordCount.getTopicCount() / (maxTopicCount + 1));
-        return Math.pow(rarityWeight, RARITY_FACTOR) * Math.pow(topicRarityWeight, TOPIC_RARITY_FACTOR) * Math.pow((double)word.length() / maxLength, LENGTH_FACTOR);
+        double lengthWeight = (double)word.length() / maxLength;
+        return Math.pow(rarityWeight, RARITY_FACTOR) * Math.pow(topicRarityWeight, TOPIC_RARITY_FACTOR) * Math.pow(lengthWeight, LENGTH_FACTOR);
     }
 
     public Set<String> getTopicKeys() {
