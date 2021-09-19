@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -22,6 +24,10 @@ public class HelpTopic {
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
     public static final double COUNT_FACTOR = 0.5;
     public static final double SIMILARITY_FACTOR = 2;
+    public static final double CONTENT_WEIGHT = 1;
+    public static final double TAG_WEIGHT = 2;
+    public static final double TITLE_WEIGHT = 4;
+    public static final double TOTAL_WEIGHT = CONTENT_WEIGHT + TAG_WEIGHT + TITLE_WEIGHT;
 
     private final String key;
     private final String title;
@@ -31,6 +37,8 @@ public class HelpTopic {
     private final String topicType;
     private final String[] lines;
     private final Map<String, Integer> words;
+    private final Set<String> titleWords;
+    private final Set<String> tagWords;
     private final int maxCount;
 
     public HelpTopic(Messages messages, String key, String text, String tags, String topicType) {
@@ -56,11 +64,17 @@ public class HelpTopic {
         // Track uses of individual words
         words = new HashMap<>();
         int maxCount = 0;
+        titleWords = new HashSet<>();
+        tagWords = new HashSet<>();
         List<String> helpTopicWords = new ArrayList<>();
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(searchText)));
-        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(title)));
+        List titleWordList = Arrays.asList(ChatUtils.getWords(title.toLowerCase()));
+        titleWords.addAll(titleWordList);
+        helpTopicWords.addAll(titleWordList);
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(key)));
-        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(tags)));
+        List tagWordList = Arrays.asList(ChatUtils.getWords(tags.toLowerCase()));
+        helpTopicWords.addAll(tagWordList);
+        tagWords.addAll(tagWordList);
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(topicType)));
         for (String word : helpTopicWords) {
             word = word.trim();
@@ -89,6 +103,39 @@ public class HelpTopic {
     }
 
     public double getRelevance(Help help, String keyword) {
+        double wordsRelevance = getWordsRelevance(help, keyword);
+        double titleRelevance = getSetRelevance(help, titleWords, keyword);
+        double tagRelevance = getSetRelevance(help, tagWords, keyword);
+        return (wordsRelevance * CONTENT_WEIGHT + titleRelevance * TITLE_WEIGHT + tagRelevance * TAG_WEIGHT) / TOTAL_WEIGHT;
+    }
+
+    private double getSetRelevance(Help help, Set<String> words, String keyword) {
+        double relevance = 0;
+        if (!isValidWord(keyword)) {
+            return relevance;
+        }
+        keyword = keyword.trim();
+        if (words.contains(keyword)) {
+            return help.getWeight(keyword);
+        }
+        double maxSimilarity = 0;
+        String bestMatch = null;
+        for (String word : words) {
+            double similarity = ChatUtils.getSimilarity(keyword, word);
+            if (similarity > maxSimilarity) {
+                bestMatch = word;
+            }
+        }
+        if (bestMatch != null) {
+            relevance = help.getWeight(bestMatch);
+            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
+            relevance *= similarityWeight;
+        }
+
+        return relevance;
+    }
+
+    private double getWordsRelevance(Help help, String keyword) {
         double relevance = 0;
         if (!isValidWord(keyword)) {
             return relevance;
