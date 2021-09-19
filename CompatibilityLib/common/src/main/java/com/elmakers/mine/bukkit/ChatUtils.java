@@ -145,4 +145,23 @@ public class ChatUtils {
         }
         return message;
     }
+
+    public static double getSimilarity(String s1, String s2) {
+        String longer = s1;
+        String shorter = s2;
+
+        // Find the longer of the two strings
+        if (s1.length() < s2.length()) {
+            longer = s2;
+            shorter = s1;
+        }
+
+        int longerLength = longer.length();
+        if (longerLength == 0) {
+            // Special case for two empty string
+            return 1.0;
+        }
+
+        return longerLength - StringUtils.getLevenshteinDistance(longer, shorter);
+    }
 }

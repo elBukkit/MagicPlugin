@@ -1,8 +1,10 @@
 package com.elmakers.mine.bukkit.utility.help;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.annotation.Nonnull;
 
@@ -18,6 +20,8 @@ import com.elmakers.mine.bukkit.utility.Messages;
 public class HelpTopic {
     public static final int MIN_WORD_LENGTH = 2;
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
+    public static final double COUNT_FACTOR = 0.5;
+    public static final double SIMILARITY_FACTOR = 2;
 
     private final String key;
     private final String title;
@@ -52,7 +56,12 @@ public class HelpTopic {
         // Track uses of individual words
         words = new HashMap<>();
         int maxCount = 0;
-        String[] helpTopicWords = ChatUtils.getWords(searchText);
+        List<String> helpTopicWords = new ArrayList<>();
+        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(searchText)));
+        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(title)));
+        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(key)));
+        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(tags)));
+        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(topicType)));
         for (String word : helpTopicWords) {
             word = word.trim();
             if (word.isEmpty()) continue;
@@ -81,25 +90,32 @@ public class HelpTopic {
 
     public double getRelevance(Help help, String keyword) {
         double relevance = 0;
-        keyword = keyword.trim();
         if (!isValidWord(keyword)) {
             return relevance;
         }
-        if (title.toLowerCase().contains(keyword)) {
-            relevance += help.getWeight(keyword);
+        keyword = keyword.trim();
+        Integer count = words.get(keyword);
+        if (count != null) {
+            double countWeight = (double)count / maxCount;
+            return Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(keyword);
         }
-        if (key.contains(keyword)) {
-            relevance += help.getWeight(keyword);
+        double maxSimilarity = 0;
+        String bestMatch = null;
+        for (Map.Entry<String, Integer> entry : words.entrySet()) {
+            String word = entry.getKey();
+            double similarity = ChatUtils.getSimilarity(keyword, word);
+            if (similarity > maxSimilarity) {
+                count = entry.getValue();
+                bestMatch = word;
+            }
         }
-        if (searchText.contains(keyword)) {
-            relevance += help.getWeight(keyword);
+        if (bestMatch != null) {
+            double countWeight = (double)count / maxCount;
+            relevance = Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(bestMatch);
+            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
+            relevance *= similarityWeight;
         }
-        if (tags.contains(keyword)) {
-            relevance += help.getWeight(keyword);
-        }
-        if (topicType.contains(keyword)) {
-            relevance += help.getWeight(keyword);
-        }
+
         return relevance;
     }
 
@@ -108,7 +124,7 @@ public class HelpTopic {
         for (String keyword : keywords) {
             relevance += getRelevance(help, keyword);
         }
-        return relevance;
+        return relevance / keywords.size();
     }
 
     public boolean isValidWord(String keyword) {

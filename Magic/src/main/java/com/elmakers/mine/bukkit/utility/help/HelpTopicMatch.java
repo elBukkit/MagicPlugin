@@ -52,16 +52,15 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             int firstMatchIndex = -1;
             int lastMatchEnd = -1;
             double relevance = 0;
-            for (String arg : keywords) {
-                arg = arg.trim();
-                int len = arg.length();
-                if (!topic.isValidWord(arg)) continue;
-                int startIndex = matchLine.indexOf(arg);
+            for (String keyword : keywords) {
+                keyword = keyword.trim();
+                if (!topic.isValidWord(keyword)) continue;
+                int startIndex = matchLine.indexOf(keyword);
                 if (startIndex >= 0) {
                     // Track match count
-                    relevance += len * help.getWeight(arg);
+                    relevance += topic.getRelevance(help, keyword);
                     // Track range of all keywords
-                    int endIndex = startIndex + len;
+                    int endIndex = startIndex + keyword.length();
                     if (firstMatchIndex == -1) {
                         firstMatchIndex = startIndex;
                         lastMatchEnd = endIndex;
