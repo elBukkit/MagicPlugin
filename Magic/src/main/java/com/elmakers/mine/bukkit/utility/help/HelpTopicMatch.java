@@ -56,7 +56,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
                 arg = arg.trim();
                 int len = arg.length();
                 if (len < 2) continue;
-                if (len < 4) arg = " " + arg + " ";
+                if (len < 4 && !help.isWord(arg)) continue;
                 int startIndex = matchLine.indexOf(arg);
                 if (startIndex >= 0) {
                     // Track match count
@@ -109,11 +109,11 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
                 summary = summary.substring(0, remainingLength) + ChatColor.GRAY + "...";
             }
         }
-        // Color matches
+        // Highlight matches
         for (String keyword : keywords) {
             keyword = keyword.trim();
             if (keyword.length() < 2) continue;
-            if (keyword.length() < 4) keyword = " " + keyword + " ";
+            if (keyword.length() < 4 && !help.isWord(keyword)) continue;
             summary = summary.replaceAll("((?i)" + Pattern.quote(keyword) + ")", matchPrefix + "$1" + matchSuffix);
         }
         return summary;

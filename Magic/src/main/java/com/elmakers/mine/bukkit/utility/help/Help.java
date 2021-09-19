@@ -167,6 +167,10 @@ public class Help {
         return words.keySet();
     }
 
+    public boolean isWord(String word) {
+        return words.containsKey(word);
+    }
+
     public double getWeight(String word) {
         if (maxCount == 0) return 1;
         Integer count = words.get(word);

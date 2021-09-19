@@ -63,7 +63,7 @@ public class HelpTopic {
             keyword = keyword.trim();
             if (keyword.length() < 2) continue;
             String search = keyword;
-            if (search.length() < 4) search = " " + search + " ";
+            if (search.length() < 4 && !help.isWord(keyword)) continue;
             if (title.toLowerCase().contains(search)) {
                 relevance += help.getWeight(keyword);
             }
