@@ -16,6 +16,9 @@ import com.elmakers.mine.bukkit.utility.MacroExpansion;
 import com.elmakers.mine.bukkit.utility.Messages;
 
 public class HelpTopic {
+    public static final int MIN_WORD_LENGTH = 2;
+    public static final int MIN_WHOLE_WORD_LENGTH = 4;
+
     private final String key;
     private final String title;
     private final String text;
@@ -24,6 +27,7 @@ public class HelpTopic {
     private final String topicType;
     private final String[] lines;
     private final Map<String, Integer> words;
+    private final int maxCount;
 
     public HelpTopic(Messages messages, String key, String text, String tags, String topicType) {
         this.key = key;
@@ -47,6 +51,7 @@ public class HelpTopic {
 
         // Track uses of individual words
         words = new HashMap<>();
+        int maxCount = 0;
         String[] helpTopicWords = ChatUtils.getWords(searchText);
         for (String word : helpTopicWords) {
             word = word.trim();
@@ -55,7 +60,9 @@ public class HelpTopic {
             if (count == null) count = 1;
             else count++;
             words.put(word, count);
+            maxCount = Math.max(maxCount, count);
         }
+        this.maxCount = maxCount;
     }
 
     @Nonnull
@@ -72,33 +79,41 @@ public class HelpTopic {
         return text;
     }
 
+    public double getRelevance(Help help, String keyword) {
+        double relevance = 0;
+        keyword = keyword.trim();
+        if (!isValidWord(keyword)) {
+            return relevance;
+        }
+        if (title.toLowerCase().contains(keyword)) {
+            relevance += help.getWeight(keyword);
+        }
+        if (key.contains(keyword)) {
+            relevance += help.getWeight(keyword);
+        }
+        if (searchText.contains(keyword)) {
+            relevance += help.getWeight(keyword);
+        }
+        if (tags.contains(keyword)) {
+            relevance += help.getWeight(keyword);
+        }
+        if (topicType.contains(keyword)) {
+            relevance += help.getWeight(keyword);
+        }
+        return relevance;
+    }
+
     public double match(Help help, Collection<String> keywords) {
         double relevance = 0;
         for (String keyword : keywords) {
-            keyword = keyword.trim();
-            if (!isValidWord(keyword)) continue;
-            if (title.toLowerCase().contains(keyword)) {
-                relevance += help.getWeight(keyword);
-            }
-            if (key.contains(keyword)) {
-                relevance += help.getWeight(keyword);
-            }
-            if (searchText.contains(keyword)) {
-                relevance += help.getWeight(keyword);
-            }
-            if (tags.contains(keyword)) {
-                relevance += help.getWeight(keyword);
-            }
-            if (topicType.contains(keyword)) {
-                relevance += help.getWeight(keyword);
-            }
+            relevance += getRelevance(help, keyword);
         }
         return relevance;
     }
 
     public boolean isValidWord(String keyword) {
-        if (keyword.length() < 2) return false;
-        if (keyword.length() < 4 && !words.containsKey(keyword)) return false;
+        if (keyword.length() < MIN_WORD_LENGTH) return false;
+        if (keyword.length() < MIN_WHOLE_WORD_LENGTH && !words.containsKey(keyword)) return false;
         return true;
     }
 

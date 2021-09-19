@@ -135,4 +135,14 @@ public class ChatUtils {
             sender.sendMessage(message);
         }
     }
+
+    public static String getFixedWidth(String message, int width) {
+        int messageLength = message.length();
+        if (messageLength < width) {
+            message = message + StringUtils.repeat(" ", width - messageLength);
+        } else if (messageLength > width) {
+            message = message.substring(0, width);
+        }
+        return message;
+    }
 }

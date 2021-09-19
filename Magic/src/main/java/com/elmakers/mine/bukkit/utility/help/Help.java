@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility.help;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -17,6 +18,7 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
@@ -256,10 +258,8 @@ public class Help {
     }
 
     public void search(Mage mage, String[] args) {
-        List<String> keywords = new ArrayList<>();
-        for (String arg : args) {
-            keywords.add(arg.toLowerCase());
-        }
+        // This may seem roundabout, but handles punctuation nicely
+        List<String> keywords = Arrays.asList(ChatUtils.getWords(StringUtils.join(args, " ").toLowerCase()));
         List<HelpTopicMatch> matches = findMatches(keywords);
 
         // This is called async, move back to the main thread to do messaging
