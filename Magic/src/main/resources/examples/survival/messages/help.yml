@@ -88,8 +88,8 @@ help:
         `<li>``<help topic="examples.survival.spellpoints" text="About spell points">`
         `<li>``<help topic="examples.survival.paths" text="About progression paths">`
       spellpoints: |-
-        `<title text="Spell Points">`
-        `<p>`&6Spell points&f are earned whenever a player &osuccessfully&f casts a spell. For most spells, &bsuccess&f is determined by hitting a valid mob or player target.
+        `<title text="SP: Spell Points">`
+        `<p>`&6Spell points&f &7(&bSP&7)&f are earned whenever a player &osuccessfully&f casts a spell. For most spells, &bsuccess&f is determined by hitting a valid mob or player target.
         `<p>`&6Spell points&f have a &ecooldown &ffor earning. This cooldown is specific to each spell, and defaults to &e15 minutes&f.
         `<p>`This means that once you have more than one spell, using each one frequently is the fastest way to earn SP!
         `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get palyers going.
