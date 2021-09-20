@@ -40,6 +40,8 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
     private ConfigurationSection attributes;
     private String attributeSlot;
     private String parentKey;
+    private String description;
+    private String name;
     private Map<String, String> messageKeys = new HashMap<>();
 
     public WandTemplate(MageController controller, String key, ConfigurationSection node) {
@@ -53,6 +55,8 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
         icon = node.getString("icon");
         attributeSlot = node.getString("item_attribute_slot", node.getString("attribute_slot"));
         parentKey = node.getString("inherit");
+        name = node.getString("name", key);
+        description = node.getString("description", "");
 
         // Remove some properties that should not transfer to wands
         clearProperty("creator");
@@ -162,12 +166,12 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
 
     @Override
     public String getName() {
-        return controller.getMessages().get("wands." + getKey() + ".name", getKey());
+        return controller.getMessages().get("wands." + getKey() + ".name", name);
     }
 
     @Override
     public String getDescription() {
-        return controller.getMessages().get("wands." + getKey() + ".description", "?");
+        return controller.getMessages().get("wands." + getKey() + ".description", description);
     }
 
     @Override
