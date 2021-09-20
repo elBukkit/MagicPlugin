@@ -12,8 +12,6 @@ import org.geysermc.connector.common.ChatColor;
 import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
-    public static final double COUNT_FACTOR = 0.5;
-    public static final double SIMILARITY_FACTOR = 2;
     public static final double CONTENT_WEIGHT = 1;
     public static final double TAG_WEIGHT = 2;
     public static final double TITLE_WEIGHT = 4;
@@ -23,7 +21,12 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     private final HelpTopic topic;
     private final Map<String, HelpTopicKeywordMatch> wordMatches = new HashMap<>();
 
-    public HelpTopicMatch(Help help, HelpTopic topic, Collection<String> keywords) {
+    @Nonnull
+    public static HelpTopicMatch match(Help help, HelpTopic topic, Collection<String> keywords) {
+        return new HelpTopicMatch(help, topic, keywords);
+    }
+
+    private HelpTopicMatch(Help help, HelpTopic topic, Collection<String> keywords) {
         this.topic = topic;
 
         double relevance = 0;
@@ -61,45 +64,30 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         }
         if (bestMatch != null) {
             relevance = help.getWeight(bestMatch);
-            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
+            double similarityWeight = Math.pow(maxSimilarity, HelpTopicKeywordMatch.SIMILARITY_FACTOR);
             relevance *= similarityWeight;
         }
 
         return relevance;
     }
 
-    private double computeWordsRelevance(Help help, String keyword) {
-        double relevance = 0;
-        if (!topic.isValidWord(keyword)) {
-            return relevance;
-        }
-        keyword = keyword.trim();
-        Integer count = topic.words.get(keyword);
-        if (count != null) {
-            double countWeight = (double)count / topic.maxCount;
-            return Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(keyword);
-        }
-        double maxSimilarity = 0;
-        String bestMatch = null;
-        for (Map.Entry<String, Integer> entry : topic.words.entrySet()) {
-            String word = entry.getKey();
-            double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity) {
-                count = entry.getValue();
-                bestMatch = word;
-                maxSimilarity = similarity;
+    private HelpTopicKeywordMatch getWordMatch(Help help, String keyword) {
+        HelpTopicKeywordMatch match = wordMatches.get(keyword);
+        if (match == null) {
+            match = HelpTopicKeywordMatch.match(keyword, topic, help);
+            if (match != null) {
+                wordMatches.put(keyword, match);
             }
         }
-        if (bestMatch != null) {
-            double countWeight = (double)count / topic.maxCount;
-            relevance = Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(bestMatch);
-            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
-            relevance *= similarityWeight;
-            HelpTopicKeywordMatch match = new HelpTopicKeywordMatch(keyword, bestMatch, relevance);
-            wordMatches.put(bestMatch, match);
-        }
+        return match;
+    }
 
-        return relevance;
+    private double computeWordsRelevance(Help help, String keyword) {
+        HelpTopicKeywordMatch match = getWordMatch(help, keyword);
+        if (match == null) {
+            return 0;
+        }
+        return match.getRelevance();
     }
 
     @Override
@@ -141,6 +129,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             double relevance = 0;
             int matchCount = 0;
             for (HelpTopicKeywordMatch match : wordMatches.values()) {
+                if (!match.allowHighlight(topic)) continue;
                 String keyword = match.getWord();
                 int startIndex = matchLine.indexOf(keyword);
                 if (startIndex >= 0) {
@@ -200,6 +189,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         }
         // Highlight matches
         for (HelpTopicKeywordMatch match : wordMatches.values()) {
+            if (!match.allowHighlight(topic)) continue;
             String keyword = match.getWord();
             summary = summary.replaceAll("((?i)" + Pattern.quote(keyword) + ")", matchPrefix + "$1" + matchSuffix);
         }

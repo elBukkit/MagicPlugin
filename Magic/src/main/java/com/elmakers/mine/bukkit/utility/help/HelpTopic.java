@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.utility.Messages;
 
 public class HelpTopic {
     public static final int MIN_WORD_LENGTH = 2;
-    public static final int MIN_WHOLE_WORD_LENGTH = 4;
 
     private final String key;
     private final String title;
@@ -97,12 +96,11 @@ public class HelpTopic {
 
     @Nonnull
     public HelpTopicMatch match(Help help, Collection<String> keywords) {
-        return new HelpTopicMatch(help, this, keywords);
+        return HelpTopicMatch.match(help, this, keywords);
     }
 
     public boolean isValidWord(String keyword) {
         if (keyword.length() < MIN_WORD_LENGTH) return false;
-        if (keyword.length() < MIN_WHOLE_WORD_LENGTH && !words.containsKey(keyword)) return false;
         return true;
     }
 
