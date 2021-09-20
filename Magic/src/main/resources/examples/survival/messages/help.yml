@@ -16,8 +16,25 @@ help:
         `<li>``<help topic="instructions.example.survival" text="Show basic survival instructions">`
         `<li>``<help topic="examples.survival.wands" text="Help getting and using wands">`
         `<li>``<help topic="examples.survival.broomstick" text="My broomsticks do not work!">`
+        `<li>``<help topic="examples.survival.mobs" text="Help with mobs, including dragons">`
         `<li>``<help topic="examples.survival.recipes" text="Help with crafting">`
         `<li>``<help topic="examples.survival.progression" text="Help with progression">`
+      mobs: |-
+        `<title text="Survival Mobs">`
+        `<p>`The &6survival&f example comes with a variety of magic mobs preconfigured
+        `<p>`You can use the `<help topic="examples.all" text="spawnmobs examples">` to have them naturally spawn
+        `<p>`Use the `<command command="mmob spawn warlock" text="mmob spawn">` command to spawn a magic mob
+        `<p>`There are also some `<help topic="examples.survival.dragons" text="dragon mobs">` that have certain prerequisites
+      dragons: |-
+        `<title text="Survival Dragon Mobs">`
+        `<p>`The &6survival&f example includes a variety of colored dragon mobs you can spawn
+        `<p>`These will spawn naturally using the `<help topic="examples.all" text="spawnmobs examples">`
+        `<p>`Dragons require the `<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">` plugin
+        `<p>`which itself requires the `<link url="https://www.spigotmc.org/resources/protocollib.1997/" text="ProtocolLib">` plugin.
+        `<p>`Finally, players will need the `<help topic="resourcepack" text="resoure pack">` to see the dragons properly.
+        `<p>`If the dragons are invisible, you are missing LibsDisguises or it is not working.
+        `<p>`If the dragons look like a strange collection of leather horse armor, you are missing the resource pack.
+        `<li>``<command command="mmob spawn reddragon" text="Summon a red dragon">`
       wands: |-
         `<title text="Survival Wands">`
         `<li>``<help topic="instructions.wand" text="Help with the wand I'm holding">`
