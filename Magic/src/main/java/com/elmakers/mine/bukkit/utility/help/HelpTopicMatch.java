@@ -10,8 +10,6 @@ import javax.annotation.Nonnull;
 
 import org.geysermc.connector.common.ChatColor;
 
-import com.elmakers.mine.bukkit.ChatUtils;
-
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     public static final double CONTENT_WEIGHT = 1;
     public static final double TAG_WEIGHT = 2;
@@ -46,30 +44,8 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     }
 
     private double computeSetRelevance(Help help, Set<String> words, String keyword) {
-        double relevance = 0;
-        if (!topic.isValidWord(keyword)) {
-            return relevance;
-        }
-        keyword = keyword.trim();
-        if (words.contains(keyword)) {
-            return help.getWeight(keyword);
-        }
-        double maxSimilarity = 0;
-        String bestMatch = null;
-        for (String word : words) {
-            double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity) {
-                bestMatch = word;
-                maxSimilarity = similarity;
-            }
-        }
-        if (bestMatch != null) {
-            relevance = help.getWeight(bestMatch);
-            double similarityWeight = Math.pow(maxSimilarity, HelpTopicKeywordMatch.SIMILARITY_FACTOR);
-            relevance *= similarityWeight;
-        }
-
-        return relevance;
+        HelpTopicKeywordMatch match = HelpTopicKeywordMatch.match(keyword, words, topic, help);
+        return match == null ? 0 : match.getRelevance();
     }
 
     private HelpTopicKeywordMatch getWordMatch(Help help, String keyword) {
