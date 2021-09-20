@@ -58,7 +58,7 @@ public class ShowTopicsTask implements Runnable {
             String template = messages.get("commands.mhelp.match");
             for (HelpTopicMatch topicMatch : matches) {
                 String title = topicMatch.getTopic().getTitle();
-                String summary = topicMatch.getSummary(help, keywords, title);
+                String summary = topicMatch.getSummary();
                 String message = template
                         .replace("$title", title)
                         .replace("$topic", topicMatch.getTopic().getKey())
@@ -100,7 +100,7 @@ public class ShowTopicsTask implements Runnable {
 
                     for (int i = 0; i < matchCount; i++) {
                         HelpTopicMatch topicMatch = matches.get(i);
-                        double relevance = topicMatch.computeRelevance(help, keyword);
+                        double relevance = topicMatch.getKeywordRelevance(keyword);
                         String value = relevance > 0 ? String.format(DEBUG_NUMERIC_FORMAT, 100 * relevance) : "";
                         row += ChatColor.AQUA + ChatUtils.getFixedWidth(value, DEBUG_NUMERIC_WIDTH);
                         row += StringUtils.repeat(" ", DEBUG_PADDING);

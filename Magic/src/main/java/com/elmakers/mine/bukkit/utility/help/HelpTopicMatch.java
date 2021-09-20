@@ -1,7 +1,7 @@
 package com.elmakers.mine.bukkit.utility.help;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -21,6 +21,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     private static final int MAX_WIDTH = 50;
     private final double relevance;
     private final HelpTopic topic;
+    private final Map<String, HelpTopicKeywordMatch> wordMatches = new HashMap<>();
 
     public HelpTopicMatch(Help help, HelpTopic topic, Collection<String> keywords) {
         this.topic = topic;
@@ -33,7 +34,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         this.relevance = relevance;
     }
 
-    public double computeRelevance(Help help, String keyword) {
+    private double computeRelevance(Help help, String keyword) {
         double wordsRelevance = computeWordsRelevance(help, keyword);
         double titleRelevance = computeSetRelevance(help, topic.titleWords, keyword);
         double tagRelevance = computeSetRelevance(help, topic.tagWords, keyword);
@@ -94,6 +95,8 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             relevance = Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(bestMatch);
             double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
             relevance *= similarityWeight;
+            HelpTopicKeywordMatch match = new HelpTopicKeywordMatch(keyword, bestMatch, relevance);
+            wordMatches.put(bestMatch, match);
         }
 
         return relevance;
@@ -109,11 +112,12 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         return topic;
     }
 
-    public String getSummary(Help help, List<String> keywords, String title) {
-        return getSummary(help, keywords, title, MAX_WIDTH, ChatColor.AQUA, ChatColor.RESET);
+    public String getSummary() {
+        return getSummary(MAX_WIDTH, ChatColor.AQUA, ChatColor.RESET);
     }
 
-    public String getSummary(Help help, List<String> keywords, String title, int maxWidth, String matchPrefix, String matchSuffix) {
+    public String getSummary(int maxWidth, String matchPrefix, String matchSuffix) {
+        String title = getTopic().getTitle();
         int titleLength = title.length();
         if (titleLength > maxWidth - 4) {
             return "";
@@ -135,13 +139,17 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             int firstMatchIndex = -1;
             int lastMatchEnd = -1;
             double relevance = 0;
-            for (String keyword : keywords) {
-                keyword = keyword.trim();
-                if (!topic.isValidWord(keyword)) continue;
+            int matchCount = 0;
+            for (HelpTopicKeywordMatch match : wordMatches.values()) {
+                String keyword = match.getWord();
                 int startIndex = matchLine.indexOf(keyword);
                 if (startIndex >= 0) {
-                    // Track match count
-                    relevance += computeRelevance(help, keyword);
+                    // Track match count and relevance
+                    double matchRelevance = match.getRelevance();
+                    if (matchRelevance > 0) {
+                        relevance += matchRelevance;
+                        matchCount++;
+                    }
                     // Track range of all keywords
                     int endIndex = startIndex + keyword.length();
                     if (firstMatchIndex == -1) {
@@ -178,7 +186,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
                     }
                 }
                 summary = line;
-                if (fitAllMatches && mostRelevant == keywords.size()) break;
+                if (fitAllMatches && matchCount == wordMatches.size()) break;
             }
         }
         // Fall back to first line
@@ -191,12 +199,16 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             }
         }
         // Highlight matches
-        for (String keyword : keywords) {
-            keyword = keyword.trim();
-            if (!topic.isValidWord(keyword)) continue;
+        for (HelpTopicKeywordMatch match : wordMatches.values()) {
+            String keyword = match.getWord();
             summary = summary.replaceAll("((?i)" + Pattern.quote(keyword) + ")", matchPrefix + "$1" + matchSuffix);
         }
         return summary;
+    }
+
+    public double getKeywordRelevance(String keyword) {
+        HelpTopicKeywordMatch match = wordMatches.get(keyword);
+        return match == null ? 0 : match.getRelevance();
     }
 
     public double getRelevance() {
