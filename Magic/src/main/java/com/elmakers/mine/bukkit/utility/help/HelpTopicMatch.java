@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
@@ -100,11 +101,15 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         return topic;
     }
 
-    public String getSummary() {
-        return getSummary(MAX_WIDTH, ChatColor.AQUA, ChatColor.RESET);
+    public String getSummary(boolean forConsole) {
+        return getSummary(MAX_WIDTH, ChatColor.AQUA, ChatColor.RESET, !forConsole);
     }
 
     public String getSummary(int maxWidth, String matchPrefix, String matchSuffix) {
+        return getSummary(maxWidth, matchPrefix, matchSuffix, false);
+    }
+
+    public String getSummary(int maxWidth, String matchPrefix, String matchSuffix, boolean addTooltips) {
         String title = getTopic().getTitle();
         int titleLength = title.length();
         if (titleLength > maxWidth - 4) {
@@ -191,7 +196,22 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         for (HelpTopicKeywordMatch match : wordMatches.values()) {
             if (!match.allowHighlight(topic)) continue;
             String keyword = match.getWord();
-            summary = summary.replaceAll("((?i)" + Pattern.quote(keyword) + ")", matchPrefix + "$1" + matchSuffix);
+            Pattern pattern = Pattern.compile("((?i)" + Pattern.quote(keyword) + ")");
+            Matcher matcher = pattern.matcher(summary);
+            StringBuffer highlighted = new StringBuffer();
+            while (matcher.find()) {
+                String replacement = matcher.group(1);
+                if (addTooltips) {
+                    String hover = "Matched " + match.getKeyword() + " at " + (int)(100.0 * match.getSimilarity()) + "% with "
+                        + (int)(100.0 * match.getRelevance()) + "% relevance";
+                    replacement = "`{\"text\":\"" + replacement.replace("\"", "\\\"") + "\",";
+                    replacement += "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":\"" + hover + "\"}}`";
+                }
+                replacement = matchPrefix + replacement + matchSuffix;
+                matcher.appendReplacement(highlighted, replacement);
+            }
+            matcher.appendTail(highlighted);
+            summary = highlighted.toString();
         }
         return summary;
     }

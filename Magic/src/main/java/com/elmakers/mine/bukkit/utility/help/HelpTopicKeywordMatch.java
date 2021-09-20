@@ -13,11 +13,13 @@ public class HelpTopicKeywordMatch {
     private final String keyword;
     private final String word;
     private final double relevance;
+    private final double similarity;
 
-    private HelpTopicKeywordMatch(String keyword, String word, double relevance) {
+    private HelpTopicKeywordMatch(String keyword, String word, double relevance, double similarity) {
         this.keyword = keyword.trim();
         this.word = word;
         this.relevance = relevance;
+        this.similarity = similarity;
     }
 
     @Nullable
@@ -29,7 +31,7 @@ public class HelpTopicKeywordMatch {
         Integer count = topic.words.get(keyword);
         if (count != null) {
             double countWeight = (double)count / topic.maxCount;
-            return new HelpTopicKeywordMatch(keyword, keyword, Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(keyword));
+            return new HelpTopicKeywordMatch(keyword, keyword, Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(keyword), 1);
         }
 
         double relevance = 0;
@@ -44,22 +46,31 @@ public class HelpTopicKeywordMatch {
                 maxSimilarity = similarity;
             }
         }
-        if (bestMatch != null) {
-            double countWeight = (double)count / topic.maxCount;
-            relevance = Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(bestMatch);
-            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
-            relevance *= similarityWeight;
+        if (bestMatch == null) {
+            return null;
         }
+        double countWeight = (double)count / topic.maxCount;
+        relevance = Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(bestMatch);
+        double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
+        relevance *= similarityWeight;
 
-        return new HelpTopicKeywordMatch(keyword, bestMatch, relevance);
+        return new HelpTopicKeywordMatch(keyword, bestMatch, relevance, maxSimilarity);
     }
 
     public String getWord() {
         return word;
     }
 
+    public String getKeyword() {
+        return keyword;
+    }
+
     public double getRelevance() {
         return relevance;
+    }
+
+    public double getSimilarity() {
+        return similarity;
     }
 
     public boolean allowHighlight(HelpTopic topic) {

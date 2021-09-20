@@ -58,7 +58,7 @@ public class ShowTopicsTask implements Runnable {
             String template = messages.get("commands.mhelp.match");
             for (HelpTopicMatch topicMatch : matches) {
                 String title = topicMatch.getTopic().getTitle();
-                String summary = topicMatch.getSummary();
+                String summary = topicMatch.getSummary(!mage.isPlayer());
                 String message = template
                         .replace("$title", title)
                         .replace("$topic", topicMatch.getTopic().getKey())
