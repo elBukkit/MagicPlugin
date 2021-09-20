@@ -7,3 +7,6 @@ example:
       &8|
       &8 ----------------------------------------------------
     instructions_footer: ""
+    instructions_additional: |-
+      `<li>``<command command="mconfig example add $example" text="Enable this example">`
+      `<li>``<command command="mconfig example remove $example" text="Remove this example">`

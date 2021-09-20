@@ -52,9 +52,15 @@ public class Help {
         metaTemplates.clear();
     }
 
-    public void load(ConfigurationSection helpSection, ConfigurationSection examplesSection, ConfigurationSection metaSection) {
+    public void loadMessages(ConfigurationSection messages) {
+        ConfigurationSection helpSection = messages.getConfigurationSection("help");
+        ConfigurationSection examplesSection = messages.getConfigurationSection("examples");
+        ConfigurationSection metaSection = messages.getConfigurationSection("meta");
+        ConfigurationSection exampleSection = messages.getConfigurationSection("example");
+
         loadMetaTemplates(metaSection);
         if (helpSection != null) {
+            processExamples(examplesSection, exampleSection);
             ConfigurationSection helpExamples = helpSection.getConfigurationSection("examples");
             if (helpExamples != null) {
                 ConfigurationUtils.addConfigurations(helpExamples, examplesSection);
@@ -65,7 +71,19 @@ public class Help {
         }
     }
 
-    public void load(ConfigurationSection helpSection) {
+    private void processExamples(ConfigurationSection examplesSection, ConfigurationSection exampleSection) {
+        Set<String> examples = examplesSection.getKeys(false);
+        for (String exampleKey : examples) {
+            String instructionsKey = exampleKey + ".instructions";
+            String instructions = examplesSection.getString(instructionsKey);
+            if (instructions == null) continue;
+            String template = exampleSection.getString("instructions_additional");
+            instructions += "\n" + template.replace("$example", exampleKey);
+            examplesSection.set(instructionsKey, instructions);
+        }
+    }
+
+    private void load(ConfigurationSection helpSection) {
         Collection<String> keys = helpSection.getKeys(true);
         for (String key : keys) {
             if (helpSection.isConfigurationSection(key)) continue;
