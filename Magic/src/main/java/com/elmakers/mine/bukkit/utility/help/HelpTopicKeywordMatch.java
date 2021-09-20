@@ -9,6 +9,7 @@ public class HelpTopicKeywordMatch {
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
     public static final double COUNT_FACTOR = 0.5;
     public static final double SIMILARITY_FACTOR = 2;
+    public static final double HIGHLIGHT_CUTOFF = 0.6;
 
     private final String keyword;
     private final String word;
@@ -74,6 +75,7 @@ public class HelpTopicKeywordMatch {
     }
 
     public boolean allowHighlight(HelpTopic topic) {
+        if (similarity < HIGHLIGHT_CUTOFF) return false;
         // TODO: Remove this hack eventually?
         // This prevents a lot of false-positives in identifying where a matched word is
         // It might be better to divide up topics into word sets per line?
