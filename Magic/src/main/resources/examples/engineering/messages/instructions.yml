@@ -1,7 +1,7 @@
 examples:
   engineering:
     instructions: |-
-      `<title text="Engineering">`
+      `<title text="Engineering Instructions">`
       `<p>`Rank up to &bEngineer &fafter mastering the &bWizard &frank &r
       `<p>`Use &6/mgive wolf &ffor NathanWolf's personal OP staff &r
       `<p>`Use &6/mnpc add conduitshop &fif you want players to be able &r

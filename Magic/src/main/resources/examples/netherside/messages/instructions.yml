@@ -1,7 +1,7 @@
 examples:
   netherside:
     instructions: |-
-      `<title text="The 'Nother Side">`
+      `<title text="The 'Nother Side Instructions">`
       `<p>`The &6Phase &fspell will now take you to an alternate &r
       `<p>`dimension full of dangerous mobs. &r
       `<p>`Admins can use the &6netherize&r and &6supernetherize&r. &r

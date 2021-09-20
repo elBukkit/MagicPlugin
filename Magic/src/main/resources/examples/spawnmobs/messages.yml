@@ -1,7 +1,7 @@
 examples:
   spawnmobs:
     instructions: |-
-      `<title text="Magic Mob Spawning">`
+      `<title text="Magic Mob Spawning Instructions">`
       `<p>`Magic mobs will now spawn naturally, rarely, in place
       `<p>`of some vanilla mob spawns.
       `<p>`This includes warlocks, dragons and other dangerous mobs, be careful!

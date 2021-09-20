@@ -6,7 +6,7 @@ help:
 examples:
   chests:
     instructions: |-
-      `<title text="Magic Chests">`
+      `<title text="Magic Chest Instructions">`
       `<p>`You can now find &6Spell Points &fin naturally-spawned chests &r
       `<p>`They will only be added once, and so can only be found in &r
       `<p>`chunks generated after this example has been enabled. &r

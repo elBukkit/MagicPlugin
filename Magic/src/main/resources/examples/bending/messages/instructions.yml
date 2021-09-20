@@ -1,7 +1,7 @@
 examples:
   bending:
     instructions: |-
-      `<title text="Bending">`
+      `<title text="Bending Instructions">`
       `<p>`Use &6/mnpc add aang &fto allow &r
       `<p>`players to choose a bending element &r
 

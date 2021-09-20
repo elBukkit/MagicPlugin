@@ -1,7 +1,7 @@
 examples:
   rpg:
     instructions: |-
-      `<title text="RPG">`
+      `<title text="RPG Instructions">`
       `<p>`&cPLEASE NOTE &r
       `<p>`&eThese configs are not yet fully functional &r
       `<p>`You will need to do a lot of work to make them useable &r

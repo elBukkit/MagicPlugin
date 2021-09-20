@@ -1,7 +1,7 @@
 examples:
   banners:
     instructions: |-
-      `<title text="Banners">`
+      `<title text="Banners Example Instructions">`
       `<p>`Use &6/mnpc add bannershop &fto allow &r
       `<p>`players to buy custom banners &r
 

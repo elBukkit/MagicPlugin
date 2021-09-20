@@ -1,7 +1,7 @@
 examples:
   potter:
     instructions: |-
-      `<title text="Potter">`
+      `<title text="Potter Instructions">`
       `<p>`Set up &bOllivander &fwith &6/mnpc add ollivander &r
       `<p>`Players will get a &bTicket from Ollivander&f on join &r
       `<p>`Use &6/mgive ticket&f to get another one &r

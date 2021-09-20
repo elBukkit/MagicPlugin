@@ -1,7 +1,7 @@
 examples:
   otherside:
     instructions: |-
-      `<title text="The Other Side">`
+      `<title text="The Other Side Instructions">`
       `<p>`The &6Phase &fspell will now take you to an alternate &r
       `<p>`dimension full of powerful block monsters. &r
       `<p>`If your default world is not called &6world&f you will &r

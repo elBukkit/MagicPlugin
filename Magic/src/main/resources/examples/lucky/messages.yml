@@ -1,7 +1,7 @@
 examples:
   lucky:
     instructions: |-
-      `<title text="Lucky Blocks">`
+      `<title text="Lucky Blocks Instructions">`
       `<p>`Work-in-progress &r
       `<p>`Breaking certain blocks will now have random results &r
       `<p>`Cobblestone, dirt, end stone and netherrack are all luckified &r

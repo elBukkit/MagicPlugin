@@ -1,7 +1,7 @@
 examples:
   stars:
     instructions: |-
-      `<title text="Stars">`
+      `<title text="Stars Instructions">`
       `<p>`Use &6/mnpc add starshop &fto allow &r
       `<p>`players to choose between &bJedi&f or &cSith &r
 

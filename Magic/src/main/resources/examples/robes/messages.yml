@@ -6,7 +6,7 @@ help:
 examples:
   robes:
     instructions: |-
-      `<title text="Robes">`
+      `<title text="Robe Instructions">`
       `<p>`&6Wizard robes &fcan be crafted using &d`<command command="mgive purple_wool" text="Purple Wool">`&f and a variety of other ingredients.
       `<p>`The recipe will appear in your in-game &aknowledge book&f once you have acquired some &dpurple wool&f.
 

@@ -1,10 +1,10 @@
 examples:
   survival:
     instructions: |-
-      `<title text="Survival">`
+      `<title text="Survival Instructions">`
       `<p>`This is the example loaded by default.
       `<p>`It is meant as a natural add-on to vanilla survival.
       `<li>``<command command="mgive uberwand" text="Get an OP testing wand">`
       `<li>``<command command="mgive wand" text="Get a survival wand">`
       `<p>`The survival wand is craftable, players will learn the recipe
-      `<p>`when they find a &bdiamond&f, &4emerald&f or &eamethyst shard&f.
+      `<p>`when they find a &bdiamond&f, &aemerald&f or &damethyst shard&f.
