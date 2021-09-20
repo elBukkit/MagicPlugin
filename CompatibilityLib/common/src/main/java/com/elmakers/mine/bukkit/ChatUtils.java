@@ -162,6 +162,6 @@ public class ChatUtils {
             return 1.0;
         }
 
-        return longerLength - StringUtils.getLevenshteinDistance(longer, shorter);
+        return (longerLength - StringUtils.getLevenshteinDistance(longer, shorter)) / (double)longerLength;
     }
 }
