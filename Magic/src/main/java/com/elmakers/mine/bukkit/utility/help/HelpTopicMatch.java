@@ -55,6 +55,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             double similarity = ChatUtils.getSimilarity(keyword, word);
             if (similarity > maxSimilarity) {
                 bestMatch = word;
+                maxSimilarity = similarity;
             }
         }
         if (bestMatch != null) {
@@ -85,6 +86,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             if (similarity > maxSimilarity) {
                 count = entry.getValue();
                 bestMatch = word;
+                maxSimilarity = similarity;
             }
         }
         if (bestMatch != null) {
