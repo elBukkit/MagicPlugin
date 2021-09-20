@@ -4930,6 +4930,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 break;
         }
         if (hotbars.isEmpty()) return null;
+        if (currentHotbar >= hotbars.size() || currentHotbar < 0) currentHotbar = 0;
         return hotbars.get(currentHotbar);
     }
 
