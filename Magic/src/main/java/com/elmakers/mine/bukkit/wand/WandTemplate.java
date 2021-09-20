@@ -162,7 +162,7 @@ public class WandTemplate extends TemplateProperties implements com.elmakers.min
 
     @Override
     public String getName() {
-        return controller.getMessages().get("wands." + getKey() + ".name", "?");
+        return controller.getMessages().get("wands." + getKey() + ".name", getKey());
     }
 
     @Override
