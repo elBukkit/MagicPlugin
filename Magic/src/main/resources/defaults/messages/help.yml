@@ -198,6 +198,7 @@ help:
     `<li>``<help topic="spell_parameters" text="How spell parameters work">`
     `<li>``<help topic="effects" text="How to customize the effects of a spell">`
     `<li>``<help topic="sandbox" text="Using the sandbox editor">`
+    `<li>``<help topic="spelllevels" text="Working with spell levels">`
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Custom-Spells" text="Spell creation guide on wiki">`
   sandbox: |-
     `<title text="The Magic Sandbox Editor">`
@@ -430,6 +431,15 @@ help:
     `<li>``<command command="meditor recipe wand" text="Edit the wand recipe">`
     `<li>``<command command="meditor recipe" text="Create a new wand recipe">`
     `<li>``<link url="https://reference.elmakers.com/#crafting" text="See all recipe properties in the reference guide">`
+  spelllevels: |-
+    `<title text="Spell Levels">`
+    `<p>`Some spells, particularly most of the &6survival&f example spells, can level up.
+    `<p>`Spells level up automatically by use. Some levels are gated by &bpath progression&f.
+    `<p>`Players can check on their spell progress using the `<command command="cast upgrades" text="Upgrades section">` of the enchant table menu.
+    `<p>`In configs, spell levels are separate spells using a &6spell&f|&blevel&f naming convention.
+    `<li>``<command command="mage levelspells" text="Max out all your spells">`
+    `<li>``<command command="wand configure level_spells true" text="Configure a wand to max out its spells">`
+    `<li>``<command command="mage add missile|5" text="Give yourself a specific level of a specific spell">`
   examples:
     main: |-
       `<title text="Examples">`
