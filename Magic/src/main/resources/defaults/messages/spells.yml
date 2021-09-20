@@ -20,3 +20,4 @@ spells:
         world_required: A world is required
         invalid_world: The specified world is not valid
         cast_finish: ""
+        no_target: ""
