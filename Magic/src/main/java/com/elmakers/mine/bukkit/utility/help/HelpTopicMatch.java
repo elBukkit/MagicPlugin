@@ -1,19 +1,100 @@
 package com.elmakers.mine.bukkit.utility.help;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
 import org.geysermc.connector.common.ChatColor;
 
+import com.elmakers.mine.bukkit.ChatUtils;
+
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
+    public static final double COUNT_FACTOR = 0.5;
+    public static final double SIMILARITY_FACTOR = 2;
+    public static final double CONTENT_WEIGHT = 1;
+    public static final double TAG_WEIGHT = 2;
+    public static final double TITLE_WEIGHT = 4;
+    public static final double TOTAL_WEIGHT = CONTENT_WEIGHT + TAG_WEIGHT + TITLE_WEIGHT;
     private static final int MAX_WIDTH = 50;
     private final double relevance;
     private final HelpTopic topic;
 
-    public HelpTopicMatch(HelpTopic topic, double relevance) {
+    public HelpTopicMatch(Help help, HelpTopic topic, Collection<String> keywords) {
         this.topic = topic;
+
+        double relevance = 0;
+        for (String keyword : keywords) {
+            relevance += computeRelevance(help, keyword);
+        }
+        relevance = relevance / keywords.size();
         this.relevance = relevance;
+    }
+
+    public double computeRelevance(Help help, String keyword) {
+        double wordsRelevance = computeWordsRelevance(help, keyword);
+        double titleRelevance = computeSetRelevance(help, topic.titleWords, keyword);
+        double tagRelevance = computeSetRelevance(help, topic.tagWords, keyword);
+        return (wordsRelevance * CONTENT_WEIGHT + titleRelevance * TITLE_WEIGHT + tagRelevance * TAG_WEIGHT) / TOTAL_WEIGHT;
+    }
+
+    private double computeSetRelevance(Help help, Set<String> words, String keyword) {
+        double relevance = 0;
+        if (!topic.isValidWord(keyword)) {
+            return relevance;
+        }
+        keyword = keyword.trim();
+        if (words.contains(keyword)) {
+            return help.getWeight(keyword);
+        }
+        double maxSimilarity = 0;
+        String bestMatch = null;
+        for (String word : words) {
+            double similarity = ChatUtils.getSimilarity(keyword, word);
+            if (similarity > maxSimilarity) {
+                bestMatch = word;
+            }
+        }
+        if (bestMatch != null) {
+            relevance = help.getWeight(bestMatch);
+            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
+            relevance *= similarityWeight;
+        }
+
+        return relevance;
+    }
+
+    private double computeWordsRelevance(Help help, String keyword) {
+        double relevance = 0;
+        if (!topic.isValidWord(keyword)) {
+            return relevance;
+        }
+        keyword = keyword.trim();
+        Integer count = topic.words.get(keyword);
+        if (count != null) {
+            double countWeight = (double)count / topic.maxCount;
+            return Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(keyword);
+        }
+        double maxSimilarity = 0;
+        String bestMatch = null;
+        for (Map.Entry<String, Integer> entry : topic.words.entrySet()) {
+            String word = entry.getKey();
+            double similarity = ChatUtils.getSimilarity(keyword, word);
+            if (similarity > maxSimilarity) {
+                count = entry.getValue();
+                bestMatch = word;
+            }
+        }
+        if (bestMatch != null) {
+            double countWeight = (double)count / topic.maxCount;
+            relevance = Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(bestMatch);
+            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
+            relevance *= similarityWeight;
+        }
+
+        return relevance;
     }
 
     @Override
@@ -58,7 +139,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
                 int startIndex = matchLine.indexOf(keyword);
                 if (startIndex >= 0) {
                     // Track match count
-                    relevance += topic.getRelevance(help, keyword);
+                    relevance += computeRelevance(help, keyword);
                     // Track range of all keywords
                     int endIndex = startIndex + keyword.length();
                     if (firstMatchIndex == -1) {
@@ -118,5 +199,9 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
 
     public double getRelevance() {
         return relevance;
+    }
+
+    public boolean isRelevant() {
+        return relevance > 0;
     }
 }

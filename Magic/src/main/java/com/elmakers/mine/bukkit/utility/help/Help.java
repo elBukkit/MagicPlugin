@@ -236,7 +236,7 @@ public class Help {
         List<HelpTopicMatch> matches = new ArrayList<>();
         for (HelpTopic topic : topics.values()) {
             HelpTopicMatch match = topic.match(this, keywords);
-            if (match != null) {
+            if (match.isRelevant()) {
                 matches.add(match);
             }
         }

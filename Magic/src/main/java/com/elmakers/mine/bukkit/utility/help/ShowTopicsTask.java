@@ -100,7 +100,7 @@ public class ShowTopicsTask implements Runnable {
 
                     for (int i = 0; i < matchCount; i++) {
                         HelpTopicMatch topicMatch = matches.get(i);
-                        double relevance = topicMatch.getTopic().getRelevance(help, keyword);
+                        double relevance = topicMatch.computeRelevance(help, keyword);
                         String value = relevance > 0 ? String.format(DEBUG_NUMERIC_FORMAT, 100 * relevance) : "";
                         row += ChatColor.AQUA + ChatUtils.getFixedWidth(value, DEBUG_NUMERIC_WIDTH);
                         row += StringUtils.repeat(" ", DEBUG_PADDING);

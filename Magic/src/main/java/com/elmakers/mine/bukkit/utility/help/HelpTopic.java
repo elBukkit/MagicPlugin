@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -23,24 +22,17 @@ import com.elmakers.mine.bukkit.utility.Messages;
 public class HelpTopic {
     public static final int MIN_WORD_LENGTH = 2;
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
-    public static final double COUNT_FACTOR = 0.5;
-    public static final double SIMILARITY_FACTOR = 2;
-    public static final double CONTENT_WEIGHT = 1;
-    public static final double TAG_WEIGHT = 2;
-    public static final double TITLE_WEIGHT = 4;
-    public static final double TOTAL_WEIGHT = CONTENT_WEIGHT + TAG_WEIGHT + TITLE_WEIGHT;
 
     private final String key;
     private final String title;
     private final String text;
     private final String searchText;
-    private final String tags;
     private final String topicType;
     private final String[] lines;
-    private final Map<String, Integer> words;
-    private final Set<String> titleWords;
-    private final Set<String> tagWords;
-    private final int maxCount;
+    protected final Map<String, Integer> words;
+    protected final Set<String> titleWords;
+    protected final Set<String> tagWords;
+    protected final int maxCount;
 
     public HelpTopic(Messages messages, String key, String text, String tags, String topicType) {
         this.key = key;
@@ -52,7 +44,6 @@ public class HelpTopic {
         String simpleText = ChatColor.stripColor(ChatUtils.getSimpleMessage(text, true));
         this.searchText = simpleText.toLowerCase();
         this.title = expansion.getTitle();
-        this.tags = tags + " " + expansion.getTags();
 
         // Pre-split simple description lines, remove title if present
         String[] allLines = StringUtils.split(simpleText, "\n");
@@ -73,6 +64,7 @@ public class HelpTopic {
         titleWords.addAll(titleWordList);
         helpTopicWords.addAll(titleWordList);
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(key)));
+        tags = tags + " " + expansion.getTags();
         List tagWordList = Arrays.asList(ChatUtils.getWords(tags.toLowerCase()));
         helpTopicWords.addAll(tagWordList);
         tagWords.addAll(tagWordList);
@@ -103,80 +95,9 @@ public class HelpTopic {
         return text;
     }
 
-    public double getRelevance(Help help, String keyword) {
-        double wordsRelevance = getWordsRelevance(help, keyword);
-        double titleRelevance = getSetRelevance(help, titleWords, keyword);
-        double tagRelevance = getSetRelevance(help, tagWords, keyword);
-        return (wordsRelevance * CONTENT_WEIGHT + titleRelevance * TITLE_WEIGHT + tagRelevance * TAG_WEIGHT) / TOTAL_WEIGHT;
-    }
-
-    private double getSetRelevance(Help help, Set<String> words, String keyword) {
-        double relevance = 0;
-        if (!isValidWord(keyword)) {
-            return relevance;
-        }
-        keyword = keyword.trim();
-        if (words.contains(keyword)) {
-            return help.getWeight(keyword);
-        }
-        double maxSimilarity = 0;
-        String bestMatch = null;
-        for (String word : words) {
-            double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity) {
-                bestMatch = word;
-            }
-        }
-        if (bestMatch != null) {
-            relevance = help.getWeight(bestMatch);
-            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
-            relevance *= similarityWeight;
-        }
-
-        return relevance;
-    }
-
-    private double getWordsRelevance(Help help, String keyword) {
-        double relevance = 0;
-        if (!isValidWord(keyword)) {
-            return relevance;
-        }
-        keyword = keyword.trim();
-        Integer count = words.get(keyword);
-        if (count != null) {
-            double countWeight = (double)count / maxCount;
-            return Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(keyword);
-        }
-        double maxSimilarity = 0;
-        String bestMatch = null;
-        for (Map.Entry<String, Integer> entry : words.entrySet()) {
-            String word = entry.getKey();
-            double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity) {
-                count = entry.getValue();
-                bestMatch = word;
-            }
-        }
-        if (bestMatch != null) {
-            double countWeight = (double)count / maxCount;
-            relevance = Math.pow(countWeight, COUNT_FACTOR) * help.getWeight(bestMatch);
-            double similarityWeight = Math.pow(maxSimilarity, SIMILARITY_FACTOR);
-            relevance *= similarityWeight;
-        }
-
-        return relevance;
-    }
-
-    @Nullable
+    @Nonnull
     public HelpTopicMatch match(Help help, Collection<String> keywords) {
-        double relevance = 0;
-        for (String keyword : keywords) {
-            relevance += getRelevance(help, keyword);
-        }
-        if (relevance <= 0) {
-            return null;
-        }
-        return new HelpTopicMatch(this, relevance / keywords.size());
+        return new HelpTopicMatch(help, this, keywords);
     }
 
     public boolean isValidWord(String keyword) {
