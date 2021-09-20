@@ -74,31 +74,16 @@ public class ShowTopicsTask implements Runnable {
                 String header = ChatColor.GRAY + ChatUtils.getFixedWidth("", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                 header += ChatUtils.getFixedWidth("*", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
 
-                if (mage.getDebugLevel() >= 2000) {
-                    header += ChatUtils.getFixedWidth("r", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                    header += ChatUtils.getFixedWidth("t", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                    header += ChatUtils.getFixedWidth("l", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                }
-
                 for (int i = 0; i < matchCount; i++) {
                     header += ChatUtils.getFixedWidth(Integer.toString(i + 1), DEBUG_NUMERIC_WIDTH);
                     header += StringUtils.repeat(" ", DEBUG_PADDING);
                 }
                 mage.sendMessage(header);
                 int totalWidth = DEBUG_KEY_WIDTH + DEBUG_PADDING + (matchCount + 1) * (DEBUG_NUMERIC_WIDTH + DEBUG_PADDING);
-                if (mage.getDebugLevel() >= 2000) {
-                    totalWidth += 3 * (DEBUG_NUMERIC_WIDTH + DEBUG_PADDING);
-                }
                 mage.sendMessage(StringUtils.repeat("_", totalWidth));
 
                 String row = ChatColor.GRAY + ChatUtils.getFixedWidth("*", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                 row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-
-                if (mage.getDebugLevel() >= 2000) {
-                    row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                    row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                    row += ChatUtils.getFixedWidth("", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                }
 
                 for (int i = 0; i < matchCount; i++) {
                     HelpTopicMatch topicMatch = matches.get(i);
@@ -113,11 +98,6 @@ public class ShowTopicsTask implements Runnable {
                     row = ChatColor.WHITE + ChatUtils.getFixedWidth(keyword, DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                     row += ChatColor.BLUE + ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
 
-                    if (mage.getDebugLevel() >= 2000) {
-                        row += ChatColor.GREEN + ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getRarityWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                        row += ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getTopicWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                        row += ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getLengthWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                    }
                     for (int i = 0; i < matchCount; i++) {
                         HelpTopicMatch topicMatch = matches.get(i);
                         double relevance = topicMatch.getTopic().getRelevance(help, keyword);

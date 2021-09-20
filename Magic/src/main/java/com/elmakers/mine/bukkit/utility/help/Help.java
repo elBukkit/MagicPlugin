@@ -26,18 +26,15 @@ import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Help {
     private static double DEFAULT_WEIGHT = 0.00001;
-    private static final double RARITY_FACTOR = 3;
-    private static final double TOPIC_RARITY_FACTOR = 5;
-    private static final double LENGTH_FACTOR = 0.2;
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
     private final Map<String, HelpTopicWord> words = new HashMap<>();
     private final Map<String, String> metaTemplates = new HashMap<>();
     // We cheat and use one regex for both <li> and <link ...>
     private static final Pattern linkPattern = Pattern.compile("([^`])(<li[^>]*>)([^`])");
-    private int maxCount = 0;
-    private int maxTopicCount = 0;
-    private int maxLength = 0;
+    protected int maxCount = 0;
+    protected int maxTopicCount = 0;
+    protected int maxLength = 0;
 
     public Help(Messages messages) {
         this.messages = messages;
@@ -59,8 +56,10 @@ public class Help {
         ConfigurationSection exampleSection = messages.getConfigurationSection("example");
 
         loadMetaTemplates(metaSection);
-        if (helpSection != null) {
+        if (examplesSection != null && exampleSection != null) {
             processExamples(examplesSection, exampleSection);
+        }
+        if (helpSection != null) {
             ConfigurationSection helpExamples = helpSection.getConfigurationSection("examples");
             if (helpExamples != null) {
                 ConfigurationUtils.addConfigurations(helpExamples, examplesSection);
@@ -105,7 +104,7 @@ public class Help {
             String word = wordEntry.getKey();
             HelpTopicWord wordCount = words.get(word);
             if (wordCount == null) {
-                wordCount = new HelpTopicWord();
+                wordCount = new HelpTopicWord(word);
                 words.put(word, wordCount);
             }
             wordCount.addTopic(wordEntry.getValue());
@@ -207,50 +206,16 @@ public class Help {
         return words.keySet();
     }
 
-    public boolean isWord(String word) {
-        return words.containsKey(word);
-    }
-
-    public double getRarityWeight(String word) {
-        HelpTopicWord wordCount = words.get(word);
-        if (wordCount == null) return DEFAULT_WEIGHT;
-        return getRarityWeight(wordCount);
-    }
-
-    protected double getRarityWeight(HelpTopicWord wordCount) {
-        if (wordCount == null) return DEFAULT_WEIGHT;
-        double rarityWeight = 1.0 - ((double)wordCount.getCount() / (maxCount + 1));
-        return Math.pow(rarityWeight, RARITY_FACTOR);
-    }
-
-    public double getLengthWeight(String word) {
-        double lengthWeight = (double)word.length() / maxLength;
-        return Math.pow(lengthWeight, LENGTH_FACTOR);
-    }
-
-    public double getTopicWeight(String word) {
-        HelpTopicWord wordCount = words.get(word);
-        return getTopicWeight(wordCount);
-    }
-
-    protected double getTopicWeight(HelpTopicWord wordCount) {
-        if (wordCount == null) return DEFAULT_WEIGHT;
-        double topicRarityWeight = 1.0 - ((double)wordCount.getTopicCount() / (maxTopicCount + 1));
-        return Math.pow(topicRarityWeight, TOPIC_RARITY_FACTOR);
-    }
-
     public double getWeight(String word) {
-        if (maxCount == 0 || maxLength == 0 || maxTopicCount == 0) return DEFAULT_WEIGHT;
+        if (maxCount == 0 || maxLength == 0 || maxTopicCount == 0) {
+            return DEFAULT_WEIGHT;
+        }
 
         HelpTopicWord wordCount = words.get(word);
-        double rarityWeight = getRarityWeight(wordCount);
-        double topicRarityWeight = getTopicWeight(wordCount);
-        double lengthWeight = getLengthWeight(word);
-        return  rarityWeight * topicRarityWeight * lengthWeight;
-    }
-
-    public Set<String> getTopicKeys() {
-        return topics.keySet();
+        if (wordCount == null) {
+            return DEFAULT_WEIGHT;
+        }
+        return wordCount.getWeight(this);
     }
 
     public boolean showTopic(Mage mage, String key) {
@@ -270,9 +235,9 @@ public class Help {
     public List<HelpTopicMatch> findMatches(List<String> keywords, int listLength) {
         List<HelpTopicMatch> matches = new ArrayList<>();
         for (HelpTopic topic : topics.values()) {
-            double relevance = topic.match(this, keywords);
-            if (relevance > 0) {
-                matches.add(new HelpTopicMatch(topic, relevance));
+            HelpTopicMatch match = topic.match(this, keywords);
+            if (match != null) {
+                matches.add(match);
             }
         }
 

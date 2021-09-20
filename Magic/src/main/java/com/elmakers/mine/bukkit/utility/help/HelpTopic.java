@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.commons.lang.StringUtils;
@@ -166,12 +167,16 @@ public class HelpTopic {
         return relevance;
     }
 
-    public double match(Help help, Collection<String> keywords) {
+    @Nullable
+    public HelpTopicMatch match(Help help, Collection<String> keywords) {
         double relevance = 0;
         for (String keyword : keywords) {
             relevance += getRelevance(help, keyword);
         }
-        return relevance / keywords.size();
+        if (relevance <= 0) {
+            return null;
+        }
+        return new HelpTopicMatch(this, relevance / keywords.size());
     }
 
     public boolean isValidWord(String keyword) {
