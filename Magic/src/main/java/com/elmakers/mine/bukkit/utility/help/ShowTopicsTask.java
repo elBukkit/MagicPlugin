@@ -10,10 +10,10 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 
 public class ShowTopicsTask implements Runnable {
-    private static final int DEBUG_PADDING = 1;
+    private static final int DEBUG_PADDING = 2;
     private static final int DEBUG_KEY_WIDTH = 8;
-    private static final int DEBUG_NUMERIC_WIDTH = 8;
-    private static final String DEBUG_NUMERIC_FORMAT = "%.3f";
+    private static final int DEBUG_NUMERIC_WIDTH = 6;
+    private static final String DEBUG_NUMERIC_FORMAT = "%.2f";
     private final List<HelpTopicMatch> matches;
     private final Mage mage;
     private final Help help;
@@ -91,7 +91,7 @@ public class ShowTopicsTask implements Runnable {
 
                 for (int i = 0; i < matchCount; i++) {
                     HelpTopicMatch topicMatch = matches.get(i);
-                    double relevance = topicMatch.getRelevance();
+                    double relevance = topicMatch.getRelevance() * 100;
                     String value = relevance > 0 ? String.format(DEBUG_NUMERIC_FORMAT, relevance) : "";
                     value = debugTooltip.replace("$text", value);
                     value = value.replace("$debug", topicMatch.getDebugText());

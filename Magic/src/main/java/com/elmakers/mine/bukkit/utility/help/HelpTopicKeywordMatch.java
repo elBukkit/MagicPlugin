@@ -10,13 +10,11 @@ public class HelpTopicKeywordMatch {
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
     public static final double COUNT_FACTOR = 0.5;
     public static final double WORD_FACTOR = 1.5;
-    public static final double SIMILARITY_FACTOR = 2;
     public static final double HIGHLIGHT_CUTOFF = 0.6;
 
-    public static final double COUNT_WEIGHT = 0.5;
-    public static final double SIMILARITY_WEIGHT = 4;
-    public static final double WORD_WEIGHT = 2;
-    public static final double TOTAL_WEIGHT = COUNT_WEIGHT + SIMILARITY_WEIGHT + WORD_WEIGHT;
+    public static final double COUNT_WEIGHT = 1;
+    public static final double WORD_WEIGHT = 3;
+    public static final double TOTAL_WEIGHT = COUNT_WEIGHT + WORD_WEIGHT;
 
     private final String keyword;
     private final String word;
@@ -31,25 +29,24 @@ public class HelpTopicKeywordMatch {
         this.countWeight = Math.pow(countRatio, COUNT_FACTOR);
 
         double wordWeight = help.getWeight(word);
-        this.relevance = (countWeight * COUNT_WEIGHT
-            + Math.pow(wordWeight, WORD_FACTOR) * WORD_WEIGHT
-            + Math.pow(similarity, SIMILARITY_FACTOR) * SIMILARITY_WEIGHT
-        ) / TOTAL_WEIGHT;
+        wordWeight = wordWeight * Math.pow(wordWeight, WORD_FACTOR);
+        double relevance = (countWeight * COUNT_WEIGHT + wordWeight * WORD_WEIGHT) / TOTAL_WEIGHT;
+        this.relevance = relevance * similarity;
     }
 
     public String getDebugText(Help help) {
         double wordWeight = help.getWeight(word);
-        return "Match: "
-                + ChatUtils.printPercentage(Math.pow(similarity, SIMILARITY_FACTOR))
-                + "x" + SIMILARITY_WEIGHT
-                + " Count: "
+        return "Matched " + word + ": "
+                + ChatUtils.printPercentage(similarity)
+                + " x ("
+                + "Count: "
                 + ChatUtils.printPercentage(countWeight)
-                + "x" + COUNT_WEIGHT
-                + " Word: "
+                + "x" + (int)COUNT_WEIGHT
+                + " + Word: "
                 + ChatUtils.printPercentage(Math.pow(wordWeight, WORD_FACTOR))
-                + "x" + WORD_WEIGHT
-                + " | "
-                + help.getDebugText(keyword);
+                + "x" + (int)WORD_WEIGHT
+                + ") "
+                + help.getDebugText(word);
     }
 
     @Nullable

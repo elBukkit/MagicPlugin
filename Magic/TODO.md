@@ -2,6 +2,8 @@
 
 # Next Up:
 
+ - Add help topic weights to config for easier tweaking
+
  - Using the swap (offhand) button in a shop gives a glitched-out offhand item
 
  - Does fizzle (counterspell) not have any FX?

@@ -3,9 +3,13 @@ package com.elmakers.mine.bukkit.utility.help;
 import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicWord {
-    private static final double RARITY_FACTOR = 3;
-    private static final double TOPIC_RARITY_FACTOR = 5;
-    private static final double LENGTH_FACTOR = 0.2;
+    private static final double RARITY_FACTOR = 1.2;
+    private static final double TOPIC_RARITY_FACTOR = 1.5;
+    private static final double LENGTH_FACTOR = 0.5;
+    private static final double RARITY_WEIGHT = 2;
+    private static final double TOPIC_RARITY_WEIGHT = 3;
+    private static final double LENGTH_WEIGHT = 1;
+    private static final double TOTAL_WEIGHT = RARITY_WEIGHT + TOPIC_RARITY_WEIGHT + LENGTH_WEIGHT;
 
     private final String word;
     private int count;
@@ -37,10 +41,10 @@ public class HelpTopicWord {
     }
 
     private double computeWeight(Help help) {
-        double rarityWeight = getRarityWeight(help.maxCount);
-        double topicRarityWeight = getTopicWeight(help.maxTopicCount);
-        double lengthWeight = getLengthWeight(word, help.maxLength);
-        return rarityWeight * topicRarityWeight * lengthWeight;
+        double rarityWeight = getRarityWeight(help.maxCount) * RARITY_WEIGHT;
+        double topicRarityWeight = getTopicWeight(help.maxTopicCount) * TOPIC_RARITY_WEIGHT;
+        double lengthWeight = getLengthWeight(word, help.maxLength) * LENGTH_WEIGHT;
+        return (rarityWeight + topicRarityWeight + lengthWeight) / TOTAL_WEIGHT;
     }
 
     protected double getRarityWeight(int maxCount) {
@@ -64,9 +68,12 @@ public class HelpTopicWord {
         double lengthWeight = getLengthWeight(word, help.maxLength);
         return "Rare: "
                 + ChatUtils.printPercentage(rarityWeight)
-                + " TRare: "
+                + "x" + (int)RARITY_WEIGHT
+                + " + TRare: "
                 + ChatUtils.printPercentage(topicRarityWeight)
-                + " Len: "
-                + ChatUtils.printPercentage(lengthWeight);
+                + "x" + (int)TOPIC_RARITY_WEIGHT
+                + " + Len: "
+                + ChatUtils.printPercentage(lengthWeight)
+                + "x" + (int)LENGTH_WEIGHT;
     }
 }

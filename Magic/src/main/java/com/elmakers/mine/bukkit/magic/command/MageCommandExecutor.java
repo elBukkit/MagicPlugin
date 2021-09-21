@@ -601,7 +601,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 } else {
                     mage.setDebugger(null);
                 }
-                sender.sendMessage(ChatColor.GOLD + "Setting debug level for  " + ChatColor.AQUA + player.getName() + ChatColor.GOLD + " to " + ChatColor.GREEN + Integer.toString(level));
+                sender.sendMessage(ChatColor.GOLD + "Setting debug level for " + ChatColor.AQUA + player.getName() + ChatColor.GOLD + " to " + ChatColor.GREEN + Integer.toString(level));
             } catch (Exception ex) {
                 sender.sendMessage("Expecting integer, got: " + args[0]);
             }
