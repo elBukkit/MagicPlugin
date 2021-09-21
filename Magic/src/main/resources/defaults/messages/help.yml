@@ -305,6 +305,7 @@ help:
     `<li>``<command command="mconfig config dynmap_show_wands false" text="Don't show wands on the map">`
     `<li>``<command command="mconfig config dynmap_show_spells false" text="Don't show any spell casts on the map">`
     `<li>``<command command="mconfig config dynmap_only_player_spells true" text="Don't show non-player spell casts on the map">`
+    `<li>``<link url="https://map.elmakers.com" text="See the elMakers demo map">`
   skript: |-
     `<title text="Skript">`
     `<p>`The `<link url="https://github.com/SkriptLang/Skript/releases" text="Skript">` plugin can be used with &dMagic&f.
