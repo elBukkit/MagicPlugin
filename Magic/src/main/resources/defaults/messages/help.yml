@@ -293,10 +293,18 @@ help:
     `<li>`&dMagic integrates with &bEssentials&f and &bCommandBook&f for `<help topic="warps" text="warps">`
     `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell disguises
     `<li>`&dMagic integrates with &bMythicMobs&f for mythic mob spawning
-    `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">`&f to show warps, spell casts and lost wands on maps
+    `<li>`&dMagic integrates with &b`<help topic="dynmap" text="dynmap">`&f to show warps, spell casts and lost wands on maps
     `<li>`You can use `<help topic="skript" text="Skript">` to react to spell casts, SP earn or other events.
     `<li>`You can use &6`<help topic="placeholders" text="placeholders">` via &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f to show magic properties in various places
     `<li>``<help topic="compatibility" text="Compatibility or issues with other plugins">`
+  dynmap: |-
+    `<title text="Dynmap">`
+    `<p>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">`
+    `<p>`By default, lost wands and spell casts will show on the map
+    `<p>`Magic `<help topic="warps" text="warps">` can also be shown on the map.
+    `<li>``<command command="mconfig config dynmap_show_wands false" text="Don't show wands on the map">`
+    `<li>``<command command="mconfig config dynmap_show_spells false" text="Don't show any spell casts on the map">`
+    `<li>``<command command="mconfig config dynmap_only_player_spells true" text="Don't show non-player spell casts on the map">`
   skript: |-
     `<title text="Skript">`
     `<p>`The `<link url="https://github.com/SkriptLang/Skript/releases" text="Skript">` plugin can be used with &dMagic&f.
