@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility.help;
 
+import com.elmakers.mine.bukkit.ChatUtils;
+
 public class HelpTopicWord {
     private static final double RARITY_FACTOR = 3;
     private static final double TOPIC_RARITY_FACTOR = 5;
@@ -54,5 +56,17 @@ public class HelpTopicWord {
     protected double getTopicWeight(int maxTopicCount) {
         double topicRarityWeight = 1.0 - ((double)topicCount / (maxTopicCount + 1));
         return Math.pow(topicRarityWeight, TOPIC_RARITY_FACTOR);
+    }
+
+    public String getDebugText(Help help) {
+        double rarityWeight = getRarityWeight(help.maxCount);
+        double topicRarityWeight = getTopicWeight(help.maxTopicCount);
+        double lengthWeight = getLengthWeight(word, help.maxLength);
+        return "Rare: "
+                + ChatUtils.printPercentage(rarityWeight)
+                + " TRare: "
+                + ChatUtils.printPercentage(topicRarityWeight)
+                + " Len: "
+                + ChatUtils.printPercentage(lengthWeight);
     }
 }

@@ -24,6 +24,7 @@ commands:
       found: "&fI found &b$count &fmatches:"
       found_limit: "&fI found &b$count &fmatches &7(Showing top &f$limit&7)&f:"
       match: '`<li>` &6`<help topic="$topic" text="$title">`&7: &f$summary'
+      debug_tooltip: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"$debug"}}`'
       prompt: |-
         &8
         &f`<icon key="counterspell">`        &bWelcome to &dMagic&f!        &f`<icon key="counterspell">`

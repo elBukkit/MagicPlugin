@@ -218,6 +218,14 @@ public class Help {
         return wordCount.getWeight(this);
     }
 
+    public String getDebugText(String word) {
+        HelpTopicWord wordCount = words.get(word);
+        if (wordCount == null) {
+            return "";
+        }
+        return wordCount.getDebugText(this);
+    }
+
     public boolean showTopic(Mage mage, String key) {
         HelpTopic topic = topics.get(key);
         if (topic == null) {

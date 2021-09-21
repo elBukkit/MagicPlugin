@@ -69,8 +69,12 @@ public class ShowTopicsTask implements Runnable {
             }
 
             if (mage.getDebugLevel() >= 1000) {
+                String debugTooltip = messages.get("commands.mhelp.debug_tooltip");
                 mage.sendMessage(messages.get("commands.mhelp.separator"));
                 int matchCount = Math.min(maxTopics, matches.size());
+                if (mage.isPlayer()) {
+                    matchCount = Math.min(matchCount, 5);
+                }
                 String header = ChatColor.GRAY + ChatUtils.getFixedWidth("", DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
                 header += ChatUtils.getFixedWidth("*", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
 
@@ -89,6 +93,8 @@ public class ShowTopicsTask implements Runnable {
                     HelpTopicMatch topicMatch = matches.get(i);
                     double relevance = topicMatch.getRelevance();
                     String value = relevance > 0 ? String.format(DEBUG_NUMERIC_FORMAT, relevance) : "";
+                    value = debugTooltip.replace("$text", value);
+                    value = value.replace("$debug", topicMatch.getDebugText());
                     row += ChatColor.DARK_AQUA + ChatUtils.getFixedWidth(value, DEBUG_NUMERIC_WIDTH);
                     row += StringUtils.repeat(" ", DEBUG_PADDING);
                 }
@@ -96,12 +102,20 @@ public class ShowTopicsTask implements Runnable {
 
                 for (String keyword : keywords) {
                     row = ChatColor.WHITE + ChatUtils.getFixedWidth(keyword, DEBUG_KEY_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
-                    row += ChatColor.BLUE + ChatUtils.getFixedWidth(String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getWeight(keyword)), DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
+                    String overallWeight = String.format(DEBUG_NUMERIC_FORMAT, 100 * help.getWeight(keyword));
+                    overallWeight = debugTooltip.replace("$text", overallWeight);
+                    overallWeight = overallWeight.replace("$debug", help.getDebugText(keyword));
+                    row += ChatColor.BLUE + ChatUtils.getFixedWidth(overallWeight, DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
 
                     for (int i = 0; i < matchCount; i++) {
                         HelpTopicMatch topicMatch = matches.get(i);
-                        double relevance = topicMatch.getKeywordRelevance(keyword);
+                        HelpTopicKeywordMatch keyWordMatch = topicMatch.getKeywordMatch(keyword);
+                        double relevance = keyWordMatch == null ? 0 : keyWordMatch.getRelevance();
                         String value = relevance > 0 ? String.format(DEBUG_NUMERIC_FORMAT, 100 * relevance) : "";
+                        if (keyWordMatch != null) {
+                            value = debugTooltip.replace("$text", value);
+                            value = value.replace("$debug", keyWordMatch.getDebugText(help));
+                        }
                         row += ChatColor.AQUA + ChatUtils.getFixedWidth(value, DEBUG_NUMERIC_WIDTH);
                         row += StringUtils.repeat(" ", DEBUG_PADDING);
                     }

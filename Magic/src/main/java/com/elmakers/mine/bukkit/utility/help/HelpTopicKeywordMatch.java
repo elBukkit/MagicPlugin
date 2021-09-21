@@ -22,18 +22,34 @@ public class HelpTopicKeywordMatch {
     private final String word;
     private final double relevance;
     private final double similarity;
+    private final double countWeight;
 
     private HelpTopicKeywordMatch(Help help, String keyword, String word, double countRatio, double similarity) {
-        double wordValue = help.getWeight(keyword);
-
         this.keyword = keyword.trim();
         this.word = word;
         this.similarity = similarity;
+        this.countWeight = Math.pow(countRatio, COUNT_FACTOR);
 
-        this.relevance = (Math.pow(countRatio, COUNT_FACTOR) * COUNT_WEIGHT
-            + Math.pow(wordValue, WORD_FACTOR) * WORD_WEIGHT
+        double wordWeight = help.getWeight(word);
+        this.relevance = (countWeight * COUNT_WEIGHT
+            + Math.pow(wordWeight, WORD_FACTOR) * WORD_WEIGHT
             + Math.pow(similarity, SIMILARITY_FACTOR) * SIMILARITY_WEIGHT
         ) / TOTAL_WEIGHT;
+    }
+
+    public String getDebugText(Help help) {
+        double wordWeight = help.getWeight(word);
+        return "Match: "
+                + ChatUtils.printPercentage(Math.pow(similarity, SIMILARITY_FACTOR))
+                + "x" + SIMILARITY_WEIGHT
+                + " Count: "
+                + ChatUtils.printPercentage(countWeight)
+                + "x" + COUNT_WEIGHT
+                + " Word: "
+                + ChatUtils.printPercentage(Math.pow(wordWeight, WORD_FACTOR))
+                + "x" + WORD_WEIGHT
+                + " | "
+                + help.getDebugText(keyword);
     }
 
     @Nullable

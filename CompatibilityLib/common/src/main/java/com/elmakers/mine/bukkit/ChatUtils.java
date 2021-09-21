@@ -137,13 +137,17 @@ public class ChatUtils {
     }
 
     public static String getFixedWidth(String message, int width) {
-        int messageLength = message.length();
+        int messageLength = getSimpleMessage(message).length();
         if (messageLength < width) {
             message = message + StringUtils.repeat(" ", width - messageLength);
         } else if (messageLength > width) {
-            message = message.substring(0, width);
+            message = getSimpleMessage(message).substring(0, width);
         }
         return message;
+    }
+
+    public static String printPercentage(double percentage) {
+        return ((int)(percentage * 100)) + "%";
     }
 
     public static double getSimilarity(String s1, String s2) {

@@ -10,6 +10,8 @@ import javax.annotation.Nonnull;
 
 import org.geysermc.connector.common.ChatColor;
 
+import com.elmakers.mine.bukkit.ChatUtils;
+
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     public static final double CONTENT_WEIGHT = 1;
     public static final double TAG_WEIGHT = 2;
@@ -19,6 +21,9 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     private final double relevance;
     private final HelpTopic topic;
     private final Map<String, HelpTopicKeywordMatch> wordMatches = new HashMap<>();
+    private double wordsRelevance;
+    private double titleRelevance;
+    private double tagRelevance;
 
     @Nonnull
     public static HelpTopicMatch match(Help help, HelpTopic topic, Collection<String> keywords) {
@@ -32,14 +37,34 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         for (String keyword : keywords) {
             relevance += computeRelevance(help, keyword);
         }
-        relevance = relevance / keywords.size();
+        if (!keywords.isEmpty()) {
+            relevance = relevance / keywords.size();
+            wordsRelevance = wordsRelevance / keywords.size();
+            titleRelevance = titleRelevance / keywords.size();
+            tagRelevance = tagRelevance / keywords.size();
+        }
         this.relevance = relevance;
+    }
+
+    public String getDebugText() {
+        return "Word: "
+                + ChatUtils.printPercentage(wordsRelevance)
+                + "x" + CONTENT_WEIGHT
+                + " Title: "
+                + ChatUtils.printPercentage(titleRelevance)
+                + "x" + TITLE_WEIGHT
+                + " Tags: "
+                + ChatUtils.printPercentage(tagRelevance)
+                + "x" + TAG_WEIGHT;
     }
 
     private double computeRelevance(Help help, String keyword) {
         double wordsRelevance = computeWordsRelevance(help, keyword);
+        this.wordsRelevance += wordsRelevance;
         double titleRelevance = computeSetRelevance(help, topic.titleWords, keyword);
+        this.titleRelevance += titleRelevance;
         double tagRelevance = computeSetRelevance(help, topic.tagWords, keyword);
+        this.tagRelevance += tagRelevance;
         return (wordsRelevance * CONTENT_WEIGHT + titleRelevance * TITLE_WEIGHT + tagRelevance * TAG_WEIGHT) / TOTAL_WEIGHT;
     }
 
@@ -178,8 +203,9 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             while (matcher.find()) {
                 String replacement = matcher.group(1);
                 if (addTooltips) {
-                    String hover = "Matched " + match.getKeyword() + " at " + (int)(100.0 * match.getSimilarity()) + "% with "
-                        + (int)(100.0 * match.getRelevance()) + "% relevance";
+                    String hover = "Matched " + match.getKeyword() + " at "
+                        + ChatUtils.printPercentage(match.getSimilarity()) + " with "
+                        + ChatUtils.printPercentage(match.getRelevance()) + " relevance";
                     replacement = "`{\"text\":\"" + replacement.replace("\"", "\\\"") + "\",";
                     replacement += "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":\"" + hover + "\"}}`";
                 }
@@ -192,9 +218,8 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         return summary;
     }
 
-    public double getKeywordRelevance(String keyword) {
-        HelpTopicKeywordMatch match = wordMatches.get(keyword);
-        return match == null ? 0 : match.getRelevance();
+    public HelpTopicKeywordMatch getKeywordMatch(String keyword) {
+        return wordMatches.get(keyword);
     }
 
     public double getRelevance() {
