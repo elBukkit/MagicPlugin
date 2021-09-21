@@ -55,6 +55,13 @@ help:
     `<li>``<help topic="noflying" text="I get a 'flying is not enabled' error when using some spells">`
     `<li>``<help topic="default_configs" text="Where are the default spells and other configs?">`
     `<li>``<command command="wand fill" text="Add ALL spells to my wand">`
+  decorating: |-
+    `<title text="Decorating with Magic Items">`
+    `<p>`&6Wand&f items can not be put into containers by default.
+    `<p>`This includes item frames!
+    `<p>`If you want to decorate with a wand item, you must turn it into a regular item first.
+    `<li>`Use the `<command command="wand destroy" text="wand destroy">` command to make a wand a normal item.
+    `<li>`Use `<command command="wand restore" text="wand restore">` to get a bound wand back if you accidentally destroy it.
   default_configs: |-
     `<title text="Default Configs">`
     `<p>`Magic will output the effective configs it is using to the &7plugins/Magic/defaults&f folder.
@@ -462,9 +469,11 @@ help:
     `<p>`Spells level up automatically by use. Some levels are gated by &bpath progression&f.
     `<p>`Players can check on their spell progress using the `<command command="cast upgrades" text="Upgrades section">` of the enchant table menu.
     `<p>`In configs, spell levels are separate spells using a &6spell&f|&blevel&f naming convention.
+    `<p>`To add new levels, simply add another spell following that name format.
     `<li>``<command command="mage levelspells" text="Max out all your spells">`
     `<li>``<command command="wand configure level_spells true" text="Configure a wand to max out its spells">`
     `<li>``<command command="mage add missile|5" text="Give yourself a specific level of a specific spell">`
+    `<li>``<command command="meditor spell missile" text="Edit the Magic Missile spell and all of its levels">`
   examples:
     main: |-
       `<title text="Examples">`
