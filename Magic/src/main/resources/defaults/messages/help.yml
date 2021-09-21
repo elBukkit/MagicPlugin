@@ -462,6 +462,7 @@ help:
     `<p>`though custom item outputs are fine.
     `<li>``<command command="meditor recipe wand" text="Edit the wand recipe">`
     `<li>``<command command="meditor recipe" text="Create a new wand recipe">`
+    `<li>``<command command="mconfig disable recipe broomstick" text="Disable crafting a specific recipe">`
     `<li>``<link url="https://reference.elmakers.com/#crafting" text="See all recipe properties in the reference guide">`
   spelllevels: |-
     `<title text="Spell Levels">`
