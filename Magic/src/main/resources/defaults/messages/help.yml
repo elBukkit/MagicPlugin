@@ -213,6 +213,7 @@ help:
     `<li>``<command command="mconfig spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
     `<li>``<command command="mconfig spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
     `<li>``<command command="mconfig config enable_crafting false" text="Disable all Magic crafting recipes">`
+    `<li>``<command command="mconfig config sound_volume 0.1" text="Lower all sound volume to 10%">` &7Note that the survival example is already at 50%
     `<li>``<help topic="donator_shops" text="How to set up a donator shop">`
     `<li>``<help topic="customize_damage" text="How to customize spell damage">`
   customize_damage: |-
@@ -277,6 +278,15 @@ help:
     `<p>`&bCommand&f permissions all follow the same format, e.g. &6magic.commands.mgive
     `<p>`&bSpell&f casting permissions can be set to false to deny specific spells, e.g. &6magic.cast.blink
     `<p>`&bWand&f permissions can be set to false to deny using specific wands, e.g. &6magic.wand.use.wolf
+    `<li>``<help topic="no_permission" text="But my wand is saying I have no permission!">`
+  no_permission: |-
+    `<title text="You Can't do That Right Now">`
+    `<p>`Spells follow &bPvP&f and &bbuild&f permission rules.
+    `<p>`If some of your spells are saying you can't use them or have no permission, this may be due to a protection plugin.
+    `<p>`&dMagic&f integrates with many `<help topic="protection" text="protection">` plugins such as &bWorldGuard&f, &bFactions&f, &bRedProtect&f and many others.
+    `<p>`If you can not PvP in an area, you may not be able to cast some spells their either.
+    `<p>`Any spells that require changing blocks can not be cast if you can't change blocks there by hand.
+    `<li>`Use `<command command="mage check" text="mage check">` to see why a spell may not be castable.
   integration: |-
     `<title text="Integration">`
     `<li>`&dMagic integrates with several `<help topic="protection" text="protection plugins">` to keep spells from griefing and trolling
