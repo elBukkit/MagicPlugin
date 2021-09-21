@@ -13,9 +13,9 @@ import org.geysermc.connector.common.ChatColor;
 import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
-    public static double CONTENT_WEIGHT = 1;
-    public static double TAG_WEIGHT = 2;
-    public static double TITLE_WEIGHT = 4;
+    public static double CONTENT_FACTOR = 1;
+    public static double TAG_FACTOR = 1.5;
+    public static double TITLE_FACTOR = 0.75;
 
     private static final int MAX_WIDTH = 50;
     private final double relevance;
@@ -49,41 +49,40 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     public String getDebugText() {
         String debugText = "";
         if (wordsRelevance > 0) {
-            debugText += "Word: " + ChatUtils.printPercentage(wordsRelevance) + "x" + (int)CONTENT_WEIGHT;
+            debugText += "Word: " + ChatUtils.printPercentage(wordsRelevance);
         }
         if (titleRelevance > 0) {
-            if (!debugText.isEmpty()) debugText += " + ";
-            debugText += "Title: " + ChatUtils.printPercentage(titleRelevance) + "x" + (int)TITLE_WEIGHT;;
+            if (!debugText.isEmpty()) debugText += " ";
+            debugText += "Title: " + ChatUtils.printPercentage(titleRelevance);
         }
         if (tagRelevance > 0) {
-            if (!debugText.isEmpty()) debugText += " + ";
-            debugText += "Tags: " + ChatUtils.printPercentage(tagRelevance) + "x" + (int)TAG_WEIGHT;;
+            if (!debugText.isEmpty()) debugText += " ";
+            debugText += "Tags: " + ChatUtils.printPercentage(tagRelevance);
         }
         return debugText;
     }
 
     private double computeRelevance(Help help, String keyword) {
-        double totalWeight = 0;
-        double totalRelevance = 0;
+        double maxRelevance = 0;
         double wordsRelevance = computeWordsRelevance(help, keyword);
         if (wordsRelevance > 0) {
-            totalWeight += CONTENT_WEIGHT;
-            totalRelevance += wordsRelevance * CONTENT_WEIGHT;
+            wordsRelevance = Math.pow(wordsRelevance, CONTENT_FACTOR);
             this.wordsRelevance += wordsRelevance;
+            maxRelevance = Math.max(wordsRelevance, maxRelevance);
         }
         double titleRelevance = computeSetRelevance(help, topic.titleWords, keyword);
         if (titleRelevance > 0) {
-            totalWeight += TITLE_WEIGHT;
-            totalRelevance += titleRelevance * TITLE_WEIGHT;
+            titleRelevance = Math.pow(titleRelevance, TITLE_FACTOR);
             this.titleRelevance += titleRelevance;
+            maxRelevance = Math.max(titleRelevance, maxRelevance);
         }
         double tagRelevance = computeSetRelevance(help, topic.tagWords, keyword);
         if (tagRelevance > 0) {
-            totalWeight += TAG_WEIGHT;
-            totalRelevance += tagRelevance * TAG_WEIGHT;
+            tagRelevance = Math.pow(tagRelevance, TAG_FACTOR);
             this.tagRelevance += tagRelevance;
+            maxRelevance = Math.max(tagRelevance, maxRelevance);
         }
-        return totalWeight == 0 ? 0 : totalRelevance / totalWeight;
+        return maxRelevance;
     }
 
     private double computeSetRelevance(Help help, Set<String> words, String keyword) {

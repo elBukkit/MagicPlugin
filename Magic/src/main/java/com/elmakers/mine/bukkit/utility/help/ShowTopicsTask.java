@@ -79,7 +79,9 @@ public class ShowTopicsTask implements Runnable {
                 header += ChatUtils.getFixedWidth("*", DEBUG_NUMERIC_WIDTH) + StringUtils.repeat(" ", DEBUG_PADDING);
 
                 for (int i = 0; i < matchCount; i++) {
-                    header += ChatUtils.getFixedWidth(Integer.toString(i + 1), DEBUG_NUMERIC_WIDTH);
+                    HelpTopicMatch topicMatch = matches.get(i);
+                    String topicHeader = debugTooltip.replace("$debug", topicMatch.getTopic().getKey()).replace("$text", Integer.toString(i + 1));
+                    header += ChatUtils.getFixedWidth(topicHeader, DEBUG_NUMERIC_WIDTH);
                     header += StringUtils.repeat(" ", DEBUG_PADDING);
                 }
                 mage.sendMessage(header);

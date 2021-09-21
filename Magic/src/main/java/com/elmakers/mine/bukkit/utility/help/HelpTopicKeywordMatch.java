@@ -10,8 +10,9 @@ public class HelpTopicKeywordMatch {
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
     public static final double HIGHLIGHT_CUTOFF = 0.6;
 
-    public static double COUNT_FACTOR = 0.5;
+    public static double COUNT_FACTOR = 0.75;
     public static double WORD_FACTOR = 1.5;
+    public static double SIMILARITY_FACTOR = 1.2;
     public static double COUNT_WEIGHT = 1;
     public static double WORD_WEIGHT = 3;
 
@@ -24,7 +25,7 @@ public class HelpTopicKeywordMatch {
     private HelpTopicKeywordMatch(Help help, String keyword, String word, double countRatio, double similarity) {
         this.keyword = keyword.trim();
         this.word = word;
-        this.similarity = similarity;
+        this.similarity = Math.pow(similarity, SIMILARITY_FACTOR);
         this.countWeight = Math.pow(countRatio, COUNT_FACTOR);
 
         double wordWeight = help.getWeight(word);
