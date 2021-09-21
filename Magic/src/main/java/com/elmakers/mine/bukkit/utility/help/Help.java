@@ -26,9 +26,11 @@ import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Help {
     private static double DEFAULT_WEIGHT = 0.00001;
+    private static double STOP_WEIGHT = 0.01;
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
     private final Map<String, HelpTopicWord> words = new HashMap<>();
+    private final Set<String> stopWords = new HashSet<>();
     private final Map<String, String> metaTemplates = new HashMap<>();
     // We cheat and use one regex for both <li> and <link ...>
     private static final Pattern linkPattern = Pattern.compile("([^`])(<li[^>]*>)([^`])");
@@ -74,6 +76,10 @@ public class Help {
             }
             load(helpSection);
         }
+
+        List<String> stopWords = messages.getStringList("stop");
+        messages.set("stop", null);
+        this.stopWords.addAll(stopWords);
     }
 
     private void processExamples(ConfigurationSection examplesSection, ConfigurationSection exampleSection) {
@@ -221,7 +227,11 @@ public class Help {
         if (wordCount == null) {
             return DEFAULT_WEIGHT;
         }
-        return wordCount.getWeight(this);
+        double weight = wordCount.getWeight(this);
+        if (stopWords.contains(word)) {
+            weight *= STOP_WEIGHT;
+        }
+        return weight;
     }
 
     public String getDebugText(String word) {
