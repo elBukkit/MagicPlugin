@@ -8,13 +8,12 @@ import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicKeywordMatch {
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
-    public static final double COUNT_FACTOR = 0.5;
-    public static final double WORD_FACTOR = 1.5;
     public static final double HIGHLIGHT_CUTOFF = 0.6;
 
-    public static final double COUNT_WEIGHT = 1;
-    public static final double WORD_WEIGHT = 3;
-    public static final double TOTAL_WEIGHT = COUNT_WEIGHT + WORD_WEIGHT;
+    public static double COUNT_FACTOR = 0.5;
+    public static double WORD_FACTOR = 1.5;
+    public static double COUNT_WEIGHT = 1;
+    public static double WORD_WEIGHT = 3;
 
     private final String keyword;
     private final String word;
@@ -30,7 +29,8 @@ public class HelpTopicKeywordMatch {
 
         double wordWeight = help.getWeight(word);
         wordWeight = wordWeight * Math.pow(wordWeight, WORD_FACTOR);
-        double relevance = (countWeight * COUNT_WEIGHT + wordWeight * WORD_WEIGHT) / TOTAL_WEIGHT;
+        double totalWeight = COUNT_WEIGHT + WORD_WEIGHT;
+        double relevance = (countWeight * COUNT_WEIGHT + wordWeight * WORD_WEIGHT) / totalWeight;
         this.relevance = relevance * similarity;
     }
 

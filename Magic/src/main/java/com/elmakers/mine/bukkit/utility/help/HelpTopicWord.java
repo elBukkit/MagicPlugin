@@ -3,13 +3,12 @@ package com.elmakers.mine.bukkit.utility.help;
 import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicWord {
-    private static final double RARITY_FACTOR = 1.2;
-    private static final double TOPIC_RARITY_FACTOR = 1.5;
-    private static final double LENGTH_FACTOR = 0.5;
-    private static final double RARITY_WEIGHT = 2;
-    private static final double TOPIC_RARITY_WEIGHT = 3;
-    private static final double LENGTH_WEIGHT = 1;
-    private static final double TOTAL_WEIGHT = RARITY_WEIGHT + TOPIC_RARITY_WEIGHT + LENGTH_WEIGHT;
+    public static double RARITY_FACTOR = 1.2;
+    public static double TOPIC_RARITY_FACTOR = 1.5;
+    public static double LENGTH_FACTOR = 0.5;
+    public static double RARITY_WEIGHT = 2;
+    public static double TOPIC_RARITY_WEIGHT = 3;
+    public static double LENGTH_WEIGHT = 1;
 
     private final String word;
     private int count;
@@ -44,7 +43,8 @@ public class HelpTopicWord {
         double rarityWeight = getRarityWeight(help.maxCount) * RARITY_WEIGHT;
         double topicRarityWeight = getTopicWeight(help.maxTopicCount) * TOPIC_RARITY_WEIGHT;
         double lengthWeight = getLengthWeight(word, help.maxLength) * LENGTH_WEIGHT;
-        return (rarityWeight + topicRarityWeight + lengthWeight) / TOTAL_WEIGHT;
+        double totalWeight = RARITY_WEIGHT + TOPIC_RARITY_WEIGHT + LENGTH_WEIGHT;
+        return (rarityWeight + topicRarityWeight + lengthWeight) / totalWeight;
     }
 
     protected double getRarityWeight(int maxCount) {
@@ -75,5 +75,9 @@ public class HelpTopicWord {
                 + " + Len: "
                 + ChatUtils.printPercentage(lengthWeight)
                 + "x" + (int)LENGTH_WEIGHT;
+    }
+
+    public void reset() {
+        this.weight = null;
     }
 }

@@ -49,6 +49,12 @@ public class Help {
         metaTemplates.clear();
     }
 
+    public void resetStats() {
+        for (HelpTopicWord word : words.values()) {
+            word.reset();;
+        }
+    }
+
     public void loadMessages(ConfigurationSection messages) {
         ConfigurationSection helpSection = messages.getConfigurationSection("help");
         ConfigurationSection examplesSection = messages.getConfigurationSection("examples");
