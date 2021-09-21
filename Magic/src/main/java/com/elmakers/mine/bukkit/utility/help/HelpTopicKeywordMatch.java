@@ -13,8 +13,8 @@ public class HelpTopicKeywordMatch {
     public static double COUNT_FACTOR = 0.8;
     public static double WORD_FACTOR = 1.0;
     public static double SIMILARITY_FACTOR = 0.2;
-    public static double COUNT_WEIGHT = 1;
-    public static double WORD_WEIGHT = 1;
+    public static double COUNT_WEIGHT = 1.5;
+    public static double WORD_WEIGHT = 2;
 
     private final String keyword;
     private final String word;
