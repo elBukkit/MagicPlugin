@@ -45,7 +45,8 @@
  - Add `remove_on_finish: true` option to `PotionEffect` and `Modifier` actions
  - Add `probability` option to effects
  - Add `ignore_name` spell property to have spells ignore entities with a specific name
-
+ - Add `face_player` NPC option to allow them to face players without any dialog
+ 
 ## Changes
  
  - Using `/meditor spell` will include all levels of a spell (unless you have previously edited that spell)

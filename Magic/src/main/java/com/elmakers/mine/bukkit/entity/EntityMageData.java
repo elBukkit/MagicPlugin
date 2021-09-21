@@ -48,7 +48,7 @@ public class EntityMageData {
     protected boolean isCancelLaunch = true;
     protected List<String> dialog;
     protected double dialogRadius;
-    protected boolean dialogFacePlayer;
+    protected boolean facePlayer;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
         requiresWand = controller.getOrCreateItem(parameters.getString("cast_requires_item"));
@@ -71,12 +71,14 @@ public class EntityMageData {
         requiresTarget = parameters.getBoolean("cast_requires_target", parameters.getBoolean("interval_requires_target", true));
         trackRadiusSquared = parameters.getDouble("track_radius", 128);
         trackRadiusSquared = trackRadiusSquared * trackRadiusSquared;
-        dialogFacePlayer = parameters.getBoolean("dialog_face_player", true);
+        boolean dialogFacePlayer = parameters.getBoolean("dialog_face_player", true);
 
         dialog = ConfigurationUtils.getStringList(parameters, "dialog");
         dialogRadius = parameters.getDouble("dialog_range", 3);
         int dialogInterval = parameters.getInt("dialog_interval", 2000);
-        if (hasDialog()) {
+        boolean hasDialog = hasDialog();
+        facePlayer = parameters.getBoolean("face_player", hasDialog && dialogFacePlayer);
+        if (hasDialog || facePlayer) {
             tickInterval = Math.max(tickInterval, dialogInterval);
         }
 
@@ -118,7 +120,7 @@ public class EntityMageData {
         boolean hasLifetime = lifetime > 0;
         boolean hasTargeting = targeting != null;
         boolean hasLeash = leashRange > 0;
-        return !hasProperties && !hasTriggers && !aggro && !hasLifetime && !hasDialog() && !hasTargeting && !hasLeash;
+        return !hasProperties && !hasTriggers && !aggro && !hasLifetime && !hasDialog() && !hasTargeting && !hasLeash && !facePlayer;
     }
 
     public boolean hasDialog() {
@@ -198,7 +200,9 @@ public class EntityMageData {
             }
         }
 
-        if (hasDialog() && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
+        boolean hasDialog = hasDialog();
+        boolean hasPlayerInteraction = hasDialog || facePlayer;
+        if (hasPlayerInteraction && mage instanceof com.elmakers.mine.bukkit.magic.Mage) {
             com.elmakers.mine.bukkit.magic.Mage speaker = (com.elmakers.mine.bukkit.magic.Mage)mage;
             Map<Player, MageConversation> conversations = speaker.getConversations();
             Map<Player, MageConversation> progress = conversations.isEmpty() ? conversations : new HashMap<>(conversations);
@@ -209,12 +213,14 @@ public class EntityMageData {
             for (Entity targetEntity : nearby) {
                 if (!(targetEntity instanceof Player) || mage.getController().isNPC(targetEntity)) continue;
                 Player targetPlayer = (Player)targetEntity;
-                MageConversation conversation = progress.get(targetPlayer);
-                if (conversation == null) {
-                    conversation = new MageConversation(speaker, targetPlayer);
+                if (hasDialog) {
+                    MageConversation conversation = progress.get(targetPlayer);
+                    if (conversation == null) {
+                        conversation = new MageConversation(speaker, targetPlayer);
+                    }
+                    conversation.sayNextLine(dialog);
+                    conversations.put(targetPlayer, conversation);
                 }
-                conversation.sayNextLine(dialog);
-                conversations.put(targetPlayer, conversation);
                 if (targetLocation == null) {
                     targetLocation = targetPlayer.getLocation().clone();
                 } else {
@@ -222,7 +228,7 @@ public class EntityMageData {
                 }
             }
 
-            if (targetLocation != null && dialogFacePlayer) {
+            if (targetLocation != null && facePlayer) {
                 Entity entity = mage.getEntity();
                 if (entity != null && entity.isValid()) {
                     Location location = entity.getLocation();
