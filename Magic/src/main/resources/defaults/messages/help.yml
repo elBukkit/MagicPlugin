@@ -294,8 +294,14 @@ help:
     `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell disguises
     `<li>`&dMagic integrates with &bMythicMobs&f for mythic mob spawning
     `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">`&f to show warps, spell casts and lost wands on maps
+    `<li>`You can use `<help topic="skript" text="Skript">` to react to spell casts, SP earn or other events.
     `<li>`You can use &6`<help topic="placeholders" text="placeholders">` via &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f to show magic properties in various places
     `<li>``<help topic="compatibility" text="Compatibility or issues with other plugins">`
+  skript: |-
+    `<title text="Skript">`
+    `<p>`The `<link url="https://github.com/SkriptLang/Skript/releases" text="Skript">` plugin can be used with &dMagic&f.
+    `<p>`There are several Magic-related events and expressions you can use.
+    `<li>`See more information `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Skript" text="on the wiki">`
   placeholders: |-
     `<title text="Placeholders">`
     `<p>`&dMagic&f provides a variety of placeholders that can be used in messages sent with the &bMessage&f action
