@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
@@ -14,10 +15,17 @@ import org.geysermc.connector.common.ChatColor;
 import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
+    public static double CONTENT_FACTOR = 1.4;
+    public static double TAG_FACTOR = 2;
+    public static double TITLE_FACTOR = 1.2;
+
     private static final int MAX_WIDTH = 50;
     private final double relevance;
     private final HelpTopic topic;
     private final Map<String, HelpTopicKeywordMatch> wordMatches = new HashMap<>();
+    private double wordsRelevance;
+    private double titleRelevance;
+    private double tagRelevance;
 
     @Nonnull
     public static HelpTopicMatch match(Help help, HelpTopic topic, Collection<String> keywords) {
@@ -33,20 +41,55 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         }
         if (!keywords.isEmpty()) {
             relevance = relevance / keywords.size();
+            wordsRelevance = wordsRelevance / keywords.size();
+            titleRelevance = titleRelevance / keywords.size();
+            tagRelevance = tagRelevance / keywords.size();
         }
         this.relevance = relevance;
     }
 
     public String getDebugText() {
-        return ChatUtils.printPercentage(relevance);
+        String debugText = "";
+        if (wordsRelevance > 0) {
+            debugText += "Word: " + ChatUtils.printPercentage(wordsRelevance);
+        }
+        if (titleRelevance > 0) {
+            if (!debugText.isEmpty()) debugText += " ";
+            debugText += "Title: " + ChatUtils.printPercentage(titleRelevance);
+        }
+        if (tagRelevance > 0) {
+            if (!debugText.isEmpty()) debugText += " ";
+            debugText += "Tags: " + ChatUtils.printPercentage(tagRelevance);
+        }
+        return debugText;
     }
 
     private double computeRelevance(Help help, String keyword) {
-        HelpTopicKeywordMatch match = getWordMatch(help, keyword);
-        if (match == null) {
-            return 0;
+        double maxRelevance = 0;
+        double wordsRelevance = computeWordsRelevance(help, keyword);
+        if (wordsRelevance > 0) {
+            wordsRelevance = Math.pow(wordsRelevance, CONTENT_FACTOR);
+            this.wordsRelevance += wordsRelevance;
+            maxRelevance = Math.max(wordsRelevance, maxRelevance);
         }
-        return match.getRelevance();
+        double titleRelevance = computeSetRelevance(help, topic.titleWords, keyword);
+        if (titleRelevance > 0) {
+            titleRelevance = Math.pow(titleRelevance, TITLE_FACTOR);
+            this.titleRelevance += titleRelevance;
+            maxRelevance = Math.max(titleRelevance, maxRelevance);
+        }
+        double tagRelevance = computeSetRelevance(help, topic.tagWords, keyword);
+        if (tagRelevance > 0) {
+            tagRelevance = Math.pow(tagRelevance, TAG_FACTOR);
+            this.tagRelevance += tagRelevance;
+            maxRelevance = Math.max(tagRelevance, maxRelevance);
+        }
+        return maxRelevance;
+    }
+
+    private double computeSetRelevance(Help help, Set<String> words, String keyword) {
+        HelpTopicKeywordMatch match = HelpTopicKeywordMatch.match(keyword, words, topic, help);
+        return match == null ? 0 : match.getRelevance();
     }
 
     private HelpTopicKeywordMatch getWordMatch(Help help, String keyword) {
@@ -58,6 +101,14 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             }
         }
         return match;
+    }
+
+    private double computeWordsRelevance(Help help, String keyword) {
+        HelpTopicKeywordMatch match = getWordMatch(help, keyword);
+        if (match == null) {
+            return 0;
+        }
+        return match.getRelevance();
     }
 
     @Override
