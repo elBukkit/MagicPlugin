@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringEscapeUtils;
@@ -27,8 +25,6 @@ public class HelpTopic {
     private final String topicType;
     private final String[] lines;
     protected final Map<String, Integer> words;
-    protected final Set<String> titleWords;
-    protected final Set<String> tagWords;
     protected final int maxCount;
 
     public HelpTopic(Messages messages, String key, String text, String tags, String topicType) {
@@ -53,18 +49,14 @@ public class HelpTopic {
         // Track uses of individual words
         words = new HashMap<>();
         int maxCount = 0;
-        titleWords = new HashSet<>();
-        tagWords = new HashSet<>();
         List<String> helpTopicWords = new ArrayList<>();
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(searchText)));
         List<String> titleWordList = Arrays.asList(ChatUtils.getWords(title.toLowerCase()));
-        titleWords.addAll(titleWordList);
         helpTopicWords.addAll(titleWordList);
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(key)));
         tags = tags + " " + expansion.getTags();
         List<String> tagWordList = Arrays.asList(ChatUtils.getWords(tags.toLowerCase()));
         helpTopicWords.addAll(tagWordList);
-        tagWords.addAll(tagWordList);
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(topicType)));
         for (String word : helpTopicWords) {
             word = word.trim();

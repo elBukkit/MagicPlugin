@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.utility.help;
 
 import java.util.Map;
-import java.util.Set;
 import javax.annotation.Nullable;
 
 import com.elmakers.mine.bukkit.ChatUtils;
@@ -48,31 +47,6 @@ public class HelpTopicKeywordMatch {
                 + "x" + (int)WORD_WEIGHT
                 + ") ["
                 + help.getDebugText(word) + "]";
-    }
-
-    @Nullable
-    public static HelpTopicKeywordMatch match(String keyword, Set<String> words, HelpTopic topic, Help help) {
-        if (!help.isValidWord(keyword)) {
-            return null;
-        }
-        keyword = keyword.trim();
-        if (words.contains(keyword)) {
-            return new HelpTopicKeywordMatch(help, keyword, keyword, 1, 1);
-        }
-
-        double maxSimilarity = 0;
-        String bestMatch = null;
-        for (String word : words) {
-            double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity) {
-                bestMatch = word;
-                maxSimilarity = similarity;
-            }
-        }
-        if (bestMatch == null || !help.isValidWord(bestMatch)) {
-            return null;
-        }
-        return new HelpTopicKeywordMatch(help, keyword, bestMatch, 1, maxSimilarity);
     }
 
     @Nullable
