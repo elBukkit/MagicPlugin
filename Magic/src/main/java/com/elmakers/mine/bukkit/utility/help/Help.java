@@ -191,10 +191,6 @@ public class Help {
                 }
                 description += "\n" + examplesTemplate.replace("$examples", StringUtils.join(exampleList, " "));
             }
-            // Turning this off for now, due to
-            // 1. The huge number of false-positive hits it generates
-            // 2. The huge dump of text
-            /*
             Object rawParameters = action.get("parameters");
             // The conversion process turns empty maps into empty lists
             if (rawParameters != null && rawParameters instanceof Map) {
@@ -222,7 +218,6 @@ public class Help {
                     description += "\n" + parametersTemplate.replace("$parameters", StringUtils.join(parameterLines, "\n"));
                 }
             }
-            */
 
             description = convertMetaDescription(description);
             // hacky plural here, be warned
