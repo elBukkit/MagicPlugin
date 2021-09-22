@@ -9,6 +9,8 @@ meta:
     `<p>`An EffectLib class, used in the &7effectlib:&f section of an &7effects:&f list with &7- class: $class
     `<p>`$description
     `<p>``<link url="https://reference.elmakers.com/#effectlib.$key" text="See this effect in the reference guide">`
+  description_template: |-
+    `<p>`$description
   parameters_template: |-
     `<p>`&bParameters:
     $parameters

@@ -149,7 +149,7 @@ public class Help {
 
     @SuppressWarnings("unchecked")
     private void loadMetaClassed(Map<String, Map<String, Object>> meta, String metaType, String tags, String topicType) {
-        String descriptionTemplate = metaTemplates.get(metaType + "_template");
+        String typeTemplate = metaTemplates.get(metaType + "_template");
         String defaultDescription = metaTemplates.get("default_description");
         String defaultParameterDescription = metaTemplates.get("default_parameter_description");
         String parameterTemplate = metaTemplates.get("parameter_template");
@@ -157,17 +157,26 @@ public class Help {
         String parametersTemplate = metaTemplates.get("parameters_template");
         String examplesTemplate = metaTemplates.get("examples_template");
         String exampleTemplate = metaTemplates.get("example_template");
+        String descriptionTemplate = metaTemplates.get("description_template");
         for (Map.Entry<String, Map<String, Object>> entry : meta.entrySet()) {
             Map<String, Object> action = entry.getValue();
             String key = entry.getKey();
             String shortClass = (String)action.get("short_class");
             if (shortClass == null) continue;
             List<String> descriptionList = (List<String>)action.get("description");
-            String description = StringUtils.join(descriptionList, "\n");
-            if (description.isEmpty()) {
-                description = defaultDescription;
+            if (descriptionList.size() == 1 && descriptionList.get(0).trim().isEmpty()) {
+                descriptionList.isEmpty();
             }
-            description = descriptionTemplate.replace("$class", shortClass)
+            String description;
+            if (descriptionList.isEmpty()) {
+                description = descriptionTemplate.replace("$description", defaultDescription);
+            } else {
+                for (int i = 0; i < descriptionList.size(); i++) {
+                    descriptionList.set(i, descriptionTemplate.replace("$description", descriptionList.get(i)));
+                }
+                description = StringUtils.join(descriptionList, "\n");
+            }
+            description = typeTemplate.replace("$class", shortClass)
                 .replace("$description", description)
                 .replace("$key", key);
             String metaCategory = (String)action.get("category");
