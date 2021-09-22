@@ -13,8 +13,8 @@ public class HelpTopicKeywordMatch {
     public static double COUNT_FACTOR = 0.8;
     public static double WORD_FACTOR = 1.0;
     public static double SIMILARITY_FACTOR = 0.2;
-    public static double COUNT_WEIGHT = 1.5;
-    public static double WORD_WEIGHT = 2;
+    public static double COUNT_WEIGHT = 1;
+    public static double WORD_WEIGHT = 10;
 
     private final String keyword;
     private final String word;
@@ -46,13 +46,13 @@ public class HelpTopicKeywordMatch {
                 + " + Word: "
                 + ChatUtils.printPercentage(Math.pow(wordWeight, WORD_FACTOR))
                 + "x" + (int)WORD_WEIGHT
-                + ") "
-                + help.getDebugText(word);
+                + ") ["
+                + help.getDebugText(word) + "]";
     }
 
     @Nullable
     public static HelpTopicKeywordMatch match(String keyword, Set<String> words, HelpTopic topic, Help help) {
-        if (!topic.isValidWord(keyword)) {
+        if (!help.isValidWord(keyword)) {
             return null;
         }
         keyword = keyword.trim();
@@ -77,7 +77,7 @@ public class HelpTopicKeywordMatch {
 
     @Nullable
     public static HelpTopicKeywordMatch match(String keyword, HelpTopic topic, Help help) {
-        if (!topic.isValidWord(keyword)) {
+        if (!help.isValidWord(keyword)) {
             return null;
         }
         keyword = keyword.trim();

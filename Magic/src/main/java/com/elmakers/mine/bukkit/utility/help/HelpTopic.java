@@ -20,8 +20,6 @@ import com.elmakers.mine.bukkit.utility.MacroExpansion;
 import com.elmakers.mine.bukkit.utility.Messages;
 
 public class HelpTopic {
-    public static final int MIN_WORD_LENGTH = 2;
-
     private final String key;
     private final String title;
     private final String text;
@@ -59,12 +57,12 @@ public class HelpTopic {
         tagWords = new HashSet<>();
         List<String> helpTopicWords = new ArrayList<>();
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(searchText)));
-        List titleWordList = Arrays.asList(ChatUtils.getWords(title.toLowerCase()));
+        List<String> titleWordList = Arrays.asList(ChatUtils.getWords(title.toLowerCase()));
         titleWords.addAll(titleWordList);
         helpTopicWords.addAll(titleWordList);
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(key)));
         tags = tags + " " + expansion.getTags();
-        List tagWordList = Arrays.asList(ChatUtils.getWords(tags.toLowerCase()));
+        List<String> tagWordList = Arrays.asList(ChatUtils.getWords(tags.toLowerCase()));
         helpTopicWords.addAll(tagWordList);
         tagWords.addAll(tagWordList);
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(topicType)));
@@ -97,11 +95,6 @@ public class HelpTopic {
     @Nonnull
     public HelpTopicMatch match(Help help, Collection<String> keywords) {
         return HelpTopicMatch.match(help, this, keywords);
-    }
-
-    public boolean isValidWord(String keyword) {
-        if (keyword.length() < MIN_WORD_LENGTH) return false;
-        return true;
     }
 
     public Map<String, Integer> getWordCounts() {

@@ -25,8 +25,10 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Messages;
 
 public class Help {
+    // It is tempting to ignore two-letter words, but we have things like "sp"
+    public static final int MIN_WORD_LENGTH = 2;
     private static double DEFAULT_WEIGHT = 0.00001;
-    private static double STOP_WEIGHT = 0.01;
+    private static double STOP_WEIGHT = 0;
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
     private final Map<String, HelpTopicWord> words = new HashMap<>();
@@ -347,5 +349,11 @@ public class Help {
         ShowTopicsTask showTask = new ShowTopicsTask(this, mage, keywords, matches, maxTopics);
         Plugin plugin = mage.getController().getPlugin();
         plugin.getServer().getScheduler().runTask(plugin, showTask);
+    }
+
+    public boolean isValidWord(String keyword) {
+        if (keyword.length() < MIN_WORD_LENGTH) return false;
+        if (stopWords.contains(keyword)) return false;
+        return true;
     }
 }
