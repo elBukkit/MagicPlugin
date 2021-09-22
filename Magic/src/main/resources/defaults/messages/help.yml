@@ -235,11 +235,21 @@ help:
   donator_shops: |-
     `<title text="Donator Shops">`
     `<p>`&dMagic &fcan be used to set up &bdonator shops&f with a variety of EULA-compliant vanity items.
-    `<p>`Wand appearances, effect colors, trails and hats are all possibilities.
+    `<p>`Wand appearances, effect colors, `<help topic="trails" text="trails">` and hats are all possibilities.
     `<p>`&dMagic shops&f can handle the unlocking directly in-game, using a custom magic currency, or TokenManager integration.
     `<p>`Commands can also be used to perform unlocks directly if you'd prefer a web-based storefront to do the unlocking.
     `<p>`Once unlocked a player can use a &dMagic shop&f menu to select their vanity items at any time.
     `<li>``<link text="See Vanity Items on the wiki for more information" url="https://github.com/elBukkit/MagicPlugin/wiki/Vanity-Items">`
+  tails: |-
+    `<title text="Trails">`
+    `<p>`Players can purchase (using Spell Points) trails that will show while they are holding their wand.
+    `<p>`These include builtin trails like the crown, demon tail and butterfly wings.
+    `<p>`This is done in the `<command command="cast effectshop" text="Effect Shop">`
+    `<p>`Which is accessible in the `<command command="cast progressmenu" text="enchantment table menu">`
+    `<p>`There is also an optional `<command command="cast trailshop" text="Trail Shop">` you can allow via an NPC or other means.
+    `<p>`Note that the trail shop must be used to remove its trails, they are separate from the wand and will always show on the player.
+    `<p>`Non-wand trails are implemented as `<help topic="classes" text="magic classes">`
+    `<p>`And so you can use the `<command command="mage deactivate crown" text="mage deactivate">`command to turnt hem off.
   mana_customization: |-
     `<title text="Mana Customization">`
     `<p>`Stand-alone (demo) wands can have their mana set directly:
