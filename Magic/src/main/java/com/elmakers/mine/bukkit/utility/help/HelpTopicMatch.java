@@ -20,8 +20,8 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     public static double TITLE_FACTOR = 1.2;
 
     public static double CONTENT_WEIGHT = 1;
-    public static double TAG_WEIGHT = 3;
-    public static double TITLE_WEIGHT = 5;
+    public static double TAG_WEIGHT = 1.2;
+    public static double TITLE_WEIGHT = 1.3;
 
     private static final int MAX_WIDTH = 50;
     private final double relevance;
@@ -88,8 +88,8 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             this.tagRelevance += tagRelevance;
             maxRelevance = Math.max(tagRelevance, maxRelevance);
         }
-        double totalWeight = CONTENT_WEIGHT + TITLE_WEIGHT + TAG_WEIGHT;
-        return maxRelevance / totalWeight;
+        double maxWeight = Math.max(Math.max(CONTENT_WEIGHT, TITLE_WEIGHT), TAG_WEIGHT);
+        return maxRelevance / maxWeight;
     }
 
     private double computeSetRelevance(Help help, Set<String> words, String keyword) {
