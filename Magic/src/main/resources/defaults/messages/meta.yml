@@ -3,12 +3,12 @@ meta:
     `<title text="$class Action">`
     `<p>`A spell action, used in a spell action handler with &7- class: $class
     `<p>`$description
-    `<p>``<link url="https://reference.elmakers.com/#actions.$key" text="See this action in the reference guide">`
+    `<p>``<link url="https://reference.elmakers.com/#actions.$key" text="See this action and all of its parameters in the reference guide">`
   effect_template: |-
     `<title text="$class EffectLib Class">`
     `<p>`An EffectLib class, used in the &7effectlib:&f section of an &7effects:&f list with &7- class: $class
     `<p>`$description
-    `<p>``<link url="https://reference.elmakers.com/#effectlib.$key" text="See this effect in the reference guide">`
+    `<p>``<link url="https://reference.elmakers.com/#effectlib.$key" text="See this effect and all of its parameters in the reference guide">`
   description_template: |-
     `<p>`$description
   parameters_template: |-
