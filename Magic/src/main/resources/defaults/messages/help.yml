@@ -240,7 +240,7 @@ help:
     `<p>`Commands can also be used to perform unlocks directly if you'd prefer a web-based storefront to do the unlocking.
     `<p>`Once unlocked a player can use a &dMagic shop&f menu to select their vanity items at any time.
     `<li>``<link text="See Vanity Items on the wiki for more information" url="https://github.com/elBukkit/MagicPlugin/wiki/Vanity-Items">`
-  tails: |-
+  trails: |-
     `<title text="Trails">`
     `<p>`Players can purchase (using Spell Points) trails that will show while they are holding their wand.
     `<p>`These include builtin trails like the crown, demon tail and butterfly wings.
