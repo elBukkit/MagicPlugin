@@ -49,11 +49,11 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             titleRelevance = titleRelevance / keywords.size();
             tagRelevance = tagRelevance / keywords.size();
         }
-        this.relevance = relevance;
+        this.relevance = relevance * topic.getWeight();
     }
 
     public String getDebugText() {
-        String debugText = "";
+        String debugText = "Topic: " + ChatUtils.printPercentage(topic.getWeight());
         if (wordsRelevance > 0) {
             debugText += "Word: " + ChatUtils.printPercentage(wordsRelevance) + "x" + CONTENT_WEIGHT;
         }

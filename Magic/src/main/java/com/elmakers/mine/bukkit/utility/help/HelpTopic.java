@@ -26,14 +26,16 @@ public class HelpTopic {
     private final String searchText;
     private final String topicType;
     private final String[] lines;
+    private final double weight;
     protected final Map<String, Integer> words;
     protected final Set<String> titleWords;
     protected final Set<String> tagWords;
     protected final int maxCount;
 
-    public HelpTopic(Messages messages, String key, String text, String tags, String topicType) {
+    public HelpTopic(Messages messages, String key, String text, String tags, String topicType, double weight) {
         this.key = key;
         this.topicType = topicType;
+        this.weight = weight;
         MacroExpansion expansion = messages.expandMacros(text);
         text = expansion.getText();
         text = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(text));
@@ -111,5 +113,9 @@ public class HelpTopic {
 
     public String getTopicType() {
         return topicType;
+    }
+
+    public double getWeight() {
+        return weight;
     }
 }

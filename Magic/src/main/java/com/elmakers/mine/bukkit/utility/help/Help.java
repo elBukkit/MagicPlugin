@@ -28,6 +28,8 @@ public class Help {
     // It is tempting to ignore two-letter words, but we have things like "sp"
     public static final int MIN_WORD_LENGTH = 2;
     private static double DEFAULT_WEIGHT = 0.00001;
+    private static double META_WEIGHT_MAX = 0.75;
+    private static double META_WEIGHT_MIN = 0.25;
     private static double STOP_WEIGHT = 0;
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
@@ -106,11 +108,11 @@ public class Help {
     }
 
     public void loadTopic(String key, String contents) {
-        loadTopic(key, contents, "", "");
+        loadTopic(key, contents, "", "", 1.0);
     }
 
-    public void loadTopic(String key, String contents, String tags, String topicType) {
-        HelpTopic helpTopic = new HelpTopic(messages, key, contents, tags, topicType);
+    public void loadTopic(String key, String contents, String tags, String topicType, double weight) {
+        HelpTopic helpTopic = new HelpTopic(messages, key, contents, tags, topicType, weight);
         topics.put(key, helpTopic);
         // Index all words
         Map<String, Integer> wordCounts = helpTopic.getWordCounts();
@@ -191,6 +193,12 @@ public class Help {
                 }
                 description += "\n" + examplesTemplate.replace("$examples", StringUtils.join(exampleList, " "));
             }
+            int importance = 0;
+            Object rawImportance = action.get("importance");
+            if (rawImportance != null && rawImportance instanceof Integer) {
+                importance = (Integer)rawImportance;
+            }
+
             Object rawParameters = action.get("parameters");
             // The conversion process turns empty maps into empty lists
             if (rawParameters != null && rawParameters instanceof Map) {
@@ -221,7 +229,8 @@ public class Help {
 
             description = convertMetaDescription(description);
             // hacky plural here, be warned
-            loadTopic("reference." + metaType + "s." + key, description, tags, topicType);
+            double weight = (Math.min(importance, 100) / 100) * (META_WEIGHT_MAX - META_WEIGHT_MIN) + META_WEIGHT_MIN;
+            loadTopic("reference." + metaType + "s." + key, description, tags, topicType, weight);
         }
     }
 
