@@ -65,7 +65,7 @@ public class HelpTopic {
         List<String> tagWordList = Arrays.asList(ChatUtils.getWords(tags.toLowerCase()));
         helpTopicWords.addAll(tagWordList);
         tagWords.addAll(tagWordList);
-        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(topicType)));
+        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(topicType.toLowerCase())));
         for (String word : helpTopicWords) {
             word = word.trim();
             if (word.isEmpty()) continue;

@@ -19,6 +19,10 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     public static double TAG_FACTOR = 2;
     public static double TITLE_FACTOR = 1.2;
 
+    public static double CONTENT_WEIGHT = 1;
+    public static double TAG_WEIGHT = 3;
+    public static double TITLE_WEIGHT = 5;
+
     private static final int MAX_WIDTH = 50;
     private final double relevance;
     private final HelpTopic topic;
@@ -51,15 +55,15 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     public String getDebugText() {
         String debugText = "";
         if (wordsRelevance > 0) {
-            debugText += "Word: " + ChatUtils.printPercentage(wordsRelevance);
+            debugText += "Word: " + ChatUtils.printPercentage(wordsRelevance) + "x" + CONTENT_WEIGHT;
         }
         if (titleRelevance > 0) {
             if (!debugText.isEmpty()) debugText += " ";
-            debugText += "Title: " + ChatUtils.printPercentage(titleRelevance);
+            debugText += "Title: " + ChatUtils.printPercentage(titleRelevance) + "x" + TITLE_WEIGHT;
         }
         if (tagRelevance > 0) {
             if (!debugText.isEmpty()) debugText += " ";
-            debugText += "Tags: " + ChatUtils.printPercentage(tagRelevance);
+            debugText += "Tags: " + ChatUtils.printPercentage(tagRelevance) + "x" + TAG_WEIGHT;
         }
         return debugText;
     }
@@ -68,23 +72,24 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         double maxRelevance = 0;
         double wordsRelevance = computeWordsRelevance(help, keyword);
         if (wordsRelevance > 0) {
-            wordsRelevance = Math.pow(wordsRelevance, CONTENT_FACTOR);
+            wordsRelevance = Math.pow(wordsRelevance, CONTENT_FACTOR) * CONTENT_WEIGHT;
             this.wordsRelevance += wordsRelevance;
             maxRelevance = Math.max(wordsRelevance, maxRelevance);
         }
         double titleRelevance = computeSetRelevance(help, topic.titleWords, keyword);
         if (titleRelevance > 0) {
-            titleRelevance = Math.pow(titleRelevance, TITLE_FACTOR);
+            titleRelevance = Math.pow(titleRelevance, TITLE_FACTOR) * TITLE_WEIGHT;
             this.titleRelevance += titleRelevance;
             maxRelevance = Math.max(titleRelevance, maxRelevance);
         }
         double tagRelevance = computeSetRelevance(help, topic.tagWords, keyword);
         if (tagRelevance > 0) {
-            tagRelevance = Math.pow(tagRelevance, TAG_FACTOR);
+            tagRelevance = Math.pow(tagRelevance, TAG_FACTOR) * TAG_WEIGHT;
             this.tagRelevance += tagRelevance;
             maxRelevance = Math.max(tagRelevance, maxRelevance);
         }
-        return maxRelevance;
+        double totalWeight = CONTENT_WEIGHT + TITLE_WEIGHT + TAG_WEIGHT;
+        return maxRelevance / totalWeight;
     }
 
     private double computeSetRelevance(Help help, Set<String> words, String keyword) {
