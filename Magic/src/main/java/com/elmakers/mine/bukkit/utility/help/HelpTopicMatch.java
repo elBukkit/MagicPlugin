@@ -1,7 +1,9 @@
 package com.elmakers.mine.bukkit.utility.help;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
@@ -211,6 +213,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             }
         }
         // Highlight matches
+        List<String> replacements = new ArrayList<>();
         for (HelpTopicKeywordMatch match : wordMatches.values()) {
             if (!match.allowHighlight(topic)) continue;
             String keyword = match.getWord();
@@ -227,10 +230,17 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
                     replacement += "\"hoverEvent\":{\"action\":\"show_text\",\"contents\":\"" + hover + "\"}}`";
                 }
                 replacement = matchPrefix + replacement + matchSuffix;
-                matcher.appendReplacement(highlighted, replacement);
+                matcher.appendReplacement(highlighted, "@|" + replacements.size() + "|@");
+                replacements.add(replacement);
             }
             matcher.appendTail(highlighted);
             summary = highlighted.toString();
+        }
+
+        // Replace in second pass so we don't match on replacements
+        // This is particularly important due to the hacky hover event json adding
+        for (int i = 0; i < replacements.size(); i++) {
+            summary = summary.replace("@|" + i + "|@", replacements.get(i));
         }
         return summary;
     }
