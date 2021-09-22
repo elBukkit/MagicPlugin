@@ -69,7 +69,7 @@ public class HelpTopicKeywordMatch {
                 maxSimilarity = similarity;
             }
         }
-        if (bestMatch == null) {
+        if (bestMatch == null || !help.isValidWord(bestMatch)) {
             return null;
         }
         return new HelpTopicKeywordMatch(help, keyword, bestMatch, 1, maxSimilarity);
@@ -98,7 +98,7 @@ public class HelpTopicKeywordMatch {
                 maxSimilarity = similarity;
             }
         }
-        if (bestMatch == null) {
+        if (bestMatch == null || !help.isValidWord(bestMatch)) {
             return null;
         }
         double countWeight = (double)count / topic.maxCount;
