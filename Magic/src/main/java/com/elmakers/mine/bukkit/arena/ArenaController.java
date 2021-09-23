@@ -110,7 +110,7 @@ public class ArenaController implements Runnable {
 
     public Arena getQueuedArena(Player player) {
         ArenaPlayer arenaPlayer = getArenaPlayer(player);
-        return arenaPlayer == null ? null : arenaPlayer.getArena();
+        return arenaPlayer == null || arenaPlayer.getArena().isDead(arenaPlayer) ? null : arenaPlayer.getArena();
     }
 
     public ArenaPlayer getArenaPlayer(Player player) {

@@ -761,6 +761,10 @@ public class Arena {
         return arenaPlayer;
     }
 
+    public boolean isDead(ArenaPlayer arenaPlayer) {
+        return deadPlayers.contains(arenaPlayer);
+    }
+
     public ArenaStage getCurrentStage() {
         if (stages.isEmpty()) {
             return null;
