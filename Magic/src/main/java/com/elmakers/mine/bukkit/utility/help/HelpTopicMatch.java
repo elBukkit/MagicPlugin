@@ -47,15 +47,13 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     public String getDebugText() {
         String debugText = "Topic: " + ChatUtils.printPercentage(topic.getWeight());
         if (wordsRelevance > 0) {
-            debugText += "Word: " + ChatUtils.printPercentage(wordsRelevance) + "x" + SearchFactors.CONTENT_WEIGHT;
+            debugText += " Word: " + ChatUtils.printPercentage(wordsRelevance) + "x" + SearchFactors.CONTENT_WEIGHT;
         }
         if (titleRelevance > 0) {
-            if (!debugText.isEmpty()) debugText += " ";
-            debugText += "Title: " + ChatUtils.printPercentage(titleRelevance) + "x" + SearchFactors.TITLE_WEIGHT;
+            debugText += " Title: " + ChatUtils.printPercentage(titleRelevance) + "x" + SearchFactors.TITLE_WEIGHT;
         }
         if (tagRelevance > 0) {
-            if (!debugText.isEmpty()) debugText += " ";
-            debugText += "Tags: " + ChatUtils.printPercentage(tagRelevance) + "x" + SearchFactors.TAG_WEIGHT;
+            debugText += " Tags: " + ChatUtils.printPercentage(tagRelevance) + "x" + SearchFactors.TAG_WEIGHT;
         }
         return debugText;
     }
