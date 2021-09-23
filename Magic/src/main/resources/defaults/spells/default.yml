@@ -124,6 +124,18 @@ default:
          particle_offset_y: 0.1
          particle_offset_z: 0.1
          sound: magic.shimmer_quiet
+       fizzle:
+       - location: origin
+         sound: block_note_block_basedrum
+         sound_broadcast: false
+         sound_volume: 0.8
+         sound_pitch: 1.2
+       - sound: block_beacon_deactivate
+         sound_pitch: 0.9
+         sound_volume: 0.3
+         particle: fireworks_spark
+         particle_count: 16
+         particle_offset: 0.5
        headshot: hit
        cast_self: cast
        no_target: cast
@@ -132,7 +144,6 @@ default:
        alternate_up: cast
        alternate_down: cast
        alternate_sneak: cast
-       fizzle: fail
        cancelled: fail
        entity_required: fail
        living_entity_required: fail
