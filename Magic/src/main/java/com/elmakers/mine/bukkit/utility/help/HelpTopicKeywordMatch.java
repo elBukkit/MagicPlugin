@@ -10,14 +10,6 @@ public class HelpTopicKeywordMatch {
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
     public static final double HIGHLIGHT_CUTOFF = 0.6;
 
-    public static double COUNT_FACTOR = 0.4;
-    public static double WORD_FACTOR = 0.5;
-    public static double SIMILARITY_FACTOR = 0.1;
-    public static double COUNT_WEIGHT = 1;
-    public static double WORD_WEIGHT = 0.8;
-    public static double COUNT_MAX = 5; // This is a double to make evaluation easier
-    public static double MIN_SIMILARITY = 0.6;
-
     private final String keyword;
     private final String word;
     private final double relevance;
@@ -27,13 +19,13 @@ public class HelpTopicKeywordMatch {
     private HelpTopicKeywordMatch(Help help, String keyword, String word, double countRatio, double similarity) {
         this.keyword = keyword.trim();
         this.word = word;
-        this.similarity = Math.pow(similarity, SIMILARITY_FACTOR);
-        this.countWeight = Math.pow(countRatio, COUNT_FACTOR);
+        this.similarity = Math.pow(similarity, SearchFactors.SIMILARITY_FACTOR);
+        this.countWeight = Math.pow(countRatio, SearchFactors.COUNT_FACTOR);
 
         double wordWeight = help.getWeight(word);
-        wordWeight = wordWeight * Math.pow(wordWeight, WORD_FACTOR);
-        double totalWeight = COUNT_WEIGHT + WORD_WEIGHT;
-        double relevance = (countWeight * COUNT_WEIGHT + wordWeight * WORD_WEIGHT) / totalWeight;
+        wordWeight = wordWeight * Math.pow(wordWeight, SearchFactors.WORD_FACTOR);
+        double totalWeight = SearchFactors.COUNT_WEIGHT + SearchFactors.WORD_WEIGHT;
+        double relevance = (countWeight * SearchFactors.COUNT_WEIGHT + wordWeight * SearchFactors.WORD_WEIGHT) / totalWeight;
         this.relevance = relevance * similarity;
     }
 
@@ -44,10 +36,10 @@ public class HelpTopicKeywordMatch {
                 + " x ("
                 + "Count: "
                 + ChatUtils.printPercentage(countWeight)
-                + "x" + (int)COUNT_WEIGHT
+                + "x" + (int) SearchFactors.COUNT_WEIGHT
                 + " + Word: "
-                + ChatUtils.printPercentage(Math.pow(wordWeight, WORD_FACTOR))
-                + "x" + (int)WORD_WEIGHT
+                + ChatUtils.printPercentage(Math.pow(wordWeight, SearchFactors.WORD_FACTOR))
+                + "x" + (int) SearchFactors.WORD_WEIGHT
                 + ") ["
                 + help.getDebugText(word) + "]";
     }
@@ -66,7 +58,7 @@ public class HelpTopicKeywordMatch {
         String bestMatch = null;
         for (String word : words) {
             double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity && similarity >= MIN_SIMILARITY) {
+            if (similarity > maxSimilarity && similarity >= SearchFactors.MIN_SIMILARITY) {
                 bestMatch = word;
                 maxSimilarity = similarity;
             }
@@ -94,7 +86,7 @@ public class HelpTopicKeywordMatch {
         for (Map.Entry<String, Integer> entry : topic.words.entrySet()) {
             String word = entry.getKey();
             double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity && similarity >= MIN_SIMILARITY) {
+            if (similarity > maxSimilarity && similarity >= SearchFactors.MIN_SIMILARITY) {
                 count = entry.getValue();
                 bestMatch = word;
                 maxSimilarity = similarity;
@@ -103,7 +95,7 @@ public class HelpTopicKeywordMatch {
         if (bestMatch == null || !help.isValidWord(bestMatch)) {
             return null;
         }
-        double countWeight = Math.min(count, COUNT_MAX) / COUNT_MAX;
+        double countWeight = Math.min(count, SearchFactors.COUNT_MAX) / SearchFactors.COUNT_MAX;
         return new HelpTopicKeywordMatch(help, keyword, bestMatch, countWeight, maxSimilarity);
     }
 

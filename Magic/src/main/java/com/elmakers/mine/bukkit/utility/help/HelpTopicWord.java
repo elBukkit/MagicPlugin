@@ -3,13 +3,6 @@ package com.elmakers.mine.bukkit.utility.help;
 import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicWord {
-    public static double RARITY_FACTOR = 0.4;
-    public static double TOPIC_RARITY_FACTOR = 1.5;
-    public static double LENGTH_FACTOR = 0.1;
-    public static double RARITY_WEIGHT = 5;
-    public static double TOPIC_RARITY_WEIGHT = 1.0;
-    public static double LENGTH_WEIGHT = 1.5;
-
     private final String word;
     private int count;
     private int topicCount;
@@ -40,26 +33,26 @@ public class HelpTopicWord {
     }
 
     private double computeWeight(Help help) {
-        double rarityWeight = getRarityWeight(help.maxCount) * RARITY_WEIGHT;
-        double topicRarityWeight = getTopicWeight(help.maxTopicCount) * TOPIC_RARITY_WEIGHT;
-        double lengthWeight = getLengthWeight(word, help.maxLength) * LENGTH_WEIGHT;
-        double totalWeight = RARITY_WEIGHT + TOPIC_RARITY_WEIGHT + LENGTH_WEIGHT;
+        double rarityWeight = getRarityWeight(help.maxCount) * SearchFactors.RARITY_WEIGHT;
+        double topicRarityWeight = getTopicWeight(help.maxTopicCount) * SearchFactors.TOPIC_RARITY_WEIGHT;
+        double lengthWeight = getLengthWeight(word, help.maxLength) * SearchFactors.LENGTH_WEIGHT;
+        double totalWeight = SearchFactors.RARITY_WEIGHT + SearchFactors.TOPIC_RARITY_WEIGHT + SearchFactors.LENGTH_WEIGHT;
         return (rarityWeight + topicRarityWeight + lengthWeight) / totalWeight;
     }
 
     protected double getRarityWeight(int maxCount) {
         double rarityWeight = 1.0 - ((double)count / (maxCount + 1));
-        return Math.pow(rarityWeight, RARITY_FACTOR);
+        return Math.pow(rarityWeight, SearchFactors.RARITY_FACTOR);
     }
 
     protected double getLengthWeight(String word, int maxLength) {
         double lengthWeight = (double)word.length() / maxLength;
-        return Math.pow(lengthWeight, LENGTH_FACTOR);
+        return Math.pow(lengthWeight, SearchFactors.LENGTH_FACTOR);
     }
 
     protected double getTopicWeight(int maxTopicCount) {
         double topicRarityWeight = 1.0 - ((double)topicCount / (maxTopicCount + 1));
-        return Math.pow(topicRarityWeight, TOPIC_RARITY_FACTOR);
+        return Math.pow(topicRarityWeight, SearchFactors.TOPIC_RARITY_FACTOR);
     }
 
     public String getDebugText(Help help) {
@@ -68,13 +61,13 @@ public class HelpTopicWord {
         double lengthWeight = getLengthWeight(word, help.maxLength);
         return "Rare: "
                 + ChatUtils.printPercentage(rarityWeight)
-                + "x" + (int)RARITY_WEIGHT
+                + "x" + (int) SearchFactors.RARITY_WEIGHT
                 + " + TRare: "
                 + ChatUtils.printPercentage(topicRarityWeight)
-                + "x" + (int)TOPIC_RARITY_WEIGHT
+                + "x" + (int) SearchFactors.TOPIC_RARITY_WEIGHT
                 + " + Len: "
                 + ChatUtils.printPercentage(lengthWeight)
-                + "x" + (int)LENGTH_WEIGHT;
+                + "x" + (int) SearchFactors.LENGTH_WEIGHT;
     }
 
     public void reset() {
