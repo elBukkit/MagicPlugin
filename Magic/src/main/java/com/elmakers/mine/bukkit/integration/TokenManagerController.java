@@ -19,7 +19,7 @@ public class TokenManagerController {
     }
 
     public void load(ConfigurationSection configuration) {
-        enabled = configuration.getBoolean("token_manager.enabled", true);
+        enabled = configuration.getBoolean("enabled", true);
         String statusString;
 
         if (!enabled) {
