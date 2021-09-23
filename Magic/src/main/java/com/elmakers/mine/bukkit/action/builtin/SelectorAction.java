@@ -25,6 +25,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.Inventory;
@@ -1603,6 +1604,11 @@ public class SelectorAction extends CompoundAction implements GUIAction
         event.setCancelled(true);
         ItemStack item = event.getCurrentItem();
         Mage mage = context.getMage();
+        // Work around ghost items getting put in the offhand when using the swap item button to click on something
+        Player player = mage.getPlayer();
+        if (player != null && event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD) {
+           player.getInventory().setItemInOffHand(player.getInventory().getItemInOffHand());
+        }
         if (item == null || !CompatibilityLib.getNBTUtils().containsTag(item, "slot")) {
             if (defaultConfiguration.autoClose) {
                 mage.deactivateGUI();

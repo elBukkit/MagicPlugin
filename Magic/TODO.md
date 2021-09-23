@@ -4,12 +4,6 @@
 
  - Safe example breaks enchant table (could not reproduce, maybe fixed in 10.1?)
 
- - Add support for TradeSystem plugin, block trading bound wands
-
- - Using the swap (offhand) button in a shop gives a glitched-out offhand item
-
- - Fix not being able to re-join an in-progress match
-
  - Do wand overrides not work for cast_spell wand casts? Seems like not (can't make fancy ice skates)
 
  - API access is broken, need parent pom?
