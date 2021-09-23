@@ -65,7 +65,12 @@ public class HelpTopic {
             titleWords.add(titleWord);
         }
         helpTopicWords.addAll(titleWordList);
-        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(key)));
+        List<String> keyWordList = Arrays.asList(ChatUtils.getWords(key));
+        for (String keyWord : keyWordList) {
+            if (keyWord.length() < Help.MIN_WORD_LENGTH) continue;
+            titleWords.add(keyWord);
+        }
+        helpTopicWords.addAll(keyWordList);
         tags = tags + " " + expansion.getTags();
         List<String> tagWordList = Arrays.asList(ChatUtils.getWords(tags.toLowerCase()));
         helpTopicWords.addAll(tagWordList);
@@ -73,7 +78,12 @@ public class HelpTopic {
             if (tagWord.length() < Help.MIN_WORD_LENGTH) continue;
             tagWords.add(tagWord);
         }
-        helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(topicType.toLowerCase())));
+        List<String> topicTypeList = Arrays.asList(ChatUtils.getWords(topicType.toLowerCase()));
+        for (String topicWord : topicTypeList) {
+            if (topicWord.length() < Help.MIN_WORD_LENGTH) continue;
+            tagWords.add(topicWord);
+        }
+        helpTopicWords.addAll(topicTypeList);
         for (String word : helpTopicWords) {
             word = word.trim();
             if (word.length() < Help.MIN_WORD_LENGTH) continue;
