@@ -25,6 +25,7 @@
  - Fix engineering wands not showing materia in level display
  - Prevent spells that glitch out of a spell inventory being absorbable as spells
  - Change the broom booster recipe since firework rockets were problematic
+ - Fix passive spells double-triggering under some circumstances
 
 ## Additions
 

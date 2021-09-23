@@ -218,19 +218,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     }
 
     public void trigger(String triggerType) {
-        Collection<TriggeredSpell> triggers = getTriggers(triggerType);
-        if (triggers != null) {
-            for (TriggeredSpell triggered : triggers) {
-                if (triggered.getTrigger().isValid(mage)) {
-                    Spell spell = mage.getSpell(triggered.getSpellKey());
-                    if (spell != null && spell.isEnabled()) {
-                        spell.cast();
-                        triggered.getTrigger().triggered();
-                    }
-                }
-            }
-        }
-
+        // Spell-based triggers are handled by the Mage class, compiled in updatePassiveEffects
         Collection<CustomTrigger> customTriggers = this.triggers == null ? null : this.triggers.get(triggerType);
         if (customTriggers != null) {
             for (CustomTrigger trigger : customTriggers) {
