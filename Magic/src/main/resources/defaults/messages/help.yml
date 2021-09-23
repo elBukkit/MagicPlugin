@@ -435,14 +435,12 @@ help:
     `<p>`Actions are the building blocks of a spell's logic.
     `<p>`Without actions, a spell does nothing except create particle effects or sounds.
     `<p>`Action parameters can go in the "parameters" section of a spell's configuration, alongside `<help topic="spell_parameters" text="base spell parameters">`.
-    Action parameters in the "parameters" section can be overridden as normal by /cast commands or wand
-    overrides, but actions placed directly in the actions list can not.
-    <br/><br/>
-    In general it is good practice to put all parameters in the "parameters" section for easy reading, but there
-    are cases where it is necessary to put them in the actions list. Generally this would be because you have
-    two of the same actions in the logic that you want to use different parameters.
-    <br/><br/>
-    They can also go directly underneath the corresponding action in the "actions" list.<br/><br/>
+    `<p>`Action parameters in the "parameters" section can be overridden as normal by /cast commands or wand
+    `<p>`overrides, but actions placed directly in the actions list can not.
+    `<p>`In general it is good practice to put all parameters in the "parameters" section for easy reading, but there
+    `<p>`are cases where it is necessary to put them in the actions list. Generally this would be because you have
+    `<p>`two of the same actions in the logic that you want to use different parameters.
+    `<p>`They can also go directly underneath the corresponding action in the "actions" list.
     `<li>``<link url="https://reference.elmakers.com/#effects" text="See all actions in the reference guide">`
   effects: |-
     `<title text="Sound and Particle Effects">`
