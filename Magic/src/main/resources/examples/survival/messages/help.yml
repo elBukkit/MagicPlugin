@@ -72,7 +72,8 @@ help:
         `<p>`&6Wands &fcan be crafted using an &d`<command command="mgive amethyst_shard" text="Amethyst Shard">`&f, a &e`<command command="mgive stick" text="stick">`&f and &b`<command command="mgive diamond 2" text="2 diamonds">`&f.
         `<p>`The recipe will appear in your in-game &bknowledge book once you have acquired an &damethyst shard&f.
         `<p>`If you prefer, you can have the recipe &b`<command text="auto-discover on login" command="mconfig recipe wand auto_discover true">`
-        `<p>`Missing the &6magic hearts&f? You can &b`<command text="bring back the old recipes" command="mexample add magicheart">` &fif you want.
-        `<p>`Don't want crafting? You can `<command text="Disable all magic crafting" command="mconfig config enable_crafting false">`
-        `<p>`Or `<command text="Disable an individual recipe" command="mconfig disable recipe wand">`
+        `<li>`Missing the &6magic hearts&f? You can &b`<command text="bring back the old recipes" command="mexample add magicheart">` &fif you want.
+        `<li>`Don't want crafting? You can `<command text="Disable all magic crafting" command="mconfig config enable_crafting false">`
+        `<li>`Or `<command text="Disable an individual recipe" command="mconfig disable recipe wand">`
+        `<li>``<link text="See all recipes in the reference guide" url="https://magic.elmakers.com/#crafting">`
 
