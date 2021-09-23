@@ -15,12 +15,12 @@ import org.geysermc.connector.common.ChatColor;
 import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
-    public static double CONTENT_FACTOR = 1.4;
-    public static double TAG_FACTOR = 2;
+    public static double CONTENT_FACTOR = 1.5;
+    public static double TAG_FACTOR = 0.1;
     public static double TITLE_FACTOR = 1.2;
 
     public static double CONTENT_WEIGHT = 1;
-    public static double TAG_WEIGHT = 1.2;
+    public static double TAG_WEIGHT = 0.5;
     public static double TITLE_WEIGHT = 1.3;
 
     private static final int MAX_WIDTH = 50;

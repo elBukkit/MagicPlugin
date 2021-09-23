@@ -10,12 +10,12 @@ public class HelpTopicKeywordMatch {
     public static final int MIN_WHOLE_WORD_LENGTH = 4;
     public static final double HIGHLIGHT_CUTOFF = 0.6;
 
-    public static double COUNT_FACTOR = 0.8;
-    public static double WORD_FACTOR = 1.0;
-    public static double SIMILARITY_FACTOR = 0.2;
+    public static double COUNT_FACTOR = 0.4;
+    public static double WORD_FACTOR = 0.5;
+    public static double SIMILARITY_FACTOR = 0.1;
     public static double COUNT_WEIGHT = 1;
+    public static double WORD_WEIGHT = 0.8;
     public static int COUNT_MAX = 5;
-    public static double WORD_WEIGHT = 10;
 
     private final String keyword;
     private final String word;

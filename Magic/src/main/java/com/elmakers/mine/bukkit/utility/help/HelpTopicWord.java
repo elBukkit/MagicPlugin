@@ -3,12 +3,12 @@ package com.elmakers.mine.bukkit.utility.help;
 import com.elmakers.mine.bukkit.ChatUtils;
 
 public class HelpTopicWord {
-    public static double RARITY_FACTOR = 0.6;
-    public static double TOPIC_RARITY_FACTOR = 1.8;
-    public static double LENGTH_FACTOR = 0.2;
-    public static double RARITY_WEIGHT = 2;
-    public static double TOPIC_RARITY_WEIGHT = 1.2;
-    public static double LENGTH_WEIGHT = 1.2;
+    public static double RARITY_FACTOR = 0.4;
+    public static double TOPIC_RARITY_FACTOR = 1.5;
+    public static double LENGTH_FACTOR = 0.1;
+    public static double RARITY_WEIGHT = 5;
+    public static double TOPIC_RARITY_WEIGHT = 1.0;
+    public static double LENGTH_WEIGHT = 1.5;
 
     private final String word;
     private int count;
