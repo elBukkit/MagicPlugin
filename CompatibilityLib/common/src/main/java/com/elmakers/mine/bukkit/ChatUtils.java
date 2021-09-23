@@ -147,7 +147,11 @@ public class ChatUtils {
     }
 
     public static String printPercentage(double percentage) {
-        return ((int)(percentage * 100)) + "%";
+        return printRatio(percentage) + "%";
+    }
+
+    public static String printRatio(double percentage) {
+        return Integer.toString((int)(percentage * 100));
     }
 
     public static double getSimilarity(String s1, String s2) {
