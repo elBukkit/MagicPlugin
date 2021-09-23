@@ -543,7 +543,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     public void undone(BlockData blockData, BlockState currentState) {
         Mage owner = getOwner();
         if (consumed && !isScheduled() && currentState.getType() != Material.AIR && owner != null) {
-            owner.refundBlock(new MaterialAndData(currentState.getType(), CompatibilityLib.getDeprecatedUtils().getRawData(currentState)));
+            owner.refundBlock(new MaterialAndData(currentState.getType()));
         }
 
         CastContext context = getContext();

@@ -27,6 +27,7 @@
  - Change the broom booster recipe since firework rockets were problematic
  - Fix passive spells double-triggering under some circumstances
  - Fix not being able to re-join a pvp arena after losing but before the match is over
+ - Fix rollback giving back blocks with NBT data on them
 
 ## Additions
 
