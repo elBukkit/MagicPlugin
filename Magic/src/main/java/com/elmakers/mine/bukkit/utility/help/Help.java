@@ -28,8 +28,8 @@ public class Help {
     // It is tempting to ignore two-letter words, but we have things like "sp"
     public static final int MIN_WORD_LENGTH = 2;
     private static double DEFAULT_WEIGHT = 0.00001;
-    private static double META_WEIGHT_MAX = 0.75;
-    private static double META_WEIGHT_MIN = 0.25;
+    private static double META_WEIGHT_MAX = 0.95;
+    private static double META_WEIGHT_MIN = 0.75;
     private static double STOP_WEIGHT = 0;
     private final Messages messages;
     private final Map<String, HelpTopic> topics = new HashMap<>();
@@ -228,8 +228,8 @@ public class Help {
             }
 
             description = convertMetaDescription(description);
-            // hacky plural here, be warned
             double weight = (Math.min(importance, 100) / 100) * (META_WEIGHT_MAX - META_WEIGHT_MIN) + META_WEIGHT_MIN;
+            // hacky plural here, be warned
             loadTopic("reference." + metaType + "s." + key, description, tags, topicType, weight);
         }
     }
