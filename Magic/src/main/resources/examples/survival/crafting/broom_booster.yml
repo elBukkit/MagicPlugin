@@ -5,7 +5,7 @@ broom_booster:
   ingredients:
     s: slime_ball
     h: fire_charge
-    r: firework_rocket
+    r: gunpowder
   row_1: "  r"
   row_2: "shr"
   row_3: "  r"

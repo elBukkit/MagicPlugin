@@ -2,6 +2,10 @@
 
 # Next Up:
 
+ - Safe example breaks enchant table
+
+ - Add support for TradeSystem plugin, block trading bound wands
+
  - Add help topic weights to config for easier tweaking
 
  - Using the swap (offhand) button in a shop gives a glitched-out offhand item
