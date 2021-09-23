@@ -16,6 +16,7 @@ public class HelpTopicKeywordMatch {
     public static double COUNT_WEIGHT = 1;
     public static double WORD_WEIGHT = 0.8;
     public static int COUNT_MAX = 5;
+    public static double MIN_SIMILARITY = 0.6;
 
     private final String keyword;
     private final String word;
@@ -65,7 +66,7 @@ public class HelpTopicKeywordMatch {
         String bestMatch = null;
         for (String word : words) {
             double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity) {
+            if (similarity > maxSimilarity && similarity >= MIN_SIMILARITY) {
                 bestMatch = word;
                 maxSimilarity = similarity;
             }
@@ -93,7 +94,7 @@ public class HelpTopicKeywordMatch {
         for (Map.Entry<String, Integer> entry : topic.words.entrySet()) {
             String word = entry.getKey();
             double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity) {
+            if (similarity > maxSimilarity && similarity >= MIN_SIMILARITY) {
                 count = entry.getValue();
                 bestMatch = word;
                 maxSimilarity = similarity;
