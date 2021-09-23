@@ -18,7 +18,7 @@ help:
         `<li>``<help topic="examples.survival.broomstick" text="My broomsticks do not work!">`
         `<li>``<help topic="examples.survival.mobs" text="Help with mobs, including dragons">`
         `<li>``<help topic="examples.survival.recipes" text="Help with crafting">`
-        `<li>``<help topic="examples.survival.progression" text="Help with progression">`
+        `<li>``<help topic="progression" text="Help with progression">`
       mobs: |-
         `<title text="Survival Mobs">`
         `<p>`The &6survival&f example comes with a variety of magic mobs preconfigured
@@ -50,17 +50,9 @@ help:
         `<p>`&eThis is available to all players in the &benchantment table&4 menu
         `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_bossbar" text="Change wand default to use the boss bar GUI instead of the action bar">`
         `<li>``<command command="mconfig config wand_slots.controls.default_slotted controls_inventory" text="Set default controls to right-click to open spell inventory">`
-        `<li>``<help topic="examples.survival.wandgui" text="Help or issues with the wand GUI">`
+        `<li>``<help topic="wandgui" text="Help or issues with the wand GUI">`
         `<li>``<command command="meditor spell progressmenu" text="Edit the enchant table menu">`
         `<li>``<command command="mconfig config enchant_click" text="Disable the enchant table menu">`
-      wandgui: |-
-        `<title text="Wand GUI">`
-        `<p>`The &6wand&f second hotbar and mana &bGUI&f uses custom font glyphs from the resource pack
-        `<p>`This means that the resource pack is &brequired&f, and this only works on &6Minecraft 1.16&f and above.
-        `<p>`You will need to be using the official &aMagic&f resource pack, or you can `<link url="https://merge.elmakers.com" text="merge your own RP with the Magic RP">`
-        `<p>`If you see squares instead of the hotbar glyphs, you have the &bwrong resource pack&f.
-        `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_bossbar" text="Change wand default to use the boss bar GUI instead of the action bar">`
-        `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_none" text="Turn off the wand GUI hotbar by default">`
       broomstick: |-
         `<title text="Broomsticks">`
         `<li>`Broomsticks work by moving invisible armor stands around. If you have anything on your server that might prevent moving armor stands, they will not work.
@@ -83,24 +75,4 @@ help:
         `<p>`Missing the &6magic hearts&f? You can &b`<command text="bring back the old recipes" command="mexample add magicheart">` &fif you want.
         `<p>`Don't want crafting? You can `<command text="Disable all magic crafting" command="mconfig config enable_crafting false">`
         `<p>`Or `<command text="Disable an individual recipe" command="mconfig disable recipe wand">`
-      progression: |-
-        `<title text="Survival Progression">`
-        `<li>``<help topic="examples.survival.spellpoints" text="About spell points">`
-        `<li>``<help topic="examples.survival.paths" text="About progression paths">`
-      spellpoints: |-
-        `<title text="SP: Spell Points">`
-        `<p>`&6Spell points&f &7(&bSP&7)&f are earned whenever a player &osuccessfully&f casts a spell. For most spells, &bsuccess&f is determined by hitting a valid mob or player target.
-        `<p>`&6Spell points&f have a &ecooldown &ffor earning. This cooldown is specific to each spell, and defaults to &e15 minutes&f.
-        `<p>`This means that once you have more than one spell, using each one frequently is the fastest way to earn SP!
-        `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get palyers going.
-        `<p>`Once players have more than one spell they can earn SP much faster by using all of their spells frequently.
-        `<li>``<command command="mgive @p sp 1000" text="Give yourself some SP">`
-        `<li>``<command command="mconfig spell default earns_cooldown 30 seconds" text="Reduce SP cooldown to 30 seconds">`
-        `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/SpellPoints#balancing-sp" text="See the wiki for more info">
-      paths: |-
-        `<title text="Progression Paths">`
-        `<p>`Players progress through survival ranks as they collect spells.
-        `<p>`Survival Progression: &6Beginner&f, &6Student&f, &6Apprentice&f, &6Wizard &7(&fAKA &6Master&7)
-        `<p>`Players must &bcollect every spell&f at their current rank to progress to the next
-        `<p>`There are some spells, sorted to the end of the &bspellshop&f list, that are not required and are labelled as such.
-        `<li>``<command command="mage promote" text="Promote yourself to the next rank">`
+

@@ -54,7 +54,32 @@ help:
     `<li>``<help topic="nottrained" text="Some of my items are telling me I am not trained to use them">`
     `<li>``<help topic="noflying" text="I get a 'flying is not enabled' error when using some spells">`
     `<li>``<help topic="default_configs" text="Where are the default spells and other configs?">`
+    `<li>``<help topic="right_click" text="Right clicking is not working!">`
     `<li>``<command command="wand fill" text="Add ALL spells to my wand">`
+  right_click: |-
+    `<title text="Right Clicks and Offhand Items">`
+    `<p>`Wands use right-click for spell cycling by default, these `<help topic="wandcontrols" text="controls">` are customizable.
+    `<p>`If you have certain items in your offhand, wands will ignore right-clicks.
+    `<p>`This is to allow vanilla offhand item behavior without wands getting in the way.
+    `<p>`You can `<command command="meditor materials offhand" text="edit the list of offhand items">` if you want to change this behavior.
+    `<p>`Right-clicking an enchantment table with a wand will bring up the `<command command="cast progressmenu" text="progress menu">`
+    `<p>`If the enchant table is not working but right-clicks are working otherwise, check your configs to make sure you don't have &7enchant_click&f set to an empty string.
+  wandcontrols: |-
+    `<title text="Wand Controls">`
+    `<p>`Wand controls are completely customizable.
+    `<p>`Players can use the `<command command="cast controlsmenu" text="controls menu">` to change their controls.
+    `<p>`Players can also change their `<help topic="wandgui" text="GUI">` (second hotbar and mana bar) in that same menu.
+    `<p>`You may also change the default controls
+    `<p>`The simplest way is to `<command command="meditor config wand_slots" text="edit the wand_slots config">`, changing the &7default_slotted&f property.
+    `<p>`Available builtin control schemes: &7controls_cycle&f, &7controls_hotbarswap&f, &7controls_inventory
+  wandgui: |-
+    `<title text="Wand GUI">`
+    `<p>`The &6wand&f second hotbar and mana &bGUI&f uses custom font glyphs from the resource pack
+    `<p>`This means that the resource pack is &brequired&f, and this only works on &6Minecraft 1.16&f and above.
+    `<p>`You will need to be using the official &aMagic&f resource pack, or you can `<link url="https://merge.elmakers.com" text="merge your own RP with the Magic RP">`
+    `<p>`If you see squares instead of the hotbar glyphs, you have the &bwrong resource pack&f.
+    `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_bossbar" text="Change wand default to use the boss bar GUI instead of the action bar">`
+    `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_none" text="Turn off the wand GUI hotbar by default">`
   decorating: |-
     `<title text="Decorating with Magic Items">`
     `<p>`&6Wand&f items can not be put into containers by default.
@@ -485,6 +510,28 @@ help:
     `<li>``<command command="wand configure level_spells true" text="Configure a wand to max out its spells">`
     `<li>``<command command="mage add missile|5" text="Give yourself a specific level of a specific spell">`
     `<li>``<command command="meditor spell missile" text="Edit the Magic Missile spell and all of its levels">`
+  progression: |-
+    `<title text="Progression and Ranking Up">`
+    `<li>``<help topic="spellpoints" text="About spell points">`
+    `<li>``<help topic="paths" text="About progression paths">`
+    `<li>``<help topic="spelllevels" text="About spell levels">`
+  spellpoints: |-
+    `<title text="SP: Spell Points">`
+    `<p>`&6Spell points&f &7(&bSP&7)&f are earned whenever a player &osuccessfully&f casts a spell. For most spells, &bsuccess&f is determined by hitting a valid mob or player target.
+    `<p>`&6Spell points&f have a &ecooldown &ffor earning. This cooldown is specific to each spell, and defaults to &e15 minutes&f.
+    `<p>`This means that once you have more than one spell, using each one frequently is the fastest way to earn SP!
+    `<p>`The &6Magic Missile&f spell is a special case, it allows for faster SP earning at the start to get palyers going.
+    `<p>`Once players have more than one spell they can earn SP much faster by using all of their spells frequently.
+    `<li>``<command command="mgive @p sp 1000" text="Give yourself some SP">`
+    `<li>``<command command="mconfig spell default earns_cooldown 30 seconds" text="Reduce SP cooldown to 30 seconds">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/SpellPoints#balancing-sp" text="See the wiki for more info">
+  paths: |-
+    `<title text="Progression Paths">`
+    `<p>`Players progress through survival ranks as they collect spells.
+    `<p>`Survival Progression: &6Beginner&f, &6Student&f, &6Apprentice&f, &6Wizard &7(&fAKA &6Master&7)
+    `<p>`Players must &bcollect every spell&f at their current rank to progress to the next
+    `<p>`There are some spells, sorted to the end of the &bspellshop&f list, that are not required and are labelled as such.
+    `<li>``<command command="mage promote" text="Promote yourself to the next rank">`
   examples:
     main: |-
       `<title text="Examples">`
