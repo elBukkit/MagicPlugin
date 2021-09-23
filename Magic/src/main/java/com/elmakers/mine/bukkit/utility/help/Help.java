@@ -305,7 +305,7 @@ public class Help {
         while (!grouped.isEmpty()) {
             Iterator<Map.Entry<String, Queue<HelpTopicMatch>>> it = grouped.entrySet().iterator();
             if (grouped.size() == 1) {
-                matches.addAll(it.next().getValue());
+                batch.addAll(it.next().getValue());
                 break;
             }
 
