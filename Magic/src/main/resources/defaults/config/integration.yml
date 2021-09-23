@@ -213,6 +213,11 @@ token_manager:
   # Set this to false if you don't want to register tokens as a magic currency
   enabled: true
 
+# TradeSystem integration
+trade_system:
+  # Set this to false if you don't want to prevent trading bound wands
+  enabled: true
+
 # AureliumSkills integration
 aurelium_skills:
   enabled: true

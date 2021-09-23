@@ -450,6 +450,12 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <dependency>
+            <groupId>com.github.CodingAir.TradeSystem</groupId>
+            <artifactId>TradeSystem-Spigot</artifactId>
+            <version>v2.0.5</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <repositories>

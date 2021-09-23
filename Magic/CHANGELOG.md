@@ -49,6 +49,8 @@
  - Add `probability` option to effects
  - Add `ignore_name` spell property to have spells ignore entities with a specific name
  - Add `face_player` NPC option to allow them to face players without any dialog
+ - Add TradeSystem compatibility, don't allow trading bound wands
+   https://www.spigotmc.org/resources/trade-system-custom-layouts.58434/
  
 ## Changes
  

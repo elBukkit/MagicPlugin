@@ -179,6 +179,7 @@ import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
 import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.SkriptManager;
 import com.elmakers.mine.bukkit.integration.TokenManagerController;
+import com.elmakers.mine.bukkit.integration.TradeSystemManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.item.Icon;
@@ -583,6 +584,7 @@ public class MagicController implements MageController {
     private HeroesManager heroesManager = null;
     private AureliumSkillsManager aureliumSkillsManager = null;
     private TokenManagerController tokenManager = null;
+    private TradeSystemManager tradeSystemManager = null;
     private LibsDisguiseManager libsDisguiseManager = null;
     private ModelEngineManager modelEngineManager = null;
     private SkillAPIManager skillAPIManager = null;
@@ -1870,6 +1872,9 @@ public class MagicController implements MageController {
         if (tokenManager != null) {
             ConfigurationSection tokenManagerConfiguration = configuration.getConfigurationSection("token_manager");
             tokenManager.load(tokenManagerConfiguration);
+        }
+        if (tradeSystemManager != null) {
+            tradeSystemManager.load(configuration.getConfigurationSection("trade_system"));
         }
         if (heroesManager != null) {
             heroesManager.load(configuration);
@@ -7649,6 +7654,19 @@ public class MagicController implements MageController {
                 tokenManager = new TokenManagerController(this, tokenManagerPlugin);
             } else {
                 tokenManager = null;
+
+            }
+        } catch (Throwable ex) {
+            getLogger().warning(ex.getMessage());
+        }
+
+        // Try to link to TradeSystem:
+        try {
+            Plugin tradeSystemPlugin = pluginManager.getPlugin("TradeSystem");
+            if (tradeSystemPlugin != null) {
+                tradeSystemManager = new TradeSystemManager(this);
+            } else {
+                tradeSystemManager = null;
 
             }
         } catch (Throwable ex) {
