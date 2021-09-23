@@ -15,7 +15,7 @@ public class HelpTopicKeywordMatch {
     public static double SIMILARITY_FACTOR = 0.1;
     public static double COUNT_WEIGHT = 1;
     public static double WORD_WEIGHT = 0.8;
-    public static int COUNT_MAX = 5;
+    public static double COUNT_MAX = 5; // This is a double to make evaluation easier
     public static double MIN_SIMILARITY = 0.6;
 
     private final String keyword;
@@ -103,7 +103,7 @@ public class HelpTopicKeywordMatch {
         if (bestMatch == null || !help.isValidWord(bestMatch)) {
             return null;
         }
-        double countWeight = (double)Math.min(count, COUNT_MAX) / COUNT_MAX;
+        double countWeight = Math.min(count, COUNT_MAX) / COUNT_MAX;
         return new HelpTopicKeywordMatch(help, keyword, bestMatch, countWeight, maxSimilarity);
     }
 
