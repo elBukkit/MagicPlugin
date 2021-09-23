@@ -60,17 +60,23 @@ public class HelpTopic {
         List<String> helpTopicWords = new ArrayList<>();
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(searchText)));
         List<String> titleWordList = Arrays.asList(ChatUtils.getWords(title.toLowerCase()));
-        titleWords.addAll(titleWordList);
+        for (String titleWord : titleWordList) {
+            if (titleWord.length() < Help.MIN_WORD_LENGTH) continue;
+            titleWords.add(titleWord);
+        }
         helpTopicWords.addAll(titleWordList);
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(key)));
         tags = tags + " " + expansion.getTags();
         List<String> tagWordList = Arrays.asList(ChatUtils.getWords(tags.toLowerCase()));
         helpTopicWords.addAll(tagWordList);
-        tagWords.addAll(tagWordList);
+        for (String tagWord : tagWordList) {
+            if (tagWord.length() < Help.MIN_WORD_LENGTH) continue;
+            tagWords.add(tagWord);
+        }
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(topicType.toLowerCase())));
         for (String word : helpTopicWords) {
             word = word.trim();
-            if (word.isEmpty()) continue;
+            if (word.length() < Help.MIN_WORD_LENGTH) continue;
             Integer count = words.get(word);
             if (count == null) count = 1;
             else count++;
