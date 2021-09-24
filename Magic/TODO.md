@@ -35,8 +35,6 @@
 
  - Custom armor durability
 
- - Fix locked/modifiable wand properties in meta.json
-
  - Mysterious:
    Mage class mage': 'allow': Unknown function or variable 'allow' at pos 0 in expression 'allow'
    Try giving yourself a disabled spell? Or give it then disable it?
