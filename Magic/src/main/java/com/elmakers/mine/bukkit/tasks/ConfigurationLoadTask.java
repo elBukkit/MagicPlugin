@@ -391,7 +391,6 @@ public class ConfigurationLoadTask implements Runnable {
                         List<String> disable = ConfigurationUtils.getStringList(mainConfiguration, "disable_inherited");
                         if (!isUnkeyedConfig && disable != null && disable.contains(fileName)) {
                             addDisabled(inheritFrom, inheritedConfig);
-                            ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
                             info("   Example " + exampleKey + " inheriting from disabled " + inheritFrom);
                         } else {
                             ConfigurationUtils.addConfigurations(exampleConfig, inheritedConfig, false);
@@ -613,7 +612,6 @@ public class ConfigurationLoadTask implements Runnable {
             deleteDefaults(defaultsFileName);
         }
 
-
         return config;
     }
 
@@ -744,46 +742,20 @@ public class ConfigurationLoadTask implements Runnable {
         }
     }
 
-    private void disableAll(ConfigurationSection config) {
-        Set<String> keys = config.getKeys(false);
-        for (String key : keys) {
-            ConfigurationSection thisConfig = config.getConfigurationSection(key);
-            if (thisConfig == null) continue;
-            thisConfig.set("enabled", false);
-        }
-    }
-
-    private void reenableAll(ConfigurationSection config, ConfigurationSection from) {
-        Set<String> keys = config.getKeys(false);
-        for (String key : keys) {
-            ConfigurationSection thisConfig = config.getConfigurationSection(key);
-            if (thisConfig == null) continue;
-            ConfigurationSection fromConfig = from.getConfigurationSection(key);
-            if (fromConfig != null && fromConfig.getBoolean("enabled", true)) {
-                thisConfig.set("enabled", true);
-            }
-        }
-    }
-
-    private void enableAll(ConfigurationSection config) {
-        Set<String> keys = config.getKeys(false);
-        for (String key : keys) {
-            ConfigurationSection thisConfig = config.getConfigurationSection(key);
-            if (thisConfig == null || thisConfig.contains("enabled")) continue;
-            thisConfig.set("enabled", true);
-        }
-    }
-
     private void resolveDisabled(ConfigurationSection config) {
-        for (Map.Entry<String, ConfigurationSection> entry : addDisabled.entrySet()) {
-            String key = entry.getKey();
-            ConfigurationSection disableConfig = entry.getValue();
-            disableAll(disableConfig);
-            ConfigurationSection existing = config.getConfigurationSection(key);
-            if (existing == null) {
-                config.set(key, disableConfig);
-            } else {
-                ConfigurationUtils.addConfigurations(existing, disableConfig, false);
+        for (ConfigurationSection disableConfigs : addDisabled.values()) {
+            Set<String> keys = disableConfigs.getKeys(false);
+            for (String key : keys) {
+                ConfigurationSection disableConfig = disableConfigs.getConfigurationSection(key);
+                if (disableConfig == null) continue;
+
+                // If something else has already included this config, use that instead.
+                ConfigurationSection existing = config.getConfigurationSection(key);
+                if (existing == null) {
+                    // Include this config, but make it disabled
+                    disableConfig.set("enabled", false);
+                    config.set(key, disableConfig);
+                }
             }
         }
         addDisabled.clear();
@@ -835,7 +807,7 @@ public class ConfigurationLoadTask implements Runnable {
         return config;
     }
 
-    private ConfigurationSection mapSpells(ConfigurationSection spellConfiguration) throws InvalidConfigurationException, IOException {
+    private ConfigurationSection mapSpells(ConfigurationSection spellConfiguration) {
         ConfigurationSection spellConfigs = ConfigurationUtils.newConfigurationSection();
         if (spellConfiguration == null) return spellConfigs;
 

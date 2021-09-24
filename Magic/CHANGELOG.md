@@ -29,6 +29,7 @@
  - Fix not being able to re-join a pvp arena after losing but before the match is over
  - Fix rollback giving back blocks with NBT data on them
  - Fix upgrade lore overwriting wand lore when using custom lore
+ - Fix potter, bending and stars examples also including (unobtainable) survival spells
 
 ## Additions
 
