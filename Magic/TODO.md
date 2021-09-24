@@ -2,6 +2,9 @@
 
 # Next Up:
 
+ - Still need to fix re-joining an arena, it kicks you out at the end
+ - Also delay respawn tp, or double-tp .. need to prevent going home
+
  - Add $attributes custom wand option, to show attribute modifiers like in standard lore
 
  - Safe example breaks enchant table (could not reproduce, maybe fixed in 10.1?)

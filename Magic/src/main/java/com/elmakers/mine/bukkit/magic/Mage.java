@@ -4,7 +4,6 @@ import static com.google.common.base.Verify.verifyNotNull;
 
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,7 +13,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
@@ -127,6 +125,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
+import com.elmakers.mine.bukkit.utility.QueueSet;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 import com.elmakers.mine.bukkit.wand.ActiveWandSet;
@@ -173,7 +172,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private final Map<String, Long> lastTriggers = new HashMap<>();
     private final Map<String, MageKit> kits = new HashMap<>();
     private final Map<String, CurrencyMessage> currencyMessages = new HashMap<>();
-    private final Queue<String> actionBarQueue = new ArrayDeque<>();
+    private final QueueSet<String> actionBarQueue = new QueueSet<>();
     private long lastActionBarSend;
     protected ConfigurationSection data = ConfigurationUtils.newConfigurationSection();
     protected Map<String, SpellData> spellData = new HashMap<>();
@@ -6086,6 +6085,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (!isPlayer()) return;
 
         long now = System.currentTimeMillis();
+        if (actionBarQueue.contains(message)) return;
         if (now > lastActionBarSend + ACTION_BAR_QUEUE_INTERVAL || ACTION_BAR_QUEUE_INTERVAL == 0 || actionBarQueue.size() > ACTION_BAR_QUEUE_MAX_DEPTH) {
             doSendToActionBar(message);
         } else {
