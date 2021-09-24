@@ -22,4 +22,4 @@ meta:
     `<p>`&6Used in spells: &b$examples
   example_template: '&b`<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/spells/$example.yml" text="$example">`&f'
   default_parameter_description: "&8?"
-  default_description: "&7(No description yes)"
+  default_description: "&7(No description yet)"
