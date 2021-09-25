@@ -4,6 +4,9 @@
 
  - Still need to fix re-joining an arena, it kicks you out at the end
  - Also delay respawn tp, or double-tp .. need to prevent going home
+ ... idk, I feel like the whole deadPlayers system needs some re-thinking
+   
+ - IonTech says attributes in protection on a class does not work
 
  - Add $attributes custom wand option, to show attribute modifiers like in standard lore
 
