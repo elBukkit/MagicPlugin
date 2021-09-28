@@ -696,13 +696,13 @@ public class Arena {
     protected void clearPlayers() {
         for (ArenaPlayer arenaPlayer : players) {
             Player player = arenaPlayer.getPlayer();
-            if (player != null) {
+            if (player != null && !queue.contains(arenaPlayer)) {
                 controller.unregister(player);
             }
         }
         for (ArenaPlayer arenaPlayer : deadPlayers) {
             Player player = arenaPlayer.getPlayer();
-            if (player != null) {
+            if (player != null && !queue.contains(arenaPlayer)) {
                 controller.unregister(player);
             }
         }
@@ -991,11 +991,20 @@ public class Arena {
     }
 
     public void join(Player player) {
-        Arena currentArena = controller.getQueuedArena(player);
+        ArenaPlayer arenaPlayer = controller.getArenaPlayer(player);
+        Arena currentArena = arenaPlayer == null ? null : arenaPlayer.getArena();
         if (currentArena != null) {
             if (currentArena == this) {
-                player.sendMessage(ChatColor.RED + "You are already in " + ChatColor.AQUA + currentArena.getName());
-                return;
+                // If we have lost, we can queue for the next round
+                if (currentArena.isDead(arenaPlayer)) {
+                    if (currentArena.queue.contains(arenaPlayer)) {
+                        player.sendMessage(ChatColor.RED + "You are already in the queue for " + ChatColor.AQUA + currentArena.getName());
+                        return;
+                    }
+                } else {
+                    player.sendMessage(ChatColor.RED + "You are already in " + ChatColor.AQUA + currentArena.getName());
+                    return;
+                }
             } else {
                 controller.leave(player);
             }
@@ -1016,7 +1025,7 @@ public class Arena {
         if (description != null) {
             player.sendMessage(ChatColor.LIGHT_PURPLE + getDescription());
         }
-        ArenaPlayer arenaPlayer = queue ? add(player) : interrupt(player);
+        arenaPlayer = queue ? add(player) : interrupt(player);
 
         int winCount = arenaPlayer.getWins();
         int lostCount = arenaPlayer.getLosses();
