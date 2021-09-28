@@ -3,5 +3,7 @@ examples:
     instructions: |-
       `<title text="Automata Instructions">`
       `<p>`Use &6/cast birth_hunter &fto spawn a hunter &r
+      `<li>``<command command="mnpc add automatashop" text="Set up a Bounty Hunter">` so players can sell automaton hearts.
+      `<p>`These heart items (Hunter Heart, Virus Heart, etc) are otherwise useless.
       `<p>`See the wiki for more info: &r
       `<p>`https://github.com/elBukkit/MagicPlugin/wiki/Automata &r

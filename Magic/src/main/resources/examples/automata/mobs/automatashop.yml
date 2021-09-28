@@ -1,0 +1,7 @@
+automatashop:
+  inherit: base_npc
+  interact_spell: automatashop
+  villager_profession: fletcher
+  dialog:
+    - Want to earn some loot?
+    - It's a tough job, but I know you're up for it!

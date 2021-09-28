@@ -362,7 +362,7 @@ help:
     `<p>`The &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f plugin can be used alongside compatible chat or other plugins to show &dMagic placeholders in other places.
     `<p>`Use a &bmagic_&f prefix in PlaceholderAPI configs, such as &b%magic_path%&f.
     `<p>`Example `<link url="https://www.spigotmc.org/resources/chatformat.74890/" text="ChatFormat">` chat prefix: &7'(%magic_path%) {PLAYER_NAME} > {SUFFIX}{MESSAGE}'&f
-    `<p>`See `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Placeholders" text="the wiki" for a list of available placeholders.
+    `<p>`See `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Placeholders" text="the wiki">` for a list of available placeholders.
   compatibility: |-
     `<title text="Compatibility">`
     `<li>`&dMagic&f can use a &4Slimefun&f-compatible resource pack using the &b`<command command="mexample add slimefun" text="slimefun">` &fexample
