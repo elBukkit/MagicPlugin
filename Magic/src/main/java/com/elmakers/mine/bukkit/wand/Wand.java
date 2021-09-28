@@ -1950,7 +1950,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void updateSpellInventory() {
-        if (spellInventory.isEmpty()) {
+        if (spellInventory.isEmpty() || (spellInventory.size() == 1 && spellInventory.values().iterator().next() == 0)) {
             setProperty("spell_inventory", null);
         } else {
             setProperty("spell_inventory", new HashMap<>(spellInventory));
