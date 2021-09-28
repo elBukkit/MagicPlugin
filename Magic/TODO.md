@@ -12,6 +12,8 @@
 
  - Safe example breaks enchant table (could not reproduce, maybe fixed in 10.1?)
 
+ - Add sleep/lay down triggers
+
  - Do wand overrides not work for cast_spell wand casts? Seems like not (can't make fancy ice skates)
 
  - API access is broken, need parent pom?

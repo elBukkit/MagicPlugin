@@ -6142,7 +6142,13 @@ public class MagicController implements MageController {
         if (modelEngineManager == null || entity == null) {
             return false;
         }
-        return modelEngineManager.applyModel(entity, configuration);
+        boolean success = false;
+        try {
+            success = modelEngineManager.applyModel(entity, configuration);
+        } catch (Throwable ex) {
+            getLogger().log(Level.WARNING, "Failed to apply ModelEngine model to mob: " + configuration.getString("model"));
+        }
+        return success;
     }
 
     @Override
