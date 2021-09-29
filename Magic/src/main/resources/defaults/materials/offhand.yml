@@ -5,3 +5,7 @@ offhand:
   - spyglass
   - bow
   - crossbow
+  - firework_rocket
+
+  # Legacy
+  - firework
