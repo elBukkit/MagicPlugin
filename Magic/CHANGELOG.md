@@ -10,7 +10,6 @@
    - Overall or per-item bonuses can be applied once enough set pieces are worn at once
    - See survival `wizard_armor` set for example
    - Wizard armor (including magic hat) now have an SP earn bonus when the full set is worn  
-   - TODO: Wand lore
  - Reference Guide
    - Spell action and effectlib effect reference information is now available via `/mhelp`
    - I will attempt to improve the descriptions and information over time!
@@ -63,10 +62,8 @@
    This is to prevent it being used to gain arrows with the infinity enchantment, though unfortunately
    this means it will burn through arrows without the enchant. Will hopefully improve this in the future.
  - The Conduit rank will switch the wand display back to SP since materia is no longer needed
- - Nerf the wizard spell
+ - Nerf the Wither spell
  - Don't allow Heal in arenas
-
-# 10.0.4
 
 # 10.0.3
 
