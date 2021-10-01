@@ -89,7 +89,7 @@ blast:
         break_durability: 10
         select_self: false
         undo_speed: 0.5
-        damage: 6
+        damage: 3
     costs:
         mana: 45
 
@@ -103,7 +103,7 @@ blast|2:
         durability_max_distance: 4
         damage_max_distance: 3
         speed: 1.2
-        damage: 8
+        damage: 5
         living_entity_speed: 0.8
 
 blast|3:
@@ -114,7 +114,7 @@ blast|3:
         break_durability: 100
         radius: 2
         undo: 20000
-        damage: 10
+        damage: 6
 
 blast|4:
     parameters:
@@ -124,5 +124,5 @@ blast|4:
         durability_max_distance: 5
         damage_max_distance: 4
         undo: 30000
-        damage: 12
+        damage: 7
 

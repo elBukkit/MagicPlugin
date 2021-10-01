@@ -2,6 +2,8 @@
 
 # 10.2
 
+ - Nerf Blast damage
+
 # 10.1.1
 
  - Fix spellbook spells disappearing when clicked
