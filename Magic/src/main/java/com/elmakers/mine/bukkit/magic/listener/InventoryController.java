@@ -396,7 +396,7 @@ public class InventoryController implements Listener {
         }
 
         // Get rid of glitched spells and brushes
-        if (!isWandInventoryOpen && (clickedBrush || clickedSpell) && !Wand.isAbsorbable(clickedItem)) {
+        if (!isWandInventoryOpen && !isSkill && (clickedBrush || clickedSpell) && !Wand.isAbsorbable(clickedItem)) {
             event.setCurrentItem(new ItemStack(Material.AIR));
             event.setCancelled(true);
             return;

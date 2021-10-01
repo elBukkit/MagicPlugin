@@ -5519,7 +5519,7 @@ public class MagicController implements MageController {
 
         if (magicItemKey.startsWith("skill:")) {
             String spellKey = magicItemKey.substring(6);
-            itemStack = Wand.createSpellItem(spellKey, this, mage, null, true, true);
+            itemStack = Wand.createSpellItem(spellKey, this, mage, null, false, true);
             CompatibilityLib.getNBTUtils().setString(itemStack, "skill", "true");
             if (callback != null) {
                 callback.updated(itemStack);

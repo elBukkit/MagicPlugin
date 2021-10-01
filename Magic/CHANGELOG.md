@@ -4,6 +4,8 @@
 
 # 10.1.1
 
+ - Fix spellbook spells disappearing when clicked
+
 # 10.1
 
 ## New Features
