@@ -2,12 +2,16 @@
 
 # 10.2
 
+## Balance Changes
+
  - Nerf Blast damage
  - Buff Kill damage vs players
 
 # 10.1.1
 
  - Fix spellbook spells disappearing when clicked
+ - Fix Recall allowing you to teleport into an area where you can't use Recall
+   Use `require_target_permission: false` to the spell if you do not want this.
 
 # 10.1
 

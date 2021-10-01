@@ -62,6 +62,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private int delay = 0;
     private boolean teleport = true;
     private boolean teleportTarget = false;
+    private boolean requireTargetPermission = true;
     private String titleKey = null;
 
     private boolean isActive = false;
@@ -438,6 +439,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.markerCount = parameters.getInt("marker_count", 1);
         this.teleport = parameters.getBoolean("teleport", true);
         this.teleportTarget = parameters.getBoolean("teleport_target", false);
+        this.requireTargetPermission = parameters.getBoolean("require_target_permission", true);
         this.delay = parameters.getInt("delay", 0);
         this.delay = parameters.getInt("warmup", this.delay);
         titleKey = parameters.getString("title_key", "title");
@@ -1206,6 +1208,9 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             return SpellResult.NO_TARGET;
         }
         Location targetLocation = context.getTargetLocation();
+        if (requireTargetPermission && !context.canContinue(targetLocation)) {
+            return SpellResult.INSUFFICIENT_PERMISSION;
+        }
         if (!CompatibilityLib.getCompatibilityUtils().checkChunk(targetLocation)) {
             pendingTeleport = targetLocation;
             return SpellResult.PENDING;
