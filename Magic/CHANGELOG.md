@@ -3,6 +3,7 @@
 # 10.2
 
  - Nerf Blast damage
+ - Buff Kill damage vs players
 
 # 10.1.1
 

@@ -104,7 +104,7 @@ kill:
         cooldown_mage: 10000
         target_breakables: 5
         bypass_backfire: true
-        player_damage: 20
+        player_damage: 100
         entity_damage: 30
         hitbox_size: 1
         velocity: 5
