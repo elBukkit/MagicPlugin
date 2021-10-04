@@ -274,28 +274,40 @@ public class BlockController implements Listener, ChunkLoadListener {
         if (undoList != null) {
             // This block stores the state of the piston, maybe
             undoList.add(piston);
-
-            if (reaction == PistonMoveReaction.BREAK) {
-                // This block is about to be broken, we will break it but avoid dropping an item.
-                undoList.add(block);
-                CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
-                CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte) 0, false);
-            } else {
-                // This block is about to become the piston head
-                undoList.add(block);
-
-                // Continue to look for more solid blocks we'll push
-                block = block.getRelative(event.getDirection());
-                undoList.add(block);
-                // We need to store the final air block since we'll be pushing a block into that
-                // But after that, we can quit
-                int maxBlocks = 14;
-                while (maxBlocks-- > 0 && !DefaultMaterials.isAir(block.getType())) {
-                    block = block.getRelative(event.getDirection());
-                    undoList.add(block);
+            // We need to store the final air block since we'll be pushing a block into that
+            // But after that, we can quit
+            final int MAX_BLOCKS = 14;
+            while (block != null) {
+                block = handleMovedBlock(undoList, block, event.getDirection(), reaction, MAX_BLOCKS);
+                // Determine the reaction for the new block type
+                if (block != null) {
+                    reaction = block.getPistonMoveReaction();
                 }
             }
         }
+    }
+
+    private Block handleMovedBlock(UndoList undoList, Block block, BlockFace direction, PistonMoveReaction reaction, int movesRemaining) {
+        Block nextBlock = null;
+        if (reaction == PistonMoveReaction.BREAK) {
+            // This block is about to be broken, we will break it but avoid dropping an item.
+            undoList.add(block);
+            CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
+            CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte) 0, false);
+        } else {
+            // This block is about to become the piston head
+            undoList.add(block);
+
+            // Continue to look for more solid blocks we'll push
+            block = block.getRelative(direction);
+            undoList.add(block);
+
+            // See if we should continue looking
+            if (movesRemaining-- > 0 && !DefaultMaterials.isAir(block.getType())) {
+                nextBlock = block;
+            }
+        }
+        return nextBlock;
     }
 
     @EventHandler(ignoreCancelled = true)
