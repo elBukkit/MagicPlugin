@@ -531,6 +531,10 @@ help:
     `<p>`Players must &bcollect every spell&f at their current rank to progress to the next
     `<p>`There are some spells, sorted to the end of the &bspellshop&f list, that are not required and are labelled as such.
     `<li>``<command command="mage promote" text="Promote yourself to the next rank">`
+  notloading: |-
+    `<title text="The Plugin Won't Load">`
+    `<p>`You may have the wrong version for your server?
+    `<p>`It's pretty hard to tell from here, you will need to check your servers logs for errors.
   examples:
     main: |-
       `<title text="Examples">`
