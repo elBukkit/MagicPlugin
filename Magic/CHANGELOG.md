@@ -2,6 +2,10 @@
 
 # 10.2
 
+## Fixes
+
+ - Fix SkillAPI integration (needs testing)
+
 ## Additions
  
  - Add `critical:` effects section for Damage action, when a critical hit occurs

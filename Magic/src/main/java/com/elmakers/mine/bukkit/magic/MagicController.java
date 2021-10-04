@@ -1879,6 +1879,9 @@ public class MagicController implements MageController {
         if (heroesManager != null) {
             heroesManager.load(configuration);
         }
+    }
+
+    private void loadPostIntegrations(ConfigurationSection configuration) {
         if (skillAPIManager != null) {
             skillAPIManager.load(configuration);
         }
@@ -1924,8 +1927,11 @@ public class MagicController implements MageController {
 
         // Integrate with any plugins that don't need to be done at startup
         if (!loaded) {
-            finalizeIntegrationPostLoad();
+            finalizeIntegrationPostLoad(loader.getMainConfiguration());
         } else {
+            // Load integrations for plugins that can't be attached until after load time
+            loadPostIntegrations(loader.getMainConfiguration());
+
             // Update anything in the world that may have had its config changed
             logger.setContext("reload active magic blocks");
             try {
@@ -7679,21 +7685,6 @@ public class MagicController implements MageController {
             getLogger().warning(ex.getMessage());
         }
 
-        // Check for SkillAPI
-        Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
-        if (skillAPIPlugin != null && skillAPIEnabled) {
-            skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
-            if (skillAPIManager.initialize()) {
-                getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
-            } else {
-                skillAPIManager = null;
-                getLogger().warning("SkillAPI integration failed");
-            }
-        } else if (!skillAPIEnabled) {
-            skillAPIManager = null;
-            getLogger().info("SkillAPI integration disabled");
-        }
-
         // Mythic Mobs
         Plugin mythicMobsPlugin = pluginManager.getPlugin("MythicMobs");
         if (mythicMobsPlugin != null) {
@@ -7732,7 +7723,7 @@ public class MagicController implements MageController {
         }
     }
 
-    public void finalizeIntegrationPostLoad() {
+    public void finalizeIntegrationPostLoad(ConfigurationSection mainConfiguration) {
         logger.setContext("integration");
 
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
@@ -7860,6 +7851,21 @@ public class MagicController implements MageController {
             } catch (Exception ex) {
                 getLogger().log(Level.WARNING, "Error integrating with DeadSouls, is it up to date? Version 1.6 or higher required.", ex);
             }
+        }
+
+        // Check for SkillAPI
+        Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
+        if (skillAPIPlugin != null && skillAPIEnabled) {
+            skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
+            if (skillAPIManager.initialize()) {
+                getLogger().info("SkillAPI found, attributes can be used in spell parameters. Classes and skills can be used in requirements.");
+            } else {
+                skillAPIManager = null;
+                getLogger().warning("SkillAPI integration failed");
+            }
+        } else if (!skillAPIEnabled) {
+            skillAPIManager = null;
+            getLogger().info("SkillAPI integration disabled");
         }
 
         // Link to PreciousStones
@@ -8065,6 +8071,9 @@ public class MagicController implements MageController {
         } else {
             getLogger().info("UltimateClans Lands integration disabled.");
         }
+
+        // Load integrations for plugins that can't be attached until after load time
+        loadPostIntegrations(mainConfiguration);
 
         // Set up the Mage update timer
         final MageUpdateTask mageTask = new MageUpdateTask(this);
