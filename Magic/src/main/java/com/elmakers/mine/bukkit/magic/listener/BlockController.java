@@ -12,7 +12,6 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.PistonMoveReaction;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
@@ -245,7 +244,7 @@ public class BlockController implements Listener, ChunkLoadListener {
     public void onPistonRetract(BlockPistonRetractEvent event) {
         // Immediately undo or commit any blocks involved
         for (Block block : event.getBlocks()) {
-            BlockData undoData = controller.getUndoData(block.getLocation());
+            BlockData undoData = controller.getModifiedBlock(block.getLocation());
             if (undoData != null) {
                 UndoList undoList = undoData.getUndoList();
                 if (undoList.isScheduled()) {
@@ -260,82 +259,26 @@ public class BlockController implements Listener, ChunkLoadListener {
     @EventHandler(ignoreCancelled = true)
     public void onPistonExtend(BlockPistonExtendEvent event) {
         Block piston = event.getBlock();
-        Block block = piston.getRelative(event.getDirection());
-        // See if this block is going to get pushed or broken or what
-        PistonMoveReaction reaction = block.getPistonMoveReaction();
+        boolean undone = false;
 
-        // Ignore blocked moves
-        if (reaction == PistonMoveReaction.BLOCK) {
-            return;
-        }
-
-        UndoList undoList = controller.getPendingUndo(block.getLocation());
-        if (undoList == null) {
-            undoList = controller.getPendingUndo(piston.getLocation());
-        }
-
-        // If either the block or the piston is magical, mark the piston for undo
-        if (undoList != null) {
-            undoList.add(piston);
-        }
-
-        // Determine how many blocks ahead we may need to look, minecraft will move up to 13
-        // blocks by default.
-        // TODO: Can we get this number programatically from somewhere?
-        // We need to store the final air block since we'll be pushing a block into that
-        // But after that, we can quit
-        final int MAX_BLOCKS = 14;
-
-        // Look ahead to see if any part of the blocks moving in this chain have been modified magically
-        while (block != null) {
-            block = handleMovedBlock(undoList, block, event.getDirection(), reaction, MAX_BLOCKS);
-
-            // If we n eed to keep looking, update state given new target block
-            if (block != null) {
-                // Determine the reaction for the new block type
-                reaction = block.getPistonMoveReaction();
-
-                // Look for new modification source
-                UndoList newUndo = controller.getPendingUndo(block.getLocation());
-                if (newUndo != null) {
-                    undoList = newUndo;
+        // Immediately undo or commit any blocks involved
+        for (Block block : event.getBlocks()) {
+            BlockData undoData = controller.getModifiedBlock(block.getLocation());
+            if (undoData != null) {
+                undone = true;
+                UndoList undoList = undoData.getUndoList();
+                if (undoList.isScheduled()) {
+                    undoData.undo(false);
+                } else {
+                    undoData.commit();
                 }
             }
         }
-    }
 
-    private Block handleMovedBlock(UndoList undoList, Block block, BlockFace direction, PistonMoveReaction reaction, int movesRemaining) {
-        Block nextBlock = null;
-        // If the move is blocked, we are done
-        if (reaction == PistonMoveReaction.BLOCK) {
-            return nextBlock;
+        // If we undid anything, cancel this event
+        if (undone) {
+            event.setCancelled(true);
         }
-
-        if (reaction == PistonMoveReaction.BREAK) {
-            // If none of the blocks so far have been magically modified, we are done.
-            if (undoList == null) return nextBlock;
-
-            // This block is about to be broken, we will break it but avoid dropping an item.
-            undoList.add(block);
-            CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
-            CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte) 0, false);
-        } else {
-            // This block is about to become the piston head
-            if (undoList != null) undoList.add(block);
-
-            // Continue to look for more solid blocks we'll push
-            block = block.getRelative(direction);
-            if (undoList != null) undoList.add(block);
-
-            // See if we should continue looking
-            // We need to keep looking until we hit air or the limit of piston pushing
-            // even if nothing so far has been magically modified, there *may* be blocks further
-            // down in the chain that have been.
-            if (movesRemaining-- > 0 && !DefaultMaterials.isAir(block.getType())) {
-                nextBlock = block;
-            }
-        }
-        return nextBlock;
     }
 
     @EventHandler(ignoreCancelled = true)

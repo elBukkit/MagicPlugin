@@ -1715,6 +1715,10 @@ public class MagicController implements MageController {
         return com.elmakers.mine.bukkit.block.UndoList.getBlockData(location);
     }
 
+    public com.elmakers.mine.bukkit.api.block.BlockData getModifiedBlock(Location location) {
+        return com.elmakers.mine.bukkit.block.UndoList.getModified(location);
+    }
+
     protected void addPending(Mage mage) {
         pendingConstruction.add(mage);
     }
