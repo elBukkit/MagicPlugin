@@ -88,6 +88,8 @@ public class MobTargeting {
             if (checkTarget == mageEntity) continue;
             double distanceTo = location.distanceSquared(checkTarget.getLocation());
             if (distanceTo > closestDistance) continue;
+            Mage targetMage = controller.getRegisteredMage(checkTarget);
+            if (targetMage != null && targetMage.isIgnoredByMobs()) continue;
             closestDistance = distanceTo;
             closestEntity = checkTarget;
         }

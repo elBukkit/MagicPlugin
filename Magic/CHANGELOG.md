@@ -22,6 +22,7 @@
    Use `require_target_permission: false` to the spell if you do not want this.
  - Yet another piston dupe exploit fix (WIP .. need to decide how to do this before we push to stable)  
  - Fix some errors that may appear on config load when Vault is not present
+ - Fix magic mobs with aggro behavior targeting players with the "ignored by mobs tag"
 
 # 10.1
 

@@ -96,6 +96,12 @@ public class MageTargeting {
             }
         }
 
+        // Ignore damage from entities that are ignored by mobs
+        Mage damagerMage = mage.getController().getRegisteredMage(damager);
+        if (damagerMage != null && damagerMage.isIgnoredByMobs()) {
+            return;
+        }
+
         if (topDamager != null) {
             if (topDamager.getEntity() == null || topDamager.damage < lastDamager.damage || !withinRange(topDamager.getEntity())) {
                 topDamager = lastDamager;
