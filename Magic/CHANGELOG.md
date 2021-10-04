@@ -20,7 +20,8 @@
  - Fix spellbook spells disappearing when clicked
  - Fix Recall allowing you to teleport into an area where you can't use Recall
    Use `require_target_permission: false` to the spell if you do not want this.
- - Yet another piston dupe exploit fix  
+ - Yet another piston dupe exploit fix (WIP .. need to decide how to do this before we push to stable)  
+ - Fix some errors that may appear on config load when Vault is not present
 
 # 10.1
 

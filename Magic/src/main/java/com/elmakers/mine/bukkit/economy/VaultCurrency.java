@@ -64,33 +64,37 @@ public class VaultCurrency extends BaseMagicCurrency {
 
     @Override
     public String getName(Messages messages) {
-        if (customFormatting) {
+        VaultController vault = VaultController.getInstance();
+        if (customFormatting || vault == null) {
             return super.getName(messages);
         }
-        return VaultController.getInstance().getCurrencyPlural();
+        return vault.getCurrencyPlural();
     }
 
     @Override
     public String getShortName(Messages messages) {
-        if (customFormatting) {
+        VaultController vault = VaultController.getInstance();
+        if (customFormatting || vault == null) {
             return super.getShortName(messages);
         }
-        return VaultController.getInstance().getCurrency();
+        return vault.getCurrency();
     }
 
     @Override
     public String getSingularName(Messages messages) {
-        if (customFormatting) {
+        VaultController vault = VaultController.getInstance();
+        if (customFormatting || vault == null) {
             return super.getSingularName(messages);
         }
-        return VaultController.getInstance().getCurrency();
+        return vault.getCurrency();
     }
 
     @Override
     public String formatAmount(double amount, Messages messages) {
-        if (customFormatting) {
+        VaultController vault = VaultController.getInstance();
+        if (customFormatting || vault == null) {
             return super.formatAmount(amount, messages);
         }
-        return VaultController.getInstance().format(amount);
+        return vault.format(amount);
     }
 }
