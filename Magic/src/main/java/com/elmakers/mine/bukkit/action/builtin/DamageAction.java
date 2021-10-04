@@ -43,6 +43,7 @@ public class DamageAction extends BaseSpellAction
     private double criticalMultiplier;
     private int noDamageTicks;
     private boolean cancelOnKillTarget;
+    private String criticalEffectsKey;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -81,6 +82,7 @@ public class DamageAction extends BaseSpellAction
         damageSourceLocation = new SourceLocation(parameters.getString("damage_source_location", "BODY"), false);
         criticalProbability = parameters.getDouble("critical_probability", 0);
         criticalMultiplier = parameters.getDouble("critical_damage_multiplier", 0);
+        criticalEffectsKey = parameters.getString("critical_effects", "critical");
     }
 
     @Override
@@ -151,6 +153,7 @@ public class DamageAction extends BaseSpellAction
                 }
                 if (criticalProbability > 0 && criticalMultiplier > 0 && context.getRandom().nextDouble() <= criticalProbability) {
                     damage *= criticalMultiplier;
+                    context.playEffects(criticalEffectsKey);
                 }
                 damage = Math.max(minDamage, damage);
                 if (damageType != null) {

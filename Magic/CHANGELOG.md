@@ -2,6 +2,10 @@
 
 # 10.2
 
+## Additions
+ 
+ - Add `critical:` effects section for Damage action, when a critical hit occurs
+
 ## Balance Changes
 
  - Nerf Blast damage
