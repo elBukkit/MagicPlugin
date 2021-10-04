@@ -263,6 +263,8 @@ public class BlockController implements Listener, ChunkLoadListener {
         Block block = piston.getRelative(event.getDirection());
         // See if this block is going to get pushed or broken or what
         PistonMoveReaction reaction = block.getPistonMoveReaction();
+
+        // Ignore blocked moves
         if (reaction == PistonMoveReaction.BLOCK) {
             return;
         }
@@ -271,17 +273,32 @@ public class BlockController implements Listener, ChunkLoadListener {
         if (undoList == null) {
             undoList = controller.getPendingUndo(piston.getLocation());
         }
+
+        // If either the block or the piston is magical, mark the piston for undo
         if (undoList != null) {
-            // This block stores the state of the piston, maybe
             undoList.add(piston);
-            // We need to store the final air block since we'll be pushing a block into that
-            // But after that, we can quit
-            final int MAX_BLOCKS = 14;
-            while (block != null) {
-                block = handleMovedBlock(undoList, block, event.getDirection(), reaction, MAX_BLOCKS);
+        }
+
+        // Determine how many blocks ahead we may need to look, minecraft will move up to 13
+        // blocks by default.
+        // TODO: Can we get this number programatically from somewhere?
+        // We need to store the final air block since we'll be pushing a block into that
+        // But after that, we can quit
+        final int MAX_BLOCKS = 14;
+
+        // Look ahead to see if any part of the blocks moving in this chain have been modified magically
+        while (block != null) {
+            block = handleMovedBlock(undoList, block, event.getDirection(), reaction, MAX_BLOCKS);
+
+            // If we n eed to keep looking, update state given new target block
+            if (block != null) {
                 // Determine the reaction for the new block type
-                if (block != null) {
-                    reaction = block.getPistonMoveReaction();
+                reaction = block.getPistonMoveReaction();
+
+                // Look for new modification source
+                UndoList newUndo = controller.getPendingUndo(block.getLocation());
+                if (newUndo != null) {
+                    undoList = newUndo;
                 }
             }
         }
@@ -289,20 +306,31 @@ public class BlockController implements Listener, ChunkLoadListener {
 
     private Block handleMovedBlock(UndoList undoList, Block block, BlockFace direction, PistonMoveReaction reaction, int movesRemaining) {
         Block nextBlock = null;
+        // If the move is blocked, we are done
+        if (reaction == PistonMoveReaction.BLOCK) {
+            return nextBlock;
+        }
+
         if (reaction == PistonMoveReaction.BREAK) {
+            // If none of the blocks so far have been magically modified, we are done.
+            if (undoList == null) return nextBlock;
+
             // This block is about to be broken, we will break it but avoid dropping an item.
             undoList.add(block);
             CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
             CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte) 0, false);
         } else {
             // This block is about to become the piston head
-            undoList.add(block);
+            if (undoList != null) undoList.add(block);
 
             // Continue to look for more solid blocks we'll push
             block = block.getRelative(direction);
-            undoList.add(block);
+            if (undoList != null) undoList.add(block);
 
             // See if we should continue looking
+            // We need to keep looking until we hit air or the limit of piston pushing
+            // even if nothing so far has been magically modified, there *may* be blocks further
+            // down in the chain that have been.
             if (movesRemaining-- > 0 && !DefaultMaterials.isAir(block.getType())) {
                 nextBlock = block;
             }
