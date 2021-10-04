@@ -3548,6 +3548,8 @@ public class MagicController implements MageController {
             registeredAttributes.add(enchantmentKey);
         }
         for (PotionEffectType potionEffect : PotionEffectType.values()) {
+            // WTF bukkit?
+            if (potionEffect == null) continue;
             registeredAttributes.add(potionEffect.getName().toLowerCase());
         }
         registerPlayerAttributes(this.attributes.keySet());
