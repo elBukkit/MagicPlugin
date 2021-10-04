@@ -15,6 +15,7 @@ import org.bukkit.block.data.Powerable;
 import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Dispenser;
 import org.bukkit.block.data.type.Door;
+import org.bukkit.block.data.type.Piston;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.spigotmc.event.entity.EntityDismountEvent;
@@ -126,6 +127,21 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             return true;
         }
         if (blockData instanceof AnaloguePowerable) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean extendPiston(Block block) {
+        BlockData blockData = block.getBlockData();
+        if (blockData == null) {
+            return false;
+        }
+        if (blockData instanceof Piston) {
+            Piston piston = (Piston)blockData;
+            piston.setExtended(true);
+            block.setBlockData(piston, true);
             return true;
         }
         return false;

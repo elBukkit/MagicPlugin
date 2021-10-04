@@ -389,6 +389,8 @@ public interface CompatibilityUtils {
 
     boolean setPowered(Block block, boolean powered);
 
+    boolean extendPiston(Block block);
+
     boolean toggleBlockPower(Block block);
 
     boolean canToggleBlockPower(Block block);

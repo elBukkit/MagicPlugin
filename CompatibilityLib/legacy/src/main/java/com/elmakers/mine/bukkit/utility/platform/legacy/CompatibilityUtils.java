@@ -70,6 +70,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.material.Door;
 import org.bukkit.material.MaterialData;
+import org.bukkit.material.PistonBaseMaterial;
 import org.bukkit.material.RedstoneWire;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
@@ -1933,6 +1934,19 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         BlockState blockState = block.getState();
         MaterialData data = blockState.getData();
         if (data instanceof RedstoneWire) {
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean extendPiston(Block block) {
+        BlockState blockState = block.getState();
+        MaterialData data = blockState.getData();
+        if (data instanceof PistonBaseMaterial) {
+            PistonBaseMaterial pistonData = (PistonBaseMaterial)data;
+            pistonData.setPowered(true);
+            blockState.update();
             return true;
         }
         return false;
