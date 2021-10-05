@@ -1490,6 +1490,7 @@ spells:
     vengeance:
         name: Vengeance
         description: Absorb damage taken and then deal it back in full
+        upgrade_description: "Deals more damage back"
     soulburn:
         name: Soulburn
         description: Your opponent's mana supply burns them to the core
