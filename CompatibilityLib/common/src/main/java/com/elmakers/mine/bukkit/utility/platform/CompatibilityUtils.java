@@ -529,6 +529,8 @@ public interface CompatibilityUtils {
 
     void openSign(Player player, Location signBlock);
 
+    Collection<BoundingBox> getBoundingBoxes(Block block);
+
     @Nonnull
     FallingBlock spawnFallingBlock(Location location, Material material, String blockData);
 }

@@ -66,6 +66,7 @@ import org.bukkit.util.Vector;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.ChatUtils;
+import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
 import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
@@ -82,6 +83,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected static final int MAX_ENTITY_RANGE = 72;
     protected static boolean USE_MAGIC_DAMAGE = true;
     protected static int BLOCK_BREAK_RANGE = 64;
+
+    protected static final BoundingBox BLOCK_BOUNDING_BOX = new BoundingBox(0, 1, 0, 1, 0, 1);
+    protected static final List<BoundingBox> BLOCK_BOUNDING_BOXES = new ArrayList<>(1);
 
     protected final UUID emptyUUID = new UUID(0L, 0L);
     protected final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
@@ -1045,5 +1049,12 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
         setBossBarTitle(bossBar, title);
         return true;
+    }
+
+    @Override
+    public Collection<BoundingBox> getBoundingBoxes(Block block) {
+        BoundingBox translated = new BoundingBox(block.getLocation().toVector(), BLOCK_BOUNDING_BOX);
+        BLOCK_BOUNDING_BOXES.set(0, translated);
+        return BLOCK_BOUNDING_BOXES;
     }
 }

@@ -27,6 +27,11 @@ public class BoundingBox
         this.max = new Vector(center.getX() + dMaxX, center.getY() + dMaxY, center.getZ() + dMaxZ);
     }
 
+    public BoundingBox(Vector center, BoundingBox shape)
+    {
+        this(center, shape.min.getX(), shape.max.getX(), shape.min.getY(), shape.max.getY(), shape.min.getZ(), shape.max.getZ());
+    }
+
     public BoundingBox center(Vector center)
     {
         BoundingBox results = new BoundingBox(min, max);
