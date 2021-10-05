@@ -23,6 +23,7 @@
  - Yet another piston dupe exploit fix 
  - Fix some errors that may appear on config load when Vault is not present
  - Fix magic mobs with aggro behavior targeting players with the "ignored by mobs tag"
+ - Fix potter spells with the same name as survival spells (arrow, stash)
 
 # 10.1
 

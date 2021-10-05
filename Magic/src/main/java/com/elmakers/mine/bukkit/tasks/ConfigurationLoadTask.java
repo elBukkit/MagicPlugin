@@ -755,6 +755,9 @@ public class ConfigurationLoadTask implements Runnable {
                     // Include this config, but make it disabled
                     disableConfig.set("enabled", false);
                     config.set(key, disableConfig);
+                } else {
+                    existing = ConfigurationUtils.addConfigurations(existing, disableConfig, false);
+                    config.set(key, existing);
                 }
             }
         }
