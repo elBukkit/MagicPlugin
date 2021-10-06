@@ -1,4 +1,6 @@
 otherside_mobs:
+  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
+  inherit: false
   world: world_other
   entity_spawn:
 
@@ -63,7 +65,7 @@ otherside_mobs:
         undead_minion: 100
         warlock: 1
         blaze: 5
-        none: 50
+        remove: 50
 
     creeper:
       class: Replace
@@ -72,6 +74,7 @@ otherside_mobs:
       replace_type:
         warlock: 1
         blaze: 5
+        remove: 100
 
     zombie:
       class: Replace
@@ -81,6 +84,7 @@ otherside_mobs:
         mutant: 10
         mutant_captain: 1
         blaze: 5
+        remove: 100
 
     spider:
       class: Replace
@@ -91,7 +95,7 @@ otherside_mobs:
         mega_spider: 1
         mutant_spider: 10
         # Spiders are everywhere! eek
-        none: 10
+        remove: 50
 
     horse:
       target_type: horse

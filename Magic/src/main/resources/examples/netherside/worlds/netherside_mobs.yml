@@ -72,6 +72,7 @@ netherside_mobs:
         warlock: 10
         dark_wizard: 1
         killer_bunny: 20
+        remove: 100
 
     skeleton:
       class: Replace
@@ -82,7 +83,7 @@ netherside_mobs:
         undead_minion: 100
         dark_wizard: 1
         blaze: 5
-        none: 50
+        remove: 500
 
     creeper:
       class: Replace
@@ -93,6 +94,7 @@ netherside_mobs:
         zombified_piglin: 20
         piglin: 50
         blaze: 5
+        remove: 500
 
     zombie:
       class: Replace
@@ -104,6 +106,7 @@ netherside_mobs:
         zombified_piglin: 25
         piglin: 10
         blaze: 5
+        remove: 500
 
     spider:
       class: Replace
@@ -114,7 +117,7 @@ netherside_mobs:
         mega_spider: 1
         mutant_spider: 10
         # Spiders are everywhere! eek
-        none: 10
+        remove: 50
 
     enderman:
       class: Replace
@@ -126,6 +129,7 @@ netherside_mobs:
         giant: 5
         wither_skeleton: 25
         blaze: 20
+        remove: 100
 
     horse:
       target_type: horse

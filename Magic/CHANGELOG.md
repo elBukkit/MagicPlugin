@@ -5,6 +5,7 @@
 ## Improvements
 
  - More precise targeting through blocks like stairs and carpet
+ - Improvement natural mob spawning, rebalance otherside and netherside spawns
 
 ## Fixes
 
