@@ -123,6 +123,7 @@ help:
     `<li>``<command command="cast lootshop" text="Test the mob loot sell shop">`
     `<li>``<command command="mnpc add lootshop" text="Add a loot shop NPC">`
     `<li>``<command command="meditor spell glassshop" text="Edit a shop, prices can be set directly in the shop config">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/examples/survival/items/economy.yml" text="See all default item prices">` (you can copy this file to your items folder if you wish to edit them all in one place)
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Shops" text="More shop information on the wiki">`
     `<li>``<help topic="playershops" text="About player shops">`
   playershops: |-
