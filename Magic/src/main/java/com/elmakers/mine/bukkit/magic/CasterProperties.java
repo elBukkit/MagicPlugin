@@ -1374,7 +1374,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                         }
                     }
 
-                    String templateName = "attributes." + key;
+                    String templateName = "attribute." + key;
                     if (controller.getMessages().get(getMessageKey(templateName), "").isEmpty()) {
                         templateName = "attributes";
                     }
