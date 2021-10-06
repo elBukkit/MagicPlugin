@@ -85,7 +85,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected static int BLOCK_BREAK_RANGE = 64;
 
     protected static final BoundingBox BLOCK_BOUNDING_BOX = new BoundingBox(0, 1, 0, 1, 0, 1);
-    protected static final List<BoundingBox> BLOCK_BOUNDING_BOXES = new ArrayList<>(1);
+    protected final List<BoundingBox> blockBoundingBoxes = new ArrayList<>();
 
     protected final UUID emptyUUID = new UUID(0L, 0L);
     protected final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
@@ -101,6 +101,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     protected CompatibilityUtilsBase(final Platform platform) {
         this.platform = platform;
+        // This will be replaced, but adding it here lets us initialize the list to be the right size
+        // There's probably a cleaner way to get a mutable pre-initialized list, but I couldn't figure it ou.
+        blockBoundingBoxes.add(BLOCK_BOUNDING_BOX);
     }
 
     @Override
@@ -1054,7 +1057,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public Collection<BoundingBox> getBoundingBoxes(Block block) {
         BoundingBox translated = new BoundingBox(block.getLocation().toVector(), BLOCK_BOUNDING_BOX);
-        BLOCK_BOUNDING_BOXES.set(0, translated);
-        return BLOCK_BOUNDING_BOXES;
+        blockBoundingBoxes.set(0, translated);
+        return blockBoundingBoxes;
     }
 }
