@@ -127,6 +127,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
     }
 
     public void addPendingRemoval(Entity entity) {
+        CompatibilityLib.getCompatibilityUtils().setInvisible(entity, true);
         pendingRemoval.add(entity);
         if (removalTask == null) {
             Plugin plugin = controller.getPlugin();
