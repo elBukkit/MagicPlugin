@@ -184,7 +184,7 @@
                 "dialog_interval": "How long to wait before speaking each line of dialog",
                 "dialog_range": "How close a player must be before the NPC will start speaking to them",
                 "direction": "The direction to search",
-                "disguise": "A disguise to use\\nrequires the LibsDisguise plugin",
+                "disguise": "A disguise to use\\nrequires the LibsDisguises plugin",
                 "disguise_target": "What player to use when disguising\\nThis will copy the target player's skin",
                 "docile": "Make this mob avoid targeting other mobs",
                 "drop_xp": "Amount of experience a mob should drop on death",
@@ -338,7 +338,7 @@
                 "dialog_interval": "How long to wait before speaking each line of dialog",
                 "dialog_range": "How close a player must be before the NPC will start speaking to them",
                 "disabled_slots": "A bitmask of slots to disable, making it so players can not interact with them\\nYou may need to look up how to use this on the Minecraft wiki",
-                "disguise": "A disguise to use\\nrequires the LibsDisguise plugin",
+                "disguise": "A disguise to use\\nrequires the LibsDisguises plugin",
                 "distance_weight": "Tweak how important the distance to the target is when performing targeting",
                 "docile": "Make this mob avoid targeting other mobs",
                 "drag": "",
@@ -1851,7 +1851,7 @@
             "importance": 0,
             "name": "Disguise",
             "parameters": {
-                "disguise": "A disguise to use\\nrequires the LibsDisguise plugin"
+                "disguise": "A disguise to use\\nrequires the LibsDisguises plugin"
             },
             "short_class": "Disguise"
         },
@@ -2930,7 +2930,7 @@
                 "dialog_interval": "How long to wait before speaking each line of dialog",
                 "dialog_range": "How close a player must be before the NPC will start speaking to them",
                 "direction": "The direction to search",
-                "disguise": "A disguise to use\\nrequires the LibsDisguise plugin",
+                "disguise": "A disguise to use\\nrequires the LibsDisguises plugin",
                 "disguise_target": "What player to use when disguising\\nThis will copy the target player's skin",
                 "docile": "Make this mob avoid targeting other mobs",
                 "drop_xp": "Amount of experience a mob should drop on death",
@@ -4366,7 +4366,7 @@
                 "dialog_interval": "How long to wait before speaking each line of dialog",
                 "dialog_range": "How close a player must be before the NPC will start speaking to them",
                 "direction": "The direction to search",
-                "disguise": "A disguise to use\\nrequires the LibsDisguise plugin",
+                "disguise": "A disguise to use\\nrequires the LibsDisguises plugin",
                 "disguise_target": "What player to use when disguising\\nThis will copy the target player's skin",
                 "docile": "Make this mob avoid targeting other mobs",
                 "drop_xp": "Amount of experience a mob should drop on death",

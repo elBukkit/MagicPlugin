@@ -534,6 +534,9 @@ help:
   not_loading: |-
     `<title text="The Plugin Won't Load">`
     `<p>`You may have the wrong version for your server?
+    `<p>`Current versions of Magic are compatible with the following versions:
+    `<p>`1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17
+    `<p>`For older versions of Minecraft you will need Magic 8.x
     `<p>`It's pretty hard to tell from here, you will need to check your servers logs for errors.
   examples:
     main: |-
