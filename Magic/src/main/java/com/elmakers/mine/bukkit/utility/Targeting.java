@@ -13,6 +13,7 @@ import java.util.WeakHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -326,11 +327,20 @@ public class Targeting {
             block = currentBlock;
         }
 
-        if (isBlock) {
-            return new Target(source, block, useHitbox, hitboxBlockPadding);
+        Target targetBlock = null;
+        if (block != null || isBlock) {
+            if (result == TargetingResult.BLOCK) {
+                targetBlock = new Target(source, block, useHitbox, hitboxBlockPadding);
+            } else {
+                Vector direction = source.getDirection();
+                Location targetLocation = source.clone().add(direction.multiply(range));
+                targetBlock = new Target(source, targetLocation, useHitbox, hitboxBlockPadding);
+            }
         }
 
-        Target targetBlock = block == null ? null : new Target(source, block, useHitbox, hitboxBlockPadding);
+        if (isBlock) {
+            return targetBlock;
+        }
 
         // Don't target entities beyond the block we just hit,
         // but only if that block was solid, and not just at max range
@@ -399,7 +409,7 @@ public class Targeting {
         }
 
         currentBlock = source.getBlock();
-        if (context.isTargetable(currentBlock)) {
+        if (isTargetable(context, currentBlock)) {
             result = TargetingResult.BLOCK;
             return;
         }
@@ -424,7 +434,7 @@ public class Targeting {
         while (block != null)
         {
             if (targetMinOffset <= 0) {
-                if (targetSpaceRequired && context instanceof  CastContext) {
+                if (targetSpaceRequired && context instanceof CastContext) {
                     CastContext castContext = (CastContext)context;
                     if (!castContext.allowPassThrough(block)) {
                         break;
@@ -432,7 +442,7 @@ public class Targeting {
                     if (castContext.isOkToStandIn(block) && castContext.isOkToStandIn(block.getRelative(BlockFace.UP))) {
                         break;
                     }
-                } else if (context.isTargetable(block)) {
+                } else if (isTargetable(context, block)) {
                     break;
                 }
             } else {
@@ -445,6 +455,45 @@ public class Targeting {
             currentBlock = previousBlock;
             previousBlock = previousPreviousBlock;
         }
+    }
+
+    private boolean isTargetable(MageContext context, Block block) {
+        if (!context.isTargetable(block)) return false;
+        if (useHitbox && !intersects(block)) return false;
+        return true;
+    }
+
+    public boolean intersects(Block block) {
+        Vector sourceDirection = source.getDirection();
+        Vector sourceLocation = source.toVector();
+
+        // Look out a long distance, enough to cover any valid range query
+        Vector endPoint = sourceLocation.clone().add(sourceDirection.clone().multiply(1000));
+        // Back up a bit
+        Vector startPoint = sourceLocation.clone().add(sourceDirection.multiply(-0.1));
+
+        Collection<BoundingBox> hitboxes = CompatibilityLib.getCompatibilityUtils().getBoundingBoxes(block);
+        if (Target.DEBUG_TARGETING) {
+            org.bukkit.Bukkit.getLogger().info(" Checking hitboxes for block "
+                + block.getType() + " : " + StringUtils.join(hitboxes)
+                + " from " + startPoint.toBlockVector() + " to " + endPoint.toBlockVector()
+                + " rot: " + sourceDirection);
+        }
+        for (BoundingBox hitbox : hitboxes) {
+            if (hitboxPadding > 0) {
+                hitbox.expand(hitboxPadding);
+            }
+
+            // This is a more efficient check as a first-pass
+            if (hitbox.intersectsLine(startPoint, endPoint)) {
+                if (Target.DEBUG_TARGETING) {
+                    Vector hit = Target.getIntersection(block, startPoint, endPoint, hitboxPadding);
+                    org.bukkit.Bukkit.getLogger().info(" Hit block at " + hit);
+                }
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<Target> getAllTargetEntities(MageContext context, double range) {
@@ -511,6 +560,7 @@ public class Targeting {
         }
 
         if (entities == null) return targets;
+        int useRange = (int)Math.ceil(range + hitboxPadding);
         for (Entity entity : entities)
         {
             if (ignoreEntities.contains(entity.getUniqueId())) continue;
@@ -520,7 +570,6 @@ public class Targeting {
             if (!context.canTarget(entity)) continue;
 
             Target newScore = null;
-            int useRange = (int)Math.ceil(range + hitboxPadding);
             if (useHitbox) {
                 newScore = new Target(source, entity, useRange, useHitbox, hitboxPadding);
             } else {

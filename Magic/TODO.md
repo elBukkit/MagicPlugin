@@ -2,15 +2,9 @@
 
 # Next Up:
 
- - Still need to fix re-joining an arena, it kicks you out at the end
- - Also delay respawn tp, or double-tp .. need to prevent going home
- ... idk, I feel like the whole deadPlayers system needs some re-thinking
-   
- - IonTech says attributes in protection on a class does not work
+ - you can hotkey/shiftclick uncraftable: true items into the crafting tables/inventory menu.
 
  - Add $attributes custom wand option, to show attribute modifiers like in standard lore
-
- - Safe example breaks enchant table (could not reproduce, maybe fixed in 10.1?)
 
  - Add sleep/lay down triggers
 

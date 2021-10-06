@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility;
 
 import java.lang.ref.WeakReference;
+import java.util.Collection;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -39,7 +40,8 @@ public class Target implements Comparable<Target>
     private MaterialAndData locationMaterial;
     private WeakReference<Entity> entityRef;
     private WeakReference<Mage>   mageRef;
-    private boolean  reverseDistance = false;
+    private boolean reverseDistance = false;
+    private boolean atMaxRange = false;
 
     private double   distanceSquared    = 100000;
     private double   angle              = 10000;
@@ -75,6 +77,17 @@ public class Target implements Comparable<Target>
         this.useHitbox = hitbox;
         this.hitboxPadding = hitboxPadding;
         this.setBlock(block);
+        calculateScore();
+    }
+
+    public Target(Location sourceLocation, Location targetLocation, boolean hitbox, double hitboxPadding)
+    {
+        this.source = sourceLocation;
+        getSourceMaterial(targetLocation.getBlock());
+        this.useHitbox = hitbox;
+        this.hitboxPadding = hitboxPadding;
+        this.location = targetLocation;
+        this.atMaxRange = true;
         calculateScore();
     }
 
@@ -277,18 +290,43 @@ public class Target implements Comparable<Target>
         return score;
     }
 
+
+    public Vector getIntersection(Block block, Vector startPoint, Vector endPoint) {
+        return getIntersection(block, startPoint, endPoint, hitboxPadding);
+    }
+
+    public static Vector getIntersection(Block block, Vector startPoint, Vector endPoint, double hitboxPadding) {
+        Collection<BoundingBox> hitboxes = CompatibilityLib.getCompatibilityUtils().getBoundingBoxes(block);
+        for (BoundingBox hitbox : hitboxes) {
+            if (hitboxPadding > 0) {
+                hitbox.expand(hitboxPadding);
+            }
+
+            // This is a more efficient check as a first-pass
+            if (!hitbox.intersectsLine(startPoint, endPoint)) {
+                continue;
+            }
+
+            Vector hit = hitbox.getIntersection(startPoint, endPoint);
+            if (hit != null) {
+                return hit;
+            }
+        }
+        return null;
+    }
+
     protected void calculateScore()
     {
         score = 0;
         if (source == null) return;
 
         Vector sourceDirection = source.getDirection();
-        Vector sourceLocation = new Vector(source.getX(), source.getY(), source.getZ());
+        Vector sourceLocation = source.toVector();
 
         Location targetLocation = getLocation();
         if (targetLocation == null) return;
 
-        Vector targetLoc = new Vector(targetLocation.getX(), targetLocation.getY(), targetLocation.getZ());
+        Vector targetLoc = targetLocation.toVector();
         Vector targetDirection = new Vector(targetLoc.getX() - sourceLocation.getX(), targetLoc.getY() - sourceLocation.getY(), targetLoc.getZ() - sourceLocation.getZ());
         distanceSquared = targetDirection.lengthSquared();
 
@@ -302,57 +340,58 @@ public class Target implements Comparable<Target>
             Vector endPoint = sourceLocation.clone().add(sourceDirection.clone().multiply(checkDistance));
             // Back up just a wee bit
             Vector startPoint = sourceLocation.clone().add(sourceDirection.multiply(-0.1));
-            BoundingBox hitbox = null;
-            if (entity != null)
-            {
-                hitbox = HitboxUtils.getHitbox(entity);
-            }
-            if (hitbox == null)
-            {
-                // We make this a little smaller to ensure the coordinates stay inside the block
-                hitbox =  new BoundingBox(targetLoc, -0.499, 0.499, -0.499, 0.499, -0.499, 0.499);
-                if (DEBUG_TARGETING)
-                {
-                    if (entity != null) {
+            Vector hit = null;
+            if (entity != null) {
+                BoundingBox hitbox = HitboxUtils.getHitbox(entity);
+                if (hitbox == null) {
+                    if (DEBUG_TARGETING) {
                         org.bukkit.Bukkit.getLogger().info(" failed to get hitbox for " + entity.getType() + " : " + targetLoc);
-                    } else {
-                        org.bukkit.Bukkit.getLogger().info(" got hitbox for block " + getBlock() + " : " + hitbox);
                     }
+                    // Create a placeholder hitbox assuming from entity eye location
+                    hitbox = new BoundingBox(targetLoc, -0.5, 0.5, -1, 0.5, -0.5, 0.5);
                 }
-            }
-            if (hitboxPadding > 0)
-            {
-                hitbox.expand(hitboxPadding);
-            }
 
-            if (DEBUG_TARGETING && entity != null)
-            {
-                org.bukkit.Bukkit.getLogger().info("CHECKING " + entity.getType() + ": " + hitbox + ", " + startPoint + " - " + endPoint + ": " + hitbox.intersectsLine(sourceLocation, endPoint));
-            }
+                // Compute hit location
+                if (hitboxPadding > 0) {
+                    hitbox.expand(hitboxPadding);
+                }
 
-            if (!hitbox.intersectsLine(startPoint, endPoint))
-            {
-                if (DEBUG_TARGETING && entity != null)
-                {
+                if (DEBUG_TARGETING) {
+                    org.bukkit.Bukkit.getLogger().info("CHECKING " + entity.getType() + ": " + hitbox + ", " + startPoint + " - " + endPoint + ": " + hitbox.intersectsLine(sourceLocation, endPoint));
+                }
+
+                if (hitbox.intersectsLine(startPoint, endPoint)) {
+                    hit = hitbox.getIntersection(startPoint, endPoint);
+                } else if (DEBUG_TARGETING) {
                     org.bukkit.Bukkit.getLogger().info(" block hitbox test failed from " + sourceLocation);
                 }
-                return;
+            } else if (!atMaxRange) {
+                hit = getIntersection(getBlock(), startPoint, endPoint);
+                if (DEBUG_TARGETING && hit == null) {
+                    org.bukkit.Bukkit.getLogger().info(" Failed to get intersection for block " + getBlock().getType()
+                        + " from " + startPoint.toBlockVector() + " to " + endPoint.toBlockVector()
+                        + " rot: " + sourceDirection);
+                }
             }
-            Vector hit = hitbox.getIntersection(startPoint, endPoint);
-            if (hit != null)
-            {
+            if (hit != null) {
                 location.setX(hit.getX());
                 location.setY(hit.getY());
                 location.setZ(hit.getZ());
+            }
 
-                if (location.getWorld().equals(source.getWorld()))
-                {
-                    distanceSquared = location.distanceSquared(source);
-                }
+            if (location.getWorld().equals(source.getWorld()))
+            {
+                distanceSquared = location.distanceSquared(source);
             }
             if (DEBUG_TARGETING)
             {
-                org.bukkit.Bukkit.getLogger().info("HIT: " + hit);
+                if (entity != null) {
+                    org.bukkit.Bukkit.getLogger().info("HIT Entity: " + hit);
+                } else if (atMaxRange) {
+                    org.bukkit.Bukkit.getLogger().info("MAX RANGE: " + hit);
+                } else {
+                    org.bukkit.Bukkit.getLogger().info("HIT: " + hit);
+                }
             }
         }
         else if (maxAngle > 0)

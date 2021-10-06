@@ -2,6 +2,10 @@
 
 # 10.2
 
+## Improvements
+
+ - More precise targeting through blocks like stairs and carpet
+
 ## Fixes
 
  - Fix SkillAPI integration (needs testing)
