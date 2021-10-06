@@ -188,10 +188,12 @@ public class Help {
             Object rawExamples = action.get("examples");
             if (rawExamples != null && rawExamples instanceof List) {
                 List<String> exampleList = (List<String>)rawExamples;
-                for (int i = 0; i < exampleList.size(); i++) {
-                    exampleList.set(i, exampleTemplate.replace("$example", exampleList.get(i)));
+                if (!exampleList.isEmpty()) {
+                    for (int i = 0; i < exampleList.size(); i++) {
+                        exampleList.set(i, exampleTemplate.replace("$example", exampleList.get(i)));
+                    }
+                    description += "\n" + examplesTemplate.replace("$examples", StringUtils.join(exampleList, " "));
                 }
-                description += "\n" + examplesTemplate.replace("$examples", StringUtils.join(exampleList, " "));
             }
             int importance = 0;
             Object rawImportance = action.get("importance");
