@@ -21,6 +21,9 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     public Collection<BoundingBox> getBoundingBoxes(Block block) {
         VoxelShape voxelShape = block.getCollisionShape();
         Collection<org.bukkit.util.BoundingBox> boxes = voxelShape.getBoundingBoxes();
+        if (boxes.isEmpty()) {
+            return super.getBoundingBoxes(block);
+        }
         List<BoundingBox> converted = new ArrayList<>(boxes.size());
         Vector center = block.getLocation().toVector();
 
