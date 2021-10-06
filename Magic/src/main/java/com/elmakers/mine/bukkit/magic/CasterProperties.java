@@ -1374,7 +1374,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                         }
                     }
 
-                    label = getPropertyString("attributes", value, max, true).replace("$attribute", label);
+                    String templateName = "attributes." + key;
+                    if (controller.getMessages().get(getMessageKey(templateName), "").isEmpty()) {
+                        templateName = "attributes";
+                    }
+                    label = getPropertyString(templateName, value, max, true).replace("$attribute", label);
                     lore.add(label);
                 }
             }
