@@ -15,6 +15,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.spawn.SpawnOption;
@@ -97,6 +98,13 @@ public class ReplaceRule extends SpawnRule {
             Entity spawned = replacement.spawn(location);
             if (spawned == null) {
                 return SpawnResult.SKIP;
+            }
+
+            // Make sure to flag mobs as non-persistent, unless they are explicitly set to persistent
+            // Otherwise we get pile-ups of mobs
+            if (!replacement.isPersistent()) {
+                CompatibilityLib.getCompatibilityUtils().setPersist(spawned, false);
+                CompatibilityLib.getCompatibilityUtils().setRemoveWhenFarAway(spawned, true);
             }
         }
 
