@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 public class Target implements Comparable<Target>
 {
     public static boolean DEBUG_TARGETING = false;
+    private static final double BLOCK_HIT_PADDING = 0.00000001;
 
     protected int    maxDistanceSquared = 128 * 128;
     protected int    minDistanceSquared = 0;
@@ -309,6 +310,15 @@ public class Target implements Comparable<Target>
 
             Vector hit = hitbox.getIntersection(startPoint, endPoint);
             if (hit != null) {
+
+                // Make sure the hit location is inside of the block
+                // I tried using Double.MIN_NORMAL but it didn't work.
+                hit.subtract(block.getLocation().toVector());
+                hit.setX((Math.max(BLOCK_HIT_PADDING, Math.min(1.0 - BLOCK_HIT_PADDING, hit.getX()))));
+                hit.setY((Math.max(BLOCK_HIT_PADDING, Math.min(1.0 - BLOCK_HIT_PADDING, hit.getY()))));
+                hit.setZ((Math.max(BLOCK_HIT_PADDING, Math.min(1.0 - BLOCK_HIT_PADDING, hit.getZ()))));
+                hit.add(block.getLocation().toVector());
+
                 return hit;
             }
         }
