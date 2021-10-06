@@ -324,6 +324,8 @@ public class EntityData
             removeWhenFarAway = parameters.getBoolean("remove_when_far_away");
         } else if (persist != null && persist) {
             removeWhenFarAway = false;
+        } else if (persist != null) {
+            removeWhenFarAway = true;
         }
         if (parameters.contains("invisible")) {
             invisible = parameters.getBoolean("invisible");
@@ -1433,6 +1435,11 @@ public class EntityData
     @Override
     public boolean isCombustible() {
         return combustible;
+    }
+
+    @Override
+    public boolean isPersistent() {
+        return persist == null ? false : persist;
     }
 
     @Nullable
