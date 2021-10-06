@@ -13,6 +13,7 @@
 ## Additions
  
  - Add `critical:` effects section for Damage action, when a critical hit occurs
+ - Add more custom wand lore placeholders: $attributes, $slots, $slot, $sets
 
 ## Balance Changes
 

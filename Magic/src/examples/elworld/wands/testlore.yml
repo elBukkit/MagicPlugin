@@ -1,0 +1,19 @@
+lorebroom:
+  inherit: broomstick
+  lore:
+    - $slots
+
+lorebroombooster:
+  inherit: broom_booster
+  lore:
+    - $slot
+
+lorewizardhelmet:
+  inherit: wizardhelmet
+  attributes:
+    testattribute: 5
+  lore:
+    - $sets
+    - $attributes
+
+

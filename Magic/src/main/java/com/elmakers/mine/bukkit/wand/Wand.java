@@ -2977,14 +2977,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         int materialCount = getBrushes().size();
 
         if (isUpgrade) {
-            String slot = getString("slot");
-            if (slot != null && !slot.isEmpty()) {
-                WandUpgradeSlotTemplate wandSlot = controller.getWandSlotTemplate(slot);
-                if (wandSlot == null || !wandSlot.isHidden()) {
-                    String slotName = controller.getMessages().get("wand_slots." + slot + ".name", slot);
-                    ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_slot").replace("$slot", slotName), lore);
-                }
-            }
+            addSlotLore(lore);
         }
 
         String pathName = getPathName();
@@ -3048,86 +3041,11 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         addPropertyLore(lore, isSingleSpell);
         if (!isUpgrade) {
             if (slots != null) {
-                boolean printedHeader = false;
-                for (WandUpgradeSlot slot : slots) {
-                    if (slot.isHidden()) {
-                        continue;
-                    }
-                    if (!printedHeader) {
-                        ConfigurationUtils.addIfNotEmpty(getMessage("slots_header").replace("$count", Integer.toString(slots.size())), lore);
-                        printedHeader = true;
-                    }
-                    WandProperties slotted = slot.getSlotted();
-                    if (slotted == null) {
-                        String slotName = controller.getMessages().get("wand_slots." + slot.getType() + ".name", slot.getType());
-                        ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
-                    } else {
-                        ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slotted.getName()), lore);
-                    }
-                }
+                addSlotsLore(lore);
             }
-
-            ConfigurationSection setsConfiguration = getSets();
-            if (setsConfiguration != null) {
-                Set<String> setKeys = setsConfiguration.getKeys(false);
-                for (String setKey : setKeys) {
-                    ConfigurationSection setConfiguration = setsConfiguration == null ? null : setsConfiguration.getConfigurationSection(setKey);
-                    ConfigurationSection setBonusConfiguration = setConfiguration == null ? null : setConfiguration.getConfigurationSection("bonuses");
-                    WandSet wandSet = controller.getWandSet(setKey);
-                    if (wandSet == null) continue;
-                    String setName = wandSet.getName(controller.getMessages());
-                    boolean isActive = setBonusesActive != null && setBonusesActive.contains(setKey);
-                    boolean printedHeader = false;
-                    WandProperties commonBonus = wandSet.getBonus();
-                    String setBonusTemplate = isActive ? getMessage("set_bonus_active") : getMessage("set_bonus_inactive");
-                    if (commonBonus != null && !setBonusTemplate.isEmpty()) {
-                        if (!printedHeader) {
-                            String headerKey = isActive ? "set_header_bonus_active" : "set_header_bonus_inactive";
-                            ConfigurationUtils.addIfNotEmpty(getMessage(headerKey).replace("$set", setName), lore);
-                            printedHeader = true;
-                        }
-                        List<String> propertiesLore = new ArrayList<>();
-                        commonBonus.addPropertyLore(propertiesLore);
-                        for (String propertyLore : propertiesLore) {
-                            if (!isActive) {
-                                propertyLore = ChatColor.stripColor(propertyLore);
-                            }
-                            lore.add(setBonusTemplate.replace("$bonus", propertyLore));
-                        }
-                    }
-                    if (setBonusConfiguration != null) {
-                        WandProperties setBonusProperties = new WandProperties(controller, setBonusConfiguration);
-                        if (!printedHeader) {
-                            String headerKey = isActive ? "set_header_bonus_active" : "set_header_bonus_inactive";
-                            ConfigurationUtils.addIfNotEmpty(getMessage(headerKey).replace("$set", setName), lore);
-                            printedHeader = true;
-                        }
-                        List<String> propertiesLore = new ArrayList<>();
-                        setBonusProperties.addPropertyLore(propertiesLore);
-                        for (String propertyLore : propertiesLore) {
-                            if (!isActive) {
-                                propertyLore = ChatColor.stripColor(propertyLore);
-                            }
-                            lore.add(setBonusTemplate.replace("$bonus", propertyLore));
-                        }
-                    }
-                    if (!printedHeader) {
-                        ConfigurationUtils.addIfNotEmpty(getMessage("set_header").replace("$set", Integer.toString(slots.size())), lore);
-                    }
-                }
-            }
+            addSetLore(lore);
         }
-
-        String slotType = getSlot();
-        if (slotType != null && !slotType.isEmpty()) {
-            WandUpgradeSlotTemplate template = controller.getWandSlotTemplate(slotType);
-            String defaultSlotted = template == null ? null : template.getDefaultSlottedKey();
-            if (defaultSlotted != null && defaultSlotted.equals(getTemplateKey())) {
-                String slotName = controller.getMessages().get("slots." + slotType + ".name", slotType);
-                ConfigurationUtils.addIfNotEmpty(getMessage("default_slotted").replace("$slot", slotName), lore);
-            }
-        }
-
+        addDefaultSlottedLore(lore);
 
         if (instructionsLore && spellCount > 1) {
             String header = getMessage("lore_instructions_header", "");
@@ -3165,6 +3083,119 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         return lore;
+    }
+
+    private void addDefaultSlottedLore(List<String> lore) {
+        String slotType = getSlot();
+        if (slotType != null && !slotType.isEmpty()) {
+            WandUpgradeSlotTemplate template = controller.getWandSlotTemplate(slotType);
+            String defaultSlotted = template == null ? null : template.getDefaultSlottedKey();
+            if (defaultSlotted != null && defaultSlotted.equals(getTemplateKey())) {
+                String slotName = controller.getMessages().get("slots." + slotType + ".name", slotType);
+                ConfigurationUtils.addIfNotEmpty(getMessage("default_slotted").replace("$slot", slotName), lore);
+            }
+        }
+    }
+
+    private void addSlotLore(List<String> lore) {
+        String slot = getString("slot");
+        if (slot != null && !slot.isEmpty()) {
+            WandUpgradeSlotTemplate wandSlot = controller.getWandSlotTemplate(slot);
+            if (wandSlot == null || !wandSlot.isHidden()) {
+                String slotName = controller.getMessages().get("wand_slots." + slot + ".name", slot);
+                ConfigurationUtils.addIfNotEmpty(getMessage("upgrade_slot").replace("$slot", slotName), lore);
+            }
+        }
+    }
+
+    private String getSlotLore() {
+        List<String> lore = new ArrayList<>();
+        addSlotLore(lore);
+        return StringUtils.join(lore, "\n");
+    }
+
+    private void addSetLore(List<String> lore) {
+        ConfigurationSection setsConfiguration = getSets();
+        if (setsConfiguration != null) {
+            Set<String> setKeys = setsConfiguration.getKeys(false);
+            for (String setKey : setKeys) {
+                ConfigurationSection setConfiguration = setsConfiguration == null ? null : setsConfiguration.getConfigurationSection(setKey);
+                ConfigurationSection setBonusConfiguration = setConfiguration == null ? null : setConfiguration.getConfigurationSection("bonuses");
+                WandSet wandSet = controller.getWandSet(setKey);
+                if (wandSet == null) continue;
+                String setName = wandSet.getName(controller.getMessages());
+                boolean isActive = setBonusesActive != null && setBonusesActive.contains(setKey);
+                boolean printedHeader = false;
+                WandProperties commonBonus = wandSet.getBonus();
+                String setBonusTemplate = isActive ? getMessage("set_bonus_active") : getMessage("set_bonus_inactive");
+                if (commonBonus != null && !setBonusTemplate.isEmpty()) {
+                    if (!printedHeader) {
+                        String headerKey = isActive ? "set_header_bonus_active" : "set_header_bonus_inactive";
+                        ConfigurationUtils.addIfNotEmpty(getMessage(headerKey).replace("$set", setName), lore);
+                        printedHeader = true;
+                    }
+                    List<String> propertiesLore = new ArrayList<>();
+                    commonBonus.addPropertyLore(propertiesLore);
+                    for (String propertyLore : propertiesLore) {
+                        if (!isActive) {
+                            propertyLore = ChatColor.stripColor(propertyLore);
+                        }
+                        lore.add(setBonusTemplate.replace("$bonus", propertyLore));
+                    }
+                }
+                if (setBonusConfiguration != null) {
+                    WandProperties setBonusProperties = new WandProperties(controller, setBonusConfiguration);
+                    if (!printedHeader) {
+                        String headerKey = isActive ? "set_header_bonus_active" : "set_header_bonus_inactive";
+                        ConfigurationUtils.addIfNotEmpty(getMessage(headerKey).replace("$set", setName), lore);
+                        printedHeader = true;
+                    }
+                    List<String> propertiesLore = new ArrayList<>();
+                    setBonusProperties.addPropertyLore(propertiesLore);
+                    for (String propertyLore : propertiesLore) {
+                        if (!isActive) {
+                            propertyLore = ChatColor.stripColor(propertyLore);
+                        }
+                        lore.add(setBonusTemplate.replace("$bonus", propertyLore));
+                    }
+                }
+                if (!printedHeader) {
+                    ConfigurationUtils.addIfNotEmpty(getMessage("set_header").replace("$set", Integer.toString(slots.size())), lore);
+                }
+            }
+        }
+    }
+
+    private String getSetLore() {
+        List<String> lore = new ArrayList<>();
+        addSetLore(lore);
+        return StringUtils.join(lore, "\n");
+    }
+
+    private void addSlotsLore(List<String> lore) {
+        boolean printedHeader = false;
+        for (WandUpgradeSlot slot : slots) {
+            if (slot.isHidden()) {
+                continue;
+            }
+            if (!printedHeader) {
+                ConfigurationUtils.addIfNotEmpty(getMessage("slots_header").replace("$count", Integer.toString(slots.size())), lore);
+                printedHeader = true;
+            }
+            WandProperties slotted = slot.getSlotted();
+            if (slotted == null) {
+                String slotName = controller.getMessages().get("wand_slots." + slot.getType() + ".name", slot.getType());
+                ConfigurationUtils.addIfNotEmpty(getMessage("empty_slot").replace("$slot", slotName), lore);
+            } else {
+                ConfigurationUtils.addIfNotEmpty(getMessage("slotted").replace("$slotted", slotted.getName()), lore);
+            }
+        }
+    }
+
+    private String getSlotsLore() {
+        List<String> lore = new ArrayList<>();
+        addSlotsLore(lore);
+        return StringUtils.join(lore, "\n");
     }
 
     private void addInstructionLore(String key, WandAction action, List<String> lore) {
@@ -4947,6 +4978,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return getHotbarGlyphs();
             case "description":
                 return getAndUpdateDescription();
+            case "slot":
+                return getSlotLore();
+            case "slots":
+                return getSlotsLore();
+            case "sets":
+                return getSetLore();
+            case "attributes":
+                return getAttributeLore();
             case "path":
                 String pathTemplate = getMessage("path_lore", "");
                 String pathName = getPathName();

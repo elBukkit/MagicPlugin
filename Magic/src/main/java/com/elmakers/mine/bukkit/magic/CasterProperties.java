@@ -1348,6 +1348,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 addDamageTypeLore("strength", key, strengthConfig.getDouble(key), lore);
             }
         }
+        addAttributeLore(lore);
+    }
+
+    private void addAttributeLore(List<String> lore) {
         ConfigurationSection attributes = getConfigurationSection("attributes");
         if (attributes != null) {
             // Don't bother with the lore at all if the template has been blanked out
@@ -1375,5 +1379,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 }
             }
         }
+    }
+
+    protected String getAttributeLore() {
+        List<String> lore = new ArrayList<>();
+        addAttributeLore(lore);
+        return StringUtils.join(lore, "\n");
     }
 }
