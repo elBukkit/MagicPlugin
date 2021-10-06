@@ -4,6 +4,48 @@ otherside_mobs:
   world: world_other
   entity_spawn:
 
+    # Sea creatures are cursed
+    # Minecraft will keep trying to spawn them over and over
+    # Particularly seems to be the case for Cod, for some reason
+    # We're just going to prevent it, should be rare that water appears in the other side anyway.
+
+    drowned:
+      target_type: drowned
+      class: Replace
+      replace_type: stop
+    pufferfish:
+      target_type: pufferfish
+      class: Replace
+      replace_type: stop
+    dolphin:
+      target_type: dolphin
+      class: Replace
+      replace_type: stop
+    guardian:
+      target_type: guardian
+      class: Replace
+      replace_type: stop
+    elder_guardian:
+      target_type: elder_guardian
+      class: Replace
+      replace_type: stop
+    salmon:
+      target_type: salmon
+      class: Replace
+      replace_type: stop
+    turtle:
+      target_type: turtle
+      class: Replace
+      replace_type: stop
+    tropical_fish:
+      target_type: tropical_fish
+      class: Replace
+      replace_type: stop
+    cod:
+      target_type: cod
+      class: Replace
+      replace_type: stop
+
     # Don't replace bats, they seem to be problematic. Caves really want bats.
     bat:
       priority: 1000
@@ -138,42 +180,3 @@ otherside_mobs:
       replace_type:
         mega_phantom: 10
         none: 50
-
-    # All sea creatures turn into silverfish since they're in some glass
-
-    drowned:
-      target_type: drowned
-      class: Replace
-      replace_type: silverfish
-    pufferfish:
-      target_type: pufferfish
-      class: Replace
-      replace_type: silverfish
-    dolphin:
-      target_type: dolphin
-      class: Replace
-      replace_type: silverfish
-    guardian:
-      target_type: guardian
-      class: Replace
-      replace_type: silverfish
-    elder_guardian:
-      target_type: elder_guardian
-      class: Replace
-      replace_type: silverfish
-    salmon:
-      target_type: salmon
-      class: Replace
-      replace_type: silverfish
-    turtle:
-      target_type: turtle
-      class: Replace
-      replace_type: silverfish
-    tropical_fish:
-      target_type: tropical_fish
-      class: Replace
-      replace_type: silverfish
-    cod:
-      target_type: cod
-      class: Replace
-      replace_type: silverfish

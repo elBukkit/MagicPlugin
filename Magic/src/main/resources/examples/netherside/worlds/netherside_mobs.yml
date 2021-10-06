@@ -2,6 +2,55 @@ netherside_mobs:
   world: world_netherside
   entity_spawn:
 
+    # Sea creatures are cursed
+    # Minecraft will keep trying to spawn them over and over
+    # Particularly seems to be the case for Cod, for some reason
+    # We're just going to prevent it, should be rare that water appears in the other side anyway.
+
+    drowned:
+      target_type: drowned
+      class: Replace
+      replace_type: stop
+    pufferfish:
+      target_type: pufferfish
+      class: Replace
+      replace_type: stop
+    dolphin:
+      target_type: dolphin
+      class: Replace
+      replace_type: stop
+    guardian:
+      target_type: guardian
+      class: Replace
+      replace_type: stop
+    elder_guardian:
+      target_type: elder_guardian
+      class: Replace
+      replace_type: stop
+    salmon:
+      target_type: salmon
+      class: Replace
+      replace_type: stop
+    turtle:
+      target_type: turtle
+      class: Replace
+      replace_type: stop
+    tropical_fish:
+      target_type: tropical_fish
+      class: Replace
+      replace_type: stop
+    cod:
+      target_type: cod
+      class: Replace
+      replace_type: stop
+
+    # Don't replace bats, they seem to be problematic. Caves really want bats.
+    bat:
+      priority: 1000
+      target_type: bat
+      class: Replace
+      replace_type: stop
+
     # Prevent replacing piglins on zombificiation
     zombified_piglin:
       priority: 1000
@@ -12,13 +61,6 @@ netherside_mobs:
       priority: 1000
       class: Replace
       target_type: zoglin
-      replace_type: stop
-
-    # Don't replace bats, they seem to be problematic. Caves really want bats.
-    bat:
-      priority: 1000
-      target_type: bat
-      class: Replace
       replace_type: stop
 
     fallback_flying:
@@ -186,42 +228,3 @@ netherside_mobs:
       replace_type:
         phantom: 50
         mega_phantom: 10
-
-    # All sea creatures to striders
-
-    drowned:
-      target_type: drowned
-      class: Replace
-      replace_type: strider
-    pufferfish:
-      target_type: pufferfish
-      class: Replace
-      replace_type: strider
-    dolphin:
-      target_type: dolphin
-      class: Replace
-      replace_type: strider
-    guardian:
-      target_type: guardian
-      class: Replace
-      replace_type: strider
-    elder_guardian:
-      target_type: elder_guardian
-      class: Replace
-      replace_type: strider
-    salmon:
-      target_type: salmon
-      class: Replace
-      replace_type: strider
-    turtle:
-      target_type: turtle
-      class: Replace
-      replace_type: strider
-    tropical_fish:
-      target_type: tropical_fish
-      class: Replace
-      replace_type: strider
-    cod:
-      target_type: cod
-      class: Replace
-      replace_type: strider
