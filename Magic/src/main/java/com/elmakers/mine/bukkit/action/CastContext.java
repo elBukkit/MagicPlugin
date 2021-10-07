@@ -82,6 +82,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     private Vector direction = null;
     private Boolean targetCaster = null;
     private long startTime;
+    private long lastTriggerTime;
     private ConfigurationSection workingParameters;
     private Map<String, Object> castData;
 
@@ -160,6 +161,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         this.result = copy.getResult();
         this.mageClass = copy.getMageClass();
         this.startTime = copy.getStartTime();
+        this.lastTriggerTime = copy.getLastTriggerTime();
         this.workingParameters = copy.getWorkingParameters();
         this.rootHandler = copy.getRootHandler();
 
@@ -1679,6 +1681,19 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Override
     public long getStartTime() {
         return startTime;
+    }
+
+    @Override
+    public long getLastTriggerTime() {
+        if (lastTriggerTime == 0) {
+            return startTime;
+        }
+        return lastTriggerTime;
+    }
+
+    @Override
+    public void updateLastTriggerTime() {
+        lastTriggerTime = System.currentTimeMillis();
     }
 
     @Override

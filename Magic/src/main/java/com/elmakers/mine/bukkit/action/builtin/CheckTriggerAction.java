@@ -9,7 +9,6 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public class CheckTriggerAction extends CheckAction {
-    private long startTime;
     private String trigger;
 
     @Override
@@ -22,12 +21,10 @@ public class CheckTriggerAction extends CheckAction {
     @Override
     protected boolean isAllowed(CastContext context) {
         Long lastTrigger = context.getMage().getLastTrigger(trigger);
-        if (startTime == 0) {
-            startTime = context.getStartTime();
-        }
-        boolean isTriggered = (lastTrigger != null && lastTrigger > startTime);
+        long lastTriggerTime = context.getLastTriggerTime();
+        boolean isTriggered = (lastTrigger != null && lastTrigger > lastTriggerTime);
         if (isTriggered) {
-            startTime = System.currentTimeMillis();
+            context.updateLastTriggerTime();
         }
         return isTriggered;
     }

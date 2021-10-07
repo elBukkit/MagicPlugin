@@ -4,8 +4,6 @@
 
  - you can hotkey/shiftclick uncraftable: true items into the crafting tables/inventory menu.
 
- - Add $attributes custom wand option, to show attribute modifiers like in standard lore
-
  - Add sleep/lay down triggers
 
  - Do wand overrides not work for cast_spell wand casts? Seems like not (can't make fancy ice skates)

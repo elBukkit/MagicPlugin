@@ -10,6 +10,9 @@
 ## Fixes
 
  - Fix SkillAPI integration (needs testing)
+ - Fix CheckTrigger action not being able to check the same trigger twice in two different actions of the same spell
+   This change also means that multiple triggers in a spell will need to happen in the order they appear in the spell.
+   I apologize if this interferes with any exsting spell behavior, please let me know!
 
 ## Additions
  

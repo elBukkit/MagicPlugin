@@ -233,6 +233,8 @@ public interface CastContext extends MageContext {
     boolean hasHandlers();
     void addMessageParameter(String key, String value);
     long getStartTime();
+    long getLastTriggerTime();
+    void updateLastTriggerTime();
     @Nonnull
     ConfigurationSection getVariables(VariableScope scope);
 
