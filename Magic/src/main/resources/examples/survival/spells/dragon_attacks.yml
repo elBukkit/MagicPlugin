@@ -84,7 +84,7 @@ dragonexplodefire:
         cooldown: 15000
         cooldown_mage: 20
         lifetime: 10000
-        damage: rand(15,35)
+        damage: rand(8,12)
         source_location: body
         potion_effects:
           confusion: 100
@@ -167,7 +167,7 @@ dragonfire:
         range: 78
         hitbox_size: 0.7
         target_type: Player
-        damage: rand(7,17)
+        damage: rand(6,12)
         target_breakables: 1
         cooldown: 4000
         track_target: true
@@ -309,7 +309,7 @@ dragonwingblast:
         tick_size: 0.2
         target_count: 12
         target_type: Player
-        damage: rand(2,12)
+        damage: rand(4,8)
         target_breakables: 1
         ignore_blocks: false
         cooldown: 15000
@@ -403,7 +403,7 @@ dragonwater:
         range: 78
         hitbox_size: 0.7
         target_type: Player
-        damage: rand(7,17)
+        damage: rand(5,10)
         target_breakables: 1
         cooldown: 4000
         potion_effects:
@@ -487,7 +487,7 @@ dragonpoison:
         range: 78
         hitbox_size: 0.7
         target_type: Player
-        damage: rand(7,17)
+        damage: rand(5,9)
         target_breakables: 1
         cooldown: 4000
         potion_effects:
@@ -570,7 +570,7 @@ dragonlightning:
         range: 78
         hitbox_size: 0.7
         target_type: Player
-        damage: rand(7,17)
+        damage: rand(6,10)
         target_breakables: 1
         cooldown: 4000
         potion_effects:
@@ -666,7 +666,7 @@ dragonexplodewater:
         cooldown: 15000
         cooldown_mage: 20
         lifetime: 10000
-        damage: rand(15,35)
+        damage: rand(8,12)
         source_location: body
         potion_effects:
           slow: 10000
@@ -762,7 +762,7 @@ dragonexplodepoison:
         cooldown: 15000
         cooldown_mage: 20
         lifetime: 10000
-        damage: rand(15,35)
+        damage: rand(6,12)
         source_location: body
         potion_effects:
           poison: 2
@@ -857,7 +857,7 @@ dragonexplodelightning:
         cooldown: 15000
         cooldown_mage: 20
         lifetime: 10000
-        damage: rand(15,35)
+        damage: rand(8,12)
         source_location: body
         potion_effects:
           confusion: 2
@@ -952,7 +952,7 @@ dragonexplodedark:
         cooldown: 15000
         cooldown_mage: 20
         lifetime: 10000
-        damage: rand(15,35)
+        damage: rand(7,12)
         source_location: body
         potion_effects:
           blindness: 2
@@ -1034,7 +1034,7 @@ dragondark:
         range: 78
         hitbox_size: 0.7
         target_type: Player
-        damage: rand(7,17)
+        damage: rand(5,12)
         target_breakables: 1
         cooldown: 4000
         potion_effects:

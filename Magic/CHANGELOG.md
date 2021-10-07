@@ -24,6 +24,7 @@
 
  - Nerf Blast damage
  - Buff Kill damage vs players
+ - Nerf dragon attack damage
 
 # 10.1.1
 
