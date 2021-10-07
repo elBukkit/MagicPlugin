@@ -383,6 +383,9 @@ public class Target implements Comparable<Target>
                         + " rot: " + sourceDirection);
                 }
             }
+            if (hit == null && (entity != null || !atMaxRange)) {
+                return;
+            }
             if (hit != null) {
                 location.setX(hit.getX());
                 location.setY(hit.getY());
