@@ -1,12 +1,13 @@
 base_dragon:
   requires: LibsDisguises
   hidden: true
-  type: Ghast
+  type: phantom
   disguise:
     type: player
     skin: NightScythe1
     invisible: true
     swimming: true
+    burning: false
   chestplate: thorns
   leggings: thorns
   boots: thorns
