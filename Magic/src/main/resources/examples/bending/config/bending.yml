@@ -9,6 +9,7 @@ inherit: survival
 include_inherited:
   - spells
   - icons
+  - messages
 disable_inherited:
  - spells
 
