@@ -163,6 +163,7 @@ import com.elmakers.mine.bukkit.essentials.EssentialsController;
 import com.elmakers.mine.bukkit.essentials.MagicItemDb;
 import com.elmakers.mine.bukkit.essentials.Mailer;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.integration.AuctionHouseManager;
 import com.elmakers.mine.bukkit.integration.AureliumSkillsManager;
 import com.elmakers.mine.bukkit.integration.BattleArenaManager;
 import com.elmakers.mine.bukkit.integration.GenericMetadataNPCSupplier;
@@ -585,6 +586,7 @@ public class MagicController implements MageController {
     private AureliumSkillsManager aureliumSkillsManager = null;
     private TokenManagerController tokenManager = null;
     private TradeSystemManager tradeSystemManager = null;
+    private AuctionHouseManager auctionHouseManager = null;
     private LibsDisguiseManager libsDisguiseManager = null;
     private ModelEngineManager modelEngineManager = null;
     private SkillAPIManager skillAPIManager = null;
@@ -1879,6 +1881,9 @@ public class MagicController implements MageController {
         }
         if (tradeSystemManager != null) {
             tradeSystemManager.load(configuration.getConfigurationSection("trade_system"));
+        }
+        if (auctionHouseManager != null) {
+            auctionHouseManager.load(configuration.getConfigurationSection("action_house"));
         }
         if (heroesManager != null) {
             heroesManager.load(configuration);
@@ -7685,6 +7690,19 @@ public class MagicController implements MageController {
                 tradeSystemManager = new TradeSystemManager(this);
             } else {
                 tradeSystemManager = null;
+
+            }
+        } catch (Throwable ex) {
+            getLogger().warning(ex.getMessage());
+        }
+
+        // Try to link to zAuctionHouse:
+        try {
+            Plugin auctionHousePlugin = pluginManager.getPlugin("zAuctionHouse");
+            if (auctionHousePlugin != null) {
+                auctionHouseManager = new AuctionHouseManager(this);
+            } else {
+                auctionHouseManager = null;
 
             }
         } catch (Throwable ex) {

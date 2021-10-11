@@ -218,6 +218,11 @@ trade_system:
   # Set this to false if you don't want to prevent trading bound wands
   enabled: true
 
+# zAcutionHouse integration
+action_house:
+  # Set this to false if you don't want to prevent auctioning bound wands
+  enabled: true
+
 # AureliumSkills integration
 aurelium_skills:
   enabled: true

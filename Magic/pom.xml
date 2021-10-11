@@ -456,6 +456,11 @@
             <version>v2.0.5</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.Maxlego08</groupId>
+            <artifactId>zAuctionHouseV3-API</artifactId>
+            <version>4.0.4.9</version>
+        </dependency>
     </dependencies>
 
     <repositories>

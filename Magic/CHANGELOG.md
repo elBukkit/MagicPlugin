@@ -19,6 +19,7 @@
  
  - Add `critical:` effects section for Damage action, when a critical hit occurs
  - Add more custom wand lore placeholders: $attributes, $slots, $slot, $sets
+ - Add zAuctionHouse support, bound wands can't be auctioned
 
 ## Balance Changes
 
