@@ -106,7 +106,6 @@ spells:
         name: Platform
         description: Create a platform in front of you
         cast_finish: Filled @blocks blocks with $material
-    platform|2:
         upgrade_description: "Increased size"
     platform|4:
         upgrade_description: "Now builds with your brush"
