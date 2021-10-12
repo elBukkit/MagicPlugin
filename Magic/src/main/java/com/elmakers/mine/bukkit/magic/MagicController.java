@@ -8827,4 +8827,9 @@ public class MagicController implements MageController {
         mobs.onEntitiesLoaded(chunk, entities);
         worldController.getSpawnListener().onEntitiesLoaded(chunk, entities);
     }
+
+    @Override
+    public boolean onEntityPickupItem(Entity entity, Item item) {
+        return playerController.onEntityPickupItem(entity, item);
+    }
 }

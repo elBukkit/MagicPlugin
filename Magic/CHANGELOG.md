@@ -14,6 +14,7 @@
    This change also means that multiple triggers in a spell will need to happen in the order they appear in the spell.
    I apologize if this interferes with any existing spell behavior, please let me know!
  - Survival dragons changed to phantoms, improve AI and fix being one-shottable with arrows  
+ - Fix issues with spell inventories and EliteMobs loot showers
 
 ## Additions
  

@@ -22,6 +22,7 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.listener.PlayerPickupListener;
 
 public abstract class PlatformBase implements Platform {
     private final Logger logger;
@@ -89,6 +90,11 @@ public abstract class PlatformBase implements Platform {
         if (paperUtils != null) {
             paperUtils.registerEvents(controller, pm);
         }
+        registerPickupEvent(controller, pm);
+    }
+
+    protected void registerPickupEvent(MageController controller, PluginManager pm) {
+        pm.registerEvents(new PlayerPickupListener(controller), controller.getPlugin());
     }
 
     protected EntityMetadataUtils createEntityMetadataUtils() {

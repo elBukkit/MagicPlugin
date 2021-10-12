@@ -1110,33 +1110,33 @@ public class PlayerController implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerPickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
-    {
-        // TODO: Change to EntityPickupItemEvent
-        Player player = event.getPlayer();
+    public boolean onEntityPickupItem(Entity entity, Item item) {
+        if (!(entity instanceof Player)) {
+            return false;
+        }
+        Player player = (Player)entity;
         if (player.isDead()) {
             controller.info("Player picking up item while dead? " + player.getName() + ", cancelling", 5);
-            event.setCancelled(true);
-            return;
+            return true;
         }
         Mage mage = controller.getMage(player);
         mage.trigger("pickup");
 
         // If a wand's inventory is active, add the item there
         if (mage.hasStoredInventory()) {
-            event.setCancelled(true);
-            if (mage.addToStoredInventory(event.getItem().getItemStack())) {
-                event.getItem().remove();
+            if (mage.addToStoredInventory(item.getItemStack())) {
+                item.remove();
                 mage.playSoundEffect(Wand.itemPickupSound);
             }
+            return true;
         }
+        return false;
     }
 
     @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
     public void onPlayerPrePickupItem(org.bukkit.event.player.PlayerPickupItemEvent event)
     {
-        // TODO: Change to EntityPickupItemEvent
+        // TODO: Change to EntityPickupItemEvent .. maybe?
         Item item = event.getItem();
         ItemStack pickup = item.getItemStack();
         if (CompatibilityLib.getItemUtils().isTemporary(pickup) || CompatibilityLib.getEntityMetadataUtils().getBoolean(item, MagicMetaKeys.TEMPORARY))

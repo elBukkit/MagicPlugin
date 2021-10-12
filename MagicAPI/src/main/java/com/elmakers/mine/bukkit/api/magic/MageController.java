@@ -23,6 +23,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.inventory.ItemStack;
@@ -868,4 +869,5 @@ public interface MageController {
     @Nonnull
     Icon getDefaultIcon();
     void onEntitiesLoaded(Chunk chunk, List<Entity> entities);
+    boolean onEntityPickupItem(Entity entity, Item item);
 }

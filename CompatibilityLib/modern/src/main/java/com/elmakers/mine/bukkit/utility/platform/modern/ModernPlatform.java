@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
+import com.elmakers.mine.bukkit.utility.platform.v1_12.listener.EntityPickupListener;
 import com.elmakers.mine.bukkit.utility.platform.v1_16.PersistentEntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.v1_16.event.ResourcePackListener;
 
@@ -45,6 +46,11 @@ public abstract class ModernPlatform extends PlatformBase {
         super.registerEvents(controller, pm);
         ResourcePackListener timeListener = new ResourcePackListener(controller);
         pm.registerEvents(timeListener, controller.getPlugin());
+    }
+
+    @Override
+    protected void registerPickupEvent(MageController controller, PluginManager pm) {
+        pm.registerEvents(new EntityPickupListener(controller), controller.getPlugin());
     }
 
     @Override
