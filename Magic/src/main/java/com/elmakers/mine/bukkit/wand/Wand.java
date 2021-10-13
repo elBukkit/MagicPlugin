@@ -3322,7 +3322,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         super.addPropertyLore(lore, isSingleSpell);
         addAuraLore(lore);
-        addEnchantmentLore(lore);
+
+        if (isEnchantable()) {
+            int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
+            if ((hideFlags & 1) == 1) {
+                addEnchantmentLore(lore);
+            }
+        }
     }
 
     protected String getEnchantmentLore() {
@@ -3332,17 +3338,14 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     public void addEnchantmentLore(List<String> lore) {
-        if (isEnchantable()) {
-            int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
-            ConfigurationSection enchantments = getConfigurationSection("enchantments");
-            if ((hideFlags & 1) == 1 && enchantments != null) {
-                Set<String> enchantmentKeys = enchantments.getKeys(false);
-                for (String enchantmentKey : enchantmentKeys) {
-                    int level = enchantments.getInt(enchantmentKey);
-                    String[] pieces = StringUtils.split(enchantmentKey, ":");
-                    enchantmentKey = pieces[pieces.length - 1];
-                    addDamageTypeLore("enchantment", enchantmentKey, level, 0, lore, enchantmentKey);
-                }
+        ConfigurationSection enchantments = getConfigurationSection("enchantments");
+        if (enchantments != null) {
+            Set<String> enchantmentKeys = enchantments.getKeys(false);
+            for (String enchantmentKey : enchantmentKeys) {
+                int level = enchantments.getInt(enchantmentKey);
+                String[] pieces = StringUtils.split(enchantmentKey, ":");
+                enchantmentKey = pieces[pieces.length - 1];
+                addDamageTypeLore("enchantment", enchantmentKey, level, 0, lore, enchantmentKey);
             }
         }
     }
