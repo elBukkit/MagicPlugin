@@ -346,7 +346,7 @@ public class InventoryController implements Listener {
             controller.onArmorUpdated(mage);
         }
 
-        boolean tryingToWear = action == InventoryAction.MOVE_TO_OTHER_INVENTORY && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING);
+        boolean tryingToWear = action == InventoryAction.MOVE_TO_OTHER_INVENTORY && (inventoryType == InventoryType.PLAYER || inventoryType == InventoryType.CRAFTING) && slotType == InventoryType.SlotType.CONTAINER;
         if (clickedWand && tryingToWear) {
             Wand wand = null;
             if (slot == player.getInventory().getHeldItemSlot()) {
