@@ -19,6 +19,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     private final double relevance;
     private final HelpTopic topic;
     private final Map<String, HelpTopicKeywordMatch> wordMatches = new HashMap<>();
+    private final Map<String, HelpTopicKeywordMatch> setMatches = new HashMap<>();
     private double wordsRelevance;
     private double titleRelevance;
     private double tagRelevance;
@@ -66,13 +67,13 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             this.wordsRelevance += wordsRelevance;
             maxRelevance = Math.max(wordsRelevance, maxRelevance);
         }
-        double titleRelevance = computeSetRelevance(help, topic.titleWords, keyword);
+        double titleRelevance = computeSetRelevance(help, topic.titleWords, keyword, SearchFactors.MIN_TITLE_SIMILARITY);
         if (titleRelevance > 0) {
             titleRelevance = Math.pow(titleRelevance, SearchFactors.TITLE_FACTOR) * SearchFactors.TITLE_WEIGHT;
             this.titleRelevance += titleRelevance;
             maxRelevance = Math.max(titleRelevance, maxRelevance);
         }
-        double tagRelevance = computeSetRelevance(help, topic.tagWords, keyword);
+        double tagRelevance = computeSetRelevance(help, topic.tagWords, keyword, SearchFactors.MIN_TAG_SIMILARITY);
         if (tagRelevance > 0) {
             tagRelevance = Math.pow(tagRelevance, SearchFactors.TAG_FACTOR) * SearchFactors.TAG_WEIGHT;
             this.tagRelevance += tagRelevance;
@@ -82,8 +83,11 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         return maxRelevance / maxWeight;
     }
 
-    private double computeSetRelevance(Help help, Set<String> words, String keyword) {
-        HelpTopicKeywordMatch match = HelpTopicKeywordMatch.match(keyword, words, topic, help);
+    private double computeSetRelevance(Help help, Set<String> words, String keyword, double minSimilarity) {
+        HelpTopicKeywordMatch match = HelpTopicKeywordMatch.match(keyword, words, help, minSimilarity);
+        if (match != null) {
+            setMatches.put(keyword, match);
+        }
         return match == null ? 0 : match.getRelevance();
     }
 
@@ -241,7 +245,11 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     }
 
     public HelpTopicKeywordMatch getKeywordMatch(String keyword) {
-        return wordMatches.get(keyword);
+        HelpTopicKeywordMatch match = setMatches.get(keyword);
+        if (match == null) {
+            match = wordMatches.get(keyword);
+        }
+        return match;
     }
 
     public double getRelevance() {

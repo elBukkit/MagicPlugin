@@ -25,4 +25,6 @@ public class SearchFactors {
     public static double WORD_WEIGHT = 0.8;
     public static double COUNT_MAX = 3;
     public static double MIN_SIMILARITY = 0.6;
+    public static double MIN_TITLE_SIMILARITY = 0.9;
+    public static double MIN_TAG_SIMILARITY = 0.8;
 }

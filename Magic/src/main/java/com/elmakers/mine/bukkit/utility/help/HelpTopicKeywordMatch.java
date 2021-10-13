@@ -45,20 +45,20 @@ public class HelpTopicKeywordMatch {
     }
 
     @Nullable
-    public static HelpTopicKeywordMatch match(String keyword, Set<String> words, HelpTopic topic, Help help) {
+    public static HelpTopicKeywordMatch match(String keyword, Set<String> words, Help help, double minSimilarity) {
         if (!help.isValidWord(keyword)) {
             return null;
         }
         keyword = keyword.trim();
         if (words.contains(keyword)) {
-            return new HelpTopicKeywordMatch(help, keyword, keyword, 1, 1);
+            return new HelpTopicKeywordMatch(help, keyword, keyword, 1 / SearchFactors.COUNT_MAX, 1);
         }
 
         double maxSimilarity = 0;
         String bestMatch = null;
         for (String word : words) {
             double similarity = ChatUtils.getSimilarity(keyword, word);
-            if (similarity > maxSimilarity && similarity >= SearchFactors.MIN_SIMILARITY) {
+            if (similarity > maxSimilarity && similarity >= minSimilarity) {
                 bestMatch = word;
                 maxSimilarity = similarity;
             }
@@ -66,7 +66,7 @@ public class HelpTopicKeywordMatch {
         if (bestMatch == null || !help.isValidWord(bestMatch)) {
             return null;
         }
-        return new HelpTopicKeywordMatch(help, keyword, bestMatch, 1, maxSimilarity);
+        return new HelpTopicKeywordMatch(help, keyword, bestMatch, 1 / SearchFactors.COUNT_MAX, maxSimilarity);
     }
 
     @Nullable
@@ -77,7 +77,7 @@ public class HelpTopicKeywordMatch {
         keyword = keyword.trim();
         Integer count = topic.words.get(keyword);
         if (count != null) {
-            double countWeight = (double)count / topic.maxCount;
+            double countWeight = Math.min(count, SearchFactors.COUNT_MAX) / SearchFactors.COUNT_MAX;
             return new HelpTopicKeywordMatch(help, keyword, keyword, countWeight, 1);
         }
 
