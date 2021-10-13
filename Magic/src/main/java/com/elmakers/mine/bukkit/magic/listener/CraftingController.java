@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -223,6 +224,11 @@ public class CraftingController implements Listener {
         if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
             ItemStack cursor = event.getCursor();
             if (!isCraftable(cursor)) {
+                event.setCancelled(true);
+            }
+        } else if (slotType != SlotType.CRAFTING && inventoryType == InventoryType.WORKBENCH && event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+            ItemStack clicked = event.getCurrentItem();
+            if (!isCraftable(clicked)) {
                 event.setCancelled(true);
             }
         }
