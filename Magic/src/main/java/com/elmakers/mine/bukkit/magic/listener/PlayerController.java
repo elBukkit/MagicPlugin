@@ -49,6 +49,7 @@ import org.bukkit.event.player.PlayerSwapHandItemsEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
+import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -1250,6 +1251,17 @@ public class PlayerController implements Listener {
                         plugin.getServer().getScheduler().runTask(plugin, new GiveItemTask(player, item, offhand));
                     }
                 }
+            }
+        }
+    }
+
+    @EventHandler(priority = EventPriority.LOWEST)
+    public void onServerCommand(ServerCommandEvent event) {
+        String command = event.getCommand();
+        if (command.matches("reload") || command.matches("stop")) {
+            controller.getLogger().info("Server is shutting down, closing all wand inventories");
+            for (com.elmakers.mine.bukkit.api.magic.Mage mage : controller.getMages()) {
+                mage.deactivate();
             }
         }
     }
