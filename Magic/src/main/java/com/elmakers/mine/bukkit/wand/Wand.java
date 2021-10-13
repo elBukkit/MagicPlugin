@@ -144,6 +144,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String activeBrush = "";
     protected String wandName = "";
     protected String description = "";
+    protected ConfigurationSection customLoreLines;
     private String owner = "";
     private String ownerId = "";
     private String template = "";
@@ -2445,6 +2446,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (templateConfig != null) {
                 wandName = templateConfig.getString("name", wandName);
                 description = templateConfig.getString("description", description);
+                customLoreLines = templateConfig.getConfigurationSection("placeholders");
 
                 int templateUses = templateConfig.getInt("uses");
                 isSingleUse = templateUses == 1;
@@ -4989,6 +4991,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public String getReplacement(String line, boolean integerValues) {
+        String customPlaceholder = customLoreLines != null ? customLoreLines.getString(line) : null;
+        if (customPlaceholder != null) {
+            return customPlaceholder;
+        }
         switch (line) {
             case "extra":
                 return glyphHotbar.getExtraMessage();
