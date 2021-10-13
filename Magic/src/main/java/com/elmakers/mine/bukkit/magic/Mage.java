@@ -151,6 +151,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static boolean COMMAND_BLOCKS_SUPERPOWERED = true;
     public static boolean CONSOLE_SUPERPOWERED = true;
     public static boolean ALLOW_PERSISTENT_INVISIBILITY = true;
+    public static double MOVEMENT_SPEED_BPS = 43;
     public static String DEFAULT_CLASS = "";
     private static String defaultMageName = "Mage";
 
@@ -5174,6 +5175,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case "luck": return getVanillaAttribute(Attribute.GENERIC_LUCK);
             case "knockback_resistance": return getVanillaAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
             case "movement_speed": return getVanillaAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
+            case "movement_speed_bps": return getVanillaAttribute(Attribute.GENERIC_MOVEMENT_SPEED) * MOVEMENT_SPEED_BPS;
             case "mana": return (double)getMana();
             case "mana_max": return (double)getEffectiveManaMax();
             case "xp": return (double)getExperience();
