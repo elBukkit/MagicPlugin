@@ -1291,9 +1291,6 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             earnDescription = earnDescription.replace("$type", earnType);
             ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
         }
-        for (Map.Entry<PotionEffectType, Integer> effect : getPotionEffects().entrySet()) {
-            ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
-        }
 
         if (getBoolean("ignored_by_mobs")) {
             ConfigurationUtils.addIfNotEmpty(getMessage("ignored_by_mobs"), lore);
@@ -1388,6 +1385,18 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     protected String getAttributeLore() {
         List<String> lore = new ArrayList<>();
         addAttributeLore(lore);
+        return StringUtils.join(lore, "\n");
+    }
+
+    protected void addPotionEffectLore(List<String> lore) {
+        for (Map.Entry<PotionEffectType, Integer> effect : getPotionEffects().entrySet()) {
+            ConfigurationUtils.addIfNotEmpty(describePotionEffect(effect.getKey(), effect.getValue()), lore);
+        }
+    }
+
+    protected String getPotionEffectLore() {
+        List<String> lore = new ArrayList<>();
+        addPotionEffectLore(lore);
         return StringUtils.join(lore, "\n");
     }
 }

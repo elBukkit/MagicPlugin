@@ -3319,14 +3319,17 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (worn) isSingleSpell = false;
 
         super.addPropertyLore(lore, isSingleSpell);
+        addAuraLore(lore);
+        addEnchantmentLore(lore);
+    }
 
-        if (castSpell != null) {
-            SpellTemplate spell = controller.getSpellTemplate(castSpell);
-            if (spell != null) {
-                ConfigurationUtils.addIfNotEmpty(getMessage("spell_aura").replace("$spell", spell.getName()), lore);
-            }
-        }
+    protected String getEnchantmentLore() {
+        List<String> lore = new ArrayList<>();
+        addEnchantmentLore(lore);
+        return StringUtils.join(lore, "\n");
+    }
 
+    public void addEnchantmentLore(List<String> lore) {
         if (isEnchantable()) {
             int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
             ConfigurationSection enchantments = getConfigurationSection("enchantments");
@@ -3338,6 +3341,21 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     enchantmentKey = pieces[pieces.length - 1];
                     addDamageTypeLore("enchantment", enchantmentKey, level, 0, lore, enchantmentKey);
                 }
+            }
+        }
+    }
+
+    protected String getAuraLore() {
+        List<String> lore = new ArrayList<>();
+        addAuraLore(lore);
+        return StringUtils.join(lore, "\n");
+    }
+
+    public void addAuraLore(List<String> lore) {
+        if (castSpell != null) {
+            SpellTemplate spell = controller.getSpellTemplate(castSpell);
+            if (spell != null) {
+                ConfigurationUtils.addIfNotEmpty(getMessage("spell_aura").replace("$spell", spell.getName()), lore);
             }
         }
     }
@@ -4986,6 +5004,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return getSetLore();
             case "attributes":
                 return getAttributeLore();
+            case "enchantments":
+                return getEnchantmentLore();
+            case "potion_effects":
+                return getPotionEffectLore();
+            case "cast_spell":
+                return getAuraLore();
             case "path":
                 String pathTemplate = getMessage("path_lore", "");
                 String pathName = getPathName();
