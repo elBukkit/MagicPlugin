@@ -13,6 +13,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -47,6 +48,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicProperties;
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -896,6 +898,44 @@ public class SelectorAction extends CompoundAction implements GUIAction
                 }
             }
 
+            // Check spells, don't show spells the player has already nor spells with missing requirements
+            CasterProperties caster = getCaster(context);
+            if (applyToWand || applyToCaster) {
+                if (caster == null) {
+                    unavailableMessage = getMessage("not_applicable").replace("$item", name);
+                    CompatibilityLib.getInventoryUtils().wrapText(unavailableMessage, lore);
+                    unavailable = true;
+                } else if (items != null) {
+                    for (ItemStack item : items) {
+                        String spellKey = controller.getSpell(item);
+                        SpellTemplate spell = spellKey == null ? null : controller.getSpellTemplate(spellKey);
+                        if (spell != null) {
+                            if (caster.hasSpell(spellKey)) {
+                                unavailableMessage = getMessage("not_applicable").replace("$item", name);
+                                CompatibilityLib.getInventoryUtils().wrapText(unavailableMessage, lore);
+                                unavailable = true;
+                                break;
+                            } else {
+                                Collection<PrerequisiteSpell> missingSpells = PrerequisiteSpell.getMissingRequirements(caster, spell);
+                                if (!missingSpells.isEmpty()) {
+                                    List<String> requiredNames = new ArrayList<>();
+                                    for (PrerequisiteSpell prerequisiteSpell : missingSpells) {
+                                        SpellTemplate required = controller.getSpellTemplate(prerequisiteSpell.getSpellKey().getKey());
+                                        if (required != null) {
+                                            requiredNames.add(required.getName());
+                                        }
+                                    }
+                                    unavailableMessage = getMessage("prerequisite_spell").replace("$name", StringUtils.join(requiredNames, ", "));
+                                    CompatibilityLib.getInventoryUtils().wrapText(unavailableMessage, lore);
+                                    unavailable = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // See if this is locked
             boolean locked = unlockKey != null && !unlockKey.isEmpty() && !unlocked;
 
@@ -954,7 +994,17 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             // Choose icon if none was set in config
             if (icon == null && items != null) {
-                icon = CompatibilityLib.getItemUtils().getCopy(items.get(0));
+                ItemStack item = items.get(0);
+                if (unavailable) {
+                    String spellKey = controller.getSpell(item);
+                    SpellTemplate spellTemplate = spellKey == null ? null : controller.getSpellTemplate(spellKey);
+                    if (spellTemplate != null && spellTemplate.getDisabledIcon() != null) {
+                        icon = spellTemplate.getDisabledIcon().getItemStack(1);
+                    }
+                }
+                if (icon == null) {
+                    icon = CompatibilityLib.getItemUtils().getCopy(item);
+                }
                 // This prevents getting two copies of the lore
                 // Only do this if lore was actually provided, since this setting is on by default for the Shop action
                 if (applyLoreToItem && this.lore != null && !this.lore.isEmpty()) {
@@ -1017,7 +1067,6 @@ public class SelectorAction extends CompoundAction implements GUIAction
 
             if (icon != null && attribute != null) {
                 int amount = 1;
-                CasterProperties caster = getCaster(context);
                 Double currentAmount = caster.getAttribute(attributeKey);
                 if (currentAmount != null) {
                     if (attributeAmount == 0) {

@@ -29,6 +29,7 @@ selector:
   level_requirement: "&r&cRequires: &6$path"
   tags_requirement: "&r&cRequires: &6$tags"
   cast_requirement: "&r&cCasts: &6$current&f/&e$required"
+  prerequisite_spell: "&cYou must know &6$name"
   prerequisite_spell_level: "&6$name"
   prerequisite_spell_progress_level: " (Progress $level/$max_level)"
   required_spells: "&r&cRequires: $spells"
