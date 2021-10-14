@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -18,6 +19,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.CastingCost;
+import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -26,6 +28,7 @@ public class ShopAction extends SelectorAction {
     private boolean showNoPermission;
     private boolean showUncastable;
     private boolean checkLimits;
+    private boolean showMissingRequirements;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -34,6 +37,7 @@ public class ShopAction extends SelectorAction {
         boolean showRequired = parameters.getBoolean("show_required_spells", false);
         boolean showFree = parameters.getBoolean("show_free", false);
         boolean addSellShop = parameters.getBoolean("add_sell_shop", false);
+        showMissingRequirements = parameters.getBoolean("show_missing_requirements", false);
         showUncastable = parameters.getBoolean("show_uncastable", true);
         showNoPermission = parameters.getBoolean("show_no_permission", false);
         checkLimits = parameters.getBoolean("check_max_spells", showPath);
@@ -179,6 +183,13 @@ public class ShopAction extends SelectorAction {
                     if (skip) {
                         continue;
                     }
+                }
+            }
+            if (!showMissingRequirements) {
+                Collection<PrerequisiteSpell> missingSpells = PrerequisiteSpell.getMissingRequirements(caster, spell);
+                if (!missingSpells.isEmpty()) {
+                    mage.sendDebugMessage(ChatColor.YELLOW + " Skipping " + spellKey + ", missing requirements: " + StringUtils.join(missingSpells, ","), 3);
+                    continue;
                 }
             }
 
