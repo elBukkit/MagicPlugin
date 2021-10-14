@@ -219,6 +219,7 @@ public class CraftingController implements Listener {
         if (event.isCancelled()) return;
 
         InventoryType inventoryType = event.getInventory().getType();
+        InventoryAction action = event.getAction();
         SlotType slotType = event.getSlotType();
         // Check for wand clicks to prevent grinding them to dust, or whatever.
         if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH)) {
@@ -226,10 +227,20 @@ public class CraftingController implements Listener {
             if (!isCraftable(cursor)) {
                 event.setCancelled(true);
             }
-        } else if (slotType != SlotType.CRAFTING && inventoryType == InventoryType.WORKBENCH && event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+        }
+        if (slotType != SlotType.CRAFTING && inventoryType == InventoryType.WORKBENCH && action == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
             ItemStack clicked = event.getCurrentItem();
             if (!isCraftable(clicked)) {
                 event.setCancelled(true);
+            }
+        }
+        if (slotType == SlotType.CRAFTING && (inventoryType == InventoryType.CRAFTING || inventoryType == InventoryType.WORKBENCH) && (action == InventoryAction.HOTBAR_SWAP || action == InventoryAction.HOTBAR_MOVE_AND_READD)) {
+            int hotbarButton = event.getHotbarButton();
+            if (hotbarButton >= 0) {
+                ItemStack hotbarItem = event.getWhoClicked().getInventory().getItem(hotbarButton);
+                if (!isCraftable(hotbarItem)) {
+                    event.setCancelled(true);
+                }
             }
         }
     }
