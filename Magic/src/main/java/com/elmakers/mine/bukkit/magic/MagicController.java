@@ -7698,7 +7698,7 @@ public class MagicController implements MageController {
 
         // Try to link to zAuctionHouse:
         try {
-            Plugin auctionHousePlugin = pluginManager.getPlugin("zAuctionHouse");
+            Plugin auctionHousePlugin = pluginManager.getPlugin("zAuctionHouseV3");
             if (auctionHousePlugin != null) {
                 auctionHouseManager = new AuctionHouseManager(this);
             } else {

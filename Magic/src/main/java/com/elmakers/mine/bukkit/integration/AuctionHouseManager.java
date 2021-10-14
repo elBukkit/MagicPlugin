@@ -31,7 +31,7 @@ public class AuctionHouseManager implements Listener {
         if (!registered && enabled) {
             register();
         }
-        controller.getLogger().info("zActionHouse found" + statusString);
+        controller.getLogger().info("zAuctionHouse found" + statusString);
     }
 
     public void register() {
