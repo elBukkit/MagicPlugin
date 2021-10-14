@@ -1,0 +1,38 @@
+tree_a1:
+  name: Arrow A1
+  inherit: arrow
+
+tree_a2:
+  name: Push A2
+  inherit: push
+  required_spells:
+    - tree_a1
+
+tree_a3:
+  name: Fire A3
+  inherit: fire
+  required_spells:
+    - tree_a2
+
+tree_b1:
+  name: Pull B1
+  inherit: pull
+
+tree_b2:
+  name: Poison B2
+  inherit: poison
+  required_spells:
+    - tree_b1
+
+tree_b3:
+  name: Curse B3
+  inherit: curse
+  required_spells:
+    - tree_b2
+
+tree_ult:
+  name: Kill Ult
+  inherit: kill
+  required_spells:
+    - tree_b3
+    - tree_a3

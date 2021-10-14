@@ -77,3 +77,9 @@ fairy:
   passive: true
   spells:
     - fairy
+
+tree:
+  inherit: base
+  path: tree
+  spells:
+    - missile

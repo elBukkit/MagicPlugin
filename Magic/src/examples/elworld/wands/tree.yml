@@ -1,0 +1,9 @@
+#
+# This creates a basic starter wand, and is the default wand given with the "/wand" command.
+#
+tree:
+  inherit: base_wand
+  class: tree
+  icon: stick{CustomModelData:18001}
+  active_spell: missile
+  slots: gui,controls,spellmode,swappable

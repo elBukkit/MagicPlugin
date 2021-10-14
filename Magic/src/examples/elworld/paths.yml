@@ -11,3 +11,17 @@ randompower:
       "0^7": 2
       "0^8": 2
       "0^9": 2
+
+tree:
+  override_properties:
+    mana_max: 500
+    mana_regeneration: 50
+    hotbar_count: 1
+  spells:
+    - tree_a1
+    - tree_a2
+    - tree_a3
+    - tree_b1
+    - tree_b2
+    - tree_b3
+    - tree_ult
