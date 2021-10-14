@@ -460,6 +460,7 @@
             <groupId>com.github.Maxlego08</groupId>
             <artifactId>zAuctionHouseV3-API</artifactId>
             <version>4.0.4.9</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
