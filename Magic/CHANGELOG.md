@@ -16,6 +16,7 @@
  - Survival dragons changed to phantoms, improve AI and fix being one-shottable with arrows  
  - Fix issues with spell inventories and EliteMobs loot showers
  - Force-deactivate all players on server shutdown (prior to logout), for MDB compatibility issues
+ - The Freeze action now uses a separate `snowable` material list to prevent changing ice to snow
 
 ## Additions
  

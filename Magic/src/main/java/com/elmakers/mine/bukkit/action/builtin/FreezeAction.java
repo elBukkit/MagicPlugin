@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
@@ -23,6 +24,7 @@ public class FreezeAction extends BaseSpellAction
     private boolean freezeLava;
     private boolean freezeFire;
     private Material iceMaterial;
+    private MaterialSet snowable;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -32,6 +34,7 @@ public class FreezeAction extends BaseSpellAction
         freezeLava = parameters.getBoolean("freeze_lava", true);
         freezeFire = parameters.getBoolean("freeze_fire", true);
         iceMaterial = ConfigurationUtils.getMaterial(parameters, "ice", Material.ICE);
+        snowable = context.getController().getMaterialSetManager().fromConfig(parameters.getString("snowable", "snowable"));
     }
 
     @SuppressWarnings("deprecation")
@@ -103,6 +106,10 @@ public class FreezeAction extends BaseSpellAction
             }
         }
         if (!context.isDestructible(block) || !context.hasBuildPermission(block))
+        {
+            return SpellResult.NO_TARGET;
+        }
+        if (material == Material.SNOW && !snowable.testBlock(block))
         {
             return SpellResult.NO_TARGET;
         }
