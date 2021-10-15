@@ -371,6 +371,14 @@ help:
     `<li>`&dMagic&f can work with &4ItemsAdder&f, use &7`<command command="getrp url" text="/getrp url">` &fto download the correct Magic RP, then unzip it into IA's &7resourcepacks&f folder
     `<li>`Other resource pack compatiblity issues can possibily be resolved using the `<link url="https://merge.elmakers.com" text="RP merge tool">`
     `<li>`Note if merging an ItemsAdder resource pack, you need to turn off the &7protect-file-from-unzip&f setting in ItemsAdder's config, or the merge tool can't read it
+    `<li>`See information on using &dMagic&f with &b`<help topic="mythicmobs" text="Mythic Mobs">`
+  mythicmobs: |-
+    `<title text="Mythic Mobs">`
+    `<li>`MythicMobs can cast &dMagic&f spells using the command skill: `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/examples/MythicMobs-2.0/Skills/MagicSkills.yml" text="Example">`
+    `<li>`Magic mobs can use a MythicMob as a base with &7mythic_mob: <name>&f in a config
+    `<li>`Mythic mob names can be used in place of a &dMagic&f mob key in mmob commands and spell configs
+    `<li>``<command command="mitem save myitem" text="Save a the item in your hand">` to turn a Mythic item into a &dMagic&f item.
+    `<li>`Mythic mobs can drop magic items using a command skill and the `<command command="mitem spawn sp:100 0 64 0 world" text="mitem spawn">` command.
   protection: |-
     `<title text="Protection">`
     `<li>` &dMagic will respect PvP and build/break permissions from: WorldGuard, PreciousStones, RedProtect, Factions, GriefPrevention, PvPManager, Multiverse, Citadel and others
