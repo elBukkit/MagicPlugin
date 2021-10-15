@@ -23,16 +23,17 @@ public class HelpTopic {
     private final String key;
     private final String title;
     private final String text;
-    private final String searchText;
+    private final String extraText;
     private final String topicType;
     private final String[] lines;
     private final double weight;
     protected final Map<String, Integer> words;
     protected final Set<String> titleWords;
     protected final Set<String> tagWords;
+    protected final Set<String> extraWords;
     protected final int maxCount;
 
-    public HelpTopic(Messages messages, String key, String text, String tags, String topicType, double weight) {
+    public HelpTopic(Messages messages, String key, String text, String extraText, String tags, String topicType, double weight) {
         this.key = key;
         this.topicType = topicType;
         this.weight = weight;
@@ -40,8 +41,9 @@ public class HelpTopic {
         text = expansion.getText();
         text = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(text));
         this.text = text;
+        this.extraText = extraText;
         String simpleText = ChatColor.stripColor(ChatUtils.getSimpleMessage(text, true));
-        this.searchText = simpleText.toLowerCase();
+        String searchText = simpleText.toLowerCase();
         this.title = expansion.getTitle();
 
         // Pre-split simple description lines, remove title if present
@@ -57,6 +59,12 @@ public class HelpTopic {
         int maxCount = 0;
         titleWords = new HashSet<>();
         tagWords = new HashSet<>();
+        this.extraWords = new HashSet<>();
+        List<String> otherWordList = Arrays.asList(ChatUtils.getWords(extraText.toLowerCase()));
+        for (String otherWord : otherWordList) {
+            if (otherWord.length() < Help.MIN_WORD_LENGTH) continue;
+            this.extraWords.add(otherWord);
+        }
         List<String> helpTopicWords = new ArrayList<>();
         helpTopicWords.addAll(Arrays.asList(ChatUtils.getWords(searchText)));
         List<String> titleWordList = Arrays.asList(ChatUtils.getWords(title.toLowerCase()));
@@ -107,7 +115,7 @@ public class HelpTopic {
 
     @Nonnull
     public String getText() {
-        return text;
+        return text + extraText;
     }
 
     @Nonnull

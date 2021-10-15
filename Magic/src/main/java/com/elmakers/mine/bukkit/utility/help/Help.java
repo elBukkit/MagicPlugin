@@ -108,11 +108,11 @@ public class Help {
     }
 
     public void loadTopic(String key, String contents) {
-        loadTopic(key, contents, "", "", 1.0);
+        loadTopic(key, contents, "", "", "", 1.0);
     }
 
-    public void loadTopic(String key, String contents, String tags, String topicType, double weight) {
-        HelpTopic helpTopic = new HelpTopic(messages, key, contents, tags, topicType, weight);
+    public void loadTopic(String key, String contents, String extraContents, String tags, String topicType, double weight) {
+        HelpTopic helpTopic = new HelpTopic(messages, key, contents, extraContents, tags, topicType, weight);
         topics.put(key, helpTopic);
         // Index all words
         Map<String, Integer> wordCounts = helpTopic.getWordCounts();
@@ -185,6 +185,8 @@ public class Help {
             if (metaCategory != null && !metaCategory.isEmpty()) {
                 tags += " " + metaCategory;
             }
+
+            String extraDescription = "";
             Object rawExamples = action.get("examples");
             if (rawExamples != null && rawExamples instanceof List) {
                 List<String> exampleList = (List<String>)rawExamples;
@@ -192,7 +194,7 @@ public class Help {
                     for (int i = 0; i < exampleList.size(); i++) {
                         exampleList.set(i, exampleTemplate.replace("$example", exampleList.get(i)));
                     }
-                    description += "\n" + examplesTemplate.replace("$examples", StringUtils.join(exampleList, " "));
+                    extraDescription += "\n" + examplesTemplate.replace("$examples", StringUtils.join(exampleList, " "));
                 }
             }
             int importance = 0;
@@ -225,14 +227,15 @@ public class Help {
                             );
                         }
                     }
-                    description += "\n" + parametersTemplate.replace("$parameters", StringUtils.join(parameterLines, "\n"));
+                    extraDescription += "\n" + parametersTemplate.replace("$parameters", StringUtils.join(parameterLines, "\n"));
                 }
             }
 
             description = convertMetaDescription(description);
+            extraDescription = convertMetaDescription(extraDescription);
             double weight = (Math.min(importance, 100) / 100) * (META_WEIGHT_MAX - META_WEIGHT_MIN) + META_WEIGHT_MIN;
             // hacky plural here, be warned
-            loadTopic("reference." + metaType + "s." + key, description, tags, topicType, weight);
+            loadTopic("reference." + metaType + "s." + key, description, extraDescription, tags, topicType, weight);
         }
     }
 

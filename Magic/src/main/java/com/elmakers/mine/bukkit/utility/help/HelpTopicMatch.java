@@ -23,6 +23,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     private double wordsRelevance;
     private double titleRelevance;
     private double tagRelevance;
+    private double extraRelevance;
 
     @Nonnull
     public static HelpTopicMatch match(Help help, HelpTopic topic, Collection<String> keywords) {
@@ -41,6 +42,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             wordsRelevance = wordsRelevance / keywords.size();
             titleRelevance = titleRelevance / keywords.size();
             tagRelevance = tagRelevance / keywords.size();
+            extraRelevance = extraRelevance / keywords.size();
         }
         this.relevance = relevance * topic.getWeight();
     }
@@ -55,6 +57,9 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         }
         if (tagRelevance > 0) {
             debugText += " Tags: " + ChatUtils.printPercentage(tagRelevance) + "x" + SearchFactors.TAG_WEIGHT;
+        }
+        if (extraRelevance > 0) {
+            debugText += " Extra: " + ChatUtils.printPercentage(extraRelevance) + "x" + SearchFactors.EXTRA_WEIGHT;
         }
         return debugText;
     }
@@ -79,8 +84,13 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
             this.tagRelevance += tagRelevance;
             maxRelevance = Math.max(tagRelevance, maxRelevance);
         }
-        double maxWeight = Math.max(Math.max(SearchFactors.CONTENT_WEIGHT, SearchFactors.TITLE_WEIGHT), SearchFactors.TAG_WEIGHT);
-        return maxRelevance / maxWeight;
+        double extraRelevance = computeSetRelevance(help, topic.extraWords, keyword, SearchFactors.MIN_EXTRA_SIMILARITY);
+        if (extraRelevance > 0) {
+            extraRelevance = Math.pow(extraRelevance, SearchFactors.EXTRA_FACTOR) * SearchFactors.EXTRA_WEIGHT;
+            this.extraRelevance += extraRelevance;
+            maxRelevance = Math.max(extraRelevance, maxRelevance);
+        }
+        return maxRelevance / SearchFactors.MAX_WEIGHT;
     }
 
     private double computeSetRelevance(Help help, Set<String> words, String keyword, double minSimilarity) {
@@ -122,10 +132,6 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
 
     public String getSummary(boolean forConsole) {
         return getSummary(MAX_WIDTH, ChatColor.AQUA, ChatColor.RESET, !forConsole);
-    }
-
-    public String getSummary(int maxWidth, String matchPrefix, String matchSuffix) {
-        return getSummary(maxWidth, matchPrefix, matchSuffix, false);
     }
 
     public String getSummary(int maxWidth, String matchPrefix, String matchSuffix, boolean addTooltips) {
