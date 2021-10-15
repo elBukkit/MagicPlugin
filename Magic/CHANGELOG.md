@@ -24,6 +24,7 @@
  - Add more custom wand lore placeholders: $attributes, $slots, $slot, $sets, $potion_effects, $enchantments, $cast_spell
  - Add zAuctionHouse support, bound wands can't be auctioned
  - Add `placeholders` option to wands, for making custom placeholders that can be used in custom lore
+ - Add `potion_effects` messages section for customizing potion effect names in wand lore
 
 ## Balance Changes
 

@@ -2,6 +2,10 @@
 
 # Next Up:
 
+ - Allow modifiers on classes
+
+ - Add auto-unlock option for classes
+
  - Add sleep/lay down triggers
 
  - Do wand overrides not work for cast_spell wand casts? Seems like not (can't make fancy ice skates)

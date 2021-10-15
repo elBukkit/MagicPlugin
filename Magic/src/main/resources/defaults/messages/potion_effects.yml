@@ -1,0 +1,28 @@
+potion_effects:
+  speed: Speed
+  slow: Slowness
+  fast_digging: Haste
+  slow_digging: Fatigue
+  increase_damage: Strength
+  heal: Healing
+  harm: Harming
+  jump: Jump Boost
+  confusion: Nausea
+  regeneration: Regeneration
+  damage_resistance: Resistance
+  fire_resistance: Fire Resistance
+  water_breathing: Water Breathing
+  invisibility: Invisibility
+  blindness: Blindness
+  night_vision: Night Vision
+  hunger: Hunger
+  weakness: Weakness
+  poison: Poison
+  wither: Wither
+  health_boost: Health Boost
+  absorption: absorption
+  saturation: saturation
+  glowing: Glowing
+  levitation: Levitation
+  luck: Luck
+  unluck: Unlock
