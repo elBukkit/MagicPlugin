@@ -5,7 +5,8 @@
 ## Improvements
 
  - More precise targeting through blocks like stairs and carpet
- - Improvement natural mob spawning, rebalance otherside and netherside spawns
+ - Improved natural mob spawning, rebalance otherside and netherside spawns
+ - Add Lands to `generic_protection` by default
 
 ## Fixes
 
