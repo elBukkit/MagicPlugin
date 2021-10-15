@@ -41,10 +41,14 @@ public class HelpTopic {
         text = expansion.getText();
         text = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(text));
         this.text = text;
-        this.extraText = extraText;
         String simpleText = ChatColor.stripColor(ChatUtils.getSimpleMessage(text, true));
         String searchText = simpleText.toLowerCase();
         this.title = expansion.getTitle();
+
+        MacroExpansion extraExpansion = messages.expandMacros(extraText);
+        extraText = extraExpansion.getText();
+        extraText = CompatibilityLib.getCompatibilityUtils().translateColors(StringEscapeUtils.unescapeHtml(extraText));
+        this.extraText = extraText;
 
         // Pre-split simple description lines, remove title if present
         String[] allLines = StringUtils.split(simpleText, "\n");
