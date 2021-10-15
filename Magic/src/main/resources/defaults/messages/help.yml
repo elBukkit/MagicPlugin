@@ -371,7 +371,14 @@ help:
     `<li>`&dMagic&f can work with &4ItemsAdder&f, use &7`<command command="getrp url" text="/getrp url">` &fto download the correct Magic RP, then unzip it into IA's &7resourcepacks&f folder
     `<li>`Other resource pack compatiblity issues can possibily be resolved using the `<link url="https://merge.elmakers.com" text="RP merge tool">`
     `<li>`Note if merging an ItemsAdder resource pack, you need to turn off the &7protect-file-from-unzip&f setting in ItemsAdder's config, or the merge tool can't read it
+    `<li>`&dMagic&f has a &b`<help topic="quests" text="Quests">` module for requirements, objectives and rewards
     `<li>`See information on using &dMagic&f with &b`<help topic="mythicmobs" text="Mythic Mobs">`
+  quests: |-
+    `<title text="Quests">`
+    `<p>`&dMagic&f has a custom module for the `<link url="https://www.spigotmc.org/resources/quests.3711/" text="Quests">` plugin
+    `<p>`This will add special requirements, objectives and rewards.
+    `<li>``<link url="https://github.com/elBukkit/MagicQuests/releases" text="Download the MagicQuests module">`
+    `<p>`Make sure to put this in &7plugins/Quests/modules&f, NOT the plugins folder! It is not a stand-alone plugin.
   mythicmobs: |-
     `<title text="Mythic Mobs">`
     `<li>`MythicMobs can cast &dMagic&f spells using the command skill: `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/examples/MythicMobs-2.0/Skills/MagicSkills.yml" text="Example">`
