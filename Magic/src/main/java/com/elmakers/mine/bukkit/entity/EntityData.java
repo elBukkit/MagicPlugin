@@ -1070,47 +1070,56 @@ public class EntityData
         return true;
     }
 
-    public void applyAI(Entity entity) {
+    private void applyAI(Entity entity) {
         if (ai == null) return;
         List<?> goalConfig = ai.getList("goals");
-        if (goalConfig != null && !goalConfig.isEmpty()) {
-            MobUtils mobUtils = CompatibilityLib.getMobUtils();
-            Entity target = null;
-            if (entity instanceof Creature) {
-                target = ((Creature)entity).getTarget();
+    }
+
+    private void applyGoals(Entity entity, List<?> goalConfig) {
+        if (goalConfig == null || goalConfig.isEmpty()) {
+            return;
+        }
+        MobUtils mobUtils = CompatibilityLib.getMobUtils();
+        Entity target = null;
+        if (entity instanceof Creature) {
+            target = ((Creature)entity).getTarget();
+        }
+        if (!mobUtils.removePathfinderGoals(entity)) {
+            if (entity instanceof LivingEntity) {
+                ((LivingEntity)entity).setAI(false);
             }
-            mobUtils.removePathfinderGoals(entity);
-            for (Object rawGoal : goalConfig) {
-                String goalKey;
-                ConfigurationSection config;
-                if (rawGoal instanceof String) {
-                    goalKey = (String)rawGoal;
-                    config = ConfigurationUtils.newSection(ai);
+            return;
+        }
+        for (Object rawGoal : goalConfig) {
+            String goalKey;
+            ConfigurationSection config;
+            if (rawGoal instanceof String) {
+                goalKey = (String)rawGoal;
+                config = ConfigurationUtils.newSection(ai);
+            } else {
+                if (rawGoal instanceof Map) {
+                    rawGoal = ConfigurationUtils.toConfigurationSection(ai, (Map<?,?>)rawGoal);
+                }
+                if (rawGoal instanceof ConfigurationSection) {
+                    config = (ConfigurationSection)rawGoal;
+                    goalKey = config.getString("goal");
                 } else {
-                    if (rawGoal instanceof Map) {
-                        rawGoal = ConfigurationUtils.toConfigurationSection(ai, (Map<?,?>)rawGoal);
-                    }
-                    if (rawGoal instanceof ConfigurationSection) {
-                        config = (ConfigurationSection)rawGoal;
-                        goalKey = config.getString("goal");
-                    } else {
-                        goalKey = null;
-                        config = null;
-                    }
+                    goalKey = null;
+                    config = null;
                 }
-                if (goalKey == null || goalKey.isEmpty()) {
-                    controller.getLogger().info("Goal missing goal type in mob " + getKey());
-                    continue;
-                }
-                GoalType goalType;
-                try {
-                    goalType = GoalType.valueOf(goalKey.toUpperCase());
-                } catch (Exception ex) {
-                    controller.getLogger().info("Invalid goal type in mob " + getKey() + ": " + goalKey);
-                    continue;
-                }
-                mobUtils.setPathfinderGoal(entity, goalType, target, config);
             }
+            if (goalKey == null || goalKey.isEmpty()) {
+                controller.getLogger().info("Goal missing goal type in mob " + getKey());
+                continue;
+            }
+            GoalType goalType;
+            try {
+                goalType = GoalType.valueOf(goalKey.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().info("Invalid goal type in mob " + getKey() + ": " + goalKey);
+                continue;
+            }
+            mobUtils.setPathfinderGoal(entity, goalType, target, config);
         }
     }
 
