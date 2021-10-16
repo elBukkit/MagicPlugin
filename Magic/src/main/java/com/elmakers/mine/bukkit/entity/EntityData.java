@@ -51,11 +51,13 @@ import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
+import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
@@ -152,6 +154,7 @@ public class EntityData
     protected boolean dropsRequirePlayerKiller;
     protected List<Deque<WeightedPair<String>>> drops;
     protected ConfigurationSection loot;
+    protected ConfigurationSection ai;
     protected Set<String> tags;
     protected Set<String> removeMounts;
     protected String interactSpell;
@@ -377,7 +380,6 @@ public class EntityData
         isSitting = ConfigUtils.getOptionalBoolean(parameters, "sitting");
         isInvulnerable = ConfigUtils.getOptionalBoolean(parameters, "invulnerable");
         isBaby = ConfigUtils.getOptionalBoolean(parameters, "baby");
-        hasAI = ConfigUtils.getOptionalBoolean(parameters, "ai");
         isAware = ConfigUtils.getOptionalBoolean(parameters, "aware");
         hasGravity = ConfigUtils.getOptionalBoolean(parameters, "gravity");
         canPickupItems = ConfigUtils.getOptionalBoolean(parameters, "can_pickup_items");
@@ -479,6 +481,14 @@ public class EntityData
                 }
             }
         }
+
+        ai = parameters.getConfigurationSection("ai");
+        if (ai != null) {
+            hasAI = true;
+        } else {
+            hasAI = ConfigUtils.getOptionalBoolean(parameters, "ai");
+        }
+
         loot = parameters.getConfigurationSection("loot");
         cancelInteract = parameters.getBoolean("cancel_interact");
         List<String> tagList = ConfigurationUtils.getStringList(parameters, "tags");
@@ -1051,7 +1061,52 @@ public class EntityData
         if (extraData != null) {
             extraData.applyPostSpawn(entity);
         }
+        applyAI(entity);
         return true;
+    }
+
+    public void applyAI(Entity entity) {
+        if (ai == null) return;
+        List<?> goalConfig = ai.getList("goals");
+        if (goalConfig != null && !goalConfig.isEmpty()) {
+            MobUtils mobUtils = CompatibilityLib.getMobUtils();
+            Entity target = null;
+            if (entity instanceof Creature) {
+                target = ((Creature)entity).getTarget();
+            }
+            mobUtils.removePathfinderGoals(entity);
+            for (Object rawGoal : goalConfig) {
+                String goalKey;
+                ConfigurationSection config;
+                if (rawGoal instanceof String) {
+                    goalKey = (String)rawGoal;
+                    config = ConfigurationUtils.newSection(ai);
+                } else {
+                    if (rawGoal instanceof Map) {
+                        rawGoal = ConfigurationUtils.toConfigurationSection(ai, (Map<?,?>)rawGoal);
+                    }
+                    if (rawGoal instanceof ConfigurationSection) {
+                        config = (ConfigurationSection)rawGoal;
+                        goalKey = config.getString("goal");
+                    } else {
+                        goalKey = null;
+                        config = null;
+                    }
+                }
+                if (goalKey == null || goalKey.isEmpty()) {
+                    controller.getLogger().info("Goal missing goal type in mob " + getKey());
+                    continue;
+                }
+                GoalType goalType;
+                try {
+                    goalType = GoalType.valueOf(goalKey.toUpperCase());
+                } catch (Exception ex) {
+                    controller.getLogger().info("Invalid goal type in mob " + getKey() + ": " + goalKey);
+                    continue;
+                }
+                mobUtils.setPathfinderGoal(entity, goalType, target, config);
+            }
+        }
     }
 
     public void applyAttributes(LivingEntity entity) {

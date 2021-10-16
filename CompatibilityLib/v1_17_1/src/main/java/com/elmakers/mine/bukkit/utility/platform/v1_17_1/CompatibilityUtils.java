@@ -132,7 +132,6 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.EntityDamageSource;
-import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -1591,20 +1590,6 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         }
         WallSign sign = (WallSign)blockData;
         return sign.getFacing();
-    }
-
-    @Override
-    public boolean setPathFinderTarget(Entity entity, Entity target, double speed) {
-        if (entity == null || target == null) return false;
-        net.minecraft.world.entity.Entity nmsEntity = ((CraftEntity)entity).getHandle();
-        net.minecraft.world.entity.Entity nmstarget = ((CraftEntity)target).getHandle();
-        if (!(nmsEntity instanceof PathfinderMob)) {
-            return false;
-        }
-
-        PathfinderMob pathfinder = (PathfinderMob)nmsEntity;
-        pathfinder.getNavigation().moveTo(nmstarget, speed);
-        return true;
     }
 
     @Override

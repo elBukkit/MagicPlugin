@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
@@ -206,6 +207,13 @@ public class CompatibilityLib extends PlatformInterpreter {
             throw new IllegalStateException("EntityUtils used before being initialized");
         }
         return platform.getEntityUtils();
+    }
+
+    public static MobUtils getMobUtils() {
+        if (platform == null) {
+            throw new IllegalStateException("MobUtils used before being initialized");
+        }
+        return platform.getMobUtils();
     }
 
     public static int[] getServerVersion(Plugin plugin) {

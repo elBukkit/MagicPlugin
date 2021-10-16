@@ -32,7 +32,7 @@ public class AggroAction extends BaseSpellAction
         if (!(target instanceof Creature)) {
             boolean result = false;
             if (setPathfinder) {
-                result = CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(target, sourceEntity, speedModifier);
+                result = CompatibilityLib.getMobUtils().setPathfinderTarget(target, sourceEntity, speedModifier);
             }
             return result ? SpellResult.CAST : SpellResult.NO_TARGET;
         }
@@ -61,7 +61,7 @@ public class AggroAction extends BaseSpellAction
 
         ((Creature) target).setTarget(source);
         if (setPathfinder) {
-            CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(target, source, speedModifier);
+            CompatibilityLib.getMobUtils().setPathfinderTarget(target, source, speedModifier);
         }
         return SpellResult.CAST;
     }

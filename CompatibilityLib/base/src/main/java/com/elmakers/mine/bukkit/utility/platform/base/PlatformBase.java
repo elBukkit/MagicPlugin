@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
@@ -42,6 +43,8 @@ public abstract class PlatformBase implements Platform {
     @Nonnull
     protected final SkinUtils skinUtils;
     @Nonnull
+    protected final MobUtils mobUtils;
+    @Nonnull
     protected final EntityUtils entityUtils;
     protected final PaperUtils paperUtils;
     protected final SpigotUtils spigotUtils;
@@ -66,6 +69,7 @@ public abstract class PlatformBase implements Platform {
             this.spigotUtils = createSpigotUtils();
             this.entityMetadataUtils = createEntityMetadataUtils();
             this.entityUtils = createEntityUtils();
+            this.mobUtils = createMobUtils();
         } else {
             this.compatibilityUtils = null;
             this.deprecatedUtils = null;
@@ -78,6 +82,7 @@ public abstract class PlatformBase implements Platform {
             this.spigotUtils = null;
             this.entityMetadataUtils = null;
             this.entityUtils = null;
+            this.mobUtils = null;
         }
     }
 
@@ -159,6 +164,10 @@ public abstract class PlatformBase implements Platform {
 
     protected DeprecatedUtils createDeprecatedUtils() {
         throw new IllegalStateException("Platform does not implement createDeprecatedUtils");
+    }
+
+    protected MobUtils createMobUtils() {
+        return new MobUtilsBase();
     }
 
     @Override
@@ -256,6 +265,11 @@ public abstract class PlatformBase implements Platform {
     @Override
     public EntityUtils getEntityUtils() {
         return entityUtils;
+    }
+
+    @Override
+    public MobUtils getMobUtils() {
+        return mobUtils;
     }
 
     @Override

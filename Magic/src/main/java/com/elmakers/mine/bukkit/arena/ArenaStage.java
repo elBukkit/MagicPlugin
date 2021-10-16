@@ -104,7 +104,7 @@ public class ArenaStage extends ArenaStageTemplate {
                                 targetPlayer = RandomUtils.getRandom(players);
                                 Player player = targetPlayer.getPlayer();
                                 ((Creature)spawnedEntity).setTarget(player);
-                                CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(spawnedEntity, player, 0);
+                                CompatibilityLib.getMobUtils().setPathfinderTarget(spawnedEntity, player, 0);
                             }
                             spawned.put(spawnedEntity, targetPlayer);
                         }
@@ -140,7 +140,7 @@ public void checkAggro(Entity mob) {
             if (mob instanceof Creature) {
                 ((Creature)mob).setTarget(target.getPlayer());
             }
-            CompatibilityLib.getCompatibilityUtils().setPathFinderTarget(mob, target.getPlayer(), 1);
+            CompatibilityLib.getMobUtils().setPathfinderTarget(mob, target.getPlayer(), 1);
         }
     }
 

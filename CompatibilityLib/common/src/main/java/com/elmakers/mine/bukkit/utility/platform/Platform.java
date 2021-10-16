@@ -46,6 +46,8 @@ public interface Platform {
 
     EntityUtils getEntityUtils();
 
+    MobUtils getMobUtils();
+
     @Nullable
     PaperUtils getPaperUtils();
 

@@ -6,6 +6,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.event.EntityLoadEventHandler;
 
@@ -39,6 +40,11 @@ public class Platform extends ModernPlatform {
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.EntityUtils createEntityUtils() {
         return new EntityUtils(this);
+    }
+
+    @Override
+    protected MobUtils createMobUtils() {
+        return new com.elmakers.mine.bukkit.utility.platform.v1_17_1.MobUtils(this);
     }
 
     @Override
