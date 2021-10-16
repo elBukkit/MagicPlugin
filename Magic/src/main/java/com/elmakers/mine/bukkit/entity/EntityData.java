@@ -155,7 +155,7 @@ public class EntityData
     protected boolean dropsRequirePlayerKiller;
     protected List<Deque<WeightedPair<String>>> drops;
     protected ConfigurationSection loot;
-    protected ConfigurationSection ai;
+    protected List<?> goals;
     protected Set<String> tags;
     protected Set<String> removeMounts;
     protected String interactSpell;
@@ -484,12 +484,8 @@ public class EntityData
             }
         }
 
-        ai = parameters.getConfigurationSection("ai");
-        if (ai != null) {
-            hasAI = true;
-        } else {
-            hasAI = ConfigUtils.getOptionalBoolean(parameters, "ai");
-        }
+        hasAI = ConfigUtils.getOptionalBoolean(parameters, "ai");
+        goals = parameters.getList("goals");
 
         loot = parameters.getConfigurationSection("loot");
         cancelInteract = parameters.getBoolean("cancel_interact");
@@ -1066,17 +1062,12 @@ public class EntityData
         if (extraData != null) {
             extraData.applyPostSpawn(entity);
         }
-        applyAI(entity);
+        applyGoals(entity);
         return true;
     }
 
-    private void applyAI(Entity entity) {
-        if (ai == null) return;
-        List<?> goalConfig = ai.getList("goals");
-    }
-
-    private void applyGoals(Entity entity, List<?> goalConfig) {
-        if (goalConfig == null || goalConfig.isEmpty()) {
+    private void applyGoals(Entity entity) {
+        if (goals == null || goals.isEmpty()) {
             return;
         }
         MobUtils mobUtils = CompatibilityLib.getMobUtils();
@@ -1090,15 +1081,15 @@ public class EntityData
             }
             return;
         }
-        for (Object rawGoal : goalConfig) {
+        for (Object rawGoal : goals) {
             String goalKey;
             ConfigurationSection config;
             if (rawGoal instanceof String) {
                 goalKey = (String)rawGoal;
-                config = ConfigurationUtils.newSection(ai);
+                config = ConfigurationUtils.newSection(configuration);
             } else {
                 if (rawGoal instanceof Map) {
-                    rawGoal = ConfigurationUtils.toConfigurationSection(ai, (Map<?,?>)rawGoal);
+                    rawGoal = ConfigurationUtils.toConfigurationSection(configuration, (Map<?,?>)rawGoal);
                 }
                 if (rawGoal instanceof ConfigurationSection) {
                     config = (ConfigurationSection)rawGoal;

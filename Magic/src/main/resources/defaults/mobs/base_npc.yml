@@ -4,9 +4,8 @@ base_npc:
   type: villager
   use_npc_name: true
   villager_profession: librarian
-  ai:
-    goals:
-      - look_at_player
+  goals:
+    - look_at_player
   invulnerable: true
   collidable: false
   leash_range: 2
