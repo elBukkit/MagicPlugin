@@ -5,6 +5,7 @@
 ## Mob AI
 
  - New `goals` list in mob configs, can be used to change vanilla pathfinding goals (1.17 only)
+ - New `scaredy` mob added as an example
 
 ## Improvements
 

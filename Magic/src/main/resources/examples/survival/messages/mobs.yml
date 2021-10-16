@@ -117,3 +117,5 @@ mobs:
     name: "&6Marigold"
   aggromite:
     name: Aggromite
+  scaredy:
+    name: Scaredy Cat
