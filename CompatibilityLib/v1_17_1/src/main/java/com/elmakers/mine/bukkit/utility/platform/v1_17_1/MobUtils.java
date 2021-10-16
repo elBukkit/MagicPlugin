@@ -3,13 +3,16 @@ package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.mob.GoalType;
+import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -30,13 +33,39 @@ import net.minecraft.world.entity.ai.goal.GolemRandomStrollInVillageGoal;
 import net.minecraft.world.entity.ai.goal.InteractGoal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
+import net.minecraft.world.entity.ai.goal.MoveBackToVillageGoal;
+import net.minecraft.world.entity.ai.goal.MoveThroughVillageGoal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsRestrictionGoal;
+import net.minecraft.world.entity.ai.goal.MoveTowardsTargetGoal;
+import net.minecraft.world.entity.ai.goal.OcelotAttackGoal;
+import net.minecraft.world.entity.ai.goal.OfferFlowerGoal;
+import net.minecraft.world.entity.ai.goal.OpenDoorGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
+import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
+import net.minecraft.world.entity.ai.goal.RandomSwimmingGoal;
+import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
+import net.minecraft.world.entity.ai.goal.RunAroundLikeCrazyGoal;
+import net.minecraft.world.entity.ai.goal.StrollThroughVillageGoal;
+import net.minecraft.world.entity.ai.goal.SwellGoal;
+import net.minecraft.world.entity.ai.goal.TemptGoal;
+import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
+import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
+import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
 import net.minecraft.world.entity.animal.Animal;
+import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Wolf;
+import net.minecraft.world.entity.animal.horse.Horse;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
 
 public class MobUtils extends MobUtilsBase {
     private final Platform platform;
@@ -107,10 +136,12 @@ public class MobUtils extends MobUtilsBase {
     }
 
     private Goal getGoal(GoalType goalType, PathfinderMob mob, ConfigurationSection config) {
-        double speed = config.getDouble("speed", 1);
-        double sprintSpeed = config.getDouble("sprint_speed", 1);
-        String classType = config.getString("entity_class", "player");
-        float distance = (float)config.getDouble("distance", 16);
+        final String classType = config.getString("entity_class", "player");
+        final double speed = config.getDouble("speed", 1);
+        final double sprintSpeed = config.getDouble("sprint_speed", 1);
+        final float distance = (float)config.getDouble("distance", 16);
+        final boolean doors = config.getBoolean("doors", true);
+        int interval = config.getInt("interval", 120);
         switch (goalType) {
             case AVOID_ENTITY:
                 return getAvoidEntityGoal(mob, classType, distance, sprintSpeed, sprintSpeed);
@@ -124,7 +155,7 @@ public class MobUtils extends MobUtilsBase {
             case BREATHE_AIR:
                 return new BreathAirGoal(mob);
             case BREED:
-                if (mob instanceof  Animal) {
+                if (mob instanceof Animal) {
                     return new BreedGoal((Animal)mob, speed);
                 }
                 return null;
@@ -146,8 +177,76 @@ public class MobUtils extends MobUtilsBase {
                 return new LeapAtTargetGoal(mob, (float)config.getDouble("y_offset", 0.4));
             case LOOK_AT_PLAYER:
                 return getLookAtPlayerGoal(mob, classType, distance, (float)config.getDouble("probability", 1), config.getBoolean("horizontal"));
+            case MELEE_ATTACK:
+                return new MeleeAttackGoal(mob, speed, config.getBoolean("follow", true));
+            case MOVE_BACK_TO_VILLAGE:
+                return new MoveBackToVillageGoal(mob, speed, config.getBoolean("check", true));
+            case MOVE_THROUGH_VILLAGE:
+                return new MoveThroughVillageGoal(mob, speed, config.getBoolean("night", true), (int)distance, (BooleanSupplier) () -> doors);
+            case MOVE_TOWARDS_RESTRICTION:
+                return new MoveTowardsRestrictionGoal(mob, speed);
+            case MOVE_TOWARDS_TARGET:
+                return new MoveTowardsTargetGoal(mob, speed, distance);
+            case OCELOT_ATTACK:
+                return new OcelotAttackGoal(mob);
+            case OFFER_FLOWER:
+                if (mob instanceof IronGolem) {
+                    return new OfferFlowerGoal((IronGolem)mob);
+                }
+                return null;
+            case OPEN_DOOR:
+                return new OpenDoorGoal(mob, config.getBoolean("close", false));
             case PANIC:
                 return new PanicGoal(mob, speed);
+            case RANDOM_LOOK_AROUND:
+                return new RandomLookAroundGoal(mob);
+            case RANDOM_STROLL:
+                return new RandomStrollGoal(mob, speed, interval);
+            case RANDOM_SWIMMING:
+                return new RandomSwimmingGoal(mob, speed, interval);
+            case RESTRICT_SUN:
+                return new RestrictSunGoal(mob);
+            case RUN_AROUND_LIKE_CRAZY:
+                if (mob instanceof Horse) {
+                    return new RunAroundLikeCrazyGoal((Horse)mob, speed);
+                }
+                return null;
+            case STROLL_THROUGH_VILLAGE:
+                return new StrollThroughVillageGoal(mob, interval);
+            case SWELL:
+                if (mob instanceof Creeper) {
+                    return new SwellGoal((Creeper)mob);
+                }
+                return null;
+            case TEMPT:
+                String itemKey = config.getString("item", "EMERALD");
+                try {
+                    Material material = Material.valueOf(itemKey.toUpperCase());
+                    org.bukkit.inventory.ItemStack itemStack = new org.bukkit.inventory.ItemStack(material);
+                    ItemUtils itemUtils = platform.getItemUtils();
+                    itemStack = itemUtils.makeReal(itemStack);
+                    ItemStack nms = (ItemStack)itemUtils.getHandle(itemStack);
+                    if (nms == null) {
+                        platform.getLogger().warning("Invalid item from material in temp goal: " + itemKey);
+                        return null;
+                    }
+                    boolean scare = config.getBoolean("scare", false);
+                    return new TemptGoal(mob, speed, Ingredient.of(nms), scare);
+                } catch (Exception ex) {
+                    platform.getLogger().warning("Invalid material in temp goal: " + itemKey);
+                    return null;
+                }
+            case TRY_FIND_WATER:
+                return new TryFindWaterGoal(mob);
+            case WATER_AVOIDING_RANDOM_FLYING:
+                return new WaterAvoidingRandomFlyingGoal(mob, speed);
+            case WATER_AVOIDING_RANDOM_STROLL:
+                return new WaterAvoidingRandomStrollGoal(mob, speed);
+            case ZOMBIE_ATTACK:
+                if (mob instanceof Zombie) {
+                    return new ZombieAttackGoal((Zombie)mob, speed, config.getBoolean("follow", true));
+                }
+                return null;
             default:
                 platform.getLogger().warning("Unsupported goal type: " + goalType);
                 return null;

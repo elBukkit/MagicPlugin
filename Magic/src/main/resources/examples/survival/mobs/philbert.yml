@@ -1,0 +1,8 @@
+philbert:
+  name: Philbert
+  type: creeper
+  brain:
+    goals:
+      - goal: tempt
+        item: GUNPOWDER
+        speed: 2
