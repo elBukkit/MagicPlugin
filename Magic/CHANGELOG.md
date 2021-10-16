@@ -6,6 +6,7 @@
 
  - New `goals` list in mob configs, can be used to change vanilla pathfinding goals (1.17 only)
  - New `scaredy` mob added as an example
+ - Add `collidable` flag, NPCs now always look at players (have ai, don't move, aren't collidable)
 
 ## Improvements
 

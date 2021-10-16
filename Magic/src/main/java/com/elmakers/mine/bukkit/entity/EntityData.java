@@ -104,6 +104,7 @@ public class EntityData
     protected Boolean isAware;
     protected Boolean hasAI;
     protected Boolean hasGravity;
+    protected Boolean isCollidable;
     protected boolean isDocile;
     protected boolean isRelentless;
     protected boolean transformable = true;
@@ -382,6 +383,7 @@ public class EntityData
         isBaby = ConfigUtils.getOptionalBoolean(parameters, "baby");
         isAware = ConfigUtils.getOptionalBoolean(parameters, "aware");
         hasGravity = ConfigUtils.getOptionalBoolean(parameters, "gravity");
+        isCollidable = ConfigUtils.getOptionalBoolean(parameters, "collidable");
         canPickupItems = ConfigUtils.getOptionalBoolean(parameters, "can_pickup_items");
 
         isSuperProtected = parameters.getBoolean("protected", false);
@@ -886,6 +888,9 @@ public class EntityData
 
         if (entity instanceof LivingEntity) {
             LivingEntity li = (LivingEntity)entity;
+            if (isCollidable != null) {
+                li.setCollidable(isCollidable);
+            }
             if (hasPotionEffects && potionEffects != null) {
                 for (PotionEffect effect : potionEffects) {
                         li.addPotionEffect(effect);
