@@ -1,7 +1,8 @@
 scaredy:
   type: cat
   health: 4
-  goals:
-  - avoid_entity
-  - goal: panic
-    priority: 1
+  brain:
+    goals:
+    - avoid_entity
+    - goal: panic
+      priority: 1

@@ -6,9 +6,11 @@ import org.bukkit.entity.Entity;
 import com.elmakers.mine.bukkit.mob.GoalType;
 
 public interface MobUtils {
-    boolean removePathfinderGoals(Entity entity);
+    boolean removeGoals(Entity entity);
 
-    boolean setPathfinderGoal(Entity entity, GoalType goalType, Entity target, ConfigurationSection config);
+    boolean removeGoal(Entity entity, GoalType goalType);
+
+    boolean addGoal(Entity entity, GoalType goalType, Entity target, ConfigurationSection config);
 
     boolean setPathfinderTarget(Entity entity, Entity target, double speed);
 }

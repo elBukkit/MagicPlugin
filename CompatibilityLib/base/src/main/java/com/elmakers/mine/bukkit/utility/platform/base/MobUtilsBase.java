@@ -8,12 +8,17 @@ import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 
 public class MobUtilsBase implements MobUtils {
     @Override
-    public boolean removePathfinderGoals(Entity entity) {
+    public boolean removeGoals(Entity entity) {
         return false;
     }
 
     @Override
-    public boolean setPathfinderGoal(Entity entity, GoalType goalType, Entity target, ConfigurationSection config) {
+    public boolean removeGoal(Entity entity, GoalType goalType) {
+        return false;
+    }
+
+    @Override
+    public boolean addGoal(Entity entity, GoalType goalType, Entity target, ConfigurationSection config) {
         return false;
     }
 

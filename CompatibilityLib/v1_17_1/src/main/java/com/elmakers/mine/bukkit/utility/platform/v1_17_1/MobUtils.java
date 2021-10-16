@@ -1,6 +1,11 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
@@ -26,6 +31,7 @@ import net.minecraft.world.entity.ai.goal.InteractGoal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
+import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.monster.Monster;
@@ -39,36 +45,57 @@ public class MobUtils extends MobUtilsBase {
         this.platform = platform;
     }
 
-    @Override
-    public boolean removePathfinderGoals(Entity entity) {
+    private PathfinderMob getMob(Entity entity) {
         CraftEntity craft = (CraftEntity)entity;
         net.minecraft.world.entity.Entity nms = craft.getHandle();
         if (!(nms instanceof PathfinderMob)) {
+            return null;
+        }
+        return (PathfinderMob)nms;
+    }
+
+    @Override
+    public boolean removeGoals(Entity entity) {
+        PathfinderMob mob = getMob(entity);
+        if (mob == null) {
             return false;
         }
-        PathfinderMob mob = (PathfinderMob)nms;
         mob.goalSelector.removeAllGoals();
         return true;
     }
 
     @Override
-    public boolean setPathfinderGoal(Entity entity, GoalType goalType, Entity target, ConfigurationSection config) {
+    public boolean removeGoal(Entity entity, GoalType goalType) {
+        PathfinderMob mob = getMob(entity);
+        if (mob == null) {
+            return false;
+        }
+        // TODO: Is there a cleaner way?
+        Goal targetGoal = getGoal(goalType, mob, new MemoryConfiguration());
+        Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
+        List<Goal> found = new ArrayList<>();
+        for (WrappedGoal wrappedGoal : available) {
+            if (targetGoal.getClass().isAssignableFrom(wrappedGoal.getGoal().getClass())) {
+                found.add(wrappedGoal.getGoal());
+            }
+        }
+        for (Goal removeGoal : found) {
+            mob.goalSelector.removeGoal(removeGoal);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean addGoal(Entity entity, GoalType goalType, Entity target, ConfigurationSection config) {
+        PathfinderMob mob = getMob(entity);
+        if (mob == null) {
+            return false;
+        }
         CraftEntity craft = (CraftEntity)entity;
         net.minecraft.world.entity.Entity nms = craft.getHandle();
         if (!(nms instanceof PathfinderMob)) {
             return false;
         }
-
-        /*
-        CraftEntity craftTarget = (CraftEntity)target;
-        net.minecraft.world.entity.Entity nmsTarget = craftTarget == null ? null : craftTarget.getHandle();
-        if (!(nmsTarget instanceof LivingEntity)) {
-            nmsTarget = null;
-        }
-        LivingEntity livingTarget = (LivingEntity)nmsTarget;
-        */
-
-        PathfinderMob mob = (PathfinderMob)nms;
         GoalSelector goals = mob.goalSelector;
         Goal goal = getGoal(goalType, mob, config);
         if (goal == null) {

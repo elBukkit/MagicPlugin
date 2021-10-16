@@ -1,11 +1,17 @@
 fireproof_zombie:
   type: zombie
   combustible: false
+  brain:
+    remove_goals:
+      - flee_sun
 
 fireproof_drowned:
   type: drowned
   combustible: false
   item: fishing_rod
+  brain:
+    remove_goals:
+      - flee_sun
 
 trident_drowned:
   type: drowned
@@ -16,11 +22,17 @@ fireproof_stray:
   type: stray
   combustible: false
   item: bow
+  brain:
+    remove_goals:
+      - flee_sun
 
 fireproof_skeleton:
   type: skeleton
   combustible: false
   item: bow
+  brain:
+    remove_goals:
+      - flee_sun
 
 contained_enderman:
   type: enderman
@@ -29,3 +41,11 @@ contained_enderman:
 armed_wither_skeleton:
   type: wither_skeleton
   item: stone_sword
+
+fireproof_baby_zombie:
+  type: zombie
+  baby: true
+  combustible: false
+  brain:
+    remove_goals:
+      - flee_sun

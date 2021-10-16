@@ -4,8 +4,10 @@ base_npc:
   type: villager
   use_npc_name: true
   villager_profession: librarian
-  goals:
-    - look_at_player
+  brain:
+    remove_default_goals: true
+    goals:
+      - look_at_player
   invulnerable: true
   collidable: false
   leash_range: 2

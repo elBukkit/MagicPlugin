@@ -155,7 +155,7 @@ public class EntityData
     protected boolean dropsRequirePlayerKiller;
     protected List<Deque<WeightedPair<String>>> drops;
     protected ConfigurationSection loot;
-    protected List<?> goals;
+    protected ConfigurationSection brain;
     protected Set<String> tags;
     protected Set<String> removeMounts;
     protected String interactSpell;
@@ -485,7 +485,7 @@ public class EntityData
         }
 
         hasAI = ConfigUtils.getOptionalBoolean(parameters, "ai");
-        goals = parameters.getList("goals");
+        brain = ConfigurationUtils.getConfigurationSection(parameters, "brain");
 
         loot = parameters.getConfigurationSection("loot");
         cancelInteract = parameters.getBoolean("cancel_interact");
@@ -1062,11 +1062,46 @@ public class EntityData
         if (extraData != null) {
             extraData.applyPostSpawn(entity);
         }
-        applyGoals(entity);
+        applyBrain(entity);
         return true;
     }
 
-    private void applyGoals(Entity entity) {
+    private void applyBrain(Entity entity) {
+        if (brain == null) return;
+
+        List<?> goals = brain.getList("goals");
+
+        // Remove any existing goals first
+        MobUtils mobUtils = CompatibilityLib.getMobUtils();
+        boolean removeDefaultGoals = brain.getBoolean("remove_default_goals", goals != null && !goals.isEmpty());
+        if (removeDefaultGoals) {
+            if (!mobUtils.removeGoals(entity)) {
+                if (entity instanceof LivingEntity) {
+                    ((LivingEntity)entity).setAI(false);
+                }
+                // This indicates we don't have support for goals, so just stop here.
+                return;
+            }
+        }
+        List<String> removeGoals = ConfigurationUtils.getStringList(brain, "remove_goals");
+        if (removeGoals != null) {
+            for (String goalKey : removeGoals) {
+                GoalType goalType;
+                try {
+                    goalType = GoalType.valueOf(goalKey.toUpperCase());
+                } catch (Exception ex) {
+                    controller.getLogger().info("Invalid goal type in remove_goals of mob " + getKey() + ": " + goalKey);
+                    continue;
+                }
+                mobUtils.removeGoal(entity, goalType);
+            }
+        }
+
+        // Apply custom goals
+        applyGoals(entity, goals);
+    }
+
+    private void applyGoals(Entity entity, List<?> goals) {
         if (goals == null || goals.isEmpty()) {
             return;
         }
@@ -1074,12 +1109,6 @@ public class EntityData
         Entity target = null;
         if (entity instanceof Creature) {
             target = ((Creature)entity).getTarget();
-        }
-        if (!mobUtils.removePathfinderGoals(entity)) {
-            if (entity instanceof LivingEntity) {
-                ((LivingEntity)entity).setAI(false);
-            }
-            return;
         }
         for (Object rawGoal : goals) {
             String goalKey;
@@ -1110,7 +1139,7 @@ public class EntityData
                 controller.getLogger().info("Invalid goal type in mob " + getKey() + ": " + goalKey);
                 continue;
             }
-            mobUtils.setPathfinderGoal(entity, goalType, target, config);
+            mobUtils.addGoal(entity, goalType, target, config);
         }
     }
 
