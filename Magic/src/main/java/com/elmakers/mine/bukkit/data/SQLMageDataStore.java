@@ -151,6 +151,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
         } finally {
             close(insert);
         }
+        controller.info("Finished saving data for " + mage.getId() + (releaseLock ? " and released lock " : ""), 10);
 
         if (callback != null) {
             callback.run(mage);

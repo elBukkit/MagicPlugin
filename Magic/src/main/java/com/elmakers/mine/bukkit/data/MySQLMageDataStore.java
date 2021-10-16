@@ -22,6 +22,7 @@ public class MySQLMageDataStore extends SQLMageDataStore {
         user = configuration.getString("user");
         password = configuration.getString("password");
         connectionString = "jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true";
+        controller.info("Using mysql connection for player data: " + connectionString, 10);
 
         try {
             Class.forName("com.mysql.jdbc.Driver");

@@ -3268,6 +3268,7 @@ public class MagicController implements MageController {
                 mageDataStore = (MageDataStore) dataStore;
                 mageDataStore.initialize(this, configuration);
             }
+            info("Created player_data_store class: " + dataStoreClass.getName(), 5);
         } catch (Exception ex) {
             getLogger().log(Level.WARNING, "Failed to create player_data_store class from " + dataStoreClassName, ex);
             mageDataStore = null;

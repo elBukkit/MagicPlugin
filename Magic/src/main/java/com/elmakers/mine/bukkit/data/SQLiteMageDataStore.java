@@ -30,6 +30,7 @@ public class SQLiteMageDataStore extends SQLMageDataStore {
 
         File dbFile = new File(controller.getDataFolder(), database + ".sqlite");
         connectionString = "jdbc:sqlite:" + dbFile.getAbsolutePath();
+        controller.info("Using sqlite connection for player data: " + connectionString, 10);
     }
 
     @Override

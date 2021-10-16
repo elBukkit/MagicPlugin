@@ -22,6 +22,7 @@ public class PostgresSQLMageDataStore extends SQLMageDataStore {
         user = configuration.getString("user");
         password = configuration.getString("password");
         connectionString = "jdbc:postgresql://" + host + ":" + port + "/" + database + "?useUnicode=true&characterEncoding=utf-8&autoReconnect=true";
+        controller.info("Using postgres connection for player data: " + connectionString, 10);
     }
 
     @Override
