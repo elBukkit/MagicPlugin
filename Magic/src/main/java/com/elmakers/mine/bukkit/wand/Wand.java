@@ -4533,7 +4533,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
-        Collection<SpellTemplate> allSpells = controller.getPlugin().getSpellTemplates();
+        Collection<SpellTemplate> allSpells = controller.getSpellTemplates();
 
         // Hack to prevent messaging
         Mage mage = this.mage;
