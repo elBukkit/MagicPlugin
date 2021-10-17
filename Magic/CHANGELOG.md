@@ -4,8 +4,13 @@
 
 ## Mob AI
 
- - New `goals` list in mob configs, can be used to change vanilla pathfinding goals (1.17 only)
- - New `scaredy` mob added as an example
+ - New `brain` section in magic mob configs (1.17 only)
+   - `remove_default_goals` to remove all vanilla goals (turn off default AI)
+   - `remove_goals` to remove specific default goals
+   - `goals` to add vanilla pathfinding goals
+   - `magic_requirement` goal can be used to wrap a vanilla goal in magic requirements
+ - New `moon` requirement for phase-of-moon logic, simplify `time` requirement   
+ - New `scaredy` mob added as an example, a cat that gets scared in the dark
  - Add `collidable` flag, NPCs now always look at players (have ai, don't move, aren't collidable)
 
 ## Improvements

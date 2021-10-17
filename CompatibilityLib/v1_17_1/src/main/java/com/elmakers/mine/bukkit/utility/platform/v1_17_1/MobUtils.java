@@ -11,9 +11,14 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.mob.GoalConfiguration;
 import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicRequirementGoal;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -100,7 +105,7 @@ public class MobUtils extends MobUtilsBase {
             return false;
         }
         // TODO: Is there a cleaner way?
-        Goal targetGoal = getGoal(goalType, mob, new MemoryConfiguration());
+        Goal targetGoal = getGoal(goalType, entity, mob, new MemoryConfiguration());
         Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
         List<Goal> found = new ArrayList<>();
         for (WrappedGoal wrappedGoal : available) {
@@ -115,7 +120,7 @@ public class MobUtils extends MobUtilsBase {
     }
 
     @Override
-    public boolean addGoal(Entity entity, GoalType goalType, Entity target, ConfigurationSection config) {
+    public boolean addGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
         PathfinderMob mob = getMob(entity);
         if (mob == null) {
             return false;
@@ -126,7 +131,7 @@ public class MobUtils extends MobUtilsBase {
             return false;
         }
         GoalSelector goals = mob.goalSelector;
-        Goal goal = getGoal(goalType, mob, config);
+        Goal goal = getGoal(goalType, entity, mob, config);
         if (goal == null) {
             return false;
         }
@@ -135,7 +140,7 @@ public class MobUtils extends MobUtilsBase {
         return true;
     }
 
-    private Goal getGoal(GoalType goalType, PathfinderMob mob, ConfigurationSection config) {
+    private Goal getGoal(GoalType goalType, Entity entity, PathfinderMob mob, ConfigurationSection config) {
         final String classType = config.getString("entity_class", "player");
         final double speed = config.getDouble("speed", 1);
         final double sprintSpeed = config.getDouble("sprint_speed", 1);
@@ -247,6 +252,25 @@ public class MobUtils extends MobUtilsBase {
                     return new ZombieAttackGoal((Zombie)mob, speed, config.getBoolean("follow", true));
                 }
                 return null;
+            case MAGIC_REQUIREMENT:
+                MageController controller = platform.getController();
+                Mage mage = controller.getMage(entity);
+                Collection<Requirement> requirements = controller.getRequirements(config);
+                Collection<GoalConfiguration> goalConfigurations = GoalConfiguration.fromList(config, "goals", platform.getLogger(), "magic requirement goal");
+                if (goalConfigurations == null) {
+                    return null;
+                }
+                List<Goal> goals = new ArrayList<>();
+                for (GoalConfiguration goalConfig : goalConfigurations) {
+                    Goal goal = getGoal(goalConfig.getGoalType(), entity, mob, goalConfig.getConfiguration());
+                    if (goal != null) {
+                        goals.add(goal);
+                    }
+                }
+                if (goals == null) {
+                    return null;
+                }
+                return new MagicRequirementGoal(mage, goals, config.getBoolean("force", false), config.getBoolean("interruptable", true), requirements);
             default:
                 platform.getLogger().warning("Unsupported goal type: " + goalType);
                 return null;

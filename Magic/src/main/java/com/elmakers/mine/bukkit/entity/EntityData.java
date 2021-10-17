@@ -51,6 +51,7 @@ import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
+import com.elmakers.mine.bukkit.mob.GoalConfiguration;
 import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -1069,10 +1070,11 @@ public class EntityData
     private void applyBrain(Entity entity) {
         if (brain == null) return;
 
-        List<?> goals = brain.getList("goals");
+        // See if there are any custom goals
+        MobUtils mobUtils = CompatibilityLib.getMobUtils();
+        Collection<GoalConfiguration> goals = GoalConfiguration.fromList(brain, "goals",  controller.getLogger(), "mob " + getKey());
 
         // Remove any existing goals first
-        MobUtils mobUtils = CompatibilityLib.getMobUtils();
         boolean removeDefaultGoals = brain.getBoolean("remove_default_goals", goals != null && !goals.isEmpty());
         if (removeDefaultGoals) {
             if (!mobUtils.removeGoals(entity)) {
@@ -1098,49 +1100,18 @@ public class EntityData
         applyGoals(entity, goals);
     }
 
-    private void applyGoals(Entity entity, List<?> goals) {
+    private void applyGoals(Entity entity, Collection<GoalConfiguration> goals) {
+        MobUtils mobUtils = CompatibilityLib.getMobUtils();
         if (goals == null || goals.isEmpty()) {
             return;
         }
+
         // Goals require AI, turn it on no matter what
         if (entity instanceof LivingEntity) {
             ((LivingEntity)entity).setAI(true);
         }
-        MobUtils mobUtils = CompatibilityLib.getMobUtils();
-        Entity target = null;
-        if (entity instanceof Creature) {
-            target = ((Creature)entity).getTarget();
-        }
-        for (Object rawGoal : goals) {
-            String goalKey;
-            ConfigurationSection config;
-            if (rawGoal instanceof String) {
-                goalKey = (String)rawGoal;
-                config = ConfigurationUtils.newSection(configuration);
-            } else {
-                if (rawGoal instanceof Map) {
-                    rawGoal = ConfigurationUtils.toConfigurationSection(configuration, (Map<?,?>)rawGoal);
-                }
-                if (rawGoal instanceof ConfigurationSection) {
-                    config = (ConfigurationSection)rawGoal;
-                    goalKey = config.getString("goal");
-                } else {
-                    goalKey = null;
-                    config = null;
-                }
-            }
-            if (goalKey == null || goalKey.isEmpty()) {
-                controller.getLogger().info("Goal missing goal type in mob " + getKey());
-                continue;
-            }
-            GoalType goalType;
-            try {
-                goalType = GoalType.valueOf(goalKey.toUpperCase());
-            } catch (Exception ex) {
-                controller.getLogger().info("Invalid goal type in mob " + getKey() + ": " + goalKey);
-                continue;
-            }
-            mobUtils.addGoal(entity, goalType, target, config);
+        for (GoalConfiguration goal : goals) {
+            mobUtils.addGoal(entity, goal);
         }
     }
 

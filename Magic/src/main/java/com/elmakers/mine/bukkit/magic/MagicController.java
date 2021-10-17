@@ -1082,6 +1082,11 @@ public class MagicController implements MageController {
         return attributes.keySet();
     }
 
+    @Override
+    public Collection<Requirement> getRequirements(ConfigurationSection configuration) {
+        return ConfigurationUtils.getRequirements(configuration);
+    }
+
     public float getMaxCostReduction() {
         return maxCostReduction;
     }
