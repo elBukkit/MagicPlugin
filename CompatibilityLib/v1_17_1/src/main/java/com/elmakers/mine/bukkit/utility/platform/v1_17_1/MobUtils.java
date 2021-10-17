@@ -19,6 +19,7 @@ import com.elmakers.mine.bukkit.mob.GoalConfiguration;
 import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.IdleGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicRequirementGoal;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -273,6 +274,8 @@ public class MobUtils extends MobUtilsBase {
                     return null;
                 }
                 return new MagicRequirementGoal(mage, goals, config.getBoolean("interruptable", true), requirements);
+            case IDLE:
+                return new IdleGoal();
             default:
                 platform.getLogger().warning("Unsupported goal type: " + goalType);
                 return null;
