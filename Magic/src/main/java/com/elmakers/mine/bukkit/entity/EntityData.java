@@ -1076,9 +1076,6 @@ public class EntityData
         boolean removeDefaultGoals = brain.getBoolean("remove_default_goals", goals != null && !goals.isEmpty());
         if (removeDefaultGoals) {
             if (!mobUtils.removeGoals(entity)) {
-                if (entity instanceof LivingEntity) {
-                    ((LivingEntity)entity).setAI(false);
-                }
                 // This indicates we don't have support for goals, so just stop here.
                 return;
             }
@@ -1104,6 +1101,10 @@ public class EntityData
     private void applyGoals(Entity entity, List<?> goals) {
         if (goals == null || goals.isEmpty()) {
             return;
+        }
+        // Goals require AI, turn it on no matter what
+        if (entity instanceof LivingEntity) {
+            ((LivingEntity)entity).setAI(true);
         }
         MobUtils mobUtils = CompatibilityLib.getMobUtils();
         Entity target = null;
@@ -1466,7 +1467,7 @@ public class EntityData
     }
 
     public boolean hasAI() {
-        return hasAI;
+        return hasAI == null || hasAI;
     }
 
     public void setAI(boolean hasAI) {
@@ -1474,7 +1475,7 @@ public class EntityData
     }
 
     public boolean isInvulnerable() {
-        return isInvulnerable;
+        return isInvulnerable != null && isInvulnerable;
     }
 
     public void setInvulnerable(boolean invulnerable) {

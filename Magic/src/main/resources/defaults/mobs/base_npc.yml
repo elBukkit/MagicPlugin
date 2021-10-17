@@ -4,6 +4,8 @@ base_npc:
   type: villager
   use_npc_name: true
   villager_profession: librarian
+  # This will turn off AI pre-1.17 where the goals won't work
+  ai: false
   brain:
     remove_default_goals: true
     goals:
