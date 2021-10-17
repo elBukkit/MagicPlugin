@@ -23,9 +23,14 @@ public class TriggerGoal extends MagicGoal {
     public void tick() {
         super.tick();
         long now = System.currentTimeMillis();
-        if (now + interval > lastTrigger) {
+        if (now > lastTrigger + interval) {
             lastTrigger = now;
             mage.trigger(trigger);
         }
+    }
+
+    @Override
+    protected String getDescription() {
+        return "Trigger(" + trigger + ")";
     }
 }

@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -31,5 +35,14 @@ public class RequirementGoal extends MagicGoal {
     protected boolean checkRequirements() {
         MageController controller = mage.getController();
         return controller.checkRequirements(mage.getContext(), requirements) == null;
+    }
+
+    @Override
+    protected String getDescription() {
+        List<String> requirementDescriptions = new ArrayList<>();
+        for (Requirement requirement : requirements) {
+            requirementDescriptions.add(requirement.toString());
+        }
+        return "Requirements(" + StringUtils.join(requirementDescriptions, " ") + "]";
     }
 }

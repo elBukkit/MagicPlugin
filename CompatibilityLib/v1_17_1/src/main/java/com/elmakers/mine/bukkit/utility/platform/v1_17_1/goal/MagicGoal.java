@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 
@@ -83,5 +87,22 @@ public class MagicGoal extends Goal {
         if (currentGoal != null) {
             currentGoal.tick();
         }
+    }
+
+    protected String getSubDescription() {
+        List<String> goalDescriptions = new ArrayList<>();
+        for (Goal goal : goals) {
+            goalDescriptions.add(goal.toString());
+        }
+        return "[" + StringUtils.join(goalDescriptions, " ") + "]";
+    }
+
+    protected String getDescription() {
+        return "Group";
+    }
+
+    @Override
+    public String toString() {
+        return getDescription() + ": " + getSubDescription();
     }
 }

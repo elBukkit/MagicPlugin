@@ -134,7 +134,12 @@ public class MobUtils extends MobUtilsBase {
         List<String> descriptions = new ArrayList<>();
         Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
         for (WrappedGoal wrappedGoal : available) {
-            String description = wrappedGoal.getGoal().toString();
+            Goal goal = wrappedGoal.getGoal();
+            String description = goal.toString();
+            Class<?> superClass = goal.getClass().getSuperclass();
+            if (!superClass.equals(Goal.class) && !superClass.equals(MagicGoal.class)) {
+                description += ChatColor.GRAY + " " + superClass.getName();
+            }
             if (wrappedGoal.isRunning()) {
                 description = ChatColor.AQUA + description;
             }
