@@ -12,11 +12,12 @@ debugger:
           - class: Debugger
             level: 1
             check: true
+            force: true
         alternate_up:
         - class: AllEntities
           actions:
           - class: Debugger
-          - level: 0
+            level: 0
         cast:
         - class: Debugger
           level: 10
@@ -24,6 +25,7 @@ debugger:
         - class: Debugger
           level: 100
           check: true
+          force: true
     effects:
         cast:
         -  class: EffectSingle

@@ -3699,6 +3699,36 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.debugLevel = debugLevel;
     }
 
+
+    public void debug(CommandSender sender) {
+        debug(sender, null);
+    }
+
+    public void debug(CommandSender sender, Spell spell) {
+        debugPermissions(sender, spell);
+        Entity entity = getEntity();
+        if (entity != null && !(entity instanceof Player)) {
+            debugMob(sender, entity);
+        }
+    }
+
+    public void debugMob(CommandSender sender, Entity entity) {
+        String mobType;
+        if (entityData != null) {
+            mobType = entityData.getName() + ChatColor.DARK_GRAY + " (" + ChatColor.GRAY + entityData.getKey() + ChatColor.DARK_GRAY + ")";
+        } else {
+            mobType = entity.getType().name().toLowerCase();
+        }
+        sender.sendMessage(ChatColor.DARK_AQUA + "Mob type: " + ChatColor.AQUA + mobType);
+        Collection<String> goals = CompatibilityLib.getMobUtils().getGoalDescriptions(entity);
+        if (goals != null && !goals.isEmpty()) {
+            sender.sendMessage(ChatColor.YELLOW + "Current goals:");
+            for (String goal : goals) {
+                sender.sendMessage(" " + ChatColor.GOLD + goal);
+            }
+        }
+    }
+
     @Override
     public void debugPermissions(CommandSender sender, Spell spell) {
         com.elmakers.mine.bukkit.api.wand.Wand wand = getActiveWand();

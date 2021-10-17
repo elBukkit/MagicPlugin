@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
+import java.util.Collection;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -10,6 +12,8 @@ public interface MobUtils {
     boolean removeGoals(Entity entity);
 
     boolean removeGoal(Entity entity, GoalType goalType);
+
+    Collection<String> getGoalDescriptions(Entity entity);
 
     boolean addGoal(Entity entity, GoalType goalType, ConfigurationSection config);
 

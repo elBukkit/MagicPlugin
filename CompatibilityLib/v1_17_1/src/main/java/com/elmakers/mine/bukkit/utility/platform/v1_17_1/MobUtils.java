@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
@@ -121,6 +122,24 @@ public class MobUtils extends MobUtilsBase {
             mob.goalSelector.removeGoal(removeGoal);
         }
         return true;
+    }
+
+    @Override
+    public Collection<String> getGoalDescriptions(Entity entity) {
+        PathfinderMob mob = getMob(entity);
+        if (mob == null) {
+            return null;
+        }
+        List<String> descriptions = new ArrayList<>();
+        Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
+        for (WrappedGoal wrappedGoal : available) {
+            String description = wrappedGoal.getGoal().toString();
+            if (wrappedGoal.isRunning()) {
+                description = ChatColor.AQUA + description;
+            }
+            descriptions.add(description);
+        }
+        return descriptions;
     }
 
     @Override

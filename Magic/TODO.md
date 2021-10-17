@@ -1,6 +1,43 @@
 # TODO
 
+# Mobs
+
+AI
+- attack/avoid ... mobs/factions
+- keep distance (usefull for archers)
+- preferred weapon attack type (ranged/melee)
+- change weapons on conditions (distance vs targets)
+- open/close doors
+- random-walk over radius
+
+Patrol:
+- Patrol on a path
+- Semi-random patrol in a range around a point
+- Potential inspiration: https://github.com/mcmonkeyprojects/Sentinel/blob/master/README.md
+
+General:
+- Leveling Mobs based on triggers (time pass, palyerkills, othermobskills). Define attributes that are raising every level (hp, speed, damage etc).
+- Spawn mobs based on level .. lvl 1 300 block from spawn ... l10 3000 from spawn etc.. or condition based on wg regions
+- Custom name using placeholders: '&f[Lvl <mob.level>] &6MOBName &4<caster.hp>/<caster.mhp>'
+
+Factions:
+- Belong to a Faction or more (as generic vanilla are monsters)
+- Factions connected to players  ... by permission groups ? So they can attack players in other factions 🙂 !?
+- Can attack/ignore other factions
+
+Drops:
+- Segregate drop tables outside the mob config to be easy to reuse for multiple mobs
+- Take luck in consideration (for drop chance and also number of items
+
+
 # Next Up:
+
+ - Do jukeboxes not restore their record? Maybe a 1.16 problem?
+   > Failed to find 'record' field in jukebox tile entity
+ 
+ - Support for: https://www.spigotmc.org/resources/skillapi-continued-custom-classes-skills-and-more-proskillapi.91913/  
+
+ - Miha responds to responses that have her @'d in the reply?
 
  - Allow modifiers on classes
 

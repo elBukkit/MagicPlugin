@@ -21,6 +21,7 @@ public class DebuggerAction extends BaseSpellAction
 {
     private int debugLevel;
     private boolean check;
+    private boolean forceMage;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -28,6 +29,7 @@ public class DebuggerAction extends BaseSpellAction
         super.prepare(context, parameters);
         debugLevel = parameters.getInt("level", 1);
         check = parameters.getBoolean("check", false);
+        forceMage = parameters.getBoolean("force", false);
     }
 
     @Override
@@ -36,8 +38,8 @@ public class DebuggerAction extends BaseSpellAction
         Entity entity = context.getTargetEntity();
         MageController controller = context.getController();
         Mage mage = null;
-        if (entity != null && controller.isMage(entity)) {
-                mage = controller.getMage(entity);
+        if (entity != null && (controller.isMage(entity) || forceMage)) {
+            mage = controller.getMage(entity);
         } else {
             Block block = context.getTargetBlock();
             if (DefaultMaterials.isCommand(block.getType())) {
@@ -65,7 +67,7 @@ public class DebuggerAction extends BaseSpellAction
         mage.setDebugger(context.getMage().getCommandSender());
 
         if (check) {
-            mage.debugPermissions(context.getMage().getCommandSender(), null);
+            mage.debug(context.getMage().getCommandSender());
         }
 
         return SpellResult.CAST;

@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform.base;
 
+import java.util.Collection;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 
@@ -16,6 +18,11 @@ public class MobUtilsBase implements MobUtils {
     @Override
     public boolean removeGoal(Entity entity, GoalType goalType) {
         return false;
+    }
+
+    @Override
+    public Collection<String> getGoalDescriptions(Entity entity) {
+        return null;
     }
 
     @Override
