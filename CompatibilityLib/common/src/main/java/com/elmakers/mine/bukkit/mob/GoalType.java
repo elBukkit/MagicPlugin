@@ -56,7 +56,7 @@ public enum GoalType {
     ZOMBIE_ATTACK,
 
     IDLE,
-    REQUIREMENT,
+    REQUIREMENTS,
     GROUP,
     TRIGGER
 }

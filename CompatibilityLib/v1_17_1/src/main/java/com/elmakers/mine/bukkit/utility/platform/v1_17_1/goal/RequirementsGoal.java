@@ -12,11 +12,11 @@ import com.elmakers.mine.bukkit.api.requirements.Requirement;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public class RequirementGoal extends MagicGoal {
+public class RequirementsGoal extends MagicGoal {
     private final Collection<Requirement> requirements;
     private final Mage mage;
 
-    public RequirementGoal(Mage mage, Collection<Goal> goals, boolean interruptable, Collection<Requirement> requirements) {
+    public RequirementsGoal(Mage mage, Collection<Goal> goals, boolean interruptable, Collection<Requirement> requirements) {
         super(goals, interruptable);
         this.mage = mage;
         this.requirements = requirements;

@@ -16,6 +16,7 @@ base_dragon:
   persist: true
   invisible: true
   silent: true
+  combustible: false
   boss_bar:
     bar_color: red
     bar_flags:

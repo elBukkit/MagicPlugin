@@ -3,19 +3,19 @@ scaredy:
   health: 4
   brain:
     goals:
-      - goal: random_stroll
+      - type: random_stroll
         priority: 1
-      - goal: requirement
+      - type: requirements
         priority: 0
         goals:
-          - goal: avoid_entity
+          - type: avoid_entity
             speed: 1.5
             sprint_speed: 2
             distance: 8
             priority: 0
-          - goal: panic
+          - type: panic
             priority: 1
-          - goal: look_at_player
+          - type: look_at_player
             priority: 2
             distance: 16
         requirement:

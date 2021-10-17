@@ -22,7 +22,7 @@ import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.IdleGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicGoal;
-import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.RequirementGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.RequirementsGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.TriggerGoal;
 
 import net.minecraft.world.entity.LivingEntity;
@@ -300,12 +300,12 @@ public class MobUtils extends MobUtilsBase {
                     return new ZombieAttackGoal((Zombie)mob, speed, config.getBoolean("follow", true));
                 }
                 return null;
-            case REQUIREMENT:
+            case REQUIREMENTS:
                 if (pathfinder == null) return null;
                 mage = controller.getMage(entity);
                 Collection<Requirement> requirements = controller.getRequirements(config);
                 goals = getGoals(entity, mob, config, "magic requirement goal");
-                return new RequirementGoal(mage, goals, interruptable, requirements);
+                return new RequirementsGoal(mage, goals, interruptable, requirements);
             case GROUP:
                 goals = getGoals(entity, mob, config, "magic group goal");
                 return new MagicGoal(goals, interruptable);

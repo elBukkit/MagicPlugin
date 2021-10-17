@@ -33,7 +33,7 @@ public class GoalConfiguration implements Comparable<GoalConfiguration> {
             }
             if (rawGoal instanceof ConfigurationSection) {
                 config = (ConfigurationSection)rawGoal;
-                goalKey = config.getString("goal");
+                goalKey = config.getString("type");
             } else {
                 goalKey = null;
                 config = null;

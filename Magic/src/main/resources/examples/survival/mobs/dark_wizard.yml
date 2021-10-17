@@ -17,18 +17,18 @@ dark_wizard:
       - play_boss_music
   brain:
     goals:
-      - goal: trigger
+      - type: trigger
         trigger: flee
         interval: 1000
         goals:
-          - goal: avoid_entity
+          - type: avoid_entity
             distance: 6
-      - goal: trigger
+      - type: trigger
         trigger: attack
         interval: 2000
         priority: 1
         goals:
-          - goal: look_at_player
+          - type: look_at_player
             distance: 34
   triggers:
     damage1:

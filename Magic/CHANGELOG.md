@@ -7,7 +7,7 @@
  - New `brain` section in magic mob configs (1.17 only)
    - `remove_default_goals` to remove all vanilla goals (turn off default AI)
    - `remove_goals` to remove specific default goals
-   - `goals` to add vanilla pathfinding goals
+   - `goals` to add vanilla and custom pathfinding goals
    - `magic_requirement` goal can be used to wrap a vanilla goal in magic requirements
  - New `moon` requirement for phase-of-moon logic, simplify `time` requirement   
  - New `scaredy` mob added as an example, a cat that gets scared in the dark

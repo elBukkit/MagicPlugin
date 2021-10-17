@@ -3,6 +3,7 @@ philbert:
   type: creeper
   brain:
     goals:
-      - goal: tempt
+      - type: tempt
         item: GUNPOWDER
         speed: 2
+      - type: look_at_player
