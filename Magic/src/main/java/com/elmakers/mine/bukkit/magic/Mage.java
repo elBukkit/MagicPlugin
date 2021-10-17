@@ -3699,13 +3699,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         this.debugLevel = debugLevel;
     }
 
-
-    public void debug(CommandSender sender) {
-        debug(sender, null);
-    }
-
-    public void debug(CommandSender sender, Spell spell) {
-        debugPermissions(sender, spell);
+    @Override
+    public void debugBrain(CommandSender sender) {
         Entity entity = getEntity();
         if (entity != null && !(entity instanceof Player)) {
             debugMob(sender, entity);

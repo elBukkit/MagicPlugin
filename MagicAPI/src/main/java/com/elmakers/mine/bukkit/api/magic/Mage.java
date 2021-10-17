@@ -544,7 +544,7 @@ public interface Mage extends CostReducer, CooldownReducer {
     int getDebugLevel();
     void setDebugLevel(int level);
     void setDebugger(CommandSender debugger);
-    void debug(CommandSender sender);
+    void debugBrain(CommandSender sender);
     void debugPermissions(CommandSender sender, Spell spell);
     CommandSender getDebugger();
     void giveItem(ItemStack item);

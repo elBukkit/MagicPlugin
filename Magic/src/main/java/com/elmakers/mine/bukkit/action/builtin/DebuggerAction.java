@@ -21,6 +21,7 @@ public class DebuggerAction extends BaseSpellAction
 {
     private int debugLevel;
     private boolean check;
+    private boolean checkBrain;
     private boolean forceMage;
 
     @Override
@@ -29,6 +30,7 @@ public class DebuggerAction extends BaseSpellAction
         super.prepare(context, parameters);
         debugLevel = parameters.getInt("level", 1);
         check = parameters.getBoolean("check", false);
+        checkBrain = parameters.getBoolean("check_brain", false);
         forceMage = parameters.getBoolean("force", false);
     }
 
@@ -67,7 +69,10 @@ public class DebuggerAction extends BaseSpellAction
         mage.setDebugger(context.getMage().getCommandSender());
 
         if (check) {
-            mage.debug(context.getMage().getCommandSender());
+            mage.debugPermissions(context.getMage().getCommandSender(), null);
+        }
+        if (checkBrain) {
+            mage.debugBrain(context.getMage().getCommandSender());
         }
 
         return SpellResult.CAST;

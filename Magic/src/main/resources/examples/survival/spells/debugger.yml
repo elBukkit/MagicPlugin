@@ -21,10 +21,13 @@ debugger:
         cast:
         - class: Debugger
           level: 10
+          check_brain: true
+          force: true
         alternate_sneak:
         - class: Debugger
           level: 100
           check: true
+          check_brain: true
           force: true
     effects:
         cast:
