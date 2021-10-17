@@ -4,6 +4,7 @@ fireproof_zombie:
   brain:
     remove_goals:
       - flee_sun
+      - restrict_sun
 
 fireproof_drowned:
   type: drowned
@@ -12,6 +13,7 @@ fireproof_drowned:
   brain:
     remove_goals:
       - flee_sun
+      - restrict_sun
 
 trident_drowned:
   type: drowned
@@ -25,6 +27,7 @@ fireproof_stray:
   brain:
     remove_goals:
       - flee_sun
+      - restrict_sun
 
 fireproof_skeleton:
   type: skeleton
@@ -33,6 +36,7 @@ fireproof_skeleton:
   brain:
     remove_goals:
       - flee_sun
+      - restrict_sun
 
 contained_enderman:
   type: enderman
@@ -49,3 +53,4 @@ fireproof_baby_zombie:
   brain:
     remove_goals:
       - flee_sun
+      - restrict_sun
