@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
@@ -271,7 +272,7 @@ public class MobUtils extends MobUtilsBase {
                 if (goals == null) {
                     return null;
                 }
-                return new MagicRequirementGoal(mage, goals, config.getBoolean("force", false), config.getBoolean("interruptable", true), requirements);
+                return new MagicRequirementGoal(mage, goals, config.getBoolean("interruptable", true), requirements);
             default:
                 platform.getLogger().warning("Unsupported goal type: " + goalType);
                 return null;

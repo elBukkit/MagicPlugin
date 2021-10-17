@@ -12,13 +12,12 @@ public class MagicRequirementGoal extends Goal {
     private final Collection<Requirement> requirements;
     private final Mage mage;
     private final Collection<Goal> goals;
-    private final boolean force;
     private final boolean interruptable;
+    private Goal currentGoal;
 
-    public MagicRequirementGoal(Mage mage, Collection<Goal> goals, boolean force, boolean interruptable, Collection<Requirement> requirements) {
+    public MagicRequirementGoal(Mage mage, Collection<Goal> goals, boolean interruptable, Collection<Requirement> requirements) {
         this.mage = mage;
         this.goals = goals;
-        this.force = force;
         this.interruptable = interruptable;
         this.requirements = requirements;
     }
@@ -29,17 +28,33 @@ public class MagicRequirementGoal extends Goal {
         // methods that look like they would just be queries
         // So we need to call them even if we don't care about the result.
         for (Goal goal : goals) {
-            if (!goal.canUse() && !force) {
-                return false;
+            if (goal.canUse() && currentGoal == null) {
+                currentGoal = goal;
             }
         }
-        return checkRequirements();
+        return currentGoal != null && checkRequirements();
     }
 
     @Override
     public boolean canContinueToUse() {
+        boolean interrupt = false;
+        boolean continuing = false;
         for (Goal goal : goals) {
-            if (!goal.canContinueToUse() && !force) {
+            if (goal == currentGoal) {
+                boolean canContinue = goal.canContinueToUse();
+                if (canContinue) {
+                    continuing = true;
+                } else {
+                    interrupt = true;
+                }
+            } else {
+                // A higher-priority goal can interrupt
+                boolean canUse = goal.canUse();
+                if (canUse && !continuing && (currentGoal == null || currentGoal.isInterruptable())) {
+                    interrupt = true;
+                }
+            }
+            if (interrupt) {
                 return false;
             }
         }
@@ -54,7 +69,7 @@ public class MagicRequirementGoal extends Goal {
     @Override
     public boolean isInterruptable() {
         for (Goal goal : goals) {
-            if (!goal.isInterruptable() && !force) {
+            if (!goal.isInterruptable() && goal == currentGoal) {
                 return false;
             }
         }
@@ -63,22 +78,23 @@ public class MagicRequirementGoal extends Goal {
 
     @Override
     public void start() {
-        for (Goal goal : goals) {
-            goal.start();
+        if (currentGoal != null) {
+            currentGoal.start();
         }
     }
 
     @Override
     public void stop() {
-        for (Goal goal : goals) {
-            goal.stop();
+        if (currentGoal != null) {
+            currentGoal.stop();
+            currentGoal = null;
         }
     }
 
     @Override
     public void tick() {
-        for (Goal goal : goals) {
-            goal.tick();
+        if (currentGoal != null) {
+            currentGoal.tick();
         }
     }
 }
