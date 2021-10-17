@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.listener.PlayerPickupListener;
 
 public abstract class PlatformBase implements Platform {
+    protected final MageController controller;
     private final Logger logger;
     private final Plugin plugin;
     @Nonnull
@@ -52,9 +53,10 @@ public abstract class PlatformBase implements Platform {
     protected final EntityMetadataUtils entityMetadataUtils;
     protected final boolean valid;
 
-    public PlatformBase(Plugin plugin, Logger logger) {
-        this.plugin = plugin;
-        this.logger = logger;
+    public PlatformBase(MageController controller) {
+        this.controller = controller;
+        this.plugin = controller.getPlugin();
+        this.logger = controller.getLogger();
         this.valid = initialize();
 
         if (valid) {
@@ -91,14 +93,14 @@ public abstract class PlatformBase implements Platform {
     }
 
     @Override
-    public void registerEvents(MageController controller, PluginManager pm) {
+    public void registerEvents(PluginManager pm) {
         if (paperUtils != null) {
             paperUtils.registerEvents(controller, pm);
         }
-        registerPickupEvent(controller, pm);
+        registerPickupEvent(pm);
     }
 
-    protected void registerPickupEvent(MageController controller, PluginManager pm) {
+    protected void registerPickupEvent(PluginManager pm) {
         pm.registerEvents(new PlayerPickupListener(controller), controller.getPlugin());
     }
 
@@ -168,6 +170,11 @@ public abstract class PlatformBase implements Platform {
 
     protected MobUtils createMobUtils() {
         return new MobUtilsBase();
+    }
+
+    @Override
+    public MageController getController() {
+        return controller;
     }
 
     @Override

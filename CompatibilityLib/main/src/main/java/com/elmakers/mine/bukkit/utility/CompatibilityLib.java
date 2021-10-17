@@ -32,7 +32,9 @@ import com.elmakers.mine.bukkit.utility.platform.v1_16.event.TimeListener;
 public class CompatibilityLib extends PlatformInterpreter {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
 
-    public static boolean initialize(Plugin plugin, Logger logger) {
+    public static boolean initialize(MageController controller) {
+        Plugin plugin = controller.getPlugin();
+        Logger logger = controller.getLogger();
         int[] version = getServerVersion(plugin);
         String versionDescription = StringUtils.join(ArrayUtils.toObject(version), ".");
         if (version.length < 2 || version[0] != 1) {
@@ -49,8 +51,8 @@ public class CompatibilityLib extends PlatformInterpreter {
             try {
                 String versionPackage = StringUtils.join(ArrayUtils.toObject(version), "_");
                 Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
-                Constructor<?> platformConstructor = platformClass.getConstructor(Plugin.class, Logger.class);
-                platform = (Platform)platformConstructor.newInstance(plugin, logger);
+                Constructor<?> platformConstructor = platformClass.getConstructor(MageController.class);
+                platform = (Platform)platformConstructor.newInstance(controller);
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Failed to load compatibility layer, the plugin may need to be updated to work with your server version", ex);
                 return false;
@@ -62,8 +64,8 @@ public class CompatibilityLib extends PlatformInterpreter {
                 // No minor minor version numbers here
                 String versionPackage = version[0] + "_" + version[1];
                 Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
-                Constructor<?> platformConstructor = platformClass.getConstructor(Plugin.class, Logger.class);
-                platform = (Platform)platformConstructor.newInstance(plugin, logger);
+                Constructor<?> platformConstructor = platformClass.getConstructor(MageController.class);
+                platform = (Platform)platformConstructor.newInstance(controller);
             } catch (Exception ex) {
                 logger.log(Level.SEVERE, "Failed to load compatibility layer, this is unexpected for legacy versions, please report this error", ex);
                 return false;
@@ -241,18 +243,19 @@ public class CompatibilityLib extends PlatformInterpreter {
         return version;
     }
 
-    public static void registerEvents(MageController controller, PluginManager pm) {
-        if (hasEntityTransformEvent()) {
-            EntityTransformController transformController = new EntityTransformController(controller);
-            pm.registerEvents(transformController, controller.getPlugin());
-        }
-
-        if (hasTimeSkipEvent()) {
-            TimeListener timeListener = new TimeListener(controller);
-            pm.registerEvents(timeListener, controller.getPlugin());
-        }
+    public static void registerEvents(PluginManager pm) {
         if (platform != null) {
-            platform.registerEvents(controller, pm);
+            MageController controller = platform.getController();
+            if (hasEntityTransformEvent()) {
+                EntityTransformController transformController = new EntityTransformController(controller);
+                pm.registerEvents(transformController, controller.getPlugin());
+            }
+
+            if (hasTimeSkipEvent()) {
+                TimeListener timeListener = new TimeListener(controller);
+                pm.registerEvents(timeListener, controller.getPlugin());
+            }
+            platform.registerEvents(pm);
         }
     }
 }

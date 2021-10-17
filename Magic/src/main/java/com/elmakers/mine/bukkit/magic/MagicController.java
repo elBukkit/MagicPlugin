@@ -679,7 +679,7 @@ public class MagicController implements MageController {
     }
 
     public boolean registerNMSBindings() {
-        if (!CompatibilityLib.initialize(getPlugin(), getLogger())) {
+        if (!CompatibilityLib.initialize(this)) {
             return false;
         }
         return true;
@@ -1696,7 +1696,7 @@ public class MagicController implements MageController {
         if (jumpController != null) {
             pm.registerEvents(jumpController, plugin);
         }
-        CompatibilityLib.registerEvents(this, pm);
+        CompatibilityLib.registerEvents(pm);
         worldController.registerEvents();
     }
 

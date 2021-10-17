@@ -1,15 +1,12 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_0;
 
-import java.util.logging.Logger;
-
-import org.bukkit.plugin.Plugin;
-
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
 
 public class Platform extends ModernPlatform {
 
-    public Platform(Plugin plugin, Logger logger) {
-        super(plugin, logger);
+    public Platform(MageController controller) {
+        super(controller);
     }
 
     @Override

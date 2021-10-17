@@ -1,8 +1,5 @@
 package com.elmakers.mine.bukkit.utility.platform.modern;
 
-import java.util.logging.Logger;
-
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -17,8 +14,8 @@ import com.elmakers.mine.bukkit.utility.platform.v1_16.event.ResourcePackListene
 
 public abstract class ModernPlatform extends PlatformBase {
 
-    public ModernPlatform(Plugin plugin, Logger logger) {
-        super(plugin, logger);
+    public ModernPlatform(MageController controller) {
+        super(controller);
     }
 
     @Override
@@ -42,14 +39,14 @@ public abstract class ModernPlatform extends PlatformBase {
     }
 
     @Override
-    public void registerEvents(MageController controller, PluginManager pm) {
-        super.registerEvents(controller, pm);
+    public void registerEvents(PluginManager pm) {
+        super.registerEvents(pm);
         ResourcePackListener timeListener = new ResourcePackListener(controller);
         pm.registerEvents(timeListener, controller.getPlugin());
     }
 
     @Override
-    protected void registerPickupEvent(MageController controller, PluginManager pm) {
+    protected void registerPickupEvent(PluginManager pm) {
         pm.registerEvents(new EntityPickupListener(controller), controller.getPlugin());
     }
 

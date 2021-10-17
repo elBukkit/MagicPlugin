@@ -1,16 +1,13 @@
 package com.elmakers.mine.bukkit.utility.platform.legacy;
 
-import java.util.logging.Logger;
-
-import org.bukkit.plugin.Plugin;
-
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
 
 public class LegacyPlatform extends PlatformBase {
 
-    public LegacyPlatform(Plugin plugin, Logger logger) {
-        super(plugin, logger);
+    public LegacyPlatform(MageController controller) {
+        super(controller);
     }
 
     @Override

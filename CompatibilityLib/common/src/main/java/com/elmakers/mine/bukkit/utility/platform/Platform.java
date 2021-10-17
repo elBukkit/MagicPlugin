@@ -10,7 +10,9 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface Platform {
 
-    void registerEvents(MageController controller, PluginManager pm);
+    void registerEvents(PluginManager pm);
+
+    MageController getController();
 
     Plugin getPlugin();
 

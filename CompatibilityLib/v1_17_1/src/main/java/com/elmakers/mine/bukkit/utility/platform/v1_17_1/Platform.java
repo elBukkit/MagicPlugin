@@ -1,8 +1,5 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1;
 
-import java.util.logging.Logger;
-
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -13,8 +10,8 @@ import com.elmakers.mine.bukkit.utility.platform.v1_17_1.event.EntityLoadEventHa
 public class Platform extends ModernPlatform {
     private Boolean hasEntityLoadEvent;
 
-    public Platform(Plugin plugin, Logger logger) {
-        super(plugin, logger);
+    public Platform(MageController controller) {
+        super(controller);
     }
 
     @Override
@@ -67,8 +64,8 @@ public class Platform extends ModernPlatform {
     }
 
     @Override
-    public void registerEvents(MageController controller, PluginManager pm) {
-        super.registerEvents(controller, pm);
+    public void registerEvents(PluginManager pm) {
+        super.registerEvents(pm);
         if (hasEntityLoadEvent()) {
             pm.registerEvents(new EntityLoadEventHandler(controller), controller.getPlugin());
         }
