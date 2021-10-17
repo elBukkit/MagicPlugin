@@ -28,6 +28,14 @@ overworld_mobs:
         whitedragon: 50
         rainbowdragon: 1
 
+    replace_cats:
+      class: Replace
+      target_types:
+        - cat
+        - ocelot
+      probability: 0.1
+      replace_type: scaredy
+
     replace_mobs:
       class: Replace
       target_types:
