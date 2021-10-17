@@ -55,6 +55,8 @@ public enum GoalType {
     WATER_AVOIDING_RANDOM_STROLL,
     ZOMBIE_ATTACK,
 
-    MAGIC_REQUIREMENT,
-    IDLE
+    IDLE,
+    REQUIREMENT,
+    GROUP,
+    TRIGGER
 }

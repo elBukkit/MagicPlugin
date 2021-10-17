@@ -2,24 +2,16 @@ package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
 import java.util.Collection;
 
-import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.api.requirements.Requirement;
-
 import net.minecraft.world.entity.ai.goal.Goal;
 
-public class MagicRequirementGoal extends Goal {
-    private final Collection<Requirement> requirements;
-    private final Mage mage;
+public class MagicGoal extends Goal {
     private final Collection<Goal> goals;
     private final boolean interruptable;
     private Goal currentGoal;
 
-    public MagicRequirementGoal(Mage mage, Collection<Goal> goals, boolean interruptable, Collection<Requirement> requirements) {
-        this.mage = mage;
+    public MagicGoal(Collection<Goal> goals, boolean interruptable) {
         this.goals = goals;
         this.interruptable = interruptable;
-        this.requirements = requirements;
     }
 
     @Override
@@ -32,7 +24,7 @@ public class MagicRequirementGoal extends Goal {
                 currentGoal = goal;
             }
         }
-        return currentGoal != null && checkRequirements();
+        return currentGoal != null;
     }
 
     @Override
@@ -58,12 +50,7 @@ public class MagicRequirementGoal extends Goal {
                 return false;
             }
         }
-        return checkRequirements();
-    }
-
-    protected boolean checkRequirements() {
-        MageController controller = mage.getController();
-        return controller.checkRequirements(mage.getContext(), requirements) == null;
+        return true;
     }
 
     @Override

@@ -20,7 +20,9 @@ import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.IdleGoal;
-import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicRequirementGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.RequirementGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.TriggerGoal;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
@@ -148,7 +150,11 @@ public class MobUtils extends MobUtilsBase {
         final double sprintSpeed = config.getDouble("sprint_speed", 1);
         final float distance = (float)config.getDouble("distance", 16);
         final boolean doors = config.getBoolean("doors", true);
-        int interval = config.getInt("interval", 120);
+        final boolean interruptable = config.getBoolean("interruptable", true);
+        int interval = config.getInt("interval", 20);
+        MageController controller = platform.getController();
+        Mage mage;
+        List<Goal> goals;
         switch (goalType) {
             case AVOID_ENTITY:
                 return getAvoidEntityGoal(mob, classType, distance, sprintSpeed, sprintSpeed);
@@ -254,32 +260,42 @@ public class MobUtils extends MobUtilsBase {
                     return new ZombieAttackGoal((Zombie)mob, speed, config.getBoolean("follow", true));
                 }
                 return null;
-            case MAGIC_REQUIREMENT:
-                MageController controller = platform.getController();
-                Mage mage = controller.getMage(entity);
+            case REQUIREMENT:
+                mage = controller.getMage(entity);
                 Collection<Requirement> requirements = controller.getRequirements(config);
-                List<GoalConfiguration> goalConfigurations = GoalConfiguration.fromList(config, "goals", platform.getLogger(), "magic requirement goal");
-                if (goalConfigurations == null) {
-                    return null;
-                }
-                Collections.sort(goalConfigurations);
-                List<Goal> goals = new ArrayList<>();
-                for (GoalConfiguration goalConfig : goalConfigurations) {
-                    Goal goal = getGoal(goalConfig.getGoalType(), entity, mob, goalConfig.getConfiguration());
-                    if (goal != null) {
-                        goals.add(goal);
-                    }
-                }
-                if (goals == null) {
-                    return null;
-                }
-                return new MagicRequirementGoal(mage, goals, config.getBoolean("interruptable", true), requirements);
+                goals = getGoals(entity, mob, config, "magic requirement goal");
+                return new RequirementGoal(mage, goals, interruptable, requirements);
+            case GROUP:
+                goals = getGoals(entity, mob, config, "magic group goal");
+                return new MagicGoal(goals, interruptable);
+            case TRIGGER:
+                mage = controller.getMage(entity);
+                goals = getGoals(entity, mob, config, "magic trigger goal");
+                return new TriggerGoal(mage, goals, interruptable, config.getString("trigger", "goal"), interval);
             case IDLE:
                 return new IdleGoal();
             default:
                 platform.getLogger().warning("Unsupported goal type: " + goalType);
                 return null;
         }
+    }
+
+    private List<Goal> getGoals(Entity entity, PathfinderMob mob, ConfigurationSection config, String logContext) {
+        List<Goal> goals = new ArrayList<>();
+        List<GoalConfiguration> goalConfigurations = GoalConfiguration.fromList(config, "goals", platform.getLogger(), logContext);
+        if (goalConfigurations != null) {
+            Collections.sort(goalConfigurations);
+            for (GoalConfiguration goalConfig : goalConfigurations) {
+                Goal goal = getGoal(goalConfig.getGoalType(), entity, mob, goalConfig.getConfiguration());
+                if (goal != null) {
+                    goals.add(goal);
+                }
+            }
+        }
+        if (goals.isEmpty()) {
+            goals.add(new IdleGoal());
+        }
+        return goals;
     }
 
     private Class<? extends LivingEntity> getMobClass(String classType) {
