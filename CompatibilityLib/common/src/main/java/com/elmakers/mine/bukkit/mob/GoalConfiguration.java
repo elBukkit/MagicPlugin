@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.mob;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -11,13 +10,15 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
-public class GoalConfiguration {
+public class GoalConfiguration implements Comparable<GoalConfiguration> {
     private final GoalType goalType;
     private final ConfigurationSection configuration;
+    private final int priority;
 
     private GoalConfiguration(GoalType goalType, ConfigurationSection configuration) {
         this.goalType = goalType;
         this.configuration = configuration;
+        priority = configuration.getInt("priority");
     }
 
     public static GoalConfiguration fromConfiguration(ConfigurationSection parent, Object rawGoal, Logger logger, String logContext) {
@@ -53,7 +54,7 @@ public class GoalConfiguration {
     }
 
     @Nullable
-    public static Collection<GoalConfiguration> fromList(ConfigurationSection parent, String key, Logger logger, String logContext) {
+    public static List<GoalConfiguration> fromList(ConfigurationSection parent, String key, Logger logger, String logContext) {
         if (!parent.contains(key)) return null;
         List<GoalConfiguration> list = new ArrayList<>();
         if (parent.isList(key)) {
@@ -76,5 +77,10 @@ public class GoalConfiguration {
 
     public ConfigurationSection getConfiguration() {
         return configuration;
+    }
+
+    @Override
+    public int compareTo(GoalConfiguration o) {
+        return Integer.compare(priority, o.priority);
     }
 }

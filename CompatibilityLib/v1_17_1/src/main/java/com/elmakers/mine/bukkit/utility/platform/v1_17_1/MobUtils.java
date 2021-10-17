@@ -256,10 +256,11 @@ public class MobUtils extends MobUtilsBase {
                 MageController controller = platform.getController();
                 Mage mage = controller.getMage(entity);
                 Collection<Requirement> requirements = controller.getRequirements(config);
-                Collection<GoalConfiguration> goalConfigurations = GoalConfiguration.fromList(config, "goals", platform.getLogger(), "magic requirement goal");
+                List<GoalConfiguration> goalConfigurations = GoalConfiguration.fromList(config, "goals", platform.getLogger(), "magic requirement goal");
                 if (goalConfigurations == null) {
                     return null;
                 }
+                Collections.sort(goalConfigurations);
                 List<Goal> goals = new ArrayList<>();
                 for (GoalConfiguration goalConfig : goalConfigurations) {
                     Goal goal = getGoal(goalConfig.getGoalType(), entity, mob, goalConfig.getConfiguration());
