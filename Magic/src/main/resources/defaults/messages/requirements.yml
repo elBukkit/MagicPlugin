@@ -20,6 +20,7 @@ requirements:
   no_indoors: "May only be used indoors"
   light: "Light Level"
   time: "Time of Day"
+  moon: "Phase of Moon"
   height: "Height"
   server_version: "Server Version"
   currency: "$currency"

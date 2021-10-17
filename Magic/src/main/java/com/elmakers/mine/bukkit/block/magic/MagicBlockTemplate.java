@@ -96,52 +96,12 @@ public class MagicBlockTemplate {
 
     @Nullable
     private Integer parseTime(ConfigurationSection configuration, String key, Logger log) {
-        Integer time = null;
-        if (configuration.contains(key)) {
-            if (configuration.isInt(key)) {
-                time = configuration.getInt(key);
-            } else {
-                String timeString = configuration.getString(key);
-                if (timeString.equalsIgnoreCase("day")) {
-                    time = 0;
-                } else if (timeString.equalsIgnoreCase("night")) {
-                    time = 13000;
-                } else if (timeString.equalsIgnoreCase("dusk") || timeString.equalsIgnoreCase("sunset")) {
-                    time = 12000;
-                } else if (timeString.equalsIgnoreCase("dawn") || timeString.equalsIgnoreCase("sunrise")) {
-                    time = 23000;
-                } else if (timeString.equalsIgnoreCase("noon") || timeString.equalsIgnoreCase("midday")) {
-                    time = 6000;
-                } else if (timeString.equalsIgnoreCase("midnight")) {
-                    time = 18000;
-                } else {
-                    log.warning("Invalid time in automata config: " + timeString);
-                }
-            }
-        }
-
-        return time;
+        return ConfigurationUtils.parseTime(configuration.getString(key), log, "magic block");
     }
 
     @Nullable
     private Integer parseMoonPhase(ConfigurationSection configuration, String key, Logger log) {
-        Integer phase = null;
-        if (configuration.contains(key)) {
-            if (configuration.isInt(key)) {
-                phase = configuration.getInt(key);
-            } else {
-                String phaseString = configuration.getString(key);
-                if (phaseString.equalsIgnoreCase("new")) {
-                    phase = 4;
-                } else if (phaseString.equalsIgnoreCase("full")) {
-                    phase = 0;
-                } else {
-                    log.warning("Invalid phase of moon in automata config: " + phaseString);
-                }
-            }
-        }
-
-        return phase;
+        return ConfigurationUtils.parseMoonPhase(configuration.getString(key), log, "magic block");
     }
 
     @Nonnull

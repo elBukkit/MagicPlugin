@@ -55,7 +55,8 @@ public class MagicRequirement {
     private @Nullable List<PropertyRequirement> variables = null;
     private @Nullable Set<String> regionTags = null;
     private @Nullable RangedRequirement lightLevel = null;
-    private @Nullable RangedRequirement timeOfDay = null;
+    private @Nullable TimeRequirement timeOfDay = null;
+    private @Nullable MoonRequirement moonPhase = null;
     private @Nullable RangedRequirement height = null;
     private @Nullable RangedRequirement serverVersion = null;
     private @Nullable CurrencyRequirement currency = null;
@@ -115,7 +116,8 @@ public class MagicRequirement {
         variables = parsePropertyRequirements(configuration, "variables", "variable", "variable");
 
         lightLevel = parseRangedRequirement(configuration, "light");
-        timeOfDay = parseRangedRequirement(configuration, "time");
+        timeOfDay = parseTimeRequirement(configuration, "time");
+        moonPhase = parseMoonRequirement(configuration, "moon");
         weather = configuration.getString("weather");
         height = parseRangedRequirement(configuration, "height");
         serverVersion = parseRangedRequirement(configuration, "server_version");
@@ -152,6 +154,30 @@ public class MagicRequirement {
         }
         if (configuration.contains(key)) {
             return new RangedRequirement(configuration.getString(key));
+        }
+        return null;
+    }
+
+    @Nullable
+    private TimeRequirement parseTimeRequirement(ConfigurationSection configuration, String key) {
+        ConfigurationSection rangedConfig = ConfigurationUtils.getConfigurationSection(configuration, key);
+        if (rangedConfig != null) {
+            return new TimeRequirement(rangedConfig, controller.getLogger());
+        }
+        if (configuration.contains(key)) {
+            return new TimeRequirement(configuration.getString(key), controller.getLogger());
+        }
+        return null;
+    }
+
+    @Nullable
+    private MoonRequirement parseMoonRequirement(ConfigurationSection configuration, String key) {
+        ConfigurationSection rangedConfig = ConfigurationUtils.getConfigurationSection(configuration, key);
+        if (rangedConfig != null) {
+            return new MoonRequirement(rangedConfig, controller.getLogger());
+        }
+        if (configuration.contains(key)) {
+            return new MoonRequirement(configuration.getString(key), controller.getLogger());
         }
         return null;
     }
@@ -255,6 +281,12 @@ public class MagicRequirement {
              if (location == null || !timeOfDay.check((double)location.getWorld().getTime())) {
                  return false;
              }
+        }
+        if (moonPhase != null) {
+            int phase = (int)((location.getWorld().getFullTime() / 24000) % 8);
+            if (location == null || !moonPhase.check((double)phase)) {
+                return false;
+            }
         }
         if (lightLevel != null) {
             if (location == null || !lightLevel.check((double)location.getBlock().getLightLevel())) {
@@ -522,6 +554,13 @@ public class MagicRequirement {
                     break;
                 default:
                     context.getLogger().warning("Invalid weather specified in requirement " + weather + ", looking for clear/storm/thunder");
+            }
+        }
+        if (moonPhase != null) {
+            int phase = (int)((location.getWorld().getFullTime() / 24000) % 8);
+            String message = checkRequiredProperty(context, moonPhase, getMessage(context, "moon"), location == null ? null : (double)phase);
+            if (message != null) {
+                return message;
             }
         }
         if (timeOfDay != null) {

@@ -619,4 +619,51 @@ public class ConfigurationUtils extends ConfigUtils {
         if (material == null) return "";
         return material.name().toLowerCase();
     }
+
+    @Nullable
+    public static Integer parseTime(String timeString, Logger log, String logContext) {
+        Integer time = null;
+        if (timeString != null) {
+            if (timeString.equalsIgnoreCase("day")) {
+                time = 0;
+            } else if (timeString.equalsIgnoreCase("night")) {
+                time = 13000;
+            } else if (timeString.equalsIgnoreCase("dusk") || timeString.equalsIgnoreCase("sunset")) {
+                time = 12000;
+            } else if (timeString.equalsIgnoreCase("dawn") || timeString.equalsIgnoreCase("sunrise")) {
+                time = 23000;
+            } else if (timeString.equalsIgnoreCase("noon") || timeString.equalsIgnoreCase("midday")) {
+                time = 6000;
+            } else if (timeString.equalsIgnoreCase("midnight")) {
+                time = 18000;
+            } else {
+                try {
+                    time = Integer.parseInt(timeString);
+                } catch (Exception ex) {
+                    log.warning("Invalid time in " + logContext + ": " + timeString);
+                }
+            }
+        }
+        return time;
+    }
+
+    @Nullable
+    public static Integer parseMoonPhase(String phaseString, Logger log, String logContext) {
+        Integer phase = null;
+        if (phaseString != null) {
+            if (phaseString.equalsIgnoreCase("new")) {
+                phase = 4;
+            } else if (phaseString.equalsIgnoreCase("full")) {
+                phase = 0;
+            } else {
+                try {
+                    phase = Integer.parseInt(phaseString);
+                } catch (Exception ex) {
+                    log.warning("Invalid phase of moon in " + logContext + " config: " + phaseString);
+                }
+            }
+        }
+
+        return phase;
+    }
 }

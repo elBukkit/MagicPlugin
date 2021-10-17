@@ -8,6 +8,9 @@ class RangedRequirement {
     public Double value;
     public boolean inclusive = false;
 
+    protected RangedRequirement() {
+    }
+
     public RangedRequirement(String value) {
         try {
             if (value.startsWith("<")) {
