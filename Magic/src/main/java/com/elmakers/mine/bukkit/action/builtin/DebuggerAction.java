@@ -58,6 +58,14 @@ public class DebuggerAction extends BaseSpellAction
         if (mage == null) {
             return SpellResult.NO_TARGET;
         }
+
+        if (check) {
+            mage.debugPermissions(context.getMage().getCommandSender(), null);
+        }
+        if (checkBrain) {
+            mage.debugBrain(context.getMage().getCommandSender());
+        }
+
         int currentLevel = mage.getDebugLevel();
         if (currentLevel == debugLevel || debugLevel == 0) {
             mage.setDebugLevel(0);
@@ -67,13 +75,6 @@ public class DebuggerAction extends BaseSpellAction
 
         mage.setDebugLevel(debugLevel);
         mage.setDebugger(context.getMage().getCommandSender());
-
-        if (check) {
-            mage.debugPermissions(context.getMage().getCommandSender(), null);
-        }
-        if (checkBrain) {
-            mage.debugBrain(context.getMage().getCommandSender());
-        }
 
         return SpellResult.CAST;
     }
