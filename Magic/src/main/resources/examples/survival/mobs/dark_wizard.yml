@@ -15,6 +15,21 @@ dark_wizard:
       - create_fog
       - darken_sky
       - play_boss_music
+  brain:
+    goals:
+      - goal: trigger
+        trigger: flee
+        interval: 1000
+        goals:
+          - goal: avoid_entity
+            distance: 6
+      - goal: trigger
+        trigger: attack
+        interval: 2000
+        priority: 1
+        goals:
+          - goal: look_at_player
+            distance: 34
   triggers:
     damage1:
       type: damage
@@ -36,7 +51,13 @@ dark_wizard:
       cast:
         neutron: 10
         fury: 50
-    interval:
+    flee:
+      cast:
+        fling|3: 50
+        blink: 10
+        fury: 5
+        heal: 5
+    attack:
       cast:
         missile|4: 20
         railgun: 10
