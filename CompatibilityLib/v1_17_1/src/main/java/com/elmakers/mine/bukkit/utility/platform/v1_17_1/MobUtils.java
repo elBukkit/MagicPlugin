@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -125,6 +126,20 @@ public class MobUtils extends MobUtilsBase {
         return true;
     }
 
+    public String getGoalParentDescriptions(Goal goal) {
+        List<String> parentClasses = null;
+        Class<?> superClass = goal.getClass().getSuperclass();
+        while (superClass != null && superClass != Goal.class && superClass != MagicGoal.class) {
+            if (parentClasses == null) {
+                parentClasses = new ArrayList<>();
+            }
+            parentClasses.add(superClass.getSimpleName());
+            superClass = superClass.getSuperclass();
+        }
+        if (parentClasses == null || parentClasses.isEmpty()) return null;
+        return ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + StringUtils.join(parentClasses, ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY);
+    }
+
     @Override
     public Collection<String> getGoalDescriptions(Entity entity) {
         Mob mob = getMob(entity);
@@ -136,9 +151,9 @@ public class MobUtils extends MobUtilsBase {
         for (WrappedGoal wrappedGoal : available) {
             Goal goal = wrappedGoal.getGoal();
             String description = goal.toString();
-            Class<?> superClass = goal.getClass().getSuperclass();
-            if (!superClass.equals(Goal.class) && !superClass.equals(MagicGoal.class)) {
-                description += ChatColor.GRAY + " " + superClass.getName();
+            String parentDescription = getGoalParentDescriptions(goal);
+            if (parentDescription != null) {
+                description += " " + parentDescription;
             }
             if (wrappedGoal.isRunning()) {
                 description = ChatColor.AQUA + description;

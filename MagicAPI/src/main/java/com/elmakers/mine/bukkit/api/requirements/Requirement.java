@@ -31,6 +31,7 @@ public class Requirement {
         List<String> pairs = new ArrayList<>();
         Set<String> keys = configuration.getKeys(true);
         for (String key : keys) {
+            if (configuration.isConfigurationSection(key)) continue;
            pairs.add(key + ":" + configuration.getString(key));
         }
 
