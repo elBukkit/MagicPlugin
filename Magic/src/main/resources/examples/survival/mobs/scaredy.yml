@@ -3,6 +3,15 @@ scaredy:
   health: 4
   brain:
     goals:
-    - avoid_entity
-    - goal: panic
-      priority: 1
+      - goal: random_stroll
+        priority: 1
+      - goal: magic_requirement
+        priority: 0
+        goals:
+          - goal: avoid_entity
+            speed: 1.2
+            sprint_speed: 1.5
+        requirement:
+          time:
+            min: dusk
+            max: dawn
