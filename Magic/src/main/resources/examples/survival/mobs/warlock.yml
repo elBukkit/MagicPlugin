@@ -48,6 +48,7 @@ warlock:
   - diamond: 10
     emerald: 15
     warlock_wand: 5
+    amethyst_shard: 10
     none: 100
   - sp:16
   loot:
