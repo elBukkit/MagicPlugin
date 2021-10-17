@@ -5,7 +5,7 @@ scaredy:
     goals:
       - goal: random_stroll
         priority: 1
-      - goal: magic_requirement
+      - goal: requirement
         priority: 0
         goals:
           - goal: avoid_entity

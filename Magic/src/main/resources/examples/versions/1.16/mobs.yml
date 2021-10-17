@@ -1,2 +1,15 @@
 marigold:
   type: wolf
+
+warlock:
+  triggers:
+    interval:
+      cast:
+        missile: 20
+        poison: 30
+        pull: 100
+        curse: 100
+        blob: 20
+        lava: 10
+        shell: 20
+        none: 300
