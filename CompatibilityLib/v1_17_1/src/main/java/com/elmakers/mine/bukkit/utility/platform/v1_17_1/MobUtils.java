@@ -26,6 +26,7 @@ import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.RequirementGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.TriggerGoal;
 
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.BegGoal;
@@ -84,18 +85,18 @@ public class MobUtils extends MobUtilsBase {
         this.platform = platform;
     }
 
-    private PathfinderMob getMob(Entity entity) {
+    private Mob getMob(Entity entity) {
         CraftEntity craft = (CraftEntity)entity;
         net.minecraft.world.entity.Entity nms = craft.getHandle();
-        if (!(nms instanceof PathfinderMob)) {
+        if (!(nms instanceof Mob)) {
             return null;
         }
-        return (PathfinderMob)nms;
+        return (Mob)nms;
     }
 
     @Override
     public boolean removeGoals(Entity entity) {
-        PathfinderMob mob = getMob(entity);
+        Mob mob = getMob(entity);
         if (mob == null) {
             return false;
         }
@@ -105,7 +106,7 @@ public class MobUtils extends MobUtilsBase {
 
     @Override
     public boolean removeGoal(Entity entity, GoalType goalType) {
-        PathfinderMob mob = getMob(entity);
+        Mob mob = getMob(entity);
         if (mob == null) {
             return false;
         }
@@ -126,7 +127,7 @@ public class MobUtils extends MobUtilsBase {
 
     @Override
     public Collection<String> getGoalDescriptions(Entity entity) {
-        PathfinderMob mob = getMob(entity);
+        Mob mob = getMob(entity);
         if (mob == null) {
             return null;
         }
@@ -144,13 +145,8 @@ public class MobUtils extends MobUtilsBase {
 
     @Override
     public boolean addGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
-        PathfinderMob mob = getMob(entity);
+        Mob mob = getMob(entity);
         if (mob == null) {
-            return false;
-        }
-        CraftEntity craft = (CraftEntity)entity;
-        net.minecraft.world.entity.Entity nms = craft.getHandle();
-        if (!(nms instanceof PathfinderMob)) {
             return false;
         }
         GoalSelector goals = mob.goalSelector;
@@ -163,20 +159,22 @@ public class MobUtils extends MobUtilsBase {
         return true;
     }
 
-    private Goal getGoal(GoalType goalType, Entity entity, PathfinderMob mob, ConfigurationSection config) {
+    private Goal getGoal(GoalType goalType, Entity entity, Mob mob, ConfigurationSection config) {
         final String classType = config.getString("entity_class", "player");
         final double speed = config.getDouble("speed", 1);
         final double sprintSpeed = config.getDouble("sprint_speed", 1);
         final float distance = (float)config.getDouble("distance", 16);
         final boolean doors = config.getBoolean("doors", true);
         final boolean interruptable = config.getBoolean("interruptable", true);
+        final PathfinderMob pathfinder = mob instanceof PathfinderMob ? (PathfinderMob)mob : null;
         int interval = config.getInt("interval", 20);
         MageController controller = platform.getController();
         Mage mage;
         List<Goal> goals;
         switch (goalType) {
             case AVOID_ENTITY:
-                return getAvoidEntityGoal(mob, classType, distance, sprintSpeed, sprintSpeed);
+                if (pathfinder == null) return null;
+                return getAvoidEntityGoal(pathfinder, classType, distance, sprintSpeed, sprintSpeed);
             case BEG:
                 if (mob instanceof Wolf) {
                     return new BegGoal((Wolf)mob, distance);
@@ -185,7 +183,8 @@ public class MobUtils extends MobUtilsBase {
             case BREAK_DOOR:
                 return new BreakDoorGoal(mob, difficulty -> true);
             case BREATHE_AIR:
-                return new BreathAirGoal(mob);
+                if (pathfinder == null) return null;
+                return new BreathAirGoal(pathfinder);
             case BREED:
                 if (mob instanceof Animal) {
                     return new BreedGoal((Animal)mob, speed);
@@ -194,15 +193,18 @@ public class MobUtils extends MobUtilsBase {
             case EAT_BLOCK:
                 return new EatBlockGoal(mob);
             case FLEE_SUN:
-                return new FleeSunGoal(mob, speed);
+                if (pathfinder == null) return null;
+                return new FleeSunGoal(pathfinder, speed);
             case FLOAT:
                 return new FloatGoal(mob);
             case FOLLOW_BOAT:
-                return new FollowBoatGoal(mob);
+                if (pathfinder == null) return null;
+                return new FollowBoatGoal(pathfinder);
             case FOLLOW_MOB:
                 return new FollowMobGoal(mob, speed, distance, (float)config.getDouble("area_size", 7));
             case GOLEM_RANDOM_STROLL_IN_VILLAGE:
-                return new GolemRandomStrollInVillageGoal(mob, speed);
+                if (pathfinder == null) return null;
+                return new GolemRandomStrollInVillageGoal(pathfinder, speed);
             case INTERACT:
                 return getInteractGoal(mob, classType, distance, (float)config.getDouble("probability", 1));
             case LEAP_AT_TARGET:
@@ -210,15 +212,20 @@ public class MobUtils extends MobUtilsBase {
             case LOOK_AT_PLAYER:
                 return getLookAtPlayerGoal(mob, classType, distance, (float)config.getDouble("probability", 1), config.getBoolean("horizontal"));
             case MELEE_ATTACK:
-                return new MeleeAttackGoal(mob, speed, config.getBoolean("follow", true));
+                if (pathfinder == null) return null;
+                return new MeleeAttackGoal(pathfinder, speed, config.getBoolean("follow", true));
             case MOVE_BACK_TO_VILLAGE:
-                return new MoveBackToVillageGoal(mob, speed, config.getBoolean("check", true));
+                if (pathfinder == null) return null;
+                return new MoveBackToVillageGoal(pathfinder, speed, config.getBoolean("check", true));
             case MOVE_THROUGH_VILLAGE:
-                return new MoveThroughVillageGoal(mob, speed, config.getBoolean("night", true), (int)distance, (BooleanSupplier) () -> doors);
+                if (pathfinder == null) return null;
+                return new MoveThroughVillageGoal(pathfinder, speed, config.getBoolean("night", true), (int)distance, (BooleanSupplier) () -> doors);
             case MOVE_TOWARDS_RESTRICTION:
-                return new MoveTowardsRestrictionGoal(mob, speed);
+                if (pathfinder == null) return null;
+                return new MoveTowardsRestrictionGoal(pathfinder, speed);
             case MOVE_TOWARDS_TARGET:
-                return new MoveTowardsTargetGoal(mob, speed, distance);
+                if (pathfinder == null) return null;
+                return new MoveTowardsTargetGoal(pathfinder, speed, distance);
             case OCELOT_ATTACK:
                 return new OcelotAttackGoal(mob);
             case OFFER_FLOWER:
@@ -229,28 +236,34 @@ public class MobUtils extends MobUtilsBase {
             case OPEN_DOOR:
                 return new OpenDoorGoal(mob, config.getBoolean("close", false));
             case PANIC:
-                return new PanicGoal(mob, speed);
+                if (pathfinder == null) return null;
+                return new PanicGoal(pathfinder, speed);
             case RANDOM_LOOK_AROUND:
                 return new RandomLookAroundGoal(mob);
             case RANDOM_STROLL:
-                return new RandomStrollGoal(mob, speed, interval);
+                if (pathfinder == null) return null;
+                return new RandomStrollGoal(pathfinder, speed, interval);
             case RANDOM_SWIMMING:
-                return new RandomSwimmingGoal(mob, speed, interval);
+                if (pathfinder == null) return null;
+                return new RandomSwimmingGoal(pathfinder, speed, interval);
             case RESTRICT_SUN:
-                return new RestrictSunGoal(mob);
+                if (pathfinder == null) return null;
+                return new RestrictSunGoal(pathfinder);
             case RUN_AROUND_LIKE_CRAZY:
                 if (mob instanceof Horse) {
                     return new RunAroundLikeCrazyGoal((Horse)mob, speed);
                 }
                 return null;
             case STROLL_THROUGH_VILLAGE:
-                return new StrollThroughVillageGoal(mob, interval);
+                if (pathfinder == null) return null;
+                return new StrollThroughVillageGoal(pathfinder, interval);
             case SWELL:
                 if (mob instanceof Creeper) {
                     return new SwellGoal((Creeper)mob);
                 }
                 return null;
             case TEMPT:
+                if (pathfinder == null) return null;
                 String itemKey = config.getString("item", "EMERALD");
                 try {
                     Material material = Material.valueOf(itemKey.toUpperCase());
@@ -263,23 +276,27 @@ public class MobUtils extends MobUtilsBase {
                         return null;
                     }
                     boolean scare = config.getBoolean("scare", false);
-                    return new TemptGoal(mob, speed, Ingredient.of(nms), scare);
+                    return new TemptGoal(pathfinder, speed, Ingredient.of(nms), scare);
                 } catch (Exception ex) {
                     platform.getLogger().warning("Invalid material in temp goal: " + itemKey);
                     return null;
                 }
             case TRY_FIND_WATER:
-                return new TryFindWaterGoal(mob);
+                if (pathfinder == null) return null;
+                return new TryFindWaterGoal(pathfinder);
             case WATER_AVOIDING_RANDOM_FLYING:
-                return new WaterAvoidingRandomFlyingGoal(mob, speed);
+                if (pathfinder == null) return null;
+                return new WaterAvoidingRandomFlyingGoal(pathfinder, speed);
             case WATER_AVOIDING_RANDOM_STROLL:
-                return new WaterAvoidingRandomStrollGoal(mob, speed);
+                if (pathfinder == null) return null;
+                return new WaterAvoidingRandomStrollGoal(pathfinder, speed);
             case ZOMBIE_ATTACK:
                 if (mob instanceof Zombie) {
                     return new ZombieAttackGoal((Zombie)mob, speed, config.getBoolean("follow", true));
                 }
                 return null;
             case REQUIREMENT:
+                if (pathfinder == null) return null;
                 mage = controller.getMage(entity);
                 Collection<Requirement> requirements = controller.getRequirements(config);
                 goals = getGoals(entity, mob, config, "magic requirement goal");
@@ -299,7 +316,7 @@ public class MobUtils extends MobUtilsBase {
         }
     }
 
-    private List<Goal> getGoals(Entity entity, PathfinderMob mob, ConfigurationSection config, String logContext) {
+    private List<Goal> getGoals(Entity entity, Mob mob, ConfigurationSection config, String logContext) {
         List<Goal> goals = new ArrayList<>();
         List<GoalConfiguration> goalConfigurations = GoalConfiguration.fromList(config, "goals", platform.getLogger(), logContext);
         if (goalConfigurations != null) {
@@ -336,7 +353,7 @@ public class MobUtils extends MobUtilsBase {
         }
     }
 
-    private Goal getLookAtPlayerGoal(PathfinderMob mob, String classType, float distance, float probability, boolean horizontal) {
+    private Goal getLookAtPlayerGoal(Mob mob, String classType, float distance, float probability, boolean horizontal) {
         Class<? extends LivingEntity> mobClass = getMobClass(classType);
         if (mobClass == null) {
             platform.getLogger().warning("Unsupported entity_class in interact goal: " + classType);
@@ -345,7 +362,7 @@ public class MobUtils extends MobUtilsBase {
         return new LookAtPlayerGoal(mob, mobClass, distance, probability, horizontal);
     }
 
-    private Goal getInteractGoal(PathfinderMob mob, String classType, float distance, float probability) {
+    private Goal getInteractGoal(Mob mob, String classType, float distance, float probability) {
         Class<? extends LivingEntity> mobClass = getMobClass(classType);
         if (mobClass == null) {
             platform.getLogger().warning("Unsupported entity_class in interact goal: " + classType);
@@ -379,12 +396,12 @@ public class MobUtils extends MobUtilsBase {
         if (entity == null || target == null) return false;
         net.minecraft.world.entity.Entity nmsEntity = ((CraftEntity)entity).getHandle();
         net.minecraft.world.entity.Entity nmstarget = ((CraftEntity)target).getHandle();
-        if (!(nmsEntity instanceof PathfinderMob)) {
+        if (!(nmsEntity instanceof Mob)) {
             return false;
         }
 
-        PathfinderMob pathfinder = (PathfinderMob)nmsEntity;
-        pathfinder.getNavigation().moveTo(nmstarget, speed);
+        Mob mob = (Mob)nmsEntity;
+        mob.getNavigation().moveTo(nmstarget, speed);
         return true;
     }
 }

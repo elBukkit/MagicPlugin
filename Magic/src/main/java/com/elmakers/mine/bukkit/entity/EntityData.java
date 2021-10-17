@@ -1111,7 +1111,9 @@ public class EntityData
             ((LivingEntity)entity).setAI(true);
         }
         for (GoalConfiguration goal : goals) {
-            mobUtils.addGoal(entity, goal);
+            if (!mobUtils.addGoal(entity, goal)) {
+                controller.getLogger().warning("Invalid gaol " + goal.getGoalType() + " for mob type " + entity.getType().name().toLowerCase());
+            }
         }
     }
 
