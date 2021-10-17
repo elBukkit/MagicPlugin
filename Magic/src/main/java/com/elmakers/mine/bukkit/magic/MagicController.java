@@ -34,7 +34,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -78,6 +77,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.MetadataValue;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
@@ -489,7 +489,7 @@ public class MagicController implements MageController {
     private MageDataStore migrateDataStore = null;
     private MigrateDataTask migrateDataTask = null;
     private BukkitTask logWatchdogTimer = null;
-    private MagicPlugin plugin = null;
+    private Plugin plugin = null;
     private int magicBlockUpdateFrequency = 1;
     private int mageUpdateFrequency = 5;
     private int workFrequency = 1;
@@ -609,28 +609,23 @@ public class MagicController implements MageController {
     MaterialSet offhandMaterials = MaterialSets.empty();
     private GeyserManager geyserManager = null;
 
-    // Special constructor used for interrogation
-    public MagicController() {
-        configFolder = null;
-        dataFolder = null;
-        defaultsFolder = null;
-        this.logger = new MagicLogger(null, Logger.getLogger("Magic"));
-        this.materialSetManager.setLogger(logger);
-    }
-
-    public MagicController(final MagicPlugin plugin) {
+    public MagicController(final Plugin plugin) {
         this.plugin = plugin;
         this.logger = new MagicLogger(plugin, plugin.getLogger());
+        this.materialSetManager.setLogger(logger);
         resourcePacks = new ResourcePackManager(this);
 
         configFolder = plugin.getDataFolder();
-        configFolder.mkdirs();
-
-        dataFolder = new File(configFolder, "data");
-        dataFolder.mkdirs();
-
-        defaultsFolder = new File(configFolder, "defaults");
-        defaultsFolder.mkdirs();
+        if (configFolder != null) {
+            configFolder.mkdirs();
+            dataFolder = new File(configFolder, "data");
+            dataFolder.mkdirs();
+            defaultsFolder = new File(configFolder, "defaults");
+            defaultsFolder.mkdirs();
+        } else {
+            dataFolder = null;
+            defaultsFolder = null;
+        }
         ConfigurationUtils.setMagicController(this);
     }
 
@@ -1615,7 +1610,7 @@ public class MagicController implements MageController {
         metrics = null;
         if (metricsLevel > 0) {
             try {
-                metrics = new Metrics(plugin);
+                metrics = new Metrics(getJavaPlugin());
 
                 if (metricsLevel > 1) {
                     metrics.addCustomChart(new Metrics.MultiLineChart("Plugin Integration") {
@@ -4343,13 +4338,17 @@ public class MagicController implements MageController {
     }
 
     @Override
-    public MagicPlugin getPlugin() {
+    public Plugin getPlugin() {
         return plugin;
+    }
+
+    public JavaPlugin getJavaPlugin() {
+        return (JavaPlugin)plugin;
     }
 
     @Override
     public MagicAPI getAPI() {
-        return plugin;
+        return (MagicAPI)plugin;
     }
 
     public Collection<? extends Mage> getMutableMages() {
@@ -7959,7 +7958,7 @@ public class MagicController implements MageController {
             Plugin citizensPlugin = plugin.getServer().getPluginManager().getPlugin("Citizens");
             if (citizensPlugin != null && citizensPlugin.isEnabled()) {
                 citizens = new CitizensController(citizensPlugin, this, citizensEnabled);
-                new MagicTraitCommandExecutor(MagicPlugin.getAPI(), citizens).register(plugin);
+                new MagicTraitCommandExecutor(MagicPlugin.getAPI(), citizens).register(getJavaPlugin());
             } else {
                 citizens = null;
                 getLogger().info("Citizens not found, Magic trait unavailable.");
