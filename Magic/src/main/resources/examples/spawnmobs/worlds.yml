@@ -1,6 +1,22 @@
 overworld_mobs:
   world: world
   entity_spawn:
+
+    replace_creepers:
+      class: Replace
+      target_types:
+        - creeper
+      probability: 0.05
+      replace_type: philbert
+
+    replace_cats:
+      class: Replace
+      target_types:
+        - cat
+        - ocelot
+      probability: 0.05
+      replace_type: scaredy
+
     replace_flying:
       class: Replace
       y_offset: 32
@@ -27,14 +43,6 @@ overworld_mobs:
         mega_phantom: 500
         whitedragon: 50
         rainbowdragon: 1
-
-    replace_cats:
-      class: Replace
-      target_types:
-        - cat
-        - ocelot
-      probability: 0.1
-      replace_type: scaredy
 
     replace_mobs:
       class: Replace
