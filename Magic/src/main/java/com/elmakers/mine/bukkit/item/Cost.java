@@ -35,6 +35,22 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
         this.setType(controller, key);
     }
 
+    public Cost(ItemStack item) {
+        itemWildcard = false;
+        this.item = item;
+        this.currency = null;
+        this.amount = item.getAmount();
+        this.item.setAmount(1);
+        this.materialSetKey = null;
+    }
+
+    public Cost(Cost copy) {
+        this.item = copy.item;
+        this.itemWildcard = copy.itemWildcard;
+        this.amount = copy.amount;
+        this.currency = copy.currency;
+    }
+
     protected void setType(MageController controller, String key) {
         currency = controller.getCurrency(key);
         if (currency == null) {
@@ -54,13 +70,6 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
                 }
             }
         }
-    }
-
-    public Cost(Cost copy) {
-        this.item = copy.item;
-        this.itemWildcard = copy.itemWildcard;
-        this.amount = copy.amount;
-        this.currency = copy.currency;
     }
 
     @Override
