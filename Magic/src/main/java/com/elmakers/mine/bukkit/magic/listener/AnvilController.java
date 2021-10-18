@@ -31,7 +31,8 @@ public class AnvilController implements Listener {
     private boolean bookCombiningDisabled = false;
     private boolean organizingEnabled = false;
     private boolean clearDescriptionOnRename = false;
-    private boolean enableRenaming = true;
+    private boolean enableWandRenaming = true;
+    private boolean enableSpellRenaming = false;
     private boolean disableAnvil = false;
 
     public AnvilController(MagicController controller) {
@@ -41,7 +42,8 @@ public class AnvilController implements Listener {
     public void load(ConfigurationSection properties) {
         disableAnvil = properties.getBoolean("disable_anvil", false);
         bookCombiningDisabled = properties.getBoolean("disable_book_combining", bookCombiningDisabled);
-        enableRenaming = properties.getBoolean("enable_wand_renaming", true);
+        enableWandRenaming = properties.getBoolean("enable_wand_renaming", true);
+        enableSpellRenaming = properties.getBoolean("enable_spell_renaming", false);
         bindingEnabled = properties.getBoolean("enable_anvil_binding", bindingEnabled);
         combiningEnabled = properties.getBoolean("enable_combining", combiningEnabled);
         wandBookCombiningEnabled = properties.getBoolean("enable_wand_book_combining", wandBookCombiningEnabled);
@@ -81,6 +83,8 @@ public class AnvilController implements Listener {
                     }, 1);
                 }
             }
+        } else if (Wand.isSpecial(oldCursor) && !enableSpellRenaming) {
+            event.setCancelled(true);
         }
     }
 
@@ -123,7 +127,12 @@ public class AnvilController implements Listener {
             // Handle direct movement into the anvil inventory
             if (action == InventoryAction.MOVE_TO_OTHER_INVENTORY)
             {
-                if (!Wand.isWand(current)) return;
+                if (!Wand.isWand(current)) {
+                    if (Wand.isSpecial(current) && !enableSpellRenaming && slotType != SlotType.RESULT && slotType != SlotType.CRAFTING) {
+                        event.setCancelled(true);
+                    }
+                    return;
+                }
 
                 // Moving from anvil back to inventory
                 if (slotType == SlotType.CRAFTING) {
@@ -144,6 +153,9 @@ public class AnvilController implements Listener {
                 if (Wand.isWand(cursor)) {
                     Wand wand = controller.getWand(cursor);
                     wand.updateName(false, true);
+                } else if (Wand.isSpecial(cursor) && !enableSpellRenaming) {
+                    event.setCancelled(true);
+                    return;
                 }
 
                 // Taking a wand out of the anvil's crafting slot
@@ -262,7 +274,7 @@ public class AnvilController implements Listener {
                     }
 
                 }
-                if (enableRenaming && wand.getBoolean("renamable", true)) {
+                if (enableWandRenaming && wand.getBoolean("renamable", true)) {
                     wand.setName(newName);
                 }
                 if (organizingEnabled) {
@@ -272,6 +284,12 @@ public class AnvilController implements Listener {
                     wand.tryToOwn(player);
                 }
                 wand.saveState();
+                return;
+            }
+
+            // Don't allow renaming non-wand special items
+            if (slotType == SlotType.RESULT && Wand.isSpecial(current) && !enableSpellRenaming) {
+                event.setCancelled(true);
                 return;
             }
 
