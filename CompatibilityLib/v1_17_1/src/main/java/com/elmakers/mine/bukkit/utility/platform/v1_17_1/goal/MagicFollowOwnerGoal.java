@@ -1,9 +1,11 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
 import java.util.EnumSet;
+import java.util.UUID;
 
 import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -24,7 +26,6 @@ public class MagicFollowOwnerGoal extends Goal {
     private final Platform platform;
     private final Mob mob;
     private final Entity entity;
-    private final LivingEntity owner;
     private final Level level;
     private final double speedModifier;
     private final PathNavigation navigation;
@@ -35,12 +36,12 @@ public class MagicFollowOwnerGoal extends Goal {
 
     // State
     private int ticksRemaining = 0;
+    private LivingEntity owner;
 
-    public MagicFollowOwnerGoal(Platform platform, Mob tamed, Entity entity, LivingEntity owner, double speedModifier, float startDistance, float stopDistance, int interval, ConfigurationSection config) {
+    public MagicFollowOwnerGoal(Platform platform, Mob tamed, Entity entity, double speedModifier, float startDistance, float stopDistance, int interval, ConfigurationSection config) {
         this.platform = platform;
         this.mob = tamed;
         this.entity = entity;
-        this.owner = owner;
         this.level = tamed.level;
         this.speedModifier = speedModifier;
         this.navigation = tamed.getNavigation();
@@ -53,6 +54,20 @@ public class MagicFollowOwnerGoal extends Goal {
     }
 
     public boolean canUse() {
+        if (owner == null) {
+            String ownerId = platform.getEnityMetadataUtils().getString(entity, MagicMetaKeys.OWNER_ID);
+            if (ownerId != null && !ownerId.isEmpty()) {
+                try {
+                    UUID ownerUUID = UUID.fromString(ownerId);
+                    CraftEntity bukkitEntity = (CraftEntity)platform.getCompatibilityUtils().getEntity(ownerUUID);
+                    if (bukkitEntity.getHandle() instanceof LivingEntity) {
+                        owner = (LivingEntity)bukkitEntity.getHandle();
+                    }
+                } catch (Exception ignore) {
+                    // Not going to log this since it'd get really spammy
+                }
+            }
+        }
         if (owner == null || (owner instanceof Player && ((Player)owner).getGameMode() == GameMode.SPECTATOR)) {
             return false;
         }
@@ -81,6 +96,7 @@ public class MagicFollowOwnerGoal extends Goal {
 
     public void stop() {
         this.navigation.stop();
+        this.owner = null;
     }
 
     public void tick() {

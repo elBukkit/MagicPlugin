@@ -268,12 +268,7 @@ public class MobUtils extends MobUtilsBase {
                 }
                 // Intentional fall-through
             case MAGIC_FOLLOW_OWNER:
-                Entity owner = entityData == null ? null : entityData.getOwner();
-                net.minecraft.world.entity.Entity nmsOwner = getNMS(owner);
-                if (nmsOwner != null && nmsOwner instanceof LivingEntity) {
-                    return new MagicFollowOwnerGoal(platform, mob, entity, (LivingEntity)nmsOwner, speed, startDistance, stopDistance, interval, config);
-                }
-                return null;
+                return new MagicFollowOwnerGoal(platform, mob, entity, speed, startDistance, stopDistance, interval, config);
             case FOLLOW_PARENT:
                 if (mob instanceof Animal) {
                     return new FollowParentGoal((Animal)mob, speed);
