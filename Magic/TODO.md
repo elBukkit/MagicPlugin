@@ -39,8 +39,10 @@ Drops:
 
 # Next Up:
 
- - Do jukeboxes not restore their record? Maybe a 1.16 problem?
+ - Do jukeboxes not restore their record? Maybe a 1.16 problem? (no this was from loading)
    > Failed to find 'record' field in jukebox tile entity
+ 
+ - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?  
  
  - Support for: https://www.spigotmc.org/resources/skillapi-continued-custom-classes-skills-and-more-proskillapi.91913/  
 

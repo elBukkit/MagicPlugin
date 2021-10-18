@@ -140,10 +140,18 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
 
         PreparedStatement insert = null;
         try {
-            insert = getConnection().prepareStatement("REPLACE INTO mage (id, data, locked) VALUES (?, ?, ?)");
+            String sql;
+            if (releaseLock) {
+                sql = "REPLACE INTO mage (id, data, locked) VALUES (?, ?, ?)";
+            } else {
+                sql = "REPLACE INTO mage (id, data) VALUES (?, ?)";
+            }
+            insert = getConnection().prepareStatement(sql);
             insert.setString(1, mage.getId());
             insert.setString(2, serialized.saveToString());
-            insert.setInt(3, releaseLock ? 0 : 1);
+            if (releaseLock) {
+                insert.setInt(3, 0);
+            }
             insert.execute();
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error saving player " + mage.getId(), ex);
@@ -151,10 +159,11 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
         } finally {
             close(insert);
         }
-        controller.info("Finished saving data for " + mage.getId() + (releaseLock ? " and released lock " : ""), 10);
+        controller.info("Finished saving data for " + mage.getId() + (releaseLock ? " and released lock " : ""  + " at " + System.currentTimeMillis()), 10);
 
         if (callback != null) {
             callback.run(mage);
+
         }
     }
 
