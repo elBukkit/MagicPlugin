@@ -199,7 +199,17 @@ public class MobUtils extends MobUtilsBase {
         final boolean doors = config.getBoolean("doors", true);
         final boolean interruptable = config.getBoolean("interruptable", true);
         final PathfinderMob pathfinder = mob instanceof PathfinderMob ? (PathfinderMob)mob : null;
-        int interval = config.getInt("interval", 20);
+        EntityData entityData = platform.getController().getMob(entity);
+        int defaultInterval = 1000;
+        if (entityData != null) {
+            long tickInterval = entityData.getTickInterval();
+            if (tickInterval > 0) {
+                defaultInterval = (int)tickInterval;
+            }
+        }
+        int interval = config.getInt("interval", defaultInterval);
+        // Interval is specified in ms, but needed in ticks
+        interval = interval / 50;
         MageController controller = platform.getController();
         Mage mage;
         List<Goal> goals;
