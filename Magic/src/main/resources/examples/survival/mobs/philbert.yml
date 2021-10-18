@@ -1,9 +1,13 @@
 philbert:
-  name: Philbert
   type: creeper
+  ownable: true
   brain:
     goals:
+      - type: follow_owner
+        priority: 1
       - type: tempt
         item: GUNPOWDER
         speed: 2
+        priority: 2
       - type: look_at_player
+        priority: 3

@@ -9,9 +9,16 @@
    - `remove_goals` to remove specific default goals
    - `goals` to add vanilla and custom pathfinding goals
    - `magic_requirement` goal can be used to wrap a vanilla goal in magic requirements
+ - Pets   
+   - Added `ownable` property, allows any mob to be owned via the Tame action
+   - (WIP, will be tameable with items)
+   - TODO: add pets example with pet shop, ownable pets
+ - Add `collidable` flag
  - New `moon` requirement for phase-of-moon logic, simplify `time` requirement   
- - New `scaredy` mob added as an example, a cat that gets scared in the dark
- - Add `collidable` flag, NPCs now always look at players (have ai, don't move, aren't collidable)
+ - Example `scaredy` mob added, a cat that gets scared in the dark
+ - Example `philbert` mob added, a friendly tameable creeper  
+ - Warlocks and Dark Wizards now try to keep their distance  
+ - NPCs now always look at players (have ai, don't move, aren't collidable)
 
 ## Improvements
 

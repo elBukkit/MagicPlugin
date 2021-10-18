@@ -112,6 +112,7 @@ public class EntityData
     protected boolean isRelentless;
     protected boolean transformable = true;
     protected boolean combustible = true;
+    protected boolean ownable = false;
     protected boolean isStatic = false;
     protected boolean preventProjectiles;
     protected boolean preventMelee;
@@ -347,6 +348,7 @@ public class EntityData
         isRelentless = parameters.getBoolean("relentless");
         transformable = parameters.getBoolean("transformable", true);
         combustible = parameters.getBoolean("combustible", true);
+        ownable = parameters.getBoolean("ownable", false);
         preventProjectiles = parameters.getBoolean("prevent_projectiles", false);
         preventMelee = parameters.getBoolean("prevent_melee", false);
         bossBar = BossBarConfiguration.parse(controller, parameters, "$pn");
@@ -1543,6 +1545,11 @@ public class EntityData
     @Override
     public boolean isCombustible() {
         return combustible;
+    }
+
+    @Override
+    public boolean isOwnable() {
+        return ownable;
     }
 
     @Override
