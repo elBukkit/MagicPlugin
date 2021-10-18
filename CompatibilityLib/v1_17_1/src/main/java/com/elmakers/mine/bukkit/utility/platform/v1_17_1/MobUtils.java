@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.TriggerGoal;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.ai.goal.BegGoal;
 import net.minecraft.world.entity.ai.goal.BreakDoorGoal;
@@ -38,7 +39,10 @@ import net.minecraft.world.entity.ai.goal.EatBlockGoal;
 import net.minecraft.world.entity.ai.goal.FleeSunGoal;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
 import net.minecraft.world.entity.ai.goal.FollowBoatGoal;
+import net.minecraft.world.entity.ai.goal.FollowFlockLeaderGoal;
 import net.minecraft.world.entity.ai.goal.FollowMobGoal;
+import net.minecraft.world.entity.ai.goal.FollowOwnerGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.goal.GolemRandomStrollInVillageGoal;
@@ -67,6 +71,7 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
+import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
 import net.minecraft.world.entity.animal.Wolf;
@@ -220,8 +225,23 @@ public class MobUtils extends MobUtilsBase {
             case FOLLOW_BOAT:
                 if (pathfinder == null) return null;
                 return new FollowBoatGoal(pathfinder);
+            case FOLLOW_FLOCK_LEADER:
+                if (mob instanceof AbstractSchoolingFish) {
+                    return new FollowFlockLeaderGoal((AbstractSchoolingFish)mob);
+                }
+                return null;
             case FOLLOW_MOB:
                 return new FollowMobGoal(mob, speed, distance, (float)config.getDouble("area_size", 7));
+            case FOLLOW_OWNER:
+                if (mob instanceof TamableAnimal) {
+                    return new FollowOwnerGoal((TamableAnimal)mob, speed, distance, (float)config.getDouble("area_size", 7), config.getBoolean("fly", false));
+                }
+                return null;
+            case FOLLOW_PARENT:
+                if (mob instanceof Animal) {
+                    return new FollowParentGoal((Animal)mob, speed);
+                }
+                return null;
             case GOLEM_RANDOM_STROLL_IN_VILLAGE:
                 if (pathfinder == null) return null;
                 return new GolemRandomStrollInVillageGoal(pathfinder, speed);
