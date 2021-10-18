@@ -24,11 +24,13 @@ public class CheckInventoryAction extends CheckAction {
     private InventorySlot slot;
     private Collection<Enchantment> allowedEnchantments;
     private Collection<Enchantment> blockedEnchantments;
+    private boolean targetCaster;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        targetCaster = parameters.getBoolean("target_caster", false);
         String itemKey = parameters.getString("item");
         if (itemKey != null && !itemKey.isEmpty()) {
             item = context.getController().createItem(itemKey);
@@ -70,9 +72,14 @@ public class CheckInventoryAction extends CheckAction {
 
     @Override
     protected boolean isAllowed(CastContext context) {
-        Entity targetEntity = context.getTargetEntity();
-        if (targetEntity == null || !(targetEntity instanceof Player)) return false;
-        Mage mage = context.getController().getMage(targetEntity);
+        Mage mage;
+        if (targetCaster) {
+            mage = context.getMage();
+        } else {
+            Entity targetEntity = context.getTargetEntity();
+            if (targetEntity == null || !(targetEntity instanceof Player)) return false;
+            mage = context.getController().getMage(targetEntity);
+        }
         if (slot != null) {
             boolean defaultResult = false;
             int slotNumber = slot.getSlot(mage);
@@ -117,11 +124,11 @@ public class CheckInventoryAction extends CheckAction {
 
     @Override
     public boolean requiresTarget() {
-        return true;
+        return !targetCaster;
     }
 
     @Override
     public boolean requiresTargetEntity() {
-        return true;
+        return !targetCaster;
     }
 }
