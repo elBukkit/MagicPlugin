@@ -972,7 +972,7 @@ public class MagicController implements MageController {
                 mageDataStore.load(id, new MageDataCallback() {
                     @Override
                     public void run(MageData data) {
-                        if (data == null && migrateDataStore != null) {
+                        if (data == null && migrateDataStore != null && lock) {
                             info(" Checking migration data store for mage data for " + id);
                             migrateDataStore.load(id, new MageDataCallback() {
                                 @Override
@@ -984,7 +984,7 @@ public class MagicController implements MageController {
                                     callback.run(data);
                                     info(" Finished Loading mage data for " + id + " from migration store at " + System.currentTimeMillis());
                                 }
-                            });
+                            }, false);
                         } else {
                             callback.run(data);
                             info(" Finished Loading mage data for " + id + " at " + System.currentTimeMillis());
