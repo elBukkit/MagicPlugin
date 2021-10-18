@@ -25,10 +25,24 @@ tamepet:
                       - class: PlayEffects
                         effects: healed
                 fail:
-                  # TODO:
-                  - class: Message
-                    message: "Sitting"
-                    message_target: false
+                  - class: CheckEntity
+                    stay: true
+                    actions:
+                      - class: ModifyEntity
+                        stay: false
+                        sitting: false
+                        # Don't give them the item from parameters
+                        item: ""
+                      - class: PlayEffects
+                        effects: go
+                    fail:
+                      - class: ModifyEntity
+                        stay: true
+                        sitting: true
+                        # Don't give them the item from parameters
+                        item: ""
+                      - class: PlayEffects
+                        effects: stay
         # This is not owned, try to own it
         fail:
           - class: CheckInventory
@@ -60,6 +74,20 @@ tamepet:
         effectlib:
           class: LoveEffect
           duration: 2 seconds
+    stay:
+      - location: target
+        sound: entity_cat_ambient
+        sound_pitch: 0.2
+        sound_volume: 0.8
+        particle: flame
+    go:
+      - location: target
+        sound: entity_cat_ambient
+        sound_pitch: 0.2
+        sound_volume: 0.8
+        effectlib:
+          class: LoveEffect
+          duration: 1 seconds
     no_target:
       - location: target
         sound: block_note_block_bass

@@ -12,6 +12,7 @@ import org.bukkit.entity.EntityType;
 
 import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -22,6 +23,7 @@ public class CheckEntityAction extends CheckAction {
     private Boolean owned;
     private Boolean onFire;
     private Boolean onGround;
+    private Boolean stay;
     private Set<EntityType> allowedTypes;
     private Set<EntityType> deniedTypes;
     private List<Class<? extends Entity>> allowedClasses;
@@ -41,6 +43,7 @@ public class CheckEntityAction extends CheckAction {
         }
         owner = ConfigurationUtils.getOptionalBoolean(parameters, "owner");
         owned = ConfigurationUtils.getOptionalBoolean(parameters, "owned");
+        stay = ConfigurationUtils.getOptionalBoolean(parameters, "stay");
 
         if (parameters.contains("allowed_entities")) {
             List<String> keys = ConfigurationUtils.getStringList(parameters, "allowed_entities");
@@ -114,6 +117,9 @@ public class CheckEntityAction extends CheckAction {
             return false;
         }
         if (onlyCaster && !isCaster) {
+            return false;
+        }
+        if (stay != null && !CompatibilityLib.getEntityMetadataUtils().getBoolean(targetEntity, MagicMetaKeys.STAY)) {
             return false;
         }
         if (owner != null || owned != null) {

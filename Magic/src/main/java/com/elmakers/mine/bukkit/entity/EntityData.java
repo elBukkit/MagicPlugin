@@ -123,7 +123,7 @@ public class EntityData
     protected boolean preventDismount;
     protected boolean preventTeleport;
     protected boolean equipOnRespawn = true;
-    protected boolean stay = false;
+    protected Boolean stay;
     protected Boolean invisible;
     protected Boolean persistentInvisible;
     protected Boolean persist;
@@ -398,7 +398,7 @@ public class EntityData
         canPickupItems = ConfigUtils.getOptionalBoolean(parameters, "can_pickup_items");
 
         isSuperProtected = parameters.getBoolean("protected", false);
-        stay = parameters.getBoolean("stay", false);
+        stay = ConfigUtils.getOptionalBoolean(parameters, "stay");
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -693,7 +693,7 @@ public class EntityData
         }
         if (spawned != null) {
             try {
-                modifyPreSpawn(spawned, true);
+                modifyPreSpawn(spawned, true, true);
                 if (!addedToWorld) {
                     isSpawning = true;
                     reason = reason == null ? CreatureSpawnEvent.SpawnReason.CUSTOM : reason;
@@ -834,15 +834,15 @@ public class EntityData
         if (register && !(entity instanceof Player)) {
             controller.registerMob(entity, this);
         }
-        boolean modifiedPre = modifyPreSpawn(entity, false);
+        boolean modifiedPre = modifyPreSpawn(entity, false, false);
         boolean modifiedPost = modifyPostSpawn(entity);
         return modifiedPre || modifiedPost;
     }
 
-    private boolean modifyPreSpawn(Entity entity, boolean isFirstSpawn) {
+    private boolean modifyPreSpawn(Entity entity, boolean isFirstSpawn, boolean register) {
         if (entity == null || (type != null && entity.getType() != type)) return false;
 
-        if (!(entity instanceof Player)) {
+        if (!(entity instanceof Player) && register) {
             controller.registerMob(entity, this);
         }
         boolean isPlayer = (entity instanceof Player);
@@ -882,8 +882,8 @@ public class EntityData
         if (isSitting != null) {
             CompatibilityLib.getCompatibilityUtils().setSitting(entity, isSitting);
         }
-        if (stay) {
-            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.STAY, true);
+        if (stay != null) {
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.STAY, stay);
         }
         if (isInvulnerable != null) CompatibilityLib.getCompatibilityUtils().setInvulnerable(entity, isInvulnerable);
 
