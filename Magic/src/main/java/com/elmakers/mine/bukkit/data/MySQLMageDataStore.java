@@ -24,10 +24,17 @@ public class MySQLMageDataStore extends SQLMageDataStore {
         connectionString = "jdbc:mysql://" + host + ":" + port + "/" + database + "?useSSL=false&useUnicode=true&characterEncoding=utf-8&autoReconnect=true";
         controller.info("Using mysql connection for player data: " + connectionString, 10);
 
+        // Try to load more current driver first
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-        } catch (ClassNotFoundException e) {
-            controller.getLogger().severe("MySQL library not found! " + e.getMessage());
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            controller.info("Using new mysql driver", 10);
+        } catch (Exception ex) {
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+                controller.info("Using legacy mysql driver", 10);
+            } catch (ClassNotFoundException e) {
+                controller.getLogger().severe("MySQL library not found! " + e.getMessage());
+            }
         }
     }
 
