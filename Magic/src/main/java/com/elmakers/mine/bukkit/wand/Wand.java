@@ -173,6 +173,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean quickCastDisabled = false;
     private boolean manualQuickCastDisabled = false;
     private boolean isInOffhand = false;
+    private boolean allowOffhand = false;
     private boolean hasId = false;
     private boolean showCycleModeLore = true;
     private boolean alwaysUseActiveName = false;
@@ -2352,6 +2353,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         brushMode = parseWandMode(getString("brush_mode"), controller.getDefaultBrushMode());
+        allowOffhand = getBoolean("allow_offhand", true);
 
         // Backwards compatibility
         if (getBoolean("mode_drop", false)) {
@@ -5672,6 +5674,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public boolean activate(Mage mage, boolean offhand) {
         if (mage == null) return false;
+        if (offhand && !allowOffhand) return false;
         mage.sendDebugMessage(ChatColor.YELLOW + "   Activating wand", 50);
         Player player = mage.getPlayer();
         if (player == null) return false;
@@ -7315,5 +7318,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
         ConfigurationUtils.overlayConfigurations(setBonusConfiguration, bonusConfig);
         return true;
+    }
+
+    public boolean allowOffhand() {
+        return allowOffhand;
     }
 }

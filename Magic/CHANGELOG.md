@@ -44,6 +44,7 @@
  - Add zAuctionHouse support, bound wands can't be auctioned
  - Add `placeholders` option to wands, for making custom placeholders that can be used in custom lore
  - Add `potion_effects` messages section for customizing potion effect names in wand lore
+ - Add `allow_offhand` wand flag, to prevent specific wands from working in the offhand
 
 ## Changes
 
