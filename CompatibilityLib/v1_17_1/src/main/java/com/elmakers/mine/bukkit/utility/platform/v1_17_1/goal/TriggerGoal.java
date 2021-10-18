@@ -16,6 +16,7 @@ public class TriggerGoal extends MagicGoal {
         super(goals, interruptable);
         this.mage = mage;
         this.interval = interval * 50;
+        this.lastTrigger = System.currentTimeMillis();
         this.trigger = trigger;
     }
 
