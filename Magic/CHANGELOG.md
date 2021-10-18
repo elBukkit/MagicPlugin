@@ -13,7 +13,8 @@
    - Added `ownable` property, allows any mob to be owned via the Tame action
    - (WIP, will be tameable with items)
    - TODO: add pets example with pet shop, ownable pets
- - Add `collidable` flag
+ - Add `collidable` flag to mobs
+ - Add `owner` and `owned` flags to `CheckEntity`, for specific behaviors for owned mobs  
  - New `moon` requirement for phase-of-moon logic, simplify `time` requirement   
  - Example `scaredy` mob added, a cat that gets scared in the dark
  - Example `philbert` mob added, a friendly tameable creeper  

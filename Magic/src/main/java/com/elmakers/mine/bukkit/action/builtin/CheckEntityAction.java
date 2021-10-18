@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -11,11 +12,14 @@ import org.bukkit.entity.EntityType;
 
 import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class CheckEntityAction extends CheckAction {
     private boolean allowCaster;
     private boolean onlyCaster;
+    private Boolean owner;
+    private Boolean owned;
     private Boolean onFire;
     private Boolean onGround;
     private Set<EntityType> allowedTypes;
@@ -35,6 +39,8 @@ public class CheckEntityAction extends CheckAction {
         if (parameters.contains("on_ground")) {
             onGround = parameters.getBoolean("on_ground");
         }
+        owner = ConfigurationUtils.getOptionalBoolean(parameters, "owner");
+        owned = ConfigurationUtils.getOptionalBoolean(parameters, "owned");
 
         if (parameters.contains("allowed_entities")) {
             List<String> keys = ConfigurationUtils.getStringList(parameters, "allowed_entities");
@@ -109,6 +115,16 @@ public class CheckEntityAction extends CheckAction {
         }
         if (onlyCaster && !isCaster) {
             return false;
+        }
+        if (owner != null || owned != null) {
+            UUID ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(targetEntity);
+            if (ownerId == null) {
+                if (owner != null) return !owner;
+                return !owned;
+            }
+            if (owner != null && !ownerId.equals(context.getMage().getEntity().getUniqueId())) {
+                return !owner;
+            }
         }
         if (onGround != null && onGround != targetEntity.isOnGround()) {
             return false;
