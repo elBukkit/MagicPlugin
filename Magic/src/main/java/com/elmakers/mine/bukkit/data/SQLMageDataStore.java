@@ -185,6 +185,11 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
         }
     }
 
+    @Override
+    public void obtainLock(MageData mage) {
+        obtainLock(mage.getId());
+    }
+
     protected void obtainLock(String id) {
         synchronized (lockingLock) {
             boolean hasLock = false;

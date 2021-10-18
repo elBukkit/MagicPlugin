@@ -54,6 +54,11 @@ public interface MageDataStore {
     void releaseLock(MageData mage);
 
     /**
+     * Force-obtain a lock for a mage
+     */
+    default void obtainLock(MageData mage) {}
+
+    /**
      * Remove all data for a single mage
      */
     void delete(String id);

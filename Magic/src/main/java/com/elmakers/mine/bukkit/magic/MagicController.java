@@ -902,6 +902,19 @@ public class MagicController implements MageController {
         });
     }
 
+    public void onLoginFailed(Player player) {
+        String id = mageIdentifier.fromEntity(player);
+        if (mageDataPreCache.remove(id) != null) {
+            info("Removed pre-login mage data cache for id " + id + " due to failed login");
+        }
+    }
+    public void onPreLoginFailed(AsyncPlayerPreLoginEvent event) {
+        String id = mageIdentifier.fromPreLogin(event);
+        if (mageDataPreCache.remove(id) != null) {
+            info("Removed pre-login mage data cache for id " + id + " due to failed pre-login");
+        }
+    }
+
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
         String id = mageIdentifier.fromPreLogin(event);
         Iterator<Map.Entry<String, MageData>> it = mageDataPreCache.entrySet().iterator();
@@ -923,19 +936,29 @@ public class MagicController implements MageController {
                     mageDataPreCache.put(id, data);
                 }
             }
-        });
+        }, true);
     }
 
     public void onPlayerJoin(com.elmakers.mine.bukkit.magic.Mage mage) {
         worldController.onPlayerJoin(mage);
     }
 
+
     private void getMageData(String id, MageDataCallback callback) {
+        getMageData(id, callback, false);
+    }
+
+    private void getMageData(String id, MageDataCallback callback, boolean releaseLock) {
         synchronized (saveLock) {
             MageData cached = mageDataPreCache.get(id);
             if (cached != null) {
-                info("Loaded preloaded mage data from cache for id " + id);
                 mageDataPreCache.remove(id);
+                String extraMessage = "";
+                if (!releaseLock) {
+                    extraMessage = " and obtained lock";
+                    mageDataStore.obtainLock(cached);
+                }
+                info("Loaded preloaded mage data from cache for id " + id + extraMessage);
                 callback.run(cached);
                 return;
             }
@@ -962,7 +985,12 @@ public class MagicController implements MageController {
                             });
                         } else {
                             callback.run(data);
-                            info(" Finished Loading mage data for " + id + " at " + System.currentTimeMillis());
+                            String extraMessage = "";
+                            if (releaseLock) {
+                                mageDataStore.releaseLock(data);
+                                extraMessage = " and released lock";
+                            }
+                            info(" Finished Loading mage data for " + id + " at " + System.currentTimeMillis() + extraMessage);
                         }
                     }
                 });

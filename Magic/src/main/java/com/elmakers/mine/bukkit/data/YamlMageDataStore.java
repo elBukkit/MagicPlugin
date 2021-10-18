@@ -71,6 +71,12 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         }
     }
 
+
+    @Override
+    public void obtainLock(MageData mage) {
+        obtainLock(mage.getId());
+    }
+
     protected void obtainLock(String id) {
         if (controller.isFileLockingEnabled()) {
             synchronized (locks) {
