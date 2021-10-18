@@ -18,13 +18,11 @@ warlock:
     goals:
       - type: trigger
         trigger: flee
-        interval: 1000
         goals:
           - type: avoid_entity
             distance: 4
       - type: trigger
         trigger: attack
-        interval: 2000
         priority: 1
         goals:
           - type: look_at_player
