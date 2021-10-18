@@ -529,4 +529,6 @@ public interface CompatibilityUtils {
 
     @Nonnull
     FallingBlock spawnFallingBlock(Location location, Material material, String blockData);
+
+    UUID getOwnerId(Entity entity);
 }

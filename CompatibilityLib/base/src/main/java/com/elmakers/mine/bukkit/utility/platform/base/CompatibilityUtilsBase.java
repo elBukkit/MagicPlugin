@@ -38,6 +38,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.ComplexEntityPart;
@@ -66,6 +67,7 @@ import org.bukkit.util.Vector;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.ChatUtils;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
@@ -1059,5 +1061,24 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         BoundingBox translated = new BoundingBox(block.getLocation().toVector(), BLOCK_BOUNDING_BOX);
         blockBoundingBoxes.set(0, translated);
         return blockBoundingBoxes;
+    }
+
+    @Override
+    public UUID getOwnerId(Entity entity) {
+        String ownerIdString = platform.getEnityMetadataUtils().getString(entity, MagicMetaKeys.OWNER_ID);
+        if (ownerIdString != null && !ownerIdString.isEmpty()) {
+            try {
+                return UUID.fromString(ownerIdString);
+            } catch (Exception ex) {
+                platform.getLogger().warning("Error parsing owner id from: " + ownerIdString);
+            }
+        }
+
+        if (entity instanceof Tameable) {
+            Tameable tamed = (Tameable)entity;
+            AnimalTamer tamer = tamed.getOwner();
+            return tamer.getUniqueId();
+        }
+        return null;
     }
 }

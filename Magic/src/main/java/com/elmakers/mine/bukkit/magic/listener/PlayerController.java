@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
@@ -13,13 +14,11 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.Tameable;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -522,12 +521,8 @@ public class PlayerController implements Listener {
         }
         boolean requiresOwner = mob.getInteractRequiresOwner();
         if (requiresOwner) {
-            if (!(entity instanceof Tameable)) {
-                return;
-            }
-            Tameable tamed = (Tameable)entity;
-            AnimalTamer tamer = tamed.getOwner();
-            if (!tamer.getUniqueId().equals(player.getUniqueId())) {
+            UUID ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(entity);
+            if (ownerId == null || !ownerId.equals(player.getUniqueId())) {
                 return;
             }
         }
