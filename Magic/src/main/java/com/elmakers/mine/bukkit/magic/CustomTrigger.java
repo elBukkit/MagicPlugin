@@ -115,9 +115,9 @@ public class CustomTrigger extends Trigger {
         }
     }
 
-    private void cast(Mage mage, String castSpell, ConfigurationSection parameters) {
+    protected boolean cast(Mage mage, String castSpell, ConfigurationSection parameters) {
         if (castSpell.isEmpty() || castSpell.equalsIgnoreCase("none")) {
-            return;
+            return false;
         }
 
         if (parameters != null) {
@@ -136,7 +136,7 @@ public class CustomTrigger extends Trigger {
         spell = mage.getSpell(castSpell);
         if (spell == null) {
             mage.getController().getLogger().warning("Unknown spell in trigger: " + castSpell + " from " + mage.getName());
-            return;
+            return false;
         }
 
         double bowpull = mage.getLastBowPull();
@@ -146,7 +146,7 @@ public class CustomTrigger extends Trigger {
             }
             parameters.set("bowpull", Double.toString(bowpull));
         }
-        spell.cast(parameters);
+        return spell.cast(parameters);
     }
 
     public boolean cancel(Mage mage) {
