@@ -124,16 +124,21 @@ public class MobUtils extends MobUtilsBase {
             return false;
         }
         // TODO: Is there a cleaner way?
-        Goal targetGoal = getGoal(goalType, entity, mob, new MemoryConfiguration());
-        Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
-        List<Goal> found = new ArrayList<>();
-        for (WrappedGoal wrappedGoal : available) {
-            if (targetGoal.getClass().isAssignableFrom(wrappedGoal.getGoal().getClass())) {
-                found.add(wrappedGoal.getGoal());
+        try {
+            Goal targetGoal = getGoal(goalType, entity, mob, new MemoryConfiguration());
+            Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
+            List<Goal> found = new ArrayList<>();
+            for (WrappedGoal wrappedGoal : available) {
+                if (targetGoal.getClass().isAssignableFrom(wrappedGoal.getGoal().getClass())) {
+                    found.add(wrappedGoal.getGoal());
+                }
             }
-        }
-        for (Goal removeGoal : found) {
-            mob.goalSelector.removeGoal(removeGoal);
+            for (Goal removeGoal : found) {
+                mob.goalSelector.removeGoal(removeGoal);
+            }
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error removing goal: " + goalType + " from " + entity.getType(), ex);
+            return false;
         }
         return true;
     }
@@ -182,12 +187,17 @@ public class MobUtils extends MobUtilsBase {
             return false;
         }
         GoalSelector goals = mob.goalSelector;
-        Goal goal = getGoal(goalType, entity, mob, config);
-        if (goal == null) {
+        try {
+            Goal goal = getGoal(goalType, entity, mob, config);
+            if (goal == null) {
+                return false;
+            }
+            int priority = config.getInt("priority", 0);
+            goals.addGoal(priority, goal);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Error creating goal: " + goalType + " on " + entity.getType(), ex);
             return false;
         }
-        int priority = config.getInt("priority", 0);
-        goals.addGoal(priority, goal);
         return true;
     }
 
@@ -388,9 +398,13 @@ public class MobUtils extends MobUtilsBase {
         if (goalConfigurations != null) {
             Collections.sort(goalConfigurations);
             for (GoalConfiguration goalConfig : goalConfigurations) {
-                Goal goal = getGoal(goalConfig.getGoalType(), entity, mob, goalConfig.getConfiguration());
-                if (goal != null) {
-                    goals.add(goal);
+                try {
+                    Goal goal = getGoal(goalConfig.getGoalType(), entity, mob, goalConfig.getConfiguration());
+                    if (goal != null) {
+                        goals.add(goal);
+                    }
+                } catch (Exception ex) {
+                    platform.getLogger().log(Level.WARNING, "Error creating goal: " + goalConfig.getGoalType() + " on mob " + entity.getType(), ex);
                 }
             }
         }
