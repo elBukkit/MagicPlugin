@@ -837,7 +837,9 @@ public class MagicController implements MageController {
             final com.elmakers.mine.bukkit.magic.Mage mage = new com.elmakers.mine.bukkit.magic.Mage(mageId, this);
 
             mages.put(mageId, mage);
-            info("Registered mage " + mageId, 10);
+            if (entity instanceof Player) {
+                info("Registered player " + mageId, 10);
+            }
             mage.setName(mageName);
             mage.setCommandSender(commandSender);
             mage.setEntity(entity);
@@ -4016,7 +4018,9 @@ public class MagicController implements MageController {
     public void removeMage(String id) {
         Mage mage = mages.remove(id);
         if (mage != null) {
-            info("Unregistered mage " + id, 10);
+            if (mage.isPlayer()) {
+                info("Unregistered player " + id, 10);
+            }
             mage.removed();
         }
     }
