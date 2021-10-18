@@ -612,7 +612,8 @@ public class MagicController implements MageController {
     public MagicController(final Plugin plugin) {
         this.plugin = plugin;
         this.logger = new MagicLogger(plugin, plugin.getLogger());
-        this.materialSetManager.setLogger(logger);
+        // This is very spammy
+        // this.materialSetManager.setLogger(logger);
         resourcePacks = new ResourcePackManager(this);
 
         configFolder = plugin.getDataFolder();
