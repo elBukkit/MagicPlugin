@@ -24,6 +24,7 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
+import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -81,6 +82,7 @@ public class EntityData
     protected Double mythicMobLevel;
     protected WeakReference<Entity> entity = null;
     protected UUID uuid = null;
+    protected UUID ownerId = null;
 
     protected EntityType type;
     protected EntityExtraData extraData;
@@ -238,6 +240,9 @@ public class EntityData
             this.isBaby = !ageable.isAdult();
         }
 
+        String ownerIdString = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.OWNER_ID);
+        setOwnerId(ownerIdString);
+
         // TODO: Extra data class for this?
         if (entity instanceof ExperienceOrb) {
             xp = ((ExperienceOrb)entity).getExperience();
@@ -367,6 +372,7 @@ public class EntityData
         if (removeMountKeys != null && !removeMountKeys.isEmpty()) {
             removeMounts = new HashSet<>(removeMountKeys);
         }
+        setOwnerId(parameters.getString("owner"));
 
         disguise = ConfigurationUtils.getConfigurationSection(parameters, "disguise");
         model = ConfigurationUtils.getConfigurationSection(parameters, "model");
@@ -551,6 +557,18 @@ public class EntityData
         EntityMageData mageData = new EntityMageData(controller, parameters);
         if (!mageData.isEmpty()) {
             this.mageData = mageData;
+        }
+    }
+
+    private void setOwnerId(String ownerIdString) {
+        if (ownerIdString != null && !ownerIdString.isEmpty()) {
+            try {
+                ownerId = UUID.fromString(ownerIdString);
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid owner id: " + ownerIdString);
+            }
+        } else {
+            ownerId = null;
         }
     }
 
@@ -1060,6 +1078,16 @@ public class EntityData
         if (invisible != null) {
             CompatibilityLib.getCompatibilityUtils().setInvisible(entity, invisible);
         }
+        if (this.ownerId != null) {
+            CompatibilityLib.getEntityMetadataUtils().setString(entity, MagicMetaKeys.OWNER_ID, this.ownerId.toString());
+        }
+        if (entity instanceof Tameable) {
+            Entity owner = ownerId != null ? CompatibilityLib.getCompatibilityUtils().getEntity(ownerId) : null;
+            if (owner != null && owner instanceof AnimalTamer) {
+                Tameable tameable = (Tameable)entity;
+                tameable.setOwner((AnimalTamer)owner);
+            }
+        }
         if (extraData != null) {
             extraData.applyPostSpawn(entity);
         }
@@ -1466,6 +1494,14 @@ public class EntityData
     @Override
     public boolean isDocile() {
         return isDocile;
+    }
+
+    @Override
+    public Entity getOwner() {
+        if (ownerId == null) {
+            return null;
+        }
+        return CompatibilityLib.getCompatibilityUtils().getEntity(ownerId);
     }
 
     @Override

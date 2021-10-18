@@ -231,10 +231,17 @@ superfox:
   type: fox
   name: "&2Foxy"
   fox_type: snow
-  trusted: 892bba3e-76c1-4cd4-97cb-bfa8221e2332
+  # TBW
+  # trusted: 892bba3e-76c1-4cd4-97cb-bfa8221e2332
+  trusted: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  owner: 4cb358ae-719c-4423-93c7-8769ce46e9c3
   health: 10000
   persist: true
   baby: true
+  brain:
+    goals:
+      - follow_owner
+      - look_at_player
   disguise:
     type: fox
     baby: true

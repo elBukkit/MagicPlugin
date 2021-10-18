@@ -120,4 +120,5 @@ public interface EntityData extends Cloneable {
     void attach(@Nonnull MageController controller, @Nonnull Entity entity);
     @Nonnull
     EntityData clone();
+    Entity getOwner();
 }
