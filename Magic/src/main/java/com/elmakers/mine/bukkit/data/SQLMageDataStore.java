@@ -239,9 +239,55 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
         }
     }
 
+    protected boolean isLocked(String id) {
+        boolean isLocked = false;
+        synchronized (lockingLock) {
+            long start = System.currentTimeMillis();
+            controller.info("Checking lock for player " + id + " at " + start, 10);
+
+            PreparedStatement lockLookup = null;
+            PreparedStatement lock = null;
+            ResultSet results = null;
+            try {
+                lockLookup = getConnection().prepareStatement("SELECT locked FROM mage WHERE id = ?");
+                lockLookup.setString(1, id);
+                results = lockLookup.executeQuery();
+                if (results.next()) {
+                    isLocked = results.getBoolean(1);
+                } else {
+                    isLocked = false;
+                }
+                close(results);
+                results = null;
+            } catch (Exception ex) {
+                controller.info("Could not check lock for mage " + id);
+                close();
+            } finally {
+                close(lockLookup);
+                close(results);
+                close(lock);
+            }
+        }
+        return isLocked;
+    }
+
     @Override
+    @Deprecated
     public void load(String id, MageDataCallback callback) {
-        obtainLock(id);
+        load(id, callback, true);
+    }
+
+    @Override
+    public void load(String id, MageDataCallback callback, boolean lock) {
+        if (lock) {
+            obtainLock(id);
+        } else if (isLocked(id)) {
+            controller.info("Skipping locked data preload", 10);
+            if (callback != null) {
+                callback.run(null);
+            }
+            return;
+        }
         MageData data = null;
 
         PreparedStatement loadQuery = null;

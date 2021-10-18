@@ -938,7 +938,7 @@ public class MagicController implements MageController {
                     mageDataPreCache.put(id, data);
                 }
             }
-        }, true);
+        }, false);
     }
 
     public void onPlayerJoin(com.elmakers.mine.bukkit.magic.Mage mage) {
@@ -947,16 +947,16 @@ public class MagicController implements MageController {
 
 
     private void getMageData(String id, MageDataCallback callback) {
-        getMageData(id, callback, false);
+        getMageData(id, callback, true);
     }
 
-    private void getMageData(String id, MageDataCallback callback, boolean releaseLock) {
+    private void getMageData(String id, MageDataCallback callback, boolean lock) {
         synchronized (saveLock) {
             MageData cached = mageDataPreCache.get(id);
             if (cached != null) {
                 mageDataPreCache.remove(id);
                 String extraMessage = "";
-                if (!releaseLock) {
+                if (lock) {
                     extraMessage = " and obtained lock";
                     mageDataStore.obtainLock(cached);
                 }
@@ -987,15 +987,10 @@ public class MagicController implements MageController {
                             });
                         } else {
                             callback.run(data);
-                            String extraMessage = "";
-                            if (releaseLock) {
-                                mageDataStore.releaseLock(data);
-                                extraMessage = " and released lock";
-                            }
-                            info(" Finished Loading mage data for " + id + " at " + System.currentTimeMillis() + extraMessage);
+                            info(" Finished Loading mage data for " + id + " at " + System.currentTimeMillis());
                         }
                     }
-                });
+                }, lock);
             } catch (Exception ex) {
                 getLogger().warning("Failed to load mage data for " + id);
                 ex.printStackTrace();

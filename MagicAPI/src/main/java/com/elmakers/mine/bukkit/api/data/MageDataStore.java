@@ -46,7 +46,19 @@ public interface MageDataStore {
      *
      * <p>If the provided callback is non-null, it should be called on completion.
      */
+    @Deprecated
     void load(String id, MageDataCallback callback);
+
+    /**
+     * Load a single mage by id.
+     *
+     * <p>If there is no data for this mage, a new empty record should be returned.
+     *
+     * <p>If the provided callback is non-null, it should be called on completion.
+     */
+    default void load(String id, MageDataCallback callback, boolean lock) {
+        load(id, callback);
+    }
 
     /**
      * Force-release a lock for a mage

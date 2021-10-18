@@ -38,6 +38,7 @@
  - Fix issues with spell inventories and EliteMobs loot showers
  - Force-deactivate all players on server shutdown (prior to logout), for MDB compatibility issues
  - The Freeze action now uses a separate `snowable` material list to prevent changing ice to snow
+ - Fixes and improvements to mysql data storage, particularly in a multi-server setup
 
 ## Additions
  

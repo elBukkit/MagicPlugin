@@ -71,7 +71,6 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         }
     }
 
-
     @Override
     public void obtainLock(MageData mage) {
         obtainLock(mage.getId());
@@ -97,9 +96,32 @@ public class YamlMageDataStore extends ConfigurationMageDataStore {
         }
     }
 
+    protected boolean isLocked(String id) {
+        boolean locked = false;
+        if (controller.isFileLockingEnabled()) {
+            synchronized (locks) {
+                locked = locks.containsKey(id);
+            }
+        }
+        return locked;
+    }
+
     @Override
+    @Deprecated
     public void load(String id, MageDataCallback callback) {
-        obtainLock(id);
+        load(id, callback, true);
+    }
+
+    @Override
+    public void load(String id, MageDataCallback callback, boolean lock) {
+        if (lock) {
+            obtainLock(id);
+        } else if (isLocked(id)) {
+            if (callback != null) {
+                callback.run(null);
+            }
+            return;
+        }
 
         final File playerFile = new File(playerDataFolder, id + ".dat");
         if (!playerFile.exists()) {
