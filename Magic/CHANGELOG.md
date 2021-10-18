@@ -38,6 +38,10 @@
  - Add `placeholders` option to wands, for making custom placeholders that can be used in custom lore
  - Add `potion_effects` messages section for customizing potion effect names in wand lore
 
+## Changes
+
+ - Mob spawners are indestructible to spells
+
 ## Balance Changes
 
  - Nerf Blast damage

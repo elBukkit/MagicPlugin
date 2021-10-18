@@ -10,4 +10,5 @@ indestructible:
 - pistons
 - containers
 - commands
-
+- spawner
+- mob_spawner
