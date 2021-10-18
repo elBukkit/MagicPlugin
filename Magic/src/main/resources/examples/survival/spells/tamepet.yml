@@ -1,0 +1,75 @@
+tamepet:
+  actions:
+    cast:
+      - class: CheckEntity
+        owned: true
+        # If this is owned, see if we are the owner
+        actions:
+          - class: CheckEntity
+            owner: true
+            # If we are the owner, check if we're holding the food item
+            actions:
+              - class: CheckInventory
+                target_caster: true
+                slot: main_hand
+                ignore_result: true
+                actions:
+                  # See if we can heal our friend
+                  - class: CheckHealth
+                    full_health: true
+                    invert: true
+                    actions:
+                      - class: TakeCosts
+                        item_cost: true
+                      - class: Heal
+                      - class: PlayEffects
+                        effects: healed
+                fail:
+                  # TODO:
+                  - class: Message
+                    message: "Sitting"
+                    message_target: false
+        # This is not owned, try to own it
+        fail:
+          - class: CheckInventory
+            target_caster: true
+            slot: main_hand
+            ignore_result: true
+            actions:
+              - class: TakeCosts
+                item_cost: true
+              - class: Probability
+                actions:
+                  - class: Tame
+                  - class: PlayEffects
+                    effects: tamed
+  effects:
+    tamed:
+      - location: target
+        sound: entity_cat_ambient
+        sound_pitch: 0.2
+        sound_volume: 0.8
+        effectlib:
+          class: LoveEffect
+          duration: 3 seconds
+    healed:
+      - location: target
+        sound: entity_cat_ambient
+        sound_pitch: 0.2
+        sound_volume: 0.8
+        effectlib:
+          class: LoveEffect
+          duration: 2 seconds
+    no_target:
+      - location: target
+        sound: block_note_block_bass
+        sound_pitch: 1.5
+        sound_volume: 0.75
+        particle: smoke_normal
+    no_action: no_target
+  parameters:
+    target: none
+    item: wheat
+    probability: 0.2
+    # For healing
+    amount: 2

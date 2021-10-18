@@ -1,13 +1,18 @@
 philbert:
   type: creeper
   ownable: true
+  interact_spell: tamepet
+  interact_spell_source: player
+  interact_spell_target: mob
+  interact_spell_parameters:
+    item: gunpowder
   brain:
     goals:
       - type: follow_owner
         priority: 1
       - type: tempt
-        item: GUNPOWDER
-        speed: 2
+        item: gunpowder
+        speed: 1.1
         priority: 2
       - type: look_at_player
         priority: 3
