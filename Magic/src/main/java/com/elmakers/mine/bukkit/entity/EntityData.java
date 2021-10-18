@@ -398,7 +398,7 @@ public class EntityData
         canPickupItems = ConfigUtils.getOptionalBoolean(parameters, "can_pickup_items");
 
         isSuperProtected = parameters.getBoolean("protected", false);
-        stay = ConfigUtils.getBoolean(parameters, "stay", false);
+        stay = parameters.getBoolean("stay", false);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
