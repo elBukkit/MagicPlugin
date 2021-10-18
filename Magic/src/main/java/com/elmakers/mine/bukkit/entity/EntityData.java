@@ -122,6 +122,7 @@ public class EntityData
     protected boolean preventDismount;
     protected boolean preventTeleport;
     protected boolean equipOnRespawn = true;
+    protected boolean stay = false;
     protected Boolean invisible;
     protected Boolean persistentInvisible;
     protected Boolean persist;
@@ -231,6 +232,7 @@ public class EntityData
             isTamed = ((Tameable)entity).isTamed();
         }
         isSitting = CompatibilityLib.getCompatibilityUtils().isSitting(entity);
+        stay = CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.STAY);
         isInvulnerable = CompatibilityLib.getCompatibilityUtils().isInvulnerable(entity);
         mythicMobKey = controller.getMythicMobKey(entity);
         mythicMobLevel = controller.getMythicMobLevel(entity);
@@ -394,6 +396,7 @@ public class EntityData
         canPickupItems = ConfigUtils.getOptionalBoolean(parameters, "can_pickup_items");
 
         isSuperProtected = parameters.getBoolean("protected", false);
+        stay = ConfigUtils.getBoolean(parameters, "stay", false);
 
         potionEffects = ConfigurationUtils.getPotionEffectObjects(parameters, "potion_effects", controller.getLogger());
         hasPotionEffects = potionEffects != null && !potionEffects.isEmpty();
@@ -874,7 +877,12 @@ public class EntityData
         if (entity instanceof Tameable && isTamed != null) {
             ((Tameable)entity).setTamed(isTamed);
         }
-        if (isSitting != null) CompatibilityLib.getCompatibilityUtils().setSitting(entity, isSitting);
+        if (isSitting != null) {
+            CompatibilityLib.getCompatibilityUtils().setSitting(entity, isSitting);
+        }
+        if (stay) {
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.STAY, true);
+        }
         if (isInvulnerable != null) CompatibilityLib.getCompatibilityUtils().setInvulnerable(entity, isInvulnerable);
 
         if (tags != null && !tags.isEmpty()) {
@@ -1372,6 +1380,7 @@ public class EntityData
         return key;
     }
 
+    @Override
     public long getTickInterval() {
         return mageData == null ? 0 : mageData.tickInterval;
     }

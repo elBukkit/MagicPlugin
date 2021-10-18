@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BooleanSupplier;
+import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -23,8 +24,8 @@ import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.IdleGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicFollowOwnerGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicGoal;
-import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.Pet;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.RequirementsGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.TriggerGoal;
 
@@ -208,6 +209,8 @@ public class MobUtils extends MobUtilsBase {
         final float distance = (float)config.getDouble("distance", 16);
         final boolean doors = config.getBoolean("doors", true);
         final boolean interruptable = config.getBoolean("interruptable", true);
+        final float startDistance = (float)config.getDouble("start_distance", 5);
+        final float stopDistance = (float)config.getDouble("stop_distance", 1);
         final PathfinderMob pathfinder = mob instanceof PathfinderMob ? (PathfinderMob)mob : null;
         EntityData entityData = platform.getController().getMob(entity);
         int defaultInterval = 1000;
@@ -261,16 +264,14 @@ public class MobUtils extends MobUtilsBase {
                 return new FollowMobGoal(mob, speed, distance, (float)config.getDouble("area_size", 7));
             case FOLLOW_OWNER:
                 if (mob instanceof TamableAnimal) {
-                    return new FollowOwnerGoal((TamableAnimal)mob, speed, distance, (float)config.getDouble("area_size", 7), config.getBoolean("fly", false));
-                } else {
-                    EntityData entityData = platform.getController().getMob(entity);
-                    Entity owner = entityData == null ? null : entityData.getOwner();
-                    net.minecraft.world.entity.Entity nmsOwner = getNMS(owner);
-                    if (nmsOwner != null && nmsOwner instanceof LivingEntity) {
-                        // TODO: cache these somewhere?
-                        Pet pet = new Pet(mob, (LivingEntity)nmsOwner);
-                        return new FollowOwnerGoal(pet, speed, distance, (float)config.getDouble("area_size", 7), config.getBoolean("fly", false));
-                    }
+                    return new FollowOwnerGoal((TamableAnimal)mob, speed, startDistance, stopDistance, config.getBoolean("fly", false));
+                }
+                // Intentional fall-through
+            case MAGIC_FOLLOW_OWNER:
+                Entity owner = entityData == null ? null : entityData.getOwner();
+                net.minecraft.world.entity.Entity nmsOwner = getNMS(owner);
+                if (nmsOwner != null && nmsOwner instanceof LivingEntity) {
+                    return new MagicFollowOwnerGoal(platform, mob, entity, (LivingEntity)nmsOwner, speed, startDistance, stopDistance, interval, config);
                 }
                 return null;
             case FOLLOW_PARENT:

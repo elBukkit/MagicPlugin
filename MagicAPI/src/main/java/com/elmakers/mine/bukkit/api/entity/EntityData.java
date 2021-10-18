@@ -121,4 +121,5 @@ public interface EntityData extends Cloneable {
     @Nonnull
     EntityData clone();
     Entity getOwner();
+    long getTickInterval();
 }

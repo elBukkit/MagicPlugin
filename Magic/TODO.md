@@ -2,6 +2,13 @@
 
 # Mobs
 
+Tech notes
+
+- If pets are going to be NPCs (are they... ?) then NPCs need to handle moving through chunks
+  (maybe they should either way)
+- The follow owner goal doesn't handle teleporting away, probably the mob unloads?
+- Add permission list magic.teams to plugin.yml so it can be default:false
+
 AI
 - attack/avoid ... mobs/factions
 - keep distance (usefull for archers)

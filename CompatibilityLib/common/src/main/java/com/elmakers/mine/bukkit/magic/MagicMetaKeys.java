@@ -29,6 +29,9 @@ public class MagicMetaKeys {
     public static final MetaKey<String> OWNER_ID = new MetaKey<>(
             String.class, "owner");
 
+    public static final MetaKey<Boolean> STAY = new MetaKey<>(
+            Boolean.class, "stay");
+
     public static final MetaKey<String> NPC_ID = new MetaKey<>(
             String.class, "npc_id");
 
