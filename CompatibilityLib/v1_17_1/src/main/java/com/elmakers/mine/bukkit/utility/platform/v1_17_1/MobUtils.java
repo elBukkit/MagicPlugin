@@ -14,6 +14,7 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
+import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
@@ -23,6 +24,7 @@ import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.IdleGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.Pet;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.RequirementsGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.TriggerGoal;
 
@@ -91,9 +93,14 @@ public class MobUtils extends MobUtilsBase {
         this.platform = platform;
     }
 
+    private net.minecraft.world.entity.Entity getNMS(Entity entity) {
+        if (entity == null) return null;
+        CraftEntity craft = (CraftEntity) entity;
+        return craft.getHandle();
+    }
+
     private Mob getMob(Entity entity) {
-        CraftEntity craft = (CraftEntity)entity;
-        net.minecraft.world.entity.Entity nms = craft.getHandle();
+        net.minecraft.world.entity.Entity nms = getNMS(entity);
         if (!(nms instanceof Mob)) {
             return null;
         }
@@ -235,6 +242,15 @@ public class MobUtils extends MobUtilsBase {
             case FOLLOW_OWNER:
                 if (mob instanceof TamableAnimal) {
                     return new FollowOwnerGoal((TamableAnimal)mob, speed, distance, (float)config.getDouble("area_size", 7), config.getBoolean("fly", false));
+                } else {
+                    EntityData entityData = platform.getController().getMob(entity);
+                    Entity owner = entityData == null ? null : entityData.getOwner();
+                    net.minecraft.world.entity.Entity nmsOwner = getNMS(owner);
+                    if (nmsOwner != null && nmsOwner instanceof LivingEntity) {
+                        // TODO: cache these somewhere?
+                        Pet pet = new Pet(mob, (LivingEntity)nmsOwner);
+                        return new FollowOwnerGoal(pet, speed, distance, (float)config.getDouble("area_size", 7), config.getBoolean("fly", false));
+                    }
                 }
                 return null;
             case FOLLOW_PARENT:
