@@ -4036,7 +4036,7 @@ public class MagicController implements MageController {
             return;
         }
         asynchronous = asynchronous && asynchronousSaving;
-        info("Saving player data for " + mage.getName() + " (" + mage.getId() + ") " + ((asynchronous ? "" : " synchronously ") + "at " + System.currentTimeMillis()));
+        info("Saving player data for " + mage.getName() + " (" + mage.getId() + ")" + ((asynchronous ? "" : " synchronously") + " at " + System.currentTimeMillis()));
         final MageData mageData = new MageData(mage.getId());
         if (mageDataStore != null && mage.save(mageData)) {
             if (wandInventoryOpen) {
