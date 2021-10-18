@@ -189,6 +189,7 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
         synchronized (lockingLock) {
             boolean hasLock = false;
             long start = System.currentTimeMillis();
+            controller.info("Obtaining lock for player " + id + " at " + start, 10);
 
             PreparedStatement lockLookup = null;
             PreparedStatement lock = null;
@@ -205,8 +206,9 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                     }
                     if (!hasLock) {
                         // I am hoping this is only called on separate load threads!
-                        if (System.currentTimeMillis() > start + lockTimeout) {
-                            controller.info("Lock timeout while waiting for mage " + id + ", claiming lock");
+                        long now = System.currentTimeMillis();
+                        if (now > start + lockTimeout) {
+                            controller.info("Lock timeout of " + lockTimeout + "ms expired at " + now + " while waiting for mage " + id + ", claiming lock");
                             break;
                         }
                         Thread.sleep(lockRetry);
@@ -218,6 +220,9 @@ public abstract class SQLMageDataStore extends ConfigurationMageDataStore {
                 lock = getConnection().prepareStatement("UPDATE mage SET locked = 1 WHERE id = ?");
                 lock.setString(1, id);
                 lock.execute();
+                long now = System.currentTimeMillis();
+                long duration = (now - start);
+                controller.info("Obtained lock for player " + id + " at " + now + " in " + duration + "ms", 10);
             } catch (Exception ex) {
                 controller.info("Could not obtain lock for mage " + id);
                 close();
