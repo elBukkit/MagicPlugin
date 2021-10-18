@@ -262,7 +262,7 @@ public class AnvilController implements Listener {
                     }
 
                 }
-                if (enableRenaming) {
+                if (enableRenaming && wand.getBoolean("renamable", true)) {
                     wand.setName(newName);
                 }
                 if (organizingEnabled) {
