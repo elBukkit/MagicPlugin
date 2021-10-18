@@ -13,11 +13,13 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class TameAction extends BaseSpellAction {
     private boolean own = true;
+    private boolean persist = true;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         own = parameters.getBoolean("own", true);
+        persist = parameters.getBoolean("persist", true);
     }
 
     @Override
@@ -40,7 +42,14 @@ public class TameAction extends BaseSpellAction {
                 }
             }
         }
-        return tamed || owned ? SpellResult.CAST : SpellResult.NO_TARGET;
+        if (tamed || owned) {
+            if (persist) {
+                CompatibilityLib.getCompatibilityUtils().setPersist(entity, true);
+                CompatibilityLib.getCompatibilityUtils().setRemoveWhenFarAway(entity, false);
+            }
+            return SpellResult.CAST;
+        }
+        return SpellResult.NO_TARGET;
     }
 
     @Override

@@ -48,6 +48,7 @@
 ## Changes
 
  - Mob spawners are indestructible to spells
+ - The Tame action will cause tamed mobs to persist
 
 ## Balance Changes
 
