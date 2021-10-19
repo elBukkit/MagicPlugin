@@ -927,7 +927,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void setOffhandWand(Wand offhandWand) {
         // Avoid deactivating a wand by mistake, and avoid infinite recursion on null!
         if (this.offhandWand == offhandWand) return;
-        if (!offhandWand.allowOffhand()) return;
+        if (offhandWand != null && !offhandWand.allowOffhand()) return;
         this.offhandWand = offhandWand;
         if (offhandWand != null && offhandWand.isBound() && offhandWand.canUse(getPlayer())) {
             addBound(offhandWand);
