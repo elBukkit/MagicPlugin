@@ -6,12 +6,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -30,6 +32,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
+import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -69,7 +72,9 @@ public class MagicRequirement {
     private boolean requireResourcePack = false;
     private boolean requireWand = false;
     private boolean ignoreMissing = false;
-    private boolean indoors = false;
+    private Boolean indoors;
+    private Boolean stay;
+    private Boolean owned;
 
     public MagicRequirement(@Nonnull MageController controller, @Nonnull Requirement requirement) {
         this.controller = controller;
@@ -93,7 +98,9 @@ public class MagicRequirement {
         wandSlots = ConfigurationUtils.getStringList(configuration, "wand_slots");
         openSpellInventory = configuration.getBoolean("spell_inventory_open");
         ignoreMissing = configuration.getBoolean("ignore_missing", false);
-        indoors = configuration.getBoolean("indoors", false);
+        indoors = ConfigurationUtils.getOptionalBoolean(configuration,"indoors");
+        stay = ConfigurationUtils.getOptionalBoolean(configuration,"stay");
+        owned = ConfigurationUtils.getOptionalBoolean(configuration,"owned");
         if (activeClass != null && mageClass == null) {
             mageClass = activeClass;
         }
@@ -249,9 +256,22 @@ public class MagicRequirement {
         }
 
         Location location = mage.getLocation();
-        if (indoors) {
+        if (indoors != null) {
             Block highest = location.getWorld().getHighestBlockAt(location.getBlockX(), location.getBlockZ());
-            if (highest.getY() <= location.getBlockY()) {
+            if (location.getBlockY() < highest.getY() != indoors) {
+                return false;
+            }
+        }
+
+        Entity entity = mage.getEntity();
+        if (stay != null) {
+            if (CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.STAY) != stay) {
+                return false;
+            }
+        }
+        if (owned != null) {
+            UUID ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(entity);
+            if ((ownerId != null) != owned) {
                 return false;
             }
         }
@@ -529,10 +549,23 @@ public class MagicRequirement {
         }
 
         Location location = mage.getLocation();
-        if (indoors) {
+        if (indoors != null) {
             Block highest = location.getWorld().getHighestBlockAt(location.getBlockX(), location.getBlockZ());
-            if (highest.getY() <= location.getBlockY()) {
-                return getMessage(context, "no_indoors");
+            if (location.getBlockY() < highest.getY() != indoors) {
+                return getMessage(context, indoors ? "no_indoors" : "indoors");
+            }
+        }
+
+        Entity entity = mage.getEntity();
+        if (stay != null) {
+            if (CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.STAY) != stay) {
+                return getMessage(context, stay ? "no_stay" : "stay");
+            }
+        }
+        if (owned != null) {
+            UUID ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(entity);
+            if ((ownerId != null) != owned) {
+                return getMessage(context, owned ? "no_owned" : "owned");
             }
         }
         if (weather != null) {
