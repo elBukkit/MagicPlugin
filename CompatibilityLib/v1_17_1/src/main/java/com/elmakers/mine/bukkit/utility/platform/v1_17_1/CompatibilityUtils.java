@@ -1748,4 +1748,14 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     public Runnable getTaskRunnable(BukkitTask task) {
         return (Runnable)ReflectionUtils.getPrivate(platform.getLogger(), task, CraftTask.class, "rTask");
     }
+
+    @Override
+    public boolean isSwingingArm(Entity entity) {
+        if (entity == null) return false;
+        net.minecraft.world.entity.Entity nms = ((CraftEntity)entity).getHandle();
+        if (nms == null || !(nms instanceof net.minecraft.world.entity.LivingEntity)) {
+            return false;
+        }
+        return ((net.minecraft.world.entity.LivingEntity)nms).swinging;
+    }
 }

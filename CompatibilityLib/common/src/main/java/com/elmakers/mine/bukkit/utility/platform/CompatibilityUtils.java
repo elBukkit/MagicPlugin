@@ -531,4 +531,6 @@ public interface CompatibilityUtils {
     FallingBlock spawnFallingBlock(Location location, Material material, String blockData);
 
     UUID getOwnerId(Entity entity);
+
+    default boolean isSwingingArm(Entity entity) { return false; }
 }
