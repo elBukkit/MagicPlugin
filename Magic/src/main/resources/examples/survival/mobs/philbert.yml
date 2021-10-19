@@ -16,3 +16,10 @@ philbert:
         priority: 2
       - type: look_at_player
         priority: 3
+      - type: panic
+        priority: 0
+      - type: requirement
+        priority: 4
+        requirement:
+          stay: false
+        goals: random_stroll

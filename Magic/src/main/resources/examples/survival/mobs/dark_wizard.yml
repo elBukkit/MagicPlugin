@@ -23,6 +23,7 @@ dark_wizard:
         goals:
           - type: avoid_entity
             distance: 6
+            speed: 1.5
       - type: trigger
         trigger: attack
         interval: 2000

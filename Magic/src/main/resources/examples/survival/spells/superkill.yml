@@ -10,14 +10,14 @@ superkill:
         cast:
         - sound: entity_wither_shoot
           sound_pitch: 0.2
-          sound_volume: 0.2
+          sound_volume: 0.1
         - sound: entity_guardian_attack
           sound_pitch: 1.5
-          sound_volume: 0.2
+          sound_volume: 0.1
         - class: EffectSingle
           sound: magic.electrify
-          sound_volume: 0.5
-          sound_pitch: -0.25
+          sound_volume: 0.2
+          sound_pitch: 0.25
           location: origin
           effectlib:
              class: AtomEffect

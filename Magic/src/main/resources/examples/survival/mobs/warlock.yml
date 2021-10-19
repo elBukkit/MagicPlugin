@@ -21,6 +21,7 @@ warlock:
         goals:
           - type: avoid_entity
             distance: 4
+            speed: 1.5
       - type: trigger
         trigger: attack
         priority: 1
