@@ -367,6 +367,7 @@ public class MobUtils extends MobUtilsBase {
                     return new ZombieAttackGoal((Zombie)mob, speed, config.getBoolean("follow", true));
                 }
                 return null;
+            case REQUIREMENT:
             case REQUIREMENTS:
                 if (pathfinder == null) return null;
                 mage = controller.getMage(entity);

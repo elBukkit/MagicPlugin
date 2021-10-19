@@ -57,6 +57,7 @@ public enum GoalType {
 
     IDLE,
     REQUIREMENTS,
+    REQUIREMENT,
     GROUP,
     TRIGGER,
     MAGIC_FOLLOW_OWNER

@@ -47,7 +47,7 @@ public class GoalConfiguration implements Comparable<GoalConfiguration> {
         try {
             goalType = GoalType.valueOf(goalKey.toUpperCase());
         } catch (Exception ex) {
-            logger.warning("Invalid goal type in mob " + logContext);
+            logger.warning("Invalid goal type in " + logContext);
             return null;
         }
         return new GoalConfiguration(goalType, config);
