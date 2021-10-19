@@ -39,6 +39,8 @@ Drops:
 
 # Next Up:
 
+ - Test: `/mconfig configure spell arrow_ice worth 200`
+ 
  - Do jukeboxes not restore their record? Maybe a 1.16 problem? (no this was from loading)
    > Failed to find 'record' field in jukebox tile entity
  

@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -1270,21 +1271,13 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
     }
 
     protected void onMagicClean(CommandSender sender, String configName) {
-        sender.sendMessage("This command is (temporarily?) disabled until it can be fixed.");
-        return;
-        /*
+        sender.sendMessage("This command will currently only clean your config.yml");
+        // sender.sendMessage("This command is (temporarily?) disabled until it can be fixed.");
         List<String> configFiles = new ArrayList<>();
         if (!configName.isEmpty()) {
             configFiles.add(configName);
         } else {
-            configFiles.add("spells");
-            configFiles.add("wands");
-            configFiles.add("paths");
-            configFiles.add("mobs");
-            configFiles.add("items");
-            configFiles.add("crafting");
-            configFiles.add("materials");
-            configFiles.add("messages");
+            configFiles.add("config");
         }
 
         File pluginFolder = api.getPlugin().getDataFolder();
@@ -1304,15 +1297,17 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 defaultConfig.load(defaultsFile);
 
                 // Overlay examples
+                /*
                 for (String example : examples) {
                     String examplesFileName = "examples/" + example + "/" + configFileName + ".yml";
                     InputStream input = plugin.getResource(examplesFileName);
                     if (input != null)
                     {
-                        ConfigurationSection exampleConfig = CompatibilityUtils.loadConfigurationQuietly(input);
+                        ConfigurationSection exampleConfig = ConfigurationUtils.loadConfiguration(input);
                         ConfigurationUtils.addConfigurations(defaultConfig, exampleConfig, false);
                     }
                 }
+                */
 
                 Collection<String> allKeys = currentConfig.getKeys(true);
                 for (String key : allKeys) {
@@ -1343,7 +1338,7 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                         sender.sendMessage(ChatColor.YELLOW + "  Backup file exists, will not overwrite: " + backupFile.getName());
                     } else {
                         sender.sendMessage(ChatColor.DARK_PURPLE + "  Saved backup file to " + backupFile.getName() + ", delete this file if all looks good.");
-                        Files.copy(configFile, backupFile);
+                        Files.copy(configFile.toPath(), backupFile.toPath());
                     }
                     String[] lines = StringUtils.split(cleanConfig.saveToString(), '\n');
                     PrintWriter out = new PrintWriter(configFile, "UTF-8");
@@ -1366,6 +1361,39 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
                 ex.printStackTrace();
             }
         }
-        */
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean areDifferent(Object configValue, Object defaultValue) {
+        if (defaultValue == null) return true;
+
+        if (configValue instanceof ConfigurationSection || configValue instanceof Map) {
+            if (!(defaultValue instanceof ConfigurationSection) && !(defaultValue instanceof Map)) return true;
+
+            Map<String, Object> configMap = configValue instanceof ConfigurationSection
+                    ? CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)configValue)
+                    : (Map<String, Object>)configValue;
+
+            Map<String, Object> defaultMap = defaultValue instanceof ConfigurationSection
+                    ? CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)defaultValue)
+                    : (Map<String, Object>)defaultValue;
+
+            return !configMap.equals(defaultMap);
+        }
+        if (configValue instanceof List) {
+            if (!(defaultValue instanceof List)) return true;
+
+            List<Object> configList = (List<Object>)configValue;
+            List<Object> defaultList = (List<Object>)defaultValue;
+            if (configList.size() != defaultList.size()) return true;
+
+            for (int i = 0; i < configList.size(); i++) {
+                if (areDifferent(configList.get(i), defaultList.get(i))) return true;
+            }
+
+            return false;
+        }
+
+        return !defaultValue.equals(configValue);
     }
 }
