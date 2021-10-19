@@ -51,6 +51,7 @@ import org.bukkit.craftbukkit.v1_17_R1.entity.CraftHanging;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftItem;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_17_R1.scheduler.CraftTask;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftChatMessage;
 import org.bukkit.craftbukkit.v1_17_R1.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
@@ -93,6 +94,7 @@ import org.bukkit.loot.Lootable;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.projectiles.ProjectileSource;
+import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
@@ -1740,5 +1742,10 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             return null;
         }
         return CraftChatMessage.fromJSON(serialized);
+    }
+
+    @Override
+    public Runnable getTaskRunnable(BukkitTask task) {
+        return (Runnable)ReflectionUtils.getPrivate(platform.getLogger(), task, CraftTask.class, "rTask");
     }
 }
