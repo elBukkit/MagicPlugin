@@ -13,6 +13,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -21,6 +23,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.effect.EffectContext;
 import com.elmakers.mine.bukkit.magic.Mage;
@@ -271,19 +274,32 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
     public void checkEntities() {
         if (spawned == null || template == null) return;
         Spawner spawner = template.getSpawner();
-        double leashRangeSquared = spawner == null || !spawner.isLeashed() ? 0 : spawner.getLimitRange();
-        if (leashRangeSquared > 0) {
-            leashRangeSquared = leashRangeSquared * leashRangeSquared;
-        }
-        Iterator<WeakReference<Entity>> iterator = spawned.iterator();
-        while (iterator.hasNext()) {
-            WeakReference<Entity> mobReference = iterator.next();
-            Entity mob = mobReference.get();
-            if (mob == null || !mob.isValid()) {
-                iterator.remove();
-            } else if (leashRangeSquared > 0) {
-                if (mob.getLocation().distanceSquared(location) > leashRangeSquared) {
-                    mob.teleport(spawner.getSpawnLocation(location));
+        if (spawner.isLeashed()) {
+            MaterialSet leashBlocks = spawner == null ? null : spawner.getLeashBlocks();
+            double leashRangeSquared = spawner == null ? 0 : spawner.getLimitRange();
+            if (leashRangeSquared > 0) {
+                leashRangeSquared = leashRangeSquared * leashRangeSquared;
+            }
+            Iterator<WeakReference<Entity>> iterator = spawned.iterator();
+            while (iterator.hasNext()) {
+                WeakReference<Entity> mobReference = iterator.next();
+                Entity mob = mobReference.get();
+                boolean handled = false;
+                if (mob == null || !mob.isValid()) {
+                    iterator.remove();
+                    handled = true;
+                }
+                if (!handled && leashRangeSquared > 0) {
+                    if (mob.getLocation().distanceSquared(location) > leashRangeSquared) {
+                        mob.teleport(spawner.getSpawnLocation(location));
+                    }
+                }
+                if (!handled && leashBlocks != null) {
+                    Block block = mob.getLocation().getBlock();
+                    Block down = block.getRelative(BlockFace.DOWN);
+                    if (leashBlocks.testBlock(block) || leashBlocks.testBlock(down)) {
+                        mob.teleport(spawner.getSpawnLocation(location));
+                    }
                 }
             }
         }

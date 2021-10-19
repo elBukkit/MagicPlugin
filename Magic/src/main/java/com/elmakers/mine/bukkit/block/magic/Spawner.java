@@ -54,6 +54,7 @@ public class Spawner {
     private final boolean track;
     private final boolean leash;
     private int interval;
+    private MaterialSet leashBlocks;
 
     public Spawner(@Nonnull MageController controller, @Nonnull MagicBlockTemplate automaton, ConfigurationSection configuration) {
         this.controller = controller;
@@ -115,6 +116,7 @@ public class Spawner {
         randomizeYaw = configuration.getBoolean("randomize_yaw", false);
         track = configuration.getBoolean("track", true);
         leash = configuration.getBoolean("leash", true);
+        leashBlocks = controller.getMaterialSetManager().fromConfig(configuration.getString("leash_blocks"));
 
         // Make sure the limit is at least big enough for all the spawn cunts
         for (WeightedPair<Integer> count : countProbability) {
@@ -302,7 +304,11 @@ public class Spawner {
     }
 
     public boolean isLeashed() {
-        return leash && limitRange > 0;
+        return leash && (limitRange > 0 || leashBlocks != null);
+    }
+
+    public MaterialSet getLeashBlocks() {
+        return leashBlocks;
     }
 
     public int getLimitRange() {
