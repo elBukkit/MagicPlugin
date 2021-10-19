@@ -31,6 +31,8 @@ dark_wizard:
         goals:
           - type: look_at_player
             distance: 34
+      - type: random_stroll
+        priority: 2
   triggers:
     damage1:
       type: damage
@@ -87,6 +89,7 @@ dark_wizard:
     - emerald: 15
       gold_ingot@2: 5
       gold_ingot: 1
+      amethyst_shard: 10
     - sp:100
   loot:
     gold_nugget:

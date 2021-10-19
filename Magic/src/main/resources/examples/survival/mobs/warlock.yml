@@ -28,6 +28,8 @@ warlock:
         goals:
           - type: look_at_player
             distance: 34
+      - type: random_stroll
+        priority: 2
   triggers:
     flee:
       cast:
