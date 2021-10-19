@@ -1,0 +1,8 @@
+grappler:
+  worth: 10000
+  inherit: base_bow
+  active_spell: arrow_grapple
+  icon: bow{CustomModelData:18002}
+  effect_color: '004400'
+  earn_multiplier: 0
+  enchantments: arrow_infinite
