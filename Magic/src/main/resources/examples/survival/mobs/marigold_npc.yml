@@ -1,4 +1,4 @@
-marigold:
+marigold_npc:
   requires: ModelEngine
   inherit: base_npc
   name: Marigold
