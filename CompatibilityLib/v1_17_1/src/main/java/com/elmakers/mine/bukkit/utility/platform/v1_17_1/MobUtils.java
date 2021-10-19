@@ -74,6 +74,11 @@ import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.WrappedGoal;
 import net.minecraft.world.entity.ai.goal.ZombieAttackGoal;
+import net.minecraft.world.entity.ai.goal.target.DefendVillageTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -209,6 +214,8 @@ public class MobUtils extends MobUtilsBase {
         final float distance = (float)config.getDouble("distance", 16);
         final boolean doors = config.getBoolean("doors", true);
         final boolean interruptable = config.getBoolean("interruptable", true);
+        final boolean see = config.getBoolean("see", true);
+        final boolean reach = config.getBoolean("reach", false);
         final float startDistance = (float)config.getDouble("start_distance", 5);
         final float stopDistance = (float)config.getDouble("stop_distance", 1);
         final PathfinderMob pathfinder = mob instanceof PathfinderMob ? (PathfinderMob)mob : null;
@@ -367,6 +374,32 @@ public class MobUtils extends MobUtilsBase {
                     return new ZombieAttackGoal((Zombie)mob, speed, config.getBoolean("follow", true));
                 }
                 return null;
+
+            // Target
+            case DEFEND_VILLAGE_TARGET:
+                if (mob instanceof IronGolem) {
+                    return new DefendVillageTargetGoal((IronGolem)mob);
+                }
+                return null;
+            case HURT_BY_TARGET:
+                if (pathfinder == null) return null;
+                return new HurtByTargetGoal(pathfinder);
+            case NEAREST_ATTACKABLE_TARGET:
+                return getNearestAttackableTargetGoal(mob, classType, see, reach);
+            case OWNER_HURT_BY_TARGET:
+                if (mob instanceof TamableAnimal) {
+                    return new OwnerHurtByTargetGoal((TamableAnimal)mob);
+                }
+                // TODO: Custom
+                return null;
+            case OWNER_HURT_TARGET:
+                if (mob instanceof TamableAnimal) {
+                    return new OwnerHurtTargetGoal((TamableAnimal)mob);
+                }
+                // TODO: Custom
+                return null;
+
+            // Magic add-ons
             case REQUIREMENT:
             case REQUIREMENTS:
                 if (pathfinder == null) return null;
@@ -464,6 +497,26 @@ public class MobUtils extends MobUtilsBase {
             default:
                 // TODO: Implement more.. :(
                 platform.getLogger().warning("Unsupported entity_class in avoid_entity goal: " + classType);
+                return null;
+        }
+    }
+
+    private Goal getNearestAttackableTargetGoal(Mob mob, String classType, boolean see, boolean reach) {
+        switch (classType) {
+            case "player":
+                return new NearestAttackableTargetGoal<>(mob, Player.class, see, reach);
+            case "livingentity":
+            case "living_entity":
+                return new NearestAttackableTargetGoal<>(mob, LivingEntity.class, see, reach);
+            case "monster":
+                return new NearestAttackableTargetGoal<>(mob, Monster.class, see, reach);
+            case "animal":
+                return new NearestAttackableTargetGoal<>(mob, Animal.class, see, reach);
+            case "villager":
+                return new NearestAttackableTargetGoal<>(mob, Villager.class, see, reach);
+            default:
+                // TODO: Implement more.. :(
+                platform.getLogger().warning("Unsupported entity_class in nearest_attackable_target goal: " + classType);
                 return null;
         }
     }

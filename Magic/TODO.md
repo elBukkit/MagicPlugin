@@ -4,6 +4,7 @@
 
 Tech notes
 
+- Reload seems to break custom goals- need to reset goal selector somehow?
 - If pets are going to be NPCs (are they... ?) then NPCs need to handle moving through chunks
   (maybe they should either way)
 - The follow owner goal doesn't handle teleporting away, probably the mob unloads?
