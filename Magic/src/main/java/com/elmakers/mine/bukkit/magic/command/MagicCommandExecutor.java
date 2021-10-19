@@ -45,6 +45,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.LostWand;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.UndoList;
+import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.HitboxUtils;
@@ -70,6 +71,16 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
                 return true;
             }
             sender.sendMessage("Magic " + getMagicVersion());
+            MagicController controller = (MagicController)api.getController();
+            if (!controller.isLoaded()) {
+                sender.sendMessage(ChatColor.RED + " Plugin did not load correctly");
+            }
+            if (!controller.isDataLoaded()) {
+                sender.sendMessage(ChatColor.RED + " Plugin did not load data correctly");
+            }
+            if (controller.isShuttingDown()) {
+                sender.sendMessage(ChatColor.RED + " Plugin is shutting down");
+            }
             sender.sendMessage(api.getMessages().get("commands.magic.help"));
             return true;
         }
