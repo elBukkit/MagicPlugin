@@ -477,6 +477,7 @@ public class MagicController implements MageController {
     private BukkitTask configCheckTask = null;
     private BukkitTask logNotifyTask = null;
     private boolean savePlayerData = true;
+    private boolean enablePreloginCache = true;
     private boolean externalPlayerData = false;
     private boolean asynchronousSaving = true;
     private boolean debugEffectLib = false;
@@ -918,6 +919,7 @@ public class MagicController implements MageController {
     }
 
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
+        if (!enablePreloginCache) return;
         String id = mageIdentifier.fromPreLogin(event);
         Iterator<Map.Entry<String, MageData>> it = mageDataPreCache.entrySet().iterator();
         while (it.hasNext()) {
@@ -6901,6 +6903,7 @@ public class MagicController implements MageController {
         savePlayerData = !external;
         externalPlayerData = external;
         this.backupInventories = backupInventories;
+        enablePreloginCache = !external;
         getLogger().info("External plugin managing player data");
     }
 
@@ -8576,6 +8579,7 @@ public class MagicController implements MageController {
         }
 
         savePlayerData = properties.getBoolean("save_player_data", true);
+        enablePreloginCache = properties.getBoolean("cache_data_on_prelogin", savePlayerData);
         externalPlayerData = properties.getBoolean("external_player_data", false);
         if (externalPlayerData) {
             getLogger().info("Magic is expecting player data to be loaded from an external source, if this doesn't happen player data won't save and players won't get unregistered on logout");

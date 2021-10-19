@@ -56,5 +56,9 @@ auto_save: 600000
 # Can be used to turn off saving player data entirely
 save_player_data: true
 
+# Turn off the prelogin caching mechanism if you suspect it is causing issues
+# Players will log in without magic data for a few ticks
+cache_data_on_prelogin: true
+
 # If player data saving is off, you can use this to still have mages expect their data to load
 external_player_data: false
