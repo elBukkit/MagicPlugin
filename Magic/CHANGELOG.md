@@ -51,6 +51,7 @@
  - Add `potion_effects` messages section for customizing potion effect names in wand lore
  - Add `allow_offhand` wand flag, to prevent specific wands from working in the offhand
  - Add `renamable` wand flag, to prevent specific wands from being renamed on an anvil
+ - Add `fail` action handler to `Probability` action
 
 ## Changes
 

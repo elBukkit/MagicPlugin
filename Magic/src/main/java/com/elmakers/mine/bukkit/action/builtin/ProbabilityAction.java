@@ -5,13 +5,12 @@ import java.util.Collection;
 
 import org.bukkit.configuration.ConfigurationSection;
 
-import com.elmakers.mine.bukkit.action.CompoundAction;
+import com.elmakers.mine.bukkit.action.CheckAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
-import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 
-public class ProbabilityAction extends CompoundAction
+public class ProbabilityAction extends CheckAction
 {
     private double probability;
 
@@ -23,13 +22,8 @@ public class ProbabilityAction extends CompoundAction
     }
 
     @Override
-    public SpellResult step(CastContext context)
-    {
-        if (context.getRandom().nextDouble() > probability) {
-            return SpellResult.NO_ACTION;
-        }
-
-        return startActions();
+    protected boolean isAllowed(CastContext context) {
+        return context.getRandom().nextDouble() <= probability;
     }
 
     @Override
