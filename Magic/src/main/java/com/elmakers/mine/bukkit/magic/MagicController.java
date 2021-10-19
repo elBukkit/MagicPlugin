@@ -8553,6 +8553,7 @@ public class MagicController implements MageController {
         }
         com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_GAME_MODE_CHANGE = properties.getBoolean("close_wand_on_game_mode_change", com.elmakers.mine.bukkit.magic.Mage.DEACTIVATE_WAND_ON_WORLD_CHANGE);
         com.elmakers.mine.bukkit.magic.Mage.ALLOW_PERSISTENT_INVISIBILITY = properties.getBoolean("allow_player_persistent_invisibility", true);
+        com.elmakers.mine.bukkit.magic.Mage.REOPEN_WAND_ON_JOIN = properties.getBoolean("reopen_wand_on_join", com.elmakers.mine.bukkit.magic.Mage.REOPEN_WAND_ON_JOIN);
 
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));

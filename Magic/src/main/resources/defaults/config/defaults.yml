@@ -329,6 +329,10 @@ action_bar_queue_max_depth: 5
 # By default this is true if PerWorldInventory is detected, otherwise false.
 close_wand_on_world_change: true|false
 
+# Wands will reopen on join by default, if they were open on logout
+# Turn this off if it is causing conflicts or dupes with plugins like MysqlPlayerDatabase
+reopen_wand_on_join: false
+
 # Turn this off to use normal damage. May be useful if you want
 # direct damage spells to effect armor.
 # This is incompatible with prevent_melee_damage: true!

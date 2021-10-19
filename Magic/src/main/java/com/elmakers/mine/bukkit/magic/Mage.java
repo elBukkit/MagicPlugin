@@ -148,6 +148,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static int ACTION_BAR_QUEUE_MAX_DEPTH = 20;
     public static boolean DEACTIVATE_WAND_ON_WORLD_CHANGE = false;
     public static boolean DEACTIVATE_WAND_ON_GAME_MODE_CHANGE = false;
+    public static boolean REOPEN_WAND_ON_JOIN = true;
     public static boolean COMMAND_BLOCKS_SUPERPOWERED = true;
     public static boolean CONSOLE_SUPERPOWERED = true;
     public static boolean ALLOW_PERSISTENT_INVISIBILITY = true;
@@ -1198,7 +1199,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
             // Re-activate wand if it was active on logout
             checkWand();
-            if (activeWand != null && restoreOpenWand && !activeWand.isInventoryOpen())
+            if (activeWand != null && restoreOpenWand && !activeWand.isInventoryOpen() && REOPEN_WAND_ON_JOIN)
             {
                 activeWand.openInventory();
             }
