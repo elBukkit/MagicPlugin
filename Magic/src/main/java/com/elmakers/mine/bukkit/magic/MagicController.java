@@ -1039,6 +1039,10 @@ public class MagicController implements MageController {
         }
     }
 
+    public int getLogVerbosity() {
+        return logVerbosity;
+    }
+
     public float getMaxDamagePowerMultiplier() {
         return maxDamagePowerMultiplier;
     }
@@ -3965,6 +3969,9 @@ public class MagicController implements MageController {
         // Don't delay on shutdown, though.
         if (loaded && implementation != null && !shuttingDown) {
             final com.elmakers.mine.bukkit.magic.Mage quitMage = implementation;
+            if (mage.isPlayer()) {
+                info("Setting player " + mage.getId() + " to unloading, delaying finalize quit to next tick", 10);
+            }
             quitMage.setUnloading(true);
             plugin.getServer().getScheduler().runTaskLater(plugin, new MageQuitTask(this, quitMage, callback, isOpen), 1);
         } else {
@@ -3973,11 +3980,15 @@ public class MagicController implements MageController {
     }
 
     public void finalizeMageQuit(final Mage mage, final MageDataCallback callback, final boolean isOpen) {
+        boolean isPlayer = mage.isPlayer();
+        if (isPlayer) {
+            info("Finalizing quit of player " + mage.getId() + " using external data? " + externalPlayerData + ", loaded? " + loaded + ", loading? " + mage.isLoading() + ", shutting down? " + shuttingDown, 10);
+        }
         // Unregister
-        if (!externalPlayerData || !mage.isPlayer()) {
+        if (!externalPlayerData || !isPlayer) {
             removeMage(mage);
         }
-        if (!mage.isLoading() && (mage.isPlayer() || saveNonPlayerMages) && loaded) {
+        if (!mage.isLoading() && (isPlayer || saveNonPlayerMages) && loaded) {
             // Save synchronously on shutdown
             saveMage(mage, !shuttingDown, callback, isOpen, true);
         } else if (callback != null) {
@@ -6230,6 +6241,10 @@ public class MagicController implements MageController {
 
     public boolean isDataLoaded() {
         return loaded && dataLoaded && !shuttingDown;
+    }
+
+    public boolean isShuttingDown() {
+        return shuttingDown;
     }
 
     public boolean areLocksProtected() {

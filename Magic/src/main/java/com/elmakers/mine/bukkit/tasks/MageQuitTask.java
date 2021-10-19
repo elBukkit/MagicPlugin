@@ -22,6 +22,8 @@ public class MageQuitTask implements Runnable {
         // Just in case the player relogged in that one tick..
         if (mage.isUnloading()) {
             controller.finalizeMageQuit(mage, callback, isWandInventoryOpen);
+        } else {
+            controller.info("Player " + mage.getId() + " was already loaded on quit, not unregistering");
         }
     }
 }

@@ -1019,8 +1019,17 @@ public class PlayerController implements Listener {
     {
         // Automatically re-activate mages.
         Player player = event.getPlayer();
+        if (controller.getLogVerbosity() >= 10) {
+            Mage existing = controller.getRegisteredMage(player);
+            if (existing != null) {
+                controller.info("Mage data exists already on login: " + existing.getId(), 10);
+            }
+        }
         Mage mage = controller.getMage(player);
         // In case of rapid relog, this mage may have been marked for removal already
+        if (mage.isUnloading()) {
+            controller.info("Player relogged while still unloading: " + mage.getId(), 10);
+        }
         mage.setUnloading(false);
         controller.checkVanished(player);
         if (player.hasPermission("magic.migrate")) {
