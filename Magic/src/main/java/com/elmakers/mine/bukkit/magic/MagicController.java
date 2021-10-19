@@ -6901,6 +6901,7 @@ public class MagicController implements MageController {
         savePlayerData = !external;
         externalPlayerData = external;
         this.backupInventories = backupInventories;
+        getLogger().info("External plugin managing player data");
     }
 
     public void initializeWorldGuardFlags() {
@@ -8577,7 +8578,7 @@ public class MagicController implements MageController {
         savePlayerData = properties.getBoolean("save_player_data", true);
         externalPlayerData = properties.getBoolean("external_player_data", false);
         if (externalPlayerData) {
-            getLogger().info("Magic is expecting player data to be loaded from an external source");
+            getLogger().info("Magic is expecting player data to be loaded from an external source, if this doesn't happen player data won't save and players won't get unregistered on logout");
         } else if (!savePlayerData) {
             getLogger().info("Magic player data saving is disabled");
         }
