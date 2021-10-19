@@ -6069,6 +6069,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     @Override
     public com.elmakers.mine.bukkit.api.wand.Wand duplicate() {
+        if (CompatibilityLib.getItemUtils().isEmpty(item)) {
+            item = new ItemStack(getIcon().getMaterial());
+            saveState();
+        }
         ItemStack newItem = CompatibilityLib.getItemUtils().getCopy(item);
         Wand newWand = controller.getWand(newItem);
         newWand.saveState();

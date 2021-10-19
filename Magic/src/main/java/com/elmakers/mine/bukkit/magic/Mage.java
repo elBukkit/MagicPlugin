@@ -205,6 +205,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private boolean ignoreParticles = false;
     private EntityData entityData;
     private long lastTick;
+    private boolean isSwingingArm;
     private Location lastLocation;
     private Vector velocity = new Vector();
     private long lastBlockTime;
@@ -1606,13 +1607,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     Wand wand = wandEntry.getValue();
                     ItemStack item = wand.getItem();
                     if (CompatibilityLib.getItemUtils().isEmpty(item)) {
-                        // This makes sure bound wands get saved as valid items even if vanilla did something
-                        // ugly like turn their items to air.
-                        item = new ItemStack(wand.getIcon().getMaterial());
-                        item = CompatibilityLib.getItemUtils().makeReal(item);
-                        wand.setItem(item);
-                        wand.updateItemIcon();
-                        wand.saveState();
+                        controller.getLogger().warning("Empty item found in bound wand list, this should not happen");
+                        continue;
                     }
                     wandItems.put(wandEntry.getKey(), item);
                 }
@@ -1903,6 +1899,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         triggeringSpells.clear();
         long now = System.currentTimeMillis();
         if (entityData != null) {
+            boolean swinging = CompatibilityLib.getCompatibilityUtils().isSwingingArm(getEntity());
+            if (swinging != isSwingingArm) {
+                isSwingingArm = swinging;
+                if (swinging) {
+                    trigger("swing");
+                }
+            }
+
             if (lastTick != 0) {
                 long tickInterval = entityData.getTickInterval();
                 if (tickInterval > 0 && now - lastTick > tickInterval) {
