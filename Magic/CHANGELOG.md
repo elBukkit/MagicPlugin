@@ -19,7 +19,8 @@
  - Add `owned` and `stay` requirements  
  - New `moon` requirement for phase-of-moon logic, simplify `time` requirement   
  - Example `scaredy` mob added, a cat that gets scared in the dark
- - Example `philbert` mob added, a friendly tameable creeper  
+ - Example `philbert` mob added, a friendly tameable creeper
+ - ModelEngine example mob `kindetron` added, custom boss mob  
  - Warlocks and Dark Wizards now try to keep their distance, swing their arms when casting
  - NPCs now always look at players (have ai, don't move, aren't collidable)
  - Add `leash_blocks` mob spawner option to prevent mobs going over specific block types

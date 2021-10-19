@@ -1,0 +1,60 @@
+kindletron:
+  type: husk
+  name: Kindletron
+  model: kindletronsr
+  health: 100
+  default_drops: false
+  interval: 1000
+  boss_bar:
+    bar_color: red
+    bar_flags:
+      - create_fog
+      - darken_sky
+      - play_boss_music
+  brain:
+    goals:
+      - type: melee_attack
+        priority: 1
+      - type: nearest_attackable_target
+        reach: false
+        priority: 2
+      - type: random_stroll
+        priority: 10
+  triggers:
+    damage1:
+      type: damage
+      min_health: 100
+      cast:
+        push|4: 150
+        push|3: 100
+        none: 50
+    damage2:
+      type: damage
+      max_health: 100
+      cast:
+        missile|4: 150
+        railgun: 100
+        push|4: 70
+        shell: 20
+        none: 20
+    death:
+      cast: "model_state model_state death"
+    swing:
+      type: swing
+      cast: "model_state model_state attack"
+    attack:
+      type: swing
+      cast:
+        "wound|3 cooldown 0 quiet true": 100
+        none: 20
+  drops:
+    - emerald: 15
+      gold_ingot@2: 5
+      gold_ingot: 1
+    - sp:100
+  loot:
+    gold_nugget:
+      count: looting * 3 + 10
+    diamond:
+      probability: 0.5 + luck
+      count: 1 + looting / 3
