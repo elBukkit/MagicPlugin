@@ -1,0 +1,28 @@
+marigold:
+  requires: ModelEngine
+  inherit: base_npc
+  name: Marigold
+  type: axolotl
+  ai: true
+  gravity: true
+  leash_range: 8
+  axolotl_type: wild
+  transformable: false
+  default_drops: false
+  model:
+    id: bearded_dragon
+    invisible: true
+  interval: 500
+  interval_requires_target: false
+  triggers:
+    colorchange:
+      type: interval
+      cast: lizardskin
+    interval:
+      interval: 5000
+      cast:
+        "model_state model_state smell": 300
+        "model_state model_state dance": 200
+        "model_state model_state sit": 500
+        "model_state model_state lookup": 600
+        none: 500
