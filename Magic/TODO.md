@@ -7,7 +7,6 @@
  - Test: `/mconfig configure spell arrow_ice worth 200`
  - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?
 
-
 # Mobs
 
 Tech notes
@@ -46,6 +45,10 @@ Drops:
 - Take luck in consideration (for drop chance and also number of items
 
 # Next Up:
+
+ - Add a section ("randomized" ?) to wands that apply all those properties to the wand data when
+   the wand is first created. This could allow for randomization but possibly has other uses, so maybe
+   don't make it randomization specific.
 
  - Do jukeboxes not restore their record? Maybe a 1.16 problem? (no this was from loading)
    > Failed to find 'record' field in jukebox tile entity

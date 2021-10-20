@@ -27,7 +27,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.common.collect.ImmutableSet;
 
-public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback {
+public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback, Cloneable {
     public static final String MINECRAFT_ITEM_PREFIX = "minecraft:";
     public static double EARN_SCALE = 0.5;
 
@@ -49,9 +49,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     private ConfigurationSection configuration;
     private double worth;
     private Double earns;
+    private Integer damage;
     private Set<String> categories = ImmutableSet.of();
     private String creatorId;
     private String creator;
+    private boolean cache = true;
     private boolean locked;
     private boolean loaded;
     private boolean exactIngredient;
@@ -97,6 +99,8 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         replaceOnEquip = configuration.getBoolean("replace_on_equip");
         exactIngredient = configuration.getBoolean("exact_ingredient");
         discoverRecipes = ConfigurationUtils.getStringList(configuration, "discover_recipes");
+        damage = ConfigurationUtils.getOptionalInteger(configuration, "damage");
+        cache = configuration.getBoolean("cache", true);
         // Slightly more efficient if this has been overridden to an empty list
         if (discoverRecipes != null && discoverRecipes.isEmpty()) {
             discoverRecipes = null;
@@ -108,9 +112,13 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
     }
 
-    private void createItemFromConfiguration() throws InvalidMaterialException {
+    private ItemStack createItemFromConfiguration() throws InvalidMaterialException {
         ConfigurationSection configuration = this.configuration;
-        this.configuration = null;
+        // Save this configuration for later if we're not caching the item, otherwise we are done with it.
+        if (cache) {
+            this.configuration = null;
+        }
+        ItemStack item = null;
         if (configuration.isItemStack("item")) {
             item = configuration.getItemStack("item");
         } else if (configuration.isConfigurationSection("item")) {
@@ -234,6 +242,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                 item.setItemMeta(potion);
             }
         }
+        return item;
     }
 
     private void setKey(String key) {
@@ -277,10 +286,15 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     }
 
     public ItemData createVariant(String key, short damage) throws Exception {
-        ItemData copy = new ItemData(key, this.item.clone(), worth, controller);
-        copy.categories = categories;
-        CompatibilityLib.getDeprecatedUtils().setItemDamage(copy.item, damage);
-        return copy;
+        ItemData variant = (ItemData)this.clone();
+        variant.damage = (int)damage;
+        variant.key = key;
+        variant.materialKey = key;
+        if (variant.item != null) {
+            variant.item = variant.item.clone();
+            CompatibilityLib.getDeprecatedUtils().setItemDamage(variant.item, damage);
+        }
+        return variant;
     }
 
     @Override
@@ -353,10 +367,10 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
 
     @Nonnull
     public ItemStack getOrCreateItemStack() {
-        if (item == null) {
+        if (item == null || !cache) {
             if (configuration != null) {
                 try {
-                    createItemFromConfiguration();
+                    item = createItemFromConfiguration();
                 } catch (InvalidMaterialException ex) {
                     controller.info("Invalid item type '" + key + "', may not exist on your server version: " + ex.getMessage(), 2);
                 }
@@ -372,6 +386,9 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                     controller.getLogger().warning("Invalid item key: " + materialKey);
                     item = new ItemStack(Material.AIR);
                 }
+            }
+            if (item != null && damage != null) {
+                CompatibilityLib.getDeprecatedUtils().setItemDamage(item, (short)(int)damage);
             }
         }
         return item;

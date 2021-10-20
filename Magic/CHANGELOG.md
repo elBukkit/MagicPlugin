@@ -58,6 +58,8 @@
  - Add `allow_offhand` wand flag, to prevent specific wands from working in the offhand
  - Add `renamable` wand flag, to prevent specific wands from being renamed on an anvil
  - Add `fail` action handler to `Probability` action
+ - Add `prob(p, x, y)` function to equation parser, returns x if a random 0-1 draw < p, else returns y
+ - Add `cache: false` option to items to allow randomization to work
 
 ## Changes
 
