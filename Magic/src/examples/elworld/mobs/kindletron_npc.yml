@@ -1,7 +1,7 @@
 kindletron_npc:
   inherit: base_npc
   type: husk
-  name: Kindle Sr
+  name: Kindletron
   model: kindletronsr
   triggers:
     playdead:
