@@ -3834,11 +3834,15 @@ public class MagicController implements MageController {
         boolean hasWildcard = false;
         if (pNode.contains(".")) {
             String parentNode = pNode.substring(0, pNode.lastIndexOf('.') + 1) + "*";
-            hasWildcard = player.hasPermission(parentNode);
+            // We will use the wildcard default as the default
+            // this lets me make lists that default to true or false by controlling the default wildcard perm
+            // This should never fall back to using an unset default, so we should always have a wildcard set for
+            // any lists in plugin.yml
+            return player.hasPermission(parentNode);
         }
 
-        // Use default permission or wildcard default/override
-        return hasPermission || hasWildcard;
+        // Use default permission
+        return hasPermission;
     }
 
     // Note that this version doesn't work with mob permissions

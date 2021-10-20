@@ -1900,6 +1900,13 @@ permissions:
     description: A player may use any wand
     type: boolean
     default: true
+  magic.team:
+    description: The teams a player is on, used for mob factions
+    type: list
+  magic.team.*:
+    description: A player is on every magic team
+    type: boolean
+    default: false
   magic.wand.enchant:
     description: The player may enchant a wand
     default: true
