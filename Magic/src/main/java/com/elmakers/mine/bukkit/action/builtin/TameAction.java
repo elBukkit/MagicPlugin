@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
+import java.util.UUID;
+
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -8,7 +10,6 @@ import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
-import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class TameAction extends BaseSpellAction {
@@ -35,9 +36,9 @@ public class TameAction extends BaseSpellAction {
         if (own) {
             EntityData mob = context.getController().getMob(entity);
             if (mob != null && mob.isOwnable()) {
-                String owner = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.OWNER_ID);
-                if (owner == null) {
-                    CompatibilityLib.getEntityMetadataUtils().setString(entity, MagicMetaKeys.OWNER_ID, player.getUniqueId().toString());
+                UUID existingOwner = CompatibilityLib.getCompatibilityUtils().getOwnerId(entity);
+                if (existingOwner == null) {
+                    CompatibilityLib.getCompatibilityUtils().setOwner(entity, player);
                     owned = true;
                 }
             }

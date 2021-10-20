@@ -24,7 +24,6 @@ import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Ageable;
-import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
@@ -243,8 +242,7 @@ public class EntityData
             this.isBaby = !ageable.isAdult();
         }
 
-        String ownerIdString = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.OWNER_ID);
-        setOwnerId(ownerIdString);
+        ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(entity);
 
         // TODO: Extra data class for this?
         if (entity instanceof ExperienceOrb) {
@@ -1089,14 +1087,7 @@ public class EntityData
             CompatibilityLib.getCompatibilityUtils().setInvisible(entity, invisible);
         }
         if (this.ownerId != null) {
-            CompatibilityLib.getEntityMetadataUtils().setString(entity, MagicMetaKeys.OWNER_ID, this.ownerId.toString());
-        }
-        if (entity instanceof Tameable) {
-            Entity owner = ownerId != null ? CompatibilityLib.getCompatibilityUtils().getEntity(ownerId) : null;
-            if (owner != null && owner instanceof AnimalTamer) {
-                Tameable tameable = (Tameable)entity;
-                tameable.setOwner((AnimalTamer)owner);
-            }
+            CompatibilityLib.getCompatibilityUtils().setOwner(entity, ownerId);
         }
         if (extraData != null) {
             extraData.applyPostSpawn(entity);

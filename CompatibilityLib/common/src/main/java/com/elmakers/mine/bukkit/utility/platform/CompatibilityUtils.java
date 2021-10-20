@@ -532,5 +532,9 @@ public interface CompatibilityUtils {
 
     UUID getOwnerId(Entity entity);
 
+    void setOwner(Entity entity, Entity owner);
+
+    void setOwner(Entity entity, UUID ownerId);
+
     default boolean isSwingingArm(Entity entity) { return false; }
 }

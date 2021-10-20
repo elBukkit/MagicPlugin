@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.bukkit.DyeColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AreaEffectCloud;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
@@ -133,8 +132,8 @@ public class ModifyEntityAction extends BaseSpellAction
             motion.multiply(speed);
             CompatibilityLib.getCompatibilityUtils().setEntityMotion(entity, motion);
         }
-        if (setOwner && entity instanceof Creature) {
-            CompatibilityLib.getEntityMetadataUtils().setString(entity, MagicMetaKeys.OWNER, context.getMage().getId());
+        if (setOwner) {
+            CompatibilityLib.getCompatibilityUtils().setOwner(entity, context.getMage().getEntity());
         }
         LivingEntity shooter = context.getLivingEntity();
         if (shooter != null) {

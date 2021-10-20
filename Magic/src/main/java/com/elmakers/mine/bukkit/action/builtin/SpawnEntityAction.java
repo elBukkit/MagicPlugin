@@ -12,7 +12,6 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AreaEffectCloud;
-import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Horse;
@@ -302,8 +301,8 @@ public class SpawnEntityAction extends CompoundAction
             effectPlayer.start(spawnedEntity.getLocation(), spawnedEntity, null, null);
         }
         context.registerForUndo(spawnedEntity);
-        if (setOwner && spawnedEntity instanceof Creature) {
-            CompatibilityLib.getEntityMetadataUtils().setString(spawnedEntity, MagicMetaKeys.OWNER, context.getMage().getId());
+        if (setOwner) {
+            CompatibilityLib.getCompatibilityUtils().setOwner(spawnedEntity, context.getMage().getEntity());
         }
         if (setTarget && !hasAnyActions)
         {

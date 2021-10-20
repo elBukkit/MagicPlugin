@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
@@ -281,13 +282,10 @@ public class MobController implements Listener, ChunkLoadListener {
 
         Entity target = event.getTarget();
         if (target != null) {
-            String ownerId = CompatibilityLib.getEntityMetadataUtils().getString(source, MagicMetaKeys.OWNER);
-            if (ownerId != null) {
-                Mage mageOwner = controller.getRegisteredMage(ownerId);
-                if (mageOwner != null && mageOwner.getEntity() == target) {
-                    event.setCancelled(true);
-                    return;
-                }
+            UUID ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(source);
+            if (ownerId != null && ownerId.equals(target.getUniqueId())) {
+                event.setCancelled(true);
+                return;
             }
 
             Mage targetMage = controller.getRegisteredMage(target);

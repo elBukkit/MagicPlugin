@@ -26,9 +26,6 @@ public class MagicMetaKeys {
     public static final MetaKey<String> MAGIC_MOB = new MetaKey<>(
             String.class, "magicmob");
 
-    public static final MetaKey<String> OWNER_ID = new MetaKey<>(
-            String.class, "owner");
-
     public static final MetaKey<Boolean> STAY = new MetaKey<>(
             Boolean.class, "stay");
 

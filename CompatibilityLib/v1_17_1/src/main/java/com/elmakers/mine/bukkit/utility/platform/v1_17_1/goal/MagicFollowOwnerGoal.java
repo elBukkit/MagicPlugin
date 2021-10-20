@@ -55,10 +55,9 @@ public class MagicFollowOwnerGoal extends Goal {
 
     public boolean canUse() {
         if (owner == null) {
-            String ownerId = platform.getEnityMetadataUtils().getString(entity, MagicMetaKeys.OWNER_ID);
-            if (ownerId != null && !ownerId.isEmpty()) {
+            UUID ownerUUID = platform.getCompatibilityUtils().getOwnerId(entity);
+            if (ownerUUID != null) {
                 try {
-                    UUID ownerUUID = UUID.fromString(ownerId);
                     CraftEntity bukkitEntity = (CraftEntity)platform.getCompatibilityUtils().getEntity(ownerUUID);
                     if (bukkitEntity.getHandle() instanceof LivingEntity) {
                         owner = (LivingEntity)bukkitEntity.getHandle();

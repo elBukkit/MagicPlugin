@@ -1065,7 +1065,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public UUID getOwnerId(Entity entity) {
-        String ownerIdString = platform.getEnityMetadataUtils().getString(entity, MagicMetaKeys.OWNER_ID);
+        String ownerIdString = platform.getEnityMetadataUtils().getString(entity, MagicMetaKeys.OWNER);
         if (ownerIdString != null && !ownerIdString.isEmpty()) {
             try {
                 return UUID.fromString(ownerIdString);
@@ -1080,5 +1080,36 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             return tamer.getUniqueId();
         }
         return null;
+    }
+
+    protected void setOwner(Entity entity, Entity owner, UUID ownerId) {
+        if (ownerId != null) {
+            platform.getEnityMetadataUtils().setString(entity, MagicMetaKeys.OWNER, ownerId.toString());
+        } else {
+            platform.getEnityMetadataUtils().remove(entity, MagicMetaKeys.OWNER);
+        }
+        if (entity instanceof Tameable) {
+            Tameable tamed = (Tameable)entity;
+            if (owner != null && owner instanceof AnimalTamer) {
+                tamed.setOwner((AnimalTamer)owner);
+            } else {
+                tamed.setOwner(null);
+            }
+        }
+    }
+
+    @Override
+    public void setOwner(Entity entity, Entity owner) {
+        setOwner(entity, owner, owner == null ? null : owner.getUniqueId());
+    }
+
+    @Override
+    public void setOwner(Entity entity, UUID ownerId) {
+        Entity owner = null;
+        // Don't need to look up owner entity unless this is a tameable mob
+        if (entity instanceof Tameable) {
+            owner = ownerId != null ? getEntity(ownerId) : null;
+        }
+        setOwner(entity, owner, ownerId);
     }
 }
