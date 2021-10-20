@@ -3725,6 +3725,27 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 sender.sendMessage(" " + ChatColor.GOLD + goal);
             }
         }
+        Collection<String> targetGoals = CompatibilityLib.getMobUtils().getTargetGoalDescriptions(entity);
+        if (targetGoals != null && !targetGoals.isEmpty()) {
+            sender.sendMessage(ChatColor.YELLOW + "Current targets:");
+            for (String goal : targetGoals) {
+                sender.sendMessage(" " + ChatColor.GOLD + goal);
+            }
+        }
+        if (entity instanceof Creature) {
+            Creature creature = (Creature)entity;
+            Entity currentTarget = creature.getTarget();
+            if (currentTarget != null) {
+                String mobName = currentTarget.getCustomName();
+                if (mobName == null || mobName.isEmpty()) {
+                    mobName = currentTarget.getName();
+                }
+                if (mobName == null || mobName.isEmpty()) {
+                    mobName = currentTarget.getType().name().toLowerCase();
+                }
+                sender.sendMessage(ChatColor.YELLOW + "Targeting: " + ChatColor.GOLD + mobName);
+            }
+        }
     }
 
     @Override
