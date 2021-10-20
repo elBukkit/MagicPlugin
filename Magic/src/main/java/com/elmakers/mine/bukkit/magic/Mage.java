@@ -2037,18 +2037,15 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             Map.Entry<String, MageClass> entry = it.next();
             String templateKey = entry.getKey();
             MageClass mageClass = entry.getValue();
+            if (!mageClass.isLocked()) {
+                mageClass.deactivate();
+            }
             MageClassTemplate template = controller.getMageClassTemplate(templateKey);
             if (template == null) {
-                mageClass.onRemoved();
                 if (activeClass == mageClass) {
                     setActiveClass(null);
                 }
-                it.remove();
                 continue;
-            }
-
-            if (!mageClass.isLocked()) {
-                mageClass.deactivate();
             }
             mageClass.setTemplate(template);
             mageClass.loadProperties();
