@@ -77,6 +77,7 @@
  - Fix magic mobs with aggro behavior targeting players with the "ignored by mobs tag"
  - Fix potter spells with the same name as survival spells (arrow, stash)
  - Fix online players losing survival progress if the survival example is removed
+ - Fix air scooter and force causing players to get kicked for flying
 
 # 10.1
 
