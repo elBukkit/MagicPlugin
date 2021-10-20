@@ -40,6 +40,8 @@ Drops:
 
 # Next Up:
 
+ - Do you need `swappable: false` for swap controls to work at all?
+
  - Test: `/mconfig configure spell arrow_ice worth 200`
  
  - Do jukeboxes not restore their record? Maybe a 1.16 problem? (no this was from loading)
@@ -47,6 +49,7 @@ Drops:
  
  - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?  
  
+ - Mimic integration: https://www.spigotmc.org/resources/mimic.82515/
  - Support for: https://www.spigotmc.org/resources/skillapi-continued-custom-classes-skills-and-more-proskillapi.91913/  
 
  - Miha responds to responses that have her @'d in the reply?

@@ -21,7 +21,7 @@
 
  - Changed the meaning of the `locked` tag on wands, to match the behavior of items, classes and recipes
    Removed this tag from all builtin wands
-   The "locked" properyy now makes a wand that can not be used unless the player has a class or modifier that allows it
+   The "locked" property now makes a wand that can not be used unless the player has a class or modifier that allows it
    Use "modifiable: false" for the same behavior as "locked: true" used to have
    If this is a big issue to update, use `/mconfig config old_wand_locked_behavior true`
    - The `locked_allow_upgrades` option was removed from wands. Please transition to the slotted upgrade system

@@ -54,8 +54,18 @@ help:
     `<li>``<help topic="nottrained" text="Some of my items are telling me I am not trained to use them">`
     `<li>``<help topic="noflying" text="I get a 'flying is not enabled' error when using some spells">`
     `<li>``<help topic="default_configs" text="Where are the default spells and other configs?">`
-    `<li>``<help topic="right_click" text="Right clicking is not working!">`
+    `<li>``<help topic="right_click" text="Right clicking is not working">`
+    `<li>``<help topic="updating" text="My custom wands or other configs broke when I updated the plugin">`
     `<li>``<command command="wand fill" text="Add ALL spells to my wand">`
+  updating: |-
+    `<title text="Updating the Plugin">`
+    `<p>`Updating &dMagic &f should generally be as simple as replacing the plugin jar
+    `<p>`Backwards-compatibility of your custom configs is always a top priority!
+    `<p>`However, some major updates have changed things around. Always check the `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/MIGRATION.md" text="migration log">` on major updates.
+    `<p>`Updating to Magic 10 had a few specific gotchas:
+    `<p>`Changed the meaning of the `locked` tag on wands, to match the behavior of items, classes and recipes
+    `<p>`Use "modifiable: false" for the same behavior as "locked: true" used to have
+    `<p>`If this is a big issue to update, use `<command command="mconfig config old_wand_locked_behavior true" text="this command">` to revert to the old behavior.
   right_click: |-
     `<title text="Right Clicks and Offhand Items">`
     `<p>`Wands use right-click for spell cycling by default, these `<help topic="wandcontrols" text="controls">` are customizable.
@@ -89,7 +99,7 @@ help:
     `<li>`Use `<command command="wand restore" text="wand restore">` to get a bound wand back if you accidentally destroy it.
   default_configs: |-
     `<title text="Default Configs">`
-    `<p>`Magic will output the effective configs it is using to the &7plugins/Magic/defaults&f folder.
+    `<p>`&dMagic &f will output the effective configs it is using to the &7plugins/Magic/defaults&f folder.
     `<p>`This includes the default configs, any loaded examples (such as &bsurvival&f) and all of your customizations.
     `<p>`These files can be useful to see how things work or what you can edit.
     `<p>`However, please be aware they can not be edited directly. Magic will overwrite them every restart.
