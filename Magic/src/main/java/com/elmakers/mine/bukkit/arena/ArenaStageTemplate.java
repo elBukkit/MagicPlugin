@@ -34,7 +34,7 @@ public abstract class ArenaStageTemplate implements EditingStage  {
     protected int respawnDuration = 0;
 
     protected boolean defaultDrops = false;
-    protected boolean forceTarget = true;
+    protected boolean forceTarget = false;
 
     public ArenaStageTemplate(Arena arena) {
         this.arena = arena;
@@ -73,7 +73,7 @@ public abstract class ArenaStageTemplate implements EditingStage  {
         winSP = configuration.getInt("win_sp");
         winMoney = configuration.getInt("win_money");
         defaultDrops = configuration.getBoolean("drops");
-        forceTarget = configuration.getBoolean("aggro", true);
+        forceTarget = configuration.getBoolean("aggro", false);
         duration = configuration.getInt("duration", 0);
         respawnDuration = configuration.getInt("respawn_duration", 0);
 
