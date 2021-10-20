@@ -50,6 +50,7 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.GoalSelector;
 import net.minecraft.world.entity.ai.goal.GolemRandomStrollInVillageGoal;
 import net.minecraft.world.entity.ai.goal.InteractGoal;
+import net.minecraft.world.entity.ai.goal.LandOnOwnersShoulderGoal;
 import net.minecraft.world.entity.ai.goal.LeapAtTargetGoal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
@@ -83,6 +84,7 @@ import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
+import net.minecraft.world.entity.animal.ShoulderRidingEntity;
 import net.minecraft.world.entity.animal.Wolf;
 import net.minecraft.world.entity.animal.horse.Horse;
 import net.minecraft.world.entity.monster.Creeper;
@@ -337,6 +339,11 @@ public class MobUtils extends MobUtilsBase {
                 return new GolemRandomStrollInVillageGoal(pathfinder, speed);
             case INTERACT:
                 return getInteractGoal(mob, classType, distance, (float)config.getDouble("probability", 1));
+            case LAND_ON_OWNERS_SHOULDER:
+                if (mob instanceof ShoulderRidingEntity) {
+                    return new LandOnOwnersShoulderGoal((ShoulderRidingEntity)mob);
+                }
+                return null;
             case LEAP_AT_TARGET:
                 return new LeapAtTargetGoal(mob, (float)config.getDouble("y_offset", 0.4));
             case LOOK_AT_PLAYER:
