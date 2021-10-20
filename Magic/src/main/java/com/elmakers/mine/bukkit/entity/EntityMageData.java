@@ -110,7 +110,7 @@ public class EntityMageData {
             tickInterval = Math.max(1000, lifetime / 2 + 1000);
         }
 
-        aggro = parameters.getBoolean("aggro", !isEmpty());
+        aggro = parameters.getBoolean("aggro", false);
         leashRange = parameters.getInt("leash_range", 0);
     }
 
