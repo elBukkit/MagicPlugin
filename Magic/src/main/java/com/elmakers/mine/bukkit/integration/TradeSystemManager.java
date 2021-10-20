@@ -43,6 +43,10 @@ public class TradeSystemManager implements Listener {
     public void onTradeOffer(TradeOfferItemEvent event) {
         if (!enabled) return;
         ItemStack item = event.getItemStack();
+        if (controller.isSkill(item)) {
+            event.setCancelled(true);
+            return;
+        }
         Wand wand = controller.getIfWand(item);
         if (wand != null && wand.isBound()) {
             event.setCancelled(true);
