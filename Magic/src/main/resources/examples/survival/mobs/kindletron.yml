@@ -15,9 +15,6 @@ kindletron:
     goals:
       - type: melee_attack
         priority: 1
-      - type: nearest_attackable_target
-        reach: false
-        priority: 2
       - type: random_stroll
         priority: 10
   triggers:

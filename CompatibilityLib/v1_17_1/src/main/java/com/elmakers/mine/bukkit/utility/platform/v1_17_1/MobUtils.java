@@ -79,6 +79,7 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.OwnerHurtTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.TargetGoal;
 import net.minecraft.world.entity.animal.AbstractSchoolingFish;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.IronGolem;
@@ -175,7 +176,7 @@ public class MobUtils extends MobUtilsBase {
     public String getGoalParentDescriptions(Goal goal) {
         List<String> parentClasses = null;
         Class<?> superClass = goal.getClass().getSuperclass();
-        while (superClass != null && superClass != Goal.class && superClass != MagicGoal.class) {
+        while (superClass != null && superClass != Goal.class && superClass != MagicGoal.class && superClass != TargetGoal.class) {
             if (parentClasses == null) {
                 parentClasses = new ArrayList<>();
             }
@@ -186,9 +187,9 @@ public class MobUtils extends MobUtilsBase {
         return ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + StringUtils.join(parentClasses, ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY);
     }
 
-    protected Collection<String> getGoalDescriptions(GoalSelector selector, Mob mob) {
+    protected Collection<String> getGoalDescriptions(GoalSelector selector) {
         List<String> descriptions = new ArrayList<>();
-        Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
+        Collection<WrappedGoal> available = selector.getAvailableGoals();
         for (WrappedGoal wrappedGoal : available) {
             Goal goal = wrappedGoal.getGoal();
             String description = goal.toString();
@@ -211,7 +212,7 @@ public class MobUtils extends MobUtilsBase {
         if (mob == null) {
             return null;
         }
-        return getGoalDescriptions(mob.goalSelector, mob);
+        return getGoalDescriptions(mob.goalSelector);
     }
 
     @Override
@@ -220,7 +221,7 @@ public class MobUtils extends MobUtilsBase {
         if (mob == null) {
             return null;
         }
-        return getGoalDescriptions(mob.targetSelector, mob);
+        return getGoalDescriptions(mob.targetSelector);
     }
 
     protected boolean addGoal(GoalSelector selector, Mob mob, Entity entity, GoalType goalType, ConfigurationSection config) {
@@ -247,7 +248,6 @@ public class MobUtils extends MobUtilsBase {
         }
         return addGoal(mob.goalSelector, mob, entity, goalType, config);
     }
-
 
     @Override
     public boolean addTargetGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
