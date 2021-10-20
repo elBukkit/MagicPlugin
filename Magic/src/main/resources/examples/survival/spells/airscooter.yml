@@ -55,6 +55,7 @@ airscooter:
         sound_volume: 0.4
         sound_interval: 200
         sound_pitch: 0.5
+        exemption_duration: 5000
     costs:
         mana: 20
     active_costs:

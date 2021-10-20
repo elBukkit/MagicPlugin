@@ -64,6 +64,7 @@ force:
     cancel_on_damage: 0.5
     cooldown: 45000
     duration: 15000
+    exemption_duration: 5000
   costs:
     mana: 100
   active_costs:

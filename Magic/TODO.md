@@ -1,5 +1,13 @@
 # TODO
 
+# Important
+
+ - Removing the survival example wipes progress - guessing because the mage class is gone, but shouldn't it save anyway?
+ - Do you need `swappable: false` for swap controls to work at all?
+ - Test: `/mconfig configure spell arrow_ice worth 200`
+ - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?
+
+
 # Mobs
 
 Tech notes
@@ -37,20 +45,15 @@ Drops:
 - Segregate drop tables outside the mob config to be easy to reuse for multiple mobs
 - Take luck in consideration (for drop chance and also number of items
 
-
 # Next Up:
 
- - Do you need `swappable: false` for swap controls to work at all?
-
- - Test: `/mconfig configure spell arrow_ice worth 200`
- 
  - Do jukeboxes not restore their record? Maybe a 1.16 problem? (no this was from loading)
    > Failed to find 'record' field in jukebox tile entity
- 
- - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?  
- 
+   
  - Mimic integration: https://www.spigotmc.org/resources/mimic.82515/
  - Support for: https://www.spigotmc.org/resources/skillapi-continued-custom-classes-skills-and-more-proskillapi.91913/  
+ - RPG Inventory support, allow passive items to work in virtual inventory slots
+   https://www.spigotmc.org/resources/rpg-inventory-custom-model-data-support.11809/
 
  - Miha responds to responses that have her @'d in the reply?
 
