@@ -124,15 +124,20 @@ public class MobUtils extends MobUtilsBase {
     }
 
     @Override
-    public boolean removeGoal(Entity entity, GoalType goalType) {
+    public boolean removeTargetGoals(Entity entity) {
         Mob mob = getMob(entity);
         if (mob == null) {
             return false;
         }
+        mob.targetSelector.removeAllGoals();
+        return true;
+    }
+
+    protected boolean removeGoal(GoalSelector selector, Mob mob, Entity entity, GoalType goalType) {
         // TODO: Is there a cleaner way?
         try {
             Goal targetGoal = getGoal(goalType, entity, mob, new MemoryConfiguration());
-            Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
+            Collection<WrappedGoal> available = selector.getAvailableGoals();
             List<Goal> found = new ArrayList<>();
             for (WrappedGoal wrappedGoal : available) {
                 if (targetGoal.getClass().isAssignableFrom(wrappedGoal.getGoal().getClass())) {
@@ -140,13 +145,31 @@ public class MobUtils extends MobUtilsBase {
                 }
             }
             for (Goal removeGoal : found) {
-                mob.goalSelector.removeGoal(removeGoal);
+                selector.removeGoal(removeGoal);
             }
         } catch (Exception ex) {
             platform.getLogger().log(Level.WARNING, "Error removing goal: " + goalType + " from " + entity.getType(), ex);
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean removeGoal(Entity entity, GoalType goalType) {
+        Mob mob = getMob(entity);
+        if (mob == null) {
+            return false;
+        }
+        return removeGoal(mob.goalSelector, mob, entity, goalType);
+    }
+
+    @Override
+    public boolean removeTargetGoal(Entity entity, GoalType goalType) {
+        Mob mob = getMob(entity);
+        if (mob == null) {
+            return false;
+        }
+        return removeGoal(mob.targetSelector, mob, entity, goalType);
     }
 
     public String getGoalParentDescriptions(Goal goal) {
@@ -163,12 +186,7 @@ public class MobUtils extends MobUtilsBase {
         return ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY + StringUtils.join(parentClasses, ChatColor.DARK_GRAY + " -> " + ChatColor.GRAY);
     }
 
-    @Override
-    public Collection<String> getGoalDescriptions(Entity entity) {
-        Mob mob = getMob(entity);
-        if (mob == null) {
-            return null;
-        }
+    protected Collection<String> getGoalDescriptions(GoalSelector selector, Mob mob) {
         List<String> descriptions = new ArrayList<>();
         Collection<WrappedGoal> available = mob.goalSelector.getAvailableGoals();
         for (WrappedGoal wrappedGoal : available) {
@@ -186,25 +204,58 @@ public class MobUtils extends MobUtilsBase {
         return descriptions;
     }
 
+
     @Override
-    public boolean addGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
+    public Collection<String> getGoalDescriptions(Entity entity) {
         Mob mob = getMob(entity);
         if (mob == null) {
-            return false;
+            return null;
         }
-        GoalSelector goals = mob.goalSelector;
+        return getGoalDescriptions(mob.goalSelector, mob);
+    }
+
+    @Override
+    public Collection<String> getTargetGoalDescriptions(Entity entity) {
+        Mob mob = getMob(entity);
+        if (mob == null) {
+            return null;
+        }
+        return getGoalDescriptions(mob.targetSelector, mob);
+    }
+
+    protected boolean addGoal(GoalSelector selector, Mob mob, Entity entity, GoalType goalType, ConfigurationSection config) {
         try {
             Goal goal = getGoal(goalType, entity, mob, config);
             if (goal == null) {
                 return false;
             }
             int priority = config.getInt("priority", 0);
-            goals.addGoal(priority, goal);
+            selector.addGoal(priority, goal);
         } catch (Exception ex) {
             platform.getLogger().log(Level.WARNING, "Error creating goal: " + goalType + " on " + entity.getType(), ex);
             return false;
         }
         return true;
+    }
+
+
+    @Override
+    public boolean addGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
+        Mob mob = getMob(entity);
+        if (mob == null) {
+            return false;
+        }
+        return addGoal(mob.goalSelector, mob, entity, goalType, config);
+    }
+
+
+    @Override
+    public boolean addTargetGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
+        Mob mob = getMob(entity);
+        if (mob == null) {
+            return false;
+        }
+        return addGoal(mob.targetSelector, mob, entity, goalType, config);
     }
 
     private Goal getGoal(GoalType goalType, Entity entity, Mob mob, ConfigurationSection config) {

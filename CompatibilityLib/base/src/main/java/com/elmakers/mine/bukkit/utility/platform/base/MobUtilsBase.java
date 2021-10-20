@@ -36,6 +36,31 @@ public class MobUtilsBase implements MobUtils {
     }
 
     @Override
+    public boolean removeTargetGoals(Entity entity) {
+        return false;
+    }
+
+    @Override
+    public boolean removeTargetGoal(Entity entity, GoalType goalType) {
+        return false;
+    }
+
+    @Override
+    public Collection<String> getTargetGoalDescriptions(Entity entity) {
+        return null;
+    }
+
+    @Override
+    public boolean addTargetGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
+        return false;
+    }
+
+    @Override
+    public boolean addTargetGoal(Entity entity, GoalConfiguration goal) {
+        return addTargetGoal(entity, goal.getGoalType(), goal.getConfiguration());
+    }
+
+    @Override
     public boolean setPathfinderTarget(Entity entity, Entity target, double speed) {
         return false;
     }

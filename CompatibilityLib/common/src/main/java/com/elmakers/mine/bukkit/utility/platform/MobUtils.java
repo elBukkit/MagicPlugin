@@ -19,5 +19,15 @@ public interface MobUtils {
 
     boolean addGoal(Entity entity, GoalConfiguration goal);
 
+    boolean removeTargetGoals(Entity entity);
+
+    boolean removeTargetGoal(Entity entity, GoalType goalType);
+
+    Collection<String> getTargetGoalDescriptions(Entity entity);
+
+    boolean addTargetGoal(Entity entity, GoalType goalType, ConfigurationSection config);
+
+    boolean addTargetGoal(Entity entity, GoalConfiguration goal);
+
     boolean setPathfinderTarget(Entity entity, Entity target, double speed);
 }

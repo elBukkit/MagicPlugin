@@ -1127,6 +1127,34 @@ public class EntityData
 
         // Apply custom goals
         applyGoals(entity, goals);
+
+        // Now look for target goals
+        Collection<GoalConfiguration> targets = GoalConfiguration.fromList(brain, "targets",  controller.getLogger(), "mob " + getKey());
+
+        // Remove any existing goals first
+        boolean removeDefaultTargets = brain.getBoolean("remove_default_targets", targets != null && !targets.isEmpty());
+        if (removeDefaultTargets) {
+            if (!mobUtils.removeTargetGoals(entity)) {
+                // This indicates we don't have support for goals, so just stop here.
+                return;
+            }
+        }
+        List<String> removeTargets = ConfigurationUtils.getStringList(brain, "remove_targets");
+        if (removeTargets != null) {
+            for (String goalKey : removeTargets) {
+                GoalType goalType;
+                try {
+                    goalType = GoalType.valueOf(goalKey.toUpperCase());
+                } catch (Exception ex) {
+                    controller.getLogger().info("Invalid goal type in remove_targets of mob " + getKey() + ": " + goalKey);
+                    continue;
+                }
+                mobUtils.removeTargetGoal(entity, goalType);
+            }
+        }
+
+        // Apply custom goals
+        applyTargetGoals(entity, targets);
     }
 
     private void applyGoals(Entity entity, Collection<GoalConfiguration> goals) {
@@ -1141,7 +1169,24 @@ public class EntityData
         }
         for (GoalConfiguration goal : goals) {
             if (!mobUtils.addGoal(entity, goal)) {
-                controller.getLogger().warning("Invalid gaol " + goal.getGoalType() + " for mob type " + entity.getType().name().toLowerCase());
+                controller.getLogger().warning("Invalid goal " + goal.getGoalType() + " for mob type " + entity.getType().name().toLowerCase());
+            }
+        }
+    }
+
+    private void applyTargetGoals(Entity entity, Collection<GoalConfiguration> goals) {
+        MobUtils mobUtils = CompatibilityLib.getMobUtils();
+        if (goals == null || goals.isEmpty()) {
+            return;
+        }
+
+        // Goals require AI, turn it on no matter what
+        if (entity instanceof LivingEntity) {
+            ((LivingEntity)entity).setAI(true);
+        }
+        for (GoalConfiguration goal : goals) {
+            if (!mobUtils.addTargetGoal(entity, goal)) {
+                controller.getLogger().warning("Invalid target goal " + goal.getGoalType() + " for mob type " + entity.getType().name().toLowerCase());
             }
         }
     }

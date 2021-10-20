@@ -8,6 +8,8 @@
    - `remove_default_goals` to remove all vanilla goals (turn off default AI)
    - `remove_goals` to remove specific default goals
    - `goals` to add vanilla and custom pathfinding goals
+   - `remove_default_targets`, `remove_targets`, `targets` also available for targeting goals
+   - The debugger spell will show mobs' current goals  
    - `magic_requirement` goal can be used to wrap a vanilla goal in magic requirements
  - Pets   
    - Added `ownable` property, allows any mob to be owned via the Tame action
