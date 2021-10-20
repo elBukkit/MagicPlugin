@@ -12,5 +12,7 @@ imperial:
   interval: 5000
   targeting:
     radius: 32
-    required_permissions: magic.team.rebel
+    # Imperials will attack anything other than another imperial
+    # This can be used to make them *only* target rebels
+    # required_permissions: magic.team.rebel
     denied_permissions: magic.team.imperial
