@@ -23,7 +23,6 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
-import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
@@ -73,12 +72,7 @@ public class Spawner {
                     if (entityData == null) {
                         controller.getLogger().warning("Invalid mob type in automaton " + automaton.getKey() + ": " + mobKey);
                     } else {
-                        if (entityParameters != null) {
-                            entityData = entityData.clone();
-                            ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(entityData.getConfiguration());
-                            effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, entityParameters);
-                            entityData.load(effectiveParameters);
-                        }
+                        entityData = entityData.createVariant(entityParameters);
                         String customMob = entityData.getName();
                         if (customMob == null || customMob.isEmpty()) {
                             entityTypes.add(entityData.getType());

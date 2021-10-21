@@ -123,4 +123,5 @@ public interface EntityData extends Cloneable {
     EntityData clone();
     Entity getOwner();
     long getTickInterval();
+    EntityData createVariant(ConfigurationSection parameters);
 }

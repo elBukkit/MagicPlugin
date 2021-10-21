@@ -380,10 +380,7 @@ public class MobController implements Listener, ChunkLoadListener {
     public void register(@Nonnull Entity entity, @Nonnull EntityData entityData) {
         EntityData existing = activeMobs.get(entity);
         if (existing != null && existing != entityData) {
-            entityData = entityData.clone();
-            ConfigurationSection combinedConfig = ConfigurationUtils.cloneConfiguration(existing.getConfiguration());
-            combinedConfig = ConfigurationUtils.addConfigurations(combinedConfig, entityData.getConfiguration(), true);
-            entityData.load(combinedConfig);
+            entityData = existing.createVariant(entityData.getConfiguration());
         }
         activeMobs.put(entity, entityData);
     }

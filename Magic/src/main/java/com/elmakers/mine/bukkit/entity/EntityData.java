@@ -1661,4 +1661,18 @@ public class EntityData
     public boolean isStatic() {
         return isStatic;
     }
+
+    @Override
+    public EntityData createVariant(ConfigurationSection parameters) {
+        if (parameters == null || parameters.getKeys(false).isEmpty()) {
+            return this;
+        }
+        EntityData variant = this.clone();
+
+        ConfigurationSection effectiveParameters = ConfigurationUtils.cloneConfiguration(getConfiguration());
+        effectiveParameters = ConfigurationUtils.addConfigurations(effectiveParameters, parameters);
+        variant.load(effectiveParameters);
+
+        return variant;
+    }
 }
