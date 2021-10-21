@@ -78,6 +78,7 @@ import com.elmakers.mine.bukkit.effect.SoundEffect;
 import com.elmakers.mine.bukkit.effect.WandContext;
 import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
+import com.elmakers.mine.bukkit.item.ArmorSlot;
 import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.Mage;
@@ -7032,7 +7033,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         List<Integer> slots = null;
         if (isBoolean("wearable") && getBoolean("wearable")) {
             slots = new ArrayList<>();
-            for (InventorySlot slot : InventorySlot.values()) {
+            for (ArmorSlot slot : ArmorSlot.values()) {
                 if (slot.getSlot() >= 0) {
                     slots.add(slot.getSlot());
                 }

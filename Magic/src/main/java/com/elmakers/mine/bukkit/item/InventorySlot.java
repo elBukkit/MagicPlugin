@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.item;
 
+import java.util.HashMap;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.bukkit.inventory.EntityEquipment;
@@ -9,25 +11,40 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
-public enum InventorySlot {
-    HELMET(39), CHESTPLATE(38), LEGGINGS(37), BOOTS(36),
+public class InventorySlot {
+    private static final Map<Integer, InventorySlot> bySlot = new HashMap<>();
+    private static final Map<String, InventorySlot> byName = new HashMap<>();
 
-    MAIN_HAND(), OFF_HAND(), FREE(),
+    public static final InventorySlot HELMET = new InventorySlot(ArmorSlot.HELMET);
+    public static final InventorySlot CHESTPLATE = new InventorySlot(ArmorSlot.CHESTPLATE);
+    public static final InventorySlot LEGGINGS = new InventorySlot(ArmorSlot.LEGGINGS);
+    public static final InventorySlot BOOTS = new InventorySlot(ArmorSlot.BOOTS);
+
+    public static final InventorySlot MAIN_HAND = new InventorySlot(ArmorSlot.MAIN_HAND);
+    public static final InventorySlot OFF_HAND = new InventorySlot(ArmorSlot.OFF_HAND);
+    public static final InventorySlot FREE = new InventorySlot(ArmorSlot.FREE);
 
     // This is here for armor stands
-    RIGHT_ARM(),
-
-    // This is here for getSlot when getting a non armor-slot
-    INVENTORY();
+    public static final InventorySlot RIGHT_ARM = new InventorySlot(ArmorSlot.RIGHT_ARM);
 
     private final int slot;
+    private final ArmorSlot name;
 
-    InventorySlot() {
-        this(-1);
+    InventorySlot(ArmorSlot armorSlot) {
+        this(armorSlot, armorSlot.getSlot());
     }
 
     InventorySlot(int slot) {
+        this(ArmorSlot.INVENTORY, slot);
+    }
+
+    InventorySlot(ArmorSlot armorSlot, int slot) {
+        this.name = armorSlot;
         this.slot = slot;
+        if (slot >= 0) {
+            bySlot.put(slot, this);
+        }
+        byName.put(armorSlot.name().toLowerCase(), this);
     }
 
     @Nullable
@@ -37,11 +54,21 @@ public enum InventorySlot {
         } else if (key.equalsIgnoreCase("offhand")) {
             key = "off_hand";
         }
-        try {
-            return InventorySlot.valueOf(key.toUpperCase());
-        } catch (Exception ignore) {
+        key = key.toLowerCase();
+        InventorySlot slot = byName.get(key);
+        if (slot == null) {
+            try {
+                int slotNumber = Integer.parseInt(key);
+                slot = bySlot.get(slotNumber);
+                if (slot == null) {
+                    slot = new InventorySlot(slotNumber);
+                    bySlot.put(slotNumber, slot);
+                }
+                byName.put(key, slot);
+            } catch (Exception ignore) {
+            }
         }
-        return null;
+        return slot;
     }
 
     public static Integer parseSlot(String key) {
@@ -65,13 +92,12 @@ public enum InventorySlot {
     }
 
     public static InventorySlot getSlot(int slot) {
-        switch (slot) {
-            case 36: return BOOTS;
-            case 37: return LEGGINGS;
-            case 38: return CHESTPLATE;
-            case 39: return HELMET;
+        InventorySlot number = bySlot.get(slot);
+        if (number == null) {
+            number = new InventorySlot(slot);
+            bySlot.put(slot, number);
         }
-        return INVENTORY;
+        return number;
     }
 
     public int getSlot() {
@@ -82,7 +108,7 @@ public enum InventorySlot {
         if (slot != -1 || !mage.isPlayer()) {
             return slot;
         }
-        switch (this) {
+        switch (this.name) {
             case MAIN_HAND:
                 return mage.getPlayer().getInventory().getHeldItemSlot();
             case OFF_HAND:
@@ -106,7 +132,7 @@ public enum InventorySlot {
     }
 
     public boolean setItem(EntityEquipment equipment, ItemStack itemStack) {
-        switch (this) {
+        switch (this.name) {
             case HELMET:
                 equipment.setHelmet(itemStack);
                 break;
@@ -135,7 +161,7 @@ public enum InventorySlot {
 
     @Nullable
     public ItemStack getItem(EntityEquipment equipment) {
-        switch (this) {
+        switch (this.name) {
             case HELMET:
                 return equipment.getHelmet();
             case CHESTPLATE:

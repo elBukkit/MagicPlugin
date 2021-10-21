@@ -27,6 +27,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
+import com.elmakers.mine.bukkit.item.ArmorSlot;
 import com.elmakers.mine.bukkit.item.InventorySlot;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
@@ -342,7 +343,7 @@ public class EquipAction extends BaseSpellAction
             examples.add("2");
             examples.add("3");
         } else if (parameterKey.equals("slot")) {
-            for (InventorySlot slot : InventorySlot.values()) {
+            for (ArmorSlot slot : ArmorSlot.values()) {
                 examples.add(slot.name().toLowerCase());
             }
         } else if (parameterKey.equals("use_item")) {
