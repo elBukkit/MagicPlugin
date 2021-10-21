@@ -4058,7 +4058,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public void giveItem(ItemStack itemStack) {
-        giveItem(itemStack, true, false);
+        giveItem(itemStack, true, true);
     }
 
     @Override
