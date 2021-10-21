@@ -26,6 +26,8 @@ import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.IdleGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicFollowOwnerGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicOwnerHurtByTargetGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicOwnerHurtTargetGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.RequirementsGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.TriggerGoal;
 
@@ -448,14 +450,16 @@ public class MobUtils extends MobUtilsBase {
                 if (mob instanceof TamableAnimal) {
                     return new OwnerHurtByTargetGoal((TamableAnimal)mob);
                 }
-                // TODO: Custom
-                return null;
+                // Intentional fall-through
+            case MAGIC_OWNER_HURT_BY_TARGET:
+                return new MagicOwnerHurtByTargetGoal(platform, mob, entity, see, reach);
             case OWNER_HURT_TARGET:
                 if (mob instanceof TamableAnimal) {
                     return new OwnerHurtTargetGoal((TamableAnimal)mob);
                 }
-                // TODO: Custom
-                return null;
+                // Intentional fall-through
+            case MAGIC_OWNER_HURT_TARGET:
+                return new MagicOwnerHurtTargetGoal(platform, mob, entity, see, reach);
 
             // Magic add-ons
             case REQUIREMENT:

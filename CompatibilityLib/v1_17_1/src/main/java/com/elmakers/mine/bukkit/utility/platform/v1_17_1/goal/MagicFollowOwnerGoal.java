@@ -1,32 +1,21 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
 import java.util.EnumSet;
-import java.util.UUID;
 
-import org.bukkit.GameMode;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.pathfinder.BlockPathTypes;
 import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
-public class MagicFollowOwnerGoal extends Goal {
-    private final Platform platform;
-    private final Mob mob;
-    private final Entity entity;
-    private final Level level;
+public class MagicFollowOwnerGoal extends MagicOwnerGoal {
     private final double speedModifier;
     private final PathNavigation navigation;
     private final int interval;
@@ -36,13 +25,9 @@ public class MagicFollowOwnerGoal extends Goal {
 
     // State
     private int ticksRemaining = 0;
-    private LivingEntity owner;
 
     public MagicFollowOwnerGoal(Platform platform, Mob tamed, Entity entity, double speedModifier, float startDistance, float stopDistance, int interval, ConfigurationSection config) {
-        this.platform = platform;
-        this.mob = tamed;
-        this.entity = entity;
-        this.level = tamed.level;
+        super(platform, tamed, entity);
         this.speedModifier = speedModifier;
         this.navigation = tamed.getNavigation();
         this.startDistanceSquared = startDistance * startDistance;
@@ -53,96 +38,86 @@ public class MagicFollowOwnerGoal extends Goal {
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
     }
 
+    @Override
     public boolean canUse() {
-        if (owner == null) {
-            UUID ownerUUID = platform.getCompatibilityUtils().getOwnerId(entity);
-            if (ownerUUID != null) {
-                try {
-                    CraftEntity bukkitEntity = (CraftEntity)platform.getCompatibilityUtils().getEntity(ownerUUID);
-                    if (bukkitEntity.getHandle() instanceof LivingEntity) {
-                        owner = (LivingEntity)bukkitEntity.getHandle();
-                    }
-                } catch (Exception ignore) {
-                    // Not going to log this since it'd get really spammy
-                }
-            }
-        }
-        if (owner == null || (owner instanceof Player && ((Player)owner).getGameMode() == GameMode.SPECTATOR)) {
+        if (!super.canUse()) {
             return false;
         }
-        if (platform.getEnityMetadataUtils().getBoolean(entity, MagicMetaKeys.STAY)) {
-            return false;
-        }
-        if (mob.distanceToSqr(owner) < startDistanceSquared) {
+        if (mob.distanceToSqr(tamed.getOwner()) < startDistanceSquared) {
             return false;
         }
         return true;
     }
 
+    @Override
     public boolean canContinueToUse() {
         if (navigation.isDone()) {
             return false;
         }
-        if (platform.getEnityMetadataUtils().getBoolean(entity, MagicMetaKeys.STAY)) {
+        if (tamed.isStay()) {
             return false;
         }
-        return mob.distanceToSqr(owner) > stopDistanceSquared;
+        return mob.distanceToSqr(tamed.getOwner()) > stopDistanceSquared;
     }
 
+    @Override
     public void start() {
         this.ticksRemaining = 0;
     }
 
+    @Override
     public void stop() {
+        super.stop();
         this.navigation.stop();
-        this.owner = null;
     }
 
+    @Override
     public void tick() {
-        this.mob.getLookControl().setLookAt(owner, 10.0F, (float)this.mob.getMaxHeadXRot());
+        this.mob.getLookControl().setLookAt(tamed.getOwner(), 10.0F, (float)this.mob.getMaxHeadXRot());
         if (ticksRemaining-- <= 0) {
             ticksRemaining = this.interval;
             if (!this.mob.isLeashed() && !this.mob.isPassenger()) {
-                if (this.mob.distanceToSqr(this.owner) >= teleportDistanceSquared) {
+                if (this.mob.distanceToSqr(this.tamed.getOwner()) >= teleportDistanceSquared) {
                     this.teleportToOwner();
                 } else {
-                    this.navigation.moveTo(this.owner, this.speedModifier);
+                    this.navigation.moveTo(this.tamed.getOwner(), this.speedModifier);
                 }
             }
         }
     }
 
     private void teleportToOwner() {
-        BlockPos blockPosition = this.owner.blockPosition();
+        BlockPos blockPosition = this.tamed.getOwner().blockPosition();
         for (int i = 0; i < 10; ++i) {
             int dx = RandomUtils.getRandomIntInclusive(-3, 3);
             int dy = RandomUtils.getRandomIntInclusive(-1, 1);
             int dz = RandomUtils.getRandomIntInclusive(-3, 3);
-            if (this.maybeTeleportTo(blockPosition.getX() + dx, blockPosition.getY() + dy, blockPosition.getZ() + dz)) {
+            if (this.tryTeleportTo(blockPosition.getX() + dx, blockPosition.getY() + dy, blockPosition.getZ() + dz)) {
                 break;
             }
         }
     }
 
-    private boolean maybeTeleportTo(int x, int y, int z) {
-        if (Math.abs((double)x - this.owner.getX()) < 2.0D && Math.abs((double)z - this.owner.getZ()) < 2.0D) {
+    private boolean tryTeleportTo(int x, int y, int z) {
+        LivingEntity owner = tamed.getOwner();
+        if (Math.abs((double)x - owner.getX()) < 2.0D && Math.abs((double)z - owner.getZ()) < 2.0D) {
             return false;
         } else if (!this.canTeleportTo(new BlockPos(x, y, z))) {
             return false;
         } else {
-            this.mob.moveTo((double)x + 0.5D, (double)y, (double)z + 0.5D, this.mob.getYRot(), this.mob.getXRot());
+            this.mob.moveTo((double)x + 0.5D, y, (double)z + 0.5D, this.mob.getYRot(), this.mob.getXRot());
             this.navigation.stop();
             return true;
         }
     }
 
     private boolean canTeleportTo(BlockPos blockPosition) {
-        BlockPathTypes pathType = WalkNodeEvaluator.getBlockPathTypeStatic(this.level, blockPosition.mutable());
+        BlockPathTypes pathType = WalkNodeEvaluator.getBlockPathTypeStatic(mob.level, blockPosition.mutable());
         if (pathType != BlockPathTypes.WALKABLE) {
             return false;
         }
 
         blockPosition = blockPosition.e(this.mob.blockPosition());
-        return this.level.noCollision(this.mob, this.mob.getBoundingBox().move(blockPosition));
+        return mob.level.noCollision(this.mob, this.mob.getBoundingBox().move(blockPosition));
     }
 }
