@@ -35,6 +35,7 @@
  - Add Lands to `generic_protection` by default
  - There is now a builtin `magic.team.*` list you can use to set up mob permission teams without ops being on a team by default
    (Permission queries changed again, please let me know if anything weird happens, such as no permission to craft or use wands)
+ - Allow using numbers for "slot" parameters in various places (such as the CheckInventory action)
 
 ## Fixes
 
