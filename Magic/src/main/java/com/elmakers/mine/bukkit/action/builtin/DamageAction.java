@@ -31,6 +31,8 @@ public class DamageAction extends BaseSpellAction
     private boolean magicDamage;
     private boolean magicEntityDamage;
     private boolean invertDistance;
+    private boolean setLastDamaged;
+    private boolean setLastDamagedBy;
     private Double percentage;
     private Double knockbackResistance;
     private Double damageMultiplier;
@@ -55,6 +57,8 @@ public class DamageAction extends BaseSpellAction
         playerDamage = parameters.getDouble("player_damage", damage);
         elementalDamage = parameters.getDouble("elemental_damage", damage);
         invertDistance = parameters.getBoolean("invert_distance", false);
+        setLastDamaged = parameters.getBoolean("set_last_damaged", true);
+        setLastDamagedBy = parameters.getBoolean("set_last_damaged_by", true);
         cancelOnKillTarget = parameters.getBoolean("cancel_on_kill_target", false);
         if (parameters.contains("damage_multiplier")) {
             damageMultiplier = parameters.getDouble("damage_multiplier");
@@ -184,6 +188,12 @@ public class DamageAction extends BaseSpellAction
                 if (damageType != null && !damageType.isEmpty()) {
                     String typeDescription = context.getController().getMessages().get("damage_types." + damageType, damageType);
                     context.addMessageParameter("damage_type", typeDescription);
+                }
+                if (setLastDamaged) {
+                    CompatibilityLib.getCompatibilityUtils().setLastDamaged(targetEntity, mage.getEntity());
+                }
+                if (setLastDamagedBy) {
+                    CompatibilityLib.getCompatibilityUtils().setLastDamagedBy(targetEntity, mage.getEntity());
                 }
             }
         } finally {

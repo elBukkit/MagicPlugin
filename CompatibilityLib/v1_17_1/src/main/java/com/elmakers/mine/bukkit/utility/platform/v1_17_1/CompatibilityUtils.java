@@ -1758,4 +1758,36 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         }
         return ((net.minecraft.world.entity.LivingEntity)nms).swinging;
     }
+
+    @Override
+    public boolean setLastDamaged(Entity damaged, Entity damager) {
+        if (damager == null) {
+            return false;
+        }
+        net.minecraft.world.entity.Entity nmsDamager = ((CraftEntity)damager).getHandle();
+        if (nmsDamager == null || !(nmsDamager instanceof net.minecraft.world.entity.LivingEntity)) {
+            return false;
+        }
+        net.minecraft.world.entity.LivingEntity livingDamager = (net.minecraft.world.entity.LivingEntity)nmsDamager;
+        net.minecraft.world.entity.Entity nmsDamaged = damaged == null ? null : ((CraftEntity)damaged).getHandle();
+        livingDamager.setLastHurtMob(nmsDamaged);
+        return true;
+    }
+
+    @Override
+    public boolean setLastDamagedBy(Entity damaged, Entity damager) {
+        if (damager == null) {
+            return false;
+        }
+        net.minecraft.world.entity.Entity nmsDamaged = ((CraftEntity)damager).getHandle();
+        if (nmsDamaged == null || !(nmsDamaged instanceof net.minecraft.world.entity.LivingEntity)) {
+            return false;
+        }
+        net.minecraft.world.entity.LivingEntity livingDamaged = (net.minecraft.world.entity.LivingEntity)nmsDamaged;
+        net.minecraft.world.entity.Entity nmsDamager = damager == null ? null : ((CraftEntity)damager).getHandle();
+        net.minecraft.world.entity.LivingEntity livingDamager = nmsDamager instanceof net.minecraft.world.entity.LivingEntity
+                ? (net.minecraft.world.entity.LivingEntity)nmsDamaged : null;
+        livingDamaged.setLastHurtByMob(livingDamager);
+        return true;
+    }
 }

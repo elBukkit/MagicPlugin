@@ -537,4 +537,8 @@ public interface CompatibilityUtils {
     void setOwner(Entity entity, UUID ownerId);
 
     default boolean isSwingingArm(Entity entity) { return false; }
+
+    default boolean setLastDamaged(Entity damaged, Entity damager) { return false; }
+
+    default boolean setLastDamagedBy(Entity damaged, Entity damager) { return false; }
 }
