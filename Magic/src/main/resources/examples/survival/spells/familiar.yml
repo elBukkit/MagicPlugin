@@ -61,6 +61,13 @@ familiar:
             horse: 5
             snowman: 5
             iron_golem: 2
+        entity_parameters:
+          brain:
+            goals:
+              - type: follow_owner
+                priority: 2
+              - type: look_at_player
+                priority: 3
         target_type: LivingEntity
         allow_max_range: false
         cooldown: 30000

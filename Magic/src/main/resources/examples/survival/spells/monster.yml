@@ -69,6 +69,18 @@ monster:
         cooldown: 30000
         range: 32
         undo: 10000
+        entity_parameters:
+          brain:
+            goals:
+              - type: melee_attack
+                priority: 1
+              - type: follow_owner
+                priority: 2
+              - type: look_at_player
+                priority: 3
+            targets:
+              - owner_hurt_target
+              - owner_hurt_by_target
         entity_types:
             zombie: 100
             skeleton: 100
@@ -111,4 +123,3 @@ monster|3:
             blaze: 25
             ghast: 10
             zoglin: 10
-
