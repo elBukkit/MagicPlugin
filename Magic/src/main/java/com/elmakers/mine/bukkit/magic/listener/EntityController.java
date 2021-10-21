@@ -113,6 +113,10 @@ public class EntityController implements Listener {
         disableItemSpawn = disable;
     }
 
+    public boolean isItemSpawnDisabled() {
+        return disableItemSpawn;
+    }
+
     public void setForceSpawn(boolean forceSpawn) {
         this.forceSpawn = forceSpawn;
     }

@@ -3851,7 +3851,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 // button.
                 mage.sendDebugMessage(ChatColor.RED + "  updating slot with a non-brush/spell item: " + item.getType(), 30);
                 if (!item.equals(this.item)) {
+                    boolean spawnDisabled = controller.isItemSpawnDisabled();
+                    if (spawnDisabled) controller.enableItemSpawn();
                     mage.giveItem(item);
+                    if (spawnDisabled) controller.disableItemSpawn();
                     mage.sendDebugMessage(ChatColor.RED + "    Giving to mage: " + item.getType(), 100);
                 }
                 return false;

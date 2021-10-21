@@ -6096,6 +6096,10 @@ public class MagicController implements MageController {
         entityController.setDisableItemSpawn(false);
     }
 
+    public boolean isItemSpawnDisabled() {
+        return entityController.isItemSpawnDisabled();
+    }
+
     @Override
     public void setForceSpawn(boolean force) {
         entityController.setForceSpawn(force);

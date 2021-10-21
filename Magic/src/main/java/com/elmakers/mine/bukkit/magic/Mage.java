@@ -41,6 +41,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
@@ -4045,7 +4046,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
             Entity entity = getEntity();
             if (entity != null) {
-                entity.getWorld().dropItem(entity.getLocation(), itemStack);
+                Item item = entity.getWorld().dropItem(entity.getLocation(), itemStack);
+                if (item == null || !item.isValid()) {
+                    controller.getLogger().warning("Tried to give an item to a player with a full inventory and couldn't spawn item entity: " + itemStack);
+                }
             }
         }
         return true;
