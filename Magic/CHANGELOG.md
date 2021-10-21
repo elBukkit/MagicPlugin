@@ -36,7 +36,7 @@
  - There is now a builtin `magic.team.*` list you can use to set up mob permission teams without ops being on a team by default
    (Permission queries changed again, please let me know if anything weird happens, such as no permission to craft or use wands)
  - Allow using numbers for "slot" parameters in various places (such as the CheckInventory action)
- - Mobs spawned by the `monster` spell will attack for you
+ - Mobs spawned by the `monster` and `mob` spell will attack for you (`familiar` and `farm` will follow you)
  - The Damage action will now force-set the damager and damaged NMS references, so "magic" damage registers with
    vanilla mob AI, possibly other plugins
 

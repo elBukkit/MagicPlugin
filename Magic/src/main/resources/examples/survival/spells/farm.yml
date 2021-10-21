@@ -63,6 +63,13 @@ farm:
         undo: 30000
         radius: 24
         delay: 500
+        entity_parameters:
+          brain:
+            goals:
+              - type: follow_owner
+                priority: 2
+              - type: look_at_player
+                priority: 3
         entity_types:
             chicken: 30
             cow: 100
