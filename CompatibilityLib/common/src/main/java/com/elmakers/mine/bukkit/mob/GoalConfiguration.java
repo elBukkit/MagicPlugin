@@ -58,7 +58,7 @@ public class GoalConfiguration implements Comparable<GoalConfiguration> {
         if (!parent.contains(key)) return null;
         List<GoalConfiguration> list = new ArrayList<>();
         if (parent.isList(key)) {
-            List<?> goals = parent.getList("goals");
+            List<?> goals = parent.getList(key);
             for (Object rawGoal : goals) {
                 GoalConfiguration goal = fromConfiguration(parent, rawGoal, logger, logContext);
                 if (goal == null) continue;
