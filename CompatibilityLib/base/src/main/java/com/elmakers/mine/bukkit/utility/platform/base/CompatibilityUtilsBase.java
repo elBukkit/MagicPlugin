@@ -1077,7 +1077,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         if (entity instanceof Tameable) {
             Tameable tamed = (Tameable)entity;
             AnimalTamer tamer = tamed.getOwner();
-            return tamer.getUniqueId();
+            return tamer == null ? null : tamer.getUniqueId();
         }
         return null;
     }
