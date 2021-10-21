@@ -65,6 +65,7 @@ public class SpawnEntityAction extends CompoundAction
     private double dyOffset;
 
     private EntityData entityData;
+    private ConfigurationSection entityParameters;
     private WeakReference<Entity> entity;
     private boolean spawnActionsRun = false;
     private boolean deathActionsRun = false;
@@ -89,6 +90,7 @@ public class SpawnEntityAction extends CompoundAction
         allowReplacement = parameters.getBoolean("allow_replacement", true);
         useWandName = parameters.getBoolean("use_wand_name", false);
         parameterizeName = parameters.getBoolean("parameterize_name", true);
+        entityParameters = parameters.getConfigurationSection("entity_parameters");
 
         String disguiseTarget = parameters.getString("disguise_target");
         if (disguiseTarget != null) {
@@ -240,6 +242,9 @@ public class SpawnEntityAction extends CompoundAction
         if (entityData == null)
         {
             return SpellResult.FAIL;
+        }
+        if (entityParameters != null) {
+            entityData = entityData.createVariant(entityParameters);
         }
 
         if (force) {

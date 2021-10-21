@@ -61,6 +61,7 @@
  - Add `fail` action handler to `Probability` action
  - Add `prob(p, x, y)` function to equation parser, returns x if a random 0-1 draw < p, else returns y
  - Add `cache: false` option to items to allow randomization to work
+ - Add `entity_parameters` section to SpawnEntity action, will be applied to any mobs spawned
 
 ## Changes
 
