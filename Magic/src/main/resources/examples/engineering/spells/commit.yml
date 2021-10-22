@@ -39,6 +39,7 @@ commit:
         target: self
         bypass_backfire: true
         loud: true
+        commit_all: false
     costs:
         mana: 200
 
