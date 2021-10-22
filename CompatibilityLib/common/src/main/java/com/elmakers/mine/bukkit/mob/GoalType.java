@@ -35,7 +35,7 @@ public enum GoalType {
     OCELOT_ATTACK,
     OFFER_FLOWER,
     OPEN_DOOR,
-    PANIC,
+    PANIC_FIRE, // renamed, use magic panic by default
     // PATHFIND_TO_RAID
     RANDOM_LOOK_AROUND,
     RANDOM_STROLL,
@@ -77,5 +77,7 @@ public enum GoalType {
     FOLLOW_ENTITY,
     MAGIC_FOLLOW_MOB,
     MAGIC_OWNER_HURT_BY_TARGET,
-    MAGIC_OWNER_HURT_TARGET
+    MAGIC_OWNER_HURT_TARGET,
+    MAGIC_PANIC,
+    PANIC // renamed vanilla goal to panic_fire
 }

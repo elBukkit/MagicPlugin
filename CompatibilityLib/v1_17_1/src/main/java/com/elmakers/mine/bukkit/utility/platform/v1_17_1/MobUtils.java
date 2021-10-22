@@ -29,6 +29,7 @@ import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicFollowOwnerGo
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicOwnerHurtByTargetGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicOwnerHurtTargetGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicPanicGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.RequirementsGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.TriggerGoal;
 
@@ -453,9 +454,13 @@ public class MobUtils extends MobUtilsBase {
                 return null;
             case OPEN_DOOR:
                 return new OpenDoorGoal(mob, config.getBoolean("close", false));
-            case PANIC:
+            case PANIC_FIRE:
                 if (pathfinder == null) return null;
                 return new PanicGoal(pathfinder, speed);
+            case PANIC:
+            case MAGIC_PANIC:
+                if (pathfinder == null) return null;
+                return new MagicPanicGoal(pathfinder, speed, config.getInt("panic", 3000), config.getInt("calm", 5000), interruptable);
             case RANDOM_LOOK_AROUND:
                 return new RandomLookAroundGoal(mob);
             case RANDOM_STROLL:
