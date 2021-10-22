@@ -14,6 +14,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.logging.Level;
@@ -3746,6 +3747,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
                 sender.sendMessage(ChatColor.YELLOW + "Targeting: " + ChatColor.GOLD + mobName);
             }
+        }
+        UUID ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(entity);
+        if (ownerId != null) {
+            sender.sendMessage(ChatColor.GREEN + "Owner: " + ChatColor.GRAY + ownerId);
         }
     }
 
