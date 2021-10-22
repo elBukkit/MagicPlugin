@@ -13,9 +13,6 @@ mutant_captain:
   loot:
     gold_nugget:
       count: looting + 10
-  potion_effects:
-  - type: speed
-    amplifier: 0
   entity_attributes:
     generic_knockback_resistance: 1
     generic_attack_speed: 3
