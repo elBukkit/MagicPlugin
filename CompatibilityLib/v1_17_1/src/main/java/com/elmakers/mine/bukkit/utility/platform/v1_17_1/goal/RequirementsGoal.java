@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -43,6 +44,6 @@ public class RequirementsGoal extends MagicGoal {
         for (Requirement requirement : requirements) {
             requirementDescriptions.add(requirement.toString());
         }
-        return "Requirements(" + StringUtils.join(requirementDescriptions, " ") + "]";
+        return "Requirements" + ChatColor.GRAY + "(" + ChatColor.DARK_AQUA + StringUtils.join(requirementDescriptions, " ") + ChatColor.GRAY + ")";
     }
 }

@@ -6,6 +6,7 @@ import java.util.EnumSet;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.bukkit.ChatColor;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 
@@ -118,9 +119,15 @@ public class MagicGoal extends Goal {
     protected String getSubDescription() {
         List<String> goalDescriptions = new ArrayList<>();
         for (Goal goal : goals) {
-            goalDescriptions.add(goal.toString());
+            String goalDescription = goal.toString();
+            if (goal == currentGoal) {
+                goalDescription = ChatColor.AQUA + goalDescription;
+            } else {
+                goalDescription = ChatColor.DARK_AQUA + goalDescription;
+            }
+            goalDescriptions.add(goalDescription);
         }
-        return "[" + StringUtils.join(goalDescriptions, " ") + "]";
+        return ChatColor.DARK_GRAY + " [" + StringUtils.join(goalDescriptions, " ") + ChatColor.DARK_GRAY + "]";
     }
 
     protected String getDescription() {
@@ -129,6 +136,6 @@ public class MagicGoal extends Goal {
 
     @Override
     public String toString() {
-        return getDescription() + ": " + getSubDescription();
+        return getDescription() + getSubDescription();
     }
 }

@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
 import java.util.Collection;
 
+import org.bukkit.ChatColor;
+
 import com.elmakers.mine.bukkit.api.magic.Mage;
 
 import net.minecraft.world.entity.ai.goal.Goal;
@@ -32,6 +34,6 @@ public class TriggerGoal extends MagicGoal {
 
     @Override
     protected String getDescription() {
-        return "Trigger(" + trigger + ")";
+        return "Trigger" + ChatColor.GRAY + "(" + ChatColor.DARK_AQUA + trigger + ChatColor.GRAY + ")";
     }
 }

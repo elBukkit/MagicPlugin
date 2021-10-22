@@ -29,7 +29,7 @@ public class MagicTamed {
             UUID ownerUUID = platform.getCompatibilityUtils().getOwnerId(mob.getBukkitEntity());
             if (ownerUUID != null) {
                 CraftEntity bukkitEntity = (CraftEntity)platform.getCompatibilityUtils().getEntity(ownerUUID);
-                if (bukkitEntity.getHandle() instanceof LivingEntity) {
+                if (bukkitEntity != null && bukkitEntity.getHandle() instanceof LivingEntity) {
                     owner = (LivingEntity)bukkitEntity.getHandle();
                 }
             }
