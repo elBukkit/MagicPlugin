@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
-import org.bukkit.entity.Entity;
-
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 import net.minecraft.world.entity.Mob;
@@ -11,8 +9,8 @@ public abstract class MagicOwnerGoal extends Goal {
     protected final Mob mob;
     protected final MagicTamed tamed;
 
-    public MagicOwnerGoal(Platform platform, Mob mob, Entity entity) {
-        this.tamed = new MagicTamed(platform, mob, entity);
+    public MagicOwnerGoal(Platform platform, Mob mob) {
+        this.tamed = new MagicTamed(platform, mob);
         this.mob = mob;
     }
 

@@ -10,22 +10,20 @@ import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 
 public class MagicFollowMobGoal extends Goal {
-    private final Class<? extends LivingEntity> followType;
     private final Mob mob;
     private final double speedModifier;
     private final PathNavigation navigation;
     private final int interval;
     private final double radius;
     private final double stopDistanceSquared;
+    private final Predicate<LivingEntity> followPredicate;
 
     // State
-    private final Predicate<LivingEntity> followPredicate;
     private int ticksRemaining = 0;
     private LivingEntity followingMob;
 
     public MagicFollowMobGoal(Mob mob, double speedModifier, double radius, float stopDistance, int interval, Class<? extends LivingEntity> followType) {
         this.mob = mob;
-        this.followType = followType;
         this.radius = radius;
         this.interval = interval;
         this.speedModifier = speedModifier;

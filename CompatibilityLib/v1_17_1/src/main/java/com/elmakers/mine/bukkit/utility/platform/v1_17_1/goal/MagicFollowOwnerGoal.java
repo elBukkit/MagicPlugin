@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 import java.util.EnumSet;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
@@ -26,8 +25,8 @@ public class MagicFollowOwnerGoal extends MagicOwnerGoal {
     // State
     private int ticksRemaining = 0;
 
-    public MagicFollowOwnerGoal(Platform platform, Mob tamed, Entity entity, double speedModifier, float startDistance, float stopDistance, int interval, ConfigurationSection config) {
-        super(platform, tamed, entity);
+    public MagicFollowOwnerGoal(Platform platform, Mob tamed, double speedModifier, float startDistance, float stopDistance, int interval, ConfigurationSection config) {
+        super(platform, tamed);
         this.speedModifier = speedModifier;
         this.navigation = tamed.getNavigation();
         this.startDistanceSquared = startDistance * startDistance;

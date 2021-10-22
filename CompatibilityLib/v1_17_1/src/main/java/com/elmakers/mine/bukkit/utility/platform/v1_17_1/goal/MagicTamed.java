@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import org.bukkit.GameMode;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
@@ -16,20 +15,18 @@ import net.minecraft.world.entity.Mob;
 public class MagicTamed {
     protected final Platform platform;
     protected final Mob mob;
-    protected final Entity entity;
 
     // State
     protected LivingEntity owner;
 
-    public MagicTamed(Platform platform, Mob tamed, Entity entity) {
+    public MagicTamed(Platform platform, Mob tamed) {
         this.platform = platform;
         this.mob = tamed;
-        this.entity = entity;
     }
 
     protected void checkOwner() {
         if (owner == null) {
-            UUID ownerUUID = platform.getCompatibilityUtils().getOwnerId(entity);
+            UUID ownerUUID = platform.getCompatibilityUtils().getOwnerId(mob.getBukkitEntity());
             if (ownerUUID != null) {
                 CraftEntity bukkitEntity = (CraftEntity)platform.getCompatibilityUtils().getEntity(ownerUUID);
                 if (bukkitEntity.getHandle() instanceof LivingEntity) {
@@ -39,8 +36,13 @@ public class MagicTamed {
         }
     }
 
+    public void setOwner(LivingEntity owner) {
+        this.owner = owner;
+        platform.getCompatibilityUtils().setOwner(mob.getBukkitEntity(), owner == null ? null : owner.getBukkitEntity());
+    }
+
     public boolean isStay() {
-        return platform.getEnityMetadataUtils().getBoolean(entity, MagicMetaKeys.STAY);
+        return platform.getEnityMetadataUtils().getBoolean(mob.getBukkitEntity(), MagicMetaKeys.STAY);
     }
 
     public boolean canUse() {

@@ -23,7 +23,7 @@ public abstract class MagicOwnerTargetGoal extends TargetGoal {
     public MagicOwnerTargetGoal(Platform platform, Mob mob, Entity entity, boolean see, boolean reach) {
         super(mob, see, reach);
         this.mob = mob;
-        this.tamed = new MagicTamed(platform, mob, entity);
+        this.tamed = new MagicTamed(platform, mob);
         this.setFlags(EnumSet.of(Flag.TARGET));
     }
 
