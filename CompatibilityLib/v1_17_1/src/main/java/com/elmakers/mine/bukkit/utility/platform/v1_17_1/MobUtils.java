@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.IdleGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicFollowMobGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicFollowOwnerGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicOwnerHurtByTargetGoal;
@@ -163,6 +164,9 @@ import net.minecraft.world.entity.monster.Zoglin;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.monster.ZombieVillager;
 import net.minecraft.world.entity.monster.ZombifiedPiglin;
+import net.minecraft.world.entity.monster.hoglin.Hoglin;
+import net.minecraft.world.entity.monster.piglin.Piglin;
+import net.minecraft.world.entity.monster.piglin.PiglinBrute;
 import net.minecraft.world.entity.npc.Villager;
 import net.minecraft.world.entity.npc.WanderingTrader;
 import net.minecraft.world.entity.player.Player;
@@ -347,6 +351,7 @@ public class MobUtils extends MobUtilsBase {
         final boolean reach = config.getBoolean("reach", false);
         final float startDistance = (float)config.getDouble("start_distance", 5);
         final float stopDistance = (float)config.getDouble("stop_distance", 1);
+        final float radius = (float)config.getDouble("radius", 16);
         final PathfinderMob pathfinder = mob instanceof PathfinderMob ? (PathfinderMob)mob : null;
         EntityData entityData = platform.getController().getMob(entity);
         int defaultInterval = 1000;
@@ -397,7 +402,7 @@ public class MobUtils extends MobUtilsBase {
                 }
                 return null;
             case FOLLOW_MOB:
-                return new FollowMobGoal(mob, speed, distance, (float)config.getDouble("radius", 7));
+                return new FollowMobGoal(mob, speed, distance, radius);
             case FOLLOW_OWNER:
                 if (mob instanceof TamableAnimal) {
                     return new FollowOwnerGoal((TamableAnimal)mob, speed, startDistance, stopDistance, config.getBoolean("fly", false));
@@ -536,6 +541,14 @@ public class MobUtils extends MobUtilsBase {
                 return new MagicOwnerHurtTargetGoal(platform, mob, entity, see, reach);
 
             // Magic add-ons
+            case FOLLOW_ENTITY:
+            case MAGIC_FOLLOW_MOB:
+                Class<? extends LivingEntity> mobClass = getMobClass(classType);
+                if (mobClass == null) {
+                    platform.getLogger().warning("Unsupported entity_class in magic_follow_mob goal: " + classType);
+                    return null;
+                }
+                return new MagicFollowMobGoal(mob, speed, radius, distance, interval, mobClass);
             case REQUIREMENT:
             case REQUIREMENTS:
                 if (pathfinder == null) return null;
@@ -712,6 +725,17 @@ public class MobUtils extends MobUtilsBase {
             case "armorstand":
             case "armor_stand":
                 return ArmorStand.class;
+
+            // Hoglin
+            case "hoglin":
+                return Hoglin.class;
+
+            // Piglin
+            case "piglin":
+                return Piglin.class;
+            case "piglinbrute":
+            case "piglin_brute":
+                return PiglinBrute.class;
 
             // Monster
             case "abstractillager":
