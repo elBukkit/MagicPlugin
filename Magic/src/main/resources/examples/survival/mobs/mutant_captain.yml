@@ -1,11 +1,11 @@
 mutant_captain:
-  type: zombified_piglin
+  type: piglin_brute
   item: iron_sword
   chestplate: gold_chestplate
   leggings: gold_leggings
   helmet: gold_helmet
   boots: gold_boots
-  health: 30
+  health: 50
   default_drops: false
   transformable: false
   drops:
