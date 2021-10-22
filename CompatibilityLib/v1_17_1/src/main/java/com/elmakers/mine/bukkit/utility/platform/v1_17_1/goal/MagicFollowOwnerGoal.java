@@ -32,6 +32,9 @@ public class MagicFollowOwnerGoal extends MagicOwnerGoal {
         this.startDistanceSquared = startDistance * startDistance;
         this.stopDistanceSquared = stopDistance * stopDistance;
         float teleportDistance = (float)config.getDouble("teleport_distance", 12);
+        if (!config.getBoolean("teleport", true)) {
+            teleportDistance = 0;
+        }
         this.teleportDistanceSquared = teleportDistance * teleportDistance;
         this.interval = interval;
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -76,7 +79,7 @@ public class MagicFollowOwnerGoal extends MagicOwnerGoal {
         if (ticksRemaining-- <= 0) {
             ticksRemaining = this.interval;
             if (!this.mob.isLeashed() && !this.mob.isPassenger()) {
-                if (this.mob.distanceToSqr(this.tamed.getOwner()) >= teleportDistanceSquared) {
+                if (teleportDistanceSquared > 0 && this.mob.distanceToSqr(this.tamed.getOwner()) >= teleportDistanceSquared) {
                     this.teleportToOwner();
                 } else {
                     this.navigation.moveTo(this.tamed.getOwner(), this.speedModifier);

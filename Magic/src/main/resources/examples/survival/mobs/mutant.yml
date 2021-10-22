@@ -16,9 +16,10 @@ mutant:
         requirement:
           owned: true
         goals:
-          - check_owner
-          - melee_attack
-          - follow_owner
+          - type: check_owner
+          - type: melee_attack
+          - type: follow_owner
+            teleport: false
       - type: requirement
         requirement:
           owned: false
