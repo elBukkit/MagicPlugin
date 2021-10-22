@@ -12,9 +12,7 @@ public class MagicCheckOwnerGoal extends MagicOwnerGoal {
 
     @Override
     public boolean canUse() {
-        if (!tamed.canUse()) {
-            return false;
-        }
+        tamed.checkOwner();
         LivingEntity owner = tamed.getOwner();
         if (owner == null || owner.isDeadOrDying()) {
             tamed.setOwner(null);
