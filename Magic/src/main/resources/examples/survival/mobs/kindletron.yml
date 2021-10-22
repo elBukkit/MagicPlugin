@@ -20,20 +20,11 @@ kindletron:
   triggers:
     damage1:
       type: damage
-      min_health: 100
+      max_health: 20
       cast:
         push|4: 150
         push|3: 100
         none: 50
-    damage2:
-      type: damage
-      max_health: 100
-      cast:
-        missile|4: 150
-        railgun: 100
-        push|4: 70
-        shell: 20
-        none: 20
     death:
       cast: "model_state model_state death"
     swing:
@@ -42,7 +33,7 @@ kindletron:
     attack:
       type: swing
       cast:
-        "wound|3 cooldown 0 quiet true": 100
+        kindletron_smash: 100
         none: 20
   drops:
     - emerald: 15
