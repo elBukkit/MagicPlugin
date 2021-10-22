@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumSet;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
@@ -14,8 +15,33 @@ public class MagicGoal extends Goal {
     private Goal currentGoal;
 
     public MagicGoal(Collection<Goal> goals, boolean interruptable) {
+        this(goals, interruptable, null);
+    }
+
+    public MagicGoal(Collection<Goal> goals, boolean interruptable, List<String> flagKeys) {
         this.goals = goals;
         this.interruptable = interruptable;
+
+        // You might think, "gee, why not just use the flags of the sub-goals?"
+        // Indeed!
+        // But unfortunately, as of 1.17.1 the Goal.getFlags method does not properly
+        // remapped and so will cause a runtime error.
+        // So we'll assume move/look for now
+        // TODO: Add parameters to all custom goals to control flags, maybe?
+        EnumSet<Flag> flags;
+        if (flagKeys == null) {
+            flags = EnumSet.of(Flag.MOVE, Flag.LOOK);
+        } else {
+            flags = EnumSet.noneOf(Flag.class);
+            for (String flagKey : flagKeys) {
+                try {
+                    Flag flag = Flag.valueOf(flagKey.toUpperCase());
+                    flags.add(flag);
+                } catch (Exception ignore) {
+                }
+            }
+        }
+        this.setFlags(flags);
     }
 
     @Override

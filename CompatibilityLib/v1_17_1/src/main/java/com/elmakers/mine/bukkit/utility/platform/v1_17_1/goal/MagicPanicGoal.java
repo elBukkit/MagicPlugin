@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal;
 
-import java.util.EnumSet;
-
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.PanicGoal;
 
