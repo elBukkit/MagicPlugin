@@ -203,8 +203,10 @@ public class MobUtils extends MobUtilsBase {
             }
             if (wrappedGoal.isRunning()) {
                 description = ChatColor.AQUA + description;
+            } else {
+                description = ChatColor.GOLD + description;
             }
-            descriptions.add(description);
+            descriptions.add(ChatColor.BLUE + Integer.toString(wrappedGoal.getPriority()) + ChatColor.DARK_GRAY + ": " + description);
         }
         return descriptions;
     }
