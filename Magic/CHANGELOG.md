@@ -24,7 +24,7 @@
  - Example `philbert` mob added, a friendly tameable creeper
  - ModelEngine example mob `kindetron` added, custom boss mob  
  - Warlocks and Dark Wizards now try to keep their distance, swing their arms when casting
- - Mutants will now follow mutant captains, and easily   
+ - Mutants will now follow mutant captains, and easily panic when there is no captain around
  - NPCs now always look at players (have ai, don't move, aren't collidable)
  - Add `leash_blocks` mob spawner option to prevent mobs going over specific block types
  - Add `swing` trigger for mobs, triggers when they swing their arm (1.17 only)

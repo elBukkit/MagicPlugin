@@ -20,6 +20,9 @@ mutant:
           priority: 2
           distance: 5
         - type: panic
+          panic: 20 seconds
+          calm: 15 seconds
+          interruptable: false
       - type: melee_attack
         priority: 3
       - type: look_at_player
