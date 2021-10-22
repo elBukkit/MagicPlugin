@@ -12,23 +12,27 @@ mutant:
     goals:
       # Follow the mutant captain if one is around
       # If not, be prone to panicing!
-      - type: group
-        priority: 2
+      - type: requirement
+        requirement:
+          owned: true
         goals:
-        - type: follow_entity
-          entity_class: piglin_brute
-          priority: 2
-          distance: 5
-        - type: panic
-          panic: 20 seconds
-          calm: 15 seconds
-          interruptable: false
-      - type: melee_attack
-        priority: 3
+          - check_owner
+          - melee_attack
+          - follow_owner
+      - type: requirement
+        requirement:
+          owned: false
+        goals:
+          - type: panic
+            panic: 20 seconds
+            calm: 15 seconds
+            interruptable: false
+          - type: find_owner
+            entity_class: piglin_brute
+          - type: melee_attack
+      - type: random_stroll
       - type: look_at_player
-        priority: 8
       - type: random_look_around
-        priority: 8
   loot:
     gold_nugget:
       count: looting + 4
