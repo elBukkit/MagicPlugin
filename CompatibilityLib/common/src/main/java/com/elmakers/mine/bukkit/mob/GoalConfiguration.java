@@ -80,6 +80,10 @@ public class GoalConfiguration implements Comparable<GoalConfiguration> {
         return configuration;
     }
 
+    public int getPriority() {
+        return priority;
+    }
+
     @Override
     public int compareTo(GoalConfiguration o) {
         return Integer.compare(priority, o.priority);

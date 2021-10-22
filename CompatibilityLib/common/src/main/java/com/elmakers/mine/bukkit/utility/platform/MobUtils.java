@@ -15,7 +15,7 @@ public interface MobUtils {
 
     Collection<String> getGoalDescriptions(Entity entity);
 
-    boolean addGoal(Entity entity, GoalType goalType, ConfigurationSection config);
+    boolean addGoal(Entity entity, GoalType goalType, int priority, ConfigurationSection config);
 
     boolean addGoal(Entity entity, GoalConfiguration goal);
 
@@ -25,7 +25,7 @@ public interface MobUtils {
 
     Collection<String> getTargetGoalDescriptions(Entity entity);
 
-    boolean addTargetGoal(Entity entity, GoalType goalType, ConfigurationSection config);
+    boolean addTargetGoal(Entity entity, GoalType goalType, int priority, ConfigurationSection config);
 
     boolean addTargetGoal(Entity entity, GoalConfiguration goal);
 

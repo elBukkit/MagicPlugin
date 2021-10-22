@@ -26,13 +26,13 @@ public class MobUtilsBase implements MobUtils {
     }
 
     @Override
-    public boolean addGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
+    public boolean addGoal(Entity entity, GoalType goalType, int priority, ConfigurationSection config) {
         return false;
     }
 
     @Override
     public boolean addGoal(Entity entity, GoalConfiguration goal) {
-        return addGoal(entity, goal.getGoalType(), goal.getConfiguration());
+        return addGoal(entity, goal.getGoalType(), goal.getPriority(), goal.getConfiguration());
     }
 
     @Override
@@ -51,13 +51,13 @@ public class MobUtilsBase implements MobUtils {
     }
 
     @Override
-    public boolean addTargetGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
+    public boolean addTargetGoal(Entity entity, GoalType goalType, int priority, ConfigurationSection config) {
         return false;
     }
 
     @Override
     public boolean addTargetGoal(Entity entity, GoalConfiguration goal) {
-        return addTargetGoal(entity, goal.getGoalType(), goal.getConfiguration());
+        return addTargetGoal(entity, goal.getGoalType(), goal.getPriority(), goal.getConfiguration());
     }
 
     @Override

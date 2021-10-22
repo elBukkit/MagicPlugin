@@ -24,6 +24,8 @@ import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.IdleGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicCheckOwnerGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicFindOwnerGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicFollowMobGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicFollowOwnerGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_17_1.goal.MagicGoal;
@@ -288,7 +290,6 @@ public class MobUtils extends MobUtilsBase {
         return descriptions;
     }
 
-
     @Override
     public Collection<String> getGoalDescriptions(Entity entity) {
         Mob mob = getMob(entity);
@@ -307,13 +308,12 @@ public class MobUtils extends MobUtilsBase {
         return getGoalDescriptions(mob.targetSelector);
     }
 
-    protected boolean addGoal(GoalSelector selector, Mob mob, Entity entity, GoalType goalType, ConfigurationSection config) {
+    protected boolean addGoal(GoalSelector selector, Mob mob, Entity entity, GoalType goalType, int priority, ConfigurationSection config) {
         try {
             Goal goal = getGoal(goalType, entity, mob, config);
             if (goal == null) {
                 return false;
             }
-            int priority = config.getInt("priority", 0);
             selector.addGoal(priority, goal);
         } catch (Exception ex) {
             platform.getLogger().log(Level.WARNING, "Error creating goal: " + goalType + " on " + entity.getType(), ex);
@@ -324,21 +324,21 @@ public class MobUtils extends MobUtilsBase {
 
 
     @Override
-    public boolean addGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
+    public boolean addGoal(Entity entity, GoalType goalType, int priority, ConfigurationSection config) {
         Mob mob = getMob(entity);
         if (mob == null) {
             return false;
         }
-        return addGoal(mob.goalSelector, mob, entity, goalType, config);
+        return addGoal(mob.goalSelector, mob, entity, goalType, priority, config);
     }
 
     @Override
-    public boolean addTargetGoal(Entity entity, GoalType goalType, ConfigurationSection config) {
+    public boolean addTargetGoal(Entity entity, GoalType goalType, int priority, ConfigurationSection config) {
         Mob mob = getMob(entity);
         if (mob == null) {
             return false;
         }
-        return addGoal(mob.targetSelector, mob, entity, goalType, config);
+        return addGoal(mob.targetSelector, mob, entity, goalType, priority, config);
     }
 
     private Goal getGoal(GoalType goalType, Entity entity, Mob mob, ConfigurationSection config) {
@@ -371,7 +371,7 @@ public class MobUtils extends MobUtilsBase {
         switch (goalType) {
             case AVOID_ENTITY:
                 if (pathfinder == null) return null;
-                return getAvoidEntityGoal(pathfinder, classType, distance, sprintSpeed, sprintSpeed);
+                return new AvoidEntityGoal(pathfinder, getMobClass(classType), distance, sprintSpeed, sprintSpeed);
             case BEG:
                 if (mob instanceof Wolf) {
                     return new BegGoal((Wolf)mob, distance);
@@ -410,7 +410,7 @@ public class MobUtils extends MobUtilsBase {
                 }
                 // Intentional fall-through
             case MAGIC_FOLLOW_OWNER:
-                return new MagicFollowOwnerGoal(platform, mob, entity, speed, startDistance, stopDistance, interval, config);
+                return new MagicFollowOwnerGoal(platform, mob, speed, startDistance, stopDistance, interval, config);
             case FOLLOW_PARENT:
                 if (mob instanceof Animal) {
                     return new FollowParentGoal((Animal)mob, speed);
@@ -420,7 +420,7 @@ public class MobUtils extends MobUtilsBase {
                 if (pathfinder == null) return null;
                 return new GolemRandomStrollInVillageGoal(pathfinder, speed);
             case INTERACT:
-                return getInteractGoal(mob, classType, distance, (float)config.getDouble("probability", 1));
+                return new InteractGoal(mob, getMobClass(classType), distance, (float)config.getDouble("probability", 1));
             case LAND_ON_OWNERS_SHOULDER:
                 if (mob instanceof ShoulderRidingEntity) {
                     return new LandOnOwnersShoulderGoal((ShoulderRidingEntity)mob);
@@ -429,7 +429,7 @@ public class MobUtils extends MobUtilsBase {
             case LEAP_AT_TARGET:
                 return new LeapAtTargetGoal(mob, (float)config.getDouble("y_offset", 0.4));
             case LOOK_AT_PLAYER:
-                return getLookAtPlayerGoal(mob, classType, distance, (float)config.getDouble("probability", 1), config.getBoolean("horizontal"));
+                return new LookAtPlayerGoal(mob, getMobClass(classType), distance, (float)config.getDouble("probability", 1), config.getBoolean("horizontal"));
             case MELEE_ATTACK:
                 if (pathfinder == null) return null;
                 return new MeleeAttackGoal(pathfinder, speed, config.getBoolean("follow", true));
@@ -529,7 +529,7 @@ public class MobUtils extends MobUtilsBase {
                 if (pathfinder == null) return null;
                 return new HurtByTargetGoal(pathfinder);
             case NEAREST_ATTACKABLE_TARGET:
-                return getNearestAttackableTargetGoal(mob, classType, see, reach);
+                return new NearestAttackableTargetGoal(mob, getMobClass(classType), see, reach);
             case OWNER_HURT_BY_TARGET:
                 if (mob instanceof TamableAnimal) {
                     return new OwnerHurtByTargetGoal((TamableAnimal)mob);
@@ -568,6 +568,10 @@ public class MobUtils extends MobUtilsBase {
                 mage = controller.getMage(entity);
                 goals = getGoals(entity, mob, config, "magic trigger goal");
                 return new TriggerGoal(mage, goals, interruptable, config.getString("trigger", "goal"), interval);
+            case FIND_OWNER:
+                return new MagicFindOwnerGoal(platform, mob, radius, getMobClass(classType));
+            case CHECK_OWNER:
+                return new MagicCheckOwnerGoal(platform, mob);
             case IDLE:
                 return new IdleGoal();
             default:
@@ -850,44 +854,9 @@ public class MobUtils extends MobUtilsBase {
                 return LivingEntity.class;
 
             default:
-                return null;
+                platform.getLogger().warning("Invalid entity_class in goal config: " + classType);
+                return LivingEntity.class;
         }
-    }
-
-    private Goal getLookAtPlayerGoal(Mob mob, String classType, float distance, float probability, boolean horizontal) {
-        Class<? extends LivingEntity> mobClass = getMobClass(classType);
-        if (mobClass == null) {
-            platform.getLogger().warning("Unsupported entity_class in interact goal: " + classType);
-            return null;
-        }
-        return new LookAtPlayerGoal(mob, mobClass, distance, probability, horizontal);
-    }
-
-    private Goal getInteractGoal(Mob mob, String classType, float distance, float probability) {
-        Class<? extends LivingEntity> mobClass = getMobClass(classType);
-        if (mobClass == null) {
-            platform.getLogger().warning("Unsupported entity_class in interact goal: " + classType);
-            return null;
-        }
-        return new InteractGoal(mob, mobClass, distance, probability);
-    }
-
-    private Goal getAvoidEntityGoal(PathfinderMob mob, String classType, float distance, double speed, double sprintSpeed) {
-        Class<? extends LivingEntity> mobClass = getMobClass(classType);
-        if (mobClass == null) {
-            platform.getLogger().warning("Unsupported entity_class in avoid_entity goal: " + classType);
-            return null;
-        }
-        return new AvoidEntityGoal<>(mob, mobClass, distance, speed, sprintSpeed);
-    }
-
-    private Goal getNearestAttackableTargetGoal(Mob mob, String classType, boolean see, boolean reach) {
-        Class<? extends LivingEntity> mobClass = getMobClass(classType);
-        if (mobClass == null) {
-            platform.getLogger().warning("Unsupported entity_class in avoid_entity goal: " + classType);
-            return null;
-        }
-        return new NearestAttackableTargetGoal<>(mob, mobClass, see, reach);
     }
 
     @Override
