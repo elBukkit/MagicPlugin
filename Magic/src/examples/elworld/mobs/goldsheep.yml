@@ -1,0 +1,7 @@
+goldsheep:
+  type: sheep
+  brain:
+    goals:
+    - goal: tempt
+      item: GOLD_NUGGET
+      speed: 3

@@ -1,0 +1,6 @@
+greedy:
+  type: villager
+  brain:
+    goals:
+    - goal: tempt
+      item: EMERALD

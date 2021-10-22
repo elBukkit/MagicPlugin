@@ -1,0 +1,8 @@
+charlotte:
+  name: Charlotte
+  type: spider
+  brain:
+    goals:
+      - goal: tempt
+        item: STRING
+        speed: 3

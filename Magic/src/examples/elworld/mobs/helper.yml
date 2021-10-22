@@ -1,0 +1,16 @@
+helper:
+  name: Helper
+  type: husk
+  health: 200
+  item: diamond_sword
+  default_drops: false
+  ownable: true
+  brain:
+      goals:
+        - melee_attack
+        - follow_owner
+        - look_at_player
+      targets:
+        - owner_hurt_target
+        - owner_hurt_by_target
+ 
