@@ -684,7 +684,7 @@ public class InventoryController implements Listener {
                 } else {
                     event.setCursor(null);
                 }
-                player.getInventory().setItem(event.getSlot(), wand.getItem());
+                event.getClickedInventory().setItem(event.getSlot(), wand.getItem());
             }
             if (activeWand != null) {
                 mage.checkWand();
