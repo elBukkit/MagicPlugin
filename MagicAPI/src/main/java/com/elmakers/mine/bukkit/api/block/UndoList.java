@@ -24,6 +24,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public interface UndoList extends BlockList, Comparable<UndoList> {
     void commit();
+    boolean commitNext();
     void undo();
     void undo(boolean blocking);
     void undoScheduled();

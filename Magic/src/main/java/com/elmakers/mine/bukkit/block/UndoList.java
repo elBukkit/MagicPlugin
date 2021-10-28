@@ -405,6 +405,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         registry.commitAll();
     }
 
+    @Override
     public boolean commitNext() {
         if (blockQueue == null || blockQueue.isEmpty()) {
             unlink();
