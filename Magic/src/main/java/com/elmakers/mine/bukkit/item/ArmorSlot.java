@@ -24,4 +24,8 @@ public enum ArmorSlot {
     public int getSlot() {
         return slot;
     }
+
+    public boolean isArmorSlot() {
+        return slot >= 36 && slot <= 39;
+    }
 }

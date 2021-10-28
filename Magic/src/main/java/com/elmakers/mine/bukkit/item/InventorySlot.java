@@ -28,7 +28,7 @@ public class InventorySlot {
     public static final InventorySlot RIGHT_ARM = new InventorySlot(ArmorSlot.RIGHT_ARM);
 
     private final int slot;
-    private final ArmorSlot name;
+    private final ArmorSlot slotType;
 
     InventorySlot(ArmorSlot armorSlot) {
         this(armorSlot, armorSlot.getSlot());
@@ -39,7 +39,7 @@ public class InventorySlot {
     }
 
     InventorySlot(ArmorSlot armorSlot, int slot) {
-        this.name = armorSlot;
+        this.slotType = armorSlot;
         this.slot = slot;
         if (slot >= 0) {
             bySlot.put(slot, this);
@@ -108,7 +108,7 @@ public class InventorySlot {
         if (slot != -1 || !mage.isPlayer()) {
             return slot;
         }
-        switch (this.name) {
+        switch (this.slotType) {
             case MAIN_HAND:
                 return mage.getPlayer().getInventory().getHeldItemSlot();
             case OFF_HAND:
@@ -128,11 +128,11 @@ public class InventorySlot {
     }
 
     public boolean isArmorSlot() {
-        return slot != -1;
+        return slotType.isArmorSlot();
     }
 
     public boolean setItem(EntityEquipment equipment, ItemStack itemStack) {
-        switch (this.name) {
+        switch (this.slotType) {
             case HELMET:
                 equipment.setHelmet(itemStack);
                 break;
@@ -161,7 +161,7 @@ public class InventorySlot {
 
     @Nullable
     public ItemStack getItem(EntityEquipment equipment) {
-        switch (this.name) {
+        switch (this.slotType) {
             case HELMET:
                 return equipment.getHelmet();
             case CHESTPLATE:
