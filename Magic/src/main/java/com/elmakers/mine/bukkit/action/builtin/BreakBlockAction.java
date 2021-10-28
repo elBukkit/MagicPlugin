@@ -20,13 +20,15 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class BreakBlockAction extends ModifyBlockAction {
     private double durabilityAmount;
+    private double durabilityPercent;
     private double maxDistanceSquared;
     private Material breakMaterial = Material.AIR;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        durabilityAmount = parameters.getDouble("break_durability", 1);
+        durabilityPercent = parameters.getDouble("break_percent", 0);
+        durabilityAmount = parameters.getDouble("break_durability", durabilityPercent > 0 ? 0 : 1);
         double maxDistance = parameters.getDouble("durability_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
 
@@ -48,7 +50,9 @@ public class BreakBlockAction extends ModifyBlockAction {
             return SpellResult.NO_TARGET;
         }
         context.registerForUndo(block);
-        double scaledAmount = durabilityAmount;
+        MageController controller = context.getController();
+        double durability = controller.getBlockDurability(block);
+        double scaledAmount = durabilityAmount + durabilityPercent * durability;
         if (maxDistanceSquared > 0) {
             double distanceSquared = context.getTargetCenterLocation().distanceSquared(block.getLocation());
             if (distanceSquared > maxDistanceSquared) {
@@ -60,8 +64,6 @@ public class BreakBlockAction extends ModifyBlockAction {
         }
 
         double breakAmount = 1;
-        MageController controller = context.getController();
-        double durability = controller.getBlockDurability(block);
         if (durability > 0) {
             double breakPercentage = scaledAmount / durability;
             breakAmount = context.registerBreaking(block, breakPercentage);
