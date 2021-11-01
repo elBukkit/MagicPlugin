@@ -1,7 +1,7 @@
 # Which materials are defined as ores
 # This can be used to make "erasure" spells that avoid destroying ore,
 # or otherwise make spells that act specifically on ores.
-ores:
+overworld_ores:
 - gold_ore
 - iron_ore
 - coal_ore
@@ -25,3 +25,7 @@ deepslate_ores:
 - deepslate_redstone_ore
 - deepslate_lapis_ore
 - deepslate_diamond_ore
+
+ores:
+  - overworld_ores
+  - deepslate_ores

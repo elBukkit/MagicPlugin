@@ -54,7 +54,7 @@ mine:
         range: 32
         limit: 8
         depth: 2
-        destructible: ores,deepslate_ores
+        destructible: ores
         cooldown: 10000
         bypass_undo: true
         delay: 100
