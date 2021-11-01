@@ -53,6 +53,8 @@ public class InventorySlot {
             key = "main_hand";
         } else if (key.equalsIgnoreCase("offhand")) {
             key = "off_hand";
+        } else if (key.equalsIgnoreCase("any")) {
+            key = "free";
         }
         key = key.toLowerCase();
         InventorySlot slot = byName.get(key);
@@ -129,6 +131,10 @@ public class InventorySlot {
 
     public boolean isArmorSlot() {
         return slotType.isArmorSlot();
+    }
+
+    public boolean isAnySlot() {
+        return slotType == ArmorSlot.FREE;
     }
 
     public boolean setItem(EntityEquipment equipment, ItemStack itemStack) {

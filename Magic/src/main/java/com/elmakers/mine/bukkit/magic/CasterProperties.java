@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
+import com.elmakers.mine.bukkit.item.MagicAttributeModifier;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -570,8 +571,15 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     @Override
     public Double getAttribute(String attributeKey) {
         ConfigurationSection attributes = getConfigurationSection("attributes");
-        Double value = attributes == null || !attributes.contains(attributeKey) ? null
-                : attributes.getDouble(attributeKey);
+        Double value;
+        if (attributes.isConfigurationSection(attributeKey)) {
+            ConfigurationSection attributeConfig = attributes.getConfigurationSection(attributeKey);
+            value = !attributeConfig.contains("value") ? null
+                    : attributes.getDouble("value");
+        } else {
+            value = attributes == null || !attributes.contains(attributeKey) ? null
+                    : attributes.getDouble(attributeKey);
+        }
         if (value == null) {
             MagicAttribute defaultSetting = controller.getAttribute(attributeKey);
             if (defaultSetting != null) {
@@ -590,7 +598,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (attributeValue == null) return;
             attributes = ConfigurationUtils.newConfigurationSection();
         }
-        attributes.set(attributeKey, attributeValue);
+
+        if (attributes.isConfigurationSection(attributeKey)) {
+            ConfigurationSection attributeConfig = attributes.getConfigurationSection(attributeKey);
+            attributeConfig.set("value", attributeValue);
+        } else {
+            attributes.set(attributeKey, attributeValue);
+        }
         setProperty("attributes", attributes);
         Mage mage = getMage();
         if (mage != null) {
@@ -1358,8 +1372,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                 for (String key : keys) {
                     String label = controller.getMessages().get("attributes." + key + ".name", key);
 
-                    // We are only display attributes as integers for now
-                    int value = attributes.getInt(key);
+                    // We  only display attributes as integers for now
+                    int value;
+                    if (attributes.isConfigurationSection(key)) {
+                        value = attributes.getConfigurationSection(key).getInt("value");
+                    } else {
+                        value = attributes.getInt(key);
+                    }
                     if (value == 0) continue;
 
                     float max = 1;
@@ -1398,5 +1417,27 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         List<String> lore = new ArrayList<>();
         addPotionEffectLore(lore);
         return StringUtils.join(lore, "\n");
+    }
+
+    @Nullable
+    public List<MagicAttributeModifier> getAttributes() {
+        ConfigurationSection attributesSection = getConfigurationSection("attributes");
+        if (attributesSection == null) return null;
+        Set<String> keys = attributesSection.getKeys(false);
+        if (keys.isEmpty()) return null;
+        List<MagicAttributeModifier> modifiers = new ArrayList<>();
+        for (String key : keys) {
+            try {
+                if (attributesSection.isConfigurationSection(key)) {
+                    ConfigurationSection attributeConfig = attributesSection.getConfigurationSection(key);
+                    modifiers.add(new MagicAttributeModifier(key, attributeConfig, 0));
+                } else {
+                    modifiers.add(new MagicAttributeModifier(key, attributesSection.getDouble(key)));
+                }
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid attribute definition in " + key);
+            }
+        }
+        return modifiers;
     }
 }

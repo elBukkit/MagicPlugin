@@ -110,7 +110,9 @@ import com.elmakers.mine.bukkit.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
+import com.elmakers.mine.bukkit.item.AttributeOperation;
 import com.elmakers.mine.bukkit.item.InventorySlot;
+import com.elmakers.mine.bukkit.item.MagicAttributeModifier;
 import com.elmakers.mine.bukkit.kit.MageKit;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
 import com.elmakers.mine.bukkit.spell.ActionSpell;
@@ -258,7 +260,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private double lastFallDistance;
     private float manaPerDamage;
 
-    private Map<Integer, Wand> activeArmor = new HashMap<>();
+    private Map<InventorySlot, Wand> activeArmor = new HashMap<>();
 
     private Location location;
     private long cooldownExpiration = 0;
@@ -4174,7 +4176,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 }
 
                 if (Wand.isWand(armorItem)) {
-                    activeArmor.put(index, controller.getWand(armorItem));
+                    activeArmor.put(InventorySlot.getArmorSlot(index), controller.getWand(armorItem));
                 }
             }
 
@@ -4207,38 +4209,64 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     }
 
     protected void addPassiveAttributes(CasterProperties properties) {
-        addPassiveAttributes(properties, false);
+        addPassiveAttributes(properties, AttributeOperation.MAXIMUM, InventorySlot.FREE);
     }
 
-    protected void addPassiveAttributes(CasterProperties addProperties, boolean defaultStack) {
-        boolean stack = addProperties.getBoolean("stack", defaultStack);
-        // addPassiveEffectsGroup(attributes, properties, "attributes", stack, null);
-        ConfigurationSection addSection = addProperties.getConfigurationSection("attributes");
-        if (addSection != null) {
-            Set<String> addAttributes = addSection.getKeys(false);
-            for (String attributeKey : addAttributes) {
+    protected void addPassiveAttributes(CasterProperties addProperties, AttributeOperation defaultOperation, InventorySlot slot) {
+        if (addProperties.getBoolean("stack", false)) {
+            defaultOperation = AttributeOperation.ADD_NUMBER;
+        }
+        List<MagicAttributeModifier> modifiers = addProperties.getAttributes();
+        if (modifiers != null) {
+            for (MagicAttributeModifier modifier : modifiers) {
+                String attributeKey = modifier.getAttribute();
                 MagicAttribute magicAttribute = controller.getAttribute(attributeKey);
-                Double existing = attributes.get(attributeKey);
-                if (existing == null) {
+                Double attributeValue = attributes.get(attributeKey);
+                if (attributeValue == null) {
                     if (magicAttribute != null) {
-                        existing = magicAttribute.getDefault();
+                        attributeValue = magicAttribute.getDefault();
                     }
-                    if (existing == null) {
-                        existing = 0.0;
+                    if (attributeValue == null) {
+                        attributeValue = 0.0;
                     }
                 }
-                double addValue = addSection.getDouble(attributeKey);
-                if (stack) {
-                    Double maxValue = magicAttribute == null ? null : magicAttribute.getMax();
-                    if (maxValue != null) {
-                        existing = Math.min(maxValue, existing + addValue);
-                    } else {
-                        existing = existing + addValue;
-                    }
-                } else {
-                    existing = Math.max(existing, addValue);
+                InventorySlot modifierSlot = modifier.getSlot();
+                if (slot != InventorySlot.FREE && modifierSlot != InventorySlot.FREE && modifierSlot != slot) continue;
+
+                // Perform modifier operation
+                double modifierValue = modifier.getValue();
+                AttributeOperation operation = modifier.getOperation();
+                if (operation == AttributeOperation.DEFAULT) {
+                    operation = defaultOperation;
                 }
-                attributes.put(attributeKey, existing);
+                switch (operation) {
+                    case ADD_NUMBER:
+                        attributeValue += modifierValue;
+                        break;
+                    case ADD_SCALAR:
+                        attributeValue *= modifierValue;
+                        break;
+                    case MULTIPLY_SCALAR_1:
+                        attributeValue *= (modifierValue + 1);
+                        break;
+                    case MAXIMUM:
+                        attributeValue = Math.max(modifierValue, attributeValue);
+                        break;
+                    case DEFAULT:
+                    default:
+                        controller.getLogger().warning("Unhandled modifier operation: " + operation);
+                }
+
+                // Enforce bounds
+                Double maxValue = magicAttribute == null ? null : magicAttribute.getMax();
+                if (maxValue != null) {
+                    attributeValue = Math.min(maxValue, attributeValue);
+                }
+                Double minValue = magicAttribute == null ? null : magicAttribute.getMin();
+                if (minValue != null) {
+                    attributeValue = Math.max(minValue, attributeValue);
+                }
+                attributes.put(attributeKey, attributeValue);
             }
         }
     }
@@ -4461,7 +4489,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
         for (MageModifier modifier : modifiers.values()) {
-            addPassiveAttributes(modifier, true);
+            addPassiveAttributes(modifier, AttributeOperation.ADD_NUMBER, InventorySlot.FREE);
         }
 
         // Count up wand sets to look for bonuses before adding in wand properties
@@ -4498,19 +4526,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         }
 
         if (setBonus != null) {
-            addPassiveAttributes(setBonus, true);
+            addPassiveAttributes(setBonus, AttributeOperation.ADD_NUMBER, InventorySlot.FREE);
         }
 
         if (activeWand != null && !activeWand.isWorn()) {
-            addPassiveAttributes(activeWand, true);
+            addPassiveAttributes(activeWand, AttributeOperation.ADD_NUMBER, InventorySlot.MAIN_HAND);
         }
         // Don't add these together so things stay balanced!
         if (offhandWand != null && !offhandWand.isWorn()) {
-            addPassiveAttributes(offhandWand, true);
+            addPassiveAttributes(offhandWand, AttributeOperation.ADD_NUMBER, InventorySlot.OFF_HAND);
         }
-        for (Wand armorWand : activeArmor.values()) {
+        for (Map.Entry<InventorySlot, Wand> entry : activeArmor.entrySet()) {
+            Wand armorWand = entry.getValue();
             if (armorWand != null) {
-                addPassiveAttributes(armorWand, true);
+                addPassiveAttributes(armorWand, AttributeOperation.ADD_NUMBER, entry.getKey());
             }
         }
         reloadAttributes();

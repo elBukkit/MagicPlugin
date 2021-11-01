@@ -1,0 +1,9 @@
+offhandonly:
+  name: Offhand
+  description: Hold it in your offhand already!
+  icon: diamond
+  attributes:
+    testattribute:
+      slot: offhand
+      operation: add_scalar
+      value: 5
