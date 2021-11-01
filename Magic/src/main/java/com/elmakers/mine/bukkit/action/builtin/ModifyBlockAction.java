@@ -238,7 +238,8 @@ public class ModifyBlockAction extends BaseSpellAction {
         }
 
         if (commit) {
-            com.elmakers.mine.bukkit.api.block.BlockData blockData = com.elmakers.mine.bukkit.block.UndoList.register(block);
+
+            com.elmakers.mine.bukkit.api.block.BlockData blockData = context.getUndoList().get(block);;
             blockData.commit();
         }
         return SpellResult.CAST;

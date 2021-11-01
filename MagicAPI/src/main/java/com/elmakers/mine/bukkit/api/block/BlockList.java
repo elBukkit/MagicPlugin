@@ -39,6 +39,9 @@ public interface BlockList extends Collection<BlockData> {
     Map<String, ? extends BoundingBox> getAreas();
     boolean add(Block block);
 
+    @Nonnull
+    BlockData get(Block block);
+
     /**
      * This method will assume the list only covers one world
      */

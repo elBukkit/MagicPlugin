@@ -252,8 +252,9 @@ public class BlockData extends MaterialAndData implements com.elmakers.mine.bukk
     }
 
     private void removeFromList(com.elmakers.mine.bukkit.api.block.BlockData priorState, boolean watch) {
-        com.elmakers.mine.bukkit.block.UndoList list = (com.elmakers.mine.bukkit.block.UndoList)undoList.get();
-        if (list != null) {
+        UndoList apiList = getUndoList();
+        if (apiList != null && apiList instanceof com.elmakers.mine.bukkit.block.UndoList) {
+            com.elmakers.mine.bukkit.block.UndoList list = (com.elmakers.mine.bukkit.block.UndoList)apiList;
             list.remove(this, priorState);
             // Continue watching this block until we completely finish the undo process
             // If committing, we want to unregister it instead
