@@ -68,6 +68,7 @@
  - Add `cache: false` option to items to allow randomization to work
  - Add `entity_parameters` section to SpawnEntity action, will be applied to any mobs spawned
  - Add `skills.quick_cast: auto` option to wands, to allow spellbooks with only some quick-cast skills
+ - Add `rarify` spell as an optional Apprentice spell, improves ore drops but requires teamwork
 
 ## Changes
 

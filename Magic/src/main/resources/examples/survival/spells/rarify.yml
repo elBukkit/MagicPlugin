@@ -1,0 +1,55 @@
+rarify:
+  icon: mine
+  category: mining
+  worth: 5
+  earns: 5
+  actions:
+    cast:
+      - class: CheckBlock
+        allowed: coal_ore,deepslate_coal_ore
+        actions:
+          - class: BreakBlock
+            break_material: coal_block
+      - class: CheckBlock
+        allowed: copper_ore,deepslate_copper_ore
+        actions:
+          - class: BreakBlock
+            break_material: copper_block
+      - class: CheckBlock
+        allowed: diamond_ore,deepslate_diamond_ore
+        actions:
+        - class: BreakBlock
+          break_material: diamond_block
+      - class: CheckBlock
+        allowed: emerald_ore,deepslate_emerald_ore
+        actions:
+          - class: BreakBlock
+            break_material: emerald_block
+      - class: CheckBlock
+        allowed: gold_ore,deepslate_gold_ore
+        actions:
+          - class: BreakBlock
+            break_material: gold_block
+      - class: CheckBlock
+        allowed: iron_ore,deepslate_iron_ore
+        actions:
+          - class: BreakBlock
+            break_material: iron_block
+      - class: CheckBlock
+        allowed: lapis_ore,deepslate_lapis_ore
+        actions:
+          - class: BreakBlock
+            break_material: lapis_block
+      - class: CheckBlock
+        allowed: redstone_ore,deepslate_redstone_ore
+        actions:
+          - class: BreakBlock
+            break_material: redstone_block
+  parameters:
+    target: block
+    range: 4
+    break_percent: 0.4
+    destructible: ores
+    commit: true
+    undo: 3000
+    cooldown: 500

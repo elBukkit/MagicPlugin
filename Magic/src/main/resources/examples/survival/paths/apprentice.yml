@@ -18,6 +18,7 @@ apprentice:
       - critical
       - decoy
       - soulburn
+      - rarify
     spells:
       - breach
       - disintegrate

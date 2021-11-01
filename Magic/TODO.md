@@ -2,11 +2,13 @@
 
 # Important
 
+ - Still gets insane with transforming piglins, how to prevent and reset?
  - CheckInventory action checking for empty slot, air doesn't work?
  - Do you need `swappable: false` for swap controls to work at all?
  - Test: `/mconfig configure spell arrow_ice worth 200`
  - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?
  - Make the "no default drops" a separate tag so it still works after removing mob configs
+ - `/wand configure` somehow deleted all spells?
 
 # Mobs
 

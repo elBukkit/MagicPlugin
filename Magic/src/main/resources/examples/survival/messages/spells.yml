@@ -1518,3 +1518,7 @@ spells:
     eat_food:
         name: Eat Food
         description: Useful for putting on consumable items, override the feed or add_potion_effects parameters
+    rarify:
+        name: Rarify
+        description: Cast on an ore block to rarify it into a pure block
+        usage: Requires 3 players to cast at the same time!
