@@ -80,6 +80,7 @@ import com.elmakers.mine.bukkit.effect.builtin.EffectRing;
 import com.elmakers.mine.bukkit.heroes.HeroesManager;
 import com.elmakers.mine.bukkit.item.ArmorSlot;
 import com.elmakers.mine.bukkit.item.InventorySlot;
+import com.elmakers.mine.bukkit.item.MagicAttributeModifier;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MageClass;
@@ -7241,6 +7242,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public ConfigurationSection getConfigurationSection(String key) {
         // Special override to handle merging slotted configurations
         ConfigurationSection base = super.getConfigurationSection(key);
+
+        // Attributes are not merged, but are processed separately
+        // This is handled by the getAttributes override below.
+        if (key.equals("attributes")) {
+            return base;
+        }
+
         ConfigurationSection slotted = slottedConfiguration != null ? slottedConfiguration.getConfigurationSection(key) : null;
         ConfigurationSection requirement = requirementConfiguration != null ? requirementConfiguration.getConfigurationSection(key) : null;
         ConfigurationSection setBonus = setBonusConfiguration != null ? setBonusConfiguration.getConfigurationSection(key) : null;
@@ -7251,6 +7259,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ConfigurationSection path = getPathConfigurationSection(key);
 
         return ConfigurationUtils.mergeConfigurations(path, requirement, slotted, setBonus, base);
+    }
+
+    @Override
+    @Nullable
+    public List<MagicAttributeModifier> getAttributes() {
+        List<MagicAttributeModifier> modifiers = super.getAttributes();
+
+        // We don't need to add the path in here, it will be included in the base config
+        ConfigurationSection slotted = slottedConfiguration != null ? slottedConfiguration.getConfigurationSection("attributes") : null;
+        modifiers = addAttributes(modifiers, slotted);
+        ConfigurationSection requirement = requirementConfiguration != null ? requirementConfiguration.getConfigurationSection("attributes") : null;
+        modifiers = addAttributes(modifiers, requirement);
+        ConfigurationSection setBonus = setBonusConfiguration != null ? setBonusConfiguration.getConfigurationSection("attributes") : null;
+        modifiers = addAttributes(modifiers, setBonus);
+
+        return modifiers;
     }
 
     @Override

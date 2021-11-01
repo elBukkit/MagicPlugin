@@ -1363,22 +1363,22 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     private void addAttributeLore(List<String> lore) {
-        ConfigurationSection attributes = getConfigurationSection("attributes");
-        if (attributes != null) {
+        // TODO: This should take operation into account rather than using "stack" only
+        // This should also, ideally, display lore differently for wands with attributes that are
+        // "boosted" by upgrades.
+        // So probably we need to group all modifiers by attribute and operation, show any that have more than one
+        // modifiers as "boosted", properly stacking the numbers to display only once.
+        List<MagicAttributeModifier> modifiers = getAttributes();
+        if (modifiers != null) {
             // Don't bother with the lore at all if the template has been blanked out
             String template = getMessage("attributes");
             if (!template.isEmpty()) {
-                Set<String> keys = attributes.getKeys(false);
-                for (String key : keys) {
+                for (MagicAttributeModifier modifier : modifiers) {
+                    String key = modifier.getAttribute();
                     String label = controller.getMessages().get("attributes." + key + ".name", key);
 
                     // We  only display attributes as integers for now
-                    int value;
-                    if (attributes.isConfigurationSection(key)) {
-                        value = attributes.getConfigurationSection(key).getInt("value");
-                    } else {
-                        value = attributes.getInt(key);
-                    }
+                    int value = (int)modifier.getValue();
                     if (value == 0) continue;
 
                     float max = 1;
@@ -1419,13 +1419,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return StringUtils.join(lore, "\n");
     }
 
-    @Nullable
-    public List<MagicAttributeModifier> getAttributes() {
-        ConfigurationSection attributesSection = getConfigurationSection("attributes");
-        if (attributesSection == null) return null;
+    protected List<MagicAttributeModifier> addAttributes(List<MagicAttributeModifier> modifiers, ConfigurationSection attributesSection) {
+        if (attributesSection == null) return modifiers;
         Set<String> keys = attributesSection.getKeys(false);
-        if (keys.isEmpty()) return null;
-        List<MagicAttributeModifier> modifiers = new ArrayList<>();
+        if (keys.isEmpty()) return modifiers;
+        if (modifiers == null) {
+            modifiers = new ArrayList<>();
+        }
         for (String key : keys) {
             try {
                 if (attributesSection.isConfigurationSection(key)) {
@@ -1439,5 +1439,11 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             }
         }
         return modifiers;
+    }
+
+    @Nullable
+    public List<MagicAttributeModifier> getAttributes() {
+        ConfigurationSection attributesSection = getConfigurationSection("attributes");
+        return addAttributes(null, attributesSection);
     }
 }
