@@ -79,7 +79,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    public boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig) {
+    public boolean configureSkillItem(ItemStack skillItem, String skillClass, boolean quickCast, ConfigurationSection skillConfig) {
         if (skillItem == null) return false;
         Object handle = platform.getItemUtils().getHandle(skillItem);
         if (handle == null) return false;
@@ -102,7 +102,10 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         if (skillConfig.getBoolean("keep", false)) {
             platform.getNBTUtils().setBoolean(tag, "keep", true);
         }
-        boolean quickCast = skillConfig.getBoolean("quick_cast", true);
+        String quickCastString = skillConfig.getString("quick_cast", "");
+        if (!quickCastString.equalsIgnoreCase("auto")) {
+            quickCast = skillConfig.getBoolean("quick_cast", true);
+        }
         if (!quickCast && spellNode != null) {
             platform.getNBTUtils().setBoolean(spellNode, "quick_cast", false);
         }

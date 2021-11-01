@@ -22,7 +22,7 @@ public interface InventoryUtils {
 
     boolean saveTagsToItem(Map<String, Object> tags, ItemStack item);
 
-    boolean configureSkillItem(ItemStack skillItem, String skillClass, ConfigurationSection skillConfig);
+    boolean configureSkillItem(ItemStack skillItem, String skillClass, boolean quickCast, ConfigurationSection skillConfig);
 
     boolean saveTagsToNBT(ConfigurationSection tags, Object node);
 

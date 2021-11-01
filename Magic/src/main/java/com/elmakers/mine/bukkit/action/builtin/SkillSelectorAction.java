@@ -228,7 +228,8 @@ public class SkillSelectorAction extends BaseSpellAction implements GUIAction {
         {
             ItemStack skillItem = controller.getAPI().createItem(skill.getSkillKey(), mage);
             if (skillItem == null) continue;
-            CompatibilityLib.getInventoryUtils().configureSkillItem(skillItem, classKey, skillsConfig);
+            boolean quickCast = skill.spell == null ? true : skill.spell.isQuickCast();
+            CompatibilityLib.getInventoryUtils().configureSkillItem(skillItem, classKey, quickCast, skillsConfig);
             if (skill.isHeroes() && heroes != null && !heroes.canUseSkill(player, skill.heroesSkill))
             {
                 String nameTemplate = controller.getMessages().get("skills.item_name_unavailable", "$skill");

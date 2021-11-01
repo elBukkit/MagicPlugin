@@ -1761,7 +1761,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (wand != null && wand.getMode() == WandMode.SKILLS && !isItem) {
             String mageClassKey = wand.getMageClassKey();
             ConfigurationSection skillsConfig = wand.getConfigurationSection("skills");
-            CompatibilityLib.getInventoryUtils().configureSkillItem(itemStack, mageClassKey, skillsConfig);
+            CompatibilityLib.getInventoryUtils().configureSkillItem(itemStack, mageClassKey, spell.isQuickCast(), skillsConfig);
         }
 
         return itemStack;
