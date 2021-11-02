@@ -9,6 +9,16 @@
 
     <name>Magic-parent</name>
     <description>Magic maven parent</description>
+    <url>http://mine.elmakers.com</url>
+
+    <developers>
+        <developer>
+            <name>Nathan Wolf</name>
+            <email>nathan@elmakers.com</email>
+            <organization>elMakers</organization>
+            <organizationUrl>http://www.elmakers.com</organizationUrl>
+        </developer>
+    </developers>
 
     <packaging>pom</packaging>
 
