@@ -52,12 +52,6 @@ public class TownyBridge
         TownBlock townBlock = api.getTownBlock(location);
         if (townBlock == null) return true;
 
-        TownyWorld world = townBlock.getWorld();
-        Coord coord = Coord.parseCoord(location);
-        if (world.isWarZone(coord)) {
-            return true;
-        }
-
         if (townBlock.getType().equals(TownBlockType.ARENA)) {
             return true;
         }

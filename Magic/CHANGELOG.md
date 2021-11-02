@@ -53,6 +53,7 @@
  - The Freeze action now uses a separate `snowable` material list to prevent changing ice to snow
  - Fixes and improvements to mysql data storage, particularly in a multi-server setup
  - Fix items put directly in a spell inventory (vanilla give, other plugins) getting lost if the player's survival inventory is full
+ - Fix integration with future releases of Towny, the Warzone API is gone
 
 ## Additions
  
