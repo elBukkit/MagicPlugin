@@ -9,6 +9,7 @@
  - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?
  - Make the "no default drops" a separate tag so it still works after removing mob configs
  - `/wand configure` somehow deleted all spells?
+ - Magic load cancelling in-progress arena matches is not ideal
 
 # Mobs
 
@@ -133,6 +134,8 @@ Drops:
 
 # Important
 
+ - Fall back to a disguise if model engine isn't present
+ - Date/time range requirements for spawn rules (or requirements in general?)
  - Allow different actions for different click types in a selector option
  - Maybe don't combine configs via ant anymore, merging them would be helpful and we have the tech now?
    - If done, cleanup the items economy.yml and discover_recipes.yml mess

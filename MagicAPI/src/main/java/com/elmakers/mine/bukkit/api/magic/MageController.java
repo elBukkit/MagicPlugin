@@ -822,6 +822,7 @@ public interface MageController {
     MagicBlock getMagicBlock(String name);
     @Nullable
     MagicBlock addMagicBlock(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters);
+    boolean removeMagicBlock(@Nonnull Location location);
     @Deprecated
     @Nullable
     Automaton addAutomaton(@Nonnull Location location, @Nonnull String templateKey, String creatorId, String creatorName, @Nullable ConfigurationSection parameters);

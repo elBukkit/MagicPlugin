@@ -2962,6 +2962,15 @@ public class MagicController implements MageController {
         return removed;
     }
 
+    @Override
+    public boolean removeMagicBlock(@Nonnull Location location) {
+        MagicBlock magicBlock = getMagicBlockAt(location);
+        if (magicBlock == null) {
+            return false;
+        }
+        return unregisterMagicBlock(magicBlock);
+    }
+
     public void resumeMagicBlocks(final Chunk chunk) {
         String chunkKey = getChunkKey(chunk);
         Map<Long, MagicBlock> chunkData = magicBlocks.get(chunkKey);
