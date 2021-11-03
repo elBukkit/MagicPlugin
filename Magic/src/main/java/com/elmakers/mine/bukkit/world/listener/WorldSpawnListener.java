@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.world.listener;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,11 +17,9 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.scheduler.BukkitTask;
 
 import com.elmakers.mine.bukkit.magic.listener.ChunkLoadListener;
 import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
-import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.WorldController;
@@ -33,8 +30,6 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
     private Set<SpawnReason> ignoreReasons = new HashSet<>();
     private int processedSpawns = 0;
     private int processedChunkSpawns = 0;
-    private List<Entity> pendingRemoval = new ArrayList<>();
-    private BukkitTask removalTask = null;
 
     public WorldSpawnListener(final WorldController controller) {
         this.controller = controller;
@@ -69,7 +64,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
             try {
                 if (magicWorld.processEntitySpawn(plugin, entity)) {
                     processedChunkSpawns++;
-                    addPendingRemoval(entity);;
+                    entity.remove();
                 }
             } catch (Exception ex) {
                 controller.getLogger().log(Level.SEVERE, "Error replacing mob", ex);
@@ -101,37 +96,14 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
         controller.setDisableSpawnReplacement(true);
         try {
             if (magicWorld.processEntitySpawn(plugin, entity)) {
-                addPendingRemoval(entity);
+                entity.remove();
+                event.setCancelled(true);
                 processedSpawns++;
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.SEVERE, "Error replacing mob", ex);
         }
         controller.setDisableSpawnReplacement(false);
-    }
-
-    public void processPendingRemoval() {
-        removalTask = null;
-        for (Entity entity : pendingRemoval) {
-            Entity vehicle = entity.getVehicle();
-            if (vehicle != null) {
-                vehicle.remove();
-            }
-            List<Entity> passengers = CompatibilityLib.getCompatibilityUtils().getPassengers(entity);
-            for (Entity passenger : passengers) {
-                passenger.remove();
-            }
-            entity.remove();
-        }
-        pendingRemoval.clear();
-    }
-
-    public void addPendingRemoval(Entity entity) {
-        pendingRemoval.add(entity);
-        if (removalTask == null) {
-            Plugin plugin = controller.getPlugin();
-            removalTask = plugin.getServer().getScheduler().runTaskLater(plugin, this::processPendingRemoval, 1);
-        }
     }
 
     public int getProcessedSpawns() {
