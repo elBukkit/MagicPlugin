@@ -8443,6 +8443,7 @@ public class MagicController implements MageController {
         ncpManager.setEnabled(properties.getBoolean("ncp_enabled", false));
         useWildStacker = properties.getBoolean("wildstacker.enabled", true);
         com.elmakers.mine.bukkit.magic.Mage.DEFAULT_CLASS = properties.getString("default_mage_class", "");
+        com.elmakers.mine.bukkit.magic.Mage.RP_DOWNLOADED = properties.getBoolean("assume_resource_pack_downloaded");
 
         metricsLevel = properties.getInt("metrics_level", metricsLevel);
 

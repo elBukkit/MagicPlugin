@@ -45,6 +45,12 @@ resource_pack_prompt: false
 # Goes to the action bar and will tell them to use `/getrp`
 resource_pack_default_auto: true
 
+# This turns on the wand GUI and any other features that rely on the resource pack,
+# without knowledge of the player having it.
+# Using this is not advised, unless you are really sure that *all* of your players
+# are getting and using the resource pack by some other means.
+assume_resource_pack_downloaded: false
+
 # Alternate resource packs can be accessed with /getrp <pack>
 alternate_resource_packs:
   default:

@@ -412,6 +412,7 @@ help:
     `<li>``<command command="getrp auto" text="Automatically recieve the resource pack on join">`
     `<li>``<link text="Resource pack issues guide" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
     `<li>``<command command="mconfig config enable_resource_pack false" text="Disable the resource pack, turn if off completely for the whole server">`
+    `<li>``<command command="mconfig config assume_resource_pack_downloaded true" text="Make Magic assume players have the RP">` this allows using the `<help topic="wandgui" text="Wand GUI">` with a downloaded RP, similar to `<command command="getrp download" text="getrp download">`
     `<li>``<command command="getrp hires" text="Get the hi-res (less blocky) resource pack">`
     `<li>``<command command="mconfig config resource_pack hires" text="Set the hi-res resource pack your server default">`
     `<li>``<help topic="bedrock" text="Questions about Bedrock players">`

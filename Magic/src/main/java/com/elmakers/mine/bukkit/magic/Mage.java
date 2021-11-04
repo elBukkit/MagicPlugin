@@ -156,6 +156,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public static boolean COMMAND_BLOCKS_SUPERPOWERED = true;
     public static boolean CONSOLE_SUPERPOWERED = true;
     public static boolean ALLOW_PERSISTENT_INVISIBILITY = true;
+    public static boolean RP_DOWNLOADED = false;
     public static double MOVEMENT_SPEED_BPS = 43;
     public static String DEFAULT_CLASS = "";
     private static String defaultMageName = "Mage";
@@ -5873,7 +5874,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Override
     public boolean hasResourcePack() {
-        if (resourcePackPreference == ResourcePackPreference.DOWNLOADED) {
+        if (resourcePackPreference == ResourcePackPreference.DOWNLOADED || RP_DOWNLOADED) {
             return true;
         }
         return hasResourcePack && !isResourcePackDisabled();
