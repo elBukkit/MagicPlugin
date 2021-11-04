@@ -333,6 +333,7 @@ public class ResourcePackManager {
 
         if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
             if (!quiet) sender.sendMessage("Resource pack in config.yml has been disabled, Magic skipping RP check");
+            resourcePacksEnabled = false;
             return false;
         }
 
@@ -439,7 +440,7 @@ public class ResourcePackManager {
     }
 
     public void onResourcePackStatus(Player player, ResourcePackStatus status) {
-        if (!controller.isResourcePackEnabled()) return;
+        if (!resourcePacksEnabled) return;
 
         Mage mage = controller.getRegisteredMage(player);
         if (mage == null || mage.isResourcePackDisabled()) return;

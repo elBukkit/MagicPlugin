@@ -42,12 +42,26 @@ public class RPCommandExecutor extends MagicTabExecutor {
             sendNoPermission(sender);
             return true;
         }
+        Mage mage = (Mage)controller.getMage(sender);
+        String subCommand = args.length > 0 ? args[0] : "";
+        if (subCommand.equalsIgnoreCase("download")) {
+            String message;
+            if (controller.isResourcePackEnabled()) {
+                message = controller.getMessages().get("commands.getrp.download");
+                message = message.replace("$url", controller.getResourcePackURL(sender));
+            } else {
+                message = controller.getMessages().get("commands.getrp.download_disabled");
+            }
+            mage.sendMessage(message);
+            mage.setResourcePackPreference(ResourcePackPreference.DOWNLOADED);
+            return true;
+        }
+
         if (!controller.isResourcePackEnabled()) {
             sender.sendMessage(controller.getMessages().get("commands.getrp.disabled"));
             return true;
         }
 
-        String subCommand = args.length > 0 ? args[0] : "";
         if (subCommand.equalsIgnoreCase("url")) {
             sender.sendMessage(controller.getResourcePackURL(sender));
             return true;
@@ -60,15 +74,6 @@ public class RPCommandExecutor extends MagicTabExecutor {
         if (subCommand.isEmpty()) {
             sender.sendMessage(controller.getMessages().get("commands.getrp.sending"));
             controller.sendResourcePack((Player)sender);
-            return true;
-        }
-
-        Mage mage = (Mage)controller.getMage(sender);
-        if (subCommand.equalsIgnoreCase("download")) {
-            String message = controller.getMessages().get("commands.getrp.download");
-            message = message.replace("$url", controller.getResourcePackURL(sender));
-            mage.sendMessage(message);
-            mage.setResourcePackPreference(ResourcePackPreference.DOWNLOADED);
             return true;
         }
         if (subCommand.equalsIgnoreCase("auto")) {
