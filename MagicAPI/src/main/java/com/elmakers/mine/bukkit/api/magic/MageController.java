@@ -542,6 +542,7 @@ public interface MageController {
     String getResourcePackURL(CommandSender sender);
     boolean isResourcePackEnabledByDefault();
     boolean isResourcePackEnabled();
+    boolean isResourcePackSetByServer();
     Collection<String> getAlternateResourcePacks();
     boolean commitOnQuit();
     int getMaxHeight(World world);

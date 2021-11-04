@@ -32,6 +32,7 @@ public class ResourcePackManager {
 
     private final MagicController controller;
     private boolean enableResourcePackCheck = true;
+    private boolean resourcePackFromServer = false;
     private boolean resourcePacksEnabled = true;
     private int resourcePackPromptDelay = 0;
     private boolean resourcePackPrompt = false;
@@ -323,12 +324,18 @@ public class ResourcePackManager {
         return resourcePacksEnabled;
     }
 
+    public boolean isResourcePackFromServer() {
+        return resourcePackFromServer;
+    }
+
     public boolean checkResourcePack(final CommandSender sender, final boolean skipMessages, final boolean force, final boolean filenameChanged) {
         final Plugin plugin = controller.getPlugin();
         if (!plugin.isEnabled()) return false;
         final Server server = plugin.getServer();
         resourcePack = null;
         resourcePackHash = null;
+        resourcePackFromServer = false;
+        resourcePacksEnabled = true;
         final boolean quiet = sender == null || skipMessages;
 
         if (defaultResourcePack == null || defaultResourcePack.isEmpty()) {
@@ -343,6 +350,7 @@ public class ResourcePackManager {
         if (serverResourcePack != null && !serverResourcePack.isEmpty()) {
             if (!quiet) sender.sendMessage("Resource pack configured in server.properties, Magic not using RP from config.yml");
             resourcePacksEnabled = false;
+            resourcePackFromServer = true;
             return false;
         }
         resourcePack = defaultResourcePack;

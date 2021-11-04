@@ -45,6 +45,19 @@ public class RPCommandExecutor extends MagicTabExecutor {
         Mage mage = (Mage)controller.getMage(sender);
         String subCommand = args.length > 0 ? args[0] : "";
         if (subCommand.equalsIgnoreCase("download")) {
+            if (!(sender instanceof Player)) {
+                if (controller.isResourcePackEnabled()) {
+                    mage.sendMessage(controller.getResourcePackURL(sender));
+                } else {
+                    if (controller.isResourcePackSetByServer()) {
+                        mage.sendMessage(controller.getMessages().get("commands.getrp.disabled_server"));
+                    } else {
+                        mage.sendMessage(controller.getMessages().get("commands.getrp.disabled"));
+                    }
+                }
+                return true;
+            }
+
             String message;
             if (controller.isResourcePackEnabled()) {
                 message = controller.getMessages().get("commands.getrp.download");
@@ -58,21 +71,25 @@ public class RPCommandExecutor extends MagicTabExecutor {
         }
 
         if (!controller.isResourcePackEnabled()) {
-            sender.sendMessage(controller.getMessages().get("commands.getrp.disabled"));
+            if (controller.isResourcePackSetByServer()) {
+                mage.sendMessage(controller.getMessages().get("commands.getrp.disabled_server"));
+            } else {
+                mage.sendMessage(controller.getMessages().get("commands.getrp.disabled"));
+            }
             return true;
         }
 
         if (subCommand.equalsIgnoreCase("url")) {
-            sender.sendMessage(controller.getResourcePackURL(sender));
+            mage.sendMessage(controller.getResourcePackURL(sender));
             return true;
         }
         if (!(sender instanceof Player)) {
-            sender.sendMessage(controller.getMessages().get("commands.in_game"));
+            mage.sendMessage(controller.getMessages().get("commands.in_game"));
             return true;
         }
 
         if (subCommand.isEmpty()) {
-            sender.sendMessage(controller.getMessages().get("commands.getrp.sending"));
+            mage.sendMessage(controller.getMessages().get("commands.getrp.sending"));
             controller.sendResourcePack((Player)sender);
             return true;
         }

@@ -6711,6 +6711,11 @@ public class MagicController implements MageController {
         return resourcePacks.isResourcePackEnabled();
     }
 
+    @Override
+    public boolean isResourcePackSetByServer() {
+        return resourcePacks.isResourcePackFromServer();
+    }
+
     @Nullable
     @Override
     public Material getMobEgg(EntityType mobType) {
