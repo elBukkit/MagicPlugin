@@ -11,6 +11,14 @@
  - `/wand configure` somehow deleted all spells?
  - Magic load cancelling in-progress arena matches is not ideal
 
+# Model Engine
+
+ - Add builtin blueprints (?)
+ - Install them by default (.. fetch free ones from links?)
+ - Config option to turn this off
+ - Auto switch to "modelengine" RP by default (config option also)
+ - Add a message somewhere explaining this and how to merge the RPs (?)
+
 # Mobs
 
 Tech notes
