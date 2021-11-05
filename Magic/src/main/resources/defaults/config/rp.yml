@@ -74,6 +74,8 @@ alternate_resource_packs:
     url: "http://rp.elmakers.com/Magic-hires-RP-1.17.zip"
   hires-all:
     url: "http://rp.elmakers.com/Magic-hires-all-RP-1.17.zip"
+  hires-modelengine:
+    url: "http://rp.elmakers.com/Magic-hires-modelengine-RP-1.17.zip"
   hires-robes:
     url: "http://rp.elmakers.com/Magic-hires-robes-RP-1.17.zip"
   robes:
