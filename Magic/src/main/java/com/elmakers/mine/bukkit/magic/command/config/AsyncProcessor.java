@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.Plugin;
 
+import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public class AsyncProcessor {
@@ -18,7 +19,9 @@ public class AsyncProcessor {
         plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
             @Override
             public void run() {
-                sender.sendMessage(message);
+                // Allow for chat components and other special message processing
+                Mage mage = controller.getMage(sender);
+                mage.sendMessage(message);
             }
         });
     }
@@ -32,7 +35,9 @@ public class AsyncProcessor {
         plugin.getServer().getScheduler().runTask(plugin, new Runnable() {
             @Override
             public void run() {
-                sender.sendMessage(ChatColor.RED + message);
+                // Allow for chat components and other special message processing
+                Mage mage = controller.getMage(sender);
+                mage.sendMessage(ChatColor.RED + message);
                 if (errorMessage != null) {
                     controller.getLogger().log(Level.WARNING, errorMessage, ex);
                 }
