@@ -29,6 +29,10 @@
  - Add `leash_blocks` mob spawner option to prevent mobs going over specific block types
  - Add `swing` trigger for mobs, triggers when they swing their arm (1.17 only)
 
+## Additions
+
+ - Added `halloween` example from TheDarthFather (thank you!) (use `/mexample fetch halloween`)
+
 ## Improvements
 
  - More precise targeting through blocks like stairs and carpet
