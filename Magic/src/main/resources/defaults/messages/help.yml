@@ -345,12 +345,21 @@ help:
     `<title text="Integration">`
     `<li>`&dMagic integrates with several `<help topic="protection" text="protection plugins">` to keep spells from griefing and trolling
     `<li>`&dMagic integrates with &bEssentials&f and &bCommandBook&f for `<help topic="warps" text="warps">`
-    `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell disguises
+    `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell `<help topic="disguises" text="disguises">`
     `<li>`&dMagic integrates with &bMythicMobs&f for mythic mob spawning
     `<li>`&dMagic integrates with &b`<help topic="dynmap" text="dynmap">`&f to show warps, spell casts and lost wands on maps
     `<li>`You can use `<help topic="skript" text="Skript">` to react to spell casts, SP earn or other events.
     `<li>`You can use &6`<help topic="placeholders" text="placeholders">` via &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f to show magic properties in various places
     `<li>``<help topic="compatibility" text="Compatibility or issues with other plugins">`
+  disguises: |-
+    `<title text="Disgusies">`
+    `<p>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell disguises.
+    `<p>`Mobs can use disguises, and the Disguise action can be used to disguise mobs or players.
+    `<p>`In both cases, a disguise parameter is used to configure the disguise.
+    `<p>`Player disguises can be used, see the `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/examples/survival/mobs/madscientist.yml" text="Mad Scientist">` mob for example.
+    `<p>`A specific skin/profile can also be used, see `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/examples/survival/mobs/ironman.yml" text="Iron Man">` mob for example.
+    `<p>`You need a full profile, though, just a URL will not work. You can set a skin as your own and capture your profile using the `<command command="mage skin" text="mage skin">` command.
+    `<p>`See `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Disguises" text="the wiki">` for more information.
   dynmap: |-
     `<title text="Dynmap">`
     `<p>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">`
@@ -561,7 +570,7 @@ help:
   not_loading: |-
     `<title text="The Plugin Won't Load">`
     `<p>`You may have the wrong version for your server?
-    `<p>`Current versions of Magic are compatible with the following versions:
+    `<p>`Current versions of Magic are compatible with the following Spigot and Paper versions:
     `<p>`1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17
     `<p>`For older versions of Minecraft you will need Magic 8.x
     `<p>`It's pretty hard to tell from here, you will need to check your servers logs for errors.
