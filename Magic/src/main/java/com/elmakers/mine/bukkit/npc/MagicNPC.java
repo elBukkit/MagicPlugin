@@ -30,6 +30,8 @@ import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.google.common.base.MoreObjects;
+import com.google.common.base.Preconditions;
 
 public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     private static final String DEFAULT_NPC_KEY = "base_npc";
@@ -77,7 +79,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
         this.controller = controller;
         this.setLocation(location);
-        this.name = name != null ? name : template.getName();
+        this.name = MoreObjects.firstNonNull(
+                name != null ? name : template.getName(),
+                "");
         this.createdAt = System.currentTimeMillis();
         this.creatorId = creator.getId();
         this.creatorName = creator.getName();
@@ -123,7 +127,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
         if (uuidString != null && !uuidString.isEmpty()) {
             entityId = UUID.fromString(uuidString);
         }
-        name = configuration.getString("name", name);
+        name = MoreObjects.firstNonNull(
+                configuration.getString("name", name),
+                "");
         createdAt = configuration.getLong("created", createdAt);
         creatorId = configuration.getString("creator", creatorId);
         creatorName = configuration.getString("creator_name", creatorName);
@@ -356,7 +362,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
             CompatibilityLib.getEntityMetadataUtils().setString(vehicle, MagicMetaKeys.NPC_ID, id.toString());
             vehicle = vehicle.getVehicle();
         }
-        if (entityData.useNPCName() && name != null) {
+        if (entityData.useNPCName()) {
             entity.setCustomName(getName());
         }
         this.entityId = entity.getUniqueId();
@@ -392,14 +398,11 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     @Override
     @Nonnull
     public String getName() {
-        if (name == null) {
-            return "";
-        }
         return CompatibilityLib.getCompatibilityUtils().translateColors(name);
     }
 
     protected String getLabel() {
-        if (name != null &&  !name.isEmpty()) {
+        if (!name.isEmpty()) {
             return name;
         }
         if (templateKey != null && !templateKey.isEmpty()) {
@@ -410,7 +413,7 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
 
     @Override
     public void setName(@Nonnull String name) {
-        this.name = name;
+        this.name = Preconditions.checkNotNull(name, "name");
         restore();
     }
 

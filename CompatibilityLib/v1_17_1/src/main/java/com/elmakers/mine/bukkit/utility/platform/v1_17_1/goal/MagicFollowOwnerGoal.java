@@ -75,7 +75,7 @@ public class MagicFollowOwnerGoal extends MagicOwnerGoal {
 
     @Override
     public void tick() {
-        this.mob.getLookControl().setLookAt(tamed.getOwner(), 10.0F, (float)this.mob.getMaxHeadXRot());
+        this.mob.getLookControl().setLookAt(tamed.getOwner(), 10.0F, this.mob.getMaxHeadXRot());
         if (ticksRemaining-- <= 0) {
             ticksRemaining = this.interval;
             if (!this.mob.isLeashed() && !this.mob.isPassenger()) {
@@ -102,12 +102,12 @@ public class MagicFollowOwnerGoal extends MagicOwnerGoal {
 
     private boolean tryTeleportTo(int x, int y, int z) {
         LivingEntity owner = tamed.getOwner();
-        if (Math.abs((double)x - owner.getX()) < 2.0D && Math.abs((double)z - owner.getZ()) < 2.0D) {
+        if (Math.abs(x - owner.getX()) < 2.0D && Math.abs(z - owner.getZ()) < 2.0D) {
             return false;
         } else if (!this.canTeleportTo(new BlockPos(x, y, z))) {
             return false;
         } else {
-            this.mob.moveTo((double)x + 0.5D, y, (double)z + 0.5D, this.mob.getYRot(), this.mob.getXRot());
+            this.mob.moveTo(x + 0.5D, y, z + 0.5D, this.mob.getYRot(), this.mob.getXRot());
             this.navigation.stop();
             return true;
         }

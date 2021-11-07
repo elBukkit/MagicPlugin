@@ -1393,9 +1393,7 @@ public class EntityData
                 if (!RandomUtils.checkProbability(probability)) continue;
                 ItemStack item = controller.createItem(key);
                 item.setAmount(count);
-                if (item != null) {
-                    dropList.add(item);
-                }
+                dropList.add(item);
             }
         }
     }

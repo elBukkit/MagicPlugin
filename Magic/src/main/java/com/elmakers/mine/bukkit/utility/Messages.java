@@ -208,7 +208,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                     pieces[i] = defaultReplace;
                     continue;
                 }
-                String macro = macros.get((String)macroKey);
+                String macro = macros.get(macroKey);
                 if (macro == null) {
                     pieces[i] = defaultReplace;
                     continue;
@@ -219,7 +219,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
                 // Check for special hard-coded macros
                 if (macroKey.equals("icon")) {
                     Object iconKey = mapped.get("key");
-                    Icon icon = iconKey == null || !(iconKey instanceof String) ? null : icons.get((String) iconKey);
+                    Icon icon = iconKey == null || !(iconKey instanceof String) ? null : icons.get(iconKey);
                     String glyph = icon == null ? null : icon.getGlyph();
                     if (glyph == null) {
                         // Just blank this out, we may have unloaded survival and don't have the icons

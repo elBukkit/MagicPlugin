@@ -577,7 +577,8 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             value = !attributeConfig.contains("value") ? null
                     : attributes.getDouble("value");
         } else {
-            value = attributes == null || !attributes.contains(attributeKey) ? null
+            value = !attributes.contains(attributeKey)
+                    ? null
                     : attributes.getDouble(attributeKey);
         }
         if (value == null) {

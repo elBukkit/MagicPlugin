@@ -207,7 +207,7 @@ public class Help {
             // The conversion process turns empty maps into empty lists
             if (rawParameters != null && rawParameters instanceof Map) {
                 Map<String, Object> parameters = (Map<String, Object>)rawParameters;
-                if (parameters != null && !parameters.isEmpty()) {
+                if (!parameters.isEmpty()) {
                     List<String> parameterLines = new ArrayList<>();
                     for (Map.Entry<String, Object> parameterEntry : parameters.entrySet()) {
                         String parameterDescription = parameterEntry.getValue().toString();

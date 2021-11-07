@@ -258,7 +258,6 @@ public class BlockController implements Listener, ChunkLoadListener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPistonExtend(BlockPistonExtendEvent event) {
-        Block piston = event.getBlock();
         boolean undone = false;
 
         // Immediately undo or commit any blocks involved

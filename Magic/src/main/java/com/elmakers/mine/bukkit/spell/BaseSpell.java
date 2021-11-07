@@ -55,7 +55,6 @@ import com.elmakers.mine.bukkit.api.event.CastEvent;
 import com.elmakers.mine.bukkit.api.event.EarnEvent;
 import com.elmakers.mine.bukkit.api.event.PreCastEvent;
 import com.elmakers.mine.bukkit.api.event.StartCastEvent;
-import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -1208,15 +1207,6 @@ public class BaseSpell implements MageSpell, Cloneable {
 
         // Boss bar, can be a simple boolean or a config
         bossBarConfiguration = BossBarConfiguration.parse(controller, node, "$spell");
-    }
-
-    @Nullable
-    private MaterialAndData loadIcon(String key) {
-        if (key == null || key.isEmpty()) {
-            return null;
-        }
-        ItemData itemData = controller.getOrCreateItem(key);
-        return itemData == null ? null : itemData.getMaterialAndData();
     }
 
     @Override

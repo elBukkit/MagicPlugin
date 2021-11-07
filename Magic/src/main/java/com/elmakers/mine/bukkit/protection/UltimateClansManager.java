@@ -9,10 +9,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import me.ulrich.clans.api.ClanAPI;
 
 public class UltimateClansManager implements TeamProvider {
-    private MagicController controller;
-
     public UltimateClansManager(MagicController controller) {
-        this.controller = controller;
     }
 
     @Override

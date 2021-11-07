@@ -235,24 +235,21 @@ public class ActionSpell extends BrushSpell
 
             // This is here for sub-action initialization, and will get replaced with real working parameters for prepare
             workingParameters = parameters;
-            if (actionsNode != null)
+            Collection<String> actionKeys = actionsNode.getKeys(false);
+            for (String actionKey : actionKeys)
             {
-                Collection<String> actionKeys = actionsNode.getKeys(false);
-                for (String actionKey : actionKeys)
-                {
-                    String configKey = actionKey;
-                    if (actionsNode.isString(actionKey)) {
-                        configKey = actionsNode.getString(actionKey);
-                    }
-                    ActionHandler handler = new ActionHandler();
-                    handler.load(this, actionsNode, configKey);
-                    handler.initialize(this, parameters);
-                    usesBrush = usesBrush || handler.usesBrush();
-                    undoable = undoable || handler.isUndoable();
-                    requiresBuildPermission = requiresBuildPermission || handler.requiresBuildPermission();
-                    requiresBreakPermission = requiresBreakPermission || handler.requiresBreakPermission();
-                    actions.put(actionKey, handler);
+                String configKey = actionKey;
+                if (actionsNode.isString(actionKey)) {
+                    configKey = actionsNode.getString(actionKey);
                 }
+                ActionHandler handler = new ActionHandler();
+                handler.load(this, actionsNode, configKey);
+                handler.initialize(this, parameters);
+                usesBrush = usesBrush || handler.usesBrush();
+                undoable = undoable || handler.isUndoable();
+                requiresBuildPermission = requiresBuildPermission || handler.requiresBuildPermission();
+                requiresBreakPermission = requiresBreakPermission || handler.requiresBreakPermission();
+                actions.put(actionKey, handler);
             }
         } else if (template.contains("actions")) {
             controller.getLogger().warning("Invalid actions configuration in spell " + getKey() + ", did you forget to add cast: ?");
