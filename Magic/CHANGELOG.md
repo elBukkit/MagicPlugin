@@ -82,6 +82,7 @@
  - The Tame action will cause tamed mobs to persist
  - Don't allow renaming spells, skills, currency or other non-wand special items on an anvil
  - The Magic Sword can now have effect trails just like a wand
+ - Potion effects with a negative amplifier will be considered more important than positive ones
 
 ## Balance Changes
 
