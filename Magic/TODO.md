@@ -10,14 +10,19 @@
  - Make the "no default drops" a separate tag so it still works after removing mob configs
  - `/wand configure` somehow deleted all spells?
  - Magic load cancelling in-progress arena matches is not ideal
+ - Displayed potion effect level in $roman is one off
+ - Option for potion effects on wands to not replace existing ones
 
 # Model Engine
 
  - Add builtin blueprints (?)
  - Install them by default (.. fetch free ones from links?)
  - Config option to turn this off
- - Auto switch to "modelengine" RP by default (config option also)
+ - Auto switch to "modelengine" RP by default (config option also) [use variants, if using hires]
  - Add a message somewhere explaining this and how to merge the RPs (?)
+   - Ideally, do this if we detect non-Magic blueprints
+     AND they aren't using a custom RP link
+     AND they don't have Magic's RP feature disabled
 
 # Mobs
 
