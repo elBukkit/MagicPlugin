@@ -930,7 +930,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 if (waypoint.description != null && waypoint.description.length() > 0)
                 {
                     List<String> lore = new ArrayList<>();
-                    CompatibilityLib.getInventoryUtils().wrapText(waypoint.description, lore);
+                    CompatibilityLib.getInventoryUtils().wrapText(context.parameterize(waypoint.description), lore);
                     meta.setLore(lore);
                 }
                 String invalidMessage = context.getMessage("invalid_description");
