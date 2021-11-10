@@ -91,6 +91,7 @@
  - Nerf Blast damage
  - Buff Kill damage vs players
  - Nerf dragon attack damage
+ - The Mine and Chop spells are in the "engineering" category, useful when region-tagging
 
 # 10.1.1
 

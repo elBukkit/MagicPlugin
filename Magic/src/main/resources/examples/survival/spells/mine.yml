@@ -1,7 +1,7 @@
 mine:
     # This refers to an icon defined in the icons folder/config
     icon: mine
-    category: mining
+    category: engineering
     tags: noduel,nojail
     worth: 500
     earns: 10
