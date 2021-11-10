@@ -5,6 +5,7 @@ rainbowdragon:
         - class: ColorItem
     parameters:
         target: self
+        bypass_undo: true
         slots:
         - helmet
         - main_hand

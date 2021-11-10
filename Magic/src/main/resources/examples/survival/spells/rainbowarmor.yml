@@ -6,6 +6,7 @@ rainbowarmor:
     parameters:
         target: self
         color_wand: true
+        bypass_undo: true
         color:
           h: "((epoch/100) % 255.0) / 255.0"
           s: 1

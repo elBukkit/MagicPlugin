@@ -393,6 +393,7 @@ camoarmor:
   parameters:
     target: self
     color_wand: true
+    bypass_undo: true
 
 camochestplate:
   inherit: camoarmor
