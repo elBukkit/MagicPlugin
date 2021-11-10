@@ -56,6 +56,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.warp.Warp;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
@@ -233,7 +234,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected boolean autoClose = true;
         protected boolean showFree = true;
         protected boolean unbreakableIcon = true;
-        protected int iconHideFlags = 63;
+        protected int iconHideFlags = CompatibilityConstants.ALL_HIDE_FLAGS;
 
         protected int limit = 0;
 
@@ -849,7 +850,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             } else {
                 icon = CompatibilityLib.getItemUtils().makeReal(icon);
                 CompatibilityLib.getItemUtils().makeUnbreakable(icon);
-                CompatibilityLib.getItemUtils().hideFlags(icon, 63);
+                CompatibilityLib.getItemUtils().hideFlags(icon, CompatibilityConstants.ALL_HIDE_FLAGS);
                 ItemMeta meta = icon.getItemMeta();
                 meta.setDisplayName(" ");
                 icon.setItemMeta(meta);

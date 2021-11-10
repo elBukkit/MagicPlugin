@@ -58,6 +58,7 @@
  - Fixes and improvements to mysql data storage, particularly in a multi-server setup
  - Fix items put directly in a spell inventory (vanilla give, other plugins) getting lost if the player's survival inventory is full
  - Fix integration with future releases of Towny, the Warzone API is gone
+ - Fix color lore showing on leather icons in Recall and other places
 
 ## Additions
  

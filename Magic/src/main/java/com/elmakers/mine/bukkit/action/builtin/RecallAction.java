@@ -42,6 +42,7 @@ import com.elmakers.mine.bukkit.api.warp.Warp;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
@@ -950,7 +951,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 }
                 waypointItem.setItemMeta(meta);
                 waypointItem = CompatibilityLib.getItemUtils().makeReal(waypointItem);
-                CompatibilityLib.getItemUtils().hideFlags(waypointItem, 63);
+                CompatibilityLib.getItemUtils().hideFlags(waypointItem, CompatibilityConstants.ALL_HIDE_FLAGS);
                 CompatibilityLib.getNBTUtils().setString(waypointItem, "waypoint", "true");
                 CompatibilityLib.getItemUtils().makeUnbreakable(waypointItem);
                 if (isPlaceholder) {
@@ -999,7 +1000,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
             }
             markerItem.setItemMeta(meta);
             markerItem = CompatibilityLib.getItemUtils().makeReal(markerItem);
-            CompatibilityLib.getItemUtils().hideFlags(markerItem, 63);
+            CompatibilityLib.getItemUtils().hideFlags(markerItem, CompatibilityConstants.ALL_HIDE_FLAGS);
             CompatibilityLib.getNBTUtils().setInt(markerItem, "move_marker", marker);
 
             displayInventory.setItem(inventoryIndex, markerItem);

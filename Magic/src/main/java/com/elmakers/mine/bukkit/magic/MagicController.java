@@ -5778,7 +5778,7 @@ public class MagicController implements MageController {
                             itemStack.setItemMeta(meta);
                             itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
                             CompatibilityLib.getItemUtils().makeUnbreakable(itemStack);
-                            CompatibilityLib.getItemUtils().hideFlags(itemStack, 63);
+                            CompatibilityLib.getItemUtils().hideFlags(itemStack, CompatibilityConstants.ALL_HIDE_FLAGS);
                             Object currencyNode = CompatibilityLib.getNBTUtils().createTag(itemStack, "currency");
                             CompatibilityLib.getNBTUtils().setInt(currencyNode, "amount", intAmount);
                             CompatibilityLib.getNBTUtils().setString(currencyNode, "type", itemKey);

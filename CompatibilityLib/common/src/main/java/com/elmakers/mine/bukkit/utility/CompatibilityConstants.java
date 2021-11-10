@@ -22,6 +22,8 @@ public class CompatibilityConstants {
     public static int MAX_PROPERTY_DISPLAY_LENGTH = 50;
     public static boolean USE_METADATA_LOCATIONS;
 
+    public static int ALL_HIDE_FLAGS = 127;
+
     public static String getVersionPrefix() {
         String versionPrefix = "";
         String className = Bukkit.getServer().getClass().getName();
