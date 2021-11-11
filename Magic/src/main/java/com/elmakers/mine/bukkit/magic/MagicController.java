@@ -6719,7 +6719,15 @@ public class MagicController implements MageController {
     @Nullable
     @Override
     public Material getMobEgg(EntityType mobType) {
-        return mobEggs.get(mobType);
+        Material material = mobEggs.get(mobType);
+        if (material == null) {
+            try {
+                material = Material.valueOf(mobType.name() + "_SPAWN_EGG");
+                mobEggs.put(mobType, material);
+            } catch (Exception ignore) {
+            }
+        }
+        return material;
     }
 
     @Nullable

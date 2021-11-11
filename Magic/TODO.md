@@ -2,7 +2,6 @@
 
 # Important
 
- - Most mobs from 1.16+ don't work with capture
  - when for a mob i set a lifetime the goals are not working
 
  - Still gets insane with transforming piglins, how to prevent and reset?
