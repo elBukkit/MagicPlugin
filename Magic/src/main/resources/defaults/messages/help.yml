@@ -518,12 +518,20 @@ help:
   mobs: |-
     `<title text="Magic Mobs">`
     `<p>`&dMagic&f has a custom mob system for creating mobs that can cast spells or have other magical properties.
+    `<p>`This includes custom `<help topic="loot" text="loot drops">`
     `<p>`Magic mobs can also be used as an `<help topic="npc" text="NPC">` template.
     `<li>``<command command="mmob spawn warlock" text="Spawn a spellcasting warlock">`
     `<li>``<command command="mmob remove warlock" text="Remove all spawned warlocks">`
     `<li>``<command command="meditor mob warlock" text="Edit the warlock mob config">`
     `<li>``<command command="meditor mob" text="Create a new mob">`
     `<li>``<link url="https://reference.elmakers.com/#mobs" text="See all mob properties in the reference guide">`
+  loot: |-
+    `<title text="Mob Loot">`
+    `<p>`&dMagic&f mobs can drop custom loot, including &6Spell Points&f, wands, spells and other magic items.
+    `<p>`Some of the builtin mobs drop custom items, such as the &3warlock wand&f
+    `<p>`These items can be sold in the `<command command="mnpc add lootshop" text="loot shop">` when using the `<command command="mexample add spawnmobs" text="spawnmobs">` example.
+    `<p>`The items are otherwise useless.
+    `<p>`Use `<command command="meditor mob warlock" text="the editor">` to change mob loot drops.
   crafting: |-
     `<title text="Custom Crafting">`
     `<p>`&dMagic&f has a completely customizable crafting system.
