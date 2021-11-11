@@ -3054,31 +3054,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         addDefaultSlottedLore(lore);
 
         if (instructionsLore && spellCount > 1) {
-            String header = getMessage("lore_instructions_header", "");
-            CompatibilityLib.getInventoryUtils().wrapText(header, lore);
-            if (isInventoryOpen() && inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
-                CompatibilityLib.getInventoryUtils().wrapText(inventoryOpenLore, lore);
-
-                String cycleMessage = getMessage("inventory_open_cycle", "");
-                if (!cycleMessage.isEmpty() &&  inventories.size() > 1) {
-                    CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
-                }
-
-                cycleMessage = getMessage("inventory_open_cycle_hotbar", "");
-                if (!cycleMessage.isEmpty() &&  hotbars.size() > 1) {
-                    CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
-                }
-            }
-            addInstructionLore("left_click", leftClickAction, lore);
-            addInstructionLore("right_click", rightClickAction, lore);
-            addInstructionLore("drop", dropAction, lore);
-            addInstructionLore("swap", swapAction, lore);
-            addInstructionLore("no_bowpull", noBowpullAction, lore);
-            if (slots != null) {
-                for (WandUpgradeSlot slot : slots) {
-                    slot.addInstructionLore(lore, controller.getMessages());
-                }
-            }
+            addInstructionLore(lore);
         }
 
         // This should always be last
@@ -3202,6 +3178,40 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         List<String> lore = new ArrayList<>();
         addSlotsLore(lore);
         return StringUtils.join(lore, "\n");
+    }
+
+    private String getInstructionLore() {
+        List<String> lore = new ArrayList<>();
+        addInstructionLore(lore);
+        return StringUtils.join(lore, "\n");
+    }
+
+    private void addInstructionLore(List<String> lore) {
+        String header = getMessage("lore_instructions_header", "");
+        CompatibilityLib.getInventoryUtils().wrapText(header, lore);
+        if (isInventoryOpen() && inventoryOpenLore != null && !inventoryOpenLore.isEmpty()) {
+            CompatibilityLib.getInventoryUtils().wrapText(inventoryOpenLore, lore);
+
+            String cycleMessage = getMessage("inventory_open_cycle", "");
+            if (!cycleMessage.isEmpty() &&  inventories.size() > 1) {
+                CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
+            }
+
+            cycleMessage = getMessage("inventory_open_cycle_hotbar", "");
+            if (!cycleMessage.isEmpty() &&  hotbars.size() > 1) {
+                CompatibilityLib.getInventoryUtils().wrapText(cycleMessage, lore);
+            }
+        }
+        addInstructionLore("left_click", leftClickAction, lore);
+        addInstructionLore("right_click", rightClickAction, lore);
+        addInstructionLore("drop", dropAction, lore);
+        addInstructionLore("swap", swapAction, lore);
+        addInstructionLore("no_bowpull", noBowpullAction, lore);
+        if (slots != null) {
+            for (WandUpgradeSlot slot : slots) {
+                slot.addInstructionLore(lore, controller.getMessages());
+            }
+        }
     }
 
     private void addInstructionLore(String key, WandAction action, List<String> lore) {
@@ -5016,6 +5026,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 return getSlotLore();
             case "slots":
                 return getSlotsLore();
+            case "instructions":
+                return getInstructionLore();
             case "sets":
                 return getSetLore();
             case "attributes":
