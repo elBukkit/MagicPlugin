@@ -2,6 +2,9 @@
 
 # Important
 
+ - Most mobs from 1.16+ don't work with capture
+
+
  - Still gets insane with transforming piglins, how to prevent and reset?
  - CheckInventory action checking for empty slot, air doesn't work?
  - Do you need `swappable: false` for swap controls to work at all?

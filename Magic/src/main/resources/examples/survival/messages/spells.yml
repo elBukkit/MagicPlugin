@@ -542,7 +542,7 @@ spells:
         upgrade_description: "Increased radius, longer burn time"
     growth:
         name: Growth
-        description: Make plants, crops and saplings grow instantly
+        description: Make crops grow instantly
         upgrade_description: "Increased radius"
     rainbow:
         name: Rainbow
