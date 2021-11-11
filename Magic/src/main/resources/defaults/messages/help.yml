@@ -143,6 +143,7 @@ help:
     `<p>`Players select a chest to use as their shop inventory. and place items in that chest.
     `<p>`It is recomended to protect this chest with a `<help topic="protection" text="protection">` plugin, or the &6Secure&f spell.
     `<p>`The &bShopkeeper&f will sell items from the player's chest, and the players will earn money from the sales.
+    `<p>`Use the `<command command="mnpc select" text="mnpc select">` and `<command command="mnpc remove" text="mnpc remove">` commands if you need to remove an NPC.
   players: |-
     `<title text="Magic Player Data">`
     `<li>``<command command="mage reset NathanWolf" text="Completely reset a player's progress">`
