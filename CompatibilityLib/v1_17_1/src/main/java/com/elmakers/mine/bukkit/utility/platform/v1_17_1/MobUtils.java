@@ -15,7 +15,6 @@ import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.craftbukkit.v1_17_R1.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
-import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
@@ -354,15 +353,7 @@ public class MobUtils extends MobUtilsBase {
         final float stopDistance = (float)config.getDouble("stop_distance", 1);
         final float radius = (float)config.getDouble("radius", 16);
         final PathfinderMob pathfinder = mob instanceof PathfinderMob ? (PathfinderMob)mob : null;
-        EntityData entityData = platform.getController().getMob(entity);
-        int defaultInterval = 1000;
-        if (entityData != null) {
-            long tickInterval = entityData.getTickInterval();
-            if (tickInterval > 0) {
-                defaultInterval = (int)tickInterval;
-            }
-        }
-        int interval = config.getInt("interval", defaultInterval);
+        int interval = config.getInt("interval", 1000);
         // Interval is specified in ms, but needed in ticks
         interval = interval / 50;
         MageController controller = platform.getController();

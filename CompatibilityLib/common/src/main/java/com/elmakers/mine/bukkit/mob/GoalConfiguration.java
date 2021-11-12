@@ -88,4 +88,10 @@ public class GoalConfiguration implements Comparable<GoalConfiguration> {
     public int compareTo(GoalConfiguration o) {
         return Integer.compare(priority, o.priority);
     }
+
+    public void setDefault(String key, Object value) {
+        if (!configuration.contains(key)) {
+            configuration.set(key, value);
+        }
+    }
 }

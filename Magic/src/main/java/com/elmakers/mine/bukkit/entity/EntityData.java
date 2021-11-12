@@ -160,6 +160,7 @@ public class EntityData
     protected List<Deque<WeightedPair<String>>> drops;
     protected ConfigurationSection loot;
     protected ConfigurationSection brain;
+    protected int interval;
     protected Set<String> tags;
     protected Set<String> removeMounts;
     protected String interactSpell;
@@ -496,6 +497,7 @@ public class EntityData
 
         hasAI = ConfigUtils.getOptionalBoolean(parameters, "ai");
         brain = ConfigurationUtils.getConfigurationSection(parameters, "brain");
+        interval = parameters.getInt("interval", 1000);
 
         loot = parameters.getConfigurationSection("loot");
         cancelInteract = parameters.getBoolean("cancel_interact");
@@ -1168,6 +1170,7 @@ public class EntityData
             ((LivingEntity)entity).setAI(true);
         }
         for (GoalConfiguration goal : goals) {
+            goal.setDefault("interval", interval);
             if (!mobUtils.addGoal(entity, goal)) {
                 controller.getLogger().warning("Invalid goal " + goal.getGoalType() + " for mob type " + entity.getType().name().toLowerCase());
             }
@@ -1185,6 +1188,7 @@ public class EntityData
             ((LivingEntity)entity).setAI(true);
         }
         for (GoalConfiguration goal : goals) {
+            goal.setDefault("interval", interval);
             if (!mobUtils.addTargetGoal(entity, goal)) {
                 controller.getLogger().warning("Invalid target goal " + goal.getGoalType() + " for mob type " + entity.getType().name().toLowerCase());
             }

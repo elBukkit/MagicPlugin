@@ -65,6 +65,8 @@ Drops:
 
 # Next Up:
 
+ - Economy based on stock: https://dev.bukkit.org/projects/hyperconomy/pages/information
+
  - Add a section ("randomized" ?) to wands that apply all those properties to the wand data when
    the wand is first created. This could allow for randomization but possibly has other uses, so maybe
    don't make it randomization specific.
