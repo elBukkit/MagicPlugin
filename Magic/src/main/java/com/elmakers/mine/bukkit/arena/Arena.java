@@ -584,7 +584,7 @@ public class Arena {
         Collection<? extends Player> players = controller.getPlugin().getServer().getOnlinePlayers();
         for (Player player : players) {
             Location playerLocation = player.getLocation();
-            if (!playerLocation.getWorld().equals(center.getWorld())) continue;
+            if (center == null || !playerLocation.getWorld().equals(center.getWorld())) continue;
             if (playerLocation.distanceSquared(center) < rangeSquared) {
                 player.sendMessage(message);
             }
