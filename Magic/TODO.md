@@ -13,7 +13,6 @@
  - Make the "no default drops" a separate tag so it still works after removing mob configs
  - `/wand configure` somehow deleted all spells?
  - Magic load cancelling in-progress arena matches is not ideal
- - Displayed potion effect level in $roman is one off
 
 # Model Engine
 

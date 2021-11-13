@@ -292,7 +292,7 @@ public class BaseMagicProperties implements MagicProperties {
         effectName = effectName.substring(1).toLowerCase().replace("_", " ");
         effectName = effectFirst + effectName;
         effectName = controller.getMessages().get("potion_effects." + effect.getName().toLowerCase(), effectName);
-        return controller.getMessages().getLevelString("wand.potion_effect", level, 5).replace("$effect", effectName);
+        return controller.getMessages().getLevelString("wand.potion_effect", level + 1, 5).replace("$effect", effectName);
     }
 
     protected void sendDebug(String debugMessage) {
