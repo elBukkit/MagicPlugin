@@ -492,8 +492,10 @@ public class NMSUtils {
             class_CraftEntity = fixBukkitClass("org.bukkit.craftbukkit.entity.CraftEntity");
             class_TileEntitySign = fixBukkitClass("net.minecraft.server.TileEntitySign");
             try {
+                // 1.13
                 class_TileEntityRecordPlayer = fixBukkitClass("net.minecraft.server.TileEntityJukeBox");
             } catch (ClassNotFoundException e) {
+                // <= 1.12
                 class_TileEntityRecordPlayer = fixBukkitClass("net.minecraft.server.BlockJukeBox$TileEntityRecordPlayer");
             }
             class_CraftServer = fixBukkitClass("org.bukkit.craftbukkit.CraftServer");
@@ -1551,8 +1553,15 @@ public class NMSUtils {
             }
 
             try {
-                class_TileEntityRecordPlayer_record = class_TileEntityRecordPlayer.getDeclaredField("record");
-                class_TileEntityRecordPlayer_record.setAccessible(true);
+                try {
+                    // <= 1.12.2
+                    class_TileEntityRecordPlayer_record = class_TileEntityRecordPlayer.getDeclaredField("record");
+                    class_TileEntityRecordPlayer_record.setAccessible(true);
+                } catch (NoSuchFieldException e) {
+                    // 1.13.2
+                    class_TileEntityRecordPlayer_record = class_TileEntityRecordPlayer.getDeclaredField("a");
+                    class_TileEntityRecordPlayer_record.setAccessible(true);
+                }
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "Failed to find 'record' field in jukebox tile entity", ex);
                 class_TileEntityRecordPlayer_record = null;
