@@ -1305,6 +1305,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             earnDescription = earnDescription.replace("$type", earnType);
             ConfigurationUtils.addIfNotEmpty(earnDescription, lore);
         }
+        addPotionEffectLore(lore);
 
         if (getBoolean("ignored_by_mobs")) {
             ConfigurationUtils.addIfNotEmpty(getMessage("ignored_by_mobs"), lore);
