@@ -20,8 +20,8 @@ potion_effects:
   poison: Poison
   wither: Wither
   health_boost: Health Boost
-  absorption: absorption
-  saturation: saturation
+  absorption: Absorption
+  saturation: Saturation
   glowing: Glowing
   levitation: Levitation
   luck: Luck
