@@ -85,6 +85,7 @@ public class BreakBlockAction extends ModifyBlockAction {
             }
             super.perform(context);
             context.unregisterBreaking(block);
+            context.playEffects("broken");
         } else {
             CompatibilityLib.getCompatibilityUtils().setBreaking(block, breakAmount);
         }

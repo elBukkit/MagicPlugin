@@ -2,8 +2,9 @@
 
 # Important
 
- - when for a mob i set a lifetime the goals are not working
-
+ - Trying to sell invisible item frame in a player shop says it's out of stock
+ - Can't save bundles?
+   
  - Still gets insane with transforming piglins, how to prevent and reset?
  - CheckInventory action checking for empty slot, air doesn't work?
  - Do you need `swappable: false` for swap controls to work at all?
@@ -13,7 +14,6 @@
  - `/wand configure` somehow deleted all spells?
  - Magic load cancelling in-progress arena matches is not ideal
  - Displayed potion effect level in $roman is one off
- - Option for potion effects on wands to not replace existing ones
 
 # Model Engine
 

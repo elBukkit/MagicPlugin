@@ -18,8 +18,8 @@ rarify:
       - class: CheckBlock
         allowed: diamond_ore,deepslate_diamond_ore
         actions:
-        - class: BreakBlock
-          break_material: diamond_block
+          - class: BreakBlock
+            break_material: diamond_block
       - class: CheckBlock
         allowed: emerald_ore,deepslate_emerald_ore
         actions:
@@ -45,6 +45,46 @@ rarify:
         actions:
           - class: BreakBlock
             break_material: redstone_block
+  effects:
+    no_target:
+      - sound: block_note_block_bass
+    cast:
+      - effect: step_sound
+        location: target
+        particle: block_crack
+        particle_count: 20
+        particle_offset: 0.2
+        use_block_location: true
+        sample: target
+      - location: target
+        particle: redstone
+        particle_count: 20
+        particle_offset: 0.3
+      - class: EffectSingle
+        sound: magic.shimmer
+        location: origin
+    broken:
+      - location: target
+        sound: magic.hit
+        sound_volume: 0.5
+      - location: target
+        sound: block_note_block_cow_bell
+        sound_volume: 0.75
+        sound_pitch: 1.8
+      - location: target
+        use_block_location: true
+        sample: target
+        effectlib:
+          class: Modified
+          iterations: 30
+          parameters:
+            edge_length: "max(1, (1 - (t / i)) * 5 - 2)"
+          effect:
+            class: CubeEffect
+            particle: block_crack
+            color: "C0C0C0"
+            enable_rotation: false
+            offset: 0.5,0.5,0.5
   parameters:
     target: block
     range: 4
@@ -52,4 +92,4 @@ rarify:
     destructible: ores
     commit: true
     undo: 3000
-    cooldown: 500
+    cooldown: 5000
