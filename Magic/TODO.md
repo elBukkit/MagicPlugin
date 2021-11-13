@@ -1,14 +1,16 @@
 # TODO
 
-# Important
+# For 10.2
 
  - Trying to sell invisible item frame in a player shop says it's out of stock
  - Can't save bundles?
-   
  - Still gets insane with transforming piglins, how to prevent and reset?
  - CheckInventory action checking for empty slot, air doesn't work?
  - Do you need `swappable: false` for swap controls to work at all?
  - Test: `/mconfig configure spell arrow_ice worth 200`
+   
+# Still Important
+
  - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?
  - Make the "no default drops" a separate tag so it still works after removing mob configs
  - `/wand configure` somehow deleted all spells?
@@ -64,11 +66,9 @@ Drops:
 
 # Next Up:
 
- - Economy based on stock: https://dev.bukkit.org/projects/hyperconomy/pages/information
+ - Improve wand randomization- it would be nice to pick from a set of things, or assign a probability to each property?
 
- - Add a section ("randomized" ?) to wands that apply all those properties to the wand data when
-   the wand is first created. This could allow for randomization but possibly has other uses, so maybe
-   don't make it randomization specific.
+ - Economy based on stock: https://dev.bukkit.org/projects/hyperconomy/pages/information
 
  - Do jukeboxes not restore their record? Maybe a 1.16 problem? (no this was from loading)
    > Failed to find 'record' field in jukebox tile entity

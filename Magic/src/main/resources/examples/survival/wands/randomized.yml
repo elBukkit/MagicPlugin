@@ -1,0 +1,11 @@
+randomized:
+  name: Wand
+  inherit: base_wand
+  class: mage
+  legacy_icon: wand_icon:1
+  icon: stick{CustomModelData:18001}
+  effect_color: random
+  slots: gui,controls,spellmode,swappable
+  item_properties:
+    strength.overall: rand(0,0.25)
+    weakness.overall: rand(0,0.5)
