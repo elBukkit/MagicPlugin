@@ -13,7 +13,6 @@ import java.util.WeakHashMap;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -475,7 +474,7 @@ public class Targeting {
         Collection<BoundingBox> hitboxes = CompatibilityLib.getCompatibilityUtils().getBoundingBoxes(block);
         if (Target.DEBUG_TARGETING) {
             org.bukkit.Bukkit.getLogger().info(" Checking hitboxes for block "
-                + block.getType() + " : " + StringUtils.join(hitboxes)
+                + block.getType() + " : " + hitboxes
                 + " from " + startPoint.toBlockVector() + " to " + endPoint.toBlockVector()
                 + " rot: " + sourceDirection);
         }

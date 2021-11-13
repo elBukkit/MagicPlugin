@@ -72,7 +72,7 @@ public class MagicFollowMobGoal extends Goal {
     @Override
     public void tick() {
         if (followingMob != null && !mob.isLeashed()) {
-            this.mob.getLookControl().setLookAt(this.followingMob, 10.0F, (float)this.mob.getMaxHeadXRot());
+            this.mob.getLookControl().setLookAt(this.followingMob, 10.0F, this.mob.getMaxHeadXRot());
             if (--this.ticksRemaining <= 0) {
                 this.ticksRemaining = interval;
                 navigation.moveTo(this.followingMob, this.speedModifier);

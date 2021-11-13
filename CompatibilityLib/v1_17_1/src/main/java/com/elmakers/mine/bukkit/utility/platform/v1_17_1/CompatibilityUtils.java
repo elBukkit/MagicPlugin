@@ -1784,7 +1784,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             return false;
         }
         net.minecraft.world.entity.LivingEntity livingDamaged = (net.minecraft.world.entity.LivingEntity)nmsDamaged;
-        net.minecraft.world.entity.Entity nmsDamager = damager == null ? null : ((CraftEntity)damager).getHandle();
+        net.minecraft.world.entity.Entity nmsDamager = ((CraftEntity)damager).getHandle();
         net.minecraft.world.entity.LivingEntity livingDamager = nmsDamager instanceof net.minecraft.world.entity.LivingEntity
                 ? (net.minecraft.world.entity.LivingEntity)nmsDamaged : null;
         livingDamaged.setLastHurtByMob(livingDamager);

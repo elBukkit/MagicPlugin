@@ -339,12 +339,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         this((MagicController)properties.getController(), DefaultWandMaterial, (short)0);
         ConfigurationSection config = properties.getConfiguration();
         String templateKey = properties.getTemplateKey();
-        if (config != null) {
-            config.set("template", templateKey);
-            load(config);
-        } else {
-            setTemplate(templateKey);
-        }
+        config.set("template", templateKey);
+        load(config);
         loadProperties();
         updateName();
         findAndUpdateLore();
@@ -3101,8 +3097,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (setsConfiguration != null) {
             Set<String> setKeys = setsConfiguration.getKeys(false);
             for (String setKey : setKeys) {
-                ConfigurationSection setConfiguration = setsConfiguration == null ? null : setsConfiguration.getConfigurationSection(setKey);
-                ConfigurationSection setBonusConfiguration = setConfiguration == null ? null : setConfiguration.getConfigurationSection("bonuses");
+                ConfigurationSection setConfiguration = setsConfiguration.getConfigurationSection(setKey);
+                ConfigurationSection setBonusConfiguration = setConfiguration.getConfigurationSection("bonuses");
                 WandSet wandSet = controller.getWandSet(setKey);
                 if (wandSet == null) continue;
                 String setName = wandSet.getName(controller.getMessages());
@@ -3325,10 +3321,12 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return CompatibilityLib.getNBTUtils().containsTag(item, "currency");
     }
 
+    @Override
     public void addPropertyLore(List<String> lore) {
         addPropertyLore(lore, false);
     }
 
+    @Override
     public void addPropertyLore(List<String> lore, boolean isSingleSpell) {
         // If this is a passive wand, then reduction properties stack onto the mage when worn.
         // In this case we should show it as such in the lore.

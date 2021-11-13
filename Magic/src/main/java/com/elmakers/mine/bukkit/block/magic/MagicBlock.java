@@ -275,8 +275,8 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         if (spawned == null || template == null) return;
         Spawner spawner = template.getSpawner();
         if (spawner.isLeashed()) {
-            MaterialSet leashBlocks = spawner == null ? null : spawner.getLeashBlocks();
-            double leashRangeSquared = spawner == null ? 0 : spawner.getLimitRange();
+            MaterialSet leashBlocks = spawner.getLeashBlocks();
+            double leashRangeSquared = spawner.getLimitRange();
             if (leashRangeSquared > 0) {
                 leashRangeSquared = leashRangeSquared * leashRangeSquared;
             }

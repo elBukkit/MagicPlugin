@@ -567,6 +567,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
             // Remove items
             NMSUtils.class_NBTTagCompound_removeMethod.invoke(entityData, "Item");
+            NMSUtils.class_NBTTagCompound_removeMethod.invoke(entityData, "Items");
 
             // Reload tile entity
             if (NMSUtils.class_IBlockData != null) {

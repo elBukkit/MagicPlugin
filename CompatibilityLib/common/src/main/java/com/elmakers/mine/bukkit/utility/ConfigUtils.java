@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
@@ -416,15 +417,48 @@ public class ConfigUtils {
         return vector.getX() + "," + vector.getY() + "," + vector.getZ();
     }
 
-    public static String fromLocation(Location location, Location relativeTo) {
-        if (location == null) return "";
-        if (location.getWorld() == null) return "";
-        if (relativeTo != null && relativeTo.getWorld() == null) return "";
-        if (!relativeTo.getWorld().equals(location.getWorld())) {
+    /**
+     * Serialises a location as a relative offset to another location.
+     *
+     * <p>One of the following formats may be used, depending on the
+     * availability of the locations, whether or not they are in the same
+     * world and whether or not the pitch and the yaw are the same.
+     *
+     * <ul>
+     * <li>{@code ""}, the empty string, when no location was specified, or the
+     * center location was not valid.
+     * <li>{@code "x,y,z"}, offsets relative to the center, with the same
+     * orientation.
+     * <li>{@code "x,y,z,yaw,pitch"}, offset relative to the center, with
+     * absolute rotations.
+     * <li>{@code "x,y,z,world,yaw,pitch"}, an absolute location an orientation
+     * </ul>
+     *
+     * @param location The location to serialise.
+     * @param relativeTo The center to make the location relative to.
+     * @return The string representation.
+     */
+    @Nonnull
+    public static String fromLocation(
+            @Nullable Location location,
+            @Nullable Location relativeTo) {
+        if (location == null || location.getWorld() == null) {
+            // Invalid location
+            return "";
+        } else if (relativeTo != null && relativeTo.getWorld() == null) {
+            // Invalid center
+            // FIXME: Shouldn't we just return a non-relative location?
+            return "";
+        } else if (relativeTo == null
+                || !relativeTo.getWorld().equals(location.getWorld())) {
+            // No relative, or they are not in the same world
             return fromLocation(location);
         }
+
+        // Make location relative to relativeTo
         location = location.clone();
         location.subtract(relativeTo);
+
         String serialized = location.getX() + "," + location.getY() + "," + location.getZ();
         if (location.getPitch() != relativeTo.getPitch() || location.getYaw() != relativeTo.getYaw()) {
             serialized += "," + location.getYaw() + "," + location.getPitch();
@@ -432,7 +466,8 @@ public class ConfigUtils {
         return serialized;
     }
 
-    public static String fromLocation(Location location) {
+    @Nonnull
+    public static String fromLocation(@Nullable Location location) {
         if (location == null) return "";
         if (location.getWorld() == null) return "";
         return location.getX() + "," + location.getY() + "," + location.getZ() + "," + location.getWorld().getName()

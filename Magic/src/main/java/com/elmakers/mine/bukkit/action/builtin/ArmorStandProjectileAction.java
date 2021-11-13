@@ -240,7 +240,6 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         return result;
     }
 
-    @Nullable
     private void checkItems(CastContext context) {
         if (useBrushItem != null) {
             MaterialBrush brush = context.getBrush();

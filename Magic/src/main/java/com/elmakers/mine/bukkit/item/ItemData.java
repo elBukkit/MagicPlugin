@@ -488,6 +488,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     }
 
     @Nullable
+    @Override
     public Collection<String> getDiscoverRecipes() {
         return discoverRecipes;
     }

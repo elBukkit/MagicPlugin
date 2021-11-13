@@ -16,6 +16,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Server;
+import org.bukkit.SkullType;
 import org.bukkit.World;
 import org.bukkit.WorldBorder;
 import org.bukkit.block.Block;
@@ -31,6 +32,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
+import org.bukkit.material.Skull;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -581,7 +584,7 @@ public class Arena {
         Collection<? extends Player> players = controller.getPlugin().getServer().getOnlinePlayers();
         for (Player player : players) {
             Location playerLocation = player.getLocation();
-            if (!playerLocation.getWorld().equals(center.getWorld())) continue;
+            if (center == null || !playerLocation.getWorld().equals(center.getWorld())) continue;
             if (playerLocation.distanceSquared(center) < rangeSquared) {
                 player.sendMessage(message);
             }
@@ -1327,9 +1330,24 @@ public class Arena {
                 ArenaPlayer player = leaderboard.get(i);
                 if (canReplace(leaderboardBlock)) {
                     skullMaterial.modify(leaderboardBlock);
+
                     BlockState blockState = leaderboardBlock.getState();
+
+                    // Apply rotation for legacy versions
+                    if (!CompatibilityLib.isCurrentVersion()) {
+                        MaterialData data = blockState.getData();
+                        if (data instanceof Skull) {
+                            ((Skull) data).setFacingDirection(skullFace);
+                            blockState.setData(data);
+                            blockState.update(false, false);
+                        }
+                    }
+
                     if (blockState instanceof org.bukkit.block.Skull) {
                         org.bukkit.block.Skull skullBlock = (org.bukkit.block.Skull)blockState;
+                        if (!CompatibilityLib.isCurrentVersion()) {
+                            skullBlock.setSkullType(SkullType.PLAYER);
+                        }
                         skullBlock.setRotation(skullFace);
                         controller.getMagic().setSkullOwner(skullBlock, player.getUUID());
                     }

@@ -3840,7 +3840,6 @@ public class MagicController implements MageController {
 
         // Check for wildcards, this is particularly important for lists
         // Only going to look up one level though, and hope the perm system handles it from there
-        boolean hasWildcard = false;
         if (pNode.contains(".")) {
             String parentNode = pNode.substring(0, pNode.lastIndexOf('.') + 1) + "*";
             // We will use the wildcard default as the default
@@ -5079,6 +5078,7 @@ public class MagicController implements MageController {
     }
 
     @Nonnull
+    @Override
     public Icon getDefaultIcon() {
         Icon defaultIcon = icons.get("default");
         // This shouldn't really happen unless something's gone horribly wrong

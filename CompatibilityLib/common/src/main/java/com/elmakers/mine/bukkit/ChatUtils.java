@@ -19,12 +19,10 @@ public class ChatUtils {
     // Remove some standard java punctuation, plus the unicode range from "Number Forms" to "Miscellaneous symbols"
     private static final Pattern PUNCTUATION_PATTERN = Pattern.compile("[\\s0-9\\p{Punct}\\p{IsPunctuation}\u2150-\u2BFF\uE000-\uFFFF]"); // Sorry for the unicode escapes
     private static Messages messages;
-    private static Logger logger;
     private static Gson gson;
 
     public static void initialize(Messages messages, Logger logger) {
         ChatUtils.messages = messages;
-        ChatUtils.logger = logger;
     }
 
     protected static Gson getGson() {

@@ -268,6 +268,7 @@ public class BaseMagicProperties implements MagicProperties {
         return getVector(key, null);
     }
 
+    @Nonnull
     public ConfigurationSection getConfiguration() {
         return configuration;
     }

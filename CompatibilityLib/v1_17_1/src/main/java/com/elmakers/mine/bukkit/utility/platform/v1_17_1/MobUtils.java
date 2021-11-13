@@ -362,7 +362,7 @@ public class MobUtils extends MobUtilsBase {
         switch (goalType) {
             case AVOID_ENTITY:
                 if (pathfinder == null) return null;
-                return new AvoidEntityGoal(pathfinder, getMobClass(classType), distance, sprintSpeed, sprintSpeed);
+                return new AvoidEntityGoal<>(pathfinder, getMobClass(classType), distance, sprintSpeed, sprintSpeed);
             case BEG:
                 if (mob instanceof Wolf) {
                     return new BegGoal((Wolf)mob, distance);
@@ -520,7 +520,7 @@ public class MobUtils extends MobUtilsBase {
                 if (pathfinder == null) return null;
                 return new HurtByTargetGoal(pathfinder);
             case NEAREST_ATTACKABLE_TARGET:
-                return new NearestAttackableTargetGoal(mob, getMobClass(classType), see, reach);
+                return new NearestAttackableTargetGoal<>(mob, getMobClass(classType), see, reach);
             case OWNER_HURT_BY_TARGET:
                 if (mob instanceof TamableAnimal) {
                     return new OwnerHurtByTargetGoal((TamableAnimal)mob);

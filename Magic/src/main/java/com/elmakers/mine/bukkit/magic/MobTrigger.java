@@ -32,6 +32,7 @@ public class MobTrigger extends CustomTrigger {
         return true;
     }
 
+    @Override
     protected boolean cast(Mage mage, String castSpell, ConfigurationSection parameters) {
         boolean success = super.cast(mage, castSpell, parameters);
         if (success && swingArm) {

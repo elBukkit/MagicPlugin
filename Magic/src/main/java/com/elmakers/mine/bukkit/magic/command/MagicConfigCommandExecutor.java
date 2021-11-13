@@ -1281,8 +1281,6 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
         }
 
         File pluginFolder = api.getPlugin().getDataFolder();
-        Collection<String> examples = controller.getLoadedExamples();
-        Plugin plugin = controller.getPlugin();
         for (String configFileName : configFiles) {
             sender.sendMessage(ChatColor.AQUA + "Checking " + ChatColor.DARK_AQUA + configFileName);
             try {
