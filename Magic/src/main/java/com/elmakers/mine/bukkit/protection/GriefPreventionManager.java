@@ -49,7 +49,7 @@ public class GriefPreventionManager implements BlockBuildManager, BlockBreakMana
 
     @Override
     public boolean hasBuildPermission(Player player, Block block) {
-        if (enabled && block != null && api != null) {
+        if (enabled && block != null && api != null && player != null) {
             return api.hasBuildPermission(player, block);
         }
         return true;
@@ -57,7 +57,7 @@ public class GriefPreventionManager implements BlockBuildManager, BlockBreakMana
 
     @Override
     public boolean hasBreakPermission(Player player, Block block) {
-        if (enabled && block != null && api != null) {
+        if (enabled && block != null && api != null && player != null) {
             return api.hasBreakPermission(player, block);
         }
         return true;
@@ -65,7 +65,7 @@ public class GriefPreventionManager implements BlockBuildManager, BlockBreakMana
 
     @Override
     public boolean isPVPAllowed(Player player, Location location) {
-        if (enabled && location != null && api != null) {
+        if (enabled && location != null && api != null && player != null) {
             return api.isPVPAllowed(location);
         }
         return true;

@@ -60,6 +60,7 @@
  - Fix integration with future releases of Towny, the Warzone API is gone
  - Fix color lore showing on leather icons in Recall and other places
  - Fix Capture not working on 1.16+ mobs
+ - Fix errors when using dev builds of GriefPrevention
 
 ## Additions
  
