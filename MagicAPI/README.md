@@ -22,7 +22,7 @@ You can easily import Magic's API into your project like this:
   <dependency>
       <groupId>com.elmakers.mine.bukkit</groupId>
       <artifactId>MagicAPI</artifactId>
-      <version>10.0</version>
+      <version>10.2</version>
       <scope>provided</scope>
   </dependency>
 </dependencies>
@@ -47,7 +47,7 @@ repositories {
 }
 
 dependencies {
-    compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.0'
+    compileOnly 'com.elmakers.mine.bukkit:MagicAPI:10.2'
 }
 ```
 
