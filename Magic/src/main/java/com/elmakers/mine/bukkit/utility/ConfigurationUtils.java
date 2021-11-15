@@ -481,10 +481,10 @@ public class ConfigurationUtils extends ConfigUtils {
             result = Boolean.valueOf(isTrue);
         } else {
             try {
-                result = Double.valueOf(value instanceof Double ? ((Double)value).doubleValue() : (value instanceof Float ? (double)((Float)value).floatValue() : Double.parseDouble(value.toString())));
-            } catch (Exception notADouble) {
+                result = Integer.valueOf(value instanceof Integer ? ((Integer)value).intValue() : Integer.parseInt(value.toString()));
+            } catch (Exception notAnInteger) {
                 try {
-                    result = Integer.valueOf(value instanceof Integer ? ((Integer)value).intValue() : Integer.parseInt(value.toString()));
+                    result = Double.valueOf(value instanceof Double ? ((Double)value).doubleValue() : (value instanceof Float ? (double)((Float)value).floatValue() : Double.parseDouble(value.toString())));
                 } catch (Exception ignored) {
                 }
             }
