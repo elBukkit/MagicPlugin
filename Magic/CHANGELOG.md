@@ -2,6 +2,10 @@
 
 # 10.3
 
+## Changes
+
+ - Attributes set on players, classes or wands will no longer override builtin attributes
+
 # 10.2
 
 ## Mob AI

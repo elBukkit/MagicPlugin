@@ -5203,7 +5203,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Nullable
     @Override
     public Double getAttribute(String attributeKey) {
-        Double attribute = attributes.get(attributeKey);
+        Double attribute = getBuiltinAttribute(attributeKey);
+
+        if (attribute == null) {
+            attribute = attributes.get(attributeKey);
+        }
         if (attribute == null) {
             MagicAttribute defaultSetting = controller.getAttribute(attributeKey);
             if (defaultSetting != null) {
@@ -5222,10 +5226,6 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     }
                 }
             }
-        }
-
-        if (attribute == null) {
-            attribute = getBuiltinAttribute(attributeKey);
         }
 
         return attribute;
