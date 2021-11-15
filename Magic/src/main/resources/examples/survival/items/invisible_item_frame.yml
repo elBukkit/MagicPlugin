@@ -1,5 +1,6 @@
 invisible_item_frame:
   item: item_frame
+  worth: 100
   tags:
     EntityTag:
       Invisible: 1
