@@ -63,6 +63,7 @@
  - Fix errors when using dev builds of GriefPrevention
  - Fix piglins going nuts when their zombification is cancelled
  - Fix CheckInventory action not being able to check for air (empty slot) see windfist example
+ - Fix parsing decimal costs (such as the mconfig command would set)
 
 ## Additions
  

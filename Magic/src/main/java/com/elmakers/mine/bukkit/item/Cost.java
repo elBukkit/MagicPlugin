@@ -379,7 +379,7 @@ public class Cost implements com.elmakers.mine.bukkit.api.item.Cost {
             String[] pieces = StringUtils.split(costString, ' ');
             int amount = 0;
             try {
-                amount = Integer.parseInt(pieces[0]);
+                amount = (int)Double.parseDouble(pieces[0]);
             } catch (Exception ex) {
                 controller.getLogger().warning("Invalid cost string: " + costString);
             }

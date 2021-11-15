@@ -5,7 +5,6 @@
  - Remove players from arena if they wander too far away
  - Trying to sell invisible item frame in a player shop says it's out of stock
  - Can't save bundles?
- - Do you need `swappable: false` for swap controls to work at all?
  - Test: `/mconfig configure spell arrow_ice worth 200`
  
 # Still Important
