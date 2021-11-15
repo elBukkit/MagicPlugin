@@ -9,9 +9,7 @@
  - CheckInventory action checking for empty slot, air doesn't work?
  - Do you need `swappable: false` for swap controls to work at all?
  - Test: `/mconfig configure spell arrow_ice worth 200`
-
- - A "hidden" property on attributes to keep them out of wand lore
-   
+ 
 # Still Important
 
  - Breaking slimefun head blocks with explosive magic breaks them. Do the tile entities have extra tags we can save?

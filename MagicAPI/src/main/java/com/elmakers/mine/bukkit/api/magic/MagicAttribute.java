@@ -12,6 +12,7 @@ public class MagicAttribute {
     private final @Nullable Double max;
     private final @Nullable String iconKey;
     private final @Nullable String iconDisabledKey;
+    private final boolean hidden;
 
     public MagicAttribute(@Nonnull String key, @Nonnull ConfigurationSection configuration) {
         this.key = key;
@@ -20,6 +21,7 @@ public class MagicAttribute {
         this.defaultValue = configuration.contains("default") ? configuration.getDouble("default") : null;
         this.iconKey = configuration.getString("icon");
         this.iconDisabledKey = configuration.getString("icon_disabled");
+        hidden = configuration.getBoolean("hidden");
     }
 
     public @Nonnull  String getKey() {
@@ -58,5 +60,9 @@ public class MagicAttribute {
 
     public String getDescription(Messages messages) {
         return messages.get("attributes." + key + ".description", key);
+    }
+
+    public boolean isHidden() {
+        return hidden;
     }
 }

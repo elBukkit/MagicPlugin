@@ -1386,6 +1386,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                     float max = 1;
                     MagicAttribute attribute = controller.getAttribute(key);
                     if (attribute != null) {
+                        if (attribute.isHidden()) continue;
                         Double maxValue = attribute.getMax();
                         if (maxValue != null) {
                             max = (float)(double)maxValue;
