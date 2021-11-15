@@ -2,12 +2,15 @@
 
 # For 10.2
 
+ - Remove players from arena if they wander too far away
  - Trying to sell invisible item frame in a player shop says it's out of stock
  - Can't save bundles?
  - Still gets insane with transforming piglins, how to prevent and reset?
  - CheckInventory action checking for empty slot, air doesn't work?
  - Do you need `swappable: false` for swap controls to work at all?
  - Test: `/mconfig configure spell arrow_ice worth 200`
+
+ - A "hidden" property on attributes to keep them out of wand lore
    
 # Still Important
 

@@ -556,6 +556,8 @@ help:
     `<li>``<command command="meditor spell missile" text="Edit the Magic Missile spell and all of its levels">`
   progression: |-
     `<title text="Progression and Ranking Up">`
+    `<p>`Players rank up by collecting all spells on their current path.
+    `<p>`Spells can be learned by right-clicking an &6enchantment table&f while holding a wand.
     `<li>``<help topic="spell_points" text="About spell points">`
     `<li>``<help topic="paths" text="About progression paths">`
     `<li>``<help topic="spell_levels" text="About spell levels">`
