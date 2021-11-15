@@ -89,8 +89,8 @@ public class CheckInventoryAction extends CheckAction {
             }
             ItemStack item = mage.getItem(slotNumber);
             if (this.item != null) {
-                if (item == null) {
-                    return false;
+                if (CompatibilityLib.getItemUtils().isEmpty((item))) {
+                    return CompatibilityLib.getItemUtils().isEmpty(this.item);
                 }
                 return item.isSimilar(this.item) && item.getAmount() >= this.item.getAmount();
             }

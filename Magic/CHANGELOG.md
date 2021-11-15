@@ -62,6 +62,7 @@
  - Fix Capture not working on 1.16+ mobs
  - Fix errors when using dev builds of GriefPrevention
  - Fix piglins going nuts when their zombification is cancelled
+ - Fix CheckInventory action not being able to check for air (empty slot) see windfist example
 
 ## Additions
  
