@@ -59,7 +59,7 @@ public class CompatibilityLib extends PlatformInterpreter {
             }
         } else {
             versionDescription = version[0] + "." + version[1];
-            logger.info("Loading legacy  compatibility layer for server version " + versionDescription);
+            logger.info("Loading legacy compatibility layer for server version " + versionDescription);
             try {
                 // No minor minor version numbers here
                 String versionPackage = version[0] + "_" + version[1];
