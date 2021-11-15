@@ -84,6 +84,7 @@
  - Allow placeholders in Recall icon descriptions
  - Add `item_properties` wand config, for (possibly randomized) properties to be put on the wand item when it is created
  - Add `hidden: true` option on attribute configs, will keep them out of wand lore
+ - Add `allow_path_overrides: false` wand option, to make it easier to customize wand mana
 
 ## Changes
 

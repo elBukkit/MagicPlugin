@@ -1115,6 +1115,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return getBoolean("passive");
     }
 
+    public boolean pathOverridesAllowed() {
+        return getBoolean("allow_path_overrides", false);
+    }
+
     @Nullable
     public ConfigurationSection getPathConfigurationSection(String key) {
         ConfigurationSection config = getPathPropertyConfiguration(key);
@@ -1123,7 +1127,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Nullable
     public ConfigurationSection getPathPropertyConfiguration(String key) {
-        if (key.equals("path")) return null;
+        if (key.equals("path") || key.equals("allow_path_overrides") || !pathOverridesAllowed()) return null;
         ProgressionPath path = getPath();
         if (path != null) {
             ConfigurationSection pathProperties = path.getProperties();
@@ -1146,7 +1150,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
     @Override
     public boolean hasOwnProperty(String key) {
-        if (!key.equals("path") && getStorage("path") == this) {
+        if (!key.equals("path") && getStorage("path") == this && pathOverridesAllowed()) {
             ProgressionPath path = getPath();
             if (path != null) {
                 ConfigurationSection pathProperties = path.getProperties();
@@ -1162,7 +1166,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties, @Nullable Set<String> overriddenProperties) {
         super.describe(sender, ignoreProperties, overriddenProperties);
         ProgressionPath path = getPath();
-        if (path != null) {
+        if (path != null && pathOverridesAllowed()) {
             ConfigurationSection pathProperties = path.getProperties();
             if (pathProperties != null) {
                 sender.sendMessage(ChatColor.GOLD + "Path Properties Override:");

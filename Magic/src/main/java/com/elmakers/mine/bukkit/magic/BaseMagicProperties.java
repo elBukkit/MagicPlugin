@@ -43,7 +43,7 @@ public class BaseMagicProperties implements MagicProperties {
             "powered", "protected",
             "earn_multiplier",
             "attributes", "tags", "ignored_by_mobs", "allow_container_copy", "ignore_particles",
-            "reflect_chance", "reflect_fov",
+            "reflect_chance", "reflect_fov", "allow_path_overrides",
             "block_fov", "block_chance", "block_reflect_chance", "block_mage_cooldown", "block_cooldown"
     );
 
