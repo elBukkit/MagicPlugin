@@ -349,10 +349,19 @@ help:
     `<li>`&dMagic integrates with &bEssentials&f and &bCommandBook&f for `<help topic="warps" text="warps">`
     `<li>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell `<help topic="disguises" text="disguises">`
     `<li>`&dMagic integrates with &bMythicMobs&f for mythic mob spawning
+    `<li>`&dMagic integrates with &b<`help topic="aureliumskills" text="AureliumSkills">`&f for skills, stats and (optionally) mana
     `<li>`&dMagic integrates with &b`<help topic="dynmap" text="dynmap">`&f to show warps, spell casts and lost wands on maps
     `<li>`You can use `<help topic="skript" text="Skript">` to react to spell casts, SP earn or other events.
     `<li>`You can use &6`<help topic="placeholders" text="placeholders">` via &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f to show magic properties in various places
     `<li>``<help topic="compatibility" text="Compatibility or issues with other plugins">`
+  aureliumskills: |-
+    `<title text="Aurelium Skills">`
+    `<p>`&dMagic integrates with `<link url="https://www.spigotmc.org/resources/aurelium-skills-advanced-skills-stats-abilities-and-more.81069/" text="Aurelium Skills">`
+    `<p>`Aurelium Skills stat and skill points can be used as variables in Magic configs.
+    `<p>`Simply use the name of the skill or stat, make sure to uppercase it such as SORCERY.
+    `<p>`Magic will not use Aurelium Skills mana by default, but you can `<command command="mconfig config aurelium_skills.use_mana true" text="turn it on">` if you want.
+    `<p>`Note that you may have progression issues since Aurelium mana will not increase in lockstep with Magic path progression.
+    `<p>`So, some additional customization may be required if using AS mana.
   disguises: |-
     `<title text="Disgusies">`
     `<p>`&dMagic integrates with &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f for mob and spell disguises.
