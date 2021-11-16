@@ -390,11 +390,20 @@ help:
     `<p>`&dMagic&f provides a variety of placeholders that can be used in messages sent with the &bMessage&f action
     `<p>`or commands issued with the &bCommand&f action.
     `<p>`For example &b$path&f, &b@mana_max&f or &sp&f. Any variable or attribute can be used as a placeholder.
-    `<p>`In general the &b$&f prefix shows the full value of a numeric attribute, while &b@&f will round.
+    `<p>`In general the &b$&f prefix shows the full value of a numeric `<help topic="attributes" text="attribute">`, while &b@&f will round.
     `<p>`The &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f plugin can be used alongside compatible chat or other plugins to show &dMagic placeholders in other places.
     `<p>`Use a &bmagic_&f prefix in PlaceholderAPI configs, such as &b%magic_path%&f.
     `<p>`Example `<link url="https://www.spigotmc.org/resources/chatformat.74890/" text="ChatFormat">` chat prefix: &7'(%magic_path%) {PLAYER_NAME} > {SUFFIX}{MESSAGE}'&f
     `<p>`See `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Placeholders" text="the wiki">` for a list of available placeholders.
+  attributes: |-
+    `<title text="Attributes">`
+    `<p>`&dMagic&f has a set of builtin attributes and a system for adding custom attributes.
+    `<p>`These attributes can be used in any spell, wand, class or other config property.
+    `<p>`Equations can be formed using one or more attributes (or variables) for complex spell behaviors.
+    `<p>`Custom attributes can be modified for each player buy spells, wands or classes.
+    `<p>`Magic will print a list of all available attributes, builtin and custom, on startup. Check your logs!
+    `<li`>See the `<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/rpg/attributes" text="RPG configs">` for examples of custom attributes as well as using them with an attribute selector.
+    `<li>`Use `<command command="meditor attribute custom" text="the editor">` to create and edit custom attributes.
   compatibility: |-
     `<title text="Compatibility">`
     `<li>`&dMagic&f can use a &4Slimefun&f-compatible resource pack using the &b`<command command="mexample add slimefun" text="slimefun">` &fexample
