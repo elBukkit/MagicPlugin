@@ -1116,7 +1116,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
     }
 
     public boolean pathOverridesAllowed() {
-        return getBoolean("allow_path_overrides", false);
+        return getBoolean("allow_path_overrides", true);
     }
 
     @Nullable
