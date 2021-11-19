@@ -203,6 +203,36 @@ public class ConfigurationUtils extends ConfigUtils {
         return first;
     }
 
+    @Nonnull
+    public static ConfigurationSection addNumericConfigurations(
+            @Nonnull ConfigurationSection first,
+            @Nullable ConfigurationSection second,
+            boolean override) {
+        if (second == null) {
+            return first;
+        }
+
+        Set<String> keys = second.getKeys(true);
+        for (String key : keys) {
+            double value = second.getDouble(key);
+
+            Object existingValue = first.get(key);
+            if (existingValue != null && !override) continue;
+            first.set(key, value);
+        }
+
+        return first;
+    }
+
+
+    @Nonnull
+    public static ConfigurationSection overlayNumericConfigurations(
+            @Nonnull ConfigurationSection first,
+            @Nullable ConfigurationSection second) {
+        return addNumericConfigurations(first, second, false);
+    }
+
+
     public static ConfigurationSection replaceConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         if (second == null) return first;
