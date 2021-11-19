@@ -2,6 +2,11 @@
 
 # 10.3
 
+## Additions
+
+- Add `show_enchantment_lore` wand property to force hide/show enchantments in lore
+  The default is the old behavior, enchantments will only be shown for enchantable wands that don't show vanilla enchants
+
 ## Changes
 
  - Attributes set on players, classes or wands will no longer override builtin attributes

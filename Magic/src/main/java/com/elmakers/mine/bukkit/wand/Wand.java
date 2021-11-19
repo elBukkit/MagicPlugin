@@ -178,6 +178,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean allowOffhand = false;
     private boolean hasId = false;
     private boolean showCycleModeLore = true;
+    private boolean showEnchantmentLore = true;
     private boolean alwaysUseActiveName = false;
     private boolean neverUseActiveName = false;
     private boolean instructions = true;
@@ -2042,6 +2043,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         maxEnchantCount = getInt("max_enchant_count");
         showCycleModeLore = getBoolean("show_cycle_lore", true);
 
+        int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
+        showEnchantmentLore = getBoolean("show_enchantment_lore", isEnchantable() && (hideFlags & 1) == 1);
+
         alwaysUseActiveName = false;
         neverUseActiveName = false;
         if (hasProperty("use_active_name")) {
@@ -3337,11 +3341,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         super.addPropertyLore(lore, isSingleSpell);
         addAuraLore(lore);
 
-        if (isEnchantable()) {
-            int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
-            if ((hideFlags & 1) == 1) {
-                addEnchantmentLore(lore);
-            }
+        if (showEnchantmentLore) {
+            addEnchantmentLore(lore);
         }
     }
 
