@@ -4,8 +4,9 @@
 
 ## Additions
 
-- Add `show_enchantment_lore` wand property to force hide/show enchantments in lore
-  The default is the old behavior, enchantments will only be shown for enchantable wands that don't show vanilla enchants
+ - Add `show_enchantment_lore` wand property to force hide/show enchantments in lore
+   The default is the old behavior, enchantments will only be shown for enchantable wands that don't show vanilla enchants
+ - Add support for complex potions in one line, e.g. `/mgive potion:#00AA00,luck,60000,2` or `/mgive potion:#random` 
 
 ## Changes
 

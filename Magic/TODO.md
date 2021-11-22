@@ -1,10 +1,11 @@
 # TODO
 
-# For 10.2
+# For 10.3
 
  - Remove players from arena if they wander too far away
  - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
  - Can't save bundles? (could not reproduce)
+ - Frost doesn't pile up snow?
  
 # Still Important
 
@@ -12,6 +13,7 @@
  - Make the "no default drops" a separate tag so it still works after removing mob configs
  - `/wand configure` somehow deleted all spells?
  - Magic load cancelling in-progress arena matches is not ideal
+ - A way to specify colors for potion effects and tipped arrows, e.g. `potion:#FFAABB`
 
 # Model Engine
 

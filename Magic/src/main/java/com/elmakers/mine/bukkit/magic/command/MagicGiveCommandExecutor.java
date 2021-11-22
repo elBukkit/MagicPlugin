@@ -15,6 +15,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -186,6 +187,9 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
             for (EntityType entityType : EntityType.values()) {
                 String mobKey = entityType.name().toLowerCase();
                 addIfPermissible(sender, options, "magic.create.", "egg:" + mobKey);
+            }
+            for (PotionEffectType effectType : PotionEffectType.values()) {
+                addIfPermissible(sender, options, "magic.create.", "potion:" + effectType.getName().toLowerCase());
             }
             addIfPermissible(sender, options, "magic.create.", "recipe:*");
             addIfPermissible(sender, options, "magic.create.", "recipes:*");

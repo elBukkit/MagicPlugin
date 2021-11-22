@@ -35,6 +35,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
@@ -145,7 +147,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW) {
             ItemMeta meta = item.getItemMeta();
             if (meta != null && meta instanceof PotionMeta) {
-                extraData = new ColoredData(CompatibilityLib.getCompatibilityUtils().getColor((PotionMeta)meta));
+                PotionMeta potionMeta = (PotionMeta)meta;
+                Color color = CompatibilityLib.getCompatibilityUtils().getColor(potionMeta);
+                extraData = new PotionData(color, potionMeta.getCustomEffects());
             }
         } else if (this.material == DefaultMaterials.getFireworkStar()) {
             ItemMeta meta = item.getItemMeta();
@@ -351,8 +355,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 } else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE
                         || material == Material.LEATHER_HELMET || material == Material.LEATHER_LEGGINGS
                         || material.name().equals("LEATHER_HORSE_ARMOR")) {
-                    StringUtils.split(dataString, ',');
-                    for (String piece : pieces) {
+                    String[] colorPieces = StringUtils.split(dataString, ',');
+                    for (String piece : colorPieces) {
                         if (piece.startsWith("#")) {
                             Color color = ConfigurationUtils.toColor(piece);
                             if (color != null) {
@@ -366,17 +370,45 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             }
                         }
                     }
-                } else if (material == Material.POTION || material == Material.TIPPED_ARROW || material == DefaultMaterials.getFireworkStar()) {
-                    String color = dataString;
-                    if (color.startsWith("#")) {
-                        color = color.substring(1);
+                } else if (material == Material.POTION || material == Material.TIPPED_ARROW) {
+                    String[] colorPieces = StringUtils.split(dataString, ',');
+                    Color color = Color.WHITE;
+                    List<PotionEffect> effects = new ArrayList<>();
+                    PotionEffectType effectType = null;
+                    Integer amplifier = null;
+                    Integer duration = null;
+                    for (String piece : colorPieces) {
+                        if (piece.startsWith("#")) {
+                            color = ConfigurationUtils.toColor(piece);
+                        } else {
+                            if (effectType == null) {
+                                try {
+                                    effectType = PotionEffectType.getByName(piece.toUpperCase());
+                                } catch (Exception ignore) {
+                                    effectType = null;
+                                }
+                            } else {
+                                if (duration == null) {
+                                    try {
+                                        duration = Integer.parseInt(piece) / 50;
+                                    } catch (Exception ignore) {
+                                    }
+                                } else if (amplifier == null) {
+                                    try {
+                                        amplifier = Integer.parseInt(piece);
+                                    } catch (Exception ignore) {
+                                    }
+                                }
+                            }
+                        }
                     }
-                    try {
-                        Color potionColor = Color.fromRGB(Integer.parseInt(color, 16));
-                        extraData = new ColoredData(potionColor);
-                    } catch (Exception ex) {
-                        extraData = null;
+                    if (effectType != null) {
+                        effects.add(new PotionEffect(effectType, duration == null ? 20 * 60 : duration, amplifier == null ? 0 : amplifier));
                     }
+                    extraData = new PotionData(color, effects);
+                } else if (material == DefaultMaterials.getFireworkStar()) {
+                    Color color = ConfigurationUtils.toColor(dataString);
+                    extraData = new ColoredData(color);
                 } else if (material == Material.ENCHANTED_BOOK) {
                     Map<Enchantment, Integer> enchants = new HashMap<>();
                     String[] list = StringUtils.split(dataString, ",");
@@ -976,8 +1008,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
         } else if (this.material == Material.POTION || this.material == Material.TIPPED_ARROW) {
             ItemMeta meta = stack.getItemMeta();
-            if (extraData != null && extraData instanceof ColoredData && meta != null && meta instanceof PotionMeta) {
-                CompatibilityLib.getCompatibilityUtils().setColor((PotionMeta)meta, ((ColoredData)extraData).getColor());
+            if (extraData != null && extraData instanceof PotionData && meta != null && meta instanceof PotionMeta) {
+                PotionMeta potionMeta = (PotionMeta)meta;
+                PotionData potionData = (PotionData)extraData;
+                CompatibilityLib.getCompatibilityUtils().setColor(potionMeta, potionData.getColor());
+                potionMeta.clearCustomEffects();
+                for (PotionEffect effect : potionData.getEffects()) {
+                    potionMeta.addCustomEffect(effect, true);
+                }
                 stack.setItemMeta(meta);
             }
         } else if (extraData != null && extraData instanceof EnchantmentData) {
