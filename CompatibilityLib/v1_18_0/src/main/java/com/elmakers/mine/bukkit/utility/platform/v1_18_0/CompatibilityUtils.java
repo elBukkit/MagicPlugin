@@ -654,8 +654,8 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     public void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax) {
         entity.setHurtEntities(true);
         FallingBlockEntity nms = (FallingBlockEntity)((CraftEntity)entity).getHandle();
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamagePerDistance", "ar", fallHurtAmount);
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamageMax", "aq", fallHurtMax);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamagePerDistance", "at", fallHurtAmount);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamageMax", "as", fallHurtMax);
     }
 
     @Override
@@ -997,7 +997,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public boolean isJumping(LivingEntity entity) {
         net.minecraft.world.entity.LivingEntity living = ((CraftLivingEntity)entity).getHandle();
-        return (boolean)ReflectionUtils.getPrivateNeedsFixing(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping", "bn");
+        return (boolean)ReflectionUtils.getPrivateNeedsFixing(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping", "bo");
     }
 
     @Override
