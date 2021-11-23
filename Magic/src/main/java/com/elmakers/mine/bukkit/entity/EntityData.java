@@ -42,6 +42,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.elmakers.mine.bukkit.api.integration.ModelEngine;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -984,7 +985,8 @@ public class EntityData
         }
 
         if (model != null) {
-            if (!controller.getModelEngine().applyModel(entity, model)) {
+            ModelEngine modelEngine = controller.getModelEngine();
+            if (modelEngine != null && !modelEngine.applyModel(entity, model)) {
                 controller.getLogger().warning("Invalid model config in mob " + getName() + " (" + getKey() + ")");
             }
         }
