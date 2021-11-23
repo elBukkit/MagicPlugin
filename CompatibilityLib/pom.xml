@@ -57,6 +57,7 @@
         <module>modern</module>
         <module>v1_17_0</module>
         <module>v1_17_1</module>
+        <module>v1_18_0</module>
         <module>main</module>
     </modules>
 </project>

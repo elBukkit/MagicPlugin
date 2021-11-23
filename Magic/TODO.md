@@ -1,5 +1,13 @@
 # TODO
 
+# 1.18
+
+ - Need to switch to Guava ... or bundle commons3
+ - Got a bunch of errors on chunk load, can't create mages for magic mobs, plugin was unloaded (?)
+ - Couldn't set requirement goal? May be related to above.
+ - Biomes all need updating in camo armor .. might need fallback approach like with materials.
+ - Need to update reflection
+
 # For 10.3
 
  - Remove players from arena if they wander too far away
