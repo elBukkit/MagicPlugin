@@ -1551,7 +1551,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         // API says plugins aren't supposed to use this, but i have no idea how to deal
         // with custom enchants otherwise
         try {
-            NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
+            NamespacedKey namespacedKey = new NamespacedKey(namespace, key.toLowerCase());
             enchantment = Enchantment.getByKey(namespacedKey);
             if (enchantment == null) {
                 // Convert legacy enchantments

@@ -1537,7 +1537,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         // with custom enchants otherwise
         Enchantment enchantment = null;
         try {
-            NamespacedKey namespacedKey = new NamespacedKey(namespace, key);
+            NamespacedKey namespacedKey = new NamespacedKey(namespace, key.toLowerCase());
             enchantment = Enchantment.getByKey(namespacedKey);
             if (enchantment == null) {
                 // Convert legacy enchantments
