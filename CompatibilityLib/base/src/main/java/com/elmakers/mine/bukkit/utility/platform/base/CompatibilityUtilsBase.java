@@ -817,6 +817,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public Collection<String> getEnchantmentBaseKeys() {
         List<String> enchantmentKeys = new ArrayList<>();
         for (Enchantment enchantment : Enchantment.values()) {
+            if (enchantment == null) continue;
             enchantmentKeys.add(getEnchantmentBaseKey(enchantment));
         }
         return enchantmentKeys;
