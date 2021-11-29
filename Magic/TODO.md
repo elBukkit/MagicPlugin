@@ -13,6 +13,9 @@
  - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
  - Can't save bundles? (could not reproduce)
  - Frost doesn't pile up snow?
+ - Selling stacks of wands doesn't multiply price directly
+ - Wand modifiers not working, see: https://editor.elmakers.com/ftk88gh1 and https://editor.elmakers.com/pc9fsyt5
+ - Check 
  
 # Still Important
 

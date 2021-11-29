@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
@@ -798,13 +799,20 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    @Nullable
     public String getEnchantmentKey(Enchantment enchantment) {
-        return enchantment.getName().toLowerCase();
+        if (enchantment == null) return null;
+        String name = enchantment.getName();
+        if (name == null) return null;
+        return name.toLowerCase();
     }
 
     @Override
+    @Nullable
     public String getEnchantmentBaseKey(Enchantment enchantment) {
-        String[] pieces = StringUtils.split(getEnchantmentKey(enchantment), ":", 2);
+        String key = getEnchantmentKey(enchantment);
+        if (key == null) return null;
+        String[] pieces = StringUtils.split(key, ":", 2);
         return pieces[pieces.length - 1];
     }
 
@@ -817,8 +825,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public Collection<String> getEnchantmentBaseKeys() {
         List<String> enchantmentKeys = new ArrayList<>();
         for (Enchantment enchantment : Enchantment.values()) {
-            if (enchantment == null) continue;
-            enchantmentKeys.add(getEnchantmentBaseKey(enchantment));
+            String key = getEnchantmentBaseKey(enchantment);
+            if (key != null) {
+                enchantmentKeys.add(key);
+            }
         }
         return enchantmentKeys;
     }

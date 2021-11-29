@@ -11,6 +11,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Art;
 import org.bukkit.Chunk;
@@ -475,8 +476,10 @@ public interface CompatibilityUtils {
 
     String translateColors(String message);
 
+    @Nullable
     String getEnchantmentKey(Enchantment enchantment);
 
+    @Nullable
     String getEnchantmentBaseKey(Enchantment enchantment);
 
     Enchantment getEnchantmentByKey(String key);
