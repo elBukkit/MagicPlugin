@@ -20,6 +20,8 @@
 ## Fixes
 
  - Fix item_attributes property on wands re-randomizing
+ - Fix parsing stacks of wand items from configs
+ - Fix pricing of stacks of wands
 
 # 10.2.1
 

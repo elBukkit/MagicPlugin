@@ -6618,11 +6618,11 @@ public class MagicController implements MageController {
                 CurrencyAmount currencyAmount = CompatibilityLib.getInventoryUtils().getCurrencyAmount(item);
                 Currency currency = currencyAmount == null ? null : getCurrency(currencyAmount.getType());
                 if (currency != null) {
-                    return currency.getWorth() * currencyAmount.getAmount() * item.getAmount() / toCurrency.getWorth();
+                    return currency.getWorth() * currencyAmount.getAmount() * amount / toCurrency.getWorth();
                 }
                 return null;
             }
-            return wand.getWorth() / toCurrency.getWorth();
+            return wand.getWorth() * amount / toCurrency.getWorth();
         }
 
         return configuredItem.getWorth() * amount / toCurrency.getWorth();

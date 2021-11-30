@@ -1,21 +1,19 @@
 # TODO
 
+# For 10.3
+
+ - Wand modifiers not working, see: https://editor.elmakers.com/ftk88gh1 and https://editor.elmakers.com/pc9fsyt5
+ - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
+ - Can't save bundles? (could not reproduce)
+ - Frost doesn't pile up snow?
+ - Remove players from arena if they wander too far away
+
 # 1.18
 
  - Need to switch to Guava ... or bundle commons3
  - Got a bunch of errors on chunk load, can't create mages for magic mobs, plugin was unloaded (?)
  - Couldn't set requirement goal? May be related to above.
  - Biomes all need updating in camo armor .. might need fallback approach like with materials.
-
-# For 10.3
-
- - Remove players from arena if they wander too far away
- - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
- - Can't save bundles? (could not reproduce)
- - Frost doesn't pile up snow?
- - Selling stacks of wands doesn't multiply price directly
- - Wand modifiers not working, see: https://editor.elmakers.com/ftk88gh1 and https://editor.elmakers.com/pc9fsyt5
- - Check test.yml but don't frigging commit it for the love of god
  
 # Still Important
 
