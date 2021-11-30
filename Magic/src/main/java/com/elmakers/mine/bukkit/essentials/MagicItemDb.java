@@ -92,7 +92,7 @@ public class MagicItemDb implements net.ess3.api.IItemDb.ItemResolver {
             if (bookCategory.length() > 0 && !bookCategory.equalsIgnoreCase("all")) {
                 category = controller.getCategory(bookCategory);
             }
-            ItemStack bookItem = controller.getSpellBook(category, 1);
+            ItemStack bookItem = controller.getSpellBook(category);
             if (bookItem != null) {
                 return bookItem;
             }

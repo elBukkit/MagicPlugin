@@ -5217,11 +5217,11 @@ public class MagicController implements MageController {
         return WordUtils.capitalize(target.getType().name().toLowerCase().replace('_', ' '));
     }
 
-    public ItemStack getSpellBook(int count) {
-        return getSpellBook((SpellCategory)null, count);
+    public ItemStack getSpellBook() {
+        return getSpellBook((SpellCategory)null);
     }
 
-    public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellCategory category, int count) {
+    public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellCategory category) {
         Map<String, List<SpellTemplate>> categories = new HashMap<>();
         Collection<SpellTemplate> spellVariants = spells.values();
         String categoryKey = category == null ? null : category.getKey();
@@ -5244,7 +5244,7 @@ public class MagicController implements MageController {
         List<String> categoryKeys = new ArrayList<>(categories.keySet());
         Collections.sort(categoryKeys);
 
-        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
+        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta book = (BookMeta) bookItem.getItemMeta();
         book.setAuthor(messages.get("books.default.author"));
         String title = null;
@@ -5276,8 +5276,8 @@ public class MagicController implements MageController {
         return bookItem;
     }
 
-    public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellTemplate spell, int count) {
-        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
+    public ItemStack getSpellBook(com.elmakers.mine.bukkit.api.spell.SpellTemplate spell) {
+        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta book = (BookMeta) bookItem.getItemMeta();
         book.setAuthor(messages.get("books.default.author"));
         book.setTitle(messages.get("books.spell.title").replace("$spell", spell.getName()));
@@ -5415,11 +5415,11 @@ public class MagicController implements MageController {
         return lines;
     }
 
-    public ItemStack getSpellCategoriesBook(int count) {
+    public ItemStack getSpellCategoriesBook() {
         List<String> categoryKeys = new ArrayList<>(categories.keySet());
         Collections.sort(categoryKeys);
 
-        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK, count);
+        ItemStack bookItem = new ItemStack(Material.WRITTEN_BOOK);
         BookMeta book = (BookMeta) bookItem.getItemMeta();
         book.setAuthor(messages.get("books.default.author"));
         String title = messages.get("books.categories.title");
@@ -5437,7 +5437,7 @@ public class MagicController implements MageController {
         return bookItem;
     }
 
-    public ItemStack getLearnSpellBook(SpellTemplate spell, int amount) {
+    public ItemStack getLearnSpellBook(SpellTemplate spell) {
         ConfigurationSection wandConfiguration = ConfigurationUtils.newConfigurationSection();
         wandConfiguration.set("template", "learnspell");
         wandConfiguration.set("icon", "book:" + spell.getKey());
@@ -5446,7 +5446,6 @@ public class MagicController implements MageController {
         wandConfiguration.set("overrides", "spell " + spell.getKey());
         Wand wand = new Wand(this, wandConfiguration);
         ItemStack item = wand.getItem();
-        item.setAmount(amount);
         return item;
     }
 
@@ -5643,19 +5642,19 @@ public class MagicController implements MageController {
                     case "book": {
                         com.elmakers.mine.bukkit.api.spell.SpellCategory category = null;
                         if (itemData.equals("categories")) {
-                            itemStack = getSpellCategoriesBook(amount);
+                            itemStack = getSpellCategoriesBook();
                         } else {
                             if (!itemData.isEmpty() && !itemData.equalsIgnoreCase("all")) {
                                 category = categories.get(itemData);
                             }
                             if (category != null) {
-                                itemStack = getSpellBook(category, amount);
+                                itemStack = getSpellBook(category);
                             } else {
                                 SpellTemplate spell = getSpellTemplate(itemData);
                                 if (spell != null) {
-                                    itemStack = getSpellBook(spell, amount);
+                                    itemStack = getSpellBook(spell);
                                 } else {
-                                    itemStack = getSpellBook(amount);
+                                    itemStack = getSpellBook();
                                 }
                             }
                         }
@@ -5669,7 +5668,7 @@ public class MagicController implements MageController {
                             }
                             return null;
                         }
-                        itemStack = getLearnSpellBook(spell, amount);
+                        itemStack = getLearnSpellBook(spell);
                     }
                     break;
                     case "recipe": {
@@ -5795,35 +5794,30 @@ public class MagicController implements MageController {
         // also as some fallbacks for wands and classes wtihout a prefix
         if (itemStack == null && items != null) {
             try {
+                // try generic item first
                 ItemStack genericItem = getGenericItemStack(magicItemKey, amount, callback);
                 if (genericItem != null) {
+                    // NOTE: getGenericItemStack calls the callback and sets the amount.
                     return genericItem;
                 }
+
+                // Next try a wand
                 com.elmakers.mine.bukkit.api.wand.Wand wand = createWand(magicItemKey, mage);
                 if (wand != null) {
-                    ItemStack wandItem = wand.getItem();
-                    if (wandItem != null) {
-                        wandItem.setAmount(amount);
-                    }
-                    if (callback != null) {
-                        callback.updated(wandItem);
-                    }
-                    return wandItem;
+                    itemStack = wand.getItem();
                 }
-                // Spells may be using the | delimiter for levels
-                // I am regretting overloading this delimiter!
-                String spellKey = magicItemKey.replace(":", "|");
-                itemStack = createSpellItem(spellKey, mage, brief);
-                if (itemStack != null) {
-                    itemStack.setAmount(amount);
-                    if (callback != null) {
-                        callback.updated(itemStack);
-                    }
-                    return itemStack;
+
+                // Then try a spell
+                if (itemStack == null) {
+                    // Spells may be using the | delimiter for levels
+                    // I am regretting overloading this delimiter!
+                    String spellKey = magicItemKey.replace(":", "|");
+                    itemStack = createSpellItem(spellKey, mage, brief);
                 }
-                itemStack = createBrushItem(magicItemKey);
-                if (itemStack != null) {
-                    itemStack.setAmount(amount);
+
+                // Try a brush
+                if (itemStack == null) {
+                    itemStack = createBrushItem(magicItemKey);
                 }
 
                 // Finally look up icons, we have to do this last because there will be overlap
@@ -5842,6 +5836,12 @@ public class MagicController implements MageController {
             }
         }
 
+        // Finally, if the item is non-null, set the amount
+        if (itemStack != null) {
+            itemStack.setAmount(amount);
+        }
+
+        // Always call the callback if one was given.
         if (callback != null) {
             callback.updated(itemStack);
         }

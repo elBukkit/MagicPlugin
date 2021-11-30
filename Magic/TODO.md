@@ -15,7 +15,7 @@
  - Frost doesn't pile up snow?
  - Selling stacks of wands doesn't multiply price directly
  - Wand modifiers not working, see: https://editor.elmakers.com/ftk88gh1 and https://editor.elmakers.com/pc9fsyt5
- - Check 
+ - Check test.yml but don't frigging commit it for the love of god
  
 # Still Important
 

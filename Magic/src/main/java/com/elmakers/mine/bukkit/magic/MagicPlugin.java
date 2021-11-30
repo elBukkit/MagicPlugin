@@ -522,7 +522,11 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
 
     @Override
     public ItemStack getSpellBook(SpellCategory category, int count) {
-        return controller.getSpellBook(category, count);
+        ItemStack spellBook = controller.getSpellBook(category);
+        if (spellBook != null) {
+            spellBook.setAmount(count);
+        }
+        return spellBook;
     }
 
     @Override
