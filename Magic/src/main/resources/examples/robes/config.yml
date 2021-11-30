@@ -11,4 +11,4 @@ add_resource_pack: robes
 # Override the hires RP so it loads the robes version
 alternate_resource_packs:
   hires:
-    url: "http://rp.elmakers.com/Magic-hires-robes-RP-1.17.zip"
+    url: "http://rp.elmakers.com/Magic-hires-robes-RP-1.18.zip"

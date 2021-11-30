@@ -8,6 +8,6 @@ example_override: true
 # Override the all and robes RPs so they load the hires versions
 alternate_resource_packs:
   all:
-    url: "http://rp.elmakers.com/Magic-hires-all-RP-1.17.zip"
+    url: "http://rp.elmakers.com/Magic-hires-all-RP-1.18.zip"
   robes:
-    url: "http://rp.elmakers.com/Magic-hires-robes-RP-1.17.zip"
+    url: "http://rp.elmakers.com/Magic-hires-robes-RP-1.18.zip"
