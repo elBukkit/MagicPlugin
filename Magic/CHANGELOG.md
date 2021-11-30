@@ -4,8 +4,7 @@
 
 ## 1.18 Support
 
- - *Very* preliminary at present, should load and run, might get a lot of warnings.
-   I can barely run a 1.18 server, I'm getting 2 TPS so it may be hard for me to continue testing thi
+ - Preliminary support, should load and run, might get a lot of warnings (mostly about biomes)
 
 ## Additions
 
