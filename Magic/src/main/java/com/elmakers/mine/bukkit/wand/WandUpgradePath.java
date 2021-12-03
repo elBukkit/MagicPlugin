@@ -33,6 +33,7 @@ import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
+import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -67,6 +68,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
     private final Set<String> brushes = new HashSet<>();
     private final Set<String> extraSpells = new HashSet<>();
     private Collection<PrerequisiteSpell> requiredSpells = new HashSet<>();
+    private Collection<Requirement> requirements;
     private Set<String> requiredSpellKeys = new HashSet<>();
     private final Set<String> allSpells = new HashSet<>();
     private final Set<String> allExtraSpells = new HashSet<>();
@@ -105,6 +107,7 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
         this.parent = inherit;
         this.key = key;
         if (inherit != null) {
+            this.requirements = inherit.requirements == null ? null : new ArrayList<>(inherit.requirements);
             this.levels = inherit.levels;
             this.progressionLevels = inherit.progressionLevels;
             this.maxMaxMana = inherit.maxMaxMana;
@@ -159,6 +162,9 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
             template = ConfigurationUtils.addConfigurations(template, properties, false);
             properties = null;
         }
+
+        // Parse requirements
+        requirements = ConfigurationUtils.getRequirements(template);
 
         // Cache spells, mainly used for spellbooks
         Collection<PrerequisiteSpell> pathSpells = ConfigurationUtils.getPrerequisiteSpells(controller, template, "spells", "path " + key, true);
@@ -724,10 +730,30 @@ public class WandUpgradePath implements com.elmakers.mine.bukkit.api.wand.WandUp
 
     @Override
     public boolean checkUpgradeRequirements(CasterProperties caster, boolean quiet) {
-        if (requiredSpells == null || requiredSpells.isEmpty()) return true;
         if (caster == null) {
             return false;
         }
+        return checkRequiredSpells(caster, quiet) && checkRequirements(caster, quiet);
+    }
+
+    protected boolean checkRequirements(CasterProperties caster, boolean quiet) {
+        if (requirements == null || requirements.isEmpty()) return true;
+        MageController controller = caster.getController();
+        Mage mage = caster.getMage();
+        if (mage == null) return false;
+
+        String message = controller.checkRequirements(mage.getContext(), requirements);
+        if (message != null) {
+            if (!quiet) {
+                mage.sendMessage(message);
+            }
+            return false;
+        }
+        return true;
+    }
+
+    protected boolean checkRequiredSpells(CasterProperties caster, boolean quiet) {
+        if (requiredSpells == null || requiredSpells.isEmpty()) return true;
         MageController controller = caster.getController();
         Mage mage = caster.getMage();
 

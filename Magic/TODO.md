@@ -1,12 +1,19 @@
 # TODO
 
-# For 10.3
+# For 10.4
 
+ - Dupe/overwrite glitch, name two wands the same, hold one and drop the other
+ - Add localization for countdown messages, all arena messages
+ - Can't change `costs_description` message per-wand  
+ - Can't replace an amplifier 2 potion effect with 10, something went wrong with the last change
  - Wand modifiers not working, see: https://editor.elmakers.com/ftk88gh1 and https://editor.elmakers.com/pc9fsyt5
  - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
  - Can't save bundles? (could not reproduce)
  - Frost doesn't pile up snow?
  - Remove players from arena if they wander too far away
+ - A way to make passive spells not show on the wand at all
+ - Some way to add/subtract attributes via commands
+ - Test path requirements
 
 # 1.18
 
