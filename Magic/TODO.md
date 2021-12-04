@@ -14,6 +14,11 @@
  - A way to make passive spells not show on the wand at all
  - Some way to add/subtract attributes via commands
  - Test path requirements
+ - Prevent putting skull spell icons on your head
+ - Are force powers broken?  
+ - Integrate with: 
+   https://github.com/ScreamingSandals/BedWars/blob/master/api/src/main/java/org/screamingsandals/bedwars/api/events/PlayerJoinEvent.java
+   https://www.spigotmc.org/threads/screaming-bedwars-1-9-4-1-18.353950/page-18
 
 # 1.18
 
