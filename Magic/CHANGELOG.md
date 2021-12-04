@@ -6,6 +6,10 @@
  
  - Add `requirements` config for paths, for custom-gated progression.
 
+# 10.3.1
+
+ - Fix wand dupe/overwrite issue with renamed wands
+
 # 10.3
 
 ## 1.18 Support

@@ -55,4 +55,6 @@ public interface ItemUtils {
     ItemStack[] getItems(Object rootTag, String tagName);
 
     boolean isSameItem(ItemStack first, ItemStack second);
+
+    boolean hasSameTags(ItemStack first, ItemStack second);
 }

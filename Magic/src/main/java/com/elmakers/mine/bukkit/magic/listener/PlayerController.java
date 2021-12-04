@@ -365,17 +365,14 @@ public class PlayerController implements Listener {
         boolean cancelEvent = false;
         ItemStack activeItem = activeWand == null ? null : activeWand.getItem();
         // It seems like Spigot sets the original item to air before dropping
-        // We will be satisfied to only compare the display name.
-        // used to compare all metadata, but this has issues when using items with special metadata as icons
-        // (such as leather horse armor)
-        // because Spigot changing the item to air also changes the metadata type.
+        // We will be satisfied to only compare the NBT tags, if any.
+        // We can not use Bukkit metadata for this comparison, we need to use the underlying tags
+        // This is because setting the item to air will change the metadata type, removing
+        // metadata from the Bukkit ItemStack.
         // I wish there was a better way, or that Spigot wouldn't pre-emptively delete the item on drop.
         ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
-        ItemMeta droppedMeta = droppedItem.getItemMeta();
         final boolean droppedSpell = Wand.isSpell(droppedItem) || Wand.isBrush(droppedItem);
-        final String droppedName = droppedMeta == null ? null : droppedMeta.getDisplayName();
-        final String activeName = activeMeta == null ? null : activeMeta.getDisplayName();
-        final boolean droppedWand = droppedName != null && activeName != null && activeName.equals(droppedName);
+        final boolean droppedWand = activeItem != null && CompatibilityLib.getItemUtils().hasSameTags(droppedItem, activeItem);
         boolean inSpellInventory = activeWand != null && activeWand.isInventoryOpen();
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
