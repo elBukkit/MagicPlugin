@@ -165,7 +165,7 @@ public class ArenaListener implements Listener {
         if (leftPlayer != null) {
             leftPlayer.quit();
             Arena arena = leftPlayer.getArena();
-            arena.announce(ChatColor.RED + leftPlayer.getDisplayName() + ChatColor.DARK_AQUA + " has left " + ChatColor.AQUA + arena.getName());
+            arena.announce(arena.getAnnouncePlayerMessage("quit", leftPlayer));
         }
     }
 

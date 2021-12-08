@@ -2,8 +2,6 @@
 
 # For 10.4
 
- - Dupe/overwrite glitch, name two wands the same, hold one and drop the other
- - Add localization for countdown messages, all arena messages
  - Can't change `costs_description` message per-wand  
  - Can't replace an amplifier 2 potion effect with 10, something went wrong with the last change
  - Wand modifiers not working, see: https://editor.elmakers.com/ftk88gh1 and https://editor.elmakers.com/pc9fsyt5
@@ -15,7 +13,8 @@
  - Some way to add/subtract attributes via commands
  - Test path requirements
  - Prevent putting skull spell icons on your head
- - Are force powers broken?  
+ - Are force powers broken? (sabers have no mana?)
+ - Test AI on a phantom  
  - Integrate with: 
    https://github.com/ScreamingSandals/BedWars/blob/master/api/src/main/java/org/screamingsandals/bedwars/api/events/PlayerJoinEvent.java
    https://www.spigotmc.org/threads/screaming-bedwars-1-9-4-1-18.353950/page-18

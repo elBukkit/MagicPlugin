@@ -1,0 +1,46 @@
+#
+# All arena messages can be overridden per-arena using
+# arenas.arenaname.messagekey
+#
+arena:
+  countdown_10: "t:&3Starting in &b$countdown seconds"
+  countdown: "t:&b$countdown"
+  cancelled: "&4This match has been cancelled!"
+  draw: "t:&cOut of Time!"
+  win: "t:&bWINNER!\n&bYou have won! Congratulations!"
+  waiting_1: "&bWaiting for 1 more player"
+  waiting: "&bWaiting for $count more players"
+  starting: "&eA round of $arena is about to start!"
+  next: "&6You are up for the next round!"
+  start: "t:&6GO!"
+  opponent: "&e with &3$player &f(&a$winsW &f/ &c$lossesL$f)"
+  queued: "&cYou are already in the queue for &b$arena"
+  already: "&cYou are already in &b$arena"
+  joined: "&eYou have entered the current round of &b$arena"
+  joined_queue: "&6You have joined the queue of &b$arena"
+  joined_next_queue: "&6You have joined the queue for the next round of &b$arena"
+  lost: "&bYou have lost - Better luck next time!"
+  died: "&bYou have died, but you can get back in the fight in &e$respawn &bseconds!"
+  false_start: "&cYou died before the match even started!"
+  announce:
+    draw: "&7The &e$arena &7match ended in a draw"
+    lose: "&cThe &e$arena &cmatch has ended, better luck next time!"
+    default: "&cThe &e$arena &cmatch has ended in a default"
+    join: "&b$playerPath &3has joined &b$arena with &a$wins $3wins and &c$losses &3losses."
+    join_first: "&b$playerPath &3has joined &b$arena &3for the first time"
+    quit: "&c$player &3has left &b$arena"
+    duration_minute_1: "&6The &e$arena &6match will &cEND &6in &ctwo minutes!"
+    duration_minute_2: "&6The &e$arena &6match will &cEND &6in &cone minute!"
+    duration_seconds_30: "&6The &e$arena &6match will &cEND &6in &cthirty seconds!"
+    duration_seconds_10: "&6The &e$arena &6match will &cEND &6in &cten seconds!"
+    duration_seconds_5: "&6The &e$arena &6match will &cEND &6in &cfive seconds!"
+    sudden_death: "&cSUDDEN DEATH!"
+
+    win: |-
+      &b$playerPath &6is the champion of &e$arena
+      &6with &4$hearts &6 hearts, and a total of &a$wins $6wins and &c$losses &6losses.
+  stage:
+    start_mobs: "t:$arena"
+    win: "&aCongratulations!  &bYou have passed &3$arena"
+    duration_10: "t:&c$countdown Seconds!"
+    duration: "t:&c$countdown"

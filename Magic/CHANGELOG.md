@@ -6,6 +6,7 @@
  
  - Add `requirements` config for paths, for custom-gated progression.
  - Add `temporary: true` mob option, mostly for dropped items
+ - Add `arena` messages section, allow customizing all arena messages
 
 # 10.3.1
 

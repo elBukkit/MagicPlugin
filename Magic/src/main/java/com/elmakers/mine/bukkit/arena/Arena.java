@@ -44,10 +44,12 @@ import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
+import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DirectionUtils;
+import com.google.common.base.Splitter;
 
 public class Arena {
     private static final Random random = new Random();
@@ -262,6 +264,44 @@ public class Arena {
         }
     }
 
+    public String getPlayerMessage(String key, ArenaPlayer player) {
+        return convertPlayerMessage(getMessage(key), player);
+    }
+
+    public String getAnnounceMessage(String key) {
+        return getMessage("announce." + key);
+    }
+
+    public String getAnnouncePlayerMessage(String key, ArenaPlayer player) {
+        return convertPlayerMessage(getAnnounceMessage(key), player);
+    }
+
+    public String convertPlayerMessage(String message, ArenaPlayer player) {
+        message = message.replace("$player", player.getName());
+        message = message.replace("$playerDisplay", player.getDisplayName());
+        message = message.replace("$playerPath", player.getNameAndPath());
+
+        int winCount = player.getWins();
+        int lostCount = player.getLosses();
+        double health = player.getHealth() / 2;
+        int hearts = (int)Math.floor(health);
+        String heartDescription = Integer.toString(hearts);
+        health = health - hearts;
+        if (health >= 0.5) {
+            heartDescription = heartDescription + " 1/2";
+        }
+        message = message.replace("$hearts", heartDescription);
+        message = message.replace("$wins", Integer.toString(winCount));
+        message = message.replace("$losses", Integer.toString(lostCount));
+        return message;
+    }
+
+    public String getMessage(String key) {
+        Messages messages = controller.getMagic().getMessages();
+        String message = messages.get("arenas." + getKey() + "." + key, messages.get("arena." + key));
+        return message.replace("$arena", getName());
+    }
+
     public void load(ConfigurationSection configuration) {
         parameters = configuration.getConfigurationSection("parameters");
         center = ConfigurationUtils.toLocation(configuration.getString("location"));
@@ -455,7 +495,7 @@ public class Arena {
             currentStage.start();
         }
 
-        messageNextRoundPlayerList(ChatColor.GOLD + "You are up for the next round!");
+        messageNextRoundPlayerList(getMessage("next"));
     }
 
     protected List<Location> getRandomSpawns() {
@@ -471,7 +511,7 @@ public class Arena {
                 continue;
             }
             arenaPlayer.heal();
-            arenaPlayer.sendMessage("t:" + ChatColor.GOLD + "GO!");
+            arenaPlayer.sendMessage(getMessage("start"));
 
             Location spawn = spawns.get(num);
             if (randomizeSpawn != null) {
@@ -508,12 +548,9 @@ public class Arena {
                 player.sendMessage(message);
                 for (ArenaPlayer otherArenaPlayer : nextUpPlayers) {
                     String otherPlayerName = otherArenaPlayer.getNameAndPath();
-                    if (!otherPlayerName.equals(messagePlayerName)) {
-                        int winCount = otherArenaPlayer.getWins();
-                        int lostCount = otherArenaPlayer.getLosses();
-
-                        player.sendMessage(ChatColor.YELLOW + " with " + ChatColor.DARK_AQUA + otherPlayerName + ChatColor.WHITE + " ("
-                            + ChatColor.GREEN + winCount + "W" + ChatColor.WHITE + " / " + ChatColor.RED + lostCount + "L" + ChatColor.WHITE + ")");
+                    String opponentMessage = getPlayerMessage("opponent", otherArenaPlayer);
+                    if (!otherPlayerName.equals(messagePlayerName) && !opponentMessage.isEmpty()) {
+                        player.sendMessage(opponentMessage);
                     }
                 }
             }
@@ -574,12 +611,23 @@ public class Arena {
         int playerCount = queue.size();
         if (playerCount < minPlayers) {
             int playersRemaining = minPlayers - playerCount;
-            String playerDescription = playersRemaining == 1 ? "1 more player" : (playersRemaining + " more players");
-            messageNextRoundPlayers(ChatColor.AQUA + "Waiting for " + playerDescription);
+            if (playersRemaining == 1) {
+                messageNextRoundPlayers(getMessage("waiting_1").replace("$count", Integer.toString(playersRemaining)));
+            } else {
+                messageNextRoundPlayers(getMessage("waiting").replace("$count", Integer.toString(playersRemaining)));
+            }
         }
     }
 
     public void announce(String message) {
+       List<String> lines = Splitter.on("\n").trimResults().splitToList(message);
+       for (String line : lines) {
+           sendAnnounce(line);
+       }
+    }
+
+    private void sendAnnounce(String message) {
+        if (message.isEmpty()) return;
         int rangeSquared = announcerRange * announcerRange;
         Collection<? extends Player> players = controller.getPlugin().getServer().getOnlinePlayers();
         for (Player player : players) {
@@ -592,6 +640,7 @@ public class Arena {
     }
 
     protected void messagePlayers(String message, Collection<ArenaPlayer> players) {
+        if (message.isEmpty()) return;
         for (ArenaPlayer arenaPlayer : players) {
             arenaPlayer.sendMessage(message);
         }
@@ -620,7 +669,7 @@ public class Arena {
     public void startCountdown(int time) {
         if (state != ArenaState.LOBBY) return;
         state = ArenaState.COUNTDOWN;
-        messageNextRoundPlayerList(ChatColor.YELLOW + "A round of " + getName() + " is about to start!");
+        messageNextRoundPlayerList(getMessage("starting"));
         countdown(time);
     }
 
@@ -635,9 +684,11 @@ public class Arena {
         }
 
         if (time % 10 == 0) {
-            messageNextRoundPlayers("t:" + ChatColor.DARK_AQUA + "Starting In\n " + ChatColor.AQUA + Integer.toString(time) + ChatColor.DARK_AQUA + " seconds");
+            String message = getMessage("countdown_10");
+            messageNextRoundPlayers(message.replace("$countdown", Integer.toString(time)));
         } else if (time <= 5) {
-            messageNextRoundPlayers("t:" + ChatColor.AQUA + Integer.toString(time));
+            String message = getMessage("countdown");
+            messageNextRoundPlayers(message.replace("$countdown", Integer.toString(time)));
         }
         BukkitScheduler scheduler = controller.getPlugin().getServer().getScheduler();
         scheduler.runTaskLater(controller.getPlugin(), new Runnable() {
@@ -650,7 +701,7 @@ public class Arena {
 
     public boolean stop() {
         if (state == ArenaState.LOBBY) return false;
-        messageInGamePlayers(ChatColor.DARK_RED + "This match has been cancelled!");
+        messageInGamePlayers(getMessage("cancelled"));
         finish();
         return true;
     }
@@ -901,9 +952,9 @@ public class Arena {
                     loser.lost();
                     updateLeaderboard(loser);
                 }
-                announce(ChatColor.RED + "The " + ChatColor.YELLOW + getName() + ChatColor.RED + " match has ended, better luck next time!");
+                announce(getAnnounceMessage("lose"));
             } else {
-                announce(ChatColor.RED + "The " + ChatColor.YELLOW + getName() + ChatColor.RED + " match ended in a default");
+                announce(getAnnounceMessage("default"));
             }
             exitPlayers();
             finish();
@@ -945,7 +996,7 @@ public class Arena {
                         if (winner != null) {
                             winner.teleport(getExit());
                         }
-                        announce(ChatColor.RED + "The " + ChatColor.YELLOW + getName() + ChatColor.RED + " match ended in a default");
+                        announce(getAnnounceMessage("default"));
                     } else if (won) {
                         playerWon(winner);
                     } else {
@@ -955,7 +1006,7 @@ public class Arena {
                         for (ArenaPlayer loser : deadPlayers) {
                             loser.draw();
                         }
-                        announce(ChatColor.GRAY + "The " + ChatColor.YELLOW + getName() + ChatColor.GRAY + " match ended in a draw");
+                        announce(getAnnounceMessage("draw"));
                     }
                     if (winner != null)
                     {
@@ -975,21 +1026,8 @@ public class Arena {
             updateLeaderboard(loser);
         }
         updateLeaderboard();
-        winner.sendMessage("t:" + ChatColor.AQUA + "WINNER!");
-        winner.sendMessage(ChatColor.AQUA + "You have won! Congratulations!");
-        int winCount = winner.getWins();
-        int lostCount = winner.getLosses();
-        double health = winner.getHealth() / 2;
-        int hearts = (int)Math.floor(health);
-        String heartDescription = Integer.toString(hearts);
-        health = health - hearts;
-        if (health >= 0.5) {
-            heartDescription = heartDescription + " 1/2";
-        }
-        announce(ChatColor.GOLD + winner.getNameAndPath() + " is the champion of " + ChatColor.YELLOW + getName());
-        announce(ChatColor.GOLD + " with " + ChatColor.DARK_RED + heartDescription + ChatColor.GOLD
-                + " hearts, and a total of " + ChatColor.GREEN + Integer.toString(winCount) + ChatColor.GOLD + " wins and "
-                + ChatColor.RED + Integer.toString(lostCount) + ChatColor.GOLD + " losses.");
+        winner.sendMessage(getMessage("win"));
+        announce(getAnnouncePlayerMessage("win", winner));
         winner.teleport(getWinLocation());
     }
 
@@ -1001,11 +1039,11 @@ public class Arena {
                 // If we have lost, we can queue for the next round
                 if (currentArena.isDead(arenaPlayer)) {
                     if (currentArena.queue.contains(arenaPlayer)) {
-                        player.sendMessage(ChatColor.RED + "You are already in the queue for " + ChatColor.AQUA + currentArena.getName());
+                        player.sendMessage(getMessage("queued"));
                         return;
                     }
                 } else {
-                    player.sendMessage(ChatColor.RED + "You are already in " + ChatColor.AQUA + currentArena.getName());
+                    player.sendMessage(getMessage("already"));
                     return;
                 }
             } else {
@@ -1017,12 +1055,12 @@ public class Arena {
         boolean started = isStarted();
         if (started && allowInterrupt && !isPlayersFull()) {
             queue = false;
-            player.sendMessage(ChatColor.YELLOW + "You have entered the current round of " + ChatColor.AQUA + getName());
+            player.sendMessage(getMessage("joined"));
         } else {
             if (isFull()) {
-                player.sendMessage(ChatColor.GOLD + "You have joined the queue for " + ChatColor.AQUA + getName());
+                player.sendMessage(getMessage("joined_queue"));
             } else {
-                player.sendMessage(ChatColor.GOLD + "You have joined the queue for the next round of " + ChatColor.AQUA + getName());
+                player.sendMessage(getMessage("joined_next_queue"));
             }
         }
         if (description != null) {
@@ -1037,11 +1075,9 @@ public class Arena {
         arenaPlayer.joined();
 
         if (winCount == 0 && lostCount == 0 && joinedCount == 0) {
-            announce(ChatColor.AQUA + arenaPlayer.getNameAndPath() + ChatColor.DARK_AQUA + " has joined " + ChatColor.AQUA + getName() + ChatColor.DARK_AQUA + " for the first time");
+            announce(getAnnouncePlayerMessage("join_first", arenaPlayer));
         } else {
-            announce(ChatColor.AQUA + arenaPlayer.getNameAndPath() + ChatColor.DARK_AQUA + " has joined " + ChatColor.AQUA + getName()
-                    + ChatColor.DARK_AQUA + " with " + ChatColor.GREEN + Integer.toString(winCount) + ChatColor.DARK_AQUA + " wins and "
-                    + ChatColor.RED + Integer.toString(lostCount) + ChatColor.DARK_AQUA + " losses.");
+            announce(getAnnouncePlayerMessage("join", arenaPlayer));
         }
         checkStart();
     }
@@ -1280,16 +1316,18 @@ public class Arena {
                     Location lobby = getLobby();
                     player.setMetadata("respawnLocation", new FixedMetadataValue(controller.getPlugin(), lobby));
                     long seconds = respawnDuration / 1000;
-                    player.sendMessage(ChatColor.AQUA + "You have died, but you can get back in the fight in " + ChatColor.YELLOW + seconds + ChatColor.AQUA + " seconds!");
+                    String message = getMessage("died");
+                    message =  message.replace("$respawn", Long.toString(seconds));
+                    player.sendMessage(message);
                 } else {
                     Location specroom = getLoseLocation();
                     player.setMetadata("respawnLocation", new FixedMetadataValue(controller.getPlugin(), specroom));
-                    player.sendMessage(ChatColor.AQUA + "You have lost - Better luck next time!");
+                    player.sendMessage(getMessage("lost"));
                 }
             }
         } else {
             if (queue.contains(arenaPlayer)) {
-                player.sendMessage(ChatColor.RED + "You died before the match even started!");
+                player.sendMessage(getMessage("false_start"));
             }
             queue.remove(arenaPlayer);
         }
@@ -1643,8 +1681,8 @@ public class Arena {
     }
 
     public void draw() {
-        messageInGamePlayers("t:" + ChatColor.RED + "Out of Time!");
-        announce(ChatColor.GRAY + "The " + ChatColor.YELLOW + getName() + ChatColor.GRAY + " match timed out in a draw");
+        messageInGamePlayers(getMessage("draw"));
+        announce(getAnnounceMessage("draw"));
         for (ArenaPlayer player : players) {
             player.draw();
         }
@@ -1674,31 +1712,26 @@ public class Arena {
 
         boolean hasSuddenDeath = suddenDeath > 0 && suddenDeathEffect != null && suddenDeath < duration;
         if (currentTime >= duration - 120000 && previousTime < duration - 1200000) {
-            announce(ChatColor.GOLD + "The " + ChatColor.YELLOW + getName() + ChatColor.GOLD + " match will "
-                    + ChatColor.RED + "END" + ChatColor.GOLD + " in " + ChatColor.RED + "two minutes!");
+            announce(getAnnounceMessage("duration_minute_2"));
         }
         if (currentTime >= duration - 60000 && previousTime < duration - 60000) {
-            announce(ChatColor.GOLD + "The " + ChatColor.YELLOW + getName() + ChatColor.GOLD + " match will "
-                    + ChatColor.RED + "END" + ChatColor.GOLD + " in " + ChatColor.RED + "one minute!");
+            announce(getAnnounceMessage("duration_minute_1"));
         }
         if (currentTime >= duration - 30000 && previousTime < duration - 30000) {
-            announce(ChatColor.GOLD + "The " + ChatColor.YELLOW + getName() + ChatColor.GOLD + " match will "
-                    + ChatColor.RED + "END" + ChatColor.GOLD + " in " + ChatColor.RED + "thirty seconds!");
+            announce(getAnnounceMessage("duration_seconds_30"));
         }
         if (currentTime >= duration - 10000 && previousTime < duration - 10000) {
-            announce(ChatColor.GOLD + "The " + ChatColor.YELLOW + getName() + ChatColor.GOLD + " match will "
-                    + ChatColor.RED + "END" + ChatColor.GOLD + " in " + ChatColor.RED + "ten seconds!");
+            announce(getAnnounceMessage("duration_seconds_10"));
         }
         if (currentTime >= duration - 5000 && previousTime < duration - 5000) {
-            announce(ChatColor.GOLD + "The " + ChatColor.YELLOW + getName() + ChatColor.GOLD + " match will "
-                    + ChatColor.RED + "END" + ChatColor.GOLD + " in " + ChatColor.RED + "five seconds!");
+            announce(getAnnounceMessage("duration_seconds_5"));
         }
 
         if (hasSuddenDeath) {
             long suddenDeathDuration = duration - suddenDeath;
             if (currentTime >= suddenDeathDuration) {
                 if (previousTime < suddenDeathDuration) {
-                    announce(ChatColor.RED + "SUDDEN DEATH!");
+                    announce(getAnnounceMessage("sudden_death"));
                 }
                 for (ArenaPlayer player : players) {
                     player.getPlayer().addPotionEffect(suddenDeathEffect, true);

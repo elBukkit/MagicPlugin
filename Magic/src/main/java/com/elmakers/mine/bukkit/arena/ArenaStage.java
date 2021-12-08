@@ -64,11 +64,15 @@ public class ArenaStage extends ArenaStageTemplate {
         super.describe(sender);
     }
 
+    public String getMessage(String key) {
+        return arena.getMessage("stage." + key).replace("$name", getName());
+    }
+
     public void start() {
         started = System.currentTimeMillis();
         lastTick = started;
         if (!mobs.isEmpty()) {
-            arena.messageInGamePlayers("t:" + getName());
+            arena.messageInGamePlayers(getMessage("start_mobs"));
             MageController magic = arena.getController().getMagic();
             magic.setForceSpawn(true);
             List<ArenaPlayer> players = new ArrayList<>(arena.getLivingParticipants());
@@ -150,7 +154,7 @@ public void checkAggro(Entity mob) {
     }
 
     public void completed() {
-        arena.messageInGamePlayers(ChatColor.GREEN + "Congratulations!" + ChatColor.AQUA + "  You have passed " + ChatColor.DARK_AQUA + getName());
+        arena.messageInGamePlayers(getMessage("win"));
 
         Collection<ArenaPlayer> players = arena.getParticipants();
         for (ArenaPlayer player : players) {
@@ -275,9 +279,9 @@ public void checkAggro(Entity mob) {
             long secondsRemaining = (duration - currentTime) / 1000;
             if (secondsRemaining > 0 && secondsRemaining < previousSecondsRemaining) {
                 if (secondsRemaining == 10 || secondsRemaining == 30) {
-                    arena.messageInGamePlayers("t:" + ChatColor.RED + secondsRemaining + " Seconds!");
+                    arena.messageInGamePlayers(getMessage("duration_10").replace("$countdown", Long.toString(secondsRemaining)));
                 } else if (secondsRemaining <= 5) {
-                    arena.messageInGamePlayers("t:" + ChatColor.RED + secondsRemaining);
+                    arena.messageInGamePlayers(getMessage("duration").replace("$countdown", Long.toString(secondsRemaining)));
                 }
             }
 
