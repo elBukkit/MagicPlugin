@@ -5,6 +5,7 @@
 ## Additions
  
  - Add `requirements` config for paths, for custom-gated progression.
+ - Add `temporary: true` mob option, mostly for dropped items
 
 # 10.3.1
 

@@ -190,6 +190,7 @@ public class EntityData
         this.location = CompatibilityLib.getCompatibilityUtils().getHangingLocation(entity);
         this.magicSpawned = CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.MAGIC_SPAWNED);
         this.cancelExplosion = CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION);
+        this.isTemporary = CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.TEMPORARY);
         this.isLiving = entity instanceof LivingEntity;
         this.isProjectile = entity instanceof Projectile;
         this.type = entity.getType();
@@ -355,6 +356,7 @@ public class EntityData
         preventDismount = parameters.getBoolean("prevent_dismount", false);
         preventTeleport = parameters.getBoolean("prevent_teleport", false);
         cancelExplosion = parameters.getBoolean("cancel_explosion", false);
+        isTemporary = parameters.getBoolean("temporary", false);
         equipOnRespawn = parameters.getBoolean("equip_on_respawn", true);
         List<String> permissionsList = ConfigurationUtils.getStringList(parameters, "permissions");
         if (permissionsList != null && !permissionsList.isEmpty()) {
@@ -1080,6 +1082,9 @@ public class EntityData
         }
         if (cancelExplosion) {
             CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.CANCEL_EXPLOSION, true);
+        }
+        if (isTemporary) {
+            CompatibilityLib.getEntityMetadataUtils().setBoolean(entity, MagicMetaKeys.TEMPORARY, true);
         }
 
         if (this.key != null) {

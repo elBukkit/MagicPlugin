@@ -34,6 +34,7 @@
  - `/wand configure` somehow deleted all spells?
  - Magic load cancelling in-progress arena matches is not ideal
  - A way to specify colors for potion effects and tipped arrows, e.g. `potion:#FFAABB`
+ - Allow BreakBlock action to run some actions (like Drop) before finally breaking the block
 
 # Model Engine
 
