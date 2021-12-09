@@ -1131,4 +1131,16 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
         setOwner(entity, owner, ownerId);
     }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void setSnowLevel(Block block, int level) {
+        block.setData((byte)level);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public int getSnowLevel(Block block) {
+        return block.getData();
+    }
 }

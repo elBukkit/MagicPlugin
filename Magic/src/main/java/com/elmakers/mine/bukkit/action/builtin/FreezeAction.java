@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class FreezeAction extends BaseSpellAction
@@ -23,6 +24,7 @@ public class FreezeAction extends BaseSpellAction
     private boolean freezeWater;
     private boolean freezeLava;
     private boolean freezeFire;
+    private boolean pileSnow;
     private Material iceMaterial;
     private MaterialSet snowable;
 
@@ -33,6 +35,7 @@ public class FreezeAction extends BaseSpellAction
         freezeWater = parameters.getBoolean("freeze_water", true);
         freezeLava = parameters.getBoolean("freeze_lava", true);
         freezeFire = parameters.getBoolean("freeze_fire", true);
+        pileSnow = parameters.getBoolean("pile_snow", true);
         iceMaterial = ConfigurationUtils.getMaterial(parameters, "ice", Material.ICE);
         snowable = context.getController().getMaterialSetManager().fromConfig(parameters.getString("snowable", "snowable"));
     }
@@ -116,16 +119,14 @@ public class FreezeAction extends BaseSpellAction
 
         context.registerForUndo(block);
         MaterialAndData applyMaterial = new MaterialAndData(material);
-        if (block.getType() == Material.SNOW && material == Material.SNOW)
-        {
-            short data = block.getData();
-            if (data < 7)
-            {
-                data++;
+        if (pileSnow && block.getType() == Material.SNOW && material == Material.SNOW) {
+            int level = CompatibilityLib.getCompatibilityUtils().getSnowLevel(block);
+            if (level < 7) {
+                CompatibilityLib.getCompatibilityUtils().setSnowLevel(block, level + 1);
             }
-            applyMaterial.setData(data);
+        } else {
+            applyMaterial.modify(block);
         }
-        applyMaterial.modify(block);
         return SpellResult.CAST;
     }
 

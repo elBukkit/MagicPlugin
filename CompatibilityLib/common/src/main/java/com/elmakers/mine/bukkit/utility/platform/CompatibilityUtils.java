@@ -544,4 +544,8 @@ public interface CompatibilityUtils {
     default boolean setLastDamaged(Entity damaged, Entity damager) { return false; }
 
     default boolean setLastDamagedBy(Entity damaged, Entity damager) { return false; }
+
+    void setSnowLevel(Block block, int level);
+
+    int getSnowLevel(Block block);
 }

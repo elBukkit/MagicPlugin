@@ -2,11 +2,8 @@
 
 # For 10.4
 
- - Can't change `costs_description` message per-wand
- - Wand modifiers not working, see: https://editor.elmakers.com/ftk88gh1 and https://editor.elmakers.com/pc9fsyt5
  - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
  - Can't save bundles? (could not reproduce)
- - Frost doesn't pile up snow?
  - Remove players from arena if they wander too far away
  - A way to make passive spells not show on the wand at all
  - Some way to add/subtract attributes via commands
@@ -15,7 +12,6 @@
  - Are force powers broken? (sabers have no mana?)
  - Test AI on a phantom
  - parameter for charge regeneration, so that charges only begin to regen once they've all been used up
- - That's what lightsaber_vader in stars did, but a bug prevented the modifier from triggering, so it cannot be done anymore...
  - Allow spawn removal (not cancel) via rule options  
  - Integrate with: 
    https://github.com/ScreamingSandals/BedWars/blob/master/api/src/main/java/org/screamingsandals/bedwars/api/events/PlayerJoinEvent.java
@@ -36,6 +32,7 @@
  - Magic load cancelling in-progress arena matches is not ideal
  - A way to specify colors for potion effects and tipped arrows, e.g. `potion:#FFAABB`
  - Allow BreakBlock action to run some actions (like Drop) before finally breaking the block
+ - Can't change `costs_description` message per-wand
 
 # Model Engine
 

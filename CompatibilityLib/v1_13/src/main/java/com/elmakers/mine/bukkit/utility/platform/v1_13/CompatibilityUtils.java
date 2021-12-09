@@ -16,6 +16,7 @@ import org.bukkit.block.data.Waterlogged;
 import org.bukkit.block.data.type.Dispenser;
 import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.Piston;
+import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.spigotmc.event.entity.EntityDismountEvent;
@@ -257,5 +258,26 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         }
 
         return super.spawnFallingBlock(location, material, blockDataString);
+    }
+
+    @Override
+    public void setSnowLevel(Block block, int level) {
+        BlockData blockData = block.getBlockData();
+        if (blockData instanceof Snow) {
+            Snow snow = (Snow)blockData;
+            snow.setLayers(level);
+            block.setBlockData(blockData);
+        }
+    }
+
+    @Override
+    public int getSnowLevel(Block block) {
+        int level = 0;
+        BlockData blockData = block.getBlockData();
+        if (blockData instanceof Snow) {
+            Snow snow = (Snow)blockData;
+            level = snow.getLayers();
+        }
+        return level;
     }
 }

@@ -13,6 +13,10 @@
  - Allow replacing infinite potion effects.
    This fixes spells not being able to increase the amplifier of an already-added effect, e.g. from wizard boots
 
+## Fixes
+
+ - Fix the Freeze action not piling up snow in recent MC versions, add `pile_snow: false` option to turn this off
+
 # 10.3.1
 
  - Fix wand dupe/overwrite issue with renamed wands
