@@ -32,3 +32,11 @@ spectralsword:
 empowered:
   mana_max_boost: 2
   mana_regeneration_boost: 0.5
+
+test:
+  potion_effects:
+    night_vision: 0
+  triggers:
+    added:
+      commands: say test
+      op: true
