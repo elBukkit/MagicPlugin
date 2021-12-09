@@ -8,8 +8,6 @@
  - A way to make passive spells not show on the wand at all
  - Some way to add/subtract attributes via commands
  - Test path requirements
- - Prevent putting skull spell icons on your head
- - Are force powers broken? (sabers have no mana?)
  - Test AI on a phantom
  - parameter for charge regeneration, so that charges only begin to regen once they've all been used up
  - Allow spawn removal (not cancel) via rule options  

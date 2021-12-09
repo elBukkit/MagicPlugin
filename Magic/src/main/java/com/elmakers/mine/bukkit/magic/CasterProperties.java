@@ -634,6 +634,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         upgradeConfig.set("description", null);
         upgradeConfig.set("name", null);
         upgradeConfig.set("lore", null);
+        upgradeConfig.set("slot", null);
         if (slotted) {
             upgradeConfig.set("mana", null);
         }
