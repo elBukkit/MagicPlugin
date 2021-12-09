@@ -136,9 +136,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             // Don't replace negative effects, except with more negative effects
             if (currentAmplifier < 0)  {
                 applyEffect = newAmplifier < currentAmplifier;
-            } else if (currentEffect.getDuration() > Integer.MAX_VALUE / 4 && effect.getDuration() <= Integer.MAX_VALUE / 4) {
-                // Don't replace infinite effects, except with other infinite effects
-                applyEffect = false;
             } else if (newAmplifier > 0 && newAmplifier < currentAmplifier) {
                 // Don't replace if the new amplifier is positive but less than the current amplifier
                 applyEffect = false;

@@ -8,6 +8,11 @@
  - Add `temporary: true` mob option, mostly for dropped items
  - Add `arena` messages section, allow customizing all arena messages
 
+## Changes
+
+ - Allow replacing infinite potion effects.
+   This fixes spells not being able to increase the amplifier of an already-added effect, e.g. from wizard boots
+
 # 10.3.1
 
  - Fix wand dupe/overwrite issue with renamed wands

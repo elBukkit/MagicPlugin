@@ -2,8 +2,7 @@
 
 # For 10.4
 
- - Can't change `costs_description` message per-wand  
- - Can't replace an amplifier 2 potion effect with 10, something went wrong with the last change
+ - Can't change `costs_description` message per-wand
  - Wand modifiers not working, see: https://editor.elmakers.com/ftk88gh1 and https://editor.elmakers.com/pc9fsyt5
  - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
  - Can't save bundles? (could not reproduce)
@@ -14,7 +13,10 @@
  - Test path requirements
  - Prevent putting skull spell icons on your head
  - Are force powers broken? (sabers have no mana?)
- - Test AI on a phantom  
+ - Test AI on a phantom
+ - parameter for charge regeneration, so that charges only begin to regen once they've all been used up
+ - That's what lightsaber_vader in stars did, but a bug prevented the modifier from triggering, so it cannot be done anymore...
+ - Allow spawn removal (not cancel) via rule options  
  - Integrate with: 
    https://github.com/ScreamingSandals/BedWars/blob/master/api/src/main/java/org/screamingsandals/bedwars/api/events/PlayerJoinEvent.java
    https://www.spigotmc.org/threads/screaming-bedwars-1-9-4-1-18.353950/page-18
