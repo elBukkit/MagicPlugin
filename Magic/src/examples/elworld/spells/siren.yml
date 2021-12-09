@@ -1,0 +1,18 @@
+siren:
+  actions:
+    cast:
+      - class: CheckInventory
+        slot: helmet
+        item: red_stained_glass
+        actions:
+        - class: ModifyProperties
+          modify:
+            icon: blue_stained_glass
+        fail:
+          - class: ModifyProperties
+            modify:
+              icon: red_stained_glass
+  parameters:
+    target: self
+    bypass_undo: true
+    material_only: true

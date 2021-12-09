@@ -1,0 +1,8 @@
+siren:
+  name: Police Siren
+  lore: []
+  icon: red_stained_glass
+  cast_spell: siren
+  cast_interval: 100
+  passive: true
+  wearable: helmet

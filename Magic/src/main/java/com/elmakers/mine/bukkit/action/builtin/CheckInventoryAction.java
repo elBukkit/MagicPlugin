@@ -25,12 +25,14 @@ public class CheckInventoryAction extends CheckAction {
     private Collection<Enchantment> allowedEnchantments;
     private Collection<Enchantment> blockedEnchantments;
     private boolean targetCaster;
+    private boolean materialOnly;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
         targetCaster = parameters.getBoolean("target_caster", false);
+        materialOnly = parameters.getBoolean("material_only", false);
         String itemKey = parameters.getString("item");
         if (itemKey != null && !itemKey.isEmpty()) {
             item = context.getController().createItem(itemKey);
@@ -91,6 +93,9 @@ public class CheckInventoryAction extends CheckAction {
             if (this.item != null) {
                 if (CompatibilityLib.getItemUtils().isEmpty((item))) {
                     return CompatibilityLib.getItemUtils().isEmpty(this.item);
+                }
+                if (materialOnly) {
+                    return item.getType() == this.item.getType() && item.getAmount() >= this.item.getAmount();
                 }
                 return item.isSimilar(this.item) && item.getAmount() >= this.item.getAmount();
             }
