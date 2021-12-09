@@ -1,8 +1,9 @@
 marauder:
     inherit: sith
     upgrade: sith_master
-    max_mana: 200
-    max_mana_regeneration: 20
+    override_properties:
+        mana_max: 150
+        mana_regeneration: 15
     spells:
       - forcecollapse
 

@@ -1,8 +1,9 @@
 jedi_knight:
     inherit: padawan
     upgrade: jedi_master
-    max_mana: 200
-    max_mana_regeneration: 20
+    override_properties:
+      mana_max: 100
+      mana_regeneration: 10
     spells:
       - forcelift
       - forcethrow

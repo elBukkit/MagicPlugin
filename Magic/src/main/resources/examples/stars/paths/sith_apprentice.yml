@@ -1,8 +1,9 @@
 sith_apprentice:
     inherit: acolyte
     upgrade: sith
-    max_mana: 200
-    max_mana_regeneration: 20
+    override_properties:
+      mana_max: 75
+      mana_regeneration: 7
     spells:
       - forceblast
       - forceexplode

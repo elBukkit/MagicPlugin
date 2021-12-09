@@ -1,7 +1,8 @@
 sith_lord:
     inherit: sith_master
-    max_mana: 200
-    max_mana_regeneration: 20
+    override_properties:
+      mana_max: 250
+      mana_regeneration: 25
     spells:
       - forcelightning
       - forcechoke
