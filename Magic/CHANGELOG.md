@@ -16,6 +16,7 @@
 # 10.3.1
 
  - Fix wand dupe/overwrite issue with renamed wands
+ - Fix modifiers from wands not getting applied
 
 # 10.3
 
