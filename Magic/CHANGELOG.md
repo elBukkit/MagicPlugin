@@ -3,6 +3,7 @@
 # 10.4
 
  - 1.18.1 Support
+ - Silence invalid biome warnings
 
 ## Additions
  

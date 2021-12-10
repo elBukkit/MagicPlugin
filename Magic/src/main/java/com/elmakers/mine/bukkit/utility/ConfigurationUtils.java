@@ -575,8 +575,7 @@ public class ConfigurationUtils extends ConfigUtils {
             try {
                 Biome biome = Biome.valueOf(biomeName.trim().toUpperCase());
                 set.add(biome);
-            } catch (Exception ex) {
-                logger.warning(" Invalid biome in " + logContext + ": " + biomeName);
+            } catch (Exception ignore) {
             }
         }
         return set;

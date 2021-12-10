@@ -50,7 +50,7 @@ public class CheckBlockAction extends CheckAction {
                     Biome biome = Biome.valueOf(biomeKey.trim().toUpperCase());
                     biomeActions.put(biome, biomeActionConfig.getString(biomeKey));
                 } catch (Exception ex) {
-                    spell.getController().getLogger().warning("Invalid biome in biome_actions config: " + biomeKey);
+                    spell.getController().info("Invalid biome in biome_actions config: " + biomeKey, 10);
                 }
             }
         }
@@ -63,7 +63,7 @@ public class CheckBlockAction extends CheckAction {
                     Material blockType = Material.valueOf(blockKey.trim().toUpperCase());
                     blockActions.put(blockType, blockActionConfig.getString(blockKey));
                 } catch (Exception ex) {
-                    spell.getController().getLogger().warning("Invalid block type in block_actions config: " + blockKey);
+                    spell.getController().info("Invalid block type in block_actions config: " + blockKey, 10);
                 }
             }
         }
