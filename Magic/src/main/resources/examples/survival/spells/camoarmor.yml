@@ -33,9 +33,11 @@ camoarmor:
         bamboo_jungle: green
         bamboo_jungle_hills: green
         modified_jungle_edge: green
+        sparse_jungle: green
 
         forest: lightgreen
         wooded_hills: lightgreen
+        windswept_forest: lightgreen
 
         dark_forest: darkgreen
         dark_forest_hills: darkgreen
@@ -63,36 +65,53 @@ camoarmor:
         deep_frozen_ocean: frozenblue
         ice_spikes: frozenblue
         frozen_river: frozenblue
+        frozen_peaks: frozenblue
 
         plains: plains
 
         birch_forest: birch_green
         birch_forest_hills: birch_green
         tall_birch_forest: birch_green
+        old_growth_birch_forest: birch_green
 
         savanna: savanna
 
+        windswept_hills: mountains
         mountains: mountains
         mountain_edge: mountains
         gravelly_mountains: mountains
         modified_gravelly_mountains: mountains
+        windswept_gravelly_hills: mountains
         stone_shore: mountains
+        stony_shore: mountains
+        stony_peaks: mountains
+        jagged_peaks: mountains
+
+        lush_caves: caves
+        dripstone_caves: caves
 
         mushroom_fields: mushroom
 
         sunflower_plains: sunflowers
 
         flower_forest: flower_forest
+        meadow: flower_forest
+        grove: flower_forest
 
         snowy_tundra: snowy
+        snowy_plains: snowy
         snowy_beach: snowy
         snowy_mountains: snowy
         snowy_taiga: snowy
         snowy_taiga_hills: snowy
         snowy_taiga_mountains: snowy
+        snowy_slopes: snowy
 
         badlands: badlands
         eroded_badlands: badlands
+        wooded_badlands: badlands
+        wooded_badlands_plateau: badlands
+        badlands_plateau: badlands
 
         taiga: taiga
         wooded_mountains: taiga
@@ -102,6 +121,8 @@ camoarmor:
         giant_spruce_taiga_hills: taiga
         giant_tree_taiga: taiga
         giant_tree_taiga_hills: taiga
+        old_growth_pine_taiga: taiga
+        old_growth_spruce_taiga: taiga
 
         nether_wastes: nether
         warped_forest: nether
@@ -272,6 +293,17 @@ camoarmor:
         - class: ModifyVariable
           variable: target_b
           value: 114
+
+      caves:
+        - class: ModifyVariable
+          variable: target_r
+          value: 70
+        - class: ModifyVariable
+          variable: target_g
+          value: 70
+        - class: ModifyVariable
+          variable: target_b
+          value: 70
 
       mushroom:
         # "#705E64"

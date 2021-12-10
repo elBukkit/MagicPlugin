@@ -20,6 +20,7 @@
 ## Fixes
 
  - Fix the Freeze action not piling up snow in recent MC versions, add `pile_snow: false` option to turn this off
+ - Add 1.18 biomes to camo armor mapping
 
 # 10.3.1
 
