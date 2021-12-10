@@ -445,6 +445,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         setTemplate(templateName);
         setProperty("version", CURRENT_VERSION);
 
+        // Set item properties first
+        ConfigurationSection configuration = getConfiguration();
+        ConfigurationUtils.overlayNumericConfigurations(configuration, getConfigurationSection("item_properties"));
+
         // Load all properties
         loadProperties();
 
@@ -1873,9 +1877,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             controller.getLogger().warning("Failed to save wand state for wand to : " + item + ownerMessage);
         } else {
-            ConfigurationSection configuration = getConfiguration();
-            ConfigurationUtils.overlayNumericConfigurations(configuration, getConfigurationSection("item_properties"));
-            CompatibilityLib.getInventoryUtils().saveTagsToNBT(configuration, wandNode);
+            CompatibilityLib.getInventoryUtils().saveTagsToNBT(getConfiguration(), wandNode);
         }
     }
 
@@ -1890,6 +1892,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
+        if (stateNode == null) {
+            stateNode = ConfigurationUtils.newConfigurationSection();
+        }
         ConfigurationUtils.loadAllTagsFromNBT(stateNode, wandNode);
 
         return stateNode;
