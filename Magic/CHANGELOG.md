@@ -2,6 +2,8 @@
 
 # 10.4
 
+ - 1.18.1 Support
+
 ## Additions
  
  - Add `requirements` config for paths, for custom-gated progression.
