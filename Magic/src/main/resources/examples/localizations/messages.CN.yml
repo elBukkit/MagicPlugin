@@ -1775,7 +1775,7 @@ spells:
   spshop:
     name: SP商店
     description: 把钱换成法术点
-   title: Spell Points
+    title: Spell Points
   lootshop:
     name: 战利品商店
     description: 通过出售怪物掉落物换钱
