@@ -1830,6 +1830,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (itemInHand != null && !CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)
                     && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
+                    item = CompatibilityLib.getItemUtils().makeReal(item);
+                    if (!CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)) {
+                        player.getInventory().setItemInMainHand(item);
+                    }
                     isInOffhand = false;
                     return true;
                 }
@@ -1837,6 +1841,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (itemInHand != null && !CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)
                     && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
+                    item = CompatibilityLib.getItemUtils().makeReal(item);
+                    if (!CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)) {
+                        player.getInventory().setItemInOffHand(item);
+                    }
                     isInOffhand = true;
                     return true;
                 }
@@ -1845,6 +1853,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (itemInHand != null && !CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)
                     && controller.isSameItem(itemInHand, item)) {
                     item = itemInHand;
+                    item = CompatibilityLib.getItemUtils().makeReal(item);
+                    if (!CompatibilityLib.getInventoryUtils().isSameInstance(itemInHand, item)) {
+                        player.getInventory().setItem(heldSlot, item);
+                    }
                     isInOffhand = true;
                     return true;
                 }
