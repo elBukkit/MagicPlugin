@@ -553,7 +553,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (spellInventoryRaw instanceof Map) {
                     spellInventory = (Map<String, ? extends Object>)spellInventoryRaw;
                 } else if (spellInventoryRaw instanceof ConfigurationSection) {
-                    spellInventory = CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)spellInventoryRaw);
+                    spellInventory = ConfigurationUtils.toMap((ConfigurationSection)spellInventoryRaw);
                 }
                 if (spellInventory != null) {
                     for (Map.Entry<String, ? extends Object> spellEntry : spellInventory.entrySet()) {
@@ -2575,7 +2575,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Map<String, Integer> brushInventory = (Map<String, Integer>)brushInventoryRaw;
                 loadBrushInventory(brushInventory);
             } else if (brushInventoryRaw instanceof ConfigurationSection) {
-                loadBrushInventory(CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)brushInventoryRaw));
+                loadBrushInventory(ConfigurationUtils.toMap((ConfigurationSection)brushInventoryRaw));
             }
         }
 
@@ -2587,7 +2587,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Map<String, Integer> spellInventory = (Map<String, Integer>)spellInventoryRaw;
                 loadSpellInventory(spellInventory);
             } else if (spellInventoryRaw instanceof ConfigurationSection) {
-                loadSpellInventory(CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)spellInventoryRaw));
+                loadSpellInventory(ConfigurationUtils.toMap((ConfigurationSection)spellInventoryRaw));
             }
         }
 
@@ -2602,7 +2602,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 Map<String, Integer> spellLevels = (Map<String, Integer>)spellLevelsRaw;
                 loadSpellLevels(spellLevels);
             } else if (spellLevelsRaw instanceof ConfigurationSection) {
-                loadSpellLevels(CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)spellLevelsRaw));
+                loadSpellLevels(ConfigurationUtils.toMap((ConfigurationSection)spellLevelsRaw));
             }
         }
         checkActiveSpell();

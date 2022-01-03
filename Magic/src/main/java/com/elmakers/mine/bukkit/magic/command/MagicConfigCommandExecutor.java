@@ -1369,11 +1369,11 @@ public class MagicConfigCommandExecutor extends MagicTabExecutor {
             if (!(defaultValue instanceof ConfigurationSection) && !(defaultValue instanceof Map)) return true;
 
             Map<String, Object> configMap = configValue instanceof ConfigurationSection
-                    ? CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)configValue)
+                    ? ConfigurationUtils.toMap((ConfigurationSection)configValue)
                     : (Map<String, Object>)configValue;
 
             Map<String, Object> defaultMap = defaultValue instanceof ConfigurationSection
-                    ? CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection)defaultValue)
+                    ? ConfigurationUtils.toMap((ConfigurationSection)defaultValue)
                     : (Map<String, Object>)defaultValue;
 
             return !configMap.equals(defaultMap);

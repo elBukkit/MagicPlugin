@@ -3,9 +3,11 @@ package com.elmakers.mine.bukkit.utility;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
@@ -836,5 +838,16 @@ public class ConfigUtils {
     @Nullable
     public static Float getOptionalFloat(ConfigurationSection configuration, String key) {
         return configuration.contains(key) ? (float)configuration.getDouble(key) : null;
+    }
+
+    // This is here to replace teh more efficient but broken by 1.18 CompatibilityUtils.getMap
+    @Nonnull
+    public static Map<String, Object> toMap(ConfigurationSection section) {
+        Map<String, Object> map = new LinkedHashMap<>();
+        Set<String> keys = section.getKeys(false);
+        for (String key : keys) {
+            map.put(key, section.get(key));
+        }
+        return map;
     }
 }

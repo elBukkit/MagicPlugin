@@ -765,7 +765,7 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
             if (brushInventoryRaw instanceof Map) {
                 brushInventory = (Map<String, ? extends Object>) brushInventoryRaw;
             } else if (brushInventoryRaw instanceof ConfigurationSection) {
-                brushInventory = CompatibilityLib.getCompatibilityUtils().getMap((ConfigurationSection) brushInventoryRaw);
+                brushInventory = ConfigurationUtils.toMap((ConfigurationSection) brushInventoryRaw);
             }
             if (brushInventory != null) {
                 for (Map.Entry<String, ? extends Object> brushEntry : brushInventory.entrySet()) {

@@ -169,7 +169,7 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         override = override || second.getBoolean("override");
-        Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(second);
+        Map<String, Object> map = ConfigurationUtils.toMap(second);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             Object value = entry.getValue();
             if (value == null) continue;
@@ -236,7 +236,7 @@ public class ConfigurationUtils extends ConfigUtils {
     public static ConfigurationSection replaceConfigurations(ConfigurationSection first, ConfigurationSection second)
     {
         if (second == null) return first;
-        Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(second);
+        Map<String, Object> map = ConfigurationUtils.toMap(second);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             first.set(entry.getKey(), entry.getValue());
         }
@@ -290,7 +290,7 @@ public class ConfigurationUtils extends ConfigUtils {
 
     public static String getParameters(ConfigurationSection parameters) {
         Collection<String> parameterStrings = new ArrayList<>();
-        Map<String, Object> map = CompatibilityLib.getCompatibilityUtils().getMap(parameters);
+        Map<String, Object> map = ConfigurationUtils.toMap(parameters);
         for (Map.Entry<String, Object> entry : map.entrySet()) {
             parameterStrings.add(entry.getKey());
             parameterStrings.add(entry.getValue().toString());

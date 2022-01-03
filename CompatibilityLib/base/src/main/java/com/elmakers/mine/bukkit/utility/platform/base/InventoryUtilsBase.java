@@ -24,6 +24,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
@@ -64,7 +65,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         Object tag = platform.getItemUtils().getTag(handle);
         if (tag == null) return false;
 
-        return addTagsToNBT(platform.getCompatibilityUtils().getMap(tags), tag);
+        return addTagsToNBT(ConfigUtils.toMap(tags), tag);
     }
 
     @Override
@@ -120,7 +121,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames) {
-        return saveTagsToNBT(platform.getCompatibilityUtils().getMap(tags), node, tagNames);
+        return saveTagsToNBT(ConfigUtils.toMap(tags), node, tagNames);
     }
 
     protected byte[] makeByteArray(List<Object> list) {
