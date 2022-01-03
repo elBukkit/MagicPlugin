@@ -1,6 +1,6 @@
 # TODO
 
-# For 10.4
+# Next
 
  - cooldown isn't working on triggered spells
  - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
@@ -16,6 +16,7 @@
    https://github.com/ScreamingSandals/BedWars/blob/master/api/src/main/java/org/screamingsandals/bedwars/api/events/PlayerJoinEvent.java
    https://www.spigotmc.org/threads/screaming-bedwars-1-9-4-1-18.353950/page-18
  - `auto_absorb_sp: true` is not working, add auto_absorb option to custom_currency
+ - the chop spell on 1.18 doesent work on the new azaela leaves btw
 
 # 1.18
 

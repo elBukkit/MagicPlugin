@@ -2,6 +2,8 @@
 
 # 10.5
 
+ - Fix incompatibility with Bukkit change to config section internals in 1.18.1
+
 # 10.4
 
  - 1.18.1 Support
