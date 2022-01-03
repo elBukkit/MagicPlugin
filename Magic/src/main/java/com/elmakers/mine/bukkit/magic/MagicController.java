@@ -3321,6 +3321,7 @@ public class MagicController implements MageController {
 
     protected void loadMobEggs(ConfigurationSection skins) {
         mobEggs.clear();
+        if (skins == null) return;
         Set<String> keys = skins.getKeys(false);
         for (String key : keys) {
             try {
@@ -3336,6 +3337,7 @@ public class MagicController implements MageController {
 
     protected void loadMobSkins(ConfigurationSection skins) {
         mobSkins.clear();
+        if (skins == null) return;
         Set<String> keys = skins.getKeys(false);
         for (String key : keys) {
             try {
@@ -3348,6 +3350,7 @@ public class MagicController implements MageController {
 
     protected void loadBlockSkins(ConfigurationSection skins) {
         blockSkins.clear();
+        if (skins == null) return;
         Set<String> keys = skins.getKeys(false);
         for (String key : keys) {
             try {

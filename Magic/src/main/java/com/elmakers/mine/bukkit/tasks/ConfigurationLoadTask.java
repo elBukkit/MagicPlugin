@@ -619,7 +619,6 @@ public class ConfigurationLoadTask implements Runnable {
         ConfigurationSection mainHelp = messagesConfig.getConfigurationSection("help");
         // This shouldn't ever happen since there's a help section in defaults, but still.
         if (mainHelp == null) {
-            mainHelp.set("help", helpTopics);
             return;
         }
 
