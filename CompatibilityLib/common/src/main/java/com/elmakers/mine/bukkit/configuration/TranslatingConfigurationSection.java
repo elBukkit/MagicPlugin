@@ -95,7 +95,7 @@ public class TranslatingConfigurationSection extends MemorySection {
         String key = path.substring(i2);
         if (section == this) {
             ConfigurationSection result = createSection(this, key);
-            map.put(key, result);
+            super.set(key, result);
             return result;
         }
         return section.createSection(key);
