@@ -2,6 +2,8 @@
 
 # 10.5.2
 
+ - Turn image map loading messages into debug messages (hiding them by default)
+
 # 10.5.1
 
  - More config issue fixes

@@ -19,6 +19,7 @@ import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
@@ -26,6 +27,7 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     protected final File configurationFile;
     private final File cacheFolder;
     private final Plugin plugin;
+    private final MageController controller;
 
     private boolean animationAllowed = true;
     private boolean loaded = false;
@@ -36,8 +38,9 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
     private HashMap<String, URLMap> playerMap = new HashMap<>();
     private HashMap<Integer, URLMap> idMap = new HashMap<>();
 
-    public MapController(Plugin plugin, File configFile, File cache) {
-        this.plugin = plugin;
+    public MapController(MageController controller, File configFile, File cache) {
+        this.plugin = controller == null ? null : controller.getPlugin();
+        this.controller = controller;
         this.configurationFile = configFile;
         this.cacheFolder = cache;
     }
@@ -160,15 +163,15 @@ public class MapController implements com.elmakers.mine.bukkit.api.maps.MapContr
 
     protected void info(String message)
     {
-        if (plugin != null) {
-            plugin.getLogger().info(message);
+        if (controller != null) {
+            controller.info(message);
         }
     }
 
     protected void warning(String message)
     {
-        if (plugin != null) {
-            plugin.getLogger().warning(message);
+        if (controller != null) {
+            controller.getLogger().warning(message);
         }
     }
 

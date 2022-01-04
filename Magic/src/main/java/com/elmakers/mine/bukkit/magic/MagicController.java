@@ -1541,7 +1541,7 @@ public class MagicController implements MageController {
         File urlMapFile = getDataFile(URL_MAPS_FILE);
         File imageCache = new File(dataFolder, "imagemapcache");
         imageCache.mkdirs();
-        maps = new MapController(plugin, urlMapFile, imageCache);
+        maps = new MapController(this, urlMapFile, imageCache);
 
         // Initialize EffectLib.
         if (com.elmakers.mine.bukkit.effect.EffectPlayer.initialize(plugin, getLogger())) {
