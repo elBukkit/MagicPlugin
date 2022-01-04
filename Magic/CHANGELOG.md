@@ -1,5 +1,9 @@
 # CHANGELOG
 
+# 10.5.1
+
+ - More config issue fixes
+
 # 10.5
 
  - Fix incompatibility with Bukkit change to config section internals in 1.18.1
