@@ -21,7 +21,6 @@ import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ColorHD;
-import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class BaseMagicConfigurable extends BaseMagicProperties implements MagicConfigurable {
@@ -370,7 +369,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         if (existingLevelsRaw instanceof Map) {
             spellLevels = (Map<String, Integer>)existingLevelsRaw;
         } else if (existingLevelsRaw instanceof ConfigurationSection) {
-            spellLevels = CompatibilityLib.getCompatibilityUtils().getTypedMap((ConfigurationSection)existingLevelsRaw);
+            spellLevels = ConfigurationUtils.toTypedMap((ConfigurationSection)existingLevelsRaw);
         } else {
             spellLevels = new HashMap<>();
         }
@@ -407,7 +406,7 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
         if (value instanceof Map) {
             newLevels = (Map<String, Integer>)value;
         } else {
-            newLevels = CompatibilityLib.getCompatibilityUtils().getTypedMap((ConfigurationSection)value);
+            newLevels = ConfigurationUtils.toTypedMap((ConfigurationSection)value);
         }
 
         for (Map.Entry<String, Integer> entry : newLevels.entrySet()) {

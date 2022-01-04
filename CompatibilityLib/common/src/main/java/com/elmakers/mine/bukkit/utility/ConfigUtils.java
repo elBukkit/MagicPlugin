@@ -843,11 +843,17 @@ public class ConfigUtils {
     // This is here to replace teh more efficient but broken by 1.18 CompatibilityUtils.getMap
     @Nonnull
     public static Map<String, Object> toMap(ConfigurationSection section) {
-        Map<String, Object> map = new LinkedHashMap<>();
+        return toTypedMap(section);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> Map<String, T> toTypedMap(ConfigurationSection section) {
+        Map<String, T> map = new LinkedHashMap<>();
         Set<String> keys = section.getKeys(false);
         for (String key : keys) {
-            map.put(key, section.get(key));
+            map.put(key, (T)section.get(key));
         }
+
         return map;
     }
 }
