@@ -1,5 +1,7 @@
 # CHANGELOG
 
+# 10.5.2
+
 # 10.5.1
 
  - More config issue fixes
