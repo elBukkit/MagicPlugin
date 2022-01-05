@@ -134,6 +134,10 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
         return getSummary(MAX_WIDTH, ChatColor.AQUA, ChatColor.RESET, !forConsole);
     }
 
+    public String getSummary(int maxWidth, String matchPrefix, String matchSuffix) {
+        return getSummary(maxWidth, matchPrefix, matchSuffix, false);
+    }
+
     public String getSummary(int maxWidth, String matchPrefix, String matchSuffix, boolean addTooltips) {
         String title = getTopic().getTitle();
         int titleLength = title.length();
