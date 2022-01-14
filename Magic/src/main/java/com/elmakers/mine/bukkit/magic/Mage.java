@@ -5957,13 +5957,26 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return false;
     }
 
-    @Override
-    public boolean canUse(ItemStack itemStack) {
+    protected boolean canUse(ItemStack itemStack, Wand wand) {
+        if (wand != null && !controller.hasWandPermission(getPlayer(), wand)) {
+            return false;
+        }
         String lockKey = controller.getLockKey(itemStack);
         if (lockKey == null) {
             return true;
         }
         return canUse(lockKey);
+    }
+
+    @Override
+    public boolean canUse(com.elmakers.mine.bukkit.api.wand.Wand apiWand) {
+        Wand wand = apiWand instanceof Wand ? (Wand)apiWand : null;
+        return canUse(wand.getItem(), wand);
+    }
+
+    @Override
+    public boolean canUse(ItemStack itemStack) {
+        return canUse(itemStack, controller.getIfWand(itemStack));
     }
 
     @Override

@@ -690,14 +690,8 @@ public class PlayerController implements Listener {
         if (wand == null) return;
 
         Messages messages = controller.getMessages();
-        if (!controller.hasWandPermission(player))
-        {
-            return;
-        }
-
         // Check for region or wand-specific permissions
-        if (!controller.hasWandPermission(player, wand))
-        {
+        if (!mage.canUse(wand)) {
             wand.deactivate();
             mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));
             return;
@@ -746,13 +740,7 @@ public class PlayerController implements Listener {
         if (wand == null) {
             return true;
         }
-        Player player = mage.getPlayer();
-        if (!controller.hasWandPermission(player)) {
-            return false;
-        }
-
-        // Check for region or wand-specific permissions
-        if (!controller.hasWandPermission(player, wand)) {
+        if (!mage.canUse(wand)) {
             Messages messages = controller.getMessages();
             wand.deactivate();
             mage.sendMessage(messages.get("wand.no_permission").replace("$wand", wand.getName()));

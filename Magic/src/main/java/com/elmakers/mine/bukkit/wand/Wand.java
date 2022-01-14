@@ -5714,7 +5714,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         Player player = mage.getPlayer();
         if (player == null) return false;
 
-        if (!controller.hasWandPermission(player, this)) return false;
+        if (!mage.canUse(this)) return false;
 
         if (getBoolean("self_destruct")) {
             mage.sendMessageKey("wand.self_destruct");

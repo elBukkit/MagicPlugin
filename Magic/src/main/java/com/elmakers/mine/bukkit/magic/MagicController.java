@@ -3742,6 +3742,8 @@ public class MagicController implements MageController {
 
     public boolean hasWandPermission(Player player, Wand wand) {
         if (hasBypassPermission(player)) return true;
+
+        if (!hasWandPermission(player)) return false;
         if (wand.isSuperPowered() && !player.hasPermission("magic.wand.use.powered")) return false;
         if (wand.isSuperProtected() && !player.hasPermission("magic.wand.use.protected")) return false;
 
