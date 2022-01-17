@@ -474,6 +474,7 @@ public class MagicController implements MageController {
     private float cooldownReduction = 0.0f;
     private int autoUndo = 0;
     private int autoSaveTaskId = 0;
+    private boolean validateSpells;
     private BukkitTask configCheckTask = null;
     private BukkitTask logNotifyTask = null;
     private boolean savePlayerData = true;
@@ -2141,7 +2142,7 @@ public class MagicController implements MageController {
         if (!(sender instanceof ConsoleCommandSender)) {
             getLogger().info("Finished loading configuration");
         }
-        if (sender != null && logger.isCapturing() && isLoaded()) {
+        if (sender != null && logger.isCapturing() && isLoaded() && validateSpells) {
             Bukkit.getScheduler().runTaskAsynchronously(plugin, new ValidateSpellsTask(this, sender));
         } else {
             resetLoading(sender);
@@ -8615,6 +8616,7 @@ public class MagicController implements MageController {
                     autoSaveIntervalTicks, autoSaveIntervalTicks);
         }
 
+        validateSpells = properties.getBoolean("validate_spells", true);
         savePlayerData = properties.getBoolean("save_player_data", true);
         enablePreloginCache = properties.getBoolean("cache_data_on_prelogin", savePlayerData);
         externalPlayerData = properties.getBoolean("external_player_data", false);

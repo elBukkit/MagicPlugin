@@ -3,6 +3,7 @@
 # Next
 
  - cooldown isn't working on triggered spells
+ - Add support for min_y/max_y in MagicBlockHandler  
  - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
  - Can't save bundles? (could not reproduce)
  - Remove players from arena if they wander too far away

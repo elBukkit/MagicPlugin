@@ -68,6 +68,11 @@ show_cast_messages: true
 # with Magic, the extra log info may help me find problems.
 log_verbosity: 0
 
+# Set this to false to turn off spell validation on config load
+# This may be necessary to avoid log spam if you are using placeholders in spell configs
+# This is because placeholders can not be evaluated without a player context.
+validate_spells: true
+
 # Use this to turn off colored error and warning messages
 colored_logs: true
 
