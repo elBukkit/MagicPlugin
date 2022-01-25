@@ -46,6 +46,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.warp.WarpDescription;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.magic.MagicBlock;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -742,8 +743,8 @@ public class EntityController implements Listener {
     public void onEntityPortalEnter(EntityPortalEnterEvent event) {
         Entity entity = event.getEntity();
         String portalSpellKey = controller.getPortalSpell(event.getLocation(), entity);
-        String portalWarpKey = controller.getPortalWarp(event.getLocation(), entity);
-        if (portalSpellKey == null && portalWarpKey == null) return;
+        WarpDescription portalWarp = controller.getPortalWarp(event.getLocation(), entity);
+        if (portalSpellKey == null && portalWarp == null) return;
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(entity);
         boolean onCooldown = mage.isOnPortalCooldown();
         mage.setPortalCooldown(portalCooldown);
@@ -765,11 +766,16 @@ public class EntityController implements Listener {
                 spell.cast(spellParameters);
             }
         }
-        if (portalWarpKey != null) {
-            Location location = controller.getWarp(portalWarpKey);
+        if (portalWarp != null) {
+            Location location = controller.getWarp(portalWarp.getKey());
             if (location == null || location.getWorld() == null) {
-                controller.getLogger().warning("Invalid portal-warp in region flag: " + portalWarpKey);
+                controller.getLogger().warning("Invalid portal-warp in region flag: " + portalWarp.getKey());
             } else {
+                if (portalWarp.isMaintainDirection()) {
+                    location = location.clone();
+                    location.setPitch(entity.getLocation().getPitch());
+                    location.setYaw(entity.getLocation().getYaw());
+                }
                 entity.teleport(location);
             }
         }

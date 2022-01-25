@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.warp.MagicWarpDescription;
 
 public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automaton,
         com.elmakers.mine.bukkit.api.block.magic.MagicBlock {
@@ -475,5 +476,13 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
             return false;
         }
         return template.interact(this, player);
+    }
+
+    public MagicWarpDescription getPortalWarp() {
+        return template == null ? null : template.getPortalWarp();
+    }
+
+    public String getPortalSpell() {
+        return template == null ? null : template.getPortalSpell();
     }
 }

@@ -39,7 +39,7 @@ public class MagicBlockCommandExecutor extends MagicTabExecutor {
         "min_time", "max_time", "min_moon_phase", "max_moon_phase", "moon_phase",
         "cast.spells", "cast.recast", "cast.undo_all", "spawn.count", "spawn.leash",
         "spawn.interval", "spawn.parameters", "spawn.check_radius", "spawn.check_floor",
-        "spawn.vertical_check_radius"
+        "spawn.vertical_check_radius","portal_warp","warp_maintain_direction","portal_spell"
     );
     private static final ImmutableSet<String> IGNORE_PROPERTIES = ImmutableSet.of("name", "description");
 

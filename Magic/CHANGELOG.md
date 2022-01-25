@@ -6,6 +6,7 @@
  - Fix cancel_on_damage always triggering, with any damage amount
  - Make wand permissions consistent so armor wands should work the same as handheld wands
  - Add `validate_spells: false` option for config.yml, to turn off spell validation
+ - Add `portal_warp` magic block parameter to turn nether portals into warps, use `/mblock add portal`
 
 # 10.5.1
 

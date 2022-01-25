@@ -1,0 +1,4 @@
+portal:
+  name: Portal Warp
+  warp_maintain_direction: true
+  portal_warp: spawn

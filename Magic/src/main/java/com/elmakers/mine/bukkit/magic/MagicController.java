@@ -52,6 +52,7 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.command.BlockCommandSender;
@@ -275,6 +276,7 @@ import com.elmakers.mine.bukkit.wand.WandTemplate;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;
 import com.elmakers.mine.bukkit.wand.WandUpgradeSlotTemplate;
 import com.elmakers.mine.bukkit.warp.MagicWarp;
+import com.elmakers.mine.bukkit.warp.MagicWarpDescription;
 import com.elmakers.mine.bukkit.warp.WarpController;
 import com.elmakers.mine.bukkit.world.MagicWorld;
 import com.elmakers.mine.bukkit.world.WorldController;
@@ -3824,14 +3826,67 @@ public class MagicController implements MageController {
         return inRegion != null && inRegion;
     }
 
+    protected MagicBlock getConnectedBlock(Location location) {
+        return getConnectedBlock(location, new HashSet<>());
+    }
+
+    protected MagicBlock getConnectedBlock(Location location, Set<Block> touched) {
+        MagicBlock magicBlock = getMagicBlockAt(location);
+        if (magicBlock != null) {
+            return magicBlock;
+        }
+
+        // Always go down first if we can
+        Block block = location.getBlock();
+        Block under = block.getRelative(BlockFace.DOWN);
+        if (under.getType() == block.getType()) {
+            return getConnectedBlock(under.getLocation(), touched);
+        }
+
+        // Make sure we don't go crazy
+        touched.add(block);
+        if (touched.size() > 100) return null;
+
+        // If we can't go down anymore, then look at neighbors
+        for (BlockFace blockFace : BlockData.SIDES) {
+            Block neighbor = block.getRelative(blockFace);
+            if (!touched.contains(neighbor)) {
+                touched.add(neighbor);
+                magicBlock = getConnectedBlock(neighbor.getLocation(), touched);
+                if (magicBlock != null) {
+                    break;
+                }
+            }
+        }
+
+        return magicBlock;
+    }
+
     public String getPortalSpell(Location location, Entity entity) {
+        // First look for a magic block
+        MagicBlock magicBlock = getConnectedBlock(location);
+        String magicBlockSpell = magicBlock != null ? magicBlock.getPortalSpell() : null;
+        if (magicBlockSpell != null) {
+            return magicBlockSpell;
+        }
+
+        // Fall back to regions
         Player player = entity instanceof Player ? (Player)entity : null;
         return worldGuardManager.getPortalSpell(player, location);
     }
 
-    public String getPortalWarp(Location location, Entity entity) {
+    public MagicWarpDescription getPortalWarp(Location location, Entity entity) {
+        // First look for a magic block
+        MagicBlock magicBlock = getConnectedBlock(location);
+        MagicWarpDescription magicWarp = magicBlock != null ? magicBlock.getPortalWarp() : null;
+        if (magicWarp != null) {
+            return magicWarp;
+        }
+
+        // Fall back to regions
         Player player = entity instanceof Player ? (Player)entity : null;
-        return worldGuardManager.getPortalWarp(player, location);
+        String regionWarp = worldGuardManager.getPortalWarp(player, location);
+        return regionWarp == null ? null : new MagicWarpDescription(regionWarp);
     }
 
     public boolean hasPermission(Player player, String pNode) {

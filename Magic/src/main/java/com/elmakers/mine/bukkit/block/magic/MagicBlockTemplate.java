@@ -14,6 +14,7 @@ import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.warp.MagicWarpDescription;
 import com.google.common.base.Preconditions;
 
 public class MagicBlockTemplate {
@@ -36,6 +37,10 @@ public class MagicBlockTemplate {
     private InteractCaster interactCaster;
     @Nullable
     private Collection<EffectPlayer> effects;
+    @Nullable
+    private MagicWarpDescription portalWarp;
+    @Nullable
+    private String portalSpell;
 
     private final int playerRange;
     private final int minPlayers;
@@ -57,6 +62,11 @@ public class MagicBlockTemplate {
         alwaysActive = configuration.getBoolean("always_active", false);
         removeWhenBroken = configuration.getBoolean("remove_when_broken", false);
         dropWhenRemoved = configuration.getString("drop_when_removed");
+        portalSpell = configuration.getString("portal_spell");
+        String portalWarpKey = configuration.getString("portal_warp");
+        if (portalWarpKey != null) {
+            portalWarp = new MagicWarpDescription(portalWarpKey, configuration.getBoolean("warp_maintain_direction", true));
+        }
         if (configuration.isList("effects")) {
             effects = controller.loadEffects(configuration, "effects");
         } else {
@@ -240,5 +250,13 @@ public class MagicBlockTemplate {
 
     public String getDropWhenRemoved() {
         return dropWhenRemoved;
+    }
+
+    public MagicWarpDescription getPortalWarp() {
+        return portalWarp;
+    }
+
+    public String getPortalSpell() {
+        return portalSpell;
     }
 }

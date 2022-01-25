@@ -63,10 +63,10 @@ healthy:
     generic_max_health: 10
   health_scale: 20
 
-constituted:
+armorhealth:
   inherit: base
   entity_attributes:
-    generic_max_health: "constitution * 2"
+    generic_max_health: "5 + %armor_amount_helmet% * 2"
 
 vampire:
   passive: true
@@ -83,3 +83,32 @@ tree:
   path: tree
   spells:
     - missile
+
+guardian:
+  name: Guardian
+  description: A Shieldbearing class that focuses on creating walls and protecting itself and allies.
+  inherit: base_class
+  locked: true
+  protection:
+    stuck: 1
+  mana_max: 100
+  mana_regeneration: 10
+  mana: 100
+  potion_effects:
+    damage_resistance: 2
+    health_boost: 9
+    speed: 4
+  class_items:
+    - guardianshield
+  spells:
+    - summonknight
+    - barriershield
+    - bring
+    - shieldbash
+    - aggravation
+    - revenge
+    - regenerate
+    - guardianreflect
+    - gather
+    - recall
+
