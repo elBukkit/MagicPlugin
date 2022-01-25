@@ -26,9 +26,8 @@ class MoonRequirement extends RangedRequirement {
             } else if (value.startsWith("=")) {
                 this.value = (double)ConfigurationUtils.parseMoonPhase(value.substring(1), logger, "moon requirement");
             } else {
-                // Default to >= which is what we normally mean
-                min = (double)ConfigurationUtils.parseMoonPhase(value, logger, "moon requirement");
-                this.inclusive = true;
+                // Default to = which is what we normally mean for phase of moon
+                this.value = (double)ConfigurationUtils.parseMoonPhase(value, logger, "moon requirement");
             }
         } catch (Exception ignore) {
         }
