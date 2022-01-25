@@ -8,6 +8,7 @@
  - Add `validate_spells: false` option for config.yml, to turn off spell validation
  - Add `portal_warp` magic block parameter to turn nether portals into warps, use `/mblock add portal`
  - Phase of moon requirement default format changed to parse as = instead of >=
+ - Add `GiveCurrency` action
 
 # 10.5.1
 
