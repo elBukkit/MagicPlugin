@@ -9,6 +9,7 @@
  - Add `portal_warp` magic block parameter to turn nether portals into warps, use `/mblock add portal`
  - Phase of moon requirement default format changed to parse as = instead of >=
  - Add `GiveCurrency` action
+ - Change `rocketboots` recipe to use gunpowder since firework rockets don't want to work
 
 # 10.5.1
 

@@ -5,7 +5,7 @@ rocketboots:
   ingredients:
     o: amethyst_shard
     i: iron_ingot
-    f: firework
+    f: gunpowder
   row_1: o o
   row_2: i i
   row_3: f f
