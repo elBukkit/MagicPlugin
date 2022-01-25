@@ -296,26 +296,3 @@ deathbell:
       type: kill
       cast:
         shutdown: 1
-
-christmas_base_mob:
-  type: husk
-
-christmas_santa:
-  inherit: christmas_base_mob
-  hp: 100
-  name: "&b☃ &6Santa"
-  disguise:
-    type: player
-    name: Santa
-    skin: {"id":"61ea0923-aa44-4910-bcef-5bfd6d3c0d57","name":"Santa","properties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTYzNzc4NjA5NzM0NCwKICAicHJvZmlsZUlkIiA6ICI2MWVhMDkyM2FhNDQ0OTEwYmNlZjViZmQ2ZDNjMGQ1NyIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVEYXJ0aEZhdGhlciIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS85MjFiZWQ3ZmIzMjJkM2IxYTE4NDJkYThkYmY1ZTkzMGVmOWQxOTg2ZmExODAzN2JkODM3YzE0ZTIyMmZiYjlmIgogICAgfSwKICAgICJDQVBFIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8yMzQwYzBlMDNkZDI0YTExYjE1YThiMzNjMmE3ZTllMzJhYmIyMDUxYjI0ODFkMGJhN2RlZmQ2MzVjYTdhOTMzIgogICAgfQogIH0KfQ==","signature":"KOw9mHKMu5crzfVWdivJfdTUPcvj3CrPR30R3P+AkxYUjQyUNHBoUQSAQdIQ2QZlGjXDXCD8srLXUfY27g5f43gCmAO4X91OTnXTzV1TquHYGQ2DSzkhYs943OlD5z30eGySuQvf+EpYIEmwlfUgIMF96Xahtp1I1N1qEozsSSMBB4yFqJxcQufw5ZuyL8QcniQQldAK1drK/xxf34VJlKZRemFKn0DRs6mIHzi2LgM3iV6irK6gRJl4LOfWcfhmOoC3yajyzxjLE14QjowzcdlfSRnFKGYD0HIe/5Dprs86Zi0BP/hLJSeTFEE5PlExOzz1EV1tiQS21iw9OJQfCVQwhk2lq5y+kjYIwuiBPus6lak0F439DkdyHcDti6TtvuzVBFdF8zZhujwOSgr9e8Y8FMUF4INmnQwxy3pO6IFkw57dtG0JvW9q6uh6t/6e5BwgqAyBFzsUUI6tGsEXud9DBlIhi8nDfV5992wdO318etTLWlGUyw96DpCFX38sLIJ/ZFfG8oCmP+wPAKCCLmm/rXFYmf8u7ZzEHsRc+V/Yt+C4vGshsBQTpECD+om8AQnCBo48uLCxA8Zp6vPIiyt31VtEj+V9tYnuFSI77ukXZ5mjLyPm4ggOu36BwvWU7Q6r+zeKVMMcpZf8hY3+RLsmlYqfxMSs4MAvzjxsO5s="}],"legacy":false}
-
-christmas_elf:
-  inherit: christmas_base_mob
-  hp: 50
-  # name: "&b☃ &6Elf"
-  disguise:
-    type: player
-    custom_name_visible: true
-    custom_name: "&b☃ &6Elf"
-    name: Elf
-    skin: {"id":"61ea0923-aa44-4910-bcef-5bfd6d3c0d57","name":"Elf","properties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTYzNzc5NzA5NjcxMiwKICAicHJvZmlsZUlkIiA6ICI2MWVhMDkyM2FhNDQ0OTEwYmNlZjViZmQ2ZDNjMGQ1NyIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVEYXJ0aEZhdGhlciIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9mODU3ZWM5MzhkNTU1M2M0YTNiNGI1NzM3OTQ3ZTdhMjNkZTY3NWFlNDRjNjkzZWIzZmFlNDdhM2ZkNjJkYzYxIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=","signature":"O1NG4pTP4q1t1fwl3u4ihxN1X53Q7ueuj8RI/nWOxl9Do6On8l4hLJxJtjDlFUMZeGvZ2u2D3KlHkyk9QATnTHz79Z6IyNgxVl8e21qWtZuX5cwNKK+ObVAUrii9l+AsgQg0m63G13TAbMYl8pLZFvXPewmdubYVUYm/Mlr8KM/+WRznRlifZCN4Kvnn9F040AhKVbJbMOXCO+PC0UEuMGWOMobS4hi2X37oM0g0oQfnZXEauJKuSI0iJyvuiQeFXte2QgeDvwd5U7MWsi/AZ4Xdh2vueHRH7r8/NrxqFPNQnxsxXBQh6bFXWCPSesWeZ7WnspunnfsjKsX73wn4ylU5mfaEtLygRosFThlSVblSMYX51qlj/C8syNP7npZNB/ZaCiI134sWjSnLyqEG8Xbk1Mxwi8JjkrThOftpAwXjVASI6jczS7l+rhmdovhSgbD0rJwbSUeS/18vkrRN2SEkCcffMFFyvs8bGZdj42m3MFSFLo4ADuxjBoayKwUvF07zjaAhqyZWNjwf4zKvuI6eivusMpQvSP2eDppZ41s4jjd9xe+uxJ3IC93WSakERMvKLoxEC9E5mB2hcaH6zjYdo7h99vJYl+/WHiYLrswLrDEaLrySdr4sWLSyAH6q/eOjoLEtIW2FZCKxzPFjbXx0jxnXNetorMvG1USNU80="}],"legacy":false}
