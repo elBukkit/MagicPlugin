@@ -2,6 +2,8 @@ package com.elmakers.mine.bukkit.configuration;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 
 import org.bukkit.configuration.Configuration;
@@ -18,6 +20,9 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
             super(configuration);
         }
     }
+
+    private static String PLACEHOLDER_PATTERN_STRING = "%([a-zA-Z0-9_]+)%";
+    private static Pattern PLACEHOLDER_PATTERN = Pattern.compile(PLACEHOLDER_PATTERN_STRING);
 
     private Options options;
     private String context;
@@ -68,6 +73,19 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
         return options;
     }
 
+    protected String parsePlaceholders(String expression) {
+        // We need to clear placeholders here since we can't evaluate them unless this is a MageParameters
+        Matcher matcher = PLACEHOLDER_PATTERN.matcher(expression);
+        if (!matcher.matches()) return expression;
+
+        StringBuffer sb = new StringBuffer();
+        while (matcher.find()) {
+            matcher.appendReplacement(sb, "0");
+        }
+        matcher.appendTail(sb);
+        return sb.toString();
+    }
+
     @Nullable
     protected Double evaluate(String expression, String field) {
         contextField = field;
@@ -84,6 +102,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
         // We don't currently use $ as an operator, and removing it lets us keep compatibility with
         // the old system that let you reference parameters like $range
         expression = expression.replace("$", "");
+        expression = parsePlaceholders(expression);
         EquationTransform transform = EquationStore.getInstance().getTransform(expression, workingParameters);
         transform.setVariableProvider(this);
         double value = transform.get();
