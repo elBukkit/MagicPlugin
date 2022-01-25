@@ -124,7 +124,9 @@ public class MagicRequirement {
 
         lightLevel = parseRangedRequirement(configuration, "light");
         timeOfDay = parseTimeRequirement(configuration, "time");
-        moonPhase = parseMoonRequirement(configuration, "moon");
+        // For compatibility with spawners
+        String moonKey = configuration.contains("moon") ? "moon" : "moon_phase";
+        moonPhase = parseMoonRequirement(configuration, moonKey);
         weather = configuration.getString("weather");
         height = parseRangedRequirement(configuration, "height");
         serverVersion = parseRangedRequirement(configuration, "server_version");
