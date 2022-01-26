@@ -69,7 +69,7 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
             setTemplate(controller.getMagicBlockTemplate(templateKey));
         }
         if (template == null) {
-            controller.getLogger().warning("Automaton missing template: " + templateKey);
+            controller.getLogger().warning("Automaton missing template: " + templateKey + ", select with `/mblock select " + getId());
         }
         createdAt = node.getLong("created", 0);
         creatorId = node.getString("creator");
