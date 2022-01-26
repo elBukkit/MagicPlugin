@@ -2822,8 +2822,8 @@ public class MagicController implements MageController {
 
     protected int loadMagicBlocks(Collection<ConfigurationSection> list) {
         int blockCount = 0;
-        try {
-            for (ConfigurationSection node : list) {
+        for (ConfigurationSection node : list) {
+            try {
                 MagicBlock magicBlock = new MagicBlock(this, node);
                 if (magicBlock.isPendingWorldLoad()) {
                     invalidMagicBlocks.add(node);
@@ -2856,9 +2856,9 @@ public class MagicController implements MageController {
                     activeBlocks.put(magicBlock.getId(), magicBlock);
                     magicBlock.resume();
                 }
+            } catch (Exception ex) {
+                getLogger().log(Level.SEVERE, "Something went wrong loading magic block data, one or more magic blocks may be lost", ex);
             }
-        } catch (Exception ex) {
-            getLogger().log(Level.SEVERE, "Something went wrong loading magic block data", ex);
         }
         return blockCount;
     }
