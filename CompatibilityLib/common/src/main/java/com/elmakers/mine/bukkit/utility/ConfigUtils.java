@@ -827,8 +827,13 @@ public class ConfigUtils {
     }
 
     @Nullable
+    public static Integer getOptionalInteger(ConfigurationSection configuration, String key, Integer def) {
+        return configuration.contains(key) ? (Integer)configuration.getInt(key) : def;
+    }
+
+    @Nullable
     public static Integer getOptionalInteger(ConfigurationSection configuration, String key) {
-        return configuration.contains(key) ? configuration.getInt(key) : null;
+        return getOptionalInteger(configuration, key, null);
     }
 
     @Nullable

@@ -3,7 +3,6 @@
 # Next
 
  - Can potion effects be applied to classes, and what happens if you have a wand set to that class?
- - Lore not showing on buyshop items (cornelia)
  - Spell cast / cast_target triggers
  - cooldown isn't working on triggered spells
  - Add support for min_y/max_y in MagicBlockHandler  

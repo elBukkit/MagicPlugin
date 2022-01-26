@@ -234,7 +234,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected boolean autoClose = true;
         protected boolean showFree = true;
         protected boolean unbreakableIcon = true;
-        protected int iconHideFlags = CompatibilityConstants.ALL_HIDE_FLAGS;
+        protected Integer iconHideFlags = null;
 
         protected int limit = 0;
 
@@ -353,9 +353,8 @@ public class SelectorAction extends CompoundAction implements GUIAction
             applyLoreToItem = configuration.getBoolean("apply_lore_to_item", applyLoreToItem);
             applyNameToItem = configuration.getBoolean("apply_name_to_item", applyNameToItem);
             allowDroppedItems = configuration.getBoolean("allow_dropped_items", allowDroppedItems);
-            iconHideFlags = configuration.getInt("icon_hide_flags", iconHideFlags);
+            iconHideFlags = ConfigurationUtils.getOptionalInteger(configuration, "icon_hide_flags", iconHideFlags);
             unbreakableIcon = configuration.getBoolean("icon_unbreakable", unbreakableIcon);
-
             if (costType.isEmpty() || costType.equalsIgnoreCase("none")) {
                 free = true;
             }
@@ -1020,6 +1019,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
                         CompatibilityLib.getCompatibilityUtils().setRawLore(icon, iconLore);
                     }
                 }
+            } else if (iconHideFlags == null) {
+                // We default to hiding all flags if not using an item as an icon
+                iconHideFlags = CompatibilityConstants.ALL_HIDE_FLAGS;
             }
 
             if (icon == null && castSpell != null && !castSpell.isEmpty()) {
@@ -1180,7 +1182,9 @@ public class SelectorAction extends CompoundAction implements GUIAction
             if (unbreakableIcon) {
                 CompatibilityLib.getItemUtils().makeUnbreakable(icon);
             }
-            CompatibilityLib.getItemUtils().hideFlags(icon, iconHideFlags);
+            if (iconHideFlags != null) {
+                CompatibilityLib.getItemUtils().hideFlags(icon, iconHideFlags);
+            }
 
             if (unavailable) {
                 if (unavailableMessage != null && !unavailableMessage.isEmpty()) {

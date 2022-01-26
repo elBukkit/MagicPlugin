@@ -2,14 +2,23 @@
 
 # 10.5.2
 
- - Turn image map loading messages into debug messages (hiding them by default)
+## Fixes
+
+ - Fix vanilla lore (attributes, enchants) not showing on shop items
  - Fix cancel_on_damage always triggering, with any damage amount
+
+## Changes
+
+ - Turn image map loading messages into debug messages (hiding them by default)
  - Make wand permissions consistent so armor wands should work the same as handheld wands
- - Add `validate_spells: false` option for config.yml, to turn off spell validation
- - Add `portal_warp` magic block parameter to turn nether portals into warps, use `/mblock add portal`
  - Phase of moon requirement default format changed to parse as = instead of >=
- - Add `GiveCurrency` action
  - Change `rocketboots` recipe to use gunpowder since firework rockets don't want to work
+   
+## Additions 
+
+ - Add `validate_spells: false` option for config.yml, to turn off spell validation
+ - Add `portal_warp` magic block parameter to turn nether/end portals into warps, use `/mblock add portal`
+ - Add `GiveCurrency` action
  - Allow specifying `particle_offset` in effect parameters as a vector
 
 # 10.5.1
