@@ -332,9 +332,16 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             } else {
                 particleData = (float)configuration.getDouble("particle_data", particleData);
                 particleData = (float)configuration.getDouble("particle_speed", particleData);
-                particleXOffset = (float)configuration.getDouble("particle_offset", particleXOffset);
-                particleYOffset = (float)configuration.getDouble("particle_offset", particleYOffset);
-                particleZOffset = (float)configuration.getDouble("particle_offset", particleZOffset);
+                Vector particleOffsetVector = ConfigurationUtils.getVector(configuration, "particle_offset");
+                if (particleOffsetVector != null) {
+                    particleXOffset = (float)particleOffsetVector.getX();
+                    particleYOffset = (float)particleOffsetVector.getY();
+                    particleZOffset = (float)particleOffsetVector.getZ();
+                } else {
+                    particleXOffset = (float)configuration.getDouble("particle_offset", particleXOffset);
+                    particleYOffset = (float)configuration.getDouble("particle_offset", particleYOffset);
+                    particleZOffset = (float)configuration.getDouble("particle_offset", particleZOffset);
+                }
                 particleXOffset = (float)configuration.getDouble("particle_offset_x", particleXOffset);
                 particleYOffset = (float)configuration.getDouble("particle_offset_y", particleYOffset);
                 particleZOffset = (float)configuration.getDouble("particle_offset_z", particleZOffset);

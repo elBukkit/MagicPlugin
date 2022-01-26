@@ -10,6 +10,7 @@
  - Phase of moon requirement default format changed to parse as = instead of >=
  - Add `GiveCurrency` action
  - Change `rocketboots` recipe to use gunpowder since firework rockets don't want to work
+ - Allow specifying `particle_offset` in effect parameters as a vector
 
 # 10.5.1
 
