@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.magic.listener;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -43,6 +44,7 @@ import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.projectiles.ProjectileSource;
 
 import com.elmakers.mine.bukkit.api.block.UndoList;
+import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
@@ -776,7 +778,15 @@ public class EntityController implements Listener {
                     location.setPitch(entity.getLocation().getPitch());
                     location.setYaw(entity.getLocation().getYaw());
                 }
+                Location origin = entity.getLocation();
+                Collection<EffectPlayer> effects = portalWarp.getEffects();
                 entity.teleport(location);
+                if (effects != null) {
+                    for (EffectPlayer player : effects) {
+                        player.start(origin, location);
+                        player.start(location, origin);
+                    }
+                }
             }
         }
     }

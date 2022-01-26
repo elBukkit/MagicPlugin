@@ -2,3 +2,16 @@ portal:
   name: Portal Warp
   warp_maintain_direction: true
   portal_warp: spawn
+
+  warp_effects:
+    - sound: entity_enderman_teleport
+      sound_pitch: 1.2
+      location: origin
+      offset: 0,1,0
+      particle_count: 15
+      particle_offset: 0.2,0.3,0.2
+    - sound: magic.teleport
+      particle: portal
+      offset: 0,1,0
+      particle_count: 35
+      particle_offset: 0.5,1.5,0.5
