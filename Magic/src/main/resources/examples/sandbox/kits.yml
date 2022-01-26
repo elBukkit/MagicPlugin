@@ -1,0 +1,10 @@
+sandbox:
+  enabled: false
+
+  # On login, players will be given any items in this kit that they are
+  # missing.
+  keep: true
+
+  # In general items in this kit should be undroppable and probably unstashable as well.
+  items:
+    - sandbox

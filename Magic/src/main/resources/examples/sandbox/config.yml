@@ -5,9 +5,6 @@ example_override: true
 # Useful in sandbox configs
 fill_wand_creator: true
 
-# Give players a sandbox win on join
-welcome_wand: sandbox
-
 # This can be used for a server that is hooked up with a live editor
 # The editor will touch this file, and the server will automatically
 # reload configurations when the configs have changed.
