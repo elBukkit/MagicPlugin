@@ -68,9 +68,6 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         if (templateKey != null) {
             setTemplate(controller.getMagicBlockTemplate(templateKey));
         }
-        if (template == null) {
-            controller.getLogger().warning("Automaton missing template: " + templateKey);
-        }
         createdAt = node.getLong("created", 0);
         creatorId = node.getString("creator");
         creatorName = node.getString("creator_name");
@@ -82,6 +79,11 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         float yaw = (float)node.getDouble("yaw");
         float pitch = (float)node.getDouble("pitch");
         worldName = node.getString("world");
+
+        if (template == null) {
+            controller.getLogger().warning("Automaton missing template: " + templateKey + " at " + x + "," + y + "," + z + " in world " + worldName);
+        }
+
         if (worldName == null || worldName.isEmpty()) {
             worldName = "world";
             controller.getLogger().warning("Automaton missing world name, defaulting to 'world'");
