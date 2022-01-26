@@ -353,6 +353,7 @@ public class ConfigUtils {
                     parse = parse.replace("|", " ");
                 }
                 String[] pieces = StringUtils.split(parse, ' ');
+                if (pieces.length < 3) return null;
                 double x = parseDouble(pieces[0]);
                 double y = parseDouble(pieces[1]);
                 double z = parseDouble(pieces[2]);
