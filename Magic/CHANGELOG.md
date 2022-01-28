@@ -17,6 +17,8 @@
    
 ## Additions 
 
+ - Add `world_modification.remove_invalid_entities: true` option for config.yml
+   This may be needed if your server is crashing due to out of bounds projectiles or other entities
  - Add `validate_spells: false` option for config.yml, to turn off spell validation
  - Add `portal_warp` magic block parameter to turn nether/end portals into warps, use `/mblock add portal`
  - Add `GiveCurrency` action

@@ -72,3 +72,7 @@ player_data_store:
 
 # Clean up broken NPC villagers
 remove_invulnerable_mobs: true
+
+# Clean up out of bounds entities
+world_modification:
+  remove_invalid_entities: true

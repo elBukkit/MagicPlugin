@@ -14,11 +14,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.world.listener.WorldPlayerListener;
 import com.elmakers.mine.bukkit.world.listener.WorldSpawnListener;
@@ -28,6 +30,7 @@ public class WorldController implements Listener {
     private final MagicController controller;
     private final WorldPlayerListener playerListener;
     private final WorldSpawnListener spawnListener;
+    private boolean removeInvalidEntities = false;
 
     public WorldController(MagicController controller) {
         this.controller = controller;
@@ -45,6 +48,10 @@ public class WorldController implements Listener {
 
     public void load(ConfigurationSection configuration) {
         spawnListener.load(configuration);
+        removeInvalidEntities = configuration.getBoolean("remove_invalid_entities");
+        if (removeInvalidEntities) {
+            controller.getLogger().info("Will remove out of bounds entities on chunk load");
+        }
     }
 
     public void loadWorlds(ConfigurationSection configuration) {
@@ -111,6 +118,12 @@ public class WorldController implements Listener {
     @EventHandler
     public void onWorldInit(WorldInitEvent event) {
         World world = event.getWorld();
+        if (removeInvalidEntities) {
+            BlockPopulator populator = CompatibilityLib.getCompatibilityUtils().createOutOfBoundsPopulator(controller.getLogger());
+            if (populator != null) {
+                world.getPopulators().add(populator);
+            }
+        }
         for (MagicWorld notifyWorld : magicWorlds.values()) {
             notifyWorld.onWorldInit(world);
         }

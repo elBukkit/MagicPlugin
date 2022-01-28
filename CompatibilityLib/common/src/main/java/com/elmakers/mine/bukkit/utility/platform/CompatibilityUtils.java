@@ -10,6 +10,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -49,6 +50,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -548,4 +550,7 @@ public interface CompatibilityUtils {
     void setSnowLevel(Block block, int level);
 
     int getSnowLevel(Block block);
+
+    @Nullable
+    BlockPopulator createOutOfBoundsPopulator(Logger logger);
 }

@@ -15,6 +15,7 @@ import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
@@ -55,6 +56,7 @@ import org.bukkit.entity.Tameable;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.TippedArrow;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
@@ -1142,5 +1144,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @SuppressWarnings("deprecation")
     public int getSnowLevel(Block block) {
         return block.getData();
+    }
+
+    @Nullable
+    public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
+        return null;
     }
 }

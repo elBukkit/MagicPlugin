@@ -1,4 +1,7 @@
 world_modification:
+  # Turn this on if your server is crashing with "Entity XXXXXXXX is not in the region" errors
+  remove_invalid_entities: false
+
   # Spawn reasons that will be ignored by world spawn processing rules
   ignore_spawn_reasons:
     - CUSTOM
