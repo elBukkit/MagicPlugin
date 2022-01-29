@@ -65,7 +65,7 @@ public class MagicBlockTemplate {
         portalSpell = configuration.getString("portal_spell");
         String portalWarpKey = configuration.getString("portal_warp");
         if (portalWarpKey != null) {
-            portalWarp = new MagicWarpDescription(portalWarpKey, configuration.getBoolean("warp_maintain_direction", true));
+            portalWarp = new MagicWarpDescription(controller, portalWarpKey, configuration.getBoolean("warp_maintain_direction", true));
             Collection<EffectPlayer> warpEffects = null;
             if (configuration.isList("warp_effects")) {
                 warpEffects = controller.loadEffects(configuration, "warp_effects");
@@ -78,6 +78,7 @@ public class MagicBlockTemplate {
                     }
                 }
             }
+            portalWarp.setPermission(configuration.getString("permission"));
             portalWarp.setEffects(warpEffects);
         }
         if (configuration.isList("effects")) {

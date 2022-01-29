@@ -768,7 +768,7 @@ public class EntityController implements Listener {
                 spell.cast(spellParameters);
             }
         }
-        if (portalWarp != null) {
+        if (portalWarp != null && portalWarp.hasPermission(entity)) {
             Location location = controller.getWarp(portalWarp.getKey());
             if (location == null || location.getWorld() == null) {
                 controller.getLogger().warning("Invalid portal-warp in region flag: " + portalWarp.getKey());

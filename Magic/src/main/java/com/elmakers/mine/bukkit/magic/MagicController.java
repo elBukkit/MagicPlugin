@@ -3886,7 +3886,7 @@ public class MagicController implements MageController {
         // Fall back to regions
         Player player = entity instanceof Player ? (Player)entity : null;
         String regionWarp = worldGuardManager.getPortalWarp(player, location);
-        return regionWarp == null ? null : new MagicWarpDescription(regionWarp);
+        return regionWarp == null ? null : new MagicWarpDescription(this, regionWarp);
     }
 
     public boolean hasPermission(Player player, String pNode) {
