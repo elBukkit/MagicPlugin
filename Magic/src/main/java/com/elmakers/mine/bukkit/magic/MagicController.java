@@ -4902,7 +4902,14 @@ public class MagicController implements MageController {
             logger.setContext("modifiers." + key);
             ModifierTemplate template = modifiers.get(key);
             if (template != null) {
-                String parentKey = properties.getConfigurationSection(key).getString("parent");
+                String parentKey;
+                ConfigurationSection templateConfiguration = properties.getConfigurationSection(key);
+                if (templateConfiguration == null) {
+                    parentKey = null;
+                    getLogger().warning("Modifier '" + key + "' is not a configuration section");
+                } else {
+                    parentKey = templateConfiguration.getString("parent");
+                }
                 if (parentKey != null) {
                     ModifierTemplate parent = modifiers.get(parentKey);
                     if (parent == null) {
