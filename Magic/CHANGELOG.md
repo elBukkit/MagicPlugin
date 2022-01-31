@@ -14,6 +14,7 @@
  - Phase of moon requirement default format changed to parse as = instead of >=
  - Change `rocketboots` recipe to use gunpowder since firework rockets don't want to work
  - Change kill to do 1000 damage to players
+ - Beds are indestructible to magic by default
    
 ## Additions 
 
