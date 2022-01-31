@@ -6,6 +6,7 @@
 
  - Fix vanilla lore (attributes, enchants) not showing on shop items
  - Fix cancel_on_damage always triggering, with any damage amount
+ - Fix Chop not working on azalea leaves
 
 ## Changes
 

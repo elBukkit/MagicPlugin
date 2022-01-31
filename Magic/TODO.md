@@ -1,7 +1,14 @@
 # TODO
 
 # Next
-
+ 
+ - Gun reload messages not showing
+ - Sniper scope broken, why does it need `swappable: false`? It should default to that if there are swap controls..
+ - Add "held" trigger for passive spells on a wand, auto-undo when released
+ - It would be nice to be able to purge all magic blocks of a type
+ - Also keep the template key name to show in list when template is missing, maybe color them red too
+ - "Failed to save wand state" and "no template assigned" spam  
+ 
  - Can potion effects be applied to classes, and what happens if you have a wand set to that class?
  - Spell cast / cast_target triggers
  - cooldown isn't working on triggered spells
@@ -19,7 +26,6 @@
    https://github.com/ScreamingSandals/BedWars/blob/master/api/src/main/java/org/screamingsandals/bedwars/api/events/PlayerJoinEvent.java
    https://www.spigotmc.org/threads/screaming-bedwars-1-9-4-1-18.353950/page-18
  - `auto_absorb_sp: true` is not working, add auto_absorb option to custom_currency
- - the chop spell on 1.18 doesent work on the new azaela leaves btw
 
 # 1.18
 
