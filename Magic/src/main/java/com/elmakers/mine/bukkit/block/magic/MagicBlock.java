@@ -444,7 +444,10 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
     @Override
     @Nonnull
     public String getName() {
-        return name == null ? (template == null ? "(Unknown)" : template.getName()) : name;
+        if (name != null) return name;
+        if (template != null) return template.getName();
+        if (templateKey != null) return templateKey;
+        return "(Unknown)";
     }
 
     @Nullable
