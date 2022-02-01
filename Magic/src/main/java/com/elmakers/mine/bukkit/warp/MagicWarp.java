@@ -200,11 +200,11 @@ public class MagicWarp implements Warp {
         if (isLocked()) {
             sender.sendMessage(ChatColor.RED + "(Locked)");
         }
-        sendIfNotEmpty(sender, " Name:", getName());
-        sendIfNotEmpty(sender, " Description:", getDescription());
-        sendIfNotEmpty(sender, " Group:", getGroup());
-        sendIfNotEmpty(sender, " Icon:", getIcon());
-        sendIfNotEmpty(sender, " Marker Icon:", markerIcon);
-        sendIfNotEmpty(sender, " Marker Set:", markerSet);
+        sendIfNotEmpty(sender, " Name: ", getName());
+        sendIfNotEmpty(sender, " Description: ", getDescription());
+        sendIfNotEmpty(sender, " Group: ", getGroup());
+        sendIfNotEmpty(sender, " Icon: ", getIcon());
+        sendIfNotEmpty(sender, " Marker Icon: ", markerIcon);
+        sendIfNotEmpty(sender, " Marker Set: ", markerSet);
     }
 }

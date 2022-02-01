@@ -352,6 +352,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mwarp.", "list");
             addIfPermissible(sender, options, "magic.commands.mwarp.", "configure");
             addIfPermissible(sender, options, "magic.commands.mwarp.", "map");
+            addIfPermissible(sender, options, "magic.commands.mwarp.", "describe");
         } else if (args.length == 2) {
             String subCommand = args[0];
             if (subCommand.equals("remove") || subCommand.equals("go") || subCommand.equals("replace") || subCommand.equals("configure")) {
