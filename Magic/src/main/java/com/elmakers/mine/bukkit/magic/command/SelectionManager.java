@@ -25,7 +25,8 @@ public abstract class SelectionManager<T extends Locatable> extends Paginator<T>
         ACTIVE,
         TARGET,
         SELECTED,
-        INACTIVE
+        INACTIVE,
+        INVALID
     }
 
     protected final MagicController controller;
@@ -137,6 +138,9 @@ public abstract class SelectionManager<T extends Locatable> extends Paginator<T>
             } else if (item == target) {
                 listType = ListType.TARGET;
                 color = ChatColor.AQUA;
+            } else if (!item.isValid()) {
+                listType = ListType.INVALID;
+                color = ChatColor.RED;
             } else if (item.isActive()) {
                 listType = ListType.ACTIVE;
                 color = ChatColor.LIGHT_PURPLE;

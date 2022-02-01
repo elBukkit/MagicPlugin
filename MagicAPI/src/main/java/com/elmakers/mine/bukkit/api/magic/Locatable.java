@@ -12,4 +12,7 @@ public interface Locatable {
     default boolean isEnabled() {
         return true;
     }
+    default boolean isValid() {
+        return true;
+    }
 }

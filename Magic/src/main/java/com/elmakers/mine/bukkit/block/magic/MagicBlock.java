@@ -450,6 +450,11 @@ public class MagicBlock implements com.elmakers.mine.bukkit.api.automata.Automat
         return "(Unknown)";
     }
 
+    @Override
+    public boolean isValid() {
+        return template != null;
+    }
+
     @Nullable
     public String getDescription() {
         return template == null ? null : template.getDescription();
