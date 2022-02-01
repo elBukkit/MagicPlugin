@@ -22,6 +22,7 @@ public class OrientAction extends BaseSpellAction {
     private Float yawOffset;
     private boolean orientTarget;
     private boolean targetBlock;
+    private boolean noTargetBlock;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -48,6 +49,7 @@ public class OrientAction extends BaseSpellAction {
         }
         orientTarget = parameters.getBoolean("orient_target", false);
         targetBlock = parameters.getBoolean("target_block", false);
+        noTargetBlock = !parameters.getBoolean("target_block", true);
     }
 
     @Override
@@ -88,8 +90,10 @@ public class OrientAction extends BaseSpellAction {
             Location targetLocation = null;
             if (targetBlock) {
                 targetLocation = context.getTargetLocation();
-            } else {
-                targetLocation = targetEntity == null ? null : targetEntity.getLocation();
+            } else if (targetEntity != null) {
+                targetLocation = targetEntity.getLocation();
+            } else if (!noTargetBlock) {
+                targetLocation = context.getTargetLocation();
             }
             if (targetLocation == null) {
                 return SpellResult.NO_TARGET;
@@ -113,11 +117,15 @@ public class OrientAction extends BaseSpellAction {
         super.getParameterNames(spell, parameters);
         parameters.add("pitch");
         parameters.add("yaw");
+        parameters.add("target_block");
+        parameters.add("orient_target");
     }
 
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
-        if (parameterKey.equals("pitch") || parameterKey.equals("yaw")) {
+        if (parameterKey.equals("target_block") || parameterKey.equals("orient_target")) {
+            examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
+        } else if (parameterKey.equals("pitch") || parameterKey.equals("yaw")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);

@@ -1,0 +1,14 @@
+follow:
+  actions:
+    cast:
+      - class: CustomProjectile
+        tick:
+          - class: Orient
+  effects:
+    projectile:
+      - effectlib:
+          class: Sphere
+          duration: 10 seconds
+  parameters:
+    lifetime: 10 seconds
+    range: 32

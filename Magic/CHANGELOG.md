@@ -18,6 +18,8 @@
  - Change kill to do 1000 damage to players
  - Beds are indestructible to magic by default
  - The `swappable` and `undroppable` wand properties default based on whether there are actions assigned to those keys
+ - The `Orient` action changed to fall back to target location if no entity was targeted.
+   Use the `target_block: false` parameter to disable this.
    
 ## Additions 
 
