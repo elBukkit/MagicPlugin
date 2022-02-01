@@ -4976,23 +4976,29 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (cost.getMana() == 0) {
             return false;
         }
+        if (!isGlyphHotbarActive()) {
+            return false;
+        }
         return glyphHotbar.handleInsufficientResources(spell, cost);
     }
 
     public boolean handleCooldown(Spell spell) {
-        String actionBarMessage = getActionBarMessage();
-        if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
+        if (!isGlyphHotbarActive()) {
             return false;
         }
         return glyphHotbar.handleCooldown(spell);
     }
 
     public boolean handleInsufficientCharges(Spell spell) {
-        String actionBarMessage = getActionBarMessage();
-        if (actionBarMessage == null || !actionBarMessage.contains("$hotbar")) {
+        if (!isGlyphHotbarActive()) {
             return false;
         }
         return glyphHotbar.handleInsufficientCharges(spell);
+    }
+
+    private boolean isGlyphHotbarActive() {
+        String actionBarMessage = getActionBarMessage();
+        return actionBarMessage != null && actionBarMessage.contains("$hotbar");
     }
 
     @Override

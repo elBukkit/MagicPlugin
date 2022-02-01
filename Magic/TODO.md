@@ -2,8 +2,6 @@
 
 # Next
  
- - Gun reload messages not showing
- - Sniper scope broken, why does it need `swappable: false`? It should default to that if there are swap controls..
  - Add "held" trigger for passive spells on a wand, auto-undo when released
  - It would be nice to be able to purge all magic blocks of a type
  - Also keep the template key name to show in list when template is missing, maybe color them red too
