@@ -121,7 +121,7 @@ kill|2:
     upgrade_required_casts: 50
     parameters:
         cooldown_mage: 8000
-        player_damage: 25
+        player_damage: 1000
         entity_damage: 35
         hitbox_size: 1.5
         velocity: 7
@@ -130,7 +130,7 @@ kill|2:
 kill|3:
     parameters:
         cooldown_mage: 5000
-        player_damage: 30
+        player_damage: 1000
         entity_damage: 40
         hitbox_size: 2
         velocity: 10
