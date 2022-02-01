@@ -83,3 +83,8 @@ tree:
   path: tree
   spells:
     - missile
+
+armorhealth:
+  inherit: base
+  entity_attributes:
+    generic_max_health: "5 + %armor_amount_helmet% * 2"
