@@ -1261,7 +1261,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         if (templateKey != null && !templateKey.isEmpty()) {
                             boundWands.put(templateKey, boundWand);
                         } else {
-                            controller.getLogger().warning("Failed to load bound wand for " + playerName + ", wand has no template assigned");
+                            controller.info("Failed to load bound wand for " + playerName + ", wand has no template assigned");
                         }
                     } catch (Exception ex) {
                         controller.getLogger().log(Level.WARNING, "Failed to load bound wand for " + playerName + ": " + boundWandItem, ex);

@@ -1887,7 +1887,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             if (mage != null) {
                 ownerMessage = " for player " + mage.getName();
             }
-            controller.getLogger().warning("Failed to save wand state for wand to : " + item + ownerMessage);
+            controller.info("Failed to save wand state for wand to : " + item + ownerMessage);
         } else {
             CompatibilityLib.getInventoryUtils().saveTagsToNBT(getConfiguration(), wandNode);
         }
