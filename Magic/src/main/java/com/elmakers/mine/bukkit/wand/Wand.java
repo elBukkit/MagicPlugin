@@ -2055,8 +2055,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         effectBubbles = getBoolean("effect_bubbles");
         glow = getBoolean("glow");
         spellGlow = getBoolean("spell_glow");
-        undroppable = getBoolean("undroppable");
-        swappable = getBoolean("swappable", true);
         maxEnchantCount = getInt("max_enchant_count");
         showCycleModeLore = getBoolean("show_cycle_lore", true);
 
@@ -2105,6 +2103,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         dropSneakAction = parseWandAction(getString("drop_sneak"), dropSneakAction);
         swapSneakAction = parseWandAction(getString("swap_sneak"), swapSneakAction);
         noBowpullSneakAction = parseWandAction(getString("no_bowpull_sneak"), noBowpullSneakAction);
+
+        // Controls whose defaults rely on keybinding
+        undroppable = getBoolean("undroppable", dropAction != WandAction.NONE);
+        swappable = getBoolean("swappable", swapAction == WandAction.NONE);
 
         // Update glyph bar configuration
         glyphHotbar.load(getConfigurationSection("glyph_hotbar"));

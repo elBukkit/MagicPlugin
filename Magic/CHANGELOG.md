@@ -16,6 +16,7 @@
  - Change `rocketboots` recipe to use gunpowder since firework rockets don't want to work
  - Change kill to do 1000 damage to players
  - Beds are indestructible to magic by default
+ - The `swappable` and `undroppable` wand properties default based on whether there are actions assigned to those keys
    
 ## Additions 
 
