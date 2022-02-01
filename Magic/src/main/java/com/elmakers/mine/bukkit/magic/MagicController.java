@@ -8276,6 +8276,7 @@ public class MagicController implements MageController {
         resourcePacks.load(properties, sender, !loaded);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
+        logger.setSilent(logVerbosity < 0);
         logger.setNotify(properties.getBoolean("log_notify", CompatibilityLib.isModern() ? true : false));
         CompatibilityConstants.DEBUG = logVerbosity >= 5;
         LOG_WATCHDOG_TIMEOUT = properties.getInt("load_watchdog_timeout", 30000);

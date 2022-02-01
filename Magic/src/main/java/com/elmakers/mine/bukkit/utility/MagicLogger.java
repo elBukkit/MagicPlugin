@@ -26,6 +26,7 @@ public class MagicLogger extends ColoredLogger {
     private static int MAX_ERRORS = 50;
     private Plugin plugin;
     private boolean notify = false;
+    private boolean silent = false;
     private String context = null;
     private boolean capture = false;
     private final Set<LogMessage> warnings = Collections.newSetFromMap(new LinkedHashMap<LogMessage, Boolean>() {
@@ -53,6 +54,8 @@ public class MagicLogger extends ColoredLogger {
 
     @Override
     public void log(LogRecord record) {
+        if (silent) return;
+
         if (!capture || (!record.getLevel().equals(Level.WARNING) && !record.getLevel().equals(Level.SEVERE)) || record.getThrown() != null) {
             super.log(record);
         }
@@ -179,5 +182,9 @@ public class MagicLogger extends ColoredLogger {
 
     public void setNotify(boolean notify) {
         this.notify = notify;
+    }
+
+    public void setSilent(boolean silent) {
+        this.silent = silent;
     }
 }

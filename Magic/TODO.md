@@ -5,6 +5,7 @@
  - Add "held" trigger for passive spells on a wand, auto-undo when released
  - It would be nice to be able to purge all magic blocks of a type
  - "Failed to save wand state" and "no template assigned" spam  
+ - Add boss bars to long-running engineering spells
  
  - Can potion effects be applied to classes, and what happens if you have a wand set to that class?
  - Spell cast / cast_target triggers
