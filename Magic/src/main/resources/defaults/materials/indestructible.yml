@@ -13,3 +13,5 @@ indestructible:
 - spawner
 - mob_spawner
 - beds
+- nether_portal
+- end_portal

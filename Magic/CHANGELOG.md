@@ -20,7 +20,8 @@
  - The `swappable` and `undroppable` wand properties default based on whether there are actions assigned to those keys
  - The `Orient` action changed to fall back to target location if no entity was targeted.
    Use the `target_block: false` parameter to disable this.
- - You can now use `log_verbosity: -1` to turn off all log messages. Highly not recommended.  
+ - You can now use `log_verbosity: -1` to turn off all log messages. Highly not recommended.
+ - Nether and end portal blocks added to the `indestructible` list
    
 ## Additions 
 
