@@ -50,6 +50,7 @@ public class MagicBlockTemplate {
     private final Integer maxPhaseOfMoon;
     private final boolean alwaysActive;
     private final boolean removeWhenBroken;
+    private final boolean remove;
     private final String dropWhenRemoved;
 
     public MagicBlockTemplate(@Nonnull MageController controller, @Nonnull String key, @Nonnull ConfigurationSection configuration) {
@@ -61,6 +62,7 @@ public class MagicBlockTemplate {
         interval = configuration.getInt("interval", 0);
         alwaysActive = configuration.getBoolean("always_active", false);
         removeWhenBroken = configuration.getBoolean("remove_when_broken", false);
+        remove = configuration.getBoolean("remove", false);
         dropWhenRemoved = configuration.getString("drop_when_removed");
         portalSpell = configuration.getString("portal_spell");
         String portalWarpKey = configuration.getString("portal_warp");
@@ -260,6 +262,10 @@ public class MagicBlockTemplate {
 
     public boolean removeWhenBroken() {
         return removeWhenBroken;
+    }
+
+    public boolean shouldRemove() {
+        return remove;
     }
 
     public String getDropWhenRemoved() {

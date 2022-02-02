@@ -2825,6 +2825,10 @@ public class MagicController implements MageController {
         for (ConfigurationSection node : list) {
             try {
                 MagicBlock magicBlock = new MagicBlock(this, node);
+                if (magicBlock.shouldRemove()) {
+                    getLogger().info("Removed auto-remove magic block " + magicBlock.getName());
+                    continue;
+                }
                 if (magicBlock.isPendingWorldLoad()) {
                     invalidMagicBlocks.add(node);
                     continue;

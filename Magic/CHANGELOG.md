@@ -22,6 +22,7 @@
    Use the `target_block: false` parameter to disable this.
  - You can now use `log_verbosity: -1` to turn off all log messages. Highly not recommended.
  - Nether and end portal blocks added to the `indestructible` list
+ - Forked the `extramobs` example to use a new URL, remove mob spawners
    
 ## Additions 
 
