@@ -484,6 +484,8 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         BlockEntity tileEntity = getTileEntity(location);
         if (tileEntity == null) return;
         CompoundTag tag = (CompoundTag)data;
+        // We need to copy the tag, otherwise this will modify the item being used
+        tag = tag.copy();
         tag.putInt("x", location.getBlockX());
         tag.putInt("y", location.getBlockY());
         tag.putInt("z", location.getBlockZ());
