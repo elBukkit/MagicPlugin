@@ -516,6 +516,62 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
         return brushes;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public @Nonnull Map<String, Integer> getSpellInventory() {
+        Object spellInventoryRaw = getObject("spell_inventory");
+        if (spellInventoryRaw == null) return new HashMap<>();
+        Map<String, Integer> spellInventory = null;
+
+        if (spellInventoryRaw instanceof Map) {
+            spellInventory = (Map<String, Integer>)spellInventoryRaw;
+        } else if (spellInventoryRaw instanceof ConfigurationSection) {
+            spellInventory = ConfigurationUtils.toTypedMap((ConfigurationSection)spellInventoryRaw);
+        } else {
+            spellInventory = new HashMap<>();
+        }
+        return spellInventory;
+    }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public @Nonnull Map<String, Integer> getBrushInventory() {
+        Object brushInventoryRaw = getObject("brush_inventory");
+        if (brushInventoryRaw == null) return new HashMap<>();
+        Map<String, Integer> brushInventory = null;
+
+        if (brushInventoryRaw instanceof Map) {
+            brushInventory = (Map<String, Integer>)brushInventoryRaw;
+        } else if (brushInventoryRaw instanceof ConfigurationSection) {
+            brushInventory = ConfigurationUtils.toTypedMap((ConfigurationSection)brushInventoryRaw);
+        } else {
+            brushInventory = new HashMap<>();
+        }
+        return brushInventory;
+    }
+
+    @Override
+    public void updateBrushInventory(Map<String, Integer> updateBrushes) {
+        Map<String, Integer> brushInventory = getBrushInventory();
+        for (Map.Entry<String, Integer> brushEntry : updateBrushes.entrySet()) {
+            String brushKey = brushEntry.getKey();
+            Integer slot = brushEntry.getValue();
+            brushInventory.put(brushKey, slot);
+        }
+        setProperty("brush_inventory", brushInventory);
+    }
+
+    @Override
+    public void updateSpellInventory(Map<String, Integer> updateSpells) {
+        Map<String, Integer> spellInventory = getSpellInventory();
+        for (Map.Entry<String, Integer> spellEntry : updateSpells.entrySet()) {
+            String spellKey = spellEntry.getKey();
+            Integer slot = spellEntry.getValue();
+            spellInventory.put(spellKey, slot);
+        }
+        setProperty("spell_inventory", spellInventory);
+    }
+
     @Nullable
     @Override
     public ProgressionPath getPath() {

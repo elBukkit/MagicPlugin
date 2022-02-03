@@ -48,9 +48,13 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     boolean organizeInventory(Mage mage);
     boolean organizeInventory();
     boolean alphabetizeInventory();
+    @Override
     Map<String, Integer> getBrushInventory();
+    @Override
     void updateBrushInventory(Map<String, Integer> updateBrushes);
+    @Override
     Map<String, Integer> getSpellInventory();
+    @Override
     void updateSpellInventory(Map<String, Integer> updateSpells);
     @Nullable
     ItemStack getItem();

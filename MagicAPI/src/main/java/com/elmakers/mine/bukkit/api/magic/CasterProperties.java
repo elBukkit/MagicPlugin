@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.api.magic;
 
 import java.util.Collection;
+import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;
@@ -24,6 +25,10 @@ public interface CasterProperties extends MagicConfigurable {
     boolean setSpelLLevel(String spellKey, int level);
     boolean setSpellLevel(String spellKey, int level);
     int getSpellLevel(String spellKey);
+    Map<String, Integer> getBrushInventory();
+    Map<String, Integer> getSpellInventory();
+    void updateBrushInventory(Map<String, Integer> updateBrushes);
+    void updateSpellInventory(Map<String, Integer> updateSpells);
     Mage getMage();
     void removeMana(float mana);
     float getMana();
