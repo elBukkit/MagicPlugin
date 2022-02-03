@@ -233,7 +233,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
         protected double earnScale = 1;
         protected boolean autoClose = true;
         protected boolean showFree = true;
-        protected boolean unbreakableIcon = true;
+        protected Boolean unbreakableIcon = null;
         protected Integer iconHideFlags = null;
 
         protected int limit = 0;
@@ -354,7 +354,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             applyNameToItem = configuration.getBoolean("apply_name_to_item", applyNameToItem);
             allowDroppedItems = configuration.getBoolean("allow_dropped_items", allowDroppedItems);
             iconHideFlags = ConfigurationUtils.getOptionalInteger(configuration, "icon_hide_flags", iconHideFlags);
-            unbreakableIcon = configuration.getBoolean("icon_unbreakable", unbreakableIcon);
+            unbreakableIcon = ConfigurationUtils.getOptionalBoolean(configuration, "icon_unbreakable", unbreakableIcon);
             if (costType.isEmpty() || costType.equalsIgnoreCase("none")) {
                 free = true;
             }
@@ -1019,9 +1019,16 @@ public class SelectorAction extends CompoundAction implements GUIAction
                         CompatibilityLib.getCompatibilityUtils().setRawLore(icon, iconLore);
                     }
                 }
-            } else if (iconHideFlags == null) {
-                // We default to hiding all flags if not using an item as an icon
-                iconHideFlags = CompatibilityConstants.ALL_HIDE_FLAGS;
+            } else {
+                if (iconHideFlags == null) {
+                    // We default to hiding all flags if not using an item as an icon
+                    iconHideFlags = CompatibilityConstants.ALL_HIDE_FLAGS;
+                }
+                if (unbreakableIcon == null) {
+                    // We also default to unbreakable icons, mainly for backwards compatibility
+                    // with damage-value based custom items
+                    unbreakableIcon = true;
+                }
             }
 
             if (icon == null && castSpell != null && !castSpell.isEmpty()) {
@@ -1179,7 +1186,7 @@ public class SelectorAction extends CompoundAction implements GUIAction
             icon.setItemMeta(meta);
             icon = CompatibilityLib.getItemUtils().makeReal(icon);
 
-            if (unbreakableIcon) {
+            if (unbreakableIcon != null) {
                 CompatibilityLib.getItemUtils().makeUnbreakable(icon);
             }
             if (iconHideFlags != null) {

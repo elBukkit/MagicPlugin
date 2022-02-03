@@ -822,8 +822,13 @@ public class ConfigUtils {
     }
 
     @Nullable
+    public static Boolean getOptionalBoolean(ConfigurationSection configuration, String key, Boolean def) {
+        return configuration.contains(key) ? (Boolean)configuration.getBoolean(key) : def;
+    }
+
+    @Nullable
     public static Boolean getOptionalBoolean(ConfigurationSection configuration, String key) {
-        return configuration.contains(key) ? configuration.getBoolean(key) : null;
+        return getOptionalBoolean(configuration, key, null);
     }
 
     @Nullable
@@ -846,7 +851,7 @@ public class ConfigUtils {
         return configuration.contains(key) ? (float)configuration.getDouble(key) : null;
     }
 
-    // This is here to replace teh more efficient but broken by 1.18 CompatibilityUtils.getMap
+    // This is here to replace the more efficient but broken by 1.18 CompatibilityUtils.getMap
     @Nonnull
     public static Map<String, Object> toMap(ConfigurationSection section) {
         return toTypedMap(section);
