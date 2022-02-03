@@ -32,6 +32,7 @@ import com.elmakers.mine.bukkit.utility.platform.v1_18_1.goal.MagicOwnerHurtByTa
 import com.elmakers.mine.bukkit.utility.platform.v1_18_1.goal.MagicOwnerHurtTargetGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_18_1.goal.MagicPanicGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_18_1.goal.RequirementsGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_18_1.goal.SpinGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_18_1.goal.TriggerGoal;
 
 import net.minecraft.world.entity.GlowSquid;
@@ -565,6 +566,8 @@ public class MobUtils extends MobUtilsBase {
                 return new MagicCheckOwnerGoal(platform, mob);
             case IDLE:
                 return new IdleGoal();
+            case SPIN:
+                return new SpinGoal(mob, (float)config.getDouble("degrees", 10));
             default:
                 platform.getLogger().warning("Unsupported goal type: " + goalType);
                 return null;

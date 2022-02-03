@@ -1,0 +1,6 @@
+spinny_fox:
+  type: fox
+  brain:
+    goals:
+      - type: spin
+        degrees: 90

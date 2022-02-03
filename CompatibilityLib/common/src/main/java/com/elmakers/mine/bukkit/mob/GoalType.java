@@ -81,5 +81,6 @@ public enum GoalType {
     MAGIC_PANIC,
     PANIC, // renamed vanilla goal to panic_fire
     FIND_OWNER,
-    CHECK_OWNER
+    CHECK_OWNER,
+    SPIN
 }
