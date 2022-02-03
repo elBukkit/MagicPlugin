@@ -91,6 +91,10 @@ public class BlockController implements Listener, ChunkLoadListener {
             applySpawnerData = false;
             disableSpawnerData = true;
             controller.getLogger().info("SilkSpawners detected, forcing apply_spawner_data to false");
+        } else if (pluginManager.isPluginEnabled("SlimeFun")) {
+            applySpawnerData = false;
+            disableSpawnerData = true;
+            controller.getLogger().info("SlimeFun detected, forcing apply_spawner_data to false");
         }
     }
 

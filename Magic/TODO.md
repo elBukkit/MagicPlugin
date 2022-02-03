@@ -1,6 +1,11 @@
 # TODO
 
 # Next
+
+ - Test test_ak47 wand:
+   Hold the wand in your hand and use it several times to consume mana
+   Continue to open your inventory, take the wand once, and put it back where you found it.
+   You will be back to the state you were in before the mana was consumed.
  
  - Add "held" trigger for passive spells on a wand, auto-undo when released
  - It would be nice to be able to purge all magic blocks of a type
