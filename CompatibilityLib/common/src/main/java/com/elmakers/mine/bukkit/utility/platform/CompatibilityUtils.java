@@ -57,6 +57,7 @@ import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
@@ -305,6 +306,8 @@ public interface CompatibilityUtils {
     boolean removeRecipe(Recipe recipe);
 
     boolean removeRecipe(String key);
+
+    ShapelessRecipe createShapelessRecipe(String key, ItemStack item, Collection<ItemStack> ingredients, boolean ignoreDamage);
 
     ShapedRecipe createShapedRecipe(String key, ItemStack item);
 

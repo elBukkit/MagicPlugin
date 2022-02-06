@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_14;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -18,6 +19,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.SmokingRecipe;
 import org.bukkit.inventory.StonecuttingRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -128,9 +130,28 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
             RecipeChoice choice = getChoice(source, ignoreDamage);
             return new StonecuttingRecipe(namespacedKey, item, choice);
         } catch (Throwable ex) {
-            platform.getLogger().log(Level.SEVERE, "Error creating stonecutton recipe", ex);
+            platform.getLogger().log(Level.SEVERE, "Error creating stonecutting recipe", ex);
         }
         return null;
+    }
+
+    @Override
+    public ShapelessRecipe createShapelessRecipe(String key, ItemStack item, Collection<ItemStack> ingredients, boolean ignoreDamage) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key);
+        if (item == null) {
+            return null;
+        }
+        ShapelessRecipe recipe;
+        try {
+            recipe = new ShapelessRecipe(namespacedKey, item);
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, "Error creating shapeless recipe", ex);
+            return null;
+        }
+        for (ItemStack ingredient : ingredients) {
+            recipe.addIngredient(getChoice(ingredient, ignoreDamage));
+        }
+        return recipe;
     }
 
     @Override

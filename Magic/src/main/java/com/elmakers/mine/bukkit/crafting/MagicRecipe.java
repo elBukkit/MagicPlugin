@@ -150,8 +150,7 @@ public abstract class MagicRecipe {
         boolean canRemoveRecipes = CompatibilityLib.getCompatibilityUtils().canRemoveRecipes();
         Recipe recipe = getRecipe();
         // Add our custom recipe if crafting is enabled
-        if (recipe != null)
-        {
+        if (recipe != null) {
             // Recipes can't be removed on older minecraft versions, so we have to skip re-registering if we've already registered this one
             if (!FIRST_REGISTER && !canRemoveRecipes) {
                 List<Recipe> existing = plugin.getServer().getRecipesFor(craft());
@@ -163,7 +162,7 @@ public abstract class MagicRecipe {
             try {
                 plugin.getServer().addRecipe(recipe);
             } catch (Exception ex) {
-                plugin.getLogger().log(Level.WARNING, "Failed to add recipe", ex);
+                controller.getLogger().log(Level.WARNING, "Failed to add recipe", ex);
             }
         }
     }
@@ -189,6 +188,9 @@ public abstract class MagicRecipe {
             switch (recipeType) {
                 case "shaped":
                     recipe = new MagicShapedRecipe(key, controller);
+                    break;
+                case "shapeless":
+                    recipe = new MagicShapelessRecipe(key, controller);
                     break;
                 case "furnace":
                     recipe = new MagicFurnaceRecipe(key, controller);

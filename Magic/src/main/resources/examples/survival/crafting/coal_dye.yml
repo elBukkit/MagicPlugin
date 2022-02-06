@@ -1,0 +1,9 @@
+coal_dye:
+  enabled: false
+  type: shapeless
+  output: black_dye
+  auto_discover: true
+  group: ""
+  ingredients:
+    - coal
+    - white_dye

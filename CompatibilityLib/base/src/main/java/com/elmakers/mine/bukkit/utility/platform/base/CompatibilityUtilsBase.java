@@ -60,6 +60,7 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.FurnaceRecipe;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
+import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Torch;
 import org.bukkit.plugin.Plugin;
@@ -874,6 +875,11 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public ShapelessRecipe createShapelessRecipe(String key, ItemStack item, Collection<ItemStack> ingredients, boolean ignoreDamage) {
+        return null;
+    }
+
+    @Override
     public FurnaceRecipe createFurnaceRecipe(String key, ItemStack item, ItemStack source, boolean ignoreDamage, float experience, int cookingTime) {
         return null;
     }
@@ -902,8 +908,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public Recipe createSmithingRecipe(String key, ItemStack item, ItemStack source, ItemStack addition) {
         return null;
     }
-
-
 
     @Override
     public Particle getParticle(String particleType) {
