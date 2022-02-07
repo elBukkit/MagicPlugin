@@ -2,7 +2,8 @@
 
 # Next
 
- - Allow using placeholders in spell descriptions, like `description: "&cDamage: {$strength*22"`
+ - "Failed to save wand state" and "no template assigned" spam
+ - Check mana potions- does `icon: potion:AABBCC` not work anymore?
 
  - extramobs spawns should not affect breeding, should not be 100%
 
@@ -10,14 +11,14 @@
    Hold the wand in your hand and use it several times to consume mana
    Continue to open your inventory, take the wand once, and put it back where you found it.
    You will be back to the state you were in before the mana was consumed.
-   
+    
+ - `auto_absorb_sp: true` is not working, add auto_absorb option to custom_currency
  - Magic mob spawners don't work anymore
-
  - Do beacons lose their settings when restored?
- 
+
+ - A way to make passive spells not show on the wand at all
  - Add "held" trigger for passive spells on a wand, auto-undo when released
  - It would be nice to be able to purge all magic blocks of a type
- - "Failed to save wand state" and "no template assigned" spam  
  - Add boss bars to long-running engineering spells
  
  - Can potion effects be applied to classes, and what happens if you have a wand set to that class?
@@ -27,7 +28,6 @@
  - Trying to sell invisible item frame in a player shop says it's out of stock (? could not reproduce)
  - Can't save bundles? (could not reproduce)
  - Remove players from arena if they wander too far away
- - A way to make passive spells not show on the wand at all
  - Some way to add/subtract attributes via commands
  - Test path requirements
  - Test AI on a phantom
@@ -36,7 +36,6 @@
  - Integrate with: 
    https://github.com/ScreamingSandals/BedWars/blob/master/api/src/main/java/org/screamingsandals/bedwars/api/events/PlayerJoinEvent.java
    https://www.spigotmc.org/threads/screaming-bedwars-1-9-4-1-18.353950/page-18
- - `auto_absorb_sp: true` is not working, add auto_absorb option to custom_currency
 
 # 1.18
 
