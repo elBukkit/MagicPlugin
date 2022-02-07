@@ -240,6 +240,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean quiet                     = false;
     protected boolean loud                      = false;
     protected ToggleType toggle                 = ToggleType.NONE;
+    protected boolean allowOverlap              = true;
     protected boolean disableManaRegeneration   = false;
     protected boolean messageTargets            = true;
     protected boolean targetSelf                = false;
@@ -1116,6 +1117,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         cancelEffects = node.getBoolean("cancel_effects", false);
         deactivateEffects = node.getBoolean("deactivate_effects", true);
         disableManaRegeneration = node.getBoolean("disable_mana_regeneration", false);
+        allowOverlap = node.getBoolean("allow_overlap", true);
 
         String toggleString = node.getString("toggle", "NONE");
         try {
@@ -1251,6 +1253,12 @@ public class BaseSpell implements MageSpell, Cloneable {
                 mage.sendDebugMessage("Cannot cast in spectator mode.");
             }
             return false;
+        }
+
+        boolean active = isActive();
+        if (!allowOverlap && active) {
+            processResult(SpellResult.OVERLAPPING, parameters);
+            return true;
         }
 
         if (toggle != ToggleType.NONE && isActive()) {

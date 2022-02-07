@@ -39,6 +39,10 @@ public enum SpellResult {
     // The spell cast was blocked. Actions generally should not return this.
     BLOCKED(false, true, false),
 
+    // The spell cast was prevented because the spell is already active.
+    // Actions generally should not return this.
+    OVERLAPPING(false, false, true),
+
     // The spell cast was deactivated. Actions generally should not return this.
     DEACTIVATE(true, false, true),
     // A target was selected, which will be used in a subsequent cast. Actions generally should not return this.

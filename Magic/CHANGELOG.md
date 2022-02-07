@@ -36,6 +36,7 @@
  - Allow specifying `particle_offset` in effect parameters as a vector
  - Add `shapeless` recipe type support, takes just a list of `ingredients`  
  - Added `coal_dye` survival recipe, disabled by default, to replace `coal_ink`
+ - Add `allow_overlap: false` option for spells, to prevent overlapping casts
 
 # 10.5.1
 
