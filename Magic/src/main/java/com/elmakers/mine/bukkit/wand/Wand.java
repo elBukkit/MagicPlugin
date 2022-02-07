@@ -5260,6 +5260,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     public Spell getAlternateSpell(int index) {
         String key = alternateSpells[index];
         if (mage == null || key == null || key.length() == 0) return null;
+        Integer level = spellLevels.get(key);
+        if (level != null) {
+            key = new SpellKey(key, level).getKey();
+        }
         return mage.getSpell(key);
     }
 

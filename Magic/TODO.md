@@ -3,7 +3,8 @@
 # Next
 
  - Allow using placeholders in spell descriptions, like `description: "&cDamage: {$strength*22"`
- - Alt-cast spells should use spell levels
+
+ - extramobs spawns should not affect breeding, should not be 100%
 
  - Test test_ak47 wand:
    Hold the wand in your hand and use it several times to consume mana

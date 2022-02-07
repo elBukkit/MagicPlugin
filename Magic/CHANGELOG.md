@@ -9,7 +9,8 @@
  - Fix Chop not working on azalea leaves
  - Fix insufficient resource messages when not using a GUI (Fixes `war` example reload messages)
  - Turn off Magic's mob spawner features when Slimefun is present
- - Fix wither skull (the item) appareance
+ - Fix wither skull (the item) appearance
+ - Fix alt-cast spells not levelling up
 
 ## Changes
 
