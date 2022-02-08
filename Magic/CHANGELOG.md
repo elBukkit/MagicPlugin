@@ -4,7 +4,9 @@
 
 ## Additions
 
+ - The `Mount` action now works with ModelEngine mobs
  - Add `ADD_PASSENGER` and `REMOVE_PASSENGER` actions to `ModelEngine` action
+
 
 # 10.5.2
 

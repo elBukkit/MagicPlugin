@@ -7,6 +7,7 @@ import org.bukkit.entity.LivingEntity;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.integration.ModelEngine;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
@@ -45,6 +46,7 @@ public class MountAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
+        ModelEngine modelEngine = context.getController().getModelEngine();
         while (targetEntity instanceof ComplexEntityPart) {
             targetEntity = ((ComplexEntityPart)targetEntity).getParent();
         }
@@ -57,6 +59,10 @@ public class MountAction extends BaseSpellAction {
         if (targetEntity == CompatibilityLib.getDeprecatedUtils().getPassenger(source)
             || source == CompatibilityLib.getDeprecatedUtils().getPassenger(targetEntity)) {
             return SpellResult.NO_TARGET;
+        }
+
+        if (modelEngine != null && modelEngine.addPassenger(targetEntity, source)) {
+            return SpellResult.CAST;
         }
         CompatibilityLib.getDeprecatedUtils().setPassenger(targetEntity, source);
 
