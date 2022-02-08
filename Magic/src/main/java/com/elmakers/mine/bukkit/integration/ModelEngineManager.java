@@ -238,4 +238,30 @@ public class ModelEngineManager implements ModelEngine {
         modeledEntity.setTint(color, modelId, partId, exactMatch);
         return true;
     }
+
+    @Override
+    public boolean addPassenger(Entity entity, Entity passenger) {
+        if (entity == null) {
+        return false;
+        }
+        ModeledEntity modeledEntity = ModelEngineAPI.api.getModelManager().getModeledEntity(entity.getUniqueId());
+        if (modeledEntity == null) {
+            return false;
+        }
+        modeledEntity.addPassenger(passenger);
+        return true;
+    }
+
+    @Override
+    public boolean removePassenger(Entity entity, Entity passenger) {
+        if (entity == null) {
+            return false;
+        }
+        ModeledEntity modeledEntity = ModelEngineAPI.api.getModelManager().getModeledEntity(entity.getUniqueId());
+        if (modeledEntity == null) {
+            return false;
+        }
+        modeledEntity.removePassenger(passenger);
+        return true;
+    }
 }

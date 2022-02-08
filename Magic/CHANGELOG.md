@@ -2,6 +2,10 @@
 
 # 10.6
 
+## Additions
+
+ - Add `ADD_PASSENGER` and `REMOVE_PASSENGER` actions to `ModelEngine` action
+
 # 10.5.2
 
 ## Fixes

@@ -15,4 +15,6 @@ public interface ModelEngine {
     boolean addSubModel(Entity entity, String modelId, String partId, String subModelId, String subPartId, String customId);
     boolean removeSubModel(Entity entity, String modelId, String subPartId, String customId);
     boolean tintModel(Entity entity, String modelId, String partId, Color color, boolean exactMatch);
+    boolean addPassenger(Entity entity, Entity passenger);
+    boolean removePassenger(Entity entity, Entity passenger);
 }

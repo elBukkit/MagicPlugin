@@ -16,7 +16,7 @@ public class ModelEngineAction extends BaseSpellAction
     private enum ActionType {
         ADD_STATE, REMOVE_STATE,
         ADD_SUB_MODEL, REMOVE_SUB_MODEL,
-        TINT
+        TINT, ADD_PASSENGER, REMOVE_PASSENGER
     }
 
     private ActionType actionType;
@@ -95,6 +95,12 @@ public class ModelEngineAction extends BaseSpellAction
                 break;
             case TINT:
                 result = modelEngine.tintModel(target, model, subPartId, color, exactMatch);
+                break;
+            case ADD_PASSENGER:
+                result = modelEngine.addPassenger(target, context.getEntity());
+                break;
+            case REMOVE_PASSENGER:
+                result = modelEngine.removePassenger(target, context.getEntity());
                 break;
             default:
         }
