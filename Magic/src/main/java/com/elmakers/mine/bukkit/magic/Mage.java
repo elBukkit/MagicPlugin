@@ -5345,7 +5345,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                     if (potionEffectType != null) {
                         for (PotionEffect effect : living.getActivePotionEffects()) {
                             if (effect.getType() == potionEffectType) {
-                                return (double)effect.getAmplifier();
+                                return (double)effect.getAmplifier() + 1;
                             }
                         }
                         return 0.0;
