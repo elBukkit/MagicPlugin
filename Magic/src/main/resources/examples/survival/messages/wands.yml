@@ -591,3 +591,6 @@ wands:
     grappler:
         name: Grappling Hook
         description: "Soar to new places!\nRequires an arrow to use"
+    gps:
+        name: GPS
+        description: "Somehow always knows your current location"

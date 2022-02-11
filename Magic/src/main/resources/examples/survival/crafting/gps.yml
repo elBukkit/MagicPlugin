@@ -1,0 +1,9 @@
+gps:
+  enabled: false
+  output: gps
+  ingredients:
+    h: book
+    o: ender_eye
+  row_1: " o "
+  row_2: "oho"
+  row_3: " o "

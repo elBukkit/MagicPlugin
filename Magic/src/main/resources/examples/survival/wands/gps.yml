@@ -1,0 +1,4 @@
+gps:
+  active_spell: gps
+  icon: written_book
+  mode: cast
