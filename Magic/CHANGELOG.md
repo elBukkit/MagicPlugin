@@ -10,6 +10,11 @@
 
  - The `Mount` action now works with ModelEngine mobs
  - Add `ADD_PASSENGER` and `REMOVE_PASSENGER` actions to `ModelEngine` action
+ - Added gps survival item, crafting recipe (disabled by default)
+
+## Changes
+
+ - Improve/Standardize placeholder support for Book action
 
 # 10.5.2
 

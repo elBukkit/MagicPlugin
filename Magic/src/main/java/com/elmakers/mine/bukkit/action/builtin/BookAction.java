@@ -18,9 +18,7 @@ import org.bukkit.inventory.meta.BookMeta;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
-import com.elmakers.mine.bukkit.api.magic.MageClass;
 import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
@@ -52,46 +50,7 @@ public class BookAction extends BaseSpellAction {
         return book;
     }
 
-    private static class Replacement {
-        public String replace;
-        public String with;
-
-        public Replacement(String replace, String with) {
-            this.replace = replace;
-            this.with = with;
-        }
-    }
-
     private List<String> replaceContents(CastContext context, Mage targetMage) {
-        List<Replacement> replacements = new ArrayList<>();
-
-        Set<String> attributes = context.getController().getAttributes();
-        Set<String> currencies = context.getController().getCurrencyKeys();
-
-        for (String attr : attributes) {
-            Double value = targetMage.getAttribute(attr);
-            if (value != null) {
-                replacements.add(new Replacement("$" + attr, Integer.toString((int)Math.ceil(value))));
-            }
-        }
-
-        for (String currency : currencies) {
-            replacements.add(new Replacement("$" + currency, Integer.toString((int)Math.ceil(targetMage.getCurrency(currency)))));
-        }
-
-        replacements.add(new Replacement("@tn", targetMage.getName()));
-        replacements.add(new Replacement("@td", targetMage.getDisplayName()));
-        replacements.add(new Replacement("@p", context.getMage().getName()));
-        replacements.add(new Replacement("@pd", context.getMage().getDisplayName()));
-
-        MageClass mageClass = targetMage.getActiveClass();
-        String className = mageClass != null ? mageClass.getName() : "";
-        ProgressionPath magePath = targetMage.getActiveProperties().getPath();
-        String pathName = magePath != null ? magePath.getName() : "";
-
-        replacements.add(new Replacement("$class", className));
-        replacements.add(new Replacement("$path", pathName));
-
         List<String> newContents = new ArrayList<>();
         Set<String> pageKeys = pages.getKeys(false);
         for (String pageKey : pageKeys) {
@@ -109,11 +68,7 @@ public class BookAction extends BaseSpellAction {
             } else {
                 pageText = StringUtils.join(lines, "\n");
             }
-
-            for (Replacement replacement : replacements) {
-                pageText = pageText.replace(replacement.replace, replacement.with);
-            }
-
+            pageText = context.parameterize(pageText);
             while (newContents.size() <= pageNumber) newContents.add("");
             newContents.set(pageNumber, CompatibilityLib.getCompatibilityUtils().translateColors(pageText));
         }
