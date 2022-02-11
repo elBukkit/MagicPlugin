@@ -5330,13 +5330,20 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (player != null) {
                     Enchantment enchantment = CompatibilityLib.getCompatibilityUtils().getEnchantmentByKey(attributeKey);
                     if (enchantment != null) {
-                        // TODO: Check other slots/items?
+                        // TODO: Be smarter about, for instance, holding enchanted armor?
                         ItemStack item = player.getInventory().getItemInMainHand();
+                        double level = 0;
                         if (item.hasItemMeta()) {
                             ItemMeta meta = item.getItemMeta();
-                            return (double)meta.getEnchantLevel(enchantment);
+                            level = Math.max(level, meta.getEnchantLevel(enchantment));
                         }
-                        return 0.0;
+                        for (ItemStack armor : player.getInventory().getArmorContents()) {
+                            if (armor.hasItemMeta()) {
+                                ItemMeta meta = armor.getItemMeta();
+                                level = Math.max(level, meta.getEnchantLevel(enchantment));
+                            }
+                        }
+                        return level;
                     }
                 }
                 LivingEntity living = getLivingEntity();
