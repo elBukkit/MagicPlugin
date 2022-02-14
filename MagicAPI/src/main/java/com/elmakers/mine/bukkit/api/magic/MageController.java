@@ -166,6 +166,8 @@ public interface MageController {
     void unloadWandTemplate(String key);
 
     @Nonnull
+    String describeBlock(Block block);
+    @Nonnull
     String describeItem(ItemStack item);
     String getItemKey(ItemStack item);
     @Nullable

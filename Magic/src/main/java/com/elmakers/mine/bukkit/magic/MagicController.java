@@ -54,6 +54,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.CreatureSpawner;
 import org.bukkit.block.Skull;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.CommandSender;
@@ -5535,6 +5536,21 @@ public class MagicController implements MageController {
     @Override
     public String describeItem(ItemStack item) {
         return messages.describeItem(item);
+    }
+
+    @Nonnull
+    @Override
+    public String describeBlock(Block block) {
+        Material blockType = block.getType();
+        String description = blockType.name().toLowerCase();
+        if (DefaultMaterials.isMobSpawner(blockType)) {
+            BlockState blockState = block.getState();
+            if (blockState instanceof CreatureSpawner) {
+                CreatureSpawner spawner = (CreatureSpawner)blockState;
+                description += ":" + spawner.getSpawnedType().name().toLowerCase();
+            }
+        }
+        return description;
     }
 
     public boolean checkForItem(Player player, ItemStack requireItem, boolean take) {
