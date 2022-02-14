@@ -14,6 +14,7 @@
  - Add `ADD_PASSENGER` and `REMOVE_PASSENGER` actions to `ModelEngine` action
  - Added gps survival item, crafting recipe (disabled by default)
  - Add `FindTileEntities` action
+ - Add `block` and `tblock` placeholders for describing the source or target block type
 
 ## Changes
 
