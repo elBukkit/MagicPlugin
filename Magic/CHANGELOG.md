@@ -13,10 +13,12 @@
  - The `Mount` action now works with ModelEngine mobs
  - Add `ADD_PASSENGER` and `REMOVE_PASSENGER` actions to `ModelEngine` action
  - Added gps survival item, crafting recipe (disabled by default)
+ - Add `FindTileEntities` action
 
 ## Changes
 
  - Improve/Standardize placeholder support for Book action
+ - Chop will chop Shroomlights
 
 # 10.5.2
 
