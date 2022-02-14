@@ -1,6 +1,7 @@
 gps:
   enabled: false
   output: gps
+  auto_discover: true
   ingredients:
     h: book
     o: ender_eye
