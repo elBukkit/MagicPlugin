@@ -1,8 +1,11 @@
 package com.elmakers.mine.bukkit.magic;
 
+import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -126,5 +129,13 @@ public abstract class TemplatedProperties extends CasterProperties {
             return hasProperty("legacy_" + iconKey) || hasProperty(iconKey);
         }
         return hasProperty(iconKey);
+    }
+
+    @Override
+    public void describe(CommandSender sender, @Nullable Set<String> ignoreProperties) {
+        if (template != null) {
+            sender.sendMessage(ChatColor.GRAY + "Template: " + ChatColor.WHITE + template.getKey());
+        }
+        super.describe(sender, ignoreProperties);
     }
 }

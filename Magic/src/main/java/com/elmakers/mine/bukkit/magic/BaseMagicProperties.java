@@ -49,7 +49,7 @@ public class BaseMagicProperties implements MagicProperties {
 
     public static final ImmutableSet<String> HIDDEN_PROPERTY_KEYS = ImmutableSet.of(
             "owner", "owner_id", "version", "item_attributes", "item_attribute_slot",
-            "mana_timestamp", "storage", "hotbar"
+            "mana_timestamp", "storage", "hotbar", "template"
     );
 
     protected BaseMagicProperties(@Nonnull MageController controller) {
