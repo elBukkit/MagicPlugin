@@ -2,11 +2,19 @@
 
 # Next
 
+ - Show world name in `/magic list blocks` - why are there so many modified blocks on the club server?
+
+ - You can't use wand for crafting recipes because the craftable tag won't attach until you have it in your hand once.
+   If you set the icon to a CustomModelData value, even if it's 0, it will default to having the craftable tag attached, so you can use it in craft recipes.
+
  - "Failed to save wand state" and "no template assigned" spam
- - Check mana potions- does `icon: potion:AABBCC` not work anymore?
+ - Check mana potions- does `icon: potion:AABBCC` not work anymore? (specifically on a wand icon, it goes to white after being held?)
 
  - extramobs spawns should not affect breeding, should not be 100%
 
+ - API to add custom ManaController
+ - Sleep trigger
+ - Change world trigger  
  - Test test_ak47 wand:
    Hold the wand in your hand and use it several times to consume mana
    Continue to open your inventory, take the wand once, and put it back where you found it.

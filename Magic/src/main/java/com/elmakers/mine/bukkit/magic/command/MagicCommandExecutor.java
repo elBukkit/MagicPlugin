@@ -571,6 +571,7 @@ public class MagicCommandExecutor extends MagicHelpCommandExecutor {
                         + ChatColor.GRAY + blockLocation.getBlockX() + ChatColor.DARK_GRAY + ","
                         + ChatColor.GRAY + blockLocation.getBlockY() + ChatColor.DARK_GRAY + ","
                         + ChatColor.GRAY + blockLocation.getBlockZ()
+                        + ChatColor.GRAY + " " + blockData.getWorldName()
                         + ChatColor.BLUE + " stored as " + ChatColor.AQUA + blockData.getMaterial()
                         + ChatColor.BLUE + " is currently " + ChatColor.AQUA + blockDescription
                         + ChatColor.BLUE + " from " + ChatColor.GOLD + listName);
