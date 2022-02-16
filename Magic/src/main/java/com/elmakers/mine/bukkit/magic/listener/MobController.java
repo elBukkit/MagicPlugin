@@ -145,6 +145,7 @@ public class MobController implements Listener, ChunkLoadListener {
     @Override
     public void onEntitiesLoaded(Chunk chunk, List<Entity> entities) {
         for (Entity entity : entities) {
+            if (entity instanceof Player) continue;
             // Check for disconnected NPCs, we don't want to leave invulnerable entities around
             boolean removed = false;
             String npcId = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID);
