@@ -1,5 +1,5 @@
 broom:
-    enabled: true
+  enabled: true
 
 broom|2:
   enabled: true

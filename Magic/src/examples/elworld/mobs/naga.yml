@@ -1,0 +1,21 @@
+naga:
+  type: zombie
+  disguise:
+    type: player
+    name: Naga
+    skin: '{"id":"4cb358ae-719c-4423-93c7-8769ce46e9c3","name":"NathanWolf","properties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTY0NDk4MzM4OTIwMiwKICAicHJvZmlsZUlkIiA6ICI0Y2IzNThhZTcxOWM0NDIzOTNjNzg3NjljZTQ2ZTljMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJOYXRoYW5Xb2xmIiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzY0YmY4NjZiOTIzMDg3NjM5OThiZTgwM2MzNTI5OTgyYmUzYWZiNWRiMjgxNmFhOWEzZDE2MDFlMDE0ZDRlNGMiCiAgICB9CiAgfQp9","signature":"DHSQK8A9cajwpvSGmTpocuW+84smH3K/O9408u8K6fwYWAUdkrCtSRvgqXB0gTCdeiBrtRbJ6h1Qxyo2IIlalmNycTt1HJQzf29NOlpt+xYkiI9YwyGd8mWITDZxF3vLkj537N+SAdQIGYIMM6Gf5if3EHytdUDBrYtZH+guQDGFhQ2Q00gHWRdBzWt3ppZmb4d9EPlhW4kzgktWYpetmk0NOzZUVzTRBR+AlDoNwUE/8khWSGEns0Cmlv2za1gGll/8OvbP5HjO7RZ1YYoEKVE3BGnZqMQQl1k4t/CIlih14SWhwC3vp4URfU8a2dVguqFLB57rUEnkWDTVrspXagPbCs9wKzsFc+pTqGiHjc/WPa7UVTN7XO7UerHJ07r1m3nsuynMb7mEvLPR9DpUGBs3MOb2MSe2vqHwhZev01jN8meXM4rZSA7eNvkYBUTXMZsiYE7MC+eXDYyQsWQSVzlueHJN8/w2RiD6iuJvyDYiZP2nosjMSTqs+WOaV7uE5Us37LHI+2s0y7EcAEtOvreD8IYh220mWQslh2CReZHNFLRYIlz0dck314KB3XSpTMOdbrt2grImF1lJXlj9RnS6XRQxz/jx6r9bFbNK0qM+haWBFYYeb2cj7XBNTQ9uFh1cQuTyYhS/esbPx9zrpPojgnP5u/93rTUcKJzsNb8="}],"legacy":false}'
+  health: 1000
+  default_drops: false
+  interval: 1000
+  helmet: nothing
+  triggers:
+    interval:
+      cast:
+        missile|4: 200
+        none: 20
+  drops:
+    - gold_ingot@30
+    - sp:200
+  potion_effects:
+    - type: speed
+      amplifier: 1
