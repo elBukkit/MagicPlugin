@@ -7,7 +7,8 @@
  - Potion effect attributes changed to be 1-based
  - Enchantment level attributes will show the maximum of all armor and items
    Note that it's still not super smart, holding an armor piece will count
- - Fix issues with large connected magic portals  
+ - Fix issues with large connected magic portals
+ - Fix Lightsabers retracting when swung
 
 ## Additions
 

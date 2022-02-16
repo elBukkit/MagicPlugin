@@ -782,15 +782,16 @@ public class PlayerController implements Listener {
             return;
         }
 
-        // Check for locked items
-        if (!mage.canUse(itemInHand)) {
-            mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
-            event.setCancelled(true);
+        Wand wand = mage.checkWand();
+        if (!canUse(mage, wand)) {
             return;
         }
 
-        Wand wand = mage.checkWand();
-        if (!canUse(mage, wand)) {
+        // Check for locked items
+        // We will assume, for efficiency, that if a wand is active they are allowed to use it.
+        if (wand == null && !mage.canUse(itemInHand)) {
+            mage.sendMessage(controller.getMessages().get("mage.no_class").replace("$name", controller.describeItem(itemInHand)));
+            event.setCancelled(true);
             return;
         }
 
