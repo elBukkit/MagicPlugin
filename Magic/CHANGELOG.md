@@ -2,14 +2,6 @@
 
 # 10.6
 
-## Fixes
- 
- - Potion effect attributes changed to be 1-based
- - Enchantment level attributes will show the maximum of all armor and items
-   Note that it's still not super smart, holding an armor piece will count
- - Fix issues with large connected magic portals
- - Fix Lightsabers retracting when swung
-
 ## Additions
 
  - The `Mount` action now works with ModelEngine mobs
@@ -22,6 +14,14 @@
 
  - Improve/Standardize placeholder support for Book action
  - Chop will chop Shroomlights
+ - Enchantment level attributes will show the maximum of all armor and items
+   Note that it's still not super smart, holding an armor piece will count
+
+# 10.5.3
+
+- Potion effect attributes changed to be 1-based
+- Fix issues with large connected magic portals
+- Fix Lightsabers retracting when swung
 
 # 10.5.2
 
