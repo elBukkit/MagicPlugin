@@ -3841,21 +3841,23 @@ public class MagicController implements MageController {
             return magicBlock;
         }
 
+        // Make sure we don't go crazy
+        if (touched.size() > 100) {
+            return null;
+        }
+
         // Always go down first if we can
         Block block = location.getBlock();
+        touched.add(block);
         Block under = block.getRelative(BlockFace.DOWN);
         if (under.getType() == block.getType()) {
             return getConnectedBlock(under.getLocation(), touched);
         }
 
-        // Make sure we don't go crazy
-        touched.add(block);
-        if (touched.size() > 100) return null;
-
         // If we can't go down anymore, then look at neighbors
         for (BlockFace blockFace : BlockData.SIDES) {
             Block neighbor = block.getRelative(blockFace);
-            if (!touched.contains(neighbor)) {
+            if (!touched.contains(neighbor) && neighbor.getType() == block.getType()) {
                 touched.add(neighbor);
                 magicBlock = getConnectedBlock(neighbor.getLocation(), touched);
                 if (magicBlock != null) {
