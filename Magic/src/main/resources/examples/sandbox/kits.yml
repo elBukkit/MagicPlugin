@@ -1,5 +1,5 @@
 sandbox:
-  enabled: false
+  enabled: true
 
   # On login, players will be given any items in this kit that they are
   # missing.
