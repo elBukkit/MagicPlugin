@@ -16,6 +16,7 @@
  - Chop will chop Shroomlights
  - Enchantment level attributes will show the maximum of all armor and items
    Note that it's still not super smart, holding an armor piece will count
+ - Consider crimson and warped roots as plants (may fix Recall issues in nether)  
 
 # 10.5.3
 
