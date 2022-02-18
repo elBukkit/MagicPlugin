@@ -18,6 +18,7 @@
    Note that it's still not super smart, holding an armor piece will count
  - Consider crimson and warped roots as plants (may fix Recall issues in nether)
  - Lodestone and respawn anchor added to indestructible list
+ - Steps added to passthrough list
 
 # 10.5.3
 
