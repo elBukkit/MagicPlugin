@@ -51,25 +51,14 @@ studenttool:
     loud: true
     command_source: player
     options:
-    - cast_spell: help
-    - placeholder: true
-    - placeholder: true
-    - icon: music_disc_blocks{CustomModelData:18001}
-      name: Global Chat
-      description: Everyone can hear you
-      commands: ch global
-    - icon: music_disc_stal{CustomModelData:18001}
-      name: Local Chat
-      description: Only nearby people can hear you
-      commands: ch local
-    - placeholder: true
     - cast_spell: teleporter
-    - warp: mesa
+    - placeholder: true
+    - cast_spell: tprequest
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
+    - placeholder: true
+    - warp: survival
       effects: warp
-      requirements:
-      - permission: warp.mesa
-    - warp: jungle
-      effects: warp
-      requirements:
-      - permission: warp.jungle
 

@@ -7,6 +7,8 @@ teleporter:
   parameters:
       warmup: 500
       cooldown: 5000
+      allow_spawn: false
       allow_marker: false
       allow_death: true
-
+      allow_regions: false
+      allow_all_regions: false

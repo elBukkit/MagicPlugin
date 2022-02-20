@@ -2,10 +2,10 @@ teleporter:
   migrate_to: tool
 
 tool:
-  inherit: base_keep
   lore:
     - $description
   unstashable: true
+  drop: destroy
   icon: nether_star{CustomModelData:18001}
   migrate_icons:
     gunpowder: nether_star{CustomModelData:18001}
