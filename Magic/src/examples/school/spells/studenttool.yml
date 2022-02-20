@@ -58,7 +58,8 @@ studenttool:
     - placeholder: true
     - placeholder: true
     - placeholder: true
-    - placeholder: true
+    - warp: creative
+      effects: warp
     - warp: survival
       effects: warp
 
