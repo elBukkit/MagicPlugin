@@ -24,6 +24,7 @@ public class TeleportAction extends BaseTeleportAction
     private int passthroughRange;
     private int ledgeSearchDistance = 2;
     private boolean direct = false;
+    private double roundUp = 0.75;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -35,6 +36,7 @@ public class TeleportAction extends BaseTeleportAction
         useTargetLocation = parameters.getBoolean("use_target_location", false);
         passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
         direct = parameters.getBoolean("direct", false);
+        roundUp = parameters.getDouble("round_up", 0.75);
     }
 
     @Override
@@ -80,6 +82,14 @@ public class TeleportAction extends BaseTeleportAction
                 Location location = context.getTargetLocation();
                 target = location == null ? null : location.getBlock();
                 face = null;
+
+                double absY = Math.abs(location.getY());
+                int wholeY = (int)absY;
+                double yDecimal = absY - wholeY;
+                if (yDecimal > roundUp) {
+                    context.getMage().sendDebugMessage(ChatColor.GREEN + "Rounding up y coordinate of " + yDecimal, 15);
+                    target = target.getRelative(BlockFace.UP);
+                }
             } else {
                 target = context.getTargetBlock();
             }

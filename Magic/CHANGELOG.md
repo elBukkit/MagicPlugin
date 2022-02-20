@@ -10,6 +10,7 @@
  - Add `FindTileEntities` action
  - Add `block` and `tblock` placeholders for describing the source or target block type
  - Add `drop: destroy` wand option, for disposable wands. Used in admintool.
+ - Fix teleport behavior on dirt paths, controlled with `round_up` parameter to `Teleport` action
 
 ## Changes
 
