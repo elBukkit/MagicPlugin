@@ -238,12 +238,12 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 warp.setName(null);
                 sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                     + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
-                    + ChatColor.YELLOW + "name");
+                    + ChatColor.YELLOW + parameterKey);
             } else {
                 warp.setName(value);
                 sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                     + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
-                    + ChatColor.YELLOW + "name" + ChatColor.AQUA + " to "
+                    + ChatColor.YELLOW + parameterKey + ChatColor.AQUA + " to "
                     + ChatColor.GOLD + value);
             }
         } else if (parameterKey.equalsIgnoreCase("description")) {
@@ -251,12 +251,12 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 warp.setDescription(null);
                 sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                     + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
-                    + ChatColor.YELLOW + "description");
+                    + ChatColor.YELLOW + parameterKey);
             } else {
                 warp.setDescription(value);
                 sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                     + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
-                    + ChatColor.YELLOW + "description" + ChatColor.AQUA + " to "
+                    + ChatColor.YELLOW + parameterKey + ChatColor.AQUA + " to "
                     + ChatColor.GOLD + value);
             }
         } else if (parameterKey.equalsIgnoreCase("marker_set")) {
@@ -278,12 +278,12 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 warp.setIcon(null);
                 sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                     + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
-                    + ChatColor.YELLOW + "icon");
+                    + ChatColor.YELLOW + parameterKey);
             } else {
                 warp.setIcon(value);
                 sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                     + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
-                    + ChatColor.YELLOW + "icon" + ChatColor.AQUA + " to "
+                    + ChatColor.YELLOW + parameterKey + ChatColor.AQUA + " to "
                     + ChatColor.GOLD + value);
             }
         } else if (parameterKey.equalsIgnoreCase("group")) {
@@ -291,12 +291,12 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
                 warp.setGroup(null);
                 sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                     + ChatColor.DARK_AQUA + warpName + ChatColor.RED + ", cleared "
-                    + ChatColor.YELLOW + "group");
+                    + ChatColor.YELLOW + parameterKey);
             } else {
                 warp.setGroup(value);
                 sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                     + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
-                    + ChatColor.YELLOW + "icongroup" + ChatColor.AQUA + " to "
+                    + ChatColor.YELLOW + parameterKey + ChatColor.AQUA + " to "
                     + ChatColor.GOLD + value);
             }
         } else if (parameterKey.equalsIgnoreCase("locked")) {
@@ -304,7 +304,7 @@ public class MagicWarpCommandExecutor extends MagicTabExecutor {
             warp.setLocked(bValue);
             sender.sendMessage(ChatColor.AQUA + "Configured warp: "
                 + ChatColor.DARK_AQUA + warpName + ChatColor.AQUA + ", set "
-                + ChatColor.YELLOW + "icongroup" + ChatColor.AQUA + " to "
+                + ChatColor.YELLOW + parameterKey + ChatColor.AQUA + " to "
                 + ChatColor.GOLD + bValue);
         } else {
             sender.sendMessage(ChatColor.RED + "Unknown warp parameter: " + ChatColor.YELLOW + parameterKey);
