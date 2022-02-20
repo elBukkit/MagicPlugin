@@ -2,6 +2,8 @@
 
 # Next
 
+ - Builtin externale examples should (optionally) switch when the builtin url switches (??)
+
  - Show world name in `/magic list blocks` - why are there so many modified blocks on the club server?
 
  - You can't use wand for crafting recipes because the craftable tag won't attach until you have it in your hand once.

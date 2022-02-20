@@ -2105,7 +2105,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         noBowpullSneakAction = parseWandAction(getString("no_bowpull_sneak"), noBowpullSneakAction);
 
         // Controls whose defaults rely on keybinding
-        undroppable = getBoolean("undroppable", dropAction != WandAction.NONE);
+        undroppable = getBoolean("undroppable", dropAction != WandAction.NONE && dropAction != WandAction.DESTROY);
         swappable = getBoolean("swappable", swapAction == WandAction.NONE);
 
         // Update glyph bar configuration
@@ -5973,6 +5973,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         // Add vanilla attributes
         CompatibilityLib.getInventoryUtils().applyAttributes(item, getConfigurationSection("item_attributes"), getString("item_attribute_slot", getString("attribute_slot")));
 
+        // Add drop action
+        if (dropAction == WandAction.DESTROY) {
+            CompatibilityLib.getNBTUtils().setString(item, "drop", "destroy");
+        } else {
+            CompatibilityLib.getNBTUtils().removeMeta(item, "drop");
+        }
+
         // Add unstashable, unmoveable, etc tags
         if (getBoolean("unswappable")) {
             CompatibilityLib.getNBTUtils().setBoolean(item, "unswappable", true);
@@ -6874,6 +6881,18 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     Mage mage = this.mage;
                     deactivate();
                     mage.checkWandNextTick();
+                }
+                break;
+            case DESTROY:
+                if (mage != null && mage.isPlayer()) {
+                    Mage mage = this.mage;
+                    Player player = mage.getPlayer();
+                    deactivate();
+                    if (this.isInOffhand) {
+                        player.getInventory().setItemInOffHand(null);
+                    } else {
+                        player.getInventory().setItemInMainHand(null);
+                    }
                 }
                 break;
             case CANCEL:

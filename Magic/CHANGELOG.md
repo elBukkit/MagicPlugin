@@ -9,6 +9,7 @@
  - Added gps survival item, crafting recipe (disabled by default)
  - Add `FindTileEntities` action
  - Add `block` and `tblock` placeholders for describing the source or target block type
+ - Add `drop: destroy` wand option, for disposable wands. Used in admintool.
 
 ## Changes
 

@@ -544,6 +544,18 @@ public class InventoryController implements Listener {
         // Check for dropping items out of a wand's inventory
         // or dropping undroppable wands
         if (isDrop) {
+            String dropAction = CompatibilityLib.getNBTUtils().getString(clickedItem, "drop");
+            if (dropAction != null && !dropAction.isEmpty()) {
+                if (dropAction.equals("destroy")) {
+                    event.setCurrentItem(new ItemStack(Material.AIR));
+                    mage.checkWand();
+                    mage.armorUpdated();
+                } else {
+                    controller.info("Unknown wand drop action: " + dropAction, 5);
+                }
+                event.setCancelled(true);
+                return;
+            }
             if (CompatibilityLib.getNBTUtils().getBoolean(clickedItem, "undroppable", false)) {
                 event.setCancelled(true);
                 if (activeWand != null) {

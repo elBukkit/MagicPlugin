@@ -9,5 +9,7 @@ public enum WandAction {
 
     ALT_CAST, ALT_CAST2, ALT_CAST3, ALT_CAST4, ALT_CAST5, ALT_CAST6, ALT_CAST7,
 
+    DESTROY,
+
     CANCEL
 }
