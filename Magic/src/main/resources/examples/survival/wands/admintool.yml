@@ -1,11 +1,11 @@
 admintool:
-    inherit: base_keep
     icon: nether_star{"CustomModelData":18001}
     mode: chest
     unstashable: true
     quick_cast: true
     left_click: toggle
     right_click: toggle
+    drop: destroy
     cost_reduction: 2
     cooldown_reduction: 2
     earn_multiplier: 0
