@@ -2105,7 +2105,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         noBowpullSneakAction = parseWandAction(getString("no_bowpull_sneak"), noBowpullSneakAction);
 
         // Controls whose defaults rely on keybinding
-        undroppable = getBoolean("undroppable", dropAction != WandAction.NONE && dropAction != WandAction.DESTROY);
+        undroppable = getBoolean("undroppable", dropAction != WandAction.NONE);
         swappable = getBoolean("swappable", swapAction == WandAction.NONE);
 
         // Update glyph bar configuration
