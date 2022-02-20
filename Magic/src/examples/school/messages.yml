@@ -24,7 +24,8 @@ spells:
     cast_friend: "a:&5Warping you to &o&d$tn"
     reject: "a:&o&d@pn &5&rsaid no &b;("
     selected_free: ""
-
+  warpunlock:
+    unlock_warp: "t:&r&6$name\n&d&oUnlocked in Pocket Teleporter"
 wands:
   tool:
     name: "Pocket Teleporter"

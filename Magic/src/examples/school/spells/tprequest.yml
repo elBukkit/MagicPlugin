@@ -54,35 +54,6 @@ tprequest:
   effects:
     no_action: []
     no_target: []
-    wait:
-    -  source_location: eyes
-       color_override: color
-       sound: block_note_block_bit
-       sound_pitch: 0.2
-       sound_volume: 0.3
-       effectlib:
-          class: WarpEffect
-          duration: $warmup
-          period: 1
-          particle: redstone
-          particle_offset_x: 0.9
-          particle_offset_y: 0.1
-          particle_offset_z: 0.9
-          radius: 1
-          offset: 0,-1,0
-    -  class: EffectSingle
-       source_location: eyes
-       effectlib:
-          class: WarpEffect
-          duration: 1000
-          period: 2
-          particle: portal
-          particle_count: 10
-          particle_offset_x: 0.9
-          particle_offset_y: 0.1
-          particle_offset_z: 0.9
-          radius: 1
-          offset: 0,-1,0
     cast:
     -  sound: block_beacon_activate
        sound_pitch: 0.75
