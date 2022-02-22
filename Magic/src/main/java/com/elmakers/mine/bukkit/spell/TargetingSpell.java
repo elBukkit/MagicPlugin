@@ -355,6 +355,9 @@ public class TargetingSpell extends BaseSpell {
         if (!entity.isValid() || entity.isDead()) {
             return false;
         }
+        if (targetEntity != null && !targetEntity.getUniqueId().equals(entity.getUniqueId())) {
+            return false;
+        }
         // This is mainly here to ignore pets...
         if (!targetUnknown && entity.getType() == EntityType.UNKNOWN) {
             mage.sendDebugMessage("Entity is unknown type", 30);
