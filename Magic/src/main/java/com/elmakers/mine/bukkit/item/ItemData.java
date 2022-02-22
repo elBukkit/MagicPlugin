@@ -492,4 +492,12 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
     public Collection<String> getDiscoverRecipes() {
         return discoverRecipes;
     }
+
+    @Override
+    public void addDiscoverRecipe(String recipe) {
+        if (discoverRecipes == null) {
+            discoverRecipes = new ArrayList<>();
+        }
+        discoverRecipes.add(recipe);
+    }
 }

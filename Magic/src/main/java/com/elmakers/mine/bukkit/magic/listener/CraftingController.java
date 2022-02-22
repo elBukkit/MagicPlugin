@@ -124,6 +124,13 @@ public class CraftingController implements Listener {
         for (List<MagicRecipe> list : recipes.values()) {
             for (MagicRecipe recipe : list) {
                 recipe.preregister(plugin);
+                List<String> discoverBy = recipe.getDiscoverBy();
+                if (discoverBy != null) {
+                    for (String item : discoverBy) {
+                        ItemData itemData = controller.getOrCreateItem(item);
+                        itemData.addDiscoverRecipe(recipe.getKey());
+                    }
+                }
             }
         }
         for (List<MagicRecipe> list : recipes.values()) {

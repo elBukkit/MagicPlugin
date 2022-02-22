@@ -1,5 +1,8 @@
 overworld_compass:
   output: overworld_compass
+  discover_by:
+    - compass
+    - quartz
   ingredients:
     o: compass
     q: quartz

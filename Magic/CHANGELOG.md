@@ -12,6 +12,7 @@
  - Add `drop: destroy` wand option, for disposable wands. Used in admintool.
  - Fix teleport behavior on dirt paths, controlled with `round_up` parameter to `Teleport` action
  - Add craftable `overworld_compass` (Magnetic Compass) item
+ - Add `discover_by` optional recipe list, works the same as `discover_recipes` on an item
 
 ## Changes
 

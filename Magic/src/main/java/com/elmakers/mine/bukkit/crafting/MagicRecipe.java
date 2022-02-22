@@ -39,6 +39,7 @@ public abstract class MagicRecipe {
     // Discovery
     private boolean autoDiscover = false;
     private List<String> discover = null;
+    private List<String> discoverBy = null;
 
     protected MagicRecipe(String key, MagicController controller) {
         this.key = key;
@@ -51,6 +52,7 @@ public abstract class MagicRecipe {
         ignoreDamage = configuration.getBoolean("ignore_damage", false);
         autoDiscover = configuration.getBoolean("auto_discover", false);
         discover = ConfigurationUtils.getStringList(configuration, "discover");
+        discoverBy = ConfigurationUtils.getStringList(configuration, "discover_by");
 
         outputKey = configuration.getString("output");
         if (outputKey == null || outputKey.isEmpty()) {
@@ -119,6 +121,11 @@ public abstract class MagicRecipe {
 
     public boolean isAutoDiscover() {
         return autoDiscover;
+    }
+
+    @Nullable
+    public List<String> getDiscoverBy() {
+        return discoverBy;
     }
 
     public void unregister(Plugin plugin) {

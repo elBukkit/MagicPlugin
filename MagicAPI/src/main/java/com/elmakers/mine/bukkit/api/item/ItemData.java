@@ -36,6 +36,7 @@ public interface ItemData {
     int getAmount();
     @Nullable
     Collection<String> getDiscoverRecipes();
+    void addDiscoverRecipe(String recipeKey);
 
     @Nullable
     @Deprecated
