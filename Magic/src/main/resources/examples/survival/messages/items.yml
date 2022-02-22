@@ -9,3 +9,9 @@ items:
     name: Espresso
   coffee3:
     name: Double Espresso
+  overworld_compass:
+    name: 'Magnetic Compass'
+  nether_compass:
+    name: 'Magnetic Compass (Nether)'
+  end_compass:
+    name: 'Magnetic Compass (The End)'

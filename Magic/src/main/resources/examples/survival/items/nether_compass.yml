@@ -1,0 +1,14 @@
+nether_compass:
+  worth: 100
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    type: COMPASS
+    meta:
+      ==: ItemMeta
+      meta-type: COMPASS
+      display-name: 'Magnetic Compass (Nether)'
+      LodestonePosWorld: minecraft:the_nether
+      LodestonePosX: 0
+      LodestonePosY: 128
+      LodestonePosZ: -60000000
+      LodestoneTracked: false
