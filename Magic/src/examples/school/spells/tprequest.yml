@@ -134,8 +134,5 @@ tprequest:
     bypass_pvp: true
     use_target_location: true
 
-    # Player Select, to exclude friends
-    ignore_key: recall_friends
-
     # Selector parameters
     auto_close: true

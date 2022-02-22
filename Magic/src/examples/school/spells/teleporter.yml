@@ -12,3 +12,5 @@ teleporter:
       allow_death: true
       allow_regions: false
       allow_all_regions: false
+      cancel_on_damage: 0
+      cancel_on_cast_other: false
