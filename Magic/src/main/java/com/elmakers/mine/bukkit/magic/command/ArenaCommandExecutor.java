@@ -63,7 +63,7 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
         "announcer_range", "win_sp", "lose_sp", "draw_sp", "duration", "sudden_death",
         "sudden_death_effect", "start_commands", "end_commands", "border", "keep_inventory", "keep_level",
         "win_money", "lose_money", "draw_money", "item_wear",
-        "allow_consuming", "leaderboard_sign_type", "allow_melee", "allow_projectiles"
+        "allow_consuming", "leaderboard_sign_type", "allow_melee", "allow_projectiles", "heal"
     };
 
     private static final String[] ARENA_LISTS = {
@@ -129,6 +129,9 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 || args[2].equalsIgnoreCase("allow_consuming")
                 || args[2].equalsIgnoreCase("op_check")
                 || args[2].equalsIgnoreCase("allow_interrupt")
+                || args[2].equalsIgnoreCase("allow_melee")
+                || args[2].equalsIgnoreCase("allow_projectiles")
+                || args[2].equalsIgnoreCase("heal")
                 )) {
             options.addAll(Arrays.asList(BOOLEAN_PROPERTIES));
         } else if (args.length == 3 && args[0].equalsIgnoreCase("configure") && args[2].equalsIgnoreCase("template")) {
@@ -1140,6 +1143,18 @@ public class ArenaCommandExecutor extends MagicTabExecutor {
                 sender.sendMessage(ChatColor.RED + "Disabled consuming for " + arena.getName());
             }
             arena.setAllowConsuming(consume);
+            return;
+        }
+
+        if (propertyName.equalsIgnoreCase("heal"))
+        {
+            boolean heal = propertyValue.equalsIgnoreCase("true");
+            if (heal) {
+                sender.sendMessage(ChatColor.GREEN + "Enabled healing for " + arena.getName());
+            } else {
+                sender.sendMessage(ChatColor.RED + "Disabled healing for " + arena.getName());
+            }
+            arena.setHeal(heal);
             return;
         }
 

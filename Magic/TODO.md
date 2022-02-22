@@ -2,6 +2,9 @@
 
 # Next
 
+ - Can't use a custom item (skull_naga) as a warp icon?
+ - Can `ignore_types` on TargetingSpell support magic/mythic mob keys?
+
  - Builtin externale examples should (optionally) switch when the builtin url switches (??)
 
  - Show world name in `/magic list blocks` - why are there so many modified blocks on the club server?

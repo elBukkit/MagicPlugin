@@ -13,6 +13,7 @@
  - Fix teleport behavior on dirt paths, controlled with `round_up` parameter to `Teleport` action
  - Add craftable `overworld_compass` (Magnetic Compass) item
  - Add `discover_by` optional recipe list, works the same as `discover_recipes` on an item
+ - Add `heal: false` option to arenas, to avoid healing players before and after a match
 
 ## Changes
 

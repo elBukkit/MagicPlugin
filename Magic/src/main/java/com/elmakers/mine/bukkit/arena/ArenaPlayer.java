@@ -171,7 +171,6 @@ public class ArenaPlayer implements Comparable<ArenaPlayer> {
     }
 
     public void draw() {
-        heal();
         teleport(arena.getLoseLocation());
         Mage mage = getMage();
         Player player = mage == null ? null : mage.getPlayer();

@@ -134,6 +134,7 @@ public class Arena {
     private boolean allowConsuming = true;
     private boolean allowMelee = true;
     private boolean allowProjectiles = true;
+    private boolean heal = true;
 
     private BossBar respawnBar;
 
@@ -200,6 +201,7 @@ public class Arena {
         allowConsuming = configuration.getBoolean("allow_consuming", true);
         allowMelee = configuration.getBoolean("allow_melee", true);
         allowProjectiles = configuration.getBoolean("allow_projectiles", true);
+        heal = configuration.getBoolean("heal", true);
 
         lose = ConfigurationUtils.toLocation(configuration.getString("lose"), center);
         win = ConfigurationUtils.toLocation(configuration.getString("win"), center);
@@ -504,13 +506,19 @@ public class Arena {
         return spawns;
     }
 
+    protected void heal(ArenaPlayer player) {
+        if (heal) {
+            player.heal();
+        }
+    }
+
     protected void spawnPlayers(Collection<ArenaPlayer> players, List<Location> spawns) {
         int num = 0;
         for (ArenaPlayer arenaPlayer : players) {
             if (!arenaPlayer.isValid() || arenaPlayer.isDead()) {
                 continue;
             }
-            arenaPlayer.heal();
+            heal(arenaPlayer);
             arenaPlayer.sendMessage(getMessage("start"));
 
             Location spawn = spawns.get(num);
@@ -976,7 +984,7 @@ public class Arena {
                                 if (winner != null)
                                 {
                                     playerWon(winner);
-                                    winner.heal();
+                                    heal(winner);
                                 }
                             }
                             finish();
@@ -1005,12 +1013,12 @@ public class Arena {
                         }
                         for (ArenaPlayer loser : deadPlayers) {
                             loser.draw();
+                            heal(loser);
                         }
                         announce(getAnnounceMessage("draw"));
                     }
-                    if (winner != null)
-                    {
-                        winner.heal();
+                    if (winner != null) {
+                        heal(winner);
                     }
                     finish();
                 }
@@ -1125,6 +1133,9 @@ public class Arena {
         sender.sendMessage(displayName);
         if (description != null) {
             sender.sendMessage(ChatColor.LIGHT_PURPLE + getDescription());
+        }
+        if (heal) {
+            sender.sendMessage(ChatColor.GREEN + "Players will be healed before and after a match");
         }
         if (opCheck) {
             sender.sendMessage(ChatColor.RED + "OP Wand Check Enabled");
@@ -1685,9 +1696,11 @@ public class Arena {
         announce(getAnnounceMessage("draw"));
         for (ArenaPlayer player : players) {
             player.draw();
+            heal(player);
         }
         for (ArenaPlayer loser : deadPlayers) {
             loser.draw();
+            heal(loser);
         }
         finish();
     }
@@ -1950,6 +1963,11 @@ public class Arena {
 
     public boolean getAllowInterrupt() {
         return allowInterrupt;
+    }
+
+    public void setHeal(boolean heal) {
+        this.heal = heal;
+        parameters.set("heal", heal);
     }
 
     public void setAllowInterrupt(boolean interrupt) {
