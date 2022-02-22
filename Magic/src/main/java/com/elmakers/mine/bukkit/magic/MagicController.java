@@ -6630,6 +6630,24 @@ public class MagicController implements MageController {
 
     @Nullable
     @Override
+    public ItemData getOrCreateItem(Material material) {
+        if (material == null) {
+            return null;
+        }
+        return items.getOrCreate(material.name().toLowerCase());
+    }
+
+    @Nullable
+    @Override
+    public ItemData getOrCreateItem(com.elmakers.mine.bukkit.api.block.MaterialAndData material) {
+        if (material == null) {
+            return null;
+        }
+        return items.getOrCreate(material.getKey());
+    }
+
+    @Nullable
+    @Override
     @Deprecated
     public ItemData getOrCreateItemOrWand(String key) {
         return getOrCreateItem(key);

@@ -26,6 +26,10 @@
  - Steps added to passthrough list
  - Fix the `player` and `entity` parameters still allowing a projectile to hit other players/mobs if
    they get in the way.
+   
+## Fixes
+
+ - Fix using custom items as warp icons
 
 # 10.5.3
 

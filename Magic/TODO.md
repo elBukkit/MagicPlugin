@@ -2,7 +2,8 @@
 
 # Next
 
- - Can't use a custom item (skull_naga) as a warp icon?
+ - test armor stand projectile location offset with reverted code
+
  - Can `ignore_types` on TargetingSpell support magic/mythic mob keys?
 
  - Builtin externale examples should (optionally) switch when the builtin url switches (??)

@@ -559,6 +559,10 @@ public interface MageController {
     ItemData createItemData(ItemStack match);
     @Nullable
     ItemData getOrCreateItem(String key);
+    @Nullable
+    ItemData getOrCreateItem(Material material);
+    @Nullable
+    ItemData getOrCreateItem(MaterialAndData material);
 
     /**
      * Redirects to getOrCreateItem
