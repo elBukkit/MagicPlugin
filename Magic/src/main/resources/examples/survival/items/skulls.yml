@@ -268,6 +268,6 @@ skull_computer:
   name: '&bComputer'
 
 skull_naga:
-  item: skull:http://textures.minecraft.net/texture/64bf866b92308763998be803c3529982be3afb5db2816aa9a3d1601e014d4e4c
+  item: skull:http://textures.minecraft.net/texture/c30743a3618ae32575661b14b2cf89de5d62e9f8aa8c2d0fb465a7ddd46d6c90
   worth: 200
   name: '&bNaga'
