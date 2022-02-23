@@ -1,4 +1,4 @@
-nether_compass:
+end_compass:
   worth: 100
   item:
     ==: org.bukkit.inventory.ItemStack

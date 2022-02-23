@@ -1,0 +1,9 @@
+end_compass:
+  enabled: false
+  output: end_compass
+  ingredients:
+    o: compass
+    q: ender_pearl
+  row_1: " q "
+  row_2: "qoq"
+  row_3: " q "

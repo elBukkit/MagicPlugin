@@ -1,0 +1,9 @@
+nether_compass:
+  enabled: false
+  output: nether_compass
+  ingredients:
+    o: compass
+    q: magma_cream
+  row_1: " q "
+  row_2: "qoq"
+  row_3: " q "

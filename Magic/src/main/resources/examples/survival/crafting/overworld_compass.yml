@@ -3,6 +3,9 @@ overworld_compass:
   discover_by:
     - compass
     - quartz
+  discover:
+    - nether_compass
+    - end_compass
   ingredients:
     o: compass
     q: quartz
