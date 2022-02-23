@@ -30,6 +30,7 @@
 ## Fixes
 
  - Fix using custom items as warp icons
+ - Fix wand state not saving when grabbing the wand out of your own hand in the inventory
 
 # 10.5.3
 

@@ -4,9 +4,11 @@
 
  - test armor stand projectile location offset with reverted code
 
+ - Requirement for # of pieces of a set of armor a player has
+
  - Can `ignore_types` on TargetingSpell support magic/mythic mob keys?
 
- - Builtin externale examples should (optionally) switch when the builtin url switches (??)
+ - Builtin external examples should (optionally) switch when the builtin url switches (??)
 
  - Show world name in `/magic list blocks` - why are there so many modified blocks on the club server?
 
@@ -21,10 +23,6 @@
  - API to add custom ManaController
  - Sleep trigger
  - Change world trigger  
- - Test test_ak47 wand:
-   Hold the wand in your hand and use it several times to consume mana
-   Continue to open your inventory, take the wand once, and put it back where you found it.
-   You will be back to the state you were in before the mana was consumed.
     
  - `auto_absorb_sp: true` is not working, add auto_absorb option to custom_currency
  - Magic mob spawners don't work anymore

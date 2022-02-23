@@ -387,6 +387,12 @@ public class InventoryController implements Listener {
         Wand activeWand = mage.getActiveWand();
         boolean isWandInventoryOpen = activeWand != null && activeWand.isInventoryOpen();
 
+        // Check to see if we just grabbed the active wand, we'll need to deactivate it so it saves
+        if (activeWand != null && !isWandInventoryOpen && clickedWand && controller.isSameItem(clickedItem, activeWand.getItem())) {
+            activeWand.deactivate();
+            return;
+        }
+
         // Preventing putting skills in containers
         if (isSkill && !isPlayerInventory && !isWandInventoryOpen) {
             if (!isDrop) {
