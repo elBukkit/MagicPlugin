@@ -185,6 +185,23 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
 
         verifyNotNull(disguise);
 
+        boolean selfDisguise = configuration.getBoolean("self", true);
+        if (!selfDisguise) {
+            disguise.setSelfDisguiseVisible(selfDisguise);
+        }
+        boolean hearDisguise = configuration.getBoolean("hear", true);
+        if (!hearDisguise) {
+            disguise.setHearSelfDisguise(hearDisguise);
+        }
+        boolean hideArmor = configuration.getBoolean("self_hide_armor", false);
+        if (hideArmor) {
+            disguise.setHideArmorFromSelf(hideArmor);
+        }
+        boolean hideItem = configuration.getBoolean("self_hide_item", false);
+        if (hideItem) {
+            disguise.setHideHeldItemFromSelf(hideItem);
+        }
+
         try {
             DisguiseAPI.disguiseEntity(entity, disguise);
             return true;

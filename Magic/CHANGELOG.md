@@ -14,6 +14,8 @@
  - Add craftable `overworld_compass` (Magnetic Compass) item
  - Add `discover_by` optional recipe list, works the same as `discover_recipes` on an item
  - Add `heal: false` option to arenas, to avoid healing players before and after a match
+ - Add new disguise parameters to control what a player sees while they are disguised:
+   `self: false`, `hear`, `self_hide_armor` and `self_hide_item`
 
 ## Changes
 

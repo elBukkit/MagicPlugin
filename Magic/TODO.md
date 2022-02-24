@@ -2,6 +2,10 @@
 
 # Next
 
+ - Catch wand deactivate on: swap key, wearing
+
+ - Changing villager_profession on npc no longer works?
+
  - test armor stand projectile location offset with reverted code
 
  - Requirement for # of pieces of a set of armor a player has
