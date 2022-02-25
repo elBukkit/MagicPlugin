@@ -15,12 +15,14 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class CaptureAction extends BaseSpellAction {
     private double minHealth;
+    private boolean remove;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
         minHealth = parameters.getDouble("min_health", -1);
+        remove = parameters.getBoolean("remove", true);
     }
 
     @Override
@@ -55,7 +57,9 @@ public class CaptureAction extends BaseSpellAction {
             LivingEntity li = (LivingEntity)targetEntity;
             li.setHealth(CompatibilityLib.getCompatibilityUtils().getMaxHealth(li));
         }
-        targetEntity.remove();
+        if (remove) {
+            targetEntity.remove();
+        }
         ItemStack spawnEgg = new ItemStack(eggMaterial);
 
         String entityName = targetEntity.getCustomName();
