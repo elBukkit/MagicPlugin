@@ -914,7 +914,7 @@ public class EntityData
         }
 
         if (isAware != null) {
-            CompatibilityLib.getCompatibilityUtils().setAware(entity, false);
+            CompatibilityLib.getCompatibilityUtils().setAware(entity, isAware);
         }
 
         if (entity instanceof LivingEntity) {

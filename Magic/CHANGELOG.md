@@ -2,6 +2,11 @@
 
 # 10.6
 
+## 1.18.2 Support
+
+ - DO NOT USE 1.18.2 YET
+ - The Spigot team broke config saving again. You will lose all your Magic data if you update.
+
 ## Additions
 
  - The `Mount` action now works with ModelEngine mobs
@@ -33,6 +38,7 @@
 
  - Fix using custom items as warp icons
  - Fix wand state not saving when grabbing the wand out of your own hand in the inventory
+ - Fix respawned entities being unaware (no ai, sort of)
 
 # 10.5.3
 

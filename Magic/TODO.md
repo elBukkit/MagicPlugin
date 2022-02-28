@@ -2,9 +2,11 @@
 
 # Next
 
- - Catch wand deactivate on: swap key, wearing
+ - Add support for `orient_dimension_min: 0` to Volume action
 
- - Changing villager_profession on npc no longer works?
+ - Fix `location_offset` in ASProjectile not offseting the projectile, add separate parameter for armor stand offset
+
+ - Catch wand deactivate on: swap key, wearing
 
  - test armor stand projectile location offset with reverted code
 
