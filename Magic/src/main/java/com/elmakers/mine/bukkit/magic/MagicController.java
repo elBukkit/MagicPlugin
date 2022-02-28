@@ -490,6 +490,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private WarpController warpController = null;
     private KitController kitController = null;
     private Collection<ConfigurationSection> materialColors = null;
+    private ConfigurationSection biomeMap = null;
     private List<Object> materialVariants = null;
     private ConfigurationSection blockItems = null;
     private MageDataStore mageDataStore = null;
@@ -8387,6 +8388,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         maxRadiusPowerMultiplierMax = (float) properties.getDouble("max_power_radius_multiplier_max", maxRadiusPowerMultiplierMax);
         materialColors = ConfigurationUtils.getNodeList(properties, "material_colors");
         materialVariants = ConfigurationUtils.getList(properties, "material_variants");
+        biomeMap = properties.getConfigurationSection("biome_map");
         blockItems = properties.getConfigurationSection("block_items");
         loadBlockSkins(properties.getConfigurationSection("block_skins"));
         loadMobSkins(properties.getConfigurationSection("mob_skins"));
@@ -8845,6 +8847,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         defaultMaterials.loadColors(materialColors);
         defaultMaterials.loadVariants(materialVariants);
         defaultMaterials.loadBlockItems(blockItems);
+        defaultMaterials.loadBiomeMap(biomeMap);
         defaultMaterials.setPlayerSkullItem(skullItems.get(EntityType.PLAYER));
         defaultMaterials.setPlayerSkullWallBlock(skullWallBlocks.get(EntityType.PLAYER));
         defaultMaterials.setSkeletonSkullItem(skullItems.get(EntityType.SKELETON));

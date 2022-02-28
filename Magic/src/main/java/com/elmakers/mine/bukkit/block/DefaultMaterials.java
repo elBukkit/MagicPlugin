@@ -9,8 +9,10 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
@@ -51,6 +53,7 @@ public class DefaultMaterials {
     private Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
     private Map<Material, Material> colorMap = new HashMap<>();
     private Map<Material, Material> blockItems = new HashMap<>();
+    private Map<String, Biome> biomeMap = new HashMap<>();
 
     private Map<Material, List<Material>> materialVariants = new HashMap<>();
     private Map<Material, Material> variantMap = new HashMap<>();
@@ -236,6 +239,20 @@ public class DefaultMaterials {
         return getInstance().skeletonSkullItem;
     }
 
+    public void loadBiomeMap(ConfigurationSection biomeConfig) {
+        biomeMap.clear();
+        if (biomeConfig == null) return;
+        Set<String> biomeKeys = biomeConfig.getKeys(false);
+        for (String biomeKey : biomeKeys) {
+            try {
+                String value = biomeConfig.getString(biomeKey);
+                Biome biome = Biome.valueOf(value.toUpperCase());
+                biomeMap.put(biomeKey.toUpperCase(), biome);
+            } catch (Exception ignore) {
+            }
+        }
+    }
+
     public void loadBlockItems(ConfigurationSection blocks) {
         Set<String> blockKeys = blocks.getKeys(false);
         for (String blockKey : blockKeys) {
@@ -290,6 +307,35 @@ public class DefaultMaterials {
     @Nullable
     public static Material getBaseVariant(@Nullable Material material) {
         return material == null ? null : getInstance().variantMap.get(material);
+    }
+
+    @Nullable
+    private Biome getSingleBiome(String biomeKey) {
+        biomeKey = biomeKey.toUpperCase();
+        Biome biome = biomeMap.get(biomeKey);
+        if (biome == null) {
+            try {
+                biome = Biome.valueOf(biomeKey);
+            } catch (Exception ignore) {
+
+            }
+        }
+        return biome;
+    }
+
+    @Nullable
+    public Biome getBiome(String biomeKey) {
+        if (biomeKey == null) return null;
+        biomeKey = biomeKey.trim();
+        if (biomeKey.isEmpty()) return null;
+        String[] biomeKeys = StringUtils.split(biomeKey, ",");
+        for (String singleKey : biomeKeys) {
+            Biome biome = getSingleBiome(singleKey);
+            if (biome != null) {
+                return biome;
+            }
+        }
+        return null;
     }
 
     @Nullable

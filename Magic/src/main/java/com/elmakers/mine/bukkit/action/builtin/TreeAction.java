@@ -45,25 +45,25 @@ public class TreeAction extends BaseSpellAction
             Collection<String> biomeKeys = biomeConfig.getKeys(false);
             for (String biomeKey : biomeKeys)
             {
-                try {
-                    Biome biome = Biome.valueOf(biomeKey.toUpperCase());
-                    List<String> treeTypes = ConfigurationUtils.getStringList(biomeConfig, biomeKey);
-                    for (String typeKey : treeTypes)
-                    {
-                        try {
-                            TreeType treeType = TreeType.valueOf(typeKey.toUpperCase());
-                            List<TreeType> biomeTypes = biomeMap.get(biome);
-                            if (biomeTypes == null) {
-                                biomeTypes = new ArrayList<>();
-                                biomeMap.put(biome, biomeTypes);
-                            }
-                            biomeTypes.add(treeType);
-                        } catch (Exception treeEx) {
-                            // Bukkit.getLogger().warning("Invalid tree type: " + typeKey);
-                        }
-                    }
-                } catch (Exception biomeEx) {
+                Biome biome = DefaultMaterials.getInstance().getBiome(biomeKey);
+                if (biome == null) {
                     // Bukkit.getLogger().warning("Invalid biome: " + biomeKey);
+                    continue;
+                }
+                List<String> treeTypes = ConfigurationUtils.getStringList(biomeConfig, biomeKey);
+                for (String typeKey : treeTypes)
+                {
+                    try {
+                        TreeType treeType = TreeType.valueOf(typeKey.toUpperCase());
+                        List<TreeType> biomeTypes = biomeMap.get(biome);
+                        if (biomeTypes == null) {
+                            biomeTypes = new ArrayList<>();
+                            biomeMap.put(biome, biomeTypes);
+                        }
+                        biomeTypes.add(treeType);
+                    } catch (Exception treeEx) {
+                        // Bukkit.getLogger().warning("Invalid tree type: " + typeKey);
+                    }
                 }
             }
         }

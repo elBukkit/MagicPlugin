@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.api.block.MaterialBrush;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -46,11 +47,11 @@ public class CheckBlockAction extends CheckAction {
         if (biomeActionConfig != null) {
             biomeActions = new HashMap<>();
             for (String biomeKey : biomeActionConfig.getKeys(false)) {
-                try {
-                    Biome biome = Biome.valueOf(biomeKey.trim().toUpperCase());
-                    biomeActions.put(biome, biomeActionConfig.getString(biomeKey));
-                } catch (Exception ex) {
+                Biome biome = DefaultMaterials.getInstance().getBiome(biomeKey);
+                if (biome == null) {
                     spell.getController().info("Invalid biome in biome_actions config: " + biomeKey, 10);
+                } else {
+                    biomeActions.put(biome, biomeActionConfig.getString(biomeKey));
                 }
             }
         }

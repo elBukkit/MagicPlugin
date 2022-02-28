@@ -1,0 +1,40 @@
+# this is used to map biome keys in a config to other biomes from the bukkit biome enum
+# it is mainly here to easy compatibility between the various biome enum re-works that bukkit has done
+biome_map:
+  mountains: windswept_hills
+  snowy_tundra: snowy_plains
+  snowy_mountains: snowy_plains
+  mushroom_field_shore: mushroom_fields
+  desert_hills: desert
+  wooded_hills: windswept_hills
+  taiga_hills: taiga
+  mountain_edge: stony_peaks
+  jungle_hills: sparse_jungle
+  jungle_edge: sparse_jungle
+  stone_shore: stony_shore
+  birch_forest_hills: birch_forest
+  snowy_taiga_hills: snowy_slopes
+  giant_tree_taiga: old_growth_pine_taiga
+  giant_tree_taiga_hills: old_growth_pine_taiga
+  wooded_mountains: stony_peaks
+  wooded_badlands_plateau: wooded_badlands
+  badlands_plateau: eroded_badlands
+  deep_warm_ocean: deep_lukewarm_ocean
+  desert_lakes: desert
+  gravelly_mountains: windswept_gravelly_hills
+  taiga_mountains: frozen_peaks
+  swamp_hills: swamp
+  modified_jungle: jungle
+  modified_jungle_edge: sparse_jungle
+  tall_birch_forest: old_growth_birch_forest
+  tall_birch_hills: old_growth_birch_forest
+  dark_forest_hills: dark_forest
+  snowy_taiga_mountains: snowy_slopes
+  giant_spruce_taiga: old_growth_spruce_taiga
+  giant_spruce_taiga_hills: old_growth_spruce_taiga
+  modified_gravelly_mountains: jagged_peaks
+  shattered_savanna: savanna
+  shattered_savanna_plateau: savanna_plateau
+  modified_wooded_badlands_plateau: wooded_badlands
+  modified_badlands_plateau: eroded_badlands
+  bamboo_jungle_hills: bamboo_jungle
