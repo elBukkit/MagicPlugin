@@ -5700,7 +5700,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         // At this point the only modifier that should be applied already here would be a permanent one
         if (modifier != null) {
             if (modifier.hasDuration()) {
-                controller.getLogger().warning("Unexpected duplicate timed modifier: " + key);
+                controller.info("Unexpected duplicate timed modifier: " + key, 5);
             }
             return false;
         }
