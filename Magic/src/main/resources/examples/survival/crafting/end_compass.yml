@@ -1,6 +1,8 @@
 end_compass:
   enabled: false
   output: end_compass
+  discover_by:
+    - overworld_compass
   ingredients:
     o: compass
     q: ender_pearl

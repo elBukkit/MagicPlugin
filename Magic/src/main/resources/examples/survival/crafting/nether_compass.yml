@@ -1,6 +1,8 @@
 nether_compass:
   enabled: false
   output: nether_compass
+  discover_by:
+    - overworld_compass
   ingredients:
     o: compass
     q: magma_cream
