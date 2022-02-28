@@ -42,7 +42,7 @@ public class CheckChunkTask implements Runnable {
         }
     }
 
-    private static List<Entity> getEntityList(Chunk chunk) {
+    public static List<Entity> getEntityList(Chunk chunk) {
         Entity[] entities = chunk.getEntities();
         List<Entity> entityList = null;
         if (entities.length > 0) {

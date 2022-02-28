@@ -196,6 +196,7 @@ import com.elmakers.mine.bukkit.magic.command.config.UpdateAllExamplesCallback;
 import com.elmakers.mine.bukkit.magic.listener.AnvilController;
 import com.elmakers.mine.bukkit.magic.listener.ArenaListener;
 import com.elmakers.mine.bukkit.magic.listener.BlockController;
+import com.elmakers.mine.bukkit.magic.listener.ChunkLoadListener;
 import com.elmakers.mine.bukkit.magic.listener.CraftingController;
 import com.elmakers.mine.bukkit.magic.listener.EnchantingController;
 import com.elmakers.mine.bukkit.magic.listener.EntityController;
@@ -238,6 +239,7 @@ import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
 import com.elmakers.mine.bukkit.tasks.AutoSaveTask;
 import com.elmakers.mine.bukkit.tasks.BatchUpdateTask;
 import com.elmakers.mine.bukkit.tasks.ChangeServerTask;
+import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.ConfigCheckTask;
 import com.elmakers.mine.bukkit.tasks.ConfigurationLoadTask;
 import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
@@ -287,7 +289,7 @@ import com.google.common.collect.Maps;
 
 import de.slikey.effectlib.math.EquationStore;
 
-public class MagicController implements MageController {
+public class MagicController implements MageController, ChunkLoadListener {
     private static final String BUILTIN_SPELL_CLASSPATH = "com.elmakers.mine.bukkit.spell.builtin";
     private static final String LOST_WANDS_FILE = "lostwands";
     private static final String WARPS_FILE = "warps";
@@ -9021,9 +9023,13 @@ public class MagicController implements MageController {
 
     @Override
     public void onEntitiesLoaded(Chunk chunk, List<Entity> entities) {
-        blockController.onEntitiesLoaded(chunk, entities);
-        mobs.onEntitiesLoaded(chunk, entities);
-        worldController.getSpawnListener().onEntitiesLoaded(chunk, entities);
+        if (!isDataLoaded()) {
+            CheckChunkTask.process(this, this, chunk);
+        } else {
+            blockController.onEntitiesLoaded(chunk, entities);
+            mobs.onEntitiesLoaded(chunk, entities);
+            worldController.getSpawnListener().onEntitiesLoaded(chunk, entities);
+        }
     }
 
     @Override
