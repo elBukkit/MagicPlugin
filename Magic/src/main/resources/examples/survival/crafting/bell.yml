@@ -1,0 +1,11 @@
+bell:
+  enabled: false
+  output: bell
+  discover_by:
+    - gold_ingot
+  ingredients:
+    g: gold_ingot
+    i: iron_nugget
+  row_1: " g "
+  row_2: "gig"
+  row_3: "g g"
