@@ -365,7 +365,7 @@ camoarmor:
           variable: target_b
           value: 35
 
-      tiaga:
+      taiga:
         # "#567054"
         - class: ModifyVariable
           variable: target_r
