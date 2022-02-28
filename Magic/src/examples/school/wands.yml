@@ -4,6 +4,7 @@ teleporter:
 tool:
   lore:
     - $description
+  keep: true
   unstashable: true
   drop: destroy
   icon: nether_star{CustomModelData:18001}
