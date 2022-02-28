@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.utility.platform.v1_14.entity.EntityCatData;
 import com.elmakers.mine.bukkit.utility.platform.v1_14.entity.EntityEndermiteData;
 import com.elmakers.mine.bukkit.utility.platform.v1_14.entity.EntityFoxData;
 import com.elmakers.mine.bukkit.utility.platform.v1_14.entity.EntityPhantomData;
+import com.elmakers.mine.bukkit.utility.platform.v1_14.entity.EntityVillagerData;
 
 public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_13.EntityUtils  {
     public EntityUtils(final Platform platform) {
@@ -28,6 +29,8 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_13
                 return new EntityPhantomData(entity);
             case ENDERMITE:
                 return new EntityEndermiteData(entity);
+            case VILLAGER:
+                return new EntityVillagerData(entity);
             default:
                 return super.getExtraData(controller, entity);
         }
@@ -44,6 +47,8 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_13
                 return new EntityPhantomData(parameters);
             case ENDERMITE:
                 return new EntityEndermiteData(parameters);
+            case VILLAGER:
+                return new EntityVillagerData(parameters, controller);
             default:
                 return super.getExtraData(controller, type, parameters);
         }
