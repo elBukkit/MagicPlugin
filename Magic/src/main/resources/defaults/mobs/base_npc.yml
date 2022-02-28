@@ -4,6 +4,8 @@ base_npc:
   type: villager
   use_npc_name: true
   villager_profession: librarian
+  # This is needed in 1.18+ to make the villager profession show up
+  villager_level: 2
   # This will turn off AI pre-1.17 where the goals won't work
   ai: false
   brain:
