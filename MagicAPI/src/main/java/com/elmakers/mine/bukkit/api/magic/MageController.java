@@ -818,6 +818,7 @@ public interface MageController {
      */
     boolean cast(String spellName, String[] parameters);
     boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender);
+    boolean isDisableSpawnReplacement();
     void setDisableSpawnReplacement(boolean disable);
     @Nullable
     Warp getMagicWarp(String warpKey);

@@ -7746,6 +7746,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         return minHeight;
     }
 
+    @Override
     public boolean isDisableSpawnReplacement() {
         return disableSpawnReplacement > 0;
     }

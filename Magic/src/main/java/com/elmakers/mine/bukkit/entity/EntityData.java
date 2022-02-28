@@ -679,6 +679,8 @@ public class EntityData
             }
         }
         if (spawned == null && type != null && type != EntityType.PLAYER) {
+            boolean previous = controller.isDisableSpawnReplacement();
+            controller.setDisableSpawnReplacement(true);
             try {
                 SpawnedEntityExtraData spawnedEntity = null;
                 if (extraData != null) {
@@ -693,6 +695,7 @@ public class EntityData
             } catch (Exception ex) {
                 org.bukkit.Bukkit.getLogger().log(Level.WARNING, "Error restoring entity type " + getType() + " at " + getLocation(), ex);
             }
+            controller.setDisableSpawnReplacement(previous);
         }
         if (spawned != null) {
             try {
