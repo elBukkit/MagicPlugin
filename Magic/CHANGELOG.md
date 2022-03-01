@@ -40,6 +40,7 @@
  - Fix wand state not saving when grabbing the wand out of your own hand in the inventory
  - Fix respawned entities being unaware (no ai, sort of)
  - Fix/Remap biome configs in several places (fixes camo armor and dragon)
+ - Fix errors from enchantment attributes
 
 # 10.5.3
 

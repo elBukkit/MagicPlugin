@@ -5333,12 +5333,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                         // TODO: Be smarter about, for instance, holding enchanted armor?
                         ItemStack item = player.getInventory().getItemInMainHand();
                         double level = 0;
-                        if (item.hasItemMeta()) {
+                        if (item != null && item.hasItemMeta()) {
                             ItemMeta meta = item.getItemMeta();
                             level = Math.max(level, meta.getEnchantLevel(enchantment));
                         }
                         for (ItemStack armor : player.getInventory().getArmorContents()) {
-                            if (armor.hasItemMeta()) {
+                            if (armor != null && armor.hasItemMeta()) {
                                 ItemMeta meta = armor.getItemMeta();
                                 level = Math.max(level, meta.getEnchantLevel(enchantment));
                             }
