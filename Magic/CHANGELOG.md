@@ -4,9 +4,6 @@
 
 ## 1.18.2 Support
 
- - DO NOT USE 1.18.2 YET
- - The Spigot team broke config saving again. You will lose all your Magic data if you update.
-
 ## Additions
 
  - The `Mount` action now works with ModelEngine mobs
@@ -41,12 +38,9 @@
  - Fix respawned entities being unaware (no ai, sort of)
  - Fix/Remap biome configs in several places (fixes camo armor and dragon)
  - Fix errors from enchantment attributes
-
-# 10.5.3
-
-- Potion effect attributes changed to be 1-based
-- Fix issues with large connected magic portals
-- Fix Lightsabers retracting when swung
+ - Potion effect attributes changed to be 1-based
+ - Fix issues with large connected magic portals
+ - Fix Lightsabers retracting when swung
 
 # 10.5.2
 
