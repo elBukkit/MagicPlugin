@@ -1,5 +1,6 @@
 spells:
   studenttool:
+    name: "Pocket Teleporter"
     title: "Pocket Teleporter"
     selected_free: ""
     cast_fail: ""
@@ -9,7 +10,8 @@ spells:
     cast_fail: ""
   teleporter:
     name: Teleport to a Place
-    description: Only shows places you have discovered
+    description: Can return to places you have already discovered
+    description_marker: "Set this to any location you want from the Pocket Teleporter menu"
   tprequest:
     name: Teleport to a Friend
     desscription: Will ask them if you can TP to them. Please don't spam!
@@ -26,6 +28,9 @@ spells:
     selected_free: ""
   warpunlock:
     unlock_warp: "t:&r&6$name\n&d&oUnlocked in Pocket Teleporter"
+  movemarker:
+    name: Set Warp Marker
+    description: You can save 2 personal warp locations to go back to at any time!
 wands:
   tool:
     name: "Pocket Teleporter"

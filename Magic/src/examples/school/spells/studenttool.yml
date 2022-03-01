@@ -1,7 +1,7 @@
 studenttool:
   actions:
-      cast:
-       - class: Selector
+    cast:
+      - class: Selector
   effects:
     cast:
       - sound: magic.wandup
@@ -45,21 +45,21 @@ studenttool:
           offset: 0,-1,0
           update_locations: false
   parameters:
+    keep: true
     confirm: false
     auto_close: true
     quiet: false
     loud: true
     command_source: player
     options:
-    - cast_spell: teleporter
-    - placeholder: true
-    - cast_spell: tprequest
-    - placeholder: true
-    - placeholder: true
-    - placeholder: true
-    - placeholder: true
-    - warp: creative
-      effects: warp
-    - warp: survival
-      effects: warp
-
+      - cast_spell: teleporter
+      - placeholder: true
+      - cast_spell: tprequest
+      - placeholder: true
+      - placeholder: true
+      - cast_spell: movemarker
+      - placeholder: true
+      - warp: creative
+        effects: warp
+      - warp: survival
+        effects: warp

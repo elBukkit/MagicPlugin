@@ -1,16 +1,17 @@
 teleporter:
-  name: Teleporter
-  dscription: Teleport to various destinations
   earns_sp: 0
   inherit: recall
   hidden: true
+  actions:
+    alternate_down: cast
   parameters:
-      warmup: 500
-      cooldown: 5000
-      allow_spawn: false
-      allow_marker: false
-      allow_death: true
-      allow_regions: false
-      allow_all_regions: false
-      cancel_on_damage: 0
-      cancel_on_cast_other: false
+    warmup: 500
+    cooldown: 5000
+    marker_count: 2
+    allow_spawn: false
+    allow_marker: true
+    allow_death: true
+    allow_regions: false
+    allow_all_regions: false
+    cancel_on_damage: 0
+    cancel_on_cast_other: false
