@@ -11,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 
 public class ChangeBiomeAction extends BaseSpellAction {
     private Biome biome;
@@ -22,9 +23,8 @@ public class ChangeBiomeAction extends BaseSpellAction {
         super.prepare(context, parameters);
         String biomeKey = parameters.getString("biome", "");
         if (!biomeKey.isEmpty()) {
-            try {
-                biome = Biome.valueOf(biomeKey.toUpperCase());
-            } catch (Exception biomeEx) {
+            biome = DefaultMaterials.getInstance().getBiome(biomeKey);
+            if (biome == null) {
                 context.getLogger().warning("Invalid biome: " + biomeKey);
             }
         }
@@ -33,19 +33,15 @@ public class ChangeBiomeAction extends BaseSpellAction {
             biomeMap = new HashMap<>();
             Set<String> fromKeys = replaceConfiguration.getKeys(false);
             for (String fromKey : fromKeys) {
-                Biome fromBiome;
-                try {
-                    fromBiome = Biome.valueOf(fromKey.toUpperCase());
-                } catch (Exception ex) {
+                Biome fromBiome = DefaultMaterials.getInstance().getBiome(fromKey);
+                if (fromBiome == null) {
                     context.getLogger().warning("Invalid biome replacement (from): " + fromKey);
                     continue;
                 }
                 String toKey = replaceConfiguration.getString(fromKey);
-                Biome toBiome;
-                try {
-                    toBiome = Biome.valueOf(toKey.toUpperCase());
-                } catch (Exception ex) {
-                    context.getLogger().warning("Invalid biome replacement (from): " + fromKey);
+                Biome toBiome = DefaultMaterials.getInstance().getBiome(toKey);
+                if (toBiome == null) {
+                    context.getLogger().warning("Invalid biome replacement (to): " + toKey);
                     continue;
                 }
                 biomeMap.put(fromBiome, toBiome);
