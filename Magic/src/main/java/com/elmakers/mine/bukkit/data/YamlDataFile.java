@@ -1,10 +1,16 @@
 package com.elmakers.mine.bukkit.data;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class YamlDataFile extends YamlConfiguration {
     protected final File file;
@@ -74,5 +80,36 @@ public class YamlDataFile extends YamlConfiguration {
 
     public File getFile() {
         return file;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Object convert(Object value) {
+        if (value instanceof List) {
+            List<?> list = (List<?>)value;
+            if (!list.isEmpty()) {
+                List<Object> newList = new ArrayList<>();
+                for (Object o : list) {
+                    newList.add(convert(o));
+                }
+                value = newList;
+            }
+        } else if (value instanceof ConfigurationSection) {
+            value = ConfigurationUtils.toMap((ConfigurationSection)value);
+        }
+        if (value instanceof Map) {
+            Map<String, Object> map = (Map<String, Object>)value;
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                entry.setValue(convert(entry.getValue()));
+            }
+        }
+        return value;
+    }
+
+    public void set(String path, Object value) {
+        // Stop screwing up the config code Spigot :(
+        // Specifically lists no longer get serialized since the "we need to save comments"
+        // refactor apocalypse in 1.18
+        value = convert(value);
+        super.set(path, value);
     }
 }
