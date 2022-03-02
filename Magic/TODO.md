@@ -2,6 +2,8 @@
 
 # Next
 
+ - Naming a skeleton skelly turned him into testdummy ??
+
  - Add support for `orient_dimension_min: 0` to Volume action
 
  - Fix `location_offset` in ASProjectile not offseting the projectile, add separate parameter for armor stand offset
