@@ -5,10 +5,13 @@ import java.util.Collection;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockState;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -25,12 +28,14 @@ public class CheckInventoryAction extends CheckAction {
     private Collection<Enchantment> allowedEnchantments;
     private Collection<Enchantment> blockedEnchantments;
     private boolean targetCaster;
+    private boolean targetBlock;
     private boolean materialOnly;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        targetBlock = parameters.getBoolean("target_block", false);
         targetCaster = parameters.getBoolean("target_caster", false);
         materialOnly = parameters.getBoolean("material_only", false);
         String itemKey = parameters.getString("item");
@@ -71,10 +76,77 @@ public class CheckInventoryAction extends CheckAction {
         }
         return enchantments;
     }
+    protected boolean checkBlock(CastContext context) {
+        Block targetBlock = context.getTargetBlock();
+        BlockState state = targetBlock == null ? null : targetBlock.getState();
+        if (state == null || !(state instanceof InventoryHolder)) {
+            return false;
+        }
+        InventoryHolder holder = (InventoryHolder)state;
+        if (slot != null) {
+            int slotNumber = slot.getSlot();
+            if (slotNumber == -1) {
+                context.getLogger().warning("Invalid slot for CheckInventory action: " + slot);
+                return false;
+            }
+            ItemStack item = holder.getInventory().getItem(slotNumber);
+            return checkItem(item);
+        }
+        if (this.item == null) {
+            context.getLogger().warning("CheckInventory needs an item or slot to check for a container");
+            return false;
+        }
+        if (materialOnly) {
+            return holder.getInventory().contains(this.item.getType());
+        }
+        return holder.getInventory().contains(this.item);
+    }
+
+    protected boolean checkItem(ItemStack checkItemStack) {
+        boolean defaultResult = false;
+        if (this.item != null) {
+            if (CompatibilityLib.getItemUtils().isEmpty((checkItemStack))) {
+                return CompatibilityLib.getItemUtils().isEmpty(this.item);
+            }
+            if (materialOnly) {
+                return checkItemStack.getType() == this.item.getType() && checkItemStack.getAmount() >= this.item.getAmount();
+            }
+            return checkItemStack.isSimilar(this.item) && checkItemStack.getAmount() >= this.item.getAmount();
+        }
+        ItemMeta meta = checkItemStack == null ? null : checkItemStack.getItemMeta();
+        if (blockedEnchantments != null) {
+            defaultResult = true;
+            if (meta != null) {
+                for (Enchantment enchantment : blockedEnchantments) {
+                    if (meta.hasEnchant(enchantment)) {
+                        return false;
+                    }
+                }
+            }
+        }
+        if (allowedEnchantments != null) {
+            defaultResult = false;
+            if (meta == null) {
+                return false;
+            }
+            for (Enchantment enchantment : allowedEnchantments) {
+                if (meta.hasEnchant(enchantment)) {
+                    return true;
+                }
+            }
+        }
+
+        return defaultResult;
+    }
 
     @Override
     protected boolean isAllowed(CastContext context) {
         Mage mage;
+
+        if (targetBlock) {
+            return checkBlock(context);
+        }
+
         if (targetCaster) {
             mage = context.getMage();
         } else {
@@ -83,46 +155,13 @@ public class CheckInventoryAction extends CheckAction {
             mage = context.getController().getMage(targetEntity);
         }
         if (slot != null) {
-            boolean defaultResult = false;
             int slotNumber = slot.getSlot(mage);
             if (slotNumber == -1) {
                 context.getLogger().warning("Invalid slot for CheckInventory action: " + slot);
                 return false;
             }
             ItemStack item = mage.getItem(slotNumber);
-            if (this.item != null) {
-                if (CompatibilityLib.getItemUtils().isEmpty((item))) {
-                    return CompatibilityLib.getItemUtils().isEmpty(this.item);
-                }
-                if (materialOnly) {
-                    return item.getType() == this.item.getType() && item.getAmount() >= this.item.getAmount();
-                }
-                return item.isSimilar(this.item) && item.getAmount() >= this.item.getAmount();
-            }
-            ItemMeta meta = item == null ? null : item.getItemMeta();
-            if (blockedEnchantments != null) {
-                defaultResult = true;
-                if (meta != null) {
-                    for (Enchantment enchantment : blockedEnchantments) {
-                        if (meta.hasEnchant(enchantment)) {
-                            return false;
-                        }
-                    }
-                }
-            }
-            if (allowedEnchantments != null) {
-                defaultResult = false;
-                if (meta == null) {
-                    return false;
-                }
-                for (Enchantment enchantment : allowedEnchantments) {
-                    if (meta.hasEnchant(enchantment)) {
-                        return true;
-                    }
-                }
-            }
-
-            return defaultResult;
+            return checkItem(item);
         }
         return item != null && mage.hasItem(item);
     }
@@ -134,6 +173,6 @@ public class CheckInventoryAction extends CheckAction {
 
     @Override
     public boolean requiresTargetEntity() {
-        return !targetCaster;
+        return !targetCaster && !targetBlock;
     }
 }

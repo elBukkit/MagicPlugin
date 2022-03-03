@@ -2,6 +2,10 @@
 
 # Next
 
+ - Can drop spell items out of a wand inventory
+
+ - Some way to sort attribute lore (alphabetically, manually)
+
  - Naming a skeleton skelly turned him into testdummy ??
 
  - Add support for `orient_dimension_min: 0` to Volume action

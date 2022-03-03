@@ -9,6 +9,10 @@
    to see how to put the correct data tags on.
    If you need this feature, perhaps due to existing spawners or eggs that can't be updated, use
    `/mconfig config match_magic_mobs_by_name true`
+   
+## Additions
+
+ - Added `target_block` parameter to `CheckInventory` action, to allow searching container inventories
 
 # 10.6
 
