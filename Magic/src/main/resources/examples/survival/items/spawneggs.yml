@@ -18,6 +18,8 @@ mutantegg:
       display:
         Name: "{\"text\":\"Spawn Mutant\"}"
       EntityTag:
+        BukkitValues:
+          magic:magicmob: mutant
         CustomName: "{\"text\":\"Mutant\"}"
         HandItems:
           - id: "minecraft:iron_sword"
@@ -84,3 +86,14 @@ skelliehorseegg:
           id: "minecraft:saddle"
           Count: true
           Damage: 0
+
+warlockegg:
+  worth: 2000.0
+  item:
+    type: ZOMBIE_SPAWN_EGG
+    tags:
+      display:
+        Name: "{\"text\":\"Spawn Warlock\"}"
+      EntityTag:
+        BukkitValues:
+          magic:magicmob: warlock

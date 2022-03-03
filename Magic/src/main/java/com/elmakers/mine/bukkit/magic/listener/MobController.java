@@ -204,6 +204,18 @@ public class MobController implements Listener, ChunkLoadListener {
             return;
         }
 
+        // Check spawn eggs and spawner spawns for magic mob keys
+        if (reason != SpawnReason.SPAWNER
+                && reason != SpawnReason.SPAWNER_EGG
+                && reason != SpawnReason.DISPENSE_EGG) {
+            return;
+        }
+        String magicMobKey = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.MAGIC_MOB);
+        if (magicMobKey != null) {
+            checkMagicMob(entity, magicMobKey);
+            return;
+        }
+
         // We only match named mobs from spawners, so stop here if this is not a spawner.
         // This used to support spawn eggs as well, but that could be abusable thanks to the Capture spell,
         // so we no longer allow that.
