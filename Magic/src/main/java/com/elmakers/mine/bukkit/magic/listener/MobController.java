@@ -50,6 +50,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public class MobController implements Listener, ChunkLoadListener {
     public static boolean REMOVE_INVULNERABLE = false;
+    public static boolean MATCH_BY_NAME = false;
     private MagicController controller;
     private final Map<String, EntityData> mobs = new HashMap<>();
     private final Map<String, EntityData> mobsByName = new HashMap<>();
@@ -199,31 +200,19 @@ public class MobController implements Listener, ChunkLoadListener {
             return;
         }
 
+        // Check spawn eggs and spawner spawns for magic mob keys
+        if (reason == SpawnReason.SPAWNER
+                || reason == SpawnReason.SPAWNER_EGG
+                || reason == SpawnReason.DISPENSE_EGG) {
+            if (checkEntitySpawn(entity, true)) {
+                return;
+            }
+        }
+
         // Natural spawns should only check for default mobs
         if (checkDefaultSpawn(entity, true)) {
             return;
         }
-
-        // Check spawn eggs and spawner spawns for magic mob keys
-        if (reason != SpawnReason.SPAWNER
-                && reason != SpawnReason.SPAWNER_EGG
-                && reason != SpawnReason.DISPENSE_EGG) {
-            return;
-        }
-        String magicMobKey = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.MAGIC_MOB);
-        if (magicMobKey != null) {
-            checkMagicMob(entity, magicMobKey);
-            return;
-        }
-
-        // We only match named mobs from spawners, so stop here if this is not a spawner.
-        // This used to support spawn eggs as well, but that could be abusable thanks to the Capture spell,
-        // so we no longer allow that.
-        if (reason != SpawnReason.SPAWNER) {
-            return;
-        }
-
-        checkEntitySpawn(entity, true);
     }
 
     public boolean checkDefaultSpawn(Entity entity, boolean defer) {
@@ -243,6 +232,13 @@ public class MobController implements Listener, ChunkLoadListener {
     }
 
     public boolean checkEntitySpawn(Entity entity, boolean defer) {
+        // Check for magic mob keys
+        String magicMobKey = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.MAGIC_MOB);
+        if (magicMobKey != null) {
+            checkMagicMob(entity, magicMobKey);
+            return true;
+        }
+
         // Check for mythic mob spawns
         String mythicMobKey = controller.getMythicMobKey(entity);
         if (mythicMobKey != null) {
@@ -251,6 +247,12 @@ public class MobController implements Listener, ChunkLoadListener {
                 mythicMob.modify(entity);
                 return true;
             }
+        }
+
+        // We shouldn't do this anymore, it is exploitable in various ways
+        // Most notably being using Capture on a mob named with a name tag.
+        if (!MATCH_BY_NAME) {
+            return false;
         }
 
         // Check for named custom mobs

@@ -665,6 +665,10 @@ despawn_magic_mobs: false
 # Hopefully it will not be needed any more, NPCs are automatically tagged and cleaned up as necessary
 remove_invulnerable_mobs: false
 
+# Use this if you have old spawn eggs or spawners that need to match magic mobs based on names
+# This is exploitable and not a good idea, if possible update your spawners and eggs
+match_magic_mobs_by_name: false
+
 # Set this to false to disallow wand commands modifying unmodifiable wands when used from the console or command blocks
 console_bypass_modifiable: true
 

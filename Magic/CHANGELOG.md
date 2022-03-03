@@ -4,9 +4,11 @@
 
 ## Changes
 
- - Entities spawned from mob eggs will not match to a magic mob template based on display names.
-   This is to prevent abuse from the Capture spell and name tags.
-   This may break old magic mob spawn eggs, if they do not have the magic mob key data on them.
+ - Entities spawns will no longer match magic mobs based on display name.
+   This is too exploitable, unfortunately. Please see the builtin spawn eggs and spawners
+   to see how to put the correct data tags on.
+   If you need this feature, perhaps due to existing spawners or eggs that can't be updated, use
+   `/mconfig config match_magic_mobs_by_name true`
 
 # 10.6
 

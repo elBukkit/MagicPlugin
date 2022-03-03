@@ -8738,6 +8738,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         fileLoadDelay = properties.getInt("file_load_delay", 0);
         despawnMagicMobs = properties.getBoolean("despawn_magic_mobs", false);
         MobController.REMOVE_INVULNERABLE = properties.getBoolean("remove_invulnerable_mobs", false);
+        MobController.MATCH_BY_NAME = properties.getBoolean("match_magic_mobs_by_name", false);
         com.elmakers.mine.bukkit.effect.EffectPlayer.ENABLE_VANILLA_SOUNDS = properties.getBoolean("enable_vanilla_sounds", true);
         com.elmakers.mine.bukkit.effect.EffectPlayer.ENABLE_CUSTOM_SOUNDS = properties.getBoolean("enable_custom_sounds", true);
         com.elmakers.mine.bukkit.effect.EffectPlayer.VOLUME_SCALE = properties.getDouble("sound_volume", 1.0);
