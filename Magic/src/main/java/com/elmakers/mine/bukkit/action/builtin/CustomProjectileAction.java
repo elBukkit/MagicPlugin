@@ -54,7 +54,7 @@ public class CustomProjectileAction extends CompoundAction
     private double spread;
     private double movementSpread;
     private double maxMovementSpread;
-    private int startDistance;
+    private double startDistance;
     private String projectileEffectKey;
     private boolean projectileEffectsUseTarget;
     private String hitEffectKey;
@@ -224,7 +224,7 @@ public class CustomProjectileAction extends CompoundAction
         lifetime = parameters.getInt("lifetime", 8000);
         attachDuration = parameters.getInt("attach_duration", 0);
         reverseDirection = parameters.getBoolean("reverse", false);
-        startDistance = parameters.getInt("start", 0);
+        startDistance = parameters.getDouble("start", 0);
         range = parameters.getInt("range", 0);
         minEntityRange = parameters.getDouble("min_entity_range",0);
         minBlockRange = parameters.getDouble("min_block_range",0);
