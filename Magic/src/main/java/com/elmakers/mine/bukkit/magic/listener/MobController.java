@@ -204,10 +204,10 @@ public class MobController implements Listener, ChunkLoadListener {
             return;
         }
 
-        // Spawners and spawn eggs can be processed now since they will already have their display name
-        if (reason != SpawnReason.SPAWNER
-                && reason != SpawnReason.SPAWNER_EGG
-                && reason != SpawnReason.DISPENSE_EGG) {
+        // We only match named mobs from spawners, so stop here if this is not a spawner.
+        // This used to support spawn eggs as well, but that could be abusable thanks to the Capture spell,
+        // so we no longer allow that.
+        if (reason != SpawnReason.SPAWNER) {
             return;
         }
 
