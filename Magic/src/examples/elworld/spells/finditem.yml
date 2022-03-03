@@ -5,13 +5,19 @@ finditem:
     cast:
       - class: FindTileEntities
         actions:
-        - class: CheckInventory
-          actions:
-          - class: Message
-            message: "Found $tblock at @location_x,@location_y,@location_z"
-          - class: Orient
-          - class: PlayEffects
-            effects: found
+          - class: CheckInventory
+            actions:
+              - class: Message
+                message: "Found $tblock at @target_location_x,@target_location_y,@target_location_z"
+              - class: Orient
+              - class: PlayEffects
+                effects: found
+              - class: Skip
+                skip: 4
+                actions:
+                  - class: Message
+                    message: Found the limit
+                  - class: Stop
       - class: Message
         message: Done looking
   effects:
@@ -53,13 +59,10 @@ finditem:
            particle_offset_z: 0.1
   parameters:
     target: self
-    radius: 128
-    target_count: 3
-    cooldown: 20000
-    duration: 5000
-    undo: 5000
+    radius: 32
+    cooldown: 500
     target_block: true
     destructible: containers
+    indestructible: air
     item: bucket
     material_only: true
-
