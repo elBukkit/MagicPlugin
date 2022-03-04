@@ -352,8 +352,6 @@ public abstract class BaseMagicConfigurable extends BaseMagicProperties implemen
                 : (List<String>)value;
         for (String spellKey : spells) {
             spellKey = StringUtils.split(spellKey,'@')[0].trim();
-            // Don't migrate unknown spells
-            if (controller.getSpellTemplate(spellKey) == null) continue;
             if (addSpell(spellKey)) {
                 modified = true;
                 sendDebug("Added spell: " + spellKey);

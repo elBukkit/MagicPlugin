@@ -285,8 +285,13 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
 
         SpellTemplate template = controller.getSpellTemplate(spellKey);
         if (template == null) {
-            controller.getLogger().warning("Tried to add unknown spell: " + spellKey);
-            return false;
+            // We need to remember that we have this invalid spell
+            Collection<String> spells = getBaseSpells();
+            boolean modified = spells.add(spellKey);
+            if (modified) {
+                setProperty("spells", new ArrayList<>(spells));
+            }
+            return modified;
         }
 
         // Convert to spell if aliased
