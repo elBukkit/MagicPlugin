@@ -130,14 +130,18 @@ public class EntityProjectileAction extends CustomProjectileAction {
         return super.start(context);
     }
 
-    @Override
-    protected Location adjustStartLocation(Location location) {
-        super.adjustStartLocation(location);
+    protected Location adjustLocation(Location location) {
         // TODO: locationOffset and velocityOffset should be made relative
         if (locationOffset != null) {
             location = location.clone().add(locationOffset);
         }
         return location;
+    }
+
+    @Override
+    protected Location adjustStartLocation(Location location) {
+        location = super.adjustStartLocation(location);
+        return adjustLocation(location);
     }
 
     @Override
@@ -156,7 +160,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
             return SpellResult.CAST;
         }
 
-        Location target = actionContext.getTargetLocation();
+        Location target = adjustLocation(actionContext.getTargetLocation());
         if (doTeleport) {
             if (orient) {
                 target.setDirection(velocity);
