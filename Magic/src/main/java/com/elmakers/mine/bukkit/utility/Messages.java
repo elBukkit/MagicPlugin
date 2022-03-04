@@ -563,7 +563,15 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
     public String getTimeDescription(long time, @Nonnull String descriptionType, @Nullable String messagesPath) {
         if (time > 0) {
             double timeInSeconds = (double)time / 1000;
-            if (timeInSeconds >= 60 * 60) {
+            if (timeInSeconds >= 60 * 60 * 24) {
+                double days = timeInSeconds / (60 * 60 * 24);
+                if ((long)Math.floor(days) == 1) {
+                    return getWithFallback(descriptionType + "_day", "time", messagesPath)
+                            .replace("$days", HOURS_FORMATTER.format(days));
+                }
+                return getWithFallback(descriptionType + "_days", "time", messagesPath)
+                        .replace("$days", HOURS_FORMATTER.format(days));
+            } else if (timeInSeconds >= 60 * 60) {
                 double hours = timeInSeconds / (60 * 60);
                 if ((long)Math.floor(hours) == 1) {
                     return getWithFallback(descriptionType + "_hour", "time", messagesPath)

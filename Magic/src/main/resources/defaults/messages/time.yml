@@ -6,6 +6,10 @@ time:
     wait_second: a second
     wait_minute: a minute
     wait_hour: another hour
+    wait_day: another day
+    wait_days: another $days days
+    description_day: One day
+    description_days: $days days
     description_hour: One hour
     description_hours: $hours hours
     description_minute: One minute
