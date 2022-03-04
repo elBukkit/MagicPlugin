@@ -9,6 +9,7 @@
    to see how to put the correct data tags on.
    If you need this feature, perhaps due to existing spawners or eggs that can't be updated, use
    `/mconfig config match_magic_mobs_by_name true`
+ - Dropped items can now be destroyed by magic spells. This was done to prevent a dupe issue.  
    
 ## Additions
 
