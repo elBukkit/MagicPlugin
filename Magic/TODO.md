@@ -2,6 +2,12 @@
 
 # Next
 
+ - Broomsticks broken on 1.18.2
+
+ - Selector shouldn't fire if you are in a non-chest inventory .. ? Or better yet any inventory without a menu active.
+
+ - hey, my server has a big glitch, if someone uses cloak and holds a magic bow if there hand or offhand cloak never goes away
+
  - Can drop spell items out of a wand inventory
 
  - Some way to sort attribute lore (alphabetically, manually)

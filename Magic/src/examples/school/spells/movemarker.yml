@@ -6,4 +6,4 @@ movemarker:
       - class: Recall
         type: place
         allow_marker: true
-        marker_count: 2
+        marker_count: 4
