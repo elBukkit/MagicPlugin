@@ -1,0 +1,19 @@
+localrain:
+  hidden: true
+  actions:
+    cast:
+      - class: Weather
+  parameters:
+    target: self
+    player_weather: true
+    weather: rain
+
+restorelocalweather:
+  hidden: true
+  actions:
+    cast:
+      - class: Weather
+  parameters:
+    target: self
+    player_weather: true
+    weather: world

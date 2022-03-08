@@ -1,0 +1,6 @@
+airtide:
+  icon: trident
+  modifiers: localrain
+  enchantments:
+    riptide: 3
+  hide_flags: 0

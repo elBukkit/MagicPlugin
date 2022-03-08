@@ -594,3 +594,6 @@ wands:
     gps:
         name: GPS
         description: "Somehow always knows your current location"
+    airtide:
+        name: Airtide
+        description: "It's always sunny in Philadelphia\nBut this isn't Philadelphia...."

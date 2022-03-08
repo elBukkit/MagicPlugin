@@ -1,0 +1,6 @@
+localrain:
+  triggers:
+    added:
+      cast: localrain
+    removed:
+      cast: restorelocalweather

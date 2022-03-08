@@ -16,7 +16,7 @@
 
  - Added `target_block` parameter to `CheckInventory` action, to allow searching container inventories
  - Added `player_weather: true` option to `Weather` action, for player-specific weather
-
+ - Added `airtide`, a Trident with riptide that makes local rain when you hold it
 
 # 10.6
 
