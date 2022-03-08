@@ -3960,6 +3960,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Nullable
+    @Override
     public UndoList getEntityUndo(Entity entity) {
         UndoList blockList;
         if (entity == null) return null;

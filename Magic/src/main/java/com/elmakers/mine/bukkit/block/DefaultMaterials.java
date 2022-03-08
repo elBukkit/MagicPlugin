@@ -32,6 +32,7 @@ public class DefaultMaterials {
     private MaterialSet signs = MaterialSets.empty();
     private MaterialSet saplings = MaterialSets.empty();
     private MaterialSet air = MaterialSets.empty();
+    private MaterialSet shulkerBoxes = MaterialSets.empty();
 
     private MaterialAndData playerSkullItem = null;
     private MaterialAndData playerSkullWallBlock = null;
@@ -79,6 +80,7 @@ public class DefaultMaterials {
         banners = manager.getMaterialSet("banners");
         signs = manager.getMaterialSet("signs");
         saplings = manager.getMaterialSet("saplings");
+        shulkerBoxes = manager.getMaterialSet("shulker_boxes");
     }
 
     public void loadColors(Collection<ConfigurationSection> colors) {
@@ -369,6 +371,10 @@ public class DefaultMaterials {
 
     public static boolean isPlayerSkull(MaterialAndData materialAndData) {
         return getInstance().playerSkulls.testMaterialAndData(materialAndData);
+    }
+
+    public static boolean isShulkerBox(Material material) {
+        return getInstance().shulkerBoxes.testMaterial(material);
     }
 
     public static boolean isSkull(Material material) {

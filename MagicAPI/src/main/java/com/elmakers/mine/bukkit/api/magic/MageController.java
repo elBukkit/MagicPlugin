@@ -342,6 +342,7 @@ public interface MageController {
     UndoList undoRecent(Block target, int timeout);
     void scheduleUndo(UndoList undoList);
     void cancelScheduledUndo(UndoList undoList);
+    UndoList getEntityUndo(Entity entity);
 
     String getEntityName(Entity entity);
     String getEntityDisplayName(Entity entity);

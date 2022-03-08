@@ -32,6 +32,7 @@ import org.bukkit.entity.Hanging;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.InventoryHolder;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 
@@ -809,6 +810,19 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
     @Override
     public EntityData damage(Entity entity) {
         EntityData data = modify(entity);
+
+        // Prevent shulker boxes dropping items if they are going in an undo list
+        if (entity instanceof Item) {
+            Item item = (Item)entity;
+            ItemStack itemStack = item.getItemStack();
+            if (itemStack != null && DefaultMaterials.isShulkerBox(itemStack.getType())) {
+                com.elmakers.mine.bukkit.api.block.UndoList undoList = controller.getEntityUndo(entity);
+                if (undoList != null) {
+                    CompatibilityLib.getNBTUtils().removeMeta(itemStack, "BlockEntityTag");
+                }
+            }
+        }
+
         // Kind of a hack to prevent dropping hanging entities that we're going to undo later
         if (undoEntityTypes != null && undoEntityTypes.contains(entity.getType()))
         {
