@@ -36,3 +36,4 @@ entity_undo_types:
 - primed_tnt
 - falling_block
 - armor_stand
+- dropped_item
