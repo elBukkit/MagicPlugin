@@ -1,5 +1,5 @@
 spells:
-  studenttool:
+  teleportermenu:
     name: "Pocket Teleporter"
     title: "Pocket Teleporter"
     selected_free: ""
@@ -30,8 +30,8 @@ spells:
     unlock_warp: "t:&r&6$name\n&d&oUnlocked in Pocket Teleporter"
   movemarker:
     name: Set Warp Marker
-    description: You can save 2 personal warp locations to go back to at any time!
+    description: You can save 4 personal warp locations to go back to at any time!
 wands:
-  tool:
+  teleporter:
     name: "Pocket Teleporter"
     description: "Right-Click (Or swing at ground) to use\nClick on (or take) item to teleport"

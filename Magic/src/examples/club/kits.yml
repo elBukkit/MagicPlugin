@@ -1,10 +1,19 @@
+creative:
+  enabled: true
+  keep: true
+  worlds: world_water
+  items:
+    - teleporter
+
 students:
+  enabled: false
   keep: true
   worlds: "*"
   items:
-    - tool
+    - teleporter
 
 admins:
+  enabled: false
   keep: true
   requirements:
     - permission: orla.mod
@@ -14,6 +23,7 @@ admins:
 newstudents:
   starter: true
   items:
+    - teleporter
     - wooden_sword
     - wooden_pickaxe
     - wooden_shovel

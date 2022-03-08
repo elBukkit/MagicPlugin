@@ -1,3 +1,14 @@
+# Craftable teleporter
+teleporter:
+  output: teleporter
+  auto_discover: true
+  materials:
+    o: ender_eye
+    a: amethyst_shard
+  row_1: " a "
+  row_2: "aoa"
+  row_3: " a "
+
 # Enable some cruelty-free recipes
 
 zombie_leather:
@@ -17,6 +28,7 @@ name_tag:
 # Disable all magic items for now
 
 broomstick:
+  enabled: false
   inherit: false
   auto_discover: true
   output: broomstick

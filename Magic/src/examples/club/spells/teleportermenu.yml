@@ -1,4 +1,4 @@
-studenttool:
+teleportermenu:
   actions:
     cast:
       - class: Selector
@@ -56,7 +56,7 @@ studenttool:
       - placeholder: true
       - cast_spell: tprequest
       - placeholder: true
-      - placeholder: true
+      - cast_spell: stash
       - cast_spell: movemarker
       - placeholder: true
       - warp: creative
