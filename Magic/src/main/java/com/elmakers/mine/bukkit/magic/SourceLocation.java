@@ -144,7 +144,7 @@ public class SourceLocation {
             } else {
                 mage = context.getController().getRegisteredMage(targetEntity);
                 feetLocation = targetEntity.getLocation();
-                eyeLocation = targetEntity instanceof LivingEntity ? ((LivingEntity)targetEntity).getEyeLocation() : targetEntity.getLocation();
+                eyeLocation = getEyeLocation(targetEntity);
             }
         }
         if (mage == null && (locationType == LocationType.CAST || locationType == LocationType.WAND)) {
@@ -234,5 +234,9 @@ public class SourceLocation {
 
     public boolean shouldUseBlockLocation() {
         return locationType == LocationType.BLOCK;
+    }
+
+    public static Location getEyeLocation(Entity entity) {
+        return entity instanceof LivingEntity ? ((LivingEntity)entity).getEyeLocation() : entity.getLocation();
     }
 }

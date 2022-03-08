@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
+import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.google.gson.Gson;
@@ -84,14 +85,14 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             return false;
         }
 
-        if (!(sender instanceof Player) && !(sender instanceof BlockCommandSender) && args.length < 6) {
+        if (!(sender instanceof Entity) && !(sender instanceof BlockCommandSender) && args.length < 6) {
             sender.sendMessage(ChatColor.RED + "Usage: mmob spawn <type> <x> <y> <z> <world> [count]");
             return true;
         }
 
         Location targetLocation = null;
         World targetWorld = null;
-        Player player = (sender instanceof Player) ? (Player)sender : null;
+        Entity player = (sender instanceof Entity) ? (Entity)sender : null;
         BlockCommandSender commandBlock = (sender instanceof BlockCommandSender) ? (BlockCommandSender)sender : null;
 
         if (args.length >= 6) {
@@ -133,7 +134,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 return true;
             }
         } else if (player != null) {
-            Location location = player.getEyeLocation();
+            Location location = SourceLocation.getEyeLocation(player);
             BlockIterator iterator = new BlockIterator(location.getWorld(), location.toVector(), location.getDirection(), 0, 16);
             Block block = location.getBlock();
             MaterialSet allAir = controller.getMaterialSetManager().getMaterialSet("all_air");
@@ -294,7 +295,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
         String worldName = null;
         Integer radiusSquared = null;
         Location targetLocation = null;
-        Player player = (sender instanceof Player) ? (Player)sender : null;
+        Entity player = (sender instanceof Entity) ? (Entity)sender : null;
         BlockCommandSender commandBlock = (sender instanceof BlockCommandSender) ? (BlockCommandSender)sender : null;
 
         if (args.length == 3) {

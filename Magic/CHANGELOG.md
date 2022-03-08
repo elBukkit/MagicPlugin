@@ -10,6 +10,7 @@
    If you need this feature, perhaps due to existing spawners or eggs that can't be updated, use
    `/mconfig config match_magic_mobs_by_name true`
  - Shulker boxes destroyed by magic will not drop their contents
+ - The `/mmob` command can be used by entities (because I guess that's a thing??)
    
 ## Additions
 
