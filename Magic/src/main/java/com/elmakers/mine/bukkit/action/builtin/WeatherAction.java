@@ -2,8 +2,11 @@ package com.elmakers.mine.bukkit.action.builtin;
 
 import java.util.Collection;
 
+import org.bukkit.WeatherType;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -13,11 +16,13 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 public class WeatherAction extends BaseSpellAction
 {
     private String weatherString = "";
+    private boolean playerWeather = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         weatherString = parameters.getString("weather", "");
+        playerWeather = parameters.getBoolean("player_weather", false);
     }
 
     @Override
@@ -26,20 +31,39 @@ public class WeatherAction extends BaseSpellAction
         if (world == null) {
             return SpellResult.WORLD_REQUIRED;
         }
+        Entity targetEntity = context.getTargetEntity();
+        Player targetPlayer = targetEntity instanceof Player ? (Player)targetEntity : null;
+        if (playerWeather && targetPlayer == null) {
+            return SpellResult.NO_TARGET;
+        }
         boolean hasStorm = world.hasStorm();
         boolean makeStorm = weatherString.equals("storm");
         if (weatherString.equals("cycle")) {
             makeStorm = !hasStorm;
         }
 
-        if (weatherString.equals("rain")) {
-            world.setStorm(true);
+        if (playerWeather && weatherString.equals("world")) {
+            targetPlayer.setPlayerWeather(world.hasStorm() || world.isThundering() ? WeatherType.DOWNFALL : WeatherType.CLEAR);
+        } else if (weatherString.equals("rain")) {
+            if (playerWeather) {
+                targetPlayer.setPlayerWeather(WeatherType.DOWNFALL);
+            } else {
+                world.setStorm(true);
+            }
         } else if (makeStorm) {
-            world.setStorm(true);
-            world.setThundering(true);
+            if (playerWeather) {
+                targetPlayer.setPlayerWeather(WeatherType.DOWNFALL);
+            } else {
+                world.setStorm(true);
+                world.setThundering(true);
+            }
         } else {
-            world.setStorm(false);
-            world.setThundering(false);
+            if (playerWeather) {
+                targetPlayer.setPlayerWeather(WeatherType.CLEAR);
+            } else {
+                world.setStorm(false);
+                world.setThundering(false);
+            }
         }
         return makeStorm ? SpellResult.CAST : SpellResult.ALTERNATE;
     }

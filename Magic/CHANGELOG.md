@@ -15,6 +15,8 @@
 ## Additions
 
  - Added `target_block` parameter to `CheckInventory` action, to allow searching container inventories
+ - Added `player_weather: true` option to `Weather` action, for player-specific weather
+
 
 # 10.6
 
