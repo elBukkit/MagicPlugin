@@ -2,6 +2,10 @@
 
 # 10.7
 
+## Fixes
+
+ - Fix broomsticks in 1.18.2 (NMS Binding issue)
+
 ## Changes
 
  - Entities spawns will no longer match magic mobs based on display name.

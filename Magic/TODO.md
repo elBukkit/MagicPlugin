@@ -2,6 +2,23 @@
 
 # Next
 
+ - While is broken? https://editor.elmakers.com/9r9p1vjn
+
+ - Look into error, MagicGoal contains a LookAtPlayer goal that lost its target somehow
+
+java.lang.NullPointerException: Cannot invoke "net.minecraft.world.entity.Entity.bl()" because "this.c" is null
+at net.minecraft.world.entity.ai.goal.LookAtPlayerGoal.tick(LookAtPlayerGoal.java:91) ~[?:?]
+at com.elmakers.mine.bukkit.utility.platform.v1_18_2.goal.MagicGoal.e(MagicGoal.java:115) ~[Magic-10.6.jar:?]
+at net.minecraft.world.entity.ai.goal.WrappedGoal.tick(WrappedGoal.java:63) ~[?:?]
+at net.minecraft.world.entity.ai.goal.GoalSelector.tickRunningGoals(GoalSelector.java:152) ~[?:?]
+at net.minecraft.world.entity.ai.goal.GoalSelector.tick(GoalSelector.java:143) ~[?:?]
+at net.minecraft.world.entity.Mob.serverAiStep(Mob.java:857) ~[?:?]
+at net.minecraft.world.entity.LivingEntity.aiStep(LivingEntity.java:3267) ~[?:?]
+at net.minecraft.world.entity.Mob.aiStep(Mob.java:628) ~[?:?]
+at net.minecraft.world.entity.AgeableMob.aiStep(AgeableMob.java:154) ~[?:?]
+at net.minecraft.world.entity.animal.Animal.aiStep(Animal.java:62) ~[?:?]
+
+
  - Cannot use hex color code for MOB name
 
  - `fill: true` on a wand is not re-adding spells after permission was removed and granted
