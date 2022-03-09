@@ -2,6 +2,8 @@
 
 # 10.7
 
+# 10.6.1
+
 ## Fixes
 
  - Fix broomsticks in 1.18.2 (NMS Binding issue)
