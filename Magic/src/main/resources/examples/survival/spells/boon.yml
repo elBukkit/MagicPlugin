@@ -16,7 +16,7 @@ boon:
         - class: Repeat
           actions:
           - class: PotionEffect
-            duration: 5000
+            duration: 30000
           - class: Delay
             delay: 1000
     effects:
