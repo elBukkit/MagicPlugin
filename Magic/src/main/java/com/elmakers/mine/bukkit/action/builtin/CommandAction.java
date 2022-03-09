@@ -18,6 +18,7 @@ import org.bukkit.conversations.Conversable;
 import org.bukkit.conversations.ConversationContext;
 import org.bukkit.conversations.ConversationFactory;
 import org.bukkit.conversations.Prompt;
+import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -55,10 +56,12 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
  */
 public class CommandAction extends BaseSpellAction {
     public static final String[] PARAMETERS = {
-            "command", "console", "op", "local_echo", "modal", "timeout", "escape_sequence", "equation"
+            "command", "console", "op", "local_echo", "modal", "timeout",
+            "escape_sequence", "equation", "as_target"
     };
 
     private List<String> commands = new ArrayList<>();
+    private boolean asTarget;
     private boolean asConsole;
     private boolean opPlayer;
     private boolean localEcho;
@@ -72,6 +75,7 @@ public class CommandAction extends BaseSpellAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         parseCommands(parameters);
+        asTarget = parameters.getBoolean("as_target", false);
         asConsole = parameters.getBoolean("console", false);
         opPlayer = parameters.getBoolean("op", false);
         localEcho = parameters.getBoolean("local_echo", true);
@@ -111,9 +115,18 @@ public class CommandAction extends BaseSpellAction {
 
     @Override
     public SpellResult perform(CastContext context) {
-        Mage mage = context.getMage();
         MageController controller = context.getController();
-        CommandSender sender = asConsole ? Bukkit.getConsoleSender() : mage.getCommandSender();
+        CommandSender sender;
+        if (asTarget) {
+            Entity target = context.getTargetEntity();
+            if (target == null) {
+                return SpellResult.NO_TARGET;
+            }
+            sender = target;
+        } else {
+            Mage mage = context.getMage();
+            sender = asConsole ? Bukkit.getConsoleSender() : mage.getCommandSender();
+        }
         if (sender == null) {
             return SpellResult.FAIL;
         }
@@ -173,7 +186,8 @@ public class CommandAction extends BaseSpellAction {
             examples.add("5");
             examples.add("10");
         } else if (parameterKey.equals("op") || parameterKey.equals("console")
-                || parameterKey.equals("local_echo") || parameterKey.contains("modal")) {
+                || parameterKey.equals("local_echo") || parameterKey.contains("modal")
+                || parameterKey.contains("as_target")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
         } else {
             super.getParameterOptions(spell, parameterKey, examples);

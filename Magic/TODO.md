@@ -2,6 +2,10 @@
 
 # Next
 
+ - Cannot use hex color code for MOB name
+
+ - `fill: true` on a wand is not re-adding spells after permission was removed and granted
+ 
  - Broomsticks broken on 1.18.2
 
  - Selector shouldn't fire if you are in a non-chest inventory .. ? Or better yet any inventory without a menu active.
