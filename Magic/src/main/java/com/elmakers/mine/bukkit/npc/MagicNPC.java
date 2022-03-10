@@ -372,7 +372,9 @@ public class MagicNPC implements com.elmakers.mine.bukkit.api.npc.MagicNPC {
     public void save(ConfigurationSection configuration) {
         configuration.set("template", templateKey);
         configuration.set("id", id.toString());
-        configuration.set("entity_uuid", entityId.toString());
+        if (entityId != null) {
+            configuration.set("entity_uuid", entityId.toString());
+        }
         configuration.set("mob", mobKey);
         configuration.set("name", name);
         configuration.set("created", createdAt);

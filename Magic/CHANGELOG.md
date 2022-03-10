@@ -2,6 +2,10 @@
 
 # 10.7
 
+# 10.6.2
+
+ - Fix error saving an NPC that didn't successfully spawn an entity
+
 # 10.6.1
 
 ## Fixes
