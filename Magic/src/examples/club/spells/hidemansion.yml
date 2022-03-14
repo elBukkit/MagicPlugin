@@ -1,0 +1,32 @@
+hidemansion:
+  name: Hide Mansion
+  icon: stick
+  actions:
+    cast:
+      - class: Sphere
+        actions:
+          - class: FakeBlock
+  effects:
+    cast:
+      - location: target
+        effectlib:
+          class: Modified
+          parameters:
+            radius: "3+(t/i) * 10"
+            particles: "(t/i)*40+3"
+          effect:
+            class: Sphere
+            particle: end_rod
+            particle_count: 4
+            particle_offset: 1.5
+          duration: 10000
+      - sound: magic.zap
+  parameters:
+    target: self
+    destructible: dark_oak_planks,dark_oak_log
+    radius: 64
+    brush: barrier
+    undo: 10000
+    cooldown: 5000
+    undo_speed: 200
+    bypass: true

@@ -1,0 +1,69 @@
+finditem:
+  name: Find Item
+  description: Finds a specific item in nearby containers
+  actions:
+    cast:
+      - class: FindTileEntities
+        actions:
+        - class: CheckInventory
+          actions:
+          - class: Message
+            message: "Found $tblock at @target_location_x,@target_location_y,@target_location_z"
+          - class: Orient
+          - class: PlayEffects
+            effects: found
+          - class: Skip
+            skip: 4
+            actions:
+            - class: Message
+              message: Found the limit
+            - class: Stop
+      - class: Message
+        message: Done looking
+  effects:
+    cast:
+      - location: origin
+        sound: magic.zap
+        sound_volume: 0.5
+      - location: both
+        sound: entity_illusioner_prepare_mirror
+        sound_volume: 0.5
+        sound_pitch: 1.6
+      - location: target
+        use_block_location: true
+        color_override: color
+        effectlib:
+          class: CubeEffect
+          duration: 1000
+          particle: redstone
+          color: "00FFAA"
+          edge_length: 1.2
+          enable_rotation: false
+          offset: 0.5,0.5,0.5
+      - class: EffectTrail
+        particle: spell_mob
+      - class: EffectTrail
+        particle: spell_instant
+        particle_count: 8
+        particle_offset_x: 0.05
+        particle_offset_y: 0.05
+        particle_offset_z: 0.05
+    found:
+      -  class: EffectSingle
+         effectlib:
+           class: LineEffect
+           particle: villager_happy
+           particle_count: 5
+           particle_offset_x: 0.1
+           particle_offset_y: 0.1
+           particle_offset_z: 0.1
+  parameters:
+    target: self
+    radius: 128
+    cooldown: 500
+    target_block: true
+    destructible: containers
+    check_indestructible: false
+    item: gray_shulker_box
+    material_only: true
+

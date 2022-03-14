@@ -1,0 +1,7 @@
+throwball:
+  actions:
+    cast:
+      - class: ThrowItem
+  parameters:
+    target_self: true
+    throw_wand: true

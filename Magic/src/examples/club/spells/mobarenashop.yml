@@ -1,0 +1,41 @@
+mobarenashop:
+    creator: NathanWolf
+    creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+    name: Shop
+    description: Put on an npc using /mnpc cast shop
+    icon: gold_ingot
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        items:
+        - none
+        - none
+        - none
+        - bread
+        - bread@16
+        - bread@64
+        - none
+        - none
+        - none
+        
+        - none
+        - none
+        - none
+        - arrow
+        - arrow@16
+        - arrow@64
+        - none
+        - none
+        - none
+        
+        - none
+        - shield
+        - iron_sword
+        - iron_helmet
+        - iron_chestplate
+        - iron_leggings
+        - iron_boots
+        - bow
+        - none

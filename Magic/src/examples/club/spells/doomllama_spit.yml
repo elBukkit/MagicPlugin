@@ -1,0 +1,40 @@
+doomllama_spit:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Llama Spit
+  icon: stick
+  actions:
+    cast:
+    - class: AreaOfEffect
+      target_count: 1
+      actions:
+        - class: Projectile
+          actions:
+            - class: AreaOfEffect
+              radius: 3
+              actions:
+              - class: Damage
+              - class: PotionEffect
+  effects:
+    cast:
+      - sound: entity_llama_spit
+    hit:
+    - location: target
+      sound: entity_slime_jump
+      sound_pitch: 0.2
+      particle: spit
+      particle_count: 16
+      particle_offset: 4
+  parameters:
+    target: self
+    radius: 32
+    damage: 1
+    duration: 5000
+    projectile: LlamaSpit
+    speed: 3
+    spread: 1
+    bypass_pvp: true
+    bypass_friendly_fire: true
+    add_effects:
+      confusion: 4
+      slow: 1

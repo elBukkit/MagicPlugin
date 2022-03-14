@@ -1,0 +1,15 @@
+shownathanwolf:
+  actions:
+    cast:
+    - class: AllEntities
+      actions:
+        - Message
+  parameters:
+    target_game_modes: all
+    target_type: Player
+    message_target: true
+    target_self: true
+    bypass_protection: true
+    target_all_worlds: true
+    bypass_pvp: true
+    message: '`<icon key="NathanWolf">`'

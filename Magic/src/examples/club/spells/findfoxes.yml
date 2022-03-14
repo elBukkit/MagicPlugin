@@ -1,0 +1,13 @@
+findfoxes:
+  name: Find Foxes
+  icon: stick
+  actions:
+    cast:
+    - class: AreaOfEffect
+      actions:
+        - class: Message
+          message: "Found $td at @target_location_x,@target_location_y,@target_location_z"
+  parameters:
+    radius: 128
+    target: self
+    target_type: Fox

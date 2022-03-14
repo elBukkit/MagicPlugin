@@ -1,0 +1,36 @@
+startgame:
+  name: Countdown
+  description: Gives a 5-minute warning for server shutdown
+  icon: stick
+  actions:
+    cast:
+    - class: ModifyVariable
+      variable: started
+      value: epoch
+    - class: Interval
+      interval: 500
+      duration: 5000
+      actions:
+        - class: AreaOfEffect
+          actions:
+            - class: UpdateParameters
+              actions:
+                - class: BossBar
+                  bar_title: "&cGame Starting!"
+                  bar_progress: (5000 - (epoch - started)) / 5000
+    - class: AreaOfEffect
+      actions:
+        - class: Message
+          message: "&4GO!"
+  parameters:
+    target: self
+    target_game_modes: all
+    target_type: Player
+    show_target: true
+    message_target: true
+    target_self: true
+    bypass_protection: true
+    target_all_worlds: true
+    cooldown: 10 seconds
+    bypass_pvp: true
+    radius: 128

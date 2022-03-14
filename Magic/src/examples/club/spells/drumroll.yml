@@ -1,0 +1,19 @@
+drumroll:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Drum Roll Please
+  icon: stick
+  actions:
+    cast:
+    - class: Repeat
+      actions:
+        - class: PlayEffects
+          effects: drum
+        - class: Delay
+  effects:
+    drum:
+    - sound: block_note_block_snare
+  parameters:
+    target: self
+    delay: 50
+    repeat: 50

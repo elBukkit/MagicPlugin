@@ -1,0 +1,74 @@
+authorshop:
+    creator: NathanWolf
+    creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+    name: Book Shop
+    icon: gold_ingot
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        scale: 0.1
+        free: true
+        title: Books
+        items:
+        
+        - none
+        - none
+        - none
+        - none
+        - writable_book
+        - none
+        - none
+        - none
+        - none
+        
+        - none
+        - none
+        - none
+        - book_edward
+        - none
+        - book_daisy
+        - none
+        - none
+        - none
+        
+        - book_kiwi
+        - book_biology
+        - book_alexandsteve
+        - book_adventures
+        - book_1930
+        - book_sageandmidnight
+        - book_candy
+        - book_pets
+        - book_luna
+        
+        - none
+        - none
+        - book_pop
+        - book_yee
+        - book_11
+        - book_flame_princess
+        - book_gaia
+        - book_pinnocio
+        - none
+        
+        - book_greek1
+        - book_greek2
+        - book_greek3
+        - book_greek4
+        - book_greek5
+        - book_greek6
+        - book_greek7
+        - book_greek8
+        - book_greek9
+        
+        - none
+        - none
+        - none
+        - book_greek10
+        - book_greek11
+        - book_greek12
+        - none
+        - none
+        - none

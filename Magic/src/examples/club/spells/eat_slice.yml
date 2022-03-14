@@ -1,0 +1,7 @@
+eat_slice:
+  actions:
+    cast:
+    - class: Feed
+  parameters:
+   target: self
+   feed: 1

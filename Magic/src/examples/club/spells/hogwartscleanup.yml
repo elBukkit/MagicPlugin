@@ -1,0 +1,10 @@
+hogwartscleanup:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Hogwarts Cleanup
+  icon: stick
+  inherit: superblob
+  parameters:
+    destructible: hogwartscleanup
+    brush: oak_log
+    check_destructible: true

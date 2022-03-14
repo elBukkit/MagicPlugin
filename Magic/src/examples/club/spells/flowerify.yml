@@ -1,0 +1,43 @@
+flowerify:
+    icon: spell_icon:38
+    icon_disabled: spell_icon_disabled:38
+    icon_url: http://textures.minecraft.net/texture/872d9b98a6b34a2762aac1af915873c066c43c2b2b8d689d27626cc5afcb11
+    category: engineering
+    tags: noduel
+    actions:
+        cast:
+        - class: Sphere
+          actions:
+          - class: ChangeBiome
+    effects:
+        cast:
+        -  class: EffectSingle
+           sound: magic.zap
+        tick:
+        - location: target
+          particle: end_rod
+          particle_count: 4
+          particle_offset_x: 0.01
+          particle_offset_y: 0.01
+          particle_offset_z: 0.01
+        hit:
+        - location: target
+          target_offset: 0,0.2,0
+          effectlib:
+             class: Shield
+             duration: 5000
+             period: 4
+             particle: end_rod
+             radius: $radius
+    parameters:
+        target: block
+        allow_max_range: false
+        range: 48
+        radius: 5
+        destructible: "*"
+        cooldown: 5000
+        biome: meadow
+        ignore_region_overrides: true
+        cancel_on_deactivate: false
+    costs:
+        mana: 200

@@ -1,0 +1,18 @@
+atlantisshop:
+    creator: NathanWolf
+    creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+    name: Atlantis Shop
+    icon: gold_ingot
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        scale: 0.1
+        items:
+        - prismarine
+        - dark_prismarine
+        - sea_lantern
+        - warped_planks
+        - warped_sign
+        - chest

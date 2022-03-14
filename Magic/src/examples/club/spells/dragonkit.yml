@@ -1,0 +1,9 @@
+dragonkit:
+  category: npc
+  actions:
+    cast:
+      - class: GiveKit
+  parameters:
+    target: self
+    kit: dragon
+

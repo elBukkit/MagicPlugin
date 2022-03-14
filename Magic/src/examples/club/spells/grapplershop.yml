@@ -1,0 +1,19 @@
+grapplershop:
+    name: Grappler Shop
+    icon: gold_ingot
+    hidden: true
+    inherit: buyshop
+    parameters:
+        title: "Grappler &7(&6$balance&7)"
+        auto_close: true
+        scale: 0.001
+        items:
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true
+        - item: grappler
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true
+        - placeholder: true

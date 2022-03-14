@@ -1,0 +1,66 @@
+safepush:
+  icon: push
+  actions:
+    cast:
+    - class: FallProtection
+    - class: VelocityAction
+      y_offset: 1
+    - class: Repeat
+      actions:
+      - class: Delay
+      - class: PlayEffects
+        effects: iterate
+        ignore_result: true
+      - class: ConeOfEffectAction
+        actions:
+        - class: FallProtection
+        - class: VelocityAction
+  effects:
+    cast:
+    - class: EffectSingle
+      sound: block_fire_extinguish
+      sound_volume: 1
+      sound_pitch: -0.1
+      location: origin
+      effectlib:
+        class: Modified
+        iterations: 20
+        parameters:
+          radius: (t/i) * 4 + 0.2
+        effect:
+          class: DnaEffect
+          particles_base: 0
+          particles_helix: 7
+          particle_helix: spell
+          particle_base1: spell
+          particle_base2: spell
+    iterate:
+    - class: EffectSingle
+      location: origin
+      effectlib:
+        class: Modified
+        iterations: 10
+        parameters:
+          radius: (t/i) * 4 + 0.2
+        effect:
+          class: DnaEffect
+          particles_base: 0
+          particles_helix: 7
+          particle_helix: spell
+          particle_base1: spell
+          particle_base2: spell
+  parameters:
+    target_type: Entity
+    range: 8
+    fov: 1
+    target_count: 2
+    item_speed: 0.1
+    living_entity_speed: 0.5
+    repeat: 3
+    delay: 250
+    y_offset: 0.75
+    cooldown: 5000
+  costs:
+    mana: 20
+
+

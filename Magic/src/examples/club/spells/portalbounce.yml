@@ -1,0 +1,15 @@
+portalbounce:
+  name: Portal Bounce
+  actions:
+    cast:
+      - class: Interval
+        duration: 2 seconds
+        interval: 300
+        actions:
+          - class: Velocity
+            direction: 0,1,0
+            speed: 10
+  parameters:
+    target: self
+    cooldown: 500
+    quiet: true

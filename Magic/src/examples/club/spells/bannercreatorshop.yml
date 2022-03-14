@@ -1,0 +1,57 @@
+bannercreatorshop:
+    icon: gold_ingot
+    hidden: true
+    inherit: buyshop
+    parameters:
+        confirm: true
+        auto_close: true
+        items:
+
+        - banner:15@1
+        - banner:14@1
+        - banner:13@1
+        - banner:12@1
+        - banner:11@1
+        - banner:10@1
+        - banner:9@1
+        - banner:8@1
+        - banner:7@1
+
+        - none
+        - banner:6@1
+        - banner:5@1
+        - banner:4@1
+        - banner:3@1
+        - banner:2@1
+        - banner:1@1
+        - banner:0@1
+        - none
+        
+        - none
+        - creeper_banner_pattern
+        - flower_banner_pattern
+        - globe_banner_pattern
+        - mojang_banner_pattern
+        - piglin_banner_pattern
+        - skull_banner_pattern
+        - none
+        - none
+        
+        - black_dye
+        - ink_sack:1
+        - ink_sack:2
+        - brown_dye
+        - ink_sack:4
+        - blue_dye
+        - ink_sack:6
+        - ink_sack:7
+        - ink_sack:8
+        
+        - none
+        - ink_sack:9
+        - ink_sack:10
+        - ink_sack:11
+        - ink_sack:12
+        - ink_sack:13
+        - ink_sack:14
+        - white_dye
