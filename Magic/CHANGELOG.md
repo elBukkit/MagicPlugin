@@ -2,9 +2,15 @@
 
 # 10.7
 
+## Additions
+
  - Add `mushroom_cow_variant` entity data tag
  - Add `decor_item` llama data tag
  - Add engineering toggle to replace/ignore only earth blocks
+
+## Fixes
+
+ - Fix boss bar display for spells like Cloak when switching to a different class while the spell is active
 
 # 10.6.2
 

@@ -2,7 +2,6 @@
 
 # Next
 
- - While is broken? https://editor.elmakers.com/9r9p1vjn
 
  - Look into error, MagicGoal contains a LookAtPlayer goal that lost its target somehow
 
@@ -18,18 +17,11 @@ at net.minecraft.world.entity.Mob.aiStep(Mob.java:628) ~[?:?]
 at net.minecraft.world.entity.AgeableMob.aiStep(AgeableMob.java:154) ~[?:?]
 at net.minecraft.world.entity.animal.Animal.aiStep(Animal.java:62) ~[?:?]
 
-
  - Cannot use hex color code for MOB name
 
  - `fill: true` on a wand is not re-adding spells after permission was removed and granted
- 
- - Broomsticks broken on 1.18.2
 
  - Selector shouldn't fire if you are in a non-chest inventory .. ? Or better yet any inventory without a menu active.
-
- - hey, my server has a big glitch, if someone uses cloak and holds a magic bow if there hand or offhand cloak never goes away
-
- - Can drop spell items out of a wand inventory
 
  - Some way to sort attribute lore (alphabetically, manually)
 

@@ -878,13 +878,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         activeCostScale = (float)((double)(now - lastActiveCost) / 1000);
         lastActiveCost = now;
 
-        CasterProperties caster = null;
-        if (currentCast != null) {
-            caster = currentCast.getWand();
-            if (caster == null) {
-                caster = currentCast.getMageClass();
-            }
-        }
+        CasterProperties caster = getCurrentCaster();
         for (CastingCost cost : activeCosts)
         {
             if (!cost.has(mage, caster, this))
@@ -903,6 +897,18 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (duration > 0 && spellData.getLastCast() < System.currentTimeMillis() - duration) {
             deactivate();
         }
+    }
+
+    @Nullable
+    protected CasterProperties getCurrentCaster() {
+        CasterProperties caster = null;
+        if (currentCast != null) {
+            caster = currentCast.getWand();
+            if (caster == null) {
+                caster = currentCast.getMageClass();
+            }
+        }
+        return caster;
     }
 
     @Override
@@ -2871,16 +2877,17 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
 
                 if (manaRequired > 0) {
-                    double manaMax =  mage.getEffectiveManaMax();
+                    CasterProperties caster = getCurrentCaster();
+                    double manaMax = caster == null ? mage.getEffectiveManaMax() : caster.getEffectiveManaMax();
                     double manaRegeneration = 0;
                     if (!disableManaRegeneration) {
-                        manaRegeneration = mage.getEffectiveManaRegeneration();
+                        manaRegeneration = caster == null ? mage.getEffectiveManaRegeneration() : caster.getEffectiveManaRegeneration();
                     }
                     if (manaMax > manaRequired && manaRequired > manaRegeneration) {
                         double manaDrain = manaRequired - manaRegeneration;
                         double possibleDuration = bossBarMana / manaDrain;
                         if (possibleDuration > 0) {
-                            double remainingMana = mage.getMana();
+                            double remainingMana = caster == null ? mage.getMana() : caster.getMana();
                             double remainingDuration = remainingMana / manaDrain;
                             costsRemaining = remainingDuration / possibleDuration;
                         }
