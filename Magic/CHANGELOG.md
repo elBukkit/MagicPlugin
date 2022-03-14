@@ -4,6 +4,7 @@
 
  - Add `mushroom_cow_variant` entity data tag
  - Add `decor_item` llama data tag
+ - Add engineering toggle to replace/ignore only earth blocks
 
 # 10.6.2
 

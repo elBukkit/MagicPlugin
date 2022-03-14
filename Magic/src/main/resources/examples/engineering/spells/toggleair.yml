@@ -20,6 +20,8 @@ toggleair:
             - onlysolid
             - noplants
             - onlyplants
+            - noearth
+            - onlyearth
         noair:
         - class: Modifier
           add_modifiers:
@@ -32,6 +34,8 @@ toggleair:
             - onlysolid
             - noplants
             - onlyplants
+            - noearth
+            - onlyearth
         onlyliquid:
         - class: Modifier
           add_modifiers:
@@ -44,6 +48,8 @@ toggleair:
             - onlysolid
             - noplants
             - onlyplants
+            - noearth
+            - onlyearth
         noliquid:
         - class: Modifier
           add_modifiers:
@@ -56,6 +62,8 @@ toggleair:
             - onlysolid
             - noplants
             - onlyplants
+            - noearth
+            - onlyearth
         onlysolid:
         - class: Modifier
           add_modifiers:
@@ -68,6 +76,8 @@ toggleair:
             - nosolid
             - noplants
             - onlyplants
+            - noearth
+            - onlyearth
         nosolid:
         - class: Modifier
           add_modifiers:
@@ -80,6 +90,8 @@ toggleair:
             - onlysolid
             - noplants
             - onlyplants
+            - noearth
+            - onlyearth
         onlyplants:
         - class: Modifier
           add_modifiers:
@@ -92,6 +104,8 @@ toggleair:
             - nosolid
             - onlysolid
             - noplants
+            - noearth
+            - onlyearth
         noplants:
         - class: Modifier
           add_modifiers:
@@ -104,6 +118,36 @@ toggleair:
             - nosolid
             - onlysolid
             - onlyplants
+            - noearth
+            - onlyearth
+        onlyearth:
+          - class: Modifier
+            add_modifiers:
+              - onlyearth
+            remove_modifiers:
+              - ignoreair
+              - onlyair
+              - noliquid
+              - onlyliquid
+              - nosolid
+              - onlysolid
+              - noplants
+              - onlyplants
+              - noearth
+        noearth:
+          - class: Modifier
+            add_modifiers:
+              - noearth
+            remove_modifiers:
+              - ignoreair
+              - onlyair
+              - noliquid
+              - onlyliquid
+              - nosolid
+              - onlysolid
+              - noplants
+              - onlyplants
+              - onlyearth
         default:
         - class: Modifier
           remove_modifiers:
@@ -115,6 +159,8 @@ toggleair:
             - onlysolid
             - noplants
             - onlyplants
+            - noearth
+            - onlyearth
   parameters:
     title: "Select modifier"
     options:
@@ -158,6 +204,16 @@ toggleair:
        slot: 3
        requirements:
          - modifiers: onlyplants
+     - actions: onlyearth
+       icon: grass_block
+       name: "&aONLY earth"
+       slot: 4
+     - actions: noearth
+       icon: grass_block
+       name: "&cIGNORE earth"
+       slot: 4
+       requirements:
+         - modifiers: onlyearth
      - actions: default
        icon: barrier
        name: "&fDEFAULT"
