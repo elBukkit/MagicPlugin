@@ -4437,9 +4437,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             }
         }
 
-        // Finally add transient modifiers(
+        // Finally add any missing transient modifiers
         for (Map.Entry<String, MageModifier> entry : transientModifiers.entrySet()) {
-            applyModifier(entry.getKey(), entry.getValue());
+            String key = entry.getKey();
+            if (!currentKeys.contains(key)) {
+                applyModifier(key, entry.getValue());
+            }
         }
     }
 
