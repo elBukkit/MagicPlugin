@@ -3,6 +3,7 @@
 # 10.7
 
  - Add `mushroom_cow_variant` entity data tag
+ - Add `decor_item` llama data tag
 
 # 10.6.2
 

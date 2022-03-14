@@ -6,13 +6,17 @@ import java.util.logging.Logger;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Llama;
+import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
+import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 
 public class EntityLlamaData extends EntityChestedHorseData {
     private Llama.Color color;
     private Integer strength;
+    protected ItemStack decor;
 
     public EntityLlamaData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
@@ -26,6 +30,15 @@ public class EntityLlamaData extends EntityChestedHorseData {
             }
         }
         strength = ConfigUtils.getOptionalInteger(parameters, "llama_strength");
+        String itemKey = parameters.getString("decor_item");
+        if (itemKey != null && !itemKey.isEmpty()) {
+            ItemData itemData = controller.getOrCreateItem(itemKey);
+            if (itemData == null) {
+                log.warning("Invalid decor_item in llama config: " + itemKey);
+            } else {
+                decor = itemData.getItemStack();
+            }
+        }
     }
 
     public EntityLlamaData(Entity entity, MageController controller) {
@@ -34,6 +47,7 @@ public class EntityLlamaData extends EntityChestedHorseData {
             Llama llama = (Llama)entity;
             color = llama.getColor();
             strength = llama.getStrength();
+            decor = PlatformInterpreter.getPlatform().getItemUtils().getCopy(llama.getInventory().getDecor());
         }
     }
 
@@ -47,6 +61,9 @@ public class EntityLlamaData extends EntityChestedHorseData {
             }
             if (strength != null && strength > 0 && strength < 6) {
                 llama.setStrength(strength);
+            }
+            if (!PlatformInterpreter.getPlatform().getItemUtils().isEmpty(decor)) {
+                llama.getInventory().setDecor(decor);
             }
         }
     }
