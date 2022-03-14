@@ -9,6 +9,8 @@
 # 10.6.2
 
  - Fix error saving an NPC that didn't successfully spawn an entity
+ - Ignore animation events while in an inventory, this prevents unintentional spell casts
+   from dropping items while holding a wand
 
 # 10.6.1
 

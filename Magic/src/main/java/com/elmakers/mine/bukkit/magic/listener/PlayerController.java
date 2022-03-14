@@ -25,6 +25,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerAnimationEvent;
 import org.bukkit.event.player.PlayerAnimationType;
@@ -51,6 +52,7 @@ import org.bukkit.event.player.PlayerToggleSneakEvent;
 import org.bukkit.event.player.PlayerToggleSprintEvent;
 import org.bukkit.event.server.ServerCommandEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -673,6 +675,13 @@ public class PlayerController implements Listener {
             return;
         }
         if (!controller.useAnimationEvents(player)) {
+            return;
+        }
+        // Ignore this event if the player is in any kind of inventory
+        // This is important because Mojang decided that dropping an item should look like
+        // swinging a hand
+        InventoryView openInventory = player.getOpenInventory();
+        if (openInventory != null && openInventory.getType() != InventoryType.CRAFTING && openInventory.getType() != InventoryType.CREATIVE) {
             return;
         }
 
