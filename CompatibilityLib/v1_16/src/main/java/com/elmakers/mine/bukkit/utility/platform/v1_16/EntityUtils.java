@@ -9,6 +9,7 @@ import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.v1_16.entity.EntityAbstractPiglinData;
 import com.elmakers.mine.bukkit.utility.platform.v1_16.entity.EntityFoxData;
+import com.elmakers.mine.bukkit.utility.platform.v1_16.entity.EntityMooshroomData;
 
 public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_14.EntityUtils  {
     public EntityUtils(final Platform platform) {
@@ -23,6 +24,8 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_14
             case PIGLIN:
             case PIGLIN_BRUTE:
                 return new EntityAbstractPiglinData(entity);
+            case MUSHROOM_COW:
+                return new EntityMooshroomData(entity);
             default:
                 return super.getExtraData(controller, entity);
         }
@@ -36,6 +39,8 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_14
             case PIGLIN:
             case PIGLIN_BRUTE:
                 return new EntityAbstractPiglinData(parameters, controller);
+            case MUSHROOM_COW:
+                return new EntityMooshroomData(parameters, controller);
             default:
                 return super.getExtraData(controller, type, parameters);
         }

@@ -2,6 +2,8 @@
 
 # 10.7
 
+ - Add `mushroom_cow_variant` entity data tag
+
 # 10.6.2
 
  - Fix error saving an NPC that didn't successfully spawn an entity
