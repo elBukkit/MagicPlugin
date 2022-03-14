@@ -17,6 +17,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class FindTileEntitiesAction extends CompoundLocationAction {
     protected int radius;
@@ -60,9 +61,11 @@ public class FindTileEntitiesAction extends CompoundLocationAction {
                 BlockState[] blocks = chunk.getTileEntities();
                 for (BlockState blockState : blocks) {
                     Block block = blockState.getBlock();
-                    if (!context.isDestructible(block)) {
+                        if (!context.isDestructible(block)) {
+                        mage.sendDebugMessage(ChatColor.YELLOW + " Skipping "  + ChatColor.GOLD + block.getType() + ChatColor.GRAY + ", not destructible", 50);
                         continue;
                     }
+                    mage.sendDebugMessage(ChatColor.AQUA + "Found " + ChatColor.DARK_AQUA + block.getType() + ChatColor.DARK_GRAY + " at " + TextUtils.printBlockLocation(block.getLocation()), 20);
                     locations.add(block.getLocation());
                 }
             }
