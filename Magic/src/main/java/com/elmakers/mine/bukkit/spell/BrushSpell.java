@@ -26,6 +26,7 @@ public class BrushSpell extends BlockSpell {
     protected boolean brushIsErase = false;
     protected boolean usesBrushEffects = true;
     protected Boolean showBrush = null;
+    protected boolean usesBrushEntities = true;
 
     public static final String[] BRUSH_PARAMETERS = {
         "brushmod", "brush", "obx", "oby", "obz", "obworld", "btarget", "brushcolor", "preserve_data"
@@ -38,6 +39,7 @@ public class BrushSpell extends BlockSpell {
 
         brushKey = parameters.getString("brush", null);
         brushIsErase = brushKey != null && (brushKey.equalsIgnoreCase("erase") || brushKey.equalsIgnoreCase("air"));
+        usesBrushEntities = parameters.getBoolean("brush_entities", true);
 
         hasBrush = brushKey != null && !brushKey.isEmpty();
         if (hasBrush) {
@@ -174,6 +176,10 @@ public class BrushSpell extends BlockSpell {
     public boolean hasBrushOverride()
     {
         return hasBrush;
+    }
+
+    public boolean usesBrushEntities() {
+        return usesBrushEntities;
     }
 
     @Override

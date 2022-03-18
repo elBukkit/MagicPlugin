@@ -7,6 +7,8 @@
  - Add `mushroom_cow_variant` entity data tag
  - Add `decor_item` llama data tag
  - Add engineering toggle to replace/ignore only earth blocks
+ - Add `brush_entities` parameter to engineering spells, to turn off replicate and clone copying entities
+ - Add `clear_containers` parameter to engineering spells, to clear (the copied versions of) containers when copying them
 
 ## Changes
 

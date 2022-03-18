@@ -16,9 +16,11 @@ import com.elmakers.mine.bukkit.spell.BrushSpell;
 public abstract class BrushBatch extends SpellBatch {
     private final Set<Chunk> affectedChunks = new HashSet<>();
     private boolean lockChunks = false;
+    private final BrushSpell brushSpell;
 
     public BrushBatch(BrushSpell spell) {
         super(spell);
+        brushSpell = spell;
     }
 
     protected abstract boolean contains(Location location);
@@ -37,7 +39,7 @@ public abstract class BrushBatch extends SpellBatch {
     public void finish() {
         if (!finished) {
             MaterialBrush brush = spell.getBrush();
-            if (brush != null && brush.hasEntities()) {
+            if (brush != null && brush.hasEntities() && brushSpell.usesBrushEntities()) {
                 // Copy over new entities
                 Collection<EntityData> entities = brush.getEntities(affectedChunks);
                 // Delete any entities already in the area, add them to the undo list.
