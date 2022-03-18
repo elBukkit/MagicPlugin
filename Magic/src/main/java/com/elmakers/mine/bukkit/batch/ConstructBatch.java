@@ -69,6 +69,7 @@ public class ConstructBatch extends BrushBatch {
     private boolean checkChunks = true;
     private boolean deferPhysics = true;
     private boolean useBrushSize = false;
+    private boolean clearContainers = false;
 
     private int x = 0;
     private int y = 0;
@@ -118,6 +119,10 @@ public class ConstructBatch extends BrushBatch {
 
     public void setOrientDimensionMin(int minDim) {
         this.minOrientDimension = minDim;
+    }
+
+    public void setClearContainers(boolean clearContainers) {
+        this.clearContainers = clearContainers;
     }
 
     @Deprecated // Material
@@ -503,6 +508,9 @@ public class ConstructBatch extends BrushBatch {
             brush.modify(block, applyPhysics);
             if (replacement != null) {
                 replacement.modify(block, applyPhysics);
+            }
+            if (clearContainers) {
+                CompatibilityLib.getCompatibilityUtils().clearItems(block.getLocation());
             }
             if (!undoList.isScheduled()) {
                 controller.logBlockChange(spell.getMage(), prior, block.getState());

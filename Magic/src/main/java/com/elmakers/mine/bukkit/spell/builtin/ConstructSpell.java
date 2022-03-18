@@ -195,6 +195,7 @@ public class ConstructSpell extends BrushSpell
         batch.setLockChunks(lockChunks);
         batch.setApplyPhysics(physicsType.equalsIgnoreCase("true"));
         batch.setDeferPhysics(physicsType.equalsIgnoreCase("defer"));
+        batch.setClearContainers(parameters.getBoolean("clear_containers", false));
         if (breakable > 0) {
             batch.setBreakable(breakable);
         }
