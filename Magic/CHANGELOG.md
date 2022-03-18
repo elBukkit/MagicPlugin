@@ -15,6 +15,7 @@
 ## Fixes
 
  - Fix boss bar display for spells like Cloak when switching to a different class while the spell is active
+ - Fix issue updating mobs that have despawned on config reload
 
 # 10.6.2
 

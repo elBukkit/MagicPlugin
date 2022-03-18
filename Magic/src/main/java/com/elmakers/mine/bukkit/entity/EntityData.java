@@ -1425,6 +1425,9 @@ public class EntityData
     @Override
     public String getKey() {
         if (key == null) {
+            if (type == null) {
+                return null;
+            }
             return type.name().toLowerCase();
         }
         return key;
