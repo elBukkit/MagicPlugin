@@ -8,6 +8,10 @@
  - Add `decor_item` llama data tag
  - Add engineering toggle to replace/ignore only earth blocks
 
+## Changes
+
+ - Change coal+white dye -> black dye recipe changed to return 2 black dye
+
 ## Fixes
 
  - Fix boss bar display for spells like Cloak when switching to a different class while the spell is active

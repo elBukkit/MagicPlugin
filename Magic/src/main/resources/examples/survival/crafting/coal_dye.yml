@@ -1,7 +1,7 @@
 coal_dye:
   enabled: false
   type: shapeless
-  output: black_dye
+  output: black_dye@2
   auto_discover: true
   group: ""
   ingredients:
