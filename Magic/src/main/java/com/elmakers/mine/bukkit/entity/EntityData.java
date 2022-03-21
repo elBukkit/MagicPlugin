@@ -671,7 +671,7 @@ public class EntityData
             spawned = controller.spawnMythicMob(mythicMobKey, location);
             if (spawned != null) {
                 if (mythicMobLevel != null) {
-                    controller.setMythicMobLevel(spawned, mythicMobLevel);
+                    controller.setMythicMobLevel(spawned, mythicMobLevel == null ? 1 : mythicMobLevel);
                 }
                 addedToWorld = true;
             } else {

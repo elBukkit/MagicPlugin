@@ -864,7 +864,10 @@ public interface MageController {
     void timeSkipped(World world, long skippedAmount);
     void onPlayerJump(Player player, Vector velocity);
     @Nullable
+    @Deprecated
     Entity spawnMythicMob(String mythicMobKey, Location location);
+    @Nullable
+    Entity spawnMythicMob(String mythicMobKey, Location location, double level);
     @Nullable
     String getMythicMobKey(Entity entity);
     @Nullable

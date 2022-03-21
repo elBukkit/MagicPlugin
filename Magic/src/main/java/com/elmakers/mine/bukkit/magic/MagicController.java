@@ -8956,9 +8956,16 @@ public class MagicController implements MageController, ChunkLoadListener {
 
     @Nullable
     @Override
+    @Deprecated
     public Entity spawnMythicMob(String mythicMobKey, Location location) {
+        return spawnMythicMob(mythicMobKey, location, 1);
+    }
+
+    @Nullable
+    @Override
+    public Entity spawnMythicMob(String mythicMobKey, Location location, double level) {
         if (mythicMobManager != null) {
-            return mythicMobManager.spawn(mythicMobKey, location);
+            return mythicMobManager.spawn(mythicMobKey, location, level);
         }
         return null;
     }
