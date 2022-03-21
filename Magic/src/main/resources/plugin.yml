@@ -451,7 +451,7 @@ commands:
   "mhelp":
     aliases: [/mhelp]
     description: Interactive help with magic
-    permission: magic.commands.magic.help
+    permission: magic.commands.mhelp
     usage: |
       /mhelp
       /mhelp wands
