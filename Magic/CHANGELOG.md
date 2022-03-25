@@ -9,6 +9,7 @@
  - Add engineering toggle to replace/ignore only earth blocks
  - Add `brush_entities` parameter to engineering spells, to turn off replicate and clone copying entities
  - Add `clear_containers` parameter to engineering spells, to clear (the copied versions of) containers when copying them
+ - Add `min_radius` parameter to AreaOfEffect action, to select entities within a ring
 
 ## Changes
 

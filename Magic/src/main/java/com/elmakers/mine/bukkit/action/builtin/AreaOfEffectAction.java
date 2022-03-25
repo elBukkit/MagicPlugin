@@ -26,8 +26,9 @@ import com.elmakers.mine.bukkit.utility.Target;
 
 public class AreaOfEffectAction extends CompoundEntityAction
 {
-    protected int radius;
-    protected int yRadius;
+    protected double radius;
+    protected double yRadius;
+    protected double minRadius;
     protected int targetCount;
     protected boolean targetSource;
     protected boolean ignoreModified;
@@ -41,8 +42,9 @@ public class AreaOfEffectAction extends CompoundEntityAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
-        radius = parameters.getInt("radius", 8);
-        yRadius = parameters.getInt("y_radius", radius);
+        radius = parameters.getDouble("radius", 8);
+        minRadius = parameters.getDouble("min_radius", 0);
+        yRadius = parameters.getDouble("y_radius", radius);
         targetCount = parameters.getInt("target_count", -1);
         targetSource = parameters.getBoolean("target_source", true);
         ignoreModified = parameters.getBoolean("ignore_modified", false);
@@ -77,6 +79,16 @@ public class AreaOfEffectAction extends CompoundEntityAction
             );
         }
         Collection<Entity> candidates = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(sourceLocation, radius, yRadius, radius);
+        if (minRadius > 0) {
+            double minRadiusSquared = minRadius * minRadius;
+            Collection<Entity> filtered = new ArrayList<>();
+            for (Entity entity : candidates) {
+                if (entity.getLocation().distanceSquared(sourceLocation) >= minRadiusSquared) {
+                    filtered.add(entity);
+                }
+            }
+            candidates = filtered;
+        }
         Entity targetEntity = context.getTargetEntity();
         if (targetCount > 0)
         {
@@ -91,7 +103,7 @@ public class AreaOfEffectAction extends CompoundEntityAction
                 }
                 if (canTarget && context.canTarget(entity))
                 {
-                    Target target = new Target(sourceLocation, entity, radius, 0);
+                    Target target = new Target(sourceLocation, entity, (int)radius, 0);
                     targets.add(target);
                     mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + target.getScore(), 12);
                 }
