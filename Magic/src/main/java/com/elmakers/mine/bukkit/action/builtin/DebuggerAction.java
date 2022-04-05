@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.geysermc.connector.common.ChatColor;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -16,12 +17,14 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 public class DebuggerAction extends BaseSpellAction
 {
     private int debugLevel;
     private boolean check;
     private boolean checkBrain;
+    private boolean checkBlock;
     private boolean forceMage;
 
     @Override
@@ -31,6 +34,7 @@ public class DebuggerAction extends BaseSpellAction
         debugLevel = parameters.getInt("level", 1);
         check = parameters.getBoolean("check", false);
         checkBrain = parameters.getBoolean("check_brain", false);
+        checkBlock = parameters.getBoolean("check_block", false);
         forceMage = parameters.getBoolean("force", false);
     }
 
@@ -40,10 +44,10 @@ public class DebuggerAction extends BaseSpellAction
         Entity entity = context.getTargetEntity();
         MageController controller = context.getController();
         Mage mage = null;
+        Block block = context.getTargetBlock();
         if (entity != null && (controller.isMage(entity) || forceMage)) {
             mage = controller.getMage(entity);
         } else {
-            Block block = context.getTargetBlock();
             if (DefaultMaterials.isCommand(block.getType())) {
                 CommandBlock commandBlock = (CommandBlock)block.getState();
                 // This is a bit of hacky ..
@@ -54,6 +58,19 @@ public class DebuggerAction extends BaseSpellAction
                 }
                 mage = controller.getRegisteredMage(mageId);
             }
+        }
+        if (checkBlock) {
+            String blockName = block.getType().name().toLowerCase();
+            Object data = CompatibilityLib.getCompatibilityUtils().getTileEntityData(block.getLocation());
+            if (data != null) {
+                blockName += ":" + data;
+            } else {
+                data = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
+                if (data != null) {
+                    blockName += ":" + data;
+                }
+            }
+            context.getMage().sendMessage(ChatColor.GOLD + "Targeted: " + ChatColor.YELLOW + blockName);
         }
         if (mage == null) {
             return SpellResult.NO_TARGET;

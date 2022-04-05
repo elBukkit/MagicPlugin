@@ -470,7 +470,8 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public BlockEntity getTileEntity(Location location) {
         ServerLevel world = ((CraftWorld)location.getWorld()).getHandle();
-        return world.getBlockEntity(new BlockPos(location.getX(), location.getY(), location.getZ()), false);
+        BlockPos blockPos = new BlockPos(location.getX(), location.getY(), location.getZ());
+        return world.getBlockEntity(blockPos, false);
     }
 
     @Override
