@@ -10,8 +10,8 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 
-import com.palmergames.bukkit.towny.Towny;
 import com.palmergames.bukkit.towny.TownyAPI;
+import com.palmergames.bukkit.towny.TownyUniverse;
 import com.palmergames.bukkit.towny.exceptions.NotRegisteredException;
 import com.palmergames.bukkit.towny.exceptions.TownyException;
 import com.palmergames.bukkit.towny.object.Coord;
@@ -27,15 +27,13 @@ import com.palmergames.bukkit.towny.utils.PlayerCacheUtil;
 
 public class TownyBridge
 {
-    private final Towny towny;
     private final TownyAPI api;
     private final TownyManager controller;
 
-    public TownyBridge(TownyManager manager, Plugin plugin) throws IllegalArgumentException, NoSuchMethodException {
-        if (!(plugin instanceof Towny)) {
-            throw new IllegalArgumentException("Towny plugin not an instance of Towny class");
+    public TownyBridge(TownyManager manager, Plugin plugin) throws IllegalArgumentException {
+        if (plugin == null) {
+            throw new IllegalArgumentException("Towny integration attempt without Towny plugin instance");
         }
-        towny = (Towny)plugin;
         controller = manager;
         api = TownyAPI.getInstance();
     }
@@ -97,11 +95,7 @@ public class TownyBridge
         if (target != null && entity != null) {
             TownBlock defenderTB = TownyAPI.getInstance().getTownBlock(target.getLocation());
             TownBlock attackerTB = TownyAPI.getInstance().getTownBlock(entity.getLocation());
-            TownyWorld townyWorld = null;
-            try {
-                townyWorld = TownyAPI.getInstance().getDataSource().getWorld(target.getWorld().getName());
-            } catch (NotRegisteredException ignored) {
-            }
+            TownyWorld townyWorld = TownyUniverse.getInstance().getWorld(target.getWorld().getName());
             if (townyWorld == null) {
                 return true;
             }
@@ -114,8 +108,7 @@ public class TownyBridge
     @Nullable
     protected Resident getResident(Player player) {
         try {
-            // We can only look up players by name now? Why? Whatever.
-            return api.getDataSource().getResident(player.getName());
+            return TownyUniverse.getInstance().getResident(player.getUniqueId());
         } catch (Exception ex) {
             if (!(ex instanceof TownyException)) {
                 Bukkit.getLogger().log(Level.WARNING, "Error getting Towny Resident", ex);
@@ -126,7 +119,7 @@ public class TownyBridge
 
     @Nullable
     public Location getTownLocation(Player player) {
-        if (towny == null || player == null) {
+        if (api == null || player == null) {
             return null;
         }
 

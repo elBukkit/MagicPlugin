@@ -22,6 +22,8 @@
  - Update to latest MythicMobs API
    Note that because the Mythic API changed completely, you will need to update MythicMobs when you update Magic.  
    Untested.
+ - Update to latest Towny API
+   Same note applies, you will need to update Towny if you update Magic.
  - Fix boss bar display for spells like Cloak when switching to a different class while the spell is active
  - Fix issue updating mobs that have despawned on config reload
 

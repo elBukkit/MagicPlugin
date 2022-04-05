@@ -181,9 +181,9 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.github.TownyAdvanced</groupId>
-            <artifactId>Towny</artifactId>
-            <version>0.97.2.0</version>
+            <groupId>com.palmergames.bukkit.towny</groupId>
+            <artifactId>towny</artifactId>
+            <version>0.98.1.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -472,6 +472,10 @@
         <repository>
             <id>sk89q</id>
             <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+        <repository>
+            <id>glaremasters repo</id>
+            <url>https://repo.glaremasters.me/repository/towny/</url>
         </repository>
         <repository>
             <!-- For Geyser -->
