@@ -15,6 +15,7 @@
 
  - Change coal+white dye -> black dye recipe changed to return 2 black dye
  - Permission for mhelp command changed to `magic.commands.mhelp` for consistency
+ - The Wolf staff now uses a class to synchronize brushes and spells (great for PWI)
 
 ## Fixes
 
