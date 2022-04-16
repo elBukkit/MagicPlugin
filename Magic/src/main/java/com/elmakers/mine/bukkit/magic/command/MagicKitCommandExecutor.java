@@ -51,7 +51,7 @@ public class MagicKitCommandExecutor extends MagicTabExecutor {
 
         Kit kit = controller.getKit(kitName);
         if (kit == null) {
-            sender.sendMessage(controller.getMessages().get("commands.mkit.unknown_kit"));
+            sender.sendMessage(controller.getMessages().get("commands.mkit.unknown_kit").replace("$kit", kitName));
             return true;
         }
 
