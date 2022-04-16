@@ -26,6 +26,7 @@
    Same note applies, you will need to update Towny if you update Magic.
  - Fix boss bar display for spells like Cloak when switching to a different class while the spell is active
  - Fix issue updating mobs that have despawned on config reload
+ - Fix Pillager mob head
 
 # 10.6.2
 
