@@ -1,0 +1,9 @@
+movemarker:
+  icon: backup
+  inherit: recall
+  actions:
+    cast:
+      - class: Recall
+        type: place
+        allow_marker: true
+        marker_count: 4

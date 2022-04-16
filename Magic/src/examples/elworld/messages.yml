@@ -12,6 +12,32 @@ worlds:
         name: The Overworld
 
 spells:
+  teleportermenu:
+    name: "Pocket Teleporter"
+    title: "Pocket Teleporter"
+    selected_free: ""
+    cast_fail: ""
+  teleporter:
+    name: Teleport to a Place
+    description: Can return to places you have already discovered
+    description_marker: "Set this to any location you want from the Pocket Teleporter menu"
+  tprequest:
+    name: Teleport to a Friend
+    desscription: Will ask them if you can TP to them. Please don't spam!
+    no_target: "&4No one is around"
+    cast_to_player: Teleporting you to $target
+    cast_entity: Teleporting $target to your target
+    send_request_title: "Teleport To:"
+    friend_request_title: "@tn wants to teleport"
+    title_friend: $name
+    no_target_friend: Can't warp to $name
+    cast_target: "a:&d&o$player &r&5warped to you"
+    cast_friend: "a:&5Warping you to &o&d$tn"
+    reject: "a:&o&d@pn &5&rsaid no &b;("
+    selected_free: ""
+  movemarker:
+    name: Set Warp Marker
+    description: You can save 4 personal warp locations to go back to at any time!
   othershop:
     name: Warrior Shop
     title: "Warrior Shop ($balance)"
@@ -110,3 +136,8 @@ kits:
     name: Gold Kit
   iron_kit:
     name: Iron Kit
+
+wands:
+  teleporter:
+    name: "Pocket Teleporter"
+    description: "Right-Click (Or swing at ground) to use\nClick on (or take) item to teleport"

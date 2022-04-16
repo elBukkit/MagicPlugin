@@ -47,3 +47,11 @@ navigator:
 ticket:
   enabled: true
   worlds: world_hogwarts
+
+club:
+  enabled: true
+  keep: true
+  permission: club
+  worlds: "*"
+  items:
+    - teleporter

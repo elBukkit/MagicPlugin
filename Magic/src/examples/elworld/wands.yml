@@ -301,4 +301,23 @@ basic_runestone:
     - manabolt
     - wandcontrolsmenu
 
+teleporter:
+  lore:
+    - $description
+  keep: true
+  immortal: false
+  track: false
+  unstashable: false
+  invulnerable: false
+  bound: false
+  undroppable: true
+  drop: destroy
+  icon: nether_star{CustomModelData:18001}
+  migrate_icons:
+    gunpowder: nether_star{CustomModelData:18001}
+  mode: cast
+  active_spell: teleportermenu
+  effect_color: 'FF00FF'
+  spells:
+    - teleportermenu
 

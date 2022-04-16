@@ -1,0 +1,37 @@
+teleporter:
+  earns_sp: 0
+  inherit: recall
+  hidden: true
+  actions:
+    alternate_down: cast
+  parameters:
+    options:
+      - type: home
+      - type: death
+      - type: town
+        show_unavailable: false
+      - type: spawn
+        show_unavailable: false
+      - type: placeholder
+      - type: marker
+        show_unavailable: false
+        marker: 1
+      - type: marker
+        show_unavailable: false
+        marker: 2
+      - type: marker
+        show_unavailable: false
+        marker: 3
+      - type: marker
+        show_unavailable: false
+        marker: 4
+    warmup: 500
+    cooldown: 5000
+    marker_count: 4
+    allow_spawn: false
+    allow_marker: true
+    allow_death: true
+    allow_regions: false
+    allow_all_regions: false
+    cancel_on_damage: 0
+    cancel_on_cast_other: false
