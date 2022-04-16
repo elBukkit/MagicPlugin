@@ -246,6 +246,11 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 onMageForget(sender, player, args2);
                 handled = true;
             }
+            if (subCommand.equalsIgnoreCase("discover"))
+            {
+                onMageDiscover(sender, player, args2);
+                handled = true;
+            }
             if (subCommand.equalsIgnoreCase("skin"))
             {
                 onMageSkin(sender, player);
@@ -501,6 +506,23 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         }
         sender.sendMessage(ChatColor.AQUA + "Removed knowledge of " + ChatColor.DARK_AQUA + count + ChatColor.AQUA + " crafting recipes from "
             + ChatColor.GOLD + player.getName());
+        return true;
+    }
+
+    public boolean onMageDiscover(CommandSender sender, Player player, String[] parameters)
+    {
+        if (parameters.length == 0) {
+            sender.sendMessage(ChatColor.RED + "Usage: /mage discover <recipe>");
+            return false;
+        }
+        String recipe = parameters[0];
+        if (!CompatibilityLib.getCompatibilityUtils().discoverRecipe(player, recipe)) {
+            sender.sendMessage(ChatColor.RED + "Unknown recipe: " + ChatColor.YELLOW + recipe);
+            return false;
+        }
+
+        sender.sendMessage(ChatColor.AQUA + "Discovered " + ChatColor.DARK_AQUA + recipe + ChatColor.AQUA + " crafting recipe for "
+                + ChatColor.GOLD + player.getName());
         return true;
     }
 

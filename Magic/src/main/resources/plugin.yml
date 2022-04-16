@@ -567,6 +567,7 @@ commands:
         /mage deactivate  Close the player's wand inventory, also can be used like /mage lock
         /mage skin        Dump to chat a player's skin for use in a disguise
         /mage forget      Clear knowledge of crafting recipes
+        /mage discover    Discover a crafting recipe
   "mage configure":
     description: Configure mage properties, configures the active class
     usage: |
@@ -717,8 +718,16 @@ commands:
     permission: magic.commands.mage.forget
     usage: |
 
-        /mage forget <Player>
+        /mage forget <Player> <recipe>
         /mage forget NathanWolf
+        /mage forget NathanWolf broomstick
+  "mage discover":
+    description: Discover magic crafting recipes for a player
+    permission: magic.commands.mage.discover
+    usage: |
+      
+      /mage discover <Player> [recipe]
+      /mage discover NathanWolf broomstick
   "mage bypass":
     description: Toggle on/off bypass for pvp, build, break and other checks
     permission: magic.commands.mage.bypass
