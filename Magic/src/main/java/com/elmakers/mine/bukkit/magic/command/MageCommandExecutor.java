@@ -295,6 +295,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
             addIfPermissible(sender, options, "magic.commands.mage.", "bypass");
             addIfPermissible(sender, options, "magic.commands.mage.", "promote");
             addIfPermissible(sender, options, "magic.commands.mage.", "forget");
+            addIfPermissible(sender, options, "magic.commands.mage.", "discover");
         } else if (args.length == 2 && sender.hasPermission("magic.commands.mage.others")) {
             options.addAll(api.getPlayerNames());
         }

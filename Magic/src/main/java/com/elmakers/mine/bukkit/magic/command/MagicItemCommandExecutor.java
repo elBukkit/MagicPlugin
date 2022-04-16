@@ -124,6 +124,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             addIfPermissible(sender, options, "magic.commands.mitem.", "describe");
             addIfPermissible(sender, options, "magic.commands.mitem.", "desc");
             addIfPermissible(sender, options, "magic.commands.mitem.", "duplicate");
+            addIfPermissible(sender, options, "magic.commands.mitem.", "amount");
             addIfPermissible(sender, options, "magic.commands.mitem.", "save");
             addIfPermissible(sender, options, "magic.commands.mitem.", "delete");
             addIfPermissible(sender, options, "magic.commands.mitem.", "destroy");
@@ -308,6 +309,10 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         else if (subCommand.equalsIgnoreCase("duplicate"))
         {
             return onItemDuplicate(sender, player, item);
+        }
+        else if (subCommand.equalsIgnoreCase("amount"))
+        {
+            return onItemAmount(sender, item, args);
         }
         else if (subCommand.equalsIgnoreCase("save"))
         {
@@ -1125,6 +1130,22 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
             return true;
         }
         CompatibilityLib.getDeprecatedUtils().setItemDamage(item, durability);
+        return true;
+    }
+
+    public boolean onItemAmount(CommandSender sender, ItemStack item, String[] parameters)
+    {
+        if (parameters.length < 1) {
+            return false;
+        }
+        short amount = 0;
+        try {
+            amount = (short)Integer.parseInt(parameters[0]);
+        } catch (NumberFormatException ex) {
+            sender.sendMessage("Invalid amount: " + parameters[0]);
+            return true;
+        }
+        item.setAmount(amount);
         return true;
     }
 

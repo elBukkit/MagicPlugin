@@ -230,6 +230,7 @@ commands:
         /mitem describe   Show information about an item
         /mitem configure  Modify NBT tags on an item (may be dangerous!)
         /mitem duplicate  Create a copy of an item
+        /mitem amount     Change the amount of a stack of items
         /mitem destroy    Destroy an item
         /mitem clean      Strip any custom Magic data from an item
         /mitem skull      Create a custom skull based on data in a book
@@ -301,6 +302,10 @@ commands:
     description: Duplicate your held item
     usage: /mitem duplicate
     permission: magic.commands.mitem.duplicate
+  "mitem amount":
+    description: Change the amount of your held item stack
+    usage: /mitem amount <count>
+    permission: magic.commands.mitem.amount
   "mitem clean":
     description: Clean magic data from  your held item
     usage: /mitem clean
@@ -1374,6 +1379,7 @@ permissions:
     children:
     - magic.commands.mitem
     - magic.commands.mitem.add
+    - magic.commands.mitem.amount
     - magic.commands.mitem.remove
     - magic.commands.mitem.save
     - magic.commands.mitem.export
@@ -1412,6 +1418,10 @@ permissions:
     default: op
   magic.commands.mitem.duplicate:
     description: Player may duplicate their held item
+    type: boolean
+    default: op
+  magic.commands.mitem.amount:
+    description: Player may change the amount of their held item stack
     type: boolean
     default: op
   magic.commands.mitem.destroy:
@@ -1680,6 +1690,7 @@ permissions:
     - magic.commands.mage.others
     - magic.commands.mage.skin
     - magic.commands.mage.forget
+    - magic.commands.mage.discover
   magic.commands.mage.configure:
     description: Player may configure Mage properties
     type: boolean
@@ -1758,6 +1769,10 @@ permissions:
     default: op
   magic.commands.mage.forget:
     description: Player may reset player recipe knowledge
+    type: boolean
+    default: op
+  magic.commands.mage.discover:
+    description: Player may add to recipe knowledge
     type: boolean
     default: op
   magic.commands.mage.unbind:
