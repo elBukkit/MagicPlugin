@@ -40,7 +40,8 @@ attachable:
 - flowers
 - plants
 - sign_post
-- piston_head
+- piston
+- sticky_piston
 
 # 1.13
 
