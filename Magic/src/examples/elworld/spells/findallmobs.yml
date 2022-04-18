@@ -1,0 +1,12 @@
+findallmobs:
+  name: Find Mobs
+  icon: stick
+  actions:
+    cast:
+      - class: AllEntities
+        actions:
+          - class: Message
+            message: '`{"text":"Found $td at @target_location_x,@target_location_y,@target_location_z","hoverEvent":{"action":"show_text","contents":"Click to teleport"}, "clickEvent":{"action":"run_command","value":"/tp @s @target_location_x @target_location_y @target_location_z"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
+  parameters:
+    target: self
+    sort: true

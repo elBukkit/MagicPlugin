@@ -2,9 +2,13 @@ package com.elmakers.mine.bukkit.action;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.annotation.Nullable;
 
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 
@@ -15,8 +19,15 @@ public abstract class CompoundEntityAction extends CompoundAction
 {
     private List<WeakReference<Entity>> entities = new ArrayList<>();
     private int currentEntity = 0;
+    private boolean sort = false;
 
     public abstract void addEntities(CastContext context, List<WeakReference<Entity>> entities);
+
+    @Override
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        sort = parameters.getBoolean("sort", false);
+    }
 
     @Override
     public void reset(CastContext context)
@@ -30,6 +41,21 @@ public abstract class CompoundEntityAction extends CompoundAction
         entities.clear();
         addEntities(context, entities);
         context.addWork(20 + entities.size());
+        if (sort) {
+            final Location target = context.getTargetLocation();
+            final Location source = target == null ? context.getLocation() : target;
+            Collections.sort(entities, new Comparator<WeakReference<Entity>>() {
+                @Override
+                public int compare(WeakReference<Entity> r1, WeakReference<Entity> r2) {
+                    Entity e1 = r1.get();
+                    Entity e2 = r2.get();
+                    if (e1 == null && e2 == null) return 0;
+                    if (e1 == null && e2 != null) return 1;
+                    if (e1 != null && e2 == null) return -1;
+                    return (int)(e1.getLocation().distanceSquared(source) - e2.getLocation().distanceSquared(source));
+                }
+            });
+        }
         return SpellResult.NO_TARGET;
     }
 

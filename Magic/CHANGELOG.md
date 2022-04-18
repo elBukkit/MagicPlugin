@@ -12,6 +12,7 @@
  - Add `min_radius` parameter to AreaOfEffect action, to select entities within a ring
  - Add `/mage discover` command for learning crafting recipes
  - Add `/mitem amount` command to change the amount of an item stack
+ - Add `sort` option to `AllEntities` action
 
 ## Changes
 
