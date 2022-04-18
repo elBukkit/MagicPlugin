@@ -30,9 +30,6 @@
  - Fix boss bar display for spells like Cloak when switching to a different class while the spell is active
  - Fix issue updating mobs that have despawned on config reload
  - Fix Pillager mob head
-
-# 10.6.2
-
  - Fix error saving an NPC that didn't successfully spawn an entity
  - Ignore animation events while in an inventory, this prevents unintentional spell casts
    from dropping items while holding a wand
