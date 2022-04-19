@@ -2,6 +2,10 @@
 
 # 10.8
 
+## Additions
+
+ - Add toggle_icon wand action, for making wands with toggleable icons that have no spell inventory
+
 ## Changes
 
  - Bring back Regenerate and SuperRegenerate, Conduit path.

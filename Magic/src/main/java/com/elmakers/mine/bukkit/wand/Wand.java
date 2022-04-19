@@ -183,6 +183,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean neverUseActiveName = false;
     private boolean instructions = true;
     private boolean instructionsLore = true;
+    private boolean showingActiveIcon = false;
     private int inventoryRows = 1;
     private Vector castLocation;
 
@@ -760,6 +761,8 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         boolean useActiveIcon = mage != null;
         if (useActiveIcon && getMode() == WandMode.INVENTORY) {
             useActiveIcon = isInventoryOpen();
+        } else if (useActiveIcon) {
+            useActiveIcon = showingActiveIcon;
         }
         return useActiveIcon;
     }
@@ -4249,6 +4252,22 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         return false;
     }
 
+    public void toggleIcon() {
+        showingActiveIcon = !showingActiveIcon;
+
+        if (showingActiveIcon) {
+            if (!playPassiveEffects("open") && inventoryOpenSound != null) {
+                mage.playSoundEffect(inventoryOpenSound);
+            }
+        } else {
+            if (!playPassiveEffects("close") && inventoryCloseSound != null) {
+                mage.playSoundEffect(inventoryCloseSound);
+            }
+        }
+
+        showActiveIcon(showingActiveIcon);
+    }
+
     public void toggleInventory() {
         if (mage != null && mage.cancelSelection()) {
             mage.playSoundEffect(noActionSound);
@@ -5238,6 +5257,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             mage.resetSentExperience();
         }
         saveState();
+        showingActiveIcon = false;
         showActiveIcon(false);
         mage.deactivateWand(this);
         this.mage = null;
@@ -6836,6 +6856,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 break;
             case ALT_CAST7:
                 alternateCast(6);
+                break;
+            case TOGGLE_ICON:
+                toggleIcon();
                 break;
             case TOGGLE:
                 if (mode == WandMode.CYCLE) {
