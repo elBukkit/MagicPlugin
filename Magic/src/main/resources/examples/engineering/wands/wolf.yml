@@ -69,6 +69,8 @@ wolf:
     - superbackup
     - superrepair
     - save
+    - regenerate
+    - superregenerate
     - portal
     - night
     - capture

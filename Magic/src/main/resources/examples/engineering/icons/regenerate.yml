@@ -1,0 +1,8 @@
+regenerate:
+  item: 'stone_pickaxe{18003}'
+  item_disabled: 'stone_pickaxe{18004}'
+  legacy_item: spell_icon:77
+  legacy_item_disabled: spell_icon_disabled:77
+  url: http://textures.minecraft.net/texture/43e6aef534bc455c1d13d692fa193cac6efcce7c875b185375114b71c63929
+  type: spell
+  glyph: "\ue999"

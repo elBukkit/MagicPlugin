@@ -1,24 +1,62 @@
 regenerate:
-    icon: spell_icon:77
-    icon_disabled: spell_icon_disabled:77
-    icon_url: http://textures.minecraft.net/texture/43e6aef534bc455c1d13d692fa193cac6efcce7c875b185375114b71c63929
+    # This refers to an icon defined in the icons folder/config
+    icon: regenerate
     category: engineering
     tags: noduel
-    class: RegenerateSpell
-    worth: 1000
+    class: ConstructSpell
+    worth: 300
     effects:
         cast:
-        -  class: EffectTrail
-           particle: block_crack
-           material: dirt
+            - class: EffectSingle
+              sound: block_piston_extend
+              sound_volume: 0.2
+              sound_pitch: 0.5
+            - sound: entity_illusioner_cast_spell
+              sound_pitch: 1.8
+            - location: target
+              target_offset: 0,1,0
+              effectlib:
+                  class: Helix
+                  particle: crimson_spore
+                  duration: 1000
+                  radius: 2
+                  particles: 8
+                  particle_count: 4
+                  particle_offset: 0.05
+            - class: EffectTrail
+              particle: dripping_honey
+              particle_count: 4
+              particle_offset: 0.2
+            - location: target
+              effectlib:
+                  class: Star
+                  particle: end_rod
+                  duration: 1000
+                  spike_height: 4
+                  particles: 10
+                  particle_count: 4
+                  particle_offset: 0.05
+            - class: EffectTrail
+              particle: dripping_honey
+              particle_count: 4
+              particle_offset: 0.2
     parameters:
+        target: block
         allow_max_range: false
-        target: select
-        range: 64
-        max_dimension: 32
+        range: 32
+        radius: 4
+        type: sphere
+        check_destructible: false
+        indestructible: restricted
         transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_original
+        obworld: ~_original
+        brushtarget: true
+        cooldown: 7000
         ignore_region_overrides: true
         cancel_on_deactivate: false
+        consume: true
     costs:
-        mana: 400
-
+        mana: 200

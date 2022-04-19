@@ -1,25 +1,74 @@
 superregenerate:
-    icon: spell_icon:78
-    icon_disabled: spell_icon_disabled:78
-    icon_url: http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b
+    # This refers to an icon defined in the icons folder/config
+    icon: superregenerate
     category: engineering
     tags: noduel
-    class: RegenerateSpell
-    worth: 1500
+    class: ConstructSpell
+    worth: 500
     effects:
+        no_target:
+            - sound: block_note_block_didgeridoo
+              sound_pitch: 1.75
+              sound_volume: 0.15
+            - location: both
+            - class: EffectTrail
+              particle: spell_mob
+            - class: EffectTrail
+              particle: redstone
+              color: "#880000"
+              particle_count: 8
+              particle_offset_x: 0.05
+              particle_offset_y: 0.05
+              particle_offset_z: 0.05
         cast:
-        -  class: EffectTrail
-           particle: block_crack
-           material: dirt
+            - class: EffectSingle
+              sound: block_piston_extend
+              sound_volume: 0.2
+              sound_pitch: 0.3
+            - sound: entity_illusioner_cast_spell
+              sound_pitch: 0.7
+            - location: target
+              target_offset: 0,1,0
+              effectlib:
+                  class: Helix
+                  particle: crimson_spore
+                  duration: 1000
+                  radius: 2
+                  particles: 8
+                  particle_count: 4
+                  particle_offset: 0.05
+            - class: EffectTrail
+              particle: dripping_honey
+              particle_count: 4
+              particle_offset: 0.2
+            - location: selection_to_target
+              radius_override: spike_height
+              effectlib:
+                  class: Star
+                  particle: end_rod
+                  duration: 500
+                  particles: 10
+                  particle_count: 4
+                  particle_offset: 0.05
+            - class: EffectTrail
+              particle: dripping_honey
+              particle_count: 4
+              particle_offset: 0.2
     parameters:
-        allow_max_range: false
         target: select
-        range: 64
-        max_dimension: 64
-        expand: true
+        allow_max_range: true
+        max_dimension: 32
+        range: 32
+        type: sphere
+        check_destructible: false
+        indestructible: restricted
         transparent: transparent_to_construction
+        brush: clone
+        brushmod: erase
+        otworld: ~-_original
+        obworld: ~_original
+        brushtarget: true
         ignore_region_overrides: true
         cancel_on_deactivate: false
     costs:
-        mana: 1000
-
+        mana: 400

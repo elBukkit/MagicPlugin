@@ -2,6 +2,11 @@
 
 # 10.8
 
+## Changes
+
+ - Bring back Regenerate and SuperRegenerate, Conduit path.
+   These now use a world copy (like Backup/Repair) since chunk regeneration is no longer supported
+
 # 10.7
 
 ## Additions

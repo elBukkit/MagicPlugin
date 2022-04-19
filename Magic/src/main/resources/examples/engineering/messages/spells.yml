@@ -237,19 +237,16 @@ spells:
         cast_finish: Saved selection to $filename
     superregenerate:
         name: SuperRegenerate
-        description: Regenerate full chunks
+        description: Regenerate a selected area
         usage: Cast twice to regenerate
         fail: Can't regenerate that much!
-        cast: Regenerating chunks
-        target_selected: Cast again to regenerate chunks
+        cast: Regenerating blocks
+        target_selected: Cast again to regenerate blocks
         cast_finish: Regenerated @blocks blocks
     regenerate:
         name: Regenerate
-        description: Regenerate a selected area
-        fail: Can't regenerate that much!
-        usage: Cast twice to regenerate
+        description: Regenerate a small area
         cast: Regenerating area
-        target_selected: Cast again to regenerate area
         cast_finish: Regenerated @blocks blocks
     recurse:
         name: Recurse

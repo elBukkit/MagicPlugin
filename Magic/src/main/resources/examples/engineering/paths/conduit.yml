@@ -32,6 +32,8 @@ conduit:
       - capture
       - commit
       - forest
+      - regenerate
+      - superregenerate
     brushes:
       - light
       - schematic|rainbow_blocks
