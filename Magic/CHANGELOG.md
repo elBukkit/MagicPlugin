@@ -6,6 +6,7 @@
 
  - Add `toggle_icon` wand action, for making wands with toggleable icons that have no spell inventory
  - Add `pickup_delay` option for dropped item entities, can be set to "infinite"
+ - Add `relative_location_offset` parameter to Entity/ArmorStand Projectile action
 
 ## Changes
 

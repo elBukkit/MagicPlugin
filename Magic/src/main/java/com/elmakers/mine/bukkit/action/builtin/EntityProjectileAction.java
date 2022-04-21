@@ -23,6 +23,8 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 
+import de.slikey.effectlib.util.VectorUtils;
+
 public class EntityProjectileAction extends CustomProjectileAction {
     private boolean noTarget = true;
     private boolean doTeleport = false;
@@ -31,6 +33,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     private boolean spawnActionsRun;
     private Vector velocityOffset;
     private Vector locationOffset;
+    private Vector relativeLocationOffset;
     protected CreatureSpawnEvent.SpawnReason spawnReason = CreatureSpawnEvent.SpawnReason.CUSTOM;
     private Collection<PotionEffect> projectileEffects;
 
@@ -66,6 +69,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
         orient = parameters.getBoolean("orient", false);
         velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");
         locationOffset = ConfigurationUtils.getVector(parameters, "location_offset");
+        relativeLocationOffset = ConfigurationUtils.getVector(parameters, "relative_location_offset");
 
         if (parameters.contains("spawn_reason")) {
             String reasonText = parameters.getString("spawn_reason").toUpperCase();
@@ -131,7 +135,10 @@ public class EntityProjectileAction extends CustomProjectileAction {
     }
 
     protected Location adjustLocation(Location location) {
-        // TODO: locationOffset and velocityOffset should be made relative
+        if (relativeLocationOffset != null) {
+            Vector offset = VectorUtils.rotateVector(relativeLocationOffset, location);
+            location = location.clone().add(offset);
+        }
         if (locationOffset != null) {
             location = location.clone().add(locationOffset);
         }
