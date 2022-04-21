@@ -12,10 +12,12 @@ import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
+import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 
 public class EntityDroppedItemData extends EntityExtraData {
     protected ItemStack item;
+    protected Integer pickupDelay;
 
     public EntityDroppedItemData(ConfigurationSection parameters, MageController controller) {
         Logger log = controller.getLogger();
@@ -28,12 +30,18 @@ public class EntityDroppedItemData extends EntityExtraData {
                 item = itemData.getItemStack();
             }
         }
+        if (ConfigUtils.isMaxValue(parameters.getString("pickup_delay"))) {
+            pickupDelay = Integer.MAX_VALUE;
+        } else {
+            pickupDelay = ConfigUtils.getOptionalInteger(parameters, "pickup_delay");
+        }
     }
 
     public EntityDroppedItemData(Entity entity) {
         if (entity instanceof Item) {
             Item droppedItem = (Item)entity;
             item = PlatformInterpreter.getPlatform().getItemUtils().getCopy(droppedItem.getItemStack());
+            pickupDelay = droppedItem.getPickupDelay();
         }
     }
 
@@ -44,6 +52,9 @@ public class EntityDroppedItemData extends EntityExtraData {
             if (!PlatformInterpreter.getPlatform().getItemUtils().isEmpty(item)) {
                 droppedItem.setItemStack(item);
             }
+            if (pickupDelay != null) {
+                droppedItem.setPickupDelay(pickupDelay);
+            }
         }
     }
 
@@ -52,6 +63,9 @@ public class EntityDroppedItemData extends EntityExtraData {
         Entity newEntity = null;
         if (!PlatformInterpreter.getPlatform().getItemUtils().isEmpty(item)) {
             newEntity = location.getWorld().dropItem(location, item);
+        }
+        if (newEntity != null && pickupDelay != null && newEntity instanceof Item) {
+            ((Item)newEntity).setPickupDelay(pickupDelay);
         }
         return new SpawnedEntityExtraData(newEntity, true);
     }
