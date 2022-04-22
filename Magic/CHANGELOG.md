@@ -9,6 +9,8 @@
  - Add `relative_location_offset` parameter to Entity/ArmorStand Projectile action
  - Add `timeout` parameter to all `Check` actions, to wait a certain amount of time, repeating the check
  - Add `CheckChatClick` action, which can send a message to a player and then react to a click
+ - Add `same_block: true` option to `Teleport` action, to allow teleporting less than one block.
+   This is normally disallowed to prevent glitching through panes and iron bars
 
 ## Changes
 

@@ -24,6 +24,7 @@ public class TeleportAction extends BaseTeleportAction
     private int passthroughRange;
     private int ledgeSearchDistance = 2;
     private boolean direct = false;
+    private boolean sameBlock = false;
     private double roundUp = 0.75;
 
     @Override
@@ -37,6 +38,7 @@ public class TeleportAction extends BaseTeleportAction
         passthroughRange = (int)Math.floor(mage.getRangeMultiplier() * parameters.getInt("passthrough_range", DEFAULT_PASSTHROUGH_RANGE));
         direct = parameters.getBoolean("direct", false);
         roundUp = parameters.getDouble("round_up", 0.75);
+        sameBlock = parameters.getBoolean("same_block", false);
     }
 
     @Override
@@ -101,7 +103,7 @@ public class TeleportAction extends BaseTeleportAction
             }
 
             // Special-case to prevent passthrough of half-width blocks
-            if (!autoPassthrough && target.getX() == source.getX() && target.getY() == source.getY() && target.getZ() == source.getZ())
+            if (!sameBlock && !autoPassthrough && target.getX() == source.getX() && target.getY() == source.getY() && target.getZ() == source.getZ())
             {
                 context.getMage().sendDebugMessage(ChatColor.RED + "Teleporting entity failed, can't stand in half block at " + ChatColor.DARK_RED + target.getType(), 11);
                 return SpellResult.NO_TARGET;
