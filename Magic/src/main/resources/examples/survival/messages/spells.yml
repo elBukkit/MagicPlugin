@@ -721,29 +721,17 @@ spells:
         cast: You teleport back to safety
     gather:
         name: Gather
-        description: Teleport you to other players
-        usage: Aim down and cast to manage friends
-        alternate_down_no_target: "&4No one is around"
-        no_target: |-
-          &4No one is around to teleport to
-          &3Aim down and cast to send friend requests!
+        description: Request another player to let you teleport to them
+        no_target: "&4No one is around"
         cast_to_player: Teleporting you to $target
         cast_entity: Teleporting $target to your target
-        cast_player_message: "a:&d&o$player &r&5folded space"
-        cast_friend: Warping you to $name
-        no_target_friend: Can't warp to $name
+        send_request_title: "Teleport To:"
+        friend_request_title: "@tn wants to teleport"
         title_friend: $name
-        add_friend: "&bYou have added &5$name &bas a &6Friend!"
-        remove_friend: "&cYou have removed &5$name &cas a &6Friend!"
-        recall_title: "Teleport To:"
-        friend_request_title: "@tn wants to be friends"
-        reject: "@pn said no ;("
-        send_request_title: "Send Friend Request"
-        add_friend_name: Send Friend Requests
-        remove_friend_name: Unfriend
-        remove_friend_title: Unfriend
-        cast_remove_friend: "&bYou have unfriended &5$name"
-        title_remove_friend: "$name"
+        no_target_friend: Can't warp to $name
+        cast_target: "a:&d&o$player &r&5warped to you"
+        cast_friend: "a:&5Warping you to &o&d$tn"
+        selected_free: ""
     recall_death:
         name: Recall to Last Death
         description: Takes you directly to the last place you died
