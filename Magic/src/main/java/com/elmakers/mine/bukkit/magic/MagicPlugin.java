@@ -45,6 +45,7 @@ import com.elmakers.mine.bukkit.magic.command.MagicSkillsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.MagicWarpCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.RPCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
+import com.elmakers.mine.bukkit.magic.command.TriggerCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -204,6 +205,7 @@ public class MagicPlugin extends JavaPlugin implements MagicAPI
         new WandCommandExecutor(this).register(this);
         new SpellsCommandExecutor(this).register(this);
         new RPCommandExecutor(this).register(this);
+        new TriggerCommandExecutor(this).register(this);
         new MagicWarpCommandExecutor(controller).register(this);
         new MagicConfigCommandExecutor(this, controller).register(this);
         new MagicEditorCommandExecutor(this, controller).register(this);

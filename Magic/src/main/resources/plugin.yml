@@ -64,6 +64,9 @@ commands:
       /getrp off      Turn off all RP features
       /getrp <pack>   Set your preferred RP
     permission: magic.commands.getrp
+  mtrigger:
+    description: Used by chat click handlers, not meant to be used manually
+    permission: magic.commands.mtrigger
   cast:
     aliases: [mcast]
     description: Cast a spell directly
@@ -1069,12 +1072,17 @@ permissions:
     - magic.commands.msave
     - magic.commands.mserver
     - magic.commands.getrp
+    - magic.commands.mtrigger
     - magic.commands.mwarp
     - magic.commands.mwarp.*
     - magic.commands.marena
     - magic.commands.marena.*
   magic.commands.getrp:
     description: Player may download the resource pack
+    type: boolean
+    default: true
+  magic.commands.mtrigger:
+    description: Player may click CheckChatClick links
     type: boolean
     default: true
   magic.commands.spells:
@@ -1991,6 +1999,10 @@ permissions:
     type: boolean
   magic.bypass_upgrade_broadcast:
     description: A player will skip upgrade broadcast messages when ranking up
+    default: false
+    type: boolean
+  magic.mtrigger:
+    description: A player may use the /mtrigger command with any trigger
     default: false
     type: boolean
   magic.craft:
