@@ -18,6 +18,10 @@
    These now use a world copy (like Backup/Repair) since chunk regeneration is no longer supported
  - The Gather spell has been changed, the friend system is gone and it now uses chat links
 
+## Fixes
+
+ - Fix issues teleporting to locations on half-blocks (slabs)
+
 # 10.7
 
 ## Additions

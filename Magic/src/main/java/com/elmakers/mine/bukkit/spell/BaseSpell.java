@@ -370,7 +370,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     public boolean isOkToStandIn(Block block) {
         if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(block)) return false;
         if (isHalfBlock(block.getType())) {
-            return false;
+            // Allow standing in a half-block, but only the bottom half
+            return !CompatibilityLib.getCompatibilityUtils().isTopBlock(block);
         }
         return passthroughMaterials.testBlock(block)
                 && !unsafeMaterials.testBlock(block);
