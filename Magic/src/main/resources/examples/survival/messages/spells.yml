@@ -725,6 +725,10 @@ spells:
         no_target: "&4No one is around"
         click: "Click here"
         request_tp: "&3@pn &bwould like to &dteleport &bto you. &e$click &bto allow this."
+        request_form: "@pn would like to teleport to you. Allow this?"
+        request_title: "Gather Request"
+        button1: "Yes"
+        button2: "No"
         cast_to_player: Teleporting you to $target
         cast_entity: Teleporting $target to your target
         send_request_title: "Teleport To:"

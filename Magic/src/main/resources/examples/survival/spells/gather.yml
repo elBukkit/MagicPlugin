@@ -11,6 +11,13 @@ gather:
       - class: PlayerSelect
         title_key: send_request_title
         actions:
+        - class: CheckRequirements
+          timeout: 0
+          use_target: true
+          requirements:
+            - client_platform: java
+
+          actions:
           - class: CheckChatClick
             message_key: request_tp
             actions:
@@ -25,6 +32,24 @@ gather:
                   - class: Message
                     message_target: false
                     message_key: "cast_friend"
+
+          fail:
+            - class: CheckBedrockForm
+              message_key: request_form
+              actions:
+                - class: ChangeContext
+                  swap_source_and_target: true
+                  use_target_mage: true
+                  actions:
+                    - class: Teleport
+                    - class: Message
+                      message_target: true
+                      message_key: "cast_target"
+                    - class: Message
+                      message_target: false
+                      message_key: "cast_friend"
+
+
   effects:
     no_action: []
     no_target: []
@@ -103,12 +128,12 @@ gather:
     target: none
     target_self: false
     target_invisible: false
-    cooldown: 5000
+    cooldown: 15 seconds
+    timeout: 15 seconds
     bypass_friendly_fire: true
     bypass_pvp: true
     use_target_location: true
     auto_close: true
-    timeout: 10 seconds
     same_block: true
   costs:
     mana: 50
