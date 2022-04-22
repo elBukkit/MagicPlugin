@@ -32,6 +32,7 @@ gather:
           fail:
           - class: CheckBedrockForm
             message_key: request_form
+            title_key: request_title
             actions:
               - class: Teleport
               - class: Message
