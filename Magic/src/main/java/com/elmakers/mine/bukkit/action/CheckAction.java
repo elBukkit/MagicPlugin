@@ -9,6 +9,8 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 
 public abstract class CheckAction extends CompoundAction {
     private boolean invert;
+    private int timeout;
+    private Long targetTime;
 
     protected abstract boolean isAllowed(CastContext context);
 
@@ -16,6 +18,21 @@ public abstract class CheckAction extends CompoundAction {
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
         invert = parameters.getBoolean("invert", false);
+        timeout = parameters.getInt("timeout", 0);
+    }
+
+    @Override
+    public void reset(CastContext context) {
+        super.reset(context);
+        targetTime = null;
+    }
+
+    @Override
+    public SpellResult start(CastContext context) {
+        if (timeout > 0 && targetTime == null) {
+            targetTime = System.currentTimeMillis() + timeout;
+        }
+        return super.start(context);
     }
 
     @Override
@@ -31,6 +48,9 @@ public abstract class CheckAction extends CompoundAction {
             allowed = !allowed;
         }
         if (!allowed) {
+            if (targetTime != null && System.currentTimeMillis() < targetTime) {
+                return SpellResult.PENDING;
+            }
             ActionHandler fail = getHandler("fail");
             if (fail != null && fail.size() != 0) {
                 return startActions("fail");
