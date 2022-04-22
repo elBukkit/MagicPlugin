@@ -8,6 +8,7 @@
  - Add `pickup_delay` option for dropped item entities, can be set to "infinite"
  - Add `relative_location_offset` parameter to Entity/ArmorStand Projectile action
  - Add `timeout` parameter to all `Check` actions, to wait a certain amount of time, repeating the check
+ - Add `CheckChatClick` action, which can send a message to a player and then react to a click
 
 ## Changes
 

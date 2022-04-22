@@ -9,7 +9,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 
 public class CheckTriggerAction extends CheckAction {
-    private String trigger;
+    protected String trigger;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
