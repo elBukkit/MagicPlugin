@@ -21,34 +21,25 @@ gather:
           - class: CheckChatClick
             message_key: request_tp
             actions:
-              - class: ChangeContext
-                swap_source_and_target: true
-                use_target_mage: true
-                actions:
-                  - class: Teleport
-                  - class: Message
-                    message_target: true
-                    message_key: "cast_target"
-                  - class: Message
-                    message_target: false
-                    message_key: "cast_friend"
+              - class: Teleport
+              - class: Message
+                message_target: true
+                message_key: "cast_target"
+              - class: Message
+                message_target: false
+                message_key: "cast_friend"
 
           fail:
-            - class: CheckBedrockForm
-              message_key: request_form
-              actions:
-                - class: ChangeContext
-                  swap_source_and_target: true
-                  use_target_mage: true
-                  actions:
-                    - class: Teleport
-                    - class: Message
-                      message_target: true
-                      message_key: "cast_target"
-                    - class: Message
-                      message_target: false
-                      message_key: "cast_friend"
-
+          - class: CheckBedrockForm
+            message_key: request_form
+            actions:
+              - class: Teleport
+              - class: Message
+                message_target: true
+                message_key: "cast_target"
+              - class: Message
+                message_target: false
+                message_key: "cast_friend"
 
   effects:
     no_action: []
