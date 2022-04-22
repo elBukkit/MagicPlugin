@@ -2,8 +2,6 @@
 
 # Next
 
- - Better TP confirmation, maybe use chat triggers ...
- 
  - Look into error, MagicGoal contains a LookAtPlayer goal that lost its target somehow
 
 java.lang.NullPointerException: Cannot invoke "net.minecraft.world.entity.Entity.bl()" because "this.c" is null
