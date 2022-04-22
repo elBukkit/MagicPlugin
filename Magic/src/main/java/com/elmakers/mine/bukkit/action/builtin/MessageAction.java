@@ -21,6 +21,7 @@ public class MessageAction extends BaseSpellAction
 {
     public enum MessageType { MAGE, CHAT, TITLE, ACTION_BAR }
 
+    private String messageKey = null;
     private String message = "";
     private String subMessage = "";
     private String dialogFormatKey = "";
@@ -33,7 +34,7 @@ public class MessageAction extends BaseSpellAction
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
         super.prepare(context, parameters);
-        String messageKey = parameters.getString("message_key");
+        messageKey = parameters.getString("message_key");
         if (messageKey != null) {
             message = context.getMessage(messageKey);
         } else {
@@ -85,7 +86,11 @@ public class MessageAction extends BaseSpellAction
     }
 
     private SpellResult sendMessage(CastContext context, CommandSender commandSender) {
-        String message = context.parameterize(context.getMessage(this.message, this.message));
+        String message = this.message;
+        if (messageKey == null) {
+            message = context.getMessage(this.message, this.message);
+        }
+        message = context.parameterize(message);
         // This is leftover but really shouldn't be here, use @spell instead!
         message = message.replace("$spell", context.getSpell().getName());
         if (!dialogFormatKey.isEmpty()) {
