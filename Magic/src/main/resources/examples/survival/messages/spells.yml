@@ -723,6 +723,8 @@ spells:
         name: Gather
         description: Request another player to let you teleport to them
         no_target: "&4No one is around"
+        click: "Click here"
+        request_tp: "&3@pn &bwould like to &dteleport &bto you. &e$click &bto allow this."
         cast_to_player: Teleporting you to $target
         cast_entity: Teleporting $target to your target
         send_request_title: "Teleport To:"
