@@ -8918,6 +8918,15 @@ public class MagicController implements MageController, ChunkLoadListener {
         return geyserManager != null && geyserManager.isBedrock(player.getUniqueId()) ? ClientPlatform.BEDROCk : ClientPlatform.JAVA;
     }
 
+    public boolean showModalForm(Player target, Mage source, String title, String content, String[] buttonLabels, String[] buttonTriggers) {
+        if (geyserManager != null && geyserManager.isBedrock(target.getUniqueId())) {
+            geyserManager.showModalForm(target, source, title, content, buttonLabels, buttonTriggers);
+        } else {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public Entity getDamageSource(Entity entity) {
         Entity source = CompatibilityLib.getCompatibilityUtils().getSource(entity);

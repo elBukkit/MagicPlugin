@@ -6166,6 +6166,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         return controller.getClientPlatform(player);
     }
 
+    @Override
+    public boolean showModalForm(com.elmakers.mine.bukkit.api.magic.Mage source, String title, String content, String[] buttonLabels, String[] buttonTriggers) {
+        return controller.showModalForm(getPlayer(), source, title, content, buttonLabels, buttonTriggers);
+    }
+
     public void sendCurrencyMessage(String type, double amount) {
         Messages messages = controller.getMessages();
         Currency currency = controller.getCurrency(type);

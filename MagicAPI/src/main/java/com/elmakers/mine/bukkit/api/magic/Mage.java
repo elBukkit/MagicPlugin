@@ -814,4 +814,5 @@ public interface Mage extends CostReducer, CooldownReducer {
     @Nullable
     CasterProperties getCasterProperties(String propertyType);
     boolean allowContainerCopy();
+    boolean showModalForm(Mage source, String title, String content, String[] buttonLabels, String[] buttonTriggers);
 }

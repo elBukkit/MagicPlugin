@@ -9,6 +9,7 @@
  - Add `relative_location_offset` parameter to Entity/ArmorStand Projectile action
  - Add `timeout` parameter to all `Check` actions, to wait a certain amount of time, repeating the check
  - Add `CheckChatClick` action, which can send a message to a player and then react to a click
+ - Add `CheckBedrockForm` action, which can show Bedrock (via Geyser) players a two-button form and react to responses
  - Add `same_block: true` option to `Teleport` action, to allow teleporting less than one block.
    This is normally disallowed to prevent glitching through panes and iron bars
  - Add `use_target` parameter to CheckRequirements action, to make it easier to check target requirements
@@ -17,7 +18,7 @@
 
  - Bring back Regenerate and SuperRegenerate, Conduit path.
    These now use a world copy (like Backup/Repair) since chunk regeneration is no longer supported
- - The Gather spell has been changed, the friend system is gone and it now uses chat links
+ - The Gather spell has been changed, the friend system is gone and it now uses chat links and Bedrock forms
 
 ## Fixes
 
