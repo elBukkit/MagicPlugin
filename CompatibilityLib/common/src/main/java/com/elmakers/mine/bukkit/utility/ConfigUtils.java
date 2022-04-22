@@ -144,6 +144,7 @@ public class ConfigUtils {
     }
 
     public static boolean isMaxValue(String stringValue) {
+        if (stringValue == null) return false;
         return stringValue.equalsIgnoreCase("infinite")
                 || stringValue.equalsIgnoreCase("forever")
                 || stringValue.equalsIgnoreCase("infinity")
