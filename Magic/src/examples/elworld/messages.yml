@@ -35,6 +35,8 @@ spells:
     cast_friend: "a:&5Warping you to &o&d$tn"
     reject: "a:&o&d@pn &5&rsaid no &b;("
     selected_free: ""
+    click: "Click here"
+    request_tp: "&3@pn &bwould like to &dteleport &bto you. &e$click &bto allow this."
   movemarker:
     name: Set Warp Marker
     description: You can save 4 personal warp locations to go back to at any time!

@@ -14,7 +14,9 @@ spells:
     description_marker: "Set this to any location you want from the Pocket Teleporter menu"
   tprequest:
     name: Teleport to a Friend
-    desscription: Will ask them if you can TP to them. Please don't spam!
+    description: Will ask them if you can TP to them. Please don't spam!
+    click: "Click here"
+    request_tp: "&3@pn &bwould like to &dteleport &bto you. &e$click &bto allow this."
     no_target: "&4No one is around"
     cast_to_player: Teleporting you to $target
     cast_entity: Teleporting $target to your target

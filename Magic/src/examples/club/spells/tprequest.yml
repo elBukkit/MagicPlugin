@@ -10,47 +10,65 @@ tprequest:
     - class: PlayerSelect
       title_key: "send_request_title"
       actions:
-        - class: ChangeContext
-          use_target_mage: true
-          swap_source_and_target: true
+        - class: CheckRequirements
+          use_target: true
+          requirements:
+            - client_platform: java
+
           actions:
-            - class: Selector
-              title_key: "friend_request_title"
-              placeholder_icon: icon_placeholder
-              friends:
-                - class: ChangeContext
-                  swap_source_and_target: true
-                  use_target_mage: true
-                  actions:
-                  - class: Teleport
-                  - class: Message
-                    message_target: true
-                    message_key: "cast_target"
-                  - class: Message
-                    message_target: false
-                    message_key: "cast_friend"
-              nofriends:
+            - class: CheckChatClick
+              message_key: request_tp
+              actions:
+                - class: Teleport
                 - class: Message
                   message_target: true
-                  message_key: reject
-                - class: ApplyCooldown
-                  spells: tprequest
-                  duration: 60000
-                  target_caster: false
-              options:
-                - placeholder: true
-                - placeholder: true
-                - placeholder: true
-                - name: Ok!
-                  icon: icon_yes
-                  actions: friends
-                - name: Nope!
-                  icon: icon_no
-                  actions: nofriends
-                - placeholder: true
-                - placeholder: true
-                - placeholder: true
-                - placeholder: true
+                  message_key: "cast_target"
+                - class: Message
+                  message_target: false
+                  message_key: "cast_friend"
+
+          fail:
+          - class: ChangeContext
+            use_target_mage: true
+            swap_source_and_target: true
+            actions:
+              - class: Selector
+                title_key: "friend_request_title"
+                placeholder_icon: icon_placeholder
+                friends:
+                  - class: ChangeContext
+                    swap_source_and_target: true
+                    use_target_mage: true
+                    actions:
+                    - class: Teleport
+                    - class: Message
+                      message_target: true
+                      message_key: "cast_target"
+                    - class: Message
+                      message_target: false
+                      message_key: "cast_friend"
+                nofriends:
+                  - class: Message
+                    message_target: true
+                    message_key: reject
+                  - class: ApplyCooldown
+                    spells: tprequest
+                    duration: 60000
+                    target_caster: false
+                options:
+                  - placeholder: true
+                  - placeholder: true
+                  - placeholder: true
+                  - name: Ok!
+                    icon: icon_yes
+                    actions: friends
+                  - name: Nope!
+                    icon: icon_no
+                    actions: nofriends
+                  - placeholder: true
+                  - placeholder: true
+                  - placeholder: true
+                  - placeholder: true
   effects:
     no_action: []
     no_target: []
@@ -133,6 +151,8 @@ tprequest:
     bypass_friendly_fire: true
     bypass_pvp: true
     use_target_location: true
+    timeout: 10 seconds
+    same_block: true
 
     # Selector parameters
     auto_close: true
