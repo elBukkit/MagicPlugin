@@ -14,6 +14,7 @@
    This is normally disallowed to prevent glitching through panes and iron bars
  - Add `use_target` parameter to CheckRequirements action, to make it easier to check target requirements
  - Add `icon` wand mode, meant to be used with the `toggle_icon` action, prevents icon toggling on activate
+ - Add `uuid` option to attribute configurations
 
 ## Changes
 

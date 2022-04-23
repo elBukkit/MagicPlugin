@@ -253,6 +253,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
             try {
                 double value = 0;
                 int operation = 0;
+                UUID uuid = null;
                 ConfigurationSection attributeConfiguration = attributeConfig.getConfigurationSection(attributeKey);
                 if (attributeConfiguration != null) {
                     attributeKey = attributeConfiguration.getString("attribute", attributeKey);
@@ -267,11 +268,22 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
                             platform.getLogger().warning("Invalid operation " + operationKey);
                         }
                     }
+                    String uuidString = attributeConfiguration.getString("uuid");
+                    if (uuidString != null && !uuidString.isEmpty()) {
+                        try {
+                            uuid = UUID.fromString(uuidString);
+                        } catch (Exception ex) {
+                            platform.getLogger().warning("Invalid UUID " + uuidString);
+                        }
+                    }
                 } else {
                     value = attributeConfig.getDouble(attributeKey);
                 }
+                if (uuid == null) {
+                    uuid = UUID.randomUUID();
+                }
                 Attribute attribute = Attribute.valueOf(attributeKey.toUpperCase());
-                if (!platform.getCompatibilityUtils().setItemAttribute(item, attribute, value, slot, operation)) {
+                if (!platform.getCompatibilityUtils().setItemAttribute(item, attribute, value, slot, operation, uuid)) {
                     platform.getLogger().warning("Failed to set attribute: " + attributeKey);
                 }
             } catch (Exception ex) {

@@ -964,7 +964,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
 
         ItemStack newItem = CompatibilityLib.getItemUtils().makeReal(item);
         CompatibilityLib.getCompatibilityUtils().removeItemAttribute(newItem, attribute);
-        if (CompatibilityLib.getCompatibilityUtils().setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal())) {
+        if (CompatibilityLib.getCompatibilityUtils().setItemAttribute(newItem, attribute, value, attributeSlot, operation.ordinal(), UUID.randomUUID())) {
             if (attributeSlot == null) {
                 attributeSlot = "(All Slots)";
             }
