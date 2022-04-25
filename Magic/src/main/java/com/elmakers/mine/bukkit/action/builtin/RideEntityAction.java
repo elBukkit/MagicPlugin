@@ -628,6 +628,10 @@ public class RideEntityAction extends BaseSpellAction
             double damage = maxSpeed > 0 ? crashVehicleDamage * speed / maxSpeed : crashVehicleDamage;
             if (mount != null && mount.isValid() && mount instanceof Damageable) {
                 CompatibilityLib.getCompatibilityUtils().damage((Damageable)mount, damage, mountedEntity);
+                if (mount.isDead()) {
+                    mount.eject();
+                    context.playEffects("crash_destroyed");
+                }
             }
         }
         boolean dismount = (speed >= crashDismountSpeed);
