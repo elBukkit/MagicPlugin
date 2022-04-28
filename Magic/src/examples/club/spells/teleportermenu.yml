@@ -56,7 +56,7 @@ teleportermenu:
       - placeholder: true
       - cast_spell: tprequest
       - placeholder: true
-      - cast_spell: stash
+      - placeholder: true
       - cast_spell: movemarker
       - placeholder: true
       - warp: creative

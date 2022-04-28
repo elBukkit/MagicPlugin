@@ -7,11 +7,8 @@ teleporter:
   parameters:
     options:
       - type: home
-      - type: death
-      - type: town
-        show_unavailable: false
-      - type: spawn
-        show_unavailable: false
+      - type: placeholder
+      - type: placeholder
       - type: placeholder
       - type: marker
         show_unavailable: false
@@ -25,12 +22,15 @@ teleporter:
       - type: marker
         show_unavailable: false
         marker: 4
+      - type: marker
+        show_unavailable: false
+        marker: 5
     warmup: 500
     cooldown: 5000
     marker_count: 4
     allow_spawn: false
     allow_marker: true
-    allow_death: true
+    allow_death: false
     allow_regions: false
     allow_all_regions: false
     cancel_on_damage: 0

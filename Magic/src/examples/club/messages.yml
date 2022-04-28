@@ -36,7 +36,7 @@ spells:
     unlock_warp: "t:&r&6$name\n&d&oUnlocked in Pocket Teleporter"
   movemarker:
     name: Set Warp Marker
-    description: You can save 4 personal warp locations to go back to at any time!
+    description: You can save 5 personal warp locations to go back to at any time!
 wands:
   teleporter:
     name: "Pocket Teleporter"
