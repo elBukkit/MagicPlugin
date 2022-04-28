@@ -597,3 +597,6 @@ wands:
     airtide:
         name: Airtide
         description: "It's always sunny in Philadelphia\nBut this isn't Philadelphia...."
+    hookshot:
+        name: Hookshot
+        description: Zipline to your target location

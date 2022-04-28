@@ -1,0 +1,5 @@
+hookshot:
+    mode: cast
+    active_spell: hookshot
+    icon: tipped_arrow{CustomModelData:18100}
+    indestructible: false

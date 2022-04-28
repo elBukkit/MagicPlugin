@@ -16,6 +16,7 @@
  - Add `icon` wand mode, meant to be used with the `toggle_icon` action, prevents icon toggling on activate
  - Add `uuid` option to attribute configurations
  - Add `crash_destroyed` effects block to RideEntity action
+ - Add `hookshot` wand, model courtesy of Atrelyu
 
 ## Changes
 

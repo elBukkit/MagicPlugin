@@ -1,0 +1,60 @@
+hookshot:
+  # This has been added automatically so that anything you remove here does not get inherited back in from the default configs
+  inherit: false
+  icon: diamond_axe:198
+  icon_disabled: diamond_hoe:198
+  icon_url: http://textures.minecraft.net/texture/543a93796b389fc710671b62106068619b7673e7bf48a6c77bc4db921d54
+  cancel_effects: true
+  actions:
+    cast:
+      - class: CustomProjectile
+        actions:
+          - class: Damage
+          - class: CustomProjectile
+            tick_effects: pulling
+            tick:
+              - class: ChangeContext
+                target_caster: true
+                actions:
+                  - class: Velocity
+  effects:
+    cast:
+      -  class: EffectSingle
+         sound: magic.zap
+         location: origin
+    tick:
+      - location: target
+        effectlib:
+          class: Particle
+          duration: 5 seconds
+          particle: cloud
+          particle_count: 4
+          particle_offset_x: 0.05
+          particle_offset_y: 0.05
+          particle_offset_z: 0.05
+    pulling:
+      - location: target
+        particle: redstone
+        particle_count: 4
+        particle_offset_x: 0.05
+        particle_offset_y: 0.05
+        particle_offset_z: 0.05
+    hit:
+      -  class: EffectSingle
+         sound: magic.zap_crack
+         sound_volume: .3
+         location: target
+         particle: explosion_large
+  parameters:
+    target: other
+    hitbox: true
+    allow_max_range: false
+    reorient: false
+    range: 48
+    target_type: Damageable
+    player_damage: 0.1
+    entity_damage: 0.5
+    target_breakables: 1
+    cooldown: 1000
+    speed: 2
+    velocity: 35
