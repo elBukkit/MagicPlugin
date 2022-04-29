@@ -238,7 +238,7 @@ public class MountArmorStandAction extends RideEntityAction
     public void finish(CastContext context) {
         if (!mountTarget && mount != null) {
             mount.remove();
-        } else if (mount != null && (armorStandPitch != 0 || armorStandRoll != 0)) {
+        } else if (mount instanceof ArmorStand && (armorStandPitch != 0 || armorStandRoll != 0)) {
             ArmorStand armorStand = (ArmorStand)mount;
             armorStand.setHeadPose(new EulerAngle(0, 0, 0));
         }
