@@ -2,6 +2,14 @@
 
 # Next
 
+ - Yet another piston exploit:
+   u know when u hit the blocks and they temporarily dissappear, he was then using a piston to get a woodblock to replace the diamond block that was temporarily destoryed and then it would pull back the diamond block hence the dupe
+
+ - `/mexample set safe` does not load survival config.yml, enchant table doesn't work
+
+ - Using a custom mob in a spell, can't override properties
+   https://discord.com/channels/580099743875727363/580101207364861954/970749912004300850
+
  - Gather "no target" message not showing
 
  - Recipe discovery not working
