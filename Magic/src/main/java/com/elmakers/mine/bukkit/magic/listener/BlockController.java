@@ -265,7 +265,14 @@ public class BlockController implements Listener, ChunkLoadListener {
         boolean undone = false;
 
         // Immediately undo or commit any blocks involved
-        for (Block block : event.getBlocks()) {
+        List<Block> blocks = new ArrayList<>(event.getBlocks());
+        // Look one past the line of moved blocks, in case it has been broken it will not be in this list
+        // But it will in fact be modified by the exten, which seems like a flaw in this event and can cause
+        // block dupe exploits if not handled.
+        if (!blocks.isEmpty()) {
+            blocks.add(blocks.get(blocks.size() - 1).getRelative(event.getDirection()));
+        }
+        for (Block block : blocks) {
             BlockData undoData = controller.getModifiedBlock(block.getLocation());
             if (undoData != null) {
                 undone = true;
