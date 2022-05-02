@@ -4,6 +4,8 @@
 
 # 10.7.1
 
+ - Fix yet another piston-related block dupe exploit
+
 # 10.7
 
 ## Additions
