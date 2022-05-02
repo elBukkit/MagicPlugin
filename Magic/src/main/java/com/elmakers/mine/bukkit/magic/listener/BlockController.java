@@ -246,10 +246,24 @@ public class BlockController implements Listener, ChunkLoadListener {
 
     @EventHandler(ignoreCancelled = true)
     public void onPistonRetract(BlockPistonRetractEvent event) {
+        boolean undone = false;
+        List<Block> blocks = event.getBlocks();
+        // Also check the block directly in front of the piston
+        // This could be a magically-broken block that is now getting replaced,
+        // in which case it will not be in the list of moved blocks, even though it is getting changed
+        if (!blocks.isEmpty()) {
+            Block block = event.getBlock().getRelative(event.getDirection().getOppositeFace());
+            if (DefaultMaterials.isAir(block.getType())) {
+                blocks = new ArrayList<>(blocks);
+                blocks.add(block);
+            }
+        }
+
         // Immediately undo or commit any blocks involved
-        for (Block block : event.getBlocks()) {
+        for (Block block : blocks) {
             BlockData undoData = controller.getModifiedBlock(block.getLocation());
             if (undoData != null) {
+                undone = true;
                 UndoList undoList = undoData.getUndoList();
                 if (undoList.isScheduled()) {
                     undoData.undo(false);
@@ -258,6 +272,11 @@ public class BlockController implements Listener, ChunkLoadListener {
                 }
             }
         }
+
+        // If we undid anything, cancel this event
+        if (undone) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler(ignoreCancelled = true)
@@ -265,12 +284,16 @@ public class BlockController implements Listener, ChunkLoadListener {
         boolean undone = false;
 
         // Immediately undo or commit any blocks involved
-        List<Block> blocks = new ArrayList<>(event.getBlocks());
+        List<Block> blocks = event.getBlocks();
         // Look one past the line of moved blocks, in case it has been broken it will not be in this list
         // But it will in fact be modified by the exten, which seems like a flaw in this event and can cause
         // block dupe exploits if not handled.
         if (!blocks.isEmpty()) {
-            blocks.add(blocks.get(blocks.size() - 1).getRelative(event.getDirection()));
+            Block block = blocks.get(blocks.size() - 1).getRelative(event.getDirection());
+            if (DefaultMaterials.isAir(block.getType())) {
+                blocks = new ArrayList<>(event.getBlocks());
+                blocks.add(block);
+            }
         }
         for (Block block : blocks) {
             BlockData undoData = controller.getModifiedBlock(block.getLocation());
