@@ -23,6 +23,7 @@
  - Bring back Regenerate and SuperRegenerate, Conduit path.
    These now use a world copy (like Backup/Repair) since chunk regeneration is no longer supported
  - The Gather spell has been changed, the friend system is gone and it now uses chat links and Bedrock forms
+ - A wand without a path assigned will now always have a spell inventory (if using inventory mode)
 
 ## Fixes
 
