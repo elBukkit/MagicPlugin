@@ -1,127 +1,27 @@
 package com.elmakers.mine.bukkit.integration;
 
-import java.lang.reflect.Method;
 import java.util.Collection;
-import java.util.Optional;
-import java.util.UUID;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.plugin.Plugin;
 
-import com.elmakers.mine.bukkit.magic.MagicController;
-
-import io.lumine.mythic.api.MythicPlugin;
-import io.lumine.mythic.api.mobs.MobManager;
-import io.lumine.mythic.api.mobs.MythicMob;
-import io.lumine.mythic.bukkit.BukkitAdapter;
-import io.lumine.mythic.core.mobs.ActiveMob;
-
-public class MythicMobManager {
-
-    private final MagicController controller;
-    private final Plugin plugin;
-
-    private MythicPlugin api = null;
-
-    public MythicMobManager(MagicController controller, Plugin plugin) {
-        this.controller = controller;
-        this.plugin = plugin;
-    }
-
-    public boolean initialize() {
-        if (plugin == null || !(plugin instanceof MythicPlugin)) {
-            return false;
-        }
-
-        api = (MythicPlugin)plugin;
-        return true;
-    }
-
-    public boolean isEnabled() {
-        return api != null;
-    }
+public interface MythicMobManager {
+    boolean initialize();
+    boolean isEnabled();
 
     @Nullable
-    public Entity spawn(String key, Location location, double level) {
-        if (api == null) return null;
-        Optional<MythicMob> mythicMob = api.getMobManager().getMythicMob(key);
-        if (!mythicMob.isPresent()) {
-            controller.getLogger().warning("Unknown mythic mob type: " + key);
-            return null;
-        }
-        ActiveMob mob = mythicMob.get().spawn(BukkitAdapter.adapt(location), level);
-        if (mob == null) {
-            controller.getLogger().warning("Unable to spawn mythic mob with id of " + key);
-            return null;
-        }
+    Entity spawn(String key, Location location, double level);
 
-        return mob.getEntity().getBukkitEntity();
-    }
+    Collection<String> getMobKeys();
 
-    public Collection<String> getMobKeys() {
-        if (api == null) return null;
-        return api.getMobManager().getMobNames();
-    }
+    boolean isMobKey(String mobKey);
 
-    public boolean isMobKey(String mobKey) {
-        if (api == null) return false;
-        // Hopefully this is backed by a Set?
-        return api.getMobManager().getMobNames().contains(mobKey);
-    }
-
-    public void setMobLevel(Entity entity, double level) {
-        if (api == null || entity == null) {
-            return;
-        }
-        Optional<ActiveMob> mob = getActiveMob(entity.getUniqueId());
-        if (!mob.isPresent()) {
-            return;
-        }
-        mob.get().setLevel(level);
-    }
+    void setMobLevel(Entity entity, double level);
 
     @Nullable
-    public Double getMobLevel(Entity entity) {
-        if (api == null || entity == null) {
-            return null;
-        }
-        Optional<ActiveMob> mob = getActiveMob(entity.getUniqueId());
-        if (!mob.isPresent()) {
-            return null;
-        }
-        return mob.get().getLevel();
-    }
+    Double getMobLevel(Entity entity);
 
     @Nullable
-    public String getMobKey(Entity entity) {
-        if (api == null || entity == null) {
-            return null;
-        }
-        Optional<ActiveMob> mob = getActiveMob(entity.getUniqueId());
-        if (!mob.isPresent()) {
-            return null;
-        }
-        return mob.get().getMobType();
-    }
-
-    // Not in the API...
-    @SuppressWarnings("unchecked")
-    public Optional<ActiveMob> getActiveMob(UUID id) {
-        try {
-            MobManager manager = api.getMobManager();
-            Method getActiveMobMethod = manager.getClass().getMethod("getActiveMob", UUID.class);
-            if (getActiveMobMethod != null) {
-                return (Optional<ActiveMob>)getActiveMobMethod.invoke(manager, id);
-            } else {
-                controller.getLogger().warning("MythicMobs integration has gone wrong, disabling");
-                api = null;
-            }
-        } catch (Exception ex) {
-            controller.getLogger().warning("MythicMobs integration has gone wrong, disabling");
-            api = null;
-        }
-        return Optional.empty();
-    }
+    String getMobKey(Entity entity);
 }

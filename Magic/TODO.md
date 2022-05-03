@@ -10,6 +10,8 @@
  - Using a custom mob in a spell, can't override properties
    https://discord.com/channels/580099743875727363/580101207364861954/970749912004300850
 
+ - Add support for placeholders in mob `name` parameter (SpawnEntity, ModifyEntity ...) any others?
+
  - Gather "no target" message not showing
 
  - Recipe discovery not working

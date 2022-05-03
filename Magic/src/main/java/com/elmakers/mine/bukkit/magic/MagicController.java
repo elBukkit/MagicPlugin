@@ -171,11 +171,13 @@ import com.elmakers.mine.bukkit.integration.BattleArenaManager;
 import com.elmakers.mine.bukkit.integration.GenericMetadataNPCSupplier;
 import com.elmakers.mine.bukkit.integration.GeyserManager;
 import com.elmakers.mine.bukkit.integration.LegacyLibsDisguiseManager;
+import com.elmakers.mine.bukkit.integration.LegacyMythicMobManager;
 import com.elmakers.mine.bukkit.integration.LibsDisguiseManager;
 import com.elmakers.mine.bukkit.integration.LightAPIManager;
 import com.elmakers.mine.bukkit.integration.LogBlockManager;
 import com.elmakers.mine.bukkit.integration.ModelEngineManager;
 import com.elmakers.mine.bukkit.integration.ModernLibsDisguiseManager;
+import com.elmakers.mine.bukkit.integration.ModernMythicMobManager;
 import com.elmakers.mine.bukkit.integration.MythicMobManager;
 import com.elmakers.mine.bukkit.integration.NPCSupplierSet;
 import com.elmakers.mine.bukkit.integration.PlaceholderAPIManager;
@@ -7911,10 +7913,22 @@ public class MagicController implements MageController, ChunkLoadListener {
         Plugin mythicMobsPlugin = pluginManager.getPlugin("MythicMobs");
         if (mythicMobsPlugin != null) {
             if (mythicMobsEnabled) {
-                mythicMobManager = new MythicMobManager(this, mythicMobsPlugin);
+                String version = mythicMobsPlugin.getDescription().getVersion();
+                String[] versionPieces = StringUtils.split(version, ".");
+                boolean useLegacy = false;
+                try {
+                    int majorVersion = Integer.parseInt(versionPieces[0]);
+                    useLegacy = majorVersion < 5;
+                    getLogger().info("Found MythicMobs v" + version + " (" + majorVersion + ") will use "
+                            + (useLegacy ? "legacy" : "modern") + " integration layer");
+                } catch (Exception ex) {
+                    getLogger().warning("Failed to parse MythicMob version, will try loading modern layer");
+                }
+
+                mythicMobManager = useLegacy ? new LegacyMythicMobManager(this, mythicMobsPlugin) : new ModernMythicMobManager(this, mythicMobsPlugin);
 
                 if (mythicMobManager.initialize()) {
-                    getLogger().info("MythicMobs found, mobs can be spawned in arenas, spells, actions, etc.");
+                    getLogger().info("MythicMobs integration enabled, mobs can be spawned in arenas, spells, actions, etc.");
                 } else {
                     getLogger().warning("MythicMobs integration failed");
                     mythicMobManager = null;

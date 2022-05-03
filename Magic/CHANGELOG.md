@@ -27,6 +27,7 @@
 ## Fixes
 
  - Fix issues teleporting to locations on half-blocks (slabs)
+ - Fix integration with pre-v5 MythicMobs
 
 # 10.7.1
 

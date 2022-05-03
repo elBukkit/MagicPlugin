@@ -422,6 +422,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>io.lumine.xikage</groupId>
+            <artifactId>MythicMobs</artifactId>
+            <version>4.9.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.github.Realizedd</groupId>
             <artifactId>TokenManager</artifactId>
             <version>3.2.4</version>
