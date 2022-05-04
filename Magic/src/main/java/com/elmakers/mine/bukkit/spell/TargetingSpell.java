@@ -64,6 +64,7 @@ public class TargetingSpell extends BaseSpell {
     private boolean                                targetInvisible            = true;
     private boolean                                targetVanished            = false;
     private boolean                                targetUnknown            = true;
+    private boolean                                targetNoDamageTicks            = true;
     private String                                 targetPermission         = null;
     private Set<GameMode>                       targetGameModes         = null;
     private boolean                             targetTamed             = true;
@@ -476,6 +477,11 @@ public class TargetingSpell extends BaseSpell {
             mage.sendDebugMessage("Entity skipped, is vanished", 30);
             return false;
         }
+        // Ignore entities that are invincible due to recently being damaged
+        if (!targetNoDamageTicks && entity instanceof LivingEntity && ((LivingEntity)entity).getNoDamageTicks() > 0) {
+            mage.sendDebugMessage("Entity skipped, has no damage ticks", 30);
+            return false;
+        }
 
         if (targetContents != null && entity instanceof ItemFrame)
         {
@@ -677,6 +683,7 @@ public class TargetingSpell extends BaseSpell {
         targetUnknown = parameters.getBoolean("target_unknown", true);
         targetTamed = parameters.getBoolean("target_tamed", true);
         targetMount = parameters.getBoolean("target_mount", false);
+        targetNoDamageTicks = parameters.getBoolean("target_no_damage_ticks", true);
         targetPermission = parameters.getString("target_permission");
         targetGameModes = defaultTargetGameModes;
         List<String> gameModes = ConfigurationUtils.getStringList(parameters, "target_game_modes");

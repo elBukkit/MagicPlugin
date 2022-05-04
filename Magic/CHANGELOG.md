@@ -17,6 +17,7 @@
  - Add `uuid` option to attribute configurations
  - Add `crash_destroyed` effects block to RideEntity action
  - Add `hookshot` wand, model courtesy of Atrelyu
+ - Add `target_no_damage_ticks: false` option to spells, to ignore targets that are invincible due to vanilla recently-damaged protection
 
 ## Changes
 
