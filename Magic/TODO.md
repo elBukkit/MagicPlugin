@@ -12,13 +12,6 @@
  - Gather "no target" message not showing
 
  - Recipe discovery not working
- 
- - Recall markers should save pitch/yaw
-
-   Caused by: java.lang.IllegalArgumentException: Invalid key. Must be [a-z0-9/._-]: magic:quartz
-   at com.google.common.base.Preconditions.checkArgument(Preconditions.java:220) ~[guava-31.0.1-jre.jar:?]
-   at org.bukkit.NamespacedKey.<init>(NamespacedKey.java:80) ~[paper-api-1.18.2-R0.1-SNAPSHOT.jar:?]
-
 
  - Look into error, MagicGoal contains a LookAtPlayer goal that lost its target somehow
 

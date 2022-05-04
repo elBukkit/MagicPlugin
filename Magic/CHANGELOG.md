@@ -25,6 +25,9 @@
    These now use a world copy (like Backup/Repair) since chunk regeneration is no longer supported
  - The Gather spell has been changed, the friend system is gone and it now uses chat links and Bedrock forms
  - A wand without a path assigned will now always have a spell inventory (if using inventory mode)
+ - Custom Recall markers will now use the look direction that was set when creating the marker
+   `marker_maintain_direction: true` can be used for old behavior
+ - Recall changed to use shift-click to save markers, rather than aiming down
 
 ## Fixes
 

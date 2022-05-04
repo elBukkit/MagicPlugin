@@ -746,7 +746,7 @@ spells:
     recall:
         name: Recall
         description: Teleport to different locations.
-        usage: Grants 5 seconds of protection on teleportation.
+        usage: "Grants 5 seconds of protection on teleportation."
         teleport: ""
         teleport_failed: Recall failed
         no_target: Can't place a marker there
@@ -775,7 +775,7 @@ spells:
         title_move_marker: "Move Marker #$number to Here"
         description_move_marker: Replaces your current marker
         title_marker: "Marker #$number"
-        description_marker: Aim down to move your marker
+        description_marker: Sneak+cast to move your marker
         title_death: Last Death
         description_death: Your last death location
         title_friend: $name
@@ -804,12 +804,14 @@ spells:
     recall|2:
         upgrade_description: "Unlock last death location"
     recall|3:
-        upgrade_description: "Unlock marker, aim down to set location."
-        usage: Has a 5-second warmup. Cast down to set a marker
+        upgrade_description: "Unlock marker, sneak+cast to set location."
+        usage: "Grants 5 seconds of protection on teleportation.\nSneak+cast to set a marker."
     recall|4:
         upgrade_description: "Allows for a second marker"
+        usage: "Grants 5 seconds of protection on teleportation.\nSneak+cast to set a marker."
     recall|5:
         upgrade_description: "Allows for a third marker"
+        usage: "Grants 5 seconds of protection on teleportation.\nSneak+cast to set a marker."
     warpunlock:
       name: Unlock Warp
       description: Useful in command blocks or region commands to unlock Recall waypoints when a player discovers an area

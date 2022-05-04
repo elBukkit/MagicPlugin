@@ -65,6 +65,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
     private boolean teleport = true;
     private boolean teleportTarget = false;
     private boolean requireTargetPermission = true;
+    private boolean markerMaintainDirection = false;
     private String titleKey = null;
 
     private boolean isActive = false;
@@ -265,7 +266,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
                 defaultFailMessage = context.getMessage("no_target_marker", "").replace("$number", Integer.toString(markerNumber));
                 defaultDescription =  context.getMessage("description_marker", "").replace("$number", Integer.toString(markerNumber));
                 defaultIcon = getIcon(context, parameters, "icon_marker");
-                defaultMaintainDirection = true;
+                defaultMaintainDirection = markerMaintainDirection;
                 break;
             }
             case DEATH:
@@ -440,6 +441,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         this.teleport = parameters.getBoolean("teleport", true);
         this.teleportTarget = parameters.getBoolean("teleport_target", false);
         this.requireTargetPermission = parameters.getBoolean("require_target_permission", true);
+        this.markerMaintainDirection = parameters.getBoolean("marker_maintain_direction", false);
         this.delay = parameters.getInt("delay", 0);
         this.delay = parameters.getInt("warmup", this.delay);
         titleKey = parameters.getString("title_key", "title");
@@ -1058,7 +1060,7 @@ public class RecallAction extends BaseTeleportAction implements GUIAction
         switch (type) {
         case MARKER:
             location = ConfigurationUtils.getLocation(mage.getData(), markerKey);
-            return new Waypoint(context, type, location, context.getMessage("title_marker"), context.getMessage("cast_marker", "Market"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), getIcon(context, parameters, "icon_marker"), true);
+            return new Waypoint(context, type, location, context.getMessage("title_marker"), context.getMessage("cast_marker", "Market"), context.getMessage("no_target_marker"), context.getMessage("description_marker", ""), getIcon(context, parameters, "icon_marker"), markerMaintainDirection);
         case DEATH:
             Waypoint death = new Waypoint(context, type, mage.getLastDeathLocation(), "Last Death", context.getMessage("cast_death", "Last Death"), context.getMessage("no_target_death"), context.getMessage("description_death", ""), getIcon(context, parameters, "icon_death"), true);
             death.safe = false;

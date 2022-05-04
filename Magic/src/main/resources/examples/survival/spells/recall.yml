@@ -165,7 +165,7 @@ recall|2:
 recall|3:
   upgrade_required_path: apprentice
   actions:
-    alternate_down:
+    alternate_sneak:
       - class: Recall
         type: place
   parameters:
