@@ -344,6 +344,10 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
                 }
             }
 
+            if (subCommand.equalsIgnoreCase("discover") && args.length <= 1) {
+                options.addAll(controller.getRecipeKeys());
+            }
+
             if (target != null && subCommand.equalsIgnoreCase("reset") && originalArgs.length == 3) {
                 Mage mage = controller.getMage(target);
                 for (String classKey : mage.getClassKeys()) {
@@ -518,7 +522,7 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
         }
         String recipe = parameters[0];
         if (!CompatibilityLib.getCompatibilityUtils().discoverRecipe(player, recipe)) {
-            sender.sendMessage(ChatColor.RED + "Unknown recipe: " + ChatColor.YELLOW + recipe);
+            sender.sendMessage(ChatColor.RED + "Could not discover recipe: " + ChatColor.YELLOW + recipe);
             return false;
         }
 
