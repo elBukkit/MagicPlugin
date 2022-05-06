@@ -18,6 +18,7 @@
  - Add `crash_destroyed` effects block to RideEntity action
  - Add `hookshot` wand, model courtesy of Atrelyu
  - Add `target_no_damage_ticks: false` option to spells, to ignore targets that are invincible due to vanilla recently-damaged protection
+ - Add `pickup_delay` parameter to `ThrowItem` action
 
 ## Changes
 

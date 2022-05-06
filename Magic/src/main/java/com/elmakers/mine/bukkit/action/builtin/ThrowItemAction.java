@@ -28,6 +28,7 @@ public class ThrowItemAction extends BaseProjectileAction {
     private double itemSpeedMin;
     private double itemSpeedMax;
     private int ageItems;
+    private int pickupDelay;
     private boolean unbreakable;
     private SourceLocation sourceLocation;
     private ItemData item;
@@ -45,6 +46,7 @@ public class ThrowItemAction extends BaseProjectileAction {
         unbreakable = parameters.getBoolean("unbreakable", false);
         throwWand = parameters.getBoolean("throw_wand", false);
         temporary = parameters.getBoolean("temporary", true);
+        pickupDelay = parameters.getInt("pickup_delay", 0);
         sourceLocation = new SourceLocation(parameters);
 
         String itemName = parameters.getString("item");
@@ -123,6 +125,9 @@ public class ThrowItemAction extends BaseProjectileAction {
         }
         if (ageItems > 0) {
             CompatibilityLib.getCompatibilityUtils().ageItem(droppedItem, ageItems);
+        }
+        if (pickupDelay > 0) {
+            droppedItem.setPickupDelay(pickupDelay);
         }
         SafetyUtils.setVelocity(droppedItem, velocity);
 
