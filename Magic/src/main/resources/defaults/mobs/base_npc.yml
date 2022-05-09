@@ -13,6 +13,7 @@ base_npc:
     goals:
       - look_at_player
   invulnerable: true
+  transformable: false
   collidable: false
   leash_range: 2
   silent: true

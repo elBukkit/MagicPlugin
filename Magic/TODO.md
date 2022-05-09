@@ -2,6 +2,8 @@
 
 # Next
 
+ - Mob spawn eggs, e.g. `/mgive egg:warlock` don't work
+
  - `/mexample set safe` does not load survival config.yml, enchant table doesn't work
 
  - Using a custom mob in a spell, can't override properties
