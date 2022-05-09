@@ -7,7 +7,7 @@ teleporter:
   parameters:
     options:
       - type: home
-      - type: placeholder
+      - type: death
       - type: placeholder
       - type: placeholder
       - type: marker
@@ -30,7 +30,7 @@ teleporter:
     marker_count: 4
     allow_spawn: false
     allow_marker: true
-    allow_death: false
+    allow_death: true
     allow_regions: false
     allow_all_regions: false
     cancel_on_damage: 0
