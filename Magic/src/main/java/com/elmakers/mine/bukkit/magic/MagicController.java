@@ -920,12 +920,6 @@ public class MagicController implements MageController, ChunkLoadListener {
             info("Removed pre-login mage data cache for id " + id + " due to failed login");
         }
     }
-    public void onPreLoginFailed(AsyncPlayerPreLoginEvent event) {
-        String id = mageIdentifier.fromPreLogin(event);
-        if (mageDataPreCache.remove(id) != null) {
-            info("Removed pre-login mage data cache for id " + id + " due to failed pre-login");
-        }
-    }
 
     public void onPreLogin(AsyncPlayerPreLoginEvent event) {
         if (!enablePreloginCache) return;

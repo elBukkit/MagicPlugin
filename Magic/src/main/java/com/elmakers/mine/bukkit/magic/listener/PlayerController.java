@@ -1001,11 +1001,6 @@ public class PlayerController implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
-        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
-            controller.onPreLoginFailed(event);
-            return;
-        }
-
         controller.onPreLogin(event);
     }
 
