@@ -3,6 +3,8 @@
 # Next
 
  - Mob spawn eggs, e.g. `/mgive egg:warlock` don't work
+ 
+ - MythicMobs don't auto-register, don't work in SpawnEntity, etc
 
  - `/mexample set safe` does not load survival config.yml, enchant table doesn't work
 
