@@ -111,7 +111,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         unbreakableItems = parameters.getBoolean("unbreakable_items", false);
         visibleDelayTicks = parameters.getInt("visible_delay_ticks", 1);
         useWand = parameters.getBoolean("mount_wand", parameters.getBoolean("use_wand", false));
-        useWand = parameters.getBoolean("active_wand", false);
+        activeWandIcon = parameters.getBoolean("active_wand", false);
         reactivateWand = parameters.getBoolean("reactivate_wand", false);
         useBrushItem = parameters.getString("use_brush");
 
