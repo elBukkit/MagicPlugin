@@ -20,6 +20,7 @@
  - Add `target_no_damage_ticks: false` option to spells, to ignore targets that are invincible due to vanilla recently-damaged protection
  - Add `pickup_delay` parameter to `ThrowItem` action
  - Add `source_yaw` parameter to `ChangeContext` action
+ - Add new `ArmorStandProjectile` actions: `reactivate_wand`, `active_wand`
 
 ## Changes
 

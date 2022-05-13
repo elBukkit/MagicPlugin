@@ -43,6 +43,7 @@ public interface Wand extends CostReducer, CooldownReducer, CasterProperties {
     String getName();
     String getId();
     long getWorth();
+    void openInventory();
     void closeInventory();
     void deactivate();
     boolean organizeInventory(Mage mage);

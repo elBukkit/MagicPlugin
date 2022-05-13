@@ -53,8 +53,13 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
 
     private InventorySlot wandSlot;
     private boolean useWand;
+    private boolean activeWandIcon;
+    private boolean reactivateWand;
     private String useBrushItem;
+
+    private boolean openSpellInventory;
     private ItemStack wandItem;
+    private ItemStack useItem;
     private int slotNumber;
 
     private int stepCount = 0;
@@ -106,6 +111,8 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         unbreakableItems = parameters.getBoolean("unbreakable_items", false);
         visibleDelayTicks = parameters.getInt("visible_delay_ticks", 1);
         useWand = parameters.getBoolean("mount_wand", parameters.getBoolean("use_wand", false));
+        useWand = parameters.getBoolean("active_wand", false);
+        reactivateWand = parameters.getBoolean("reactivate_wand", false);
         useBrushItem = parameters.getString("use_brush");
 
         String wandSlotString = parameters.getString("wand_slot", "HELMET");
@@ -199,39 +206,44 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
             if (wand == null) {
                 return SpellResult.NO_TARGET;
             }
+            openSpellInventory = reactivateWand && wand.isInventoryOpen();
             wand.deactivate();
 
             wandItem = wand.getItem();
             if (wandItem == null || wandItem.getType() == Material.AIR) {
                 return SpellResult.FAIL;
             }
+            useItem = wandItem;
+            if (activeWandIcon) {
+                useItem = wand.getIcon().getItemStack(1);
+            }
             slotNumber = wand.getHeldSlot();
             player.getInventory().setItem(slotNumber, new ItemStack(Material.AIR));
         }
         if (stepCount == visibleDelayTicks) {
             EntityEquipment equipment = armorStand.getEquipment();
-            if (wandItem != null && wandSlot == InventorySlot.HELMET) {
-                equipment.setHelmet(wandItem);
+            if (useItem != null && wandSlot == InventorySlot.HELMET) {
+                equipment.setHelmet(useItem);
             } else {
                 equipment.setHelmet(getItem(helmetItem));
             }
-            if (wandItem != null && wandSlot == InventorySlot.RIGHT_ARM) {
-                equipment.setItemInMainHand(wandItem);
+            if (useItem != null && wandSlot == InventorySlot.RIGHT_ARM) {
+                equipment.setItemInMainHand(useItem);
             } else {
                 equipment.setItemInMainHand(getItem(rightArmItem));
             }
-            if (wandItem != null && wandSlot == InventorySlot.CHESTPLATE) {
-                equipment.setChestplate(wandItem);
+            if (useItem != null && wandSlot == InventorySlot.CHESTPLATE) {
+                equipment.setChestplate(useItem);
             } else {
                 equipment.setChestplate(getItem(chestplateItem));
             }
-            if (wandItem != null && wandSlot == InventorySlot.LEGGINGS) {
-                equipment.setLeggings(wandItem);
+            if (useItem != null && wandSlot == InventorySlot.LEGGINGS) {
+                equipment.setLeggings(useItem);
             } else {
                 equipment.setLeggings(getItem(leggingsItem));
             }
-            if (wandItem != null && wandSlot == InventorySlot.BOOTS) {
-                equipment.setBoots(wandItem);
+            if (useItem != null && wandSlot == InventorySlot.BOOTS) {
+                equipment.setBoots(useItem);
             } else {
                 equipment.setBoots(getItem(bootsItem));
             }
@@ -296,7 +308,10 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         } else {
             player.getInventory().setItem(slotNumber, wandItem);
         }
-        context.checkWand();
+        Wand wand = context.checkWand();
+        if (openSpellInventory && wand != null) {
+            wand.openInventory();
+        }
 
         wandItem = null;
     }
