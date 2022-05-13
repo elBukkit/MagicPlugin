@@ -105,7 +105,7 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         adjustArmPitch = parameters.getBoolean("orient_right_arm", false);
         unbreakableItems = parameters.getBoolean("unbreakable_items", false);
         visibleDelayTicks = parameters.getInt("visible_delay_ticks", 1);
-        useWand = parameters.getBoolean("mount_wand", false);
+        useWand = parameters.getBoolean("mount_wand", parameters.getBoolean("use_wand", false));
         useBrushItem = parameters.getString("use_brush");
 
         String wandSlotString = parameters.getString("wand_slot", "HELMET");
