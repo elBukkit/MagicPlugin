@@ -3,6 +3,8 @@
 # Next
 
  - Mob spawn eggs, e.g. `/mgive egg:warlock` don't work
+
+ - ModelEngine support for RideEntity action
  
  - MythicMobs don't auto-register, don't work in SpawnEntity, etc
 

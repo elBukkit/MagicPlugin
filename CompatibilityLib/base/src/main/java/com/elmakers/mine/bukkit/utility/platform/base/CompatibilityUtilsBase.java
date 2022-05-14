@@ -813,6 +813,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         String key = getEnchantmentKey(enchantment);
         if (key == null) return null;
         String[] pieces = StringUtils.split(key, ":", 2);
+        if (pieces.length == 0) return null;
         return pieces[pieces.length - 1];
     }
 
