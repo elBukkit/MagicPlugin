@@ -58,6 +58,7 @@ public class RideEntityAction extends BaseSpellAction
     private double strafeControllable = 0;
     private double steerControllable = 0;
     private double jumpControllable = 0;
+    private double sneakControllable = 0;
     private double jumpVelocity = 0;
     private double braking = 0;
     private double pitchOffset = 0;
@@ -170,6 +171,7 @@ public class RideEntityAction extends BaseSpellAction
         strafeControllable = parameters.getDouble("strafe_controllable", 0.0);
         steerControllable = parameters.getDouble("steer_controllable", 0.0);
         jumpControllable = parameters.getDouble("jump_controllable", 0.0);
+        sneakControllable = parameters.getDouble("sneak_controllable", 0.0);
         jumpVelocity = parameters.getDouble("jump_velocity", 0.0);
         braking = parameters.getDouble("braking", 0.0);
         crashEntityDistance = parameters.getDouble("crash_entity_distance", 2.0);
@@ -353,6 +355,9 @@ public class RideEntityAction extends BaseSpellAction
 
         if (jumpControllable != 0 && context.getMage().isVehicleJumping()) {
             targetDirection.setY(jumpControllable);
+        }
+        if (sneakControllable != 0 && context.getMage().isSneaking()) {
+            targetDirection.setY(-sneakControllable);
         }
 
         if (maxAscend > 0) {
