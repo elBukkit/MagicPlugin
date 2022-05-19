@@ -48,6 +48,7 @@ public class RideEntityAction extends BaseSpellAction
     private int maxHeightAboveGround;
     private int heightCheckRadius;
     private int maxHeight;
+    private double dismountHeight;
     private int exemptionDuration;
     private double gravity;
     private double terminalVelocity;
@@ -147,6 +148,7 @@ public class RideEntityAction extends BaseSpellAction
         maxDeceleration = parameters.getDouble("max_deceleration", 0);
         liftoffThrust = parameters.getDouble("liftoff_thrust", 0);
         liftoffDuration = parameters.getInt("liftoff_duration", 0);
+        dismountHeight = parameters.getDouble("dismount_height", 0);
         crashDistance = parameters.getDouble("crash_distance", 0);
         crashSpeed = parameters.getDouble("crash_speed", 0);
         maxHeight = parameters.getInt("max_height", 0);
@@ -468,25 +470,35 @@ public class RideEntityAction extends BaseSpellAction
         Location currentLocation = mountedEntity.getLocation();
         if (maxHeight > 0 && currentLocation.getY() >= maxHeight) {
             blocksAbove = currentLocation.getY() - maxHeight + 1;
-        } else if (maxHeightAboveGround >= 0) {
+        }
+
+        if (maxHeightAboveGround >= 0 || dismountHeight >= 0) {
+            double blocksAboveGround = 0;
+            double maxCheckDistance = Math.max(maxHeightAboveGround, dismountHeight);
             for (int x = -heightCheckRadius; x <= heightCheckRadius && (first || blocksAbove > 0); x++) {
                 for (int z = -heightCheckRadius; z <= heightCheckRadius && (first || blocksAbove > 0); z++) {
                     int thisBlocksAbove = 0;
                     Block block = currentLocation.getBlock().getRelative(x, 0, z);
-                    while (thisBlocksAbove < maxHeightAboveGround + 5 && context.isPassthrough(block))
+                    while (thisBlocksAbove < maxCheckDistance + 5 && context.isPassthrough(block))
                     {
                         block = block.getRelative(BlockFace.DOWN);
                         thisBlocksAbove++;
                     }
                     if (first) {
                         first = false;
-                        blocksAbove = thisBlocksAbove;
+                        blocksAboveGround = thisBlocksAbove;
                     } else {
-                        blocksAbove = Math.min(thisBlocksAbove, blocksAbove);
+                        blocksAboveGround = Math.min(thisBlocksAbove, blocksAbove);
                     }
                 }
             }
-            blocksAbove = blocksAbove - maxHeightAboveGround - 1;
+            blocksAboveGround += currentLocation.getY() - Math.floor(currentLocation.getY());
+            if (maxHeightAboveGround > 0) {
+                blocksAbove = blocksAboveGround - maxHeightAboveGround - 1;
+            }
+            if (dismountHeight > 0) {
+                context.getMage().setPreventDismount(blocksAboveGround > dismountHeight);
+            }
         }
 
         if (isAscending) {

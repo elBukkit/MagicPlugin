@@ -278,6 +278,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private BaseSpell fallingSpell = null;
     private boolean isAutomaton = false;
     private boolean allowContainerCopy = false;
+    private boolean preventDismount = false;
 
     private boolean shownHelp = false;
     private boolean gaveWelcomeWand = false;
@@ -4649,6 +4650,16 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     @Override
     public boolean allowContainerCopy() {
         return allowContainerCopy;
+    }
+
+    @Override
+    public boolean isPreventDismount() {
+        return preventDismount;
+    }
+
+    @Override
+    public void setPreventDismount(boolean prevent) {
+        this.preventDismount = prevent;
     }
 
     public Collection<Wand> getActiveArmor()

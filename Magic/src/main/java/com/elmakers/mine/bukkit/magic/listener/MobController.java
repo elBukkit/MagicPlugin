@@ -447,6 +447,11 @@ public class MobController implements Listener, ChunkLoadListener {
         EntityData entityData = getEntityData(event.getEntity());
         if (entityData != null && entityData.isPreventDismount()) {
             CompatibilityLib.getCompatibilityUtils().cancelDismount(event);
+        } else {
+            Mage mage = controller.getRegisteredMage(event.getEntity());
+            if (mage != null && mage.isPreventDismount()) {
+                CompatibilityLib.getCompatibilityUtils().cancelDismount(event);
+            }
         }
     }
 
