@@ -179,6 +179,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean hasId = false;
     private boolean showCycleModeLore = true;
     private boolean showEnchantmentLore = true;
+    private boolean useActiveIcon = false;
     private boolean alwaysUseActiveName = false;
     private boolean neverUseActiveName = false;
     private boolean instructions = true;
@@ -759,7 +760,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     private boolean useActiveIcon() {
         boolean useActiveIcon = mage != null;
-        if (useActiveIcon && getMode() == WandMode.INVENTORY) {
+        if (useActiveIcon && getMode() == WandMode.INVENTORY && this.useActiveIcon) {
             useActiveIcon = isInventoryOpen();
         } else if (useActiveIcon) {
             useActiveIcon = showingActiveIcon;
@@ -2073,6 +2074,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 neverUseActiveName = true;
             }
         }
+        useActiveIcon = getBoolean("use_active_icon", true);
 
         activeEffectsOnly = getBoolean("active_effects");
         effectParticleData = getFloat("effect_particle_data");
@@ -5790,7 +5792,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         }
 
         WandMode mode = getMode();
-        if (mode != WandMode.INVENTORY && mode != WandMode.ICON) {
+        if (mode != WandMode.INVENTORY && mode != WandMode.ICON && useActiveIcon) {
             showActiveIcon(true);
         }
 
