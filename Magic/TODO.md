@@ -2,6 +2,12 @@
 
 # Next
 
+ - Can put skills in a container with shift click or the number from the hotbar
+
+ - CheckInventory for a specific item amount not working (maybe add `amount` parameter while you're in there)
+
+ - Add `cancel_on_move: <distance>`, need to record start location of spell
+
  - Mob spawn eggs, e.g. `/mgive egg:warlock` don't work
 
  - ModelEngine support for RideEntity action

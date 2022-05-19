@@ -106,6 +106,7 @@ broom:
         jump_controllable: 1
         exemption_duration: 5000
         armor_stand_marker: false
+        dismount_height: 2
 
         # Upgrades with level
         steer_speed: 0.03

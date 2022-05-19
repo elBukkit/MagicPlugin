@@ -21,6 +21,8 @@
  - Add `pickup_delay` parameter to `ThrowItem` action
  - Add `source_yaw` parameter to `ChangeContext` action
  - Add new `ArmorStandProjectile` actions: `reactivate_wand`, `active_wand`
+ - Add `use_active_icon: false` option to wands, to make active icons completely manual, similar to `mode: icon`
+ - Add `dismount_height` option to `RideEntity` and `MountArmorStand` actions
 
 ## Changes
 
@@ -31,6 +33,7 @@
  - Custom Recall markers will now use the look direction that was set when creating the marker
    `marker_maintain_direction: true` can be used for old behavior
  - Recall changed to use shift-click to save markers, rather than aiming down
+ - Broomsticks will not let you dismount them until you are near the ground
 
 ## Fixes
 
