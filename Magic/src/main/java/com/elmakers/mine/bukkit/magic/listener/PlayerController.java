@@ -999,8 +999,14 @@ public class PlayerController implements Listener {
         }
     }
 
+    // TODO: Why not MONITOR?
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerPreLogin(AsyncPlayerPreLoginEvent event) {
+        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) {
+            // Did not emit any events prior to this, nothing to clean up
+            return;
+        }
+
         controller.onPreLogin(event);
     }
 
