@@ -332,7 +332,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
                         cached = responseCache.get(uuid);
                     }
                     if (cached != null) {
-                        callback.result(cached);
+                        synchronizeCallbackProfile(callback, cached);
                         return;
                     }
                     File cacheFolder = new File(platform.getPlugin().getDataFolder(), "data/profiles");
