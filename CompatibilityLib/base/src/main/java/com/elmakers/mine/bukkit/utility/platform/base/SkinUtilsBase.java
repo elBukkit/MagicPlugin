@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
@@ -315,7 +316,8 @@ public abstract class SkinUtilsBase implements SkinUtils {
             return;
         }
         final com.elmakers.mine.bukkit.utility.platform.SkinUtils skinUtils = this;
-        Bukkit.getScheduler().runTaskLaterAsynchronously(platform.getPlugin(), new Runnable() {
+        final Plugin plugin = platform.getPlugin();
+        Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
                 Object lock;
@@ -332,7 +334,7 @@ public abstract class SkinUtilsBase implements SkinUtils {
                         cached = responseCache.get(uuid);
                     }
                     if (cached != null) {
-                        callback.result(cached);
+                        synchronizeCallbackProfile(callback, cached);
                         return;
                     }
                     File cacheFolder = new File(platform.getPlugin().getDataFolder(), "data/profiles");
