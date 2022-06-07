@@ -2,6 +2,10 @@
 
 # 10.8
 
+## 1.19 Support
+ 
+ - As always, there may be bugs. Proceed with caution, for now.
+
 ## Additions
 
  - Add `toggle_icon` wand action, for making wands with toggleable icons that have no spell inventory
