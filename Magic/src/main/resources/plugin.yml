@@ -5,7 +5,8 @@ api-version: 1.13
 website: http://mine.elmakers.com
 author: NathanWolf
 description : A gameplay-oriented plugin for spells and wands
-load: startup
+# TODO: Put this back
+# load: startup
 softdepend:
   - WorldGuard
   - WGCustomFlags

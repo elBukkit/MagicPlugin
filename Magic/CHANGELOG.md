@@ -5,6 +5,16 @@
 ## 1.19 Support
  
  - As always, there may be bugs. Proceed with caution, for now.
+   World populators seem to be an issue, if using the chests, otherside, netherside or mars examples
+   you may need to disable them for now.
+
+ - Note that action bar support for Craftbukkit was dropped.
+   Please use Spigot or Paper!
+
+ - The plugin no longer loads at startup (for now) as this causes issues with 1.19 chunk generation. This
+   may adversely affect plugin integrations and world modification, even on prior 
+
+ - The action bar is broken, the hotbar GUI will not work. This seems to be an issue that needs fixing on Spigot's side.
 
 ## Additions
 
