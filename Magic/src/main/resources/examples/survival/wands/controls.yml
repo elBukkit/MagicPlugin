@@ -116,7 +116,7 @@ gui_actionbar:
         resource_pack: true
       properties:
         action_bar:
-          message: '$hotbar `{font:"default",text:"$extra"}`'
+          message: '$hotbar`{font:"default",text:"$extra"}`'
           font: "magic"
           open_message: ""
           interval: 250
