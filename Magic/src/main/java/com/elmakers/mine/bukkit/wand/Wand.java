@@ -2174,7 +2174,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
         config = getConfigurationSection("action_bar");
         if (config != null) {
-            actionBarMessage = config.getString("message");
+            actionBarMessage = config.getString("message", "");
             actionBarOpenMessage = config.getString("open_message", actionBarMessage);
             if (actionBarMessage.isEmpty()) {
                 actionBarMessage = null;
