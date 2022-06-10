@@ -77,6 +77,7 @@ public class Messages implements com.elmakers.mine.bukkit.api.magic.Messages {
         // These can be used via the <space> macro so we need to read them first
         ConfigurationSection spaceSection = messages.getConfigurationSection("glyphs.space");
         Set<String> spaceKeys = spaceSection.getKeys(false);
+        spaceAmounts.clear();
         for (String spaceKey : spaceKeys) {
             try {
                 Integer spaceAmount = Integer.parseInt(spaceKey);
