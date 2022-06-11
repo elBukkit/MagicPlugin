@@ -5,8 +5,6 @@
 ## 1.19 Support
  
  - As always, there may be bugs. Proceed with caution, for now.
- - Note that action bar support for Craftbukkit was dropped.
-   Please use Spigot or Paper!
 
 ## Additions
 

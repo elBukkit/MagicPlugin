@@ -126,6 +126,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket;
 import net.minecraft.network.protocol.game.ClientboundEntityEventPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
+import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.MinecraftServer;
@@ -1685,8 +1686,16 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
 
     @Override
     protected boolean sendActionBarPackets(Player player, String message) {
-        Bukkit.getLogger().warning("Can not use the action bar on Craftbukkit anymore, please use Spigot or Paper");
-        return false;
+        Component component = Component.literal(message);
+        // ChatType.GAME_INFO.ordinal() = 2
+        ClientboundSystemChatPacket packet = new ClientboundSystemChatPacket(component, 2);
+        try {
+            sendPacket(player, packet);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.SEVERE, "Error updating action bar", ex);
+            return false;
+        }
+        return true;
     }
 
     @Override
