@@ -43,6 +43,7 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.projectiles.ProjectileSource;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.entity.EntityData;
@@ -180,7 +181,13 @@ public class EntityController implements Listener {
             UndoList undoList = controller.getPendingUndo(entity.getLocation());
             if (undoList != null)
             {
-                undoList.modify(entity);
+                CastContext context = undoList == null ? null : undoList.getContext();
+                Spell spell = context == null ? null : context.getSpell();
+                if (spell != null && !spell.canTarget(entity)) {
+                    event.setCancelled(true);
+                } else {
+                    undoList.modify(entity);
+                }
             }
         }
     }
@@ -240,6 +247,16 @@ public class EntityController implements Listener {
             }
         }
 
+        // Don't allow a spell to damage an entity it can't target
+        Entity damager = event.getDamager();
+        UndoList undoList = controller.getEntityUndo(damager);
+        CastContext context = undoList == null ? null : undoList.getContext();
+        Spell spell = context == null ? null : context.getSpell();
+        if (spell != null && !spell.canTarget(entity)) {
+            event.setCancelled(true);
+            return;
+        }
+
         Mage entityMage = controller.getRegisteredMage(entity);
         if (entityMage != null) {
             entityMage.damagedBy(event.getDamager(), event.getDamage());
@@ -261,7 +278,6 @@ public class EntityController implements Listener {
             event.setCancelled(true);
             return;
         }
-        Entity damager = event.getDamager();
         if (entityDamageReduction != null) {
             Double reduction = entityDamageReduction.get(damager.getType());
             if (reduction != null) {

@@ -1,5 +1,12 @@
 # CHANGELOG
 
+# 10.8.1
+
+## Changes
+
+ - A spell is no longer allowed to damage or combust an entity it is not allowed to target
+   This probably only affects spells using vanilla explosions and fire.
+
 # 10.8
 
 ## 1.19 Support
@@ -24,7 +31,7 @@
  - Add `target_no_damage_ticks: false` option to spells, to ignore targets that are invincible due to vanilla recently-damaged protection
  - Add `pickup_delay` parameter to `ThrowItem` action
  - Add `source_yaw` parameter to `ChangeContext` action
- - Add new `ArmorStandProjectile` actions: `reactivate_wand`, `active_wand`
+ - Add new `ArmorStandProjectile` options: `reactivate_wand`, `active_wand`
  - Add `use_active_icon: false` option to wands, to make active icons completely manual, similar to `mode: icon`
  - Add `dismount_height` option to `RideEntity` and `MountArmorStand` actions
 
