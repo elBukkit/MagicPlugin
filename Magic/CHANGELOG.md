@@ -2,11 +2,15 @@
 
 # 10.8.1
 
+## Additions
+
+ - Add support for the DamageIndicators plugin, make sure to ignore hologram armor stands
+ - Add support for ProSkillAPI (maybe, untested)
+
 ## Changes
 
  - A spell is no longer allowed to damage or combust an entity it is not allowed to target
    This probably only affects spells using vanilla explosions and fire.
- - Add support for the DamageIndicators plugin, make sure to ignore hologram armor stands
 
 # 10.8
 

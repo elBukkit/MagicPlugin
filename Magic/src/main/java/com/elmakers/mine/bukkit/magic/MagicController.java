@@ -8098,6 +8098,9 @@ public class MagicController implements MageController, ChunkLoadListener {
 
         // Check for SkillAPI
         Plugin skillAPIPlugin = pluginManager.getPlugin("SkillAPI");
+        if (skillAPIPlugin == null) {
+            skillAPIPlugin = pluginManager.getPlugin("ProSkillAPI");
+        }
         if (skillAPIPlugin != null && skillAPIEnabled) {
             skillAPIManager = new SkillAPIManager(this, skillAPIPlugin);
             if (skillAPIManager.initialize()) {

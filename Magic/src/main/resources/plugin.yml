@@ -23,6 +23,7 @@ softdepend:
   - LibsDisguises
   - Minigames
   - SkillAPI
+  - ProSkillAPI
   - PlaceholderAPI
   - Skript
   - Citadel
