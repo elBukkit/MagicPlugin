@@ -8,6 +8,7 @@ testdummy:
   invulnerable: false
   health: 100
   static: false
+  gravity: true
   triggers:
     damage:
       cast: dummydialog
