@@ -62,7 +62,7 @@ public class SkillAPIManager implements ManaController, AttributeProvider, Requi
         boolean useMana = configuration.getBoolean("use_skillapi_mana", true);
         usesMana.clear();
         if (useMana) {
-            usesMana.addAll(ConfigurationUtils.getStringList(configuration, "heroes_mana_classes"));
+            usesMana.addAll(ConfigurationUtils.getStringList(configuration, "skillapi_mana_classes"));
         }
 
         usesAllies = configuration.getBoolean("use_skillapi_allies", true);
