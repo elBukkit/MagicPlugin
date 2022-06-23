@@ -104,6 +104,7 @@ public class RideEntityAction extends BaseSpellAction
     protected Location targetLocation;
     private boolean isAscending;
     private boolean isInAir;
+    private String boostAttribute;
 
     @Override
     public void initialize(Spell spell, ConfigurationSection parameters) {
@@ -186,6 +187,7 @@ public class RideEntityAction extends BaseSpellAction
         crashDismountSpeed = parameters.getDouble("crash_dismount_speed", 0.0);
         fallProtection = parameters.getInt("fall_protection", 0);
         exemptionDuration = parameters.getInt("exemption_duration", 0);
+        boostAttribute = parameters.getString("boost_attribute");
         if (parameters.contains("direction_y")) {
             yDirection = parameters.getDouble("direction_y");
         } else {
@@ -443,6 +445,13 @@ public class RideEntityAction extends BaseSpellAction
 
         if (jumpVelocity != 0 && context.getMage().isVehicleJumping()) {
             speed += jumpVelocity;
+        }
+
+        if (boostAttribute != null) {
+            Double attribute = context.getMage().getAttribute(boostAttribute);
+            if (attribute != null) {
+                speed += attribute;
+            }
         }
 
         if (controllable) {
