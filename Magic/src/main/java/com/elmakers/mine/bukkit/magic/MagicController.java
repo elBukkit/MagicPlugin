@@ -237,6 +237,7 @@ import com.elmakers.mine.bukkit.requirements.RequirementsController;
 import com.elmakers.mine.bukkit.resourcepack.ResourcePackManager;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.spell.SpellCategory;
+import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.tasks.ArmorUpdatedTask;
 import com.elmakers.mine.bukkit.tasks.AutoSaveTask;
 import com.elmakers.mine.bukkit.tasks.BatchUpdateTask;
@@ -7778,6 +7779,18 @@ public class MagicController implements MageController, ChunkLoadListener {
         logger.setContext("integration");
 
         final PluginManager pluginManager = plugin.getServer().getPluginManager();
+
+        // Check for damage indicator holograms
+        Plugin hologramPlugin = pluginManager.getPlugin("DamageIndicatorsFree");
+        if (hologramPlugin != null) {
+            getLogger().info("DamageIndicatorsFree found, will avoid targeting hologram armor stands");
+        } else {
+            hologramPlugin = pluginManager.getPlugin("DamageIndicatorsPlus");
+            if (hologramPlugin != null) {
+                getLogger().info("DamageIndicatorsPlus found, will avoid targeting hologram armor stands");
+            }
+        }
+        TargetingSpell.HOLOGRAM_PLUGIN = hologramPlugin;
 
         // Check for MobArena
         Plugin mobArenaPlugin = pluginManager.getPlugin("MobArena");

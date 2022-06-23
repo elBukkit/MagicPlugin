@@ -62,4 +62,12 @@ public class PersistentEntityMetadataUtils extends EntityMetadataUtils {
     public void setString(Entity entity, MetaKey<String> key, String value) {
         entity.getPersistentDataContainer().set(getKey(key), PersistentDataType.STRING, value);
     }
+
+    @Override
+    public boolean hasString(Entity entity, String key, Plugin plugin) {
+        if (plugin == null) {
+            plugin = this.plugin;
+        }
+        return entity.getPersistentDataContainer().has(new NamespacedKey(plugin, key), PersistentDataType.STRING);
+    }
 }

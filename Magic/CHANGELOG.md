@@ -6,6 +6,7 @@
 
  - A spell is no longer allowed to damage or combust an entity it is not allowed to target
    This probably only affects spells using vanilla explosions and fire.
+ - Add support for the DamageIndicators plugin, make sure to ignore hologram armor stands
 
 # 10.8
 

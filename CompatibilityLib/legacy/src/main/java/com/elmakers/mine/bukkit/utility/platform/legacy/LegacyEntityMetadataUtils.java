@@ -21,6 +21,14 @@ public class LegacyEntityMetadataUtils extends EntityMetadataUtils {
         plugin.getLogger().info("Persistent metadata is not available, will rely on custom names to restore persistent magic mobs");
     }
 
+    @Override
+    public boolean hasString(Entity entity, String key, Plugin plugin) {
+        // This is primarily meant for checking metadata from other plugins
+        // We *could* handle it if checking for our own plugin, except the MetaKey stuff
+        // makes it difficult to use an arbitrary string, so just going to skip it entirely.
+        return false;
+    }
+
     protected <T> T getRawValue(Entity entity, MetaKey<T> key) {
         Map<String, Object> data = metadata.get(entity.getUniqueId().toString());
         Object v = data == null ? null : data.get(key.getName());

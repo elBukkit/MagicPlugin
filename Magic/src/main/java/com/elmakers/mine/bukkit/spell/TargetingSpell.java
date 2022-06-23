@@ -24,6 +24,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Tameable;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
@@ -50,6 +51,7 @@ public class TargetingSpell extends BaseSpell {
     // block targeting can theoretically go farther
     private static final int  MAX_RANGE  = 511;
     private static Set<GameMode> defaultTargetGameModes = new HashSet<>(Arrays.asList(GameMode.SURVIVAL, GameMode.ADVENTURE));
+    public static Plugin HOLOGRAM_PLUGIN = null;
 
     private Targeting                           targeting               = new Targeting();
 
@@ -374,6 +376,10 @@ public class TargetingSpell extends BaseSpell {
         }
         if (!targetTamed && entity instanceof Tameable && ((Tameable)entity).isTamed()) {
             mage.sendDebugMessage("Entity skipped, is tamed", 30);
+            return false;
+        }
+        if (HOLOGRAM_PLUGIN != null && CompatibilityLib.getEntityMetadataUtils().hasString(entity, "hologram", HOLOGRAM_PLUGIN)) {
+            mage.sendDebugMessage("Entity skipped, is hologram entity", 30);
             return false;
         }
         if (CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.NO_TARGET)) {

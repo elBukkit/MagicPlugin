@@ -12,6 +12,8 @@ public abstract class EntityMetadataUtils {
         this.plugin = plugin;
     }
 
+    public abstract boolean hasString(Entity entity, String key, Plugin plugin);
+
     public abstract void remove(Entity entity, MetaKey<?> key);
 
     public abstract boolean getBoolean(Entity entity, MetaKey<Boolean> key);
