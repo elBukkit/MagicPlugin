@@ -7,12 +7,12 @@
 sp_enabled: false
 
 # Use a special RP
-resource_pack: "http://rp.elmakers.com/Magic-war-RP-1.18.zip"
+resource_pack: "http://rp.elmakers.com/Magic-war-RP-1.19.zip"
 
 # Use a different RP when combined with other configs
-add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-1.18.zip"
+add_resource_pack: "http://rp.elmakers.com/Magic-all-RP-1.19.zip"
 
 # Alternate resource packs can be accessed with /getrp <pack>
 alternate_resource_packs:
   war:
-    url: "http://rp.elmakers.com/Magic-war-RP-1.18.zip"
+    url: "http://rp.elmakers.com/Magic-war-RP-1.19.zip"

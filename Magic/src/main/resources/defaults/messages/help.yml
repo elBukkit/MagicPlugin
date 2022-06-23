@@ -298,7 +298,7 @@ help:
     `<p>`Use &b`<command command="meditor path beginner" text="the editor">` &fto change the &7override_properties&f section.
     `<p>`You will need to repeat this for each path &7(&6student,apprentice,master&7) &fto fully change the mana progression for all players.
     `<p>`You can use the &b`<command command="mgive uberwand" text="Uberwand">` &ffor testing if you want unlimited mana.
-    `<p>`If you prefer, you can `<command command="mconfig wand allow_path_overrides false" text="disable path overrides">` on the wand to set mana directly instead.
+    `<p>`If you prefer, you can `<command command="mconfig wand wand allow_path_overrides false" text="disable path overrides">` on the wand to set mana directly instead.
   mana: |-
     `<title text="Mana">`
     `<p>`&dMagic &fuses a &bmana&f system in many of its configs, including survival, stars bending and even war (as ammo).
