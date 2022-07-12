@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.BlockResult;
@@ -44,7 +45,7 @@ public class DropRule extends BlockRule {
 
         ItemData itemData = controller.getOrCreateItem(itemKey);
         ItemStack itemStack = itemData == null ? null : itemData.getItemStack();
-        if (itemStack == null) {
+        if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) {
             controller.getLogger().warning("Invalid item key in drop rule: " + itemKey);
             return BlockResult.SKIP;
         }
