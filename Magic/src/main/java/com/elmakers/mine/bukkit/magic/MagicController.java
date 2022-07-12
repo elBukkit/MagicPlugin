@@ -7751,7 +7751,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     @Override
-    public void setDisableSpawnReplacement(boolean disable) {
+    public synchronized void setDisableSpawnReplacement(boolean disable) {
         if (disable) {
             disableSpawnReplacement++;
         } else {

@@ -2,6 +2,10 @@
 
 # 10.8.1
 
+## Fixes
+
+ - Fix spawn replacement not working after a little while
+
 ## Additions
 
  - Add support for the DamageIndicators plugin, make sure to ignore hologram armor stands
