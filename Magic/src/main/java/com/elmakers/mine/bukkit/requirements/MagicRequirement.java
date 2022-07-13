@@ -373,7 +373,7 @@ public class MagicRequirement {
             }
         }
 
-        if (requiredTemplates != null && !requiredModifiers.isEmpty()) {
+        if (requiredTemplates != null && !requiredTemplates.isEmpty()) {
             String template = wand.getTemplateKey();
             if (template == null || !requiredTemplates.contains(template)) {
                 return false;
