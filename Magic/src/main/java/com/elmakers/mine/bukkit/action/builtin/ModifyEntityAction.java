@@ -55,19 +55,7 @@ public class ModifyEntityAction extends BaseSpellAction
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
 
-        String disguiseTarget = parameters.getString("disguise_target");
-        if (disguiseTarget != null) {
-            Entity targetEntity = disguiseTarget.equals("target") ? context.getTargetEntity() : context.getEntity();
-            if (targetEntity != null) {
-                ConfigurationSection disguiseConfig = parameters.createSection("disguise");
-                disguiseConfig.set("type", targetEntity.getType().name().toLowerCase());
-                if (targetEntity instanceof Player) {
-                    Player targetPlayer = (Player)targetEntity;
-                    disguiseConfig.set("name", targetPlayer.getName());
-                    disguiseConfig.set("skin", targetPlayer.getName());
-                }
-            }
-        }
+        ConfigurationUtils.parseDisguiseTarget(parameters, context);
 
         entityData = context.getController().getMob(parameters);
         if (parameters.contains("reason")) {

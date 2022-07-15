@@ -2,6 +2,10 @@
 
 # 10.8.2
 
+## Additions
+
+ - Add support for `disguise_target` to the `Disguise` action.
+
 # 10.8.1
 
 ## Fixes

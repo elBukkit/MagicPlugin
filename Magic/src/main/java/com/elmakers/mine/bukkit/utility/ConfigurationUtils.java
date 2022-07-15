@@ -18,10 +18,14 @@ import org.bukkit.Material;
 import org.bukkit.Particle;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.VariableScope;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
@@ -694,5 +698,47 @@ public class ConfigurationUtils extends ConfigUtils {
         }
 
         return phase;
+    }
+
+    public static void parseDisguiseTarget(ConfigurationSection parameters, CastContext context) {
+        String disguiseTarget = parameters.getString("disguise_target");
+        if (disguiseTarget != null) {
+            Entity targetEntity = disguiseTarget.equals("target") ? context.getTargetEntity() : context.getEntity();
+            if (targetEntity != null) {
+                ConfigurationSection disguiseConfig = parameters.createSection("disguise");
+                disguiseConfig.set("type", targetEntity.getType().name().toLowerCase());
+                if (targetEntity instanceof Player) {
+                    MageController controller = context.getController();
+                    Player targetPlayer = (Player)targetEntity;
+                    disguiseConfig.set("name", targetPlayer.getName());
+                    disguiseConfig.set("skin", targetPlayer.getName());
+                    PlayerInventory inventory = targetPlayer.getInventory();
+                    ItemStack helmet = inventory.getHelmet();
+                    if (!CompatibilityLib.getItemUtils().isEmpty(helmet)) {
+                        disguiseConfig.set("helmet", controller.getItemKey(helmet));
+                    }
+                    ItemStack chestplate = inventory.getChestplate();
+                    if (!CompatibilityLib.getItemUtils().isEmpty(chestplate)) {
+                        disguiseConfig.set("chestplate", controller.getItemKey(chestplate));
+                    }
+                    ItemStack leggings = inventory.getLeggings();
+                    if (!CompatibilityLib.getItemUtils().isEmpty(leggings)) {
+                        disguiseConfig.set("leggings", controller.getItemKey(leggings));
+                    }
+                    ItemStack boots = inventory.getBoots();
+                    if (!CompatibilityLib.getItemUtils().isEmpty(boots)) {
+                        disguiseConfig.set("boots", controller.getItemKey(boots));
+                    }
+                    ItemStack mainhand = inventory.getItemInMainHand();
+                    if (!CompatibilityLib.getItemUtils().isEmpty(mainhand)) {
+                        disguiseConfig.set("mainhand", controller.getItemKey(mainhand));
+                    }
+                    ItemStack offhand = inventory.getItemInOffHand();
+                    if (!CompatibilityLib.getItemUtils().isEmpty(offhand)) {
+                        disguiseConfig.set("offhand", controller.getItemKey(offhand));
+                    }
+                }
+            }
+        }
     }
 }

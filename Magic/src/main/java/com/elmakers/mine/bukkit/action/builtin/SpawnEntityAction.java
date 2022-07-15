@@ -22,8 +22,6 @@ import org.bukkit.entity.Rabbit;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.Villager;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.action.CompoundAction;
@@ -92,45 +90,7 @@ public class SpawnEntityAction extends CompoundAction
         parameterizeName = parameters.getBoolean("parameterize_name", true);
         entityParameters = parameters.getConfigurationSection("entity_parameters");
 
-        String disguiseTarget = parameters.getString("disguise_target");
-        if (disguiseTarget != null) {
-            Entity targetEntity = disguiseTarget.equals("target") ? context.getTargetEntity() : context.getEntity();
-            if (targetEntity != null) {
-                ConfigurationSection disguiseConfig = parameters.createSection("disguise");
-                disguiseConfig.set("type", targetEntity.getType().name().toLowerCase());
-                if (targetEntity instanceof Player) {
-                    MageController controller = context.getController();
-                    Player targetPlayer = (Player)targetEntity;
-                    disguiseConfig.set("name", targetPlayer.getName());
-                    disguiseConfig.set("skin", targetPlayer.getName());
-                    PlayerInventory inventory = targetPlayer.getInventory();
-                    ItemStack helmet = inventory.getHelmet();
-                    if (!CompatibilityLib.getItemUtils().isEmpty(helmet)) {
-                        disguiseConfig.set("helmet", controller.getItemKey(helmet));
-                    }
-                    ItemStack chestplate = inventory.getChestplate();
-                    if (!CompatibilityLib.getItemUtils().isEmpty(chestplate)) {
-                        disguiseConfig.set("chestplate", controller.getItemKey(chestplate));
-                    }
-                    ItemStack leggings = inventory.getLeggings();
-                    if (!CompatibilityLib.getItemUtils().isEmpty(leggings)) {
-                        disguiseConfig.set("leggings", controller.getItemKey(leggings));
-                    }
-                    ItemStack boots = inventory.getBoots();
-                    if (!CompatibilityLib.getItemUtils().isEmpty(boots)) {
-                        disguiseConfig.set("boots", controller.getItemKey(boots));
-                    }
-                    ItemStack mainhand = inventory.getItemInMainHand();
-                    if (!CompatibilityLib.getItemUtils().isEmpty(mainhand)) {
-                        disguiseConfig.set("mainhand", controller.getItemKey(mainhand));
-                    }
-                    ItemStack offhand = inventory.getItemInOffHand();
-                    if (!CompatibilityLib.getItemUtils().isEmpty(offhand)) {
-                        disguiseConfig.set("offhand", controller.getItemKey(offhand));
-                    }
-                }
-            }
-        }
+        ConfigurationUtils.parseDisguiseTarget(parameters, context);
 
         if (parameters.contains("type"))
         {
