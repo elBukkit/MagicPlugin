@@ -711,6 +711,9 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
     public boolean onMageSetData(CommandSender sender, Player player, String[] args)
     {
         Mage mage = controller.getMage(player);
+        if (args.length == 0) {
+            return false;
+        }
         if (args.length == 1)
         {
             ConfigurationSection data = mage.getData();
