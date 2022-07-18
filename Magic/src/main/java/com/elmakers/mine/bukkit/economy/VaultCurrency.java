@@ -95,6 +95,10 @@ public class VaultCurrency extends BaseMagicCurrency {
         if (customFormatting || vault == null) {
             return super.formatAmount(amount, messages);
         }
-        return vault.format(amount);
+        String valueFormatted = vault.format(amount);
+        if (valueFormatted == null) {
+            valueFormatted = super.formatAmount(amount, messages);
+        }
+        return valueFormatted;
     }
 }
