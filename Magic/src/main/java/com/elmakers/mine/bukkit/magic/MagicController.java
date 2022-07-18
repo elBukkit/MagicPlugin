@@ -8783,33 +8783,34 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
 
         // Set up mage data store
-        if (mageDataStore != null) {
-            mageDataStore.close();
-        }
-
-        ConfigurationSection mageDataStoreConfiguration = properties.getConfigurationSection("player_data_store");
-        if (mageDataStoreConfiguration != null) {
-            mageDataStore = loadMageDataStore(mageDataStoreConfiguration);
-            if (mageDataStore == null) {
-                getLogger().log(Level.WARNING, "Failed to load player_data_store configuration, player data saving disabled!");
+        synchronized (saveLock) {
+            if (mageDataStore != null) {
+                mageDataStore.close();
             }
-        } else {
-            getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
-            mageDataStore = null;
-        }
-
-        ConfigurationSection migrateDataStoreConfiguration = properties.getConfigurationSection("migrate_data_store");
-        if (migrateDataStoreConfiguration != null) {
-            migrateDataStore = loadMageDataStore(migrateDataStoreConfiguration);
-            if (migrateDataStore == null) {
-                getLogger().log(Level.WARNING, "Failed to load migrate_data_store configuration, migration will not work");
+            if (migrateDataStore != null) {
+                migrateDataStore.close();
             }
-        } else {
-            migrateDataStore = null;
-        }
 
-        if (migrateDataStore != null) {
-            migrateDataStore.close();
+            ConfigurationSection mageDataStoreConfiguration = properties.getConfigurationSection("player_data_store");
+            if (mageDataStoreConfiguration != null) {
+                mageDataStore = loadMageDataStore(mageDataStoreConfiguration);
+                if (mageDataStore == null) {
+                    getLogger().log(Level.WARNING, "Failed to load player_data_store configuration, player data saving disabled!");
+                }
+            } else {
+                getLogger().log(Level.WARNING, "Missing player_data_store configuration, player data saving disabled!");
+                mageDataStore = null;
+            }
+
+            ConfigurationSection migrateDataStoreConfiguration = properties.getConfigurationSection("migrate_data_store");
+            if (migrateDataStoreConfiguration != null) {
+                migrateDataStore = loadMageDataStore(migrateDataStoreConfiguration);
+                if (migrateDataStore == null) {
+                    getLogger().log(Level.WARNING, "Failed to load migrate_data_store configuration, migration will not work");
+                }
+            } else {
+                migrateDataStore = null;
+            }
         }
 
         // Semi-deprecated Wand defaults
