@@ -18,6 +18,7 @@ import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
@@ -27,6 +28,7 @@ public class TakeItemAction extends BaseSpellAction
     private MaterialAndData itemType;
     private boolean giveToCaster;
     private boolean fullStack;
+    private boolean takeWand;
 
     private static class TakeUndoAction implements Runnable {
         private final MageController controller;
@@ -75,6 +77,7 @@ public class TakeItemAction extends BaseSpellAction
     public void prepare(CastContext context, ConfigurationSection parameters)
     {
         super.prepare(context, parameters);
+        takeWand = parameters.getBoolean("take_wand", false);
         displayName = parameters.getString("display_name", null);
         if (displayName != null) {
             displayName = CompatibilityLib.getCompatibilityUtils().translateColors(displayName);
@@ -115,7 +118,44 @@ public class TakeItemAction extends BaseSpellAction
         }
 
         ItemStack item = null;
-        if (target instanceof Player) {
+        if (takeWand) {
+            Wand wand;
+            Mage targetMage = context.getController().getMage(target);
+            if (targetMage == context.getMage()) {
+                wand = context.getWand();
+            } else {
+                wand = targetMage.getActiveWand();
+            }
+            if (wand != null) {
+                item = wand.getItem();
+                if (wand.isInOffhand()) {
+                    if (target instanceof Player) {
+                        Player targetPlayer = (Player)target;
+                        PlayerInventory playerInventory = targetPlayer.getInventory();
+                        playerInventory.setItemInOffHand(null);
+                    } else if (target instanceof LivingEntity) {
+                        LivingEntity livingEntity = (LivingEntity)target;
+                        EntityEquipment equipment = livingEntity.getEquipment();
+                        equipment.setItemInOffHand(null);
+                    } else {
+                        item = null;
+                    }
+                } else {
+                    if (target instanceof Player) {
+                        Player targetPlayer = (Player)target;
+                        PlayerInventory playerInventory = targetPlayer.getInventory();
+                        playerInventory.setItemInMainHand(null);
+                    } else if (target instanceof LivingEntity) {
+                        LivingEntity livingEntity = (LivingEntity)target;
+                        EntityEquipment equipment = livingEntity.getEquipment();
+                        equipment.setItemInMainHand(null);
+                    } else {
+                        item = null;
+                    }
+                }
+                targetMage.checkWand();
+            }
+        } else if (target instanceof Player) {
             Player targetPlayer = (Player)target;
             PlayerInventory playerInventory = targetPlayer.getInventory();
             int slotNumber = 0;

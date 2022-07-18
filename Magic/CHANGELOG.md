@@ -1,3 +1,4 @@
+
 # CHANGELOG
 
 # 10.8.2
@@ -5,6 +6,7 @@
 ## Additions
 
  - Add support for `disguise_target` to the `Disguise` action.
+ - Add `take_wand: true` option to `TakeItem` action
 
 # 10.8.1
 
