@@ -1,0 +1,9 @@
+kamikaze:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  type: zombie
+  interval: 1000
+  triggers:
+    interval:
+      cast:
+         suicide: 100

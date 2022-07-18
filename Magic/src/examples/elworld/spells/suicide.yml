@@ -1,0 +1,12 @@
+suicide:
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  name: Suicide
+  description: Commit hare-kare
+  icon: skeleton_skull
+  actions:
+    cast:
+    - class: Damage
+  parameters:
+    target: self
+    damage: 1000
