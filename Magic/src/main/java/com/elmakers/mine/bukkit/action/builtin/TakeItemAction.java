@@ -82,7 +82,7 @@ public class TakeItemAction extends BaseSpellAction
         if (displayName != null) {
             displayName = CompatibilityLib.getCompatibilityUtils().translateColors(displayName);
         }
-        giveToCaster = true;
+        giveToCaster = !takeWand;
         String itemKey = parameters.getString("item", "");
         if (!itemKey.isEmpty()) {
             giveToCaster = false;
@@ -127,6 +127,7 @@ public class TakeItemAction extends BaseSpellAction
                 wand = targetMage.getActiveWand();
             }
             if (wand != null) {
+                wand.deactivate();
                 item = wand.getItem();
                 if (wand.isInOffhand()) {
                     if (target instanceof Player) {
