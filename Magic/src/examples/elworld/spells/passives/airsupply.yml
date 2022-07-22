@@ -4,6 +4,7 @@ airsupply:
   icon: spell_icon:76
   icon_disabled: spell_icon_disabled:76
   passive: true
+  mode: hidden
   triggers:
     # This triggers when the player takes drowning damage
     - trigger: damage

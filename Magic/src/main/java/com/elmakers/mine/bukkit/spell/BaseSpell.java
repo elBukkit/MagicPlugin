@@ -74,6 +74,7 @@ import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellCategory;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.SpellMode;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.spell.TargetType;
@@ -198,6 +199,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     private List<CastingCost> activeCosts = null;
     private List<Trigger> triggers = null;
     private ConfigurationSection messages = null;
+    private SpellMode mode = SpellMode.DEFAULT;
 
     // Variable default definitions
     // For convenience, these can be provide as a list of configurations, or as a map to objects
@@ -1125,6 +1127,18 @@ public class BaseSpell implements MageSpell, Cloneable {
         deactivateEffects = node.getBoolean("deactivate_effects", true);
         disableManaRegeneration = node.getBoolean("disable_mana_regeneration", false);
         allowOverlap = node.getBoolean("allow_overlap", true);
+
+        String modeString = node.getString("mode");
+        if (modeString != null && !modeString.isEmpty()) {
+            try {
+                mode = SpellMode.valueOf(modeString.toUpperCase());
+            } catch (Exception ex) {
+                controller.getLogger().warning("Invalid spell mode: " + modeString);
+                mode = SpellMode.DEFAULT;
+            }
+        } else {
+            mode = SpellMode.DEFAULT;
+        }
 
         String toggleString = node.getString("toggle", "NONE");
         try {
@@ -3725,5 +3739,11 @@ public class BaseSpell implements MageSpell, Cloneable {
             }
         }
         return needsUpdate;
+    }
+
+    @Override
+    @Nonnull
+    public SpellMode getMode() {
+        return mode;
     }
 }

@@ -2,6 +2,8 @@
 
 # Next
 
+ - Add `relative_particle_offset`, make it a vector and translate to the vanilla offsets
+
  - Can put skills in a container with shift click or the number from the hotbar
 
  - CheckInventory for a specific item amount not working (maybe add `amount` parameter while you're in there)

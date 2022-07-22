@@ -66,6 +66,7 @@ import com.elmakers.mine.bukkit.api.spell.CastingCost;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
+import com.elmakers.mine.bukkit.api.spell.SpellMode;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.WandAction;
 import com.elmakers.mine.bukkit.api.wand.WandUseMode;
@@ -1432,6 +1433,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             int spellLevel = getSpellLevel(key);
             SpellKey spellKey = new SpellKey(key, spellLevel);
             SpellTemplate spell = mage == null ? controller.getSpellTemplate(spellKey.getKey()) : mage.getSpell(spellKey.getKey());
+            if (spell.getMode() == SpellMode.HIDDEN) continue;
             ItemStack itemStack = createSpellItem(spellKey.getKey());
             if (itemStack != null)
             {
@@ -1592,21 +1594,26 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                 if (spellKey.getLevel() > 1 && (currentLevel == null || currentLevel < spellKey.getLevel())) {
                     setSpellLevel(spellKey.getBaseKey(), spellKey.getLevel());
                 }
-                if (slot == null) {
-                    slot = spellInventory.get(spellKey.getBaseKey());
-                }
-                if (slot == null) {
-                    if (maxSlot > nextFreeSlot) {
-                        nextFreeSlot = maxSlot + 1;
-                    }
-                    slot = getNextFreeSlot(nextFreeSlot);
-                    nextFreeSlot = slot + 1;
-                }
-                spellInventory.put(spellKey.getBaseKey(), slot);
                 spells.add(spellKey.getBaseKey());
-                if (activeSpell == null || activeSpell.length() == 0)
-                {
-                    activeSpell = spellKey.getBaseKey();
+
+                // Skip spell inventory if hidden
+                if (spell.getMode() == SpellMode.HIDDEN) {
+                    spellInventory.remove(spellKey.getBaseKey());
+                } else {
+                    if (slot == null) {
+                        slot = spellInventory.get(spellKey.getBaseKey());
+                    }
+                    if (slot == null) {
+                        if (maxSlot > nextFreeSlot) {
+                            nextFreeSlot = maxSlot + 1;
+                        }
+                        slot = getNextFreeSlot(nextFreeSlot);
+                        nextFreeSlot = slot + 1;
+                    }
+                    spellInventory.put(spellKey.getBaseKey(), slot);
+                    if (activeSpell == null || activeSpell.length() == 0) {
+                        activeSpell = spellKey.getBaseKey();
+                    }
                 }
             }
         }
@@ -6272,20 +6279,27 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (!super.forceAddSpell(spellName)) {
             return false;
         }
+
+        int level = spellKey.getLevel();
+
+        setSpellLevel(spellKey.getBaseKey(), level);
+        spells.add(spellKey.getBaseKey());
+
+        // Skip adding to inventory if hidden
+        if (template.getMode() == SpellMode.HIDDEN) {
+            return true;
+        }
+
         saveInventory();
 
         ItemStack spellItem = createSpellItem(spellKey.getKey());
         if (spellItem == null) {
             return false;
         }
-        int level = spellKey.getLevel();
 
         // Look for existing spells for spell upgrades
         Integer inventorySlot = spellInventory.get(spellKey.getBaseKey());
         clearSlot(inventorySlot);
-
-        setSpellLevel(spellKey.getBaseKey(), level);
-        spells.add(spellKey.getBaseKey());
 
         if (activeSpell == null || activeSpell.isEmpty()) {
             setActiveSpell(spellKey.getBaseKey());
