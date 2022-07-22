@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.api.spell;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Color;
@@ -169,4 +170,7 @@ public interface SpellTemplate extends Comparable<SpellTemplate>, CostReducer {
 
     @Nullable
     Collection<Trigger> getTriggers();
+
+    @Nonnull
+    SpellMode getMode();
 }
