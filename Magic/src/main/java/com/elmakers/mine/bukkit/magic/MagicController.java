@@ -246,6 +246,7 @@ import com.elmakers.mine.bukkit.tasks.CheckChunkTask;
 import com.elmakers.mine.bukkit.tasks.ConfigCheckTask;
 import com.elmakers.mine.bukkit.tasks.ConfigurationLoadTask;
 import com.elmakers.mine.bukkit.tasks.DoMageLoadTask;
+import com.elmakers.mine.bukkit.tasks.FinalizeImmediatelyTask;
 import com.elmakers.mine.bukkit.tasks.FinishGenericIntegrationTask;
 import com.elmakers.mine.bukkit.tasks.LoadDataTask;
 import com.elmakers.mine.bukkit.tasks.LogNotifyTask;
@@ -1895,6 +1896,10 @@ public class MagicController implements MageController, ChunkLoadListener {
             // Delay validation of configs or anything else that requires attributes or
             // other external plugin registrations
             Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, finalizingConfig, 1);
+
+            // Some plugins (Skript) are very strict about when other plugins can integrate,
+            // One tick later is too late.
+            Bukkit.getScheduler().runTask(plugin, new FinalizeImmediatelyTask(this));
         } else {
             finalizingConfig.run();
         }
@@ -7775,6 +7780,24 @@ public class MagicController implements MageController, ChunkLoadListener {
         return warpController.getMagicWarps();
     }
 
+    public void finalizeImmediately() {
+        final PluginManager pluginManager = plugin.getServer().getPluginManager();
+
+        // Skript
+        if (skriptEnabled) {
+            Plugin skriptPlugin = pluginManager.getPlugin("Skript");
+            if (skriptPlugin != null && skriptPlugin.isEnabled()) {
+                try {
+                    new SkriptManager(this);
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with Skript", ex);
+                }
+            }
+        } else {
+            getLogger().info("Skript integration disabled.");
+        }
+    }
+
     public void finalizeIntegration() {
         logger.setContext("integration");
 
@@ -7838,19 +7861,6 @@ public class MagicController implements MageController, ChunkLoadListener {
             } else {
                 getLogger().warning("ModelEngine found but integration failed");
             }
-        }
-
-        // Skript
-        if (skriptEnabled) {
-            if (pluginManager.getPlugin("Skript") != null) {
-                try {
-                    new SkriptManager(this);
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with Skript", ex);
-                }
-            }
-        } else {
-            getLogger().info("Skript integration disabled.");
         }
 
         // Try to link to Heroes:

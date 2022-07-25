@@ -52,6 +52,7 @@ loadbefore:
   - Heroes
   - MobArena
   - CMI
+  - Skript
 commands:
   getrp:
     description: Download the Magic resource pack

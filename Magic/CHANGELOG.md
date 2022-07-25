@@ -3,6 +3,10 @@
 
 # 10.8.2
 
+## Fixes
+
+ - Fix Skript integration
+
 ## Additions
 
  - Add support for `disguise_target` to the `Disguise` action.
