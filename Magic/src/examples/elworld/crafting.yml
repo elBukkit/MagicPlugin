@@ -73,3 +73,10 @@ sapphire_sword:
   row_2: i
   row_3: o
 
+repairsword:
+  type: shapeless
+  ignore_damage: true
+  output: iron_sword
+  ingredients:
+    - iron_sword
+    - iron_sword
