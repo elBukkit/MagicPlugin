@@ -54,7 +54,7 @@ public class WandProperties extends TemplatedProperties {
             "boss_bar", "level_display", "xp_display", "action_bar", "placeable", "infinity_cost_free",
             "allowed_enchantments", "glyph_hotbar", "allow_offhand", "renamable",
             "instructions", "lore_instructions", "cancel_interact_on_left_click", "cancel_interact_on_right_click",
-            "show_cycle_lore", "show_enchantment_lore"
+            "show_cycle_lore", "show_enchantment_lore", "spells_use_wand_name"
         ).build();
     protected MageClass mageClass;
 

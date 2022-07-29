@@ -183,6 +183,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private boolean useActiveIcon = false;
     private boolean alwaysUseActiveName = false;
     private boolean neverUseActiveName = false;
+    private boolean spellWandName = true;
     private boolean instructions = true;
     private boolean instructionsLore = true;
     private boolean showingActiveIcon = false;
@@ -2082,6 +2083,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
         useActiveIcon = getBoolean("use_active_icon", true);
+        spellWandName = getBoolean("spells_use_wand_name", true);
 
         activeEffectsOnly = getBoolean("active_effects");
         effectParticleData = getFloat("effect_particle_data");
@@ -3621,7 +3623,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public static void updateSpellName(Messages messages, ItemStack itemStack, SpellTemplate spell, Wand wand, String activeMaterial) {
         String displayName;
-        if (wand != null && !wand.isQuickCast()) {
+        if (wand != null && !wand.isQuickCast() && wand.useWandName()) {
             displayName = wand.getActiveWandName(spell);
         } else {
             displayName = getSpellDisplayName(messages, spell, MaterialBrush.parseMaterialKey(activeMaterial));
@@ -3635,7 +3637,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public static void updateBrushName(Messages messages, ItemStack itemStack, MaterialBrush brush, Wand wand) {
         String displayName;
-        if (wand != null) {
+        if (wand != null && wand.useWandName()) {
             Spell activeSpell = wand.getActiveSpell();
             if (activeSpell != null && activeSpell.usesBrush()) {
                 displayName = wand.getActiveWandName(brush);
@@ -5644,6 +5646,10 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     @Override
     public boolean isQuickCast() {
         return quickCast;
+    }
+
+    public boolean useWandName() {
+        return spellWandName;
     }
 
     public WandMode getMode() {
