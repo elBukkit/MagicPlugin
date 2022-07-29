@@ -12,6 +12,7 @@
  - Add support for `disguise_target` to the `Disguise` action.
  - Add `take_wand: true` option to `TakeItem` action
  - Add `mode: hidden` spell property to hide spells from the wand inventory
+ - Add custom `lore` spell option (does not currently support any templatization)
 
 # 10.8.1
 

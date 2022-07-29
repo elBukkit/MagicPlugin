@@ -971,6 +971,15 @@ public class BaseSpell implements MageSpell, Cloneable {
         // Embedded messages, will override anything in the messages configs
         messages = node.getConfigurationSection("messages");
 
+        // This is here to support custom lore via just a base "lore" list
+        List<String> lore = node.contains("lore") ? node.getStringList("lore") : null;
+        if (lore != null) {
+            if (messages == null) {
+                messages = ConfigurationUtils.newSection(node, "messages");
+            }
+            messages.set("lore", lore);
+        }
+
         // Upgrade path information
         // The actual upgrade spell will be set externally.
         requiredUpgradePath = node.getString("upgrade_required_path");
@@ -3080,8 +3089,32 @@ public class BaseSpell implements MageSpell, Cloneable {
         return verticalSearchDistance;
     }
 
+    private List<String> getMessageList(String messageKey) {
+        List<String> list = messages == null || !messages.contains(messageKey) ? null : messages.getStringList(messageKey);
+        if (list != null) return list;
+        if (spellKey.isVariant()) {
+            list = controller.getMessages().getAll("spells." + spellKey.getKey() + "." + messageKey);
+            if (list != null) return list;
+        }
+        list = controller.getMessages().getAll("spells." + spellKey.getBaseKey() + "." + messageKey);
+        if (list != null) return list;
+        if (inheritKey != null && !inheritKey.isEmpty()) {
+            list = controller.getMessages().getAll("spells." + inheritKey + "." + messageKey);
+            if (list != null) return list;
+        }
+        list = controller.getMessages().getAll("spells.default." + messageKey);
+        return list;
+    }
+
     @Override
     public void addLore(Messages messages, Mage mage, Wand wand, List<String> lore) {
+        List<String> messagesLore = getMessageList("lore");
+        if (messagesLore != null) {
+            for (String line : messagesLore) {
+                lore.add(CompatibilityLib.getCompatibilityUtils().translateColors(line));
+            }
+            return;
+        }
         if (levelDescription != null && levelDescription.length() > 0) {
             String descriptionTemplate = messages.get("spell.level_lore", "");
             if (!descriptionTemplate.isEmpty()) {
