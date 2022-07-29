@@ -3,6 +3,11 @@
 
 # 10.8.2
 
+## 1.19.1 Support
+
+ - Minecraft is not dead... long live Minecraft!
+ - ... But please do fix the chat censor :(
+
 ## Fixes
 
  - Fix Skript integration
