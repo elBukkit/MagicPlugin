@@ -96,7 +96,7 @@ public class DisarmAction extends BaseSpellAction
         Integer originalSlot = null;
         boolean isMainHand = false;
         if (displayName == null) {
-            stack = equipment.getItemInMainHand();
+            stack = equipment == null ? null : equipment.getItemInMainHand();
             isMainHand = true;
         } else {
             // This is not compatible
@@ -141,7 +141,7 @@ public class DisarmAction extends BaseSpellAction
             Wand activeWand = targetMage.getActiveWand();
             if (activeWand != null && isMainHand) {
                 targetMage.getActiveWand().deactivate();
-                stack = equipment.getItemInMainHand();
+                stack = equipment == null ? null : equipment.getItemInMainHand();
             }
         }
 
@@ -175,7 +175,7 @@ public class DisarmAction extends BaseSpellAction
 
         if (displayName != null) {
             ((Player)entity).getInventory().setItem(originalSlot, null);
-        } else {
+        } else if (equipment != null) {
             equipment.setItemInMainHand(swapItem);
         }
         if (targetSlot != null && targetInventory != null) {

@@ -138,6 +138,7 @@ public class InventorySlot {
     }
 
     public boolean setItem(EntityEquipment equipment, ItemStack itemStack) {
+        if (equipment == null) return false;
         switch (this.slotType) {
             case HELMET:
                 equipment.setHelmet(itemStack);
@@ -167,6 +168,7 @@ public class InventorySlot {
 
     @Nullable
     public ItemStack getItem(EntityEquipment equipment) {
+        if (equipment == null) return null;
         switch (this.slotType) {
             case HELMET:
                 return equipment.getHelmet();

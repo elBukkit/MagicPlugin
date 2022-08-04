@@ -137,7 +137,9 @@ public class TakeItemAction extends BaseSpellAction
                     } else if (target instanceof LivingEntity) {
                         LivingEntity livingEntity = (LivingEntity)target;
                         EntityEquipment equipment = livingEntity.getEquipment();
-                        equipment.setItemInOffHand(null);
+                        if (equipment != null) {
+                            equipment.setItemInOffHand(null);
+                        }
                     } else {
                         item = null;
                     }
@@ -149,7 +151,9 @@ public class TakeItemAction extends BaseSpellAction
                     } else if (target instanceof LivingEntity) {
                         LivingEntity livingEntity = (LivingEntity)target;
                         EntityEquipment equipment = livingEntity.getEquipment();
-                        equipment.setItemInMainHand(null);
+                        if (equipment != null) {
+                            equipment.setItemInMainHand(null);
+                        }
                     } else {
                         item = null;
                     }
@@ -186,26 +190,28 @@ public class TakeItemAction extends BaseSpellAction
             LivingEntity livingEntity = (LivingEntity)target;
             EntityEquipment equipment = livingEntity.getEquipment();
             ItemStack equipmentItem = equipment.getItemInMainHand();
-            if (checkItem(equipmentItem)) {
-                context.registerModified(livingEntity);
-                equipment.setItemInMainHand(null);
-                item = equipmentItem;
-            }
-            equipmentItem = equipment.getItemInOffHand();
-            if (item == null && checkItem(equipmentItem)) {
-                context.registerModified(livingEntity);
-                equipment.setItemInOffHand(null);
-                item = equipmentItem;
-            }
-            if (item == null) {
-                ItemStack[] armor = equipment.getArmorContents();
-                for (int i = 0; i < armor.length; i++) {
-                    if (checkItem(armor[i])) {
-                       context.registerModified(livingEntity);
-                       item = armor[i];
-                       armor[i] = null;
-                       equipment.setArmorContents(armor);
-                       break;
+            if (equipment != null) {
+                if (checkItem(equipmentItem)) {
+                    context.registerModified(livingEntity);
+                    equipment.setItemInMainHand(null);
+                    item = equipmentItem;
+                }
+                equipmentItem = equipment.getItemInOffHand();
+                if (item == null && checkItem(equipmentItem)) {
+                    context.registerModified(livingEntity);
+                    equipment.setItemInOffHand(null);
+                    item = equipmentItem;
+                }
+                if (item == null) {
+                    ItemStack[] armor = equipment.getArmorContents();
+                    for (int i = 0; i < armor.length; i++) {
+                        if (checkItem(armor[i])) {
+                            context.registerModified(livingEntity);
+                            item = armor[i];
+                            armor[i] = null;
+                            equipment.setArmorContents(armor);
+                            break;
+                        }
                     }
                 }
             }

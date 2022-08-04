@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.Event;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -72,8 +73,9 @@ public class CondHasItem extends Condition {
                     return (wand != null) != isNegated();
                 }
                 final LivingEntity living = mage.getLivingEntity();
-                final ItemStack item = wand == null && living != null
-                    ? (offhand ? living.getEquipment().getItemInOffHand() : living.getEquipment().getItemInMainHand())
+                EntityEquipment equipment = living == null ? null : living.getEquipment();
+                final ItemStack item = wand == null && equipment != null
+                    ? (offhand ? equipment.getItemInOffHand() : equipment.getItemInMainHand())
                     : null;
                 return itemKeys.check(e, new Checker<String>() {
                     @Override

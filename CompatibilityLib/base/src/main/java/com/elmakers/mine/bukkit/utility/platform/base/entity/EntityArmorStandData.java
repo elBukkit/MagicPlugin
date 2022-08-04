@@ -32,15 +32,15 @@ public class EntityArmorStandData extends EntityExtraData {
 
     public EntityArmorStandData(ArmorStand armorStand) {
         EntityEquipment equipment = armorStand.getEquipment();
-        itemInHand = equipment.getItemInMainHand();
+        itemInHand = equipment == null ? null : equipment.getItemInMainHand();
         if (itemInHand != null) itemInHand = itemInHand.clone();
-        boots = equipment.getBoots();
+        boots = equipment == null ? null : equipment.getBoots();
         if (boots != null) boots = boots.clone();
-        leggings = equipment.getLeggings();
+        leggings = equipment == null ? null : equipment.getLeggings();
         if (leggings != null) leggings = leggings.clone();
-        chestplate = equipment.getChestplate();
+        chestplate = equipment == null ? null : equipment.getChestplate();
         if (chestplate != null) chestplate = chestplate.clone();
-        helmet = equipment.getHelmet();
+        helmet = equipment == null ? null : equipment.getHelmet();
         if (helmet != null) helmet = helmet.clone();
         bodyPose = armorStand.getBodyPose();
         leftArmPose = armorStand.getLeftArmPose();
@@ -80,11 +80,13 @@ public class EntityArmorStandData extends EntityExtraData {
         ArmorStand armorStand = (ArmorStand)entity;
         EntityEquipment equipment = armorStand.getEquipment();
 
-        if (itemInHand != null) equipment.setItemInMainHand(itemInHand);
-        if (boots != null) equipment.setBoots(boots);
-        if (leggings != null) equipment.setLeggings(leggings);
-        if (chestplate != null) equipment.setChestplate(chestplate);
-        if (helmet != null) equipment.setHelmet(helmet);
+        if (equipment != null) {
+            if (itemInHand != null) equipment.setItemInMainHand(itemInHand);
+            if (boots != null) equipment.setBoots(boots);
+            if (leggings != null) equipment.setLeggings(leggings);
+            if (chestplate != null) equipment.setChestplate(chestplate);
+            if (helmet != null) equipment.setHelmet(helmet);
+        }
         if (bodyPose != null) armorStand.setBodyPose(bodyPose);
         if (leftArmPose != null) armorStand.setLeftArmPose(leftArmPose);
         if (rightArmPose != null) armorStand.setRightArmPose(rightArmPose);

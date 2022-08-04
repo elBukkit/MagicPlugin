@@ -15,6 +15,7 @@ import org.bukkit.entity.Creature;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
@@ -187,7 +188,8 @@ public class EntityMageData {
             }
             if (isValid && requiresWand != null && entity instanceof LivingEntity) {
                 LivingEntity li = (LivingEntity)entity;
-                ItemStack itemInHand = li.getEquipment().getItemInMainHand();
+                EntityEquipment equipment = li.getEquipment();
+                ItemStack itemInHand = equipment == null ? null : equipment.getItemInMainHand();
                 if (itemInHand == null || itemInHand.getType() != requiresWand.getType()) {
                     isValid = false;
                 }

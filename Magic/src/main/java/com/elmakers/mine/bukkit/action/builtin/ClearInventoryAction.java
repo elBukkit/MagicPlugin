@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.action.builtin;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.EntityEquipment;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -23,7 +24,10 @@ public class ClearInventoryAction extends BaseSpellAction {
         }
 
         LivingEntity li = (LivingEntity)targetEntity;
-        li.getEquipment().clear();
+        EntityEquipment equipment = li.getEquipment();
+        if (equipment != null) {
+            li.getEquipment().clear();
+        }
         return SpellResult.CAST;
     }
 

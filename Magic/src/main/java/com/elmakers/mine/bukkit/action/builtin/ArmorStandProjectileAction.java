@@ -222,30 +222,32 @@ public class ArmorStandProjectileAction extends EntityProjectileAction {
         }
         if (stepCount == visibleDelayTicks) {
             EntityEquipment equipment = armorStand.getEquipment();
-            if (useItem != null && wandSlot == InventorySlot.HELMET) {
-                equipment.setHelmet(useItem);
-            } else {
-                equipment.setHelmet(getItem(helmetItem));
-            }
-            if (useItem != null && wandSlot == InventorySlot.RIGHT_ARM) {
-                equipment.setItemInMainHand(useItem);
-            } else {
-                equipment.setItemInMainHand(getItem(rightArmItem));
-            }
-            if (useItem != null && wandSlot == InventorySlot.CHESTPLATE) {
-                equipment.setChestplate(useItem);
-            } else {
-                equipment.setChestplate(getItem(chestplateItem));
-            }
-            if (useItem != null && wandSlot == InventorySlot.LEGGINGS) {
-                equipment.setLeggings(useItem);
-            } else {
-                equipment.setLeggings(getItem(leggingsItem));
-            }
-            if (useItem != null && wandSlot == InventorySlot.BOOTS) {
-                equipment.setBoots(useItem);
-            } else {
-                equipment.setBoots(getItem(bootsItem));
+            if (equipment != null) {
+                if (useItem != null && wandSlot == InventorySlot.HELMET) {
+                    equipment.setHelmet(useItem);
+                } else {
+                    equipment.setHelmet(getItem(helmetItem));
+                }
+                if (useItem != null && wandSlot == InventorySlot.RIGHT_ARM) {
+                    equipment.setItemInMainHand(useItem);
+                } else {
+                    equipment.setItemInMainHand(getItem(rightArmItem));
+                }
+                if (useItem != null && wandSlot == InventorySlot.CHESTPLATE) {
+                    equipment.setChestplate(useItem);
+                } else {
+                    equipment.setChestplate(getItem(chestplateItem));
+                }
+                if (useItem != null && wandSlot == InventorySlot.LEGGINGS) {
+                    equipment.setLeggings(useItem);
+                } else {
+                    equipment.setLeggings(getItem(leggingsItem));
+                }
+                if (useItem != null && wandSlot == InventorySlot.BOOTS) {
+                    equipment.setBoots(useItem);
+                } else {
+                    equipment.setBoots(getItem(bootsItem));
+                }
             }
         }
         stepCount++;

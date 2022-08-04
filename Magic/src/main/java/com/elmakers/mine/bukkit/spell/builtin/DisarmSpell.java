@@ -37,7 +37,7 @@ public class DisarmSpell extends TargetingSpell
         LivingEntity entity = (LivingEntity)target.getEntity();
 
         EntityEquipment equipment = entity.getEquipment();
-        ItemStack stack = equipment.getItemInHand();
+        ItemStack stack = equipment == null ? null : equipment.getItemInHand();
 
         if (stack == null || stack.getType() == Material.AIR)
         {

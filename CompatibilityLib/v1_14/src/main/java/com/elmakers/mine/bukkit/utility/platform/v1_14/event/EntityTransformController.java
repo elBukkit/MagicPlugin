@@ -5,6 +5,7 @@ import org.bukkit.entity.LivingEntity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityTransformEvent;
+import org.bukkit.inventory.EntityEquipment;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
@@ -28,9 +29,12 @@ public class EntityTransformController implements Listener {
             if (transformed instanceof LivingEntity && original instanceof LivingEntity) {
                 LivingEntity from = (LivingEntity)transformed;
                 LivingEntity to = (LivingEntity)original;
-                to.getEquipment().setArmorContents(from.getEquipment().getArmorContents());
-                to.getEquipment().setItemInMainHand(from.getEquipment().getItemInMainHand());
-                to.getEquipment().setItemInOffHand(from.getEquipment().getItemInOffHand());
+                EntityEquipment equipment = to.getEquipment();
+                if (equipment != null) {
+                    equipment.setArmorContents(from.getEquipment().getArmorContents());
+                    equipment.setItemInMainHand(from.getEquipment().getItemInMainHand());
+                    equipment.setItemInOffHand(from.getEquipment().getItemInOffHand());
+                }
             }
         }
     }

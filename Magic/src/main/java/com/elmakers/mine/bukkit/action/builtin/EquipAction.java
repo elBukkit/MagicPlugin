@@ -106,7 +106,7 @@ public class EquipAction extends BaseSpellAction
                 activeWand.deactivate();
             }
 
-            ItemStack itemInHand = equipment.getItemInMainHand();
+            ItemStack itemInHand = equipment == null ? null : equipment.getItemInMainHand();
             if (itemInHand == null || itemInHand.getType() == Material.AIR) {
                 return SpellResult.FAIL;
             }
@@ -214,7 +214,9 @@ public class EquipAction extends BaseSpellAction
             // Otherwise, store the item inside the new item, to be returned on click or when
             // the spell finished
             if (useItem) {
-                equipment.setItemInMainHand(existingItem);
+                if (equipment != null) {
+                    equipment.setItemInMainHand(existingItem);
+                }
             } else if (existingItem != null) {
                 CompatibilityLib.getItemUtils().setReplacement(equipItem, existingItem);
                 if (returnOnFinish) {
@@ -224,7 +226,9 @@ public class EquipAction extends BaseSpellAction
         } else if (useItem) {
             // If we didn't swap the wand out with the item in the target slot, we need to clear the main hand
             // slot since we're going to equip that item and don't want to dupe it
-            equipment.setItemInMainHand(new ItemStack(Material.AIR));
+            if (equipment != null) {
+                equipment.setItemInMainHand(new ItemStack(Material.AIR));
+            }
         }
 
         // Put the new item in the target slot

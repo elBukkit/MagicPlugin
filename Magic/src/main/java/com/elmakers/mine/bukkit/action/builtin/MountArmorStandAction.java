@@ -9,6 +9,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.EulerAngle;
 
@@ -221,10 +222,13 @@ public class MountArmorStandAction extends RideEntityAction
         }
         controller.setForceSpawn(false);
 
-        if (mountWand) {
-            armorStand.getEquipment().setHelmet(item);
-        } else if (helmetItem != null) {
-            armorStand.getEquipment().setHelmet(helmetItem);
+        EntityEquipment equipment = armorStand.getEquipment();
+        if (equipment != null) {
+            if (mountWand) {
+                equipment.setHelmet(item);
+            } else if (helmetItem != null) {
+                equipment.setHelmet(helmetItem);
+            }
         }
         if (mountName != null && !mountName.isEmpty()) {
             armorStand.setCustomName(mountName);

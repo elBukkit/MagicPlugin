@@ -37,6 +37,7 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -223,12 +224,13 @@ public class EntityData
             this.maxHealth = CompatibilityLib.getCompatibilityUtils().getMaxHealth(li);
             this.hasAI = li.hasAI();
 
-            itemInHand = getItem(li.getEquipment().getItemInMainHand());
-            itemInOffhand = getItem(li.getEquipment().getItemInOffHand());
-            helmet = getItem(li.getEquipment().getHelmet());
-            chestplate = getItem(li.getEquipment().getChestplate());
-            leggings = getItem(li.getEquipment().getLeggings());
-            boots = getItem(li.getEquipment().getBoots());
+            EntityEquipment equipment = li.getEquipment();
+            itemInHand = equipment == null ? null : getItem(equipment.getItemInMainHand());
+            itemInOffhand = equipment == null ? null : getItem(equipment.getItemInOffHand());
+            helmet = equipment == null ? null : getItem(equipment.getHelmet());
+            chestplate = equipment == null ? null : getItem(equipment.getChestplate());
+            leggings = equipment == null ? null : getItem(equipment.getLeggings());
+            boots = equipment == null ? null : getItem(equipment.getBoots());
         }
 
         if (entity instanceof Tameable) {
@@ -1216,23 +1218,25 @@ public class EntityData
     }
 
     public void copyEquipmentTo(LivingEntity entity) {
+        EntityEquipment equipment = entity.getEquipment();
+        if (equipment == null) return;
         if (itemInHand != null) {
-            itemInHand.getItemStack(1, itemStack -> entity.getEquipment().setItemInMainHand(itemStack));
+            itemInHand.getItemStack(1, itemStack -> equipment.setItemInMainHand(itemStack));
         }
         if (itemInOffhand != null) {
-            itemInOffhand.getItemStack(1, itemStack -> entity.getEquipment().setItemInOffHand(itemStack));
+            itemInOffhand.getItemStack(1, itemStack -> equipment.setItemInOffHand(itemStack));
         }
         if (helmet != null) {
-            helmet.getItemStack(1, itemStack -> entity.getEquipment().setHelmet(itemStack));
+            helmet.getItemStack(1, itemStack -> equipment.setHelmet(itemStack));
         }
         if (chestplate != null) {
-            chestplate.getItemStack(1, itemStack -> entity.getEquipment().setChestplate(itemStack));
+            chestplate.getItemStack(1, itemStack -> equipment.setChestplate(itemStack));
         }
         if (leggings != null) {
-            leggings.getItemStack(1, itemStack -> entity.getEquipment().setLeggings(itemStack));
+            leggings.getItemStack(1, itemStack -> equipment.setLeggings(itemStack));
         }
         if (boots != null) {
-            boots.getItemStack(1, itemStack -> entity.getEquipment().setBoots(itemStack));
+            boots.getItemStack(1, itemStack -> equipment.setBoots(itemStack));
         }
     }
 

@@ -9,6 +9,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.inventory.EntityEquipment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -127,7 +128,10 @@ public abstract class CitizensTrait extends Trait {
                 }
             }
             if (hatItem != null) {
-                li.getEquipment().setHelmet(hatItem);
+                EntityEquipment equipment = li.getEquipment();
+                if (equipment != null) {
+                    equipment.setHelmet(hatItem);
+                }
             }
         }
         if (entity != null && mobKey != null) {
@@ -318,8 +322,9 @@ public abstract class CitizensTrait extends Trait {
                 }
 
                 LivingEntity li = entity instanceof LivingEntity ? (LivingEntity)entity : null;
-                if (li != null) {
-                    li.getEquipment().setHelmet(hatItem);
+                EntityEquipment equipment = li == null ? null : li.getEquipment();
+                if (equipment != null) {
+                    equipment.setHelmet(hatItem);
                 }
             }
             else
