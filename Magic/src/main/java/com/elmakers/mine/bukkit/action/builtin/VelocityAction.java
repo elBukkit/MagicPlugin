@@ -106,8 +106,8 @@ public class VelocityAction extends BaseSpellAction
             Location to = entity.getLocation();
             Location from = context.getLocation();
 
-            Vector toVector = new Vector(to.getBlockX(), to.getBlockY(), to.getBlockZ());
-            Vector fromVector = new Vector(from.getBlockX(), from.getBlockY(), from.getBlockZ());
+            Vector toVector = new Vector(to.getX(), to.getY(), to.getZ());
+            Vector fromVector = new Vector(from.getX(), from.getY(), from.getZ());
 
             velocity = toVector;
             velocity.subtract(fromVector);
