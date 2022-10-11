@@ -247,16 +247,7 @@ public class EntityController implements Listener {
             }
         }
 
-        // Don't allow a spell to damage an entity it can't target
         Entity damager = event.getDamager();
-        UndoList undoList = controller.getEntityUndo(damager);
-        CastContext context = undoList == null ? null : undoList.getContext();
-        Spell spell = context == null ? null : context.getSpell();
-        if (spell != null && !spell.canTarget(entity)) {
-            event.setCancelled(true);
-            return;
-        }
-
         Mage entityMage = controller.getRegisteredMage(entity);
         if (entityMage != null) {
             entityMage.damagedBy(event.getDamager(), event.getDamage());

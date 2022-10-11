@@ -3,6 +3,9 @@
 
 # 10.8.4
 
+ - Revert change from 10.8.2: A spell is no longer allowed to damage or combust an entity it is not allowed to target
+   This was causing players to not be able to damage mobs after casting friendly spells on themselves (Cure, Heal)
+
 # 10.8.3
 
 ## 1.19.2 Support
