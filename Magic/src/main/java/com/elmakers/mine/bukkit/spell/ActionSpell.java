@@ -235,6 +235,7 @@ public class ActionSpell extends BrushSpell
 
             // This is here for sub-action initialization, and will get replaced with real working parameters for prepare
             workingParameters = parameters;
+            actionsNode = ConfigurationUtils.replaceParameters(actionsNode, parameters);
             Collection<String> actionKeys = actionsNode.getKeys(false);
             for (String actionKey : actionKeys)
             {

@@ -3,6 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -148,6 +149,93 @@ public class ConfigurationUtils extends ConfigUtils {
     {
         ConfigurationSection copy = cloneEmptyConfiguration(section);
         return addConfigurations(copy, section);
+    }
+
+    @Nullable
+    public static ConfigurationSection replaceParameters(ConfigurationSection configuration, ConfigurationSection parameters) {
+        ConfigurationSection replaced = tryReplaceParameters(configuration, parameters);
+        return replaced == null ? configuration : replaced;
+    }
+
+    @Nullable
+    private static ConfigurationSection tryReplaceParameters(ConfigurationSection configuration, ConfigurationSection parameters) {
+        if (configuration == null) return null;
+
+        ConfigurationSection replaced = null;
+        Set<String> keys = configuration.getKeys(false);
+        for (String key : keys) {
+            Object value = configuration.get(key);
+            Object replacement = tryReplaceParameters(value, parameters);
+            if (replacement != null) {
+                if (replaced == null) {
+                    replaced = cloneConfiguration(configuration);
+                }
+                replaced.set(key, replacement);
+            }
+        }
+        return replaced;
+    }
+
+    private static Map<String, Object> tryReplaceParameters(Map<String, Object> configuration, ConfigurationSection parameters)
+    {
+        if (configuration == null || configuration.isEmpty()) return null;
+
+        Map<String, Object> replaced = null;
+        for (Map.Entry<String, Object> entry : configuration.entrySet()) {
+            Object entryValue = entry.getValue();
+            Object replacement = tryReplaceParameters(entryValue, parameters);
+            if (replacement != null) {
+                if (replaced == null) {
+                    replaced = new HashMap<>(configuration);
+                }
+                replaced.put(entry.getKey(), replacement);
+            }
+        }
+        return replaced;
+    }
+
+    @Nullable
+    private static Object tryReplaceParameters(Object value, ConfigurationSection parameters) {
+        if (value == null) return null;
+        if (value instanceof Map) {
+            @SuppressWarnings("unchecked")
+            Map<String, Object> map = (Map<String, Object>)value;
+            value = tryReplaceParameters(map, parameters);
+        } else if (value instanceof ConfigurationSection) {
+            value = tryReplaceParameters((ConfigurationSection)value, parameters);
+        } else if (value instanceof List) {
+            @SuppressWarnings("unchecked")
+            List<Object> list = (List<Object>)value;
+            value = tryReplaceParameters(list, parameters);
+        } else if (value instanceof String) {
+            value = tryReplaceParameter((String)value, parameters);
+        }
+
+        return value;
+    }
+
+    private static List<Object> tryReplaceParameters(List<Object> configurations, ConfigurationSection parameters)
+    {
+        if (configurations == null || configurations.size() == 0) return null;
+
+        List<Object> replaced = null;
+        for (int i = 0; i < configurations.size(); i++) {
+            Object value = configurations.get(i);
+            Object replacement = tryReplaceParameters(value, parameters);
+            if (replacement != null) {
+                if (replaced == null) {
+                    replaced = new ArrayList<>(configurations);
+                }
+                replaced.set(i, replacement);
+            }
+        }
+        return replaced;
+    }
+
+    private static Object tryReplaceParameter(String value, ConfigurationSection parameters)
+    {
+        if (value.length() < 2 || value.charAt(0) != '$') return null;
+        return parameters.get(value.substring(1));
     }
 
     public static ConfigurationSection addConfigurations(ConfigurationSection first, ConfigurationSection second)
