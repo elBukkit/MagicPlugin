@@ -7,6 +7,7 @@
    This was causing players to not be able to damage mobs after casting friendly spells on themselves (Cure, Heal)
  - Restore old parameter replacement functionality, allows for templated spells and was unintentionally broken
  - Fix world modification not working at y < 0
+ - Add netherside and otherside replacement rules for deepslate and tuff, not trying to handle ancient cities (yet?)
 
 # 10.8.3
 
