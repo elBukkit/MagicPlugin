@@ -68,7 +68,7 @@ public class ItemCurrency extends BaseMagicCurrency {
     @Override
     public String formatAmount(double amount, Messages messages) {
         int rounded = getRoundedAmount(amount);
-        String amountString = intFormatter.format(rounded);
+        String amountString = formatter.format(rounded);
         String label = rounded == 1 ? singularName : name;
         return amountString + " " + label;
     }
