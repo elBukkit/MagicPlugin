@@ -12,9 +12,10 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
 public abstract class BaseMagicCurrency implements Currency {
-    public static DecimalFormat formatter = new DecimalFormat("#,###.00");
-    public static DecimalFormat intFormatter = new DecimalFormat("#,###");
+    public static String DEFAULT_FORMATTER = "#,###.00";
+    public static String INT_FORMATTER = "#,###";
 
+    protected final DecimalFormat formatter;
     protected final String key;
     protected final double worth;
     protected final double defaultValue;
@@ -51,6 +52,10 @@ public abstract class BaseMagicCurrency implements Currency {
         } else {
             minValue = null;
         }
+
+        boolean hasDecimals = this.hasDecimals == null ? hasDecimals() : this.hasDecimals;
+        String formatString = configuration.getString("format", hasDecimals ? DEFAULT_FORMATTER : INT_FORMATTER);
+        formatter = new DecimalFormat(formatString);
     }
 
     protected BaseMagicCurrency(String key, double worth) {
@@ -58,6 +63,7 @@ public abstract class BaseMagicCurrency implements Currency {
         this.worth = worth;
         this.defaultValue = 0;
         this.hasDecimals = null;
+        formatter = new DecimalFormat(INT_FORMATTER);
         maxValue = null;
         minValue = null;
         name = null;
@@ -134,9 +140,10 @@ public abstract class BaseMagicCurrency implements Currency {
     @Override
     public String formatAmount(double amount, Messages messages) {
         boolean hasDecimals = this.hasDecimals == null ? hasDecimals() : this.hasDecimals;
+
         String amountString = hasDecimals
                 ? formatter.format(amount)
-                : intFormatter.format(getRoundedAmount(amount));
+                : formatter.format(getRoundedAmount(amount));
         return amountTemplate.replace("$amount", amountString);
     }
 

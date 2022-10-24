@@ -2179,8 +2179,8 @@ public class MagicController implements MageController, ChunkLoadListener {
     }
 
     private void processMessages() {
-        BaseMagicCurrency.formatter = new DecimalFormat(messages.get("numbers.decimal", "#,###.00"));
-        BaseMagicCurrency.intFormatter = new DecimalFormat(messages.get("numbers.integer", "#,###"));
+        BaseMagicCurrency.DEFAULT_FORMATTER = messages.get("numbers.decimal", "#,###.00");
+        BaseMagicCurrency.INT_FORMATTER = messages.get("numbers.integer", "#,###");
         ChatUtils.initialize(messages, getLogger());
     }
 
