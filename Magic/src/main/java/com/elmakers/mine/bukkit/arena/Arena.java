@@ -42,6 +42,8 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 import com.elmakers.mine.bukkit.api.block.magic.MagicBlock;
+import com.elmakers.mine.bukkit.api.event.ArenaStartEvent;
+import com.elmakers.mine.bukkit.api.event.ArenaStopEvent;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -51,7 +53,7 @@ import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DirectionUtils;
 import com.google.common.base.Splitter;
 
-public class Arena {
+public class Arena implements com.elmakers.mine.bukkit.api.arena.Arena {
     private static final Random random = new Random();
 
     private ArenaTemplate template;
@@ -451,6 +453,9 @@ public class Arena {
     public void start() {
         if (!isValid()) return;
 
+        ArenaStartEvent startEvent = new ArenaStartEvent(this);
+        Bukkit.getPluginManager().callEvent(startEvent);
+
         state = ArenaState.ACTIVE;
         started = System.currentTimeMillis();
         lastTick = started;
@@ -734,6 +739,9 @@ public class Arena {
         exitPlayers();
         hideRespawnBossBar();
         clearPlayers();
+
+        ArenaStopEvent stopEvent = new ArenaStopEvent(this);
+        Bukkit.getPluginManager().callEvent(stopEvent);
 
         // Check for a new start
         checkStart();

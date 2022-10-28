@@ -3,7 +3,8 @@
 
 # 10.8.5
 
-- Add format option to individual currencies for custom number formatting per currency type
+ - Add format option to individual currencies for custom number formatting per currency type
+ - Add ArenaStopEvent and ArenaStartEvent to the API 
 
 # 10.8.4
 
