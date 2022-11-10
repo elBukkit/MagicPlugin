@@ -46,7 +46,7 @@ public class WorldPlayerListener implements Listener {
         BlockResult result = magicWorld.processBlockBreak(block, event.getPlayer());
         if (result == BlockResult.CANCEL) {
             event.setCancelled(true);
-        } if (result == BlockResult.REMOVE_DROPS) {
+        } if (result == BlockResult.REMOVE_DROPS || result == BlockResult.REPLACED_DROPS) {
             event.setCancelled(true);
             block.setType(Material.AIR);
         }
