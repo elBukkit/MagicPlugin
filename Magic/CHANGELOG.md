@@ -5,7 +5,6 @@
 
  - Add format option to individual currencies for custom number formatting per currency type
  - Add ArenaStopEvent and ArenaStartEvent to the API 
- - Fix replacing drops in a block
 
 # 10.8.4
 
