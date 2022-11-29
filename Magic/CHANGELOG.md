@@ -5,6 +5,7 @@
 
  - Add format option to individual currencies for custom number formatting per currency type
  - Add ArenaStopEvent and ArenaStartEvent to the API 
+ - Add model_engine.enabled option to turn off ModelEngine integration (which may be broken currently?)
 
 # 10.8.4
 

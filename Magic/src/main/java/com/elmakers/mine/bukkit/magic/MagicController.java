@@ -580,6 +580,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private boolean lightAPIEnabled = true;
     private boolean skriptEnabled = true;
     private boolean vaultEnabled = true;
+    private boolean modelEngineEnabled = true;
     private ConfigurationSection residenceConfiguration = null;
     private ConfigurationSection redProtectConfiguration = null;
     private ConfigurationSection citadelConfiguration = null;
@@ -7854,13 +7855,16 @@ public class MagicController implements MageController, ChunkLoadListener {
 
         // Check for ModelEngine
         Plugin modelEnginePlugin = pluginManager.getPlugin("ModelEngine");
-        if (modelEnginePlugin != null) {
+        if (modelEngineEnabled && modelEnginePlugin != null) {
             modelEngineManager = new ModelEngineManager(plugin, modelEnginePlugin);
             if (modelEngineManager.isValid()) {
                 getLogger().info("ModelEngine found, model magic mob configuration available");
             } else {
                 getLogger().warning("ModelEngine found but integration failed");
             }
+        } else {
+            modelEngineManager = null;
+            getLogger().info("ModelEngine integration disabled");
         }
 
         // Try to link to Heroes:
@@ -8523,6 +8527,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         CompatibilityConstants.LORE_WRAP_PREFIX = properties.getString("lore_wrap_prefix", CompatibilityConstants.LORE_WRAP_PREFIX);
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         mythicMobsEnabled = properties.getBoolean("mythicmobs.enabled", mythicMobsEnabled);
+        modelEngineEnabled = properties.getBoolean("model_engine.enabled", modelEngineEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
