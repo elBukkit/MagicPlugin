@@ -1,6 +1,7 @@
 # These are player skins that represent mobs. Some are provided here
 # as official Mojang skins, but more can be added.
 mob_skins:
+  allay: MHF_Allay
   axolotl: http://textures.minecraft.net/texture/3b83a38a458c3cca0761e2c8210c6f5d2f3380e860d50d2f4756516a2642617d
   bat: http://textures.minecraft.net/texture/6681a72da7263ca9aef066542ecca7a180c40e328c0463fcb114cb3b83057552
   bee: MHF_Bee
@@ -61,6 +62,7 @@ mob_skins:
   vex: MHF_Vex
   villager: MHF_Villager
   vindicator: http://textures.minecraft.net/texture/6deaec344ab095b48cead7527f7dee61b063ff791f76a8fa76642c8676e2173
+  warden: MHF_Warden
   witch: MHF_Witch
   wither: http://textures.minecraft.net/texture/ee280cefe946911ea90e87ded1b3e18330c63a23af5129dfcfe9a8e166588041
   wither_skeleton: MHF_WSkeleton
