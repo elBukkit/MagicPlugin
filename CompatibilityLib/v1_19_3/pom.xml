@@ -10,7 +10,7 @@
     <artifactId>CompatibilityLib-v1_19_3</artifactId>
 
     <properties>
-        <bukkit.version>1.19.2-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.19.3-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <dependencies>

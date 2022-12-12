@@ -3,7 +3,7 @@
 
 # 10.8.5
 
- - Add support for 1.19.3
+ - Add support for 1.19.3 (use with caution for now...)
  - Add format option to individual currencies for custom number formatting per currency type
  - Add ArenaStopEvent and ArenaStartEvent to the API 
  - Add model_engine.enabled option to turn off ModelEngine integration (which may be broken currently?)

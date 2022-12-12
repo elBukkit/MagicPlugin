@@ -43,20 +43,20 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
-import org.bukkit.craftbukkit.v1_19_R1.CraftArt;
-import org.bukkit.craftbukkit.v1_19_R1.CraftChunk;
-import org.bukkit.craftbukkit.v1_19_R1.CraftServer;
-import org.bukkit.craftbukkit.v1_19_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_19_R1.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftArmorStand;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftHanging;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftItem;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftLivingEntity;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftPlayer;
-import org.bukkit.craftbukkit.v1_19_R1.scheduler.CraftTask;
-import org.bukkit.craftbukkit.v1_19_R1.util.CraftChatMessage;
-import org.bukkit.craftbukkit.v1_19_R1.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_19_R2.CraftArt;
+import org.bukkit.craftbukkit.v1_19_R2.CraftChunk;
+import org.bukkit.craftbukkit.v1_19_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_19_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_19_R2.block.CraftBlock;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftHanging;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftItem;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftLivingEntity;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_19_R2.scheduler.CraftTask;
+import org.bukkit.craftbukkit.v1_19_R2.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_19_R2.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
@@ -397,7 +397,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         }
     }
 
-    protected DamageSource getDamageSource(String damageType) {
+    protected DamageSource getDamageSource(String damageType, net.minecraft.world.entity.Entity source) {
         switch (damageType.toUpperCase()) {
             case "IN_FIRE" : return DamageSource.IN_FIRE;
             case "LIGHTNING_BOLT" : return DamageSource.LIGHTNING_BOLT;
@@ -415,13 +415,13 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             case "GENERIC" : return DamageSource.GENERIC;
             case "MAGIC" : return DamageSource.MAGIC;
             case "WITHER" : return DamageSource.WITHER;
-            case "ANVIL" : return DamageSource.ANVIL;
-            case "FALLING_BLOCK" : return DamageSource.FALLING_BLOCK;
+            case "ANVIL" : return DamageSource.anvil(source);
+            case "FALLING_BLOCK" : return DamageSource.fallingBlock(source);
             case "DRAGON_BREATH" : return DamageSource.DRAGON_BREATH;
             case "DRY_OUT" : return DamageSource.DRY_OUT;
             case "SWEET_BERRY_BUSH" : return DamageSource.SWEET_BERRY_BUSH;
             case "FREEZE" : return DamageSource.FREEZE;
-            case "FALLING_STALACTITE" : return DamageSource.FALLING_STALACTITE;
+            case "FALLING_STALACTITE" : return DamageSource.fallingStalactite(source);
             case "STALAGMITE" : return DamageSource.STALAGMITE;
             default: return null;
         }
@@ -439,7 +439,8 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             magicDamage(target, amount, source);
             return;
         }
-        DamageSource damageSource = getDamageSource(damageType);
+        net.minecraft.world.entity.Entity sourceHandle = ((CraftEntity)source).getHandle();
+        DamageSource damageSource = getDamageSource(damageType, sourceHandle);
         if (damageSource == null) {
             magicDamage(target, amount, source);
             return;
@@ -1460,7 +1461,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
                 ClientboundAddEntityPacket fireworkPacket = new ClientboundAddEntityPacket(fireworkHandle, CompatibilityConstants.FIREWORK_TYPE);
                 int fireworkId = fireworkHandle.getId();
                 SynchedEntityData watcher = fireworkHandle.getEntityData();
-                ClientboundSetEntityDataPacket metadataPacket = new ClientboundSetEntityDataPacket(fireworkId, watcher, true);
+                ClientboundSetEntityDataPacket metadataPacket = new ClientboundSetEntityDataPacket(fireworkId, watcher.packDirty());
                 ClientboundEntityEventPacket statusPacket = new ClientboundEntityEventPacket(fireworkHandle, (byte)17);
                 ClientboundRemoveEntitiesPacket destroyPacket = new ClientboundRemoveEntitiesPacket(fireworkId);
 

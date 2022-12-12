@@ -12,7 +12,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
-import org.bukkit.craftbukkit.v1_19_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_19_R2.entity.CraftEntity;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -203,7 +203,7 @@ public class MobUtils extends MobUtilsBase {
         if (mob == null) {
             return false;
         }
-        mob.goalSelector.removeAllGoals();
+        mob.goalSelector.getAvailableGoals().clear();
         return true;
     }
 
@@ -213,7 +213,7 @@ public class MobUtils extends MobUtilsBase {
         if (mob == null) {
             return false;
         }
-        mob.targetSelector.removeAllGoals();
+        mob.targetSelector.getAvailableGoals().clear();
         return true;
     }
 
