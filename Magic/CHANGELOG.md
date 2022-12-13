@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.8.6
+
 # 10.8.5
 
  - Add support for 1.19.3
