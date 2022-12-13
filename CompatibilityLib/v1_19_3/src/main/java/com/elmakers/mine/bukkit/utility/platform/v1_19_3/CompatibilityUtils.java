@@ -734,7 +734,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public void addFlightExemption(Player player, int ticks) {
         ServerPlayer nms = ((CraftPlayer)player).getHandle();
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms.connection, ServerGamePacketListenerImpl.class, "aboveGroundTickCount", "G", -ticks);
+        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms.connection, ServerGamePacketListenerImpl.class, "aboveGroundTickCount", "H", -ticks);
     }
 
     @Override
