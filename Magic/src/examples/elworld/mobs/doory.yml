@@ -1,7 +1,8 @@
 doory:
   type: villager
   brain:
+    remove_default_goals: false
     goals:
-    - goal: open_door
+    - type: open_door
       close: true
-    - goal: panic
+    - type: panic

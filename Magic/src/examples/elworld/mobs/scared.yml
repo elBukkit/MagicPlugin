@@ -1,0 +1,13 @@
+scared:
+  type: cat
+  brain:
+    remove_default_goals: false
+    goals:
+    - type: panic
+
+scared2:
+  type: cat
+  brain:
+    remove_default_goals: true
+    goals:
+      - type: panic
