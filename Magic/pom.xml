@@ -154,7 +154,7 @@
         <dependency>
             <groupId>com.garbagemule</groupId>
             <artifactId>MobArena</artifactId>
-            <version>0.107</version>
+            <version>0.99.1-SNAPSHOT</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
