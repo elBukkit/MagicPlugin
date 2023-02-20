@@ -154,7 +154,7 @@
         <dependency>
             <groupId>com.garbagemule</groupId>
             <artifactId>MobArena</artifactId>
-            <version>0.99.1-SNAPSHOT</version>
+            <version>0.107</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
@@ -483,11 +483,11 @@
             <url>https://maven.elmakers.com/repository/</url>
         </repository>
         <repository>
-            <id>sk89q</id>
-            <url>http://maven.sk89q.com/repo/</url>
+            <id>enginehub-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
         </repository>
         <repository>
-            <id>glaremasters repo</id>
+            <id>glaremasters-repo</id>
             <url>https://repo.glaremasters.me/repository/towny/</url>
         </repository>
         <repository>
