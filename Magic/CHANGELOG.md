@@ -12,6 +12,7 @@
          have to look into this further at a later date.
  - Add `worlds` requirement type
  - Add `fulltime` attribute, for checking total server (world) time
+ - Add `allow_replacement` parameter to EntityProjectile action
 
 # 10.8.5
 

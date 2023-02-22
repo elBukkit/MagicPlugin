@@ -31,6 +31,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
     private boolean doVelocity = false;
     private boolean orient = false;
     private boolean spawnActionsRun;
+    private boolean allowReplacement = true;
     private Vector velocityOffset;
     private Vector locationOffset;
     private Vector relativeLocationOffset;
@@ -70,6 +71,7 @@ public class EntityProjectileAction extends CustomProjectileAction {
         velocityOffset = ConfigurationUtils.getVector(parameters, "velocity_offset");
         locationOffset = ConfigurationUtils.getVector(parameters, "location_offset");
         relativeLocationOffset = ConfigurationUtils.getVector(parameters, "relative_location_offset");
+        allowReplacement = parameters.getBoolean("allow_replacement", true);
 
         if (parameters.contains("spawn_reason")) {
             String reasonText = parameters.getString("spawn_reason").toUpperCase();
@@ -122,10 +124,22 @@ public class EntityProjectileAction extends CustomProjectileAction {
             }
 
             Location location = adjustStartLocation(sourceLocation.getLocation(context));
-            Entity spawned = entityData.spawn(location, spawnReason);
-            if (spawned != null) {
-                context.registerForUndo(spawned);
-                setEntity(context.getController(), spawned);
+
+            MageController controller = context.getController();
+            if (!allowReplacement) {
+                controller.setDisableSpawnReplacement(true);
+            }
+            try {
+                Entity spawned = entityData.spawn(location, spawnReason);
+                if (spawned != null) {
+                    context.registerForUndo(spawned);
+                    setEntity(context.getController(), spawned);
+                }
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            if (!allowReplacement) {
+                controller.setDisableSpawnReplacement(false);
             }
         }
         if (entity == null) {
