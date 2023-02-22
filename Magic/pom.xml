@@ -490,8 +490,8 @@
             <id>glaremasters-repo</id>
             <url>https://repo.glaremasters.me/repository/towny/</url>
         </repository>
+        <!-- dead [For Geyser]
         <repository>
-            <!-- For Geyser -->
             <id>opencollab-snapshot-repo</id>
             <url>https://repo.opencollab.dev/maven-snapshots/</url>
             <releases>
@@ -501,6 +501,7 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        -->
         <repository>
             <id>Central</id>
             <url>https://repo1.maven.org/maven2/</url>
@@ -521,10 +522,12 @@
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
         </repository>
+        <!-- dead [for skript]
         <repository>
             <id>njol-repo</id>
             <url>https://maven.njol.ch/repo/</url>
         </repository>
+        -->
         <repository>
             <id>redprotect-repo</id>
             <url>https://raw.githubusercontent.com/FabioZumbi12/RedProtect/mvn-repo/</url>
