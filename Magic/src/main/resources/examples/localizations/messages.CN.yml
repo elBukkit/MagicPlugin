@@ -422,6 +422,7 @@ requirements:
   no_template: '&c你手持 $wand&c时不能那么做'
   no_modifier: '&c你可能需要配置: &6$modifier &c才能继续.'
   no_region: '&c你不能在这里这么做'
+  no_world: '&c你不能在这里这么做'
   no_path: '&c你还没学到那个程度'
   no_class: '&c你必须有 $class'
   no_required_path: '&c你至少要熟练度: $path&r!'

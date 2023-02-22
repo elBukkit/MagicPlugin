@@ -66,6 +66,7 @@ public class MagicRequirement {
     private @Nullable ItemRequirement item = null;
     private @Nullable String weather = null;
     private @Nullable String castSpell = null;
+    private @Nullable Set<String> worldNames = null;
     private @Nullable ClientPlatform clientPlatform = null;
     private String messageSection = "";
     private int castTimeout = 0;
@@ -128,6 +129,9 @@ public class MagicRequirement {
         String moonKey = configuration.contains("moon") ? "moon" : "moon_phase";
         moonPhase = parseMoonRequirement(configuration, moonKey);
         weather = configuration.getString("weather");
+        if (configuration.contains("worlds")) {
+            worldNames = new HashSet<>(ConfigurationUtils.getStringList(configuration, "worlds"));
+        }
         height = parseRangedRequirement(configuration, "height");
         serverVersion = parseRangedRequirement(configuration, "server_version");
         String defaultCurrencyType = configuration.getString("currency_type", "currency");
@@ -274,6 +278,12 @@ public class MagicRequirement {
         if (owned != null) {
             UUID ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(entity);
             if ((ownerId != null) != owned) {
+                return false;
+            }
+        }
+
+        if (worldNames != null) {
+            if (location == null || !worldNames.contains(location.getWorld().getName())) {
                 return false;
             }
         }
@@ -568,6 +578,11 @@ public class MagicRequirement {
             UUID ownerId = CompatibilityLib.getCompatibilityUtils().getOwnerId(entity);
             if ((ownerId != null) != owned) {
                 return getMessage(context, owned ? "no_owned" : "owned");
+            }
+        }
+        if (worldNames != null) {
+            if (location == null || !worldNames.contains(location.getWorld().getName())) {
+                return getMessage(context, "no_world");
             }
         }
         if (weather != null) {
