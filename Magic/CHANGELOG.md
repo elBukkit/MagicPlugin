@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.8.7
+
 # 10.8.6
 
  - Fix dependency issues that trigger some new Paper checks
