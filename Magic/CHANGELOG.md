@@ -3,6 +3,11 @@
 
 # 10.8.6
 
+ - Fix dependency issues that trigger some new Paper checks
+ - Remove dependency on CMI, which was triggering another Paper check
+   NOTE: This was originally put in to fix some compatibility issues with CMI's inventory saving features, please
+         watch out for regression of this issue!
+
 # 10.8.5
 
  - Add support for 1.19.3

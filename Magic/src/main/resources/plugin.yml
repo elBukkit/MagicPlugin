@@ -49,7 +49,6 @@ loadbefore:
   - Quests
   - Heroes
   - MobArena
-  - CMI
   - Skript
 commands:
   getrp:
