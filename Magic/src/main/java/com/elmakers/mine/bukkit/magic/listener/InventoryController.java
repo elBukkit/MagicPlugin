@@ -287,6 +287,7 @@ public class InventoryController implements Listener {
         ItemStack heldItem = event.getCursor();
         boolean heldWand = Wand.isWand(heldItem);
         boolean clickedWand = Wand.isWand(clickedItem);
+        boolean isCraftableWand = clickedWand && CompatibilityLib.getNBTUtils().getBoolean(clickedItem, "craftable", false);;
 
         boolean isHotbar = action == InventoryAction.HOTBAR_SWAP || action == InventoryAction.HOTBAR_MOVE_AND_READD;
         // Pressing the swap hands button also looks like a hotbar_swap ... for some reason .. I guess the offhand is considered part of the hotbar?
@@ -497,14 +498,17 @@ public class InventoryController implements Listener {
         }
 
         // Don't allow smelting wands
-        if (isFurnace && clickedWand) {
+        if (isFurnace && clickedWand && !isCraftableWand) {
             event.setCancelled(true);
             return;
         }
 
         if (isFurnace && isHotbar) {
             ItemStack destinationItem = player.getInventory().getItem(event.getHotbarButton());
-            if (Wand.isWand(destinationItem)) {
+            boolean swapToWand = Wand.isWand(destinationItem);
+            boolean swapToCraftableWand = swapToWand && CompatibilityLib.getNBTUtils().getBoolean(destinationItem, "craftable", false);;
+
+            if (swapToWand && !swapToCraftableWand) {
                 event.setCancelled(true);
                 return;
             }

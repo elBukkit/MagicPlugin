@@ -7,6 +7,9 @@
  - Remove dependency on CMI, which was triggering another Paper check
    NOTE: This was originally put in to fix some compatibility issues with CMI's inventory saving features, please
          watch out for regression of this issue!
+ - Allow using wands with `craftable: true` in furnace recipes
+   NOTE: Smelthing recipes with wand ingredients still doesn't seem to work but I will
+         have to look into this further at a later date.
 
 # 10.8.5
 
