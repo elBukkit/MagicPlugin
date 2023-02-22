@@ -5286,6 +5286,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 Location location = getLocation();
                 return location == null ? null : (double)location.getWorld().getTime();
             }
+            case "fulltime": {
+                Location location = getLocation();
+                return location == null ? null : (double)location.getWorld().getFullTime();
+            }
             case "moon": {
                 Location location = getLocation();
                 return location == null ? null : (double)(int)((location.getWorld().getFullTime() / 24000) % 8);

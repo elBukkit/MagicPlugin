@@ -315,7 +315,7 @@ public class MagicController implements MageController, ChunkLoadListener {
             "attack_damage",
             "location_x", "location_y", "location_z", "yaw", "pitch",
             "temperature", "humidity",
-            "time", "moon",
+            "time", "moon", "fulltime",
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
             "fall_distance",
             "air", "air_max",

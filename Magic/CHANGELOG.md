@@ -11,6 +11,7 @@
    NOTE: Smelthing recipes with wand ingredients still doesn't seem to work but I will
          have to look into this further at a later date.
  - Add `worlds` requirement type
+ - Add `fulltime` attribute, for checking total server (world) time
 
 # 10.8.5
 
