@@ -136,7 +136,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.damagesource.EntityDamageSource;
+import net.minecraft.world.damagesource.DamageSources;
 import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
@@ -278,7 +278,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             ex.printStackTrace();
             return null;
         }
-        BlockPos blockLocation = new BlockPos(location.getX(), location.getY(), location.getZ());
+        BlockPos blockLocation = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         net.minecraft.world.entity.decoration.Painting newEntity = new net.minecraft.world.entity.decoration.Painting(level, blockLocation, directionEnum, CraftArt.BukkitToNotch(art));
         Entity bukkitEntity = newEntity.getBukkitEntity();
         if (bukkitEntity != null && bukkitEntity instanceof Painting) {
@@ -298,7 +298,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             ex.printStackTrace();
             return null;
         }
-        BlockPos blockLocation = new BlockPos(location.getX(), location.getY(), location.getZ());
+        BlockPos blockLocation = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         net.minecraft.world.entity.decoration.ItemFrame newEntity = new net.minecraft.world.entity.decoration.ItemFrame(level, blockLocation, directionEnum);
         Entity bukkitEntity = newEntity.getBukkitEntity();
         if (bukkitEntity != null && bukkitEntity instanceof ItemFrame) {
@@ -376,11 +376,15 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
                 net.minecraft.world.entity.Entity potionHandle = ((CraftEntity)potion).getHandle();
                 potion.setShooter((LivingEntity) source);
 
-                DamageSource magicSource = DamageSource.indirectMagic(potionHandle, sourceHandle);
+                DamageSource magicSource = sourceHandle.damageSources().indirectMagic(potionHandle, sourceHandle);
 
+                /*
+                // We can't  modify the damage source anymore, it is taken from a common registry, rather than
+                // created on demand. We'll need to check and make sure that the ender dragon is damageable from spells.
                 // This is a bit of hack that lets us damage the ender dragon, who is a weird and annoying collection
                 // of various non-living entity pieces.
                 ((EntityDamageSource)magicSource).setThorns();
+                */
 
                 try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
                     damaging.touch();
@@ -389,7 +393,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             } else {
                 try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
                     damaging.touch();
-                    targetHandle.hurt(DamageSource.MAGIC, (float)amount);
+                    targetHandle.hurt(targetHandle.damageSources().magic(), (float)amount);
                 }
             }
         } catch (Exception ex) {
@@ -397,32 +401,32 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         }
     }
 
-    protected DamageSource getDamageSource(String damageType, net.minecraft.world.entity.Entity source) {
+    protected DamageSource getDamageSource(String damageType, net.minecraft.world.entity.Entity source, DamageSources damageSources) {
         switch (damageType.toUpperCase()) {
-            case "IN_FIRE" : return DamageSource.IN_FIRE;
-            case "LIGHTNING_BOLT" : return DamageSource.LIGHTNING_BOLT;
-            case "ON_FIRE" : return DamageSource.ON_FIRE;
-            case "LAVA" : return DamageSource.LAVA;
-            case "HOT_FLOOR" : return DamageSource.HOT_FLOOR;
-            case "IN_WALL" : return DamageSource.IN_WALL;
-            case "CRAMMING" : return DamageSource.CRAMMING;
-            case "DROWN" : return DamageSource.DROWN;
-            case "STARVE" : return DamageSource.STARVE;
-            case "CACTUS" : return DamageSource.CACTUS;
-            case "FALL" : return DamageSource.FALL;
-            case "FLY_INTO_WALL" : return DamageSource.FLY_INTO_WALL;
-            case "OUT_OF_WORLD" : return DamageSource.OUT_OF_WORLD;
-            case "GENERIC" : return DamageSource.GENERIC;
-            case "MAGIC" : return DamageSource.MAGIC;
-            case "WITHER" : return DamageSource.WITHER;
-            case "ANVIL" : return DamageSource.anvil(source);
-            case "FALLING_BLOCK" : return DamageSource.fallingBlock(source);
-            case "DRAGON_BREATH" : return DamageSource.DRAGON_BREATH;
-            case "DRY_OUT" : return DamageSource.DRY_OUT;
-            case "SWEET_BERRY_BUSH" : return DamageSource.SWEET_BERRY_BUSH;
-            case "FREEZE" : return DamageSource.FREEZE;
-            case "FALLING_STALACTITE" : return DamageSource.fallingStalactite(source);
-            case "STALAGMITE" : return DamageSource.STALAGMITE;
+            case "IN_FIRE" : return damageSources.inFire();
+            case "LIGHTNING_BOLT" : return damageSources.lightningBolt();
+            case "ON_FIRE" : return damageSources.onFire();
+            case "LAVA" : return damageSources.lava();
+            case "HOT_FLOOR" : return damageSources.hotFloor();
+            case "IN_WALL" : return damageSources.inWall();
+            case "CRAMMING" : return damageSources.cramming();
+            case "DROWN" : return damageSources.drown();
+            case "STARVE" : return damageSources.starve();
+            case "CACTUS" : return damageSources.cactus();
+            case "FALL" : return damageSources.fall();
+            case "FLY_INTO_WALL" : return damageSources.flyIntoWall();
+            case "OUT_OF_WORLD" : return damageSources.outOfWorld();
+            case "GENERIC" : return damageSources.generic();
+            case "MAGIC" : return damageSources.magic();
+            case "WITHER" : return damageSources.wither();
+            case "ANVIL" : return damageSources.anvil(source);
+            case "FALLING_BLOCK" : return damageSources.fallingBlock(source);
+            case "DRAGON_BREATH" : return damageSources.dragonBreath();
+            case "DRY_OUT" : return damageSources.dryOut();
+            case "SWEET_BERRY_BUSH" : return damageSources.sweetBerryBush();
+            case "FREEZE" : return damageSources.freeze();
+            case "FALLING_STALACTITE" : return damageSources.fallingStalactite(source);
+            case "STALAGMITE" : return damageSources.stalagmite();
             default: return null;
         }
     }
@@ -439,14 +443,14 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             magicDamage(target, amount, source);
             return;
         }
+        net.minecraft.world.entity.Entity targetHandle = ((CraftEntity)target).getHandle();
+        if (targetHandle == null) return;
         net.minecraft.world.entity.Entity sourceHandle = ((CraftEntity)source).getHandle();
-        DamageSource damageSource = getDamageSource(damageType, sourceHandle);
+        DamageSource damageSource = getDamageSource(damageType, sourceHandle, targetHandle.damageSources());
         if (damageSource == null) {
             magicDamage(target, amount, source);
             return;
         }
-        net.minecraft.world.entity.Entity targetHandle = ((CraftEntity)target).getHandle();
-        if (targetHandle == null) return;
 
         try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
             damaging.touch();
@@ -469,7 +473,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public BlockEntity getTileEntity(Location location) {
         ServerLevel world = ((CraftWorld)location.getWorld()).getHandle();
-        BlockPos blockPos = new BlockPos(location.getX(), location.getY(), location.getZ());
+        BlockPos blockPos = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         return world.getBlockEntity(blockPos, false);
     }
 
@@ -988,7 +992,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public void sendBreaking(Player player, long id, Location location, int breakAmount) {
         try {
-            BlockPos blockPosition = new BlockPos(location.getX(), location.getY(), location.getZ());
+            BlockPos blockPosition = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
             Packet<?> packet = new ClientboundBlockDestructionPacket((int)id, blockPosition, breakAmount);
             sendPacket(player, packet);
         } catch (Exception ex) {
@@ -1160,7 +1164,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         dummyItem.setAmount(64);
         ServerLevel nmsWorld = ((CraftWorld)location.getWorld()).getHandle();
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)platform.getItemUtils().getHandle(dummyItem);
-        BlockPos blockPosition = new BlockPos(location.getX(), location.getY(), location.getZ());
+        BlockPos blockPosition = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         return BoneMealItem.growCrop(itemStack, nmsWorld, blockPosition);
     }
 
