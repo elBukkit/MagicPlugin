@@ -3,6 +3,8 @@
 
 # 10.8.7
 
+ - 1.19.4 Support
+
 # 10.8.6
 
  - Fix dependency issues that trigger some new Paper checks
