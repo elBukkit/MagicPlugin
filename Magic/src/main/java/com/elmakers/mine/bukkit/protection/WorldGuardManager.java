@@ -40,6 +40,7 @@ public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBu
                 plugin.getLogger().info("WorldGuard found, will respect build permissions for construction spells");
                 worldGuard.checkFlagSupport();
                 worldGuard.setCacheDuration(cacheDuration);
+                worldGuard.configurePvpListener(plugin);
             }
         } else {
             worldGuard = null;

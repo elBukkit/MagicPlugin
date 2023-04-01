@@ -8,23 +8,50 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.Association;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.association.Associables;
 import com.sk89q.worldguard.protection.association.RegionAssociable;
+import com.sk89q.worldguard.protection.events.DisallowedPVPEvent;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 
 public class WorldGuardAPI {
+    // In its own class to prevent ABI problems on other versions
+    private static final class AllowPvpWhenDamagingController
+            implements Listener {
+        @EventHandler
+        public void onDisallowedPVPEvent(DisallowedPVPEvent ev) {
+            // Worldguard considers it PVP when a mob damages a player that was
+            // targeting another player. This means that any (magic) mob casting
+            // an AOE spell, or a spell that otherwise hits a player that it was
+            // not targeting triggers this event, and does not do damage by
+            // default.
+            //
+            // Here at Magic inc. we don't that this behaviour makes sense for
+            // spells, as mobs casting spells are typically highly customised,
+            // and can do their own PVP/player-targeting checks. That is why we
+            // will cancel this event when we are the ones that caused the
+            // damage.
+            if (CompatibilityLib.getCompatibilityUtils().isDamaging()) {
+                ev.setCancelled(true);
+            }
+        }
+    }
+
     private final Plugin owningPlugin;
     private Object worldGuard = null;
     private WorldGuardPlugin worldGuardPlugin = null;
@@ -73,6 +100,16 @@ public class WorldGuardAPI {
             } catch (Throwable ex) {
                 owningPlugin.getLogger().log(Level.WARNING, "Unexpected error setting up custom flags, please make sure you are on WorldGuard 6.2 or above", ex);
             }
+        }
+    }
+
+    public void configurePvpListener(Plugin owningPlugin) {
+        if (worldGuard == null) {
+            Bukkit.getPluginManager().registerEvents(
+                    new AllowPvpWhenDamagingController(),
+                    owningPlugin);
+        } else {
+            // TODO: 7+ version?
         }
     }
 
