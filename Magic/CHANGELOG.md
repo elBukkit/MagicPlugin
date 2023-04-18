@@ -3,6 +3,9 @@
 
 # 10.8.8
 
+ - Fix a year-old bug caused by an EffectLib change that caused a lot of effects to revert to using the
+   flame particle by default
+
 # 10.8.7
 
  - 1.19.4 Support
