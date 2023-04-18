@@ -4,7 +4,8 @@
 # 10.8.7
 
  - 1.19.4 Support
- - Add "difficulty" attribute (0 = peaceful, 1 = easy, 2 = normal, 3 = hard)
+ - Add `difficulty` attribute (0 = peaceful, 1 = easy, 2 = normal, 3 = hard)
+ - Particle configs can now use NMS or Bukkit names (thanks, Chronokeeper!)
 
 # 10.8.6
 
