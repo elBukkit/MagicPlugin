@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.8.8
+
 # 10.8.7
 
  - 1.19.4 Support
