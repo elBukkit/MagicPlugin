@@ -5,6 +5,8 @@
 
  - Fix a year-old bug caused by an EffectLib change that caused a lot of effects to revert to using the
    flame particle by default
+ - Fix direction bug in Velocity action when targeting an entity on the same block as the caster
+ - Fix console spam in a specific strange mblock case
 
 # 10.8.7
 

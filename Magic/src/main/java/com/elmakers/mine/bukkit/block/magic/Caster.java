@@ -36,7 +36,7 @@ public class Caster {
             }
         }
         String castSpell = RandomUtils.weightedRandom(spells);
-        if (castSpell.length() > 0) {
+        if (castSpell != null && castSpell.length() > 0) {
             String[] parameters = null;
             Spell spell = null;
             if (!castSpell.equalsIgnoreCase("none")) {
