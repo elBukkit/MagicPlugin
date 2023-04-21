@@ -34,6 +34,7 @@ import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerEvent;
 import org.bukkit.event.player.PlayerExpChangeEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.event.player.PlayerGameModeChangeEvent;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
@@ -147,6 +148,12 @@ public class PlayerController implements Listener {
     @EventHandler
     public void onPlayerSprint(PlayerToggleSprintEvent event) {
         trigger(event.getPlayer(), event.isSprinting() ? "sprint" : "stop_sprint");
+    }
+
+    @EventHandler
+    public void onPlayerFish(PlayerFishEvent event) {
+        if (event.isCancelled() || event.getCaught() == null) return;
+        trigger(event.getPlayer(), "catch_fish");
     }
 
     @EventHandler
