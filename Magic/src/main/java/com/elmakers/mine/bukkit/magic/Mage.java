@@ -276,6 +276,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     private long fallProtection = 0;
     private long fallProtectionCount = 1;
     private BaseSpell fallingSpell = null;
+    private Spell lastSpellCast = null;
     private boolean isAutomaton = false;
     private boolean allowContainerCopy = false;
     private boolean preventDismount = false;
@@ -2642,6 +2643,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // Notify controller of successful casts,
             // this if for dynmap display or other global-level processing.
             controller.onCast(this, spell, result);
+
+            // Save this as the last spell cast by this player
+            lastSpellCast = spell;
         }
     }
 
@@ -6040,6 +6044,8 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case "p":
                 return getName();
             case "uuid": return getId();
+            case "last_spell":
+                return lastSpellCast == null ? null : lastSpellCast.getName();
             case "spell": {
                 Spell spell = activeWand == null ? null : activeWand.getActiveSpell();
                 Player player = getPlayer();

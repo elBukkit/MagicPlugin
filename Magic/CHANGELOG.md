@@ -4,6 +4,7 @@
 # 10.8.8
 
  - Add `catch_fish` trigger
+ - Add `last_spell` placeholder
 
  - Fix a year-old bug caused by an EffectLib change that caused a lot of effects to revert to using the
    flame particle by default
