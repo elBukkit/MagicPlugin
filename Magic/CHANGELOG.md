@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.8.9
+
 # 10.8.8
 
  - Add `catch_fish` trigger
