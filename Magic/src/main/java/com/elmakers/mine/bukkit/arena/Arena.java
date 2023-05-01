@@ -281,9 +281,9 @@ public class Arena implements com.elmakers.mine.bukkit.api.arena.Arena {
     }
 
     public String convertPlayerMessage(String message, ArenaPlayer player) {
-        message = message.replace("$player", player.getName());
         message = message.replace("$playerDisplay", player.getDisplayName());
         message = message.replace("$playerPath", player.getNameAndPath());
+        message = message.replace("$player", player.getName());
 
         int winCount = player.getWins();
         int lostCount = player.getLosses();
