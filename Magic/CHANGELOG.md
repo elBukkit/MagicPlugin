@@ -3,6 +3,8 @@
 
 # 10.8.9
 
+ - Fix backwards compatibility (via EffectLib backwards compatibility fix in 10.2)
+
 # 10.8.8
 
  - Add `catch_fish` trigger
