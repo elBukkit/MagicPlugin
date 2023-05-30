@@ -38,7 +38,7 @@ arena:
 
     win: |-
       &b$playerPath &6is the champion of &e$arena
-      &6with &4$hearts &6 hearts, and a total of &a$wins $6wins and &c$losses &6losses.
+      &6with &4$hearts &6hearts, and a total of &a$wins &6wins and &c$losses &6losses.
   stage:
     start_mobs: "t:$arena"
     win: "&aCongratulations!  &bYou have passed &3$arena"
