@@ -37,7 +37,7 @@ public class ModifyEntityAction extends BaseSpellAction
     private boolean noDrops = false;
     private boolean force = false;
     private boolean tamed = false;
-    private boolean setOwner = true;
+    private boolean setOwner = false;
 
     private Vector direction = null;
     private double speed;
@@ -54,6 +54,7 @@ public class ModifyEntityAction extends BaseSpellAction
         speed = parameters.getDouble("speed", 0);
         direction = ConfigurationUtils.getVector(parameters, "direction");
         dyOffset = parameters.getDouble("dy_offset", 0);
+        setOwner = parameters.getBoolean("own", false);
 
         ConfigurationUtils.parseDisguiseTarget(parameters, context);
 

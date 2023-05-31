@@ -4,6 +4,8 @@
 # 10.8.9
 
  - Fix backwards compatibility (via EffectLib backwards compatibility fix in 10.2)
+ - Fix the ModifyEntity action changing the owner of the target mob
+   Use `own: true` in the action parameters if you want this functionality back
 
 # 10.8.8
 
