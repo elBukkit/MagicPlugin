@@ -3,7 +3,7 @@
 
 # 10.8.9
 
- - Support for Minecraft 1.20
+ - Support for Minecraft 1.20.1 and 1.20
  - Fix backwards compatibility (via EffectLib backwards compatibility fix in 10.2)
  - Fix the ModifyEntity action changing the owner of the target mob
    Use `own: true` in the action parameters if you want this functionality back
