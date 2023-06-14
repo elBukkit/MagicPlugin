@@ -5,7 +5,7 @@
 
     <groupId>com.elmakers.mine.bukkit</groupId>
     <artifactId>Magic-parent</artifactId>
-    <version>10.8.9</version>
+    <version>10.8.10-SNAPSHOT</version>
 
     <name>Magic-parent</name>
     <description>Magic maven parent</description>

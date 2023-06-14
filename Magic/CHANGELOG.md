@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.8.10
+
 # 10.8.9
 
  - Support for Minecraft 1.20.1 and 1.20
