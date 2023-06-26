@@ -3,6 +3,8 @@
 
 # 10.8.10
 
+ - Add `light` and `target_light` attributes
+
 # 10.8.9
 
  - Support for Minecraft 1.20.1 and 1.20

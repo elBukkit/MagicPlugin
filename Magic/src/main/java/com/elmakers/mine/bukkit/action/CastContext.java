@@ -1545,6 +1545,10 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 Location location = getTargetLocation();
                 return location == null ? null : location.getBlock().getTemperature();
             }
+            case "target_light": {
+                Location location = getTargetLocation();
+                return location == null ? null : (double)location.getBlock().getLightLevel();
+            }
             case "target_humidity": {
                 Location location = getTargetLocation();
                 return location == null ? null : location.getBlock().getHumidity();

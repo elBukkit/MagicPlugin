@@ -319,7 +319,7 @@ public class MagicController implements MageController, ChunkLoadListener {
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
             "fall_distance",
             "air", "air_max",
-            "hunger", "play_time"
+            "hunger", "play_time", "light"
     );
     private final Set<String> builtinTargetAttributes = ImmutableSet.of(
             "target_health", "target_health_max",
@@ -328,7 +328,7 @@ public class MagicController implements MageController, ChunkLoadListener {
             "target_yaw", "target_pitch",
             "target_mana", "target_mana_max",
             "target_air", "target_air_max", "target_hunger", "target_fall_distance",
-            "target_humidity", "target_temperature"
+            "target_humidity", "target_temperature", "target_light"
     );
     private final Set<String> builtinAttributes = ImmutableSet.of(
             "epoch",

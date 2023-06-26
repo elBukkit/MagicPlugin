@@ -5322,6 +5322,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 Location location = getLocation();
                 return location == null ? null : location.getBlock().getTemperature();
             }
+            case "light": {
+                Location location = getLocation();
+                return location == null ? null : (double)location.getBlock().getLightLevel();
+            }
             case "humidity": {
                 Location location = getLocation();
                 return location == null ? null : location.getBlock().getHumidity();
