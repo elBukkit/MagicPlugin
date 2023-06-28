@@ -205,7 +205,7 @@ help:
     `<li>``<help text="Change mana" topic="mana_customization">`
     `<li>``<help text="Creating new spells, wands and other configs" topic="creating_configs">`
     `<li>``<help text="Customize or create crafting recipes" topic="crafting">`
-    `<li>``<command command="config reset spell missile" text="Reset a spell to its default configuration">`
+    `<li>``<command command="mconfig reset spell missile" text="Reset a spell to its default configuration">`
     `<li>``<help topic="common_customizations" text="Other common customizations">`
     `<li>``<help topic="general_customization" text="General Customization Questions">`&8(&7"Where are all the configs to edit?"&7)
   messages: |-
@@ -214,6 +214,14 @@ help:
     `<p>`You can edit
     `<li>``<command command="meditor messages" text="Edit all messages">`
     `<li>``<help text="Change language or localize text" topic="localization">`
+    `<li>``<help text="Customize individual messages" topic="message_customization">`
+  message_customization: |-
+    `<title text="Message Customization">`
+    `<p>`To edit an individual piece of in-game text, Look in plugins/Magic/defaults/messages.defaults.yml
+    `<p>`Find the key you want to change, and use it in a "mconfig configure message" command
+    `<p>`Or you can use the "meditor" command to edit all messages in one big file
+    `<li>``<command command="mconfig configure message wand.appearance_magicka Mega Wand" text="Change wand appearance name">`
+    `<li>``<command command="meditor messages" text="Edit all messages at once">`
   general_customization: |-
     `<title text="General Customization Guide">`
     `<p>`&dMagic &fcan be very confusing to configure at first.
