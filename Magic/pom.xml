@@ -219,8 +219,8 @@
         </dependency>
         <dependency>
             <groupId>com.onarandombox.multiversecore</groupId>
-            <artifactId>Multiverse-Core</artifactId>
-            <version>2.5</version>
+            <artifactId>multiverse-core</artifactId>
+            <version>4.3.9</version>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
