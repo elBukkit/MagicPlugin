@@ -4,6 +4,8 @@
 # 10.8.10
 
  - Add `light` and `target_light` attributes
+ - The `damage_dealt` attribute now takes into account damage modifiers (via using getFinalDamage)
+ - The above also affects the `mana_per_damage` mechanic
 
 # 10.8.9
 

@@ -564,14 +564,14 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void onDamageDealt(EntityDamageEvent event) {
         String damageType = currentDamageDealtType;
         lastDamageTarget = new WeakReference<>(event.getEntity());
-        lastDamageDealt = event.getDamage();
+        lastDamageDealt = event.getFinalDamage();
         currentDamageDealtType = null;
         lastDamageDealtType = getDamageType(damageType, event.getCause());
         trigger("damage_dealt");
 
         boolean isMelee = event.getCause() == EntityDamageEvent.DamageCause.ENTITY_ATTACK && !CompatibilityLib.getCompatibilityUtils().isDamaging();
         if (isMelee) {
-            float damage = (float)event.getDamage();
+            float damage = (float)event.getFinalDamage();
             processMeleeDamage(damage);
         }
     }
