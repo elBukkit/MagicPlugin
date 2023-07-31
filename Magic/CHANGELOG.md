@@ -3,6 +3,7 @@
 
 # 10.8.10
 
+ - Update material lists to include 1.20 (and some missing 1.19) entries
  - Add `light` and `target_light` attributes
  - The `damage_dealt` attribute now takes into account damage modifiers (via using getFinalDamage)
  - The above also affects the `mana_per_damage` mechanic

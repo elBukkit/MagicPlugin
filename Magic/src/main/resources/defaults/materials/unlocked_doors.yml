@@ -12,3 +12,8 @@ unlocked_doors:
 # 1.13
 - oak_door
 
+# 1.19
+- mangrove_door
+
+# 1.20
+- cherry_door
