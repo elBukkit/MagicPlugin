@@ -2058,7 +2058,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     }
 
     protected void loadParameters() {
-        // These should only be parameters to are OK and safe (performance-wise in particular)
+        // These should only be parameters that are safe (performance-wise in particular)
         // to change on the fly without fully reloading the wand
         quietLevel = getInt("quiet");
         if (quietLevel == 0 && getBoolean("quiet")) {
@@ -2069,9 +2069,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         spellGlow = getBoolean("spell_glow");
         maxEnchantCount = getInt("max_enchant_count");
         showCycleModeLore = getBoolean("show_cycle_lore", true);
-
-        int hideFlags = getProperty("hide_flags", HIDE_FLAGS);
-        showEnchantmentLore = getBoolean("show_enchantment_lore", isEnchantable() && (hideFlags & 1) == 1);
 
         alwaysUseActiveName = false;
         neverUseActiveName = false;
@@ -2512,6 +2509,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         } else {
             hideFlags = getProperty("hide_flags", HIDE_FLAGS);
         }
+        showEnchantmentLore = getBoolean("show_enchantment_lore", isEnchantable() && (hideFlags & 1) == 1);
 
         WandTemplate wandTemplate = getTemplate();
 

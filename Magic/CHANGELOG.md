@@ -8,6 +8,7 @@
  - The `damage_dealt` attribute now takes into account damage modifiers (via using getFinalDamage)
  - The above also affects the `mana_per_damage` mechanic
  - Turned off ModelEngine integration by default. May remove it completely.
+ - Fix wand enchantment lore duplicating if not hiding vanilla lore
 
 # 10.8.9
 
