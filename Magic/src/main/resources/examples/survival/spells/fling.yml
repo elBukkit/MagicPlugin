@@ -34,6 +34,7 @@ fling:
            particle: block_crack
            source_location: feet
            period: 4
+           iterations: 3
            particle_count: 80
            radius: 4
            particle_offset_x: 0.9
