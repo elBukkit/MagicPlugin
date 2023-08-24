@@ -119,11 +119,11 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
                 }
             }
 
-            Short parsedId = null;
+            Integer parsedId = null;
             if (mapId != null)
             {
                 try {
-                    parsedId = Short.parseShort(mapId);
+                    parsedId = Integer.parseInt(mapId);
                 } catch (Exception ignored) {
 
                 }
@@ -143,11 +143,11 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
                 return true;
             }
             String mapId = args[1];
-            Short parsedId = null;
+            Integer parsedId = null;
             if (mapId != null)
             {
                 try {
-                    parsedId = Short.parseShort(mapId);
+                    parsedId = Integer.parseInt(mapId);
                 } catch (Exception ignored) {
 
                 }
@@ -322,7 +322,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
         sender.sendMessage("Loaded map id " + mapId);
         if (sender instanceof Player)
         {
-            ItemStack mapItem = maps.getMapItem((short)mapId);
+            ItemStack mapItem = maps.getMapItem(mapId);
             api.giveItemToPlayer((Player)sender, mapItem);
         }
     }
@@ -348,7 +348,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
             int mapId = CompatibilityLib.getInventoryUtils().getMapId(item);
             ids.add(Integer.toString(mapId));
             if (sender instanceof Player) {
-                ItemStack mapItem = maps.getMapItem((short)mapId, false);
+                ItemStack mapItem = maps.getMapItem(mapId, false);
                 api.giveItemToPlayer((Player)sender, mapItem);
             }
         }
@@ -368,7 +368,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
         sender.sendMessage("Loaded map id " + mapId + " as player " + playerName);
         if (sender instanceof Player)
         {
-            ItemStack mapItem = maps.getMapItem((short)mapId);
+            ItemStack mapItem = maps.getMapItem(mapId);
             api.giveItemToPlayer((Player)sender, mapItem);
         }
     }
@@ -492,7 +492,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
         }
         int mapId = CompatibilityLib.getInventoryUtils().getMapId(currentMap);
         MapController mapController = api.getController().getMaps();
-        URLMap map = mapController.getMap((short)mapId);
+        URLMap map = mapController.getMap(mapId);
         if (map == null) {
             sender.sendMessage("Map id " + mapId + " is not registered");
             return;
@@ -576,7 +576,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
                 } else {
                     sender.sendMessage("Added " + mapId + " as: " + url);
                 }
-                mapController.get(world.getName(), (short)mapId, url, name, x, y, xOverlay, yOverlay, width, height, null);
+                mapController.get(world.getName(), mapId, url, name, x, y, xOverlay, yOverlay, width, height, null);
 
                 addedFiles++;
                 if (backwards) {
@@ -593,7 +593,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
         sender.sendMessage(ChatColor.AQUA + "Restored " + ChatColor.DARK_AQUA + addedFiles);
     }
 
-    protected void onMapGive(CommandSender sender, Player recipient, short mapId)
+    protected void onMapGive(CommandSender sender, Player recipient, int mapId)
     {
         MapController maps = api.getController().getMaps();
         ItemStack mapItem = maps.getMapItem(mapId);
