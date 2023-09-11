@@ -9,6 +9,7 @@
  - The above also affects the `mana_per_damage` mechanic
  - Turned off ModelEngine integration by default. May remove it completely.
  - Fix wand enchantment lore duplicating if not hiding vanilla lore
+ - Update RP for 1.20 to pack format 15
 
 # 10.8.9
 
