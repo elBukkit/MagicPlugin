@@ -36,8 +36,12 @@
         <property name="severity" value="error"/>
     </module>
     -->
+    <!-- Filter out Checkstyle warnings that have been suppressed with the @SuppressWarnings annotation -->
+    <module name="SuppressWarningsFilter" />
 
     <module name="TreeWalker">
+        <!-- Make the @SuppressWarnings annotations available to Checkstyle -->
+        <module name="SuppressWarningsHolder" />
         <module name="OuterTypeFilename">
             <property name="severity" value="error"/>
         </module>
