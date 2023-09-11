@@ -3,6 +3,7 @@
 
 # 10.8.10
 
+ - Fix broken hotbar, caused by Spigot chat API "fix"
  - Update material lists to include 1.20 (and some missing 1.19) entries
  - Add `light` and `target_light` attributes
  - The `damage_dealt` attribute now takes into account damage modifiers (via using getFinalDamage)
