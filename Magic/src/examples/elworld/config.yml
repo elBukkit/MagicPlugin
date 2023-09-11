@@ -58,8 +58,9 @@ custom_currency:
 # resource_pack_prompt: true
 resource_pack_delay: 2000
 
-resource_pack: "http://rp.elmakers.com/Magic-modelengine-RP-1.19.zip"
-add_resource_pack: "http://rp.elmakers.com/Magic-modelengine-RP-1.19.zip"
+# Model engine integration is broken, so...
+# resource_pack: "http://rp.elmakers.com/Magic-modelengine-RP-1.19.zip"
+# add_resource_pack: "http://rp.elmakers.com/Magic-modelengine-RP-1.19.zip"
 
 # Using SQLLite here
 player_data_store:
