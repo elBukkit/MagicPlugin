@@ -75,7 +75,7 @@ public class MagicBlockTemplate {
                 String effectKey = configuration.getString("warp_effects");
                 if (effectKey != null) {
                     warpEffects = controller.getEffects(effectKey);
-                    if (effects.isEmpty()) {
+                    if (warpEffects.isEmpty()) {
                         warpEffects = null;
                     }
                 }
