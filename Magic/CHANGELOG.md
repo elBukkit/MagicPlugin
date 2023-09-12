@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.8.11
+
 # 10.8.10
 
  - Fix broken hotbar, caused by Spigot chat API "fix"
