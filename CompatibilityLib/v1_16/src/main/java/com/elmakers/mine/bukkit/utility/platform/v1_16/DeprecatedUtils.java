@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.v1_15;
+package com.elmakers.mine.bukkit.utility.platform.v1_16;
 
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
