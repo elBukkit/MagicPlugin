@@ -11,7 +11,6 @@ import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
-import org.bukkit.entity.Horse;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.Painting;
@@ -33,7 +32,6 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityCreeperData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityDroppedItemData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEnderDragonData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFallingBlockData;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityHorseData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityItemFrameData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPaintingData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityRabbitData;
@@ -53,9 +51,7 @@ public abstract class EntityUtilsBase implements EntityUtils {
     @Override
     public EntityExtraData getExtraData(MageController controller, Entity entity) {
         EntityExtraData extraData = null;
-        if (entity instanceof Horse) {
-            extraData = new EntityHorseData((Horse)entity, controller);
-        } else if (entity instanceof Villager) {
+        if (entity instanceof Villager) {
             extraData = new EntityVillagerData((Villager)entity);
         } else if (entity instanceof Wolf) {
             extraData = new EntityWolfData(entity);
@@ -90,8 +86,6 @@ public abstract class EntityUtilsBase implements EntityUtils {
     @Override
     public EntityExtraData getExtraData(MageController controller, EntityType type, ConfigurationSection parameters) {
         switch (type) {
-            case HORSE:
-                return new EntityHorseData(parameters, controller);
             case VILLAGER:
                 return new EntityVillagerData(parameters, controller);
             case AREA_EFFECT_CLOUD:

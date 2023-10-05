@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.v1_12.entity;
+package com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity;
 
 import java.util.List;
 
