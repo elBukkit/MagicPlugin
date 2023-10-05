@@ -55,18 +55,6 @@
         <module>v1_15</module>
         <module>v1_16</module>
         <module>modern</module>
-        <module>v1_17_0</module>
-        <module>v1_17_1</module>
-        <module>v1_18_0</module>
-        <module>v1_18_1</module>
-        <module>v1_18_2</module>
-        <module>v1_19_0</module>
-        <module>v1_19_1</module>
-        <module>v1_19_2</module>
-        <module>v1_19_3</module>
-        <module>v1_19_4</module>
-        <module>v1_20_0</module>
-        <module>v1_20_1</module>
         <module>v1_20_2</module>
         <module>main</module>
     </modules>
