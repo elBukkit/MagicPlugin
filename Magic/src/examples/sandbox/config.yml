@@ -87,6 +87,3 @@
 example: sandbox
 # debug_effects: true
 
-# use the same RP as elworld to make transfers cleaner
-resource_pack: "http://rp.elmakers.com/Magic-all-RP-1.17.zip"
-
