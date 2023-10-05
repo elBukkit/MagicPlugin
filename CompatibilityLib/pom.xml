@@ -46,9 +46,6 @@
         <module>paper</module>
         <module>spigot</module>
         <module>legacy</module>
-        <module>v1_9</module>
-        <module>v1_10</module>
-        <module>v1_11</module>
         <module>v1_12</module>
         <module>v1_13</module>
         <module>v1_14</module>
