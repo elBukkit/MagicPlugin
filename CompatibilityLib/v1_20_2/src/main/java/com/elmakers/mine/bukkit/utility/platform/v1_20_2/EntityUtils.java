@@ -8,7 +8,23 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.EntityUtilsBase;
-import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.*;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityAbstractPiglinData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityAxolotlData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityCatData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityEnderSignalData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityEndermiteData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityFallingBlockData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityFoxData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityGoatData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityHorseData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityLlamaData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityMooshroomData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityMuleData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityParrotData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityPhantomData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityShulkerData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityVillagerData;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.entity.EntityZombieVillagerData;
 
 public class EntityUtils extends EntityUtilsBase {
     public EntityUtils(final Platform platform) {
