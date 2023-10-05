@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.utility.platform.v1_20_2.goal;
 import java.util.UUID;
 
 import org.bukkit.GameMode;
-import org.bukkit.craftbukkit.v1_20_R1.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_20_R2.entity.CraftEntity;
 import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
