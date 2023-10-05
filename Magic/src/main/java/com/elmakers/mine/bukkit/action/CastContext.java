@@ -236,7 +236,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Nullable
     @Override
     public Location getCastLocation() {
-        if (location != null) {
+        if (location != null || locationCleared) {
             return location;
         }
         Location castLocation = wand == null ? null : wand.getLocation();
@@ -251,7 +251,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
 
     @Override
     public Location getEyeLocation() {
-        if (location != null) {
+        if (location != null || locationCleared) {
             return location;
         }
 
@@ -295,7 +295,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Nullable
     @Override
     public Location getLocation() {
-        if (location != null) {
+        if (location != null || locationCleared) {
             return location;
         }
         Entity entity = getContextEntity();

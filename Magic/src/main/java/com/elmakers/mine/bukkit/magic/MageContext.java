@@ -40,7 +40,7 @@ public class MageContext extends EffectContext implements com.elmakers.mine.bukk
     @Nullable
     @Override
     public Location getLocation() {
-        if (location != null) {
+        if (location != null || locationCleared) {
             return location;
         }
         return mage.getLocation();
@@ -60,7 +60,7 @@ public class MageContext extends EffectContext implements com.elmakers.mine.bukk
 
     @Override
     public Location getEyeLocation() {
-        if (location != null) {
+        if (location != null || locationCleared) {
             return location;
         }
         return mage.getEyeLocation();

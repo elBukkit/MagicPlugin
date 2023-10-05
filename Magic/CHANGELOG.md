@@ -4,6 +4,9 @@
 # 10.8.11
 
  - Add support for 1.20.2
+ - Fix source_at_target parameter of ChangeContext when there is no target, it will clear the source location
+   This fixed an issue with the Carpet Bomb spell where targeting nothing would cause it to target yourself.
+   Please watch out for unintended side-effects of this change, but I think the new behavior is more consistent.
 
 # 10.8.10
 

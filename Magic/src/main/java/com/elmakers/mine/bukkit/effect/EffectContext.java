@@ -16,6 +16,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 public class EffectContext implements com.elmakers.mine.bukkit.api.effect.EffectContext {
     protected MageController controller;
     protected Location location;
+    protected boolean locationCleared;
     protected Collection<EffectPlay> currentEffects = null;
 
     public EffectContext(@Nonnull MageController controller) {
@@ -49,6 +50,7 @@ public class EffectContext implements com.elmakers.mine.bukkit.api.effect.Effect
     @Override
     public void setLocation(Location location) {
         this.location = location;
+        locationCleared = false;
     }
 
     @Nullable
@@ -120,5 +122,11 @@ public class EffectContext implements com.elmakers.mine.bukkit.api.effect.Effect
     @Nonnull
     public String getName() {
         return "Unknown effects";
+    }
+
+    @Override
+    public void clearSourceLocation() {
+        location = null;
+        locationCleared = true;
     }
 }

@@ -33,6 +33,7 @@ public interface EffectContext {
     Location getCastLocation();
     @Nullable
     Location getWandLocation();
+    void clearSourceLocation();
 
     void cancelEffects();
     void trackEffects(EffectPlayer player);

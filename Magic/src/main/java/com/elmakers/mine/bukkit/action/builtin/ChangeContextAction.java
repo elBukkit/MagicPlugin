@@ -343,6 +343,7 @@ public class ChangeContextAction extends CompoundAction {
         Location sourceLocation = context.getEyeLocation();
         Entity targetEntity = context.getTargetEntity();
         Location targetLocation = context.getTargetLocation();
+        boolean clearSource = false;
         if (useTargetMage) {
             if (targetEntity == null) {
                 return SpellResult.NO_TARGET;
@@ -467,13 +468,18 @@ public class ChangeContextAction extends CompoundAction {
         {
             sourceLocation.setDirection(targetLocation.toVector().subtract(sourceLocation.toVector()));
         }
-        if (sourceAtTarget && targetLocation != null && sourceLocation != null)
+        if (sourceAtTarget && sourceLocation != null)
         {
-            sourceLocation.setX(targetLocation.getX());
-            sourceLocation.setY(targetLocation.getY());
-            sourceLocation.setZ(targetLocation.getZ());
-            sourceLocation.setWorld(targetLocation.getWorld());
-            sourceLocation = modifySource(sourceLocation, context, targetEntity);
+            if (targetLocation == null) {
+                sourceLocation = null;
+                clearSource = true;
+            } else {
+                sourceLocation.setX(targetLocation.getX());
+                sourceLocation.setY(targetLocation.getY());
+                sourceLocation.setZ(targetLocation.getZ());
+                sourceLocation.setWorld(targetLocation.getWorld());
+                sourceLocation = modifySource(sourceLocation, context, targetEntity);
+            }
         }
         if (persistTarget)
         {
@@ -521,6 +527,9 @@ public class ChangeContextAction extends CompoundAction {
         }
         if (indestructible != null) {
             actionContext.setIndestructible(indestructible);
+        }
+        if (clearSource) {
+            actionContext.clearSourceLocation();
         }
         return startActions();
     }

@@ -42,7 +42,7 @@ public class WandContext extends MageContext {
     @Nullable
     @Override
     public Location getCastLocation() {
-        if (location != null) {
+        if (location != null || locationCleared) {
             return location;
         }
         Location wandLocation = wand == null ? null : wand.getLocation();
