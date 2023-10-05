@@ -1,6 +1,15 @@
 
 # CHANGELOG
 
+# 11.0
+
+ - Spigot API Version
+   Forwards-compatibile with future Spigot/MC versions
+   *NOT* backwards-compatible with pre-1.20 Spigot/MC versions
+   Most configs and item/player data will migrate
+   Some issues may arise:
+   - Legacy material names are no longer supported
+
 # 10.8.12
 
 # 10.8.11
