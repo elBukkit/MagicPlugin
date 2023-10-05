@@ -46,7 +46,6 @@
         <module>paper</module>
         <module>spigot</module>
         <module>legacy</module>
-        <module>v1_14</module>
         <module>v1_15</module>
         <module>v1_16</module>
         <module>modern</module>
