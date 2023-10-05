@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.platform.v1_13;
 
 import javax.annotation.Nonnull;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,16 +20,26 @@ import org.bukkit.block.data.type.Piston;
 import org.bukkit.block.data.type.Snow;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryHolder;
 import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 
-public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_12.CompatibilityUtils {
+public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.legacy.CompatibilityUtils {
 
     public CompatibilityUtils(Platform platform) {
         super(platform);
+    }
+
+    @Override
+    public Inventory createInventory(InventoryHolder holder, int size, final String name) {
+        size = (int) (Math.ceil((double) size / 9) * 9);
+        size = Math.min(size, 54);
+        String translatedName = translateColors(name);
+        return Bukkit.createInventory(holder, size, translatedName);
     }
 
     @Override

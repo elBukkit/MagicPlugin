@@ -7,6 +7,7 @@ import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
 import com.elmakers.mine.bukkit.utility.platform.v1_20_2.event.EntityLoadEventHandler;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.listener.EntityPickupListener;
 
 public class Platform extends ModernPlatform {
     private Boolean hasEntityLoadEvent;
@@ -75,5 +76,10 @@ public class Platform extends ModernPlatform {
         if (hasEntityLoadEvent()) {
             pm.registerEvents(new EntityLoadEventHandler(controller), controller.getPlugin());
         }
+    }
+
+    @Override
+    protected void registerPickupEvent(PluginManager pm) {
+        pm.registerEvents(new EntityPickupListener(controller), controller.getPlugin());
     }
 }
