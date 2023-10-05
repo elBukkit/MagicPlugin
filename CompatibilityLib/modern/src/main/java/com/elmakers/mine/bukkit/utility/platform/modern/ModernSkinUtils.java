@@ -24,6 +24,14 @@ public class ModernSkinUtils extends SkinUtilsBase {
         super(platform);
     }
 
+    protected String getValue(Property property) {
+        return property.getValue();
+    }
+
+    protected String getSignature(Property property) {
+        return property.getSignature();
+    }
+
     @Override
     public String getProfileURL(Object profile) {
         String url = null;
@@ -38,7 +46,7 @@ public class ModernSkinUtils extends SkinUtilsBase {
         Collection<Property> textures = properties.get("textures");
         if (textures != null && textures.size() > 0) {
             Property textureProperty = textures.iterator().next();
-            String texture = textureProperty.getValue();
+            String texture = getValue(textureProperty);
             try {
                 String decoded = Base64Coder.decodeString(texture);
                 url = getTextureURL(decoded);
@@ -67,9 +75,9 @@ public class ModernSkinUtils extends SkinUtilsBase {
             for (Map.Entry<String, Property> entry : properties.entries()) {
                 JsonObject newObject = new JsonObject();
                 newObject.addProperty("name", entry.getKey());
-                String value = entry.getValue().getValue();
+                String value = getValue(entry.getValue());
                 newObject.addProperty("value", value);
-                String signature = entry.getValue().getSignature();
+                String signature = getSignature(entry.getValue());
                 newObject.addProperty("signature", signature);
                 propertiesArray.add(newObject);
             }
