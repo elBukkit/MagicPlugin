@@ -26,7 +26,7 @@ import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
-import com.elmakers.mine.bukkit.utility.platform.v1_16.event.TimeListener;
+import com.elmakers.mine.bukkit.utility.platform.modern.event.TimeListener;
 import com.elmakers.mine.bukkit.utility.platform.v1_20_2.event.EntityTransformController;
 
 public class CompatibilityLib extends PlatformInterpreter {
