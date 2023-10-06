@@ -8,8 +8,9 @@ import org.bukkit.block.Skull;
 import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.DeprecatedUtilsBase;
 
-public class DeprecatedUtils extends com.elmakers.mine.bukkit.utility.platform.legacy.DeprecatedUtils {
+public class DeprecatedUtils extends DeprecatedUtilsBase {
     public DeprecatedUtils(Platform platform) {
         super(platform);
     }

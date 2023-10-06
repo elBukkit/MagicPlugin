@@ -29,7 +29,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-legacy</artifactId>
+            <artifactId>CompatibilityLib-base</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>

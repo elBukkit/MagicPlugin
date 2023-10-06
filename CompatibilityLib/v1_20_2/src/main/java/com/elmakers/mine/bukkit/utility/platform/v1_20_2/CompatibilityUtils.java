@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_20_2;
 
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -135,6 +137,7 @@ import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_20_2.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
@@ -176,12 +179,15 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
-public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.legacy.CompatibilityUtils {
+public class CompatibilityUtils extends CompatibilityUtilsBase {
+    public static int OFFHAND_BROADCAST_RANGE = 32;
     private final Map<String, net.minecraft.world.entity.EntityType<?>> projectileEntityTypes = new HashMap<>();
     private final Map<String, Class<? extends net.minecraft.world.entity.projectile.Projectile>> projectileClasses = new HashMap<>();
+    private final WeakReference<Thread> primaryThread;
 
     public CompatibilityUtils(Platform platform) {
         super(platform);
+        primaryThread = new WeakReference<>(Thread.currentThread());
         populateProjectileClasses();
     }
 
@@ -1028,6 +1034,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         player.playSound(location, sound, volume, pitch);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Entity> selectEntities(CommandSender sender, String selector) {
         if (!selector.startsWith("@")) return null;
@@ -1515,6 +1522,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         return true;
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
         if (!(projectile instanceof AbstractArrow)) return false;
@@ -1534,6 +1542,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         return event.getHitBlock();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Entity getEntity(World world, UUID uuid) {
         net.minecraft.world.entity.Entity nmsEntity = ((CraftWorld)world).getHandle().getEntity(uuid);
@@ -1811,6 +1820,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean setAutoBlockState(Block block, Location target, BlockFace facing, boolean physics, Player originator) {
         if (block == null || facing == null || target == null) return false;
@@ -1892,6 +1902,7 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
         vehicle.addPassenger(passenger);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public List<Entity> getPassengers(Entity entity) {
         return entity.getPassengers();
@@ -2134,7 +2145,12 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     public boolean setLore(ItemStack itemStack, List<String> lore) {
         SpigotUtils spigot = platform.getSpigotUtils();
         if (spigot == null) {
-            return super.setLore(itemStack, lore);
+            SpigotUtils spigot1 = platform.getSpigotUtils();
+            if (spigot1 == null) {
+                return super.setLore(itemStack, lore);
+            }
+            List<String> serializedLore = spigot1.serializeLore(lore);
+            return setRawLore(itemStack, serializedLore);
         }
         List<String> serializedLore = spigot.serializeLore(lore);
         return setRawLore(itemStack, serializedLore);
@@ -2285,5 +2301,20 @@ public class CompatibilityUtils extends com.elmakers.mine.bukkit.utility.platfor
     @Nullable
     public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
         return new OutOfBoundsEntityCleanup(logger);
+    }
+
+    protected Entity getBukkitEntity(Object entity)
+    {
+        if (entity == null) return null;
+        try {
+            Method getMethod = entity.getClass().getMethod("getBukkitEntity");
+            Object bukkitEntity = getMethod.invoke(entity);
+            if (!(bukkitEntity instanceof Entity)) return null;
+            return (Entity)bukkitEntity;
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+
+        return null;
     }
 }
