@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern;
+package com.elmakers.mine.bukkit.utility.platform.v1_20_2;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -9,8 +9,8 @@ import org.bukkit.map.MapView;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
-public class ModernDeprecatedUtils extends com.elmakers.mine.bukkit.utility.platform.legacy.DeprecatedUtils {
-    public ModernDeprecatedUtils(Platform platform) {
+public class DeprecatedUtils extends com.elmakers.mine.bukkit.utility.platform.legacy.DeprecatedUtils {
+    public DeprecatedUtils(Platform platform) {
         super(platform);
     }
 
