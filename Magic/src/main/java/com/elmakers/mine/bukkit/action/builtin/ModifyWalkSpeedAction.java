@@ -12,7 +12,6 @@ import org.bukkit.metadata.MetadataValue;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
-import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.google.common.collect.Iterators;
 
@@ -38,12 +37,9 @@ public class ModifyWalkSpeedAction extends BaseSpellAction implements Listener {
     private float speed = 0.0f;
 
     @Override
-    public void initialize(Spell spell, ConfigurationSection parameters) {
-        super.initialize(spell, parameters);
-
-        if (parameters.contains("speed")) {
-            speed = (float) parameters.getDouble("speed", 0.0);
-        }
+    public void prepare(CastContext context, ConfigurationSection parameters) {
+        super.prepare(context, parameters);
+        speed = (float) parameters.getDouble("speed", 0.0);
     }
 
     @Override
