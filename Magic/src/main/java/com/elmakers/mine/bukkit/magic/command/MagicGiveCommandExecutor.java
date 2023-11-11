@@ -189,7 +189,9 @@ public class MagicGiveCommandExecutor extends MagicTabExecutor {
                 addIfPermissible(sender, options, "magic.create.", "egg:" + mobKey);
             }
             for (PotionEffectType effectType : PotionEffectType.values()) {
-                addIfPermissible(sender, options, "magic.create.", "potion:" + effectType.getName().toLowerCase());
+                if (effectType != null) {
+                    addIfPermissible(sender, options, "magic.create.", "potion:" + effectType.getName().toLowerCase());
+                }
             }
             addIfPermissible(sender, options, "magic.create.", "recipe:*");
             addIfPermissible(sender, options, "magic.create.", "recipes:*");
