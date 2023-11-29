@@ -6861,7 +6861,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Nonnull
     public ItemStack getURLSkull(String url) {
         try {
-            ItemStack stack = getURLSkull(new URL(url), CompatibilityConstants.SKULL_UUID);
+            ItemStack stack = getURLSkull(new URL(url), UUID.nameUUIDFromBytes(url.getBytes()));
             return stack == null ? new ItemStack(Material.AIR) : stack;
         } catch (MalformedURLException e) {
             Bukkit.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
