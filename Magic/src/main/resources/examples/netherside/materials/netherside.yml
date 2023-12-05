@@ -31,6 +31,7 @@ netherside:
   dandelion: warped_fungus
   poppy: crimson_fungus
   grass: nether_wart
+  short_grass: nether_wart
   oxeye_daisy: crimson_roots
   blue_orchid: nether_sprouts
   dead_bush: crimson_roots

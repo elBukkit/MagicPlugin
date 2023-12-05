@@ -1725,6 +1725,8 @@ sheep_spawn_egg:
   worth: 500
 shield:
   worth: 7.55
+short_grass:
+  worth: 0
 shroomlight:
   worth: 100
 shulker_box:

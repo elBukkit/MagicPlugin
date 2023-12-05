@@ -2,6 +2,7 @@
 # This generally means Automata cannot be made out of these materials.
 restricted_animate:
 - grass
+- short_grass
 - dirt
 - mycel
 - glowstone

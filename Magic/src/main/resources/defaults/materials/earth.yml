@@ -1,6 +1,7 @@
 earth:
 - all_stone
 - grass
+- short_grass
 - grass_path
 - grass_block
 - dirt
