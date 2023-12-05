@@ -3,6 +3,7 @@
 
 # 10.8.12
 
+ - Add support for 1.20.3
  - Fix ModifyWalkSpeed speed parameter not working with variables
 
 # 10.8.11
