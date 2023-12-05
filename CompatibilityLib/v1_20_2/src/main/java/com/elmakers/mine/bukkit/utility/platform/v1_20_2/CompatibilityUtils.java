@@ -314,11 +314,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         try {
             Class<? extends Entity> entityClass = entityType.getEntityClass();
             CraftWorld craftWorld = (CraftWorld)location.getWorld();
-            net.minecraft.world.entity.Entity newEntity = craftWorld.createEntity(location, entityClass);
-            if (newEntity != null) {
-                bukkitEntity = newEntity.getBukkitEntity();
-                if (bukkitEntity == null || !entityClass.isAssignableFrom(bukkitEntity.getClass())) return null;
-            }
+            bukkitEntity = craftWorld.createEntity(location, entityClass);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
