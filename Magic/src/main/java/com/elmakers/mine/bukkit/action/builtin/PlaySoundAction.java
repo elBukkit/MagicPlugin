@@ -38,7 +38,7 @@ public class PlaySoundAction extends BaseSpellAction
         if (location == null) {
             return SpellResult.NO_TARGET;
         }
-        sound.play(context.getPlugin(), context.getLogger(), location);
+        sound.play(context.getPlugin(), context.getLogger(), location, context.getObservers());
         return countAsCast ? SpellResult.CAST : SpellResult.NO_ACTION;
     }
 

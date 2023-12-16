@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.api.spell;
 
+import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -7,6 +8,7 @@ import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.action.CastContext;
@@ -129,4 +131,28 @@ public interface Spell extends SpellTemplate {
     double getChargesRemaining();
     @Nullable
     VariableScope getVariableScope(String variableName);
+
+    /**
+     * This is used to control visibility of a spell's particle effects (and audibility of its sound effects)
+     * to a specific list of players.
+     *
+     * <p>When set, this will override the "visibility" and "broadcast" configurations of this spell.
+     *
+     * <p>This change will stick on the spell until reboot. Use #clearObservers to reset to the default
+     * behavior.
+     *
+     * @param players The list of players who can see and hear this spell
+     */
+    default void setObservers(@Nonnull Collection<Player> players) {
+        // This default is here to not break any plugins implementing custom spells from scratch
+        throw new UnsupportedOperationException("Custom spell visibility is not implemented");
+    }
+
+    /**
+     * Reset custom visibility (via #setObservers) to the default.
+     */
+    default void clearObservers() {
+        // This default is here to not break any plugins implementing custom spells from scratch
+        throw new UnsupportedOperationException("Custom spell visibility is not implemented");
+    }
 }

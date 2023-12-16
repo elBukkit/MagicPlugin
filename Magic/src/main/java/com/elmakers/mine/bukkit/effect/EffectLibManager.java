@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.effect;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -69,8 +70,8 @@ public class EffectLibManager {
     }
 
     @Nullable
-    public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, String logContext) {
-        return loadEffect(true, configuration, player, origin, target, parameterMap, logContext);
+    public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, String logContext, List<Player> players) {
+        return loadEffect(true, configuration, player, origin, target, parameterMap, logContext, players);
     }
 
     @Nullable
@@ -80,27 +81,38 @@ public class EffectLibManager {
 
     @Nullable
     public EffectLibPlay loadEffect(boolean play, ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, String logContext) {
-        // Check visibility type
-        Player targetPlayer = null;
-        switch (player.getVisibility()) {
-            case TARGET:
-                if (target != null && target.getEntity() instanceof Player) {
-                    targetPlayer = (Player)target.getEntity();
-                }
-                if (targetPlayer == null) {
-                    return null;
-                }
-                break;
-            case ORIGIN:
-                if (origin != null && origin.getEntity() instanceof Player) {
-                    targetPlayer = (Player)origin.getEntity();
-                }
-                if (targetPlayer == null) {
-                    return null;
-                }
-                break;
-            default:
-                break;
+        return loadEffect(play, configuration, player, origin, target, parameterMap, logContext, null);
+    }
+
+    @Nullable
+    public EffectLibPlay loadEffect(boolean play, ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, String logContext, List<Player> players) {
+        if (players == null) {
+            // Check visibility type
+            Player targetPlayer = null;
+            switch (player.getVisibility()) {
+                case TARGET:
+                    if (target != null && target.getEntity() instanceof Player) {
+                        targetPlayer = (Player)target.getEntity();
+                    }
+                    if (targetPlayer == null) {
+                        return null;
+                    }
+                    break;
+                case ORIGIN:
+                    if (origin != null && origin.getEntity() instanceof Player) {
+                        targetPlayer = (Player)origin.getEntity();
+                    }
+                    if (targetPlayer == null) {
+                        return null;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (targetPlayer != null) {
+                players = new ArrayList<>();
+                players.add(targetPlayer);
+            }
         }
 
         if (parameterMap == null) {
@@ -163,7 +175,7 @@ public class EffectLibManager {
         }
 
         try {
-            effect = effectManager.getEffect(effectClass, parameters, origin, target, parameterMap, targetPlayer, logContext);
+            effect = effectManager.getEffect(effectClass, parameters, origin, target, parameterMap, players, logContext);
             if (effect != null) {
                 if (!parameters.contains("material")) {
                     MaterialAndData mat = player.getWorkingMaterial();

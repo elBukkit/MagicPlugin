@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
+import java.util.UUID;
 import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -161,6 +162,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected Location                        location;
     protected CastContext                   currentCast;
     protected UndoList                      toggleUndo;
+    protected Collection<UUID>              observers;
 
     /*
      * Variant properties
@@ -3051,6 +3053,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             } else {
                 currentCast = new CastContext(this);
             }
+            currentCast.setObservers(observers);
             currentCast.initialize();
         }
         return currentCast;
@@ -3778,5 +3781,18 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Nonnull
     public SpellMode getMode() {
         return mode;
+    }
+
+    @Override
+    public void setObservers(@Nonnull Collection<Player> players) {
+        this.observers = new ArrayList<>();
+        for (Player player : players) {
+            this.observers.add(player.getUniqueId());
+        }
+    }
+
+    @Override
+    public void clearObservers() {
+        this.observers = null;
     }
 }

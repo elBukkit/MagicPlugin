@@ -95,6 +95,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     private Vector originRelativeOffset;
     private Vector targetRelativeOffset;
     private Visibility visibility = Visibility.ALL;
+    private List<Player> observers = null;
 
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
@@ -510,6 +511,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (playAtTarget && target != null) {
             performEffects(target, origin);
         }
+
+        // This is only valid for one effect play, to prevent holding references to players if effect players
+        // are reused.
+        observers = null;
     }
 
     @Override
@@ -526,31 +531,33 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void displayParticle(Particle particle, ParticleOptions options, Location center, double range) {
-        Player targetPlayer = null;
-        switch (getVisibility()) {
-            case TARGET:
-                if (target != null && target.getEntity() instanceof Player) {
-                    targetPlayer = (Player)target.getEntity();
-                }
-                if (targetPlayer == null) {
-                    return;
-                }
-                break;
-            case ORIGIN:
-                if (origin != null && origin.getEntity() instanceof Player) {
-                    targetPlayer = (Player)origin.getEntity();
-                }
-                if (targetPlayer == null) {
-                    return;
-                }
-                break;
-            default:
-                break;
-        }
-        List<Player> targetPlayers = null;
-        if (targetPlayer != null) {
-            targetPlayers = new ArrayList<>();
-            targetPlayers.add(targetPlayer);
+        List<Player> targetPlayers = this.observers;
+        if (targetPlayers == null) {
+            Player targetPlayer = null;
+            switch (getVisibility()) {
+                case TARGET:
+                    if (target != null && target.getEntity() instanceof Player) {
+                        targetPlayer = (Player)target.getEntity();
+                    }
+                    if (targetPlayer == null) {
+                        return;
+                    }
+                    break;
+                case ORIGIN:
+                    if (origin != null && origin.getEntity() instanceof Player) {
+                        targetPlayer = (Player)origin.getEntity();
+                    }
+                    if (targetPlayer == null) {
+                        return;
+                    }
+                    break;
+                default:
+                    break;
+            }
+            if (targetPlayer != null) {
+                targetPlayers = new ArrayList<>();
+                targetPlayers.add(targetPlayer);
+            }
         }
         effectLib.displayParticle(particle, options, center, range, targetPlayers);
     }
@@ -869,7 +876,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (requireEntity && sourceEntity == null) return;
 
         if (effectLib != null && effectLibConfig != null) {
-            EffectLibPlay play = effectLib.play(effectLibConfig, this, source, target, parameterMap, logContext);
+            EffectLibPlay play = effectLib.play(effectLibConfig, this, source, target, parameterMap, logContext, observers);
             if (currentEffects != null && play != null)
             {
                 play.setPlayer(this);
@@ -894,7 +901,9 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             sourceEntity.playEffect(entityEffect);
         }
         if (sound != null) {
-            if (broadcastSound) {
+            if (observers != null) {
+                sound.play(plugin, getLogger(), sourceLocation, observers);
+            } else if (broadcastSound) {
                 sound.play(plugin, getLogger(), sourceLocation);
             } else if (sourceEntity != null) {
                 sound.play(plugin, getLogger(), sourceEntity);
@@ -999,5 +1008,10 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     @Deprecated
     public boolean shouldUseEyeLocation() {
         return sourceLocation.shouldUseEyeLocation();
+    }
+
+    @Override
+    public void setObservers(List<Player> players) {
+        this.observers = players;
     }
 }

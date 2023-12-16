@@ -105,6 +105,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     private List<ActionHandlerContext> finishedHandlers = null;
     private Map<String, String> messageParameters = null;
     private ActionHandler rootHandler = null;
+    private Collection<UUID> observers;
 
     // Base Context
     private int workAllowed = 500;
@@ -683,6 +684,11 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 effectName = entityKey;
             }
         }
+        List<Player> observers = null;
+        if (this.observers != null) {
+            observers = this.getObservers();
+            if (observers.isEmpty()) return;
+        }
         Collection<EffectPlayer> effects = getEffects(effectName);
         if (effects.size() > 0)
         {
@@ -712,6 +718,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 if (sourceBlock != null) {
                     player.setMaterial(sourceBlock);
                 }
+                player.setObservers(observers);
                 player.start(source, sourceEntity, target, targetEntity, targeted);
             }
         }
@@ -1777,5 +1784,25 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
         }
         Mage mage = controller.getMage(targetEntity);
         return mage.getCasterProperties(propertyType);
+    }
+
+    @Override
+    public void setObservers(Collection<UUID> players) {
+        this.observers = players;
+    }
+
+    @Override
+    public List<Player> getObservers() {
+        List<Player> players = null;
+        if (this.observers != null) {
+            players = new ArrayList<>();
+            for (UUID uuid : observers) {
+                Player player = getPlugin().getServer().getPlayer(uuid);
+                if (player != null) {
+                    players.add(player);
+                }
+            }
+        }
+        return players;
     }
 }

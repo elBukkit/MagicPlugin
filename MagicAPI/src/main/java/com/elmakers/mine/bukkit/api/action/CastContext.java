@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.api.action;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -261,4 +262,21 @@ public interface CastContext extends MageContext {
     CasterProperties getCasterProperties(String propertyType);
     @Nullable
     CasterProperties getTargetCasterProperties(String propertyType);
+
+    /**
+     * This is used to control visibility of a cast's particle effects (and audibility of its sound effects)
+     * to a specific list of players.
+     *
+     * <p>This uses a list of UUIDs rather that players so as not to keep references to Player objects.
+     *
+     * @param players The list of players who can see and hear this cast
+     */
+    void setObservers(Collection<UUID> players);
+
+    /**
+     * Returns a list of the online observers set by #setObservers
+     *
+     * @return null if no visibility is set, else a list of players that are observing this spell
+     */
+    List<Player> getObservers();
 }
