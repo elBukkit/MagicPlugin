@@ -4262,7 +4262,16 @@ public class MagicController implements MageController, ChunkLoadListener {
         return cast(mage, spellName, parameters, sender, null);
     }
 
+    @Override
+    public boolean cast(String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity, List<UUID> observers) {
+        return cast(null, spellName, parameters, sender, entity, observers);
+    }
+
     public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity) {
+        return cast(mage, spellName, parameters, sender, entity, null);
+    }
+
+    public boolean cast(Mage mage, String spellName, ConfigurationSection parameters, CommandSender sender, Entity entity, List<UUID> observers) {
         Player usePermissions = (sender == entity && entity instanceof Player) ? (Player) entity
                 : (sender instanceof Player ? (Player) sender : null);
         if (entity == null && sender instanceof Player) {
@@ -4294,6 +4303,11 @@ public class MagicController implements MageController, ChunkLoadListener {
                 sender.sendMessage("Spell " + spellName + " unknown");
             }
             return false;
+        }
+        if (observers != null) {
+            spell.setObserverIds(observers);
+        } else {
+            spell.clearObservers();;
         }
 
         // TODO: Load configured list of parameters!

@@ -3795,4 +3795,9 @@ public class BaseSpell implements MageSpell, Cloneable {
     public void clearObservers() {
         this.observers = null;
     }
+
+    @Override
+    public void setObserverIds(@Nonnull List<UUID> players) {
+        this.observers = players;
+    }
 }

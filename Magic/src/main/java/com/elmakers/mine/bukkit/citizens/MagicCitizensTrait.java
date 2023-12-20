@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.citizens;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
+import javax.annotation.Nonnull;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
@@ -8,6 +12,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 
@@ -20,6 +25,7 @@ public class MagicCitizensTrait extends CitizensTrait {
     private boolean targetPlayer = true;
     private boolean messagePlayer = false;
     private YamlConfiguration parameters = null;
+    private List<UUID> observers = null;
 
     public MagicCitizensTrait() {
         super("magic");
@@ -98,7 +104,7 @@ public class MagicCitizensTrait extends CitizensTrait {
             }
         }
 
-        return api.cast(spellKey, config, sender, entity);
+        return api.getController().cast(spellKey, config, sender, entity, observers);
     }
 
     @Override
@@ -233,5 +239,16 @@ public class MagicCitizensTrait extends CitizensTrait {
         {
             super.configure(sender, key, value);
         }
+    }
+
+    public void setObservers(@Nonnull Collection<Player> players) {
+        this.observers = new ArrayList<>();
+        for (Player player : players) {
+            this.observers.add(player.getUniqueId());
+        }
+    }
+
+    public void clearObservers() {
+        this.observers = null;
     }
 }

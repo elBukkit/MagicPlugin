@@ -1,6 +1,8 @@
 package com.elmakers.mine.bukkit.api.spell;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -144,6 +146,11 @@ public interface Spell extends SpellTemplate {
      * @param players The list of players who can see and hear this spell
      */
     default void setObservers(@Nonnull Collection<Player> players) {
+        // This default is here to not break any plugins implementing custom spells from scratch
+        throw new UnsupportedOperationException("Custom spell visibility is not implemented");
+    }
+
+    default void setObserverIds(@Nonnull List<UUID> players) {
         // This default is here to not break any plugins implementing custom spells from scratch
         throw new UnsupportedOperationException("Custom spell visibility is not implemented");
     }
