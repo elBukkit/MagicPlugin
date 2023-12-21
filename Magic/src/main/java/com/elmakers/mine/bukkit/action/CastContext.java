@@ -185,6 +185,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             this.previousBlock = ((CastContext)copy).previousBlock;
             this.destructible = ((CastContext)copy).destructible;
             this.indestructible = ((CastContext)copy).indestructible;
+            this.observers = ((CastContext)copy).observers;
         }
         else
         {
