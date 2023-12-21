@@ -124,6 +124,17 @@ public class MagicCitizensTrait extends CitizensTrait {
             }
         }
         sender.sendMessage(ChatColor.DARK_PURPLE + "Parameters: ");
+        if (observers != null) {
+            sender.sendMessage(ChatColor.DARK_PURPLE + "Observers: ");
+            for (UUID playerId : observers) {
+                Player player = api.getPlugin().getServer().getPlayer(playerId);
+                if (player == null) {
+                    sender.sendMessage(ChatColor.GRAY + " (Offline)");
+                } else {
+                    sender.sendMessage(ChatColor.LIGHT_PURPLE + " " + player.getName());
+                }
+            }
+        }
         describeParameters(sender);
     }
 
@@ -230,6 +241,33 @@ public class MagicCitizensTrait extends CitizensTrait {
                 sender.sendMessage(ChatColor.RED + "NOTE: " + ChatColor.YELLOW + "Has no effect unless you also set " + ChatColor.AQUA + "caster true");
             }
         }
+        else if (key.equalsIgnoreCase("observers"))
+        {
+            if (value == null || value.equalsIgnoreCase("clear"))
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Cleared observers list");
+                clearObservers();
+            }
+            else
+            if (value != null && value.equalsIgnoreCase("none"))
+            {
+                sender.sendMessage(ChatColor.DARK_PURPLE + "Set spell visibility to no one");
+                observers = new ArrayList<>();
+            }
+            else
+            {
+                String[] players = StringUtils.split(value, ' ');
+                for (String playerName : players) {
+                    Player player = api.getPlugin().getServer().getPlayer(playerName);
+                    if (player == null) {
+                        sender.sendMessage(ChatColor.RED + "Unknown or offline player: " + playerName);
+                    } else {
+                        addObserver(player);
+                        sender.sendMessage(ChatColor.DARK_PURPLE + "Added to observer list: " + player.getName());
+                    }
+                }
+            }
+        }
         else if ((value == null || value.isEmpty()) && !baseParameters.contains(key))
         {
             spellKey = key;
@@ -246,6 +284,13 @@ public class MagicCitizensTrait extends CitizensTrait {
         for (Player player : players) {
             this.observers.add(player.getUniqueId());
         }
+    }
+
+    public void addObserver(@Nonnull Player player) {
+        if (observers == null) {
+            observers = new ArrayList<>();
+        }
+        observers.add(player.getUniqueId());
     }
 
     public void clearObservers() {

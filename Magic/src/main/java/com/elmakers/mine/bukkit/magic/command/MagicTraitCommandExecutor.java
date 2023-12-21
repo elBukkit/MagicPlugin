@@ -9,6 +9,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
@@ -112,6 +113,12 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
                 addIfPermissible(sender, options, "magic.cast.", spell.getKey());
             }
         }
+        else if (lastParameter.equalsIgnoreCase("observers"))
+        {
+            for (Player player : controller.getPlugin().getServer().getOnlinePlayers()) {
+                options.add(player.getName());
+            }
+        }
         else if (lastParameter.equalsIgnoreCase("parameters"))
         {
             options.addAll(Arrays.asList(BaseSpell.COMMON_PARAMETERS));
@@ -152,7 +159,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         else
         {
             options.add("spell");
-            options.add("parameter");
+            options.add("parameters");
             options.add("caster");
             options.add("target_player");
             options.add("message_player");
@@ -163,6 +170,7 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
             options.add("command");
             options.add("mob");
             options.add("requires");
+            options.add("observers");
 
             Collection<SpellTemplate> spellList = api.getSpellTemplates(sender.hasPermission("magic.bypass_hidden"));
             for (SpellTemplate spell : spellList) {
