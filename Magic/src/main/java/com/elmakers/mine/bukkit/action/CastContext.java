@@ -684,9 +684,9 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 effectName = entityKey;
             }
         }
-        List<Player> observers = null;
+        Collection<UUID> observers = null;
         if (this.observers != null) {
-            observers = this.getObservers();
+            observers = this.observers;
             if (observers.isEmpty()) return;
         }
         Collection<EffectPlayer> effects = getEffects(effectName);
@@ -718,7 +718,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 if (sourceBlock != null) {
                     player.setMaterial(sourceBlock);
                 }
-                player.setObservers(observers);
+                player.setObserverIds(observers);
                 player.start(source, sourceEntity, target, targetEntity, targeted);
             }
         }
@@ -1787,7 +1787,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     }
 
     @Override
-    public void setObservers(Collection<UUID> players) {
+    public void setObserverIds(Collection<UUID> players) {
         this.observers = players;
     }
 

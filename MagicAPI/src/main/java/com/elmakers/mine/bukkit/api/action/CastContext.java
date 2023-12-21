@@ -269,9 +269,9 @@ public interface CastContext extends MageContext {
      *
      * <p>This uses a list of UUIDs rather that players so as not to keep references to Player objects.
      *
-     * @param players The list of players who can see and hear this cast
+     * @param players The list of player ids who can see and hear this cast
      */
-    void setObservers(Collection<UUID> players);
+    void setObserverIds(Collection<UUID> players);
 
     /**
      * Returns a list of the online observers set by #setObservers

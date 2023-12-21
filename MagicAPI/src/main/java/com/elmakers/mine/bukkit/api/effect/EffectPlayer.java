@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.api.effect;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -13,7 +13,6 @@ import org.bukkit.Sound;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.api.block.MaterialAndData;
 
@@ -71,11 +70,7 @@ public interface EffectPlayer {
      * This is used to control visibility of this effect (including sound effects)
      * to a specific list of players.
      *
-     * <p>This will only affect the next play if this effect, after that the list will be reset to null.
-     *
-     * <p>This is to prevent leaking Player references.
-     *
-     * @param players The list of players who can see and hear this effect
+     * @param players The list of player ids who can see and hear this effect
      */
-    void setObservers(List<Player> players);
+    void setObserverIds(Collection<UUID> players);
 }

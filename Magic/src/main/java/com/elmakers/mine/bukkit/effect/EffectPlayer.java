@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -95,7 +96,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     private Vector originRelativeOffset;
     private Vector targetRelativeOffset;
     private Visibility visibility = Visibility.ALL;
-    private List<Player> observers = null;
+    private Collection<UUID> observers = null;
 
     // These are ignored by the Trail type, need multi-inheritance :\
     protected boolean playAtOrigin = true;
@@ -511,10 +512,6 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (playAtTarget && target != null) {
             performEffects(target, origin);
         }
-
-        // This is only valid for one effect play, to prevent holding references to players if effect players
-        // are reused.
-        observers = null;
     }
 
     @Override
@@ -531,7 +528,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     public void displayParticle(Particle particle, ParticleOptions options, Location center, double range) {
-        List<Player> targetPlayers = this.observers;
+        List<Player> targetPlayers = getObservers();
         if (targetPlayers == null) {
             Player targetPlayer = null;
             switch (getVisibility()) {
@@ -874,6 +871,7 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         if (sourceLocation == null) return;
         Entity sourceEntity = source == null ? null : source.getEntity();
         if (requireEntity && sourceEntity == null) return;
+        List<Player> observers = getObservers();
 
         if (effectLib != null && effectLibConfig != null) {
             EffectLibPlay play = effectLib.play(effectLibConfig, this, source, target, parameterMap, logContext, observers);
@@ -1011,7 +1009,21 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
     }
 
     @Override
-    public void setObservers(List<Player> players) {
+    public void setObserverIds(Collection<UUID> players) {
         this.observers = players;
+    }
+
+    public List<Player> getObservers() {
+        List<Player> players = null;
+        if (this.observers != null) {
+            players = new ArrayList<>();
+            for (UUID uuid : observers) {
+                Player player = plugin.getServer().getPlayer(uuid);
+                if (player != null) {
+                    players.add(player);
+                }
+            }
+        }
+        return players;
     }
 }

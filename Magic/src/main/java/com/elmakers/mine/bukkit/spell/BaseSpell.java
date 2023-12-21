@@ -3053,7 +3053,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             } else {
                 currentCast = new CastContext(this);
             }
-            currentCast.setObservers(observers);
+            currentCast.setObserverIds(observers);
             currentCast.initialize();
         }
         return currentCast;
