@@ -115,6 +115,8 @@ public class MagicTraitCommandExecutor extends MagicTabExecutor {
         }
         else if (lastParameter.equalsIgnoreCase("observers"))
         {
+            options.add("clear");
+            options.add("none");
             for (Player player : controller.getPlugin().getServer().getOnlinePlayers()) {
                 options.add(player.getName());
             }
