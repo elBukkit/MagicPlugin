@@ -620,6 +620,9 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             // Track effect plays for cancelling
             trackEffects(player);
 
+            // Set observers
+            player.setObserverIds(observers);
+
             // Set material and color
             player.setMaterial(brush != null ? brush : spell.getEffectMaterial());
             player.setColor(getEffectColor());
@@ -719,7 +722,6 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 if (sourceBlock != null) {
                     player.setMaterial(sourceBlock);
                 }
-                player.setObserverIds(observers);
                 player.start(source, sourceEntity, target, targetEntity, targeted);
             }
         }
