@@ -42,6 +42,10 @@ public class RideEntityAction extends BaseSpellAction
     private double crashDistance = 0;
     private double crashSpeed = 0;
     private double crashEntitySpeed = 0;
+    private double crashCooldown = 0;
+    private double crashEntityCooldown = 0;
+    private long lastCrash = 0;
+    private long lastEntityCrash = 0;
     private int duration = 0;
     private int durationWarning = 0;
     private int liftoffDuration = 0;
@@ -156,6 +160,8 @@ public class RideEntityAction extends BaseSpellAction
         crashDistance = parameters.getDouble("crash_distance", 0);
         crashSpeed = parameters.getDouble("crash_speed", 0);
         crashEntitySpeed = parameters.getDouble("crash_entity_speed", 0);
+        crashCooldown = parameters.getInt("crash_cooldown", 0);
+        crashEntityCooldown = parameters.getInt("crash_entity_cooldown", 0);
         maxHeight = parameters.getInt("max_height", 0);
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", -1);
         heightCheckRadius = parameters.getInt("height_check_radius", 0);
@@ -278,21 +284,25 @@ public class RideEntityAction extends BaseSpellAction
         }
 
         // Check for crashing
-        if (crashDistance > 0 && Math.abs(speed) >= crashSpeed && System.currentTimeMillis() > liftoffTime + liftoffDuration)
-        {
-            Vector threshold = direction.clone().multiply(speed * crashDistance);
-            if (checkForCrash(context, mounted.getLocation(), threshold)) {
+        long now = System.currentTimeMillis();
+        if (crashCooldown == 0 || now > lastCrash + crashCooldown) {
+            if (crashDistance > 0 && Math.abs(speed) >= crashSpeed && System.currentTimeMillis() > liftoffTime + liftoffDuration)
+            {
+                Vector threshold = direction.clone().multiply(speed * crashDistance);
+                if (checkForCrash(context, mounted.getLocation(), threshold)) {
+                    if (crash(context)) {
+                        return SpellResult.CAST;
+                    }
+                }
+            }
+            if (!context.isPassthrough(mounted.getLocation().getBlock())) {
                 if (crash(context)) {
                     return SpellResult.CAST;
                 }
             }
         }
-        if (!context.isPassthrough(mounted.getLocation().getBlock())) {
-            if (crash(context)) {
-                return SpellResult.CAST;
-            }
-        }
-        if (crashEntityType != null && speed > 0 && crashEntityDistance > 0 && maxSpeed > 0 && Math.abs(speed) >= crashEntitySpeed) {
+        boolean entityCrashOnCooldown = crashEntityCooldown != 0 && now <= lastCrash + crashCooldown;
+        if (!entityCrashOnCooldown && crashEntityType != null && speed > 0 && crashEntityDistance > 0 && maxSpeed > 0 && Math.abs(speed) >= crashEntitySpeed) {
             boolean dismount = (crashEntityDismountSpeed >= 0 && speed >= crashEntityDismountSpeed);
             List<Entity> nearby = mounted.getNearbyEntities(crashEntityDistance, crashEntityDistance, crashEntityDistance);
             Vector crashDirection = direction.clone();
@@ -322,6 +332,7 @@ public class RideEntityAction extends BaseSpellAction
             if (dismount) {
                 dismountFromCrash(context);
             }
+            lastEntityCrash = System.currentTimeMillis();
         }
 
         if (exemptionDuration > 0 && mounted instanceof Player) {
@@ -672,6 +683,7 @@ public class RideEntityAction extends BaseSpellAction
         if (dismount) {
             dismountFromCrash(context);
         }
+        lastCrash = System.currentTimeMillis();
         speed = 0;
         return dismount;
     }

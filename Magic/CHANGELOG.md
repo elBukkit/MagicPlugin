@@ -10,6 +10,7 @@
  - Add effect visibility API
  - Add `velocity` attribute
  - Add `crash_entity_speed` and `crash_entity_dismount_speed` parameters to RideEntity action
+ - Add `crash_cooldown` and `crash_entity_cooldown` parameters to RideEntity action
 
 # 10.8.11
 
