@@ -25,9 +25,9 @@ public class LoadingChunk {
     @Override
     public int hashCode() {
         int worldHashCode = worldName.hashCode();
-        return ((worldHashCode & 0xFFF) << 48)
-                | ((chunkX & 0xFFFFFF) << 24)
-                | (chunkX & 0xFFFFFF);
+        return ((worldHashCode & 0xFF) << 24)
+                | ((chunkX & 0xFFF) << 12)
+                | (chunkX & 0xFFF);
     }
 
     @Override
