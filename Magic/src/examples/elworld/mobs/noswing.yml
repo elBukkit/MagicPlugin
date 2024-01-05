@@ -1,0 +1,11 @@
+noswing:
+  type: zombie
+  item: warlock_wand
+  health: 50
+  interval: 1000
+  triggers:
+    interval:
+      swing_arm: false
+      cast:
+        missile: 100
+        none: 100
