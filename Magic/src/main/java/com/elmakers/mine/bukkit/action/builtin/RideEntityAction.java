@@ -41,6 +41,7 @@ public class RideEntityAction extends BaseSpellAction
     private double liftoffThrust = 0;
     private double crashDistance = 0;
     private double crashSpeed = 0;
+    private double crashEntitySpeed = 0;
     private int duration = 0;
     private int durationWarning = 0;
     private int liftoffDuration = 0;
@@ -84,6 +85,7 @@ public class RideEntityAction extends BaseSpellAction
     private boolean noTargetPlayer = false;
     private Class<?> crashEntityType;
     private double crashDismountSpeed;
+    private double crashEntityDismountSpeed;
     private double crashEntityDistance;
     private double crashVelocityYOffset = 0;
     private double crashVelocity = 0;
@@ -153,6 +155,7 @@ public class RideEntityAction extends BaseSpellAction
         dismountHeight = parameters.getDouble("dismount_height", 0);
         crashDistance = parameters.getDouble("crash_distance", 0);
         crashSpeed = parameters.getDouble("crash_speed", 0);
+        crashEntitySpeed = parameters.getDouble("crash_entity_speed", 0);
         maxHeight = parameters.getInt("max_height", 0);
         maxHeightAboveGround = parameters.getInt("max_height_above_ground", -1);
         heightCheckRadius = parameters.getInt("height_check_radius", 0);
@@ -185,6 +188,7 @@ public class RideEntityAction extends BaseSpellAction
         crashBraking = parameters.getDouble("crash_braking", 0.0);
         crashEntityFOV = parameters.getDouble("crash_entity_fov", 0.3);
         crashDismountSpeed = parameters.getDouble("crash_dismount_speed", 0.0);
+        crashEntityDismountSpeed = parameters.getDouble("crash_entity_dismount_speed", -1);
         fallProtection = parameters.getInt("fall_protection", 0);
         exemptionDuration = parameters.getInt("exemption_duration", 0);
         boostAttribute = parameters.getString("boost_attribute");
@@ -288,7 +292,8 @@ public class RideEntityAction extends BaseSpellAction
                 return SpellResult.CAST;
             }
         }
-        if (crashEntityType != null && speed > 0 && crashEntityDistance > 0 && maxSpeed > 0) {
+        if (crashEntityType != null && speed > 0 && crashEntityDistance > 0 && maxSpeed > 0 && Math.abs(speed) >= crashEntitySpeed) {
+            boolean dismount = (crashEntityDismountSpeed >= 0 && speed >= crashEntityDismountSpeed);
             List<Entity> nearby = mounted.getNearbyEntities(crashEntityDistance, crashEntityDistance, crashEntityDistance);
             Vector crashDirection = direction.clone();
             if (crashVelocityYOffset > 0) {
@@ -313,6 +318,9 @@ public class RideEntityAction extends BaseSpellAction
                     CompatibilityLib.getCompatibilityUtils().damage((Damageable)mount, crashDamage, mounted);
                 }
                 context.playEffects("crash_entity", 1.0f, null, mounted, null, entity);
+            }
+            if (dismount) {
+                dismountFromCrash(context);
             }
         }
 
@@ -662,24 +670,29 @@ public class RideEntityAction extends BaseSpellAction
         }
         boolean dismount = (speed >= crashDismountSpeed);
         if (dismount) {
-            if (crashVelocity > 0 && maxSpeed > 0) {
-                if (mount != null) {
-                    mount.eject();
-                }
-                Vector crashDirection = direction.clone();
-                if (crashVelocityYOffset > 0) {
-                    crashDirection.setY(crashDirection.getY() + crashVelocityYOffset).normalize();
-                }
-                Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
-                SafetyUtils.setVelocity(mountedEntity, velocity);
-            }
-            if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
-                CompatibilityLib.getCompatibilityUtils().applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
-            }
-            warningEffectsApplied = false;
+            dismountFromCrash(context);
         }
         speed = 0;
         return dismount;
+    }
+
+    protected void dismountFromCrash(CastContext context) {
+        Entity mountedEntity = context.getEntity();
+        if (crashVelocity > 0 && maxSpeed > 0) {
+            if (mount != null) {
+                mount.eject();
+            }
+            Vector crashDirection = direction.clone();
+            if (crashVelocityYOffset > 0) {
+                crashDirection.setY(crashDirection.getY() + crashVelocityYOffset).normalize();
+            }
+            Vector velocity = crashDirection.multiply(crashVelocity * speed / maxSpeed);
+            SafetyUtils.setVelocity(mountedEntity, velocity);
+        }
+        if (crashEffects != null && mountedEntity != null && crashEffects.size() > 0 && mountedEntity instanceof LivingEntity) {
+            CompatibilityLib.getCompatibilityUtils().applyPotionEffects((LivingEntity)mountedEntity, crashEffects);
+        }
+        warningEffectsApplied = false;
     }
 
     protected boolean checkForCrash(CastContext context, Location source, Vector threshold)

@@ -9,6 +9,7 @@
  - Fix ModifyWalkSpeed speed parameter not working with variables
  - Add effect visibility API
  - Add `velocity` attribute
+ - Add `crash_entity_speed` and `crash_entity_dismount_speed` parameters to RideEntity action
 
 # 10.8.11
 
