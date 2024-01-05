@@ -11,6 +11,7 @@
  - Add `velocity` attribute
  - Add `crash_entity_speed` and `crash_entity_dismount_speed` parameters to RideEntity action
  - Add `crash_cooldown` and `crash_entity_cooldown` parameters to RideEntity action
+ - Add `adaptive_knockback_resistance` parmeter to `Damage` action (thanks to ArcticFox XVI)
 
 # 10.8.11
 
