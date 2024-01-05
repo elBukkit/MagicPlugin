@@ -8,6 +8,7 @@
  - Fixes for compatibility with recent 1.20.2 versions (or maybe break it? I don't know what's going on)
  - Fix ModifyWalkSpeed speed parameter not working with variables
  - Add effect visibility API
+ - Add `velocity` attribute
 
 # 10.8.11
 

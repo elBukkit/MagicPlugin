@@ -5354,6 +5354,9 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (player == null) return null;
                 return (double)(System.currentTimeMillis() - player.getFirstPlayed());
             }
+            case "velocity": {
+                return getVelocity().length();
+            }
 
             default:
                 Player player = getPlayer();
