@@ -35,6 +35,8 @@ public class DamageAction extends BaseSpellAction
     private boolean setLastDamagedBy;
     private Double percentage;
     private Double knockbackResistance;
+
+    private Double adaptiveKnockbackResistance;
     private Double damageMultiplier;
     private double maxDistanceSquared;
     private double minDistanceSquared;
@@ -77,6 +79,11 @@ public class DamageAction extends BaseSpellAction
         } else {
             knockbackResistance = null;
         }
+        if (parameters.contains("adaptive_knockback_resistance")) {
+            adaptiveKnockbackResistance = parameters.getDouble("adaptive_knockback_resistance");
+        } else {
+            adaptiveKnockbackResistance = null;
+        }
         double maxDistance = parameters.getDouble("damage_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
         double minDistance = parameters.getDouble("damage_min_distance", 0);
@@ -106,12 +113,16 @@ public class DamageAction extends BaseSpellAction
         Mage mage = context.getMage();
         MageController controller = context.getController();
 
-        double previousKnockbackResistance = 0D;
+        Double previousKnockbackResistance = null;
         try {
             if (knockbackResistance != null && livingTarget != null) {
                 AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
                 previousKnockbackResistance = knockBackAttribute.getBaseValue();
                 knockBackAttribute.setBaseValue(knockbackResistance);
+            } else if (adaptiveKnockbackResistance != null && livingTarget != null) {
+                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                previousKnockbackResistance = knockBackAttribute.getBaseValue();
+                knockBackAttribute.setBaseValue(1.0 - ((1.0 - previousKnockbackResistance) * (1.0 - adaptiveKnockbackResistance)));
             }
             if (controller.isElemental(entity)) {
                 damage = elementalDamage;
@@ -197,7 +208,7 @@ public class DamageAction extends BaseSpellAction
                 }
             }
         } finally {
-            if (knockbackResistance != null && livingTarget != null) {
+            if (previousKnockbackResistance != null && livingTarget != null) {
                 AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
                 knockBackAttribute.setBaseValue(previousKnockbackResistance);
             }
@@ -229,7 +240,7 @@ public class DamageAction extends BaseSpellAction
     @Override
     public void getParameterOptions(Spell spell, String parameterKey, Collection<String> examples) {
         if (parameterKey.equals("damage") || parameterKey.equals("player_damage")
-            || parameterKey.equals("entity_damage") || parameterKey.equals("elemental_damage")) {
+                || parameterKey.equals("entity_damage") || parameterKey.equals("elemental_damage")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_SIZES));
         } else if (parameterKey.equals("magic_damage")) {
             examples.addAll(Arrays.asList(BaseSpell.EXAMPLE_BOOLEANS));
