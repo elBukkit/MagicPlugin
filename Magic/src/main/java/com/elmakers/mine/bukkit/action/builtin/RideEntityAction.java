@@ -286,7 +286,7 @@ public class RideEntityAction extends BaseSpellAction
         // Check for crashing
         long now = System.currentTimeMillis();
         if (crashCooldown == 0 || now > lastCrash + crashCooldown) {
-            if (crashDistance > 0 && Math.abs(speed) >= crashSpeed && System.currentTimeMillis() > liftoffTime + liftoffDuration)
+            if (crashDistance > 0 && Math.abs(speed) >= crashSpeed && now > liftoffTime + liftoffDuration)
             {
                 Vector threshold = direction.clone().multiply(speed * crashDistance);
                 if (checkForCrash(context, mounted.getLocation(), threshold)) {
@@ -301,7 +301,7 @@ public class RideEntityAction extends BaseSpellAction
                 }
             }
         }
-        boolean entityCrashOnCooldown = crashEntityCooldown != 0 && now <= lastCrash + crashCooldown;
+        boolean entityCrashOnCooldown = crashEntityCooldown != 0 && now <= lastEntityCrash + crashCooldown;
         if (!entityCrashOnCooldown && crashEntityType != null && speed > 0 && crashEntityDistance > 0 && maxSpeed > 0 && Math.abs(speed) >= crashEntitySpeed) {
             boolean dismount = (crashEntityDismountSpeed >= 0 && speed >= crashEntityDismountSpeed);
             List<Entity> nearby = mounted.getNearbyEntities(crashEntityDistance, crashEntityDistance, crashEntityDistance);
@@ -332,7 +332,7 @@ public class RideEntityAction extends BaseSpellAction
             if (dismount) {
                 dismountFromCrash(context);
             }
-            lastEntityCrash = System.currentTimeMillis();
+            lastEntityCrash = now;
         }
 
         if (exemptionDuration > 0 && mounted instanceof Player) {
@@ -342,7 +342,7 @@ public class RideEntityAction extends BaseSpellAction
         if (!isInAir || airControllable) {
             adjustHeading(context);
         }
-        if (System.currentTimeMillis() > liftoffTime + liftoffDuration) {
+        if (now > liftoffTime + liftoffDuration) {
             applyThrust(context);
         }
 
