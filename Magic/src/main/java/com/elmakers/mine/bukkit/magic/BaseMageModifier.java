@@ -20,7 +20,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.magic.Trigger;
 import com.elmakers.mine.bukkit.api.spell.CooldownReducer;
 import com.elmakers.mine.bukkit.api.spell.CostReducer;
-import com.elmakers.mine.bukkit.api.spell.Spell;
+import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.spell.TriggeredSpell;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ArrayListMultimap;
@@ -383,7 +383,7 @@ public class BaseMageModifier extends ParentedProperties implements CostReducer,
     public void updateSpellTriggers() {
         spellTriggers.clear();
         for (String spellKey : getSpells()) {
-            Spell spell = getSpell(spellKey);
+            SpellTemplate spell = controller.getSpellTemplate(spellKey);
             if (spell == null) continue;
             Collection<Trigger> triggers = spell.getTriggers();
             if (triggers == null) continue;

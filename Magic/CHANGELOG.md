@@ -3,6 +3,8 @@
 
 # 10.8.13
 
+ - Some optimizations for magic mob saving and loading
+
 # 10.8.12
 
  - Add support for 1.20.4

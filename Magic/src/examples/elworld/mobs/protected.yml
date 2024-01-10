@@ -1,0 +1,4 @@
+protected:
+  type: zombie
+  protection:
+    fall: 99
