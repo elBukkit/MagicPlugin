@@ -264,6 +264,7 @@ help:
     `<title text="Common Customizations">`
     `<li>``<command command="mconfig spell default parameters.target_npc true" text="Allow all spells to target NPCs">`
     `<li>``<command command="mconfig spell default earns_cooldown 2 minutes" text="Reduce SP cooldown to 2 minutes">`
+    `<li>``<command command="mconfig spell override parameters.undo 0" text="Turn off auto-undo, all spell effects made permanent">`
     `<li>``<command command="mconfig config enable_crafting false" text="Disable all Magic crafting recipes">`
     `<li>``<command command="mconfig disable spell blink" text="Disable a specific spell">`
     `<li>``<command command="mconfig config sound_volume 0.1" text="Lower all sound volume to 10%">` &7Note that the survival example is already at 50%
