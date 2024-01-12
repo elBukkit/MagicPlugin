@@ -1,0 +1,106 @@
+crash_testspell:
+  name: Dragon Riding
+  description: Right click to ride your dragon.
+  icon: saddle
+  world_border_restricted: true
+  creative_restricted: true
+  cast_on_no_target: false
+  cancel_effects: true
+  cancellable: true
+  show_undoable: false
+  undoable: true
+  reactivate: true
+  upgrade_required_casts: 10
+  actions:
+    reactivate:
+    - class: Cancel
+    - class: RideEntity
+    cast:
+    - class: Cancel
+    - class: ChangeContext
+      target_offset: 0,1,0
+      actions:
+      - class: Teleport
+        teleport_target: true
+        direct: true
+      - class: RideEntity
+  effects:
+    cast:
+    - sound: entity_ender_dragon_flap
+      sound_pitch: 2
+      sound_volume: 0.2
+    - class: EffectSingle
+      sound: entity_phantom_flap
+    - class: EffectSingle
+      sound: entity_horse_saddle
+    crash:
+    - sound: entity_bat_takeoff
+      sound_volume: 0.3
+    - class: EffectSingle
+      location: origin
+      material: stone
+      particle: block_crack
+      particle_count: 20
+      particle_data: 1
+    land:
+    - sound: entity_ender_dragon_flap
+      sound_pitch: 0.9
+      sound_volume: 0.2
+  parameters:
+    steer_speed: 0.1
+    max_deceleration: 0.1
+    max_speed: 1
+    max_acceleration: 0.1
+    min_speed: -0.4
+    start_speed: 0.1
+    max_height_above_ground: 150
+    duration: 60000
+    duration_warning: 20000
+    gravity: 0
+    target: other
+    passthrough: passthrough
+  #  crash_speed: 1
+  #  crash_dismount_speed: 1
+    crash_cooldown: 300
+  #  crash_entity_cooldown: 3000
+  #  crash_entity_damage: 5
+  #  crash_entity_speed: 1
+  #  crash_entity_dismount_speed: 1
+  #  crash_entity_distance: 2
+  #  crash_entity_fov: 0.5
+  #  crash_velocity: 3
+  #  crash_velocity_y_offset: 0.2
+  #  crash_into: LivingEntity
+  #  crash_braking: 20
+  #  crash_distance: 1
+  #  crash_vehicle_damage: 0
+  #  crash_damage: 0
+    undo: 1000
+    set_target: true
+    mount_untargetable: false
+    rider_untargetable: true
+    mount_wand: false
+    bypass_confusion: false
+    liftoff_duration: 200
+    liftoff_thrust: 0.5
+    fall_protection: 700
+   # crash_effects:
+   #   confusion: 120,3
+    warning_effects:
+      confusion: 5
+    cancel_on_no_permission: true
+    sound: magic.flying
+    sound_interval: 500
+    sound_max_volume: 0.25
+    sound_min_volume: 0.05
+    sound_max_pitch: 2
+    sound_min_pitch: 0.5
+    armor_stand_pitch: 0.3
+    air_controllable: true
+    controllable: true
+    strafe_controllable: 0.0
+    jump_controllable: 0
+    exemption_duration: 5000
+    armor_stand_marker: false
+    pitch_controllable: false
+    cooldown: 3000

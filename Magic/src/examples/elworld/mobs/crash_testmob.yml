@@ -1,0 +1,35 @@
+crash_testmob:
+  type: parrot
+  silent: true
+  equip_on_respawn: false
+  default_drops: false
+  protection:
+    fire: 10
+    drown: 10
+    stuck: 10
+    suffocation: 10
+    cramming: 10
+    falling_block: 10
+    out_of_world: 10
+    starve: 10
+  disguise:
+    type: player
+    skin: NightScythe1
+    swimming: true
+  brain:
+    goals:
+      - type: follow_owner
+        priority: 1
+      - type: look_at_player
+        priority: 2
+      - type: panic
+        priority: 0
+      - type: requirement
+        priority: 3
+        requirement:
+          stay: false
+          sitting: false
+        goals: random_stroll
+  interact_spell: crash_testspell
+  interact_spell_source: player
+  interact_spell_target: mob
