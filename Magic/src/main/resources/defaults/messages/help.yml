@@ -279,6 +279,7 @@ help:
     `<p>`Scroll down to find the levelled up version of the spell, and change damage parameters there too.
     `<p>`Note that some spells, like &7Fireball&f, &7Boom&f, or &7Fire&f deal indirect damage and as such require special handling to change damage.
     `<p>`For explosions, the &7size&f parameter deals more damage, but take care as a bigger explosion also means more blocks broken.
+    `<p>`You can also `<command command="mconfig material indestructible *" text="make all block types indestructible">` to prevent spells from damaging blocks.
   donator_shops: |-
     `<title text="Donator Shops">`
     `<p>`&dMagic &fcan be used to set up &bdonator shops&f with a variety of EULA-compliant vanity items.
