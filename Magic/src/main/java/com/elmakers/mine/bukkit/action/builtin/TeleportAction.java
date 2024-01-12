@@ -26,6 +26,7 @@ public class TeleportAction extends BaseTeleportAction
     private boolean direct = false;
     private boolean sameBlock = false;
     private double roundUp = 0.75;
+    private boolean teleportTarget = false;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters)
@@ -39,14 +40,15 @@ public class TeleportAction extends BaseTeleportAction
         direct = parameters.getBoolean("direct", false);
         roundUp = parameters.getDouble("round_up", 0.75);
         sameBlock = parameters.getBoolean("same_block", false);
+        teleportTarget = parameters.getBoolean("teleport_target", false);
     }
 
     @Override
     public SpellResult perform(CastContext context)
     {
-        Entity entity = context.getEntity();
+        Entity entity = teleportTarget ? context.getTargetEntity() : context.getEntity();
         if (entity == null) {
-            return SpellResult.ENTITY_REQUIRED;
+            return teleportTarget ? SpellResult.NO_TARGET : SpellResult.ENTITY_REQUIRED;
         }
 
         Location targetLocation;

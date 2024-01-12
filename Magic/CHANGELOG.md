@@ -4,6 +4,7 @@
 # 10.8.13
 
  - Some optimizations for magic mob saving and loading
+ - Add `teleport_target` parameter to `Teleport` action
 
 # 10.8.12
 
