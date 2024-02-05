@@ -3,6 +3,8 @@
 
 # 10.9
 
+ - Spell icons now use players heads instead of vanilla items, when not using the resource pack.
+
 # 10.8.13
 
  - Some optimizations for magic mob saving and loading
