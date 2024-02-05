@@ -1,0 +1,3 @@
+test_skull:
+    icon: skull:http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac{18001}
+    inherit: missile
