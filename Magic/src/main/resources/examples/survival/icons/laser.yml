@@ -1,8 +1,10 @@
 laser:
-  item: 'bamboo{18001}'
-  item_disabled: 'bamboo{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e{18157}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e{18158}'
   legacy_item: spell_icon:145
   legacy_item_disabled: spell_icon_disabled:145
   url: http://textures.minecraft.net/texture/7cc8e096a2ac99bf264b3e827f1e3aa07ba688d7b4f470128f741132625e
   type: spell
   glyph: "\uE964"
+  vanilla_item: 'bamboo{18001}'
+  vanilla_item_disabled: 'bamboo{18002}'

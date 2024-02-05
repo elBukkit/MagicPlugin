@@ -1,8 +1,10 @@
 cluster:
-  item: 'pumpkin_seeds{18001}'
-  item_disabled: 'pumpkin_seeds{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e{18235}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e{18236}'
   legacy_item: spell_icon:92
   legacy_item_disabled: spell_icon_disabled:92
   url: http://textures.minecraft.net/texture/e474575ab89654506a3928a03f70e5e0c11849dd1451e24e19c678cb1294e
   type: spell
   glyph: "\uE92C"
+  vanilla_item: 'pumpkin_seeds{18001}'
+  vanilla_item_disabled: 'pumpkin_seeds{18002}'

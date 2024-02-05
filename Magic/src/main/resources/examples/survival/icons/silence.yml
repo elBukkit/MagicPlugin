@@ -1,8 +1,10 @@
 silence:
-  item: 'music_disc_11{18002}'
-  item_disabled: 'music_disc_11{18003}'
+  item: 'skull:http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee{18057}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee{18058}'
   legacy_item: spell_icon:8
   legacy_item_disabled: spell_icon_disabled:8
   url: http://textures.minecraft.net/texture/ad7e09a7af7af5acc286e6a4dd3c2f69b55ace33b7838ca899545570e946ee
   type: spell
   glyph: "\uE9A6"
+  vanilla_item: 'music_disc_11{18002}'
+  vanilla_item_disabled: 'music_disc_11{18003}'

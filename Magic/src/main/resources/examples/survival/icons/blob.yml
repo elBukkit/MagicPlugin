@@ -1,8 +1,10 @@
 blob:
-  item: 'clay_ball{18001}'
-  item_disabled: 'clay_ball{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14{18081}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14{18082}'
   legacy_item: spell_icon:128
   legacy_item_disabled: spell_icon_disabled:128
   url: http://textures.minecraft.net/texture/bc8e7e971bbac56883fe9bfe1b38c5f568ece6cbe09ca59d85f6dab4688d14
   type: spell
   glyph: "\uE918"
+  vanilla_item: 'clay_ball{18001}'
+  vanilla_item_disabled: 'clay_ball{18002}'

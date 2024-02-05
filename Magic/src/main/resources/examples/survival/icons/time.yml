@@ -1,8 +1,10 @@
 time:
-  item: 'pumpkin_pie{18001}'
-  item_disabled: 'pumpkin_pie{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb{18257}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb{18258}'
   legacy_item: spell_icon:86
   legacy_item_disabled: spell_icon_disabled:86
   url: http://textures.minecraft.net/texture/1b5c8c12faec6646fd9cd8c610f138f51fbaaee1182baff8fa4f32d683b25eb
   type: spell
   glyph: "\uE9D1"
+  vanilla_item: 'pumpkin_pie{18001}'
+  vanilla_item_disabled: 'pumpkin_pie{18002}'

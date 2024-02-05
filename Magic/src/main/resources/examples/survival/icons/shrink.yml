@@ -1,8 +1,10 @@
 shrink:
-  item: 'red_mushroom{18001}'
-  item_disabled: 'red_mushroom{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e{18163}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e{18164}'
   legacy_item: spell_icon:146
   legacy_item_disabled: spell_icon_disabled:146
   url: http://textures.minecraft.net/texture/dd91c092cb93f6f4152629a02ddf617557381a16694a46eba3468446363c08e
   type: spell
   glyph: "\uE9A4"
+  vanilla_item: 'red_mushroom{18001}'
+  vanilla_item_disabled: 'red_mushroom{18002}'

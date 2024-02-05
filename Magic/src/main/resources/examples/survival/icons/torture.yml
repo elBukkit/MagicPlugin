@@ -1,8 +1,10 @@
 torture:
-  item: 'beetroot{18001}'
-  item_disabled: 'beetroot{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627{18049}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627{18050}'
   legacy_item: spell_icon:172
   legacy_item_disabled: spell_icon_disabled:172
   url: http://textures.minecraft.net/texture/df19b39e565b16cbdabe364b91e35894d1e9bac0ad3fa4b0905ec4f366627
   type: spell
   glyph: "\uE9D5"
+  vanilla_item: 'beetroot{18001}'
+  vanilla_item_disabled: 'beetroot{18002}'

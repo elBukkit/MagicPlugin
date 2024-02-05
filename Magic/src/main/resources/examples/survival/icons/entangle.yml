@@ -1,8 +1,10 @@
 entangle:
-  item: 'birch_fence{18001}'
-  item_disabled: 'birch_fence{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5{18251}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5{18252}'
   legacy_item: spell_icon:177
   legacy_item_disabled: spell_icon_disabled:177
   url: http://textures.minecraft.net/texture/b2545861d5871f75caa3b378ec44655bcb3d6cabe697b27303dbdaa8b5b5
   type: spell
   glyph: "\uE93C"
+  vanilla_item: 'birch_fence{18001}'
+  vanilla_item_disabled: 'birch_fence{18002}'

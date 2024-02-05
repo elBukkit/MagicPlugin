@@ -1,8 +1,10 @@
 chop:
-  item: 'iron_axe{18001}'
-  item_disabled: 'iron_axe{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f{18215}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f{18216}'
   legacy_item: spell_icon:124
   legacy_item_disabled: spell_icon_disabled:124
   url: http://textures.minecraft.net/texture/7033deb4e25f57413fb15bd3f7019d4ea659a4637d75597248590d746778f
   type: spell
   glyph: "\uE92A"
+  vanilla_item: 'iron_axe{18001}'
+  vanilla_item_disabled: 'iron_axe{18002}'

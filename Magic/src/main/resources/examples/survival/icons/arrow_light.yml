@@ -1,7 +1,9 @@
 arrow_light:
-  item: 'spectral_arrow{18010}'
-  item_disabled: 'spectral_arrow{18011}'
+  item: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18181}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18182}'
   legacy_item: spell_icon:242
   legacy_item_disabled: spell_icon_disabled:242
   url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
   type: spell
+  vanilla_item: 'spectral_arrow{18010}'
+  vanilla_item_disabled: 'spectral_arrow{18011}'

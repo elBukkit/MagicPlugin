@@ -1,8 +1,10 @@
 sweep:
-  item: 'dried_kelp{18001}'
-  item_disabled: 'dried_kelp{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a{18093}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a{18094}'
   legacy_item: spell_icon:178
   legacy_item_disabled: spell_icon_disabled:178
   url: http://textures.minecraft.net/texture/df4396a2bc47bc4dd545fc787a3ad8a0a75b8783cb5d81482c2016fab9cd2a
   type: spell
   glyph: "\uE9EB"
+  vanilla_item: 'dried_kelp{18001}'
+  vanilla_item_disabled: 'dried_kelp{18002}'

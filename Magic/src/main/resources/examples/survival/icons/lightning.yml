@@ -1,8 +1,10 @@
 lightning:
-  item: 'quartz{18001}'
-  item_disabled: 'quartz{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/c0d34b6c68eca9dae0f9dabeadeb5f72536fa20ab4ecf669be895baf1c17{18203}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/c0d34b6c68eca9dae0f9dabeadeb5f72536fa20ab4ecf669be895baf1c17{18204}'
   legacy_item: spell_icon:39
   legacy_item_disabled: spell_icon_disabled:39
   url: http://textures.minecraft.net/texture/c0d34b6c68eca9dae0f9dabeadeb5f72536fa20ab4ecf669be895baf1c17
   type: spell
   glyph: "\uE96B"
+  vanilla_item: 'quartz{18001}'
+  vanilla_item_disabled: 'quartz{18002}'

@@ -1,8 +1,10 @@
 monster:
-  item: 'rabbit_hide{18001}'
-  item_disabled: 'rabbit_hide{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/cd541541daaff50896cd258bdbdd4cf80c3ba816735726078bfe393927e57f1{18055}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/cd541541daaff50896cd258bdbdd4cf80c3ba816735726078bfe393927e57f1{18056}'
   legacy_item: spell_icon:64
   legacy_item_disabled: spell_icon_disabled:64
   url: http://textures.minecraft.net/texture/cd541541daaff50896cd258bdbdd4cf80c3ba816735726078bfe393927e57f1
   type: spell
   glyph: "\uE973"
+  vanilla_item: 'rabbit_hide{18001}'
+  vanilla_item_disabled: 'rabbit_hide{18002}'

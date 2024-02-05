@@ -1,8 +1,10 @@
 protection_fire:
-  item: 'shield{18016}'
-  item_disabled: 'shield{18017}'
+  item: 'skull:http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a{18025}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a{18026}'
   legacy_item: spell_icon:237
   legacy_item_disabled: spell_icon_disabled:237
   url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   type: spell
   glyph: "\uE98C"
+  vanilla_item: 'shield{18016}'
+  vanilla_item_disabled: 'shield{18017}'

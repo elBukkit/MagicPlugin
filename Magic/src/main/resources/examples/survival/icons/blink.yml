@@ -1,8 +1,10 @@
 blink:
-  item: 'ender_pearl{18001}'
-  item_disabled: 'ender_pearl{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2{18069}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2{18070}'
   legacy_item: spell_icon:134
   legacy_item_disabled: spell_icon_disabled:134
   url: http://textures.minecraft.net/texture/a35cfb663dbde27598eebe76b0fdac2593f1d696b3e6b9e044edeb8d48c2e2
   type: spell
   glyph: "\uE917"
+  vanilla_item: 'ender_pearl{18001}'
+  vanilla_item_disabled: 'ender_pearl{18002}'

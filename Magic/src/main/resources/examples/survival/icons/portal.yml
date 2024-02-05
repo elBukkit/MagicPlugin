@@ -1,8 +1,10 @@
 portal:
-  item: 'crying_obsidian{18001}'
-  item_disabled: 'crying_obsidian{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9{18085}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9{18086}'
   legacy_item: spell_icon:71
   legacy_item_disabled: spell_icon_disabled:71
   url: http://textures.minecraft.net/texture/65627b236b77eef7b4f31726ed5dbb8f3cdf29a7f8cf820fa34c6cae82f9
   type: spell
   glyph: "\uE987"
+  vanilla_item: 'crying_obsidian{18001}'
+  vanilla_item_disabled: 'crying_obsidian{18002}'

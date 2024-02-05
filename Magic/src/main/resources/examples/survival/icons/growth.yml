@@ -1,8 +1,10 @@
 growth:
-  item: 'oak_sapling{18001}'
-  item_disabled: 'oak_sapling{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb{18119}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb{18120}'
   legacy_item: spell_icon:167
   legacy_item_disabled: spell_icon_disabled:167
   url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
   type: spell
   glyph: "\uE985"
+  vanilla_item: 'oak_sapling{18001}'
+  vanilla_item_disabled: 'oak_sapling{18002}'

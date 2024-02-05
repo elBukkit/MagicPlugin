@@ -1,8 +1,10 @@
 tag:
-  item: 'oak_sign{18003}'
-  item_disabled: 'oak_sign{18004}'
+  item: 'skull:http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e{18165}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e{18166}'
   legacy_item: spell_icon:29
   legacy_item_disabled: spell_icon_disabled:29
   url: http://textures.minecraft.net/texture/c5acc4b5a7079df3f51cd9388508a5860fc60e9bcde97f9abee62b457d7e
   type: spell
   glyph: "\uE9CC"
+  vanilla_item: 'oak_sign{18003}'
+  vanilla_item_disabled: 'oak_sign{18004}'

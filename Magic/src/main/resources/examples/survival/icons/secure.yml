@@ -1,8 +1,10 @@
 secure:
-  item: 'trapped_chest{18001}'
-  item_disabled: 'trapped_chest{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/e266e2ffa06f553ef326d8c92994c77edde2e521697b5fb4637ed644443e12{18159}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/e266e2ffa06f553ef326d8c92994c77edde2e521697b5fb4637ed644443e12{18160}'
   legacy_item: spell_icon:183
   legacy_item_disabled: spell_icon_disabled:183
   url: http://textures.minecraft.net/texture/e266e2ffa06f553ef326d8c92994c77edde2e521697b5fb4637ed644443e12
   type: spell
   glyph: "\uE9A0"
+  vanilla_item: 'trapped_chest{18001}'
+  vanilla_item_disabled: 'trapped_chest{18002}'

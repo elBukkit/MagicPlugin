@@ -1,8 +1,10 @@
 glide:
-  item: 'elytra{18001}'
-  item_disabled: 'elytra{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/0da6cb9e9cd875794b8b9f3a4b77227a18adb963b42af21d52d58d2ef24e47{18021}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/0da6cb9e9cd875794b8b9f3a4b77227a18adb963b42af21d52d58d2ef24e47{18022}'
   legacy_item: spell_icon:202
   legacy_item_disabled: spell_icon_disabled:202
   url: http://textures.minecraft.net/texture/0da6cb9e9cd875794b8b9f3a4b77227a18adb963b42af21d52d58d2ef24e47
   type: spell
   glyph: "\uE954"
+  vanilla_item: 'elytra{18001}'
+  vanilla_item_disabled: 'elytra{18002}'

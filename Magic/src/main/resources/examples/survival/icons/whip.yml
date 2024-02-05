@@ -1,8 +1,10 @@
 whip:
-  item: 'lead{18001}'
-  item_disabled: 'lead{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/543a93796b389fc710671b62106068619b7673e7bf48a6c77bc4db921d54{18173}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/543a93796b389fc710671b62106068619b7673e7bf48a6c77bc4db921d54{18174}'
   legacy_item: spell_icon:198
   legacy_item_disabled: spell_icon_disabled:198
   url: http://textures.minecraft.net/texture/543a93796b389fc710671b62106068619b7673e7bf48a6c77bc4db921d54
   type: spell
   glyph: "\uE9E5"
+  vanilla_item: 'lead{18001}'
+  vanilla_item_disabled: 'lead{18002}'

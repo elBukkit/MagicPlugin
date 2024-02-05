@@ -1,8 +1,10 @@
 workbench:
-  item: 'crafting_table{18001}'
-  item_disabled: 'crafting_table{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff{18123}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff{18124}'
   legacy_item: spell_icon:105
   legacy_item_disabled: spell_icon_disabled:105
   url: http://textures.minecraft.net/texture/a5bf87cdeeefecb473472dc7c858ffa2e3ec5bd48c3718df49e2798e4aeff
   type: spell
   glyph: "\uE9E9"
+  vanilla_item: 'crafting_table{18001}'
+  vanilla_item_disabled: 'crafting_table{18002}'

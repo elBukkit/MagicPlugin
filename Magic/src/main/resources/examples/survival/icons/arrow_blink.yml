@@ -1,7 +1,9 @@
 arrow_blink:
-  item: 'spectral_arrow{CustomModelData:18022,Potion:regeneration}'
-  item_disabled: 'spectral_arrow{CustomModelData:18023,Potion:regeneration}'
+  item: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18183}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18184}'
   legacy_item: spell_icon:248
   legacy_item_disabled: spell_icon_disabled:248
   url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
   type: spell
+  vanilla_item: 'spectral_arrow{CustomModelData:18022,Potion:regeneration}'
+  vanilla_item_disabled: 'spectral_arrow{CustomModelData:18023,Potion:regeneration}'

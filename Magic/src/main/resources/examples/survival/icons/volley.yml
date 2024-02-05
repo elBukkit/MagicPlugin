@@ -1,8 +1,10 @@
 volley:
-  item: 'wheat_seeds{18001}'
-  item_disabled: 'wheat_seeds{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab{18189}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab{18190}'
   legacy_item: spell_icon:31
   legacy_item_disabled: spell_icon_disabled:31
   url: http://textures.minecraft.net/texture/c7c963831339c9e82e91cd29bfa36ab616d78555dfbe7e72983e2e254180a2ab
   type: spell
   glyph: "\uE9DE"
+  vanilla_item: 'wheat_seeds{18001}'
+  vanilla_item_disabled: 'wheat_seeds{18002}'

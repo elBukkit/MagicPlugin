@@ -1,8 +1,10 @@
 disintegrate:
-  item: 'cocoa_beans{18001}'
-  item_disabled: 'cocoa_beans{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae{18011}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae{18012}'
   legacy_item: spell_icon:133
   legacy_item_disabled: spell_icon_disabled:133
   url: http://textures.minecraft.net/texture/89f9399aceb3211c3ca1259d5b1bb1f3fb61a4d5626a757ee1a1ccec28a0ae
   type: spell
   glyph: "\uE937"
+  vanilla_item: 'cocoa_beans{18001}'
+  vanilla_item_disabled: 'cocoa_beans{18002}'

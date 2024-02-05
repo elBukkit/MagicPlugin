@@ -1,8 +1,10 @@
 recall:
-  item: 'jungle_door{18001}'
-  item_disabled: 'jungle_door{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7{18169}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7{18170}'
   legacy_item: spell_icon:149
   legacy_item_disabled: spell_icon_disabled:149
   url: http://textures.minecraft.net/texture/58c573cefdc8cc1b8c894340cb54ab343523ec2ffa0afc7536968391ae1e7
   type: spell
   glyph: "\uE996"
+  vanilla_item: 'jungle_door{18001}'
+  vanilla_item_disabled: 'jungle_door{18002}'

@@ -1,8 +1,10 @@
 push:
-  item: 'wheat{18001}'
-  item_disabled: 'wheat{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f{18121}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f{18122}'
   legacy_item: spell_icon:32
   legacy_item_disabled: spell_icon_disabled:32
   url: http://textures.minecraft.net/texture/44a760e06345bd9edd2475d6469dfb952278ca3ec7634aa334e1d7bfcc8644f
   type: spell
   glyph: "\uE991"
+  vanilla_item: 'wheat{18001}'
+  vanilla_item_disabled: 'wheat{18002}'

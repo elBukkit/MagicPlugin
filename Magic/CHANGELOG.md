@@ -4,6 +4,7 @@
 # 10.9
 
  - Spell icons now use players heads instead of vanilla items, when not using the resource pack.
+   The previous RP is still available as "vanilla" if needed. 
 
 # 10.8.13
 

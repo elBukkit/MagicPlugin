@@ -1,8 +1,10 @@
 reflect:
-  item: 'pink_dye{18001}'
-  item_disabled: 'pink_dye{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc{18017}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc{18018}'
   legacy_item: spell_icon:23
   legacy_item_disabled: spell_icon_disabled:23
   url: http://textures.minecraft.net/texture/38f77caf858c927df996e277cf6e9fbb9b3cd71aa34e4412da4d6312cc8dfc
   type: spell
   glyph: "\uE998"
+  vanilla_item: 'pink_dye{18001}'
+  vanilla_item_disabled: 'pink_dye{18002}'

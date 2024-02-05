@@ -1,14 +1,10 @@
 missile:
-  # This will determine the icon used to represent the spell.
-  # Try to use a vanilla item that will be recognizable so players not using the RP can still find the spell.
-  item: 'prismarine_shard{18001}'
-  # This icon is used when the spell can't be cast due to cooldown, mana or permissions
-  # This generally doesn't change unless the player is using the resource pack.
-  item_disabled: 'prismarine_shard{18002}'
-  # Legacy icons are used in MC versions prior to 1.16, where the resource pack still uses damage predicates
+  item: 'skull:http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac{18255}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac{18256}'
   legacy_item: spell_icon:160
   legacy_item_disabled: spell_icon_disabled:160
-  # Some setups use players skulls as icons instead of items.
   url: http://textures.minecraft.net/texture/2ba95570c7b712713632d4c0d2fc66906613d3850a596a0267c6d763fe741ac
   type: spell
   glyph: "\uE971"
+  vanilla_item: 'prismarine_shard{18001}'
+  vanilla_item_disabled: 'prismarine_shard{18002}'

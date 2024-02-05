@@ -1,8 +1,10 @@
 frost:
-  item: 'snowball{18001}'
-  item_disabled: 'snowball{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a{18199}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a{18200}'
   legacy_item: spell_icon:37
   legacy_item_disabled: spell_icon_disabled:37
   url: http://textures.minecraft.net/texture/ff39da1c8acc158ee5aa7f0352e4738aefe3365f28841badd603e2ffe42a
   type: spell
   glyph: "\uE94C"
+  vanilla_item: 'snowball{18001}'
+  vanilla_item_disabled: 'snowball{18002}'

@@ -1,8 +1,10 @@
 pollinate:
-  item: 'allium{18001}'
-  item_disabled: 'allium{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb{18269}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb{18270}'
   legacy_item: spell_icon:167
   legacy_item_disabled: spell_icon_disabled:167
   url: http://textures.minecraft.net/texture/b6d7a7f167e24d166ab1d8dedd79311481d4e1ebddbaba8ec6cb394713fb
   type: spell
   glyph: "\uE985"
+  vanilla_item: 'allium{18001}'
+  vanilla_item_disabled: 'allium{18002}'

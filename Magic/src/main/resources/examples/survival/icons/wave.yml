@@ -1,8 +1,10 @@
 wave:
-  item: 'light_blue_dye{18001}'
-  item_disabled: 'light_blue_dye{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac{18089}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac{18090}'
   legacy_item: spell_icon:195
   legacy_item_disabled: spell_icon_disabled:195
   url: http://textures.minecraft.net/texture/1d7cb6f2a4b2c2059621b7f6f84b5f0bc84c19ce981d054c26cec012ac
   type: spell
   glyph: "\uE9E1"
+  vanilla_item: 'light_blue_dye{18001}'
+  vanilla_item_disabled: 'light_blue_dye{18002}'

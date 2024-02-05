@@ -1,8 +1,10 @@
 fling:
-  item: 'feather{18001}'
-  item_disabled: 'feather{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed{18129}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed{18130}'
   legacy_item: spell_icon:60
   legacy_item_disabled: spell_icon_disabled:60
   url: http://textures.minecraft.net/texture/7cc2fb583d1762a16a50fa5ac37bc09b46def63e68205116d650391f9233ed
   type: spell
   glyph: "\uE948"
+  vanilla_item: 'feather{18001}'
+  vanilla_item_disabled: 'feather{18002}'

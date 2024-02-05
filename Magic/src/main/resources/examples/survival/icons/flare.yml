@@ -1,8 +1,10 @@
 flare:
-  item: 'firework_star{18001}'
-  item_disabled: 'firework_star{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf{18027}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf{18028}'
   legacy_item: spell_icon:148
   legacy_item_disabled: spell_icon_disabled:148
   url: http://textures.minecraft.net/texture/aa7e54c1c7634bdf1118db91da9e12b6b4d17f7fb7b7d5b0d06d554feb737bf
   type: spell
   glyph: "\uE945"
+  vanilla_item: 'firework_star{18001}'
+  vanilla_item_disabled: 'firework_star{18002}'

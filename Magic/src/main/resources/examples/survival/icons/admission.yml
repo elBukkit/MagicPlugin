@@ -1,8 +1,10 @@
 admission:
-  item: 'oak_door{18001}'
-  item_disabled: 'oak_door{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992{18239}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992{18240}'
   legacy_item: spell_icon:182
   legacy_item_disabled: spell_icon_disabled:182
   url: http://textures.minecraft.net/texture/3944e12e8e67fd67a55359df56c3c59c99550f6eaccb23813769afb2f1992
   type: spell
   glyph: "\uE902"
+  vanilla_item: 'oak_door{18001}'
+  vanilla_item_disabled: 'oak_door{18002}'

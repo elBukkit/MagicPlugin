@@ -1,8 +1,10 @@
 tornado:
-  item: 'hopper{18001}'
-  item_disabled: 'hopper{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27{18153}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27{18154}'
   legacy_item: spell_icon:192
   legacy_item_disabled: spell_icon_disabled:192
   url: http://textures.minecraft.net/texture/2362826553aaf78fd8b511fdedba941738ddd21c0f889e6bf2697d5a4f74f27
   type: spell
   glyph: "\uE9D4"
+  vanilla_item: 'hopper{18001}'
+  vanilla_item_disabled: 'hopper{18002}'

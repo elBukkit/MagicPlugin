@@ -1,8 +1,10 @@
 poison:
-  item: 'fermented_spider_eye{18001}'
-  item_disabled: 'fermented_spider_eye{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a{18071}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a{18072}'
   legacy_item: spell_icon:180
   legacy_item_disabled: spell_icon_disabled:180
   url: http://textures.minecraft.net/texture/f441923eb636b6fbc4cfba5475fd6abae52a41593a63d99bfecdd4d845b91a
   type: spell
   glyph: "\uE984"
+  vanilla_item: 'fermented_spider_eye{18001}'
+  vanilla_item_disabled: 'fermented_spider_eye{18002}'

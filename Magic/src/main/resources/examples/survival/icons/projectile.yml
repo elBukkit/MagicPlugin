@@ -1,8 +1,10 @@
 projectile:
-  item: 'prismarine_shard{18005}'
-  item_disabled: 'prismarine_shard{18006}'
+  item: 'skull:http://textures.minecraft.net/texture/d8532e9a6994e828df3a7236a7b3686194eba57dae3eb10789d98915cbb3336{18105}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/d8532e9a6994e828df3a7236a7b3686194eba57dae3eb10789d98915cbb3336{18106}'
   legacy_item: spell_icon:197
   legacy_item_disabled: spell_icon_disabled:197
   url: http://textures.minecraft.net/texture/d8532e9a6994e828df3a7236a7b3686194eba57dae3eb10789d98915cbb3336
   type: spell
   glyph: "\uE988"
+  vanilla_item: 'prismarine_shard{18005}'
+  vanilla_item_disabled: 'prismarine_shard{18006}'

@@ -1,8 +1,10 @@
 broom:
-  item: 'acacia_sapling{18002}'
-  item_disabled: 'acacia_sapling{18003}'
+  item: 'skull:http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6{18047}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6{18048}'
   legacy_item: spell_icon:168
   legacy_item_disabled: spell_icon_disabled:168
   url: http://textures.minecraft.net/texture/7f4f1b4c6661ab552b21df8ed841a221296512de46c86e8dee891efbd2fba6
   type: spell
   glyph: "\uE921"
+  vanilla_item: 'acacia_sapling{18002}'
+  vanilla_item_disabled: 'acacia_sapling{18003}'

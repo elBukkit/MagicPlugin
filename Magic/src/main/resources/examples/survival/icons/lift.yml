@@ -1,8 +1,10 @@
 lift:
-  item: 'green_dye{18001}'
-  item_disabled: 'green_dye{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/111de372969a39e34c3af5e6d2392e7876a1f13cf7a37d7513ad60c168bfd7b9{18195}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/111de372969a39e34c3af5e6d2392e7876a1f13cf7a37d7513ad60c168bfd7b9{18196}'
   legacy_item: spell_icon:181
   legacy_item_disabled: spell_icon_disabled:181
   url: http://textures.minecraft.net/texture/111de372969a39e34c3af5e6d2392e7876a1f13cf7a37d7513ad60c168bfd7b9
   type: spell
   glyph: "\uE969"
+  vanilla_item: 'green_dye{18001}'
+  vanilla_item_disabled: 'green_dye{18002}'

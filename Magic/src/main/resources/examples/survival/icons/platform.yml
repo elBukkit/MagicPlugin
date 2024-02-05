@@ -1,8 +1,10 @@
 platform:
-  item: 'magenta_dye{18001}'
-  item_disabled: 'magenta_dye{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a{18191}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a{18192}'
   legacy_item: spell_icon:24
   legacy_item_disabled: spell_icon_disabled:24
   url: http://textures.minecraft.net/texture/48e69c5a76182441d98326284e9342c1dac2a786ba47e8226884f65594c3bd3a
   type: spell
   glyph: "\uE983"
+  vanilla_item: 'magenta_dye{18001}'
+  vanilla_item_disabled: 'magenta_dye{18002}'

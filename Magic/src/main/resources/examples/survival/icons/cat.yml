@@ -1,8 +1,10 @@
 cat:
-  item: 'cod{18001}'
-  item_disabled: 'cod{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/c87fd886605b6aaf6af2b2ea5b205bcdcb60b453b0353ceece0861cfc67ada4{18083}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/c87fd886605b6aaf6af2b2ea5b205bcdcb60b453b0353ceece0861cfc67ada4{18084}'
   legacy_item: spell_icon:70
   legacy_item_disabled: spell_icon_disabled:70
   url: http://textures.minecraft.net/texture/c87fd886605b6aaf6af2b2ea5b205bcdcb60b453b0353ceece0861cfc67ada4
   type: spell
   glyph: "\uE928"
+  vanilla_item: 'cod{18001}'
+  vanilla_item_disabled: 'cod{18002}'

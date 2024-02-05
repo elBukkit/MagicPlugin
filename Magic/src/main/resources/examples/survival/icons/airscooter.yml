@@ -1,8 +1,10 @@
 airscooter:
-  item: 'bone_meal{18001}'
-  item_disabled: 'bone_meal{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1{18065}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1{18066}'
   legacy_item: spell_icon:241
   legacy_item_disabled: spell_icon_disabled:241
   url: http://textures.minecraft.net/texture/4a23ccd51565d2e246675c86aef11b5412662c15ecc2e9f3ef425adc91d1
   type: spell
   glyph: "\uE903"
+  vanilla_item: 'bone_meal{18001}'
+  vanilla_item_disabled: 'bone_meal{18002}'

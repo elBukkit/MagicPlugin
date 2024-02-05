@@ -1,8 +1,10 @@
 weather:
-  item: 'popped_chorus_fruit{18001}'
-  item_disabled: 'popped_chorus_fruit{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6{18205}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6{18206}'
   legacy_item: spell_icon:59
   legacy_item_disabled: spell_icon_disabled:59
   url: http://textures.minecraft.net/texture/cd76c83453ba48a6aceac090ef4e2c8918ecd8891e91621bed2e03fad8a7f6
   type: spell
   glyph: "\uE9E3"
+  vanilla_item: 'popped_chorus_fruit{18001}'
+  vanilla_item_disabled: 'popped_chorus_fruit{18002}'

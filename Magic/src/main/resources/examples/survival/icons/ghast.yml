@@ -1,8 +1,10 @@
 ghast:
-  item: 'pufferfish{18001}'
-  item_disabled: 'pufferfish{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0{18099}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0{18100}'
   legacy_item: spell_icon:66
   legacy_item_disabled: spell_icon_disabled:66
   url: http://textures.minecraft.net/texture/8b6a72138d69fbbd2fea3fa251cabd87152e4f1c97e5f986bf685571db3cc0
   type: spell
   glyph: "\uE952"
+  vanilla_item: 'pufferfish{18001}'
+  vanilla_item_disabled: 'pufferfish{18002}'

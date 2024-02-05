@@ -1,8 +1,10 @@
 meteor:
-  item: 'melon_seeds{18001}'
-  item_disabled: 'melon_seeds{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21{18007}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21{18008}'
   legacy_item: spell_icon:56
   legacy_item_disabled: spell_icon_disabled:56
   url: http://textures.minecraft.net/texture/f554672caf6e5335954614fb185acb15148e71423d97d0d5ff6023c247d5eb21
   type: spell
   glyph: "\uE96F"
+  vanilla_item: 'melon_seeds{18001}'
+  vanilla_item_disabled: 'melon_seeds{18002}'

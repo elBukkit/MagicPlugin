@@ -1,8 +1,10 @@
 icbm:
-  item: 'potato{18001}'
-  item_disabled: 'potato{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11{18271}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11{18272}'
   legacy_item: spell_icon:51
   legacy_item_disabled: spell_icon_disabled:51
   url: http://textures.minecraft.net/texture/9c2e9d8395cacd9922869c15373cf7cb16da0a5ce5f3c632b19ceb3929c9a11
   type: spell
   glyph: "\uE95F"
+  vanilla_item: 'potato{18001}'
+  vanilla_item_disabled: 'potato{18002}'

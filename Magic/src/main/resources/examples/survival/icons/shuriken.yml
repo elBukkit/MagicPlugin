@@ -1,8 +1,10 @@
 shuriken:
-  item: 'emerald{18002}'
-  item_disabled: 'emerald{18003}'
+  item: 'skull:http://textures.minecraft.net/texture/c79a5d6fbb1fe7435edbb9e72cb1d02f6e91597eb4b79d818ae583cda21f{18037}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/c79a5d6fbb1fe7435edbb9e72cb1d02f6e91597eb4b79d818ae583cda21f{18038}'
   legacy_item: spell_icon:194
   legacy_item_disabled: spell_icon_disabled:194
   url: http://textures.minecraft.net/texture/c79a5d6fbb1fe7435edbb9e72cb1d02f6e91597eb4b79d818ae583cda21f
   type: spell
   glyph: "\uE9A5"
+  vanilla_item: 'emerald{18002}'
+  vanilla_item_disabled: 'emerald{18003}'

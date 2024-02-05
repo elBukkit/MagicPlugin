@@ -1,8 +1,10 @@
 invincible:
-  item: 'golden_apple{18001}'
-  item_disabled: 'golden_apple{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a{18279}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a{18280}'
   legacy_item: spell_icon:74
   legacy_item_disabled: spell_icon_disabled:74
   url: http://textures.minecraft.net/texture/4a68c3ec585277cad3da3955fac44fbe7a7f98271fd529d26ce110d8884a8a
   type: spell
   glyph: "\uE961"
+  vanilla_item: 'golden_apple{18001}'
+  vanilla_item_disabled: 'golden_apple{18002}'

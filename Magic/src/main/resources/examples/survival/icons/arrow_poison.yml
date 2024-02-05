@@ -1,7 +1,9 @@
 arrow_poison:
-  item: 'spectral_arrow{CustomModelData:18016,Potion:poison}'
-  item_disabled: 'spectral_arrow{CustomModelData:18017,Potion:poison}'
+  item: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18219}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18220}'
   legacy_item: spell_icon:245
   legacy_item_disabled: spell_icon_disabled:245
   url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
   type: spell
+  vanilla_item: 'spectral_arrow{CustomModelData:18016,Potion:poison}'
+  vanilla_item_disabled: 'spectral_arrow{CustomModelData:18017,Potion:poison}'

@@ -1,8 +1,10 @@
 night:
-  item: 'gray_dye{18001}'
-  item_disabled: 'gray_dye{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/15f1fe5d5cc447e215243b4cf0b4eb56331f1b4f40909bb91a2963929ef1c2{18033}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/15f1fe5d5cc447e215243b4cf0b4eb56331f1b4f40909bb91a2963929ef1c2{18034}'
   legacy_item: spell_icon:85
   legacy_item_disabled: spell_icon_disabled:85
   url: http://textures.minecraft.net/texture/15f1fe5d5cc447e215243b4cf0b4eb56331f1b4f40909bb91a2963929ef1c2
   type: spell
   glyph: "\uE977"
+  vanilla_item: 'gray_dye{18001}'
+  vanilla_item_disabled: 'gray_dye{18002}'

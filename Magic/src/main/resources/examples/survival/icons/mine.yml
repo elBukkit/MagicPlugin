@@ -1,8 +1,10 @@
 mine:
-  item: 'iron_pickaxe{18001}'
-  item_disabled: 'iron_pickaxe{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63{18143}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63{18144}'
   legacy_item: spell_icon:123
   legacy_item_disabled: spell_icon_disabled:123
   url: http://textures.minecraft.net/texture/c688f9a3b3db226582ae3f49d34aa9077b4d4f8102dd46f21bcb784a68f2c63
   type: spell
   glyph: "\uE970"
+  vanilla_item: 'iron_pickaxe{18001}'
+  vanilla_item_disabled: 'iron_pickaxe{18002}'

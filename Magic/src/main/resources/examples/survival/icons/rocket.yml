@@ -1,8 +1,10 @@
 rocket:
-  item: 'firework_rocket{18001}'
-  item_disabled: 'firework_rocket{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/5a532e9d2221b1a2ffdbc701578331c8da41c36d1487696fefa584373572{18095}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/5a532e9d2221b1a2ffdbc701578331c8da41c36d1487696fefa584373572{18096}'
   legacy_item: spell_icon:191
   legacy_item_disabled: spell_icon_disabled:191
   url: http://textures.minecraft.net/texture/5a532e9d2221b1a2ffdbc701578331c8da41c36d1487696fefa584373572
   type: spell
   glyph: "\uE99B"
+  vanilla_item: 'firework_rocket{18001}'
+  vanilla_item_disabled: 'firework_rocket{18002}'

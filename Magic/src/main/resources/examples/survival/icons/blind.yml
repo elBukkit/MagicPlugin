@@ -1,8 +1,10 @@
 blind:
-  item: 'ink_sac{18001}'
-  item_disabled: 'ink_sac{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560{18179}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560{18180}'
   legacy_item: spell_icon:166
   legacy_item_disabled: spell_icon_disabled:166
   url: http://textures.minecraft.net/texture/c7a8e7c9d3375135e39aa6d57b4e60539cf8f6efc5b58c83a13caf40561560
   type: spell
   glyph: "\uE916"
+  vanilla_item: 'ink_sac{18001}'
+  vanilla_item_disabled: 'ink_sac{18002}'

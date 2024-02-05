@@ -1,8 +1,10 @@
 kill:
-  item: 'bone{18003}'
-  item_disabled: 'bone{18004}'
+  item: 'skull:http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c{18231}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c{18232}'
   legacy_item: spell_icon:170
   legacy_item_disabled: spell_icon_disabled:170
   url: http://textures.minecraft.net/texture/71a235c48123b487e864fa21016e223ad4070c6d977b0a519f7dd743d39e47c
   type: spell
   glyph: "\uE963"
+  vanilla_item: 'bone{18003}'
+  vanilla_item_disabled: 'bone{18004}'

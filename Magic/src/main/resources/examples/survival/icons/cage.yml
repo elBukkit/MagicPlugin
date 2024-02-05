@@ -1,8 +1,10 @@
 cage:
-  item: 'iron_bars{18001}'
-  item_disabled: 'iron_bars{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943{18217}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943{18218}'
   legacy_item: spell_icon:157
   legacy_item_disabled: spell_icon_disabled:157
   url: http://textures.minecraft.net/texture/862a3ecb44ccf65458b5413a909cd68bb76cef8d397827eaace2d59635b9943
   type: spell
   glyph: "\uE925"
+  vanilla_item: 'iron_bars{18001}'
+  vanilla_item_disabled: 'iron_bars{18002}'

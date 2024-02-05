@@ -1,8 +1,10 @@
 blessing:
-  item: 'honey_bottle{18001}'
-  item_disabled: 'honey_bottle{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3{18137}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3{18138}'
   legacy_item: spell_icon:10
   legacy_item_disabled: spell_icon_disabled:10
   url: http://textures.minecraft.net/texture/775c41bd5e4ef3cba5f9bdc5258973c95477e819cb20c163ffb378db5ae3
   type: spell
   glyph: "\uE915"
+  vanilla_item: 'honey_bottle{18001}'
+  vanilla_item_disabled: 'honey_bottle{18002}'

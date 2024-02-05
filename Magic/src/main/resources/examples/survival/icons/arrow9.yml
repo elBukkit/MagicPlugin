@@ -1,8 +1,10 @@
 arrow9:
-  item: 'spectral_arrow{CustomModelData:18024}'
-  item_disabled: 'spectral_arrow{CustomModelData:18025}'
+  item: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18109}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18110}'
   legacy_item: spell_icon:249
   legacy_item_disabled: spell_icon_disabled:249
   url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
   type: spell
   glyph: "\uE910"
+  vanilla_item: 'spectral_arrow{CustomModelData:18024}'
+  vanilla_item_disabled: 'spectral_arrow{CustomModelData:18025}'

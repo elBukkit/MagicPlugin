@@ -1,8 +1,10 @@
 boomstown:
-  item: 'firework_rocket{18003}'
-  item_disabled: 'firework_rocket{18004}'
+  item: 'skull:http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81{18289}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81{18290}'
   legacy_item: spell_icon:196
   legacy_item_disabled: spell_icon_disabled:196
   url: http://textures.minecraft.net/texture/91e9bb78d29e2967d52274d370ad78cb61d15eca3d26a8d6bfc24f887072fa81
   type: spell
   glyph: "\uE91B"
+  vanilla_item: 'firework_rocket{18003}'
+  vanilla_item_disabled: 'firework_rocket{18004}'

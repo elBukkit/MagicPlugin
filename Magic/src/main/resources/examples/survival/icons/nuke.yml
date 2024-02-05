@@ -1,8 +1,10 @@
 nuke:
-  item: 'brown_mushroom{18001}'
-  item_disabled: 'brown_mushroom{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2{18285}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2{18286}'
   legacy_item: spell_icon:36
   legacy_item_disabled: spell_icon_disabled:36
   url: http://textures.minecraft.net/texture/f27c497b89fdcbf754b59aaadcc7e49c5217f1677bf9f8803c4cca519b3a2
   type: spell
   glyph: "\uE978"
+  vanilla_item: 'brown_mushroom{18001}'
+  vanilla_item_disabled: 'brown_mushroom{18002}'

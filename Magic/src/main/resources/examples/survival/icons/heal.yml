@@ -1,8 +1,10 @@
 heal:
-  item: 'apple{18001}'
-  item_disabled: 'apple{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc{18193}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc{18194}'
   legacy_item: spell_icon:45
   legacy_item_disabled: spell_icon_disabled:45
   url: http://textures.minecraft.net/texture/6b7da98ef45cf45185d21d61f5fa3d5966a3ee52273620a6e4dfd54cf99dbc
   type: spell
   glyph: "\uE95B"
+  vanilla_item: 'apple{18001}'
+  vanilla_item_disabled: 'apple{18002}'

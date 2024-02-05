@@ -1,7 +1,9 @@
 arrow_ice:
-  item: 'spectral_arrow{CustomModelData:18014,Potion:slow_falling}'
-  item_disabled: 'spectral_arrow{CustomModelData:18015,Potion:slow_falling}'
+  item: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18161}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18162}'
   legacy_item: spell_icon:244
   legacy_item_disabled: spell_icon_disabled:244
   url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
   type: spell
+  vanilla_item: 'spectral_arrow{CustomModelData:18014,Potion:slow_falling}'
+  vanilla_item_disabled: 'spectral_arrow{CustomModelData:18015,Potion:slow_falling}'

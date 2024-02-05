@@ -1,8 +1,10 @@
 toss:
-  item: 'black_dye{18003}'
-  item_disabled: 'black_dye{18004}'
+  item: 'skull:http://textures.minecraft.net/texture/44471f5f9792fd21dd1e652f2ac5f47e49eeebd4fb289f4174ec20dc7b57e6{18207}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/44471f5f9792fd21dd1e652f2ac5f47e49eeebd4fb289f4174ec20dc7b57e6{18208}'
   legacy_item: spell_icon:30
   legacy_item_disabled: spell_icon_disabled:30
   url: http://textures.minecraft.net/texture/44471f5f9792fd21dd1e652f2ac5f47e49eeebd4fb289f4174ec20dc7b57e6
   type: spell
   glyph: "\uE9D6"
+  vanilla_item: 'black_dye{18003}'
+  vanilla_item_disabled: 'black_dye{18004}'

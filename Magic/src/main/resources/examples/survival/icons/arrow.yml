@@ -1,8 +1,10 @@
 arrow:
-  item: 'arrow{18001}'
-  item_disabled: 'arrow{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18185}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18186}'
   legacy_item: spell_icon:57
   legacy_item_disabled: spell_icon_disabled:57
   url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
   type: spell
   glyph: "\uE907"
+  vanilla_item: 'arrow{18001}'
+  vanilla_item_disabled: 'arrow{18002}'

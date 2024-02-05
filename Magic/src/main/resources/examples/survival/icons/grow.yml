@@ -1,8 +1,10 @@
 grow:
-  item: 'cookie{18001}'
-  item_disabled: 'cookie{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/b54fa4fb25cef58bc69cac7292e32e449322cac2ace4810a8a0749b2fbbb154{18237}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/b54fa4fb25cef58bc69cac7292e32e449322cac2ace4810a8a0749b2fbbb154{18238}'
   legacy_item: spell_icon:147
   legacy_item_disabled: spell_icon_disabled:147
   url: http://textures.minecraft.net/texture/b54fa4fb25cef58bc69cac7292e32e449322cac2ace4810a8a0749b2fbbb154
   type: spell
   glyph: "\uE958"
+  vanilla_item: 'cookie{18001}'
+  vanilla_item_disabled: 'cookie{18002}'

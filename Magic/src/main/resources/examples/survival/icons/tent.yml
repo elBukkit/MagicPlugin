@@ -1,8 +1,10 @@
 tent:
-  item: 'brown_wool{18001}'
-  item_disabled: 'brown_wool{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/443e10a710998d47d238e291a8ba8f6abf42bc7e419d1d8dcc8c55707ebb19{18227}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/443e10a710998d47d238e291a8ba8f6abf42bc7e419d1d8dcc8c55707ebb19{18228}'
   legacy_item: spell_icon:156
   legacy_item_disabled: spell_icon_disabled:156
   url: http://textures.minecraft.net/texture/443e10a710998d47d238e291a8ba8f6abf42bc7e419d1d8dcc8c55707ebb19
   type: spell
   glyph: "\uE9CF"
+  vanilla_item: 'brown_wool{18001}'
+  vanilla_item_disabled: 'brown_wool{18002}'

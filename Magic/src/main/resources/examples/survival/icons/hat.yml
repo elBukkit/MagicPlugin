@@ -1,8 +1,10 @@
 hat:
-  item: 'leather_helmet{18001}'
-  item_disabled: 'leather_helmet{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369{18243}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369{18244}'
   legacy_item: spell_icon:136
   legacy_item_disabled: spell_icon_disabled:136
   url: http://textures.minecraft.net/texture/2abee4fe341011b9a0ae2fb83644f695521fd4e4c6198fe23112f1acbf38369
   type: spell
   glyph: "\uE95A"
+  vanilla_item: 'leather_helmet{18001}'
+  vanilla_item_disabled: 'leather_helmet{18002}'

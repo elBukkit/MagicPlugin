@@ -1,8 +1,10 @@
 flashbang:
-  item: 'soul_campfire{18001}'
-  item_disabled: 'soul_campfire{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/964590674dbaf76126bd87694bfe97575be8de19aac4a8d9aa5579f8f01ed1{18275}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/964590674dbaf76126bd87694bfe97575be8de19aac4a8d9aa5579f8f01ed1{18276}'
   legacy_item: spell_icon:58
   legacy_item_disabled: spell_icon_disabled:58
   url: http://textures.minecraft.net/texture/964590674dbaf76126bd87694bfe97575be8de19aac4a8d9aa5579f8f01ed1
   type: spell
   glyph: "\uE946"
+  vanilla_item: 'soul_campfire{18001}'
+  vanilla_item_disabled: 'soul_campfire{18002}'

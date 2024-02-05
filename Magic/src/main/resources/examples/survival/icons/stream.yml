@@ -1,8 +1,10 @@
 stream:
-  item: 'lapis_lazuli{18001}'
-  item_disabled: 'lapis_lazuli{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced{18211}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced{18212}'
   legacy_item: spell_icon:140
   legacy_item_disabled: spell_icon_disabled:140
   url: http://textures.minecraft.net/texture/b750768d23e447d95b662344f426cc96228a4047f7a8ced0f4861edbbeaced
   type: spell
   glyph: "\uE9B3"
+  vanilla_item: 'lapis_lazuli{18001}'
+  vanilla_item_disabled: 'lapis_lazuli{18002}'
