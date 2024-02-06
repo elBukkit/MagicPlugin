@@ -1,6 +1,7 @@
 brush_replicate:
-  item: 'comparator{18001}'
+  item: 'skull:http://textures.minecraft.net/texture/f92839237f03534717246a81656961781a8a79e8f6497bcfd2894fb16ad14d{18386}'
   legacy_item: diamond_axe:4
   url: http://textures.minecraft.net/texture/f92839237f03534717246a81656961781a8a79e8f6497bcfd2894fb16ad14d
   type: brush
-  glyph: "\uE805"
+  glyph: \uE805
+  vanilla_item: 'comparator{18001}'

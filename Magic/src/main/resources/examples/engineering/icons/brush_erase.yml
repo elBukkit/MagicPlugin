@@ -1,6 +1,7 @@
 brush_clone:
-  item: 'brick{18001}'
+  item: 'skull:http://textures.minecraft.net/texture/da486c55dfcb8d3f1e38e05ec924c7952811851869d9d92df236a313370ceb1{18385}'
   legacy_item: diamond_axe:1
   url: http://textures.minecraft.net/texture/da486c55dfcb8d3f1e38e05ec924c7952811851869d9d92df236a313370ceb1
   type: brush
-  glyph: "\uE803"
+  glyph: \uE803
+  vanilla_item: 'brick{18001}'

@@ -1,6 +1,7 @@
 brush_clone:
-  item: 'repeater{18001}'
+  item: 'skull:http://textures.minecraft.net/texture/b635f01b8b4cd9f44436154be3dd5d735e4487617089d3dadda39b4dada14{18389}'
   legacy_item: diamond_axe:3
   url: http://textures.minecraft.net/texture/b635f01b8b4cd9f44436154be3dd5d735e4487617089d3dadda39b4dada14
   type: brush
-  glyph: "\uE801"
+  glyph: \uE801
+  vanilla_item: 'repeater{18001}'

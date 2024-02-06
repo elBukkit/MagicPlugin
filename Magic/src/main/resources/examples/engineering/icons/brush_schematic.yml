@@ -1,6 +1,7 @@
 brush_schematic:
-  item: 'cyan_banner{18001}'
+  item: 'skull:http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749{18387}'
   legacy_item: diamond_axe:6
   url: http://textures.minecraft.net/texture/6eb68dc909b12ef5fb397c23fdecbc416d9a76825170c106b1faeb97b4749
   type: brush
-  glyph: "\uE806"
+  glyph: \uE806
+  vanilla_item: 'cyan_banner{18001}'
