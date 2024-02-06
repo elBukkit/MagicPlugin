@@ -4,7 +4,8 @@
 # 10.9
 
  - Spell icons now use players heads instead of vanilla items, when not using the resource pack.
-   The previous RP is still available as "vanilla" if needed. 
+   The previous RP is still available as "vanilla" if needed.
+ - The spell hotbar in 1.20 uses the "space" provider instead of glyph hacks
 
 # 10.8.13
 
