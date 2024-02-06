@@ -3,11 +3,17 @@
 
 # 10.9
 
+## CHANGES
+
  - Spell icons now use players heads instead of vanilla items, when not using the resource pack.
    The previous RP is still available as "vanilla" if needed.
  - The spell hotbar in 1.20 uses the "space" provider instead of glyph hacks
  - Resource pack functionality will be disabled when ItemsAdder is present
    Use `/mconfig configure config override_resource_pack_plugins true` to override ItemsAdder
+ 
+## FIXES
+
+ - Change entity spawning to work around issues with 1.20.x internal changes
 
 # 10.8.13
 
