@@ -6,6 +6,9 @@ resource_pack: default
 # Use this to turn off all resource pack functionality
 enable_resource_pack: true
 
+# Turn this on to force Magic to use its resource pack system even when conflicting plugins such as ItemsAdder are present
+override_resource_pack_plugins: false
+
 # This will delay sending resource packs to players. This can mitigate issues with the vanilla
 # client timing out on connect due to RP processing on potato computers.
 # This value is in milliseconds.

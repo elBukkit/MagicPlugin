@@ -67,7 +67,9 @@ public class ResourcePackManager {
             defaultResourcePack = properties.getString("add_resource_pack", defaultResourcePack);
         }
 
-        if (!properties.getBoolean("enable_resource_pack")) {
+        List<String> resourcePackPlugins = controller.getResourcePackPlugins();
+        boolean resourcePacksEnableConfiguration = properties.getBoolean("enable_resource_pack");
+        if (!resourcePacksEnableConfiguration || resourcePackPlugins.isEmpty()) {
             defaultResourcePack = null;
         }
 

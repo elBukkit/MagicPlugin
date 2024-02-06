@@ -622,6 +622,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private @Nonnull
     MaterialSet offhandMaterials = MaterialSets.empty();
     private GeyserManager geyserManager = null;
+    private List<String> resourcePackPlugins = new ArrayList<>();
 
     public MagicController(final Plugin plugin) {
         this.plugin = plugin;
@@ -8755,6 +8756,14 @@ public class MagicController implements MageController, ChunkLoadListener {
         com.elmakers.mine.bukkit.magic.Mage.ALLOW_PERSISTENT_INVISIBILITY = properties.getBoolean("allow_player_persistent_invisibility", true);
         com.elmakers.mine.bukkit.magic.Mage.REOPEN_WAND_ON_JOIN = properties.getBoolean("reopen_wand_on_join", com.elmakers.mine.bukkit.magic.Mage.REOPEN_WAND_ON_JOIN);
 
+        if (!properties.getBoolean("override_resource_pack_plugins")) {
+            boolean hasItemsAdder = plugin.getServer().getPluginManager().getPlugin("ItemsAdder") != null;
+            if (hasItemsAdder || true) {
+                info("ItemsAdder found, disabling resource pack functionality. Use `/mhelp compatibility` for more info.");
+                resourcePackPlugins.add("ItemsAdder");
+            }
+        }
+
         Wand.inventoryOpenSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_open_sound"));
         Wand.inventoryCloseSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_close_sound"));
         Wand.inventoryCycleSound = ConfigurationUtils.toSoundEffect(properties.getString("wand_inventory_cycle_sound"));
@@ -9112,5 +9121,10 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Override
     public boolean onEntityPickupItem(Entity entity, Item item) {
         return playerController.onEntityPickupItem(entity, item);
+    }
+
+    @Override
+    public List<String> getResourcePackPlugins() {
+        return resourcePackPlugins;
     }
 }

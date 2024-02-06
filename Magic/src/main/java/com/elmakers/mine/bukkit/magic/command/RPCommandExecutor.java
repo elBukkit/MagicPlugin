@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -71,8 +72,13 @@ public class RPCommandExecutor extends MagicTabExecutor {
         }
 
         if (!controller.isResourcePackEnabled()) {
+            List<String> resourcePackPlugins = controller.getResourcePackPlugins();
             if (controller.isResourcePackSetByServer()) {
                 mage.sendMessage(controller.getMessages().get("commands.getrp.disabled_server"));
+            } else if (!resourcePackPlugins.isEmpty()) {
+                String message = controller.getMessages().get("commands.getrp.disabled_plugins");
+                message = message.replace("$plugins", StringUtils.join(resourcePackPlugins, ","));
+                mage.sendMessage(message);
             } else {
                 mage.sendMessage(controller.getMessages().get("commands.getrp.disabled"));
             }

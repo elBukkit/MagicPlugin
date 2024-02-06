@@ -168,4 +168,7 @@ commands:
       noauto: "Use &6/getrp auto &fto get this pack automatically at login"
       default: "RP preference set back to default"
       disabled_server: "This command has been disabled because this server has a resource pack configured in server.properties"
+      disabled_plugins: |-
+        This command has been disabled because this server is using the following plugins which control resource packs: $plugins
+        Admins can use &7`<help topic="compatibility" text="mhelp">` for more info.
       disabled: "This command has been disabled because Magic's resource pack feature has been disabled"
