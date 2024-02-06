@@ -5918,6 +5918,10 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         if (resourcePackPreference == ResourcePackPreference.DOWNLOADED || RP_DOWNLOADED) {
             return true;
         }
+        // Kind of a hack but this one doesn't *really* count ...
+        if (preferredResourcePack != null && preferredResourcePack.equals("skulls")) {
+            return false;
+        }
         return hasResourcePack && !isResourcePackDisabled();
     }
 
