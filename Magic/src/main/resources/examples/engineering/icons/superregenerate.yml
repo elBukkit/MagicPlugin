@@ -1,8 +1,10 @@
 superregenerate:
-  item: 'golden_pickaxe{18003}'
-  item_disabled: 'golden_pickaxe{18004}'
+  item: 'skull:http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b{18309}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b{18310}'
   legacy_item: spell_icon:78
   legacy_item_disabled: spell_icon_disabled:78
   url: http://textures.minecraft.net/texture/a98cd720917c3d48a165c0418515e58d52c81f4b5271ff8d23790cca43f9b
   type: spell
   glyph: "\ue9c7"
+  vanilla_item: 'golden_pickaxe{18003}'
+  vanilla_item_disabled: 'golden_pickaxe{18004}'

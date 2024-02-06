@@ -1,8 +1,10 @@
 repair:
-  item: 'stone_pickaxe{18001}'
-  item_disabled: 'stone_pickaxe{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4{18315}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4{18316}'
   legacy_item: spell_icon:103
   legacy_item_disabled: spell_icon_disabled:103
   url: http://textures.minecraft.net/texture/19b2a0ec54345ba8de3964a5ae74ef89c53a2922c527f96fb9238ecf761242a4
   type: spell
   glyph: "\uE99A"
+  vanilla_item: 'stone_pickaxe{18001}'
+  vanilla_item_disabled: 'stone_pickaxe{18002}'

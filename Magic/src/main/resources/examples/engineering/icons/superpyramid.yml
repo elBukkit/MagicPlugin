@@ -1,8 +1,10 @@
 superpyramid:
-  item: 'sugar{18001}'
-  item_disabled: 'sugar{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6{18369}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6{18370}'
   legacy_item: spell_icon:96
   legacy_item_disabled: spell_icon_disabled:96
   url: http://textures.minecraft.net/texture/295775b75c70891a42d7d8fac699da5ec2ad6c419fd1ccafd32668713dace2e6
   type: spell
   glyph: "\uE9C6"
+  vanilla_item: 'sugar{18001}'
+  vanilla_item_disabled: 'sugar{18002}'

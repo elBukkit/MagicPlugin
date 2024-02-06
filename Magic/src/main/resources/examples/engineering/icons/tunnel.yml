@@ -1,8 +1,10 @@
 tunnel:
-  item: 'wooden_pickaxe{18001}'
-  item_disabled: 'wooden_pickaxe{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e{18349}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e{18350}'
   legacy_item: spell_icon:110
   legacy_item_disabled: spell_icon_disabled:110
   url: http://textures.minecraft.net/texture/c94772c7eca88e1128b71f71f8951233f7ea79dbc80e02bb407acffe175e
   type: spell
   glyph: "\uE9DA"
+  vanilla_item: 'wooden_pickaxe{18001}'
+  vanilla_item_disabled: 'wooden_pickaxe{18002}'

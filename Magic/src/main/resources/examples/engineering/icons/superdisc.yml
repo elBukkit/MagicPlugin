@@ -1,8 +1,10 @@
 superdisc:
-  item: 'purple_dye{18001}'
-  item_disabled: 'purple_dye{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/89791581eeeb253cd59a2bda0615d78da15f218e475b192bbffc8bb16bd8f{18321}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/89791581eeeb253cd59a2bda0615d78da15f218e475b192bbffc8bb16bd8f{18322}'
   legacy_item: spell_icon:25
   legacy_item_disabled: spell_icon_disabled:25
   url: http://textures.minecraft.net/texture/89791581eeeb253cd59a2bda0615d78da15f218e475b192bbffc8bb16bd8f
   type: spell
   glyph: "\uE9BE"
+  vanilla_item: 'purple_dye{18001}'
+  vanilla_item_disabled: 'purple_dye{18002}'

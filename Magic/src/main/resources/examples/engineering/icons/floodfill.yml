@@ -1,8 +1,10 @@
 floodfill:
-  item: 'water_bucket{18001}'
-  item_disabled: 'water_bucket{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db{18379}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db{18380}'
   legacy_item: spell_icon:82
   legacy_item_disabled: spell_icon_disabled:82
   url: http://textures.minecraft.net/texture/3eae564a9cf283d1b95d45f82674bc7327d6f91ab8cd3458cabbe2c84db
   type: spell
   glyph: "\uE949"
+  vanilla_item: 'water_bucket{18001}'
+  vanilla_item_disabled: 'water_bucket{18002}'

@@ -1,8 +1,10 @@
 box:
-  item: 'iron_ingot{18001}'
-  item_disabled: 'iron_ingot{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5{18307}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5{18308}'
   legacy_item: spell_icon:98
   legacy_item_disabled: spell_icon_disabled:98
   url: http://textures.minecraft.net/texture/35b7d887a08bb8eb927b58f452becf8d349cd46e6a2ea18dffb2776d676df5
   type: spell
   glyph: "\uE91E"
+  vanilla_item: 'iron_ingot{18001}'
+  vanilla_item_disabled: 'iron_ingot{18002}'

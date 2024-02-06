@@ -1,8 +1,10 @@
 supercylinder:
-  item: 'bucket{18001}'
-  item_disabled: 'bucket{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/86b54c2be72abec1bb595f3acea2e1ef3dffb94f7d316212ced492b72a164cb2{18345}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/86b54c2be72abec1bb595f3acea2e1ef3dffb94f7d316212ced492b72a164cb2{18346}'
   legacy_item: spell_icon:97
   legacy_item_disabled: spell_icon_disabled:97
   url: http://textures.minecraft.net/texture/86b54c2be72abec1bb595f3acea2e1ef3dffb94f7d316212ced492b72a164cb2
   type: spell
   glyph: "\uE9BD"
+  vanilla_item: 'bucket{18001}'
+  vanilla_item_disabled: 'bucket{18002}'

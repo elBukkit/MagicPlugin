@@ -1,8 +1,10 @@
 absorb:
-  item: 'shears{18001}'
-  item_disabled: 'shears{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d{18335}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d{18336}'
   legacy_item: spell_icon:135
   legacy_item_disabled: spell_icon_disabled:135
   url: http://textures.minecraft.net/texture/8b50be531940368e173db018d2ead9d2cdeec8e39c7a51b681dcad4c4d41d
   type: spell
   glyph: "\uE901"
+  vanilla_item: 'shears{18001}'
+  vanilla_item_disabled: 'shears{18002}'

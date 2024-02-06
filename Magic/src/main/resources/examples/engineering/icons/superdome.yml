@@ -1,8 +1,10 @@
 superdome:
-  item: 'mushroom_stew{18001}'
-  item_disabled: 'mushroom_stew{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d{18313}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d{18314}'
   legacy_item: spell_icon:28
   legacy_item_disabled: spell_icon_disabled:28
   url: http://textures.minecraft.net/texture/e468c9623ed74bc829f985d46d4646241daa2a682fec5f2343d55cd7a63693d
   type: spell
   glyph: "\uE9BF"
+  vanilla_item: 'mushroom_stew{18001}'
+  vanilla_item_disabled: 'mushroom_stew{18002}'

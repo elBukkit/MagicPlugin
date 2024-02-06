@@ -1,8 +1,10 @@
 commit:
-  item: 'book{18001}'
-  item_disabled: 'book{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/8767f81fd66cc826827de81f3d12a3fee1fd6cfee11a43bb438404cd3391f{18355}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/8767f81fd66cc826827de81f3d12a3fee1fd6cfee11a43bb438404cd3391f{18356}'
   legacy_item: spell_icon:118
   legacy_item_disabled: spell_icon_disabled:118
   url: http://textures.minecraft.net/texture/8767f81fd66cc826827de81f3d12a3fee1fd6cfee11a43bb438404cd3391f
   type: spell
   glyph: "\uE92F"
+  vanilla_item: 'book{18001}'
+  vanilla_item_disabled: 'book{18002}'

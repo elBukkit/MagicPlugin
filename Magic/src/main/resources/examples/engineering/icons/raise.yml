@@ -1,8 +1,10 @@
 raise:
-  item: 'flint{18001}'
-  item_disabled: 'flint{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e{18325}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e{18326}'
   legacy_item: spell_icon:88
   legacy_item_disabled: spell_icon_disabled:88
   url: http://textures.minecraft.net/texture/8a37d68a64b72c169586e55e885784f61ba6ca62246b5dff877656c6c2f657e
   type: spell
   glyph: "\uE994"
+  vanilla_item: 'flint{18001}'
+  vanilla_item_disabled: 'flint{18002}'

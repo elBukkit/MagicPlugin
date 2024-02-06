@@ -1,8 +1,10 @@
 alter:
-  item: 'magma_cream{18001}'
-  item_disabled: 'magma_cream{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638{18353}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638{18354}'
   legacy_item: spell_icon:125
   legacy_item_disabled: spell_icon_disabled:125
   url: http://textures.minecraft.net/texture/4e693cf3b7bf83248527aacc2714638b55587cde593963d1f861884f5be1638
   type: spell
   glyph: "\uE904"
+  vanilla_item: 'magma_cream{18001}'
+  vanilla_item_disabled: 'magma_cream{18002}'

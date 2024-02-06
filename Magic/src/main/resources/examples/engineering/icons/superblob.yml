@@ -1,8 +1,10 @@
 superblob:
-  item: 'slime_ball{18001}'
-  item_disabled: 'slime_ball{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f{18361}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f{18362}'
   legacy_item: spell_icon:94
   legacy_item_disabled: spell_icon_disabled:94
   url: http://textures.minecraft.net/texture/812a772ef923c597e12f41986d7bea9a9387055eb17eeebb1d8c6de3ca25f
   type: spell
   glyph: "\uE9B8"
+  vanilla_item: 'slime_ball{18001}'
+  vanilla_item_disabled: 'slime_ball{18002}'

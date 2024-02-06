@@ -1,8 +1,10 @@
 backup:
-  item: 'spruce_sign{18001}'
-  item_disabled: 'spruce_sign{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb{18357}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb{18358}'
   legacy_item: spell_icon:101
   legacy_item_disabled: spell_icon_disabled:101
   url: http://textures.minecraft.net/texture/1ba8664ebb95136081e296baa6b384b975ee864e61398a6dfe4915fcafd1f3eb
   type: spell
   glyph: "\uE912"
+  vanilla_item: 'spruce_sign{18001}'
+  vanilla_item_disabled: 'spruce_sign{18002}'
