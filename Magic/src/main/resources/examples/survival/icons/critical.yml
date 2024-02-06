@@ -1,7 +1,10 @@
 critical:
-  item: 'nether_wart{18001}'
-  item_disabled: 'nether_wart{18002}'
+  item: 'skull:http://textures.minecraft.net/texture/436cb244bd2a9c1734f2db6517a973a91b1773f02ca4b481af5f24d17bb1496{18107}'
+  item_disabled: 'skull:http://textures.minecraft.net/texture/436cb244bd2a9c1734f2db6517a973a91b1773f02ca4b481af5f24d17bb1496{18108}'
   legacy_item: spell_icon:161
   legacy_item_disabled: spell_icon_disabled:161
+  url: http://textures.minecraft.net/texture/436cb244bd2a9c1734f2db6517a973a91b1773f02ca4b481af5f24d17bb1496
   type: spell
   glyph: "\uE992"
+  vanilla_item: 'prismarine_shard{18003}'
+  vanilla_item_disabled: 'prismarine_shard{18004}'

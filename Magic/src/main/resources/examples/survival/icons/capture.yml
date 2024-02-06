@@ -1,7 +1,10 @@
 capture:
-  item: 'turtle_egg{18001}'
-  item_disabled: 'turtle_egg{18002}'
+  url: https://textures.minecraft.net/texture/3c1f906a216b0482e3a0b667320edcfb2579e71a08b3dc060007e350ce65e52e
+  item: 'skull:https://textures.minecraft.net/texture/3c1f906a216b0482e3a0b667320edcfb2579e71a08b3dc060007e350ce65e52e{18381}'
+  item_disabled: 'skull:https://textures.minecraft.net/texture/3c1f906a216b0482e3a0b667320edcfb2579e71a08b3dc060007e350ce65e52e{18382}'
   legacy_item: spell_icon:251
   legacy_item_disabled: spell_icon_disabled:251
   type: spell
   glyph: "\uE927"
+  vanilla_item: 'turtle_egg{18001}'
+  vanilla_item_disabled: 'turtle_egg{18002}'

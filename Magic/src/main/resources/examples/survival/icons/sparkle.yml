@@ -1,5 +1,8 @@
 sparkle:
-  item: 'glowstone_dust{18003}'
-  item_disabled: 'glowstone_dust{18004}'
+  url: https://textures.minecraft.net/texture/242c649f037613f86f6c9ba0fbdf11ce4a1dc8f9a1bb3d6dc5dacf42a3c095f8
+  item: 'skull:https://textures.minecraft.net/texture/242c649f037613f86f6c9ba0fbdf11ce4a1dc8f9a1bb3d6dc5dacf42a3c095f8{18383}'
+  item_disabled: 'skull:https://textures.minecraft.net/texture/242c649f037613f86f6c9ba0fbdf11ce4a1dc8f9a1bb3d6dc5dacf42a3c095f8{18384}'
   type: spell
   glyph: "\uE9AD"
+  vanilla_item: 'glowstone_dust{18003}'
+  vanilla_item_disabled: 'glowstone_dust{18004}'
