@@ -84,4 +84,6 @@ alternate_resource_packs:
   robes:
     url: "http://rp.elmakers.com/Magic-robes-RP-1.20.4.zip"
   vanilla:
-    url: "http://rp.elmakers.com/Magic-vanilla-RR-1.20.4.zip"
+    url: "http://rp.elmakers.com/Magic-vanilla-RP-1.20.4.zip"
+  war:
+    url: "http://rp.elmakers.com/Magic-war-RP-1.20.4.zip"
