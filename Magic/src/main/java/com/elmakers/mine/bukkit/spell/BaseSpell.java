@@ -1085,9 +1085,8 @@ public class BaseSpell implements MageSpell, Cloneable {
             // The default item can still be overridden by "icon_item"
             icon = new Icon(icon, node, null);
         }
-        boolean legacyIcons = controller.isLegacyIconsEnabled();
-        iconMaterial = icon.getItemMaterial(legacyIcons);
-        disabledIconMaterial = icon.getItemDisabledMaterial(legacyIcons);
+        iconMaterial = icon.getItemMaterial(controller);
+        disabledIconMaterial = icon.getItemDisabledMaterial(controller);
 
         color = ConfigurationUtils.getColor(node, "color", null);
         if (node.contains("worth_sp")) {

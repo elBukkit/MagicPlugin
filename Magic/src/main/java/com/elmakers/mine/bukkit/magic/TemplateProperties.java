@@ -39,12 +39,4 @@ public abstract class TemplateProperties extends BaseMagicProperties {
     public TemplateProperties getParent() {
         return null;
     }
-
-    public @Nullable String getIconKey() {
-        return getIcon(controller.isLegacyIconsEnabled());
-    }
-
-    public @Nullable String getIconDisabledKey() {
-        return getIcon(controller.isLegacyIconsEnabled(), "icon_disabled");
-    }
 }

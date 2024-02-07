@@ -223,26 +223,36 @@ public class BaseMagicProperties implements MagicProperties {
         return ConfigurationUtils.getNodeList(getPropertyConfiguration(key), key);
     }
 
-    @Nullable
-    public String getIcon(boolean legacy) {
-        return getIcon(legacy, "icon");
+    public @Nullable String getIconDisabledKey() {
+        return getIconKey("icon_disabled");
     }
 
     @Nullable
-    public String getIcon(boolean legacy, String iconKey) {
-        if (legacy) {
+    public String getIconKey() {
+        return getIconKey("icon");
+    }
+
+    @Nullable
+    public String getIconKey(String iconKey) {
+        if (controller.isLegacyIconsEnabled()) {
             return getString("legacy_" + iconKey, getString(iconKey));
+        }
+        if (controller.isVanillaIconsEnabled()) {
+            return getString("vanilla_" + iconKey, getString(iconKey));
         }
         return getString(iconKey);
     }
 
-    public boolean hasIcon(boolean legacy) {
-        return hasIcon(legacy, "icon");
+    public boolean hasIconKey() {
+        return hasIconKey("icon");
     }
 
-    public boolean hasIcon(boolean legacy, String iconKey) {
-        if (legacy) {
+    public boolean hasIconKey(String iconKey) {
+        if (controller.isLegacyIconsEnabled()) {
             return hasProperty("legacy_" + iconKey) || hasProperty(iconKey);
+        }
+        if (controller.isVanillaIconsEnabled()) {
+            return hasProperty("vanilla_" + iconKey) || hasProperty(iconKey);
         }
         return hasProperty(iconKey);
     }
