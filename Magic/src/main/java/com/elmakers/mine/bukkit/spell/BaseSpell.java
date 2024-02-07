@@ -220,6 +220,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean pvpRestricted               = false;
     protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
+    protected boolean mountRestricted             = false;
     protected boolean glideRestricted           = false;
     protected boolean glideExclusive            = false;
     protected boolean usesBrushSelection        = false;
@@ -1125,6 +1126,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         disguiseRestricted = node.getBoolean("disguise_restricted", false);
         creativeRestricted = node.getBoolean("creative_restricted", false);
         glideRestricted = node.getBoolean("glide_restricted", false);
+        mountRestricted = node.getBoolean("mount_restricted", false);
         glideExclusive = node.getBoolean("glide_exclusive", false);
         worldBorderRestricted = node.getBoolean("world_border_restricted", false);
         usesBrushSelection = node.getBoolean("brush_selection", false);
@@ -1665,6 +1667,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (glideRestricted && entity != null && entity instanceof LivingEntity && ((LivingEntity)entity).isGliding()) return false;
         if (glideExclusive && entity != null && entity instanceof LivingEntity && !((LivingEntity)entity).isGliding()) return false;
         if (creativeRestricted && entity != null && entity instanceof Player && ((Player)entity).getGameMode() == GameMode.CREATIVE) return false;
+        if (mountRestricted && entity != null && entity.getVehicle() != null) return false;
 
         if (location == null) return true;
         Boolean regionPermission = bypassRegionPermission ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);

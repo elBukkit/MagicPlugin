@@ -11,6 +11,10 @@
  - Resource pack functionality will be disabled when ItemsAdder is present
    Use `/mconfig configure config override_resource_pack_plugins true` to override ItemsAdder
  
+## ADDITIONS
+
+ - Add `mount_restricted` spell parameter, to disallow certain spells while on a mount
+
 ## FIXES
 
  - Change entity spawning to work around issues with 1.20.x internal changes
