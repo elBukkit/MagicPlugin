@@ -316,6 +316,7 @@ public interface MageController {
 
     boolean isUrlIconsEnabled();
     boolean isLegacyIconsEnabled();
+    boolean isVanillaIconsEnabled();
     Set<EntityType> getUndoEntityTypes();
 
     boolean sendMail(CommandSender sender, String fromPlayer, String toPlayer, String message);

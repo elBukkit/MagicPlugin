@@ -21,7 +21,11 @@ public interface Icon {
     @Nullable
     MaterialAndData getItemMaterial(MageController controller);
 
+    /**
+     * Don't use this one, use the MageController version instead.
+     */
     @Nullable
+    @Deprecated
     MaterialAndData getItemMaterial(boolean isLegacy);
 
     /**
@@ -30,7 +34,11 @@ public interface Icon {
     @Nullable
     MaterialAndData getItemDisabledMaterial(MageController controller);
 
+    /**
+     * Don't use this one, use the MageController version instead.
+     */
     @Nullable
+    @Deprecated
     MaterialAndData getItemDisabledMaterial(boolean isLegacy);
 
     boolean forceUrl();
