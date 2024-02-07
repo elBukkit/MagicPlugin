@@ -82,6 +82,24 @@ public class ResourcePackManager {
         resourcePackDelay = properties.getLong("resource_pack_delay", 0);
         alternateResourcePacks = properties.getConfigurationSection("alternate_resource_packs");
 
+        // Apply references
+        for (String key : alternateResourcePacks.getKeys(false)) {
+            ConfigurationSection rpSection = alternateResourcePacks.getConfigurationSection(key);
+            if (rpSection.contains("reference")) {
+                String reference = rpSection.getString("reference");
+                if (!alternateResourcePacks.contains(reference)) {
+                    controller.getLogger().warning("Resource pack " + key + " is referencing an unknown pack: " + reference);
+                    continue;
+                }
+                ConfigurationSection referenceSection = alternateResourcePacks.getConfigurationSection(reference);
+                if (referenceSection.contains("reference")) {
+                    controller.getLogger().warning("Resource pack " + key + " is referencing pack " + reference + " which itself has a reference, this may not work out as expected");
+                }
+                controller.info("Resource pack " + key + " using url from pack " + reference);
+                rpSection.set("url", referenceSection.get("url"));
+            }
+        }
+
         if (defaultResourcePack != null) {
             ConfigurationSection altDefault = alternateResourcePacks.getConfigurationSection(defaultResourcePack);
             if (altDefault != null) {
