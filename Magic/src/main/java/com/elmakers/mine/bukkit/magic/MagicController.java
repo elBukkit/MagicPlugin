@@ -511,6 +511,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private int logVerbosity = 0;
     private boolean urlIconsEnabled = true;
     private boolean legacyIconsEnabled = false;
+    private boolean vanillaIconsEnabled = false;
     private boolean autoSpellUpgradesEnabled = true;
     private boolean autoPathUpgradesEnabled = true;
     private boolean spellProgressionEnabled = true;
@@ -5741,7 +5742,7 @@ public class MagicController implements MageController, ChunkLoadListener {
                     case "icon": {
                         Icon icon = getIcon(itemData);
                         if (icon != null) {
-                            com.elmakers.mine.bukkit.api.block.MaterialAndData material = disabled ? icon.getItemDisabledMaterial(isLegacyIconsEnabled()) : icon.getItemMaterial(isLegacyIconsEnabled());
+                            com.elmakers.mine.bukkit.api.block.MaterialAndData material = disabled ? icon.getItemDisabledMaterial(this) : icon.getItemMaterial(this);
                             if (material != null) {
                                 itemStack = material.getItemStack(1);
                             }
@@ -5938,7 +5939,7 @@ public class MagicController implements MageController, ChunkLoadListener {
                 if (itemStack == null) {
                     Icon icon = getIcon(magicItemKey);
                     if (icon != null) {
-                        com.elmakers.mine.bukkit.api.block.MaterialAndData material = disabled ? icon.getItemDisabledMaterial(isLegacyIconsEnabled()) : icon.getItemMaterial(isLegacyIconsEnabled());
+                        com.elmakers.mine.bukkit.api.block.MaterialAndData material = disabled ? icon.getItemDisabledMaterial(this) : icon.getItemMaterial(this);
                         if (material != null) {
                             itemStack = material.getItemStack(1);
                         }
@@ -7676,6 +7677,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         return legacyIconsEnabled;
     }
 
+    public boolean isVanillaIconsEnabled() {
+        return vanillaIconsEnabled;
+    }
+
     public boolean resourcePackUsesSkulls(String pack) {
         Boolean packOverride = resourcePacks.resourcePackUsesSkulls(pack);
         return packOverride == null ? urlIconsEnabled : packOverride;
@@ -8406,6 +8411,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         loadWandSets(properties.getConfigurationSection("wand_sets"));
         urlIconsEnabled = properties.getBoolean("url_icons_enabled", urlIconsEnabled);
         legacyIconsEnabled = properties.getBoolean("legacy_icons_enabled", legacyIconsEnabled);
+        vanillaIconsEnabled = properties.getBoolean("vanilla_icons_enabled", vanillaIconsEnabled);
         spellProgressionEnabled = properties.getBoolean("enable_spell_progression", spellProgressionEnabled);
         autoSpellUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoSpellUpgradesEnabled);
         autoPathUpgradesEnabled = properties.getBoolean("enable_automatic_spell_upgrades", autoPathUpgradesEnabled);

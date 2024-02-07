@@ -1,0 +1,16 @@
+# This config only changes the RP
+resource_pack: vanilla
+add_resource_pack: vanilla
+
+# Use vanilla items instead of skulls
+vanilla_icons_enabled: true
+
+# Allow overriding so we can mix vanilla+robes in any order
+example_override: true
+
+# Override the all and robes RPs so they load the vanilla versions
+alternate_resource_packs:
+  all:
+    reference: vanilla-all
+  robes:
+    reference: vanilla-robes

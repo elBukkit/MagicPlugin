@@ -15,6 +15,8 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
     private final String itemDisabledKey;
     private final String legacyItemKey;
     private final String legacyItemDisabledKey;
+    private final String vanillaItemKey;
+    private final String vanillaItemDisabledKey;
     private final String url;
     private final String urlDisabled;
     private final String glyph;
@@ -27,6 +29,8 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         itemDisabledKey = null;
         legacyItemKey = null;
         legacyItemDisabledKey = null;
+        vanillaItemKey = null;
+        vanillaItemDisabledKey = null;
         url = null;
         urlDisabled = BaseSpell.DEFAULT_DISABLED_ICON_URL;
         glyph = null;
@@ -40,6 +44,8 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         itemDisabledKey = configuration.getString("item_disabled");
         legacyItemKey = configuration.getString("legacy_item");
         legacyItemDisabledKey = configuration.getString("legacy_item_disabled");
+        vanillaItemKey = configuration.getString("vanilla_item");
+        vanillaItemDisabledKey = configuration.getString("vanilla_item_disabled");
         url = configuration.getString("url");
         urlDisabled = configuration.getString("url_disabled");
         glyph = configuration.getString("glyph");
@@ -58,6 +64,8 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         itemDisabledKey = baseIcon.itemDisabledKey != null ? baseIcon.itemDisabledKey : defaultIcon.itemDisabledKey;
         legacyItemKey = baseIcon.legacyItemKey != null ? baseIcon.legacyItemKey : defaultIcon.legacyItemKey;
         legacyItemDisabledKey = baseIcon.legacyItemDisabledKey != null ? baseIcon.legacyItemDisabledKey : defaultIcon.legacyItemDisabledKey;
+        vanillaItemKey = baseIcon.vanillaItemKey != null ? baseIcon.vanillaItemKey : defaultIcon.vanillaItemKey;
+        vanillaItemDisabledKey = baseIcon.vanillaItemDisabledKey != null ? baseIcon.vanillaItemDisabledKey : defaultIcon.vanillaItemDisabledKey;
         url = baseIcon.url != null ? baseIcon.url : defaultIcon.url;
         urlDisabled = baseIcon.urlDisabled != null ? baseIcon.urlDisabled : defaultIcon.urlDisabled;
         glyph = baseIcon.glyph != null ? baseIcon.glyph : defaultIcon.glyph;
@@ -75,6 +83,8 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
         itemDisabledKey = configuration.getString("icon_disabled", other.itemDisabledKey);
         legacyItemKey = configuration.getString("legacy_icon", other.legacyItemKey);
         legacyItemDisabledKey = configuration.getString("legacy_icon_disabled", other.legacyItemDisabledKey);
+        vanillaItemKey = configuration.getString("vanilla_item", other.vanillaItemKey);
+        vanillaItemDisabledKey = configuration.getString("vanilla_item_disabled", other.vanillaItemDisabledKey);
         url = configuration.getString("icon_url", other.url);
         urlDisabled = configuration.getString("icon_disabled_url", other.urlDisabled);
         glyph = configuration.getString("glyph", other.glyph);
@@ -122,14 +132,28 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
                 return getItem("skull:" + url);
             }
         }
-        return getItemMaterial(controller.isLegacyIconsEnabled());
+        return getItemMaterial(controller.isLegacyIconsEnabled(), controller.isVanillaIconsEnabled());
     }
 
     @Override
     @Nullable
+    @Deprecated
     public MaterialAndData getItemMaterial(boolean isLegacy) {
-        String useKey = isLegacy && legacyItemKey != null && !legacyItemKey.isEmpty()
-                ? legacyItemKey : itemKey;
+        return getItemMaterial(isLegacy, false);
+    }
+
+    @Nullable
+    public MaterialAndData getItemMaterial(boolean isLegacy, boolean isVanilla) {
+        String useKey = null;
+        if (isLegacy) {
+            useKey = legacyItemKey;
+        }
+        if (isVanilla && (useKey == null || useKey.isEmpty())) {
+            useKey = vanillaItemKey;
+        }
+        if (useKey == null || useKey.isEmpty()) {
+            useKey = itemKey;
+        }
         return getItem(useKey);
     }
 
@@ -144,18 +168,28 @@ public class Icon implements com.elmakers.mine.bukkit.api.item.Icon {
                 return getItem("skull:" + url);
             }
         }
-        return getItemDisabledMaterial(controller.isLegacyIconsEnabled());
+        return getItemDisabledMaterial(controller.isLegacyIconsEnabled(), controller.isVanillaIconsEnabled());
     }
 
     @Override
     @Nullable
+    @Deprecated
     public MaterialAndData getItemDisabledMaterial(boolean isLegacy) {
+        return getItemDisabledMaterial(isLegacy, false);
+    }
+
+    @Nullable
+    public MaterialAndData getItemDisabledMaterial(boolean isLegacy, boolean isVanilla) {
         String useKey = null;
         if (isLegacy) {
             useKey = legacyItemDisabledKey != null && !legacyItemDisabledKey.isEmpty()
                     ? legacyItemDisabledKey : legacyItemKey;
         }
-        if (useKey == null) {
+        if (isVanilla && (useKey == null || useKey.isEmpty())) {
+            useKey = vanillaItemDisabledKey != null && !vanillaItemDisabledKey.isEmpty()
+                    ? vanillaItemDisabledKey : vanillaItemKey;
+        }
+        if (useKey == null || useKey.isEmpty()) {
             useKey = itemDisabledKey != null && !itemDisabledKey.isEmpty()
                     ? itemDisabledKey : itemKey;
         }

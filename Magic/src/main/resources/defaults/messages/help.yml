@@ -469,7 +469,8 @@ help:
     `<li>` &6`<command command="getrp borders" text="borders">`&f: A different set of spell icons with borders on them
     `<li>` &6`<command command="getrp painterly" text="painterly">`&f: A more &oartistic&f set of spell icons
     `<li>` &6`<command command="getrp lowres" text="lowres">`&f: The low-resolution spell icons used in Magic 5 and below, same as the skull textures
-    `<li>` &6`<command command="getrp skulls" text="skulls">`&f: Use player heads instead of resource pack icons
+    `<li>` &6`<command command="getrp skulls" text="skulls">`&f: No wand or other item icons, only flat skulls for spell icons
+    `<li>` &6`<command command="getrp vanilla" text="vanilla">`&f: Uses item-based spell icons, like before version 10.9
     `<li>` &6`<command command="getrp all" text="all">`&f: Combines the httyd, survival, war and robes RPs into one
   classes: |-
     `<title text="Classes">`

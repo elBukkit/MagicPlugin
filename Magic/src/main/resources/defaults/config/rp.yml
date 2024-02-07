@@ -28,6 +28,11 @@ url_icons_enabled: false
 # icons rather than custom model data icons
 legacy_icons_enabled: false
 
+# Set this to revert to pre 10.9 item-based icons, rather than skulls
+# This only changes the items used for spell icons. If you want to use the previous
+# RP that includes those item-based icons, use the "vanilla" example instead.
+vanilla_icons_enabled: false
+
 # Set this to allow Magic to periodically check for updates to the resource pack.
 # Setting this to false is the same as setting resource_pack_check_interval to 0.
 enable_resource_pack_check: true
@@ -85,5 +90,9 @@ alternate_resource_packs:
     url: "http://rp.elmakers.com/Magic-robes-RP-1.20.4.zip"
   vanilla:
     url: "http://rp.elmakers.com/Magic-vanilla-RP-1.20.4.zip"
+  vanilla-all:
+    url: "http://rp.elmakers.com/Magic-vanilla-all-RP-1.20.4.zip"
+  vanilla-robes:
+    url: "http://rp.elmakers.com/Magic-vanilla-robes-RP-1.20.4.zip"
   war:
     url: "http://rp.elmakers.com/Magic-war-RP-1.20.4.zip"
