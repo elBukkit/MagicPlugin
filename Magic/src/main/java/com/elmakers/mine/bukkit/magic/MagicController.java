@@ -8758,7 +8758,7 @@ public class MagicController implements MageController, ChunkLoadListener {
 
         if (!properties.getBoolean("override_resource_pack_plugins")) {
             boolean hasItemsAdder = plugin.getServer().getPluginManager().getPlugin("ItemsAdder") != null;
-            if (hasItemsAdder || true) {
+            if (hasItemsAdder) {
                 info("ItemsAdder found, disabling resource pack functionality. Use `/mhelp compatibility` for more info.");
                 resourcePackPlugins.add("ItemsAdder");
             }
