@@ -93,7 +93,20 @@ public class LineOfEffectAction extends CompoundEntityAction {
         Entity targetEntity = context.getTargetEntity();
         if (targetCount > 0) {
             if (randomChoose) {
-                List<Entity> candidatesList = new ArrayList<>(candidates);
+                List<Entity> candidatesList = new ArrayList<>();
+                for (Entity entity : candidates) {
+                    boolean canTarget = entity != targetEntity || targetSource;
+                    if (ignore != null && ignore.contains(entity.getUniqueId())) {
+                        mage.sendDebugMessage(ChatColor.DARK_RED + "Ignoring Modified Target " + ChatColor.GREEN + entity.getType(), 16);
+                        continue;
+                    }
+                    if (canTarget && context.canTarget(entity)) {
+                        candidatesList.add(entity);
+                        mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType(), 12);
+                    } else if (mage.getDebugLevel() > 7) {
+                        mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType(), 16);
+                    }
+                }
                 Collections.shuffle(candidatesList);
                 for (int i = 0; i < targetCount && i < candidatesList.size(); i++) {
                     entities.add(new WeakReference<>(candidatesList.get(i)));
