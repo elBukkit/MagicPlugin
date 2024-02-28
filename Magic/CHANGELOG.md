@@ -3,6 +3,7 @@
 
 # 10.8.13
 
+ - Hotfix for more spigot/paper compatibility issues involving calls to `createEntity`
  - Some optimizations for magic mob saving and loading
  - Add `teleport_target` parameter to `Teleport` action
 
