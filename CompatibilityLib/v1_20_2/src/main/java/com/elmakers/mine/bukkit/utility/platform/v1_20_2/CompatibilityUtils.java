@@ -310,11 +310,10 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
 
     @Override
     public Entity createEntity(Location location, EntityType entityType) {
+        World world = location.getWorld();
         Entity bukkitEntity = null;
         try {
-            Class<? extends Entity> entityClass = entityType.getEntityClass();
-            CraftWorld craftWorld = (CraftWorld)location.getWorld();
-            bukkitEntity = craftWorld.createEntity(location, entityClass);
+            bukkitEntity = world.createEntity(location, entityType.getEntityClass());
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
