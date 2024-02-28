@@ -330,7 +330,7 @@ public class Targeting {
         if (block != null || isBlock) {
             if (result == TargetingResult.BLOCK) {
                 targetBlock = new Target(source, block, useHitbox, hitboxBlockPadding);
-            } else {
+            } else if (source != null) {
                 Vector direction = source.getDirection();
                 Location targetLocation = source.clone().add(direction.multiply(range));
                 targetBlock = new Target(source, targetLocation, useHitbox, hitboxBlockPadding);
