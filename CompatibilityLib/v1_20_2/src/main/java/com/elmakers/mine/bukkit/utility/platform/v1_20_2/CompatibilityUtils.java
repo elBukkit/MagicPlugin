@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_20_2;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -313,7 +314,20 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         World world = location.getWorld();
         Entity bukkitEntity = null;
         try {
-            bukkitEntity = world.createEntity(location, entityType.getEntityClass());
+            // So Spigot can't make up its mind on what this method should look like
+            // And Paper and Spigot differ for some reason
+            // AND it depends on what particular build of 1.20 we are running
+            // So, I guess we're using reflection for this? :|
+            Class<? extends Entity> entityClass = entityType.getEntityClass();
+            Method method = world.getClass().getMethod("createEntity", Location.class, Class.class);
+            Object whateverThisVersionReturns = method.invoke(world, location, entityType.getEntityClass());
+            if (whateverThisVersionReturns instanceof Entity) {
+                bukkitEntity = (Entity)whateverThisVersionReturns;
+            } else if (whateverThisVersionReturns instanceof net.minecraft.world.entity.Entity) {
+                net.minecraft.world.entity.Entity newEntity = (net.minecraft.world.entity.Entity)whateverThisVersionReturns;
+                bukkitEntity = newEntity.getBukkitEntity();
+                if (bukkitEntity == null || !entityClass.isAssignableFrom(bukkitEntity.getClass())) return null;
+            }
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
