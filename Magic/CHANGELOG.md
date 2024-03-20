@@ -18,6 +18,7 @@
 ## FIXES
 
  - Change entity spawning to work around issues with 1.20.x internal changes
+ - Update Heroes integration
 
 # 10.8.13
 

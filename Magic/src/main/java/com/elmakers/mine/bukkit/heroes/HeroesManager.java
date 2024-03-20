@@ -38,7 +38,6 @@ import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
 import com.herocraftonline.heroes.characters.skill.SkillManager;
-import com.herocraftonline.heroes.characters.skill.SkillSetting;
 
 public class HeroesManager implements ManaController, AttributeProvider, TeamProvider {
     private Heroes heroes;
@@ -177,7 +176,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         {
             Skill skill = skills.getSkill(skillName);
             if (skill == null) continue;
-            int level = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.LEVEL, 1, true);
+            int level = SkillConfigManager.getUseSetting(hero, skill, "level", 1, true);
             skillMap.put(level, skill);
         }
         return skillMap;
@@ -188,7 +187,7 @@ public class HeroesManager implements ManaController, AttributeProvider, TeamPro
         if (skill == null) return 0;
         Hero hero = getHero(player);
         if (hero == null) return 0;
-        return SkillConfigManager.getUseSetting(hero, skill, SkillSetting.LEVEL, 1, true);
+        return SkillConfigManager.getUseSetting(hero, skill, "level", 1, true);
     }
 
     private void addSkills(Hero hero, HeroClass heroClass, Collection<String> skillSet, boolean showUnuseable, boolean showPassive)

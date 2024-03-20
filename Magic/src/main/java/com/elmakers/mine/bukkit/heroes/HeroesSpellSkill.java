@@ -23,7 +23,6 @@ import com.herocraftonline.heroes.api.SkillResult;
 import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.ActiveSkill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillSetting;
 
 public class HeroesSpellSkill extends ActiveSkill {
     private final SpellTemplate spellTemplate;
@@ -190,7 +189,7 @@ public class HeroesSpellSkill extends ActiveSkill {
         if (costs != null) {
             for (CastingCost cost : costs) {
                 if (cost.getMana() > 0) {
-                    node.set(SkillSetting.MANA.node(), cost.getMana());
+                    node.set("mana", cost.getMana());
                 }
                 // TODO: Reagent costs from item costs
             }
@@ -214,13 +213,13 @@ public class HeroesSpellSkill extends ActiveSkill {
 
     private String magicToHeroes(String key) {
         if (key.equals("range")) {
-            return SkillSetting.MAX_DISTANCE.node();
+            return "max-distance";
         }
         return key.replace('_', '-');
     }
 
     private String heroesToMagic(String key) {
-        if (key.equals(SkillSetting.MAX_DISTANCE.node())) {
+        if (key.equals("max-distance")) {
             return "range";
         }
         return key.replace('-', '_');

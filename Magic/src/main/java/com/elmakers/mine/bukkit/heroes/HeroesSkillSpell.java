@@ -23,7 +23,6 @@ import com.herocraftonline.heroes.characters.Hero;
 import com.herocraftonline.heroes.characters.skill.PassiveSkill;
 import com.herocraftonline.heroes.characters.skill.Skill;
 import com.herocraftonline.heroes.characters.skill.SkillConfigManager;
-import com.herocraftonline.heroes.characters.skill.SkillSetting;
 
 public class HeroesSkillSpell extends BaseSpell {
     private String skillKey;
@@ -83,7 +82,7 @@ public class HeroesSkillSpell extends BaseSpell {
             lore.add(messages.get("skills.passive_description", "Passive"));
         }
 
-        int level = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.LEVEL, 1, true);
+        int level = SkillConfigManager.getUseSetting(hero, skill, "level", 1, true);
 
         String levelDescription = controller.getMessages().get("spell.level_description").replace("$level", Integer.toString(level));
         if (levelDescription != null && levelDescription.length() > 0) {
@@ -99,7 +98,7 @@ public class HeroesSkillSpell extends BaseSpell {
             CompatibilityLib.getInventoryUtils().wrapText(description, lore);
         }
 
-        int cooldown = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.COOLDOWN, 0, true);
+        int cooldown = SkillConfigManager.getUseSetting(hero, skill, "cooldown", 0, true);
         if (cooldown > 0)
         {
             String cooldownDescription = getCooldownDescription(messages, cooldown, mage, wand);
@@ -108,7 +107,7 @@ public class HeroesSkillSpell extends BaseSpell {
             }
         }
 
-        int mana = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.MANA, 0, true);
+        int mana = SkillConfigManager.getUseSetting(hero, skill, "mana", 0, true);
         if (mana > 0)
         {
             String manaDescription = messages.get("currency.heroes_mana.amount").replace("$amount", Integer.toString(mana));
@@ -137,7 +136,7 @@ public class HeroesSkillSpell extends BaseSpell {
         if (player == null) return null;
         Hero hero = heroes.getHero(mage.getPlayer());
         if (hero == null) return null;
-        int mana = SkillConfigManager.getUseSetting(hero, skill, SkillSetting.MANA, 0, true);
+        int mana = SkillConfigManager.getUseSetting(hero, skill, "mana", 0, true);
         if (mana == 0 || hero.getMana() > mana) return null;
         manaCost.setAmount(mana);
         return manaCost;
