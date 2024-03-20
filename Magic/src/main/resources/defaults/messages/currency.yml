@@ -25,6 +25,7 @@ currency:
     name_short: "&cHP"
   heroes_mana:
     name: "&3Mana"
+    amount: "$amount Mana"
   currency:
     name: "&aDollars"
     name_singular: "&aDollar"
