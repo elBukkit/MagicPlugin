@@ -19,6 +19,7 @@
 
  - Change entity spawning to work around issues with 1.20.x internal changes
  - Update Heroes integration
+ - Fix automata not properly chasing their vicitms
 
 # 10.8.13
 

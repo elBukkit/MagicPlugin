@@ -730,6 +730,7 @@ public class SimulateBatch extends SpellBatch {
             if (bestTarget != null)
             {
                 this.target = bestTarget;
+                this.target.update();
                 String targetDescription = bestTarget.getEntity() == null ? "NONE" :
                     ((bestTarget instanceof Player) ? ((Player)bestTarget.getEntity()).getName() : bestTarget.getEntity().getType().name());
 
