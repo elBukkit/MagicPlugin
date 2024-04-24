@@ -11,8 +11,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
-import net.minecraft.world.level.pathfinder.PathType;
-import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 
 public class MagicFollowOwnerGoal extends MagicOwnerGoal {
     private final double speedModifier;
@@ -114,10 +112,13 @@ public class MagicFollowOwnerGoal extends MagicOwnerGoal {
     }
 
     private boolean canTeleportTo(BlockPos blockPosition) {
-        BlockPathTypes pathType = WalkNodeEvaluator.getCachedPathType(mob.level(), blockPosition.mutable());
-        if (pathType != BlockPathTypes.WALKABLE) {
+        // TODO: The PathType enum doesn't seem accessible
+        /**
+        PathType pathType = WalkNodeEvaluator.getPathTypeStatic(mob, blockPosition.mutable());
+        if (pathType != PathType.WALKABLE) {
             return false;
         }
+        */
 
         blockPosition = blockPosition.subtract(this.mob.blockPosition());
         return mob.level().noCollision(this.mob, this.mob.getBoundingBox().move(blockPosition));
