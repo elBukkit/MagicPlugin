@@ -476,7 +476,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         if (location == null) return null;
         BlockEntity tileEntity = getTileEntity(location);
         if (tileEntity == null) return null;
-        CompoundTag tag = tileEntity.saveWithFullMetadata();
+        CompoundTag tag = tileEntity.saveWithFullMetadata(tileEntity.getLevel().registryAccess());
         return tag;
     }
 
@@ -491,7 +491,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         tag.putInt("x", location.getBlockX());
         tag.putInt("y", location.getBlockY());
         tag.putInt("z", location.getBlockZ());
-        tileEntity.load(tag);
+        tileEntity.loadWithComponents(tag, tileEntity.getLevel().registryAccess());
         tileEntity.setChanged();
     }
 
@@ -520,14 +520,14 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         // TODO: Just clear inventory instead?
         BlockEntity tileEntity = getTileEntity(location);
         if (tileEntity == null) return;
-        CompoundTag tag = tileEntity.saveWithFullMetadata();
+        CompoundTag tag = tileEntity.saveWithFullMetadata(tileEntity.getLevel().registryAccess());
         // Is there really not an enum for these NBT types?
         ListTag itemList = tag.getList("Items", CompatibilityConstants.NBT_TYPE_COMPOUND);
         // Is it really necessary to clear the list before removing it?
         if (itemList != null) {
             itemList.clear();
             tag.remove("Items");
-            tileEntity.load(tag);
+            tileEntity.loadWithComponents(tag, tileEntity.getLevel().registryAccess());
             tileEntity.setChanged();
         }
     }
