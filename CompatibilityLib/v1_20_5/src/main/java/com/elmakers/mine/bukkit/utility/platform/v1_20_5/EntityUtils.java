@@ -23,7 +23,7 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16
                 return new EntityGoatData(entity);
             case AXOLOTL:
                 return new EntityAxolotlData(entity);
-            case ENDER_SIGNAL:
+            case EYE_OF_ENDER:
                 return new EntityEnderSignalData(entity);
             default:
                 return super.getExtraData(controller, entity);
@@ -37,7 +37,7 @@ public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16
                 return new EntityGoatData(parameters, controller);
             case AXOLOTL:
                 return new EntityAxolotlData(parameters, controller);
-            case ENDER_SIGNAL:
+            case EYE_OF_ENDER:
                 return new EntityEnderSignalData(parameters, controller);
             default:
                 return super.getExtraData(controller, type, parameters);
