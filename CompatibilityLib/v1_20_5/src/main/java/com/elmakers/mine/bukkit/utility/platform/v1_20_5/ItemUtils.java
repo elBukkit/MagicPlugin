@@ -5,8 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R4.inventory.CraftItemStack;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -15,8 +18,8 @@ import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
 
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
@@ -35,10 +38,10 @@ public class ItemUtils extends ItemUtilsBase {
     }
 
     @Override
-    public CompoundTag getTag(Object mcItemStack) {
+    public DataComponentPatch getTag(Object mcItemStack) {
         if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
-        return itemStack.getTag();
+        return itemStack.getComponentsPatch();
     }
 
     @Override
@@ -54,7 +57,7 @@ public class ItemUtils extends ItemUtilsBase {
             }
             if (mcItemStack == null) return null;
             net.minecraft.world.item.ItemStack stack = (net.minecraft.world.item.ItemStack)mcItemStack;
-            tag = stack.getTag();
+            tag = stack.getComponentsPatch();
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -90,11 +93,15 @@ public class ItemUtils extends ItemUtilsBase {
             return null;
         }
 
+        // Component patch can't be null I guess?
+        // Not sure what happens if it's empty, though.
+        /*
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)nmsStack;
-        CompoundTag tag = itemStack.getTag();
+        DataComponentPatch tag = itemStack.getComponentsPatch();
         if (tag == null) {
             itemStack.setTag(new CompoundTag());
         }
+        */
 
         return stack;
     }
@@ -193,7 +200,8 @@ public class ItemUtils extends ItemUtilsBase {
         if (itemTag == null || !(itemTag instanceof CompoundTag)) return null;
         ItemStack item = null;
         try {
-            net.minecraft.world.item.ItemStack nmsStack = net.minecraft.world.item.ItemStack.of((CompoundTag)itemTag);
+            CraftWorld world = (CraftWorld)Bukkit.getWorlds().get(0);
+            net.minecraft.world.item.ItemStack nmsStack = net.minecraft.world.item.ItemStack.parse(world.getHandle().registryAccess(), (CompoundTag)itemTag).get();
             item = CraftItemStack.asCraftMirror(nmsStack);
         } catch (Exception ex) {
             ex.printStackTrace();

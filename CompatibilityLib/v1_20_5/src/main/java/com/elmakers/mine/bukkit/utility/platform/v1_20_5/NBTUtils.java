@@ -15,6 +15,7 @@ import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
 
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
@@ -73,11 +74,7 @@ public class NBTUtils extends NBTUtilsBase {
         if (outputObject == null || !(outputObject instanceof CompoundTag)) {
             Object craft = platform.getItemUtils().getHandle(stack);
             if (craft == null) return null;
-            CompoundTag tagObject = (CompoundTag)platform.getItemUtils().getTag(craft);
-            if (tagObject == null) {
-                tagObject = new CompoundTag();
-                ((net.minecraft.world.item.ItemStack)craft).setTag(tagObject);
-            }
+            DataComponentPatch tagObject = (DataComponentPatch)platform.getItemUtils().getTag(craft);
             outputObject = new CompoundTag();
             tagObject.put(tag, (CompoundTag)outputObject);
         }
