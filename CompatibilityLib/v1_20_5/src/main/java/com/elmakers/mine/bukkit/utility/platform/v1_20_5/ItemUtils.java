@@ -125,18 +125,18 @@ public class ItemUtils extends ItemUtilsBase {
     @Override
     public void hideFlags(ItemStack stack, int flags) {
         if (isEmpty(stack)) return;
-
-        try {
-            Object craft = getHandle(stack);
-            if (craft == null) return;
-            CompoundTag tagObject = getTag(craft);
-            if (tagObject == null) return;
-
-            IntTag hideFlag = IntTag.valueOf(flags);
-            tagObject.put("HideFlags", hideFlag);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+        ItemMeta meta = stack.getItemMeta();
+        ItemFlag[] flagArray = ItemFlag.values();
+        for (int ordinal = 0; ordinal < flagArray.length; ordinal++) {
+            ItemFlag flag = flagArray[ordinal];
+            if ((flags | 1) == 1) {
+                meta.addItemFlags(flag);
+            } else {
+                meta.removeItemFlags(flag);
+            }
+            flags >>= 1;
         }
+        stack.setItemMeta(meta);
     }
 
     @Override
