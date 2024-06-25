@@ -3,16 +3,39 @@ package com.elmakers.mine.bukkit.utility.platform.v1_20_2;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
+import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_20_2.event.EntityLoadEventHandler;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.event.ResourcePackListener;
+import com.elmakers.mine.bukkit.utility.platform.v1_20_2.listener.EntityPickupListener;
 
-public class Platform extends ModernPlatform {
+public class Platform extends PlatformBase {
     private Boolean hasEntityLoadEvent;
 
     public Platform(MageController controller) {
         super(controller);
+    }
+
+    @Override
+    protected EntityMetadataUtils createEntityMetadataUtils() {
+        return new PersistentEntityMetadataUtils(this.getPlugin());
+    }
+
+    @Override
+    protected com.elmakers.mine.bukkit.utility.platform.SchematicUtils createSchematicUtils() {
+        return new SchematicUtils(this);
+    }
+
+    @Override
+    protected DeprecatedUtils createDeprecatedUtils() {
+        return new DeprecatedUtils(this);
+    }
+
+    @Override
+    public boolean hasChatComponents() {
+        return true;
     }
 
     @Override
@@ -72,8 +95,15 @@ public class Platform extends ModernPlatform {
     @Override
     public void registerEvents(PluginManager pm) {
         super.registerEvents(pm);
+        ResourcePackListener rpListener = new ResourcePackListener(controller);
+        pm.registerEvents(rpListener, controller.getPlugin());
         if (hasEntityLoadEvent()) {
             pm.registerEvents(new EntityLoadEventHandler(controller), controller.getPlugin());
         }
+    }
+
+    @Override
+    protected void registerPickupEvent(PluginManager pm) {
+        pm.registerEvents(new EntityPickupListener(controller), controller.getPlugin());
     }
 }

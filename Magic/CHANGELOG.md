@@ -1,43 +1,18 @@
 
 # CHANGELOG
 
-# 10.9
+# 11.0
 
-## CHANGES
-
- - Spell icons now use players heads instead of vanilla items, when not using the resource pack.
-   The previous RP is still available, use `/mexample add vanilla` if you need it back.
- - The spell hotbar in 1.20 uses the "space" provider instead of glyph hacks
- - Resource pack functionality will be disabled when ItemsAdder is present
-   Use `/mconfig configure config override_resource_pack_plugins true` to override ItemsAdder
- 
-## ADDITIONS
-
- - Add `mount_restricted` spell parameter, to disallow certain spells while on a mount
-
-## FIXES
-
- - Change entity spawning to work around issues with 1.20.x internal changes
- - Update Heroes integration
- - Fix automata not properly chasing their vicitms
-
-# 10.8.13
-
- - Hotfix for more spigot/paper compatibility issues involving calls to `createEntity`
- - Some optimizations for magic mob saving and loading
- - Add `teleport_target` parameter to `Teleport` action
+ - Spigot API Version
+   Forwards-compatibile with future Spigot/MC versions
+   *NOT* backwards-compatible with pre-1.20 Spigot/MC versions
+   Most configs and item/player data will migrate
+   Some issues may arise:
+   - Legacy material names are no longer supported
 
 # 10.8.12
 
- - Add support for 1.20.4
- - Add support for 1.20.3
- - Fixes for compatibility with recent 1.20.2 versions (or maybe break it? I don't know what's going on)
  - Fix ModifyWalkSpeed speed parameter not working with variables
- - Add effect visibility API
- - Add `velocity` attribute
- - Add `crash_entity_speed` and `crash_entity_dismount_speed` parameters to RideEntity action
- - Add `crash_cooldown` and `crash_entity_cooldown` parameters to RideEntity action
- - Add `adaptive_knockback_resistance` parmeter to `Damage` action (thanks to ArcticFox XVI)
 
 # 10.8.11
 
