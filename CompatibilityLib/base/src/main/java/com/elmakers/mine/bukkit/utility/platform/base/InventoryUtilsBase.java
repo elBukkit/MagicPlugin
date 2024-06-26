@@ -62,9 +62,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     @Override
     public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item) {
         NBTUtils nbtUtils = platform.getNBTUtils();
-        Object handle = nbtUtils.getHandle(item);
-        if (handle == null) return false;
-        Object tag = nbtUtils.getTag(handle);
+        Object tag = nbtUtils.getTag(item);
         if (tag == null) return false;
 
         return addTagsToNBT(ConfigUtils.toMap(tags), tag);
@@ -74,9 +72,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     public boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
     {
         NBTUtils nbtUtils = platform.getNBTUtils();
-        Object handle = nbtUtils.getHandle(item);
-        if (handle == null) return false;
-        Object tag = nbtUtils.getTag(handle);
+        Object tag = nbtUtils.getTag(item);
         if (tag == null) return false;
 
         return addTagsToNBT(tags, tag);
@@ -86,9 +82,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     public boolean configureSkillItem(ItemStack skillItem, String skillClass, boolean quickCast, ConfigurationSection skillConfig) {
         if (skillItem == null) return false;
         NBTUtils nbtUtils = platform.getNBTUtils();
-        Object handle = nbtUtils.getHandle(skillItem);
-        if (handle == null) return false;
-        Object tag = nbtUtils.getTag(handle);
+        Object tag = nbtUtils.getTag(skillItem);
         if (tag == null) return false;
 
         nbtUtils.setBoolean(tag, "skill", true);

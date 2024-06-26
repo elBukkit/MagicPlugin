@@ -995,9 +995,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean setDisplayNameRaw(ItemStack itemStack, String displayName) {
         NBTUtils nbtUtils = platform.getNBTUtils();
-        Object handle = nbtUtils.getHandle(itemStack);
-        if (handle == null) return false;
-        Object tag = nbtUtils.getTag(handle);
+        Object tag = nbtUtils.getTag(itemStack);
         if (tag == null) return false;
 
         Object displayNode = nbtUtils.createTag(tag, "display");

@@ -46,13 +46,6 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public CompoundTag getTag(Object mcItemStack) {
-        if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
-        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
-        return itemStack.getTag();
-    }
-
-    @Override
     public Object getTag(ItemStack itemStack) {
         Object tag = null;
         try {
@@ -100,9 +93,7 @@ public class NBTUtils extends NBTUtilsBase {
         if (platform.getItemUtils().isEmpty(stack)) return null;
         Object outputObject = getTag(stack, tag);
         if (outputObject == null || !(outputObject instanceof CompoundTag)) {
-            Object craft = getHandle(stack);
-            if (craft == null) return null;
-            CompoundTag tagObject = getTag(craft);
+            CompoundTag tagObject = getTag(stack);
             if (tagObject == null) {
                 tagObject = new CompoundTag();
                 ((net.minecraft.world.item.ItemStack)craft).setTag(tagObject);
@@ -220,9 +211,7 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public boolean setTag(ItemStack stack, String tag, Object child) {
         if (platform.getItemUtils().isEmpty(stack)) return false;
-        Object craft = getHandle(stack);
-        if (craft == null) return false;
-        Object node = getTag(craft);
+        Object node = getTag(stack);
         if (node == null || !(node instanceof CompoundTag)) return false;
         if (child == null) {
             ((CompoundTag)node).remove(tag);
@@ -241,9 +230,7 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public void setString(ItemStack stack, String tag, String value) {
         if (platform.getItemUtils().isEmpty(stack)) return;
-        Object craft = getHandle(stack);
-        if (craft == null) return;
-        Object tagObject = getTag(craft);
+        Object tagObject = getTag(stack);
         if (tagObject == null || !(tagObject instanceof CompoundTag)) return;
         ((CompoundTag)tagObject).putString(tag, value);
     }

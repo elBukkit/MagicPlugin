@@ -13,8 +13,6 @@ public interface NBTUtils {
 
     boolean containsTag(ItemStack stack, String tag);
 
-    Object getTag(Object mcItemStack);
-
     Object getTag(ItemStack itemStack);
 
     Object getTag(ItemStack stack, String tag);
