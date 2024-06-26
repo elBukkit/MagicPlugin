@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -16,7 +17,6 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.IntTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
@@ -126,26 +126,23 @@ public class ItemUtils extends ItemUtilsBase {
     public void hideFlags(ItemStack stack, int flags) {
         if (isEmpty(stack)) return;
 
-        try {
-            Object craft = getHandle(stack);
-            if (craft == null) return;
-            CompoundTag tagObject = getTag(craft);
-            if (tagObject == null) return;
-
-            IntTag hideFlag = IntTag.valueOf(flags);
-            tagObject.put("HideFlags", hideFlag);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
+        ItemMeta meta = stack.getItemMeta();
+        ItemFlag[] flagArray = ItemFlag.values();
+        for (int ordinal = 0; ordinal < flagArray.length; ordinal++) {
+            ItemFlag flag = flagArray[ordinal];
+            if ((flags | 1) == 1) {
+                meta.addItemFlags(flag);
+            } else {
+                meta.removeItemFlags(flag);
+            }
+            flags >>= 1;
         }
+        stack.setItemMeta(meta);
     }
 
     @Override
     public boolean isEmpty(ItemStack itemStack) {
-        if (itemStack == null || itemStack.getType() == Material.AIR) return true;
-        Object handle = getHandle(itemStack);
-        if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) return false;
-        net.minecraft.world.item.ItemStack mcItem = (net.minecraft.world.item.ItemStack)handle;
-        return mcItem.isEmpty();
+        return (itemStack != null && itemStack.getType() != Material.AIR);
     }
 
     protected StringTag getTagString(String value) {
