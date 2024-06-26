@@ -1,5 +1,6 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_20_4;
 
+import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -40,6 +41,11 @@ public class Platform extends PlatformBase {
 
     @Override
     protected com.elmakers.mine.bukkit.utility.platform.NBTUtils createNBTUtils() {
+        Plugin nbtAPI = controller.getPlugin().getServer().getPluginManager().getPlugin("NBTAPI");
+        if (nbtAPI == null) {
+            controller.getLogger().info("NBTAPI not found, this is now required for Magic to work. Please download and install the NBTAPI plugin.");
+            return new NBTUtilsPlaceholder(this);
+        }
         return new NBTUtils(this);
     }
 
