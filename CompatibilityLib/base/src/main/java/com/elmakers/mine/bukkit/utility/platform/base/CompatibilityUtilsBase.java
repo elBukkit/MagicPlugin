@@ -77,6 +77,7 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
 import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
@@ -993,14 +994,15 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public boolean setDisplayNameRaw(ItemStack itemStack, String displayName) {
-        Object handle = platform.getItemUtils().getHandle(itemStack);
+        NBTUtils nbtUtils = platform.getNBTUtils();
+        Object handle = nbtUtils.getHandle(itemStack);
         if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
+        Object tag = nbtUtils.getTag(handle);
         if (tag == null) return false;
 
-        Object displayNode = platform.getNBTUtils().createTag(tag, "display");
+        Object displayNode = nbtUtils.createTag(tag, "display");
         if (displayNode == null) return false;
-        platform.getNBTUtils().setString(displayNode, "Name", displayName);
+        nbtUtils.setString(displayNode, "Name", displayName);
         return true;
     }
 

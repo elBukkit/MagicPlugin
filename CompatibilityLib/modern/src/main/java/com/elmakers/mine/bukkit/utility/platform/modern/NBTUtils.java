@@ -4,10 +4,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.bukkit.craftbukkit.v1_20_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
@@ -21,6 +23,7 @@ import net.minecraft.nbt.IntArrayTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
+import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 
 public class NBTUtils extends NBTUtilsBase {
@@ -31,7 +34,7 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public Object getTag(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
-        Object tagObject = platform.getItemUtils().getTag(stack);
+        Object tagObject = getTag(stack);
         if (tagObject == null || !(tagObject instanceof CompoundTag)) return null;
         return ((CompoundTag)tagObject).get(tag);
     }
@@ -40,6 +43,32 @@ public class NBTUtils extends NBTUtilsBase {
     public Object getTag(Object nbtBase, String tag) {
         if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return null;
         return ((CompoundTag)nbtBase).get(tag);
+    }
+
+    @Override
+    public CompoundTag getTag(Object mcItemStack) {
+        if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
+        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
+        return itemStack.getTag();
+    }
+
+    @Override
+    public Object getTag(ItemStack itemStack) {
+        Object tag = null;
+        try {
+            Object mcItemStack = getHandle(itemStack);
+            if (mcItemStack == null) {
+                if (itemStack.hasItemMeta()) {
+                    mcItemStack = getHandle(itemStack);
+                }
+            }
+            if (mcItemStack == null) return null;
+            net.minecraft.world.item.ItemStack stack = (net.minecraft.world.item.ItemStack)mcItemStack;
+            tag = stack.getTag();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return tag;
     }
 
     @Override
@@ -71,9 +100,9 @@ public class NBTUtils extends NBTUtilsBase {
         if (platform.getItemUtils().isEmpty(stack)) return null;
         Object outputObject = getTag(stack, tag);
         if (outputObject == null || !(outputObject instanceof CompoundTag)) {
-            Object craft = platform.getItemUtils().getHandle(stack);
+            Object craft = getHandle(stack);
             if (craft == null) return null;
-            CompoundTag tagObject = (CompoundTag)platform.getItemUtils().getTag(craft);
+            CompoundTag tagObject = getTag(craft);
             if (tagObject == null) {
                 tagObject = new CompoundTag();
                 ((net.minecraft.world.item.ItemStack)craft).setTag(tagObject);
@@ -106,7 +135,7 @@ public class NBTUtils extends NBTUtilsBase {
     public String getString(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
         String meta = null;
-        Object tagObject = platform.getItemUtils().getTag(stack);
+        Object tagObject = getTag(stack);
         if (tagObject == null || !(tagObject instanceof CompoundTag)) return null;
         meta = ((CompoundTag)tagObject).getString(tag);
         return meta;
@@ -191,9 +220,9 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public boolean setTag(ItemStack stack, String tag, Object child) {
         if (platform.getItemUtils().isEmpty(stack)) return false;
-        Object craft = platform.getItemUtils().getHandle(stack);
+        Object craft = getHandle(stack);
         if (craft == null) return false;
-        Object node = platform.getItemUtils().getTag(craft);
+        Object node = getTag(craft);
         if (node == null || !(node instanceof CompoundTag)) return false;
         if (child == null) {
             ((CompoundTag)node).remove(tag);
@@ -212,9 +241,9 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public void setString(ItemStack stack, String tag, String value) {
         if (platform.getItemUtils().isEmpty(stack)) return;
-        Object craft = platform.getItemUtils().getHandle(stack);
+        Object craft = getHandle(stack);
         if (craft == null) return;
-        Object tagObject = platform.getItemUtils().getTag(craft);
+        Object tagObject = getTag(craft);
         if (tagObject == null || !(tagObject instanceof CompoundTag)) return;
         ((CompoundTag)tagObject).putString(tag, value);
     }
@@ -293,5 +322,65 @@ public class NBTUtils extends NBTUtilsBase {
     @Override
     public Object newCompoundTag() {
         return new CompoundTag();
+    }
+
+    @Override
+    public ItemStack getItem(Object itemTag) {
+        if (itemTag == null || !(itemTag instanceof CompoundTag)) return null;
+        ItemStack item = null;
+        try {
+            net.minecraft.world.item.ItemStack nmsStack = net.minecraft.world.item.ItemStack.of((CompoundTag)itemTag);
+            item = CraftItemStack.asCraftMirror(nmsStack);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return item;
+    }
+    protected StringTag getTagString(String value) {
+        return StringTag.valueOf(value);
+    }
+
+    @Override
+    public Object setStringList(Object nbtBase, String tag, Collection<String> values) {
+        if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return null;
+        CompoundTag compoundTag = (CompoundTag)nbtBase;
+        ListTag listTag = new ListTag();
+
+        for (String value : values) {
+            StringTag nbtString = getTagString(value);
+            listTag.add(nbtString);
+        }
+
+        compoundTag.put(tag, listTag);
+        return listTag;
+    }
+
+    @Override
+    public List<String> getStringList(Object nbtBase, String key) {
+        List<String> list = new ArrayList<>();
+        if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return list;
+        CompoundTag compoundTag = (CompoundTag)nbtBase;
+        ListTag listTag = compoundTag.getList(key, CompatibilityConstants.NBT_TYPE_STRING);
+
+        if (listTag != null) {
+            Logger logger = platform.getLogger();
+            int size = listTag.size();
+            for (int i = 0; i < size; i++) {
+                // Doesn't seem like this is ever going to get resolved, mappings issue:
+                // https://hub.spigotmc.org/jira/browse/SPIGOT-6550
+                // Tag entry = listTag.get(i);
+                Tag entry = (Tag)ReflectionUtils.getListItem(logger, listTag, i);
+                list.add(entry.getAsString());
+            }
+        }
+        return list;
+    }
+
+    @Override
+    public Object getHandle(org.bukkit.inventory.ItemStack stack) {
+        if (stack == null || !(stack instanceof CraftItemStack)) {
+            return null;
+        }
+        return ReflectionUtils.getHandle(platform.getLogger(), stack, CraftItemStack.class);
     }
 }

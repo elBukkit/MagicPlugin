@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 public abstract class InventoryUtilsBase implements InventoryUtils {
@@ -60,9 +61,10 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item) {
-        Object handle = platform.getItemUtils().getHandle(item);
+        NBTUtils nbtUtils = platform.getNBTUtils();
+        Object handle = nbtUtils.getHandle(item);
         if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
+        Object tag = nbtUtils.getTag(handle);
         if (tag == null) return false;
 
         return addTagsToNBT(ConfigUtils.toMap(tags), tag);
@@ -71,9 +73,10 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     @Override
     public boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
     {
-        Object handle = platform.getItemUtils().getHandle(item);
+        NBTUtils nbtUtils = platform.getNBTUtils();
+        Object handle = nbtUtils.getHandle(item);
         if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
+        Object tag = nbtUtils.getTag(handle);
         if (tag == null) return false;
 
         return addTagsToNBT(tags, tag);
@@ -82,33 +85,34 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     @Override
     public boolean configureSkillItem(ItemStack skillItem, String skillClass, boolean quickCast, ConfigurationSection skillConfig) {
         if (skillItem == null) return false;
-        Object handle = platform.getItemUtils().getHandle(skillItem);
+        NBTUtils nbtUtils = platform.getNBTUtils();
+        Object handle = nbtUtils.getHandle(skillItem);
         if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
+        Object tag = nbtUtils.getTag(handle);
         if (tag == null) return false;
 
-        platform.getNBTUtils().setBoolean(tag, "skill", true);
+        nbtUtils.setBoolean(tag, "skill", true);
 
-        Object spellNode = platform.getNBTUtils().getTag(skillItem, "spell");
+        Object spellNode = nbtUtils.getTag(skillItem, "spell");
         if (skillClass != null && spellNode != null) {
-            platform.getNBTUtils().setString(spellNode, "class", skillClass);
+            nbtUtils.setString(spellNode, "class", skillClass);
         }
         if (skillConfig == null) {
             return true;
         }
 
         if (skillConfig.getBoolean("undroppable", false)) {
-            platform.getNBTUtils().setBoolean(tag, "undroppable", true);
+            nbtUtils.setBoolean(tag, "undroppable", true);
         }
         if (skillConfig.getBoolean("keep", false)) {
-            platform.getNBTUtils().setBoolean(tag, "keep", true);
+            nbtUtils.setBoolean(tag, "keep", true);
         }
         String quickCastString = skillConfig.getString("quick_cast", "");
         if (!quickCastString.equalsIgnoreCase("auto")) {
             quickCast = skillConfig.getBoolean("quick_cast", true);
         }
         if (!quickCast && spellNode != null) {
-            platform.getNBTUtils().setBoolean(spellNode, "quick_cast", false);
+            nbtUtils.setBoolean(spellNode, "quick_cast", false);
         }
 
         return true;

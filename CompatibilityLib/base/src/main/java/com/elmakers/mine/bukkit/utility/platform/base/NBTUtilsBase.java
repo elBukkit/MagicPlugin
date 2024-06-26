@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform.base;
 
+import java.util.Objects;
+
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
@@ -47,7 +49,7 @@ public abstract class NBTUtilsBase implements NBTUtils {
         if (platform.getItemUtils().isEmpty(stack)) return defaultValue;
         int result = defaultValue;
         try {
-            Object tagObject = platform.getItemUtils().getTag(stack);
+            Object tagObject = getTag(stack);
             if (tagObject == null) return defaultValue;
             Integer value = getOptionalInt(tagObject, tag);
             result = value == null ? defaultValue : value;
@@ -61,9 +63,9 @@ public abstract class NBTUtilsBase implements NBTUtils {
     public void setInt(ItemStack stack, String tag, int value) {
         if (platform.getItemUtils().isEmpty(stack)) return;
         try {
-            Object craft = platform.getItemUtils().getHandle(stack);
+            Object craft = getHandle(stack);
             if (craft == null) return;
-            Object tagObject = platform.getItemUtils().getTag(craft);
+            Object tagObject = getTag(craft);
             if (tagObject == null) return;
             setInt(tagObject, tag, value);
         } catch (Throwable ex) {
@@ -76,9 +78,9 @@ public abstract class NBTUtilsBase implements NBTUtils {
         if (platform.getItemUtils().isEmpty(stack)) return;
 
         try {
-            Object craft = platform.getItemUtils().getHandle(stack);
+            Object craft = getHandle(stack);
             if (craft == null) return;
-            Object tagObject = platform.getItemUtils().getTag(craft);
+            Object tagObject = getTag(craft);
             if (tagObject == null) return;
             removeMeta(tagObject, tag);
         } catch (Throwable ex) {
@@ -116,9 +118,9 @@ public abstract class NBTUtilsBase implements NBTUtils {
     public void setBoolean(ItemStack stack, String tag, boolean value) {
         if (platform.getItemUtils().isEmpty(stack)) return;
         try {
-            Object craft = platform.getItemUtils().getHandle(stack);
+            Object craft = getHandle(stack);
             if (craft == null) return;
-            Object tagObject = platform.getItemUtils().getTag(craft);
+            Object tagObject = getTag(craft);
             if (tagObject == null) return;
             setBoolean(tagObject, tag, value);
         } catch (Throwable ex) {
@@ -131,7 +133,7 @@ public abstract class NBTUtilsBase implements NBTUtils {
         if (platform.getItemUtils().isEmpty(stack)) return defaultValue;
         boolean result = defaultValue;
         try {
-            Object tagObject = platform.getItemUtils().getTag(stack);
+            Object tagObject = getTag(stack);
             if (tagObject == null) return defaultValue;
             Boolean value = getOptionalBoolean(tagObject, tag);
             result = value == null ? defaultValue : value;
@@ -139,5 +141,12 @@ public abstract class NBTUtilsBase implements NBTUtils {
             ex.printStackTrace();
         }
         return result;
+    }
+
+    @Override
+    public boolean hasSameTags(ItemStack first, ItemStack second) {
+        Object firstTag = getTag(first);
+        Object secondTag = getTag(second);
+        return Objects.equals(firstTag, secondTag);
     }
 }

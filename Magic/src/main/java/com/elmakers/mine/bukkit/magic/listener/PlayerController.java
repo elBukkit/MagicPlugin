@@ -381,7 +381,7 @@ public class PlayerController implements Listener {
         // I wish there was a better way, or that Spigot wouldn't pre-emptively delete the item on drop.
         ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
         final boolean droppedSpell = Wand.isSpell(droppedItem) || Wand.isBrush(droppedItem);
-        final boolean droppedWand = activeItem != null && CompatibilityLib.getItemUtils().hasSameTags(droppedItem, activeItem);
+        final boolean droppedWand = activeItem != null && CompatibilityLib.getNBTUtils().hasSameTags(droppedItem, activeItem);
         boolean inSpellInventory = activeWand != null && activeWand.isInventoryOpen();
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds

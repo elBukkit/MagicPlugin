@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.utility.platform.base;
 
-import java.util.Objects;
-
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
@@ -105,14 +103,7 @@ public abstract class ItemUtilsBase implements ItemUtils {
         if (first.getType() != second.getType()) return false;
         DeprecatedUtils deprecatedUtils = platform.getDeprecatedUtils();
         if (deprecatedUtils.getItemDamage(first) != deprecatedUtils.getItemDamage(second)) return false;
-        return hasSameTags(first, second);
-    }
-
-    @Override
-    public boolean hasSameTags(ItemStack first, ItemStack second) {
-        Object firstTag = getTag(first);
-        Object secondTag = getTag(second);
-        return Objects.equals(firstTag, secondTag);
+        return platform.getNBTUtils().hasSameTags(first, second);
     }
 }
 

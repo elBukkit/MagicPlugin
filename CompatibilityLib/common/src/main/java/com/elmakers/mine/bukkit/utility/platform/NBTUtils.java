@@ -3,13 +3,19 @@ package com.elmakers.mine.bukkit.utility.platform;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {
+    Object getHandle(org.bukkit.inventory.ItemStack stack);
 
     boolean containsTag(ItemStack stack, String tag);
+
+    Object getTag(Object mcItemStack);
+
+    Object getTag(ItemStack itemStack);
 
     Object getTag(ItemStack stack, String tag);
 
@@ -96,4 +102,12 @@ public interface NBTUtils {
     Collection<Object> getTagList(Object tag, String key);
 
     Object newCompoundTag();
+
+    Object setStringList(Object nbtBase, String tag, Collection<String> values);
+
+    List<String> getStringList(Object nbtBase, String tag);
+
+    ItemStack getItem(Object itemTag);
+
+    boolean hasSameTags(ItemStack first, ItemStack second);
 }

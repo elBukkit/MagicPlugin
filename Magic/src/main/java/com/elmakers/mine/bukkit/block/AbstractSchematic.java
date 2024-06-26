@@ -127,7 +127,7 @@ public abstract class AbstractSchematic implements Schematic {
                 if (rotation < Rotation.values().length) {
                     rot = Rotation.values()[rotation];
                 }
-                ItemStack item = CompatibilityLib.getItemUtils().getItem(CompatibilityLib.getNBTUtils().getTag(entity, "Item"));
+                ItemStack item = CompatibilityLib.getNBTUtils().getItem(CompatibilityLib.getNBTUtils().getTag(entity, "Item"));
                 EntityData itemFrame = com.elmakers.mine.bukkit.entity.EntityData.loadItemFrame(controller, position, item, getFacing(facing), rot);
                 entities.add(itemFrame);
             }

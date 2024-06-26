@@ -98,7 +98,7 @@ public class ConfigurationUtils extends ConfigUtils {
         if (item == null) {
             return false;
         }
-        Object tag = CompatibilityLib.getItemUtils().getTag(item);
+        Object tag = CompatibilityLib.getNBTUtils().getTag(item);
         if (tag == null) return false;
 
         return loadAllTagsFromNBT(tags, tag);

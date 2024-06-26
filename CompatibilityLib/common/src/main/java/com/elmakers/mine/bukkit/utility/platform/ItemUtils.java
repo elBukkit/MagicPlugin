@@ -1,17 +1,8 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
-import java.util.Collection;
-import java.util.List;
-
 import org.bukkit.inventory.ItemStack;
 
 public interface ItemUtils {
-    Object getHandle(org.bukkit.inventory.ItemStack stack);
-
-    Object getTag(Object mcItemStack);
-
-    Object getTag(ItemStack itemStack);
-
     ItemStack getCopy(ItemStack stack);
 
     ItemStack makeReal(ItemStack stack);
@@ -46,13 +37,5 @@ public interface ItemUtils {
 
     boolean isEmpty(ItemStack itemStack);
 
-    Object setStringList(Object nbtBase, String tag, Collection<String> values);
-
-    List<String> getStringList(Object nbtBase, String tag);
-
-    ItemStack[] getItems(Object rootTag, String tagName);
-
     boolean isSameItem(ItemStack first, ItemStack second);
-
-    boolean hasSameTags(ItemStack first, ItemStack second);
 }

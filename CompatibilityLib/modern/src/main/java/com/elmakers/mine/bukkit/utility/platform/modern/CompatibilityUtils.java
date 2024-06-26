@@ -133,7 +133,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
-import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
@@ -1648,7 +1648,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         }
         dummyItem.setAmount(64);
         ServerLevel nmsWorld = ((CraftWorld)location.getWorld()).getHandle();
-        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)platform.getItemUtils().getHandle(dummyItem);
+        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)platform.getNBTUtils().getHandle(dummyItem);
         BlockPos blockPosition = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
         return BoneMealItem.growCrop(itemStack, nmsWorld, blockPosition);
     }
@@ -1825,7 +1825,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         ItemStack blockItem = new ItemStack(block.getType());
         ServerPlayer originatorHandle = ((CraftPlayer)originator).getHandle();
         ServerLevel world = ((CraftWorld)block.getWorld()).getHandle();
-        Object item = platform.getItemUtils().getHandle(platform.getItemUtils().makeReal(blockItem));
+        Object item = platform.getNBTUtils().getHandle(platform.getItemUtils().makeReal(blockItem));
         if (originatorHandle == null || world == null || item == null) {
             return false;
         }
@@ -1933,7 +1933,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             meta.setPower(power);
             itemStack.setItemMeta(meta);
 
-            Object item = platform.getItemUtils().getHandle(platform.getItemUtils().makeReal(itemStack));
+            Object item = platform.getNBTUtils().getHandle(platform.getItemUtils().makeReal(itemStack));
             final FireworkRocketEntity fireworkHandle = new FireworkRocketEntity(level, location.getX(), location.getY(), location.getZ(), (net.minecraft.world.item.ItemStack)item);
             fireworkHandle.setSilent(silent);
 
@@ -2153,8 +2153,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
 
     @Override
     public boolean setRawLore(ItemStack itemStack, List<String> lore) {
-        ItemUtils itemUtils = platform.getItemUtils();
-        Object handle = itemUtils.getHandle(itemStack);
+        NBTUtils nbtUtils = platform.getNBTUtils();
+        Object handle = nbtUtils.getHandle(itemStack);
         if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) {
             return false;
         }
@@ -2163,14 +2163,14 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         if (tag == null) return false;
 
         CompoundTag displayNode = tag.getCompound("display");
-        itemUtils.setStringList(displayNode, "Lore", lore);
+        nbtUtils.setStringList(displayNode, "Lore", lore);
         return true;
     }
 
     @Override
     public List<String> getRawLore(ItemStack itemStack) {
-        ItemUtils itemUtils = platform.getItemUtils();
-        Object handle = itemUtils.getHandle(itemStack);
+        NBTUtils nbtUtils = platform.getNBTUtils();
+        Object handle = nbtUtils.getHandle(itemStack);
         if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) {
             return new ArrayList<>();
         }
@@ -2179,7 +2179,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         if (tag == null) return new ArrayList<>();
 
         CompoundTag displayNode = tag.getCompound("display");
-        return itemUtils.getStringList(displayNode, "Lore");
+        return nbtUtils.getStringList(displayNode, "Lore");
     }
 
     @Override
