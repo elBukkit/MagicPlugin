@@ -26,185 +26,159 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 
+import de.tr7zw.nbtapi.NBT;
+import de.tr7zw.nbtapi.iface.ReadWriteNBT;
+
 public class NBTUtils extends NBTUtilsBase {
     public NBTUtils(Platform platform) {
         super(platform);
     }
 
     @Override
-    public Object getTag(ItemStack stack, String tag) {
+    public ReadWriteNBT getTag(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
-        Object tagObject = getTag(stack);
-        if (tagObject == null || !(tagObject instanceof CompoundTag)) return null;
-        return ((CompoundTag)tagObject).get(tag);
+        ReadWriteNBT tagObject = getTag(stack);
+        if (tagObject == null) return null;
+        return tagObject.getCompound(tag);
     }
 
     @Override
-    public Object getTag(Object nbtBase, String tag) {
-        if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return null;
-        return ((CompoundTag)nbtBase).get(tag);
+    public ReadWriteNBT getTag(Object nbtBase, String tag) {
+        if (nbtBase == null || !(nbtBase instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)nbtBase).getCompound(tag);
     }
 
     @Override
-    public Object getTag(ItemStack itemStack) {
-        Object tag = null;
-        try {
-            Object mcItemStack = getHandle(itemStack);
-            if (mcItemStack == null) {
-                if (itemStack.hasItemMeta()) {
-                    mcItemStack = getHandle(itemStack);
-                }
-            }
-            if (mcItemStack == null) return null;
-            net.minecraft.world.item.ItemStack stack = (net.minecraft.world.item.ItemStack)mcItemStack;
-            tag = stack.getTag();
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return tag;
+    public ReadWriteNBT getTag(ItemStack itemStack) {
+        return NBT.itemStackToNBT(itemStack);
     }
 
     @Override
     public Set<String> getAllKeys(Object nbtBase) {
-        if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return null;
-        return ((CompoundTag)nbtBase).getAllKeys();
+        if (nbtBase == null || !(nbtBase instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)nbtBase).getKeys();
     }
 
     @Override
     public boolean contains(Object nbtBase, String tag) {
-        if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return false;
-        return ((CompoundTag)nbtBase).contains(tag);
+        if (nbtBase == null || !(nbtBase instanceof ReadWriteNBT)) return false;
+        return ((ReadWriteNBT)nbtBase).hasTag(tag);
     }
 
     @Override
     public Object createTag(Object nbtBase, String tag) {
-        if (nbtBase == null || !(nbtBase instanceof CompoundTag)) return null;
+        if (nbtBase == null || !(nbtBase instanceof ReadWriteNBT)) return null;
 
-        CompoundTag compoundTag = (CompoundTag)nbtBase;
-        CompoundTag meta = compoundTag.getCompound(tag);
-        // Strangely getCompound always returns non-null, but the tag it returns
-        // if not found in the parent is not connected to the parent.
-        compoundTag.put(tag, meta);
-        return meta;
+        ReadWriteNBT compoundTag = (ReadWriteNBT)nbtBase;
+        return compoundTag.resolveOrCreateCompound(tag);
     }
 
     @Override
     public Object createTag(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
-        Object outputObject = getTag(stack, tag);
-        if (outputObject == null || !(outputObject instanceof CompoundTag)) {
-            CompoundTag tagObject = getTag(stack);
-            if (tagObject == null) {
-                tagObject = new CompoundTag();
-                ((net.minecraft.world.item.ItemStack)craft).setTag(tagObject);
-            }
-            outputObject = new CompoundTag();
-            tagObject.put(tag, (CompoundTag)outputObject);
-        }
-        return outputObject;
+        ReadWriteNBT base = getTag(stack);
+        return createTag(base, tag);
     }
 
     @Override
     public byte[] getByteArray(Object tag, String key) {
-        if (tag == null || !(tag instanceof CompoundTag)) return null;
-        return ((CompoundTag)tag).getByteArray(key);
+        if (tag == null || !(tag instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)tag).getByteArray(key);
     }
 
     @Override
     public int[] getIntArray(Object tag, String key) {
-        if (tag == null || !(tag instanceof CompoundTag)) return null;
-        return ((CompoundTag)tag).getIntArray(key);
+        if (tag == null || !(tag instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)tag).getIntArray(key);
     }
 
     @Override
     public String getString(Object node, String tag) {
-        if (node == null || !(node instanceof CompoundTag)) return null;
-        return ((CompoundTag)node).getString(tag);
+        if (node == null || !(node instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)node).getString(tag);
     }
 
     @Override
     public String getString(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
-        String meta = null;
-        Object tagObject = getTag(stack);
-        if (tagObject == null || !(tagObject instanceof CompoundTag)) return null;
-        meta = ((CompoundTag)tagObject).getString(tag);
-        return meta;
+        ReadWriteNBT tagObject = getTag(stack);
+        if (tagObject == null) return null;
+        return tagObject.getString(tag);
     }
 
     @Override
     public Byte getOptionalByte(Object node, String tag) {
-        if (node == null || !(node instanceof CompoundTag)) return null;
-        return ((CompoundTag)node).getByte(tag);
+        if (node == null || !(node instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)node).getByte(tag);
     }
 
     @Override
     public Integer getOptionalInt(Object node, String tag) {
-        if (node == null || !(node instanceof CompoundTag)) return null;
-        return ((CompoundTag)node).getInt(tag);
+        if (node == null || !(node instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)node).getInteger(tag);
     }
 
     @Override
     public Short getOptionalShort(Object node, String tag) {
-        if (node == null || !(node instanceof CompoundTag)) return null;
-        return ((CompoundTag)node).getShort(tag);
+        if (node == null || !(node instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)node).getShort(tag);
     }
 
     @Override
     public Double getOptionalDouble(Object node, String tag) {
-        if (node == null || !(node instanceof CompoundTag)) return null;
-        return ((CompoundTag)node).getDouble(tag);
+        if (node == null || !(node instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)node).getDouble(tag);
     }
 
     @Override
     public Boolean getOptionalBoolean(Object node, String tag) {
-        if (node == null || !(node instanceof CompoundTag)) return null;
-        return ((CompoundTag)node).getBoolean(tag);
+        if (node == null || !(node instanceof ReadWriteNBT)) return null;
+        return ((ReadWriteNBT)node).getBoolean(tag);
     }
 
     @Override
     public void setLong(Object node, String tag, long value) {
-        if (node == null || !(node instanceof CompoundTag)) return;
-        ((CompoundTag)node).putLong(tag, value);
+        if (node == null || !(node instanceof ReadWriteNBT)) return;
+        ((ReadWriteNBT)node).setLong(tag, value);
     }
 
     @Override
     public void setBoolean(Object node, String tag, boolean value) {
-        if (node == null || !(node instanceof CompoundTag)) return;
-        ((CompoundTag)node).putBoolean(tag, value);
+        if (node == null || !(node instanceof ReadWriteNBT)) return;
+        ((ReadWriteNBT)node).setBoolean(tag, value);
     }
 
     @Override
     public void setDouble(Object node, String tag, double value) {
-        if (node == null || !(node instanceof CompoundTag)) return;
-        ((CompoundTag)node).putDouble(tag, value);
+        if (node == null || !(node instanceof ReadWriteNBT)) return;
+        ((ReadWriteNBT)node).setDouble(tag, value);
     }
 
     @Override
     public void setInt(Object node, String tag, int value) {
-        if (node == null || !(node instanceof CompoundTag)) return;
-        ((CompoundTag)node).putInt(tag, value);
+        if (node == null || !(node instanceof ReadWriteNBT)) return;
+        ((ReadWriteNBT)node).setInteger(tag, value);
     }
 
     @Override
     public void setMetaShort(Object node, String tag, short value) {
-        if (node == null || !(node instanceof CompoundTag)) return;
-        ((CompoundTag)node).putShort(tag, value);
+        if (node == null || !(node instanceof ReadWriteNBT)) return;
+        ((ReadWriteNBT)node).setShort(tag, value);
     }
 
     @Override
     public void removeMeta(Object node, String tag) {
-        if (node == null || !(node instanceof CompoundTag)) return;
-        ((CompoundTag)node).remove(tag);
+        if (node == null || !(node instanceof ReadWriteNBT)) return;
+        ((ReadWriteNBT)node).removeKey(tag);
     }
 
     @Override
     public void setTag(Object node, String tag, Object child) {
-        if (node == null || !(node instanceof CompoundTag)) return;
+        if (node == null || !(node instanceof ReadWriteNBT)) return;
         if (child == null) {
-            ((CompoundTag)node).remove(tag);
-        } else if (child instanceof Tag) {
-            ((CompoundTag)node).put(tag, (Tag)child);
+            ((ReadWriteNBT)node).removeKey(tag);
+        } else if (child instanceof ReadWriteNBT) {
+            ((ReadWriteNBT)node).
         }
     }
 
@@ -308,7 +282,7 @@ public class NBTUtils extends NBTUtilsBase {
 
     @Override
     public Object newCompoundTag() {
-        return new CompoundTag();
+        return NBT.createNBTObject();
     }
 
     @Override
