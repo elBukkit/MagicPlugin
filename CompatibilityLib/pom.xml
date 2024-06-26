@@ -45,16 +45,6 @@
         <module>base</module>
         <module>paper</module>
         <module>spigot</module>
-        <module>legacy</module>
-        <module>v1_9</module>
-        <module>v1_10</module>
-        <module>v1_11</module>
-        <module>v1_12</module>
-        <module>v1_13</module>
-        <module>v1_14</module>
-        <module>v1_15</module>
-        <module>v1_16</module>
-        <module>modern</module>
         <module>v1_20_4</module>
         <module>main</module>
     </modules>

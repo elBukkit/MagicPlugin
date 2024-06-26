@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.base.entity;
+package com.elmakers.mine.bukkit.utility.platform.v1_20_4.entity;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,11 +45,14 @@ public class EntityHorseData extends EntityAbstractHorseData {
         temporaryArmor = parameters.getBoolean("armor_temporary");
     }
 
-    public EntityHorseData(Horse horse, MageController controller) {
-        super(horse);
-        color = horse.getColor();
-        style = horse.getStyle();
-        armor = getItem(horse.getInventory().getArmor(), controller);
+    public EntityHorseData(Entity entity, MageController controller) {
+        super(entity, controller);
+        if (entity instanceof Horse) {
+            Horse horse = (Horse)entity;
+            color = horse.getColor();
+            style = horse.getStyle();
+            armor = getItem(horse.getInventory().getArmor(), controller);
+        }
     }
 
     @Override
@@ -72,33 +75,5 @@ public class EntityHorseData extends EntityAbstractHorseData {
         if (style != null) {
             horse.setStyle(style);
         }
-    }
-
-    @Override
-    public boolean cycle(Entity entity) {
-        if (!canCycle(entity)) {
-            return false;
-        }
-
-        Horse horse = (Horse)entity;
-
-        Horse.Color color = horse.getColor();
-        Horse.Color[] colorValues = Horse.Color.values();
-        color = colorValues[(color.ordinal() + 1) % colorValues.length];
-
-        Horse.Style horseStyle = horse.getStyle();
-        Horse.Style[] styleValues = Horse.Style.values();
-        horseStyle = styleValues[(horseStyle.ordinal() + 1) % styleValues.length];
-
-        horse.setStyle(horseStyle);
-        horse.setColor(color);
-
-        return true;
-    }
-
-
-    @Override
-    public boolean canCycle(Entity entity) {
-        return entity instanceof Horse;
     }
 }

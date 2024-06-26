@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern;
+package com.elmakers.mine.bukkit.utility.platform.v1_20_4;
 
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -18,8 +18,8 @@ import com.elmakers.mine.bukkit.utility.platform.base.SchematicUtilsBase;
 import com.elmakers.mine.bukkit.utility.schematic.LoadableSchematic;
 import com.google.common.primitives.Bytes;
 
-public class ModernSchematicUtils extends SchematicUtilsBase {
-    public ModernSchematicUtils(Platform platform) {
+public class SchematicUtils extends SchematicUtilsBase {
+    public SchematicUtils(Platform platform) {
         super(platform);
     }
 
