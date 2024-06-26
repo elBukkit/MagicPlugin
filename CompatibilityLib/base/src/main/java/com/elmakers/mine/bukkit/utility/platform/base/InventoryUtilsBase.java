@@ -195,8 +195,8 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     @Override
     public ItemStack setSkullURL(ItemStack itemStack, String url) {
         try {
-            // Using a fixed non-random UUID here so skulls of the same type can stack
-            return setSkullURL(itemStack, new URL(url), CompatibilityConstants.SKULL_UUID);
+            // Using a deterministic non-random UUID derived from the skull url here so skulls of the same type can stack
+            return setSkullURL(itemStack, new URL(url), UUID.nameUUIDFromBytes(url.getBytes()));
         } catch (MalformedURLException e) {
             platform.getLogger().log(Level.WARNING, "Malformed URL: " + url, e);
         }
