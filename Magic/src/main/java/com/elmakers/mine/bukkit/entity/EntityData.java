@@ -1109,7 +1109,7 @@ public class EntityData
     private void applyBrain(Entity entity) {
         if (brain == null) return;
 
-        controller.getLogger().warning("Custom AI is no longer supported, sorry! (Found in " + getKey() + ")");
+        controller.info("Custom AI is no longer supported, sorry! (Found in " + getKey() + ")");
     }
 
     public void applyAttributes(LivingEntity entity) {
