@@ -25,7 +25,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_20_4</artifactId>
+            <artifactId>CompatibilityLib-modern</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>

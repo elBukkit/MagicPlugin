@@ -60,7 +60,7 @@
         <module>base</module>
         <module>paper</module>
         <module>spigot</module>
-        <module>v1_20_4</module>
+        <module>modern</module>
         <module>main</module>
     </modules>
 </project>
