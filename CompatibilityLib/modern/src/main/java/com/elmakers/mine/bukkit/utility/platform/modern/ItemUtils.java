@@ -186,19 +186,6 @@ public class ItemUtils extends ItemUtilsBase {
     }
 
     @Override
-    public ItemStack getItem(Object itemTag) {
-        if (itemTag == null || !(itemTag instanceof CompoundTag)) return null;
-        ItemStack item = null;
-        try {
-            net.minecraft.world.item.ItemStack nmsStack = net.minecraft.world.item.ItemStack.of((CompoundTag)itemTag);
-            item = CraftItemStack.asCraftMirror(nmsStack);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return item;
-    }
-
-    @Override
     public ItemStack[] getItems(Object rootTag, String tagName) {
         if (rootTag == null || !(rootTag instanceof CompoundTag)) return null;
         CompoundTag compoundTag = (CompoundTag)rootTag;

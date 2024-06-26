@@ -50,8 +50,6 @@ public interface ItemUtils {
 
     List<String> getStringList(Object nbtBase, String tag);
 
-    ItemStack getItem(Object itemTag);
-
     ItemStack[] getItems(Object rootTag, String tagName);
 
     boolean isSameItem(ItemStack first, ItemStack second);
