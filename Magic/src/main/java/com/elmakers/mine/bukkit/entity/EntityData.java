@@ -53,14 +53,11 @@ import com.elmakers.mine.bukkit.boss.BossBarTracker;
 import com.elmakers.mine.bukkit.configuration.MageParameters;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
-import com.elmakers.mine.bukkit.mob.GoalConfiguration;
-import com.elmakers.mine.bukkit.mob.GoalType;
 import com.elmakers.mine.bukkit.tasks.DisguiseTask;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
-import com.elmakers.mine.bukkit.utility.platform.MobUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
@@ -1112,98 +1109,7 @@ public class EntityData
     private void applyBrain(Entity entity) {
         if (brain == null) return;
 
-        // See if there are any custom goals
-        MobUtils mobUtils = CompatibilityLib.getMobUtils();
-        Collection<GoalConfiguration> goals = GoalConfiguration.fromList(brain, "goals",  controller.getLogger(), "mob " + getKey());
-
-        // Remove any existing goals first
-        boolean removeDefaultGoals = brain.getBoolean("remove_default_goals", goals != null && !goals.isEmpty());
-        if (removeDefaultGoals) {
-            if (!mobUtils.removeGoals(entity)) {
-                // This indicates we don't have support for goals, so just stop here.
-                return;
-            }
-        }
-        List<String> removeGoals = ConfigurationUtils.getStringList(brain, "remove_goals");
-        if (removeGoals != null) {
-            for (String goalKey : removeGoals) {
-                GoalType goalType;
-                try {
-                    goalType = GoalType.valueOf(goalKey.toUpperCase());
-                } catch (Exception ex) {
-                    controller.getLogger().info("Invalid goal type in remove_goals of mob " + getKey() + ": " + goalKey);
-                    continue;
-                }
-                mobUtils.removeGoal(entity, goalType);
-            }
-        }
-
-        // Apply custom goals
-        applyGoals(entity, goals);
-
-        // Now look for target goals
-        Collection<GoalConfiguration> targets = GoalConfiguration.fromList(brain, "targets",  controller.getLogger(), "mob " + getKey());
-
-        // Remove any existing goals first
-        boolean removeDefaultTargets = brain.getBoolean("remove_default_targets", targets != null && !targets.isEmpty());
-        if (removeDefaultTargets) {
-            if (!mobUtils.removeTargetGoals(entity)) {
-                // This indicates we don't have support for goals, so just stop here.
-                return;
-            }
-        }
-        List<String> removeTargets = ConfigurationUtils.getStringList(brain, "remove_targets");
-        if (removeTargets != null) {
-            for (String goalKey : removeTargets) {
-                GoalType goalType;
-                try {
-                    goalType = GoalType.valueOf(goalKey.toUpperCase());
-                } catch (Exception ex) {
-                    controller.getLogger().info("Invalid goal type in remove_targets of mob " + getKey() + ": " + goalKey);
-                    continue;
-                }
-                mobUtils.removeTargetGoal(entity, goalType);
-            }
-        }
-
-        // Apply custom goals
-        applyTargetGoals(entity, targets);
-    }
-
-    private void applyGoals(Entity entity, Collection<GoalConfiguration> goals) {
-        MobUtils mobUtils = CompatibilityLib.getMobUtils();
-        if (goals == null || goals.isEmpty()) {
-            return;
-        }
-
-        // Goals require AI, turn it on no matter what
-        if (entity instanceof LivingEntity) {
-            ((LivingEntity)entity).setAI(true);
-        }
-        for (GoalConfiguration goal : goals) {
-            goal.setDefault("interval", interval);
-            if (!mobUtils.addGoal(entity, goal)) {
-                controller.getLogger().warning("Invalid goal " + goal.getGoalType() + " for mob type " + entity.getType().name().toLowerCase());
-            }
-        }
-    }
-
-    private void applyTargetGoals(Entity entity, Collection<GoalConfiguration> goals) {
-        MobUtils mobUtils = CompatibilityLib.getMobUtils();
-        if (goals == null || goals.isEmpty()) {
-            return;
-        }
-
-        // Goals require AI, turn it on no matter what
-        if (entity instanceof LivingEntity) {
-            ((LivingEntity)entity).setAI(true);
-        }
-        for (GoalConfiguration goal : goals) {
-            goal.setDefault("interval", interval);
-            if (!mobUtils.addTargetGoal(entity, goal)) {
-                controller.getLogger().warning("Invalid target goal " + goal.getGoalType() + " for mob type " + entity.getType().name().toLowerCase());
-            }
-        }
+        controller.getLogger().warning("Custom AI is no longer supported, sorry! (Found in " + getKey() + ")");
     }
 
     public void applyAttributes(LivingEntity entity) {

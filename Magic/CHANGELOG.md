@@ -1,6 +1,11 @@
 
 # CHANGELOG
 
+# 11.0.0
+
+ - Removed backwards compatibility
+ - Removed custom mob AI (removed support for "brain" property)
+
 # 10.9
 
 ## CHANGES
