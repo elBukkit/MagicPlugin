@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import java.lang.reflect.Constructor;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 
@@ -25,8 +23,8 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.v1_20_4.event.EntityTransformController;
-import com.elmakers.mine.bukkit.utility.platform.v1_20_4.event.TimeListener;
+import com.elmakers.mine.bukkit.utility.platform.modern.event.EntityTransformController;
+import com.elmakers.mine.bukkit.utility.platform.modern.event.TimeListener;
 
 public class CompatibilityLib extends PlatformInterpreter {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
@@ -41,35 +39,11 @@ public class CompatibilityLib extends PlatformInterpreter {
             return false;
         }
         int minorVersion = version[1];
-        if (minorVersion < 9) {
+        if (minorVersion != 20) {
             logger.severe("Not compatible with version: " + versionDescription);
             return false;
         }
-        if (minorVersion >= 17) {
-            logger.info("Loading modern compatibility layer for server version " + versionDescription);
-            try {
-                String versionPackage = StringUtils.join(ArrayUtils.toObject(version), "_");
-                Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
-                Constructor<?> platformConstructor = platformClass.getConstructor(MageController.class);
-                platform = (Platform)platformConstructor.newInstance(controller);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Failed to load compatibility layer, the plugin may need to be updated to work with your server version", ex);
-                return false;
-            }
-        } else {
-            versionDescription = version[0] + "." + version[1];
-            logger.info("Loading legacy compatibility layer for server version " + versionDescription);
-            try {
-                // No minor minor version numbers here
-                String versionPackage = version[0] + "_" + version[1];
-                Class<?> platformClass = Class.forName("com.elmakers.mine.bukkit.utility.platform.v" + versionPackage + ".Platform");
-                Constructor<?> platformConstructor = platformClass.getConstructor(MageController.class);
-                platform = (Platform)platformConstructor.newInstance(controller);
-            } catch (Exception ex) {
-                logger.log(Level.SEVERE, "Failed to load compatibility layer, this is unexpected for legacy versions, please report this error", ex);
-                return false;
-            }
-        }
+        platform = new com.elmakers.mine.bukkit.utility.platform.modern.Platform(controller);
         return initialize(platform);
     }
 
