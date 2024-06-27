@@ -1155,4 +1155,9 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
         return null;
     }
+
+    @Override
+    public Enchantment getInfinityEnchantment() {
+        return Enchantment.ARROW_INFINITE;
+    }
 }

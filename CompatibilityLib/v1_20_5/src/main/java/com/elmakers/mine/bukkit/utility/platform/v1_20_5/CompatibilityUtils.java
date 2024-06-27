@@ -1793,4 +1793,9 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
         return new OutOfBoundsEntityCleanup(logger);
     }
+
+    @Override
+    public Enchantment getInfinityEnchantment() {
+        return Enchantment.INFINITY;
+    }
 }

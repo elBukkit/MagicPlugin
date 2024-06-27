@@ -556,4 +556,6 @@ public interface CompatibilityUtils {
 
     @Nullable
     BlockPopulator createOutOfBoundsPopulator(Logger logger);
+
+    Enchantment getInfinityEnchantment();
 }

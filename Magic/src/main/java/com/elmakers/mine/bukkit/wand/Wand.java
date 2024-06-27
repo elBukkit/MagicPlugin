@@ -2566,7 +2566,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         isCostFree = false;
         if (getBoolean("infinity_cost_free", false)) {
             ItemMeta itemMeta = item.getItemMeta();
-            if (itemMeta != null && itemMeta.hasEnchant(Enchantment.ARROW_INFINITE)) {
+            if (itemMeta != null && itemMeta.hasEnchant(CompatibilityLib.getPlatform().getCompatibilityUtils().getInfinityEnchantment())) {
                 isCostFree = true;
             }
         }
