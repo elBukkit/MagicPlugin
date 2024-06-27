@@ -107,6 +107,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernCompatibilityUtils;
@@ -1657,15 +1658,11 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public boolean setRawLore(ItemStack itemStack, List<String> lore) {
         ItemUtils itemUtils = platform.getItemUtils();
-        Object handle = itemUtils.getHandle(itemStack);
-        if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) {
-            return false;
-        }
-        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)handle;
-        CompoundTag tag = mcItemStack.getTag();
+        Object tag = itemUtils.getTag(itemStack);
         if (tag == null) return false;
 
-        CompoundTag displayNode = tag.getCompound("display");
+        NBTUtils nbtUtils = platform.getNBTUtils();
+        Object displayNode = nbtUtils.getTag(tag, "display");
         itemUtils.setStringList(displayNode, "Lore", lore);
         return true;
     }
@@ -1673,15 +1670,11 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public List<String> getRawLore(ItemStack itemStack) {
         ItemUtils itemUtils = platform.getItemUtils();
-        Object handle = itemUtils.getHandle(itemStack);
-        if (handle == null || !(handle instanceof net.minecraft.world.item.ItemStack)) {
-            return new ArrayList<>();
-        }
-        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)handle;
-        CompoundTag tag = mcItemStack.getTag();
+        Object tag = itemUtils.getTag(itemStack);
         if (tag == null) return new ArrayList<>();
 
-        CompoundTag displayNode = tag.getCompound("display");
+        NBTUtils nbtUtils = platform.getNBTUtils();
+        Object displayNode = nbtUtils.getTag(tag, "display");
         return itemUtils.getStringList(displayNode, "Lore");
     }
 

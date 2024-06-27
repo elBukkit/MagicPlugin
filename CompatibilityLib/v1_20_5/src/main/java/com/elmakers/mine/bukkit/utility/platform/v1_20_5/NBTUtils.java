@@ -15,7 +15,7 @@ import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
 
-import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.IntArrayTag;
@@ -23,6 +23,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.NbtAccounter;
 import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.component.CustomData;
 
 public class NBTUtils extends NBTUtilsBase {
     public NBTUtils(Platform platform) {
@@ -74,7 +75,15 @@ public class NBTUtils extends NBTUtilsBase {
         if (outputObject == null || !(outputObject instanceof CompoundTag)) {
             Object craft = platform.getItemUtils().getHandle(stack);
             if (craft == null) return null;
-            DataComponentPatch tagObject = (DataComponentPatch)platform.getItemUtils().getTag(craft);
+
+            CompoundTag tagObject = (CompoundTag)platform.getItemUtils().getTag(craft);
+            if (tagObject == null) {
+                tagObject = new CompoundTag();
+                // This makes a copy
+                CustomData customData = CustomData.of(tagObject);
+                tagObject = customData.getUnsafe();
+                ((net.minecraft.world.item.ItemStack)craft).set(DataComponents.CUSTOM_DATA, customData);
+            }
             outputObject = new CompoundTag();
             tagObject.put(tag, (CompoundTag)outputObject);
         }

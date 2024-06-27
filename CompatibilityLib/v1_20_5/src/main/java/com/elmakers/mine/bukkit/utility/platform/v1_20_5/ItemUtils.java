@@ -18,11 +18,12 @@ import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
 
-import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.component.CustomData;
 
 public class ItemUtils extends ItemUtilsBase {
     public ItemUtils(Platform platform) {
@@ -38,15 +39,16 @@ public class ItemUtils extends ItemUtilsBase {
     }
 
     @Override
-    public DataComponentPatch getTag(Object mcItemStack) {
+    public CompoundTag getTag(Object mcItemStack) {
         if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
-        return itemStack.getComponentsPatch();
+        CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
+        return customData == null ? null : customData.getUnsafe();
     }
 
     @Override
-    public Object getTag(ItemStack itemStack) {
-        Object tag = null;
+    public CompoundTag getTag(ItemStack itemStack) {
+        CompoundTag tag = null;
         try {
             Object mcItemStack = getHandle(itemStack);
             if (mcItemStack == null) {
@@ -57,7 +59,7 @@ public class ItemUtils extends ItemUtilsBase {
             }
             if (mcItemStack == null) return null;
             net.minecraft.world.item.ItemStack stack = (net.minecraft.world.item.ItemStack)mcItemStack;
-            tag = stack.getComponentsPatch();
+            tag = getTag(stack);
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
