@@ -3,8 +3,8 @@
 
 # 10.9.1
 
- - Support for Minecraft 1.20.5 (currently very experimental, proceed with caution!)
- - ... coming soon, maybe, support for 1.20.6 and 1.21
+ - Support for Minecraft 1.20.5 and 1.20.6 (currently very experimental, proceed with caution!)
+ - ... coming soon, maybe, support for 1.21
 
 # 10.9
 
