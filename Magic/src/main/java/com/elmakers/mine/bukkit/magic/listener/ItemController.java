@@ -84,7 +84,12 @@ public class ItemController {
     public void finalizeItems() {
         for (ItemData magicItem : items.values()) {
             magicItem.checkKey();
-            itemsByStack.put(magicItem.getOrCreateItemStack(), magicItem);
+            try {
+                ItemStack itemStack = magicItem.getOrCreateItemStack();
+                itemsByStack.put(itemStack, magicItem);
+            } catch (Exception ex) {
+                controller.getLogger().log(Level.WARNING, "Invalid item in config: " + magicItem.getKey() + " (" + ex.getMessage() + ")";
+            }
         }
     }
 
