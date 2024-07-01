@@ -195,8 +195,8 @@ public class SpigotUtils implements com.elmakers.mine.bukkit.utility.platform.Sp
         BaseComponent first = components[0];
         if (first instanceof TextComponent) {
             TextComponent text = (TextComponent)first;
-            Boolean italicRaw = text.isItalicRaw();
-            if (italicRaw == null && text.hasFormatting()) {
+            boolean isItalic = text.isItalic();
+            if (!isItalic) {
                 needsReset = true;
             }
         }
