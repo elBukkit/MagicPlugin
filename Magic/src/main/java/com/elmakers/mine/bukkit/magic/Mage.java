@@ -1977,7 +1977,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             // Avoid getting kicked for large jump effects
             // It'd be nice to filter this by amplitude, but as
             // it turns out that is not easy to check efficiently.
-            if (JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION > 0 && player.hasPotionEffect(PotionEffectType.JUMP))
+            if (JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION > 0 && player.hasPotionEffect(CompatibilityLib.getCompatibilityUtils().getJumpPotionEffectType()))
             {
                 controller.addFlightExemption(player, JUMP_EFFECT_FLIGHT_EXEMPTION_DURATION);
             }
@@ -5606,7 +5606,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return 0;
         }
         ItemMeta meta = lastBowUsed.getItemMeta();
-        return meta.getEnchantLevel(Enchantment.ARROW_DAMAGE);
+        return meta.getEnchantLevel(CompatibilityLib.getCompatibilityUtils().getPowerEnchantment());
     }
 
     public void setLastBowUsed(ItemStack itemStack) {

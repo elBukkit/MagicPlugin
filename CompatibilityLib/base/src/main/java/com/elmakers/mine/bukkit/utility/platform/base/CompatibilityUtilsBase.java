@@ -65,6 +65,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.Torch;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
@@ -1159,5 +1160,15 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public Enchantment getInfinityEnchantment() {
         return Enchantment.ARROW_INFINITE;
+    }
+
+    @Override
+    public Enchantment getPowerEnchantment() {
+        return Enchantment.ARROW_DAMAGE;
+    }
+
+    @Override
+    public PotionEffectType getJumpPotionEffectType() {
+        return PotionEffectType.JUMP;
     }
 }

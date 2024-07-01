@@ -63,6 +63,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
@@ -558,4 +559,8 @@ public interface CompatibilityUtils {
     BlockPopulator createOutOfBoundsPopulator(Logger logger);
 
     Enchantment getInfinityEnchantment();
+
+    Enchantment getPowerEnchantment();
+
+    PotionEffectType getJumpPotionEffectType();
 }

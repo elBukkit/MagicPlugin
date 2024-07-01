@@ -96,6 +96,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.loot.Lootable;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
@@ -1797,5 +1798,15 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public Enchantment getInfinityEnchantment() {
         return Enchantment.INFINITY;
+    }
+
+    @Override
+    public Enchantment getPowerEnchantment() {
+        return Enchantment.POWER;
+    }
+
+    @Override
+    public PotionEffectType getJumpPotionEffectType() {
+        return PotionEffectType.JUMP_BOOST;
     }
 }
