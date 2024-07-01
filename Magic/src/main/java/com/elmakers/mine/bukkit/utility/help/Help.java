@@ -167,7 +167,7 @@ public class Help {
             if (shortClass == null) continue;
             List<String> descriptionList = (List<String>)action.get("description");
             if (descriptionList.size() == 1 && descriptionList.get(0).trim().isEmpty()) {
-                descriptionList.isEmpty();
+                descriptionList.clear();
             }
             String description;
             if (descriptionList.isEmpty()) {
