@@ -1004,7 +1004,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     public boolean isJumping(LivingEntity entity) {
         net.minecraft.world.entity.LivingEntity living = ((CraftLivingEntity)entity).getHandle();
         // net.minecraft.world.entity.EntityLiving
-        return (boolean)ReflectionUtils.getPrivateNeedsFixing(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping", "bj");
+        return (boolean)ReflectionUtils.getPrivateNeedsFixing(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping", "bn");
     }
 
     @Override
