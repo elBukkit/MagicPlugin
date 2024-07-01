@@ -61,7 +61,7 @@ public class ModifyAttributeAction extends BaseSpellAction
                 return SpellResult.FAIL;
             }
         }
-        if (original != null && original == value) {
+        if (original != null && original.equals(value)) {
             return SpellResult.NO_TARGET;
         }
         properties.setAttribute(attribute, value);
