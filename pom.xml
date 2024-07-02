@@ -95,14 +95,7 @@
                         <arg>-Xlint:all,-serial,-fallthrough</arg>
                         <arg>-XDcompilePolicy=simple</arg>
                         <arg>
-                            -Xplugin:ErrorProne
-                            <!-- Seems like Windows (maybe?) does not work with these flags for some reason -->
-                            <!--
-                            -Xep:ProtectedMembersInFinalClass:ERROR \
-                            -Xep:RemoveUnusedImports:ERROR \
-                            -Xep:InlineMeSuggester:OFF \
-                            -Xep:CatchAndPrintStackTrace:OFF
-                            -->
+                            -Xplugin:ErrorProne -Xep:ProtectedMembersInFinalClass:ERROR -Xep:RemoveUnusedImports:ERROR -Xep:InlineMeSuggester:OFF -Xep:CatchAndPrintStackTrace:OFF
                         </arg>
 
                         <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
