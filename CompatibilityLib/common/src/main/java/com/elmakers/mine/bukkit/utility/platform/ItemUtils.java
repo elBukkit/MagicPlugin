@@ -57,4 +57,8 @@ public interface ItemUtils {
     boolean isSameItem(ItemStack first, ItemStack second);
 
     boolean hasSameTags(ItemStack first, ItemStack second);
+
+    int getCustomModelData(ItemStack itemStack);
+
+    void setCustomModelData(ItemStack itemStack, int customModelData);
 }

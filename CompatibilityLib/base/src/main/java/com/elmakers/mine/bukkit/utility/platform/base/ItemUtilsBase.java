@@ -114,5 +114,15 @@ public abstract class ItemUtilsBase implements ItemUtils {
         Object secondTag = getTag(second);
         return Objects.equals(firstTag, secondTag);
     }
+
+    @Override
+    public int getCustomModelData(ItemStack itemStack) {
+        return platform.getNBTUtils().getInt(itemStack, "CustomModelData", 0);
+    }
+
+    @Override
+    public void setCustomModelData(ItemStack itemStack, int customModelData) {
+        platform.getNBTUtils().setInt(itemStack, "CustomModelData", customModelData);
+    }
 }
 

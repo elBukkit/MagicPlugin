@@ -151,7 +151,7 @@ public class ItemController {
         if (CompatibilityLib.getItemUtils().isEmpty(itemStack)) return;
         Map<Integer, ItemData> mapped = replaceOnEquip.get(itemStack.getType());
         if (mapped == null) return;
-        int customData = CompatibilityLib.getNBTUtils().getInt(itemStack, "CustomModelData", 0);
+        int customData = CompatibilityLib.getItemUtils().getCustomModelData(itemStack);
         ItemData replacement = mapped.get(customData);
         if (replacement != null) {
             ItemMeta meta = replacement.getItemMeta();
