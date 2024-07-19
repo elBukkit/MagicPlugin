@@ -84,6 +84,8 @@ public interface MaterialAndData {
     void setRawData(Object data);
     ItemStack applyToItem(ItemStack stack);
     ItemStack applyToItem(ItemStack stack, ItemUpdatedCallback callback);
+    @Deprecated
     @Nullable
     Map<String, Object> getTags();
+    int getCustomModelData();
 }

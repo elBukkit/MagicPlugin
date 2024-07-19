@@ -90,7 +90,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
     protected Material material;
     protected Short data;
-    protected Map<String, Object> tags;
+    protected int customModelData;
     protected MaterialExtraData extraData;
     protected String blockData;
     protected boolean isValid = true;
@@ -175,14 +175,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
         }
 
-        // TODO: Could/should this store ALL custom tag data?
         if (item.hasItemMeta()) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            int customModelData = CompatibilityLib.getNBTUtils().getInt(item, "CustomModelData", 0);
-            if (customModelData > 0) {
-                tags = new HashMap<>();
-                tags.put("CustomModelData", customModelData);
-            }
+            customModelData = CompatibilityLib.getItemUtils().getCustomModelData(item);
         }
     }
 
@@ -203,7 +198,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         other.material = material;
         other.data = data;
         // Note: shallow copies!
-        other.tags = tags;
+        other.customModelData = customModelData;
         other.extraData = extraData;
         other.blockData = blockData;
         other.isValid = isValid;
@@ -224,6 +219,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         // Check for block data
+        String originalKey = materialKey;
         String blockData = null;
         String[] blockPieces = StringUtils.split(materialKey, "?");
         if (blockPieces.length > 1) {
@@ -243,9 +239,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             }
             if (!json.contains(":")) {
                 try {
-                    int customData = Integer.parseInt(json.substring(1, json.length() - 1));
-                    tags = new HashMap<>();
-                    tags.put("CustomModelData", customData);
+                    customModelData = Integer.parseInt(json.substring(1, json.length() - 1));
                 } catch (Exception ex) {
                     Bukkit.getLogger().warning("[Magic] Error parsing item custom model data: " + json + " : " + ex.getMessage());
                 }
@@ -253,8 +247,18 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 try {
                     JsonReader reader = new JsonReader(new StringReader(json));
                     reader.setLenient(true);
-                    tags = getGson().fromJson(reader, Map.class);
+                    Map<String, Object> tags = getGson().fromJson(reader, Map.class);
                     CompatibilityLib.getInventoryUtils().convertIntegers(tags);
+                    Object cmd = tags.get("custom_model_data");
+                    if (cmd == null) {
+                        cmd = tags.get("CustomModelData");
+                    }
+                    if (cmd != null && cmd instanceof Integer) {
+                        customModelData = (int)(Integer)cmd;
+                    }
+                    if (cmd == null || tags.size() > 1) {
+                        Bukkit.getLogger().info("[Magic] [" + originalKey + "] Custom NBT tags on items are no longer supported. Please change to the {1234} syntax for custom model data.");
+                    }
                 } catch (Throwable ex) {
                     Bukkit.getLogger().warning("[Magic] Error parsing item json: " + json + " : " + ex.getMessage());
                 }
@@ -468,7 +472,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         com.elmakers.mine.bukkit.api.block.MaterialAndData other = (com.elmakers.mine.bukkit.api.block.MaterialAndData)obj;
-        return Objects.equal(other.getData(), data) && other.getMaterial() == material && Objects.equal(tags, other.getTags());
+        return Objects.equal(other.getData(), data) && other.getMaterial() == material && customModelData == other.getCustomModelData();
     }
 
     @Override
@@ -485,9 +489,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             blockData = o.blockData;
             isValid = o.isValid;
             isTargetValid = o.isTargetValid;
-            if (o.tags != null) {
-                tags = new HashMap<>(o.tags);
-            }
+            customModelData = o.customModelData;
         }
     }
 
@@ -834,12 +836,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (blockData != null) {
             materialKey += "?" + blockData;
         }
-        if (tags != null) {
-            if (tags.size() == 1 && tags.containsKey("CustomModelData")) {
-                materialKey += "{" + tags.get("CustomModelData") + "}";
-            } else {
-                materialKey += getGson().toJson(tags);
-            }
+        if (customModelData != 0) {
+            materialKey += "{" + customModelData + "}";
         }
 
         return materialKey;
@@ -900,12 +898,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     public boolean isDifferent(ItemStack itemStack) {
         if (getMaterial() != itemStack.getType()) return true;
         if (getData() != CompatibilityLib.getDeprecatedUtils().getItemDamage(itemStack)) return true;
-        if (tags != null) {
-            Object customModelData = tags.get("CustomModelData");
-            int itemModelData = CompatibilityLib.getNBTUtils().getInt(itemStack, "CustomModelData", 0);
-            if (customModelData == null && itemModelData != 0) return true;
-            if (customModelData != null && customModelData instanceof Integer && itemModelData != (Integer)customModelData) return true;
-        }
+        int itemModelData = CompatibilityLib.getItemUtils().getCustomModelData(itemStack);
+        if (customModelData != itemModelData) return true;
         return false;
     }
 
@@ -954,9 +948,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (data != null) {
             CompatibilityLib.getDeprecatedUtils().setItemDamage(stack, data);
         }
-        if (tags != null) {
-            stack = CompatibilityLib.getItemUtils().makeReal(stack);
-            CompatibilityLib.getInventoryUtils().saveTagsToItem(tags, stack);
+
+        if (customModelData != 0) {
+            CompatibilityLib.getItemUtils().setCustomModelData(stack, customModelData);
         }
         if (DefaultMaterials.isPlayerSkull(this))
         {
@@ -1177,7 +1171,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Nullable
     @Override
     public Map<String, Object> getTags() {
-        return tags;
+        return null;
+    }
+
+    public int getCustomModelData() {
+        return customModelData;
     }
 
     @Override

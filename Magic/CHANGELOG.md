@@ -3,8 +3,9 @@
 
 # 10.9.1
 
- - Support for Minecraft 1.20.5 and 1.20.6 (currently very experimental, proceed with caution!)
- - ... coming soon, maybe, support for 1.21
+ - Support for Minecraft 1.20.5 and 1.20.6 and 1.21 (currently very experimental, proceed with caution!)
+ - DROP support for arbitrary NBT tags on items. This was the item_name{tag: ...} format.
+   Now only CustomModelData and custom_model_data are supported, as well as the {12345} shortcut syntax.
 
 # 10.9
 
