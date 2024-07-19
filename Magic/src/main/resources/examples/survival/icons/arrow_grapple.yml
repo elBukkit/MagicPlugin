@@ -1,6 +1,6 @@
 arrow_grapple:
-  item: 'spectral_arrow{CustomModelData:18012,Potion:invisibility}'
-  item_disabled: 'spectral_arrow{CustomModelData:18013,Potion:invisibility}'
+  item: 'spectral_arrow{CustomModelData:18012}'
+  item_disabled: 'spectral_arrow{CustomModelData:18013}'
   legacy_item: spell_icon:243
   legacy_item_disabled: spell_icon_disabled:243
   type: spell
