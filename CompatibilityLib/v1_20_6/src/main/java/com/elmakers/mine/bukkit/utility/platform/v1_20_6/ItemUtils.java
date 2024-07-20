@@ -43,7 +43,17 @@ public class ItemUtils extends ItemUtilsBase {
         if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
         CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
-        return customData == null ? null : customData.getUnsafe();
+        CompoundTag tag = null;
+        if (customData == null) {
+            tag = new CompoundTag();
+            // This makes a copy
+            customData = CustomData.of(tag);
+            tag = customData.getUnsafe();
+            ((net.minecraft.world.item.ItemStack)mcItemStack).set(DataComponents.CUSTOM_DATA, customData);
+        } else {
+            tag = customData.getUnsafe();
+        }
+        return tag;
     }
 
     @Override
@@ -94,16 +104,6 @@ public class ItemUtils extends ItemUtilsBase {
         if (nmsStack == null) {
             return null;
         }
-
-        // Component patch can't be null I guess?
-        // Not sure what happens if it's empty, though.
-        /*
-        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)nmsStack;
-        DataComponentPatch tag = itemStack.getComponentsPatch();
-        if (tag == null) {
-            itemStack.setTag(new CompoundTag());
-        }
-        */
 
         return stack;
     }
