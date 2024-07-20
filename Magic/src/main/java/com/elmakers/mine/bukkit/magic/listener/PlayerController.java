@@ -373,15 +373,18 @@ public class PlayerController implements Listener {
 
         boolean cancelEvent = false;
         ItemStack activeItem = activeWand == null ? null : activeWand.getItem();
-        // It seems like Spigot sets the original item to air before dropping
-        // We will be satisfied to only compare the NBT tags, if any.
-        // We can not use Bukkit metadata for this comparison, we need to use the underlying tags
-        // This is because setting the item to air will change the metadata type, removing
-        // metadata from the Bukkit ItemStack.
-        // I wish there was a better way, or that Spigot wouldn't pre-emptively delete the item on drop.
+        // Spigot will delete (set to air) the original item, unfortunately this happens before dropping
+        // As of 1.20.5 this also erases all the tags, so there is no way to know if the item being dropped
+        // is the same one that the wand has.
+        // As a not-so-great work-around we will just assume the player has dropped the wand's item if the wand's item
+        // is now empty.
         ItemMeta activeMeta = activeItem == null ? null : activeItem.getItemMeta();
         final boolean droppedSpell = Wand.isSpell(droppedItem) || Wand.isBrush(droppedItem);
-        final boolean droppedWand = activeItem != null && CompatibilityLib.getItemUtils().hasSameTags(droppedItem, activeItem);
+        boolean droppedWand = activeItem != null && CompatibilityLib.getItemUtils().isEmpty(activeItem);
+        // Oh but apparently sometimes the item isn't deleted? Jeez, ok.
+        if (!droppedWand) {
+            droppedWand = activeItem != null && CompatibilityLib.getItemUtils().hasSameTags(droppedItem, activeItem);
+        }
         boolean inSpellInventory = activeWand != null && activeWand.isInventoryOpen();
         if (droppedWand && activeWand.isUndroppable()) {
             // Postpone cycling until after this event unwinds
