@@ -63,7 +63,7 @@ public abstract class NBTUtilsBase implements NBTUtils {
         try {
             Object craft = platform.getItemUtils().getHandle(stack);
             if (craft == null) return;
-            Object tagObject = platform.getItemUtils().getTag(craft);
+            Object tagObject = platform.getItemUtils().getOrCreateTag(craft);
             if (tagObject == null) return;
             setInt(tagObject, tag, value);
         } catch (Throwable ex) {
@@ -118,7 +118,7 @@ public abstract class NBTUtilsBase implements NBTUtils {
         try {
             Object craft = platform.getItemUtils().getHandle(stack);
             if (craft == null) return;
-            Object tagObject = platform.getItemUtils().getTag(craft);
+            Object tagObject = platform.getItemUtils().getOrCreateTag(craft);
             if (tagObject == null) return;
             setBoolean(tagObject, tag, value);
         } catch (Throwable ex) {

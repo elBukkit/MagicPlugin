@@ -1327,7 +1327,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             if (handle == null) {
                 return false;
             }
-            Object tag = platform.getItemUtils().getTag(handle);
+            Object tag = platform.getItemUtils().getOrCreateTag(handle);
             if (tag == null) return false;
 
             Object attributesNode = platform.getNBTUtils().getTag(tag, "AttributeModifiers");

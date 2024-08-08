@@ -62,7 +62,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item) {
         Object handle = platform.getItemUtils().getHandle(item);
         if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
+        Object tag = platform.getItemUtils().getOrCreateTag(handle);
         if (tag == null) return false;
 
         return addTagsToNBT(ConfigUtils.toMap(tags), tag);
@@ -73,7 +73,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     {
         Object handle = platform.getItemUtils().getHandle(item);
         if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
+        Object tag = platform.getItemUtils().getOrCreateTag(handle);
         if (tag == null) return false;
 
         return addTagsToNBT(tags, tag);
@@ -84,7 +84,7 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         if (skillItem == null) return false;
         Object handle = platform.getItemUtils().getHandle(skillItem);
         if (handle == null) return false;
-        Object tag = platform.getItemUtils().getTag(handle);
+        Object tag = platform.getItemUtils().getOrCreateTag(handle);
         if (tag == null) return false;
 
         platform.getNBTUtils().setBoolean(tag, "skill", true);

@@ -129,7 +129,7 @@ public class ItemUtils extends ItemUtilsBase {
         try {
             Object craft = getHandle(stack);
             if (craft == null) return;
-            Object tagObject = getTag(craft);
+            Object tagObject = getOrCreateTag(craft);
             if (tagObject == null) return;
 
             Object unbreakableFlag = null;
@@ -152,7 +152,7 @@ public class ItemUtils extends ItemUtilsBase {
         try {
             Object craft = getHandle(stack);
             if (craft == null) return;
-            Object tagObject = getTag(craft);
+            Object tagObject = getOrCreateTag(craft);
             if (tagObject == null) return;
 
             Object hideFlag = null;
