@@ -124,5 +124,15 @@ public abstract class ItemUtilsBase implements ItemUtils {
     public void setCustomModelData(ItemStack itemStack, int customModelData) {
         platform.getNBTUtils().setInt(itemStack, "CustomModelData", customModelData);
     }
+
+    @Override
+    public Object getOrCreateTag(Object mcItemStack) {
+        return getTag(mcItemStack);
+    }
+
+    @Override
+    public Object getOrCreateTag(ItemStack itemStack) {
+        return getTag(itemStack);
+    }
 }
 

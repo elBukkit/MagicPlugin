@@ -66,6 +66,44 @@ public class ItemUtils extends ItemUtilsBase {
         return tag;
     }
 
+    @Override
+    public CompoundTag getOrCreateTag(Object mcItemStack) {
+        if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
+        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
+        CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
+        CompoundTag tag = null;
+        if (customData == null) {
+            tag = new CompoundTag();
+            // This makes a copy
+            customData = CustomData.of(tag);
+            tag = customData.getUnsafe();
+            ((net.minecraft.world.item.ItemStack)mcItemStack).set(DataComponents.CUSTOM_DATA, customData);
+        } else {
+            tag = customData.getUnsafe();
+        }
+        return tag;
+    }
+
+    @Override
+    public CompoundTag getOrCreateTag(ItemStack itemStack) {
+        CompoundTag tag = null;
+        try {
+            Object mcItemStack = getHandle(itemStack);
+            if (mcItemStack == null) {
+                if (itemStack.hasItemMeta()) {
+                    itemStack = makeReal(itemStack);
+                    mcItemStack = getHandle(itemStack);
+                }
+            }
+            if (mcItemStack == null) return null;
+            net.minecraft.world.item.ItemStack stack = (net.minecraft.world.item.ItemStack)mcItemStack;
+            tag = getOrCreateTag(stack);
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+        }
+        return tag;
+    }
+
     protected net.minecraft.world.item.ItemStack getNMSCopy(ItemStack stack) {
         net.minecraft.world.item.ItemStack nms = null;
         try {

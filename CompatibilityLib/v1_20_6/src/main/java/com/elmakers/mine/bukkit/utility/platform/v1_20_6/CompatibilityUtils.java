@@ -1659,7 +1659,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public boolean setRawLore(ItemStack itemStack, List<String> lore) {
         ItemUtils itemUtils = platform.getItemUtils();
-        Object tag = itemUtils.getTag(itemStack);
+        Object tag = itemUtils.getOrCreateTag(itemStack);
         if (tag == null) return false;
 
         NBTUtils nbtUtils = platform.getNBTUtils();

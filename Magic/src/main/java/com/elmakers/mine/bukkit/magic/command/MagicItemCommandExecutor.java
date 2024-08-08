@@ -351,7 +351,7 @@ public class MagicItemCommandExecutor extends MagicTabExecutor {
         String tag = args[0];
         String[] path = StringUtils.split(tag, '.');
         ItemStack newItem = CompatibilityLib.getItemUtils().makeReal(item);
-        Object node = CompatibilityLib.getItemUtils().getTag(item);
+        Object node = CompatibilityLib.getItemUtils().getOrCreateTag(item);
         if (args.length == 1) {
             int i = 0;
             while (node != null && i < path.length - 1) {

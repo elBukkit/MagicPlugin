@@ -12,6 +12,10 @@ public interface ItemUtils {
 
     Object getTag(ItemStack itemStack);
 
+    Object getOrCreateTag(Object mcItemStack);
+
+    Object getOrCreateTag(ItemStack itemStack);
+
     ItemStack getCopy(ItemStack stack);
 
     ItemStack makeReal(ItemStack stack);

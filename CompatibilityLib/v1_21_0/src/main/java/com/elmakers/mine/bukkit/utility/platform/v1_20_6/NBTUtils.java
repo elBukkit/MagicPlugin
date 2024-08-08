@@ -199,7 +199,7 @@ public class NBTUtils extends NBTUtilsBase {
         if (platform.getItemUtils().isEmpty(stack)) return false;
         Object craft = platform.getItemUtils().getHandle(stack);
         if (craft == null) return false;
-        Object node = platform.getItemUtils().getTag(craft);
+        Object node = platform.getItemUtils().getOrCreateTag(craft);
         if (node == null || !(node instanceof CompoundTag)) return false;
         if (child == null) {
             ((CompoundTag)node).remove(tag);
@@ -220,7 +220,7 @@ public class NBTUtils extends NBTUtilsBase {
         if (platform.getItemUtils().isEmpty(stack)) return;
         Object craft = platform.getItemUtils().getHandle(stack);
         if (craft == null) return;
-        Object tagObject = platform.getItemUtils().getTag(craft);
+        Object tagObject = platform.getItemUtils().getOrCreateTag(craft);
         if (tagObject == null || !(tagObject instanceof CompoundTag)) return;
         ((CompoundTag)tagObject).putString(tag, value);
     }
