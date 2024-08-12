@@ -73,6 +73,7 @@
         <module>v1_20_5</module>
         <module>v1_20_6</module>
         <module>v1_21_0</module>
+        <module>v1_21_1</module>
         <module>main</module>
     </modules>
 </project>
