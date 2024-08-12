@@ -660,9 +660,8 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     public void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax) {
         entity.setHurtEntities(true);
         FallingBlockEntity nms = (FallingBlockEntity)((CraftEntity)entity).getHandle();
-        // net.minecraft.world.entity.item.EntityFallingBlock
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamageMax", "j", fallHurtMax);
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms, FallingBlockEntity.class, "fallDamagePerDistance", "k", fallHurtAmount);
+        nms.fallDamageMax = fallHurtMax;
+        nms.fallDamagePerDistance = fallHurtAmount;
     }
 
     @Override
@@ -1452,8 +1451,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             }
 
             if (ticksFlown != null) {
-                // net.minecraft.world.entity.projectile.EntityFireworks
-                ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), fireworkHandle, FireworkRocketEntity.class, "life", "e", ticksFlown);
+                fireworkHandle.life = ticksFlown;
             }
             if (expectedLifespan != null) {
                 fireworkHandle.lifetime = expectedLifespan;
