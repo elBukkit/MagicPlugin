@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+# 10.9.2
+
+ - Fix setting item flags (for hiding vanilla lore) in 1.20.5+
+
 # 10.9.1
 
  - Support for Minecraft 1.20.5 and 1.20.6, 1.21 and 1.21.1

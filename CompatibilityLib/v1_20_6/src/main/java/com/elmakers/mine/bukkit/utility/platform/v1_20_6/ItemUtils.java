@@ -176,7 +176,7 @@ public class ItemUtils extends ItemUtilsBase {
         ItemFlag[] flagArray = ItemFlag.values();
         for (int ordinal = 0; ordinal < flagArray.length; ordinal++) {
             ItemFlag flag = flagArray[ordinal];
-            if ((flags | 1) == 1) {
+            if ((flags & 1) == 1) {
                 meta.addItemFlags(flag);
             } else {
                 meta.removeItemFlags(flag);
