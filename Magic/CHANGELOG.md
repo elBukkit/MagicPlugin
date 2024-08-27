@@ -4,6 +4,7 @@
 # 10.9.2
 
  - Fix setting item flags (for hiding vanilla lore) in 1.20.5+
+ - Fix item lore (setting lore components via JSON was broken) in 1.20.5+
 
 # 10.9.1
 

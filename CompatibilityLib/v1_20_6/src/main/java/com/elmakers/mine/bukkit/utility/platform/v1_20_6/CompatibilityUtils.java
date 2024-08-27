@@ -108,7 +108,6 @@ import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
-import com.elmakers.mine.bukkit.utility.platform.NBTUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernCompatibilityUtils;
@@ -118,9 +117,11 @@ import com.google.common.collect.Multimap;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
@@ -146,6 +147,7 @@ import net.minecraft.world.entity.projectile.AbstractHurtingProjectile;
 import net.minecraft.world.entity.projectile.Fireball;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.BoneMealItem;
+import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.SignBlockEntity;
@@ -1657,24 +1659,30 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public boolean setRawLore(ItemStack itemStack, List<String> lore) {
         ItemUtils itemUtils = platform.getItemUtils();
-        Object tag = itemUtils.getOrCreateTag(itemStack);
-        if (tag == null) return false;
-
-        NBTUtils nbtUtils = platform.getNBTUtils();
-        Object displayNode = nbtUtils.getTag(tag, "display");
-        itemUtils.setStringList(displayNode, "Lore", lore);
+        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)itemUtils.getHandle(itemStack);
+        if (mcItemStack == null) {
+            return false;
+        }
+        List<Component> components = new ArrayList<>();
+        for (String line : lore) {
+            components.add(toNMSComponent(line));
+        }
+        ItemLore loreComponent = new ItemLore(components);
+        mcItemStack.set(DataComponents.LORE, loreComponent);
         return true;
     }
 
     @Override
     public List<String> getRawLore(ItemStack itemStack) {
+        List<String> lines = new ArrayList<>();
         ItemUtils itemUtils = platform.getItemUtils();
-        Object tag = itemUtils.getTag(itemStack);
-        if (tag == null) return new ArrayList<>();
-
-        NBTUtils nbtUtils = platform.getNBTUtils();
-        Object displayNode = nbtUtils.getTag(tag, "display");
-        return itemUtils.getStringList(displayNode, "Lore");
+        net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)itemUtils.getHandle(itemStack);
+        if (mcItemStack == null) return lines;
+        ItemLore itemLore = mcItemStack.get(DataComponents.LORE);
+        for (Component component : itemLore.lines()) {
+            lines.add(fromNMSComponent(component));
+        }
+        return lines;
     }
 
     @Override
@@ -1738,7 +1746,24 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         if (serialized == null || serialized.isEmpty()) {
             return null;
         }
-        return CraftChatMessage.fromJSON(serialized);
+        Component component;
+        try {
+            if (serialized.isEmpty()) {
+                component = CommonComponents.EMPTY;
+            } else if (serialized.startsWith("{")) {
+                component = CraftChatMessage.fromJSON(serialized);
+            } else {
+                component = Component.literal(serialized);
+            }
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Invalid JSON message: " + serialized, ex);
+            component = CommonComponents.EMPTY;
+        }
+        return component;
+    }
+
+    private String fromNMSComponent(Component component) {
+        return CraftChatMessage.toJSON(component);
     }
 
     @Override
