@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.9.3
+
 # 10.9.2
 
  - Fix setting item flags (for hiding vanilla lore) in 1.20.5+
