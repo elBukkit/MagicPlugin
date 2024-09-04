@@ -249,7 +249,9 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public void setItemDamage(ItemStack itemStack, short damage) {
-        itemStack.setDurability(damage);
+        if (getItemDamage(itemStack) != damage) {
+            itemStack.setDurability(damage);
+        }
     }
 
     @Override
