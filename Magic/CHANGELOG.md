@@ -3,6 +3,13 @@
 
 # 10.9.3
 
+ - Fix item crafting in 1.20.5+
+   The root cause of this issue were items created by the plugin having an
+   extra "damage" component added to them, which causes the items to be different than a standard
+   vanilla item.
+   The fix is to not set item durability unless it's being set to something other than zero.
+   Hoping for no side-effects.
+
 # 10.9.2
 
  - Fix setting item flags (for hiding vanilla lore) in 1.20.5+
