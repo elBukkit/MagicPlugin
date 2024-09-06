@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.9.4
+
 # 10.9.3
 
  - Fix item crafting in 1.20.5+
