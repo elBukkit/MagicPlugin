@@ -39,6 +39,7 @@ import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.item.component.ResolvableProfile;
 
 public class InventoryUtils extends InventoryUtilsBase {
     public InventoryUtils(Platform platform) {
@@ -321,8 +322,8 @@ public class InventoryUtils extends InventoryUtilsBase {
     @Override
     public boolean setSkullProfile(ItemMeta itemMeta, Object data) {
         if (itemMeta == null || !(itemMeta instanceof SkullMeta)) return false;
-        Class<?>[] parameters = {GameProfile.class};
-        Object[] values = {data};
+        Class<?>[] parameters = {ResolvableProfile.class};
+        Object[] values = {data instanceof ResolvableProfile ? data : new ResolvableProfile((GameProfile)data)};
         return ReflectionUtils.callPrivate(platform.getLogger(), itemMeta, itemMeta.getClass(), "setProfile", parameters, values);
     }
 
