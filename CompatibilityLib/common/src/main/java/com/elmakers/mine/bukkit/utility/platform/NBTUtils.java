@@ -96,4 +96,6 @@ public interface NBTUtils {
     Collection<Object> getTagList(Object tag, String key);
 
     Object newCompoundTag();
+
+    boolean setSpawnEggEntityData(ItemStack spawnEgg, Object entityData);
 }

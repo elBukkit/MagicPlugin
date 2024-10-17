@@ -3,6 +3,8 @@
 
 # 10.9.4
 
+ - Fix the Capture spell not saving custom entity data
+
 # 10.9.3
 
  - Fix item crafting in 1.20.5+

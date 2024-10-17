@@ -300,4 +300,17 @@ public class NBTUtils extends NBTUtilsBase {
     public Object newCompoundTag() {
         return new CompoundTag();
     }
+
+    @Override
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Object entityData) {
+        if (platform.getItemUtils().isEmpty(spawnEgg)) return false;
+        if (entityData == null || !(entityData instanceof CompoundTag)) return false;
+
+        Object handle = platform.getItemUtils().getHandle(spawnEgg);
+        if (handle == null) return false;
+        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)handle;
+        CustomData customData = CustomData.of((CompoundTag)entityData);
+        itemStack.set(DataComponents.ENTITY_DATA, customData);
+        return true;
+    }
 }

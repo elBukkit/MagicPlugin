@@ -140,4 +140,9 @@ public abstract class NBTUtilsBase implements NBTUtils {
         }
         return result;
     }
+
+    @Override
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Object entityData) {
+        return setTag(spawnEgg, "EntityTag", entityData);
+    }
 }

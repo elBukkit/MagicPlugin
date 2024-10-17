@@ -1,0 +1,8 @@
+test_velocity:
+  actions:
+    cast:
+      - class: Velocity
+        push: 0.05
+        y_offset: 0.05
+  parameters:
+    target: self
