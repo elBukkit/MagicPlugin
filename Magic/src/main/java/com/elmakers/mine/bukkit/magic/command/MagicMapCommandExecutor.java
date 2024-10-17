@@ -403,7 +403,7 @@ public class MagicMapCommandExecutor extends MagicTabExecutor {
             for (int i = 0; i < renderConfigs.length; i++) {
                 String renderConfig = renderConfigs[i];
                 String[] renderPieces = StringUtils.split(renderConfig, '@');
-                short id = Short.parseShort(renderPieces[0]);
+                int id = Integer.parseInt(renderPieces[0]);
                 String filename = renderPieces[1];
                 if (maps.hasMap(id)) {
                     skipped++;
