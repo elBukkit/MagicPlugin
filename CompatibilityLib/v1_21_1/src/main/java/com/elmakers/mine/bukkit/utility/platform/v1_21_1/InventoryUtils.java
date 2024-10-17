@@ -322,9 +322,16 @@ public class InventoryUtils extends InventoryUtilsBase {
     @Override
     public boolean setSkullProfile(ItemMeta itemMeta, Object data) {
         if (itemMeta == null || !(itemMeta instanceof SkullMeta)) return false;
+
+        // Somewhat annoyingly this method signature was changed in the middle of 1.21.1
         Class<?>[] parameters = {ResolvableProfile.class};
-        Object[] values = {data instanceof ResolvableProfile ? data : new ResolvableProfile((GameProfile)data)};
-        return ReflectionUtils.callPrivate(platform.getLogger(), itemMeta, itemMeta.getClass(), "setProfile", parameters, values);
+        if (ReflectionUtils.hasMethod(itemMeta.getClass(), "setProfile", parameters)) {
+            Object[] values = {data instanceof ResolvableProfile ? data : new ResolvableProfile((GameProfile)data)};
+            return ReflectionUtils.callPrivate(platform.getLogger(), itemMeta, itemMeta.getClass(), "setProfile", parameters, values);
+        }
+        Class<?>[] legacyParameters = {GameProfile.class};
+        Object[] values = {data};
+        return ReflectionUtils.callPrivate(platform.getLogger(), itemMeta, itemMeta.getClass(), "setProfile", legacyParameters, values);
     }
 
     @Override

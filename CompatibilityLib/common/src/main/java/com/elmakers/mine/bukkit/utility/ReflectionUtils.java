@@ -82,6 +82,17 @@ public class ReflectionUtils {
         return false;
     }
 
+    public static boolean hasMethod(Class<?> c, String field, Class<?>[] parameters) {
+        try {
+            Method method = c.getDeclaredMethod(field, parameters);
+            // This won't ever be null, but we can't use the getDeclaredMethod without using the return
+            // value or else checkstyle gets cranky :\
+            return method != null;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
+
     public static boolean callPrivate(Logger logger, Object o, Class<?> c, String field, Class<?>[] parameters, Object[] values) {
         try {
             Method method = c.getDeclaredMethod(field, parameters);
