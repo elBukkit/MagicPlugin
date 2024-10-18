@@ -14,6 +14,7 @@ import java.util.logging.Level;
 
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.configuration.ConfigurationSection;
@@ -411,6 +412,17 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         } else {
             mapItem.setDurability((short)id);
         }
+    }
+
+    @Override
+    public ItemStack createMap(Material material, int mapId) {
+        short durability = platform.isCurrentVersion() ? 0 : (short) mapId;
+        ItemStack mapItem = platform.getDeprecatedUtils().createItemStack(material, 1, durability);
+        if (platform.isCurrentVersion()) {
+            mapItem = platform.getItemUtils().makeReal(mapItem);
+            platform.getNBTUtils().setInt(mapItem, "map", mapId);
+        }
+        return mapItem;
     }
 
     @Override

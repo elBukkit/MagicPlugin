@@ -6,6 +6,7 @@
  - Fix the Capture spell not saving custom entity data in 1.20.5+
  - Fix recent versions of 1.21.1 being broken with a ton of skull-related spam (thanks, alekso56!)
  - Fix using map ids over 64k (thanks, YanisBft!)
+ - Fix custom maps in 1.20.5+
 
 # 10.9.3
 

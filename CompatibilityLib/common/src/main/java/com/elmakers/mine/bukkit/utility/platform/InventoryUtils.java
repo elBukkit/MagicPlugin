@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import org.bukkit.Material;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
@@ -93,6 +94,8 @@ public interface InventoryUtils {
     int getMapId(ItemStack mapItem);
 
     void setMapId(ItemStack mapItem, int id);
+
+    ItemStack createMap(Material material, int id);
 
     void convertIntegers(Map<String, Object> m);
 }

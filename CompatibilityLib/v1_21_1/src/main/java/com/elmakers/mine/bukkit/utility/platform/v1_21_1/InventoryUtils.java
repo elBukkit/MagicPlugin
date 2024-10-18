@@ -12,10 +12,12 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import org.bukkit.Material;
 import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
@@ -337,5 +339,36 @@ public class InventoryUtils extends InventoryUtilsBase {
     @Override
     public boolean setSkullProfile(Skull state, Object data) {
         return ReflectionUtils.setPrivate(platform.getLogger(), state, state.getClass(), "profile", data);
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public int getMapId(ItemStack mapItem) {
+        ItemMeta meta = mapItem.getItemMeta();
+        if (meta instanceof MapMeta) {
+            MapMeta mapMeta = (MapMeta)meta;
+            // Why is this deprecated if there is no alternative?
+            return mapMeta.getMapId();
+        }
+        return 0;
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void setMapId(ItemStack mapItem, int id) {
+        ItemMeta meta = mapItem.getItemMeta();
+        if (meta instanceof MapMeta) {
+            MapMeta mapMeta = (MapMeta)meta;
+            // Why is this deprecated if there is no alternative?
+            mapMeta.setMapId(id);
+            mapItem.setItemMeta(mapMeta);
+        }
+    }
+
+    @Override
+    public ItemStack createMap(Material material, int mapId) {
+        ItemStack mapItem = new ItemStack(material, 1);
+        setMapId(mapItem, mapId);
+        return mapItem;
     }
 }

@@ -7051,13 +7051,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Nonnull
     @Override
     public ItemStack getMap(int mapId) {
-        short durability = CompatibilityLib.isCurrentVersion() ? 0 : (short) mapId;
-        ItemStack mapItem = CompatibilityLib.getDeprecatedUtils().createItemStack(DefaultMaterials.getFilledMap(), 1, durability);
-        if (CompatibilityLib.isCurrentVersion()) {
-            mapItem = CompatibilityLib.getItemUtils().makeReal(mapItem);
-            CompatibilityLib.getNBTUtils().setInt(mapItem, "map", mapId);
-        }
-        return mapItem;
+        return CompatibilityLib.getInventoryUtils().createMap(DefaultMaterials.getFilledMap(), mapId);
     }
 
     @Override
