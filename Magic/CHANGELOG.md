@@ -3,6 +3,9 @@
 
 # 10.9.5
 
+ - Add compatibility for 1.21.3
+   1.21.2 was skipped, please use 1.21.3
+
 # 10.9.4
 
  - Fix the Capture spell not saving custom entity data in 1.20.5+
