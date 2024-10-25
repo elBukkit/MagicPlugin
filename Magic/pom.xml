@@ -57,7 +57,7 @@
         <dependency>
             <groupId>com.elmakers.mine.bukkit</groupId>
             <artifactId>EffectLib</artifactId>
-            <version>10.4-SNAPSHOT</version>
+            <version>10.4</version>
             <scope>compile</scope>
         </dependency>
 
