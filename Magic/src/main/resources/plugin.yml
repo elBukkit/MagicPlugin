@@ -30,6 +30,7 @@ softdepend:
   - LockettePro
   - PreciousStones
   - Residence
+  - Lands
   - RedProtect
   - LogBlock
   - LightAPI

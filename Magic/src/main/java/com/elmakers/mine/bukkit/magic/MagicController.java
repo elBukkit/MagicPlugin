@@ -221,6 +221,7 @@ import com.elmakers.mine.bukkit.protection.CitadelManager;
 import com.elmakers.mine.bukkit.protection.DeadSoulsManager;
 import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
+import com.elmakers.mine.bukkit.protection.LandsManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.NCPManager;
@@ -584,6 +585,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private boolean vaultEnabled = true;
     private boolean modelEngineEnabled = true;
     private ConfigurationSection residenceConfiguration = null;
+    private ConfigurationSection landsConfiguration = null;
     private ConfigurationSection redProtectConfiguration = null;
     private ConfigurationSection citadelConfiguration = null;
     private ConfigurationSection mobArenaConfiguration = null;
@@ -595,6 +597,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private boolean hasShopkeepers = false;
     private CitadelManager citadelManager = null;
     private ResidenceManager residenceManager = null;
+    private LandsManager landsClaimManager = null;
     private RedProtectManager redProtectManager = null;
     private RequirementsController requirementsController = null;
     private HeroesManager heroesManager = null;
@@ -2201,6 +2204,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (preciousStonesManager.isEnabled()) targetingProviders.add(preciousStonesManager);
         if (townyManager.isEnabled()) targetingProviders.add(townyManager);
         if (residenceManager != null) targetingProviders.add(residenceManager);
+        if (landsClaimManager != null) targetingProviders.add(landsClaimManager);
         if (redProtectManager != null) targetingProviders.add(redProtectManager);
 
         // PVP Managers
@@ -2212,6 +2216,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (griefPreventionManager.isEnabled()) pvpManagers.add(griefPreventionManager);
         if (factionsManager.isEnabled()) pvpManagers.add(factionsManager);
         if (residenceManager != null) pvpManagers.add(residenceManager);
+        if (landsClaimManager != null) pvpManagers.add(landsClaimManager);
         if (redProtectManager != null) pvpManagers.add(redProtectManager);
 
         // Build Managers
@@ -2223,6 +2228,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (griefPreventionManager.isEnabled()) blockBuildManagers.add(griefPreventionManager);
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBuildManagers.add(mobArenaManager);
         if (residenceManager != null) blockBuildManagers.add(residenceManager);
+        if (landsClaimManager != null) blockBuildManagers.add(landsClaimManager);
         if (redProtectManager != null) blockBuildManagers.add(redProtectManager);
         if (landsManager != null) blockBuildManagers.add(landsManager);
 
@@ -2236,6 +2242,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (mobArenaManager != null && mobArenaManager.isProtected()) blockBreakManagers.add(mobArenaManager);
         if (citadelManager != null) blockBreakManagers.add(citadelManager);
         if (residenceManager != null) blockBreakManagers.add(residenceManager);
+        if (landsClaimManager != null) blockBreakManagers.add(landsClaimManager);
         if (redProtectManager != null) blockBreakManagers.add(redProtectManager);
         if (landsManager != null) blockBreakManagers.add(landsManager);
 
@@ -2256,6 +2263,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
         if (redProtectManager != null) playerWarpManagers.put("redprotect", redProtectManager);
         if (residenceManager != null) playerWarpManagers.put("residence", residenceManager);
+        if (landsClaimManager != null) playerWarpManagers.put("lands", landsClaimManager);
     }
 
     private void registerProviders() {
@@ -8301,6 +8309,21 @@ public class MagicController implements MageController, ChunkLoadListener {
             getLogger().info("Residence integration disabled.");
         }
 
+        // Lands
+        if (landsConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("Lands")) {
+                try {
+                    landsClaimManager = new LandsManager(this, landsConfiguration);
+                    getLogger().info("Integrated with lands for build/break/pvp/target checks");
+                    getLogger().info("Disable warping to lands in recall config with allow_lands: false");
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with Lands", ex);
+                }
+            }
+        } else {
+            getLogger().info("Lands integration disabled.");
+        }
+
         // RedProtect
         if (redProtectConfiguration.getBoolean("enabled")) {
             if (pluginManager.isPluginEnabled("RedProtect")) {
@@ -8552,6 +8575,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         citadelConfiguration = properties.getConfigurationSection("citadel");
         mobArenaConfiguration = properties.getConfigurationSection("mobarena");
         residenceConfiguration = properties.getConfigurationSection("residence");
+        landsConfiguration = properties.getConfigurationSection("lands");
         redProtectConfiguration = properties.getConfigurationSection("redprotect");
         ajParkourConfiguration = properties.getConfigurationSection("ajparkour");
         ultimateClansConfiguration = properties.getConfigurationSection("ultimate_clans");
