@@ -81,7 +81,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.generator.BlockPopulator;
-import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
@@ -898,25 +898,24 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
                 return false;
             }
             AttributeModifier modifier;
+
+            NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), "Equipment Modifier");
+            EquipmentSlotGroup equipmentSlotGroup = EquipmentSlotGroup.ANY;
             if (slot != null && !slot.isEmpty()) {
-                EquipmentSlot equipmentSlot;
                 try {
                     if (slot.equalsIgnoreCase("mainhand")) {
-                        equipmentSlot = EquipmentSlot.HAND;
+                        equipmentSlotGroup = EquipmentSlotGroup.MAINHAND;
                     } else if (slot.equalsIgnoreCase("offhand")) {
-                        equipmentSlot = EquipmentSlot.OFF_HAND;
+                        equipmentSlotGroup = EquipmentSlotGroup.OFFHAND;
                     } else {
-                        equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase());
+                        equipmentSlotGroup = EquipmentSlotGroup.getByName(slot.toUpperCase());
                     }
                 } catch (Throwable ex) {
                     platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
                     return false;
                 }
-
-                modifier = new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation, equipmentSlot);
-            } else {
-                modifier = new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation);
             }
+            modifier = new AttributeModifier(namespacedKey, value, operation, equipmentSlotGroup);
             meta.addAttributeModifier(attribute, modifier);
             item.setItemMeta(meta);
         } catch (Exception ex) {
@@ -1101,7 +1100,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public double getMaxHealth(Damageable li) {
         if (li instanceof LivingEntity) {
-            return ((LivingEntity)li).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+            return ((LivingEntity)li).getAttribute(Attribute.MAX_HEALTH).getValue();
         }
         return 0;
     }
@@ -1109,7 +1108,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public void setMaxHealth(Damageable li, double maxHealth) {
         if (li instanceof LivingEntity) {
-            ((LivingEntity)li).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
+            ((LivingEntity)li).getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
         }
     }
 

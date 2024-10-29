@@ -5,6 +5,7 @@
 
  - Add compatibility for 1.21.3
    1.21.2 was skipped, please use 1.21.3
+ - Add real Lands compatibility, remove from generic_protections list (Thank you, XXY233!)
 
 # 10.9.4
 
