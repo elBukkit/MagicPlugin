@@ -146,7 +146,12 @@ logblock_enabled: true
 # Residence integration
 residence:
   # Set to false to disable Residence integration
-  enabled : true
+  enabled: true
+
+# Lands integration
+lands:
+  # Set to false to disable Lands integration
+  enabled: true
 
 # RedProtect integration
 redprotect:
@@ -289,8 +294,7 @@ model_engine:
 # Indirect integration with other protection plugins.
 # Add a plugin here to have Magic send it fake Block/Break events to check for permission.
 # This may have strange behavior, use with caution.
-generic_protection:
-  - Lands
+generic_protection: []
 
 # The folder and file path to use for loading schematics. This will be relative to
 # The server's /plugins folder.

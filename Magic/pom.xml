@@ -212,6 +212,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>com.github.angeschossen</groupId>
+            <artifactId>LandsAPI</artifactId>
+            <version>7.9.17</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>me.NoChance.PvPManager</groupId>
             <artifactId>PvPManager</artifactId>
             <version>3.3.2.1</version>
