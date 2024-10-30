@@ -9,6 +9,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Monster;
 import org.bukkit.entity.Player;
@@ -39,7 +40,6 @@ public class LandsManager implements PVPManager, BlockBreakManager, BlockBuildMa
         this.lands = LandsIntegration.of(MagicPlugin.getAPI().getPlugin());
     }
 
-    @Nullable
     protected boolean hasPermission(Player player, Location location, RoleFlag flag, boolean sendMessage) {
         LandWorld landWorld = lands.getWorld(player.getWorld());
         LandPlayer landPlayer = lands.getLandPlayer(player.getUniqueId());
@@ -94,8 +94,10 @@ public class LandsManager implements PVPManager, BlockBreakManager, BlockBuildMa
 
             if (target instanceof Monster) {
                 return hasPermission(sourcePlayer, target.getLocation(), Flags.ATTACK_MONSTER, true);
-            } else {
+            } else if (target instanceof Animals) {
                 return hasPermission(sourcePlayer, target.getLocation(), Flags.ATTACK_ANIMAL, true);
+            } else {
+                return hasPermission(sourcePlayer, target.getLocation(), Flags.INTERACT_GENERAL, false);
             }
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Something is going wrong with Lands entity targeting checks", ex);
