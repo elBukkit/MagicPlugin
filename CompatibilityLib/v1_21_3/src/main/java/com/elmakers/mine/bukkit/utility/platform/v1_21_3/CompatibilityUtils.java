@@ -1097,10 +1097,27 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
         return entity.undiscoverRecipe(namespacedKey);
     }
 
+    @SuppressWarnings("deprecation")
+    protected Attribute getMaxHealthAttribute() {
+        // Paper and Spigot can no longer agree on what this should be called????
+        // Also stop deprecating crap that has no alternative omg
+        Attribute attribute = null;
+        try {
+            Attribute.valueOf("MAX_HEALTH");
+        } catch (Exception ignore) {
+            // Current spigot API claims this should be called MAX_HEALTH
+            // But running in Paper throws an error for that.
+        }
+        if (attribute == null) {
+            attribute = Attribute.valueOf("GENERIC_MAX_HEALTH");
+        }
+        return attribute;
+    }
+
     @Override
     public double getMaxHealth(Damageable li) {
         if (li instanceof LivingEntity) {
-            return ((LivingEntity)li).getAttribute(Attribute.MAX_HEALTH).getValue();
+            return ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).getValue();
         }
         return 0;
     }
@@ -1108,7 +1125,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public void setMaxHealth(Damageable li, double maxHealth) {
         if (li instanceof LivingEntity) {
-            ((LivingEntity)li).getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
+            ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).setBaseValue(maxHealth);
         }
     }
 
