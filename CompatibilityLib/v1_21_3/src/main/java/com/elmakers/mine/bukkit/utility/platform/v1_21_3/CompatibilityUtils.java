@@ -899,7 +899,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             }
             AttributeModifier modifier;
 
-            NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), "Equipment Modifier");
+            NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), "modifier");
             EquipmentSlotGroup equipmentSlotGroup = EquipmentSlotGroup.ANY;
             if (slot != null && !slot.isEmpty()) {
                 try {
