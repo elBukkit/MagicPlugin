@@ -178,7 +178,12 @@ public class BrushSelectAction extends BaseSpellAction implements GUIAction
         List<ItemStack> specials = new ArrayList<>();
         MaterialAndData previous = null;
         for (String brushKey : brushKeys) {
-            ItemStack brushItem = controller.createBrushItem(brushKey, context.getWand(), false);
+            ItemStack brushItem = null;
+            try {
+                brushItem = controller.createBrushItem(brushKey, context.getWand(), false);
+            } catch (Exception e) {
+                context.getLogger().warning("Could not create brush: " + brushKey);
+            }
             if (CompatibilityLib.getItemUtils().isEmpty(brushItem)) {
                 continue;
             }
