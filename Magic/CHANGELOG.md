@@ -9,6 +9,9 @@
  - Add `cancel_on_enter_portal` parameter, use in broom spell to work around spigot crash when flying a broom into a portal
  - Add `disable_armor_stand_portal` global config option, *defaults to true*. This is also to prevent spigot crashing.
 
+ NOTE: Broom and vehicle controls are not working in 1.21.3
+       The properties I was using to detect movement keys are not working anymore. I'm not sure if this will be fixable.
+
 # 10.9.4
 
  - Fix the Capture spell not saving custom entity data in 1.20.5+
