@@ -601,6 +601,7 @@ public class RideEntityAction extends BaseSpellAction
         {
             return SpellResult.NO_TARGET;
         }
+        CompatibilityLib.getEntityMetadataUtils().setBoolean(mount, MagicMetaKeys.MAGIC_MOUNT, true);
         if (noTarget) {
             CompatibilityLib.getEntityMetadataUtils().setBoolean(mount, MagicMetaKeys.NO_TARGET, true);
         }

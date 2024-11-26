@@ -32,8 +32,8 @@ public class MagicMetaKeys {
     public static final MetaKey<String> NPC_ID = new MetaKey<>(
             String.class, "npc_id");
 
-    public static final MetaKey<Boolean> BROOM = new MetaKey<>(
-            Boolean.class, "broom");
+    public static final MetaKey<Boolean> MAGIC_MOUNT = new MetaKey<>(
+            Boolean.class, "magic_mount");
 
     public static final MetaKey<Boolean> TEMPORARY = new MetaKey<>(
             Boolean.class, "temporary");

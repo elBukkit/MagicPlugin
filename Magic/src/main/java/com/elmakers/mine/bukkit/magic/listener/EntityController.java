@@ -14,6 +14,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
@@ -66,6 +67,7 @@ public class EntityController implements Listener {
     private boolean preventMeleeDamage = false;
     private boolean keepWandsOnDeath = true;
     private boolean    disableItemSpawn = false;
+    private boolean disableArmorStandPortal = true;
     private boolean    forceSpawn = false;
     private boolean    preventWandMeleeDamage = true;
     private final Set<EntityType> allowMeleeDamage = new HashSet<>();
@@ -80,6 +82,7 @@ public class EntityController implements Listener {
         preventWandMeleeDamage = properties.getBoolean("prevent_wand_melee_damage", true);
         ageDroppedItems = properties.getInt("age_dropped_items", 0);
         portalCooldown = properties.getInt("portal_cooldown", 500);
+        disableArmorStandPortal = properties.getBoolean("disable_armor_stand_portal", true);
         List<String> allowMeleeKeys = ConfigurationUtils.getStringList(properties, "allow_melee_damage");
         allowMeleeDamage.clear();
         if (allowMeleeKeys != null) {
@@ -751,6 +754,10 @@ public class EntityController implements Listener {
     @EventHandler
     public void onEntityPortalEnter(EntityPortalEnterEvent event) {
         Entity entity = event.getEntity();
+        if (disableArmorStandPortal && entity instanceof ArmorStand && CompatibilityLib.getEntityMetadataUtils().getBoolean(entity, MagicMetaKeys.MAGIC_MOUNT)) {
+            entity.remove();
+            return;
+        }
         com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
         if (mage != null) {
             mage.onEnterPortal();
