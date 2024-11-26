@@ -751,10 +751,14 @@ public class EntityController implements Listener {
     @EventHandler
     public void onEntityPortalEnter(EntityPortalEnterEvent event) {
         Entity entity = event.getEntity();
+        com.elmakers.mine.bukkit.magic.Mage mage = controller.getRegisteredMage(entity);
+        if (mage != null) {
+            mage.onEnterPortal();
+        }
         String portalSpellKey = controller.getPortalSpell(event.getLocation(), entity);
         WarpDescription portalWarp = controller.getPortalWarp(event.getLocation(), entity);
         if (portalSpellKey == null && portalWarp == null) return;
-        com.elmakers.mine.bukkit.magic.Mage mage = controller.getMage(entity);
+        mage = controller.getMage(entity);
         boolean onCooldown = mage.isOnPortalCooldown();
         mage.setPortalCooldown(portalCooldown);
         if (onCooldown) {

@@ -214,6 +214,7 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean cancelOnDeath            = false;
     protected boolean cancelOnCastOther         = false;
     protected boolean cancelOnWorldChange         = false;
+    protected boolean cancelOnEnterPortal = false;
     protected boolean cancelOnNoPermission      = false;
     protected boolean cancelOnNoWand            = false;
     protected boolean creativeRestricted               = false;
@@ -2133,6 +2134,7 @@ public class BaseSpell implements MageSpell, Cloneable {
             cancelOnDamage = parameters.getDouble("cancel_on_damage", 0);
         }
         cancelOnWorldChange = parameters.getBoolean("cancel_on_world_change", false);
+        cancelOnEnterPortal = parameters.getBoolean("cancel_on_enter_portal", false);
         cancelOnCastOther = parameters.getBoolean("cancel_on_cast_other", false);
         cancelOnDeath = parameters.getBoolean("cancel_on_death", false);
         cancelOnDeactivate = parameters.getBoolean("cancel_on_deactivate", true);
@@ -3469,6 +3471,11 @@ public class BaseSpell implements MageSpell, Cloneable {
     @Override
     public boolean cancelOnWorldChange() {
         return cancelOnWorldChange;
+    }
+
+    @Override
+    public boolean cancelOnEnterPortal() {
+        return cancelOnEnterPortal;
     }
 
     @Override

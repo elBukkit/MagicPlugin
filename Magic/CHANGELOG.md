@@ -6,6 +6,7 @@
  - Add compatibility for 1.21.3
    1.21.2 was skipped, please use 1.21.3
  - Add real Lands compatibility, remove from generic_protections list (Thank you, XXY233!)
+ - Add `cancel_on_enter_portal` parameter, use in broom spell to work around spigot crash when flying a broom into a portal
 
 # 10.9.4
 

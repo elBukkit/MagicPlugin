@@ -94,6 +94,7 @@ broom:
           confusion: 5
         cancel_on_no_permission: true
         cancel_on_world_change: true
+        cancel_on_enter_portal: true
         sound: magic.flying
         sound_interval: 500
         sound_max_volume: 0.25

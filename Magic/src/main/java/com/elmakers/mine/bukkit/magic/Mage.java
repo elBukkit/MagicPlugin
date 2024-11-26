@@ -850,6 +850,19 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
         Bukkit.getPluginManager().callEvent(event);
     }
 
+    public void onEnterPortal() {
+        for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
+            Batch batch = iterator.next();
+            if (!(batch instanceof SpellBatch)) continue;
+            SpellBatch spellBatch = (SpellBatch)batch;
+            Spell spell = spellBatch.getSpell();
+            if (spell.cancelOnEnterPortal()) {
+                batch.cancel();
+                iterator.remove();
+            }
+        }
+    }
+
     public void onTeleport(PlayerTeleportEvent event) {
         for (Iterator<Batch> iterator = pendingBatches.iterator(); iterator.hasNext();) {
             Batch batch = iterator.next();
