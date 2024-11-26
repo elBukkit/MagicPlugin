@@ -378,7 +378,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
                     item = new ItemStack(Material.AIR);
                 }
             } else {
-                item = controller.createItem(materialKey, null, false, this);
+                try {
+                    item = controller.createItem(materialKey, null, false, this);
+                } catch (Exception ex) {
+                    controller.info("There was an error creating an item of type: " + materialKey);
+                }
                 if (!loaded && CompatibilityLib.getInventoryUtils().isSkull(item)) {
                     pending = new ArrayList<>();
                 }
