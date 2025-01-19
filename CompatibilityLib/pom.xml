@@ -75,6 +75,7 @@
         <module>v1_21_0</module>
         <module>v1_21_1</module>
         <module>v1_21_3</module>
+        <module>v1_21_4</module>
         <module>main</module>
     </modules>
 </project>
