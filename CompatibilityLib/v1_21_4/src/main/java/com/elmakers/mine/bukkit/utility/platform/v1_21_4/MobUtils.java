@@ -31,6 +31,7 @@ import com.elmakers.mine.bukkit.utility.platform.v1_21_4.goal.MagicGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_4.goal.MagicOwnerHurtByTargetGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_4.goal.MagicOwnerHurtTargetGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_4.goal.MagicPanicGoal;
+import com.elmakers.mine.bukkit.utility.platform.v1_21_4.goal.MagicTemptGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_4.goal.RequirementsGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_4.goal.SpinGoal;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_4.goal.TriggerGoal;
@@ -76,7 +77,6 @@ import net.minecraft.world.entity.ai.goal.RestrictSunGoal;
 import net.minecraft.world.entity.ai.goal.RunAroundLikeCrazyGoal;
 import net.minecraft.world.entity.ai.goal.StrollThroughVillageGoal;
 import net.minecraft.world.entity.ai.goal.SwellGoal;
-import net.minecraft.world.entity.ai.goal.TemptGoal;
 import net.minecraft.world.entity.ai.goal.TryFindWaterGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomFlyingGoal;
 import net.minecraft.world.entity.ai.goal.WaterAvoidingRandomStrollGoal;
@@ -491,7 +491,7 @@ public class MobUtils extends MobUtilsBase {
                         return null;
                     }
                     boolean scare = config.getBoolean("scare", false);
-                    return new TemptGoal(pathfinder, speed, Ingredient.of(nms.getItem()), scare);
+                    return new MagicTemptGoal(pathfinder, speed, Ingredient.of(nms.getItem()), scare, distance);
                 } catch (Exception ex) {
                     platform.getLogger().warning("Invalid material in temp goal: " + itemKey);
                     return null;
