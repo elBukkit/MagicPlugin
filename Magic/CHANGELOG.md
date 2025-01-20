@@ -3,8 +3,9 @@
 
 # 10.9.5
 
+ - Add compatibility for 1.21.4 (thanks for the help, alekso56!)
  - Add compatibility for 1.21.3
-   1.21.2 was skipped, please use 1.21.3
+   1.21.2 was skipped, please use 1.21.3 or 1.21.4
  - Add real Lands compatibility, remove from generic_protections list (Thank you, XXY233!)
  - Add `cancel_on_enter_portal` parameter, use in broom spell to work around spigot crash when flying a broom into a portal
  - Add `disable_armor_stand_portal` global config option, *defaults to true*. This is also to prevent spigot crashing.
