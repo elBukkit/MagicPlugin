@@ -51,7 +51,6 @@ import org.bukkit.craftbukkit.v1_21_R2.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntity;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftHanging;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftItem;
-import org.bukkit.craftbukkit.v1_21_R2.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R2.scheduler.CraftTask;
 import org.bukkit.craftbukkit.v1_21_R2.util.CraftChatMessage;
@@ -999,27 +998,50 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     @Override
     public Set<String> getTags(Entity entity) {
         return entity.getScoreboardTags();
-    }
+    } @Override
 
-    @Override
     public boolean isJumping(LivingEntity entity) {
-        net.minecraft.world.entity.LivingEntity living = ((CraftLivingEntity)entity).getHandle();
-        // net.minecraft.world.entity.EntityLiving
-        return (boolean)ReflectionUtils.getPrivateNeedsFixing(platform.getLogger(), living, net.minecraft.world.entity.LivingEntity.class, "jumping", "bn");
+        if (entity instanceof Player) {
+            Player player = (Player)entity;
+            return player.getCurrentInput().isJump();
+        }
+        return false;
     }
 
     @Override
     public float getForwardMovement(LivingEntity entity) {
-        net.minecraft.world.entity.LivingEntity living = ((CraftLivingEntity)entity).getHandle();
-        // For real, I guess?
-        return living.zza;
+        if (entity instanceof Player) {
+            Player player = (Player)entity;
+            if (player.getCurrentInput().isForward()) {
+                // Forward + backwards cancels out
+                if (player.getCurrentInput().isBackward()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else if (player.getCurrentInput().isBackward()) {
+                return -1;
+            }
+        }
+        return 0.0f;
     }
 
     @Override
     public float getStrafeMovement(LivingEntity entity) {
-        net.minecraft.world.entity.LivingEntity living = ((CraftLivingEntity)entity).getHandle();
-        // For real, I guess?
-        return living.xxa;
+        if (entity instanceof Player) {
+            Player player = (Player)entity;
+            if (player.getCurrentInput().isRight()) {
+                // Left + right cancels out
+                if (player.getCurrentInput().isLeft()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else if (player.getCurrentInput().isLeft()) {
+                return 1;
+            }
+        }
+        return 0.0f;
     }
 
     @Override

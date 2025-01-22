@@ -11,9 +11,6 @@
  - Add `disable_armor_stand_portal` global config option, *defaults to true*. This is also to prevent spigot crashing.
  - Add custom tempt goal to allow using it on mobs without the tempt range attribute
 
- NOTE: Broom and vehicle controls are not working in 1.21.3 and up.
-       The properties I was using to detect movement keys are not working anymore. I'm not sure if this will be fixable.
-
 # 10.9.4
 
  - Fix the Capture spell not saving custom entity data in 1.20.5+
