@@ -3,6 +3,8 @@
 
 # 10.9.5
 
+ NOTE: Maybe is not compatible with ItemsAdder, use both at your own risk.
+
  - Add compatibility for 1.21.4 (thanks for the help, alekso56!)
  - Add compatibility for 1.21.3
    1.21.2 was skipped, please use 1.21.3 or 1.21.4
