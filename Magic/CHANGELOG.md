@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.9.6
+
 # 10.9.5
 
  NOTE: Maybe is not compatible with ItemsAdder, use both at your own risk.
