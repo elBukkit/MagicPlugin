@@ -4313,7 +4313,9 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
 
     public void updateHasInventory() {
         int inventorySize = getSpells().size() + getBrushes().size();
-        hasInventory = !hasSpellProgression || inventorySize > 1 || autoFill;
+        WandMode wandMode = getMode();
+        int minInventorySize = wandMode == WandMode.SKILLS ? 0 : 1;
+        hasInventory = !hasSpellProgression || inventorySize > minInventorySize || autoFill;
     }
 
     public void cycleInventory() {

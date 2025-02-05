@@ -4,6 +4,7 @@
 # 10.9.6
 
  - Update resource pack for 1.21.4
+ - Fix spell book not opening if you only know one spell
 
 # 10.9.5
 
