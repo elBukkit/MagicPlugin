@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.9.7
+
 # 10.9.6
 
  - Update resource pack for 1.21.4
