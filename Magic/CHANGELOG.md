@@ -3,6 +3,8 @@
 
 # 10.9.6
 
+ - Update resource pack for 1.21.4
+
 # 10.9.5
 
  NOTE: Maybe is not compatible with ItemsAdder, use both at your own risk.
