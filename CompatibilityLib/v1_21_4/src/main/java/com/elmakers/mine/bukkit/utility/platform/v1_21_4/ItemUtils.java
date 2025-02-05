@@ -12,6 +12,7 @@ import org.bukkit.craftbukkit.v1_21_R3.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
@@ -279,6 +280,10 @@ public class ItemUtils extends ItemUtilsBase {
         ItemMeta itemMeta = itemStack.getItemMeta();
         if (itemMeta == null) return 0;
         if (!itemMeta.hasCustomModelData()) return 0;
+        CustomModelDataComponent component = itemMeta.getCustomModelDataComponent();
+        // Spigot will just throw an error if there is only string data in here, which is not great behavior
+        List<Float> floats = component.getFloats();
+        if (floats.isEmpty()) return 0;
         return itemMeta.getCustomModelData();
     }
 
