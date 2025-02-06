@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit;
+package com.elmakers.mine.bukkit.utility;
 
 import java.io.StringReader;
 import java.util.List;
@@ -11,7 +11,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
-import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 

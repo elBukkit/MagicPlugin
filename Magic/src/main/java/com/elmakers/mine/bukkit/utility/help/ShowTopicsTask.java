@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.bukkit.ChatColor;
 
-import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class ShowTopicsTask implements Runnable {

@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 
 import org.geysermc.connector.common.ChatColor;
 
-import com.elmakers.mine.bukkit.ChatUtils;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 
 public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     private static final int MAX_WIDTH = 50;

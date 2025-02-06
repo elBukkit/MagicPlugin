@@ -11,7 +11,7 @@ import javax.annotation.Nullable;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.elmakers.mine.bukkit.ChatUtils;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 import net.md_5.bungee.api.ChatColor;

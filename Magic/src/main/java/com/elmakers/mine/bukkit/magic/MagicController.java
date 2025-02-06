@@ -83,7 +83,6 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.action.ActionHandler;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.block.BoundingBox;
@@ -262,6 +261,7 @@ import com.elmakers.mine.bukkit.tasks.SaveMageDataTask;
 import com.elmakers.mine.bukkit.tasks.SaveMageTask;
 import com.elmakers.mine.bukkit.tasks.UndoUpdateTask;
 import com.elmakers.mine.bukkit.tasks.ValidateSpellsTask;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;

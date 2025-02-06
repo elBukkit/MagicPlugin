@@ -1,6 +1,6 @@
 package com.elmakers.mine.bukkit.utility.help;
 
-import com.elmakers.mine.bukkit.ChatUtils;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 
 public class HelpTopicWord {
     private final String word;

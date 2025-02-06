@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
-import com.elmakers.mine.bukkit.ChatUtils;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 
 public class HelpTopicKeywordMatch {
     public static final int MIN_WHOLE_WORD_LENGTH = 4;

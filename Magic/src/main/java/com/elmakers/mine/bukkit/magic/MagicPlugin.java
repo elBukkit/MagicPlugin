@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.Messages;
@@ -47,6 +46,7 @@ import com.elmakers.mine.bukkit.magic.command.RPCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.SpellsCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.TriggerCommandExecutor;
 import com.elmakers.mine.bukkit.magic.command.WandCommandExecutor;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.wand.Wand;

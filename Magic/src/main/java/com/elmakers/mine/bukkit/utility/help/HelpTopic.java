@@ -12,7 +12,7 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.ChatColor;
 
-import com.elmakers.mine.bukkit.ChatUtils;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.MacroExpansion;
 import com.elmakers.mine.bukkit.utility.Messages;
