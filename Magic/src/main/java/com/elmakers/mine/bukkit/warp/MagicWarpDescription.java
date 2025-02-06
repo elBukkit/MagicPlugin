@@ -1,10 +1,10 @@
 package com.elmakers.mine.bukkit.warp;
 
 import java.util.Collection;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.entity.Entity;
-import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.effect.EffectPlayer;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -28,7 +28,7 @@ public class MagicWarpDescription implements WarpDescription {
         this(controller, key, true);
     }
 
-    @NotNull
+    @Nonnull
     @Override
     public String getKey() {
         return key;

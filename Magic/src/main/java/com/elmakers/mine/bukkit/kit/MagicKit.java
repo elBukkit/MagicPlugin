@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bukkit.Location;
@@ -14,7 +15,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.kit.Kit;
@@ -364,7 +364,7 @@ public class MagicKit implements Kit, Comparable<MagicKit> {
     }
 
     @Override
-    public int compareTo(@NotNull MagicKit o) {
+    public int compareTo(@Nonnull MagicKit o) {
         return Integer.compare(o.priority, priority);
     }
 }
