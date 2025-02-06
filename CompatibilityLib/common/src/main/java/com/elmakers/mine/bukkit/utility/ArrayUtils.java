@@ -10,10 +10,10 @@ public class ArrayUtils {
     }
 
     public static Integer[] toObject(int[] array) {
-        return org.apache.commons.lang.ArrayUtils.toObject(array);
+        return org.apache.commons.lang3.ArrayUtils.toObject(array);
     }
 
     public static Object[] addAll(Object[] array1, Object[] array2) {
-        return org.apache.commons.lang.ArrayUtils.addAll(array1, array2);
+        return org.apache.commons.lang3.ArrayUtils.addAll(array1, array2);
     }
 }
