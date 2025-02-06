@@ -45,12 +45,16 @@
             <artifactId>CompatibilityLib</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.elmakers.mine.bukkit.compatibility</groupId>
-            <artifactId>CompatibilityLib-common</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-lang3</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>org.apache.commons</groupId>
+                    <artifactId>commons-text</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <!-- Effect library (shaded) -->
