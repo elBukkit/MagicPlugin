@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
@@ -70,7 +69,9 @@ public class TranslatingConfigurationSection extends MemorySection {
      */
     @Override
     public ConfigurationSection createSection(String path) {
-        Validate.notEmpty(path, "Cannot create section at empty path");
+        if (path == null || path.isEmpty()) {
+            throw new IllegalStateException("Cannot create section at empty path");
+        }
         Configuration root = getRoot();
         if (root == null) {
             throw new IllegalStateException("Cannot create section without a root");
