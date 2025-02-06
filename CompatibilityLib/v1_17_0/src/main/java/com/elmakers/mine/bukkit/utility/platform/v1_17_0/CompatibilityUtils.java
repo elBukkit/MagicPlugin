@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -97,6 +96,7 @@ import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernCompatibilityUtils;
 import com.google.common.collect.Multimap;

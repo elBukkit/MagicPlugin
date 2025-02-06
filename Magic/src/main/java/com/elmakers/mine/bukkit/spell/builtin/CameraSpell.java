@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
@@ -13,6 +12,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.TargetingSpell;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
+import com.elmakers.mine.bukkit.utility.WordUtils;
 
 public class CameraSpell extends TargetingSpell
 {

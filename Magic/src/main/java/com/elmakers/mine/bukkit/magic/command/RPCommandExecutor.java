@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.rp.ResourcePackPreference;
 import com.elmakers.mine.bukkit.magic.Mage;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class RPCommandExecutor extends MagicTabExecutor {
 

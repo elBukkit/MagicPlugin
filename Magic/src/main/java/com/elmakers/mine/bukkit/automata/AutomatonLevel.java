@@ -3,13 +3,13 @@ package com.elmakers.mine.bukkit.automata;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.batch.SimulateBatch;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 

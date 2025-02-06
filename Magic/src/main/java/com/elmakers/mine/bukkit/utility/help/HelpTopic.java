@@ -10,14 +10,14 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 
 import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.MacroExpansion;
 import com.elmakers.mine.bukkit.utility.Messages;
+import com.elmakers.mine.bukkit.utility.StringEscapeUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class HelpTopic {
     private final String key;

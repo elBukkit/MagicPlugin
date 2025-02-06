@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -41,6 +40,7 @@ import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.maps.BufferedMapCanvas;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class MaterialBrush extends MaterialAndData implements com.elmakers.mine.bukkit.api.block.MaterialBrush {
 

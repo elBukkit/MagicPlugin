@@ -17,7 +17,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.zip.InflaterInputStream;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -34,6 +33,7 @@ import com.elmakers.mine.bukkit.api.maps.MapController;
 import com.elmakers.mine.bukkit.api.maps.URLMap;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class MagicMapCommandExecutor extends MagicTabExecutor {
     public MagicMapCommandExecutor(MagicAPI api) {

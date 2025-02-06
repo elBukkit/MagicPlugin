@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.List;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -27,6 +26,7 @@ import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import de.slikey.effectlib.util.VectorUtils;
 

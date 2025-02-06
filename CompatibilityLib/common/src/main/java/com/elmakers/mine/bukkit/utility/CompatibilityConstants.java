@@ -1,6 +1,5 @@
 package com.elmakers.mine.bukkit.utility;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 
 public class CompatibilityConstants {

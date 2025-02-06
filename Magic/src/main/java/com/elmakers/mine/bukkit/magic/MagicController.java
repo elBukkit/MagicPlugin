@@ -40,8 +40,6 @@ import java.util.zip.ZipInputStream;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
 import org.bstats.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -274,6 +272,8 @@ import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.Messages;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
+import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.utility.WordUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.wand.LostWand;
 import com.elmakers.mine.bukkit.wand.Wand;

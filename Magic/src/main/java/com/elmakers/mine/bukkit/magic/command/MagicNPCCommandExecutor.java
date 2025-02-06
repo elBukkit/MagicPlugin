@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -35,6 +34,7 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
 
 public class MagicNPCCommandExecutor extends MagicTabExecutor {

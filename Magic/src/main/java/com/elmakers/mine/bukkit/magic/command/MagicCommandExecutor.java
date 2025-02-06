@@ -17,7 +17,6 @@ import java.util.Map.Entry;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -52,6 +51,7 @@ import com.elmakers.mine.bukkit.utility.HitboxUtils;
 import com.elmakers.mine.bukkit.utility.LogMessage;
 import com.elmakers.mine.bukkit.utility.MagicLogger;
 import com.elmakers.mine.bukkit.utility.RunnableJob;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.wand.WandCleanupRunnable;
 
 public class MagicCommandExecutor extends MagicHelpCommandExecutor {

@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Color;
 import org.bukkit.Location;
 import org.bukkit.plugin.Plugin;
@@ -28,6 +27,7 @@ import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.WordUtils;
 
 public class DynmapController {
      private final Plugin plugin;

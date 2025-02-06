@@ -8,7 +8,6 @@ import java.util.Random;
 import java.util.Set;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -20,6 +19,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.populator.MagicChunkPopulator;

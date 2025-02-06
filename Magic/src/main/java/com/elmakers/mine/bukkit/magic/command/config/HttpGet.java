@@ -5,10 +5,10 @@ import java.net.URL;
 import java.util.List;
 import javax.net.ssl.HttpsURLConnection;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public abstract class HttpGet extends AsyncProcessor implements Runnable {
     protected final String url;

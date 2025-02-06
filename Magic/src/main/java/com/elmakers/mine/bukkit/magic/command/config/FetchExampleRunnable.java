@@ -15,13 +15,13 @@ import java.util.logging.Level;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class FetchExampleRunnable extends HttpGet {
     private final String exampleKey;

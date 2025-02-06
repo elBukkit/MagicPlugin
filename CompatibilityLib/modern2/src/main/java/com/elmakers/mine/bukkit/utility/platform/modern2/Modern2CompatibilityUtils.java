@@ -12,7 +12,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
@@ -67,6 +66,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernCompatibilityUtils;

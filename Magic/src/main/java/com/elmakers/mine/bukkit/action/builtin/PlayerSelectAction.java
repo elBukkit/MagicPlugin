@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -31,6 +30,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class PlayerSelectAction extends CompoundAction implements GUIAction
 {

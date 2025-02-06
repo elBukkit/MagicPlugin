@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.Deque;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.Mage;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 

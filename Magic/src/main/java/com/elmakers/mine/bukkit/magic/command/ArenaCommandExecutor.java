@@ -7,7 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -30,6 +29,7 @@ import com.elmakers.mine.bukkit.arena.ArenaTemplate;
 import com.elmakers.mine.bukkit.arena.DefaultStage;
 import com.elmakers.mine.bukkit.arena.EditingStage;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class ArenaCommandExecutor extends MagicTabExecutor {
     private static final String[] SUB_COMMANDS = {

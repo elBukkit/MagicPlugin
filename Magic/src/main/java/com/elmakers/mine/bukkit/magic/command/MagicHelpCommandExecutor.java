@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -17,6 +16,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.help.Help;
 import com.elmakers.mine.bukkit.utility.help.SearchHelpTask;
 

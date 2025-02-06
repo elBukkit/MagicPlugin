@@ -11,7 +11,6 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.NumberConversions;
@@ -22,6 +21,7 @@ import com.elmakers.mine.bukkit.api.magic.MagicPropertyType;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public abstract class BaseMagicConfigurable extends BaseMagicProperties implements MagicConfigurable {
     protected final MagicPropertyType type;

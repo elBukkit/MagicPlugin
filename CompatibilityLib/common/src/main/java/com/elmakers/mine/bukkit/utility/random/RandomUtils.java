@@ -11,12 +11,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 /**
  * Contains some general Randomization utilities, including

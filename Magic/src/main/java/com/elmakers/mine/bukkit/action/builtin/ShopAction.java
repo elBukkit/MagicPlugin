@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 
@@ -23,6 +22,7 @@ import com.elmakers.mine.bukkit.api.spell.PrerequisiteSpell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class ShopAction extends SelectorAction {
     private boolean showNoPermission;

@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.integration.skript;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.Event;
 
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.magic.MagicPlugin;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import ch.njol.skript.Skript;
 import ch.njol.skript.doc.Description;

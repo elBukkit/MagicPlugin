@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.world.BlockResult;
 
 public abstract class BlockRule {

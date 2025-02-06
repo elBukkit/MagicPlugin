@@ -12,7 +12,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -27,6 +26,7 @@ import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;

@@ -1,8 +1,8 @@
 package com.elmakers.mine.bukkit.world.block.builtin;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 
 @Deprecated

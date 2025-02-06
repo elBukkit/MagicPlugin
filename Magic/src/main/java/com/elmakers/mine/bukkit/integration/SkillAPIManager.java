@@ -6,7 +6,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -22,6 +21,7 @@ import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.api.requirements.RequirementsProcessor;
 import com.elmakers.mine.bukkit.magic.ManaController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.sucy.skill.SkillAPI;
 import com.sucy.skill.api.player.PlayerClass;
 import com.sucy.skill.api.player.PlayerData;

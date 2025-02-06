@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Art;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -29,6 +28,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.spell.BlockSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
 @Deprecated

@@ -6,12 +6,12 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 

@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.wand.WandTemplate;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class WandPaginator extends Paginator<WandTemplate> {
     private final MageController controller;

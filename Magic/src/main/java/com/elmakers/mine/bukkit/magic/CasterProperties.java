@@ -11,8 +11,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -38,6 +36,8 @@ import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
+import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.utility.WordUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandLevel;
 import com.elmakers.mine.bukkit.wand.WandUpgradePath;

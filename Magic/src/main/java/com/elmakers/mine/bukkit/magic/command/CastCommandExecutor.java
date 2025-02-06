@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
@@ -23,6 +22,7 @@ import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class CastCommandExecutor extends MagicTabExecutor {
 

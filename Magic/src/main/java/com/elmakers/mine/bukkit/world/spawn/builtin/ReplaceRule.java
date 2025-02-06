@@ -6,7 +6,6 @@ import java.util.Deque;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,6 +15,7 @@ import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.api.entity.EntityData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.spawn.SpawnOption;

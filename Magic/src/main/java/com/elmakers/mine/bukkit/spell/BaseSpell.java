@@ -17,8 +17,6 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.ArrayUtils;
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -86,8 +84,10 @@ import com.elmakers.mine.bukkit.configuration.SpellParameters;
 import com.elmakers.mine.bukkit.item.Cost;
 import com.elmakers.mine.bukkit.item.Icon;
 import com.elmakers.mine.bukkit.magic.MageClass;
+import com.elmakers.mine.bukkit.utility.ArrayUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;

@@ -5,8 +5,9 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
+
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 

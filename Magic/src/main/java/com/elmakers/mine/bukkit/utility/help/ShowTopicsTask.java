@@ -2,12 +2,12 @@ package com.elmakers.mine.bukkit.utility.help;
 
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 
 import com.elmakers.mine.bukkit.ChatUtils;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class ShowTopicsTask implements Runnable {
     private static final int DEBUG_PADDING = 2;

@@ -7,7 +7,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -18,6 +17,7 @@ import com.elmakers.mine.bukkit.configuration.MagicConfiguration;
 import com.elmakers.mine.bukkit.item.ItemData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class ItemController {
     private MageController controller;

@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -39,6 +38,7 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 @Deprecated
 public abstract class BaseShopAction extends BaseSpellAction implements GUIAction

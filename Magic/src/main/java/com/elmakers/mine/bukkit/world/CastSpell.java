@@ -1,7 +1,6 @@
 package com.elmakers.mine.bukkit.world;
 
-import org.apache.commons.lang.StringUtils;
-
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.world.spawn.SpawnResult;
 
 public class CastSpell {

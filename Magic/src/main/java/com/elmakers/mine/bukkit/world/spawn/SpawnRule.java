@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
@@ -22,6 +21,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public abstract class SpawnRule implements Comparable<SpawnRule> {
     protected MagicController controller;

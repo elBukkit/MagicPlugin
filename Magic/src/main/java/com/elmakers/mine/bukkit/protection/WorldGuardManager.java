@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -17,6 +16,7 @@ import com.elmakers.mine.bukkit.api.protection.CastPermissionManager;
 import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.api.wand.Wand;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class WorldGuardManager implements PVPManager, BlockBreakManager, BlockBuildManager, CastPermissionManager {
     private boolean enabled = false;

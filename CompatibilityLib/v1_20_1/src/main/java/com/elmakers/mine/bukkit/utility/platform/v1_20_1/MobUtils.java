@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.function.BooleanSupplier;
 import java.util.logging.Level;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,6 +19,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
 import com.elmakers.mine.bukkit.mob.GoalConfiguration;
 import com.elmakers.mine.bukkit.mob.GoalType;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.MobUtilsBase;
 import com.elmakers.mine.bukkit.utility.platform.v1_20_1.goal.IdleGoal;

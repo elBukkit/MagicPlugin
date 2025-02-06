@@ -8,7 +8,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
@@ -25,6 +24,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.google.common.collect.ImmutableSet;
 
 public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, ItemUpdatedCallback, Cloneable {

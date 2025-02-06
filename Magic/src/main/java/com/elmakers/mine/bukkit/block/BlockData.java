@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.Set;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -23,6 +22,7 @@ import com.elmakers.mine.bukkit.api.block.UndoList;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 /**
  * Stores a cached Block. Stores the coordinates and world, but will look up a block reference on demand.

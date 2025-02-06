@@ -5,7 +5,6 @@ import java.util.Deque;
 import java.util.Random;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -13,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 import com.elmakers.mine.bukkit.world.BlockResult;

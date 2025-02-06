@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,6 +20,7 @@ import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class LockAction extends BaseSpellAction
 {

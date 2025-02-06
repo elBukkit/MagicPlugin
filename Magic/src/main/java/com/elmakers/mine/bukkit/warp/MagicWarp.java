@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.warp;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -14,6 +13,7 @@ import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.WordUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class MagicWarp implements Warp {

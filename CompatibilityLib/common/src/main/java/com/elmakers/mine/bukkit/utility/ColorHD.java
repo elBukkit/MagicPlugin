@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.concurrent.Immutable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Color;
 import org.bukkit.configuration.ConfigurationSection;
 

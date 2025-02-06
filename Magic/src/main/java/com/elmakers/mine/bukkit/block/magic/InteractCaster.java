@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.block.magic;
 import java.util.Arrays;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -13,6 +12,7 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityData;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SpellUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class InteractCaster {
     private final MagicBlockTemplate template;

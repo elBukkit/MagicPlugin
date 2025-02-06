@@ -21,7 +21,6 @@ import java.util.logging.Level;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -49,6 +48,7 @@ import com.elmakers.mine.bukkit.magic.command.config.NewSessionRunnable;
 import com.elmakers.mine.bukkit.magic.command.config.Session;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;

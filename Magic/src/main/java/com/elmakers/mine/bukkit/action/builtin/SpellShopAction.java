@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -30,6 +29,7 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 @Deprecated
 public class SpellShopAction extends com.elmakers.mine.bukkit.action.BaseShopAction

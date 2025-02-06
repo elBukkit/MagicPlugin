@@ -21,7 +21,6 @@ import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
@@ -76,6 +75,7 @@ import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.TeleportPassengerTask;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;

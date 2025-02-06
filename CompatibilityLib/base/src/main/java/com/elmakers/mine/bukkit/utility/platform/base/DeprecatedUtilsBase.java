@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.util.UUID;
 
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
@@ -27,6 +26,7 @@ import org.bukkit.plugin.Plugin;
 import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
+import com.elmakers.mine.bukkit.utility.WordUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 

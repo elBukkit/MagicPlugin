@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -40,6 +39,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.CompleteDragTask;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandInventory;
 import com.elmakers.mine.bukkit.wand.WandMode;

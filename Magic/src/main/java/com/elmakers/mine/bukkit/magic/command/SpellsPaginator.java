@@ -7,12 +7,12 @@ import java.util.Comparator;
 import java.util.List;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class SpellsPaginator extends Paginator<SpellTemplate> {
     private final MageController controller;

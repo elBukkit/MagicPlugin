@@ -9,8 +9,6 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
@@ -45,7 +43,9 @@ import com.elmakers.mine.bukkit.api.magic.Messages;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.WordUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.google.common.base.Objects;
 import com.google.gson.Gson;

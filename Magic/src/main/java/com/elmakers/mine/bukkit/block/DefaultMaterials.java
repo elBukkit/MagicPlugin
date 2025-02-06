@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -18,6 +17,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.MaterialSetManager;
 import com.elmakers.mine.bukkit.materials.MaterialSets;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class DefaultMaterials {
     private static DefaultMaterials instance;

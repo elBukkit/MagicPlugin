@@ -8,7 +8,6 @@ import java.util.logging.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.configuration.ConfigurationSection;
@@ -25,6 +24,7 @@ import com.elmakers.mine.bukkit.api.protection.PVPManager;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarp;
 import com.elmakers.mine.bukkit.api.protection.PlayerWarpManager;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import br.net.fabiozumbi12.RedProtect.Bukkit.API.RedProtectAPI;
 import br.net.fabiozumbi12.RedProtect.Bukkit.RedProtect;

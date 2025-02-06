@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.logging.Logger;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.Configuration;
 import org.bukkit.configuration.ConfigurationSection;
@@ -16,6 +15,7 @@ import org.bukkit.configuration.MemorySection;
 import org.bukkit.util.NumberConversions;
 
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 
 public class TranslatingConfigurationSection extends MemorySection {

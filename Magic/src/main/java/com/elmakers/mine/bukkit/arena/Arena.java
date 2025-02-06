@@ -10,7 +10,6 @@ import java.util.Queue;
 import java.util.Random;
 import java.util.Set;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -51,6 +50,7 @@ import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.DirectionUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.google.common.base.Splitter;
 
 public class Arena implements com.elmakers.mine.bukkit.api.arena.Arena {

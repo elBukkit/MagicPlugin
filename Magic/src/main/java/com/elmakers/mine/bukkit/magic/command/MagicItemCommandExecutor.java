@@ -15,7 +15,6 @@ import java.util.TreeMap;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -44,6 +43,7 @@ import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 

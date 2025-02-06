@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -37,6 +36,7 @@ import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;

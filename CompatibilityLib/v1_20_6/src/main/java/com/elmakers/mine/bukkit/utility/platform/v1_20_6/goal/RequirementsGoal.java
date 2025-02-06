@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.requirements.Requirement;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import net.minecraft.world.entity.ai.goal.Goal;
 

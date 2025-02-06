@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -32,6 +31,7 @@ import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 public class WandCommandExecutor extends MagicConfigurableExecutor {
     public static boolean CONSOLE_BYPASS_MODIFIABLE = true;
