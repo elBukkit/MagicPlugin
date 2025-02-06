@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.Nonnull;
 
-import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.ConfigurationSection;
 
 public class Requirement {
@@ -35,6 +34,6 @@ public class Requirement {
            pairs.add(key + ":" + configuration.getString(key));
         }
 
-        return "{" + StringUtils.join(pairs, ",") + "}";
+        return "{" + String.join(",", pairs) + "}";
     }
 }

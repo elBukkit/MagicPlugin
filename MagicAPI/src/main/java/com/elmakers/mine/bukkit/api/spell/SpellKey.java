@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.api.spell;
 
-import org.apache.commons.lang.StringUtils;
-
 public class SpellKey {
     private final String key;
     private final String baseKey;
@@ -23,7 +21,7 @@ public class SpellKey {
     public SpellKey(String key) {
         this.key = key;
         if (key.contains("|")) {
-            String[] pieces = StringUtils.split(key, "|");
+            String[] pieces = key.split("\\|");
             this.baseKey = pieces[0];
             int parsedLevel = 1;
             if (pieces.length > 1) {
