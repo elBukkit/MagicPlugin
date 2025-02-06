@@ -9,15 +9,12 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_21_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R3.inventory.CraftItemStack;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
+import com.elmakers.mine.bukkit.utility.platform.modern2.Modern2ItemUtils;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -26,7 +23,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.component.CustomData;
 
-public class ItemUtils extends ItemUtilsBase {
+public class ItemUtils extends Modern2ItemUtils {
     public ItemUtils(Platform platform) {
         super(platform);
     }
@@ -123,71 +120,6 @@ public class ItemUtils extends ItemUtilsBase {
     }
 
     @Override
-    public ItemStack makeReal(ItemStack stack) {
-        if (stack == null) return null;
-        Object nmsStack = getHandle(stack);
-        if (nmsStack == null) {
-            stack = getCopy(stack);
-            nmsStack = getHandle(stack);
-        }
-        if (nmsStack == null) {
-            return null;
-        }
-
-        // Component patch can't be null I guess?
-        // Not sure what happens if it's empty, though.
-        /*
-        net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)nmsStack;
-        DataComponentPatch tag = itemStack.getComponentsPatch();
-        if (tag == null) {
-            itemStack.setTag(new CompoundTag());
-        }
-        */
-
-        return stack;
-    }
-
-    @Override
-    public boolean isUnbreakable(ItemStack stack) {
-        if (isEmpty(stack)) return false;
-        ItemMeta meta = stack.getItemMeta();
-        return meta.isUnbreakable();
-    }
-
-    @Override
-    public void makeUnbreakable(ItemStack stack) {
-        if (isEmpty(stack)) return;
-        ItemMeta meta = stack.getItemMeta();
-        meta.setUnbreakable(true);
-        stack.setItemMeta(meta);
-    }
-
-    @Override
-    public void removeUnbreakable(ItemStack stack) {
-        if (isEmpty(stack)) return;
-        ItemMeta meta = stack.getItemMeta();
-        meta.setUnbreakable(false);
-        stack.setItemMeta(meta);
-    }
-
-    @Override
-    public void hideFlags(ItemStack stack, int flags) {
-        if (isEmpty(stack)) return;
-        ItemMeta meta = stack.getItemMeta();
-        ItemFlag[] flagArray = ItemFlag.values();
-        for (int ordinal = 0; ordinal < flagArray.length; ordinal++) {
-            ItemFlag flag = flagArray[ordinal];
-            if ((flags & 1) == 1) {
-                meta.addItemFlags(flag);
-            } else {
-                meta.removeItemFlags(flag);
-            }
-            flags >>= 1;
-        }
-        stack.setItemMeta(meta);
-    }
-
-    @Override
     public boolean isEmpty(ItemStack itemStack) {
         if (itemStack == null || itemStack.getType() == Material.AIR) return true;
         Object handle = getHandle(itemStack);
@@ -273,25 +205,5 @@ public class ItemUtils extends ItemUtilsBase {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public int getCustomModelData(ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) return 0;
-        if (!itemMeta.hasCustomModelData()) return 0;
-        CustomModelDataComponent component = itemMeta.getCustomModelDataComponent();
-        // Spigot will just throw an error if there is only string data in here, which is not great behavior
-        List<Float> floats = component.getFloats();
-        if (floats.isEmpty()) return 0;
-        return itemMeta.getCustomModelData();
-    }
-
-    @Override
-    public void setCustomModelData(ItemStack itemStack, int customModelData) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) return;
-        itemMeta.setCustomModelData(customModelData);
-        itemStack.setItemMeta(itemMeta);
     }
 }

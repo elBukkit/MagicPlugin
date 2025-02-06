@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.v1_21_4.entity;
+package com.elmakers.mine.bukkit.utility.platform.modern2.entity;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

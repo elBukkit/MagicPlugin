@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.v1_21_4.event;
+package com.elmakers.mine.bukkit.utility.platform.modern2.event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;

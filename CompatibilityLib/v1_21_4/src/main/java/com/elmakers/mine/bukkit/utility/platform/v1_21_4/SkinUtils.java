@@ -1,22 +1,11 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_21_4;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernSkinUtils;
-import com.mojang.authlib.properties.Property;
+import com.elmakers.mine.bukkit.utility.platform.modern2.Modern2SkinUtils;
 
-public class SkinUtils extends ModernSkinUtils {
+public class SkinUtils extends Modern2SkinUtils {
 
     public SkinUtils(Platform platform) {
         super(platform);
-    }
-
-    @Override
-    protected String getValue(Property property) {
-        return property.value();
-    }
-
-    @Override
-    protected String getSignature(Property property) {
-        return property.signature();
     }
 }
