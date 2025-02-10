@@ -3,6 +3,8 @@
 
 # 10.9.7
 
+ - The mount_restricted spell property can now be a list of entity types as well as true (true meaning all types) 
+
 # 10.9.6
 
  - Update resource pack for 1.21.4

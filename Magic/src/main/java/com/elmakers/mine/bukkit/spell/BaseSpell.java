@@ -221,7 +221,8 @@ public class BaseSpell implements MageSpell, Cloneable {
     protected boolean pvpRestricted               = false;
     protected boolean disguiseRestricted        = false;
     protected boolean worldBorderRestricted     = true;
-    protected boolean mountRestricted             = false;
+    protected boolean mountRestrictedAll        = false;
+    protected Set<EntityType> mountRestricted             = new HashSet<>();
     protected boolean glideRestricted           = false;
     protected boolean glideExclusive            = false;
     protected boolean usesBrushSelection        = false;
@@ -1127,7 +1128,6 @@ public class BaseSpell implements MageSpell, Cloneable {
         disguiseRestricted = node.getBoolean("disguise_restricted", false);
         creativeRestricted = node.getBoolean("creative_restricted", false);
         glideRestricted = node.getBoolean("glide_restricted", false);
-        mountRestricted = node.getBoolean("mount_restricted", false);
         glideExclusive = node.getBoolean("glide_exclusive", false);
         worldBorderRestricted = node.getBoolean("world_border_restricted", false);
         usesBrushSelection = node.getBoolean("brush_selection", false);
@@ -1140,6 +1140,24 @@ public class BaseSpell implements MageSpell, Cloneable {
         deactivateEffects = node.getBoolean("deactivate_effects", true);
         disableManaRegeneration = node.getBoolean("disable_mana_regeneration", false);
         allowOverlap = node.getBoolean("allow_overlap", true);
+
+        // This parameter changed from a boolean to a set of entity types
+        // We still support the boolean, though
+        String mountRestrictedOptions = node.getString("mount_restricted", "false");
+        String[] entries = StringUtils.split(mountRestrictedOptions, ",");
+        for (String entry : entries) {
+            String upper = entry.toUpperCase();
+            if (upper.equals("TRUE")) {
+                mountRestrictedAll = true;
+            } else if (!upper.equals("FALSE")) {
+                try {
+                    EntityType entityType = EntityType.valueOf(upper);
+                    mountRestricted.add(entityType);
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid entity type in mount_restricted options: " + entry);
+                }
+            }
+        }
 
         String modeString = node.getString("mode");
         if (modeString != null && !modeString.isEmpty()) {
@@ -1668,7 +1686,13 @@ public class BaseSpell implements MageSpell, Cloneable {
         if (glideRestricted && entity != null && entity instanceof LivingEntity && ((LivingEntity)entity).isGliding()) return false;
         if (glideExclusive && entity != null && entity instanceof LivingEntity && !((LivingEntity)entity).isGliding()) return false;
         if (creativeRestricted && entity != null && entity instanceof Player && ((Player)entity).getGameMode() == GameMode.CREATIVE) return false;
-        if (mountRestricted && entity != null && entity.getVehicle() != null) return false;
+        if (mountRestrictedAll || !mountRestricted.isEmpty()) {
+            Entity vehicle = entity.getVehicle();
+            if (vehicle != null) {
+                if (vehicle != null) return false;
+                if (mountRestricted.contains(vehicle.getType())) return false;
+            }
+        }
 
         if (location == null) return true;
         Boolean regionPermission = bypassRegionPermission ? null : controller.getRegionCastPermission(mage.getPlayer(), this, location);
