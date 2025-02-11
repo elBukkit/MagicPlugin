@@ -2289,7 +2289,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         if (OLD_WAND_LOCKED) {
             // Can't support locked wands this way
             locked = false;
-            modifiable = getBoolean("locked", false);
+            modifiable = !getBoolean("locked", false);
         } else {
             locked = getBoolean("locked", false);
             modifiable = getBoolean("modifiable", true);
