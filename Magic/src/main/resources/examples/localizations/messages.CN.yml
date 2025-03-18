@@ -1,20 +1,48 @@
-# 本文件由一个喜欢magic的人翻译
-# .
-# 默认的语言文件在以下位置已有收集:
-# .
-# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/messages
-# .
-# 若要通过网络编辑器编辑此配置,请使用
-# /mconfig editor messages
-# .
-# 使用指令
-# /mconfig configure message costs.sp Super Points
-# 即可自定义配置单条语言文件内容
-# .
-# 注意: 使用/mconfig configure或example指令做出的
-#任何更改都将覆盖对默认语言文件所做的任何编辑(默认语言文件在plugins\Magic\defaults\messages.defaults位置)
-# .
-# LastUpdate: 2021-08-31
+
+
+arena:
+  countdown_10: t:&3开始于 &b$countdown 秒
+  countdown: t:&b$countdown
+  cancelled: '&4此比赛已取消！'
+  draw: t:&c时间到！
+  win: |-
+    t:&b胜利！
+    &b您已获胜！恭喜！
+  waiting_1: '&b等待 1 名玩家'
+  waiting: '&b等待 $count 名玩家'
+  starting: '&e$arena 的一轮比赛即将开始！'
+  next: '&6您将参加下一轮比赛！'
+  start: t:&6开始！
+  opponent: '&e 对阵 &3$player &f(&a$winsW &f/ &c$lossesL&f)'
+  queued: '&c您已经在 &b$arena 的队列中'
+  already: '&c您已经在 &b$arena 中'
+  joined: '&e您已加入 &b$arena 的当前轮次'
+  joined_queue: '&6您已加入 &b$arena 的队列'
+  joined_next_queue: '&6您已加入 &b$arena 下一轮的队列'
+  lost: '&b您输了 - 下次好运！'
+  died: '&b您已死亡，但您可以在 &e$respawn &b秒后重新加入战斗！'
+  false_start: '&c比赛还没开始您就死了！'
+  announce:
+    draw: '&7$arena &7比赛以平局结束'
+    lose: '&c$arena &c比赛已结束，下次好运！'
+    default: '&c$arena &c比赛以默认结果结束'
+    join: '&b$playerPath &3已加入 &b$arena，战绩为 &a$wins &3胜和 &c$losses &3负。'
+    join_first: '&b$playerPath &3首次加入 &b$arena'
+    quit: '&c$player &3已离开 &b$arena'
+    duration_minute_1: '&6$arena &6比赛将在 &c两分钟 &6后结束！'
+    duration_minute_2: '&6$arena &6比赛将在 &c一分钟 &6后结束！'
+    duration_seconds_30: '&6$arena &6比赛将在 &c三十秒 &6后结束！'
+    duration_seconds_10: '&6$arena &6比赛将在 &c十秒 &6后结束！'
+    duration_seconds_5: '&6$arena &6比赛将在 &c五秒 &6后结束！'
+    sudden_death: '&c突然死亡！'
+    win: |-
+      &b$playerPath &6是 &e$arena &6的冠军，
+      &6拥有 &4$hearts &6颗心，总战绩为 &a$wins &6胜和 &c$losses &6负。
+  stage:
+    start_mobs: t:$arena
+    win: '&a恭喜！&b您已通过 &3$arena'
+    duration_10: t:&c$countdown 秒！
+    duration: t:&c$countdown
 attributes:
   bowpull:
     name: 弓箭力度
@@ -52,18 +80,28 @@ attributes:
   mana_max:
     name: 最大魔力
     description: 玩家可拥有的魔力上限
+brush:
+  consumes: '&e消耗 $description'
+  absorb: |-
+    &a右键点击 &2以吸收所有
+     &6$type &2方块到背包中
+  absorbed: '&a已吸收 &2$amount &a个 &6$type &a方块'
+  no_absorbed: '&c您的背包中没有 &6$type &c方块'
+  key: ''
+  block_data_description: '&7$data'
 commands:
   no_permission: '&c你没有权限使用此命令.'
   in_game: '&c此命令只能在前台游戏中使用.'
   unknown_command: '&c未知命令: &f$command'
-  mkit:
-    usage: '用法: /mkit [玩家名] <kit>'
-    console_usage: '后台使用: /mkit <玩家名> <kit>'
-    unknown_kit: '&c未知礼包: &f$kit'
-    unknown_player: '&c未匹配到目标: &f$player'
-    cooldown: 你需要等待 $time.
-    no_requirements: 你不能使用这个礼包
+  mtrigger:
+    invalid_parameters: 这是一个无效的触发器链接
+    invalid_target: 这是一个无效的触发器目标
+    no_mage: 此链接已失效
   magic:
+    help: |-
+      &8| &7> &f查看法术命令帮助请键入 &6/help magic
+      &8| &7> &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
+      &8| &7> &f帮助文档: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
     help_header: |-
       &8 ----------------------------------------------------
       &8|
@@ -72,10 +110,47 @@ commands:
     help_footer: |-
       &8|
       &8 ----------------------------------------------------
-    help: |-
-      &8| &7> &f查看法术命令帮助请键入 &6/help magic
-      &8| &7> &fFAQ: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
-      &8| &7> &f帮助文档: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
+  mage:
+    reward:
+      received: '&e您已获得&6$item奖励'
+      gave: '&e给了 &3$player &6$item'
+      replacement: '&e给了 &3$player &6$replacement&e，已经有了 &6$item'
+  mkit:
+    usage: '用法: /mkit [玩家名] <kit>'
+    console_usage: '后台使用: /mkit <玩家名> <kit>'
+    unknown_kit: '&c未知礼包: &f$kit'
+    unknown_player: '&c未匹配到目标: &f$player'
+    cooldown: 你需要等待 $time.
+    no_requirements: 你不能使用这个礼包
+  mhelp:
+    unknown: '&c未找到匹配项：&f$topic'
+    found_single: '&f我找到了一个匹配项：'
+    found: '&f我找到了 &b$count &f个匹配项：'
+    found_limit: '&f我找到了 &b$count &f个匹配项 &7(显示前 &f$limit&7)&f：'
+    match: '`<li>` &6`<help topic="$topic" text="$title">`&7: &f$summary'
+    debug_tooltip: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"$debug"}}`'
+    prompt: |-
+      &8
+      &f`<icon key="counterspell">`        &b欢迎使用 &d魔法&f！        &f`<icon key="counterspell">`
+      &8
+      &f使用 &7/mhelp &f获取帮助，并禁用此消息。
+      &d只有 &e管理员 &d或拥有 &7magic.notify&d 权限的 &e玩家 &d可以看到此消息。
+    unavailable: |-
+      &8| &7> &4您的服务器版本不完全支持交互式帮助系统
+      &8| &7> &f请按照提示输入 &7/mhelp&f 命令以导航帮助
+      &8| &7> &f查看魔法命令帮助：&6/help magic
+      &8| &7> &f常见问题：&6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
+      &8| &7> &f帮助：&6https://github.com/elBukkit/MagicPlugin/wiki/Support
+    separator: '&8---------------------------'
+    no_wand: '&4您必须手持魔杖！'
+    header: |-
+      &8                                .
+      &f      `<icon key="nathanwolf">`   &b&l魔法帮助  &f`<icon key="missile">`
+      &8                                .
+    player_header: '&a  `<rawmessage text="点击" message="{\\\"text\\\":\\\"呀哈哈，你找到我了！\\\",\\\"color\\\":\\\"green\\\"}">` &7以导航帮助'
+    console_header: |-
+      &e  &f请按照提示输入 &7/mhelp&f 命令以导航帮助
+      &e  在游戏中效果更佳！
   mconfig:
     write_failed: '&c写入 $file 文件失败'
     example:
@@ -96,20 +171,18 @@ commands:
         fail: '&c无法检索URL链接 &e$url'
         error: '&c出现某项错误,请查看日志'
         wait_all: '&b请等待 $count 个示例更新'
-        skip: '&6由于 &e$example&6未被加载,已被跳过,或许你应该使用
-          &f/mconfig example unfetch $example&6 来彻底移除它'
+        skip: '&6由于 &e$example&6未被加载,已被跳过,或许你应该使用 &f/mconfig example unfetch $example&6
+          来彻底移除它'
         success_all: '&b成功地更新了所有的示例'
         wait: '&b请等待下载 &b$url...'
-        success_quiet: '&b成功下载 &2$example&f, 消耗了 &9$time &f和
-          &9$size MB'
+        success_quiet: '&b成功下载 &2$example&f, 消耗了 &9$time &f和 &9$size MB'
         success: |-
           &b下载了示例 &2$example&f
           &r使用 &6/mconfig example add $example&f 以混合当前配置和这里的配设
           &r使用&6/mconfig example set $example&f 以设定这里的配设为你的基本配置
         backup: '&e示例是可用的, &3已经备份到&f$backup'
         overwrite_backup: '&e示例和备份都可用, &c已覆盖 &f$backup'
-        url_write: '&b你可以通过&6/mconfig example
-          fetch $example&r&b来更新这个示例'
+        url_write: '&b你可以通过&6/mconfig example fetch $example&r&b来更新这个示例'
         url_write_failed: '&c写入URL文件时出现了一些错误,请查看日志'
         url_exists: |-
           &e示例当中已经有一个内置的URL,故未被写入.
@@ -197,10 +270,15 @@ commands:
       invalid: '&c不可用的时效: &4$input'
     remove:
       success: 从 &6$player &f处移除了修改 &3$name
-      fail: '从 &6$player &f处&c移除修改 &3$name 失败,&f或许已经不存在了?'
+      fail: 从 &6$player &f处&c移除修改 &3$name 失败,&f或许已经不存在了?
   getrp:
     auto: 你会在登陆时自动接受到资源包
     manual: 资源包以关闭,但是系统会提示你登陆.
+    download_disabled: 未配置资源包下载，但将假设您已拥有资源包。
+    download: |-
+      点击链接以 &b下载资源包&f 并将其添加到您的 Minecraft &b资源包&f 文件夹中。
+      &7现在将假设您已拥有资源包。
+      &f&n$url
     turnoff: |-
       你将不会在登陆时自动接收资源包,也不会收到登陆提示
       &r使用 &6/getrp&f 以获取资源包.
@@ -213,53 +291,870 @@ commands:
       使用 &6/getrp default&f 以修改回默认设置
     noauto: 使用 &6/getrp auto &f可以在登陆时自动下载此资源包
     default: 资源包引用已被设为默认值
+    disabled_server: 此命令已被禁用，因为此服务器在 server.properties 中配置了资源包。
+    disabled_plugins: |-
+      此命令已被禁用，因为此服务器正在使用以下控制资源包的插件：$plugins
+      管理员可以使用 &7`<help topic="compatibility" text="mhelp">` 获取更多信息。
     disabled: 由于服务器server.properties配置了有关资源包的设置,此命令已被禁用
-costs:
-  sp_amount: $amount SP
-  xp_amount: $amount XP
-  levels_amount: $amount XP等级
-  mana_amount: $amount 魔力
-  mana: 魔力
-  xp: XP
-  levels: 等级
-  sp: 法术点
-  sp_short: 法术点
-  hunger: 能量
-  health: 生命
-  health_amount: $amount 生命
-  hunger_amount: $amount 能量
-  heroes_mana: $amount 魔力
-  currency_singular: 游戏币
-  currency: 游戏币
-  currency_amount: $$amount
-currency:
+ccurrency:  
+  default:  
+    item_name: '&e$amount &6$type'  
+    description: 右键点击存入  
+    limit: a:&e&6$type &e的上限为 &c$amount  
+    deposited: 'a:&a已存入 &2$amount&a，余额: &2$balance'  
+    earned: a:&a+&2$amount  
+    spent: a:&c-&4$amount  
+  sp:  
+    name: '&b法术点'  
+    description: 右键点击获取 $type  
+    name_short: '&bSP'  
+  xp:  
+    name: '&d经验值'  
+    name_short: '&dXP'  
+  levels:  
+    name: '&d等级'  
+  mana:  
+    name: '&3法力'  
+    name_short: '&3MP'  
+  hunger:  
+    name: '&4能量'  
+  health:  
+    name: '&c生命值'  
+    name_short: '&cHP'  
+  heroes_mana:  
+    name: '&3法力'  
+    amount: $amount 法力  
+  currency:  
+    name: '&a金币'  
+    name_singular: '&a金币'  
+    amount: $$amount  
+  item:  
+    name_singular: 绿宝石  
+    name: 绿宝石
   item_name: '&e$amount &6$type'
   description: 右键以存钱
   limit: a:&6$type的&e最大限制为 &c$amount
   deposited: 'a:&a已存款 &2$amount &6$type&a, 财产: &2$balance'
   earned: a:&6+&e$earned
-sp:
-  name: '&e$amount &6法术点'
-  description: 右键以获取法术点
-  limit: a:&6法术点 &e的最大限制为 &c$amount
-  deposited: 'a:&a已存入 &2$amount &6法术点&a, 财产: &2$balance'
 dynmap:
   spells_markerset: 法术
   wands_markerset: 法杖
-examples:
+example:  
+  not_found: '&4未知或未加载的示例: &f$example'  
   instructions_header: |-
     &8 ----------------------------------------------------
     &8|
-    &8|   &b&l示例介绍
-    &8|
-  instructions_footer: |-
+    &8|   &b&l示例说明
     &8|
     &8 ----------------------------------------------------
+  instructions_footer: ''
+  instructions_additional: |-
+    `<li>``<command command="mconfig example add $example" text="启用此示例">`
+    `<li>``<command command="mconfig example remove $example" text="移除此示例">`
+glyphs:
+  space:
+    '-1': 
+    '-2': 
+    '-3': 
+    '-4': 
+    '-5': 
+    '-6': 
+    '-7': 
+    '-8': 
+    '-16': 
+    '-32': 
+    '-64': 
+    '-128': 
+    '-256': 
+    '-512': 
+    '-1024': 
+    '1': 
+    '2': 
+    '3': 
+    '5': 
+    '6': 
+    '7': 
+    '8': 
+    '16': 
+    '32': 
+    '64': 
+    '128': 
+    '256': 
+    '512': 
+    '1024': 
+  cooldown:
+    wait: 
+    '16': 
+    '15': 
+    '14': 
+    '13': 
+    '12': 
+    '11': 
+    '10': 
+    '9': 
+    '8': 
+    '7': 
+    '6': 
+    '5': 
+    '4': 
+    '3': 
+    '2': 
+    '1': 
+  bar:
+    insufficient: 
+    '32': 
+    '31': 
+    '30': 
+    '29': 
+    '28': 
+    '27': 
+    '26': 
+    '25': 
+    '24': 
+    '23': 
+    '22': 
+    '21': 
+    '20': 
+    '19': 
+    '18': 
+    '17': 
+    '16': 
+    '15': 
+    '14': 
+    '13': 
+    '12': 
+    '11': 
+    '10': 
+    '9': 
+    '8': 
+    '7': 
+    '6': 
+    '5': 
+    '4': 
+    '3': 
+    '2': 
+    '1': 
+    '0': 
+  hotbar:
+    hotbar_slot: 
+    hotbar_slot_active: 
+  icons:
+    empty: 
+help:  
+  main: |-
+    `<title text="通用帮助">`
+    `<li>``<help topic="commands" text="命令帮助">`
+    `<li>``<help topic="examples.main" text="示例帮助">` &7(包括生存模式)
+    `<li>``<help topic="resourcepack" text="资源包帮助">`
+    `<li>``<help topic="faq" text="常见问题与解决方法">`
+    `<li>``<help topic="customization" text="自定义、本地化和语言">`
+    `<li>``<help topic="features" text="其他 Magic 功能">`
+    `<li>``<help topic="links" text="在线帮助与支持链接">`
+    `<li>``<help topic="examples.survival.wands" text="魔杖获取与使用帮助">`
+  features: |-
+    `<title text="其他功能">`
+    `<li>``<help topic="npc" text="NPC 帮助">`
+    `<li>``<help topic="warp" text="传送点帮助">`
+    `<li>``<help topic="arena" text="竞技场帮助">`
+    `<li>``<help topic="mobs" text="Magic 怪物帮助">`
+    `<li>``<help topic="shops" text="Magic 商店设置">`
+    `<li>``<help topic="maps" text="在地图上放置图片">`
+    `<li>``<help topic="magicblocks" text="设置刷怪笼或其他自动方块">`
+    `<li>``<help topic="kits" text="设置礼包，包括新手礼包">`
+  kits: |-
+    `<title text="礼包">`
+    `<p>`&dMagic&f 提供了一个简单的 &b礼包&f 系统，可用于新手礼包、礼包商店、服务器导航物品、每日奖励等。  
+    `<li>``<command command="mnpc add dailykit" text="添加每日奖励 NPC">`
+    `<li>``<command command="meditor kit newkit" text="使用编辑器创建新礼包">`
+    `<li>``<command command="mconfig enable kit welcome" text="启用基础新手礼包">`
+    `<li>``<command command="mkit starter" text="给予自己新手礼包">`
+    `<li>``<command command="mconfig enable welcome" text="玩家加入时给予魔杖">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/kits" text="查看生存模式礼包示例">`
+  magicblocks: |-
+    `<title text="魔法方块">`
+    `<p>`&6魔法方块&f 可用于设置自动刷怪或施法。  
+    `<li>``<command command="mblock add spawner spawn.mobs warlock" text="设置术士刷怪笼">`
+    `<li>``<command command="mblock list" text="列出所有魔法方块，按距离排序">`
+    `<li>``<command command="mblock select" text="选择最近的魔法方块进行编辑">`
+    `<li>``<command command="mblock remove" text="移除选中的魔法方块">`
+    `<li>``<command command="mblock add fountain" text="添加喷泉粒子效果">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Magic-Blocks" text="查看魔法方块维基以获取更多信息">`
+  maps: |-
+    `<title text="魔法地图">`
+    `<li>``<command command="mmap load https://i.imgur.com/C9zLu1v.png Marigold" text="从 imgur 加载图片至地图">`
+    `<li>``<command command="mmap load https://magic.elmakers.com/mario.gif Mario" text="将 GIF 动画加载至地图">`
+    `<li>``<command command="mmap slice https://i.imgur.com/ijyvZDJ.png Mint 2 3" text="将大图切割为 2x3 (共 6 张) 地图">`
+    `<li>``<command command="mmap list Mint" text="列出地图或按名称查找地图">`
+    `<li>``<command command="mmap give 1" text="按 ID 给予指定地图">`
+    `<li>``<command command="mgive invisible_item_frame 6" text="给予隐形物品展示框用于悬挂地图">`
+  faq: |-
+    `<title text="常见问题与解决方法">`
+    `<li>``<command command="wandp @p restore" text="恢复玩家丢失的魔杖">`
+    `<li>``<help topic="mana" text="关于法力系统">`
+    `<li>``<help topic="players" text="管理 Magic 玩家数据">`
+    `<li>``<help topic="missing_spells" text="魔杖中的法术消失了">`
+    `<li>``<help topic="integration" text="与其他插件的集成">`
+    `<li>``<help topic="nottrained" text="某些物品提示未受训无法使用">`
+    `<li>``<help topic="noflying" text="使用某些法术时出现“未启用飞行”错误">`
+    `<li>``<help topic="default_configs" text="默认法术和其他配置的位置">`
+    `<li>``<help topic="right_click" text="右键操作无效">`
+    `<li>``<help topic="updating" text="更新插件后自定义魔杖或配置失效">`
+    `<li>``<command command="wand fill" text="为魔杖添加所有法术">`
+  updating: |-
+    `<title text="插件更新">`
+    `<p>`更新 &dMagic &f 通常只需替换插件 JAR 文件。  
+    `<p>`向后兼容性是自定义配置的优先事项！  
+    `<p>`但某些重大更新可能会导致变更，更新前请查看 `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/MIGRATION.md" text="迁移日志">`。  
+    `<p>`更新至 Magic 10 有以下注意事项：  
+    `<p>`更改了魔杖 `locked` 标记的含义，以匹配物品、职业和配方的行为。  
+    `<p>`若需旧版行为，请使用 `"modifiable: false"` 替代 `"locked: true"`。  
+    `<p>`若更新导致问题，请执行 `<command command="mconfig config old_wand_locked_behavior true" text="此命令">` 以恢复旧行为。  
+  right_click: |-
+    `<title text="右键与副手物品">`
+    `<p>`魔杖默认使用右键进行法术切换，这些`<help topic="wandcontrols" text="控制方式">`是可自定义的。
+    `<p>`如果你的副手持有某些物品，魔杖将忽略右键操作。
+    `<p>`这样可以使副手物品保持原有的原版行为而不被魔杖干扰。
+    `<p>`如果需要更改此行为，你可以使用`<command command="meditor materials offhand" text="编辑副手物品列表">`。
+    `<p>`用魔杖右键附魔台会打开`<command command="cast progressmenu" text="进度菜单">`。
+    `<p>`如果附魔台无法使用但其他右键操作正常，请检查你的配置文件，确保没有将 &7enchant_click&f 设置为空字符串。
+  wandcontrols: |-
+    `<title text="魔杖控制方式">`
+    `<p>`魔杖的控制方式是完全可自定义的。
+    `<p>`玩家可以使用`<command command="cast controlsmenu" text="控制菜单">`来自定义他们的控制方式。
+    `<p>`在同一个菜单中，玩家还可以更改他们的`<help topic="wandgui" text="GUI界面">`（第二快捷栏和法力条）。
+    `<p>`你也可以更改默认的魔杖控制方式。
+    `<p>`最简单的方法是`<command command="meditor config wand_slots" text="编辑 wand_slots 配置">`，更改 &7default_slotted&f 属性。
+    `<p>`可用的内置控制方案：&7controls_cycle&f, &7controls_hotbarswap&f, &7controls_inventory。
+  wandgui: |-
+    `<title text="魔杖GUI界面">`
+    `<p>`&6魔杖&f的第二快捷栏和法力 &bGUI界面&f 使用来自资源包的自定义字体符号。
+    `<p>`因此，资源包是&b必需的&f，并且此功能仅适用于&6Minecraft 1.16&f及以上版本。
+    `<p>`你需要使用官方的 &aMagic&f 资源包，或可以`<link url="https://merge.elmakers.com" text="合并你自己的资源包和 Magic 资源包">`。
+    `<p>`如果你看到方块而不是快捷栏图标，说明你使用了错误的资源包。
+    `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_bossbar" text="将魔杖默认设置为使用Boss栏GUI而非动作栏">`
+    `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_none" text="默认关闭魔杖GUI快捷栏">`
+  decorating: |-
+    `<title text="使用魔杖物品进行装饰">`
+    `<p>`&6魔杖&f物品默认无法放入容器。
+    `<p>`这包括物品展示框！
+    `<p>`如果你想用魔杖装饰，必须先将其转换为普通物品。
+    `<li>`使用`<command command="wand destroy" text="wand destroy">`命令将魔杖转换为普通物品。
+    `<li>`如果你不小心销毁了魔杖，可以使用`<command command="wand restore" text="wand restore">`找回绑定的魔杖。
+  default_configs: |-
+    `<title text="默认配置">`
+    `<p>`&dMagic &f会将其使用的有效配置输出到 &7plugins/Magic/defaults&f 文件夹中。
+    `<p>`此文件夹包括默认配置、已加载的示例（如 &bsurvival&f）和所有自定义内容。
+    `<p>`这些文件可用于了解插件的工作原理或查看可编辑的内容。
+    `<p>`但请注意，这些文件无法直接编辑，Magic 每次重启都会覆盖它们。
+    `<p>`这是大多数想要自定义插件的玩家感到困惑的地方。
+    `<p>`请参阅`<help topic="general_customization" text="自定义指南">`了解更多信息！
+  noflying: |-
+    `<title text="服务器未启用飞行">`
+    `<p>`默认情况下，生存模式的玩家通常不允许在服务器上飞行。
+    `<p>`如果你在使用 "Fly" 或 "Levitate" 法术时收到此错误，可能需要更改服务器设置。
+    `<p>`在你的 &7server.properties&f 文件中将 &7allow-flight: true&f 设置为 true。
+    `<p>`此更改需要重启服务器才能生效。
+  nottrained: |-
+    `<title text="你没有学会使用此物品">`
+    `<p>`如果你的魔杖在 Magic 10 版本前正常使用，但现在出现此消息，请检查魔杖配置。
+    `<p>`如果有 &7locked: true&f，需要移除此设置。
+    `<p>`如果担心魔杖被修改，可以改为 &7modifiable: false&f。
+    `<p>`如果此问题对你影响较大，你可以使用`<command command="mconfig configure config old_wand_locked_behavior true" text="此命令">`恢复旧版行为。
+    `<p>`请注意，恢复旧行为可能会影响内置魔杖的使用。
+  missing_spells: |-
+    `<title text="法术丢失">`
+    `<p>`&6法术&f真正丢失的情况非常罕见！
+    `<p>`以下是一些常见原因，可能导致法术难以找到：
+    `<li>`&6法术数量超过8个&f：当你的魔杖法术超过8个时，需要按下 &b`{"keybind":"key.drop"}`&f 键打开法术栏查看全部法术。
+    `<li>`&6新快捷栏&f：在 &bStudent&f 等级，你会解锁第二快捷栏，按 &b`{"keybind":"key.swapOffhand"}`&f 键切换快捷栏。
+    `<li>`&6法术分页&f：当你的魔杖拥有30个以上法术时，需打开法术栏，然后 &b点击魔杖&f 来切换法术页。
+  shops: |-
+    `<title text="魔法商店">`
+    `<p>`&dMagic&f 商店使用共享的经济配置进行物品定价。你可以在 &bitems&f 配置或游戏中自定义价格。
+    `<li>``<command command="mgive diamond" text="给自己一个钻石">`
+    `<li>``<command command="mitem save diamond 1000" text="将手中物品保存为价值1000的钻石">`
+    `<li>``<command command="cast lootshop" text="测试怪物战利品出售商店">`
+    `<li>``<command command="mnpc add lootshop" text="添加一个战利品商店NPC">`
+    `<li>``<command command="meditor spell glassshop" text="编辑商店，可直接在配置中设置价格">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/examples/survival/items/economy.yml" text="查看所有默认物品价格">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Shops" text="更多商店相关信息请查看Wiki">`
+    `<li>``<help topic="playershops" text="关于玩家商店">`
+  playershops: |-
+    `<title text="玩家商店">`
+    `<p>`&dMagic &f插件包含一个基于 &bNPC&f 的基本玩家商店系统。
+    `<p>`玩家可以使用 &6`<command command="mgive shoptoken" text="商店令牌">` 创建一个 &b商店管理员&f NPC。
+    `<p>`玩家需选择一个箱子作为商店库存，并将物品放入其中。
+    `<p>`建议使用 `<help topic="protection" text="保护插件">` 或 &6Secure&f 法术来保护此箱子。
+    `<p>`&b商店管理员&f 将从玩家的箱子中出售物品，玩家可通过销售赚取金钱。
+    `<p>`如果需要移除 NPC，可使用 `<command command="mnpc select" text="mnpc select">` 和 `<command command="mnpc remove" text="mnpc remove">` 命令。
+  players: |-
+    `<title text="Magic 玩家数据">`
+    `<li>``<command command="mage reset NathanWolf" text="完全重置玩家的进度">`
+    `<li>``<command command="mage reset NathanWolf survival" text="重置玩家的施法者类别 (生存模式) 进度">`
+  npc: |-
+    `<title text="NPC">`
+    `<p>`&dMagic &f插件与 &bCitizens&f 集成，并具有 &6内置&f NPC 系统。
+    `<li>``<help topic="citizens" text="Citizens NPC 帮助">`
+    `<li>``<command command="mnpc add spellshop" text="添加一个魔法商店 NPC">`
+    `<li>``<command command="mnpc remove" text="移除选定的 Magic NPC">`
+    `<li>``<command command="mnpc list" text="列出所有 Magic NPC">`
+    `<li>``<command command="mnpc cast heal" text="将 NPC 设置为治疗者">`
+    `<li>``<command command="mnpc add testdummy" text="添加一个练习假人 NPC">`
+  citizens: |-
+    `<title text="Citizens 集成">`
+    `<li>``<command command="trait magic" text="为选定的 Citizens NPC 添加 Magic 特性">`
+    `<li>``<command command="mtrait spell spellshop" text="将选定的 Citizens NPC 设置为魔法商店">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Citizens" text="在 wiki 上查看更多信息">`
+  warp: |-
+    `<title text="传送点">`
+    `<p>`&dMagic &f插件与 &bEssentials&f 和 &bCommandBook&f 传送点集成，且具有 &6内置&f 传送系统。
+    `<li>``<help topic="recall" text="为 Recall 添加传送点">`
+    `<li>``<command command="mwarp add testing" text="创建一个新的 Magic 传送点">`
+    `<li>``<command command="mwarp configure testing marker_icon tree" text="为 Dynmap 添加 Magic 传送点标记">`
+    `<li>``<command command="mwarp remove testing" text="移除 Magic 传送点">`
+    `<li>``<command command="mwarp go testing" text="前往 Magic 传送点">`
+  recall: |-
+    `<title text="Recall 法术">`
+    `<p>`&bRecall&f 动作由 &bsurvival&f 示例中的 &bRecall&f 法术使用，可将玩家传送至各个位置。
+    `<p>`&dMagic &f 传送点可通过为其设置 &b图标&f 添加至 Recall。
+    `<li>``<command command="mwarp add testing" text="创建一个新的 Magic 传送点">`
+    `<li>``<command command="mwarp configure testing icon diamond" text="为 Recall 添加带有钻石图标的传送点">`
+    `<li>``<command command="mwarp remove testing" text="移除 Magic 传送点">`
+    `<li>``<command command="mwarp go testing" text="前往 Magic 传送点">`
+    `<li>``<command command="mwarp configure testing locked true" text="将传送点设置为锁定状态，必须解锁才能使用">`
+    `<li>``<command command="cast warpunlock unlock testing" text="解锁锁定的传送点">`
+    请参阅 `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Recall" text="wiki">` 了解设置 &bEssentials&f 和 &bCommandBook&f 传送点，以及区域解锁传送点的信息。
+  arena: |-
+    `<title text="竞技场">`
+    `<li>``<command command="marena add testing" text="创建一个新的竞技场">`，默认是2人PvP
+    `<li>``<command command="marena configure testing max 4" text="允许此竞技场最多4名玩家">`
+    `<li>``<command command="marena configure testing add spawn" text="添加一个新的玩家出生点">`
+    `<li>``<command command="marena configure testing lobby" text="设置大厅位置，玩家加入前等待的地方">`
+    `<li>``<command command="marena configure testing exit" text="设置退出位置">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Arenas" text="查看Wiki上的详细说明，包括怪物竞技场教程">`
+  links: |-
+    `<title text="链接">`
+    `<li>`配置参考: &6https://reference.elmakers.com/
+    `<li>`常见问题: &6https://github.com/elBukkit/MagicPlugin/wiki/FAQ
+    `<li>`支持: &6https://github.com/elBukkit/MagicPlugin/wiki/Support
+    `<li>`生存模式魔杖和法术: &6https://survival.elmakers.com/
+  support: |-
+    `<title text="支持">`
+    `<li>``<link text="加入Magic Discord获取实时帮助与支持" url="https://discord.elmakers.com">`
+    `<li>``<link text="使用GitHub Issues提交错误报告和功能请求" url="https://github.com/elBukkit/MagicPlugin/issues">`
+    `<li>``<link text="更多支持链接请查看Wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Support">`
+  customization: |-
+    `<title text="自定义">`
+    `<li>``<help text="自定义游戏中的消息和文本" topic="messages">`
+    `<li>``<help text="更改魔力设置" topic="mana_customization">`
+    `<li>``<help text="创建新法术、魔杖和其他配置" topic="creating_configs">`
+    `<li>``<help text="自定义或创建合成配方" topic="crafting">`
+    `<li>``<command command="mconfig reset spell missile" text="将法术重置为默认配置">`
+    `<li>``<help topic="common_customizations" text="其他常见自定义项">`
+    `<li>``<help topic="general_customization" text="常规自定义问题">`&8(&7"所有可编辑的配置在哪里？"&7)
+  messages: |-
+    `<title text="消息">`
+    `<p>`&eMagic&f 中的所有游戏内文本都可以完全自定义。
+    `<p>`你可以编辑以下内容：
+    `<li>``<command command="meditor messages" text="编辑所有消息">`
+    `<li>``<help text="更改语言或本地化文本" topic="localization">`
+    `<li>``<help text="自定义单个消息" topic="message_customization">`
+  message_customization: |-
+    `<title text="消息自定义">`
+    `<p>`要编辑游戏中的某条文本，请查看 `plugins/Magic/defaults/messages.defaults.yml` 文件。
+    `<p>`找到你想更改的键，并使用 `mconfig configure message` 命令进行修改。
+    `<p>`或者，你可以使用 `meditor` 命令一次性编辑所有消息：
+    `<li>``<command command="mconfig configure message wand.appearance_magicka Mega Wand" text="更改魔杖外观名称">`
+    `<li>``<command command="meditor messages" text="一次性编辑所有消息">`
+  general_customization: |-
+    `<title text="通用自定义指南">`
+    `<p>`&dMagic &f插件的初始配置可能会让人感到困惑。
+    `<p>`许多人会尝试编辑 &7plugins/Magic/config.yml&f 或 &7spells.yml&f 文件，却找不到想修改的内容。
+    `<p>`由于 &dMagic&f 插件高度依赖配置文件，因此每次插件更新时，确保配置文件的可更新性至关重要。
+    `<p>`如果每次安装插件时都生成所有配置文件，管理将会变得非常复杂。
+    `<p>`虽然这种设计可能会令人困惑，但短期内不会有所改变！
+    `<p>`如果你坚持需要完整的配置文件进行修改，可以 &b`<command command="meditor config" text="使用编辑器为你生成配置">`
+    `<p>`或者，前往 &7plugins/Magic/defaults&f 文件夹，复制你想修改的内容到 &7plugins/Magic&f 文件夹中。
+    `<li>``<link text="在Wiki上了解更多关于自定义的方法" url="https://github.com/elBukkit/MagicPlugin/wiki/Customization">`
+  creating_configs: |-
+    `<title text="创建新配置">`
+    `<p>`&dMagic&f 是一个完全可自定义的框架，允许你根据需要进行修改，但你需要习惯 &b通过示例学习&f！
+    `<p>`你也可以随时通过 &b`<help topic="support" text="可用的支持渠道">` 获取帮助。
+    `<li>``<help topic="creating_spells" text="如何创建新的法术">`
+    `<li>``<command command="meditor spell mynewwand" text="使用编辑器创建一个新的魔杖">`
+    `<li>``<command command="meditor recipe newrecipe" text="创建一个新的合成配方">`
+  creating_spells: |-
+    `<title text="创建新法术">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Passive-and-Triggered-Spells" text="如何创建被动和触发法术">`
+    `<li>``<command command="meditor spell mynewspell" text="使用编辑器创建一个新的法术">`
+    `<li>``<command command="meditor spell missile" text="查看魔法飞弹法术的配置">`
+    `<li>``<command command="meditor spell singularity" text="查看引力法术的配置，这是一个更复杂的示例">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival" text="查看所有生存法术的配置">`
+    `<li>``<help topic="actions" text="如何使用法术动作改变法术行为">`
+    `<li>``<help topic="spell_parameters" text="了解法术参数的工作原理">`
+    `<li>``<help topic="effects" text="如何自定义法术效果">`
+    `<li>``<help topic="sandbox" text="使用沙盒编辑器">`
+    `<li>``<help topic="spelllevels" text="处理法术等级">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Custom-Spells" text="Wiki上的法术创建指南">`
+  sandbox: |-
+    `<title text="Magic 沙盒编辑器">`
+    `<p>`&dMagic&f 提供了一个公共 &b沙盒&f 服务器，你可以在其中尝试创建自己的法术。
+    `<p>`首先，在你的网页浏览器中访问 &bhttps://sandbox.elmakers.com&f。
+    `<p>`然后在 Minecraft 中登录 &7sandbox.elmakers.com&f 服务器。
+    `<p>`你可以使用与 &7/meditor&f 命令相同的网页编辑器来创建法术。
+    `<p>`在编辑器中保存法术将会强制服务器重新加载配置。
+    `<p>`你的 &6沙盒魔杖&f 将包含你在沙盒编辑器中创建的所有法术。
+  common_customizations: |-
+    `<title text="常用自定义设置">`
+    `<li>``<command command="mconfig spell default parameters.target_npc true" text="允许所有法术以NPC为目标">`
+    `<li>``<command command="mconfig spell default earns_cooldown 2 minutes" text="将SP冷却时间缩短为2分钟">`
+    `<li>``<command command="mconfig spell override parameters.undo 0" text="关闭自动撤销，使所有法术效果永久生效">`
+    `<li>``<command command="mconfig config enable_crafting false" text="禁用所有Magic的合成配方">`
+    `<li>``<command command="mconfig disable spell blink" text="禁用指定法术">`
+    `<li>``<command command="mconfig config sound_volume 0.1" text="将所有声音音量降低至10%">` &7请注意，生存示例的默认音量已设为50%。
+    `<li>``<help topic="donator_shops" text="如何设置捐助者商店">`
+    `<li>``<help topic="customize_damage" text="如何自定义法术伤害">`
+  customize_damage: |-
+    `<title text="自定义法术伤害">`
+    `<p>`自定义法术伤害可能比较复杂，大多数造成伤害的法术会 &b随着等级提升&f 造成更多伤害。
+    `<p>`此外，&7Damage&f 动作支持对生物和玩家分别设置不同的伤害值。
+    `<p>``<command command="meditor spell missile" text="使用编辑器编辑法术">`
+    `<p>`然后在 &bparameters&f 部分查找与伤害相关的属性。
+    `<p>`向下滚动，找到法术的升级版本，并在此处更改伤害参数。
+    `<p>`请注意，某些法术（如 &7Fireball&f、&7Boom&f 和 &7Fire&f）会造成间接伤害，因此需要特殊处理才能更改伤害值。
+    `<p>`对于爆炸类法术，&7size&f 参数可增加伤害，但要注意，爆炸范围越大，破坏的方块也越多。
+    `<p>`你还可以使用 `<command command="mconfig material indestructible *" text="使所有方块类型不可破坏">` 来防止法术破坏方块。
+  donator_shops: |-
+    `<title text="捐助者商店">`
+    `<p>`&dMagic &f插件可以设置符合EULA要求的 &b捐助者商店&f，提供各种装饰性物品。
+    `<p>`魔杖外观、效果颜色、`<help topic="trails" text="轨迹">` 和帽子等物品均可作为奖励。
+    `<p>`&dMagic 商店&f 可以直接在游戏内解锁，使用自定义的魔法货币或与 TokenManager 集成。
+    `<p>`如果你更喜欢通过网页商店进行解锁，也可以使用命令直接执行解锁操作。
+    `<p>`一旦玩家解锁了物品，他们可以随时使用 &dMagic 商店&f 菜单选择自己的装饰性物品。
+    `<li>``<link text="在Wiki上了解更多关于装饰性物品的信息" url="https://github.com/elBukkit/MagicPlugin/wiki/Vanity-Items">`
+  trails: |-
+    `<title text="轨迹效果">`
+    `<p>`玩家可以使用法术点（Spell Points）购买轨迹效果，这些效果会在玩家持有魔杖时显示。
+    `<p>`这些效果包括内置轨迹，如皇冠、恶魔尾巴和蝴蝶翅膀。
+    `<p>`可以通过 `<command command="cast effectshop" text="效果商店">` 进行购买。
+    `<p>`该商店可在 `<command command="cast progressmenu" text="附魔台菜单">` 中访问。
+    `<p>`你也可以通过 NPC 或其他方式开放一个可选的 `<command command="cast trailshop" text="轨迹商店">`。
+    `<p>`请注意，必须使用轨迹商店来移除已购买的轨迹效果，这些效果与魔杖分离，始终显示在玩家身上。
+    `<p>`非魔杖轨迹效果实现为 `<help topic="classes" text="魔法职业">`。
+    `<p>`因此，你可以使用 `<command command="mage deactivate crown" text="mage deactivate">` 命令关闭这些轨迹效果。
+  mana_customization: |-
+    `<title text="魔力自定义">`
+    `<p>`独立（演示）魔杖可以直接设置魔力属性：
+    `<li>``<command command="wand configure mana_max 1000" text="设置魔杖的最大魔力值为 1000">`
+    `<li>``<command command="wand configure mana_regeneration 100" text="设置魔杖的每秒魔力恢复速度为 100">`
+    `<p>`基于职业的魔杖（例如 &b生存模式&f 和其他内置示例的魔杖）由 &b进阶路径&f 控制其魔力，不能直接修改。
+    `<p>`这些职业和魔杖的魔力由 &bpath&f 配置控制，玩家的最大魔力和恢复速度会随着 &b等级提升&f 而变化。
+    `<p>`使用 &b`<command command="meditor path beginner" text="编辑器">` &f修改 &7override_properties&f 部分。
+    `<p>`你需要为每个路径（如 &6student, apprentice, master&7）重复此过程，才能完全修改玩家的魔力成长。
+    `<p>`如果你想测试无限魔力，可以使用 &b`<command command="mgive uberwand" text="超级魔杖">`。
+    `<p>`如果你更喜欢直接设置魔力，可以在魔杖上使用 `<command command="mconfig wand wand allow_path_overrides false" text="禁用路径覆盖">`。
+  mana: |-
+    `<title text="魔力">`
+    `<p>`&dMagic &f插件在许多配置中使用 &b魔力&f 系统，包括生存模式、星辰弯曲和战争模式（作为弹药）。
+    `<p>`魔力是职业内所有法术共享的资源池（例如，生存模式的魔力与弯曲能量是分开的）。
+    `<p>`魔力会随时间恢复，直到达到最大值。&b魔杖&f 会在自定义魔力条、经验值显示或其他已配置的位置显示魔力。
+    `<p>`&b每个法术&f 消耗的魔力各不相同。
+    `<p>`一些特殊物品，如 &b`<command command="mgive talisman" text="魔力护符">`&f 和 &b`<command command="mgive wizardhelmet" text="法师盔甲">`&f，能提升你的魔力属性。
+    `<li>``<help topic="mana_customization" text="自定义魔力和成长">`
+  localization: |-
+    `<title text="Localization">`
+    `<p>`&dMagic&f has been translated into several languages. You can also add translations yourself!
+    `<li>``<command command="mconfig language RU" text="Изменить на русский">` &7(Russian)
+    `<li>``<command command="mconfig language FR" text="Changer en français">` &7(French)
+    `<li>``<command command="mconfig language ES" text="Cambiar a español">` &7(Spanish)
+    `<li>``<command command="mconfig language CN" text="更改为中文">` &7(Chinese)
+    `<li>``<command command="mconfig language JP" text="日本語に変更">` &7(Japanese)
+    `<li>``<command command="meditor messages" text="Edit all in-game text">`
+    `<li>``<link text="Localization wiki" url="https://github.com/elBukkit/MagicPlugin/wiki/Messages">`
+  commands: |-
+    `<title text="指令">`
+    `<li>``<command command="help magic" text="查看完整指令帮助">`
+    `<li>``<command command="mage promote" text="提升自己的等级">`
+    `<li>``<command command="getrp url" text="获取资源包的下载链接">`
+    `<li>``<command command="mgive @p sp 1000" text="给予自己 1000 法术点">`
+    `<li>``<command command="mage reset @p caster" text="重置你的生存模式进度">`
+    `<li>``<command command="mage reset @p" text="完全重置你的魔法玩家数据">`
+    `<li>``<help topic="permissions" text="权限帮助">`
+    `<li>`Wiki 上的指令列表：&6https://github.com/elBukkit/MagicPlugin/wiki/Commands
+    `<li>``<command command="mgive wand" text="获取默认生存魔杖">`
+  permissions: |-
+    `<title text="权限">`
+    `<p>`玩家使用魔杖或施放法术 &e不需要 &f任何权限。
+    `<p>`给管理员权限节点 &6magic.commands.* &f，允许他们使用所有 Magic 指令。
+    `<p>`&b指令&f 权限遵循相同格式，例如：&6magic.commands.mgive
+    `<p>`&b法术&f 权限可以设置为 false 以禁止特定法术，例如：&6magic.cast.blink
+    `<p>`&b魔杖&f 权限可以设置为 false 以禁止使用特定魔杖，例如：&6magic.wand.use.wolf
+    `<li>``<help topic="no_permission" text="但我的魔杖提示我没有权限！">`
+  no_permission: |-
+    `<title text="你现在无法执行此操作">`
+    `<p>`法术遵循 &bPvP&f 和 &b建筑&f 权限规则。
+    `<p>`如果你的某些法术提示无法使用或没有权限，这可能是由于保护类插件的限制。
+    `<p>`&dMagic&f 支持多种 `<help topic="protection" text="保护类插件">`，如 &bWorldGuard&f、&bFactions&f、&bRedProtect&f 等。
+    `<p>`如果你在某个区域无法进行 PvP，那么你可能也无法在该区域施放某些法术。
+    `<p>`任何需要修改方块的法术，如果你无法手动修改方块，那么也无法施放。
+    `<li>`使用 `<command command="mage check" text="mage check">` 查看某个法术无法施放的原因。
+  integration: |-
+    `<title text="插件兼容性">`
+    `<li>`&dMagic&f 支持多种 `<help topic="protection" text="保护类插件">`，防止法术用于恶意破坏或恶作剧。
+    `<li>`&dMagic&f 支持 &bEssentials&f 和 &bCommandBook&f，适配 `<help topic="warps" text="传送点">` 功能。
+    `<li>`&dMagic&f 支持 &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f，可用于实现生物和法术的 `<help topic="disguises" text="伪装效果">`。
+    `<li>`&dMagic&f 支持 &bMythicMobs&f，允许生成神秘生物。
+    `<li>`&dMagic&f 支持 &b<`help topic="aureliumskills" text="AureliumSkills">`&f，兼容技能、属性和（可选的）魔力系统。
+    `<li>`&dMagic&f 支持 &b`<help topic="dynmap" text="Dynmap">`&f，能够在地图上显示传送点、法术施放记录和遗失的魔杖。
+    `<li>`你可以使用 `<help topic="skript" text="Skript">` 响应法术施放、法术点获取或其他事件。
+    `<li>`你可以使用 &6`<help topic="placeholders" text="占位符">`，通过 &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">`&f 在不同位置显示魔法属性。
+    `<li>``<help topic="compatibility" text="与其他插件的兼容性或问题">`
+  aureliumskills: |-
+    `<title text="Aurelium Skills">`
+    `<p>`&dMagic 与 `<link url="https://www.spigotmc.org/resources/aurelium-skills-advanced-skills-stats-abilities-and-more.81069/" text="Aurelium Skills">` 插件集成。
+    `<p>`Aurelium Skills 的属性和技能点可以作为变量在 Magic 配置中使用。
+    `<p>`只需使用技能或属性的名称，并确保使用大写形式，例如 SORCERY。
+    `<p>`Magic 默认不会使用 Aurelium Skills 的魔力，但你可以使用 `<command command="mconfig config aurelium_skills.use_mana true" text="此命令">` 启用它。
+    `<p>`请注意，可能会有进度问题，因为 Aurelium 的魔力不会与 Magic 的路径进度同步增长。
+    `<p>`因此，如果使用 Aurelium 魔力，可能需要进行额外的自定义设置。
+  disguises: |-
+    `<title text="伪装">`
+    `<p>`&dMagic 支持与 &b`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`&f 插件集成，提供生物和法术伪装功能。
+    `<p>`生物可以使用伪装，且 "Disguise" 动作可用于伪装生物或玩家。
+    `<p>`在这两种情况下，都需要使用 "disguise" 参数来配置伪装。
+    `<p>`可以为玩家使用伪装，示例请参考 `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/examples/survival/mobs/madscientist.yml" text="Mad Scientist">` 生物。
+    `<p>`还可以使用特定的皮肤/角色信息，示例请参考 `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/examples/survival/mobs/ironman.yml" text="Iron Man">` 生物。
+    `<p>`需要完整的角色信息，仅提供 URL 无法生效。你可以使用 `<command command="mage skin" text="mage skin">` 命令设置自己的皮肤并获取角色信息。
+    `<p>`更多信息请参阅 `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Disguises" text="Magic 伪装指南">`。
+  dynmap: |-
+    `<title text="Dynmap">`
+    `<p>`&dMagic 支持与 &b`<link url="https://www.spigotmc.org/resources/dynmap.274/" text="dynmap">` 插件集成。
+    `<p>`默认情况下，丢失的魔杖和施放的法术会在地图上显示。
+    `<p>`Magic 的 `<help topic="warps" text="传送点">` 也可以在地图上显示。
+    `<li>``<command command="mconfig config dynmap_show_wands false" text="隐藏地图上的魔杖">`
+    `<li>``<command command="mconfig config dynmap_show_spells false" text="隐藏地图上的所有法术">`
+    `<li>``<command command="mconfig config dynmap_only_player_spells true" text="仅显示玩家施放的法术">`
+    `<li>``<link url="https://map.elmakers.com" text="查看 elMakers 演示地图">`
+  skript: |-
+    `<title text="Skript">`
+    `<p>`&dMagic 支持与 `<link url="https://github.com/SkriptLang/Skript/releases" text="Skript">` 插件集成。
+    `<p>`你可以使用多个与 Magic 相关的事件和表达式。
+    `<li>`更多信息请参阅 `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Skript" text="Magic Skript 指南">`。
+  placeholders: |-
+    `<title text="占位符">`
+    `<p>`&dMagic 提供多种占位符，可用于 &bMessage&f 动作发送消息或 &bCommand&f 动作执行命令。
+    `<p>`例如 &b$path&f、&b@mana_max&f 或 &b$sp&f。任何变量或属性都可以作为占位符使用。
+    `<p>`一般来说，&b$&f 前缀用于显示属性的完整数值，而 &b@&f 则会进行四舍五入。
+    `<p>`Magic 还支持与 &b`<link url="https://www.spigotmc.org/resources/placeholderapi.6245/" text="PlaceholderAPI">` 插件集成，能在兼容的聊天或其他插件中使用 Magic 占位符。
+    `<p>`在 PlaceholderAPI 配置中使用 &bmagic_&f 前缀，例如 &b%magic_path%&f。
+    `<p>`示例：使用 `<link url="https://www.spigotmc.org/resources/chatformat.74890/" text="ChatFormat">` 插件的聊天前缀：&7'(%magic_path%) {PLAYER_NAME} > {SUFFIX}{MESSAGE}'&f
+    `<p>`完整的占位符列表请参阅 `<link url="https://github.com/elBukkit/MagicPlugin/wiki/Placeholders" text="Magic 占位符指南">`。
+  attributes: |-
+    `<title text="属性">`
+    `<p>`&dMagic 提供一套内置属性系统，并支持自定义属性。
+    `<p>`这些属性可用于任何法术、魔杖、职业或其他配置属性中。
+    `<p>`可以使用一个或多个属性（或变量）形成复杂的法术行为。
+    `<p>`自定义属性可以由法术、魔杖或职业针对每个玩家进行修改。
+    `<p>`Magic 启动时会在日志中打印所有可用的属性，包括内置和自定义属性，请检查你的日志！
+    `<li>`查看 `<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/rpg/attributes" text="RPG 配置示例">` 了解自定义属性及其使用方法。
+    `<li>`使用 `<command command="meditor attribute custom" text="属性编辑器">` 创建和编辑自定义属性。
+  compatibility: |-
+    `<title text="兼容性">`
+    `<li>`&dMagic&f 可使用 &4Slimefun&f 兼容资源包，使用 &b`<command command="mexample add slimefun" text="slimefun">`&f 示例。
+    `<li>`Magic 可以与 &4ItemsAdder&f 插件协同工作，使用 &7`<command command="getrp url" text="/getrp url">` 下载正确的 Magic 资源包，并将其解压到 ItemsAdder 的 &7resourcepacks&f 文件夹中。
+    `<li>`如果检测到 ItemsAdder，Magic 将禁用其自身的资源包功能，使用 &7`<command command="mconfig configure config override_resource_pack_plugins true" text="此命令">` 允许 Magic 覆盖资源包设置。
+    `<li>`其他资源包兼容性问题可以通过 `<link url="https://merge.elmakers.com" text="RP 合并工具">` 解决。
+    `<li>`合并 ItemsAdder 资源包时，需关闭 ItemsAdder 配置中的 &7protect-file-from-unzip&f 设置，否则合并工具无法读取。
+    `<li>`Magic 拥有一个用于需求、目标和奖励的 &b`<help topic="quests" text="Quests">` 模块。
+    `<li>`关于 Magic 与 &b`<help topic="mythicmobs" text="MythicMobs">` 插件兼容的信息，请查看相关指南。
+  quests: |-
+    `<title text="任务">`
+    `<p>`&dMagic 拥有专为 `<link url="https://www.spigotmc.org/resources/quests.3711/" text="Quests">` 插件设计的自定义模块。
+    `<p>`此模块可添加特定的任务需求、目标和奖励。
+    `<li>``<link url="https://github.com/elBukkit/MagicQuests/releases" text="下载 MagicQuests 模块">`
+    `<p>`请确保将此模块放入 &7plugins/Quests/modules&f 文件夹，而不是 plugins 文件夹！它不是一个独立的插件。  
+  mythicmobs: |-
+    `<title text="神话生物">`
+    `<li>`MythicMobs 可以使用指令技能施放 &d魔法&f 法术：`<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/examples/MythicMobs-2.0/Skills/MagicSkills.yml" text="示例">`
+    `<li>`魔法生物可以在配置中使用 MythicMob 作为基础，格式为 &7mythic_mob: <name>&f
+    `<li>`MythicMob 名称可以用作 &d魔法&f 生物键，在 mmob 命令和法术配置中使用
+    `<li>``<command command="mitem save myitem" text="保存手中的物品">` 以将 Mythic 物品转换为 &d魔法&f 物品。
+    `<li>`Mythic 生物可以通过指令技能掉落魔法物品，使用 `<command command="mitem spawn sp:100 0 64 0 world" text="mitem spawn">` 命令。
+  protection: |-
+    `<title text="保护">`
+    `<li>` &d魔法会遵守 PvP 规则和以下插件的建造/破坏权限：WorldGuard、PreciousStones、RedProtect、Factions、GriefPrevention、PvPManager、Multiverse、Citadel 等
+    `<li>` &d魔法增加了 `<help topic="worldguard" text="自定义 WorldGuard 旗标">`，可用于控制特定区域的法术施放
+    `<li>`如果你的保护插件未列出，你可以尝试 `<command command="meditor config generic_protection" text="将其添加到 generic_protection 列表">`
+  worldguard: |-
+    `<title text="WorldGuard">`
+    `<li>`你可以 `<command command="region flag someregion blocked-spells fling,blink" text="在某个区域屏蔽部分法术">`
+    `<li>`你可以 `<command command="region flag someregion blocked-spells *" text="在某个区域屏蔽所有法术">`
+    `<li>`你可以 `<command command="region flag someregion allowed-spells *" text="允许某个区域的所有法术破坏方块">`
+  resourcepack: |-
+    `<title text="资源包">`
+    `<li>``<command command="getrp url" text="获取资源包的下载链接">`
+    `<li>``<command command="getrp auto" text="在加入服务器时自动接收资源包">`
+    `<li>``<link text="资源包问题指南" url="https://github.com/elBukkit/MagicPlugin/wiki/ResourcePack#loading-issues">`
+    `<li>``<command command="mconfig config enable_resource_pack false" text="禁用资源包，完全关闭整个服务器的资源包">`
+    `<li>``<command command="mconfig config assume_resource_pack_downloaded true" text="让 Magic 假设玩家已经下载了资源包">` 这样可以在已下载资源包的情况下使用 `<help topic="wandgui" text="魔杖 GUI">`，类似于 `<command command="getrp download" text="getrp download">`
+    `<li>``<command command="getrp hires" text="获取高清（更精细）资源包">`
+    `<li>``<command command="mconfig config resource_pack hires" text="将高清资源包设置为服务器默认">`
+    `<li>``<help topic="bedrock" text="关于基岩版玩家的问题">`
+    `<li>``<help topic="compatibility" text="与其他插件资源包的兼容性问题">`
+    `<li>``<help topic="resourcepacks" text="查看所有内置资源包">`
+    `<li>``<command command="mexample add robes" text="启用长袍材质和配方">`
+  bedrock: |-
+    `<title text="通过 Geyser 在基岩版游玩">`
+    `<p>`&d魔法&f 可以适用于 &b基岩版&f 玩家，使用 &b`<link url="https://geysermc.org" text="Geyser">`&f 插件。
+    `<p>`由于在基岩版中挥动物品较为困难，建议这些玩家使用 &6法术书&f 进行施法。
+    `<p>`不幸的是，目前 &4无法&f 让资源包适用于基岩版玩家。（此话为作者原话）
+    `<p>`来自服主的话：不能适配基岩版资源包不是无法适配，而是他们不愿意适配
+  resourcepacks: |-
+    `<title text="资源包">`
+    `<li>` &6`<command command="getrp default" text="默认">`&f：块状、Minecraft 风格，资源占用较低，Magic 9 及以上版本使用
+    `<li>` &6`<command command="getrp borders" text="边框">`&f：带有边框的不同法术图标
+    `<li>` &6`<command command="getrp painterly" text="绘画风">`&f：更具 &o艺术感&f 的法术图标
+    `<li>` &6`<command command="getrp lowres" text="低分辨率">`&f：Magic 5 及以下版本使用的低分辨率法术图标，与骷髅贴图相同
+    `<li>` &6`<command command="getrp skulls" text="骷髅">`&f：无魔杖或其他物品图标，仅使用平面骷髅作为法术图标
+    `<li>` &6`<command command="getrp vanilla" text="原版">`&f：使用基于物品的法术图标，类似于 10.9 版本之前
+    `<li>` &6`<command command="getrp all" text="全部">`&f：将 httyd、生存、战争和长袍资源包合并为一个
+  classes: |-
+    `<title text="职业">`
+    `<p>`魔法中的职业是一种将一组属性与玩家关联的方式。
+    `<p>`玩家可以拥有多个职业。
+    `<p>`魔杖可以分配给职业，这意味着它们可以施放
+    `<p>`玩家已学习的法术，而不是将法术绑定到魔杖物品上。
+    `<p>`职业还可以增加原版属性、法力、保护或其他魔法属性。
+    `<li>``<link url="https://reference.elmakers.com/#classes" text="在参考指南中查看职业属性">`
+  spell_properties: |-
+    `<title text="法术属性">`
+    `<p>`法术具有一些顶级属性，例如图标或施法消耗。
+    `<p>`这些属性无法通过 &7/cast&f 参数或 &b魔杖覆盖&f 进行更改。
+    `<li>``<link url="https://reference.elmakers.com/#spellProperties" text="在参考指南中查看法术属性">`
+  spell_parameters: |-
+    `<title text="法术参数">`
+    `<p>`法术参数位于法术配置的 &7parameters&f 部分。
+    `<p>`这些参数可以通过 &7/cast&f 参数或 &b魔杖覆盖&f 进行更改：
+    `<li>``<command command="cast missile block_hit_count 20" text="施放一个更强的魔法飞弹">`
+    `<li>``<command command="cast blob undo 1000" text="施放一个持续时间很短的粘液球">`
+    `<p>`它们也可以通过带有覆盖参数的魔杖进行修改，例如：
+    `<li>``<command command="wand override missile.damage_multiplier 20" text="让你的魔杖施放超致命的魔法飞弹">`
+    `<p>`魔杖覆盖也可以应用于该魔杖施放的所有法术：
+    `<li>``<command command="wand override undo 0" text="让你的魔杖施放的所有法术都对方块造成永久破坏">`
+    `<p>`这可以简化法术测试，或让你制作以不同方式施放法术的魔杖。
+    `<p>``<help topic="actions" text="法术动作">` 读取来自主参数部分的参数，除非它们在动作旁边定义。
+    `<p>`法术还具有一些常用的基本参数，这些参数不用于动作，例如 &7target&f 和 &7cooldown&f。
+    `<li>``<link url="https://reference.elmakers.com/#spellParameters" text="在参考指南中查看常用法术参数">`
+  actions: |-
+    `<title text="法术动作">`
+    `<p>`动作是构建法术逻辑的基本单元。
+    `<p>`没有动作，法术只能产生粒子效果或声音，无法执行其他操作。
+    `<p>`动作参数可以放在法术配置的 "parameters" 部分，与 `<help topic="spell_parameters" text="基本法术参数">` 一起使用。
+    `<p>`在 "parameters" 部分的动作参数可以被 /cast 命令或魔杖覆盖参数更改，
+    `<p>`但直接放在 actions 列表中的动作参数无法被覆盖。
+    `<p>`通常建议将所有参数放在 "parameters" 部分以便于阅读，但在某些情况下，需要将它们放在 actions 列表中，
+    `<p>`比如在逻辑中有两个相同的动作且希望它们使用不同参数时。
+    `<p>`参数也可以直接放在 "actions" 列表中对应的动作下面。
+    `<li>``<link url="https://reference.elmakers.com/#effects" text="在参考指南中查看所有法术动作">`
+  effects: |-
+    `<title text="声音和粒子效果">`
+    `<p>`效果是让法术看起来酷炫且充满感觉的关键。
+    `<p>`通常这些效果是粒子效果和声音的组合，
+    `<p>`但也可以使用烟花和 Minecraft 基本效果（如 &7hurt&f）。
+    `<p>`效果还可以使用 `<help topic="effectlib" text="EffectLib 效果">` 来创建复杂的粒子效果。
+    `<li>``<link url="https://reference.elmakers.com/#actions" text="在参考指南中查看效果选项">`
+  effectlib: |-
+    `<title text="EffectLib 效果">`
+    `<p>`Magic 集成了 EffectLib，可用于创建复杂的特效。
+    `<p>`只需在任何效果中添加 &7effectlib&f 部分，即可创建 EffectLib 效果。
+    `<p>`唯一必需的参数是 &7class&f，它决定了使用哪种效果。
+    `<p>`大多数效果都可以调整参数，这将使你的效果更加个性化。
+    `<li>``<command command="cast fxdemo" text="查看所有效果的演示">`
+    `<li>``<link url="https://reference.elmakers.com/#effectlib" text="在参考指南中查看所有 EffectLib 效果">`
+  wands: |-
+    `<title text="魔杖">`
+    `<p>`在 &dMagic&f 中，魔杖是可以用来施放法术的特殊物品，并可能赋予持有者特殊效果或增益。
+    `<p>`魔杖不一定非得看起来像魔杖，它们可以是盔甲、弓、剑或其他任何物品。
+    `<p>`可以使用 &7wand configure&f 命令快速更改和测试魔杖属性。
+    `<li>``<command command="wand configure icon diamond" text="将魔杖的图标更改为钻石">`
+    `<li>``<command command="meditor spell mynewwand" text="使用编辑器创建一个新的魔杖">`
+    `<li>``<command command="mgive basic_wand" text="给自己一个基础魔杖">`
+    `<li>``<command command="wand configure cost_reduction 2" text="使魔杖免消耗">`，不需要或消耗法力
+    `<li>``<command command="wand configure cooldown_reduction 2" text="使魔杖免冷却">`
+    `<li>``<link url="https://reference.elmakers.com/#wands" text="在参考指南中查看所有魔杖属性">`
+  modifiers: |-
+    `<title text="修饰符">`
+    `<p>`在 Magic 中，修饰符类似于一个临时（或永久）的附加类。
+    `<p>`它们可以通过魔杖或法术使用 &bModifier&f 动作应用于玩家。
+    `<p>`修饰符可以更改玩家属性、添加临时被动效果，
+    `<p>`或执行任何 `<help topic="classes" text="职业">` 能做的事情。
+    `<li>``<command command="mage modifier add hidden" text="使自己对怪物隐形">`
+    `<li>``<command command="mage modifier remove hidden" text="移除隐形修饰符">`
+    `<li>``<link url="https://reference.elmakers.com/#modifiers" text="在参考指南中查看所有修饰符属性">`
+  mobs: |-
+    `<title text="魔法生物">`
+    `<p>`&dMagic&f 拥有一个自定义的生物系统，可创建能够施法或具有其他魔法属性的生物。
+    `<p>`这包括自定义的 `<help topic="loot" text="战利品掉落">`
+    `<p>`魔法生物也可以用作 `<help topic="npc" text="NPC">` 模板。
+    `<li>``<command command="mmob spawn warlock" text="生成一个施法术士">`
+    `<li>``<command command="mmob remove warlock" text="移除所有已生成的术士">`
+    `<li>``<command command="meditor mob warlock" text="编辑术士生物配置">`
+    `<li>``<command command="meditor mob" text="创建一个新生物">`
+    `<li>``<link url="https://reference.elmakers.com/#mobs" text="查看参考指南中的所有生物属性">`
+  loot: |-
+    `<title text="生物战利品">`
+    `<p>`&dMagic&f 生物可以掉落自定义战利品，包括 &6法术点数&f、魔杖、法术和其他魔法物品。
+    `<p>`一些内置生物会掉落自定义物品，例如 &3术士魔杖&f。
+    `<p>`当使用 `<command command="mexample add spawnmobs" text="spawnmobs">` 示例时，这些物品可以在 `<command command="mnpc add lootshop" text="战利品商店">` 中出售。
+    `<p>`否则，这些物品没有其他用途。
+    `<p>`使用 `<command command="meditor mob warlock" text="编辑器">` 修改生物的战利品掉落。
+  crafting: |-
+    `<title text="自定义合成">`
+    `<p>`&dMagic&f 提供了一个完全可自定义的合成系统。
+    `<p>`支持工作台、熔炉、篝火和其他配方类型。
+    `<p>`可以使用自定义、原版和魔法 `<help topic="wands" text="魔杖">` 作为材料进行合成。
+    `<p>`请注意，游戏内的 &a知识之书&f 在使用自定义物品作为材料时效果不佳，
+    `<p>`但作为输出物品是可以正常使用的。
+    `<li>``<command command="meditor recipe wand" text="编辑魔杖配方">`
+    `<li>``<command command="meditor recipe" text="创建一个新的魔杖配方">`
+    `<li>``<command command="mconfig disable recipe broomstick" text="移除特定的合成配方">`
+    `<li>``<link url="https://reference.elmakers.com/#crafting" text="查看参考指南中的所有配方属性">`
+  spell_levels: |-
+    `<title text="法术等级">`
+    `<p>`某些法术，尤其是大部分 &6生存&f 示例中的法术，具有等级提升功能。
+    `<p>`法术会通过使用自动升级，某些等级需要 &b路径进度&f 解锁。
+    `<p>`玩家可以使用附魔台菜单中的 `<command command="cast upgrades" text="升级部分">` 来查看他们的法术进度。
+    `<p>`在配置文件中，法术等级是使用 &6法术名称&f|&b等级&f 命名规则的单独法术。
+    `<p>`要添加新等级，只需按照该命名格式添加一个新法术即可。
+    `<li>``<command command="mage levelspells" text="将你的所有法术升级至最高级">`
+    `<li>``<command command="wand configure level_spells true" text="设置魔杖以最大化其法术等级">`
+    `<li>``<command command="mage add missile|5" text="赋予自己特定等级的特定法术">`
+    `<li>``<command command="meditor spell missile" text="编辑魔法飞弹法术及其所有等级">`
+  progression: |-
+    `<title text="进度与晋升">`
+    `<p>`玩家需要收集当前路径上的所有法术才能晋升。
+    `<p>`玩家可以通过右键点击 &6附魔台&f 并手持魔杖来学习法术。
+    `<li>``<help topic="spell_points" text="关于法术点数">`
+    `<li>``<help topic="paths" text="关于进度路径">`
+    `<li>``<help topic="spell_levels" text="关于法术等级">`
+  spell_points: |-
+    `<title text="SP：法术点数">`
+    `<p>`&6法术点数&f &7(&bSP&7)&f 在玩家 &o成功&f 施放法术时获得。对大多数法术来说，&b成功&f 由是否击中有效的生物或玩家目标决定。
+    `<p>`&6法术点数&f 的获取有 &e冷却时间&f，每个法术的冷却时间是独立的，默认为 &e15 分钟&f。
+    `<p>`这意味着一旦拥有多个法术，频繁使用每个法术是获取 SP 的最快方式！
+    `<p>`&6魔法飞弹&f 是一个特殊情况，在初期可更快地获取 SP，帮助玩家起步。
+    `<p>`当玩家拥有多个法术后，通过频繁使用所有法术可以更快地获取 SP。
+    `<li>``<command command="mgive @p sp 1000" text="给予自己一定数量的 SP">`
+    `<li>``<command command="mconfig spell default earns_cooldown 30 seconds" text="将 SP 获取冷却时间缩短至 30 秒">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/SpellPoints#balancing-sp" text="查看 Wiki 了解更多信息">`
+  paths: |-
+    `<title text="进阶路径">`
+    `<p>`玩家在收集法术的过程中逐步提升生存等级。
+    `<p>`生存进阶路径：&6初学者&f、&6学徒&f、&6见习法师&f、&6巫师 &7(&f又称 &6大师&7)。
+    `<p>`玩家必须在当前等级收集 &b所有法术&f，才能晋升至下一个等级。
+    `<p>`某些法术不属于必需法术，已在 &b法术商店&f 列表末尾标明。
+    `<li>``<command command="mage promote" text="提升至下一个等级">`
+  not_loading: |-
+    `<title text="插件无法加载">`
+    `<p>`您的服务器可能使用了错误的插件版本？
+    `<p>`当前 Magic 插件兼容以下 Spigot 和 Paper 版本：
+    `<p>`1.9 1.10 1.11 1.12 1.13 1.14 1.15 1.16 1.17
+    `<p>`如果使用更旧的 Minecraft 版本，您需要 Magic 8.x 版本。
+    `<p>`请查看服务器日志以获取具体的错误信息。
+examples:
+  main: |-
+    `<title text="示例">`
+    `<li>``<help topic="instructions.example" text="显示所有已加载的示例">`
+    `<li>``<help topic="instructions.examples.all" text="显示所有可用的示例">`
+    `<li>``<command command="mexample list" text="显示所有激活的示例">`
+    `<li>``<command command="mexample set survival none" text="重置为默认生存示例">`
+    `<li>``<link url="https://github.com/elBukkit/MagicPlugin/wiki/Examples" text="示例 Wiki">`
+    `<li>``<help topic="examples.survival.main" text="生存模式（默认示例）">`
+  all: |-
+    `<title text="可用示例">`
+    `<li>` &6`<command command="mexample add survival" text="survival">`&f：默认示例，包含可制作的魔杖和物品
+    `<li>` &6`<command command="mexample add magicheart" text="magicheart">`&f：恢复 &6魔法之心&f 合成配方
+    `<li>` &6`<command command="mexample add engineering" text="engineering">`&f：新增 3 个建筑魔法等级的生存扩展
+    `<li>` &6`<command command="mexample add potter" text="potter">`&f：哈利·波特主题示例
+    `<li>` &6`<command command="mexample add war" text="war">`&f：GTA 或 CS 风格的枪械与载具示例
+    `<li>` &6`<command command="mexample add stars" text="stars">`&f：星球大战主题示例，包含光剑与原力技能
+    `<li>` &6`<command command="mexample add bending" text="bending">`&f：简化版《降世神通》元素弯曲示例
+    `<li>` &b`<command command="mexample add spawnmobs" text="spawnmobs">`&f：启用自然生成的&a魔法生物
+    `<li>` &b`<command command="mexample add safe" text="safe">`&f：禁止所有方块破坏
+    `<li>` &b`<command command="mexample add automata" text="automata">`&f：添加可生成的元胞自动机方块怪物
+    `<li>` &b`<command command="mexample add otherside" text="otherside">`&f：添加充满危险生物与自动机的异界维度
+    `<li>` &b`<command command="mexample add netherside" text="netherside">`&f：添加类似下界的独特维度
+    `<li>` &b`<command command="mexample add slimefun" text="slimefun">`&f：启用与&aSlimefun&f 融合的资源包
+    `<li>` &a`<command command="mexample fetch extramobs" text="extramobs">`&f：新增各种自然生成的动物与首领
+    `<li>` &a`<command command="mexample fetch httyd" text="httyd">`&f：《驯龙高手》主题示例
+    `<li>` &a`<command command="mexample fetch potterplus" text="potterplus">`&f：更完整、进阶的哈利·波特主题示例
   survival:
-    instructions: |-
-      &8| &3&n生存 &r
-      &8|   &f请检查新的配方, 或使用 &6/mgive wand &r
-      &8|   &f使用 &6/mgive uberwand &f以获取一个OP法杖 &r
+    main: |-
+      `<title text="生存模式">`
+      `<li>``<help topic="instructions.example.survival" text="显示基本生存指南">`
+      `<li>``<help topic="examples.survival.wands" text="获取和使用魔杖的帮助">`
+      `<li>``<help topic="examples.survival.broomstick" text="扫帚无法使用怎么办？">`
+      `<li>``<help topic="examples.survival.mobs" text="与魔法生物相关的帮助，包括龙">`
+      `<li>``<help topic="examples.survival.recipes" text="物品合成帮助">`
+      `<li>``<help topic="progression" text="进阶路径指南">`
+    mobs: |-
+      `<title text="生存模式生物">`
+      `<p>`&6生存模式&f示例预设了多种魔法生物。
+      `<p>`您可以使用`<help topic="examples.all" text="spawnmobs 示例">`使这些生物自然生成。
+      `<p>`使用`<command command="mmob spawn warlock" text="mmob spawn">`命令手动生成魔法生物。
+      `<p>`还有一些特殊的`<help topic="examples.survival.dragons" text="龙类生物">`，生成它们需要额外的前置条件。
+  dragons: |-
+    `<title text="生存龙怪物">`
+    `<p>`&6生存&f示例包括各种颜色的龙怪物，您可以生成它们
+    `<p>`这些龙会通过`<help topic="examples.all" text="spawnmobs examples">`自然生成
+    `<p>`龙需要`<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">`插件
+    `<p>`此插件依赖于`<link url="https://www.spigotmc.org/resources/protocollib.1997/" text="ProtocolLib">`插件
+    `<p>`最后，玩家需要安装`<help topic="resourcepack" text="资源包">`才能正确查看龙的外观
+    `<p>`如果龙是隐形的，说明缺少LibsDisguises插件或该插件未正常工作
+    `<p>`如果龙看起来像一堆奇怪的皮革马铠，说明缺少资源包
+    `<li>``<command command="mmob spawn reddragon" text="召唤一只红龙">`
+  wands: |-
+    `<title text="生存魔杖">`
+    `<li>``<help topic="instructions.wand" text="查看手持魔杖的帮助信息">`
+    `<li>``<help topic="examples.survival.customizing" text="自定义生存魔杖的帮助信息">`
+    `<li>``<command command="mgive wand" text="获取默认生存魔杖">`
+    `<li>``<command command="mgive master" text="获取满级生存魔杖">`
+    `<li>``<command command="mgive uberwand" text="获取一个超强测试魔杖">`
+    `<li>``<command command="wand add recall" text="为测试魔杖添加一个法术">`
+    `<li>``<command command="mage add blink" text="学习一个法术，并将其添加到您的生存魔杖中">`
+  customizing: |-
+    `<title text="自定义生存模式">`
+    `<li>``<command command="cast controlsmenu" text="使用控制菜单来自定义您的魔杖">`
+    `<p>`&e此菜单可在&benchantment table&4（附魔台）菜单中供所有玩家使用
+    `<li>``<command command="mconfig config wand_slots.gui.default_slotted gui_bossbar" text="将默认魔杖界面更改为Boss栏GUI而不是动作栏">`
+    `<li>``<command command="mconfig config wand_slots.controls.default_slotted controls_inventory" text="设置默认控制方式为右键打开法术库存">`
+    `<li>``<help topic="wandgui" text="关于魔杖GUI的帮助或问题">`
+    `<li>``<command command="meditor spell progressmenu" text="编辑附魔台菜单">`
+    `<li>``<command command="mconfig config enchant_click" text="禁用附魔台菜单">`
+  broomstick: |-
+    `<title text="飞天扫帚">`
+    `<li>`飞天扫帚是通过移动隐形盔甲架实现的。如果您的服务器有任何阻止盔甲架移动的插件或设置，飞天扫帚将无法正常工作
+    `<li>`特别是如果您使用的是&6Paper&f，请确保在&bpaper.yml&f中将&barmor-stands-tick&f设置为&btrue&f
+    `<li>`飞天扫帚会随着使用而升级，玩家的&6扫帚技能&f将提升，操控性也会改进
+    `<li>`&6`<command command="mgive broom_booster" text="扫帚助推器">`&f和&6`<command command="mgive broom_glider" text="滑翔器">`&f升级物品可以被制作并应用于扫帚
+    `<li>`每把扫帚同时只能拥有&e一种&f升级
+    `<li>`在您的物品栏中，点击拾取扫帚升级物品，然后再点击您的扫帚即可添加升级
+    `<li>``<command command="mgive broomstick" text="获取一把飞天扫帚">`
+  recipes: |-
+    `<title text="生存模式配方">`
+    `<li>``<help topic="examples.survival.wand_crafting" text="魔杖制作指南">`
+    `<li>``<command command="mgive recipe:*" text="学习所有配方">`
+    `<li>`生存模式配方: &6https://survival.elmakers.com/#crafting
+  wand_crafting: |-
+    `<title text="魔杖制作">`
+    `<p>`&6魔杖&f可以使用&d`<command command="mgive amethyst_shard" text="紫水晶碎片">`&f、&e`<command command="mgive stick" text="木棍">`&f和&b`<command command="mgive diamond 2" text="2颗钻石">`&f进行合成
+    `<p>`一旦您获得了&d紫水晶碎片&f，配方将出现在游戏中的&b知识书&f中
+    `<p>`如果您希望，您可以通过&b`<command text="登录时自动解锁配方" command="mconfig recipe wand auto_discover true">`
+    `<li>`在旧版Minecraft中？如果您的服务器版本没有紫水晶碎片，您可以将其替换为绿宝石
+    `<li>`是否缺少&6魔法之心&f？如果需要，您可以使用&b`<command text="恢复旧版配方" command="mexample add magicheart">`&f来恢复
+    `<li>`不想启用制作？您可以`<command text="禁用所有魔法物品制作" command="mconfig config enable_crafting false">`
+    `<li>`或`<command text="禁用某个特定配方" command="mconfig disable recipe wand">`
+    `<li>``<link text="在参考指南中查看所有配方" url="https://magic.elmakers.com/#crafting">`
 item:
   duplicated: 你的物品已被拷贝了
   destroyed: 你的物品已被摧毁
@@ -294,29 +1189,39 @@ item:
   attribute_not_added: '不能添加属性: $attribute 到你手上物品'
   skull: 这本书已被转化为头颅
   skull_no_book: 你必须手持一个写好的书,里面要有头颅数据
-  skull_invalid_book: 这本书没有头颅数据!请粘贴
-    文本 'Textures材质.Value数值', 这通常由一长串随机字符组成,
-    结尾一般是 ==
+  skull_invalid_book: 这本书没有头颅数据!请粘贴 文本 'Textures材质.Value数值', 这通常由一长串随机字符组成, 结尾一般是
+    ==
 logs:
-  notify_errors: '&7[Magic] &b在过去的&3$time&b中检测到了错误: &c$errors ,
-   请查看日志!'
-  notify_warnings: '&7[Magic] &b在过去的&3$time&b中出现了警告: &e$warnings,
-   请查看日志!'
-  notify_errors_and_warnings: '&7[Magic] &b在过去的&3$time&b中出现了错误: &c$errors 和警告:
-    &e$warnings ,请查看日志!'
+  notify_errors: '&7[Magic] &b在过去的&3$time&b中检测到了错误: &c$errors , 请查看日志!'
+  notify_warnings: '&7[Magic] &b在过去的&3$time&b中出现了警告: &e$warnings, 请查看日志!'
+  notify_errors_and_warnings: '&7[Magic] &b在过去的&3$time&b中出现了错误: &c$errors 和警告: &e$warnings
+    ,请查看日志!'
   notify_instructions: '&7  给负权限 &f-Magic.notify &7或者检查配置以禁用此类提示信息'
+macros:  
+  help: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看帮助"}, "clickEvent":{"action":"run_command","value":"/mhelp $topic"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
+  title: '  &#01060d⎯&#030c1a⎯&#06152e⎯&#0a1f42&#0f2e61⎯&#154085⎯&#1c4d9c⎯&#255eba⎯&#2b6acf⎯  &l&n&#36a1e3$text  &r&#2b6acf⎯&#255eba⎯&#1c4d9c⎯&#154085⎯&#0f2e61⎯&#0a1f42⎯&#06152e⎯&#030c1a⎯&#01060d⎯'  
+  tags: ''  
+  glyph: '`{"text":"\u$code","font":"magic"}`'  
+  command: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击执行命令"}, "clickEvent":{"action":"suggest_command","value":"/$command"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
+  message: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看消息"}, "clickEvent":{"action":"run_command","value":"/tellraw @s \"$message\"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
+  rawmessage: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看消息"}, "clickEvent":{"action":"run_command","value":"/tellraw @s $message"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
+  link: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击在浏览器中打开"}, "clickEvent":{"action":"open_url","value":"$url"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
+  keybind: '`{"keybind":"key.$key"}`'  
+  li: '&b&bull; &f'  
+  p: '&f'  
+  icon: '`{"text":"$glyph","font":"magic"}`'  
+  space: '`{"text":"$glyph","font":"magic"}`'  
 mage:
   removed_property: 移除了品阶 $name
   no_property: '没有品阶: $name'
   player_reconfigured: $name 的Mage数据已被重新配置
   player_not_reconfigured: $name 的Mage数据未被重新设置
   player_spells_levelled: $name的法术等级上升了 $count
-  player_spells_not_levelled:  $name未有任何法术等级上升
+  player_spells_not_levelled: $name未有任何法术等级上升
   spells_levelled: 你的法术等级上升了 $count
   spells_not_levelled: 你的法术等级没有任何上升
   reconfigured: Mage重新配置
   not_reconfigured: Mage未被重新配置
-  earned_sp: a:&6+&e$amount &6法术点
   no_class: 你没有办法使用 $name
   no_spell: 你没有办法使用 $name
   player_spell_upgraded: $players的&r&6$name &d&o已经升级到了 &3$level
@@ -331,8 +1236,30 @@ mage:
   instructions_footer: |-
     &8|
     &8 ----------------------------------------------------
+  earned_sp: a:&6+&e$amount &6法术点
 materials:
   wildcard: (任何子类型)
+meta:  
+  action_template: |-
+    `<title text="$class 动作">`
+    `<p>`一种法术动作，在法术动作处理器中使用，格式为 &7- class: $class
+    `<p>`$description
+    `<p>`&a`<link url="https://reference.elmakers.com/#actions.$key" text="查看此动作及其所有参数的参考指南">`
+  effect_template: |-
+    `<title text="$class EffectLib 类">`
+    `<p>`一个 EffectLib 类，在 &7effects:&f 列表中的 &7effectlib:&f 部分使用，格式为 &7- class: $class
+    `<p>`$description
+    `<p>``<link url="https://reference.elmakers.com/#effectlib.$key" text="查看此效果及其所有参数的参考指南">`
+  description_template: '`<p>`$description'  
+  parameters_template: |-
+    `<p>`&b参数：
+    $parameters
+  parameter_template: '`<li>`&6$parameter&8: &7$description'  
+  parameter_extra_line: '`<p>`   &7$description'  
+  examples_template: '`<p>`&6用于法术：&b$examples'  
+  example_template: '&b`<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/spells/$example.yml" text="$example">`&f'  
+  default_parameter_description: '&8?'  
+  default_description: '&7(暂无描述)'  
 general:
   locked_chest: 此箱子已上锁,不能破坏
   spawn_egg_title: 生成 $entity
@@ -342,6 +1269,9 @@ books:
     title: $category 法术书
   all:
     title: 大师之书
+  categories:
+    title: Spell Categories
+    category: '&n&l$category'
   spell:
     title: $spell法术书
   learnspell:
@@ -364,6 +1294,10 @@ worlds:
 cooldown:
   description: '&e冷却: &6$time'
   mage_description: '&c疲惫: &6$time'
+charges:  
+  description: '&e充能：&6$count'  
+  regeneration_description: '&e充能：&6$count &7(&e$rate&6/&fs&7)'  
+  recharge_description: '&e充能：&6$count &7(&e1&6/&f&e$rates&7)'  
 warmup:
   description: '&7预热: &6$time'
 duration:
@@ -383,17 +1317,33 @@ skills:
   passive_description: '&1被动型'
   none: 你没有法术!
   none_on_page: 此页没有法术 $page
-resource_pack:
-  prompt: 使用 /getrp 以下载资源包
-  off_prompt: a:&e使用 &4/getrp &e以下载资源包
-  sending: |-
-    t:&3请等待
-    &b发送资源包
+resource_pack:  
+  prompt: 使用 /getrp 以下载资源包  
+  off_prompt: a:&e使用 &4/getrp &e以下载资源包  
+  sending: |-  
+    t:&3请等待  
+    &b正在发送资源包  
+  failed: |-  
+    &c资源包下载失败！  
+    &f您可以使用 &b/getrp&f 重试。  
+  declined: |-  
+    &e查看：&f&nhttps://rp.elmakers.com/&f 获取 &b资源包&f 的使用说明。  
+    `<p>`服务器资源包不会干扰您使用的任何其他资源包！  
+    `<li>``<command command="getrp skulls" text="使用 /getrp skulls">` 获取使用扁平头颅图标的简化资源包。  
+    `<li>``<command command="getrp download" text="使用 /getrp download">` 如果您更喜欢手动下载资源包。  
+    `<li>``<command command="getrp off" text="使用 /getrp off">` 以永久关闭此提示信息。  
 controls:
   drop: 丢弃 (Q)
   right_click: 右键
   left_click: 左键
   swap: 切换 (F)
+  no_bowpull: '&f把弓往后拉一点'
+keybind:
+  inventory: E
+  use: Right-Click
+  attack: Left-Click
+  swapOffhand: F
+  drop: Q
 skillapi:
   required_skill: '&c需要SkillAPI法术: &4$skill'
   required_class: '&c需要SkillAPI法术类: &4$class'
@@ -413,29 +1363,139 @@ path:
   level_up: |-
     t:&r&b*** &r&5$path &b***
     &5高级
-requirements:
-  unknown: '&c禁用'
-  property_requirement: '&r&c需要品阶: &6$property &c达到 &4$value'
-  property_max: '&r&c你的品阶: &6$property 以达顶&c'
-  property_min: '&r&c你的品阶: &6$property &c必须达到 &4$value'
-  no_wand: '&c你必须手持法杖!'
-  no_template: '&c你手持 $wand&c时不能那么做'
-  no_modifier: '&c你可能需要配置: &6$modifier &c才能继续.'
-  no_region: '&c你不能在这里这么做'
-  no_world: '&c你不能在这里这么做'
-  no_path: '&c你还没学到那个程度'
-  no_class: '&c你必须有 $class'
-  no_required_path: '&c你至少要熟练度: $path&r!'
-  no_path_exact: '&c你的熟练度须达到 $path&r!'
-  no_path_end: '&c你必须完成 $path&r的熟练度!'
-  no_weather: 现在天气不适合这样做
-  no_client_platform: 你所处的平台不能这样做
-  light: 光照等级
-  time: 时间
-  height: 高度
-  currency: 财产
-  no_cast: '&c你需要先释放 $spell'
+placeholders:
+  hotbar: $hotbar
+  nathanwolf: '`<icon key="nathanwolf">`'
+potion_effects:  
+  speed: 速度  
+  slow: 缓慢  
+  fast_digging: 急迫  
+  slow_digging: 挖掘疲劳  
+  increase_damage: 力量  
+  heal: 治疗  
+  harm: 伤害  
+  jump: 跳跃提升  
+  confusion: 反胃  
+  regeneration: 生命恢复  
+  damage_resistance: 抗性提升  
+  fire_resistance: 防火  
+  water_breathing: 水下呼吸  
+  invisibility: 隐身  
+  blindness: 失明  
+  night_vision: 夜视  
+  hunger: 饥饿  
+  weakness: 虚弱  
+  poison: 中毒  
+  wither: 凋零  
+  health_boost: 生命提升  
+  absorption: 伤害吸收  
+  saturation: 饱和  
+  glowing: 发光  
+  levitation: 漂浮  
+  luck: 幸运  
+  unluck: 霉运  
+requirements:  
+  unknown: '&c禁用'  
+  property_requirement: '&r&c需要品阶: &6$property &c达到 &4$value'  
+  property_max: '&r&c你的品阶: &6$property &c已达顶级'  
+  property_max_inclusive: '&r&c你的 &6$property &c已达最大值'  
+  property_min: '&r&c你的品阶: &6$property &c必须达到 &4$value'  
+  property_min_inclusive: '&r&c你的 &6$property &c必须至少为 &4$value'  
+  no_resource_pack: '&c你必须使用资源包'  
+  no_wand: '&c你必须手持法杖!'  
+  no_template: '&c你手持 $wand&c时不能这么做'  
+  no_modifier: '&c你可能需要配置: &6$modifier &c才能继续。'  
+  no_region: '&c你不能在这里这么做'  
+  no_world: '&c你不能在这里这么做'  
+  no_path: '&c你还没学到那个程度'  
+  no_class: '&c你必须拥有 $class'  
+  no_required_path: '&c你至少需要熟练度: $path&r!'  
+  no_path_exact: '&c你的熟练度须达到 $path&r!'  
+  no_path_end: '&c你必须完成 $path&r的熟练度!'  
+  no_weather: '&c现在的天气不适合这样做'  
+  no_client_platform: '&c你所在的平台无法执行此操作'  
+  light: 光照等级  
+  time: 时间  
+  moon: 月相  
+  height: 高度  
+  server_version: 服务器版本  
+  currency: 财产  
+  item: $item  
+  no_cast: '&c你需要先释放 $spell'  
+  no_spell_inventory: '&c你必须打开法术栏'  
+  no_indoors: 只能在室内使用  
+  indoors: 不能在室内使用  
+  no_stay: 必须设置为停留状态  
+  no_owned: 必须有一个拥有者  
+  stay: 不能设置为停留状态  
+  owned: 不能有拥有者  
+selector:  
+  no_wand: '&c你必须手持法杖!'  
+  no_template: '&c你不能用 $wand&c 学习。'  
+  no_path: '&c你不能在这里学习。'  
+  no_class: '&c你必须是 $class'  
+  no_required_path: '&c你至少需要达到 $path&r!'  
+  no_path_exact: '&c你必须达到 $path&r!'  
+  no_path_end: '&c你必须准备好从 $path&r 进阶!'  
+  insufficient: '&c需要 $cost'  
+  confirm_title: 购买 $item  
+  unlock_confirm_title: 解锁 $item  
+  deducted: '&d&o你花费 &r&a$cost &d&o购买了 &r&6$item'  
+  selected: '&d&o你花费 &r&a$cost &d&o购买了 &r&6$item'  
+  sold: '&d&o你卖出了 &r&6$item &d&o并获得了 &r&a$earn'  
+  unlocked: '&d&o你花费 &r&a$cost &d&o解锁了 &r&6$item'  
+  unlocked_earn: '&d&o你通过 &r&6$item &d&o赚取了 &r&a$earn'  
+  selected_free: '&d&o你选择了 &r&6$item'  
+  not_applicable: 你已经拥有 $item  
+  cast_fail: '&c很抱歉，请再试一次!'  
+  warp_fail: '&c很抱歉，出现了问题!'  
+  no_items: 这里没有可以供你购买的物品  
+  title: 明智选择  
+  sell_title: 出售 ($balance&0)  
+  sell_icon_name: '&6出售物品'  
+  buy_icon_name: '&a购买物品'  
+  extra_spell: '&a不需要以继续进阶'  
+  no_upgrade: 这里没有更多内容可以学习。  
+  upgrade_name_change: '&r&4升级: &r$name'  
+  level_requirement: '&r&c需要: &6$path'  
+  tags_requirement: '&r&c需要: &6$tags'  
+  cast_requirement: '&r&c施放次数: &6$current&f/&e$required'  
+  prerequisite_spell: '&c你必须先掌握 &6$name'  
+  prerequisite_spell_level: '&6$name'  
+  prerequisite_spell_progress_level: ' (进度 $level/$max_level)'  
+  required_spells: '&r&c需要: $spells'  
+  cast_spell: $spell  
+  unlock_class: $class  
+  nothing: 无  
+  cost_lore: '&6消耗: &e$cost'  
+  earn_lore: '&6获得: &e$earn'  
+  earn_heading: ''  
+  cost_heading: ''  
+  unlock_cost_lore: '&6解锁费用: &e$cost'  
+  locked: '&c已锁定，&e请在捐赠商店解锁'  
+  required_cost_lore: '&c需要: &4$cost'  
+  required_unlock_cost_lore: '&c解锁费用: &4$cost'  
+  has_class: 你已经拥有职业 $class  
+  at_limit: 你已达到 $limit 的上限  
+  unlocked_lore: '&a已解锁'  
+  property_requirement: '&r&c需要: &6$property &c达到 $4$value'  
+  property_max: '&r&c你的 &6$property &c已达最大值'  
+  property_min: '&r&c你的 &6$property &c必须大于 $4$value'  
+  item_amount: $name x$amount  
+  attribute: '&6$attribute &f(&b$amount&f)'  
+  increase_attribute: 增加 $attribute $amount  
+  decrease_attribute: 减少 $attribute $amount  
+  attribute_max: 你无法再增加 $attribute  
+  attribute_min: 你无法再减少 $attribute  
+  full: 你的背包已满!  
+  nostock: 抱歉，该物品已售罄!  
+  paid: '&7$owner 感谢你的惠顾!'  
+  invalid_item: '&c未知或无效的物品'  
+  max_spells: '&c你无法学习更多法术'  
 shops:
+  title: 商店 ($balance&0)
+  selected: '&d&o你购买 &r&6$item &r&d&o并花费了 &r&a$cost'
+  sold: '&d&o你出售 &r&6$item &r&d&o并获得了 &r&a$earn'
   no_wand: '&c你必须手持法杖!'
   no_template: '&c手持法杖: $wand&c时不能学习'
   no_path: '&c你还没学到那个程度'
@@ -447,15 +1507,12 @@ shops:
   confirm_title: 购买了 $item
   unlock_confirm_title: 已解锁 $item
   deducted: '&d&o你购买 &r&6$item &r&d&o并花费了 &r&a$cost'
-  selected: '&d&o你购买 &r&6$item &r&d&o并花费了 &r&a$cost'
-  sold: '&d&o你出售 &r&6$item &r&d&o并获得了 &r&a$earn'
   unlocked: '&d&o你解锁了 &r&6$item &r&d&o并获得了 &r&a$cost'
   selected_free: '&d&o你选择了 &r&6$item'
   not_applicable: 你已经拥有 $item
   cast_fail: '&c抱歉,请重试'
   warp_fail: '&c抱歉, 出现了某些错误!'
   no_items: 这里没东西可以买
-  title: 商店 ($balance&0)
   sell_title: 出售 ($balance&0)
   sell_icon_name: '&6出售物品'
   buy_icon_name: '&a购买物品'
@@ -488,7 +1545,7 @@ shops:
   item_amount: $name x$amount
   attribute: '&6$attribute &f(&b$amount&f)'
   increase_attribute: '提高了属性: $attribute +$amount'
-  decrease_attribute: '降低了属性 $attribute +$amount'
+  decrease_attribute: 降低了属性 $attribute +$amount
   attribute_max: 你不能再提高 $attribute 属性了
   attribute_min: 你不能再降低 $attribute 属性了
   full: 你的物品栏已满!
@@ -523,11 +1580,12 @@ spells:
     backfire: 你的法术未达到预想的效果!
     fail: '&c出现了某些错误!'
     insufficient_permission: '&e你现在还无权这么做'
-    cast_player_message: "&7[&e法术&7] &2&o$player &r&f对你使用了 &3$spell &r&f!"
-    indirect_player_message: "&7[&e法术&7] &2&o$player &r&f对你使用了 &3$spell &r&f!"
+    cast_player_message: '&7[&e法术&7] &2&o$player &r&f对你使用了 &3$spell &r&f!'
+    indirect_player_message: '&7[&e法术&7] &2&o$player &r&f对你使用了 &3$spell &r&f!'
     insufficient_resources: 没有足够的 $cost
     insufficient: '&c需要 &4$cost'
     cooldown: 你必须再等待 $time.
+    charges: a:&eYou must wait &6$time
     cancelled: 你的法术已撤销!
     cancel: ''
     cancel_selection: a:&c撤销 &6$spell
@@ -538,6 +1596,7 @@ spells:
     world_required: 需要锁定一个世界为目标
     invalid_world: 指定的世界不存在...
     cast_finish: ''
+    no_target: ''
   admission:
     name: 通行证
     description: 打开目标门
@@ -647,14 +1706,15 @@ spells:
     name: 平台
     description: 在你前方制造一个平台
     cast_finish: 用 $material 材料填充了 @blocks 个方块
-  platform|2:
-    upgrade_description: 增加尺寸
+    upgrade_description: Increased size
   platform|4:
     upgrade_description: 现在可以用刷子来建造了
   reflect:
     name: 反弹
     description: 反弹针对你释放的法术
     upgrade_description: 增加尺寸和反弹效果
+  reflect|5:
+    upgrade_description: Caster is now reflective as well
   shell:
     name: 护罩
     description: 创造一个反弹罩
@@ -667,8 +1727,7 @@ spells:
     cast: 你放了一个标记
     cast_player: 你向 $target 传达了一条消息
     cast_give: 拿些告示牌!
-    cast_player_message: '&5你从 &c&o$player 那里听到了一段神秘的声音...他说
-      ...你好啊!'
+    cast_player_message: '&5你从 &c&o$player 那里听到了一段神秘的声音...他说 ...你好啊!'
     sign_message: 在这呢
   flashbang:
     name: 闪光弹
@@ -781,6 +1840,11 @@ spells:
     cast: 你治疗 $target
     cast_self: 你自己治疗自己
     upgrade_description: 降低冷却
+  superheal:
+    name: 超级治愈
+    description: 治愈、治疗并喂养你周围的每个人
+    cast: 你治愈了$target
+    cast_self: 你治愈了自己
   healing:
     name: 祛疫
     description: 治疗周围的人
@@ -866,8 +1930,7 @@ spells:
     description: 召唤一帮怪物
     deactivate: 你放走了他们
     cast: 你找来了一些怪物
-    upgrade_description: 提高时效和怪物数量,解锁一些新的怪物种类
-      冷却降低.
+    upgrade_description: 提高时效和怪物数量,解锁一些新的怪物种类 冷却降低.
   portal:
     name: 传送门
     description: 创建一个临时传送门
@@ -876,10 +1939,10 @@ spells:
   phase:
     name: 相位
     description: 相位传送到另一个维度
-    cancel: 相位中断!
     cast: ''
     teleport: 你相位传送到 $world_name
     teleport_failed: 不能传送到 $world_name
+    cancel: 相位中断!
   superphase:
     name: 超级相位
     description: 传送你自己或其他人到其他维度
@@ -950,9 +2013,6 @@ spells:
     description: 向目标投毒
     cast: 你让 $target 中毒
     upgrade_description: 提高中毒时效
-  light:
-    name: 光照
-    description: 让黑夜不再暗淡
   lightning:
     name: 闪电
     description: 让目标落雷
@@ -1059,8 +2119,6 @@ spells:
     description: 开采并丢出目标矿石
     cast_finish: 挖些铁块
     upgrade_description: 开采更多矿石
-  mine|4:
-    upgrade_description: 可以挖下整的方块
   mine|5:
     upgrade_description: 丢出奖励物品
   mine|6:
@@ -1267,23 +2325,31 @@ spells:
   gather:
     name: 召集
     description: 把你传到其他玩家处
-    usage: 向下瞄准以管理朋友列表
-    alternate_down_no_target: '&4周围没有人'
     no_target: |-
       &4周围没有人传过去
       &3向下瞄准以发送请求给朋友们!
+    click: 点击这里
+    request_tp: '&3@pn &b想要&d传送&b到你身边。&e$单击&b以允许此操作。'
+    request_form: '@pn 想传送到你身边。允许吗？'
+    request_title: 传送请求
+    button1: '是'
+    button2: '否'
     cast_to_player: 你让自己传送到了 $target 处
     cast_entity: 传送 $target 到目标处
-    cast_player_message: a:&d&o$player &r&5似乎在折跃
-    cast_friend: 把你送到 $name 那里
-    no_target_friend: 不能去 $name 那里
+    send_request_title: 发送朋友请求
+    friend_request_title: '@tn 想和你交个朋友'
     title_friend: $name
+    no_target_friend: 不能去 $name 那里
+    cast_target: a:&d&o$player &r&5传送到你
+    cast_friend: 把你送到 $name 那里
+    selected_free: ''
+    usage: 向下瞄准以管理朋友列表
+    alternate_down_no_target: '&4周围没有人'
+    cast_player_message: a:&d&o$player &r&5似乎在折跃
     add_friend: '&b你已经添加 &5$name &b为 &6朋友!'
     remove_friend: '&c你移除了 &5$name &6不做朋友了!'
     recall_title: '传送到:'
-    friend_request_title: '@tn 想和你交个朋友'
     reject: '@pn 说不行 ;('
-    send_request_title: 发送朋友请求
     add_friend_name: 发送一条请求
     remove_friend_name: 移除好友
     remove_friend_title: 移除好友
@@ -1291,12 +2357,11 @@ spells:
     title_remove_friend: $name
   recall_death:
     name: 死亡回传
-    description: 回传到上一次死亡地点akes you directly to the last place you died
+    description: 回传到上一次死亡地点
     cast_death: 你回到了上一次的死亡位置
     no_target_death: 没有记录在案的死亡位置
   recall:
     name: 回传
-    cancel: 回传中断
     description: 传送到不同的位置
     usage: 需要五秒秒传送保护机制
     teleport: ''
@@ -1351,13 +2416,11 @@ spells:
     unlock_warp: '&b你已经解锁 &5$name &b作为 &6回传位置!'
     add_friend: '&b你已经添加了 &5$name &b作为 &6回传位置!'
     remove_friend: '&c已删除了 &5$name &c,不再作为&6回传位置!'
-    invalid_description: |2-
-      &c此位置不可用
-    unavailable_description: |2-
-      &e升级以解锁
-    unavailable_warp_description: |2-
-      &e已找到此位置以解锁!
+    invalid_description: '&c此位置不可用'
+    unavailable_description: '&e升级以解锁'
+    unavailable_warp_description: '&e已找到此位置以解锁!'
     unavailable_name: '&c$name'
+    cancel: 回传中断
   recall|2:
     upgrade_description: 已经解锁上次死亡位置
   recall|3:
@@ -1365,12 +2428,20 @@ spells:
     usage: 需要五秒预热,向下释放以设定标记点
   recall|4:
     upgrade_description: 可以设下两个标记点
+    usage: |-
+      传送时提供 5 秒保护。
+      潜行+施法以设置标记。
   recall|5:
     upgrade_description: 可以设下三个标记点
+    usage: |-
+      在传送时提供5秒的保护。
+      潜行+施法设置标记。
   warpunlock:
     name: 解锁传送点
-    description: 当玩家发现了新区域时通
-      过命令方块或者区域指令来解锁新的回传点很有用
+    description: 当玩家发现了新区域时通 过命令方块或者区域指令来解锁新的回传点很有用
+    unlock_warp: |-
+      t:&r&6$name
+      &d&o在召回中解锁
     cooldown: ''
   warpmenu:
     name: 传送菜单
@@ -1425,15 +2496,22 @@ spells:
     cast: 咔嚓!
     cast_self: 自拍!
     cooldown: 相机在充能
+  camera3d:
+    name: 3D相机
+    description: 拍摄自己或他人的 3D 肖像
+    cast_target: 你打印了 $target 的模型  
+    fail: 创建模型失败  
+    cast: 咔嚓！  
+    cast_self: 自拍！  
+    cooldown: 3D 相机正在充能中  
   tornado:
     name: 龙卷风
     description: 造一个毁灭性的龙卷风
     cast: 快躲起来!
     upgrade_description: 增加尺寸
   masterattack:
-    name: 大师级爆破
-    description: 长距离的攻击!你必须有足够的生命值
-      才能释放
+    name: 剑气
+    description: 长距离的攻击!你必须有足够的生命值 才能释放
     insufficient_resources: ''
     cooldown: ''
   missile:
@@ -1449,8 +2527,7 @@ spells:
     description: 击穿方块和多个目标
     cast: 你发射轨道炮打击 $target
     no_target: 你尝试发射轨道炮
-    upgrade_description: 提高距离和目标数,降低冷却和
-      魔力消耗
+    upgrade_description: 提高距离和目标数,降低冷却和 魔力消耗
   testdummy:
     name: 测试人偶
     description: 生成一个可怜的测试人偶
@@ -1477,7 +2554,7 @@ spells:
     cast_player_message: a:&d&o$player&r&5的 $spell 来打你了
     upgrade_description: 导弹更快,伤害更强
   fury:
-    name: 怒吼
+    name: 子母弹
     description: 发射数颗巡航导弹到空中
     cast: 你发射了狂怒的导弹
     cast_player_message: a:&d&o$player&r&5的 $spell 来打你了
@@ -1614,8 +2691,7 @@ spells:
   tracking|4:
     upgrade_description: 潜行释放可以只追踪附近的玩家
   tracking|5:
-    upgrade_description: 向下释放可以高亮周围16格
-      所有生物/实体
+    upgrade_description: 向下释放可以高亮周围16格 所有生物/实体
   enchantwand:
     name: 进阶法杖
     description: 提升法杖等级
@@ -1692,8 +2768,8 @@ spells:
     confirm_title: 获得 $item
     deducted: '&d&o你收到了 &r&6$item'
   progressmenu:
-    name: Magic 进度
-    title: Magic 进度
+    name: 魔法进度
+    title: 魔法进度
     selected: ''
     selected_free: ''
     cast_fail: ''
@@ -1736,6 +2812,8 @@ spells:
     confirm_title: 修改为 $item
     selected: '&d&o修改为 &r&6$item'
     no_template: '&c无法修改 $wand &c的控制方式'
+    server_version:
+      property_min_inclusive: '&r&c您的&6$属性&c必须至少为&41.@value'
   colorshop:
     name: 效果颜色
     description: 更改法术效果
@@ -1776,7 +2854,7 @@ spells:
   spshop:
     name: SP商店
     description: 把钱换成法术点
-    title: Spell Points
+    title: 法术点
   lootshop:
     name: 战利品商店
     description: 通过出售怪物掉落物换钱
@@ -1821,8 +2899,7 @@ spells:
     description: 展示各类EffecLib效果
   soundtest:
     name: 自定义音效展示
-    description: 听一听所有内置到Magic资源包自定义声音特效
-      吧
+    description: 听一听所有内置到Magic资源包自定义声音特效 吧
   fx:
     name: FX 粒子
     description: 展示特定粒子,例如使用/cast fx particle redstone
@@ -1878,7 +2955,7 @@ spells:
   note24:
     name: 24 Note B
   trinketshop:
-    title: Trinkets ($balance&0)
+    title: 小饰品 ($balance&0)
   airscooter:
     name: 空气滑板车
     description: 坐在气垫上旅行
@@ -1946,8 +3023,7 @@ spells:
       必须手持法杖才有保护
   add_damage:
     name: 提高伤害
-    description: 提高你的攻击时的伤害
-      (并非需要释放的法术).
+    description: 提高你的攻击时的伤害 (并非需要释放的法术).
   add_sharpness:
     name: 锋利的剑
     description: 让你的魔法剑获得锋利附魔
@@ -1991,7 +3067,7 @@ spells:
     name: 静音
     description: 让目标玩家静音
   nobabies:
-    name: 没有婴幼儿
+    name: 成长
     description: 让所有幼体生物成长为成年体
   vanish:
     name: 隐身
@@ -2064,6 +3140,7 @@ spells:
   vengeance:
     name: 复仇
     description: 吸收伤害并完全返还回去
+    upgrade_description: Deals more damage back
   soulburn:
     name: 灵魂燃烧
     description: 你敌人的魔力储备会让他们灼烧
@@ -2081,8 +3158,166 @@ spells:
     rolled_6: 你 掷 出 了 六!
   warp:
     name: 地标
-    description: 用于命令或施法配置,例如"/cast warp"
-      warp castle"
+    description: 用于命令或施法配置,例如"/cast warp" warp castle"
+  magicheartrefund:  
+    name: 魔法之心返还  
+    description: 取回你给予的东西  
+    refunded: a:&4魔法石崩解成尘，显露出一组宝石  
+  commandspell:  
+    name: 执行命令  
+    description: 用于执行一个或多个命令，可通过 command 参数进行覆盖  
+  eat_food:  
+    name: 食用物品  
+    description: 适用于可消耗物品，可通过 feed 或 add_potion_effects 参数进行覆盖  
+  rarify:  
+    name: 提炼  
+    description: 对矿石方块施法，将其提炼为纯净方块  
+    usage: 需要 3 名玩家同时施法！  
+  platform|2:
+    upgrade_description: 增加尺寸
+  light:
+    name: 光照
+    description: 让黑夜不再暗淡
+  mine|4:
+    upgrade_description: 可以挖下整的方块
+stop:
+- i
+- me
+- my
+- myself
+- we
+- our
+- ours
+- ourselves
+- you
+- your
+- yours
+- yourself
+- yourselves
+- he
+- him
+- his
+- himself
+- she
+- her
+- hers
+- herself
+- it
+- its
+- itself
+- they
+- them
+- their
+- theirs
+- themselves
+- what
+- which
+- who
+- whom
+- this
+- that
+- these
+- those
+- am
+- is
+- are
+- was
+- were
+- be
+- been
+- being
+- have
+- has
+- had
+- having
+- do
+- does
+- did
+- doing
+- a
+- an
+- the
+- and
+- but
+- if
+- or
+- because
+- as
+- until
+- of
+- at
+- by
+- for
+- with
+- about
+- against
+- between
+- into
+- through
+- during
+- before
+- after
+- above
+- below
+- to
+- from
+- up
+- down
+- in
+- out
+- true
+- false
+- over
+- under
+- again
+- further
+- then
+- once
+- here
+- there
+- when
+- where
+- why
+- how
+- all
+- any
+- both
+- each
+- few
+- more
+- most
+- other
+- some
+- such
+- 'no'
+- nor
+- not
+- only
+- own
+- same
+- so
+- than
+- too
+- very
+- s
+- t
+- can
+- will
+- just
+- don
+- should
+- now
+- miha
+- help
+- please
+- show
+- and
+- about
+- like
+- mean
+- meant
+- tell
+- maybe
 time:
   wait_seconds: $seconds 秒
   wait_minutes: $minutes 分钟
@@ -2091,6 +3326,10 @@ time:
   wait_second: 一秒
   wait_minute: 一分钟
   wait_hour: 小时
+  wait_day: 另一天
+  wait_days: 另 $days 天
+  description_day: 一天
+  description_days: $days 天
   description_hour: 一小时
   description_hours: $hours 小时
   description_minute: 一分钟
@@ -2157,10 +3396,6 @@ wand:
   property_stack_negative: '&c$property'
   property_value: $property
   property_value_negative: '&c$property'
-  upgrade_slot: '&6移动至槽&7: &3$slot'
-  slots_header: '&6进阶&7:'
-  empty_slot: ' &8- &7(&2空 &6$slot &2slot&7)'
-  slotted: ' &8- &7$slotted'
   item_attributes:
     GENERIC_ATTACK_DAMAGE: 攻击伤害
   prefixes:
@@ -2309,8 +3544,7 @@ wand:
   unbound: 你的法杖已解除绑定
   player_unbound: $name的法杖已解除绑定
   unboundall: 你遗忘了所有绑定法杖
-  player_unboundall: $name的所有绑定法杖都被遗忘了。
-    但物品栏未被清理!
+  player_unboundall: $name的所有绑定法杖都被遗忘了。 但物品栏未被清理!
   notunbound: 你没有绑定的 $wand 法杖
   player_notunbound: $name 你没有绑定的 $wand 法杖
   unlocked: 你的法杖已解锁
@@ -2346,22 +3580,21 @@ wand:
   wand_instructions_footer: |-
     &8|
     &8 ----------------------------------------------------
-  sp_instructions: |-
-    &8| &7> &f你已经获得了一些&6法术点!
-    &8| &7> &f你的 &6SP&f(&7法术点&7) &f已经展示在魔力槽上方
-    &8| &7> &6SP &f可以在 &e魔化台 &f消耗以获得新法术
-    &8| &7> &f重复施放同一咒语获得的法术点较少
-    &8| &7> &f如果有了不少法术积累,试着&d多多搭配你的法术吧
-  currency_instructions: |-
-    &8| &7> &f你已经获得了 &6$currency!
-    &8| &7> &f你的 &6$currency &f已经展示在魔力槽上方
-    &8| &7> &6$currency &f可以在 &e魔化台 &f消耗以获得新法术
-    &8| &7> &f重复施放同一咒语获得较少法术点
-    &8| &7> &f如果有了不少法术积累,试着&d多多搭配你的法术吧
+  sp_earn_instructions: |-
+    &8| &7> &f你获得了一些&6法术点数！
+    &8| &7> &f你的&6法术点数&f显示在魔力条上方
+    &8| &7> &6法术点数&f可以在&e附魔台&f处消耗以学习新法术
+    &8| &7> &f重复施放相同的法术会获得更少的&6法术点数&f
+    &8| &7> &f当你掌握更多法术时，尝试&d混合施放&f吧！
+  earn_instructions: |-
+    &8| &7> &f你获得了一些&6$currency！
+    &8| &7> &f当法术背包打开时，你可以看到你的&6$currency
+    &8| &7> &6$currency&f可以在&e附魔台&f处消耗以学习新法术
+    &8| &7> &f重复施放相同的法术会获得更少的&6法术点数&f
+    &8| &7> &f当你掌握更多法术时，尝试&d混合施放&f吧！
   bound_instructions: '&8| &7> &f你的 &a$wand &f已经 &9绑定 &f在你身上, 而且 &9不能丢弃'
   spell_instructions: '&8| &7> &6挥舞 &f你的 &a$wand &f来释放 &d$spell'
-  mana_instructions: '&8| &7> &f法术释放需要 &6魔力 &f,一般显示在 &5XP
-    槽处'
+  mana_instructions: '&8| &7> &f法术释放需要 &6魔力 &f,一般显示在 &5XP 槽处'
   enchant_instructions: |-
     &8| &7> &f通过释放法术获得 &6法术点
     &8| &7> &f在 &e魔化台 &f消耗以获得新法术
@@ -2371,6 +3604,7 @@ wand:
   page_instructions: |-
     &8| &7> &e你的 &a$wand&8 &f已经有了超过一页的法术
     &8| &7> &6点击 &f物品栏以外处以切换页码
+  hotbar_instructions: '&8| &7> &f使用&6$cycle_hotbar&f在你的快捷栏之间切换'
   hotbar_count_usage: |-
     &8| &7> &e你获得了另一个热键槽
     &8| &7> &6$cycle_hotbar &f切换热键槽
@@ -2386,9 +3620,12 @@ wand:
     &8| &7> &6拖拽 &f法术到热键
     &8| &7> &f使用 &6数字键 &f以释放所需法术
   cycle_instructions: '&8| &7> &6$cycle &f以切换你激活的法术'
+  cycle_active_hotbar_instructions: '&8| &7> &6$button &f切换你的主动法术'
   brush_instructions: |-
     &8| &7> &6材质刷子 &f已被加入 &a$wand
     &8| &7> &6Shift+$toggle &f来选中一个刷子
+  spell_count_instructions: '&8| &7> &e你现在知道不止一个咒语了！'
+  spell_count_instructions_9: '&8| &7> &e你现在知道超过 8 种咒语了！'
   hotbar_changed: ''
   spell_activated: $spell
   upgrade_prefix: '&6'
@@ -2400,11 +3637,41 @@ wand:
   spell_prefix: '&6'
   brush_prefix: '&7'
   chest_inventory_title: 法杖
+  ignored_by_mobs: '&6对生物隐形'
+  upgrade_slot: '&6移动至槽&7: &3$slot'
+  slots_header: '&6进阶&7:'
+  empty_slot: ' &8- &7(&2空 &6$slot &2插槽&7)'
+  slotted: ' &8- &7$slotted'
+  default_slotted: '&7(&3这是默认设置&7)'
+  set_header_bonus_inactive: '&5$set &8套装奖励：'
+  set_header_bonus_active: '&5$set &f套装奖励：'
+  set_header: '&5$set'
+  set_bonus_inactive: '&c ✖ &8$bonus'
+  set_bonus_active: '&a ✔ &r$bonus'
+  lore_instructions_header: '&8------------------------'
+  lore_cast_instructions: '`<li>`$button &7施放&6$spell'
+  lore_toggle_instructions: '`<li>`$button &7打开法术背包'
+  lore_cycle_instructions: '`<li>`$button &7切换当前法术'
+  lore_cycle_active_hotbar_instructions: '`<li>`$button &7切换当前法术'
   inventory_open: |-
     &8------------------------
     &7法术物品栏
+  inventory_open_toggle_instructions: '`<li>`$button &7关闭法术库存'
   inventory_open_cycle: '&b&bull; &f左键单击 &7滚动物品栏'
   inventory_open_cycle_hotbar: '&b&bull; &f右键单击 &7滚动快捷栏'
+  inventory_open_cycle_hotbar_instructions: '`<li>`$button &7循环活动快捷栏'
+  sp_instructions: |-
+    &8| &7> &f你已经获得了一些&6法术点!
+    &8| &7> &f你的 &6SP&f(&7法术点&7) &f已经展示在魔力槽上方
+    &8| &7> &6SP &f可以在 &e魔化台 &f消耗以获得新法术
+    &8| &7> &f重复施放同一咒语获得的法术点较少
+    &8| &7> &f如果有了不少法术积累,试着&d多多搭配你的法术吧
+  currency_instructions: |-
+    &8| &7> &f你已经获得了 &6$currency!
+    &8| &7> &f你的 &6$currency &f已经展示在魔力槽上方
+    &8| &7> &6$currency &f可以在 &e魔化台 &f消耗以获得新法术
+    &8| &7> &f重复施放同一咒语获得较少法术点
+    &8| &7> &f如果有了不少法术积累,试着&d多多搭配你的法术吧
 wands:
   testwand:
     name: 测试法杖
@@ -2425,19 +3692,13 @@ wands:
       &e此法杖代表了一位收集齐所有初心者法术的生存玩家.
   master:
     name: 大师法杖
-    description: 演示用
-      &c仅用于演示!
-      &e此法杖代表了一位收集齐所有大师法术的生存玩家.
+    description: 演示用 &c仅用于演示! &e此法杖代表了一位收集齐所有大师法术的生存玩家.
   student:
     name: 学徒法杖
-    description: 演示用
-      &c仅用于演示!
-      &e此法杖代表了一位收集齐所有学徒法术的生存玩家.
+    description: 演示用 &c仅用于演示! &e此法杖代表了一位收集齐所有学徒法术的生存玩家.
   apprentice:
     name: 新手法杖
-    description: 演示用
-      &c仅用于演示!
-      &e此法杖代表了一位收集齐所有新手法术的生存玩家.
+    description: 演示用 &c仅用于演示! &e此法杖代表了一位收集齐所有新手法术的生存玩家.
   archer:
     name: 弓箭手弓
     description: |-
@@ -2455,7 +3716,7 @@ wands:
     spell_instructions: '&8| &7> &f使用&6数字键 &f以释放 &d$spell'
   magicsword:
     name: 魔法剑
-    description: $path &rMagic Sword
+    description: $path &r魔法剑
   base_bow:
     wand_instructions_header: |-
       &8 ----------------------------------------------------
@@ -2506,6 +3767,9 @@ wands:
   magicbow:
     name: 魔法弓
     description: $path &r魔法弓
+  bowcaster:
+    name: 弓箭手
+    description: $path &r弓箭手
   magiccrossbow:
     name: 魔法弩
     description: $path &r魔法弩
@@ -2524,6 +3788,9 @@ wands:
   camera:
     name: 照相机
     description: 给自己或者其他人照张相
+  camera3d:
+    name: 3D相机
+    description: 打印某人头部的 3D 模型
   magichat:
     name: 魔法帽
     description: 真正的巫师帽!朝上看,右键可佩戴
@@ -2685,6 +3952,94 @@ wands:
   inventorymode:
     name: 物品栏模式
     description: 专家专用
+  controls_cycle:
+    name: '&6切换模式'
+    description: |-
+      &d适用于 GUI 操作和快速切换的最佳方案
+      &b`<keybind key="use">`&f 切换法术
+      &b`<keybind key="drop">`&f 打开法术背包
+      &b`<keybind key="swapOffhand">`&f 切换快捷栏
+  controls_inventory:
+    name: '&6背包模式'
+    description: |-
+      &d适用于使用法术背包的玩家
+      &b`<keybind key="use">`&f 打开法术背包
+      &b`<keybind key="drop">`&f 切换快捷栏
+      &b`<keybind key="swapOffhand">`&f 切换法术
+  controls_hotbarswap:
+    name: '&6背包模式 &7(&b切换&f以更改快捷栏&7)'
+    description: |-
+      &d切换时显示法术名称
+      &b`<keybind key="use">`&f 打开法术背包
+      &b`<keybind key="swapOffhand">`&f 切换快捷栏
+      &b`<keybind key="drop">`&f 切换法术
+  spellmode_chest:
+    name: 箱子模式
+    description: '&d使用菜单选择当前法术'
+  spellmode_inventory:
+    name: 背包模式
+    description: '&d切换生存背包以选择当前法术'
+  spellmode_cycle:
+    name: 仅切换模式
+    description: '&d无法术背包，仅支持法术切换'
+  swappable_false:
+    name: '&c无法快速切换'
+    description: |-
+      &f无法在&6副手&f之间切换
+      &f&b`<keybind key="swapOffhand">`&f 键将用于&6魔杖控制&f
+  swappable_whenclosed:
+    name: '&a关闭时可快速切换'
+    description: |-
+      &f当&a法术背包&f打开时，&b`<keybind key="swapOffhand">`&f 键将用于&6魔杖控制&f
+      &f当&a法术背包&f关闭时，可以使用 &b`<keybind key="swapOffhand">`&f 与&6副手&f物品切换
+
+  swappable_always:
+    name: '&a始终可快速切换'
+    description: |-
+      &f可以使用 &b`<keybind key="swapOffhand">`&f 与&6副手&f物品切换
+      &f任何绑定到 &b`<keybind key="swapOffhand">`&f 的&6魔杖控制&f将被禁用
+
+  gui_actionbar:
+    name: 动作栏 GUI
+    description: |-
+      &d在动作栏显示你的快捷栏和魔力
+      &f`<space width="64">``<icon key="gui_actionbar">`
+
+
+
+
+
+
+
+          &b如果你能看到预览，说明你可以使用此 GUI！
+
+  gui_bossbar:
+    name: Boss 血条 GUI
+    description: |-
+      &d在 Boss 血条中显示你的快捷栏和魔力
+      &f`<space width="64">``<icon key="gui_bossbar">`
+
+
+
+
+
+
+
+      &b如果你能看到预览，说明你可以使用此 GUI！
+
+  gui_none:
+    name: 关闭 GUI
+    description: |-
+      &d关闭快捷栏和魔力显示
+      &f`<space width="64">``<icon key="gui_none">`
+
+
+
+
+
+
+
+      &b如果上方的预览看起来像一堆白色矩形，你可以使用此选项强制关闭 GUI。
   particles:
     name: 显示粒子
     description: 开启则显示所有法术的粒子
@@ -2705,20 +4060,16 @@ wands:
     description: 只有在物品栏按下丢弃键(Q时)才能快速释放
   mode_drop:
     name: 丢弃模式
-    description: 按下丢弃键(Q)以开启法术背包栏,
-      按下切换键(F)以切换热键槽且左键释放
+    description: 按下丢弃键(Q)以开启法术背包栏, 按下切换键(F)以切换热键槽且左键释放
   mode_rightclick:
     name: 右键模式
-    description: 右键以开启法术背包栏,按下丢弃键(Q)
-      以切换热键槽且左键释放
+    description: 右键以开启法术背包栏,按下丢弃键(Q) 以切换热键槽且左键释放
   mode_sword:
     name: 剑模式
-    description: 使用丢弃键(Q)以开启法术背包栏,
-      按下热键栏按钮以释放,切换键(F)可切换热键槽
+    description: 使用丢弃键(Q)以开启法术背包栏, 按下热键栏按钮以释放,切换键(F)可切换热键槽
   mode_swap:
     name: 切换模式
-    description: 使用切换键(F)以开启法术背包栏,按下丢弃键(Q)
-      以轮换热键槽,左键以释放
+    description: 使用切换键(F)以开启法术背包栏,按下丢弃键(Q) 以轮换热键槽,左键以释放
   loud:
     name: 喧嚣法杖
     description: 开启所有法术的聊天公屏输出信息
@@ -2926,95 +4277,111 @@ wands:
       &f/wand override commands spawn
       &f/mitem save spawntool
       &f/mgive spawntool
-automata:
-  awaken: '&c&o$name &r&5已苏醒'
-  default_name: 自动机
-  level: 等级 $roman
-  good:
-    prefixes:
-    - Holy
-    - Light
-    - Shiny
-    - Shimmering
-    - Stalwart
-    - Bright
-    - Savior
-    - Blessed
-    - Magic
-    - Enchanted
-    - Enlightened
-    - Magnificent
-    - Magnamous
-    - Brave
-    - Loyal
-    - Glorious
-    suffixes:
-    - of Holiness
-    - of Honor
-    - of Light
-    - of Lightness
-    - of Protection
-    - of The Sun
-    - of Magic
-    - of The Blessed
-    - of Forgiveness
-    - of Loyalty
-    - of Retribution
-    - of Resilience
-    - of Hope
-    - of Glory
-    - of Absolution
-  evil:
-    prefixes:
-    - Evil
-    - Dark
-    - Slimy
-    - Dreadful
-    - Dread
-    - Cursed
-    - Magic
-    - Enchanted
-    - Harbringer
-    - Nether
-    - Infamous
-    - Nefarious
-    - Distastrous
-    - Eldritch
-    - Disgusting
-    - Abominable
-    - Horrifying
-    - Calamity
-    - Calamitous
-    - Otherworldly
-    - Deplorable
-    - Apocalyptic
-    - Despicable
-    - Vile
-    - Wretched
-    - Loathsome
-    - Monstrous
-    - Dread
-    suffixes:
-    - of Darkness
-    - of Evil
-    - of the Night
-    - of Death
-    - of Doom
-    - of the Nether
-    - of Magic
-    - of Destruction
-    - of Desolation
-    - of Infamy
-    - of Horror
-    - of the Dark
-    - of the End
-    - of Domination
-    - of the Apocalypse
-    - of Devastation
-    - of the Wilds
-    - of Terror
-    - of Blight
-    - of the Plague
+  grappler:
+    name: 抓钩
+    description: |-
+      飞跃新天地！
+      使用时需要一支箭
+  gps:
+    name: GPS
+    description: 总能准确知道你的当前位置
+  airtide:
+    name: 气流护盾
+    description: |-
+      费城总是阳光明媚
+      但这里不是费城……
+  hookshot:
+    name: 钩索
+    description: 快速滑向你的目标位置
+automata:  
+  awaken: '&c&o$name &r&5已苏醒'  
+  default_name: 自动机  
+  level: 等级 $roman  
+  good:  
+    prefixes:  
+    - 神圣的  
+    - 光明的  
+    - 闪亮的  
+    - 闪烁的  
+    - 坚定的  
+    - 明亮的  
+    - 救世的  
+    - 受祝福的  
+    - 魔法的  
+    - 附魔的  
+    - 启迪的  
+    - 华丽的  
+    - 慷慨的  
+    - 勇敢的  
+    - 忠诚的  
+    - 荣耀的  
+    suffixes:  
+    - 圣洁之  
+    - 荣誉之  
+    - 光明之  
+    - 轻盈之  
+    - 守护之  
+    - 太阳之  
+    - 魔法之  
+    - 祝福之  
+    - 宽恕之  
+    - 忠诚之  
+    - 惩戒之  
+    - 坚韧之  
+    - 希望之  
+    - 荣耀之  
+    - 赦免之  
+  evil:  
+    prefixes:  
+    - 邪恶的  
+    - 黑暗的  
+    - 粘稠的  
+    - 可怕的  
+    - 恐惧的  
+    - 被诅咒的  
+    - 魔法的  
+    - 附魔的  
+    - 预兆的  
+    - 下界的  
+    - 臭名昭著的  
+    - 邪恶的  
+    - 灾难性的  
+    - 诡异的  
+    - 恶心的  
+    - 可憎的  
+    - 令人恐惧的  
+    - 灾祸的  
+    - 灾难的  
+    - 异界的  
+    - 卑劣的  
+    - 世界末日的  
+    - 卑鄙的  
+    - 邪恶的  
+    - 悲惨的  
+    - 令人作呕的  
+    - 怪异的  
+    - 恐怖的  
+    suffixes:  
+    - 黑暗之  
+    - 邪恶之  
+    - 夜晚之  
+    - 死亡之  
+    - 末日之  
+    - 下界之  
+    - 魔法之  
+    - 毁灭之  
+    - 荒芜之  
+    - 臭名昭著之  
+    - 恐怖之  
+    - 黑暗之  
+    - 终焉之  
+    - 支配之  
+    - 末世之  
+    - 灾害之  
+    - 荒野之  
+    - 恐惧之  
+    - 枯萎之  
+    - 瘟疫之  
 tags:
   noduel:
     name: 决斗禁止
@@ -3094,17 +4461,37 @@ classes:
   crown:
     name: 皇冠
     description: 你怎样都尊贵
+examples:
+  survival:
+    instructions: |-
+      &8| &3&n生存 &r
+      &8|   &f请检查新的配方, 或使用 &6/mgive wand &r
+      &8|   &f使用 &6/mgive uberwand &f以获取一个OP法杖 &r
+  instructions_header: |-
+    &8 ----------------------------------------------------
+    &8|
+    &8|   &b&l示例介绍
+    &8|
+  instructions_footer: |-
+    &8|
+    &8 ----------------------------------------------------
 items:
   emerald_sword:
     name: 绿宝石剑
   invisible_item_frame:
-    name: Invisible Item Frame
+    name: 隐形物品展示框
   coffee1:
-    name: Cup o' Jo
+    name: 一杯乔咖啡
   coffee2:
-    name: Espresso
+    name: 浓缩咖啡
   coffee3:
-    name: Double Espresso
+    name: 双份浓缩咖啡
+  overworld_compass:
+    name: 磁性指南针
+  nether_compass:
+    name: 磁性指南针 (下界)
+  end_compass:
+    name: 磁性指南针 (末地)
 kits:
   admin:
     name: 管理员工具包
@@ -3181,8 +4568,8 @@ mobs:
     name: '&f彩虹龙'
   dummy:
     name: 玩偶
-  dummynoai:
-    name: 哑巴玩偶
+  testdummy:
+    name: Skelly
   extraspellshop:
     name: 更多法术
   fairy:
@@ -3239,6 +4626,16 @@ mobs:
     name: 存款机
   marigold:
     name: '&6金盏花'
+  aggromite:
+    name: 铼石
+  scaredy:
+    name: 胆小的猫
+  philbert:
+    name: Philbert
+  spinny_fox:
+    name: Spinny Fox
+  dummynoai:
+    name: 哑巴玩偶
 modifiers:
   antiknockback:
     name: 防击退
@@ -3280,6 +4677,39 @@ paths:
   archer:
     name: '&6弓箭手'
     description: 弓箭手法术
+wand_sets:  
+  wizard_armor:  
+    name: 魔法师护甲  
+
+wand_slots:  
+  broom_upgrade:  
+    name: 飞天扫帚升级  
+  controls:  
+    lore_instructions: '`<li>`&e使用&b附魔台&e更改控制设置'  
+    control_instructions: '&8| &7> &e使用&b附魔台&e更改控制设置'  
+costs:
+  sp_amount: $amount SP
+  xp_amount: $amount XP
+  levels_amount: $amount XP等级
+  mana_amount: $amount 魔力
+  mana: 魔力
+  xp: XP
+  levels: 等级
+  sp: 法术点
+  sp_short: 法术点
+  hunger: 能量
+  health: 生命
+  health_amount: $amount 生命
+  hunger_amount: $amount 能量
+  heroes_mana: $amount 魔力
+  currency_singular: 游戏币
+  currency: 游戏币
+  currency_amount: $$amount
+sp:
+  name: '&e$amount &6法术点'
+  description: 右键以获取法术点
+  limit: a:&6法术点 &e的最大限制为 &c$amount
+  deposited: 'a:&a已存入 &2$amount &6法术点&a, 财产: &2$balance'
 slots:
   broom_upgrade:
     name: 扫帚进阶
