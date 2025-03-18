@@ -69,6 +69,12 @@ public class EffectLibManager {
         }
     }
 
+    public void setForceShow(boolean forceShow) {
+        if (effectManager != null) {
+            effectManager.setForceShow(forceShow);
+        }
+    }
+
     @Nullable
     public EffectLibPlay play(ConfigurationSection configuration, EffectPlayer player, DynamicLocation origin, DynamicLocation target, ConfigurationSection parameterMap, String logContext, List<Player> players) {
         return loadEffect(true, configuration, player, origin, target, parameterMap, logContext, players);

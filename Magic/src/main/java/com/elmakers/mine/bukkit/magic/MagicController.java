@@ -8423,6 +8423,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         com.elmakers.mine.bukkit.effect.EffectPlayer.showStackTraces(effectLibStackTraces);
         CompatibilityLib.getCompatibilityUtils().load(properties);
         com.elmakers.mine.bukkit.effect.EffectPlayer.setParticleRange(properties.getInt("particle_range", com.elmakers.mine.bukkit.effect.EffectPlayer.PARTICLE_RANGE));
+        com.elmakers.mine.bukkit.effect.EffectPlayer.setForceShow(properties.getBoolean("particle_force_show", false));
 
         loadWandSlotTemplates(properties.getConfigurationSection("wand_slots"));
         loadWandSets(properties.getConfigurationSection("wand_sets"));

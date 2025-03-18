@@ -7,6 +7,9 @@
  - Fix the behavior of the "locked" wand property when using the old_wand_locked_behavior config option
  - Fix error loading custom banner items in modern MC versions
  - Update Chinese (CN) localization file (thank you, JTYX8X!)
+ - Update EffectLib, fixes default particles in modern MC
+ - Fix particles not showing beyond 32 blocks in 1.21.4 and up
+   This can be disabled via `/mconfig configure config particle_force_show false`
 
 # 10.9.6
 

@@ -77,6 +77,12 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
         }
     }
 
+    public static void setForceShow(boolean forceShow) {
+        if (effectLib != null) {
+            effectLib.setForceShow(forceShow);
+        }
+    }
+
     private static Map<String, Class<?>> effectClasses = new HashMap<>();
     private static EffectLibManager effectLib = null;
     private ConfigurationSection effectLibConfig = null;

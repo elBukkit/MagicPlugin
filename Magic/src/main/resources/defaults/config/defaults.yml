@@ -435,6 +435,10 @@ protect_locked: true
 # Related to particle range
 particle_range: 48
 
+# Whether or not to force-show particles in 1.21.4 and up
+# This is on by default, set it to false if players are complaining about seeing too many particles
+particle_force_show: true
+
 # How many casts to track in the undo queue
 undo_depth: 128
 
