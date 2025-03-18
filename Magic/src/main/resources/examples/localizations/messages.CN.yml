@@ -1,5 +1,23 @@
-
-
+# 本文件由一个喜欢magic的人翻译
+# .
+# 默认的语言文件在以下位置已有收集:
+# .
+# https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/defaults/messages
+# .
+# 若要通过网络编辑器编辑此配置,请使用
+# /mconfig editor messages
+# .
+# 使用指令
+# /mconfig configure message costs.sp Super Points
+# 即可自定义配置单条语言文件内容
+# .
+# 注意: 使用/mconfig configure或example指令做出的
+#任何更改都将覆盖对默认语言文件所做的任何编辑(默认语言文件在plugins\Magic\defaults\messages.defaults位置)
+# .
+# LastUpdate: 2021-08-31
+#
+# Updated by JTYX8X 2025-02-17
+#
 arena:
   countdown_10: t:&3开始于 &b$countdown 秒
   countdown: t:&b$countdown
@@ -296,40 +314,40 @@ commands:
       此命令已被禁用，因为此服务器正在使用以下控制资源包的插件：$plugins
       管理员可以使用 &7`<help topic="compatibility" text="mhelp">` 获取更多信息。
     disabled: 由于服务器server.properties配置了有关资源包的设置,此命令已被禁用
-ccurrency:  
-  default:  
-    item_name: '&e$amount &6$type'  
-    description: 右键点击存入  
-    limit: a:&e&6$type &e的上限为 &c$amount  
-    deposited: 'a:&a已存入 &2$amount&a，余额: &2$balance'  
-    earned: a:&a+&2$amount  
-    spent: a:&c-&4$amount  
-  sp:  
-    name: '&b法术点'  
-    description: 右键点击获取 $type  
-    name_short: '&bSP'  
-  xp:  
-    name: '&d经验值'  
-    name_short: '&dXP'  
-  levels:  
-    name: '&d等级'  
-  mana:  
-    name: '&3法力'  
-    name_short: '&3MP'  
-  hunger:  
-    name: '&4能量'  
-  health:  
-    name: '&c生命值'  
-    name_short: '&cHP'  
-  heroes_mana:  
-    name: '&3法力'  
-    amount: $amount 法力  
-  currency:  
-    name: '&a金币'  
-    name_singular: '&a金币'  
-    amount: $$amount  
-  item:  
-    name_singular: 绿宝石  
+currency:
+  default:
+    item_name: '&e$amount &6$type'
+    description: 右键点击存入
+    limit: a:&e&6$type &e的上限为 &c$amount
+    deposited: 'a:&a已存入 &2$amount&a，余额: &2$balance'
+    earned: a:&a+&2$amount
+    spent: a:&c-&4$amount
+  sp:
+    name: '&b法术点'
+    description: 右键点击获取 $type
+    name_short: '&bSP'
+  xp:
+    name: '&d经验值'
+    name_short: '&dXP'
+  levels:
+    name: '&d等级'
+  mana:
+    name: '&3法力'
+    name_short: '&3MP'
+  hunger:
+    name: '&4能量'
+  health:
+    name: '&c生命值'
+    name_short: '&cHP'
+  heroes_mana:
+    name: '&3法力'
+    amount: $amount 法力
+  currency:
+    name: '&a金币'
+    name_singular: '&a金币'
+    amount: $$amount
+  item:
+    name_singular: 绿宝石
     name: 绿宝石
   item_name: '&e$amount &6$type'
   description: 右键以存钱
@@ -339,8 +357,8 @@ ccurrency:
 dynmap:
   spells_markerset: 法术
   wands_markerset: 法杖
-example:  
-  not_found: '&4未知或未加载的示例: &f$example'  
+example:
+  not_found: '&4未知或未加载的示例: &f$example'
   instructions_header: |-
     &8 ----------------------------------------------------
     &8|
@@ -440,7 +458,7 @@ glyphs:
     hotbar_slot_active: 
   icons:
     empty: 
-help:  
+help:
   main: |-
     `<title text="通用帮助">`
     `<li>``<help topic="commands" text="命令帮助">`
@@ -463,7 +481,7 @@ help:
     `<li>``<help topic="kits" text="设置礼包，包括新手礼包">`
   kits: |-
     `<title text="礼包">`
-    `<p>`&dMagic&f 提供了一个简单的 &b礼包&f 系统，可用于新手礼包、礼包商店、服务器导航物品、每日奖励等。  
+    `<p>`&dMagic&f 提供了一个简单的 &b礼包&f 系统，可用于新手礼包、礼包商店、服务器导航物品、每日奖励等。
     `<li>``<command command="mnpc add dailykit" text="添加每日奖励 NPC">`
     `<li>``<command command="meditor kit newkit" text="使用编辑器创建新礼包">`
     `<li>``<command command="mconfig enable kit welcome" text="启用基础新手礼包">`
@@ -472,7 +490,7 @@ help:
     `<li>``<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/kits" text="查看生存模式礼包示例">`
   magicblocks: |-
     `<title text="魔法方块">`
-    `<p>`&6魔法方块&f 可用于设置自动刷怪或施法。  
+    `<p>`&6魔法方块&f 可用于设置自动刷怪或施法。
     `<li>``<command command="mblock add spawner spawn.mobs warlock" text="设置术士刷怪笼">`
     `<li>``<command command="mblock list" text="列出所有魔法方块，按距离排序">`
     `<li>``<command command="mblock select" text="选择最近的魔法方块进行编辑">`
@@ -502,13 +520,13 @@ help:
     `<li>``<command command="wand fill" text="为魔杖添加所有法术">`
   updating: |-
     `<title text="插件更新">`
-    `<p>`更新 &dMagic &f 通常只需替换插件 JAR 文件。  
-    `<p>`向后兼容性是自定义配置的优先事项！  
-    `<p>`但某些重大更新可能会导致变更，更新前请查看 `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/MIGRATION.md" text="迁移日志">`。  
-    `<p>`更新至 Magic 10 有以下注意事项：  
-    `<p>`更改了魔杖 `locked` 标记的含义，以匹配物品、职业和配方的行为。  
-    `<p>`若需旧版行为，请使用 `"modifiable: false"` 替代 `"locked: true"`。  
-    `<p>`若更新导致问题，请执行 `<command command="mconfig config old_wand_locked_behavior true" text="此命令">` 以恢复旧行为。  
+    `<p>`更新 &dMagic &f 通常只需替换插件 JAR 文件。
+    `<p>`向后兼容性是自定义配置的优先事项！
+    `<p>`但某些重大更新可能会导致变更，更新前请查看 `<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/MIGRATION.md" text="迁移日志">`。
+    `<p>`更新至 Magic 10 有以下注意事项：
+    `<p>`更改了魔杖 `locked` 标记的含义，以匹配物品、职业和配方的行为。
+    `<p>`若需旧版行为，请使用 `"modifiable: false"` 替代 `"locked: true"`。
+    `<p>`若更新导致问题，请执行 `<command command="mconfig config old_wand_locked_behavior true" text="此命令">` 以恢复旧行为。
   right_click: |-
     `<title text="右键与副手物品">`
     `<p>`魔杖默认使用右键进行法术切换，这些`<help topic="wandcontrols" text="控制方式">`是可自定义的。
@@ -872,7 +890,7 @@ help:
     `<p>`&dMagic 拥有专为 `<link url="https://www.spigotmc.org/resources/quests.3711/" text="Quests">` 插件设计的自定义模块。
     `<p>`此模块可添加特定的任务需求、目标和奖励。
     `<li>``<link url="https://github.com/elBukkit/MagicQuests/releases" text="下载 MagicQuests 模块">`
-    `<p>`请确保将此模块放入 &7plugins/Quests/modules&f 文件夹，而不是 plugins 文件夹！它不是一个独立的插件。  
+    `<p>`请确保将此模块放入 &7plugins/Quests/modules&f 文件夹，而不是 plugins 文件夹！它不是一个独立的插件。
   mythicmobs: |-
     `<title text="神话生物">`
     `<li>`MythicMobs 可以使用指令技能施放 &d魔法&f 法术：`<link url="https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/examples/MythicMobs-2.0/Skills/MagicSkills.yml" text="示例">`
@@ -1197,20 +1215,20 @@ logs:
   notify_errors_and_warnings: '&7[Magic] &b在过去的&3$time&b中出现了错误: &c$errors 和警告: &e$warnings
     ,请查看日志!'
   notify_instructions: '&7  给负权限 &f-Magic.notify &7或者检查配置以禁用此类提示信息'
-macros:  
-  help: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看帮助"}, "clickEvent":{"action":"run_command","value":"/mhelp $topic"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
-  title: '  &#01060d⎯&#030c1a⎯&#06152e⎯&#0a1f42&#0f2e61⎯&#154085⎯&#1c4d9c⎯&#255eba⎯&#2b6acf⎯  &l&n&#36a1e3$text  &r&#2b6acf⎯&#255eba⎯&#1c4d9c⎯&#154085⎯&#0f2e61⎯&#0a1f42⎯&#06152e⎯&#030c1a⎯&#01060d⎯'  
-  tags: ''  
-  glyph: '`{"text":"\u$code","font":"magic"}`'  
-  command: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击执行命令"}, "clickEvent":{"action":"suggest_command","value":"/$command"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
-  message: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看消息"}, "clickEvent":{"action":"run_command","value":"/tellraw @s \"$message\"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
-  rawmessage: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看消息"}, "clickEvent":{"action":"run_command","value":"/tellraw @s $message"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
-  link: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击在浏览器中打开"}, "clickEvent":{"action":"open_url","value":"$url"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'  
-  keybind: '`{"keybind":"key.$key"}`'  
-  li: '&b&bull; &f'  
-  p: '&f'  
-  icon: '`{"text":"$glyph","font":"magic"}`'  
-  space: '`{"text":"$glyph","font":"magic"}`'  
+macros:
+  help: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看帮助"}, "clickEvent":{"action":"run_command","value":"/mhelp $topic"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
+  title: '  &#01060d⎯&#030c1a⎯&#06152e⎯&#0a1f42&#0f2e61⎯&#154085⎯&#1c4d9c⎯&#255eba⎯&#2b6acf⎯  &l&n&#36a1e3$text  &r&#2b6acf⎯&#255eba⎯&#1c4d9c⎯&#154085⎯&#0f2e61⎯&#0a1f42⎯&#06152e⎯&#030c1a⎯&#01060d⎯'
+  tags: ''
+  glyph: '`{"text":"\u$code","font":"magic"}`'
+  command: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击执行命令"}, "clickEvent":{"action":"suggest_command","value":"/$command"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
+  message: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看消息"}, "clickEvent":{"action":"run_command","value":"/tellraw @s \"$message\"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
+  rawmessage: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击查看消息"}, "clickEvent":{"action":"run_command","value":"/tellraw @s $message"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
+  link: '`{"text":"$text","hoverEvent":{"action":"show_text","contents":"点击在浏览器中打开"}, "clickEvent":{"action":"open_url","value":"$url"}, "extra":[{"text":"\u27BD","color":"#888888"}]}`'
+  keybind: '`{"keybind":"key.$key"}`'
+  li: '&b&bull; &f'
+  p: '&f'
+  icon: '`{"text":"$glyph","font":"magic"}`'
+  space: '`{"text":"$glyph","font":"magic"}`'
 mage:
   removed_property: 移除了品阶 $name
   no_property: '没有品阶: $name'
@@ -1239,7 +1257,7 @@ mage:
   earned_sp: a:&6+&e$amount &6法术点
 materials:
   wildcard: (任何子类型)
-meta:  
+meta:
   action_template: |-
     `<title text="$class 动作">`
     `<p>`一种法术动作，在法术动作处理器中使用，格式为 &7- class: $class
@@ -1250,16 +1268,16 @@ meta:
     `<p>`一个 EffectLib 类，在 &7effects:&f 列表中的 &7effectlib:&f 部分使用，格式为 &7- class: $class
     `<p>`$description
     `<p>``<link url="https://reference.elmakers.com/#effectlib.$key" text="查看此效果及其所有参数的参考指南">`
-  description_template: '`<p>`$description'  
+  description_template: '`<p>`$description'
   parameters_template: |-
     `<p>`&b参数：
     $parameters
-  parameter_template: '`<li>`&6$parameter&8: &7$description'  
-  parameter_extra_line: '`<p>`   &7$description'  
-  examples_template: '`<p>`&6用于法术：&b$examples'  
-  example_template: '&b`<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/spells/$example.yml" text="$example">`&f'  
-  default_parameter_description: '&8?'  
-  default_description: '&7(暂无描述)'  
+  parameter_template: '`<li>`&6$parameter&8: &7$description'
+  parameter_extra_line: '`<p>`   &7$description'
+  examples_template: '`<p>`&6用于法术：&b$examples'
+  example_template: '&b`<link url="https://github.com/elBukkit/MagicPlugin/tree/master/Magic/src/main/resources/examples/survival/spells/$example.yml" text="$example">`&f'
+  default_parameter_description: '&8?'
+  default_description: '&7(暂无描述)'
 general:
   locked_chest: 此箱子已上锁,不能破坏
   spawn_egg_title: 生成 $entity
@@ -1294,10 +1312,10 @@ worlds:
 cooldown:
   description: '&e冷却: &6$time'
   mage_description: '&c疲惫: &6$time'
-charges:  
-  description: '&e充能：&6$count'  
-  regeneration_description: '&e充能：&6$count &7(&e$rate&6/&fs&7)'  
-  recharge_description: '&e充能：&6$count &7(&e1&6/&f&e$rates&7)'  
+charges:
+  description: '&e充能：&6$count'
+  regeneration_description: '&e充能：&6$count &7(&e$rate&6/&fs&7)'
+  recharge_description: '&e充能：&6$count &7(&e1&6/&f&e$rates&7)'
 warmup:
   description: '&7预热: &6$time'
 duration:
@@ -1317,21 +1335,21 @@ skills:
   passive_description: '&1被动型'
   none: 你没有法术!
   none_on_page: 此页没有法术 $page
-resource_pack:  
-  prompt: 使用 /getrp 以下载资源包  
-  off_prompt: a:&e使用 &4/getrp &e以下载资源包  
-  sending: |-  
-    t:&3请等待  
-    &b正在发送资源包  
-  failed: |-  
-    &c资源包下载失败！  
-    &f您可以使用 &b/getrp&f 重试。  
-  declined: |-  
-    &e查看：&f&nhttps://rp.elmakers.com/&f 获取 &b资源包&f 的使用说明。  
-    `<p>`服务器资源包不会干扰您使用的任何其他资源包！  
-    `<li>``<command command="getrp skulls" text="使用 /getrp skulls">` 获取使用扁平头颅图标的简化资源包。  
-    `<li>``<command command="getrp download" text="使用 /getrp download">` 如果您更喜欢手动下载资源包。  
-    `<li>``<command command="getrp off" text="使用 /getrp off">` 以永久关闭此提示信息。  
+resource_pack:
+  prompt: 使用 /getrp 以下载资源包
+  off_prompt: a:&e使用 &4/getrp &e以下载资源包
+  sending: |-
+    t:&3请等待
+    &b正在发送资源包
+  failed: |-
+    &c资源包下载失败！
+    &f您可以使用 &b/getrp&f 重试。
+  declined: |-
+    &e查看：&f&nhttps://rp.elmakers.com/&f 获取 &b资源包&f 的使用说明。
+    `<p>`服务器资源包不会干扰您使用的任何其他资源包！
+    `<li>``<command command="getrp skulls" text="使用 /getrp skulls">` 获取使用扁平头颅图标的简化资源包。
+    `<li>``<command command="getrp download" text="使用 /getrp download">` 如果您更喜欢手动下载资源包。
+    `<li>``<command command="getrp off" text="使用 /getrp off">` 以永久关闭此提示信息。
 controls:
   drop: 丢弃 (Q)
   right_click: 右键
@@ -1366,132 +1384,132 @@ path:
 placeholders:
   hotbar: $hotbar
   nathanwolf: '`<icon key="nathanwolf">`'
-potion_effects:  
-  speed: 速度  
-  slow: 缓慢  
-  fast_digging: 急迫  
-  slow_digging: 挖掘疲劳  
-  increase_damage: 力量  
-  heal: 治疗  
-  harm: 伤害  
-  jump: 跳跃提升  
-  confusion: 反胃  
-  regeneration: 生命恢复  
-  damage_resistance: 抗性提升  
-  fire_resistance: 防火  
-  water_breathing: 水下呼吸  
-  invisibility: 隐身  
-  blindness: 失明  
-  night_vision: 夜视  
-  hunger: 饥饿  
-  weakness: 虚弱  
-  poison: 中毒  
-  wither: 凋零  
-  health_boost: 生命提升  
-  absorption: 伤害吸收  
-  saturation: 饱和  
-  glowing: 发光  
-  levitation: 漂浮  
-  luck: 幸运  
-  unluck: 霉运  
-requirements:  
-  unknown: '&c禁用'  
-  property_requirement: '&r&c需要品阶: &6$property &c达到 &4$value'  
-  property_max: '&r&c你的品阶: &6$property &c已达顶级'  
-  property_max_inclusive: '&r&c你的 &6$property &c已达最大值'  
-  property_min: '&r&c你的品阶: &6$property &c必须达到 &4$value'  
-  property_min_inclusive: '&r&c你的 &6$property &c必须至少为 &4$value'  
-  no_resource_pack: '&c你必须使用资源包'  
-  no_wand: '&c你必须手持法杖!'  
-  no_template: '&c你手持 $wand&c时不能这么做'  
-  no_modifier: '&c你可能需要配置: &6$modifier &c才能继续。'  
-  no_region: '&c你不能在这里这么做'  
-  no_world: '&c你不能在这里这么做'  
-  no_path: '&c你还没学到那个程度'  
-  no_class: '&c你必须拥有 $class'  
-  no_required_path: '&c你至少需要熟练度: $path&r!'  
-  no_path_exact: '&c你的熟练度须达到 $path&r!'  
-  no_path_end: '&c你必须完成 $path&r的熟练度!'  
-  no_weather: '&c现在的天气不适合这样做'  
-  no_client_platform: '&c你所在的平台无法执行此操作'  
-  light: 光照等级  
-  time: 时间  
-  moon: 月相  
-  height: 高度  
-  server_version: 服务器版本  
-  currency: 财产  
-  item: $item  
-  no_cast: '&c你需要先释放 $spell'  
-  no_spell_inventory: '&c你必须打开法术栏'  
-  no_indoors: 只能在室内使用  
-  indoors: 不能在室内使用  
-  no_stay: 必须设置为停留状态  
-  no_owned: 必须有一个拥有者  
-  stay: 不能设置为停留状态  
-  owned: 不能有拥有者  
-selector:  
-  no_wand: '&c你必须手持法杖!'  
-  no_template: '&c你不能用 $wand&c 学习。'  
-  no_path: '&c你不能在这里学习。'  
-  no_class: '&c你必须是 $class'  
-  no_required_path: '&c你至少需要达到 $path&r!'  
-  no_path_exact: '&c你必须达到 $path&r!'  
-  no_path_end: '&c你必须准备好从 $path&r 进阶!'  
-  insufficient: '&c需要 $cost'  
-  confirm_title: 购买 $item  
-  unlock_confirm_title: 解锁 $item  
-  deducted: '&d&o你花费 &r&a$cost &d&o购买了 &r&6$item'  
-  selected: '&d&o你花费 &r&a$cost &d&o购买了 &r&6$item'  
-  sold: '&d&o你卖出了 &r&6$item &d&o并获得了 &r&a$earn'  
-  unlocked: '&d&o你花费 &r&a$cost &d&o解锁了 &r&6$item'  
-  unlocked_earn: '&d&o你通过 &r&6$item &d&o赚取了 &r&a$earn'  
-  selected_free: '&d&o你选择了 &r&6$item'  
-  not_applicable: 你已经拥有 $item  
-  cast_fail: '&c很抱歉，请再试一次!'  
-  warp_fail: '&c很抱歉，出现了问题!'  
-  no_items: 这里没有可以供你购买的物品  
-  title: 明智选择  
-  sell_title: 出售 ($balance&0)  
-  sell_icon_name: '&6出售物品'  
-  buy_icon_name: '&a购买物品'  
-  extra_spell: '&a不需要以继续进阶'  
-  no_upgrade: 这里没有更多内容可以学习。  
-  upgrade_name_change: '&r&4升级: &r$name'  
-  level_requirement: '&r&c需要: &6$path'  
-  tags_requirement: '&r&c需要: &6$tags'  
-  cast_requirement: '&r&c施放次数: &6$current&f/&e$required'  
-  prerequisite_spell: '&c你必须先掌握 &6$name'  
-  prerequisite_spell_level: '&6$name'  
-  prerequisite_spell_progress_level: ' (进度 $level/$max_level)'  
-  required_spells: '&r&c需要: $spells'  
-  cast_spell: $spell  
-  unlock_class: $class  
-  nothing: 无  
-  cost_lore: '&6消耗: &e$cost'  
-  earn_lore: '&6获得: &e$earn'  
-  earn_heading: ''  
-  cost_heading: ''  
-  unlock_cost_lore: '&6解锁费用: &e$cost'  
-  locked: '&c已锁定，&e请在捐赠商店解锁'  
-  required_cost_lore: '&c需要: &4$cost'  
-  required_unlock_cost_lore: '&c解锁费用: &4$cost'  
-  has_class: 你已经拥有职业 $class  
-  at_limit: 你已达到 $limit 的上限  
-  unlocked_lore: '&a已解锁'  
-  property_requirement: '&r&c需要: &6$property &c达到 $4$value'  
-  property_max: '&r&c你的 &6$property &c已达最大值'  
-  property_min: '&r&c你的 &6$property &c必须大于 $4$value'  
-  item_amount: $name x$amount  
-  attribute: '&6$attribute &f(&b$amount&f)'  
-  increase_attribute: 增加 $attribute $amount  
-  decrease_attribute: 减少 $attribute $amount  
-  attribute_max: 你无法再增加 $attribute  
-  attribute_min: 你无法再减少 $attribute  
-  full: 你的背包已满!  
-  nostock: 抱歉，该物品已售罄!  
-  paid: '&7$owner 感谢你的惠顾!'  
-  invalid_item: '&c未知或无效的物品'  
-  max_spells: '&c你无法学习更多法术'  
+potion_effects:
+  speed: 速度
+  slow: 缓慢
+  fast_digging: 急迫
+  slow_digging: 挖掘疲劳
+  increase_damage: 力量
+  heal: 治疗
+  harm: 伤害
+  jump: 跳跃提升
+  confusion: 反胃
+  regeneration: 生命恢复
+  damage_resistance: 抗性提升
+  fire_resistance: 防火
+  water_breathing: 水下呼吸
+  invisibility: 隐身
+  blindness: 失明
+  night_vision: 夜视
+  hunger: 饥饿
+  weakness: 虚弱
+  poison: 中毒
+  wither: 凋零
+  health_boost: 生命提升
+  absorption: 伤害吸收
+  saturation: 饱和
+  glowing: 发光
+  levitation: 漂浮
+  luck: 幸运
+  unluck: 霉运
+requirements:
+  unknown: '&c禁用'
+  property_requirement: '&r&c需要品阶: &6$property &c达到 &4$value'
+  property_max: '&r&c你的品阶: &6$property &c已达顶级'
+  property_max_inclusive: '&r&c你的 &6$property &c已达最大值'
+  property_min: '&r&c你的品阶: &6$property &c必须达到 &4$value'
+  property_min_inclusive: '&r&c你的 &6$property &c必须至少为 &4$value'
+  no_resource_pack: '&c你必须使用资源包'
+  no_wand: '&c你必须手持法杖!'
+  no_template: '&c你手持 $wand&c时不能这么做'
+  no_modifier: '&c你可能需要配置: &6$modifier &c才能继续。'
+  no_region: '&c你不能在这里这么做'
+  no_world: '&c你不能在这里这么做'
+  no_path: '&c你还没学到那个程度'
+  no_class: '&c你必须拥有 $class'
+  no_required_path: '&c你至少需要熟练度: $path&r!'
+  no_path_exact: '&c你的熟练度须达到 $path&r!'
+  no_path_end: '&c你必须完成 $path&r的熟练度!'
+  no_weather: '&c现在的天气不适合这样做'
+  no_client_platform: '&c你所在的平台无法执行此操作'
+  light: 光照等级
+  time: 时间
+  moon: 月相
+  height: 高度
+  server_version: 服务器版本
+  currency: 财产
+  item: $item
+  no_cast: '&c你需要先释放 $spell'
+  no_spell_inventory: '&c你必须打开法术栏'
+  no_indoors: 只能在室内使用
+  indoors: 不能在室内使用
+  no_stay: 必须设置为停留状态
+  no_owned: 必须有一个拥有者
+  stay: 不能设置为停留状态
+  owned: 不能有拥有者
+selector:
+  no_wand: '&c你必须手持法杖!'
+  no_template: '&c你不能用 $wand&c 学习。'
+  no_path: '&c你不能在这里学习。'
+  no_class: '&c你必须是 $class'
+  no_required_path: '&c你至少需要达到 $path&r!'
+  no_path_exact: '&c你必须达到 $path&r!'
+  no_path_end: '&c你必须准备好从 $path&r 进阶!'
+  insufficient: '&c需要 $cost'
+  confirm_title: 购买 $item
+  unlock_confirm_title: 解锁 $item
+  deducted: '&d&o你花费 &r&a$cost &d&o购买了 &r&6$item'
+  selected: '&d&o你花费 &r&a$cost &d&o购买了 &r&6$item'
+  sold: '&d&o你卖出了 &r&6$item &d&o并获得了 &r&a$earn'
+  unlocked: '&d&o你花费 &r&a$cost &d&o解锁了 &r&6$item'
+  unlocked_earn: '&d&o你通过 &r&6$item &d&o赚取了 &r&a$earn'
+  selected_free: '&d&o你选择了 &r&6$item'
+  not_applicable: 你已经拥有 $item
+  cast_fail: '&c很抱歉，请再试一次!'
+  warp_fail: '&c很抱歉，出现了问题!'
+  no_items: 这里没有可以供你购买的物品
+  title: 明智选择
+  sell_title: 出售 ($balance&0)
+  sell_icon_name: '&6出售物品'
+  buy_icon_name: '&a购买物品'
+  extra_spell: '&a不需要以继续进阶'
+  no_upgrade: 这里没有更多内容可以学习。
+  upgrade_name_change: '&r&4升级: &r$name'
+  level_requirement: '&r&c需要: &6$path'
+  tags_requirement: '&r&c需要: &6$tags'
+  cast_requirement: '&r&c施放次数: &6$current&f/&e$required'
+  prerequisite_spell: '&c你必须先掌握 &6$name'
+  prerequisite_spell_level: '&6$name'
+  prerequisite_spell_progress_level: ' (进度 $level/$max_level)'
+  required_spells: '&r&c需要: $spells'
+  cast_spell: $spell
+  unlock_class: $class
+  nothing: 无
+  cost_lore: '&6消耗: &e$cost'
+  earn_lore: '&6获得: &e$earn'
+  earn_heading: ''
+  cost_heading: ''
+  unlock_cost_lore: '&6解锁费用: &e$cost'
+  locked: '&c已锁定，&e请在捐赠商店解锁'
+  required_cost_lore: '&c需要: &4$cost'
+  required_unlock_cost_lore: '&c解锁费用: &4$cost'
+  has_class: 你已经拥有职业 $class
+  at_limit: 你已达到 $limit 的上限
+  unlocked_lore: '&a已解锁'
+  property_requirement: '&r&c需要: &6$property &c达到 $4$value'
+  property_max: '&r&c你的 &6$property &c已达最大值'
+  property_min: '&r&c你的 &6$property &c必须大于 $4$value'
+  item_amount: $name x$amount
+  attribute: '&6$attribute &f(&b$amount&f)'
+  increase_attribute: 增加 $attribute $amount
+  decrease_attribute: 减少 $attribute $amount
+  attribute_max: 你无法再增加 $attribute
+  attribute_min: 你无法再减少 $attribute
+  full: 你的背包已满!
+  nostock: 抱歉，该物品已售罄!
+  paid: '&7$owner 感谢你的惠顾!'
+  invalid_item: '&c未知或无效的物品'
+  max_spells: '&c你无法学习更多法术'
 shops:
   title: 商店 ($balance&0)
   selected: '&d&o你购买 &r&6$item &r&d&o并花费了 &r&a$cost'
@@ -2499,11 +2517,11 @@ spells:
   camera3d:
     name: 3D相机
     description: 拍摄自己或他人的 3D 肖像
-    cast_target: 你打印了 $target 的模型  
-    fail: 创建模型失败  
-    cast: 咔嚓！  
-    cast_self: 自拍！  
-    cooldown: 3D 相机正在充能中  
+    cast_target: 你打印了 $target 的模型
+    fail: 创建模型失败
+    cast: 咔嚓！
+    cast_self: 自拍！
+    cooldown: 3D 相机正在充能中
   tornado:
     name: 龙卷风
     description: 造一个毁灭性的龙卷风
@@ -3159,20 +3177,20 @@ spells:
   warp:
     name: 地标
     description: 用于命令或施法配置,例如"/cast warp" warp castle"
-  magicheartrefund:  
-    name: 魔法之心返还  
-    description: 取回你给予的东西  
-    refunded: a:&4魔法石崩解成尘，显露出一组宝石  
-  commandspell:  
-    name: 执行命令  
-    description: 用于执行一个或多个命令，可通过 command 参数进行覆盖  
-  eat_food:  
-    name: 食用物品  
-    description: 适用于可消耗物品，可通过 feed 或 add_potion_effects 参数进行覆盖  
-  rarify:  
-    name: 提炼  
-    description: 对矿石方块施法，将其提炼为纯净方块  
-    usage: 需要 3 名玩家同时施法！  
+  magicheartrefund:
+    name: 魔法之心返还
+    description: 取回你给予的东西
+    refunded: a:&4魔法石崩解成尘，显露出一组宝石
+  commandspell:
+    name: 执行命令
+    description: 用于执行一个或多个命令，可通过 command 参数进行覆盖
+  eat_food:
+    name: 食用物品
+    description: 适用于可消耗物品，可通过 feed 或 add_potion_effects 参数进行覆盖
+  rarify:
+    name: 提炼
+    description: 对矿石方块施法，将其提炼为纯净方块
+    usage: 需要 3 名玩家同时施法！
   platform|2:
     upgrade_description: 增加尺寸
   light:
@@ -3992,53 +4010,28 @@ wands:
     description: |-
       &f当&a法术背包&f打开时，&b`<keybind key="swapOffhand">`&f 键将用于&6魔杖控制&f
       &f当&a法术背包&f关闭时，可以使用 &b`<keybind key="swapOffhand">`&f 与&6副手&f物品切换
-
   swappable_always:
     name: '&a始终可快速切换'
     description: |-
       &f可以使用 &b`<keybind key="swapOffhand">`&f 与&6副手&f物品切换
       &f任何绑定到 &b`<keybind key="swapOffhand">`&f 的&6魔杖控制&f将被禁用
-
   gui_actionbar:
     name: 动作栏 GUI
     description: |-
       &d在动作栏显示你的快捷栏和魔力
       &f`<space width="64">``<icon key="gui_actionbar">`
-
-
-
-
-
-
-
           &b如果你能看到预览，说明你可以使用此 GUI！
-
   gui_bossbar:
     name: Boss 血条 GUI
     description: |-
       &d在 Boss 血条中显示你的快捷栏和魔力
       &f`<space width="64">``<icon key="gui_bossbar">`
-
-
-
-
-
-
-
       &b如果你能看到预览，说明你可以使用此 GUI！
-
   gui_none:
     name: 关闭 GUI
     description: |-
       &d关闭快捷栏和魔力显示
       &f`<space width="64">``<icon key="gui_none">`
-
-
-
-
-
-
-
       &b如果上方的预览看起来像一堆白色矩形，你可以使用此选项强制关闭 GUI。
   particles:
     name: 显示粒子
@@ -4293,95 +4286,95 @@ wands:
   hookshot:
     name: 钩索
     description: 快速滑向你的目标位置
-automata:  
-  awaken: '&c&o$name &r&5已苏醒'  
-  default_name: 自动机  
-  level: 等级 $roman  
-  good:  
-    prefixes:  
-    - 神圣的  
-    - 光明的  
-    - 闪亮的  
-    - 闪烁的  
-    - 坚定的  
-    - 明亮的  
-    - 救世的  
-    - 受祝福的  
-    - 魔法的  
-    - 附魔的  
-    - 启迪的  
-    - 华丽的  
-    - 慷慨的  
-    - 勇敢的  
-    - 忠诚的  
-    - 荣耀的  
-    suffixes:  
-    - 圣洁之  
-    - 荣誉之  
-    - 光明之  
-    - 轻盈之  
-    - 守护之  
-    - 太阳之  
-    - 魔法之  
-    - 祝福之  
-    - 宽恕之  
-    - 忠诚之  
-    - 惩戒之  
-    - 坚韧之  
-    - 希望之  
-    - 荣耀之  
-    - 赦免之  
-  evil:  
-    prefixes:  
-    - 邪恶的  
-    - 黑暗的  
-    - 粘稠的  
-    - 可怕的  
-    - 恐惧的  
-    - 被诅咒的  
-    - 魔法的  
-    - 附魔的  
-    - 预兆的  
-    - 下界的  
-    - 臭名昭著的  
-    - 邪恶的  
-    - 灾难性的  
-    - 诡异的  
-    - 恶心的  
-    - 可憎的  
-    - 令人恐惧的  
-    - 灾祸的  
-    - 灾难的  
-    - 异界的  
-    - 卑劣的  
-    - 世界末日的  
-    - 卑鄙的  
-    - 邪恶的  
-    - 悲惨的  
-    - 令人作呕的  
-    - 怪异的  
-    - 恐怖的  
-    suffixes:  
-    - 黑暗之  
-    - 邪恶之  
-    - 夜晚之  
-    - 死亡之  
-    - 末日之  
-    - 下界之  
-    - 魔法之  
-    - 毁灭之  
-    - 荒芜之  
-    - 臭名昭著之  
-    - 恐怖之  
-    - 黑暗之  
-    - 终焉之  
-    - 支配之  
-    - 末世之  
-    - 灾害之  
-    - 荒野之  
-    - 恐惧之  
-    - 枯萎之  
-    - 瘟疫之  
+automata:
+  awaken: '&c&o$name &r&5已苏醒'
+  default_name: 自动机
+  level: 等级 $roman
+  good:
+    prefixes:
+    - 神圣的
+    - 光明的
+    - 闪亮的
+    - 闪烁的
+    - 坚定的
+    - 明亮的
+    - 救世的
+    - 受祝福的
+    - 魔法的
+    - 附魔的
+    - 启迪的
+    - 华丽的
+    - 慷慨的
+    - 勇敢的
+    - 忠诚的
+    - 荣耀的
+    suffixes:
+    - 圣洁之
+    - 荣誉之
+    - 光明之
+    - 轻盈之
+    - 守护之
+    - 太阳之
+    - 魔法之
+    - 祝福之
+    - 宽恕之
+    - 忠诚之
+    - 惩戒之
+    - 坚韧之
+    - 希望之
+    - 荣耀之
+    - 赦免之
+  evil:
+    prefixes:
+    - 邪恶的
+    - 黑暗的
+    - 粘稠的
+    - 可怕的
+    - 恐惧的
+    - 被诅咒的
+    - 魔法的
+    - 附魔的
+    - 预兆的
+    - 下界的
+    - 臭名昭著的
+    - 邪恶的
+    - 灾难性的
+    - 诡异的
+    - 恶心的
+    - 可憎的
+    - 令人恐惧的
+    - 灾祸的
+    - 灾难的
+    - 异界的
+    - 卑劣的
+    - 世界末日的
+    - 卑鄙的
+    - 邪恶的
+    - 悲惨的
+    - 令人作呕的
+    - 怪异的
+    - 恐怖的
+    suffixes:
+    - 黑暗之
+    - 邪恶之
+    - 夜晚之
+    - 死亡之
+    - 末日之
+    - 下界之
+    - 魔法之
+    - 毁灭之
+    - 荒芜之
+    - 臭名昭著之
+    - 恐怖之
+    - 黑暗之
+    - 终焉之
+    - 支配之
+    - 末世之
+    - 灾害之
+    - 荒野之
+    - 恐惧之
+    - 枯萎之
+    - 瘟疫之
 tags:
   noduel:
     name: 决斗禁止
@@ -4677,16 +4670,15 @@ paths:
   archer:
     name: '&6弓箭手'
     description: 弓箭手法术
-wand_sets:  
-  wizard_armor:  
-    name: 魔法师护甲  
-
-wand_slots:  
-  broom_upgrade:  
-    name: 飞天扫帚升级  
-  controls:  
-    lore_instructions: '`<li>`&e使用&b附魔台&e更改控制设置'  
-    control_instructions: '&8| &7> &e使用&b附魔台&e更改控制设置'  
+wand_sets:
+  wizard_armor:
+    name: 魔法师护甲
+wand_slots:
+  broom_upgrade:
+    name: 飞天扫帚升级
+  controls:
+    lore_instructions: '`<li>`&e使用&b附魔台&e更改控制设置'
+    control_instructions: '&8| &7> &e使用&b附魔台&e更改控制设置'
 costs:
   sp_amount: $amount SP
   xp_amount: $amount XP
