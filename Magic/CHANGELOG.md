@@ -3,6 +3,7 @@
 
 # 10.9.7
 
+ - Add support for 1.21.5
  - The mount_restricted spell property can now be a list of entity types as well as true (true meaning all types)
  - Fix the behavior of the "locked" wand property when using the old_wand_locked_behavior config option
  - Fix error loading custom banner items in modern MC versions
