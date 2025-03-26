@@ -700,9 +700,15 @@ public class ConfigurationLoadTask implements Runnable {
         int[] serverVersion = CompatibilityLib.getServerVersion(plugin);
         int majorVersion = serverVersion[0];
         int minorVersion = serverVersion[1];
+        int extraMinorVersion = serverVersion[2];
         String versionExample = majorVersion + "." + minorVersion;
         String versionFileName = "examples/versions/" + versionExample + "/" + fileName + ".yml";
         InputStream versionInput = plugin.getResource(versionFileName);
+        if (versionInput == null) {
+            versionExample = majorVersion + "." + minorVersion + "." + extraMinorVersion;
+            versionFileName = "examples/versions/" + versionExample + "/" + fileName + ".yml";
+            versionInput = plugin.getResource(versionFileName);
+        }
         if (versionInput != null)  {
             try {
                 ConfigurationSection versionConfig = CompatibilityLib.getCompatibilityUtils().loadConfiguration(versionInput, versionFileName);
