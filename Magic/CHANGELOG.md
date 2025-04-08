@@ -11,6 +11,7 @@
  - Update EffectLib, fixes default particles in modern MC
  - Fix particles not showing beyond 32 blocks in 1.21.4 and up
    This can be disabled via `/mconfig configure config particle_force_show false`
+ - Change "invalid item in config" messages from warnings to debug messages
 
 # 10.9.6
 

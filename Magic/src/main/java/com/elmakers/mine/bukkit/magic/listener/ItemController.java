@@ -88,7 +88,7 @@ public class ItemController {
                 ItemStack itemStack = magicItem.getOrCreateItemStack();
                 itemsByStack.put(itemStack, magicItem);
             } catch (Exception ex) {
-                controller.getLogger().log(Level.WARNING, "Invalid item in config: " + magicItem.getKey() + " (" + ex.getMessage() + ")");
+                controller.info("Invalid item in config: " + magicItem.getKey() + " (" + ex.getMessage() + ")");
             }
         }
     }
