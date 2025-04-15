@@ -10,7 +10,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Nonnull;
 
-import org.geysermc.connector.common.ChatColor;
+import org.bukkit.ChatColor;
 
 import com.elmakers.mine.bukkit.utility.ChatUtils;
 
@@ -131,7 +131,7 @@ public class HelpTopicMatch implements Comparable<HelpTopicMatch> {
     }
 
     public String getSummary(boolean forConsole) {
-        return getSummary(MAX_WIDTH, ChatColor.AQUA, ChatColor.RESET, !forConsole);
+        return getSummary(MAX_WIDTH, ChatColor.AQUA.toString(), ChatColor.RESET.toString(), !forConsole);
     }
 
     public String getSummary(int maxWidth, String matchPrefix, String matchSuffix) {
