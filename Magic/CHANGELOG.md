@@ -12,6 +12,7 @@
  - Fix particles not showing beyond 32 blocks in 1.21.4 and up
    This can be disabled via `/mconfig configure config particle_force_show false`
  - Change "invalid item in config" messages from warnings to debug messages
+ - Add geyser.enabled config option, can be used to disable Geyser integration if it is causing problems
 
 # 10.9.6
 

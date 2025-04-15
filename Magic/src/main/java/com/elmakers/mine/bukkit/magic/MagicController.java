@@ -584,6 +584,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private boolean skriptEnabled = true;
     private boolean vaultEnabled = true;
     private boolean modelEngineEnabled = true;
+    private boolean geyserEnabled = true;
     private ConfigurationSection residenceConfiguration = null;
     private ConfigurationSection landsConfiguration = null;
     private ConfigurationSection redProtectConfiguration = null;
@@ -8260,12 +8261,15 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
 
         // Geyser
-        if (pluginManager.isPluginEnabled("Geyser-Spigot")) {
+        if (geyserEnabled && pluginManager.isPluginEnabled("Geyser-Spigot")) {
             try {
                 geyserManager = new GeyserManager(this);
             } catch (Throwable ex) {
                 getLogger().log(Level.WARNING, "Error integrating with Geyser", ex);
             }
+        } else {
+            geyserManager = null;
+            getLogger().info("Geyser integration disabled.");
         }
 
         // ajParkour
@@ -8568,6 +8572,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         libsDisguiseEnabled = properties.getBoolean("enable_libsdisguises", libsDisguiseEnabled);
         mythicMobsEnabled = properties.getBoolean("mythicmobs.enabled", mythicMobsEnabled);
         modelEngineEnabled = properties.getBoolean("model_engine.enabled", modelEngineEnabled);
+        geyserEnabled = properties.getBoolean("geyser.enabled", geyserEnabled);
         skillAPIEnabled = properties.getBoolean("skillapi_enabled", skillAPIEnabled);
         placeholdersEnabled = properties.getBoolean("placeholder_api_enabled", placeholdersEnabled);
         lightAPIEnabled = properties.getBoolean("light_api_enabled", lightAPIEnabled);
