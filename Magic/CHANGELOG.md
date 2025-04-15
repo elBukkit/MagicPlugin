@@ -13,6 +13,7 @@
    This can be disabled via `/mconfig configure config particle_force_show false`
  - Change "invalid item in config" messages from warnings to debug messages
  - Add geyser.enabled config option, can be used to disable Geyser integration if it is causing problems
+ - Update Geyser integration to new API
 
 # 10.9.6
 

@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.integration;
 import java.util.UUID;
 
 import org.bukkit.entity.Player;
-import org.geysermc.connector.GeyserConnector;
+import org.geysermc.api.Geyser;
 import org.geysermc.cumulus.ModalForm;
 import org.geysermc.cumulus.response.ModalFormResponse;
 import org.geysermc.floodgate.api.FloodgateApi;
@@ -17,7 +17,7 @@ public class GeyserManager {
     }
 
     public boolean isBedrock(UUID uuid) {
-        return GeyserConnector.getInstance().getPlayerByUuid(uuid) != null;
+        return Geyser.api().connectionByUuid(uuid) != null;
     }
 
     public void showModalForm(Player player, Mage source, String title, String content, String[] buttonLabels, String[] buttonTriggers) {

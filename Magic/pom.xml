@@ -94,9 +94,9 @@
             (Note to plugin devs: please set your dependency scopes correctly)
         -->
         <dependency>
-            <groupId>org.geysermc</groupId>
-            <artifactId>connector</artifactId>
-            <version>1.4.2-SNAPSHOT</version>
+            <groupId>org.geysermc.api</groupId>
+            <artifactId>base-api</artifactId>
+            <version>1.0.1</version>
             <scope>provided</scope>
         </dependency>
 
@@ -499,6 +499,10 @@
         <repository>
             <id>glaremasters-repo</id>
             <url>https://repo.glaremasters.me/repository/towny/</url>
+        </repository>
+        <repository>
+            <id>opencollab-snapshot</id>
+            <url>https://repo.opencollab.dev/main/</url>
         </repository>
         <!-- dead [For Geyser]
         <repository>
