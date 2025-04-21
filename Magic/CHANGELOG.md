@@ -3,7 +3,9 @@
 
 # 10.9.7
 
- - Add support for 1.21.5
+ - This lineage (10.9.x) is now only compatible with Minecraft 1.20.4 and below
+
+ - Remove force-show EffectLib option, revert to EffectLib 10.4 for compatibility
  - The mount_restricted spell property can now be a list of entity types as well as true (true meaning all types)
  - Fix the behavior of the "locked" wand property when using the old_wand_locked_behavior config option
  - Fix error loading custom banner items in modern MC versions
