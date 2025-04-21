@@ -128,54 +128,5 @@
             <type>jar</type>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_20_5</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_20_6</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_21_0</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_21_1</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_21_3</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_21_4</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>CompatibilityLib-v1_21_5</artifactId>
-            <version>${project.version}</version>
-            <type>jar</type>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 </project>
