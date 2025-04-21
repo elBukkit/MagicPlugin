@@ -10,7 +10,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-import org.bukkit.*;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Particle;
+import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -25,8 +28,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Target;
 
-public class RectOfEffectAction extends CompoundEntityAction
-{
+public class RectOfEffectAction extends CompoundEntityAction {
     private Vector min;
     private Vector max;
     protected int targetCount;
@@ -34,10 +36,10 @@ public class RectOfEffectAction extends CompoundEntityAction
     protected boolean ignoreModified;
     protected boolean randomChoose;
 
-
-    //Temporary values -=@
-    private Location point1, point2, point3, point4;
-    //@=-
+    private Location point1;
+    private Location point2;
+    private Location point3;
+    private Location point4;
 
     @Override
     public void reset(CastContext context) {
@@ -46,8 +48,7 @@ public class RectOfEffectAction extends CompoundEntityAction
     }
 
     @Override
-    public void prepare(CastContext context, ConfigurationSection parameters)
-    {
+    public void prepare(CastContext context, ConfigurationSection parameters) {
         min = ConfigurationUtils.getVector(parameters, "min");
         max = ConfigurationUtils.getVector(parameters, "max");
 
@@ -60,9 +61,8 @@ public class RectOfEffectAction extends CompoundEntityAction
     }
 
     @Override
-    public void addEntities(CastContext context, List<WeakReference<Entity>> entities)
-    {
-        //Register Modified entities as ones that should be ignored -=@
+    public void addEntities(CastContext context, List<WeakReference<Entity>> entities) {
+        // Register Modified entities as ones that should be ignored
         Set<UUID> ignore = null;
         UndoList undoList = context.getUndoList();
         if (ignoreModified && undoList != null) {
@@ -71,17 +71,15 @@ public class RectOfEffectAction extends CompoundEntityAction
                 ignore.add(entity.getUniqueId());
             }
         }
-        //@=-
 
-        //Estimate and register the workload -=@
+        // Estimate and register the workload
         double deltaX = max.getX() - min.getX();
         double deltaY = max.getY() - min.getY();
         double deltaZ = max.getZ() - min.getZ();
         double volume = deltaX * deltaY * deltaZ;
         context.addWork((int)Math.ceil(volume / 10.0));
-        //@=-
 
-        //Log debug -=@
+        // Log debug
         Mage mage = context.getMage();
         Location sourceLocation = context.getTargetLocation();
         if (mage.getDebugLevel() > 8)
@@ -93,10 +91,8 @@ public class RectOfEffectAction extends CompoundEntityAction
                     + ChatColor.GRAY + " self? " + ChatColor.DARK_GRAY + context.getTargetsCaster(), 14
             );
         }
-        //@=-
 
-
-        //Calculate the 4 points of the rectangular space. -=@
+        // Calculate the 4 points of the rectangular space.
         double yaw = sourceLocation.getYaw();
         double yawRadians = Math.toRadians(yaw);
 
@@ -111,25 +107,21 @@ public class RectOfEffectAction extends CompoundEntityAction
 
         point1 = point1.add(cos90 * min.getZ(), 0, sin90 * min.getZ());
         point2 = point2.add(cos90 * min.getZ(), 0, sin90 * min.getZ());
-        //@=-
 
-        //Draw the points out in flame particles if were debugging. -=@
-        if(mage.getDebugLevel() >= 10) {
+        // Draw the points out in flame particles if were debugging.
+        if (mage.getDebugLevel() >= 10) {
             drawLine(context.getWorld(), point1.toVector(), point2.toVector(), 0.2);
             drawLine(context.getWorld(), point3.toVector(), point4.toVector(), 0.2);
             drawLine(context.getWorld(), point1.toVector(), point3.toVector(), 0.2);
             drawLine(context.getWorld(), point2.toVector(), point4.toVector(), 0.2);
         }
-        //@=-
 
-        //Get all entities within reasonable range -=@
+        // Get all entities within reasonable range
         double inclusionRadius = Math.sqrt(deltaX * deltaX + deltaZ * deltaZ);
         Collection<Entity> candidates = CompatibilityLib.getCompatibilityUtils().getNearbyEntities(sourceLocation, inclusionRadius, deltaY, inclusionRadius);
-        //@=-
 
         Entity targetEntity = context.getTargetEntity();
-        if (targetCount > 0)
-        {
+        if (targetCount > 0) {
             if (randomChoose) {
                 List<Entity> candidatesList = new ArrayList<>();
                 for (Entity entity : candidates) {
@@ -158,13 +150,11 @@ public class RectOfEffectAction extends CompoundEntityAction
             }
 
             List<Target> targets = new ArrayList<>();
-            for (Entity entity : candidates)
-            {
+            for (Entity entity : candidates) {
                 boolean canTarget = true;
                 if (entity == targetEntity && !targetSource) continue;
 
-                if (!canTarget || !isTargetWithinRect(sourceLocation, min, max, entity))
-                {
+                if (!canTarget || !isTargetWithinRect(sourceLocation, min, max, entity)) {
                     continue;
                 }
                 if (ignore != null && ignore.contains(entity.getUniqueId())) {
@@ -172,48 +162,40 @@ public class RectOfEffectAction extends CompoundEntityAction
                     continue;
                 }
 
-                if (canTarget && context.canTarget(entity))
-                {
+                if (canTarget && context.canTarget(entity)) {
                     double range = sourceLocation.distance(entity.getLocation());
                     Target target = new Target(sourceLocation, entity, (int)range, 0);
                     targets.add(target);
                     mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType() + ChatColor.DARK_GREEN + ": " + ChatColor.YELLOW + target.getScore(), 12);
                 }
-                else if (mage.getDebugLevel() > 7)
-                {
+                else if (mage.getDebugLevel() > 7) {
                     mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType(), 16);
                 }
             }
 
             Collections.sort(targets);
-            for (int i = 0; i < targetCount && i < targets.size(); i++)
-            {
+            for (int i = 0; i < targetCount && i < targets.size(); i++) {
                 Target target = targets.get(i);
                 entities.add(new WeakReference<>(target.getEntity()));
             }
         }
         else
         {
-            for (Entity entity : candidates)
-            {
+            for (Entity entity : candidates) {
                 boolean canTarget = true;
                 if (entity == targetEntity && !targetSource) continue;
 
-                if (!canTarget || !isTargetWithinRect(sourceLocation, min, max, entity))
-                {
+                if (!canTarget || !isTargetWithinRect(sourceLocation, min, max, entity)) {
                     continue;
                 }
                 if (ignore != null && ignore.contains(entity.getUniqueId())) {
                     mage.sendDebugMessage(ChatColor.DARK_RED + "Ignoring Modified Target " + ChatColor.GREEN + entity.getType(), 16);
                     continue;
                 }
-                if (canTarget && context.canTarget(entity))
-                {
+                if (canTarget && context.canTarget(entity)) {
                     entities.add(new WeakReference<>(entity));
                     mage.sendDebugMessage(ChatColor.DARK_GREEN + "Target " + ChatColor.GREEN + entity.getType(), 12);
-                }
-                else if (mage.getDebugLevel() > 7)
-                {
+                } else if (mage.getDebugLevel() > 7) {
                     mage.sendDebugMessage(ChatColor.DARK_RED + "Skipped Target " + ChatColor.GREEN + entity.getType(), 16);
                 }
             }
@@ -221,46 +203,41 @@ public class RectOfEffectAction extends CompoundEntityAction
     }
 
     public boolean isTargetWithinRect(Location sourceLocation, Vector min, Vector max, Entity candidate) {
-
         Vector location = candidate.getLocation().toVector();
 
-        //Check Y range first.
-        if(location.getY() < sourceLocation.getY() + min.getY() || location.getY() > sourceLocation.getY() + max.getY()) {
+        // Check Y range first.
+        if (location.getY() < sourceLocation.getY() + min.getY() || location.getY() > sourceLocation.getY() + max.getY()) {
             return false;
         }
 
-        //If the entity's location is on the left hand side of each of these lines (calculated counter-clockwise),
-        //it means the entity is within the rectangle. If one of these fails, they are outside it.
-        //-=@
-        if(!testPointAgainstLine(location, point3.toVector(), point1.toVector())) {
+        // If the entity's location is on the left hand side of each of these lines (calculated counter-clockwise),
+        // it means the entity is within the rectangle. If one of these fails, they are outside it.
+        if (!testPointAgainstLine(location, point3.toVector(), point1.toVector())) {
             return false;
         }
-        if(!testPointAgainstLine(location, point1.toVector(), point2.toVector())) {
+        if (!testPointAgainstLine(location, point1.toVector(), point2.toVector())) {
             return false;
         }
-        if(!testPointAgainstLine(location, point2.toVector(), point4.toVector())) {
+        if (!testPointAgainstLine(location, point2.toVector(), point4.toVector())) {
             return false;
         }
-        if(!testPointAgainstLine(location, point4.toVector(), point3.toVector())) {
+        if (!testPointAgainstLine(location, point4.toVector(), point3.toVector())) {
             return false;
         }
-        //@=-
 
         return true;
     }
 
     public boolean testPointAgainstLine(Vector point, Vector lineStart, Vector lineEnd) {
-        //Check whether the target location is on the Left hand side of a given line.
+        // Check whether the target location is on the Left hand side of a given line.
         double contained = (lineEnd.getX() - lineStart.getX()) * (point.getZ() - lineStart.getZ()) - (point.getX() - lineStart.getX()) * (lineEnd.getZ() - lineStart.getZ());
         return contained < 0;
     }
 
     public void drawLine(World world, Vector p1, Vector p2, double space) {
-
         double distance = p1.distance(p2);
         Vector vector = p2.clone().subtract(p1).normalize();
-        double length = 0;
-        for (; length < distance; p1.add(vector.clone().multiply(space))) {
+        for (double length = 0; length < distance; p1.add(vector.clone().multiply(space))) {
             world.spawnParticle(Particle.FLAME, p1.getX(), p1.getY(), p1.getZ(), 1, 0, 0, 0, 0);
             length += space;
         }
