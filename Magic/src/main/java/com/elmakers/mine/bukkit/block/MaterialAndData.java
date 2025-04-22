@@ -948,8 +948,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (data != null) {
             CompatibilityLib.getDeprecatedUtils().setItemDamage(stack, data);
         }
-
         if (customModelData != 0) {
+            stack = CompatibilityLib.getItemUtils().makeReal(stack);
             CompatibilityLib.getItemUtils().setCustomModelData(stack, customModelData);
         }
         if (DefaultMaterials.isPlayerSkull(this))
