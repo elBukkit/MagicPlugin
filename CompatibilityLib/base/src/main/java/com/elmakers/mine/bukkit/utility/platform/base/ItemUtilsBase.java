@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.utility.platform.base;
 import java.util.Objects;
 
 import org.bukkit.configuration.file.YamlConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -21,29 +20,17 @@ public abstract class ItemUtilsBase implements ItemUtils {
     @Override
     public void addGlow(ItemStack stack) {
         if (isEmpty(stack)) return;
-
-        try {
-            ItemMeta meta = stack.getItemMeta();
-            meta.addEnchant(Enchantment.LUCK, 1, true);
-            stack.setItemMeta(meta);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
+        ItemMeta meta = stack.getItemMeta();
+        meta.setEnchantmentGlintOverride(true);
+        stack.setItemMeta(meta);
     }
 
     @Override
     public void removeGlow(ItemStack stack) {
         if (isEmpty(stack)) return;
-
-        try {
-            ItemMeta meta = stack.getItemMeta();
-            if (meta.hasEnchant(Enchantment.LUCK)) {
-                meta.removeEnchant(Enchantment.LUCK);
-                stack.setItemMeta(meta);
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
+        ItemMeta meta = stack.getItemMeta();
+        meta.setEnchantmentGlintOverride(null);
+        stack.setItemMeta(meta);
     }
 
     @Override
