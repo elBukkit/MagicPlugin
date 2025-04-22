@@ -1,6 +1,10 @@
 
 # CHANGELOG
 
+# 10.10.1
+ 
+ - Moving towards heavier reliance on Spigot API
+
 # 10.10
 
  - ** Drop support for all MC versions prior to 1.20.5 **
