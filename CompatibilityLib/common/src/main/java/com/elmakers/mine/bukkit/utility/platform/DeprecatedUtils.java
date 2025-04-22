@@ -37,7 +37,7 @@ public interface DeprecatedUtils {
 
     MapView getMap(int id);
 
-    short getMapId(MapView mapView);
+    int getMapId(MapView mapView);
 
     String getName(EntityType entityType);
 
