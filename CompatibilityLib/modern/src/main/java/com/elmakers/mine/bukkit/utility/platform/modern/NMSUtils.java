@@ -45,8 +45,7 @@ import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.plugin.Plugin;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
-import com.elmakers.mine.bukkit.utility.platform.legacy.LegacyPlatform;
-import com.elmakers.mine.bukkit.utility.platform.legacy.NBTConstructor;
+import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.google.common.base.CaseFormat;
 
 /**
@@ -427,7 +426,7 @@ public class NMSUtils {
 
     protected static boolean chatPacketHasUUID = false;
 
-    public static boolean initialize(LegacyPlatform platform) {
+    public static boolean initialize(Platform platform) {
         Logger logger = platform.getLogger();
         versionPrefix = CompatibilityConstants.getVersionPrefix();
         try {
