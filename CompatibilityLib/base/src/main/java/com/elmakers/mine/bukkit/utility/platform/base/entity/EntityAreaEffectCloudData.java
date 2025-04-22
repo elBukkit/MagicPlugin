@@ -7,7 +7,6 @@ import org.bukkit.Particle;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.AreaEffectCloud;
 import org.bukkit.entity.Entity;
-import org.bukkit.potion.PotionData;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionType;
 
@@ -18,7 +17,7 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 
 public class EntityAreaEffectCloudData extends EntityExtraData {
     private Color color;
-    private PotionData basePotionData;
+    private PotionType basePotionType;
     private List<PotionEffect> potionEffects;
     private int duration;
     private int durationOnUse;
@@ -36,10 +35,8 @@ public class EntityAreaEffectCloudData extends EntityExtraData {
         }
         String potionTypeKey = parameters.getString("base_potion_type");
         if (potionTypeKey != null && !potionTypeKey.isEmpty()) {
-            PotionType potionType;
             try {
-                potionType = PotionType.valueOf(potionTypeKey.toUpperCase());
-                basePotionData = new PotionData(potionType);
+                basePotionType = PotionType.valueOf(potionTypeKey.toUpperCase());
             } catch (Exception ex) {
                 controller.getLogger().warning("Invalid base_potion_type: " + potionTypeKey);
             }
@@ -65,7 +62,7 @@ public class EntityAreaEffectCloudData extends EntityExtraData {
 
     public EntityAreaEffectCloudData(AreaEffectCloud cloud) {
         color = cloud.getColor();
-        basePotionData = cloud.getBasePotionData();
+        basePotionType = cloud.getBasePotionType();
         potionEffects = cloud.getCustomEffects();
         duration = cloud.getDuration();
         durationOnUse = cloud.getDurationOnUse();
@@ -82,7 +79,7 @@ public class EntityAreaEffectCloudData extends EntityExtraData {
         if (entity instanceof AreaEffectCloud) {
             AreaEffectCloud cloud = (AreaEffectCloud)entity;
             if (color != null) cloud.setColor(color);
-            if (basePotionData != null) cloud.setBasePotionData(basePotionData);
+            if (basePotionType != null) cloud.setBasePotionType(basePotionType);
             if (potionEffects != null) {
                 for (PotionEffect effect : potionEffects) {
                     cloud.addCustomEffect(effect, true);
