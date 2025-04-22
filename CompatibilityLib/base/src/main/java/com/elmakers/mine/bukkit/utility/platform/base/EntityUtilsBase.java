@@ -99,7 +99,7 @@ public abstract class EntityUtilsBase implements EntityUtils {
             case RABBIT:
                 return new EntityRabbitData(parameters, controller);
             case ZOMBIE:
-            case PIG_ZOMBIE:
+            case ZOMBIE_VILLAGER:
                 return new EntityZombieData(parameters);
             case ARMOR_STAND:
                 return new EntityArmorStandData(parameters);
@@ -118,7 +118,7 @@ public abstract class EntityUtilsBase implements EntityUtils {
                 return new EntityPaintingData(parameters, controller);
             case ITEM_FRAME:
                 return new EntityItemFrameData(parameters, controller);
-            case DROPPED_ITEM:
+            case ITEM:
                 return new EntityDroppedItemData(parameters, controller);
             case SHEEP:
                 return new EntitySheepData(parameters, controller);
