@@ -11,7 +11,7 @@ import com.elmakers.mine.bukkit.utility.platform.v1_21_3.entity.EntityAxolotlDat
 import com.elmakers.mine.bukkit.utility.platform.v1_21_3.entity.EntityEnderSignalData;
 import com.elmakers.mine.bukkit.utility.platform.v1_21_3.entity.EntityGoatData;
 
-public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.v1_16.EntityUtils  {
+public class EntityUtils extends com.elmakers.mine.bukkit.utility.platform.modern.ModernEntityUtils  {
     public EntityUtils(final Platform platform) {
         super(platform);
     }
