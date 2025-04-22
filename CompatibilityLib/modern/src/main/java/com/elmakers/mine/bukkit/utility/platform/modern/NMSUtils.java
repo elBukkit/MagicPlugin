@@ -187,8 +187,6 @@ public class NMSUtils {
     protected static Method class_World_getEntitiesMethod;
     protected static Method class_Sitting_setSittingMethod;
     protected static Method class_Sitting_isSittingMethod;
-    protected static Method class_Entity_setSilentMethod;
-    protected static Method class_Entity_isSilentMethod;
     protected static Method class_Entity_setYawPitchMethod;
     protected static Method class_Entity_getBukkitEntityMethod;
     protected static Method class_EntityLiving_damageEntityMethod;
@@ -362,7 +360,6 @@ public class NMSUtils {
     protected static Constructor class_RecipeChoice_ExactChoice_List_constructor;
     protected static Constructor class_BlockActionContext_constructor;
 
-    protected static Field class_Entity_invulnerableField;
     protected static Field class_Entity_persistField;
     protected static Field class_Entity_motXField;
     protected static Field class_Entity_motYField;
@@ -554,8 +551,6 @@ public class NMSUtils {
 
             class_CraftWorld_environmentField = class_CraftWorld.getDeclaredField("environment");
             class_CraftWorld_environmentField.setAccessible(true);
-            class_Entity_invulnerableField = class_Entity.getDeclaredField("invulnerable");
-            class_Entity_invulnerableField.setAccessible(true);
             class_ItemStack_tagField = class_ItemStack.getDeclaredField("tag");
             class_ItemStack_tagField.setAccessible(true);
             class_EntityTNTPrimed_source = class_EntityTNTPrimed.getDeclaredField("source");
@@ -1655,24 +1650,6 @@ public class NMSUtils {
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "An error occurred, setting arrow damage will not work", ex);
                 class_EntityArrow_damageField = null;
-            }
-
-            // TODO: setSilent API in 1.11+
-            try {
-                try {
-                    // 1.10 and 1.11
-                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("setSilent", Boolean.TYPE);
-                    class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("isSilent");
-                } catch (Throwable ignore) {
-                    // 1.9 and earlier
-                    setLegacy();
-                    class_Entity_setSilentMethod = class_Entity.getDeclaredMethod("c", Boolean.TYPE);
-                    class_Entity_isSilentMethod = class_Entity.getDeclaredMethod("ad");
-                }
-            } catch (Throwable ex) {
-                logger.log(Level.WARNING, "An error occurred, silent entities will not work", ex);
-                class_Entity_setSilentMethod = null;
-                class_Entity_isSilentMethod = null;
             }
 
             // TODO: ArmorStand.setGravity in 1.11+

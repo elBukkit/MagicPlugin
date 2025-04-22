@@ -593,56 +593,22 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public boolean isInvulnerable(Entity entity) {
-        if (NMSUtils.class_Entity_invulnerableField == null) return false;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            return (boolean) NMSUtils.class_Entity_invulnerableField.get(handle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        return entity.isInvulnerable();
     }
 
     @Override
     public void setInvulnerable(Entity entity, boolean flag) {
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_invulnerableField.set(handle, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        entity.setInvulnerable(flag);
     }
 
     @Override
     public boolean isSilent(Entity entity) {
-        if (NMSUtils.class_Entity_isSilentMethod == null) return false;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            return (boolean) NMSUtils.class_Entity_isSilentMethod.invoke(handle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        return entity.isSilent();
     }
 
     @Override
     public void setSilent(Entity entity, boolean flag) {
-        if (NMSUtils.class_Entity_setSilentMethod == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_setSilentMethod.invoke(handle, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    private void setSilent(Object nmsEntity, boolean flag) {
-        if (NMSUtils.class_Entity_setSilentMethod == null) return;
-        try {
-            NMSUtils.class_Entity_setSilentMethod.invoke(nmsEntity, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        entity.setSilent(flag);
     }
 
     @Override
@@ -669,6 +635,7 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public void setPersist(Entity entity, boolean flag) {
+        entity.setPersistent(flag);
         if (NMSUtils.class_Entity_persistField == null) return;
         try {
             Object handle = NMSUtils.getHandle(entity);
@@ -2682,7 +2649,6 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
             Object item = platform.getItemUtils().getHandle(platform.getItemUtils().makeReal(itemStack));
             final Object fireworkHandle = NMSUtils.class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
-            setSilent(fireworkHandle, silent);
 
             if (direction != null) {
                 if (NMSUtils.class_Entity_motField != null) {
@@ -2723,6 +2689,7 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
             NMSUtils.class_World_addEntityMethod.invoke(world, fireworkHandle, CreatureSpawnEvent.SpawnReason.CUSTOM);
             entity = (Entity) NMSUtils.class_Entity_getBukkitEntityMethod.invoke(fireworkHandle);
+            entity.setSilent(true);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
