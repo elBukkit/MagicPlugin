@@ -1,9 +1,9 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_21_4;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.modern2.Modern2Platform;
+import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
 
-public class Platform extends Modern2Platform {
+public class Platform extends ModernPlatform {
 
     public Platform(MageController controller) {
         super(controller);
