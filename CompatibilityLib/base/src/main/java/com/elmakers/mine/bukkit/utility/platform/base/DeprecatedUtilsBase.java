@@ -17,7 +17,6 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.map.MapView;
@@ -127,16 +126,6 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
     public byte getRawData(BlockState state) {
         // @deprecated Magic value
         return state.getRawData();
-    }
-
-    @Override
-    public DyeColor getBaseColor(BannerMeta banner) {
-        return banner.getBaseColor();
-    }
-
-    @Override
-    public void setBaseColor(BannerMeta banner, DyeColor color) {
-        banner.setBaseColor(color);
     }
 
     @Override

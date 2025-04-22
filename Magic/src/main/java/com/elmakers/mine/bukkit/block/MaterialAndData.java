@@ -135,7 +135,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (meta != null && meta instanceof BannerMeta)
             {
                 BannerMeta banner = (BannerMeta)meta;
-                extraData = new BlockBanner(banner.getPatterns(), CompatibilityLib.getDeprecatedUtils().getBaseColor(banner));
+                extraData = new BlockBanner(banner.getPatterns());
             }
         } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
                 || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS
@@ -342,19 +342,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                             data = 3;
                             extraData = new BlockSkull(dataString);
                         }
-                    }
-                } else if (DefaultMaterials.isBanner(material)) {
-                    DyeColor color = null;
-                    try {
-                        short colorIndex = Short.parseShort(dataString);
-                        data = colorIndex;
-                        color = DyeColor.values()[colorIndex];
-                    }
-                    catch (Exception ex) {
-                        color = null;
-                    }
-                    if (color != null) {
-                        extraData = new BlockBanner(color);
                     }
                 } else if (material == Material.LEATHER_BOOTS || material == Material.LEATHER_CHESTPLATE
                         || material == Material.LEATHER_HELMET || material == Material.LEATHER_LEGGINGS
@@ -571,8 +558,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             } else if (DefaultMaterials.isBanner(blockMaterial)) {
                 if (blockState != null && blockState instanceof Banner) {
                     Banner banner = (Banner)blockState;
-                    DyeColor color = banner.getBaseColor();
-                    extraData = new BlockBanner(banner.getPatterns(), color);
+                    extraData = new BlockBanner(banner.getPatterns());
                 }
             }
         } catch (Exception ex) {
@@ -703,13 +689,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 if (blockState instanceof Banner) {
                     BlockBanner bannerData = (BlockBanner)extraData;
                     Banner banner = (Banner)blockState;
-                    if (bannerData.patterns != null)
-                    {
+                    if (bannerData.patterns != null) {
                         banner.setPatterns(bannerData.patterns);
-                    }
-                    if (bannerData.baseColor != null)
-                    {
-                        banner.setBaseColor(bannerData.baseColor);
                     }
                 }
                 blockState.update(true, false);
@@ -792,9 +773,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 if (spawnerData.mobName != null && !spawnerData.mobName.isEmpty()) {
                     materialKey += ":" + spawnerData.mobName;
                 }
-            }
-            else if (DefaultMaterials.isBanner(material) && extraData != null && extraData instanceof BlockBanner && ((BlockBanner)extraData).baseColor != null) {
-                materialKey += ":" + ((BlockBanner)extraData).baseColor.ordinal();
             } else if (this.material == Material.LEATHER_BOOTS || this.material == Material.LEATHER_CHESTPLATE
                     || this.material == Material.LEATHER_HELMET || this.material == Material.LEATHER_LEGGINGS
                     || this.material.name().equals("LEATHER_HORSE_ARMOR")) {
@@ -982,13 +960,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             {
                 BannerMeta banner = (BannerMeta)meta;
                 BlockBanner bannerData = (BlockBanner)extraData;
-                if (bannerData.patterns != null)
-                {
+                if (bannerData.patterns != null) {
                     banner.setPatterns(bannerData.patterns);
-                }
-                if (bannerData.baseColor != null)
-                {
-                    CompatibilityLib.getDeprecatedUtils().setBaseColor(banner, bannerData.baseColor);
                 }
                 stack.setItemMeta(meta);
             }

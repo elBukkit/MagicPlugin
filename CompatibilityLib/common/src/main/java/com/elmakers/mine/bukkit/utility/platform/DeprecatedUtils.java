@@ -16,7 +16,6 @@ import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 
@@ -54,10 +53,6 @@ public interface DeprecatedUtils {
                                    Material material, byte data);
 
     byte getRawData(BlockState state);
-
-    DyeColor getBaseColor(BannerMeta banner);
-
-    void setBaseColor(BannerMeta banner, DyeColor color);
 
     void setSkullOwner(ItemStack itemStack, String ownerName, SkullLoadedCallback callback);
 
