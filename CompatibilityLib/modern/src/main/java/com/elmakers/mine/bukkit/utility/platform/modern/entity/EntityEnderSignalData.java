@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern2.entity;
+package com.elmakers.mine.bukkit.utility.platform.modern.entity;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;

@@ -8,10 +8,13 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityAbstractPiglinData;
+import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityAxolotlData;
 import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityCatData;
+import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityEnderSignalData;
 import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityEndermiteData;
 import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityFallingBlockData;
 import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityFoxData;
+import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityGoatData;
 import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityHorseData;
 import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityLlamaData;
 import com.elmakers.mine.bukkit.utility.platform.modern.entity.EntityMooshroomData;
@@ -59,6 +62,12 @@ public class ModernEntityUtils extends com.elmakers.mine.bukkit.utility.platform
                 return new EntityShulkerData(entity);
             case ZOMBIE_VILLAGER:
                 return new EntityZombieVillagerData(entity);
+            case GOAT:
+                return new EntityGoatData(entity);
+            case AXOLOTL:
+                return new EntityAxolotlData(entity);
+            case EYE_OF_ENDER:
+                return new EntityEnderSignalData(entity);
             default:
                 return super.getExtraData(controller, entity);
         }
@@ -96,6 +105,12 @@ public class ModernEntityUtils extends com.elmakers.mine.bukkit.utility.platform
                 return new EntityShulkerData(parameters);
             case ZOMBIE_VILLAGER:
                 return new EntityZombieVillagerData(parameters, controller);
+            case GOAT:
+                return new EntityGoatData(parameters, controller);
+            case AXOLOTL:
+                return new EntityAxolotlData(parameters, controller);
+            case EYE_OF_ENDER:
+                return new EntityEnderSignalData(parameters, controller);
             default:
                 return super.getExtraData(controller, type, parameters);
         }
