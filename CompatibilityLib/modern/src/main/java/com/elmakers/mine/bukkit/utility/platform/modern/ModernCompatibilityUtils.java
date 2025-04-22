@@ -15,7 +15,9 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
@@ -75,6 +77,7 @@ import org.bukkit.entity.Witch;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
+import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.BlastingRecipe;
 import org.bukkit.inventory.CampfireRecipe;
 import org.bukkit.inventory.CookingRecipe;
@@ -109,6 +112,7 @@ import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
+import com.elmakers.mine.bukkit.utility.platform.modern.populator.OutOfBoundsEntityCleanup;
 import com.google.common.io.BaseEncoding;
 
 public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase {
@@ -2812,5 +2816,10 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
         }
         List<String> serializedLore = spigot.serializeLore(lore);
         return setRawLore(itemStack, serializedLore);
+    }
+
+    @Nullable
+    public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
+        return new OutOfBoundsEntityCleanup(logger);
     }
 }

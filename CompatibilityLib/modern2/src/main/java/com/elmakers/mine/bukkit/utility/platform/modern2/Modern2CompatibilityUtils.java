@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
@@ -48,7 +46,6 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Sittable;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Zombie;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -70,7 +67,6 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernCompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.platform.modern2.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
 public abstract class Modern2CompatibilityUtils extends ModernCompatibilityUtils {
@@ -80,11 +76,6 @@ public abstract class Modern2CompatibilityUtils extends ModernCompatibilityUtils
     }
 
     protected abstract void setBossBarTitleComponents(BossBar bossBar, String serialized, String fallback);
-
-    @Nullable
-    public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
-        return new OutOfBoundsEntityCleanup(logger);
-    }
 
     @Override
     public Inventory createInventory(InventoryHolder holder, int size, final String name) {
