@@ -3,6 +3,7 @@
 
 # 10.10.1
  
+ - Fix image maps (Camera item, `/mmap` command, etc)
  - Moving towards heavier reliance on Spigot API
 
 # 10.10

@@ -1,12 +1,12 @@
 package com.elmakers.mine.bukkit.maps;
 
+import java.awt.Color;
 import java.awt.Image;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Nullable;
 
 import org.bukkit.ChatColor;
-import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.map.MapCanvas;
 import org.bukkit.map.MapCursorCollection;
@@ -32,8 +32,8 @@ public class BufferedMapCanvas implements MapCanvas {
     public static int CANVAS_HEIGHT = 128;
 
     private static MapCursorCollection emptyCursors = new MapCursorCollection();
-    private byte[] pixels = new byte[128 * 128];
-    private Map<Byte, DyeColor> dyeColors = new HashMap<>();
+    private Color[] pixels = new Color[128 * 128];
+    private Map<Color, DyeColor> dyeColors = new HashMap<>();
 
     @Nullable
     @Override
@@ -52,37 +52,20 @@ public class BufferedMapCanvas implements MapCanvas {
     }
 
     @Override
-    public void setPixelColor(int x, int y, @org.jetbrains.annotations.Nullable java.awt.Color color) {
-        // TODO ??
-    }
-
-    @Override
-    public @org.jetbrains.annotations.Nullable java.awt.Color getPixelColor(int i, int i1) {
-        return null;
-    }
-
-    @Override
-    public @NotNull java.awt.Color getBasePixelColor(int i, int i1) {
-        return null;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void setPixel(int x, int y, byte color) {
+    public void setPixelColor(int x, int y, @org.jetbrains.annotations.Nullable Color color) {
         if (x < 0 || y < 0 || x > CANVAS_WIDTH || y > CANVAS_HEIGHT) return;
 
         pixels[x + y * CANVAS_WIDTH] = color;
 
         // Map colors in advance.
-        if (color != MapPalette.TRANSPARENT && !dyeColors.containsKey(color)) {
-            java.awt.Color mapColor = MapPalette.getColor(color);
-            Color targetColor = Color.fromRGB(mapColor.getRed(), mapColor.getGreen(), mapColor.getBlue());
+        if (color.getAlpha() != 0 && !dyeColors.containsKey(color)) {
+            org.bukkit.Color targetColor = org.bukkit.Color.fromRGB(color.getRed(), color.getGreen(), color.getBlue());
 
             // Find best dyeColor
             DyeColor bestDyeColor = null;
             Double bestDistance = null;
             for (DyeColor testDyeColor : DyeColor.values()) {
-                Color testColor = testDyeColor.getColor();
+                org.bukkit.Color testColor = testDyeColor.getColor();
                 double testDistance = ColorHD.getDistance(testColor, targetColor);
                 if (bestDistance == null || testDistance < bestDistance) {
                     bestDistance = testDistance;
@@ -96,17 +79,31 @@ public class BufferedMapCanvas implements MapCanvas {
     }
 
     @Override
-    public byte getPixel(int x, int y) {
-        if (x < 0 || y < 0 || x > CANVAS_WIDTH || y > CANVAS_HEIGHT) return 0;
+    public @org.jetbrains.annotations.Nullable java.awt.Color getPixelColor(int x, int y) {
+        if (x < 0 || y < 0 || x > CANVAS_WIDTH || y > CANVAS_HEIGHT) return null;
 
         return pixels[x + y * CANVAS_WIDTH];
     }
 
-    @Nullable
+    @Override
+    public @NotNull java.awt.Color getBasePixelColor(int i, int i1) {
+        return null;
+    }
+
+    @Override
     @SuppressWarnings("deprecation")
+    public void setPixel(int x, int y, byte color) {
+    }
+
+    @Override
+    public byte getPixel(int x, int y) {
+        return 0;
+    }
+
+    @Nullable
     public DyeColor getDyeColor(int x, int y) {
-        byte color = getPixel(x, y);
-        if (color == MapPalette.TRANSPARENT) return null;
+        Color color = getPixelColor(x, y);
+        if (color.getAlpha() == 0) return null;
         if (!dyeColors.containsKey(color)) return null;
 
         return dyeColors.get(color);
