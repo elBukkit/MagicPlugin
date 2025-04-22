@@ -1,7 +1,16 @@
 
 # CHANGELOG
 
-# 10.9.7
+# 10.10
+
+ - ** Drop support for all MC versions prior to 1.20.5 **
+
+   These have not actually been working since Magic 10.9, I just didn't realize it.
+   This is a fundamental problem with the required upgrade to Java 21 enforced by MC 1.20.5,
+   and I don't think there is anything I can do about it.
+
+   The 10.9.7 Lineage will stay supported for older MC versions, and can be found in the MagicPlugin-Legacy  
+   project on the build server: https://jenkins.elmakers.com/job/MagicPlugin-Legacy/
 
  - Add support for 1.21.5
  - The mount_restricted spell property can now be a list of entity types as well as true (true meaning all types)
