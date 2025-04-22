@@ -1,7 +1,5 @@
 package com.elmakers.mine.bukkit.utility.platform.modern;
 
-import java.lang.ref.WeakReference;
-import java.lang.reflect.Array;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -24,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
+import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -36,6 +35,7 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Lockable;
 import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
@@ -48,15 +48,15 @@ import org.bukkit.block.data.type.Door;
 import org.bukkit.block.data.type.Piston;
 import org.bukkit.block.data.type.Slab;
 import org.bukkit.block.data.type.Snow;
+import org.bukkit.block.data.type.WallSign;
+import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.ComplexEntityPart;
-import org.bukkit.entity.ComplexLivingEntity;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
@@ -69,8 +69,10 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
+import org.bukkit.entity.Phantom;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
+import org.bukkit.entity.Sittable;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
@@ -93,12 +95,14 @@ import org.bukkit.inventory.ShapelessRecipe;
 import org.bukkit.inventory.SmithingRecipe;
 import org.bukkit.inventory.SmokingRecipe;
 import org.bukkit.inventory.StonecuttingRecipe;
+import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.KnowledgeBookMeta;
 import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.map.MapView;
-import org.bukkit.material.MaterialData;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
@@ -106,24 +110,25 @@ import org.bukkit.util.Vector;
 import org.bukkit.util.VoxelShape;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
+import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
+import com.elmakers.mine.bukkit.utility.ReflectionUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.populator.OutOfBoundsEntityCleanup;
-import com.google.common.io.BaseEncoding;
+import com.google.common.collect.Multimap;
 
-public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase {
-
-    public static int OFFHAND_BROADCAST_RANGE = 32;
-    private final WeakReference<Thread> primaryThread;
+public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase {
 
     public ModernCompatibilityUtils(Platform platform) {
         super(platform);
-        primaryThread = new WeakReference<>(Thread.currentThread());
     }
+
+    protected abstract void setBossBarTitleComponents(BossBar bossBar, String serialized, String fallback);
 
     @Override
     public Collection<BoundingBox> getBoundingBoxes(Block block) {
@@ -358,6 +363,7 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
                 break;
             case TOGGLE:
                 doorData.setOpen(!doorData.isOpen());
+                break;
             default:
                 return false;
         }
@@ -611,59 +617,33 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public boolean isPersist(Entity entity) {
-        if (NMSUtils.class_Entity_persistField == null) return false;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            return (boolean) NMSUtils.class_Entity_persistField.get(handle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
-
-    @Override
-    public void setRemoveWhenFarAway(Entity entity, boolean flag) {
-        if (NMSUtils.class_LivingEntity_setRemoveWhenFarAway == null || !(entity instanceof LivingEntity)) return;
-        try {
-            NMSUtils.class_LivingEntity_setRemoveWhenFarAway.invoke(entity, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        return entity.isPersistent();
     }
 
     @Override
     public void setPersist(Entity entity, boolean flag) {
         entity.setPersistent(flag);
-        if (NMSUtils.class_Entity_persistField == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_persistField.set(handle, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    }
+
+    @Override
+    public void setRemoveWhenFarAway(Entity entity, boolean flag) {
+        if (!(entity instanceof LivingEntity)) return;
+        LivingEntity li = (LivingEntity)entity;
+        li.setRemoveWhenFarAway(flag);
     }
 
     @Override
     public boolean isSitting(Entity entity) {
-        if (NMSUtils.class_Sittable == null) return false;
-        if (!NMSUtils.class_Sittable.isAssignableFrom(entity.getClass())) return false;
-        try {
-            return (boolean) NMSUtils.class_Sitting_isSittingMethod.invoke(entity);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        if (!(entity instanceof Sittable)) return false;
+        Sittable sittable = (Sittable)entity;
+        return sittable.isSitting();
     }
 
     @Override
     public void setSitting(Entity entity, boolean flag) {
-        if (NMSUtils.class_Sittable == null) return;
-        if (!NMSUtils.class_Sittable.isAssignableFrom(entity.getClass())) return;
-        try {
-            NMSUtils.class_Sitting_setSittingMethod.invoke(entity, flag);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        if (!(entity instanceof Sittable)) return;
+        Sittable sittable = (Sittable)entity;
+        sittable.setSitting(flag);
     }
 
     @Override
@@ -719,14 +699,10 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public Entity createEntity(Location location, EntityType entityType) {
+        World world = location.getWorld();
         Entity bukkitEntity = null;
         try {
-            Class<? extends Entity> entityClass = entityType.getEntityClass();
-            Object newEntity = NMSUtils.class_CraftWorld_createEntityMethod.invoke(location.getWorld(), location, entityClass);
-            if (newEntity != null) {
-                bukkitEntity = getBukkitEntity(newEntity);
-                if (bukkitEntity == null || !entityClass.isAssignableFrom(bukkitEntity.getClass())) return null;
-            }
+            bukkitEntity = world.createEntity(location, entityType.getEntityClass());
         } catch (Throwable ex) {
             ex.printStackTrace();
         }
@@ -750,35 +726,10 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     @Override
     public Collection<Entity> getNearbyEntities(Location location, double x, double y, double z) {
         if (location == null) return null;
-        Object worldHandle = NMSUtils.getHandle(location.getWorld());
-        try {
-            x = Math.min(x, MAX_ENTITY_RANGE);
-            z = Math.min(z, MAX_ENTITY_RANGE);
-            Object bb = NMSUtils.class_AxisAlignedBB_Constructor.newInstance(location.getX() - x, location.getY() - y, location.getZ() - z,
-                    location.getX() + x, location.getY() + y, location.getZ() + z);
-
-            // The input entity is only used for equivalency testing, so this "null" should be ok.
-            @SuppressWarnings("unchecked")
-            List<? extends Object> entityList = (List<? extends Object>) NMSUtils.class_World_getEntitiesMethod.invoke(worldHandle, null, bb);
-            List<Entity> bukkitEntityList = new java.util.ArrayList<>(entityList.size());
-
-            for (Object entity : entityList) {
-                Entity bukkitEntity = (Entity) NMSUtils.class_Entity_getBukkitEntityMethod.invoke(entity);
-                if (bukkitEntity instanceof ComplexLivingEntity) {
-                    ComplexLivingEntity complex = (ComplexLivingEntity) bukkitEntity;
-                    Set<ComplexEntityPart> parts = complex.getParts();
-                    for (ComplexEntityPart part : parts) {
-                        bukkitEntityList.add(part);
-                    }
-                } else {
-                    bukkitEntityList.add(bukkitEntity);
-                }
-            }
-            return bukkitEntityList;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        x = Math.min(x, MAX_ENTITY_RANGE);
+        z = Math.min(z, MAX_ENTITY_RANGE);
+        // Note this no longer special-cases ComplexParts
+        return location.getWorld().getNearbyEntities(location, x, y, z);
     }
 
     @Override
@@ -886,40 +837,12 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public boolean isReady(Chunk chunk) {
-        if (NMSUtils.class_Chunk_isReadyMethod == null) return true;
-
-        Object chunkHandle = NMSUtils.getHandle(chunk);
-        boolean ready = true;
-        try {
-            ready = (Boolean) NMSUtils.class_Chunk_isReadyMethod.invoke(chunkHandle);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return ready;
+        return true;
     }
 
     @Override
     public boolean createExplosion(Entity entity, World world, double x, double y, double z, float power, boolean setFire, boolean breakBlocks) {
-        boolean result = false;
-        if (world == null) return false;
-        if (NMSUtils.class_World_explodeMethod == null) {
-            return world.createExplosion(x, y, z, power, setFire, breakBlocks);
-        }
-        try {
-            Object worldHandle = NMSUtils.getHandle(world);
-            if (worldHandle == null) return false;
-            Object entityHandle = entity == null ? null : NMSUtils.getHandle(entity);
-
-            Object explosion = NMSUtils.class_EnumExplosionEffect != null
-                    ? NMSUtils.class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks ? NMSUtils.enum_ExplosionEffect_BREAK : NMSUtils.enum_ExplosionEffect_NONE)
-                    : NMSUtils.class_World_explodeMethod.invoke(worldHandle, entityHandle, x, y, z, power, setFire, breakBlocks);
-            Field cancelledField = explosion.getClass().getDeclaredField("wasCanceled");
-            result = (Boolean)cancelledField.get(explosion);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            result = false;
-        }
-        return result;
+        return world.createExplosion(x, y, z, power, setFire, breakBlocks, entity);
     }
 
     @Override
@@ -1044,40 +967,20 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public void setEnvironment(World world, World.Environment environment) {
-        try {
-            NMSUtils.class_CraftWorld_environmentField.set(world, environment);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        // Nah, broken and too ugly anyway
     }
 
     @Override
-    public void playCustomSound(Player player, Location location, String sound, float volume, float pitch)
-    {
-        if (NMSUtils.class_PacketPlayOutCustomSoundEffect_Constructor == null || sound == null) return;
-        try {
-            Object packet = null;
-            if (NMSUtils.class_MinecraftKey_constructor != null) {
-                Object key = NMSUtils.class_MinecraftKey_constructor.newInstance(sound);
-                Object vec = NMSUtils.class_Vec3D_constructor.newInstance(location.getX(), location.getY(), location.getZ());
-                packet = NMSUtils.class_PacketPlayOutCustomSoundEffect_Constructor.newInstance(key, NMSUtils.enum_SoundCategory_PLAYERS, vec, volume, pitch);
-            } else {
-                packet = NMSUtils.class_PacketPlayOutCustomSoundEffect_Constructor.newInstance(sound, NMSUtils.enum_SoundCategory_PLAYERS, location.getX(), location.getY(), location.getZ(), volume, pitch);
-            }
-            NMSUtils.sendPacket(player, packet);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+    public void playCustomSound(Player player, Location location, String sound, float volume, float pitch) {
+        player.playSound(location, sound, volume, pitch);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<Entity> selectEntities(CommandSender sender, String selector) {
-        if (NMSUtils.class_Bukkit_selectEntitiesMethod == null) return null;
         if (!selector.startsWith("@")) return null;
         try {
-            return (List<Entity>) NMSUtils.class_Bukkit_selectEntitiesMethod.invoke(null, sender, selector);
-        } catch (Throwable ex) {
+            return Bukkit.selectEntities(sender, selector);
+        } catch (IllegalArgumentException ex) {
             platform.getLogger().warning("Invalid selector: " + ex.getMessage());
         }
         return null;
@@ -1099,34 +1002,17 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public MapView getMapById(int id) {
-        if (NMSUtils.class_Bukkit_getMapMethod == null) return null;
-        try {
-            if (NMSUtils.legacyMaps) {
-                return (MapView) NMSUtils.class_Bukkit_getMapMethod.invoke(null, (short)id);
-            }
-            return (MapView) NMSUtils.class_Bukkit_getMapMethod.invoke(null, (short)id);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return Bukkit.getMap(id);
     }
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> Map<String, T> getTypedMap(ConfigurationSection section)
-    {
+    public <T> Map<String, T> getTypedMap(ConfigurationSection section) {
         if (section == null) return null;
-        if (section instanceof MemorySection && NMSUtils.class_MemorySection_mapField != null)
-        {
-            try {
-                Object mapObject = NMSUtils.class_MemorySection_mapField.get(section);
-                if (mapObject instanceof Map) {
-                    return (Map<String, T>)mapObject;
-                }
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        if (section instanceof MemorySection) {
+            return (Map<String, T>) ReflectionUtils.getPrivate(platform.getLogger(), section, MemorySection.class, "map");
         }
 
         // Do it the slow way
@@ -1140,17 +1026,10 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     }
 
     @Override
-    public boolean setMap(ConfigurationSection section, Map<String, Object> map)
-    {
-        if (section == null || NMSUtils.class_MemorySection_mapField == null) return false;
-        if (section instanceof MemorySection)
-        {
-            try {
-                NMSUtils.class_MemorySection_mapField.set(section, map);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                return false;
-            }
+    public boolean setMap(ConfigurationSection section, Map<String, Object> map) {
+        if (section == null) return false;
+        if (section instanceof MemorySection) {
+            return ReflectionUtils.setPrivate(platform.getLogger(), section, MemorySection.class, "map", map);
         }
 
         return true;
@@ -1187,15 +1066,8 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     }
 
     @Override
-    public void setTNTSource(TNTPrimed tnt, LivingEntity source)
-    {
-        try {
-            Object tntHandle = NMSUtils.getHandle(tnt);
-            Object sourceHandle = NMSUtils.getHandle(source);
-            NMSUtils.class_EntityTNTPrimed_source.set(tntHandle, sourceHandle);
-        } catch (Exception ex) {
-            platform.getLogger().log(Level.WARNING, "Unable to set TNT source", ex);
-        }
+    public void setTNTSource(TNTPrimed tnt, LivingEntity source) {
+        tnt.setSource(source);
     }
 
     @Override
@@ -1216,90 +1088,39 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     }
 
     @Override
-    public boolean setLock(Block block, String lockName)
-    {
-        if (NMSUtils.class_ChestLock_Constructor == null) return false;
-        if (NMSUtils.class_TileEntityContainer_setLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = getTileEntity(block.getLocation());
-        if (tileEntity == null) return false;
-        if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
-        try {
-            Object lock = NMSUtils.class_ChestLock_Constructor.newInstance(lockName);
-            if (NMSUtils.class_TileEntityContainer_lock != null) {
-                NMSUtils.class_TileEntityContainer_lock.set(tileEntity, lock);
-            } else {
-                NMSUtils.class_TileEntityContainer_setLock.invoke(tileEntity, lock);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
+    public boolean setLock(Block block, String lockName) {
+        BlockState blockData = block.getState();
+        if (!(blockData instanceof Lockable)) return false;
+        Lockable lockable = (Lockable)blockData;
+        lockable.setLock(lockName);
+        blockData.update();
         return true;
     }
 
     @Override
-    public boolean clearLock(Block block)
-    {
-        if (NMSUtils.class_TileEntityContainer_setLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = getTileEntity(block.getLocation());
-        if (tileEntity == null) return false;
-        if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
-        try {
-            if (NMSUtils.class_TileEntityContainer_lock != null) {
-                if (NMSUtils.object_emptyChestLock == null) {
-                    return false;
-                }
-                NMSUtils.class_TileEntityContainer_lock.set(tileEntity, NMSUtils.object_emptyChestLock);
-            } else {
-                NMSUtils.class_TileEntityContainer_setLock.invoke(tileEntity, new Object[] {null});
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
+    public boolean clearLock(Block block) {
+        BlockState blockData = block.getState();
+        if (!(blockData instanceof Lockable)) return false;
+        Lockable lockable = (Lockable)blockData;
+        lockable.setLock(null);
+        blockData.update();
         return true;
     }
 
     @Override
-    public boolean isLocked(Block block)
-    {
-        if (NMSUtils.class_TileEntityContainer_getLock == null && NMSUtils.class_TileEntityContainer_lock == null) return false;
-        Object tileEntity = getTileEntity(block.getLocation());
-        if (tileEntity == null) return false;
-        if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return false;
-        try {
-            Object lock = NMSUtils.class_TileEntityContainer_lock != null ? NMSUtils.class_TileEntityContainer_lock.get(tileEntity) :
-                    NMSUtils.class_TileEntityContainer_getLock.invoke(tileEntity);
-            if (lock == null) return false;
-            String key = NMSUtils.class_ChestLock_key != null ? (String) NMSUtils.class_ChestLock_key.get(lock) :
-                    (String) NMSUtils.class_ChestLock_getString.invoke(lock);
-            return key != null && !key.isEmpty();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+    public boolean isLocked(Block block) {
+        BlockState blockData = block.getState();
+        if (!(blockData instanceof Lockable)) return false;
+        Lockable lockable = (Lockable)blockData;
+        return lockable.isLocked();
     }
 
     @Override
-    public String getLock(Block block)
-    {
-        if (NMSUtils.class_ChestLock_getString == null && NMSUtils.class_ChestLock_key == null) return null;
-        if (NMSUtils.class_TileEntityContainer_getLock == null && NMSUtils.class_TileEntityContainer_lock == null) return null;
-        Object tileEntity = getTileEntity(block.getLocation());
-        if (tileEntity == null) return null;
-        if (!NMSUtils.class_TileEntityContainer.isInstance(tileEntity)) return null;
-        try {
-            Object lock = NMSUtils.class_TileEntityContainer_lock != null ? NMSUtils.class_TileEntityContainer_lock.get(tileEntity) :
-                    NMSUtils.class_TileEntityContainer_getLock.invoke(tileEntity);
-            if (lock == null) return null;
-            return NMSUtils.class_ChestLock_key != null ? (String) NMSUtils.class_ChestLock_key.get(lock) :
-                    (String) NMSUtils.class_ChestLock_getString.invoke(lock);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+    public String getLock(Block block) {
+        BlockState blockData = block.getState();
+        if (!(blockData instanceof Lockable)) return null;
+        Lockable lockable = (Lockable)blockData;
+        return lockable.getLock();
     }
 
     @Override
@@ -1329,12 +1150,7 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public void setInvisible(ArmorStand armorStand, boolean invisible) {
-        try {
-            Object handle = NMSUtils.getHandle(armorStand);
-            NMSUtils.class_ArmorStand_setInvisible.invoke(handle, invisible);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        armorStand.setInvisible(invisible);
     }
 
     @Override
@@ -1351,28 +1167,13 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public void setGravity(ArmorStand armorStand, boolean gravity) {
-        if (NMSUtils.class_Entity_setNoGravity == null && NMSUtils.class_ArmorStand_setGravity == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(armorStand);
-            if (NMSUtils.class_Entity_setNoGravity != null) {
-                NMSUtils.class_Entity_setNoGravity.invoke(handle, !gravity);
-            } else {
-                NMSUtils.class_ArmorStand_setGravity.invoke(handle, gravity);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        // I think the NMS method may be slightly different, so if things go wrong we'll have to dig deeper
+        armorStand.setGravity(gravity);
     }
 
     @Override
     public void setGravity(Entity entity, boolean gravity) {
-        if (NMSUtils.class_Entity_setNoGravity == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_setNoGravity.invoke(handle, !gravity);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        entity.setGravity(gravity);
     }
 
     @Override
@@ -1626,67 +1427,35 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public boolean setResourcePack(Player player, String rp, byte[] hash) {
-        // TODO: Player.setResourcePack in 1.11+
-        try {
-            String hashString = BaseEncoding.base16().lowerCase().encode(hash);
-            NMSUtils.class_EntityPlayer_setResourcePackMethod.invoke(NMSUtils.getHandle(player), rp, hashString);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
+        player.setResourcePack(rp, hash);
         return true;
     }
 
     @Override
     public boolean removeItemAttribute(ItemStack item, Attribute attribute) {
-        try {
-            Object handle = platform.getItemUtils().getHandle(item);
-            if (handle == null) return false;
-            Object tag = platform.getItemUtils().getTag(handle);
-            if (tag == null) return false;
-
-            String attributeName = toMinecraftAttribute(attribute);
-            Object attributesNode = platform.getNBTUtils().getTag(tag, "AttributeModifiers");
-            if (attributesNode == null) {
-                return false;
-            }
-            int size = (Integer) NMSUtils.class_NBTTagList_sizeMethod.invoke(attributesNode);
-            for (int i = 0; i < size; i++) {
-                Object candidate = NMSUtils.class_NBTTagList_getMethod.invoke(attributesNode, i);
-                String key = platform.getNBTUtils().getString(candidate, "AttributeName");
-                if (key.equals(attributeName)) {
-                    if (size == 1) {
-                        platform.getNBTUtils().removeMeta(tag, "AttributeModifiers");
-                    } else {
-                        NMSUtils.class_NBTTagList_removeMethod.invoke(attributesNode, i);
-                    }
-                    return true;
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (item == null) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+        if (!meta.removeAttributeModifier(attribute)) {
             return false;
         }
+        item.setItemMeta(meta);
         return true;
     }
 
     @Override
     public boolean removeItemAttributes(ItemStack item) {
-        try {
-            Object handle = platform.getItemUtils().getHandle(item);
-            if (handle == null) return false;
-            Object tag = platform.getItemUtils().getTag(handle);
-            if (tag == null) return false;
-
-            Object attributesNode = platform.getNBTUtils().getTag(tag, "AttributeModifiers");
-            if (attributesNode == null) {
-                return false;
-            }
-            platform.getNBTUtils().removeMeta(tag, "AttributeModifiers");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        if (item == null) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+        Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
+        if (modifiers == null || modifiers.isEmpty()) {
             return false;
         }
+        for (Attribute attribute : modifiers.keySet()) {
+            meta.removeAttributeModifier(attribute);
+        }
+        item.setItemMeta(meta);
         return true;
     }
 
@@ -1780,12 +1549,7 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public void sendExperienceUpdate(Player player, float experience, int level) {
-        try {
-            Object packet = NMSUtils.class_PacketPlayOutExperience_Constructor.newInstance(experience, player.getTotalExperience(), level);
-            NMSUtils.sendPacket(player, packet);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        player.sendExperienceChange(experience, level);
     }
 
     @Override
@@ -1822,46 +1586,18 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public void swingOffhand(Entity entity) {
-        int rangeSquared = OFFHAND_BROADCAST_RANGE * OFFHAND_BROADCAST_RANGE;
-        String worldName = entity.getWorld().getName();
-        Location center = entity.getLocation();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > rangeSquared) {
-                continue;
-            }
-            swingOffhand(player, entity);
+        if (!(entity instanceof LivingEntity)) {
+            return;
         }
-    }
-
-    private void swingOffhand(Player sendToPlayer, Entity entity) {
-        try {
-            Object packet = NMSUtils.class_PacketPlayOutAnimation_Constructor.newInstance(NMSUtils.getHandle(entity), 3);
-            NMSUtils.sendPacket(sendToPlayer, packet);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        ((LivingEntity)entity).swingOffHand();
     }
 
     @Override
     public void swingMainHand(Entity entity) {
-        int rangeSquared = OFFHAND_BROADCAST_RANGE * OFFHAND_BROADCAST_RANGE;
-        String worldName = entity.getWorld().getName();
-        Location center = entity.getLocation();
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            if (!player.getWorld().getName().equals(worldName) || player.getLocation().distanceSquared(center) > rangeSquared) {
-                continue;
-            }
-            swingMainHand(player, entity);
+        if (!(entity instanceof LivingEntity)) {
+            return;
         }
-    }
-
-    private void swingMainHand(Player sendToPlayer, Entity entity) {
-        try {
-            Object packet = NMSUtils.class_PacketPlayOutAnimation_Constructor.newInstance(NMSUtils.getHandle(entity), 0);
-            NMSUtils.sendPacket(sendToPlayer, packet);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        ((LivingEntity)entity).swingMainHand();
     }
 
     @Override
@@ -1948,18 +1684,16 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     }
 
     @Override
-    @SuppressWarnings({"unchecked", "rawtypes"})
     public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
-        if (!(projectile instanceof Arrow)) return false;
-        if (pickupStatus == null || NMSUtils.class_Arrow_setPickupStatusMethod == null || NMSUtils.class_PickupStatus == null) return false;
-
+        if (!(projectile instanceof AbstractArrow)) return false;
+        AbstractArrow.PickupStatus status;
         try {
-            Enum enumValue = Enum.valueOf(NMSUtils.class_PickupStatus, pickupStatus.toUpperCase());
-            NMSUtils.class_Arrow_setPickupStatusMethod.invoke(projectile, enumValue);
+            status = AbstractArrow.PickupStatus.valueOf(pickupStatus.toUpperCase());
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            platform.getLogger().warning("Invalid pickup status: " + pickupStatus);
             return false;
         }
+        ((AbstractArrow)projectile).setPickupStatus(status);
         return true;
     }
 
@@ -1994,174 +1728,115 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public Entity getEntity(UUID uuid) {
-        if (NMSUtils.class_Server_getEntityMethod != null) {
-            try {
-                return (Entity) NMSUtils.class_Server_getEntityMethod.invoke(Bukkit.getServer(), uuid);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-
-        for (World world : Bukkit.getWorlds()) {
-            Entity found = getEntity(world, uuid);
-            if (found != null) {
-                return found;
-            }
-        }
-
-        return null;
+        return Bukkit.getEntity(uuid);
     }
 
     @Override
     public boolean canRemoveRecipes() {
-        return NMSUtils.class_Server_removeRecipeMethod != null;
+        return true;
     }
 
     @Override
     public boolean removeRecipe(Recipe recipe) {
-        if (NMSUtils.class_Keyed == null || NMSUtils.class_Keyed_getKeyMethod == null || NMSUtils.class_Server_removeRecipeMethod == null) {
+        if (!(recipe instanceof Keyed)) {
             return false;
         }
-        if (!NMSUtils.class_Keyed.isAssignableFrom(recipe.getClass())) {
-            return false;
-        }
-        try {
-            Object namespacedKey = NMSUtils.class_Keyed_getKeyMethod.invoke(recipe);
-            return (boolean) NMSUtils.class_Server_removeRecipeMethod.invoke(platform.getPlugin().getServer(), namespacedKey);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        Keyed keyed = (Keyed)recipe;
+        return platform.getPlugin().getServer().removeRecipe(keyed.getKey());
     }
 
     @Override
     public boolean removeRecipe(String key) {
-        if (NMSUtils.class_NamespacedKey == null || NMSUtils.class_Server_removeRecipeMethod == null) {
-            return false;
-        }
-
-        try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(platform.getPlugin(), key.toLowerCase());
-            return (boolean) NMSUtils.class_Server_removeRecipeMethod.invoke(platform.getPlugin().getServer(), namespacedKey);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
+        return platform.getPlugin().getServer().removeRecipe(namespacedKey);
     }
 
     @Override
     public ShapedRecipe createShapedRecipe(String key, ItemStack item) {
-        if (NMSUtils.class_NamespacedKey == null) {
-            return new ShapedRecipe(item);
-        }
-
-        try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(platform.getPlugin(), key.toLowerCase());
-            return (ShapedRecipe) NMSUtils.class_ShapedRecipe_constructor.newInstance(namespacedKey, item);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new ShapedRecipe(item);
-        }
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
+        return new ShapedRecipe(namespacedKey, item);
     }
 
     @Override
     public boolean discoverRecipe(HumanEntity entity, String key) {
-        if (NMSUtils.class_NamespacedKey == null || NMSUtils.class_HumanEntity_discoverRecipeMethod == null) {
-            return false;
-        }
-
-        try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(platform.getPlugin(), key.toLowerCase());
-            return (boolean) NMSUtils.class_HumanEntity_discoverRecipeMethod.invoke(entity, namespacedKey);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
+        return entity.discoverRecipe(namespacedKey);
     }
 
     @Override
     public boolean undiscoverRecipe(HumanEntity entity, String key) {
-        if (NMSUtils.class_NamespacedKey == null || NMSUtils.class_HumanEntity_undiscoverRecipeMethod == null) {
-            return false;
-        }
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
+        return entity.undiscoverRecipe(namespacedKey);
+    }
 
+    @SuppressWarnings("deprecation")
+    protected Attribute getMaxHealthAttribute() {
+        // Paper and Spigot can no longer agree on what this should be called????
+        // Also stop deprecating crap that has no alternative omg
+        Attribute attribute = null;
         try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(platform.getPlugin(), key.toLowerCase());
-            return (boolean) NMSUtils.class_HumanEntity_undiscoverRecipeMethod.invoke(entity, namespacedKey);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+            Attribute.valueOf("MAX_HEALTH");
+        } catch (Exception ignore) {
+            // Current spigot API claims this should be called MAX_HEALTH
+            // But running in Paper throws an error for that.
         }
-        return false;
+        if (attribute == null) {
+            attribute = Attribute.valueOf("GENERIC_MAX_HEALTH");
+        }
+        return attribute;
     }
 
     @Override
     public double getMaxHealth(Damageable li) {
-        // return li.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
-        return li.getMaxHealth();
+        if (li instanceof LivingEntity) {
+            return ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).getValue();
+        }
+        return 0;
     }
 
     @Override
     public void setMaxHealth(Damageable li, double maxHealth) {
-        // li.getAttribute(Attribute.GENERIC_MAX_HEALTH).setValue(maxHealth);
-        li.setMaxHealth(maxHealth);
+        if (li instanceof LivingEntity) {
+            ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).setBaseValue(maxHealth);
+        }
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public Material fromLegacy(org.bukkit.material.MaterialData materialData) {
-        if (NMSUtils.class_UnsafeValues_fromLegacyDataMethod != null) {
-            try {
-                Material converted = (Material) NMSUtils.class_UnsafeValues_fromLegacyDataMethod.invoke(platform.getDeprecatedUtils().getUnsafe(), materialData);
-                if (converted == Material.AIR) {
-                    materialData.setData((byte)0);
-                    converted = (Material) NMSUtils.class_UnsafeValues_fromLegacyDataMethod.invoke(platform.getDeprecatedUtils().getUnsafe(), materialData);
-                }
-                // Converting legacy signs doesn't seem to work
-                // This fixes them, but the direction is wrong, and restoring text causes internal errors
-                // So I guess it's best to just let signs be broken for now.
-                /*
-                if (converted == Material.AIR) {
-                    String typeKey = materialData.getItemType().name();
-                    if (typeKey.equals("LEGACY_WALL_SIGN")) return Material.WALL_SIGN;
-                    if (typeKey.equals("LEGACY_SIGN_POST")) return Material.SIGN_POST;
-                    if (typeKey.equals("LEGACY_SIGN")) return Material.SIGN;
-                }
-                */
-                return converted;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
+        Material converted = Bukkit.getUnsafe().fromLegacy(materialData);
+        if (converted == Material.AIR) {
+            materialData.setData((byte)0);
+            converted = Bukkit.getUnsafe().fromLegacy(materialData);
         }
-        return materialData.getItemType();
+        // Converting legacy signs doesn't seem to work
+        // This fixes them, but the direction is wrong, and restoring text causes internal errors
+        // So I guess it's best to just let signs be broken for now.
+        /*
+        if (converted == Material.AIR) {
+            String typeKey = materialData.getItemType().name();
+            if (typeKey.equals("LEGACY_WALL_SIGN")) return Material.WALL_SIGN;
+            if (typeKey.equals("LEGACY_SIGN_POST")) return Material.SIGN_POST;
+            if (typeKey.equals("LEGACY_SIGN")) return Material.SIGN;
+        }
+        */
+        return converted;
     }
 
     @Override
     public boolean hasLegacyMaterials() {
-        return NMSUtils.class_Material_isLegacyMethod != null;
+        return true;
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public boolean isLegacy(Material material) {
-        if (NMSUtils.class_Material_isLegacyMethod == null) {
-            return false;
-        }
-        try {
-            return (boolean) NMSUtils.class_Material_isLegacyMethod.invoke(material);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        return material.isLegacy();
     }
 
     @Override
     public Material getLegacyMaterial(String materialName) {
-        if (NMSUtils.class_Material_getLegacyMethod != null) {
-            try {
-                return (Material) NMSUtils.class_Material_getLegacyMethod.invoke(null, materialName, true);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        return Material.getMaterial(materialName);
+        return Material.getMaterial(materialName, true);
     }
 
     @Override
@@ -2188,99 +1863,54 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public Color getColor(PotionMeta meta) {
-        Color color = Color.BLACK;
-        if (NMSUtils.class_PotionMeta_getColorMethod != null) {
-            try {
-                color = (Color) NMSUtils.class_PotionMeta_getColorMethod.invoke(meta);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        return color;
+        return meta.getColor();
     }
 
     @Override
     public boolean setColor(PotionMeta meta, Color color) {
-        if (NMSUtils.class_PotionMeta_setColorMethod != null) {
-            try {
-                NMSUtils.class_PotionMeta_setColorMethod.invoke(meta, color);
-                return true;
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        return false;
+        meta.setColor(color);
+        return true;
     }
 
     @Override
     public boolean hasBlockDataSupport() {
-        return NMSUtils.class_Block_getBlockDataMethod != null;
+        return true;
     }
 
     @Override
     public byte getLegacyBlockData(FallingBlock falling) {
-        // @deprecated Magic value
-        byte data = 0;
-        try {
-            if (NMSUtils.class_FallingBlock_getBlockDataMethod != null) {
-                data = (byte) NMSUtils.class_FallingBlock_getBlockDataMethod.invoke(falling);
-            }
-        } catch (Exception ignore) {
-
-        }
-        return data;
+        return 0;
     }
 
     @Override
     public Material getMaterial(FallingBlock falling) {
-        return falling.getMaterial();
+        return falling.getBlockData().getMaterial();
     }
 
     @Override
     public String getBlockData(FallingBlock fallingBlock) {
-        return null;
-    }
-
-    @Override
-    public String getBlockData(Block block) {
-        if (NMSUtils.class_Block_getBlockDataMethod == null) return null;
-        try {
-            Object blockData = NMSUtils.class_Block_getBlockDataMethod.invoke(block);
-            if (blockData == null) {
-                return null;
-            }
-            return (String) NMSUtils.class_BlockData_getAsStringMethod.invoke(blockData);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        BlockData blockData = fallingBlock.getBlockData();
+        return blockData.getAsString();
     }
 
     @Override
     public String getBlockData(Material material, byte data) {
-        if (NMSUtils.class_UnsafeValues_fromLegacyMethod == null) return null;
-        try {
-            Object blockData = NMSUtils.class_UnsafeValues_fromLegacyMethod.invoke(platform.getDeprecatedUtils().getUnsafe(), material, data);
-            if (blockData != null) {
-                return (String) NMSUtils.class_BlockData_getAsStringMethod.invoke(blockData);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        @SuppressWarnings("deprecation")
+        BlockData blockData = platform.getDeprecatedUtils().getUnsafe().fromLegacy(material, data);
+        return blockData == null ? null : blockData.getAsString();
+    }
+
+    @Override
+    public String getBlockData(Block block) {
+        BlockData blockData = block.getBlockData();
+        return blockData == null ? null : blockData.getAsString();
     }
 
     @Override
     public boolean setBlockData(Block block, String data) {
-        if (NMSUtils.class_Block_getBlockDataMethod == null) return false;
-        try {
-            Object blockData = NMSUtils.class_Server_createBlockDataMethod.invoke(platform.getPlugin().getServer(), data);
-            NMSUtils.class_Block_setBlockDataMethod.invoke(block, blockData, false);
-            return true;
-        } catch (Exception ignore) {
-            // Ignore issues setting invalid block data
-        }
-        return false;
+        BlockData blockData = platform.getPlugin().getServer().createBlockData(data);
+        block.setBlockData(blockData, false);
+        return true;
     }
 
     @Override
@@ -2301,45 +1931,26 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public boolean addRecipeToBook(ItemStack book, Plugin plugin, String recipeKey) {
-        if (NMSUtils.class_NamespacedKey_constructor == null || NMSUtils.class_KnowledgeBookMeta_addRecipeMethod == null) return false;
+        if (book == null) return false;
         ItemMeta meta = book.getItemMeta();
-        if (!NMSUtils.class_KnowledgeBookMeta.isAssignableFrom(meta.getClass())) return false;
-        try {
-            Object namespacedKey = NMSUtils.class_NamespacedKey_constructor.newInstance(plugin, recipeKey.toLowerCase());
-            Object array = Array.newInstance(NMSUtils.class_NamespacedKey, 1);
-            Array.set(array, 0, namespacedKey);
-            NMSUtils.class_KnowledgeBookMeta_addRecipeMethod.invoke(meta, array);
-            book.setItemMeta(meta);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
+        if (!(meta instanceof KnowledgeBookMeta)) return false;
+        KnowledgeBookMeta bookMeta = (KnowledgeBookMeta)meta;
+        NamespacedKey key = new NamespacedKey(plugin, recipeKey.toLowerCase());
+        bookMeta.addRecipe(key);
+        book.setItemMeta(bookMeta);
         return true;
     }
 
     @Override
     public boolean stopSound(Player player, Sound sound) {
-        if (NMSUtils.class_Player_stopSoundMethod == null) return false;
-        try {
-            NMSUtils.class_Player_stopSoundMethod.invoke(player, sound);
-            return true;
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        player.stopSound(sound);
+        return true;
     }
 
     @Override
     public boolean stopSound(Player player, String sound) {
-        if (NMSUtils.class_Player_stopSoundStringMethod == null) return false;
-        try {
-            NMSUtils.class_Player_stopSoundStringMethod.invoke(player, sound);
-            return true;
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        player.stopSound(sound);
+        return true;
     }
 
     @Override
@@ -2348,27 +1959,15 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
         if (!chunk.isLoaded()) {
             platform.getLogger().info("Locking unloaded chunk");
         }
-        if (NMSUtils.class_Chunk_addPluginChunkTicketMethod == null) return false;
-        try {
-            NMSUtils.class_Chunk_addPluginChunkTicketMethod.invoke(chunk, platform.getPlugin());
-            return true;
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        chunk.addPluginChunkTicket(platform.getPlugin());
+        return true;
     }
 
     @Override
     public boolean unlockChunk(Chunk chunk) {
         if (!platform.getPlugin().isEnabled()) return false;
-        if (NMSUtils.class_Chunk_removePluginChunkTicketMethod == null) return false;
-        try {
-            NMSUtils.class_Chunk_removePluginChunkTicketMethod.invoke(chunk, platform.getPlugin());
-            return true;
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        chunk.removePluginChunkTicket(platform.getPlugin());
+        return true;
     }
 
     @Override
@@ -2390,58 +1989,45 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     }
 
     @Override
-    public boolean isSameKey(Plugin plugin, String key, Object keyed) {
-        if (keyed == null || NMSUtils.class_Keyed == null || !NMSUtils.class_Keyed.isAssignableFrom(keyed.getClass())) {
-            return false;
-        }
+    public boolean isSameKey(Plugin plugin, String key, Object keyedObject) {
+        if (!(keyedObject instanceof Keyed)) return false;
         String namespace = plugin.getName().toLowerCase(Locale.ROOT);
         key = key.toLowerCase(Locale.ROOT);
-        try {
-            Object namespacedKey = NMSUtils.class_Keyed_getKeyMethod.invoke(keyed);
-            Object keyNamespace = NMSUtils.class_NamespacedKey_getNamespaceMethod.invoke(namespacedKey);
-            Object keyKey = NMSUtils.class_NamespacedKey_getKeyMethod.invoke(namespacedKey);
-            return keyNamespace.equals(namespace) && keyKey.equals(key);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
+        Keyed keyed = (Keyed)keyedObject;
+        NamespacedKey namespacedKey = keyed.getKey();
+        String keyNamespace = namespacedKey.getNamespace();
+        String keyKey = namespacedKey.getKey();
+        return keyNamespace.equals(namespace) && keyKey.equals(key);
     }
 
     @Override
     public boolean isLegacyRecipes() {
-        return NMSUtils.class_RecipeChoice_ExactChoice == null || NMSUtils.class_NamespacedKey == null;
+        return false;
     }
 
     @Override
     public boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage) {
         if (ingredient == null) return false;
-        if (NMSUtils.class_RecipeChoice_ExactChoice == null) {
-            if (platform.isLegacy()) {
-                org.bukkit.material.MaterialData material = ingredient.getData();
-                if (material == null) {
-                    return false;
-                }
-                recipe.setIngredient(key, material);
-            } else {
-                recipe.setIngredient(key, ingredient.getType());
-            }
-            return true;
-        }
         try {
             short maxDurability = ingredient.getType().getMaxDurability();
             if (ignoreDamage && maxDurability > 0) {
                 List<ItemStack> damaged = new ArrayList<>();
                 for (short damage = 0; damage < maxDurability; damage++) {
                     ingredient = ingredient.clone();
-                    ingredient.setDurability(damage);
+                    ItemMeta meta = ingredient.getItemMeta();
+                    if (meta == null || !(meta instanceof org.bukkit.inventory.meta.Damageable))  break;
+                    org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable)meta;
+                    damageable.setDamage(damage);
+                    ingredient.setItemMeta(meta);
                     damaged.add(ingredient);
                 }
-                Object exactChoice = NMSUtils.class_RecipeChoice_ExactChoice_List_constructor.newInstance(damaged);
-                NMSUtils.class_ShapedRecipe_setIngredientMethod.invoke(recipe, key, exactChoice);
+                RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(damaged);
+                recipe.setIngredient(key, exactChoice);
                 return true;
             }
-            Object exactChoice = NMSUtils.class_RecipeChoice_ExactChoice_constructor.newInstance(ingredient);
-            NMSUtils.class_ShapedRecipe_setIngredientMethod.invoke(recipe, key, exactChoice);
+
+            RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(ingredient);
+            recipe.setIngredient(key, exactChoice);
             return true;
         } catch (Throwable e) {
             e.printStackTrace();
@@ -2497,27 +2083,15 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public int getPhantomSize(Entity entity) {
-        if (NMSUtils.class_Phantom == null || entity == null) return 0;
-        try {
-            if (!NMSUtils.class_Phantom.isAssignableFrom(entity.getClass())) return 0;
-            return (int) NMSUtils.class_Phantom_getSizeMethod.invoke(entity);
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return 0;
+        if (entity == null || !(entity instanceof Phantom)) return 0;
+        return ((Phantom)entity).getSize();
     }
 
     @Override
     public boolean setPhantomSize(Entity entity, int size) {
-        if (NMSUtils.class_Phantom == null || entity == null) return false;
-        try {
-            if (!NMSUtils.class_Phantom.isAssignableFrom(entity.getClass())) return false;
-            NMSUtils.class_Phantom_setSizeMethod.invoke(entity, size);
-            return true;
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return false;
+        if (entity == null || !(entity instanceof Phantom)) return false;
+        ((Phantom)entity).setSize(size);
+        return true;
     }
 
     @Override
@@ -2568,58 +2142,23 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public void addPassenger(Entity vehicle, Entity passenger) {
-        if (NMSUtils.class_Entity_addPassengerMethod != null) {
-            try {
-                NMSUtils.class_Entity_addPassengerMethod.invoke(vehicle, passenger);
-                return;
-            } catch (Exception ex) {
-                platform.getLogger().log(Level.WARNING, "Error adding entity passenger", ex);
-            }
-        }
-        platform.getDeprecatedUtils().setPassenger(vehicle, passenger);
+        vehicle.addPassenger(passenger);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<Entity> getPassengers(Entity entity) {
-        if (NMSUtils.class_Entity_getPassengersMethod != null) {
-            try {
-                return (List<Entity>) NMSUtils.class_Entity_getPassengersMethod.invoke(entity);
-            } catch (Exception ex) {
-                platform.getLogger().log(Level.WARNING, "Error getting entity passengers", ex);
-            }
-        }
-        List<Entity> passengerList = new ArrayList<>();
-        Entity passenger = platform.getDeprecatedUtils().getPassenger(entity);
-        if (passenger != null) {
-            passengerList.add(passenger);
-        }
-        return passengerList;
+        return entity.getPassengers();
     }
 
     @Override
     public boolean openBook(Player player, ItemStack itemStack) {
-        if (NMSUtils.class_Player_openBookMethod == null) {
-            return false;
-        }
-        try {
-            NMSUtils.class_Player_openBookMethod.invoke(player, itemStack);
-            return true;
-        } catch (Exception ex) {
-            platform.getLogger().log(Level.SEVERE, "Unexpected error showing book", ex);
-        }
-        return false;
+        player.openBook(itemStack);
+        return true;
     }
 
     @Override
     public boolean isHandRaised(Player player) {
-        if (NMSUtils.class_Player_isHandRaisedMethod == null) return false;
-        try {
-            return (boolean) NMSUtils.class_Player_isHandRaisedMethod.invoke(player);
-        } catch (Exception ex) {
-            platform.getLogger().log(Level.SEVERE, "Unexpected error checking block status", ex);
-        }
-        return false;
+        return player.isHandRaised();
     }
 
     @Override
@@ -2748,34 +2287,37 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public boolean isPrimaryThread() {
-        return primaryThread.get() == Thread.currentThread();
+        return Bukkit.isPrimaryThread();
     }
 
     @Override
     public boolean isAdult(Zombie zombie) {
-        return !zombie.isBaby();
+        return zombie.isAdult();
     }
 
     @Override
     public void setBaby(Zombie zombie) {
-        zombie.setBaby(true);
+        zombie.setBaby();
     }
 
     @Override
     public void setAdult(Zombie zombie) {
-        zombie.setBaby(false);
+        zombie.setAdult();
     }
 
     @Override
-    public BlockFace getSignFacing(Block sign) {
-        BlockState blockState = sign.getState();
-        MaterialData data = blockState.getData();
-        if (!(data instanceof org.bukkit.material.Sign)) {
+    public int getMinHeight(World world) {
+        return world.getMinHeight();
+    }
+
+    @Override
+    public BlockFace getSignFacing(Block signBlock) {
+        BlockData blockData = signBlock.getBlockData();
+        if (!(blockData instanceof WallSign)) {
             return null;
         }
-
-        org.bukkit.material.Sign signData = (org.bukkit.material.Sign)data;
-        return signData.getFacing();
+        WallSign sign = (WallSign)blockData;
+        return sign.getFacing();
     }
 
     @Override
@@ -2821,5 +2363,100 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
     @Nullable
     public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
         return new OutOfBoundsEntityCleanup(logger);
+    }
+
+    @Override
+    public String getEnchantmentKey(Enchantment enchantment) {
+        // We don't use toString here since we'll be parsing this ourselves
+        return enchantment.getKey().getNamespace() + ":" + enchantment.getKey().getKey();
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public Enchantment getEnchantmentByKey(String key) {
+        // Really wish there was a fromString that took a string default namespace
+        String namespace = NamespacedKey.MINECRAFT;
+        Enchantment enchantment = null;
+        if (key.contains(":")) {
+            String[] pieces = StringUtils.split(key, ":", 2);
+            namespace = pieces[0];
+            key = pieces[1];
+        } else {
+            // Convert legacy enum names
+            enchantment = Enchantment.getByName(key.toUpperCase());
+            if (enchantment != null) {
+                return enchantment;
+            }
+        }
+
+        // API says plugins aren't supposed to use this, but i have no idea how to deal
+        // with custom enchants otherwise
+        try {
+            NamespacedKey namespacedKey = new NamespacedKey(namespace, key.toLowerCase());
+            enchantment = Enchantment.getByKey(namespacedKey);
+            if (enchantment == null) {
+                // Convert legacy enchantments
+                enchantment = Enchantment.getByName(key.toUpperCase());
+            }
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Unexpected error parsing enchantment key", ex);
+        }
+        return enchantment;
+    }
+
+    @Override
+    public boolean setCompassTarget(ItemMeta meta, Location targetLocation, boolean trackLocation) {
+        if (meta == null || !(meta instanceof CompassMeta)) {
+            return false;
+        }
+        CompassMeta compassMeta = (CompassMeta)meta;
+        compassMeta.setLodestoneTracked(trackLocation);
+        compassMeta.setLodestone(targetLocation);
+        return true;
+    }
+
+    @Override
+    public boolean isAware(Entity entity) {
+        if (!(entity instanceof org.bukkit.entity.Mob)) {
+            return true;
+        }
+        return ((org.bukkit.entity.Mob)entity).isAware();
+    }
+
+    @Override
+    public void setAware(Entity entity, boolean aware) {
+        if (!(entity instanceof org.bukkit.entity.Mob)) {
+            return;
+        }
+        ((org.bukkit.entity.Mob)entity).setAware(aware);
+    }
+
+    @Override
+    public void setBossBarTitle(BossBar bossBar, String title) {
+        if (ChatUtils.hasJSON(title)) {
+            SpigotUtils spigot = platform.getSpigotUtils();
+            if (spigot != null) {
+                setBossBarTitleComponents(bossBar, spigot.serializeBossBar(title), title);
+            } else {
+                bossBar.setTitle(ChatUtils.getSimpleMessage(title));
+            }
+        } else {
+            bossBar.setTitle(title);
+        }
+    }
+
+    @Override
+    public Enchantment getInfinityEnchantment() {
+        return Enchantment.INFINITY;
+    }
+
+    @Override
+    public Enchantment getPowerEnchantment() {
+        return Enchantment.POWER;
+    }
+
+    @Override
+    public PotionEffectType getJumpPotionEffectType() {
+        return PotionEffectType.JUMP_BOOST;
     }
 }
