@@ -6,7 +6,10 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
+import com.elmakers.mine.bukkit.utility.platform.modern.ModernDeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
+import com.elmakers.mine.bukkit.utility.platform.modern.ModernSchematicUtils;
+import com.elmakers.mine.bukkit.utility.platform.modern.ModernSkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern2.event.EntityLoadEventHandler;
 
 public abstract class Modern2Platform extends ModernPlatform {
@@ -18,17 +21,17 @@ public abstract class Modern2Platform extends ModernPlatform {
 
     @Override
     protected SkinUtils createSkinUtils() {
-        return new Modern2SkinUtils(this);
+        return new ModernSkinUtils(this);
     }
 
     @Override
     protected SchematicUtils createSchematicUtils() {
-        return new Modern2SchematicUtils(this);
+        return new ModernSchematicUtils(this);
     }
 
     @Override
     protected DeprecatedUtils createDeprecatedUtils() {
-        return new Modern2DeprecatedUtils(this);
+        return new ModernDeprecatedUtils(this);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern2;
+package com.elmakers.mine.bukkit.utility.platform.modern;
 
 import java.net.URL;
 import java.util.UUID;
@@ -18,8 +18,8 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import com.mojang.authlib.properties.PropertyMap;
 
-public abstract class Modern2InventoryUtils extends InventoryUtilsBase {
-    public Modern2InventoryUtils(Platform platform) {
+public abstract class ModernInventoryUtils extends InventoryUtilsBase {
+    public ModernInventoryUtils(Platform platform) {
         super(platform);
     }
 
