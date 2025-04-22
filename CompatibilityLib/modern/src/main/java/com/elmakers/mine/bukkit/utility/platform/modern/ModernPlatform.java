@@ -8,10 +8,12 @@ import com.elmakers.mine.bukkit.utility.platform.EntityMetadataUtils;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
+import com.elmakers.mine.bukkit.utility.platform.modern.event.EntityLoadEventHandler;
 import com.elmakers.mine.bukkit.utility.platform.modern.event.EntityPickupListener;
 import com.elmakers.mine.bukkit.utility.platform.modern.event.ResourcePackListener;
 
 public abstract class ModernPlatform extends PlatformBase {
+    private Boolean hasEntityLoadEvent;
 
     public ModernPlatform(MageController controller) {
         super(controller);
@@ -42,6 +44,10 @@ public abstract class ModernPlatform extends PlatformBase {
         super.registerEvents(pm);
         ResourcePackListener timeListener = new ResourcePackListener(controller);
         pm.registerEvents(timeListener, controller.getPlugin());
+
+        if (hasEntityLoadEvent()) {
+            pm.registerEvents(new EntityLoadEventHandler(controller), controller.getPlugin());
+        }
     }
 
     @Override
@@ -52,5 +58,24 @@ public abstract class ModernPlatform extends PlatformBase {
     @Override
     public boolean hasChatComponents() {
         return true;
+    }
+
+    @Override
+    public boolean hasDeferredEntityLoad() {
+        return true;
+    }
+
+    @Override
+    public boolean hasEntityLoadEvent() {
+        if (hasEntityLoadEvent == null) {
+            try {
+                Class.forName("org.bukkit.event.world.EntitiesLoadEvent");
+                hasEntityLoadEvent = true;
+            } catch (Exception ex) {
+                hasEntityLoadEvent = false;
+                getLogger().warning("EntitiesLoadEvent not found, it is recommended that you update your server software");
+            }
+        }
+        return hasEntityLoadEvent;
     }
 }
