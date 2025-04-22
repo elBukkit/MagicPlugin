@@ -430,13 +430,6 @@ public abstract class Modern2CompatibilityUtils extends ModernCompatibilityUtils
     }
 
     @Override
-    public boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
-        // Bailed on this in 1.20
-        chunk.getBlock(x, y, z).setType(material);
-        return true;
-    }
-
-    @Override
     public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
         if (!(projectile instanceof AbstractArrow)) return false;
         AbstractArrow.PickupStatus status;

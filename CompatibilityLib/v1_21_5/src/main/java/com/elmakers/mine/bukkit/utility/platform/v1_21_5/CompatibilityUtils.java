@@ -38,7 +38,6 @@ import org.bukkit.craftbukkit.v1_21_R4.entity.CraftItem;
 import org.bukkit.craftbukkit.v1_21_R4.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R4.scheduler.CraftTask;
 import org.bukkit.craftbukkit.v1_21_R4.util.CraftChatMessage;
-import org.bukkit.craftbukkit.v1_21_R4.util.CraftMagicNumbers;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Enderman;
@@ -628,11 +627,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
     public String getEntityType(Entity entity) {
         if (entity == null) return null;
         return ((CraftEntity)entity).getHandle().getEncodeId();
-    }
-
-    @Override
-    public float getDurability(Material material) {
-        return CraftMagicNumbers.getBlock(material).getExplosionResistance();
     }
 
     protected void sendPacket(Server server, Location source, Collection<? extends Player> players, Packet<?> packet) throws Exception  {

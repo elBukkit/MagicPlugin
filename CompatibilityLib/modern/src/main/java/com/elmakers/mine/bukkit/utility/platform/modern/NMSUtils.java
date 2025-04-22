@@ -69,7 +69,6 @@ public class NMSUtils {
     protected static boolean hasTimeSkipEvent = false;
 
     protected static Class<?> class_Block;
-    protected static Class<?> class_BlockBase;
     protected static Class<?> class_ItemStack;
     protected static Class<?> class_NBTBase;
     protected static Class<?> class_NBTTagCompound;
@@ -255,7 +254,6 @@ public class NMSUtils {
     protected static Method class_MinecraftServer_getResourcePackMethod;
     protected static Method class_ItemStack_isEmptyMethod;
     protected static Method class_ItemStack_createStackMethod;
-    protected static Method class_CraftMagicNumbers_getBlockMethod;
     protected static Method class_Block_fromLegacyData;
     protected static Method class_Chunk_setBlockMethod;
     protected static Method class_Arrow_setPickupStatusMethod;
@@ -406,7 +404,6 @@ public class NMSUtils {
     protected static Field class_NBTTagLong_dataField;
     protected static Field class_NBTTagShort_dataField;
     protected static Field class_NBTTagString_dataField;
-    protected static Field class_Block_durabilityField;
     protected static Field class_Entity_jumpingField;
     protected static Field class_Entity_moveStrafingField;
     protected static Field class_Entity_moveForwardField;
@@ -1325,31 +1322,6 @@ public class NMSUtils {
                 class_Entity_jumpingField = null;
                 class_Entity_moveStrafingField = null;
                 class_Entity_moveForwardField = null;
-            }
-
-            try {
-                class_BlockBase = fixBukkitClass("net.minecraft.server.BlockBase");
-                class_Block_durabilityField = class_BlockBase.getDeclaredField("durability");
-                class_Block_durabilityField.setAccessible(true);
-            } catch (Exception not16) {
-                try {
-                    class_Block_durabilityField = class_Block.getDeclaredField("durability");
-                    class_Block_durabilityField.setAccessible(true);
-                    Class<?> craftMagicNumbers = fixBukkitClass("org.bukkit.craftbukkit.util.CraftMagicNumbers");
-                    class_CraftMagicNumbers_getBlockMethod = craftMagicNumbers.getMethod("getBlock", Material.class);
-                } catch (Throwable ex) {
-                    logger.log(Level.WARNING, "An error occurred while registering block durability accessor, durability-based block checks will not work", ex);
-                    class_Block_durabilityField = null;
-                    class_CraftMagicNumbers_getBlockMethod = null;
-                }
-            }
-
-            try {
-                Class<?> craftMagicNumbers = fixBukkitClass("org.bukkit.craftbukkit.util.CraftMagicNumbers");
-                class_CraftMagicNumbers_getBlockMethod = craftMagicNumbers.getMethod("getBlock", Material.class);
-            } catch (Throwable ex) {
-                logger.log(Level.WARNING, "An error occurred while registering block accessor, durability-based block checks will not work", ex);
-                class_CraftMagicNumbers_getBlockMethod = null;
             }
 
             try {

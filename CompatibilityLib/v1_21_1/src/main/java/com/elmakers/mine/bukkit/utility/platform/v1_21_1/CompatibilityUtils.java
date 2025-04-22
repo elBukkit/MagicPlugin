@@ -54,7 +54,6 @@ import org.bukkit.craftbukkit.v1_21_R1.entity.CraftLivingEntity;
 import org.bukkit.craftbukkit.v1_21_R1.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R1.scheduler.CraftTask;
 import org.bukkit.craftbukkit.v1_21_R1.util.CraftChatMessage;
-import org.bukkit.craftbukkit.v1_21_R1.util.CraftMagicNumbers;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
@@ -959,11 +958,6 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
             return;
         }
         ((LivingEntity)entity).swingMainHand();
-    }
-
-    @Override
-    public float getDurability(Material material) {
-        return CraftMagicNumbers.getBlock(material).getExplosionResistance();
     }
 
     protected void sendPacket(Server server, Location source, Collection<? extends Player> players, Packet<?> packet) throws Exception  {

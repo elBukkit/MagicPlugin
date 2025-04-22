@@ -1922,17 +1922,7 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public float getDurability(Material material) {
-        if (NMSUtils.class_Block_durabilityField == null || NMSUtils.class_CraftMagicNumbers_getBlockMethod == null) return 0.0f;
-        try {
-            Object block = NMSUtils.class_CraftMagicNumbers_getBlockMethod.invoke(null, material);
-            if (block == null) {
-                return 0.0f;
-            }
-            return (float) NMSUtils.class_Block_durabilityField.get(block);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return 0.0f;
+        return material.getBlastResistance();
     }
 
     @Override
@@ -1987,20 +1977,8 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
 
     @Override
     public boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
-        if (NMSUtils.class_Block_fromLegacyData == null || NMSUtils.class_CraftMagicNumbers_getBlockMethod == null || NMSUtils.class_Chunk_setBlockMethod == null || NMSUtils.class_BlockPosition_Constructor == null) {
-            platform.getDeprecatedUtils().setTypeAndData(chunk.getWorld().getBlockAt(x, y, z), material, (byte)data, false);
-            return true;
-        }
-        try {
-            Object chunkHandle = NMSUtils.getHandle(chunk);
-            Object nmsBlock = NMSUtils.class_CraftMagicNumbers_getBlockMethod.invoke(null, material);
-            nmsBlock = NMSUtils.class_Block_fromLegacyData.invoke(nmsBlock, data);
-            Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(x, y, z);
-            NMSUtils.class_Chunk_setBlockMethod.invoke(chunkHandle, blockLocation, nmsBlock);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            return false;
-        }
+        // Bailed on this in 1.20
+        chunk.getBlock(x, y, z).setType(material);
         return true;
     }
 
