@@ -1,7 +1,7 @@
 
 # CHANGELOG
 
-# 10.9.7
+# 10.9.8
 
  - This lineage (10.9.x) is now only compatible with Minecraft 1.20.4 and below
 
@@ -16,6 +16,11 @@
  - Change "invalid item in config" messages from warnings to debug messages
  - Add geyser.enabled config option, can be used to disable Geyser integration if it is causing problems
  - Update Geyser integration to new API
+
+# 10.9.7
+
+ - Did not get released, development overlapped and was forked to 10.9.8 for legacy MC versions,
+   and 10.10 for modern MC versions.
 
 # 10.9.6
 
