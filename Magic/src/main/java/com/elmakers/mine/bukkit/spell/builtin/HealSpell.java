@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.spell.builtin;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
@@ -20,12 +18,6 @@ import com.elmakers.mine.bukkit.utility.Target;
 @Deprecated
 public class HealSpell extends TargetingSpell
 {
-    private static final PotionEffectType[] _negativeEffects =
-            {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
-             PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
-             PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
-    protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
-
     @Override
     public SpellResult onCast(ConfigurationSection parameters)
     {
@@ -52,6 +44,7 @@ public class HealSpell extends TargetingSpell
             p.setFoodLevel(20);
         }
         if (parameters.getBoolean("cure", false)) {
+            Set<PotionEffectType> negativeEffects = CompatibilityLib.getCompatibilityUtils().getNegativeEffects();
             Collection<PotionEffect> effects = li.getActivePotionEffects();
             for (PotionEffect effect : effects) {
                 if (negativeEffects.contains(effect.getType())) {

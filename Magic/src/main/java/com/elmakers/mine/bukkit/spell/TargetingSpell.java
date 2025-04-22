@@ -448,10 +448,10 @@ public class TargetingSpell extends BaseSpell {
         if (damageResistanceProtection > 0 && entity instanceof LivingEntity)
         {
             LivingEntity living = (LivingEntity)entity;
-            if (living.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE)) {
+            if (living.hasPotionEffect(PotionEffectType.RESISTANCE)) {
                 Collection<PotionEffect> effects = living.getActivePotionEffects();
                 for (PotionEffect effect : effects) {
-                    if (effect.getType().equals(PotionEffectType.DAMAGE_RESISTANCE) && effect.getAmplifier() >= damageResistanceProtection) {
+                    if (effect.getType().equals(PotionEffectType.RESISTANCE) && effect.getAmplifier() >= damageResistanceProtection) {
                         mage.sendDebugMessage("Entity skipped due to damage resistance", 30);
                         return false;
                     }

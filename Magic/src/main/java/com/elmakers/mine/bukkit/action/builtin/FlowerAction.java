@@ -51,7 +51,7 @@ public class FlowerAction extends BaseSpellAction {
         super.prepare(context, parameters);
         requireBlock = new MaterialAndData(parameters.getString("grow_on", "grass_block"));
         if (!requireBlock.isValid()) {
-            requireBlock = new MaterialAndData(Material.GRASS);
+            requireBlock = new MaterialAndData(Material.GRASS_BLOCK);
         }
     }
 

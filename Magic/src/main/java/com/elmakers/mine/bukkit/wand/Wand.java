@@ -4768,7 +4768,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             potionEffectLocation.setX(potionEffectLocation.getX() + random.nextDouble() - 0.5);
             potionEffectLocation.setY(potionEffectLocation.getY() + random.nextDouble() * player.getEyeHeight());
             potionEffectLocation.setZ(potionEffectLocation.getZ() + random.nextDouble() - 0.5);
-            EffectPlayer.displayParticle(Particle.SPELL_MOB, potionEffectLocation, 0, 0, 0,
+            EffectPlayer.displayParticle(Particle.ENTITY_EFFECT, potionEffectLocation, 0, 0, 0,
             0, 0, 1, effectColor, null, (byte)0, 24);
         }
 

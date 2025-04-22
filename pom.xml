@@ -26,7 +26,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <version.java>21</version.java>
         <findbugs.version>1.3.9</findbugs.version>
-        <bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
+        <bukkit.version>1.20.5-R0.1-SNAPSHOT</bukkit.version>
     </properties>
 
     <modules>

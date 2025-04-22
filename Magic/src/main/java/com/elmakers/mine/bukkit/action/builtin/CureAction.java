@@ -1,8 +1,6 @@
 package com.elmakers.mine.bukkit.action.builtin;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.bukkit.entity.Entity;
@@ -13,16 +11,11 @@ import org.bukkit.potion.PotionEffectType;
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
+import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 
 @Deprecated
 public class CureAction extends BaseSpellAction
 {
-    private static final PotionEffectType[] _negativeEffects =
-            {PotionEffectType.BLINDNESS, PotionEffectType.CONFUSION, PotionEffectType.HARM,
-                    PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.SLOW,
-                    PotionEffectType.SLOW_DIGGING, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
-    protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
-
     @Override
     public SpellResult perform(CastContext context)
     {
@@ -34,6 +27,7 @@ public class CureAction extends BaseSpellAction
 
         LivingEntity targetEntity = (LivingEntity)entity;
         Collection<PotionEffect> currentEffects = targetEntity.getActivePotionEffects();
+        Set<PotionEffectType> negativeEffects = CompatibilityLib.getCompatibilityUtils().getNegativeEffects();
         for (PotionEffect effect : currentEffects)
         {
             if (negativeEffects.contains(effect.getType()))

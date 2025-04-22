@@ -101,7 +101,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 import org.bukkit.util.VoxelShape;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
@@ -410,11 +409,6 @@ public class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.p
         directional.setFacing(facing);
         block.setBlockData(directional);
         return true;
-    }
-
-    @Override
-    public void cancelDismount(EntityDismountEvent event) {
-        event.setCancelled(true);
     }
 
     @Override

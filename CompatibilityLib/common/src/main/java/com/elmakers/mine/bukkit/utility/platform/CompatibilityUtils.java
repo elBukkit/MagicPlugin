@@ -68,7 +68,6 @@ import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
@@ -476,8 +475,6 @@ public interface CompatibilityUtils {
 
     void load(ConfigurationSection configuration);
 
-    void cancelDismount(EntityDismountEvent event);
-
     boolean isPrimaryThread();
 
     String translateColors(String message);
@@ -563,4 +560,6 @@ public interface CompatibilityUtils {
     Enchantment getPowerEnchantment();
 
     PotionEffectType getJumpPotionEffectType();
+
+    Set<PotionEffectType> getNegativeEffects();
 }

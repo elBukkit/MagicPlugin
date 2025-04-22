@@ -65,7 +65,7 @@ public class TNTAction extends BaseProjectileAction
                 targetLoc.setX(targetLoc.getX() + rand.nextInt(2 * count) - count);
                 targetLoc.setZ(targetLoc.getZ() + rand.nextInt(2 * count) - count);
             }
-            TNTPrimed grenade = (TNTPrimed)context.getWorld().spawnEntity(targetLoc, EntityType.PRIMED_TNT);
+            TNTPrimed grenade = (TNTPrimed)context.getWorld().spawnEntity(targetLoc, EntityType.TNT);
             if (grenade == null) {
                 return SpellResult.FAIL;
             }

@@ -14,6 +14,7 @@ import org.bukkit.map.MapFont;
 import org.bukkit.map.MapFont.CharacterSprite;
 import org.bukkit.map.MapPalette;
 import org.bukkit.map.MapView;
+import org.jetbrains.annotations.NotNull;
 
 import com.elmakers.mine.bukkit.utility.ColorHD;
 
@@ -48,6 +49,21 @@ public class BufferedMapCanvas implements MapCanvas {
     @Override
     public void setCursors(MapCursorCollection cursors) {
         // .. Nothing.
+    }
+
+    @Override
+    public void setPixelColor(int x, int y, @org.jetbrains.annotations.Nullable java.awt.Color color) {
+        // TODO ??
+    }
+
+    @Override
+    public @org.jetbrains.annotations.Nullable java.awt.Color getPixelColor(int i, int i1) {
+        return null;
+    }
+
+    @Override
+    public @NotNull java.awt.Color getBasePixelColor(int i, int i1) {
+        return null;
     }
 
     @Override

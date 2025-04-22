@@ -1400,7 +1400,7 @@ public class BaseSpell implements MageSpell, Cloneable {
         bypassWeakness = workingParameters.getBoolean("bypass_weakness", bypassWeakness);
         LivingEntity livingEntity = mage.getLivingEntity();
         if (livingEntity != null && !mage.isSuperPowered()) {
-            if (!bypassConfusion && livingEntity.hasPotionEffect(PotionEffectType.CONFUSION)) {
+            if (!bypassConfusion && livingEntity.hasPotionEffect(PotionEffectType.NAUSEA)) {
                 processResult(SpellResult.CURSED, workingParameters);
                 sendCastDebugMessage(SpellResult.CURSED, " (no cast)");
                 return false;

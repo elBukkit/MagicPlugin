@@ -7,10 +7,13 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.WeakHashMap;
 import java.util.function.Consumer;
@@ -33,6 +36,7 @@ import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.type.Snow;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -68,7 +72,6 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.Vector;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
@@ -90,6 +93,12 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected static final int MAX_ENTITY_RANGE = 72;
     protected static boolean USE_MAGIC_DAMAGE = true;
     protected static int BLOCK_BREAK_RANGE = 64;
+
+    private static final PotionEffectType[] _negativeEffects =
+            {PotionEffectType.BLINDNESS, PotionEffectType.NAUSEA, PotionEffectType.INSTANT_DAMAGE,
+                    PotionEffectType.HUNGER, PotionEffectType.POISON, PotionEffectType.WEAKNESS,
+                    PotionEffectType.SLOWNESS, PotionEffectType.WEAKNESS, PotionEffectType.WITHER};
+    protected static final Set<PotionEffectType> negativeEffects = new HashSet<>(Arrays.asList(_negativeEffects));
 
     protected static final BoundingBox BLOCK_BOUNDING_BOX = new BoundingBox(0, 1, 0, 1, 0, 1);
     protected final List<BoundingBox> blockBoundingBoxes = new ArrayList<>();
@@ -217,7 +226,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         if (potion == null) {
             potion = (ThrownPotion) world.spawnEntity(
                     location,
-                    EntityType.SPLASH_POTION);
+                    EntityType.POTION);
             potion.remove();
 
             ref = new WeakReference<>(potion);
@@ -763,11 +772,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         }
     }
 
-    @Override
-    public void cancelDismount(EntityDismountEvent event) {
-        // This event can't be cancelled in this version of Spigot
-    }
-
     protected String getHexColor(String hexCode) {
         SpigotUtils spigot = platform.getSpigotUtils();
         if (spigot != null) {
@@ -913,50 +917,12 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public Particle getParticle(String particleType) {
-        Particle particle;
+        Particle particle = null;
         try {
             particle = Particle.valueOf(particleType.toUpperCase());
         } catch (Exception ignored) {
-            particle = getParticleReplacement(particleType);
         }
         return particle;
-    }
-
-    public Particle getParticleReplacement(String particle) {
-        switch (particle.toLowerCase()) {
-            case "dust_color_transition":
-                return Particle.REDSTONE;
-            case "falling_water":
-            case "falling_obsidian_tear":
-                return Particle.DRIP_WATER;
-            case "falling_dust":
-            case "dripping_honey":
-            case "falling_honey":
-            case "landing_honey":
-                return Particle.DRIP_LAVA;
-            case "vibration":
-                return Particle.SWEEP_ATTACK;
-            case "soul_fire_flame":
-            case "soul":
-                return Particle.FLAME;
-            case "bubble_column_up":
-            case "bubble_pop":
-            case "current_down":
-                return Particle.WATER_BUBBLE;
-            case "campfire_signal_smoke":
-                return Particle.SMOKE_LARGE;
-            case "campfire_cosy_smoke":
-                return Particle.SMOKE_NORMAL;
-            case "snowflake":
-                return Particle.SNOWBALL;
-            case "spit":
-                return Particle.CLOUD;
-            case "totem":
-                return Particle.MOB_APPEARANCE;
-            case "flash":
-                return Particle.END_ROD;
-        }
-        return null;
     }
 
     @Override
@@ -1141,15 +1107,23 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void setSnowLevel(Block block, int level) {
-        block.setData((byte)level);
+        org.bukkit.block.data.BlockData blockData = block.getBlockData();
+        if (blockData instanceof Snow) {
+            Snow snow = (Snow)blockData;
+            snow.setLayers(level);
+        }
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public int getSnowLevel(Block block) {
-        return block.getData();
+        int level = 0;
+        org.bukkit.block.data.BlockData blockData = block.getBlockData();
+        if (blockData instanceof Snow) {
+            Snow snow = (Snow)blockData;
+            level = snow.getLayers();
+        }
+        return level;
     }
 
     @Nullable
@@ -1159,16 +1133,21 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public Enchantment getInfinityEnchantment() {
-        return Enchantment.ARROW_INFINITE;
+        return Enchantment.INFINITY;
     }
 
     @Override
     public Enchantment getPowerEnchantment() {
-        return Enchantment.ARROW_DAMAGE;
+        return Enchantment.POWER;
     }
 
     @Override
     public PotionEffectType getJumpPotionEffectType() {
-        return PotionEffectType.JUMP;
+        return PotionEffectType.JUMP_BOOST;
+    }
+
+    @Override
+    public Set<PotionEffectType> getNegativeEffects() {
+        return negativeEffects;
     }
 }

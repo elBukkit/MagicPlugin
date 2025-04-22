@@ -57,7 +57,7 @@ public class PowerBlockAction extends BaseSpellAction {
                 block.setType(Material.AIR);
 
                 // Kaboomy time!
-                context.registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.PRIMED_TNT));
+                context.registerForUndo(block.getLocation().getWorld().spawnEntity(block.getLocation(), EntityType.TNT));
             }
             if (updateBlockState) {
                 blockState.update();

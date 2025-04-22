@@ -27,6 +27,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityDismountEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.entity.EntityTargetLivingEntityEvent;
 import org.bukkit.event.entity.EntityTeleportEvent;
@@ -34,7 +35,6 @@ import org.bukkit.event.entity.SlimeSplitEvent;
 import org.bukkit.event.world.ChunkLoadEvent;
 import org.bukkit.event.world.ChunkUnloadEvent;
 import org.bukkit.plugin.Plugin;
-import org.spigotmc.event.entity.EntityDismountEvent;
 
 import com.elmakers.mine.bukkit.api.event.MagicMobDeathEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -152,7 +152,7 @@ public class MobController implements Listener, ChunkLoadListener {
             String npcId = CompatibilityLib.getEntityMetadataUtils().getString(entity, MagicMetaKeys.NPC_ID);
             if (npcId != null) {
                 checkNPC(entity, npcId);
-            } else if (REMOVE_INVULNERABLE && entity.getType() != EntityType.DROPPED_ITEM
+            } else if (REMOVE_INVULNERABLE && entity.getType() != EntityType.ITEM
                 && CompatibilityLib.getCompatibilityUtils().isInvulnerable(entity)) {
                 // Don't remove invulnerable items since those could be dropped wands
                 Location location = entity.getLocation();
@@ -446,11 +446,11 @@ public class MobController implements Listener, ChunkLoadListener {
 
         EntityData entityData = getEntityData(event.getEntity());
         if (entityData != null && entityData.isPreventDismount()) {
-            CompatibilityLib.getCompatibilityUtils().cancelDismount(event);
+            event.setCancelled(true);
         } else {
             Mage mage = controller.getRegisteredMage(event.getEntity());
             if (mage != null && mage.isPreventDismount()) {
-                CompatibilityLib.getCompatibilityUtils().cancelDismount(event);
+                event.setCancelled(true);
             }
         }
     }

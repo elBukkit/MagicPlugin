@@ -124,7 +124,7 @@ public class ExplosionController implements Listener {
         if (cancel) {
             event.setCancelled(true);
         }
-        if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.PRIMED_TNT) {
+        if (maxTNTPerChunk > 0 && explodingEntity.getType() == EntityType.TNT) {
             if (!CompatibilityLib.getCompatibilityUtils().isChunkLoaded(explodingEntity.getLocation())) return;
             Chunk chunk = explodingEntity.getLocation().getChunk();
             if (chunk == null || !chunk.isLoaded()) return;
@@ -132,7 +132,7 @@ public class ExplosionController implements Listener {
             int tntCount = 0;
             Entity[] entities = chunk.getEntities();
             for (Entity entity : entities) {
-                if (entity != null && entity.getType() == EntityType.PRIMED_TNT) {
+                if (entity != null && entity.getType() == EntityType.TNT) {
                     tntCount++;
                 }
             }

@@ -35,7 +35,7 @@ public class ModernEntityUtils extends com.elmakers.mine.bukkit.utility.platform
             case PIGLIN:
             case PIGLIN_BRUTE:
                 return new EntityAbstractPiglinData(entity);
-            case MUSHROOM_COW:
+            case MOOSHROOM:
                 return new EntityMooshroomData(entity);
             case CAT:
                 return new EntityCatData(entity);
@@ -72,7 +72,7 @@ public class ModernEntityUtils extends com.elmakers.mine.bukkit.utility.platform
             case PIGLIN:
             case PIGLIN_BRUTE:
                 return new EntityAbstractPiglinData(parameters, controller);
-            case MUSHROOM_COW:
+            case MOOSHROOM:
                 return new EntityMooshroomData(parameters, controller);
             case CAT:
                 return new EntityCatData(parameters, controller);
