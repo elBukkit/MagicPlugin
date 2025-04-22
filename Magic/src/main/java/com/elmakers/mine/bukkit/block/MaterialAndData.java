@@ -11,7 +11,6 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
-import org.bukkit.DyeColor;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
 import org.bukkit.block.Banner;
