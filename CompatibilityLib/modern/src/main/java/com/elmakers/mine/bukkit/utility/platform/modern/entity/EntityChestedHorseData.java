@@ -11,7 +11,6 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
-import com.elmakers.mine.bukkit.utility.platform.v1_12.entity.EntityAbstractHorseData;
 
 public class EntityChestedHorseData extends EntityAbstractHorseData {
     private Boolean hasChest;
