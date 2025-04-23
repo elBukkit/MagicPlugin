@@ -7,7 +7,7 @@
         <artifactId>CompatibilityLib-parent</artifactId>
         <version>10.10.1-SNAPSHOT</version>
     </parent>
-    <artifactId>CompatibilityLib-modern2</artifactId>
+    <artifactId>CompatibilityLib-base_v1_21_4</artifactId>
 
     <properties>
         <bukkit.version>1.21.4-R0.1-SNAPSHOT</bukkit.version>
