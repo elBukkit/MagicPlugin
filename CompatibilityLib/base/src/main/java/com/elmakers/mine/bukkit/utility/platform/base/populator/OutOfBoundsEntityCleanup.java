@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern.populator;
+package com.elmakers.mine.bukkit.utility.platform.base.populator;
 
 import java.util.Random;
 import java.util.logging.Logger;

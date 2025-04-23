@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern.event;
+package com.elmakers.mine.bukkit.utility.platform.base.event;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;

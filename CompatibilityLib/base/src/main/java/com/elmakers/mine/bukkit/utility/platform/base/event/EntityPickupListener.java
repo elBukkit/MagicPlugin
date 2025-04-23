@@ -1,22 +1,22 @@
-package com.elmakers.mine.bukkit.utility.platform.base.listener;
+package com.elmakers.mine.bukkit.utility.platform.base.event;
 
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.entity.EntityPickupItemEvent;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 
-public class PlayerPickupListener implements Listener {
+public class EntityPickupListener implements Listener {
     private MageController controller;
 
-    public PlayerPickupListener(MageController controller) {
+    public EntityPickupListener(MageController controller) {
         this.controller = controller;
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onPlayerPickupItem(PlayerPickupItemEvent event) {
-        if (controller.onEntityPickupItem(event.getPlayer(), event.getItem())) {
+    public void onPlayerPickupItem(EntityPickupItemEvent event) {
+        if (controller.onEntityPickupItem(event.getEntity(), event.getItem())) {
             event.setCancelled(true);
         }
     }

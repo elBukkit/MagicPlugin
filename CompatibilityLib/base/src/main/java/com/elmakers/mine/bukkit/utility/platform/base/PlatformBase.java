@@ -23,7 +23,9 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.listener.PlayerPickupListener;
+import com.elmakers.mine.bukkit.utility.platform.base.event.EntityLoadEventHandler;
+import com.elmakers.mine.bukkit.utility.platform.base.event.EntityPickupListener;
+import com.elmakers.mine.bukkit.utility.platform.base.event.ResourcePackListener;
 
 public abstract class PlatformBase implements Platform {
     protected final MageController controller;
@@ -51,6 +53,7 @@ public abstract class PlatformBase implements Platform {
     protected final SpigotUtils spigotUtils;
     @Nonnull
     protected final EntityMetadataUtils entityMetadataUtils;
+    private Boolean hasEntityLoadEvent;
     protected final boolean valid;
 
     public PlatformBase(MageController controller) {
@@ -97,11 +100,14 @@ public abstract class PlatformBase implements Platform {
         if (paperUtils != null) {
             paperUtils.registerEvents(controller, pm);
         }
-        registerPickupEvent(pm);
-    }
+        pm.registerEvents(new EntityPickupListener(controller), controller.getPlugin());
 
-    protected void registerPickupEvent(PluginManager pm) {
-        pm.registerEvents(new PlayerPickupListener(controller), controller.getPlugin());
+        ResourcePackListener timeListener = new ResourcePackListener(controller);
+        pm.registerEvents(timeListener, controller.getPlugin());
+
+        if (hasEntityLoadEvent()) {
+            pm.registerEvents(new EntityLoadEventHandler(controller), controller.getPlugin());
+        }
     }
 
     protected EntityMetadataUtils createEntityMetadataUtils() {
@@ -281,16 +287,25 @@ public abstract class PlatformBase implements Platform {
 
     @Override
     public boolean hasChatComponents() {
-        return spigotUtils != null;
-    }
-
-    @Override
-    public boolean hasEntityLoadEvent() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean hasDeferredEntityLoad() {
-        return false;
+        return true;
+    }
+
+    @Override
+    public boolean hasEntityLoadEvent() {
+        if (hasEntityLoadEvent == null) {
+            try {
+                Class.forName("org.bukkit.event.world.EntitiesLoadEvent");
+                hasEntityLoadEvent = true;
+            } catch (Exception ex) {
+                hasEntityLoadEvent = false;
+                getLogger().warning("EntitiesLoadEvent not found, it is recommended that you update your server software");
+            }
+        }
+        return hasEntityLoadEvent;
     }
 }

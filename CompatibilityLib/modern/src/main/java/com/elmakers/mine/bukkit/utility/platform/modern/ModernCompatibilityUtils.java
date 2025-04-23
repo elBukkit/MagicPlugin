@@ -118,7 +118,7 @@ import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
-import com.elmakers.mine.bukkit.utility.platform.modern.populator.OutOfBoundsEntityCleanup;
+import com.elmakers.mine.bukkit.utility.platform.base.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
 public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase {

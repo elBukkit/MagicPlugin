@@ -23,9 +23,8 @@ import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 import com.elmakers.mine.bukkit.utility.platform.SchematicUtils;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
-import com.elmakers.mine.bukkit.utility.platform.modern.event.EntityTransformController;
-import com.elmakers.mine.bukkit.utility.platform.modern.event.TimeListener;
+import com.elmakers.mine.bukkit.utility.platform.base.event.EntityTransformController;
+import com.elmakers.mine.bukkit.utility.platform.base.event.TimeListener;
 
 public class CompatibilityLib extends PlatformInterpreter {
     private static com.elmakers.mine.bukkit.utility.platform.Platform platform;
@@ -84,10 +83,6 @@ public class CompatibilityLib extends PlatformInterpreter {
 
     public static boolean isCurrentVersion() {
         return platform == null ? true : platform.isCurrentVersion();
-    }
-
-    public static boolean isModern() {
-        return platform instanceof ModernPlatform;
     }
 
     public static boolean hasStatistics() {
