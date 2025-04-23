@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
@@ -25,7 +25,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.component.CustomData;
 
-public class ItemUtils extends ModernItemUtils {
+public class ItemUtils extends ItemUtilsBase {
     public ItemUtils(Platform platform) {
         super(platform);
     }

@@ -7,9 +7,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.components.CustomModelDataComponent;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.ItemUtilsBase;
 
-public abstract class Modern2ItemUtils extends ModernItemUtils {
+public abstract class Modern2ItemUtils extends ItemUtilsBase {
     public Modern2ItemUtils(Platform platform) {
         super(platform);
     }
