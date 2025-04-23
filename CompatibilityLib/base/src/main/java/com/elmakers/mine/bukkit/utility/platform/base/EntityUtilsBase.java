@@ -27,36 +27,51 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.utility.platform.EntityUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAbstractPiglinData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAreaEffectCloudData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityArmorStandData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAxolotlData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityCatData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityCreeperData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityDroppedItemData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEnderDragonData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEnderSignalData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEndermiteData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFallingBlockData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFoxData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityGoatData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityHorseData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityItemFrameData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityLlamaData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityMooshroomData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityMuleData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPaintingData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityParrotData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityPhantomData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityRabbitData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySheepData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityShulkerData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntitySlimeData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityVillagerData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityWolfData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityZombieVillagerData;
 
-public abstract class EntityUtilsBase implements EntityUtils {
+public class EntityUtilsBase implements EntityUtils {
     protected final Platform platform;
 
     protected EntityUtilsBase(final Platform platform) {
         this.platform = platform;
     }
 
-    @Override
-    public EntityExtraData getExtraData(MageController controller, Entity entity) {
+    private EntityExtraData getExtraDataByClass(MageController controller, Entity entity) {
+        // This was the original implementation, it could probably be merged
+        // with the new implementation by EntityType
         EntityExtraData extraData = null;
         if (entity instanceof Horse) {
-            extraData = new EntityHorseData((Horse)entity, controller);
+            extraData = new EntityHorseData(entity, controller);
         } else if (entity instanceof Villager) {
-            extraData = new EntityVillagerData((Villager)entity);
+            extraData = new EntityVillagerData(entity);
         } else if (entity instanceof Wolf) {
             extraData = new EntityWolfData(entity);
         } else if (entity instanceof Rabbit) {
@@ -85,6 +100,49 @@ public abstract class EntityUtilsBase implements EntityUtils {
             extraData = new EntitySheepData(entity);
         }
         return extraData;
+    }
+
+    @Override
+    public EntityExtraData getExtraData(MageController controller, Entity entity) {
+        switch (entity.getType()) {
+            case FOX:
+                return new EntityFoxData(entity);
+            case PIGLIN:
+            case PIGLIN_BRUTE:
+                return new EntityAbstractPiglinData(entity);
+            case MOOSHROOM:
+                return new EntityMooshroomData(entity);
+            case CAT:
+                return new EntityCatData(entity);
+            case PHANTOM:
+                return new EntityPhantomData(entity);
+            case ENDERMITE:
+                return new EntityEndermiteData(entity);
+            case VILLAGER:
+                return new EntityVillagerData(entity);
+            case FALLING_BLOCK:
+                return new EntityFallingBlockData(entity, controller);
+            case HORSE:
+                return new EntityHorseData(entity, controller);
+            case LLAMA:
+                return new EntityLlamaData(entity, controller);
+            case MULE:
+                return new EntityMuleData(entity, controller);
+            case PARROT:
+                return new EntityParrotData(entity);
+            case SHULKER:
+                return new EntityShulkerData(entity);
+            case ZOMBIE_VILLAGER:
+                return new EntityZombieVillagerData(entity);
+            case GOAT:
+                return new EntityGoatData(entity);
+            case AXOLOTL:
+                return new EntityAxolotlData(entity);
+            case EYE_OF_ENDER:
+                return new EntityEnderSignalData(entity);
+            default:
+                return getExtraDataByClass(controller, entity);
+        }
     }
 
     @Override
@@ -122,6 +180,33 @@ public abstract class EntityUtilsBase implements EntityUtils {
                 return new EntityDroppedItemData(parameters, controller);
             case SHEEP:
                 return new EntitySheepData(parameters, controller);
+            case FOX:
+                return new EntityFoxData(parameters, controller);
+            case PIGLIN:
+            case PIGLIN_BRUTE:
+                return new EntityAbstractPiglinData(parameters, controller);
+            case MOOSHROOM:
+                return new EntityMooshroomData(parameters, controller);
+            case CAT:
+                return new EntityCatData(parameters, controller);
+            case PHANTOM:
+                return new EntityPhantomData(parameters);
+            case ENDERMITE:
+                return new EntityEndermiteData(parameters);
+            case MULE:
+                return new EntityMuleData(parameters, controller);
+            case LLAMA:
+                return new EntityLlamaData(parameters, controller);
+            case PARROT:
+                return new EntityParrotData(parameters, controller);
+            case SHULKER:
+                return new EntityShulkerData(parameters);
+            case GOAT:
+                return new EntityGoatData(parameters, controller);
+            case AXOLOTL:
+                return new EntityAxolotlData(parameters, controller);
+            case EYE_OF_ENDER:
+                return new EntityEnderSignalData(parameters, controller);
             default:
                 return null;
         }

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern.entity;
+package com.elmakers.mine.bukkit.utility.platform.base.entity;
 
 import java.util.UUID;
 import java.util.logging.Level;
@@ -13,7 +13,6 @@ import org.bukkit.entity.Fox;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityFoxData extends EntityAnimalData {
     private Fox.Type type;

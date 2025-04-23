@@ -5,6 +5,7 @@ import javax.annotation.Nullable;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.FallingBlock;
@@ -15,6 +16,7 @@ import com.elmakers.mine.bukkit.entity.EntityExtraData;
 import com.elmakers.mine.bukkit.entity.SpawnedEntityExtraData;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.PlatformInterpreter;
 
 public class EntityFallingBlockData extends EntityExtraData {
     @Nullable
@@ -88,14 +90,13 @@ public class EntityFallingBlockData extends EntityExtraData {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public SpawnedEntityExtraData spawn(Location location) {
-        Material material = getMaterial();
-        byte data = getMaterialData();
-        if (material == null) {
-            material = Material.DIRT;
+        String blockDataString = getBlockData();
+        if (blockDataString != null && !blockDataString.isEmpty()) {
+            BlockData blockData = PlatformInterpreter.getPlatform().getPlugin().getServer().createBlockData(blockDataString);
+            Entity newEntity = location.getWorld().spawnFallingBlock(location, blockData);
+            return new SpawnedEntityExtraData(newEntity, true);
         }
-        Entity newEntity = location.getWorld().spawnFallingBlock(location, material, data);
-        return new SpawnedEntityExtraData(newEntity, true);
+        return super.spawn(location);
     }
 }

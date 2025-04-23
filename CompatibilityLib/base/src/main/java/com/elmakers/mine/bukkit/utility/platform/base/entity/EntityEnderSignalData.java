@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern.entity;
+package com.elmakers.mine.bukkit.utility.platform.base.entity;
 
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -9,7 +9,6 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityEnderSignalData extends EntityAnimalData {
     private Boolean dropItem;

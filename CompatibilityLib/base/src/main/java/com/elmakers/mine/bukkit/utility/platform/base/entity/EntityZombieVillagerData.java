@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern.entity;
+package com.elmakers.mine.bukkit.utility.platform.base.entity;
 
 import java.util.Arrays;
 

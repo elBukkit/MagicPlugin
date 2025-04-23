@@ -30,11 +30,6 @@ public class Platform extends ModernPlatform {
     }
 
     @Override
-    protected com.elmakers.mine.bukkit.utility.platform.EntityUtils createEntityUtils() {
-        return new EntityUtils(this);
-    }
-
-    @Override
     protected com.elmakers.mine.bukkit.utility.platform.MobUtils createMobUtils() {
         return new MobUtils(this);
     }

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern.entity;
+package com.elmakers.mine.bukkit.utility.platform.base.entity;
 
 import java.util.logging.Logger;
 
@@ -8,7 +8,6 @@ import org.bukkit.entity.Cat;
 import org.bukkit.entity.Entity;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityCatData extends EntityAnimalData {
     private Cat.Type type;

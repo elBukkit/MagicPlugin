@@ -45,11 +45,14 @@ public class EntityHorseData extends EntityAbstractHorseData {
         temporaryArmor = parameters.getBoolean("armor_temporary");
     }
 
-    public EntityHorseData(Horse horse, MageController controller) {
-        super(horse);
-        color = horse.getColor();
-        style = horse.getStyle();
-        armor = getItem(horse.getInventory().getArmor(), controller);
+    public EntityHorseData(Entity entity, MageController controller) {
+        super(entity, controller);
+        if (entity instanceof Horse) {
+            Horse horse = (Horse)entity;
+            color = horse.getColor();
+            style = horse.getStyle();
+            armor = getItem(horse.getInventory().getArmor(), controller);
+        }
     }
 
     @Override

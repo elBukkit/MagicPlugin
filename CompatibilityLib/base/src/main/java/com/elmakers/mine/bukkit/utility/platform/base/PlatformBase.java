@@ -109,7 +109,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected EntityUtils createEntityUtils() {
-        throw new IllegalStateException("Platform does not implement createEntityUtils");
+        return new EntityUtilsBase(this);
     }
 
     protected PaperUtils createPaperUtils() {

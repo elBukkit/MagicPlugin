@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern.entity;
+package com.elmakers.mine.bukkit.utility.platform.base.entity;
 
 import java.util.logging.Logger;
 
@@ -7,7 +7,6 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Parrot;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
-import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityAnimalData;
 
 public class EntityParrotData extends EntityAnimalData {
     public Parrot.Variant variant;
