@@ -3,13 +3,10 @@ package com.elmakers.mine.bukkit.utility.platform.modern2;
 import java.util.UUID;
 
 import org.bukkit.NamespacedKey;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernCompatibilityUtils;
@@ -66,43 +63,8 @@ public abstract class Modern2CompatibilityUtils extends ModernCompatibilityUtils
     }
 
     @Override
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
-        if (item == null) return false;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return false;
-        try {
-            AttributeModifier.Operation operation;
-            try {
-                operation = AttributeModifier.Operation.values()[attributeOperation];
-            } catch (Throwable ex) {
-                platform.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
-                return false;
-            }
-            AttributeModifier modifier;
-
-            NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), "modifier");
-            EquipmentSlotGroup equipmentSlotGroup = EquipmentSlotGroup.ANY;
-            if (slot != null && !slot.isEmpty()) {
-                try {
-                    if (slot.equalsIgnoreCase("mainhand")) {
-                        equipmentSlotGroup = EquipmentSlotGroup.MAINHAND;
-                    } else if (slot.equalsIgnoreCase("offhand")) {
-                        equipmentSlotGroup = EquipmentSlotGroup.OFFHAND;
-                    } else {
-                        equipmentSlotGroup = EquipmentSlotGroup.getByName(slot.toUpperCase());
-                    }
-                } catch (Throwable ex) {
-                    platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
-                    return false;
-                }
-            }
-            modifier = new AttributeModifier(namespacedKey, value, operation, equipmentSlotGroup);
-            meta.addAttributeModifier(attribute, modifier);
-            item.setItemMeta(meta);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
+    protected AttributeModifier createAttributeModifier(UUID attributeUUID, double value, AttributeModifier.Operation operation, EquipmentSlotGroup equipmentSlotGroup) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), "modifier");
+        return new AttributeModifier(namespacedKey, value, operation, equipmentSlotGroup);
     }
 }
