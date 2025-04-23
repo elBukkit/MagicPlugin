@@ -84,6 +84,7 @@ import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.populator.OutOfBoundsEntityCleanup;
 
 public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
@@ -1128,7 +1129,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Nullable
     public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
-        return null;
+        return new OutOfBoundsEntityCleanup(logger);
     }
 
     @Override

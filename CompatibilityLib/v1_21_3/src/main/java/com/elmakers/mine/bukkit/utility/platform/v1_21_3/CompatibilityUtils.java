@@ -12,8 +12,6 @@ import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.annotation.Nullable;
 
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
@@ -77,7 +75,6 @@ import org.bukkit.entity.Witch;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
@@ -108,7 +105,6 @@ import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern.ModernCompatibilityUtils;
-import com.elmakers.mine.bukkit.utility.platform.v1_21_3.populator.OutOfBoundsEntityCleanup;
 import com.google.common.collect.Multimap;
 
 import net.minecraft.core.BlockPos;
@@ -1813,11 +1809,6 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
                 ? (net.minecraft.world.entity.LivingEntity)nmsDamaged : null;
         livingDamaged.setLastHurtByMob(livingDamager);
         return true;
-    }
-
-    @Nullable
-    public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
-        return new OutOfBoundsEntityCleanup(logger);
     }
 
     @Override
