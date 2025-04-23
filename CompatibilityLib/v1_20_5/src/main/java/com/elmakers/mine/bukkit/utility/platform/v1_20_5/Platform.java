@@ -2,9 +2,9 @@ package com.elmakers.mine.bukkit.utility.platform.v1_20_5;
 
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernPlatform;
+import com.elmakers.mine.bukkit.utility.platform.base.PlatformBase;
 
-public class Platform extends ModernPlatform {
+public class Platform extends PlatformBase {
     public Platform(MageController controller) {
         super(controller);
     }
