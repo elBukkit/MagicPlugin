@@ -132,9 +132,6 @@ public class NMSUtils {
     protected static Constructor class_Vec3D_constructor;
     protected static Constructor class_BlockActionContext_constructor;
 
-    protected static Field class_Entity_motXField;
-    protected static Field class_Entity_motYField;
-    protected static Field class_Entity_motZField;
     protected static Field class_Entity_motField;
     protected static Field class_WorldServer_entitiesByUUIDField;
     protected static Field class_Firework_ticksFlownField;
@@ -390,39 +387,21 @@ public class NMSUtils {
                 class_Entity_motField = class_Entity.getDeclaredField("mot");
                 class_Entity_motField.setAccessible(true);
             } catch (Throwable not14) {
-                try {
-                    class_Entity_motXField = class_Entity.getDeclaredField("motX");
-                    class_Entity_motXField.setAccessible(true);
-                    class_Entity_motYField = class_Entity.getDeclaredField("motY");
-                    class_Entity_motYField.setAccessible(true);
-                    class_Entity_motZField = class_Entity.getDeclaredField("motZ");
-                    class_Entity_motZField.setAccessible(true);
-                } catch (Throwable ex) {
-                    logger.warning("Could not bind to motion setters, some things may be broken");
-                }
+                logger.warning("Could not bind to motion setters, some things may be broken");
             }
 
-            // Changed in 1.13.2
             try {
-                class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("a");
-                class_AxisAlignedBB_minYField = class_AxisAlignedBB.getField("b");
-                class_AxisAlignedBB_minZField = class_AxisAlignedBB.getField("c");
-                class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("d");
-                class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("e");
-                class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("f");
-            } catch (Throwable ignore) {
-                try {
-                    class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("minX");
-                    class_AxisAlignedBB_minYField = class_AxisAlignedBB.getField("minY");
-                    class_AxisAlignedBB_minZField = class_AxisAlignedBB.getField("minZ");
-                    class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("maxX");
-                    class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("maxY");
-                    class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("maxZ");
-                } catch (Throwable ex) {
-                    logger.warning("Could not bind to AABB methods, vanilla hitboxes aren't readable");
-                    class_Entity_getBoundingBox = null;
-                }
+                class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("minX");
+                class_AxisAlignedBB_minYField = class_AxisAlignedBB.getField("minY");
+                class_AxisAlignedBB_minZField = class_AxisAlignedBB.getField("minZ");
+                class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("maxX");
+                class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("maxY");
+                class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("maxZ");
+            } catch (Throwable ex) {
+                logger.warning("Could not bind to AABB methods, vanilla hitboxes aren't readable");
+                class_Entity_getBoundingBox = null;
             }
+
             try {
                 Class<?> class_ItemBoneMeal = fixBukkitClass("net.minecraft.server.ItemBoneMeal");
                 class_ItemDye_bonemealMethod = class_ItemBoneMeal.getMethod("a", class_ItemStack, class_World, class_BlockPosition);
@@ -444,31 +423,9 @@ public class NMSUtils {
             }
 
             try {
-                try {
-                    // 1.14
-                    class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("h", Integer.TYPE);
-                    if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
-                        throw new Exception("Not 1.14");
-                    }
-                } catch (Throwable not14) {
-                    try {
-                        // 1.13
-                        class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("k", Integer.TYPE);
-                        if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
-                            throw new Exception("Not 1.13");
-                        }
-                    } catch (Throwable not13) {
-                        try {
-                            // 1.12
-                            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("f", Integer.TYPE);
-                            if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
-                                throw new Exception("Not 1.12");
-                            }
-                        } catch (Throwable not12) {
-                            // 1.11 and lower
-                            class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("e", Integer.TYPE);
-                        }
-                    }
+                class_NBTTagList_getDoubleMethod = class_NBTTagList.getMethod("h", Integer.TYPE);
+                if (class_NBTTagList_getDoubleMethod.getReturnType() != Double.TYPE) {
+                    throw new Exception("Wrong return type");
                 }
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "An error occurred while registering NBTTagList.getDouble, loading entities from schematics will not work", ex);
@@ -542,45 +499,26 @@ public class NMSUtils {
             }
 
             try {
-                // 1.12
-                try {
-                    // Common to 1.12 and below
-                    class_PacketPlayOutChat = fixBukkitClass("net.minecraft.server.PacketPlayOutChat");
-                    Class<?> class_ChatComponentText = fixBukkitClass("net.minecraft.server.ChatComponentText");
-                    Class<?> class_IChatBaseComponent = fixBukkitClass("net.minecraft.server.IChatBaseComponent");
-                    class_ChatComponentText_constructor = class_ChatComponentText.getConstructor(String.class);
+                // Common to 1.12 and below
+                class_PacketPlayOutChat = fixBukkitClass("net.minecraft.server.PacketPlayOutChat");
+                Class<?> class_ChatComponentText = fixBukkitClass("net.minecraft.server.ChatComponentText");
+                Class<?> class_IChatBaseComponent = fixBukkitClass("net.minecraft.server.IChatBaseComponent");
+                class_ChatComponentText_constructor = class_ChatComponentText.getConstructor(String.class);
 
-                    // Common to 1.16 and below
-                    Class<Enum> class_ChatMessageType = (Class<Enum>) fixBukkitClass("net.minecraft.server.ChatMessageType");
-                    enum_ChatMessageType_GAME_INFO = Enum.valueOf(class_ChatMessageType, "GAME_INFO");
-
-                    // 1.16 specific
-                    try {
-                        class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, class_ChatMessageType, UUID.class);
-                        chatPacketHasUUID = true;
-                    } catch (Throwable not16) {
-                        // 1.12 specific
-                        class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, class_ChatMessageType);
-                    }
-
-                } catch (Throwable ex) {
-                    class_PacketPlayOutChat_constructor = null;
-                }
+                // Common to 1.16 and below
+                Class<Enum> class_ChatMessageType = (Class<Enum>) fixBukkitClass("net.minecraft.server.ChatMessageType");
+                enum_ChatMessageType_GAME_INFO = Enum.valueOf(class_ChatMessageType, "GAME_INFO");
+                class_PacketPlayOutChat_constructor = class_PacketPlayOutChat.getConstructor(class_IChatBaseComponent, class_ChatMessageType, UUID.class);
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "An error occurred while registering action bar methods, action bar messages will not work", ex);
                 class_PacketPlayOutChat = null;
+                class_PacketPlayOutChat_constructor = null;
             }
 
             try {
-                try {
-                    // 1.11
-                    Class<?> class_Consumer = fixBukkitClass("org.bukkit.util.Consumer");
-                    class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, class_Consumer, CreatureSpawnEvent.SpawnReason.class);
-                    class_CraftWorld_spawnMethod_isLegacy = false;
-                } catch (Throwable ignore) {
-                    class_CraftWorld_spawnMethod_isLegacy = true;
-                    class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, CreatureSpawnEvent.SpawnReason.class);
-                }
+                Class<?> class_Consumer = fixBukkitClass("org.bukkit.util.Consumer");
+                class_CraftWorld_spawnMethod = class_CraftWorld.getMethod("spawn", Location.class, Class.class, class_Consumer, CreatureSpawnEvent.SpawnReason.class);
+                class_CraftWorld_spawnMethod_isLegacy = false;
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "An error occurred while registering custom spawn method, spawn reasons will not work", ex);
                 class_CraftWorld_spawnMethod = null;
@@ -628,93 +566,34 @@ public class NMSUtils {
                 damageSources = null;
                 logger.log(Level.WARNING, "An error occurred, using specific damage types will not work, will use normal damage instead", ex);
             }
+
             try {
                 class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("disabledSlots");
-            } catch (Exception notcurrent) {
-                try {
-                    try {
-                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bv");
-                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
-                            throw new Exception("Looks like 1.15/1.14, maybe");
-                    } catch (Exception not16) {
-                        try {
-                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bE");
-                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
-                                throw new Exception("Looks like 1.13, maybe");
-                        } catch (Exception not14) {
-                            // 1.13
-                            try {
-                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bH");
-                                if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
-                                    throw new Exception("Looks like 1.12, maybe");
-                            } catch (Exception not13) {
-                                try {
-                                    // 1.12, same as 1.10
-                                    class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                                    if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
-                                        throw new Exception("Looks like 1.11, maybe");
-                                } catch (Throwable not12) {
-                                    try {
-                                        // 1.11
-                                        class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                                        if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
-                                            throw new Exception("Looks like 1.10");
-                                    } catch (Throwable ignore) {
-                                        // 1.10 and earlier
-                                        try {
-                                            class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bB");
-                                            if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE)
-                                                throw new Exception("Looks like 1.9");
-                                        } catch (Throwable ignore2) {
-                                            try {
-                                                // 1.9.4
-                                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bA");
-                                            } catch (Throwable ignore3) {
-                                                // 1.9.2
-                                                class_EntityArmorStand_disabledSlotsField = class_EntityArmorStand.getDeclaredField("bz");
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                } catch (Throwable ex) {
-                    logger.log(Level.WARNING, "An error occurred, armor stand slots cannot be locked", ex);
-                    class_EntityArmorStand_disabledSlotsField = null;
+                if (class_EntityArmorStand_disabledSlotsField.getType() != Integer.TYPE) {
+                    throw new Exception("Wrong return type");
                 }
+            } catch (Throwable ex) {
+                logger.log(Level.WARNING, "An error occurred, armor stand slots cannot be locked", ex);
+                class_EntityArmorStand_disabledSlotsField = null;
             }
             if (class_EntityArmorStand_disabledSlotsField != null) {
                 class_EntityArmorStand_disabledSlotsField.setAccessible(true);
             }
 
             try {
-                try {
-                    // <= 1.12.2
-                    class_TileEntityRecordPlayer_record = class_TileEntityRecordPlayer.getDeclaredField("record");
-                    class_TileEntityRecordPlayer_record.setAccessible(true);
-                } catch (NoSuchFieldException e) {
-                    // 1.13.2
-                    class_TileEntityRecordPlayer_record = class_TileEntityRecordPlayer.getDeclaredField("a");
-                    class_TileEntityRecordPlayer_record.setAccessible(true);
-                }
+                class_TileEntityRecordPlayer_record = class_TileEntityRecordPlayer.getDeclaredField("a");
+                class_TileEntityRecordPlayer_record.setAccessible(true);
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "Failed to find 'record' field in jukebox tile entity", ex);
                 class_TileEntityRecordPlayer_record = null;
             }
 
             try {
-                try {
-                    // 1.10 and 1.11
-                    class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("C");
-                    if (class_PlayerConnection_floatCountField.getType() != Integer.TYPE)
-                        throw new Exception("Looks like 1.9");
-                    class_PlayerConnection_floatCountField.setAccessible(true);
-                } catch (Throwable ignore) {
-                    // 1.9 and earlier
-                    class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("g");
-                    class_PlayerConnection_floatCountField.setAccessible(true);
+                class_PlayerConnection_floatCountField = class_PlayerConnection.getDeclaredField("C");
+                if (class_PlayerConnection_floatCountField.getType() != Integer.TYPE) {
+                    throw new Exception("Wrong return type");
                 }
+                class_PlayerConnection_floatCountField.setAccessible(true);
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "An error occurred, player flight exemption will not work", ex);
                 class_PlayerConnection_floatCountField = null;
@@ -725,23 +604,8 @@ public class NMSUtils {
                     Class<?> class_IProjectile = fixBukkitClass("net.minecraft.server.IProjectile");
                     class_EntityArrow_lifeField = class_IProjectile.getDeclaredField("despawnCounter");
                 } catch (Throwable ignore) {
-                    try {
-                        // 1.13
-                        class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("despawnCounter");
-                    } catch (Throwable ignore6) {
-                        try {
-                            // 1.11
-                            class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ax");
-                        } catch (Throwable ignore5) {
-                            try {
-                                // 1.10
-                                class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ay"); // ayyyyy lmao
-                            } catch (Throwable ignore4) {
-                                // 1.8.3
-                                class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("ar");
-                            }
-                        }
-                    }
+                    // 1.13
+                    class_EntityArrow_lifeField = class_EntityArrow.getDeclaredField("despawnCounter");
                 }
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "Could not find arrow lifetime field, setting arrow lifespan will not work");
@@ -752,18 +616,9 @@ public class NMSUtils {
             }
 
             try {
-                // 1.13 and up
-                try {
-                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("x");
-                    if (!class_EntityDamageSource_setThornsMethod.getReturnType().isAssignableFrom(class_EntityDamageSource)) {
-                        throw new Exception("Wrong return type");
-                    }
-                } catch (Throwable not13) {
-                    // 1.9 and up
-                    class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("w");
-                    if (!class_EntityDamageSource_setThornsMethod.getReturnType().isAssignableFrom(class_EntityDamageSource)) {
-                        throw new Exception("Wrong return type");
-                    }
+                class_EntityDamageSource_setThornsMethod = class_EntityDamageSource.getMethod("x");
+                if (!class_EntityDamageSource_setThornsMethod.getReturnType().isAssignableFrom(class_EntityDamageSource)) {
+                    throw new Exception("Wrong return type");
                 }
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "An error occurred, thorn damage override to hurt ender dragon will not work", ex);
@@ -771,20 +626,8 @@ public class NMSUtils {
             }
 
             try {
-                try {
-                    // 1.12
-                    class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("getSaveID");
-                    class_Entity_saveMethod = class_Entity.getMethod("save", class_NBTTagCompound);
-                } catch (Throwable not12) {
-                    try {
-                        // 1.10 and 1.11
-                        class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("at");
-                    } catch (Throwable ignore) {
-                        // 1.9 and earlier
-                        class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("as");
-                    }
-                    class_Entity_saveMethod = class_Entity.getMethod("e", class_NBTTagCompound);
-                }
+                class_Entity_getTypeMethod = class_Entity.getDeclaredMethod("getSaveID");
+                class_Entity_saveMethod = class_Entity.getMethod("save", class_NBTTagCompound);
             } catch (Throwable ex) {
                 logger.log(Level.WARNING, "An error occurred, saving entities to spawn eggs will not work", ex);
                 class_Entity_getTypeMethod = null;

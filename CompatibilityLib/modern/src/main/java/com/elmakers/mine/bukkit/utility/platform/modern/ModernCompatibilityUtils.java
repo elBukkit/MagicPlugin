@@ -1076,10 +1076,6 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
             if (NMSUtils.class_Entity_motField != null) {
                 Object vec = NMSUtils.class_Vec3D_constructor.newInstance(motion.getX(), motion.getY(), motion.getZ());
                 NMSUtils.class_Entity_motField.set(handle, vec);
-            } else if (NMSUtils.class_Entity_motXField != null) {
-                NMSUtils.class_Entity_motXField.set(handle, motion.getX());
-                NMSUtils.class_Entity_motYField.set(handle, motion.getY());
-                NMSUtils.class_Entity_motZField.set(handle, motion.getZ());
             }
         } catch (Exception ex) {
             ex.printStackTrace();
@@ -1561,10 +1557,8 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
             Object packet;
             if (NMSUtils.enum_ChatMessageType_GAME_INFO == null) {
                 packet = NMSUtils.class_PacketPlayOutChat_constructor.newInstance(chatComponent, (byte)2);
-            } else if (NMSUtils.chatPacketHasUUID) {
-                packet = NMSUtils.class_PacketPlayOutChat_constructor.newInstance(chatComponent, NMSUtils.enum_ChatMessageType_GAME_INFO, emptyUUID);
             } else {
-                packet = NMSUtils.class_PacketPlayOutChat_constructor.newInstance(chatComponent, NMSUtils.enum_ChatMessageType_GAME_INFO);
+                packet = NMSUtils.class_PacketPlayOutChat_constructor.newInstance(chatComponent, NMSUtils.enum_ChatMessageType_GAME_INFO, emptyUUID);
             }
             NMSUtils.sendPacket(player, packet);
         } catch (Exception ex) {
@@ -2144,10 +2138,6 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
                 if (NMSUtils.class_Entity_motField != null) {
                     Object vec = NMSUtils.class_Vec3D_constructor.newInstance(direction.getX(), direction.getY(), direction.getZ());
                     NMSUtils.class_Entity_motField.set(fireworkHandle, vec);
-                } else if (NMSUtils.class_Entity_motXField != null) {
-                    NMSUtils.class_Entity_motXField.set(fireworkHandle, direction.getX());
-                    NMSUtils.class_Entity_motYField.set(fireworkHandle, direction.getY());
-                    NMSUtils.class_Entity_motZField.set(fireworkHandle, direction.getZ());
                 }
             }
 
