@@ -151,7 +151,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected SchematicUtils createSchematicUtils() {
-        throw new IllegalStateException("Platform does not implement createSchematicUtils");
+        return new SchematicUtilsBase(this);
     }
 
     protected NBTUtils createNBTUtils() {
