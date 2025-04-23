@@ -4,6 +4,7 @@
 # 10.10.1
  
  - Fix image maps (Camera item, `/mmap` command, etc)
+ - Remove all invalid items from enonomy configs, fixes spammy invalid item warnings on startup
  - Moving towards heavier reliance on Spigot API
 
 # 10.10
