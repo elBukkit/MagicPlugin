@@ -651,7 +651,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
         Painting newPainting = null;
         try {
             Object worldHandle = NMSUtils.getHandle(location.getWorld());
-            Object newEntity = null;
+            Object newEntity;
             @SuppressWarnings("unchecked")
             Enum<?> directionEnum = Enum.valueOf(NMSUtils.class_EnumDirection, facing.name());
             Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
@@ -678,7 +678,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
         ItemFrame newItemFrame = null;
         try {
             Object worldHandle = NMSUtils.getHandle(location.getWorld());
-            Object newEntity = null;
+            Object newEntity;
             @SuppressWarnings("unchecked")
             Enum<?> directionEnum = Enum.valueOf(NMSUtils.class_EnumDirection, facing.name());
             Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
@@ -818,7 +818,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
             magicDamage(target, amount, source);
             return;
         }
-        Object damageSource = (NMSUtils.damageSources == null) ? null : NMSUtils.damageSources.get(damageType.toUpperCase());
+        Object damageSource = (NMSUtils.damageSources == null) ? null : NMSUtils.damageSources.get(damageType.toUpperCase(Locale.ROOT));
         if (damageSource == null || NMSUtils.class_EntityLiving_damageEntityMethod == null) {
             magicDamage(target, amount, source);
             return;
@@ -1480,7 +1480,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
                         } else if (slot.equalsIgnoreCase("offhand")) {
                             equipmentSlot = EquipmentSlot.OFF_HAND;
                         } else {
-                            equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase());
+                            equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase(Locale.ROOT));
                         }
                     } catch (Throwable ex) {
                         platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
@@ -1688,7 +1688,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
         if (!(projectile instanceof AbstractArrow)) return false;
         AbstractArrow.PickupStatus status;
         try {
-            status = AbstractArrow.PickupStatus.valueOf(pickupStatus.toUpperCase());
+            status = AbstractArrow.PickupStatus.valueOf(pickupStatus.toUpperCase(Locale.ROOT));
         } catch (Throwable ex) {
             platform.getLogger().warning("Invalid pickup status: " + pickupStatus);
             return false;
@@ -1747,25 +1747,25 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
 
     @Override
     public boolean removeRecipe(String key) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase(Locale.ROOT));
         return platform.getPlugin().getServer().removeRecipe(namespacedKey);
     }
 
     @Override
     public ShapedRecipe createShapedRecipe(String key, ItemStack item) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase(Locale.ROOT));
         return new ShapedRecipe(namespacedKey, item);
     }
 
     @Override
     public boolean discoverRecipe(HumanEntity entity, String key) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase(Locale.ROOT));
         return entity.discoverRecipe(namespacedKey);
     }
 
     @Override
     public boolean undiscoverRecipe(HumanEntity entity, String key) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase(Locale.ROOT));
         return entity.undiscoverRecipe(namespacedKey);
     }
 
@@ -1935,7 +1935,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
         ItemMeta meta = book.getItemMeta();
         if (!(meta instanceof KnowledgeBookMeta)) return false;
         KnowledgeBookMeta bookMeta = (KnowledgeBookMeta)meta;
-        NamespacedKey key = new NamespacedKey(plugin, recipeKey.toLowerCase());
+        NamespacedKey key = new NamespacedKey(plugin, recipeKey.toLowerCase(Locale.ROOT));
         bookMeta.addRecipe(key);
         book.setItemMeta(bookMeta);
         return true;
@@ -2137,7 +2137,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
                 e.printStackTrace();
             }
         }
-        return player.getBedSpawnLocation();
+        return player.getRespawnLocation();
     }
 
     @Override
@@ -2361,6 +2361,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
     }
 
     @Nullable
+    @Override
     public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
         return new OutOfBoundsEntityCleanup(logger);
     }
@@ -2383,7 +2384,7 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
             key = pieces[1];
         } else {
             // Convert legacy enum names
-            enchantment = Enchantment.getByName(key.toUpperCase());
+            enchantment = Enchantment.getByName(key.toUpperCase(Locale.ROOT));
             if (enchantment != null) {
                 return enchantment;
             }
@@ -2392,11 +2393,11 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
         // API says plugins aren't supposed to use this, but i have no idea how to deal
         // with custom enchants otherwise
         try {
-            NamespacedKey namespacedKey = new NamespacedKey(namespace, key.toLowerCase());
+            NamespacedKey namespacedKey = new NamespacedKey(namespace, key.toLowerCase(Locale.ROOT));
             enchantment = Enchantment.getByKey(namespacedKey);
             if (enchantment == null) {
                 // Convert legacy enchantments
-                enchantment = Enchantment.getByName(key.toUpperCase());
+                enchantment = Enchantment.getByName(key.toUpperCase(Locale.ROOT));
             }
         } catch (Exception ex) {
             platform.getLogger().log(Level.WARNING, "Unexpected error parsing enchantment key", ex);
