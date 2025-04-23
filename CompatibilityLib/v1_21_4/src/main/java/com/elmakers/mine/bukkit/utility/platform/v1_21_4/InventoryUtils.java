@@ -16,7 +16,7 @@ import org.bukkit.inventory.meta.SkullMeta;
 
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernInventoryUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
 import com.mojang.authlib.GameProfile;
 
 import net.minecraft.nbt.ByteArrayTag;
@@ -34,7 +34,7 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.component.ResolvableProfile;
 
-public class InventoryUtils extends ModernInventoryUtils {
+public class InventoryUtils extends InventoryUtilsBase {
     public InventoryUtils(Platform platform) {
         super(platform);
     }

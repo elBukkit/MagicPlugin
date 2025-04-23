@@ -33,9 +33,4 @@ public class Platform extends ModernPlatform {
     protected com.elmakers.mine.bukkit.utility.platform.MobUtils createMobUtils() {
         return new MobUtils(this);
     }
-
-    @Override
-    protected com.elmakers.mine.bukkit.utility.platform.SkinUtils createSkinUtils() {
-        return new SkinUtils(this);
-    }
 }

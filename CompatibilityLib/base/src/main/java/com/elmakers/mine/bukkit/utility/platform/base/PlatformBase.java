@@ -147,7 +147,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected SkinUtils createSkinUtils() {
-        throw new IllegalStateException("Platform does not implement createSkinUtils");
+        return new SkinUtilsBase(this);
     }
 
     protected SchematicUtils createSchematicUtils() {
