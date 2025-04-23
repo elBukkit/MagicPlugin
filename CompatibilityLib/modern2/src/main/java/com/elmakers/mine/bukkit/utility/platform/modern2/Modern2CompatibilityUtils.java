@@ -9,9 +9,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.EquipmentSlotGroup;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.modern.ModernCompatibilityUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 
-public abstract class Modern2CompatibilityUtils extends ModernCompatibilityUtils {
+public abstract class Modern2CompatibilityUtils extends CompatibilityUtilsBase {
 
     public Modern2CompatibilityUtils(Platform platform) {
         super(platform);
