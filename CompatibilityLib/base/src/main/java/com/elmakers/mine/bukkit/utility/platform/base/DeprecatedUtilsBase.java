@@ -30,7 +30,7 @@ import com.elmakers.mine.bukkit.utility.platform.DeprecatedUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 
 @SuppressWarnings("deprecation")
-public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
+public class DeprecatedUtilsBase implements DeprecatedUtils {
     protected final Platform platform;
 
     protected DeprecatedUtilsBase(final Platform platform) {
@@ -250,11 +250,25 @@ public abstract class DeprecatedUtilsBase implements DeprecatedUtils {
 
     @Override
     public Biome getBiome(Location location) {
-        return location.getWorld().getBiome(location.getBlockX(), location.getBlockZ());
+        return location.getWorld().getBiome(location.getBlockX(), location.getBlockY(), location.getBlockZ());
     }
 
     @Override
     public ItemStack createItemStack(Material material, int amount, short legacyData) {
         return new ItemStack(material, amount, legacyData);
+    }
+
+    @Override
+    public void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics) {
+        block.setType(material, applyPhysics);
+    }
+
+    @Override
+    public void setSkullType(Skull skullBlock, short skullType) {
+    }
+
+    @Override
+    public short getSkullType(Skull skullBlock) {
+        return 0;
     }
 }

@@ -171,7 +171,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected DeprecatedUtils createDeprecatedUtils() {
-        throw new IllegalStateException("Platform does not implement createDeprecatedUtils");
+        return new DeprecatedUtilsBase(this);
     }
 
     protected MobUtils createMobUtils() {
