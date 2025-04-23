@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.modern;
+package com.elmakers.mine.bukkit.utility.platform.base;
 
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Entity;

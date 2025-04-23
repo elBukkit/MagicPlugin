@@ -111,7 +111,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected EntityMetadataUtils createEntityMetadataUtils() {
-        throw new IllegalStateException("Platform does not implement createEntityMetadataUtils");
+        return new PersistentEntityMetadataUtils(this.getPlugin());
     }
 
     protected EntityUtils createEntityUtils() {
