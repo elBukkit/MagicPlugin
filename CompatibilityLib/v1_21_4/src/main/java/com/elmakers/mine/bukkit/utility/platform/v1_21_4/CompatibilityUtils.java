@@ -64,13 +64,11 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
-import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.modern2.Modern2CompatibilityUtils;
 
 import net.minecraft.core.BlockPos;
@@ -927,21 +925,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
             platform.getLogger().log(Level.SEVERE, "Error updating action bar", ex);
             return false;
         }
-        return true;
-    }
-
-    @Override
-    public boolean setBossBarTitle(BossBar bossBar, String title, String font) {
-        if (ChatUtils.isDefaultFont(font)) {
-            setBossBarTitle(bossBar, title);
-            return true;
-        }
-        SpigotUtils spigot = platform.getSpigotUtils();
-        if (spigot == null) {
-            // Can't do fonts without chat components
-            return false;
-        }
-        setBossBarTitleComponents(bossBar, spigot.serializeBossBar(title, font), title);
         return true;
     }
 

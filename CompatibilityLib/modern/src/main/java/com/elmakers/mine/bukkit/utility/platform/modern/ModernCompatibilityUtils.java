@@ -2432,6 +2432,21 @@ public abstract class ModernCompatibilityUtils extends com.elmakers.mine.bukkit.
     }
 
     @Override
+    public boolean setBossBarTitle(BossBar bossBar, String title, String font) {
+        if (ChatUtils.isDefaultFont(font)) {
+            setBossBarTitle(bossBar, title);
+            return true;
+        }
+        SpigotUtils spigot = platform.getSpigotUtils();
+        if (spigot == null) {
+            // Can't do fonts without chat components
+            return false;
+        }
+        setBossBarTitleComponents(bossBar, spigot.serializeBossBar(title, font), title);
+        return true;
+    }
+
+    @Override
     public void setBossBarTitle(BossBar bossBar, String title) {
         if (ChatUtils.hasJSON(title)) {
             SpigotUtils spigot = platform.getSpigotUtils();

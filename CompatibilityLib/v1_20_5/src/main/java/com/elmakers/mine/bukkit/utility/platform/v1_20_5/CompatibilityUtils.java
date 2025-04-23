@@ -101,7 +101,6 @@ import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.utility.BoundingBox;
-import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
@@ -1693,35 +1692,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     }
 
     @Override
-    public void setBossBarTitle(BossBar bossBar, String title) {
-        if (ChatUtils.hasJSON(title)) {
-            SpigotUtils spigot = platform.getSpigotUtils();
-            if (spigot != null) {
-                setBossBarTitleComponents(bossBar, spigot.serializeBossBar(title), title);
-            } else {
-                bossBar.setTitle(ChatUtils.getSimpleMessage(title));
-            }
-        } else {
-            bossBar.setTitle(title);
-        }
-    }
-
-    @Override
-    public boolean setBossBarTitle(BossBar bossBar, String title, String font) {
-        if (ChatUtils.isDefaultFont(font)) {
-            setBossBarTitle(bossBar, title);
-            return true;
-        }
-        SpigotUtils spigot = platform.getSpigotUtils();
-        if (spigot == null) {
-            // Can't do fonts without chat components
-            return false;
-        }
-        setBossBarTitleComponents(bossBar, spigot.serializeBossBar(title, font), title);
-        return true;
-    }
-
-    private void setBossBarTitleComponents(BossBar bossBar, String serialized, String fallback) {
+    protected void setBossBarTitleComponents(BossBar bossBar, String serialized, String fallback) {
         Object handle = ReflectionUtils.getHandle(platform.getLogger(), bossBar);
         if (handle == null || !(handle instanceof ServerBossEvent)) {
             bossBar.setTitle(fallback);

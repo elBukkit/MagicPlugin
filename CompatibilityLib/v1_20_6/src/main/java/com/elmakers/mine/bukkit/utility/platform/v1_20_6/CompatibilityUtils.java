@@ -1707,21 +1707,7 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     }
 
     @Override
-    public boolean setBossBarTitle(BossBar bossBar, String title, String font) {
-        if (ChatUtils.isDefaultFont(font)) {
-            setBossBarTitle(bossBar, title);
-            return true;
-        }
-        SpigotUtils spigot = platform.getSpigotUtils();
-        if (spigot == null) {
-            // Can't do fonts without chat components
-            return false;
-        }
-        setBossBarTitleComponents(bossBar, spigot.serializeBossBar(title, font), title);
-        return true;
-    }
-
-    private void setBossBarTitleComponents(BossBar bossBar, String serialized, String fallback) {
+    protected void setBossBarTitleComponents(BossBar bossBar, String serialized, String fallback) {
         Object handle = ReflectionUtils.getHandle(platform.getLogger(), bossBar);
         if (handle == null || !(handle instanceof ServerBossEvent)) {
             bossBar.setTitle(fallback);
