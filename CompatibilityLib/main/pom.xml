@@ -12,10 +12,6 @@
     <name>Magic Compatibility Library</name>
     <url>http://mine.elmakers.com</url>
 
-    <properties>
-        <bukkit.version>1.9.2-R0.1-SNAPSHOT</bukkit.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
