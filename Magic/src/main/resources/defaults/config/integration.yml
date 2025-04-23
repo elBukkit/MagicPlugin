@@ -293,7 +293,7 @@ model_engine:
 
 # Geyser integration
 geyser:
-  enabled: false
+  enabled: true
 
 # Indirect integration with other protection plugins.
 # Add a plugin here to have Magic send it fake Block/Break events to check for permission.
