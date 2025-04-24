@@ -44,7 +44,6 @@
         <module>common</module>
         <module>base</module>
         <module>paper</module>
-        <module>spigot</module>
         <module>v1_20_5</module>
         <module>v1_20_6</module>
         <module>v1_21_0</module>

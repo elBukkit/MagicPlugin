@@ -139,7 +139,7 @@ public abstract class PlatformBase implements Platform {
             Class<?> bungeeColor = Class.forName("net.md_5.bungee.api.ChatColor");
             bungeeColor.getMethod("of", String.class);
             logger.info("Chat component API found");
-            return new com.elmakers.mine.bukkit.utility.spigot.SpigotUtils(this);
+            return new spigot.SpigotUtils(this);
         } catch (Throwable ignore) {
         }
         // null SpigotUtils is OK
