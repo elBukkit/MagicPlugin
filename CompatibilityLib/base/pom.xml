@@ -19,7 +19,7 @@
         <dependency>
             <groupId>com.mojang</groupId>
             <artifactId>authlib</artifactId>
-            <version>1.5.25</version>
+            <version>6.0.54</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
