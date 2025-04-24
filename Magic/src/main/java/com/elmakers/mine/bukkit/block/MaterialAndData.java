@@ -1001,10 +1001,21 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             if (extraData != null && extraData instanceof PotionData && meta != null && meta instanceof PotionMeta) {
                 PotionMeta potionMeta = (PotionMeta)meta;
                 PotionData potionData = (PotionData)extraData;
-                CompatibilityLib.getCompatibilityUtils().setColor(potionMeta, potionData.getColor());
+                Color potionColor = potionData.getColor();
+                if (potionColor != null) {
+                    CompatibilityLib.getCompatibilityUtils().setColor(potionMeta, potionData.getColor());
+                }
                 potionMeta.clearCustomEffects();
                 for (PotionEffect effect : potionData.getEffects()) {
                     potionMeta.addCustomEffect(effect, true);
+                }
+                stack.setItemMeta(meta);
+            } else if (extraData != null && extraData instanceof ColoredData && meta != null && meta instanceof PotionMeta) {
+                PotionMeta potionMeta = (PotionMeta)meta;
+                ColoredData colorData = (ColoredData)extraData;
+                Color potionColor = colorData.getColor();
+                if (potionColor != null) {
+                    CompatibilityLib.getCompatibilityUtils().setColor(potionMeta, colorData.getColor());
                 }
                 stack.setItemMeta(meta);
             }
