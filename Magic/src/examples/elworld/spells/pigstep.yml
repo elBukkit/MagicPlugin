@@ -1,0 +1,21 @@
+# This is the key name of this spell
+# It must be unique across the server, and is used in configs and commands such as /mage, /wand and /mgive
+# to refer to this spell.
+pigstep:
+  # These track who created what spells, you can remove them if you want
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  # Name and description may be added here and will appear in lore for this spell.
+  name: Play Pigstep
+  description: BUM BUM BUMMM BUMM BUMMMMMMMMMMM
+  # Choose an icon, used when showing this spell in a wand inventory.
+  icon: music_disc_pigstep
+  # Actions define what this spell does when cast. In this case we will damage the target.
+  actions:
+    # Actions can be triggered from a few different events, but the most common is "cast",
+    # which will happen immediately when the spell is cast.
+    cast:
+    - class: PlayRecord
+  parameters:
+    target: self
+    records: pigstep
