@@ -7,6 +7,7 @@
  - Remove all invalid items from enonomy configs, fixes spammy invalid item warnings on startup
  - Fix PlayRecordAction (music spell)
  - Re-enable Geyser integration by default
+ - Fix loading issues in 1.21.1 caused by Spigot API breakage in the Sound enum
 
 # 10.10
 
