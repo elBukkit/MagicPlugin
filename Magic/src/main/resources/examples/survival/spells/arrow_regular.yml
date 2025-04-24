@@ -1,7 +1,7 @@
 arrow_regular:
     # This refers to an icon defined in the icons folder/config
-    icon: arrow
-    legacy_icon: arrow
+    icon: arrow_regular
+    legacy_icon: arrow_regular
     category: combat
     worth: 100
     earns: 2

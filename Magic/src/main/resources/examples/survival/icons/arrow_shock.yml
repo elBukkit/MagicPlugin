@@ -1,9 +1,7 @@
 arrow_shock:
-  item: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18009}'
-  item_disabled: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18010}'
+  item: 'tipped_arrow{CustomModelData:18026,Potion:speed}'
+  item_disabled: 'tipped_arrow{CustomModelData:18027,Potion:speed}'
   legacy_item: spell_icon:250
   legacy_item_disabled: spell_icon_disabled:250
   url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
   type: spell
-  vanilla_item: 'spectral_arrow{CustomModelData:18026,Potion:swiftness}'
-  vanilla_item_disabled: 'spectral_arrow{CustomModelData:18027,Potion:swiftness}'

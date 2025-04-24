@@ -1,9 +1,7 @@
 arrow_bomb:
-  item: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18117}'
-  item_disabled: 'skull:http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094{18118}'
+  item: 'tipped_arrow{CustomModelData:18020,Potion:instant_health}'
+  item_disabled: 'tipped_arrow{CustomModelData:18021,Potion:instant_health}'
   legacy_item: spell_icon:247
   legacy_item_disabled: spell_icon_disabled:247
   url: http://textures.minecraft.net/texture/ea96e1b8c4d458f8f5443fa66eb376981f7b2ec385386db67faf3f1589094
   type: spell
-  vanilla_item: 'spectral_arrow{CustomModelData:18020,Potion:healing}'
-  vanilla_item_disabled: 'spectral_arrow{CustomModelData:18021,Potion:healing}'

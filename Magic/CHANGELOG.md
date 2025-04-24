@@ -8,6 +8,8 @@
  - Fix PlayRecordAction (music spell)
  - Re-enable Geyser integration by default
  - Fix loading issues in 1.21.1 caused by Spigot API breakage in the Sound enum
+ - Allow using Color and Potion properties in item json-formatted items, for tipped arrows and potions
+   This fixes vanilla Magic Bow spell icons, which have been changed to use tipped_arrow instead of spectral_arrow or skulls
 
 # 10.10
 
