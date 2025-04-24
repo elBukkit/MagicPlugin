@@ -5,8 +5,8 @@
  
  - Fix image maps (Camera item, `/mmap` command, etc)
  - Remove all invalid items from enonomy configs, fixes spammy invalid item warnings on startup
+ - Fix PlayRecordAction (music spell)
  - Re-enable Geyser integration by default
- - Moving towards heavier reliance on Spigot API
 
 # 10.10
 
