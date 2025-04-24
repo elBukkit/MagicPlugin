@@ -63,7 +63,6 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 
-import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
@@ -108,8 +107,6 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.SignBlockEntity;
-import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -848,39 +845,8 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
     }
 
     @Override
-    public BoundingBox getHitbox(Entity entity) {
-        net.minecraft.world.entity.Entity nmsEntity = ((CraftEntity)entity).getHandle();
-        AABB aabb = nmsEntity.getBoundingBox();
-        if (aabb == null) {
-            return null;
-        }
-        return new BoundingBox(
-                aabb.minX,
-                aabb.maxX,
-                aabb.minY,
-                aabb.maxY,
-                aabb.minZ,
-                aabb.maxZ
-        );
-    }
-
-    @Override
     public Object getProfile(Player player) {
         return ((CraftPlayer)player).getProfile();
-    }
-
-
-    @Override
-    public void openSign(Player player, Location signBlock) {
-        try {
-            Object tileEntity = platform.getCompatibilityUtils().getTileEntity(signBlock);
-            ServerPlayer playerHandle = ((CraftPlayer)player).getHandle();
-            if (tileEntity != null && playerHandle != null && tileEntity instanceof SignBlockEntity) {
-                playerHandle.openTextEdit((SignBlockEntity) tileEntity, true);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
     }
 
     @Override

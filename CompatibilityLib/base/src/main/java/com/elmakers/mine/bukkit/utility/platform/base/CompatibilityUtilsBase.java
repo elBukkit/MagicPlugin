@@ -51,6 +51,7 @@ import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Lockable;
+import org.bukkit.block.Sign;
 import org.bukkit.block.data.AnaloguePowerable;
 import org.bukkit.block.data.Bisected;
 import org.bukkit.block.data.BlockData;
@@ -3200,27 +3201,8 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public BoundingBox getHitbox(Entity entity) {
-        if (NMSUtils.class_Entity_getBoundingBox != null) {
-            try {
-                Object entityHandle = NMSUtils.getHandle(entity);
-                Object aabb = NMSUtils.class_Entity_getBoundingBox.invoke(entityHandle);
-                if (aabb == null) {
-                    return null;
-                }
-                return new BoundingBox(
-                        NMSUtils.class_AxisAlignedBB_minXField.getDouble(aabb),
-                        NMSUtils.class_AxisAlignedBB_maxXField.getDouble(aabb),
-                        NMSUtils.class_AxisAlignedBB_minYField.getDouble(aabb),
-                        NMSUtils.class_AxisAlignedBB_maxYField.getDouble(aabb),
-                        NMSUtils.class_AxisAlignedBB_minZField.getDouble(aabb),
-                        NMSUtils.class_AxisAlignedBB_maxZField.getDouble(aabb)
-                );
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        }
-        return null;
+        org.bukkit.util.BoundingBox boundingBox = entity.getBoundingBox();
+        return new BoundingBox(boundingBox);
     }
 
     @Override
@@ -3255,14 +3237,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public void openSign(Player player, Location signBlock) {
-        try {
-            Object tileEntity = platform.getCompatibilityUtils().getTileEntity(signBlock);
-            Object playerHandle = NMSUtils.getHandle(player);
-            if (tileEntity != null && playerHandle != null) {
-                NMSUtils.class_EntityPlayer_openSignMethod.invoke(playerHandle, tileEntity);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        Block block = signBlock.getBlock();
+        BlockState blockState = block.getState();
+        if (blockState instanceof Sign) {
+            player.openSign((Sign)blockState);
         }
     }
 

@@ -32,6 +32,11 @@ public class BoundingBox
         this(center, shape.min.getX(), shape.max.getX(), shape.min.getY(), shape.max.getY(), shape.min.getZ(), shape.max.getZ());
     }
 
+    public BoundingBox(org.bukkit.util.BoundingBox boundingBox) {
+        this.min = boundingBox.getMin().clone();
+        this.max = boundingBox.getMax().clone();
+    }
+
     public BoundingBox center(Vector center)
     {
         BoundingBox results = new BoundingBox(min, max);
