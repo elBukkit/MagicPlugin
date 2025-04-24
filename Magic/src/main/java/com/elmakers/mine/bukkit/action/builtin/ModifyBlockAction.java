@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
@@ -107,9 +108,8 @@ public class ModifyBlockAction extends BaseSpellAction {
             return SpellResult.NO_TARGET;
         }
 
+        BlockData blockData = block.getBlockData();;
         Material fallingMaterial = block.getType();
-        String fallingData = CompatibilityLib.getCompatibilityUtils().getBlockData(block);
-        byte fallingLegacyData = block.getData();
 
         Mage mage = context.getMage();
         brush.update(mage, context.getTargetSourceLocation());
@@ -147,12 +147,7 @@ public class ModifyBlockAction extends BaseSpellAction {
             spawnFalling = context.getRandom().nextDouble() < fallingProbability;
         }
 
-        if (spawnFalling && !brush.isErase()) {
-            fallingMaterial = brush.getMaterial();
-            fallingData = brush.getModernBlockData();
-            Byte data = brush.getBlockData();
-            fallingLegacyData = data == null ? 0 : data;
-        } else {
+        if (!spawnFalling || brush.isErase()) {
             if (!commit) {
                 context.registerForUndo(block);
                 if (brush.isErase() && !DefaultMaterials.isAir(block.getType())) {
@@ -212,12 +207,7 @@ public class ModifyBlockAction extends BaseSpellAction {
             }
 
             // If not using erase, spawn falling block instead of placing a block
-            FallingBlock falling;
-            if (fallingData != null) {
-                falling = CompatibilityLib.getCompatibilityUtils().spawnFallingBlock(blockCenter, fallingMaterial, fallingData);
-            } else {
-                falling = CompatibilityLib.getDeprecatedUtils().spawnFallingBlock(blockCenter, fallingMaterial, fallingLegacyData);
-            }
+            FallingBlock falling = blockCenter.getWorld().spawnFallingBlock(blockCenter, blockData);
             falling.setDropItem(false);
             if (fallingBlockVelocity != null) {
                 SafetyUtils.setVelocity(falling, fallingBlockVelocity);
@@ -238,9 +228,8 @@ public class ModifyBlockAction extends BaseSpellAction {
         }
 
         if (commit) {
-
-            com.elmakers.mine.bukkit.api.block.BlockData blockData = context.getUndoList().get(block);;
-            blockData.commit();
+            com.elmakers.mine.bukkit.api.block.BlockData undoBlockData = context.getUndoList().get(block);
+            undoBlockData.commit();
         }
         return SpellResult.CAST;
     }

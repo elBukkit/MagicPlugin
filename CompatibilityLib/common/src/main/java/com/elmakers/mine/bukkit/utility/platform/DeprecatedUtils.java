@@ -7,11 +7,9 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.inventory.ItemStack;
@@ -26,8 +24,6 @@ public interface DeprecatedUtils {
 
     void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics);
 
-    byte getData(Block block);
-
     MapView getMap(int id);
 
     int getMapId(MapView mapView);
@@ -41,11 +37,6 @@ public interface DeprecatedUtils {
     Player getPlayer(String name);
 
     Player getPlayerExact(String name);
-
-    FallingBlock spawnFallingBlock(Location location,
-                                   Material material, byte data);
-
-    byte getRawData(BlockState state);
 
     void setSkullOwner(ItemStack itemStack, String ownerName, SkullLoadedCallback callback);
 

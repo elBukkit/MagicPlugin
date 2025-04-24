@@ -8,11 +8,9 @@ import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Biome;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Player;
 import org.bukkit.event.enchantment.PrepareItemEnchantEvent;
 import org.bukkit.inventory.ItemStack;
@@ -41,12 +39,6 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
         // @deprecated This method should not be relied upon as it is a
         // temporary work-around for a larger, more complicated issue.
         player.updateInventory();
-    }
-
-    @Override
-    public byte getData(Block block) {
-        // @deprecated Magic value
-        return block.getData();
     }
 
     @Override
@@ -94,19 +86,6 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
     @Override
     public Player getPlayerExact(String name) {
         return Bukkit.getPlayerExact(name);
-    }
-
-    @Override
-    public FallingBlock spawnFallingBlock(Location location,
-                                          Material material, byte data) {
-        // @deprecated Magic value
-        return location.getWorld().spawnFallingBlock(location, material, data);
-    }
-
-    @Override
-    public byte getRawData(BlockState state) {
-        // @deprecated Magic value
-        return state.getRawData();
     }
 
     @Override

@@ -474,8 +474,7 @@ public class ConstructBatch extends BrushBatch {
     }
 
     protected void modifyWith(Block block, MaterialAndData brush) {
-        Material previousMaterial = block.getType();
-        byte previousData = CompatibilityLib.getDeprecatedUtils().getData(block);
+        org.bukkit.block.data.BlockData previousBlockData = block.getBlockData();
         touch(block);
 
         boolean isDifferent = false;
@@ -522,7 +521,8 @@ public class ConstructBatch extends BrushBatch {
                 context.registerReflective(block, backfireChance);
             }
             if (spawnFallingBlocks) {
-                FallingBlock falling = CompatibilityLib.getDeprecatedUtils().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+                Location blockLocation = block.getLocation();
+                FallingBlock falling = blockLocation.getWorld().spawnFallingBlock(blockLocation, previousBlockData);
                 falling.setDropItem(false);
                 if (fallingBlockSpeed != 0) {
                     Vector direction = this.fallingDirection != null ? this.fallingDirection :

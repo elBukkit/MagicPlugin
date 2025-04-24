@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.util.Vector;
@@ -79,14 +80,13 @@ public class ThrowBlockAction extends BaseProjectileAction
         }
 
         Material material = buildWith.getMaterial();
-        byte data = buildWith.getBlockData();
-
         location = sourceLocation.getLocation(context);
         Vector direction = location.getDirection();
         double speed = context.getRandom().nextDouble() * (speedMax - speedMin) + speedMin;
         direction.normalize().multiply(speed);
 
-        FallingBlock falling = CompatibilityLib.getDeprecatedUtils().spawnFallingBlock(location, material, data);
+        BlockData fallingBlockData = material.createBlockData();
+        FallingBlock falling = location.getWorld().spawnFallingBlock(location, fallingBlockData);
         if (falling == null)
         {
             return SpellResult.FAIL;
