@@ -433,11 +433,11 @@ public class SkinUtilsBase implements SkinUtils {
     }
 
     protected String getValue(Property property) {
-        return property.getValue();
+        return property.value();
     }
 
     protected String getSignature(Property property) {
-        return property.getSignature();
+        return property.signature();
     }
 
     @Override
