@@ -1,0 +1,16 @@
+# This is the key name of this spell
+# It must be unique across the server, and is used in configs and commands such as /mage, /wand and /mgive
+# to refer to this spell.
+editsign:
+  # These track who created what spells, you can remove them if you want
+  creator: NathanWolf
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  # Name and description may be added here and will appear in lore for this spell.
+  name: Edit Sign
+  description: Edits a sign
+  # Choose an icon, used when showing this spell in a wand inventory.
+  icon: oak_sign
+  class: SignSpell
+  parameters:
+    edit: true
+    target: block
