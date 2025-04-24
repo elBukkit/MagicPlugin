@@ -2,7 +2,6 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.UUID;
 
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -28,12 +27,6 @@ public interface DeprecatedUtils {
     void setTypeAndData(Block block, Material material, byte data, boolean applyPhysics);
 
     byte getData(Block block);
-
-    byte getWoolData(DyeColor color);
-
-    int getId(Material material);
-
-    int getTypeId(Block block);
 
     MapView getMap(int id);
 

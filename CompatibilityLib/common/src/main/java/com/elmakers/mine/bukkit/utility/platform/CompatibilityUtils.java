@@ -461,8 +461,6 @@ public interface CompatibilityUtils {
 
     boolean isHandRaised(Player player);
 
-    void playRecord(Location location, Material record);
-
     Class<?> getProjectileClass(String projectileTypeName);
 
     Entity spawnFireworkEffect(Material fireworkMaterial, Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown, boolean silent);

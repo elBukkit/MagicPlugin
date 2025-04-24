@@ -34,7 +34,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
-import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Keyed;
 import org.bukkit.Location;
@@ -858,16 +857,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public boolean isTeleporting() {
         return teleporting;
-    }
-
-    @Override
-    public void playRecord(Location location, Material record) {
-        if (platform.isLegacy()) {
-            location.getWorld().playEffect(location, Effect.RECORD_PLAY,
-                    platform.getDeprecatedUtils().getId(record));
-        } else {
-            location.getWorld().playEffect(location, Effect.RECORD_PLAY, record);
-        }
     }
 
     protected String getHexColor(String hexCode) {

@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.utility.platform.base;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
@@ -48,24 +47,6 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
     public byte getData(Block block) {
         // @deprecated Magic value
         return block.getData();
-    }
-
-    @Override
-    public byte getWoolData(DyeColor color) {
-        // @deprecated Magic value
-        return color.getWoolData();
-    }
-
-    @Override
-    public int getId(Material material) {
-        // @deprecated Magic value
-        return material.getId();
-    }
-
-    @Override
-    public int getTypeId(Block block) {
-        // @deprecated Magic value
-        return block.getType().getId();
     }
 
     @Override
