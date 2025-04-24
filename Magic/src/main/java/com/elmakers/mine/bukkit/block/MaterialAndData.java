@@ -39,6 +39,7 @@ import com.elmakers.mine.bukkit.api.block.ModifyType;
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.magic.Messages;
+import com.elmakers.mine.bukkit.utility.ColorHD;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SkullLoadedCallback;
@@ -226,6 +227,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             blockData = blockPieces[1];
         }
 
+        MaterialExtraData extraData = null;
         int jsonStart = materialKey.indexOf('{');
         if (jsonStart > 0) {
             String fullKey = materialKey;
@@ -244,19 +246,42 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 }
             } else {
                 try {
+                    // TODO: Support more tags ?
                     JsonReader reader = new JsonReader(new StringReader(json));
                     reader.setLenient(true);
                     Map<String, Object> tags = getGson().fromJson(reader, Map.class);
                     CompatibilityLib.getInventoryUtils().convertIntegers(tags);
-                    Object cmd = tags.get("custom_model_data");
-                    if (cmd == null) {
-                        cmd = tags.get("CustomModelData");
-                    }
-                    if (cmd != null && cmd instanceof Integer) {
-                        customModelData = (int)(Integer)cmd;
-                    }
-                    if (cmd == null || tags.size() > 1) {
-                        Bukkit.getLogger().info("[Magic] [" + originalKey + "] Custom NBT tags on items are no longer supported. Please change to the {1234} syntax for custom model data.");
+                    for (Map.Entry<String, Object> entry : tags.entrySet()) {
+                        String key = entry.getKey();
+                        Object value = entry.getValue();
+                        switch (key) {
+                            case "custom_model_data":
+                            case "CustomModelData":
+                                if (value instanceof Integer) {
+                                    customModelData = (int)(Integer)value;
+                                } else {
+                                    Bukkit.getLogger().info("[Magic] [" + originalKey + "] Unsupported CustomModelData value: " + value);
+                                }
+                                break;
+                            case "Potion":
+                                try {
+                                    PotionEffectType effectType = PotionEffectType.getByName(value.toString().toUpperCase());
+                                    PotionEffect effect = new PotionEffect(effectType, 20 * 60, 0);
+                                    List<PotionEffect> effects = new ArrayList<>();
+                                    effects.add(effect);
+                                    extraData = new PotionData(null, effects);
+                                } catch (Exception ignore) {
+                                    Bukkit.getLogger().info("[Magic] [" + originalKey + "] Error parsing potion effect data: " + value);
+                                }
+                                break;
+                            case "Color":
+                                ColorHD color = new ColorHD(value.toString());
+                                extraData = new ColoredData(color.getColor());
+                                break;
+                            default:
+                                Bukkit.getLogger().info("[Magic] [" + originalKey + "] Custom NBT tags on items are no longer supported. Unknown tag key: " + key);
+                                break;
+                        }
                     }
                 } catch (Throwable ex) {
                     Bukkit.getLogger().warning("[Magic] Error parsing item json: " + json + " : " + ex.getMessage());
@@ -266,7 +291,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         String[] pieces = splitMaterialKey(materialKey);
         Short data = 0;
         Material material = null;
-        MaterialExtraData extraData = null;
         materialKey = pieces[0];
         if (materialKey.equalsIgnoreCase("skull") || materialKey.equalsIgnoreCase("skull_item")) {
             MaterialAndData skullData = DefaultMaterials.getPlayerSkullItem();
