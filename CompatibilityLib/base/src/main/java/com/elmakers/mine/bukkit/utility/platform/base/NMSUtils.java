@@ -89,7 +89,6 @@ public class NMSUtils {
     protected static Method class_Entity_setLocationMethod;
     protected static Method class_Entity_getIdMethod;
     protected static Method class_Entity_getDataWatcherMethod;
-    protected static Method class_Entity_getBoundingBox;
     protected static Method class_Entity_setInvisible;
     protected static Method class_Entity_isInvisible;
     protected static Method class_CraftPlayer_getHandleMethod;
@@ -97,9 +96,7 @@ public class NMSUtils {
     protected static Method class_CraftEntity_getHandleMethod;
     protected static Method class_CraftLivingEntity_getHandleMethod;
     protected static Method class_CraftWorld_getHandleMethod;
-    protected static Method class_EntityPlayer_openSignMethod;
     protected static Method class_CraftServer_getServerMethod;
-    protected static Method class_MinecraftServer_getResourcePackMethod;
     protected static Method class_ProjectileHitEvent_getHitBlockMethod;
     protected static Method class_ItemDye_bonemealMethod;
     protected static Method class_World_getTileEntityMethod;
@@ -113,10 +110,6 @@ public class NMSUtils {
     protected static Method class_MovingObjectPositionBlock_createMethod;
     protected static Method class_CraftBlock_setTypeAndDataMethod;
     protected static Method class_nms_Block_getBlockDataMethod;
-    protected static Method class_EntityHuman_getBedMethod;
-    protected static Method class_EntityPlayer_getSpawnDimensionMethod;
-    protected static Method class_MinecraftServer_getWorldServerMethod;
-    protected static Method class_WorldServer_worldMethod;
 
     protected static Constructor class_EntityFireworkConstructor;
     protected static Constructor class_EntityPaintingConstructor;
@@ -133,15 +126,8 @@ public class NMSUtils {
     protected static Constructor class_BlockActionContext_constructor;
 
     protected static Field class_Entity_motField;
-    protected static Field class_WorldServer_entitiesByUUIDField;
     protected static Field class_Firework_ticksFlownField;
     protected static Field class_Firework_expectedLifespanField;
-    protected static Field class_AxisAlignedBB_minXField;
-    protected static Field class_AxisAlignedBB_minYField;
-    protected static Field class_AxisAlignedBB_minZField;
-    protected static Field class_AxisAlignedBB_maxXField;
-    protected static Field class_AxisAlignedBB_maxYField;
-    protected static Field class_AxisAlignedBB_maxZField;
     protected static Field class_EntityFallingBlock_hurtEntitiesField;
     protected static Field class_EntityFallingBlock_fallHurtMaxField;
     protected static Field class_EntityFallingBlock_fallHurtAmountField;
@@ -156,8 +142,6 @@ public class NMSUtils {
     protected static Field class_TileEntityRecordPlayer_record;
     protected static Field class_EntityPainting_art;
     protected static Field class_EntityHanging_blockPosition;
-    protected static Field class_EntityHuman_spawnWorldField;
-    protected static Field class_EntityPlayer_serverField;
     protected static Field class_Entity_persistentInvisibilityField;
 
     protected static Object object_magicSource;
@@ -235,9 +219,7 @@ public class NMSUtils {
             class_CraftEntity_getHandleMethod = class_CraftEntity.getMethod("getHandle");
             class_CraftLivingEntity_getHandleMethod = class_CraftLivingEntity.getMethod("getHandle");
             class_CraftWorld_getHandleMethod = class_CraftWorld.getMethod("getHandle");
-            class_EntityPlayer_openSignMethod = class_EntityPlayer.getMethod("openSign", class_TileEntitySign);
             class_CraftServer_getServerMethod = class_CraftServer.getMethod("getServer");
-            class_MinecraftServer_getResourcePackMethod = class_MinecraftServer.getMethod("getResourcePack");
 
             class_EntityFireworkConstructor = class_EntityFirework.getConstructor(class_World, Double.TYPE, Double.TYPE, Double.TYPE, class_ItemStack);
             class_PacketSpawnEntityConstructor = class_PacketPlayOutSpawnEntity.getConstructor(class_Entity, Integer.TYPE);
@@ -262,16 +244,10 @@ public class NMSUtils {
             class_EntityFallingBlock_fallHurtMaxField = class_EntityFallingBlock.getDeclaredField("fallHurtMax");
             class_EntityFallingBlock_fallHurtMaxField.setAccessible(true);
 
-            class_Entity_getBoundingBox = class_Entity.getMethod("getBoundingBox");
-
             class_EnumDirection = (Class<Enum>) fixBukkitClass("net.minecraft.server.EnumDirection");
             class_BlockPosition_Constructor = class_BlockPosition.getConstructor(Double.TYPE, Double.TYPE, Double.TYPE);
             class_EntityPaintingConstructor = class_EntityPainting.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
             class_EntityItemFrameConstructor = class_EntityItemFrame.getConstructor(class_World, class_BlockPosition, class_EnumDirection);
-
-            // TODO: Server.getEntity(UUID) in 1.11+
-            class_WorldServer_entitiesByUUIDField = class_WorldServer.getDeclaredField("entitiesByUUID");
-            class_WorldServer_entitiesByUUIDField.setAccessible(true);
 
             try {
                 Class.forName("org.bukkit.event.player.PlayerStatisticIncrementEvent");
@@ -391,18 +367,6 @@ public class NMSUtils {
             }
 
             try {
-                class_AxisAlignedBB_minXField = class_AxisAlignedBB.getField("minX");
-                class_AxisAlignedBB_minYField = class_AxisAlignedBB.getField("minY");
-                class_AxisAlignedBB_minZField = class_AxisAlignedBB.getField("minZ");
-                class_AxisAlignedBB_maxXField = class_AxisAlignedBB.getField("maxX");
-                class_AxisAlignedBB_maxYField = class_AxisAlignedBB.getField("maxY");
-                class_AxisAlignedBB_maxZField = class_AxisAlignedBB.getField("maxZ");
-            } catch (Throwable ex) {
-                logger.warning("Could not bind to AABB methods, vanilla hitboxes aren't readable");
-                class_Entity_getBoundingBox = null;
-            }
-
-            try {
                 Class<?> class_ItemBoneMeal = fixBukkitClass("net.minecraft.server.ItemBoneMeal");
                 class_ItemDye_bonemealMethod = class_ItemBoneMeal.getMethod("a", class_ItemStack, class_World, class_BlockPosition);
             } catch (Throwable not13) {
@@ -454,23 +418,6 @@ public class NMSUtils {
                 class_EntityLiving_damageEntityMethod = null;
                 class_DamageSource_getMagicSourceMethod = null;
                 object_magicSource = null;
-            }
-
-            try {
-                try {
-                    class_EntityHuman_getBedMethod = class_EntityPlayer.getMethod("getSpawn");
-                    class_EntityPlayer_getSpawnDimensionMethod = class_EntityPlayer.getMethod("getSpawnDimension");
-                    class_EntityPlayer_serverField = class_EntityPlayer.getField("server");
-                    Class<?> class_resourceKey = fixBukkitClass("net.minecraft.server.ResourceKey");
-                    class_MinecraftServer_getWorldServerMethod = class_MinecraftServer.getMethod("getWorldServer", class_resourceKey);
-                    class_WorldServer_worldMethod = class_WorldServer.getMethod("getWorld");
-                } catch (Exception notCurrent) {
-                    class_EntityHuman_getBedMethod = class_EntityHuman.getMethod("getBed");
-                    class_EntityHuman_spawnWorldField = class_EntityHuman.getField("spawnWorld");
-                }
-            } catch (Throwable ex) {
-                class_EntityHuman_getBedMethod = null;
-                logger.log(Level.WARNING, "An error occurred, could not get bed location directly, will use API", ex);
             }
             try {
                 class_ProjectileHitEvent_getHitBlockMethod = ProjectileHitEvent.class.getMethod("getHitBlock");

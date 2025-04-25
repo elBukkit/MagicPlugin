@@ -2638,19 +2638,11 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     @SuppressWarnings("unchecked")
     public Entity getEntity(World world, UUID uuid) {
-        try {
-            Object worldHandle = NMSUtils.getHandle(world);
-            final Map<UUID, Entity> entityMap = (Map<UUID, Entity>) NMSUtils.class_WorldServer_entitiesByUUIDField.get(worldHandle);
-            if (entityMap != null) {
-                Object nmsEntity = entityMap.get(uuid);
-                if (nmsEntity != null) {
-                    return getBukkitEntity(nmsEntity);
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        // This was previously optimized slightly using NMS to get the entity
+        // directly from the known world
+        // Maybe we could PR an API for this but in the meantime we'll prefer to use the
+        // slightly-less-efficient API.
+        return getEntity(uuid);
     }
 
     @Override
