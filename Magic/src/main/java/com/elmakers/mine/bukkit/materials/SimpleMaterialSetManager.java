@@ -177,7 +177,7 @@ public final class SimpleMaterialSetManager
         }
 
         if (existing == null) {
-            warning("Invalid material set: " + materialSet);
+            // warning("Invalid material set: " + materialSet);
             return null;
         }
 
