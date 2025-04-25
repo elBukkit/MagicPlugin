@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -27,7 +26,6 @@ import org.bukkit.Server;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -35,13 +33,11 @@ import org.bukkit.block.Jukebox;
 import org.bukkit.block.Lectern;
 import org.bukkit.block.Lockable;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.block.data.type.WallSign;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.craftbukkit.v1_20_R4.CraftArt;
-import org.bukkit.craftbukkit.v1_20_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_20_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_20_R4.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_20_R4.entity.CraftArmorStand;
@@ -66,24 +62,20 @@ import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
-import org.bukkit.entity.Phantom;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.entity.Sittable;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
-import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.KnowledgeBookMeta;
@@ -101,12 +93,10 @@ import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
-import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.ItemUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SpigotUtils;
 import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
-import com.google.common.collect.Multimap;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -125,8 +115,6 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -839,93 +827,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public String getResourcePack(Server server) {
-        Optional<MinecraftServer.ServerResourcePackInfo> rpInfo = ((CraftServer)server).getServer().getServerResourcePack();
-        return rpInfo.isPresent() ? rpInfo.get().url() : null;
-    }
-
-    @Override
-    public boolean setResourcePack(Player player, String rp, byte[] hash) {
-        player.setResourcePack(rp, hash);
-        return true;
-    }
-
-    @Override
-    public boolean removeItemAttribute(ItemStack item, Attribute attribute) {
-        if (item == null) return false;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return false;
-        if (!meta.removeAttributeModifier(attribute)) {
-            return false;
-        }
-        item.setItemMeta(meta);
-        return true;
-    }
-
-    @Override
-    public boolean removeItemAttributes(ItemStack item) {
-        if (item == null) return false;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return false;
-        Multimap<Attribute, AttributeModifier> modifiers = meta.getAttributeModifiers();
-        if (modifiers == null || modifiers.isEmpty()) {
-            return false;
-        }
-        for (Attribute attribute : modifiers.keySet()) {
-            meta.removeAttributeModifier(attribute);
-        }
-        item.setItemMeta(meta);
-        return true;
-    }
-
-    @Override
-    public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation, UUID attributeUUID) {
-        if (item == null) return false;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return false;
-        try {
-            AttributeModifier.Operation operation;
-            try {
-                operation = AttributeModifier.Operation.values()[attributeOperation];
-            } catch (Throwable ex) {
-                platform.getLogger().warning("[Magic] invalid attribute operation ordinal: " + attributeOperation);
-                return false;
-            }
-            AttributeModifier modifier;
-            if (slot != null && !slot.isEmpty()) {
-                EquipmentSlot equipmentSlot;
-                try {
-                    if (slot.equalsIgnoreCase("mainhand")) {
-                        equipmentSlot = EquipmentSlot.HAND;
-                    } else if (slot.equalsIgnoreCase("offhand")) {
-                        equipmentSlot = EquipmentSlot.OFF_HAND;
-                    } else {
-                        equipmentSlot = EquipmentSlot.valueOf(slot.toUpperCase());
-                    }
-                } catch (Throwable ex) {
-                    platform.getLogger().warning("[Magic] invalid attribute slot: " + slot);
-                    return false;
-                }
-
-                modifier = new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation, equipmentSlot);
-            } else {
-                modifier = new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation);
-            }
-            meta.addAttributeModifier(attribute, modifier);
-            item.setItemMeta(meta);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void sendExperienceUpdate(Player player, float experience, int level) {
-        player.sendExperienceChange(experience, level);
-    }
-
-    @Override
     public CompoundTag getEntityData(Entity entity) {
         if (entity == null) return null;
         CompoundTag data = new CompoundTag();
@@ -937,22 +838,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     public String getEntityType(Entity entity) {
         if (entity == null) return null;
         return ((CraftEntity)entity).getHandle().getEncodeId();
-    }
-
-    @Override
-    public void swingOffhand(Entity entity) {
-        if (!(entity instanceof LivingEntity)) {
-            return;
-        }
-        ((LivingEntity)entity).swingOffHand();
-    }
-
-    @Override
-    public void swingMainHand(Entity entity) {
-        if (!(entity instanceof LivingEntity)) {
-            return;
-        }
-        ((LivingEntity)entity).swingMainHand();
     }
 
     protected void sendPacket(Server server, Location source, Collection<? extends Player> players, Packet<?> packet) throws Exception  {
@@ -984,11 +869,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    @Override
-    public Set<String> getTags(Entity entity) {
-        return entity.getScoreboardTags();
     }
 
     @Override
@@ -1360,59 +1240,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public int getPhantomSize(Entity entity) {
-        if (entity == null || !(entity instanceof Phantom)) return 0;
-        return ((Phantom)entity).getSize();
-    }
-
-    @Override
-    public boolean setPhantomSize(Entity entity, int size) {
-        if (entity == null || !(entity instanceof Phantom)) return false;
-        ((Phantom)entity).setSize(size);
-        return true;
-    }
-
-    @Override
-    public Location getBedSpawnLocation(Player player) {
-        if (player == null) {
-            return null;
-        }
-        ServerPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
-        BlockPos bedLocation = nmsPlayer.getRespawnPosition();
-        ResourceKey<net.minecraft.world.level.Level> bedDimension = nmsPlayer.getRespawnDimension();
-        if (bedLocation != null && bedDimension != null) {
-            MinecraftServer server = nmsPlayer.getServer();
-            ServerLevel worldServer = server != null ? server.getLevel(bedDimension) : null;
-            World world = worldServer != null ? worldServer.getWorld() : null;
-            if (world != null) {
-                return new Location(world, bedLocation.getX(), bedLocation.getY(), bedLocation.getZ());
-            }
-        }
-        return player.getBedSpawnLocation();
-    }
-
-    @Override
-    public void addPassenger(Entity vehicle, Entity passenger) {
-        vehicle.addPassenger(passenger);
-    }
-
-    @Override
-    public List<Entity> getPassengers(Entity entity) {
-        return entity.getPassengers();
-    }
-
-    @Override
-    public boolean openBook(Player player, ItemStack itemStack) {
-        player.openBook(itemStack);
-        return true;
-    }
-
-    @Override
-    public boolean isHandRaised(Player player) {
-        return player.isHandRaised();
-    }
-
-    @Override
     public Class<?> getProjectileClass(String projectileTypeName) {
         return projectileClasses.get(projectileTypeName.toLowerCase());
     }
@@ -1495,117 +1322,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             }
         }
         return true;
-    }
-
-    @Override
-    public boolean isPrimaryThread() {
-        return Bukkit.isPrimaryThread();
-    }
-
-    @Override
-    public String getEnchantmentKey(Enchantment enchantment) {
-        // We don't use toString here since we'll be parsing this ourselves
-        return enchantment.getKey().getNamespace() + ":" + enchantment.getKey().getKey();
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public Enchantment getEnchantmentByKey(String key) {
-        // Really wish there was a fromString that took a string default namespace
-        String namespace = NamespacedKey.MINECRAFT;
-        Enchantment enchantment = null;
-        if (key.contains(":")) {
-            String[] pieces = StringUtils.split(key, ":", 2);
-            namespace = pieces[0];
-            key = pieces[1];
-        } else {
-            // Convert legacy enum names
-            enchantment = Enchantment.getByName(key.toUpperCase());
-            if (enchantment != null) {
-                return enchantment;
-            }
-        }
-
-        // API says plugins aren't supposed to use this, but i have no idea how to deal
-        // with custom enchants otherwise
-        try {
-            NamespacedKey namespacedKey = new NamespacedKey(namespace, key.toLowerCase());
-            enchantment = Enchantment.getByKey(namespacedKey);
-            if (enchantment == null) {
-                // Convert legacy enchantments
-                enchantment = Enchantment.getByName(key.toUpperCase());
-            }
-        } catch (Exception ex) {
-            platform.getLogger().log(Level.WARNING, "Unexpected error parsing enchantment key", ex);
-        }
-        return enchantment;
-    }
-
-    @Override
-    public boolean isAdult(Zombie zombie) {
-        return zombie.isAdult();
-    }
-
-    @Override
-    public void setBaby(Zombie zombie) {
-        zombie.setBaby();
-    }
-
-    @Override
-    public void setAdult(Zombie zombie) {
-        zombie.setAdult();
-    }
-
-    @Override
-    public int getMinHeight(World world) {
-        return world.getMinHeight();
-    }
-
-    @Override
-    public BlockFace getSignFacing(Block signBlock) {
-        BlockData blockData = signBlock.getBlockData();
-        if (!(blockData instanceof WallSign)) {
-            return null;
-        }
-        WallSign sign = (WallSign)blockData;
-        return sign.getFacing();
-    }
-
-    @Override
-    public boolean setCompassTarget(ItemMeta meta, Location targetLocation, boolean trackLocation) {
-        if (meta == null || !(meta instanceof CompassMeta)) {
-            return false;
-        }
-        CompassMeta compassMeta = (CompassMeta)meta;
-        compassMeta.setLodestoneTracked(trackLocation);
-        compassMeta.setLodestone(targetLocation);
-        return true;
-    }
-
-    @Override
-    public boolean isAware(Entity entity) {
-        if (!(entity instanceof org.bukkit.entity.Mob)) {
-            return true;
-        }
-        return ((org.bukkit.entity.Mob)entity).isAware();
-    }
-
-    @Override
-    public void setAware(Entity entity, boolean aware) {
-        if (!(entity instanceof org.bukkit.entity.Mob)) {
-            return;
-        }
-        ((org.bukkit.entity.Mob)entity).setAware(aware);
-    }
-
-    @Override
-    public boolean setLore(ItemStack itemStack, List<String> lore) {
-        SpigotUtils spigot = platform.getSpigotUtils();
-        if (spigot == null) {
-            return super.setLore(itemStack, lore);
-        }
-        List<String> serializedLore = spigot.serializeLore(lore);
-        return setRawLore(itemStack, serializedLore);
     }
 
     @Override

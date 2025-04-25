@@ -28,7 +28,6 @@ import org.bukkit.block.Lectern;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_21_R4.CraftArt;
-import org.bukkit.craftbukkit.v1_21_R4.CraftServer;
 import org.bukkit.craftbukkit.v1_21_R4.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R4.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_21_R4.entity.CraftArmorStand;
@@ -89,7 +88,6 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -606,13 +604,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
     }
 
     @Override
-    public String getResourcePack(Server server) {
-        Optional<MinecraftServer.ServerResourcePackInfo> rpInfo = ((CraftServer)server).getServer().getServerResourcePack();
-        if (!rpInfo.isPresent()) return null;
-        return rpInfo.get().url();
-    }
-
-    @Override
     public CompoundTag getEntityData(Entity entity) {
         if (entity == null) return null;
         CompoundTag data = new CompoundTag();
@@ -655,11 +646,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    @Override
-    public Set<String> getTags(Entity entity) {
-        return entity.getScoreboardTags();
     }
 
     @Override
@@ -750,12 +736,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
         BlockPos blockPosition = new BlockPos(block.getX(), block.getY(), block.getZ());
         world.setBlock(blockPosition, blockData, 11);
         return false;
-    }
-
-    @Override
-    public Location getBedSpawnLocation(Player player) {
-        // This used to do a bunch of NMS, let's just try the API now.
-        return player.getRespawnLocation();
     }
 
     @Override

@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -28,7 +27,6 @@ import org.bukkit.block.Lectern;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_21_R3.CraftArt;
-import org.bukkit.craftbukkit.v1_21_R3.CraftServer;
 import org.bukkit.craftbukkit.v1_21_R3.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R3.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_21_R3.entity.CraftArmorStand;
@@ -87,8 +85,6 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundSystemChatPacket;
 import net.minecraft.network.syncher.SynchedEntityData;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -597,12 +593,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
     }
 
     @Override
-    public String getResourcePack(Server server) {
-        Optional<MinecraftServer.ServerResourcePackInfo> rpInfo = ((CraftServer)server).getServer().getServerResourcePack();
-        return rpInfo.isPresent() ? rpInfo.get().url() : null;
-    }
-
-    @Override
     public CompoundTag getEntityData(Entity entity) {
         if (entity == null) return null;
         CompoundTag data = new CompoundTag();
@@ -645,11 +635,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-    }
-
-    @Override
-    public Set<String> getTags(Entity entity) {
-        return entity.getScoreboardTags();
     }
 
     @Override
@@ -740,25 +725,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
         BlockPos blockPosition = new BlockPos(block.getX(), block.getY(), block.getZ());
         world.setBlock(blockPosition, blockData, 11);
         return false;
-    }
-
-    @Override
-    public Location getBedSpawnLocation(Player player) {
-        if (player == null) {
-            return null;
-        }
-        ServerPlayer nmsPlayer = ((CraftPlayer)player).getHandle();
-        BlockPos bedLocation = nmsPlayer.getRespawnPosition();
-        ResourceKey<net.minecraft.world.level.Level> bedDimension = nmsPlayer.getRespawnDimension();
-        if (bedLocation != null && bedDimension != null) {
-            MinecraftServer server = nmsPlayer.getServer();
-            ServerLevel worldServer = server != null ? server.getLevel(bedDimension) : null;
-            World world = worldServer != null ? worldServer.getWorld() : null;
-            if (world != null) {
-                return new Location(world, bedLocation.getX(), bedLocation.getY(), bedLocation.getZ());
-            }
-        }
-        return player.getBedSpawnLocation();
     }
 
     @Override

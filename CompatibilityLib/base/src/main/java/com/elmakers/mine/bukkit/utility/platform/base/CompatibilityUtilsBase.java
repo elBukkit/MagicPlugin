@@ -2419,16 +2419,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public String getResourcePack(Server server) {
-        String rp = null;
-        try {
-            Object minecraftServer = NMSUtils.getHandle(server);
-            if (minecraftServer != null) {
-                rp = (String) NMSUtils.class_MinecraftServer_getResourcePackMethod.invoke(minecraftServer);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return rp;
+        return server.getResourcePack();
     }
 
     @Override
@@ -2583,8 +2574,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public Set<String> getTags(Entity entity) {
-        // TODO: Use Entity.getScoreboardTags in a future version.
-        return null;
+        return entity.getScoreboardTags();
     }
 
     @Override
@@ -3028,47 +3018,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public Location getBedSpawnLocation(Player player) {
-        if (player == null) {
-            return null;
-        }
-        if (NMSUtils.class_EntityHuman_getBedMethod != null && NMSUtils.class_EntityPlayer_getSpawnDimensionMethod != null) {
-            try {
-                Object playerHandle = NMSUtils.getHandle(player);
-                Object bedLocation = NMSUtils.class_EntityHuman_getBedMethod.invoke(playerHandle);
-                Object spawnDimension = NMSUtils.class_EntityPlayer_getSpawnDimensionMethod.invoke(playerHandle);
-                if (spawnDimension != null && bedLocation != null) {
-                    Object server = NMSUtils.class_EntityPlayer_serverField.get(playerHandle);
-                    Object worldServer = server != null ? NMSUtils.class_MinecraftServer_getWorldServerMethod.invoke(server, spawnDimension) : null;
-                    World world = worldServer != null ? (World) NMSUtils.class_WorldServer_worldMethod.invoke(worldServer) : null;
-                    if (world != null) {
-                        int x = (int) NMSUtils.class_BlockPosition_getXMethod.invoke(bedLocation);
-                        int y = (int) NMSUtils.class_BlockPosition_getYMethod.invoke(bedLocation);
-                        int z = (int) NMSUtils.class_BlockPosition_getZMethod.invoke(bedLocation);
-                        return new Location(world, x, y, z);
-                    }
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
-        if (NMSUtils.class_EntityHuman_getBedMethod != null && NMSUtils.class_EntityHuman_spawnWorldField != null) {
-            try {
-                Object playerHandle = NMSUtils.getHandle(player);
-                Object bedLocation = NMSUtils.class_EntityHuman_getBedMethod.invoke(playerHandle);
-                String spawnWorld = (String) NMSUtils.class_EntityHuman_spawnWorldField.get(playerHandle);
-                if (spawnWorld != null && bedLocation != null) {
-                    World world = Bukkit.getWorld(spawnWorld);
-                    if (world != null) {
-                        int x = (int) NMSUtils.class_BlockPosition_getXMethod.invoke(bedLocation);
-                        int y = (int) NMSUtils.class_BlockPosition_getYMethod.invoke(bedLocation);
-                        int z = (int) NMSUtils.class_BlockPosition_getZMethod.invoke(bedLocation);
-                        return new Location(world, x, y, z);
-                    }
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
-        }
+        // This used to do a bunch of NMS, let's just try the API now.
         return player.getRespawnLocation();
     }
 
