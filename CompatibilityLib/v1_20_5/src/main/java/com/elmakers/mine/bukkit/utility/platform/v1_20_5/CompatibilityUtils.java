@@ -1598,11 +1598,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public Object getProfile(Player player) {
-        return ((CraftPlayer)player).getProfile();
-    }
-
-    @Override
     public boolean setLore(ItemStack itemStack, List<String> lore) {
         SpigotUtils spigot = platform.getSpigotUtils();
         if (spigot == null) {

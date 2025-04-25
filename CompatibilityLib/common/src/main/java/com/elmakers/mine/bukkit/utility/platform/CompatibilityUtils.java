@@ -525,8 +525,6 @@ public interface CompatibilityUtils {
 
     default void setAware(Entity entity, boolean aware) {}
 
-    default Object getProfile(Player player) { return null; }
-
     void openSign(Player player, Location signBlock);
 
     Collection<BoundingBox> getBoundingBoxes(Block block);

@@ -845,11 +845,6 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
     }
 
     @Override
-    public Object getProfile(Player player) {
-        return ((CraftPlayer)player).getProfile();
-    }
-
-    @Override
     public boolean setRawLore(ItemStack itemStack, List<String> lore) {
         ItemUtils itemUtils = platform.getItemUtils();
         net.minecraft.world.item.ItemStack mcItemStack = (net.minecraft.world.item.ItemStack)itemUtils.getHandle(itemStack);
