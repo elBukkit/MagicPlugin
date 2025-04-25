@@ -8,11 +8,9 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Material;
-import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 
@@ -48,19 +46,9 @@ public interface InventoryUtils {
 
     ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String name);
 
-    ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id);
-
     String getSkullURL(ItemStack skull);
 
     boolean isSkull(ItemStack item);
-
-    Object getSkullProfile(ItemMeta itemMeta);
-
-    Object getSkullProfile(Skull state);
-
-    boolean setSkullProfile(Skull state, Object data);
-
-    boolean setSkullProfile(ItemMeta itemMeta, Object data);
 
     void wrapText(String text, Collection<String> list);
 

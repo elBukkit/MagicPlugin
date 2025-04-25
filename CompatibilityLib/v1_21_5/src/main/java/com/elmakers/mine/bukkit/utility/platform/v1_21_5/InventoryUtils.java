@@ -11,13 +11,9 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 
-import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
-import com.mojang.authlib.GameProfile;
 
 import net.minecraft.nbt.ByteArrayTag;
 import net.minecraft.nbt.ByteTag;
@@ -32,7 +28,6 @@ import net.minecraft.nbt.LongTag;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.item.component.ResolvableProfile;
 
 public class InventoryUtils extends InventoryUtilsBase {
     public InventoryUtils(Platform platform) {
@@ -258,20 +253,5 @@ public class InventoryUtils extends InventoryUtilsBase {
         }
 
         return value;
-    }
-
-    @Override
-    public boolean setSkullProfile(ItemMeta itemMeta, Object data) {
-        if (itemMeta == null || !(itemMeta instanceof SkullMeta)) return false;
-
-        // Somewhat annoyingly this method signature was changed in the middle of 1.21.1
-        Class<?>[] parameters = {ResolvableProfile.class};
-        if (ReflectionUtils.hasMethod(itemMeta.getClass(), "setProfile", parameters)) {
-            Object[] values = {data instanceof ResolvableProfile ? data : new ResolvableProfile((GameProfile)data)};
-            return ReflectionUtils.callPrivate(platform.getLogger(), itemMeta, itemMeta.getClass(), "setProfile", parameters, values);
-        }
-        Class<?>[] legacyParameters = {GameProfile.class};
-        Object[] values = {data};
-        return ReflectionUtils.callPrivate(platform.getLogger(), itemMeta, itemMeta.getClass(), "setProfile", legacyParameters, values);
     }
 }

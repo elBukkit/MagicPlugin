@@ -12,11 +12,11 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
-import org.bukkit.block.Skull;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.Inventory;
@@ -26,19 +26,14 @@ import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.profile.PlayerProfile;
 
-import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
-import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.utility.platform.InventoryUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.properties.PropertyMap;
 
 public abstract class InventoryUtilsBase implements InventoryUtils {
     protected final Platform platform;
@@ -221,73 +216,15 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String name) {
-        try {
-            if (platform.getItemUtils().isEmpty(itemStack)) {
-                return itemStack;
-            }
-
-            GameProfile gameProfile = new GameProfile(id, name);
-            PropertyMap properties = gameProfile.getProperties();
-            if (properties == null) {
-                return itemStack;
-            }
-            itemStack = platform.getItemUtils().makeReal(itemStack);
-            if (platform.getItemUtils().isEmpty(itemStack)) {
-                return itemStack;
-            }
-
-            String textureJSON = "{textures:{SKIN:{url:\"" + url + "\"}}}";
-            String encoded = Base64Coder.encodeString(textureJSON);
-
-            Property newProperty = new Property("textures", encoded);
-            properties.put("textures", newProperty);
-
-            ItemMeta skullMeta = itemStack.getItemMeta();
-            setSkullProfile(skullMeta, gameProfile);
-
-            itemStack.setItemMeta(skullMeta);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+    public ItemStack setSkullURL(ItemStack itemStack, URL url, UUID id, String ownerName) {
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta instanceof SkullMeta) {
+            SkullMeta skullMeta = (SkullMeta)itemMeta;
+            PlayerProfile fakeProfile = Bukkit.createPlayerProfile(id, ownerName);
+            fakeProfile.getTextures().setSkin(url);
+            skullMeta.setOwnerProfile(fakeProfile);
+            itemStack.setItemMeta(itemMeta);
         }
-        return itemStack;
-    }
-
-    @Override
-    public boolean isSkull(ItemStack item) {
-        if (item == null) return false;
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null) return false;
-        return meta instanceof SkullMeta;
-    }
-
-    @Override
-    public Object getSkullProfile(ItemMeta itemMeta) {
-        if (itemMeta == null || !(itemMeta instanceof SkullMeta)) return null;
-        return ReflectionUtils.getPrivate(platform.getLogger(), itemMeta, itemMeta.getClass(), "profile");
-    }
-
-    @Override
-    public Object getSkullProfile(Skull state) {
-        return ReflectionUtils.getPrivate(platform.getLogger(), state, state.getClass(), "profile");
-    }
-
-    @Override
-    public boolean setSkullProfile(Skull state, Object data) {
-        return ReflectionUtils.setPrivate(platform.getLogger(), state, state.getClass(), "profile", data);
-    }
-
-    @Override
-    public ItemStack setSkullURLAndName(ItemStack itemStack, URL url, String ownerName, UUID id) {
-        try {
-            itemStack = platform.getItemUtils().makeReal(itemStack);
-            Object skullOwner = platform.getNBTUtils().createTag(itemStack, "SkullOwner");
-            platform.getNBTUtils().setString(skullOwner, "Name", ownerName);
-            return setSkullURL(itemStack, url, id);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
         return itemStack;
     }
 
@@ -303,6 +240,14 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean isSkull(ItemStack item) {
+        if (item == null) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null) return false;
+        return meta instanceof SkullMeta;
     }
 
     @Override

@@ -17,7 +17,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.potion.PotionEffect;
+import org.bukkit.profile.PlayerProfile;
 
 import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -469,14 +471,21 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         if (pending != null && itemStack != null) {
             this.item = itemStack;
             ItemMeta populatedMeta = itemStack.getItemMeta();
-            Object profile = CompatibilityLib.getInventoryUtils().getSkullProfile(populatedMeta);
+            PlayerProfile profile = null;
+            if (populatedMeta instanceof SkullMeta) {
+                SkullMeta skullMeta = (SkullMeta)populatedMeta;
+                profile = skullMeta.getOwnerProfile();
+            }
             for (PendingUpdate update : pending) {
                 // We're assuming the only thing that changes here is skull profile
                 if (profile != null) {
                     ItemStack item = update.item;
-                    ItemMeta meta = item.getItemMeta();
-                    CompatibilityLib.getInventoryUtils().setSkullProfile(meta, profile);
-                    item.setItemMeta(meta);
+                    ItemMeta updateMeta = item.getItemMeta();
+                    if (updateMeta instanceof SkullMeta) {
+                        SkullMeta updateSkullMeta = (SkullMeta)updateMeta;
+                        updateSkullMeta.setOwnerProfile(profile);
+                        item.setItemMeta(updateMeta);
+                    }
                 }
                 if (update.callback != null) {
                     update.callback.updated(update.item);
