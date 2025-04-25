@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.10.2
+
 # 10.10.1
  
  - Fix image maps (Camera item, `/mmap` command, etc)
