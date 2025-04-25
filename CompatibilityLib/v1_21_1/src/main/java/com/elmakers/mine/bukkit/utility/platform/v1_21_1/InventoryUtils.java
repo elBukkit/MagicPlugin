@@ -10,11 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 
-import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.MapMeta;
 
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.InventoryUtilsBase;
@@ -257,36 +253,5 @@ public class InventoryUtils extends InventoryUtilsBase {
         }
 
         return value;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public int getMapId(ItemStack mapItem) {
-        ItemMeta meta = mapItem.getItemMeta();
-        if (meta instanceof MapMeta) {
-            MapMeta mapMeta = (MapMeta)meta;
-            // Why is this deprecated if there is no alternative?
-            return mapMeta.getMapId();
-        }
-        return 0;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public void setMapId(ItemStack mapItem, int id) {
-        ItemMeta meta = mapItem.getItemMeta();
-        if (meta instanceof MapMeta) {
-            MapMeta mapMeta = (MapMeta)meta;
-            // Why is this deprecated if there is no alternative?
-            mapMeta.setMapId(id);
-            mapItem.setItemMeta(mapMeta);
-        }
-    }
-
-    @Override
-    public ItemStack createMap(Material material, int mapId) {
-        ItemStack mapItem = new ItemStack(material, 1);
-        setMapId(mapItem, mapId);
-        return mapItem;
     }
 }
