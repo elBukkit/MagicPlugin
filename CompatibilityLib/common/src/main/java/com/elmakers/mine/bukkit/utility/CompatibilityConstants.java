@@ -3,7 +3,7 @@ package com.elmakers.mine.bukkit.utility;
 import org.bukkit.Bukkit;
 
 public class CompatibilityConstants {
-    public static boolean DEBUG = false;
+    public static boolean DEBUG = true;
 
     public static final int NBT_TYPE_COMPOUND = 10;
     public static final int NBT_TYPE_INT_ARRAY = 11;

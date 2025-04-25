@@ -1,29 +1,42 @@
 package com.elmakers.mine.bukkit.block;
 
 import org.bukkit.block.BlockFace;
+import org.bukkit.profile.PlayerProfile;
 
 public class BlockSkull extends MaterialExtraData {
-    protected BlockFace rotation = null;
-    protected Object profile = null;
-    protected String playerName = null;
+    private BlockFace rotation = null;
+    private PlayerProfile profile = null;
+    private String playerName = null;
 
     public BlockSkull(String playerName) {
         this(null, playerName, BlockFace.SELF);
     }
 
-    public BlockSkull(Object profile) {
+    public BlockSkull(PlayerProfile profile) {
         this(profile, BlockFace.SELF);
     }
 
-    public BlockSkull(Object profile, BlockFace rotation) {
+    public BlockSkull(PlayerProfile profile, BlockFace rotation) {
         this.profile = profile;
         this.rotation = rotation;
     }
 
-    private BlockSkull(Object profile, String playerName, BlockFace rotation) {
+    private BlockSkull(PlayerProfile profile, String playerName, BlockFace rotation) {
         this.profile = profile;
         this.rotation = rotation;
         this.playerName = playerName;
+    }
+
+    public BlockFace getRotation() {
+        return rotation;
+    }
+
+    public PlayerProfile getProfile() {
+        return profile;
+    }
+
+    public String getPlayerName() {
+        return playerName;
     }
 
     @Override

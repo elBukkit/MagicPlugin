@@ -1,47 +1,31 @@
 package com.elmakers.mine.bukkit.utility.platform.base;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.profile.PlayerProfile;
 
-import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
+import com.elmakers.mine.bukkit.utility.OfflinePlayerCallback;
 import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
-import com.elmakers.mine.bukkit.utility.UUIDCallback;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import com.mojang.authlib.properties.PropertyMap;
 
 public class SkinUtilsBase implements SkinUtils {
     protected final Platform platform;
     protected final Map<UUID, ProfileResponse> responseCache = new HashMap<>();
-    protected final Map<String, UUID> uuidCache = new HashMap<>();
     protected final Map<String, Object> loadingUUIDs = new HashMap<>();
     protected final Map<UUID, Object> loadingProfiles = new HashMap<>();
-    protected Gson gson;
     protected long holdoff = 0;
 
     protected SkinUtilsBase(final Platform platform) {
@@ -49,34 +33,10 @@ public class SkinUtilsBase implements SkinUtils {
     }
 
     @Override
-    public Gson getGson() {
-        if (gson == null) {
-            gson = new Gson();
-        }
-        return gson;
-    }
-
-    @Override
-    public String getTextureURL(String texturesJson) {
-        String url = null;
-        JsonElement element = new JsonParser().parse(texturesJson);
-        if (element != null && element.isJsonObject()) {
-            JsonObject object = element.getAsJsonObject();
-            JsonObject texturesObject = object.getAsJsonObject("textures");
-            if (texturesObject != null && texturesObject.has("SKIN")) {
-                JsonObject skin = texturesObject.getAsJsonObject("SKIN");
-                if (skin != null && skin.has("url")) {
-                    url = skin.get("url").getAsString();
-                }
-            }
-        }
-        return url;
-    }
-
-    @Override
     public String getOnlineSkinURL(Player player) {
-        Object profile = getProfile(player);
-        return profile == null ? null : getProfileURL(profile);
+        PlayerProfile playerProfile = player.getPlayerProfile();
+        URL skinURL = playerProfile == null ? null : playerProfile.getTextures().getSkin();
+        return skinURL == null ? null : skinURL.toString();
     }
 
     @Override
@@ -90,33 +50,15 @@ public class SkinUtilsBase implements SkinUtils {
         return url;
     }
 
-    private String fetchURL(String urlString) throws IOException {
-        StringBuffer response = new StringBuffer();
-        URL url = new URL(urlString);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setConnectTimeout(30000);
-        conn.setReadTimeout(30000);
-        conn.setInstanceFollowRedirects(true);
-        try (InputStream in = conn.getInputStream()) {
-            BufferedReader reader = new BufferedReader(
-                    new InputStreamReader(in, StandardCharsets.UTF_8));
-            String inputLine = "";
-            while ((inputLine = reader.readLine()) != null) {
-                response.append(inputLine);
-            }
-        }
-        return response.toString();
-    }
-
     private void engageHoldoff() {
         holdoff = 10 * 60000;
     }
 
-    private void synchronizeCallbackUUID(final UUIDCallback callback, final UUID uuid) {
+    private void synchronizeCallbackOfflinePlayer(final OfflinePlayerCallback callback, final OfflinePlayer offlinePlayer) {
         Bukkit.getScheduler().runTask(platform.getPlugin(), new Runnable() {
             @Override
             public void run() {
-                callback.result(uuid);
+                callback.result(offlinePlayer);
             }
         });
     }
@@ -130,53 +72,16 @@ public class SkinUtilsBase implements SkinUtils {
         });
     }
 
-    @Override
-    public void fetchUUID(final String playerName, final UUIDCallback callback) {
+    private void fetchOfflinePlayer(final String playerName, final OfflinePlayerCallback callback) {
         final Player onlinePlayer = platform.getDeprecatedUtils().getPlayerExact(playerName);
         if (onlinePlayer != null) {
-            final UUID uuid = onlinePlayer.getUniqueId();
-            boolean contains;
-            synchronized (uuidCache) {
-                contains = uuidCache.containsKey(playerName);
-                if (!contains) {
-                    uuidCache.put(playerName, onlinePlayer.getUniqueId());
-                }
-            }
-            if (!contains) {
-                Bukkit.getScheduler().runTaskAsynchronously(platform.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        File cacheFolder = new File(platform.getPlugin().getDataFolder(), "data/profiles");
-                        if (!cacheFolder.exists()) {
-                            cacheFolder.mkdirs();
-                        }
-
-                        try {
-                            File playerCache = new File(cacheFolder, playerName + ".yml");
-                            YamlConfiguration config = new YamlConfiguration();
-                            config.set("uuid", uuid.toString());
-                            config.save(playerCache);
-                        } catch (IOException ex) {
-                            platform.getLogger().log(Level.WARNING, "Error saving to player UUID cache", ex);
-                        }
-                    }
-                });
-            }
-            callback.result(onlinePlayer.getUniqueId());
-            return;
-        }
-
-        UUID cached;
-        synchronized (uuidCache) {
-            cached = uuidCache.get(playerName);
-        }
-        if (cached != null) {
-            callback.result(cached);
+            callback.result(onlinePlayer);
             return;
         }
         Bukkit.getScheduler().runTaskLaterAsynchronously(platform.getPlugin(), new Runnable() {
             @Override
             public void run() {
+                // Don't request the same player more than once at a time
                 Object lock;
                 synchronized (loadingUUIDs) {
                     lock = loadingUUIDs.get(playerName);
@@ -185,89 +90,28 @@ public class SkinUtilsBase implements SkinUtils {
                         loadingUUIDs.put(playerName, lock);
                     }
                 }
+                // Subsequent requests should hit the cache
                 synchronized (lock) {
-                    UUID cached;
-                    synchronized (uuidCache) {
-                        cached = uuidCache.get(playerName);
-                    }
-                    if (cached != null) {
-                        callback.result(cached);
-                        return;
-                    }
-                    File cacheFolder = new File(platform.getPlugin().getDataFolder(), "data/profiles");
-                    if (!cacheFolder.exists()) {
-                        cacheFolder.mkdirs();
-                    }
-
-                    UUID uuid;
-                    final File playerCache = new File(cacheFolder, playerName + ".yml");
-                    try {
-                        if (playerCache.exists()) {
-                            YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
-                            uuid = UUID.fromString(config.getString("uuid"));
-                        } else {
-                            String uuidJSON = fetchURL("https://api.mojang.com/users/profiles/minecraft/" + playerName);
-                            if (uuidJSON.isEmpty()) {
-                                if (CompatibilityConstants.DEBUG)
-                                    platform.getLogger().warning("Got empty UUID JSON for " + playerName);
-                                synchronizeCallbackUUID(callback, null);
-                                return;
-                            }
-
-                            String uuidString = null;
-                            JsonElement element = new JsonParser().parse(uuidJSON);
-                            if (element != null && element.isJsonObject()) {
-                                uuidString = element.getAsJsonObject().get("id").getAsString();
-                            }
-                            if (uuidString == null) {
-                                engageHoldoff();
-                                if (CompatibilityConstants.DEBUG)
-                                    platform.getLogger().warning("Failed to parse UUID JSON for " + playerName + ", will not retry for 10 minutes");
-                                synchronizeCallbackUUID(callback, null);
-                                return;
-                            }
-                            if (CompatibilityConstants.DEBUG)
-                                platform.getLogger().info("Got UUID: " + uuidString + " for " + playerName);
-                            uuid = UUID.fromString(addDashes(uuidString));
-
-                            YamlConfiguration config = new YamlConfiguration();
-                            config.set("uuid", uuid.toString());
-                            config.save(playerCache);
-                        }
-
-                        synchronized (uuidCache) {
-                            uuidCache.put(playerName, uuid);
-                        }
-                    } catch (Exception ex) {
-                        if (CompatibilityConstants.DEBUG) {
-                            platform.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes", ex);
-                        } else {
-                            platform.getLogger().log(Level.WARNING, "Failed to fetch UUID for: " + playerName + ", will not retry for 10 minutes");
-                        }
+                    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerName);
+                    if (offlinePlayer == null || offlinePlayer.getUniqueId() == null) {
                         engageHoldoff();
-                        uuid = null;
+                        if (CompatibilityConstants.DEBUG) {
+                            platform.getLogger().warning("Failed to request offline player data for " + playerName + ", will not retry for 10 minutes");
+                        }
                     }
-
-                    synchronizeCallbackUUID(callback, uuid);
+                    synchronizeCallbackOfflinePlayer(callback, offlinePlayer);
                 }
             }
         }, holdoff / 50);
     }
 
-    private String addDashes(String uuidString) {
-        StringBuilder builder = new StringBuilder(uuidString);
-        for (int i = 8, j = 0; i <= 20; i += 4, j++)
-            builder.insert(i + j, '-');
-        return builder.toString();
-    }
-
     @Override
     public void fetchProfile(final String playerName, final ProfileCallback callback) {
-        fetchUUID(playerName, new UUIDCallback() {
+        fetchOfflinePlayer(playerName, new OfflinePlayerCallback() {
             @Override
-            public void result(UUID uuid) {
-                if (uuid != null) {
-                    fetchProfile(uuid, callback);
+            public void result(OfflinePlayer offlinePlayer) {
+                if (offlinePlayer != null) {
+                    fetchProfile(offlinePlayer, callback);
                 } else {
                     callback.result(null);
                 }
@@ -277,40 +121,21 @@ public class SkinUtilsBase implements SkinUtils {
 
     @Override
     public void fetchProfile(final UUID uuid, final ProfileCallback callback) {
-        final Player onlinePlayer = Bukkit.getPlayer(uuid);
-        if (onlinePlayer != null) {
-            boolean contains;
-            final ProfileResponse response = new ProfileResponse(this, platform.getLogger(), onlinePlayer);
-            synchronized (responseCache) {
-                contains = responseCache.containsKey(uuid);
-                if (!contains) {
-                    responseCache.put(uuid, response);
-                }
-            }
-            if (!contains) {
-                Bukkit.getScheduler().runTaskAsynchronously(platform.getPlugin(), new Runnable() {
-                    @Override
-                    public void run() {
-                        File cacheFolder = new File(platform.getPlugin().getDataFolder(), "data/profiles");
-                        if (!cacheFolder.exists()) {
-                            cacheFolder.mkdirs();
-                        }
+        // Note that if not cached this OfflinePlayer will not have a name assigned
+        // Hopefully this is fine
+        // The upside is this will never make a Mojang request so we don't need locking or async here.
+        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+        fetchProfile(offlinePlayer, callback);
+    }
 
-                        try {
-                            File playerCache = new File(cacheFolder, uuid + ".yml");
-                            YamlConfiguration config = new YamlConfiguration();
-                            response.save(config);
-                            config.save(playerCache);
-                        } catch (IOException ex) {
-                            platform.getLogger().log(Level.WARNING, "Error saving to player profile cache", ex);
-                        }
-                    }
-                });
-            }
-            callback.result(response);
+    public void fetchProfile(final OfflinePlayer offlinePlayer, final ProfileCallback callback) {
+        UUID uuid = offlinePlayer == null ? null : offlinePlayer.getUniqueId();
+        if (uuid == null) {
+            callback.result(null);
             return;
         }
 
+        // Check the cache first
         ProfileResponse cached;
         synchronized (responseCache) {
             cached = responseCache.get(uuid);
@@ -319,13 +144,14 @@ public class SkinUtilsBase implements SkinUtils {
             callback.result(cached);
             return;
         }
-        final com.elmakers.mine.bukkit.utility.platform.SkinUtils skinUtils = this;
+
+        // Check for the updated profile, fetch if necessary, then cache it
         final Plugin plugin = platform.getPlugin();
         Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, new Runnable() {
             @Override
             public void run() {
                 Object lock;
-                synchronized (loadingUUIDs) {
+                synchronized (loadingProfiles) {
                     lock = loadingProfiles.get(uuid);
                     if (lock == null) {
                         lock = new Object();
@@ -333,6 +159,7 @@ public class SkinUtilsBase implements SkinUtils {
                     }
                 }
                 synchronized (lock) {
+                    // See if another thread has cached it
                     ProfileResponse cached;
                     synchronized (responseCache) {
                         cached = responseCache.get(uuid);
@@ -341,6 +168,10 @@ public class SkinUtilsBase implements SkinUtils {
                         synchronizeCallbackProfile(callback, cached);
                         return;
                     }
+
+                    // Check for a previously downloaded profile
+                    // These were updated in 10.10.1 to include a serialized data property in place of the json profile
+                    // If the playerProfile is not set, we will need to update the serialized cache file.
                     File cacheFolder = new File(platform.getPlugin().getDataFolder(), "data/profiles");
                     if (!cacheFolder.exists()) {
                         cacheFolder.mkdirs();
@@ -348,178 +179,72 @@ public class SkinUtilsBase implements SkinUtils {
                     final File playerCache = new File(cacheFolder, uuid + ".yml");
                     if (playerCache.exists()) {
                         YamlConfiguration config = YamlConfiguration.loadConfiguration(playerCache);
-                        ProfileResponse fromCache = new ProfileResponse(skinUtils, config);
-                        synchronized (responseCache) {
-                            responseCache.put(uuid, fromCache);
+                        ProfileResponse fromCache = new ProfileResponse(config);
+                        // Check for updated data that contains player profile
+                        if (isComplete(fromCache.getPlayerProfile())) {
+                            synchronized (responseCache) {
+                                responseCache.put(uuid, fromCache);
+                            }
+                            synchronizeCallbackProfile(callback, fromCache);
+                            return;
                         }
-                        synchronizeCallbackProfile(callback, fromCache);
+                    }
+
+                    // Now we will have to fetch the profile and update the cache
+                    PlayerProfile offlineProfile = offlinePlayer.getPlayerProfile();
+                    if (!isComplete(offlineProfile)) {
+                        if (CompatibilityConstants.DEBUG) {
+                            platform.getLogger().info("Fetching offline player data for " + uuid);
+                        }
+
+                        try {
+                            // We are already in a separate thread so we can update this synchronously
+                            offlineProfile = offlineProfile.update().get();
+                        } catch (Exception ex) {
+                            if (CompatibilityConstants.DEBUG) {
+                                platform.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes", ex);
+                            } else {
+                                platform.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes");
+                            }
+                            engageHoldoff();
+                            synchronizeCallbackProfile(callback, null);
+                            return;
+                        }
+                    }
+
+                    // Check again for a valid skin
+                    if (!isComplete(offlineProfile)) {
+                        platform.getLogger().log(Level.WARNING, "Got an empty player profile for: " + uuid + ", will not retry for 10 minutes");
+                        engageHoldoff();
+                        synchronizeCallbackProfile(callback, null);
                         return;
                     }
 
-                    if (CompatibilityConstants.DEBUG) {
-                        platform.getLogger().info("Fetching profile for " + uuid);
+                    // Update cache
+                    platform.getLogger().info("Got skin URL: " + offlineProfile.getTextures().getSkin() + " for " + offlineProfile.getName());
+                    ProfileResponse response = new ProfileResponse(offlineProfile);
+                    synchronized (responseCache) {
+                        responseCache.put(uuid, response);
                     }
                     try {
-                        String profileJSON = fetchURL("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().replace("-", ""));
-                        if (profileJSON.isEmpty()) {
-                            synchronizeCallbackProfile(callback, null);
-                            engageHoldoff();
-                            if (CompatibilityConstants.DEBUG)
-                                platform.getLogger().warning("Failed to fetch profile JSON for " + uuid + ", will not retry for 10 minutes");
-                            return;
-                        }
-                        if (CompatibilityConstants.DEBUG) platform.getLogger().info("Got profile: " + profileJSON);
-                        JsonElement element = new JsonParser().parse(profileJSON);
-                        if (element == null || !element.isJsonObject()) {
-                            synchronizeCallbackProfile(callback, null);
-                            engageHoldoff();
-                            if (CompatibilityConstants.DEBUG)
-                                platform.getLogger().warning("Failed to parse profile JSON for " + uuid + ", will not retry for 10 minutes");
-                            return;
-                        }
-
-                        JsonObject profileJson = element.getAsJsonObject();
-                        JsonArray properties = profileJson.getAsJsonArray("properties");
-                        String encodedTextures = null;
-                        for (int i = 0; i < properties.size(); i++) {
-                            JsonElement property = properties.get(i);
-                            if (property.isJsonObject()) {
-                                JsonObject objectProperty = property.getAsJsonObject();
-                                if (objectProperty.has("name") && objectProperty.has("value")) {
-                                    if (objectProperty.get("name").getAsString().equals("textures")) {
-                                        encodedTextures = objectProperty.get("value").getAsString();
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-
-                        if (encodedTextures == null) {
-                            synchronizeCallbackProfile(callback, null);
-                            engageHoldoff();
-                            if (CompatibilityConstants.DEBUG)
-                                platform.getLogger().warning("Failed to find textures in profile JSON, will not retry for 10 minutes");
-                            return;
-                        }
-                        String decodedTextures = Base64Coder.decodeString(encodedTextures);
-                        if (CompatibilityConstants.DEBUG)
-                            platform.getLogger().info("Decoded textures: " + decodedTextures);
-                        String skinURL = getTextureURL(decodedTextures);
-
-                        // A null skin URL here is normal if the player has no skin.
-                        if (CompatibilityConstants.DEBUG)
-                            platform.getLogger().info("Got skin URL: " + skinURL + " for " + profileJson.get("name").getAsString());
-                        ProfileResponse response = new ProfileResponse(skinUtils, uuid, profileJson.get("name").getAsString(), skinURL, profileJSON);
-                        synchronized (responseCache) {
-                            responseCache.put(uuid, response);
-                        }
                         YamlConfiguration saveToCache = new YamlConfiguration();
                         response.save(saveToCache);
                         saveToCache.save(playerCache);
-                        synchronizeCallbackProfile(callback, response);
-                        holdoff = 0;
                     } catch (Exception ex) {
-                        if (CompatibilityConstants.DEBUG) {
-                            platform.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes", ex);
-                        } else {
-                            platform.getLogger().log(Level.WARNING, "Failed to fetch profile for: " + uuid + ", will not retry for 10 minutes");
-                        }
-                        engageHoldoff();
-                        synchronizeCallbackProfile(callback, null);
+                        platform.getLogger().log(Level.WARNING, "Failed to save player profile to cache for: " + uuid, ex);
                     }
+                    synchronizeCallbackProfile(callback, response);
+                    holdoff = 0;
                 }
             }
         }, holdoff / 50);
     }
 
-    protected String getValue(Property property) {
-        return property.value();
-    }
-
-    protected String getSignature(Property property) {
-        return property.signature();
-    }
-
-    @Override
-    public String getProfileURL(Object profile) {
-        String url = null;
-        if (profile == null || !(profile instanceof GameProfile)) {
-            return null;
-        }
-        GameProfile gameProfile = (GameProfile)profile;
-        PropertyMap properties = gameProfile.getProperties();
-        if (properties == null) {
-            return null;
-        }
-        Collection<Property> textures = properties.get("textures");
-        if (textures != null && textures.size() > 0) {
-            Property textureProperty = textures.iterator().next();
-            String texture = getValue(textureProperty);
-            try {
-                String decoded = Base64Coder.decodeString(texture);
-                url = getTextureURL(decoded);
-            } catch (Exception ex) {
-                platform.getLogger().log(Level.WARNING, "Could not parse textures in profile", ex);
-            }
-        }
-        return url;
-    }
-
-    @Override
-    public Object getProfile(Player player) {
-        return platform.getCompatibilityUtils().getProfile(player);
-    }
-
-    @Override
-    public JsonElement getProfileJson(Object profile) {
-        if (!(profile instanceof GameProfile)) return null;
-        GameProfile gameProfile = (GameProfile)profile;
-        JsonElement profileJson = getGson().toJsonTree(gameProfile);
-        if (profileJson.isJsonObject()) {
-            JsonObject profileObject = (JsonObject) profileJson;
-            PropertyMap properties = gameProfile.getProperties();
-            JsonArray propertiesArray = new JsonArray();
-
-            for (Map.Entry<String, Property> entry : properties.entries()) {
-                JsonObject newObject = new JsonObject();
-                newObject.addProperty("name", entry.getKey());
-                String value = getValue(entry.getValue());
-                newObject.addProperty("value", value);
-                String signature = getSignature(entry.getValue());
-                newObject.addProperty("signature", signature);
-                propertiesArray.add(newObject);
-            }
-            profileObject.add("properties", propertiesArray);
-        }
-        return profileJson;
-    }
-
-    @Override
-    public Object getGameProfile(UUID uuid, String playerName, String profileJSON) {
-        GameProfile gameProfile = null;
-        try {
-            gameProfile = new GameProfile(uuid, playerName);
-            PropertyMap properties = gameProfile.getProperties();
-            JsonElement json = new JsonParser().parse(profileJSON);
-            if (json != null && json.isJsonObject()) {
-                JsonObject profile = json.getAsJsonObject();
-                if (profile.has("properties")) {
-                    JsonArray propertiesJson = profile.getAsJsonArray("properties");
-                    for (int i = 0; i < propertiesJson.size(); i++) {
-                        JsonObject property = propertiesJson.get(i).getAsJsonObject();
-                        if (property != null && property.has("name") && property.has("value")) {
-                            String name = property.get("name").getAsString();
-                            String value = property.get("value").getAsString();
-                            String signature = property.has("signature") ? property.get("signature").getAsString() : null;
-                            Property newProperty = new Property(name, value, signature);
-                            properties.put(name, newProperty);
-                        }
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            platform.getLogger().log(Level.WARNING, "Error creating GameProfile", ex);
-        }
-        return gameProfile;
+    private boolean isComplete(PlayerProfile playerProfile) {
+        // The Spigot implementation of this looks correct, but when running on Paper
+        // it seems to do something different and will return true for an unloaded profile.
+        // return playerProfile.isComplete()
+        return playerProfile != null && playerProfile.getUniqueId() != null
+                && playerProfile.getName() != null && !playerProfile.getTextures().isEmpty();
     }
 }

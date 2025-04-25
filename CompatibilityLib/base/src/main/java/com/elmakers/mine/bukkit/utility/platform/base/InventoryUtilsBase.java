@@ -24,6 +24,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.MapMeta;
 import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
 
 import com.elmakers.mine.bukkit.utility.Base64Coder;
 import com.elmakers.mine.bukkit.utility.ChatUtils;
@@ -292,7 +293,16 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
 
     @Override
     public String getSkullURL(ItemStack skull) {
-        return platform.getSkinUtils().getProfileURL(getSkullProfile(skull.getItemMeta()));
+        ItemMeta itemMeta = skull.getItemMeta();
+        if (itemMeta instanceof SkullMeta) {
+            SkullMeta skullMeta = (SkullMeta)itemMeta;
+            PlayerProfile playerProfile = skullMeta.getOwnerProfile();
+            URL skinURL = playerProfile == null ? null : playerProfile.getTextures().getSkin();
+            if (skinURL != null) {
+                return skinURL.toString();
+            }
+        }
+        return null;
     }
 
     @Override

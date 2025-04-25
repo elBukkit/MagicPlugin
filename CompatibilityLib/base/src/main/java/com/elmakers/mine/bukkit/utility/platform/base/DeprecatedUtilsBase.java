@@ -94,10 +94,9 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        platform.getInventoryUtils().setSkullProfile(meta, gameProfile);
+                        ((SkullMeta)meta).setOwnerProfile(response.getPlayerProfile());
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -114,10 +113,9 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
                     ItemMeta meta = itemStack.getItemMeta();
                     if (meta instanceof SkullMeta) {
-                        platform.getInventoryUtils().setSkullProfile(meta, gameProfile);
+                        ((SkullMeta)meta).setOwnerProfile(response.getPlayerProfile());
                         itemStack.setItemMeta(meta);
                     }
                 }
@@ -134,8 +132,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
-                    platform.getInventoryUtils().setSkullProfile(skull, gameProfile);
+                    skull.setOwnerProfile(response.getPlayerProfile());
                 }
                 skull.update(true, false);
             }
@@ -148,8 +145,7 @@ public class DeprecatedUtilsBase implements DeprecatedUtils {
             @Override
             public void result(ProfileResponse response) {
                 if (response != null) {
-                    Object gameProfile = response.getGameProfile();
-                    platform.getInventoryUtils().setSkullProfile(skull, gameProfile);
+                    skull.setOwnerProfile(response.getPlayerProfile());
                 }
                 skull.update(true, false);
             }
