@@ -3166,7 +3166,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
     {
         try {
-            Set<String> keys = platform.getInventoryUtils().getTagKeys(tag);
+            Set<String> keys = platform.getNBTUtils().getTagKeys(tag);
             if (keys == null) return false;
 
             for (String tagName : keys) {
@@ -3176,7 +3176,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
                         ConfigurationSection newSection = tags.createSection(tagName);
                         loadAllTagsFromNBT(newSection, metaBase);
                     } else {
-                        tags.set(tagName, platform.getInventoryUtils().getTagValue(metaBase));
+                        tags.set(tagName, platform.getNBTUtils().getTagValue(metaBase));
                     }
                 }
             }

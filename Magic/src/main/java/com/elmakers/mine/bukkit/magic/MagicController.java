@@ -7088,7 +7088,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (CompatibilityLib.getItemUtils().isEmpty(item)) return null;
         Object wandNode = CompatibilityLib.getNBTUtils().getTag(item, Wand.WAND_KEY);
         if (wandNode == null) return null;
-        Object value = CompatibilityLib.getInventoryUtils().getMetaObject(wandNode, key);
+        Object value = CompatibilityLib.getNBTUtils().getMetaObject(wandNode, key);
         if (value == null) {
             WandTemplate template = getWandTemplate(CompatibilityLib.getNBTUtils().getString(wandNode, "template"));
             if (template != null) {
@@ -7119,7 +7119,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         Class<? extends T> clazz = (Class<? extends T>) defaultValue.getClass();
 
         // Value directly stored on wand
-        Object value = CompatibilityLib.getInventoryUtils().getMetaObject(wandNode, key);
+        Object value = CompatibilityLib.getNBTUtils().getMetaObject(wandNode, key);
         if (value != null) {
             if (clazz.isInstance(value)) {
                 return clazz.cast(value);

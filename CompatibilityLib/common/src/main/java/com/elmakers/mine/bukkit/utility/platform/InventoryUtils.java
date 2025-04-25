@@ -1,10 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform;
 
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Material;
@@ -17,28 +14,7 @@ import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 public interface InventoryUtils {
     CurrencyAmount getCurrencyAmount(ItemStack item);
 
-    boolean saveTagsToItem(ConfigurationSection tags, ItemStack item);
-
-    boolean saveTagsToItem(Map<String, Object> tags, ItemStack item);
-
     boolean configureSkillItem(ItemStack skillItem, String skillClass, boolean quickCast, ConfigurationSection skillConfig);
-
-    boolean saveTagsToNBT(ConfigurationSection tags, Object node);
-
-    boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames);
-
-    boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames);
-
-    boolean addTagsToNBT(Map<String, Object> tags, Object node);
-
-    Object wrapInTag(Object value)
-            throws IllegalAccessException, InvocationTargetException, InstantiationException;
-
-    Set<String> getTagKeys(Object tag);
-
-    Object getMetaObject(Object tag, String key);
-
-    Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException;
 
     ItemStack setSkullURL(ItemStack itemStack, String url);
 
@@ -84,6 +60,4 @@ public interface InventoryUtils {
     void setMapId(ItemStack mapItem, int id);
 
     ItemStack createMap(Material material, int id);
-
-    void convertIntegers(Map<String, Object> m);
 }

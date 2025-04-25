@@ -182,7 +182,7 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
                 JsonReader reader = new JsonReader(new StringReader(json));
                 reader.setLenient(true);
                 Map<String, Object> tags = getGson().fromJson(reader, Map.class);
-                CompatibilityLib.getInventoryUtils().convertIntegers(tags);
+                CompatibilityLib.getNBTUtils().convertIntegers(tags);
                 ConfigurationSection mobConfig = ConfigurationUtils.newConfigurationSection();
                 mobConfig.set("type", mobKey);
                 for (Map.Entry<String, Object> entry : tags.entrySet()) {

@@ -1901,7 +1901,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
             controller.info("Failed to save wand state for wand to : " + item + ownerMessage);
         } else {
-            CompatibilityLib.getInventoryUtils().saveTagsToNBT(getConfiguration(), wandNode);
+            CompatibilityLib.getNBTUtils().saveTagsToNBT(getConfiguration(), wandNode);
         }
     }
 
@@ -1928,7 +1928,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
         ConfigurationSection stateNode = itemSection.getConfigurationSection("wand");
         Object wandNode = CompatibilityLib.getNBTUtils().createTag(item, Wand.WAND_KEY);
         if (wandNode != null) {
-            CompatibilityLib.getInventoryUtils().saveTagsToNBT(stateNode, wandNode);
+            CompatibilityLib.getNBTUtils().saveTagsToNBT(stateNode, wandNode);
         }
     }
 

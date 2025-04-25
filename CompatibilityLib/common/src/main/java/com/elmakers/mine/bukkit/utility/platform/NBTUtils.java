@@ -2,9 +2,12 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
 
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
 public interface NBTUtils {
@@ -98,4 +101,25 @@ public interface NBTUtils {
     Object newCompoundTag();
 
     boolean setSpawnEggEntityData(ItemStack spawnEgg, Object entityData);
+
+    boolean saveTagsToItem(ConfigurationSection tags, ItemStack item);
+
+    boolean saveTagsToNBT(ConfigurationSection tags, Object node);
+
+    boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames);
+
+    boolean saveTagsToNBT(Map<String, Object> tags, Object node, Set<String> tagNames);
+
+    boolean addTagsToNBT(Map<String, Object> tags, Object node);
+
+    Object wrapInTag(Object value)
+            throws IllegalAccessException, InvocationTargetException, InstantiationException;
+
+    Set<String> getTagKeys(Object tag);
+
+    Object getMetaObject(Object tag, String key);
+
+    Object getTagValue(Object tag) throws IllegalAccessException, InvocationTargetException;
+
+    void convertIntegers(Map<String, Object> m);
 }

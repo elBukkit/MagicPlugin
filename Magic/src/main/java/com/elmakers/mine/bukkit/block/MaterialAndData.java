@@ -257,7 +257,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     JsonReader reader = new JsonReader(new StringReader(json));
                     reader.setLenient(true);
                     Map<String, Object> tags = getGson().fromJson(reader, Map.class);
-                    CompatibilityLib.getInventoryUtils().convertIntegers(tags);
+                    CompatibilityLib.getNBTUtils().convertIntegers(tags);
                     for (Map.Entry<String, Object> entry : tags.entrySet()) {
                         String key = entry.getKey();
                         Object value = entry.getValue();

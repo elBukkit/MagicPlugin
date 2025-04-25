@@ -826,7 +826,7 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
     {
         if (!(tag instanceof CompoundTag)) return false;
         CompoundTag compoundTag = (CompoundTag) tag;
-        Set<String> keys = platform.getInventoryUtils().getTagKeys(tag);
+        Set<String> keys = platform.getNBTUtils().getTagKeys(tag);
         if (keys == null) return false;
         for (String tagName : keys) {
             Tag metaBase = compoundTag.get(tagName);
@@ -836,7 +836,7 @@ public class CompatibilityUtils extends Modern2CompatibilityUtils {
                     loadAllTagsFromNBT(newSection, metaBase);
                 } else {
                     try {
-                        tags.set(tagName, platform.getInventoryUtils().getTagValue(metaBase));
+                        tags.set(tagName, platform.getNBTUtils().getTagValue(metaBase));
                     } catch (Exception ex) {
                         platform.getLogger().log(Level.SEVERE, "Failed to load NBT tags", ex);
                         return false;

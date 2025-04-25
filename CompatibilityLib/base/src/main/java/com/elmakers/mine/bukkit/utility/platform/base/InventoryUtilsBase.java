@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -28,7 +26,6 @@ import org.bukkit.profile.PlayerProfile;
 
 import com.elmakers.mine.bukkit.utility.ChatUtils;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
-import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.CurrencyAmount;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
@@ -64,27 +61,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
     }
 
     @Override
-    public boolean saveTagsToItem(ConfigurationSection tags, ItemStack item) {
-        Object handle = platform.getItemUtils().getHandle(item);
-        if (handle == null) return false;
-        Object tag = platform.getItemUtils().getOrCreateTag(handle);
-        if (tag == null) return false;
-
-        return addTagsToNBT(ConfigUtils.toMap(tags), tag);
-    }
-
-    @Override
-    public boolean saveTagsToItem(Map<String, Object> tags, ItemStack item)
-    {
-        Object handle = platform.getItemUtils().getHandle(item);
-        if (handle == null) return false;
-        Object tag = platform.getItemUtils().getOrCreateTag(handle);
-        if (tag == null) return false;
-
-        return addTagsToNBT(tags, tag);
-    }
-
-    @Override
     public boolean configureSkillItem(ItemStack skillItem, String skillClass, boolean quickCast, ConfigurationSection skillConfig) {
         if (skillItem == null) return false;
         Object handle = platform.getItemUtils().getHandle(skillItem);
@@ -117,84 +93,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         }
 
         return true;
-    }
-
-    @Override
-    public boolean saveTagsToNBT(ConfigurationSection tags, Object node) {
-        return saveTagsToNBT(tags, node, null);
-    }
-
-    @Override
-    public boolean saveTagsToNBT(ConfigurationSection tags, Object node, Set<String> tagNames) {
-        return saveTagsToNBT(ConfigUtils.toMap(tags), node, tagNames);
-    }
-
-    protected byte[] makeByteArray(List<Object> list) {
-        byte[] a = new byte[list.size()];
-
-        for (int i = 0; i < list.size(); ++i) {
-            Byte b = (Byte)list.get(i);
-            a[i] = b == null ? 0 : b;
-        }
-
-        return a;
-    }
-
-    protected int[] makeIntArray(List<Object> list) {
-        int[] a = new int[list.size()];
-
-        for (int i = 0; i < list.size(); ++i) {
-            Integer value = (Integer)list.get(i);
-            a[i] = value == null ? 0 : value;
-        }
-
-        return a;
-    }
-
-    protected long[]  makeLongArray(List<Object> list) {
-        long[] a = new long[list.size()];
-
-        for (int i = 0; i < list.size(); ++i) {
-            Long l = (Long)list.get(i);
-            a[i] = l == null ? 0 : l;
-        }
-
-        return a;
-    }
-
-    protected Long convertToLong(Object o) {
-        if (o == null) return null;
-        if (o instanceof Long) return (Long)o;
-        if (o instanceof Integer) return (long)(Integer)o;
-        if (o instanceof Byte) return (long)(Byte)o;
-        if (o instanceof Double) return (long)(double)(Double)o;
-        if (o instanceof String) return Long.parseLong((String)o);
-        return null;
-    }
-
-    protected Integer convertToInteger(Object o) {
-        Long intVal = convertToLong(o);
-        return intVal == null ? null : (int)(long)intVal;
-    }
-
-    protected Byte convertToByte(Object o) {
-        Long intVal = convertToLong(o);
-        return intVal == null ? null : (byte)(long)intVal;
-    }
-
-    protected Short convertToShort(Object o) {
-        Long intVal = convertToLong(o);
-        return intVal == null ? null : (short)(long)intVal;
-    }
-
-    protected Double convertToDouble(Object o) {
-        if (o == null) return null;
-        if (o instanceof Double) return (Double)o;
-        if (o instanceof Integer) return (double)(Integer)o;
-        if (o instanceof Long) return (double)(Long)o;
-        if (o instanceof Byte) return (double)(Byte)o;
-        if (o instanceof String) return Double.parseDouble((String)o);
-        return null;
     }
 
     @Override
@@ -445,28 +343,6 @@ public abstract class InventoryUtilsBase implements InventoryUtils {
         ItemStack mapItem = new ItemStack(material, 1);
         setMapId(mapItem, mapId);
         return mapItem;
-    }
-
-    @Override
-    public void convertIntegers(Map<String, Object> m) {
-        for (Map.Entry<String, Object> entry : m.entrySet()) {
-            Object value = entry.getValue();
-            if (value != null && value instanceof Double) {
-                double d = (Double) value;
-                if (d == (int)d) {
-                    entry.setValue((int)d);
-                }
-            } else if (value != null && value instanceof Float) {
-                float f = (Float) value;
-                if (f == (int)f) {
-                    entry.setValue((int)f);
-                }
-            } else if (value != null && value instanceof Map) {
-                @SuppressWarnings("unchecked")
-                Map<String, Object> map = (Map<String, Object>)value;
-                convertIntegers(map);
-            }
-        }
     }
 
     @Override

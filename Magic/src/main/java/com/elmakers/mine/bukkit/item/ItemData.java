@@ -138,7 +138,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
             ConfigurationSection tagSection = itemConfiguration.getConfigurationSection("tags");
             if (tagSection != null) {
                 item = CompatibilityLib.getItemUtils().makeReal(item);
-                CompatibilityLib.getInventoryUtils().saveTagsToItem(tagSection, item);
+                CompatibilityLib.getNBTUtils().saveTagsToItem(tagSection, item);
             }
         } else {
             String materialKey = configuration.getString("item", key);
@@ -196,7 +196,7 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         ConfigurationSection tagSection = configuration.getConfigurationSection("tags");
         if (tagSection != null) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
-            CompatibilityLib.getInventoryUtils().saveTagsToItem(tagSection, item);
+            CompatibilityLib.getNBTUtils().saveTagsToItem(tagSection, item);
         }
         String customName = configuration.getString("name");
         if (customName == null) {
