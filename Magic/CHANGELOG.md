@@ -4,7 +4,7 @@
 # 10.10.1
  
  - Fix image maps (Camera item, `/mmap` command, etc)
- - Remove all invalid items from enonomy configs, fixes spammy invalid item warnings on startup
+ - Remove all invalid items from economy configs, fixes spammy invalid item warnings on startup
  - Fix PlayRecordAction (music spell)
  - Re-enable Geyser integration by default
  - Fix loading issues in 1.21.1 caused by Spigot API breakage in the Sound enum
