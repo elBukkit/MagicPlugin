@@ -14,7 +14,7 @@ superalter:
         range: 64
         depth: 32
         transparent: transparent_to_construction
-        destructible: "!air"
+        destructible: "!all_air"
         replace: true
         ignore_region_overrides: true
         cancel_on_deactivate: false
