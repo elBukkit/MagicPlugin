@@ -3420,10 +3420,8 @@ public class MagicController implements MageController, ChunkLoadListener {
         defaultMaterials.setFirework(getVersionedMaterial(configuration, "firework"));
         defaultMaterials.setFireworkStar(getVersionedMaterial(configuration, "firework_star"));
         defaultMaterials.setWallTorch(getVersionedMaterialAndData(configuration, "wall_torch"));
-        defaultMaterials.setRedstoneTorchOn(getVersionedMaterialAndData(configuration, "redstone_torch_on"));
-        defaultMaterials.setRedstoneTorchOff(getVersionedMaterialAndData(configuration, "redstone_torch_off"));
-        defaultMaterials.setRedstoneWallTorchOn(getVersionedMaterialAndData(configuration, "redstone_wall_torch_on"));
-        defaultMaterials.setRedstoneWallTorchOff(getVersionedMaterialAndData(configuration, "redstone_wall_torch_off"));
+        defaultMaterials.setRedstoneTorch(getVersionedMaterialAndData(configuration, "redstone_torch"));
+        defaultMaterials.setRedstoneWallTorch(getVersionedMaterialAndData(configuration, "redstone_wall_torch"));
         defaultMaterials.setMobSpawner(getVersionedMaterial(configuration, "mob_spawner"));
         defaultMaterials.setNetherPortal(getVersionedMaterial(configuration, "nether_portal"));
         defaultMaterials.setWriteableBook(getVersionedMaterial(configuration, "writable_book"));

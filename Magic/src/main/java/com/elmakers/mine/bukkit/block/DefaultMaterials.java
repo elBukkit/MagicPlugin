@@ -46,10 +46,8 @@ public class DefaultMaterials {
     private Material netherPortal = null;
     private Material writeableBook = null;
     private MaterialAndData wallTorch = null;
-    private MaterialAndData redstoneTorchOn = null;
-    private MaterialAndData redstoneTorchOff = null;
-    private MaterialAndData redstoneWallTorchOn = null;
-    private MaterialAndData redstoneWallTorchOff = null;
+    private MaterialAndData redstoneTorch = null;
+    private MaterialAndData redstoneWallTorch = null;
 
     private Map<Material, Map<DyeColor, MaterialAndData>> materialColors = new HashMap<>();
     private Map<Material, Material> colorMap = new HashMap<>();
@@ -427,35 +425,19 @@ public class DefaultMaterials {
     }
 
     public static MaterialAndData getRedstoneTorchOn() {
-        return getInstance().redstoneTorchOn;
+        return getInstance().redstoneTorch;
     }
 
-    public void setRedstoneTorchOn(MaterialAndData redstoneTorchOn) {
-        this.redstoneTorchOn = redstoneTorchOn;
-    }
-
-    public static MaterialAndData getRedstoneTorchOff() {
-        return getInstance().redstoneTorchOff;
-    }
-
-    public void setRedstoneTorchOff(MaterialAndData redstoneTorchOff) {
-        this.redstoneTorchOff = redstoneTorchOff;
+    public void setRedstoneTorch(MaterialAndData redstoneTorch) {
+        this.redstoneTorch = redstoneTorch;
     }
 
     public static MaterialAndData getRedstoneWallTorchOn() {
-        return getInstance().redstoneWallTorchOn;
+        return getInstance().redstoneWallTorch;
     }
 
-    public void setRedstoneWallTorchOn(MaterialAndData redstoneWallTorchOn) {
-        this.redstoneWallTorchOn = redstoneWallTorchOn;
-    }
-
-    public static MaterialAndData getRedstoneWallTorchOff() {
-        return getInstance().redstoneWallTorchOff;
-    }
-
-    public void setRedstoneWallTorchOff(MaterialAndData redstoneWallTorchOff) {
-        this.redstoneWallTorchOff = redstoneWallTorchOff;
+    public void setRedstoneWallTorch(MaterialAndData redstoneWallTorch) {
+        this.redstoneWallTorch = redstoneWallTorch;
     }
 
     public static boolean isAir(Material material) {

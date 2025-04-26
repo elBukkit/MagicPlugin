@@ -1,14 +1,13 @@
 # These define mappings of materials for backwards compatibility
-ground_sign_block: oak_sign,sign_post,sign
-wall_sign_block: oak_wall_sign,wall_sign
-firework: firework,firework_rocket
-firework_star: firework_star,firework_charge
-wall_torch: wall_torch,torch
-redstone_torch_on: redstone_torch_on,redstone_torch:1
-redstone_torch_off: redstone_torch_on,redstone_torch:0
-redstone_wall_torch_on: redstone_torch_on,redstone_wall_torch:4
-redstone_wall_torch_off: redstone_torch_on,redstone_torch:0
-mob_spawner: spawner,mob_spawner
-filled_map: filled_map,map
-nether_portal: nether_portal,portal
-writable_book: writable_book,book_and_quill
+# They were all reduced to current material names in 10.10
+ground_sign_block: oak_sign
+wall_sign_block: oak_wall_sign
+firework: firework_rocket
+firework_star: firework_star
+wall_torch: wall_torch
+redstone_torch: redstone_torch
+redstone_wall_torch: redstone_wall_torch
+mob_spawner: spawner
+filled_map: filled_map
+nether_portal: nether_portal
+writable_book: writable_book
