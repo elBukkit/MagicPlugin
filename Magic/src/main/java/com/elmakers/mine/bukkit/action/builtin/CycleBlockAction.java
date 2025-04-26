@@ -13,6 +13,8 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.elmakers.mine.bukkit.action.BaseSpellAction;
 import com.elmakers.mine.bukkit.api.action.CastContext;
+import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.api.magic.MaterialSet;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
@@ -44,6 +46,29 @@ public class CycleBlockAction extends BaseSpellAction {
                 }
             }
         }
+
+        MageController controller = spell.getController();
+        List<String> materialSets = parameters.getStringList("material_sets");
+        if (materialSets != null) {
+            for (String materialSetKey : materialSets) {
+                MaterialSet materialSet = controller.getMaterialSetManager().getMaterialSet(materialSetKey);
+                if (materialSet == null) {
+                    controller.getLogger().warning("Invalid material set in spell " + spell.getKey() + ": " + materialSetKey);
+                    continue;
+                }
+                List<MaterialAndData> materialsToCycle = new ArrayList<>();
+                Collection<Material> materialsInSet = materialSet.getMaterials();
+                for (Material material : materialsInSet) {
+                    materialsToCycle.add(new MaterialAndData(material));
+                }
+                if (materialsToCycle.size() > 1) {
+                    for (int i = 0; i < materialsToCycle.size(); i++) {
+                        materials.put(materialsToCycle.get(i), materialsToCycle.get((i + 1) % materialsToCycle.size()));
+                    }
+                }
+            }
+        }
+
         if (parameters.getBoolean("cycle_colors", false)) {
             Collection<Map<DyeColor, MaterialAndData>> colorBlocks = DefaultMaterials.getInstance().getAllColorBlocks();
             for (Map<DyeColor, MaterialAndData> colorMap : colorBlocks) {
