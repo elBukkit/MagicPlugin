@@ -283,7 +283,7 @@ public class UndoList extends BlockList implements com.elmakers.mine.bukkit.api.
         if (entity == null) return;
         if (spawnedEntities == null) spawnedEntities = new HashMap<>();
         if (entity instanceof Item) {
-            controller.info("** Dropped item " + TextUtils.nameItem(((Item)entity).getItemStack()) + " added to undo queue of " + getName(), 15);
+            controller.info("Dropped item " + TextUtils.nameItem(((Item)entity).getItemStack()) + " added to undo queue of " + getName(), 50);
         }
 
         spawnedEntities.put(entity.getUniqueId(), new SpawnedEntity(entity));
