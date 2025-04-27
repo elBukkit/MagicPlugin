@@ -864,6 +864,8 @@ public interface MageController {
     MaterialAndData createMaterialAndData(Material material, String blockData);
     MaterialAndData createMaterialAndData(Material material, byte legacyBlockData);
     MaterialAndData createMaterialAndData(String materialKey);
+    @Nonnull
+    MaterialAndData createMaterialAndDataIcon(String materialKey, Mage mage);
     void timeSkipped(World world, long skippedAmount);
     void onPlayerJump(Player player, Vector velocity);
     @Nullable

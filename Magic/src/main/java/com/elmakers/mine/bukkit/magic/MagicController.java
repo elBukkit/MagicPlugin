@@ -9030,14 +9030,39 @@ public class MagicController implements MageController, ChunkLoadListener {
 
     @Override
     public MaterialAndData createMaterialAndData(String materialKey) {
+        return new MaterialAndData(materialKey);
+    }
+
+    @Override
+    @Nonnull
+    public MaterialAndData createMaterialAndDataIcon(String materialKey, Mage mage) {
+        // Try icons first
         Icon icon = getIcon(materialKey);
         if (icon != null) {
             com.elmakers.mine.bukkit.api.block.MaterialAndData apiMaterial = icon.getItemMaterial(this);
-            if (apiMaterial instanceof MaterialAndData) {
+            if (apiMaterial.isValid() && apiMaterial instanceof MaterialAndData) {
                 return (MaterialAndData)apiMaterial;
             }
         }
-        return new MaterialAndData(materialKey);
+
+        // Try custom items
+        ItemData itemData = getItem(materialKey);
+        if (itemData != null) {
+            com.elmakers.mine.bukkit.api.block.MaterialAndData apiMaterial = itemData.getMaterialAndData();
+            if (apiMaterial.isValid() && apiMaterial instanceof MaterialAndData) {
+                return (MaterialAndData)apiMaterial;
+            }
+        }
+
+        // Try creating an ItemStack instead
+        // This should account for book items, which was previously a special-case when this code was in the Wand class
+        ItemStack iconItem = createItem(materialKey, mage);
+        if (!CompatibilityLib.getItemUtils().isEmpty(iconItem)) {
+            return new MaterialAndData(iconItem);
+        }
+
+        // Fall back to just creating a new MaterialAndData
+        return createMaterialAndData(materialKey);
     }
 
     @Nullable

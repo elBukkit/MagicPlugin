@@ -52,7 +52,6 @@ import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.event.SpellInventoryEvent;
 import com.elmakers.mine.bukkit.api.event.WandPreActivateEvent;
 import com.elmakers.mine.bukkit.api.item.Icon;
-import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.api.magic.MageClassTemplate;
 import com.elmakers.mine.bukkit.api.magic.MageContext;
 import com.elmakers.mine.bukkit.api.magic.MageController;
@@ -2023,32 +2022,13 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             }
         }
 
-        // This lets us use spell books as wands, which is a fancy way to make
-        // books that can teach you about a spell
-        if (key.startsWith("book:")) {
-            ItemStack bookItem = controller.createItem(key);
-            if (bookItem != null) {
-                return new MaterialAndData(bookItem);
-            }
-        }
+        // This supports icons and custom items
+        com.elmakers.mine.bukkit.api.block.MaterialAndData materialData = controller.createMaterialAndDataIcon(key, mage);
 
-        com.elmakers.mine.bukkit.api.block.MaterialAndData materialData = null;
-        ItemData itemData = controller.getItem(key);
-        if (itemData != null) {
-            materialData = itemData.getMaterialAndData();
-        } else {
-            materialData = new MaterialAndData(key);
-            if (!materialData.isValid()) {
-                ItemStack iconItem = controller.createItem(key, mage);
-                if (!CompatibilityLib.getItemUtils().isEmpty(iconItem)) {
-                    materialData = new MaterialAndData(iconItem);
-                }
-            }
-
-        }
-
-        // try icon again if we still are invalid
-        if ((materialData == null || !materialData.isValid()) && icon != null) {
+        // Try icon again if we still are invalid
+        // Note: We should probably never get here any more since createMaterialAndDataIcon supports icons
+        // I'm leaving the code here anyway just in case I'm missing something
+        if (!materialData.isValid() && icon != null) {
             com.elmakers.mine.bukkit.api.block.MaterialAndData iconMaterial = icon.getItemMaterial(controller);
             if (iconMaterial != null && iconMaterial instanceof MaterialAndData) {
                 return (MaterialAndData)iconMaterial;
@@ -3963,7 +3943,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     String[] keys = StringUtils.split(iconKey, ',');
                     iconKey = keys[r.nextInt(keys.length)];
                 }
-                setIcon(controller.createMaterialAndData(iconKey));
+                setIcon(controller.createMaterialAndDataIcon(iconKey, mage));
                 updateIcon();
                 playEffects("randomize");
             }
