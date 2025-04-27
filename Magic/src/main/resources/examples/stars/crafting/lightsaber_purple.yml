@@ -3,8 +3,7 @@ lightsaber_purple:
   output_type: wand
   ingredients:
     i: lightsaber_hilt
-    x: stained_glass:2
+    x: purple_stained_glass
   row_1: ""
   row_2: ""
   row_3: "xix"
-

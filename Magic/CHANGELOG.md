@@ -9,6 +9,7 @@
  - Drop support for legacy material names, you may need to update customized configs to use modern material names!
    See the Spigot API for a list of modern names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
  - Support predifined icons (from icons config) in wand icons
+ - Fix/update lightsaber hilt item from stars config
 
 # 10.10.1
  

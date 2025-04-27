@@ -133,7 +133,7 @@ butterflyeffects:
     activate: butterfly
 taileffects:
   inherit: wandeffects
-  icon: leash
+  icon: lead
   effects:
     activate: tail
 crowneffects:

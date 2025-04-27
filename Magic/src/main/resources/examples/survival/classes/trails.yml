@@ -15,7 +15,7 @@ crown:
       effects: crown
 
 tail:
-  icon: leash
+  icon: lead
   passive: true
   locked: true
   triggers:

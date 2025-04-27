@@ -14,7 +14,7 @@ arrow_blink:
 arrow_bomb:
   worth: 100
   locked: true
-  item: tipped_arrow{CustomModelData:3,Potion:healing}
+  item: tipped_arrow{CustomModelData:3,Potion:instant_health}
   name: Bomb Arrow
   lore:
     - An explosive surprise
@@ -87,7 +87,7 @@ arrow_poison:
 arrow_shock:
   locked: true
   worth: 100
-  item: tipped_arrow{CustomModelData:9,Potion:swiftness}
+  item: tipped_arrow{CustomModelData:9,Potion:speed}
   name: Shock Arrow
   lore:
     - An arrow with an electrical shock

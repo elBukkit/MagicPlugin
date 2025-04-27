@@ -40,7 +40,7 @@ arrow_grapple:
   output_type: item
 
   ingredients:
-    o: leash
+    o: lead
     i: arrow
 
   row_1: o

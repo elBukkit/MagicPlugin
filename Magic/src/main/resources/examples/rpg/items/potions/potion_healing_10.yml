@@ -1,24 +1,12 @@
 potion_healing_10:
-  worth: 20
+  worth: 20.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 2724
-    type: POTION
-    meta:
-      ==: ItemMeta
-      meta-type: POTION
-      ItemFlags:
-        - HIDE_POTION_EFFECTS
-      custom-color:
-        ==: Color
-        RED: 255
-        BLUE: 0
-        GREEN: 0
-      custom-effects:
-        - ==: PotionEffect
-          effect: 6
-          duration: 10
-          amplifier: 20
-          ambient: true
-          has-particles: true
-          has-icon: true
+    DataVersion: 4325
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:16711680,custom_effects:[{ambient:1b,amplifier:20b,duration:10,id:"minecraft:instant_health",show_icon:1b}]}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:container","minecraft:potion_contents","minecraft:bees","minecraft:written_book_content","minecraft:block_state","minecraft:container_loot","minecraft:map_id","minecraft:banner_patterns","minecraft:pot_decorations","minecraft:firework_explosion","minecraft:instrument","minecraft:fireworks","minecraft:painting/variant","minecraft:tropical_fish/pattern","minecraft:bundle_contents","minecraft:charged_projectiles","minecraft:block_entity_data","minecraft:stored_enchantments"]}'
+      minecraft:custom_name: '{extra:["Mega Healing Potion"],text:""}'
+    schema_version: 1
