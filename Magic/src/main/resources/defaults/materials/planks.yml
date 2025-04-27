@@ -1,5 +1,4 @@
 planks:
-- wood
 - oak_planks
 - spruce_planks
 - birch_planks
@@ -10,3 +9,4 @@ planks:
 - warped_planks
 - mangrove_planks
 - cherry_planks
+- bamboo_mosaic

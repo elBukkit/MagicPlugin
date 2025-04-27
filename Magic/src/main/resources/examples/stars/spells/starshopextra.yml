@@ -4,7 +4,7 @@ starshopextra:
     parameters:
         confirm: true
         auto_close: true
-        confirm_filler: stained_glass:3
+        confirm_filler: light_blue_stained_glass
         show_active_icons: true
         items:
         - item: detonator

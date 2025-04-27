@@ -1,6 +1,6 @@
 
 incremental_reload:
-  icon: sulphur
+  icon: gunpowder
   actions:
     cast:
     - class: Repeat

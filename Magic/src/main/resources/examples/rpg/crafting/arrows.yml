@@ -28,7 +28,7 @@ arrow_bomb:
   output_type: item
 
   ingredients:
-    o: sulphur
+    o: gunpowder
     i: arrow
 
   row_1: o

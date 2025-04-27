@@ -8,8 +8,7 @@ attachable_wall:
 - lever
 - cocoa
 - vine
-- redstone_torch_off
-- redstone_torch_on
+- redstone_torch
 - torch
 - ladder
 - wall_sign

@@ -404,71 +404,70 @@ painter:
     spells:
         - paint
     brushes:
-        - wool:0
-        - wool:1
-        - wool:2
-        - wool:3
-        - wool:4
-        - wool:5
-        - wool:6
-        - wool:7
-        - wool:8
-        - wool:9
-        - wool:10
-        - wool:11
-        - wool:12
-        - wool:13
-        - wool:14
-        - wool:15
-        - stained_clay:0
-        - stained_clay:1
-        - stained_clay:2
-        - stained_clay:3
-        - stained_clay:4
-        - stained_clay:5
-        - stained_clay:6
-        - stained_clay:7
-        - stained_clay:8
-        - stained_clay:9
-        - stained_clay:10
-        - stained_clay:11
-        - stained_clay:12
-        - stained_clay:13
-        - stained_clay:14
-        - stained_clay:15
-        - stained_glass:0
-        - stained_glass:1
-        - stained_glass:2
-        - stained_glass:3
-        - stained_glass:4
-        - stained_glass:5
-        - stained_glass:6
-        - stained_glass:7
-        - stained_glass:8
-        - stained_glass:9
-        - stained_glass:10
-        - stained_glass:11
-        - stained_glass:12
-        - stained_glass:13
-        - stained_glass:14
-        - stained_glass:15
-        - stained_glass_pane:15
-        - stained_glass_pane:0
-        - stained_glass_pane:1
-        - stained_glass_pane:2
-        - stained_glass_pane:3
-        - stained_glass_pane:4
-        - stained_glass_pane:5
-        - stained_glass_pane:6
-        - stained_glass_pane:7
-        - stained_glass_pane:8
-        - stained_glass_pane:9
-        - stained_glass_pane:10
-        - stained_glass_pane:11
-        - stained_glass_pane:12
-        - stained_glass_pane:13
-        - stained_glass_pane:14
-        - stained_glass_pane:15
+        - black_wool
+        - blue_wool
+        - brown_wool
+        - cyan_wool
+        - gray_wool
+        - green_wool
+        - light_blue_wool
+        - light_gray_wool
+        - lime_wool
+        - magenta_wool
+        - orange_wool
+        - pink_wool
+        - purple_wool
+        - red_wool
+        - white_wool
+        - yellow_wool
+        - black_terracotta
+        - blue_terracotta
+        - brown_terracotta
+        - cyan_terracotta
+        - gray_terracotta
+        - green_terracotta
+        - light_blue_terracotta
+        - light_gray_terracotta
+        - lime_terracotta
+        - magenta_terracotta
+        - orange_terracotta
+        - pink_terracotta
+        - purple_terracotta
+        - red_terracotta
+        - white_terracotta
+        - yellow_terracotta
+        - black_stained_glass
+        - blue_stained_glass
+        - brown_stained_glass
+        - cyan_stained_glass
+        - gray_stained_glass
+        - green_stained_glass
+        - light_blue_stained_glass
+        - light_gray_stained_glass
+        - lime_stained_glass
+        - magenta_stained_glass
+        - orange_stained_glass
+        - pink_stained_glass
+        - purple_stained_glass
+        - red_stained_glass
+        - white_stained_glass
+        - yellow_stained_glass
+        - black_stained_glass_pane
+        - blue_stained_glass_pane
+        - brown_stained_glass_pane
+        - cyan_stained_glass_pane
+        - gray_stained_glass_pane
+        - green_stained_glass_pane
+        - light_blue_stained_glass_pane
+        - light_gray_stained_glass_pane
+        - lime_stained_glass_pane
+        - magenta_stained_glass_pane
+        - orange_stained_glass_pane
+        - pink_stained_glass_pane
+        - purple_stained_glass_pane
+        - red_stained_glass_pane
+        - white_stained_glass_pane
+        - yellow_stained_glass_pane
         - schematic:rainbow
 
 decorator:
@@ -479,70 +478,70 @@ decorator:
     spells:
         - convert
     brushes:
-        - wool:0
-        - wool:1
-        - wool:2
-        - wool:3
-        - wool:4
-        - wool:5
-        - wool:6
-        - wool:7
-        - wool:8
-        - wool:9
-        - wool:10
-        - wool:11
-        - wool:12
-        - wool:13
-        - wool:14
-        - wool:15
-        - stained_clay:0
-        - stained_clay:1
-        - stained_clay:2
-        - stained_clay:3
-        - stained_clay:4
-        - stained_clay:5
-        - stained_clay:6
-        - stained_clay:7
-        - stained_clay:8
-        - stained_clay:9
-        - stained_clay:10
-        - stained_clay:11
-        - stained_clay:12
-        - stained_clay:13
-        - stained_clay:14
-        - stained_clay:15
-        - stained_glass:0
-        - stained_glass:1
-        - stained_glass:2
-        - stained_glass:3
-        - stained_glass:4
-        - stained_glass:5
-        - stained_glass:6
-        - stained_glass:7
-        - stained_glass:8
-        - stained_glass:9
-        - stained_glass:10
-        - stained_glass:11
-        - stained_glass:12
-        - stained_glass:13
-        - stained_glass:14
-        - stained_glass_pane:15
-        - stained_glass_pane:0
-        - stained_glass_pane:1
-        - stained_glass_pane:2
-        - stained_glass_pane:3
-        - stained_glass_pane:4
-        - stained_glass_pane:5
-        - stained_glass_pane:6
-        - stained_glass_pane:7
-        - stained_glass_pane:8
-        - stained_glass_pane:9
-        - stained_glass_pane:10
-        - stained_glass_pane:11
-        - stained_glass_pane:12
-        - stained_glass_pane:13
-        - stained_glass_pane:14
-        - stained_glass_pane:15
+        - black_wool
+        - blue_wool
+        - brown_wool
+        - cyan_wool
+        - gray_wool
+        - green_wool
+        - light_blue_wool
+        - light_gray_wool
+        - lime_wool
+        - magenta_wool
+        - orange_wool
+        - pink_wool
+        - purple_wool
+        - red_wool
+        - white_wool
+        - yellow_wool
+        - black_terracotta
+        - blue_terracotta
+        - brown_terracotta
+        - cyan_terracotta
+        - gray_terracotta
+        - green_terracotta
+        - light_blue_terracotta
+        - light_gray_terracotta
+        - lime_terracotta
+        - magenta_terracotta
+        - orange_terracotta
+        - pink_terracotta
+        - purple_terracotta
+        - red_terracotta
+        - white_terracotta
+        - yellow_terracotta
+        - black_stained_glass
+        - blue_stained_glass
+        - brown_stained_glass
+        - cyan_stained_glass
+        - gray_stained_glass
+        - green_stained_glass
+        - light_blue_stained_glass
+        - light_gray_stained_glass
+        - lime_stained_glass
+        - magenta_stained_glass
+        - orange_stained_glass
+        - pink_stained_glass
+        - purple_stained_glass
+        - red_stained_glass
+        - white_stained_glass
+        - yellow_stained_glass
+        - black_stained_glass_pane
+        - blue_stained_glass_pane
+        - brown_stained_glass_pane
+        - cyan_stained_glass_pane
+        - gray_stained_glass_pane
+        - green_stained_glass_pane
+        - light_blue_stained_glass_pane
+        - light_gray_stained_glass_pane
+        - lime_stained_glass_pane
+        - magenta_stained_glass_pane
+        - orange_stained_glass_pane
+        - pink_stained_glass_pane
+        - purple_stained_glass_pane
+        - red_stained_glass_pane
+        - white_stained_glass_pane
+        - yellow_stained_glass_pane
 
 mining:
     inherit: basic_wand
@@ -678,13 +677,13 @@ white:
         - glass
         - erase
         - soul_sand
-        - stained_glass
+        - white_stained_glass
         - copy
-        - wool
-        - stained_clay
+        - white_wool
+        - white_stained_clay
         - quartz_block
-        - quartz_block:1
-        - quartz_block:2
+        - chizeled_quartz_block
+        - quartz_pillar
 
 black:
     inherit: basic_wand
@@ -748,9 +747,9 @@ black:
         - soul_sand
         - copy
         - obsidian
-        - stained_clay:15
-        - stained_glass:15
-        - wool:15
+        - black_stained_clay
+        - black_stained_glass
+        - black_wool
 
 red:
     inherit: basic_wand
@@ -782,11 +781,10 @@ red:
         - bomb
         - frag
     brushes:
-        - stationary_lava
-        - stained_clay:14
-        - stained_glass:14
-        - wool:14
-        - sand:1
+        - red_stained_clay
+        - red_stained_glass
+        - red_wool
+        - red_sand
         - redstone_block
 
 blue:
@@ -815,18 +813,18 @@ blue:
         - iterate
         - portal
     brushes:
-        - stationary_water
+        - water
         - ice
         - packed_ice
-        - stained_clay:3
-        - stained_glass:3
-        - wool:3
-        - stained_clay:9
-        - stained_glass:9
-        - wool:9
-        - stained_clay:11
-        - stained_glass:11
-        - wool:11
+        - light_blue_stained_clay
+        - light_blue_stained_glass
+        - light_blue_wool
+        - cyan_stained_clay
+        - cyan_stained_glass
+        - cyan_wool
+        - blue_stained_clay
+        - slue_tained_glass
+        - blue_wool
         - lapis_block
         - diamond_block
 
@@ -865,14 +863,14 @@ green:
         - wood
         - log
         - vine
-        - mycel
+        - mycelium
         - emerald_block
         - leaves
-        - stained_clay:5
-        - stained_glass:5
-        - stained_clay:13
-        - stained_glass:13
-        - wool:5
-        - wool:13
-        - huge_mushroom_1
-        - huge_mushroom_2
+        - green_stained_clay
+        - green_stained_glass
+        - lime_stained_clay
+        - lime_stained_glass
+        - green_wool
+        - lime_wool
+        - brown_mushroom_block
+        - red_mushroom_block

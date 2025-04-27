@@ -2,7 +2,7 @@
 warlockspawner:
   worth: 50000.0
   item:
-    type: MOB_SPAWNER
+    type: SPAWNER
     tags:
       display:
         Name: "{\"text\":\"Warlock Spawner\"}"
@@ -23,7 +23,7 @@ warlockspawner:
 darkspiderspawner:
   worth: 20000.0
   item:
-    type: MOB_SPAWNER
+    type: SPAWNER
     tags:
       display:
         Name: "{\"text\":\"Dark Spider Spawner\"}"
@@ -44,7 +44,7 @@ darkspiderspawner:
 megaspiderspawner:
   worth: 20000.0
   item:
-    type: MOB_SPAWNER
+    type: SPAWNER
     tags:
       display:
         Name: "{\"text\":\"Mega Spider Spawner\"}"
@@ -65,7 +65,7 @@ megaspiderspawner:
 cavespiderspawner:
   worth: 5000.0
   item:
-    type: MOB_SPAWNER
+    type: SPAWNER
     tags:
       display:
         Name: "{\"text\":\"Cave Spider Spawner\"}"
@@ -84,7 +84,7 @@ cavespiderspawner:
 spiderspawner:
   worth: 5000.0
   item:
-    type: MOB_SPAWNER
+    type: SPAWNER
     tags:
       display:
         Name: "{\"text\":\"Spider Spawner\"}"
@@ -103,7 +103,7 @@ spiderspawner:
 zombiespawner:
   worth: 20000.0
   item:
-    type: MOB_SPAWNER
+    type: SPAWNER
     tags:
       display:
         Name: "{\"text\":\"Zombie Spawner\"}"
@@ -122,7 +122,7 @@ zombiespawner:
 skeletonspawner:
   worth: 20000.0
   item:
-    type: MOB_SPAWNER
+    type: SPAWNER
     tags:
       display:
         Name: "{\"text\":\"Skeleton Spawner\"}"

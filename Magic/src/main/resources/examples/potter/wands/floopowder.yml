@@ -2,7 +2,7 @@ floopowder:
     mode: cast
     quiet: 2
     active_spell: floo
-    icon: sulphur
+    icon: gunpowder
     indestructible: false
     effect_color: 'FF0000'
     uses: 8

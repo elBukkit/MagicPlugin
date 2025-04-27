@@ -3,38 +3,6 @@
 # It may also be used for coloring blocks to match a player's custom color,
 # such as with the blob, reflect, shell and platform spells.
 material_colors:
-- white: concrete:0
-  orange: concrete:1
-  magenta: concrete:2
-  light_blue: concrete:3
-  yellow: concrete:4
-  lime: concrete:5
-  pink: concrete:6
-  gray: concrete:7
-  light_gray: concrete:8
-  cyan: concrete:9
-  purple: concrete:10
-  blue: concrete:11
-  brown: concrete:12
-  green: concrete:13
-  red: concrete:14
-  black: concrete:15
-- white: concrete_powder:0
-  orange: concrete_powder:1
-  magenta: concrete_powder:2
-  light_blue: concrete_powder:3
-  yellow: concrete_powder:4
-  lime: concrete_powder:5
-  pink: concrete_powder:6
-  gray: concrete_powder:7
-  light_gray: concrete_powder:8
-  cyan: concrete_powder:9
-  purple: concrete_powder:10
-  blue: concrete_powder:11
-  brown: concrete_powder:12
-  green: concrete_powder:13
-  red: concrete_powder:14
-  black: concrete_powder:15
 - white: white_glazed_terracotta
   orange: orange_glazed_terracotta
   magenta: magenta_glazed_terracotta
@@ -51,86 +19,6 @@ material_colors:
   green: green_glazed_terracotta
   red: red_glazed_terracotta
   black: black_glazed_terracotta
-- white: stained_clay:0
-  orange: stained_clay:1
-  magenta: stained_clay:2
-  light_blue: stained_clay:3
-  yellow: stained_clay:4
-  lime: stained_clay:5
-  pink: stained_clay:6
-  gray: stained_clay:7
-  light_gray: stained_clay:8
-  cyan: stained_clay:9
-  purple: stained_clay:10
-  blue: stained_clay:11
-  brown: stained_clay:12
-  green: stained_clay:13
-  red: stained_clay:14
-  black: stained_clay:15
-- white: wool:0
-  orange: wool:1
-  magenta: wool:2
-  light_blue: wool:3
-  yellow: wool:4
-  lime: wool:5
-  pink: wool:6
-  gray: wool:7
-  light_gray: wool:8
-  cyan: wool:9
-  purple: wool:10
-  blue: wool:11
-  brown: wool:12
-  green: wool:13
-  red: wool:14
-  black: wool:15
-- white: carpet:0
-  orange: carpet:1
-  magenta: carpet:2
-  light_blue: carpet:3
-  yellow: carpet:4
-  lime: carpet:5
-  pink: carpet:6
-  gray: carpet:7
-  light_gray: carpet:8
-  cyan: carpet:9
-  purple: carpet:10
-  blue: carpet:11
-  brown: carpet:12
-  green: carpet:13
-  red: carpet:14
-  black: carpet:15
-- white: stained_glass:0
-  orange: stained_glass:1
-  magenta: stained_glass:2
-  light_blue: stained_glass:3
-  yellow: stained_glass:4
-  lime: stained_glass:5
-  pink: stained_glass:6
-  gray: stained_glass:7
-  light_gray: stained_glass:8
-  cyan: stained_glass:9
-  purple: stained_glass:10
-  blue: stained_glass:11
-  brown: stained_glass:12
-  green: stained_glass:13
-  red: stained_glass:14
-  black: stained_glass:15
-- white: stained_glass_pane:0
-  orange: stained_glass_pane:1
-  magenta: stained_glass_pane:2
-  light_blue: stained_glass_pane:3
-  yellow: stained_glass_pane:4
-  lime: stained_glass_pane:5
-  pink: stained_glass_pane:6
-  gray: stained_glass_pane:7
-  light_gray: stained_glass_pane:8
-  cyan: stained_glass_pane:9
-  purple: stained_glass_pane:10
-  blue: stained_glass_pane:11
-  brown: stained_glass_pane:12
-  green: stained_glass_pane:13
-  red: stained_glass_pane:14
-  black: stained_glass_pane:15
 - white: white_shulker_box
   orange: orange_shulker_box
   magenta: magenta_shulker_box
@@ -147,9 +35,6 @@ material_colors:
   green: green_shulker_box
   red: red_shulker_box
   black: black_shulker_box
-
-# 1.13
-
 - white: white_concrete
   orange: orange_concrete
   magenta: magenta_concrete
@@ -278,22 +163,6 @@ material_colors:
   green: green_stained_glass_pane
   red: red_stained_glass_pane
   black: black_stained_glass_pane
-- white: white_shulker_box
-  orange: orange_shulker_box
-  magenta: magenta_shulker_box
-  light_blue: light_blue_shulker_box
-  yellow: yellow_shulker_box
-  lime: lime_shulker_box
-  pink: pink_shulker_box
-  gray: gray_shulker_box
-  light_gray: light_gray_shulker_box
-  cyan: cyan_shulker_box
-  purple: purple_shulker_box
-  blue: blue_shulker_box
-  brown: brown_shulker_box
-  green: green_shulker_box
-  red: red_shulker_box
-  black: black_shulker_box
 - white: white_bed
   orange: orange_bed
   magenta: magenta_bed

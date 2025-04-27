@@ -13,9 +13,8 @@ restricted_animate:
 - all_stone
 - bedrock
 - command
-- ender_portal
-- portal
-- mob_spawner
+- portals
+- spawner
 - beacon
 - chest
 - ender_chest
@@ -44,15 +43,9 @@ restricted_animate:
 - powered_rail
 - detector_rail
 - lever
-- redstone_torch_off
-- redstone_torch_on
 - stone_button
-- portal
-- diode_block_off
-- diode_block_on
 - vine
 - water_lily
-- ender_portal
 - cocoa
 - tripwire_hook
 - tripwire
@@ -60,8 +53,6 @@ restricted_animate:
 - carrot
 - potato
 - wood_button
-- restone_comparator_off
-- restone_comparator_on
 - activator_rail
 - double_plant
 - carpet
@@ -76,11 +67,8 @@ restricted_animate:
 - stained_glass_panes
 - plants
 - skulls
-
-# 1.13
-
 - wall_torch
 - redstone_torch
 - redstone_wall_torch
 - repeater
-- restone_comparator
+- comparator

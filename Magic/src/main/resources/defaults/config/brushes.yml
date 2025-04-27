@@ -51,29 +51,12 @@ legacy_default_brush_item: diamond_axe:7
 default_brush_icon_url: http://textures.minecraft.net/texture/5163dafac1d91a8c91db576caac784336791a6e18d8f7f62778fc47bf146b6
 
 # Use this for block types that Minecraft won't allow in an inventory (lava, water)
-# or for blocks that have been replaced in the resource pack (monster eggs)
 brush_replacements:
   lava: lava_bucket
-  stationary_lava: lava_bucket
   water: water_bucket
-  stationary_water: water_bucket
-  monster_eggs|0: stone
-  monster_eggs|1: cobblestone
-  monster_eggs|2: smooth_brick
-  monster_eggs|3: smooth_brick:1
-  monster_eggs|4: smooth_brick:2
-  monster_eggs|5: smooth_brick:3
   fire: flint_and_steel
-  flower_pot: flower_pot_item
-  iron_door_block: iron_door
-  wooden_door: wood_door
-  spruce_door: spruce_door_item
-  birch_door: birch_door_item
-  acacia_door: acacia_door_item
-  jungle_door: jungle_door_item
-  dark_oak_door: dark_oak_door_item
-  carrot: carrot_item
-  potato: potato_item
+  carrot: carrots
+  potato: potatoes
   frosted_ice: ice
   black_wall_banner: black_banner
   blue_wall_banner: blue_banner

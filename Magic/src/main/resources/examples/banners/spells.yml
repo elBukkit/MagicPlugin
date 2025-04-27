@@ -46,22 +46,22 @@ bannershop:
       - none
       - none
 
-      - banner:15@1
-      - banner:14@1
-      - banner:13@1
-      - banner:12@1
-      - banner:11@1
-      - banner:10@1
-      - banner:9@1
-      - banner:8@1
-      - banner:7@1
+      - black_banner
+      - blue_banner
+      - brown_banner
+      - cyan_banner
+      - gray_banner
+      - green_banner
+      - light_blue_banner
+      - light_gray_banner
 
       - none
-      - banner:6@1
-      - banner:5@1
-      - banner:4@1
-      - banner:3@1
-      - banner:2@1
-      - banner:1@1
-      - banner:0@1
+      - lime_banner
+      - magenta_banner
+      - orange_banner
+      - pink_banner
+      - purple_banner
+      - red_banner
+      - white_banner
+      - yellow_banner
       - none

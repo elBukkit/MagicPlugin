@@ -1,8 +1,4 @@
 skulls:
-- skull
-- skull_item
-
-# 1.13
 - player_head
 - wither_skeleton_skull
 - dragon_head

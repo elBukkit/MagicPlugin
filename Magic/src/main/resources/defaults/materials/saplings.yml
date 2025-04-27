@@ -1,23 +1,12 @@
 saplings:
-- sapling
-
-# 1.13
-- spurce_sapling
+- spruce_sapling
 - acacia_sapling
 - birch_sapling
 - dark_oak_sapling
 - jungle_sapling
 - oak_sapling
-
-# 1.18
 - azalea
 - flowering_azalea
-
-# 1.19
 - mangrove_propagule
-
-# 1.20
 - cherry_sapling
-
-# 1.21.4
 - pale_oak_sapling

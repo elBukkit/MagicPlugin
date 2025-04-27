@@ -1,7 +1,4 @@
 carpets:
-- carpet
-
-# 1.13
 - black_carpet
 - blue_carpet
 - brown_carpet
@@ -18,6 +15,4 @@ carpets:
 - red_carpet
 - white_carpet
 - yellow_carpet
-
-# 1.18
 - moss_carpet

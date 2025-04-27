@@ -9,7 +9,7 @@ restricted:
 - bedrock
 - barrier
 - ender_portal
-- mob_spawner
-- ender_portal_frame
+- spawner
+- end_portal_frame
 - commands
 

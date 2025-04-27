@@ -1,7 +1,7 @@
 colorable:
-- wool
-- stained_glass
-- stained_clay
-- stained_glass_pane
-- carpet
+- wools
+- stained_glasses
+- stained_clays
+- stained_glass_panes
+- carpets
 

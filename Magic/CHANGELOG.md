@@ -3,6 +3,9 @@
 
 # 10.10.2
 
+ - Alter spell changed to work with material sets
+ - Add `health_percentage` and `air_percentage` attributes
+
 # 10.10.1
  
  - Fix image maps (Camera item, `/mmap` command, etc)

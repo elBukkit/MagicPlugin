@@ -116,25 +116,6 @@ hunter:
         - smooth_red_sandstone
         - chiseled_red_sandstone
         - cut_red_sandstone
-
-        # Legacy
-        - stained_clay
-        - stained_clay:1
-        - stained_clay:2
-        - stained_clay:3
-        - stained_clay:4
-        - stained_clay:5
-        - stained_clay:6
-        - stained_clay:7
-        - stained_clay:8
-        - stained_clay:9
-        - stained_clay:10
-        - stained_clay:11
-        - stained_clay:12
-        - stained_clay:13
-        - stained_clay:14
-        - red_sandstone:1
-        - red_sandstone:2
     costs:
         xp: 200
         sp: 100

@@ -78,25 +78,6 @@ defender:
         - red_wool
         - white_wool
         - yellow_wool
-
-        # Legacy
-        - quartz_block:1
-        - quartz_block:2
-        - wool
-        - wool:1
-        - wool:2
-        - wool:3
-        - wool:4
-        - wool:5
-        - wool:6
-        - wool:7
-        - wool:8
-        - wool:9
-        - wool:10
-        - wool:11
-        - wool:12
-        - wool:13
-        - wool:14
     costs:
         xp: 50
         sp: 20

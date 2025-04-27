@@ -6,7 +6,7 @@ disable_enchanting: false
 spell_blocks: {}
 
 # spell_blocks:
-#   enchantment_table:
+#   enchanting_table:
 #     right_click: progressmenu
 #     right_click_sneak: upgrades
 #     requires_wand: true
@@ -21,6 +21,6 @@ enchant_sneak_click: ""
 enchant_click_requires_wand: true
 
 # This can be used to set up a progression system based on clicking an enchant table with your wand.
-# enchant_block: enchantment_table
+# enchant_block: enchanting_table
 enchant_block: ""
 

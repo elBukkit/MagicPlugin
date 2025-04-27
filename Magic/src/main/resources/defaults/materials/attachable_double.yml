@@ -1,7 +1,6 @@
 # Things that double-stack like doors and tall plants
 attachable_double:
 - cactus
-- sugar_cane_block
 - sugar_cane
 - plants_double
 - banners

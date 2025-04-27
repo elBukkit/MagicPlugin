@@ -13,7 +13,6 @@ stairs:
 - end_stone_brick_stairs
 - granite_stairs
 - jungle_stairs
-- jungle_wood_stairs
 - mossy_cobblestone_stairs
 - mossy_stone_brick_stairs
 - nether_brick_stairs
@@ -35,10 +34,10 @@ stairs:
 - smooth_sandstone_stairs
 - smooth_stairs
 - spruce_stairs
-- spruce_wood_stairs
 - stone_brick_stairs
 - stone_stairs
 - warped_stairs
 - wood_stairs
 - mangrove_stairs
 - cherry_stairs
+- bamboo_stairs

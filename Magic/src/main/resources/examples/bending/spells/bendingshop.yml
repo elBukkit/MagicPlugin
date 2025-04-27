@@ -1,5 +1,5 @@
 bendingshop:
-  icon: sulphur
+  icon: gunpowder
   category: shop
   hidden: true
   actions:
@@ -22,7 +22,7 @@ bendingshop:
     selected: "Became $name for $cost"
     confirm: true
     auto_close: true
-    confirm_filler: stained_glass:3
+    confirm_filler: light_blue_stained_glass
     quiet: false
     loud: true
     limit: 1

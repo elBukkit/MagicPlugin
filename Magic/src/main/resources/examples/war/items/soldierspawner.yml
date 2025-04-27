@@ -1,7 +1,7 @@
 soldierspawner:
   worth: 50000.0
   item:
-    type: MOB_SPAWNER
+    type: SPAWNER
     tags:
       display:
         Name: "{\"text\":\"Soldier Spawner\"}"

@@ -7,7 +7,7 @@ appearanceshop:
         -  class: Selector
     parameters:
         auto_close: true
-        confirm_filler: stained_glass:3
+        confirm_filler: light_blue_stained_glass
         show_unavailable: true
         requirements:
         - wand_tags: transformable

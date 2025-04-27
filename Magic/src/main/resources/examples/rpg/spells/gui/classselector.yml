@@ -1,5 +1,5 @@
 classselector:
-  icon: sulphur
+  icon: gunpowder
   category: shop
   hidden: true
   actions:

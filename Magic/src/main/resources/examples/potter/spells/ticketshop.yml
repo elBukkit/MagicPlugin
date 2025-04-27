@@ -8,7 +8,7 @@ ticketshop:
       cooldown: 360000000
       confirm: true
       auto_close: true
-      confirm_filler: stained_glass:3
+      confirm_filler: light_blue_stained_glass
       quiet: false
       loud: true
 

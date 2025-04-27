@@ -3,7 +3,7 @@
 #
 
 starshop:
-  icon: sulphur
+  icon: gunpowder
   category: shop
   hidden: true
   actions:
@@ -15,7 +15,7 @@ starshop:
       selected: "You became $name for $cost"
       items:
       - lightsaber_hilt
-      - stained_glass:3@2
+      - light_blue_stained_glass@2
       - stained_glass:1@2
       - stained_glass:2@2
       - stained_glass:5@2
@@ -38,7 +38,7 @@ starshop:
       cost: 100
     confirm: true
     auto_close: true
-    confirm_filler: stained_glass:3
+    confirm_filler: light_blue_stained_glass
     quiet: false
     loud: true
     selected: "You bought $item for $cost"

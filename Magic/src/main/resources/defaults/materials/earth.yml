@@ -1,15 +1,13 @@
 earth:
 - all_stone
-- grass
 - short_grass
-- grass_path
 - grass_block
-- dirt
+- dirts
 - cobblestone
 - mossy_cobblestone
 - clay
 - hard_clay
-- stained_clay
+- stained_clays
 - sand
 - gravel
 - netherrack

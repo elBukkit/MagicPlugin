@@ -10,7 +10,7 @@ non_destructible_mining:
 - fences
 - rails
 - trees
-- stained_glass
+- stained_glasses
 - glass
 
 destructible_mining: "!non_destructible_mining"
