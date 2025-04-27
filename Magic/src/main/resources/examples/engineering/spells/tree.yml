@@ -38,5 +38,5 @@ tree:
         destructible: destructible,destructible_replace
     costs:
         mana: 20
-        sapling|*: 1
+        oak_sapling: 1
 
