@@ -8378,6 +8378,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         logVerbosity = properties.getInt("log_verbosity", 0);
         logger.setSilent(logVerbosity < 0);
         logger.setNotify(properties.getBoolean("log_notify", true));
+        MaterialAndData.DEBUG = logVerbosity >= 10;
         CompatibilityConstants.DEBUG = logVerbosity >= 5;
         LOG_WATCHDOG_TIMEOUT = properties.getInt("load_watchdog_timeout", 30000);
         logger.setColorize(properties.getBoolean("colored_logs", true));

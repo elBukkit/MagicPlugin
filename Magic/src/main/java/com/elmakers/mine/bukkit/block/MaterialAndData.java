@@ -99,6 +99,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected boolean isTargetValid = true;
 
     public static final Material DEFAULT_MATERIAL = Material.AIR;
+    public static boolean DEBUG = false;
 
     public MaterialAndData() {
         material = DEFAULT_MATERIAL;
@@ -313,7 +314,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                     if (!materialKey.equals("*")) {
                         materialKey = materialKey.toUpperCase();
                         material = Material.getMaterial(materialKey);
-                        if (material == null) {
+                        if (DEBUG && material == null) {
                             Bukkit.getLogger().warning("Unknown material id: " + materialKey);
                         }
                     }
