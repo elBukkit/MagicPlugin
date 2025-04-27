@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
@@ -14,6 +15,7 @@ import javax.annotation.Nullable;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -30,6 +32,7 @@ import com.elmakers.mine.bukkit.api.magic.ProgressionPath;
 import com.elmakers.mine.bukkit.api.spell.Spell;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.block.DefaultMaterials;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.item.MagicAttributeModifier;
 import com.elmakers.mine.bukkit.utility.ColorHD;
@@ -833,7 +836,10 @@ public abstract class CasterProperties extends BaseMagicConfigurable implements 
                     Object slot = brushEntry.getValue();
                     if (slot != null && slot instanceof Integer) {
                         String materialKey = brushEntry.getKey();
-                        materialKey = CompatibilityLib.getCompatibilityUtils().migrateMaterial(materialKey);
+                        Material migratedMaterial = DefaultMaterials.migrateMaterial(materialKey);
+                        if (migratedMaterial != null) {
+                            materialKey = migratedMaterial.name().toLowerCase(Locale.ROOT);
+                        }
                         newBrushInventory.put(materialKey, (Integer) slot);
                     }
                 }

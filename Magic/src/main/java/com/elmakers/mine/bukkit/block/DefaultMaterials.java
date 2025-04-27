@@ -89,10 +89,6 @@ public class DefaultMaterials {
         }
     }
 
-    public Material migrateMaterial(String key) {
-        return migrations.get(key.toUpperCase(Locale.ROOT));
-    }
-
     public void loadColors(Collection<ConfigurationSection> colors) {
         for (ConfigurationSection colorSection : colors) {
             Material keyColor = null;
@@ -458,5 +454,10 @@ public class DefaultMaterials {
 
     public static boolean isBow(Material material) {
         return material == Material.BOW || material.name().equals("CROSSBOW");
+    }
+
+    @Nullable
+    public static Material migrateMaterial(String key) {
+        return getInstance().migrations.get(key.toUpperCase(Locale.ROOT));
     }
 }
