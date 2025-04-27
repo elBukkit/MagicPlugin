@@ -3,10 +3,10 @@ package com.elmakers.mine.bukkit.block;
 import java.io.StringReader;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -311,41 +311,16 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             try {
                 if (pieces.length > 0) {
                     if (!materialKey.equals("*")) {
-                        // Legacy material id loading
-                        try {
-                            Integer id = Integer.parseInt(materialKey);
-                            material = CompatibilityLib.getCompatibilityUtils().getMaterial(id);
-                        } catch (Exception ex) {
-                            materialKey = materialKey.toUpperCase();
-                            material = Material.getMaterial(materialKey);
-                            if (material == null) {
-                                byte legacyData = 0;
-                                if (pieces.length > 1) {
-                                    try {
-                                        legacyData = Byte.parseByte(pieces[1]);
-                                    } catch (Exception ignore) {
-
-                                    }
-                                }
-                                if (legacyData > 0) {
-                                    material = Material.getMaterial("LEGACY_" + materialKey.toUpperCase());
-                                    if (material != null) {
-                                        material = CompatibilityLib.getCompatibilityUtils().migrateMaterial(material, legacyData);
-                                        if (material.getMaxDurability() == 0) {
-                                            pieces = Arrays.copyOfRange(pieces, 0, 1);
-                                        }
-                                    }
-                                }
-
-                                if (material == null) {
-                                    material = CompatibilityLib.getCompatibilityUtils().getLegacyMaterial(materialKey);
-                                }
-                            }
+                        materialKey = materialKey.toUpperCase();
+                        material = Material.getMaterial(materialKey);
+                        if (material == null) {
+                            Bukkit.getLogger().warning("Unknown material id: " + materialKey);
                         }
                     }
                 }
             } catch (Exception ex) {
                 material = null;
+                Bukkit.getLogger().log(Level.WARNING, "Error parsing material key: " + materialKey, ex);
             }
         }
         try {
@@ -532,14 +507,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         this.data = data;
         extraData = null;
         blockData = null;
-        if (material != null && CompatibilityLib.isLegacy(material)) {
-            short convertData = (this.data == null ? 0 : this.data);
-            material = CompatibilityLib.getCompatibilityUtils().migrateMaterial(material, (byte)convertData);
-            this.material = material;
-        } else if (material != null && data != null && CompatibilityLib.hasLegacyMaterials() && material.getMaxDurability() == 0) {
-            this.data = 0;
-        }
-
         isValid = material != null;
         isTargetValid = true;
     }
@@ -547,10 +514,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     public void setMaterial(Material material) {
         setMaterial(material, (byte)0);
-    }
-
-    public void setMaterialId(int id) {
-        this.material = CompatibilityLib.getCompatibilityUtils().getMaterial(id);
     }
 
     @SuppressWarnings("deprecation")

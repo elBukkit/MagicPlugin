@@ -30,7 +30,6 @@ public class FlowerAction extends BaseSpellAction {
         tallFlowers.clear();
         Collection<String> flowerKeys = parameters.getStringList("flowers");
         for (String flowerKey : flowerKeys) {
-            flowerKey = CompatibilityLib.getCompatibilityUtils().migrateMaterial(flowerKey);
             MaterialAndData flower = new MaterialAndData(flowerKey);
             if (flower.isValid()) {
                 flowers.add(flower);
@@ -38,7 +37,6 @@ public class FlowerAction extends BaseSpellAction {
         }
         Collection<String> tallFlowerKeys = parameters.getStringList("tall_flowers");
         for (String flowerKey : tallFlowerKeys) {
-            flowerKey = CompatibilityLib.getCompatibilityUtils().migrateMaterial(flowerKey);
             MaterialAndData flower = new MaterialAndData(flowerKey);
             if (flower.isValid()) {
                 tallFlowers.add(flower);

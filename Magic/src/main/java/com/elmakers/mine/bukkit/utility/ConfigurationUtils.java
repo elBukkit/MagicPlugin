@@ -703,17 +703,8 @@ public class ConfigurationUtils extends ConfigUtils {
         if (o instanceof Material) {
             return (Material)o;
         }
-        if (o instanceof Integer) {
-            return Material.values()[(Integer)o];
-        }
         if (o instanceof String) {
             String matName = (String)o;
-            try {
-                int value = Integer.parseInt(matName);
-                return CompatibilityLib.getCompatibilityUtils().getMaterial(value);
-            } catch (NumberFormatException ignored) {
-            }
-
             return Material.getMaterial(matName.toUpperCase());
         }
 

@@ -15,7 +15,6 @@ import java.util.logging.Level;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
-import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Keyed;
 import org.bukkit.Location;
@@ -23,7 +22,6 @@ import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Rotation;
 import org.bukkit.Server;
-import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
@@ -32,7 +30,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.Jukebox;
 import org.bukkit.block.Lectern;
 import org.bukkit.block.Lockable;
-import org.bukkit.block.data.BlockData;
 import org.bukkit.boss.BossBar;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -78,8 +75,6 @@ import org.bukkit.inventory.RecipeChoice;
 import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.KnowledgeBookMeta;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.loot.Lootable;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
@@ -983,44 +978,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         if (li instanceof LivingEntity) {
             ((LivingEntity)li).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
         }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public Material fromLegacy(org.bukkit.material.MaterialData materialData) {
-        Material converted = Bukkit.getUnsafe().fromLegacy(materialData);
-        if (converted == Material.AIR) {
-            materialData.setData((byte)0);
-            converted = Bukkit.getUnsafe().fromLegacy(materialData);
-        }
-        // Converting legacy signs doesn't seem to work
-        // This fixes them, but the direction is wrong, and restoring text causes internal errors
-        // So I guess it's best to just let signs be broken for now.
-        /*
-        if (converted == Material.AIR) {
-            String typeKey = materialData.getItemType().name();
-            if (typeKey.equals("LEGACY_WALL_SIGN")) return Material.WALL_SIGN;
-            if (typeKey.equals("LEGACY_SIGN_POST")) return Material.SIGN_POST;
-            if (typeKey.equals("LEGACY_SIGN")) return Material.SIGN;
-        }
-        */
-        return converted;
-    }
-
-    @Override
-    public boolean hasLegacyMaterials() {
-        return true;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isLegacy(Material material) {
-        return material.isLegacy();
-    }
-
-    @Override
-    public Material getLegacyMaterial(String materialName) {
-        return Material.getMaterial(materialName, true);
     }
 
     @Override

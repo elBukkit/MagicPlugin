@@ -547,36 +547,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
-    public Material getMaterial(int id, byte data) {
-        Material material = getMaterial(id);
-        if (material != null) {
-            material = fromLegacy(new org.bukkit.material.MaterialData(material, data));
-        }
-        if (material == null) {
-            material = Material.AIR;
-        }
-        return material;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public Material getMaterial(int id) {
-        if (materialIdMap == null) {
-            materialIdMap = new HashMap<>();
-
-            Object[] allMaterials = Material.AIR.getDeclaringClass().getEnumConstants();
-            for (Object o : allMaterials) {
-                Material material = (Material)o;
-                if (!hasLegacyMaterials() || isLegacy(material)) {
-                    materialIdMap.put(material.getId(), material);
-                }
-            }
-        }
-        return materialIdMap.get(id);
-    }
-
-    @Override
     public Material getMaterial(String blockData) {
         String[] pieces = StringUtils.split(blockData, "[", 2);
         if (pieces.length == 0) return null;
@@ -594,53 +564,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         } catch (Exception ignore) {
         }
         return null;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public Material migrateMaterial(Material material, byte data) {
-        return fromLegacy(new org.bukkit.material.MaterialData(material, data));
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public String migrateMaterial(String materialKey) {
-        if (materialKey == null || materialKey.isEmpty()) return materialKey;
-        byte data = 0;
-        String[] pieces = StringUtils.split(materialKey, ':');
-        String textData = "";
-        if (pieces.length > 1) {
-            textData = pieces[1];
-            try {
-                data = Byte.parseByte(pieces[1]);
-                textData = "";
-            } catch (Exception ignore) {
-            }
-        }
-
-        String materialName = pieces[0].toUpperCase();
-        Material material = Material.getMaterial(materialName);
-        if (material != null && data == 0) {
-            return material.name().toLowerCase();
-        }
-
-        Material legacyMaterial = data == 0 ? getLegacyMaterial(materialName) : Material.getMaterial("LEGACY_" + materialName);
-        if (legacyMaterial != null) {
-            org.bukkit.material.MaterialData materialData = new org.bukkit.material.MaterialData(legacyMaterial, data);
-            legacyMaterial = fromLegacy(materialData);
-            if (legacyMaterial != null) {
-                material = legacyMaterial;
-            }
-        }
-
-        if (material != null) {
-            materialKey = material.name().toLowerCase();
-            // This mainly covers player skulls, but .. maybe other things? Maps?
-            if (!textData.isEmpty()) {
-                materialKey += ":" + textData;
-            }
-        }
-        return materialKey;
     }
 
     @Override
@@ -2718,44 +2641,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         if (li instanceof LivingEntity) {
             ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).setBaseValue(maxHealth);
         }
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public Material fromLegacy(org.bukkit.material.MaterialData materialData) {
-        Material converted = Bukkit.getUnsafe().fromLegacy(materialData);
-        if (converted == Material.AIR) {
-            materialData.setData((byte)0);
-            converted = Bukkit.getUnsafe().fromLegacy(materialData);
-        }
-        // Converting legacy signs doesn't seem to work
-        // This fixes them, but the direction is wrong, and restoring text causes internal errors
-        // So I guess it's best to just let signs be broken for now.
-        /*
-        if (converted == Material.AIR) {
-            String typeKey = materialData.getItemType().name();
-            if (typeKey.equals("LEGACY_WALL_SIGN")) return Material.WALL_SIGN;
-            if (typeKey.equals("LEGACY_SIGN_POST")) return Material.SIGN_POST;
-            if (typeKey.equals("LEGACY_SIGN")) return Material.SIGN;
-        }
-        */
-        return converted;
-    }
-
-    @Override
-    public boolean hasLegacyMaterials() {
-        return true;
-    }
-
-    @Override
-    @SuppressWarnings("deprecation")
-    public boolean isLegacy(Material material) {
-        return material.isLegacy();
-    }
-
-    @Override
-    public Material getLegacyMaterial(String materialName) {
-        return Material.getMaterial(materialName, true);
     }
 
     @Override

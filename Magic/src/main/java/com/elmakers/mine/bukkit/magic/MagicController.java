@@ -5995,10 +5995,6 @@ public class MagicController implements MageController, ChunkLoadListener {
             return itemStack;
         }
         MaterialAndData item = new MaterialAndData(magicItemKey);
-        if (item.isValid() && CompatibilityLib.getCompatibilityUtils().isLegacy(item.getMaterial())) {
-            short convertData = (item.getData() == null ? 0 : item.getData());
-            item = new MaterialAndData(CompatibilityLib.getCompatibilityUtils().migrateMaterial(item.getMaterial(), (byte) convertData));
-        }
         if (item.isValid()) {
             return item.getItemStack(amount, callback);
         }

@@ -331,25 +331,9 @@ public interface CompatibilityUtils {
 
     void setMaxHealth(Damageable li, double maxHealth);
 
-    Material fromLegacy(org.bukkit.material.MaterialData materialData);
-
-    Material getMaterial(int id, byte data);
-
-    Material getMaterial(int id);
-
     Material getMaterial(String blockData);
 
     Material getMaterial(FallingBlock falling);
-
-    boolean hasLegacyMaterials();
-
-    boolean isLegacy(Material material);
-
-    Material getLegacyMaterial(String materialName);
-
-    Material migrateMaterial(Material material, byte data);
-
-    String migrateMaterial(String materialKey);
 
     boolean isChunkLoaded(Block block);
 

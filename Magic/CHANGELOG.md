@@ -6,6 +6,8 @@
  - Alter spell changed to work with material sets
  - Add `health_percentage` and `air_percentage` attributes
  - Drop support for legacy (.schematic) schematic files, only .schem are supported now
+ - Drop support for legacy material names, you may need to update customized configs to use modern material names!
+   See the Spigot API for a list of modern names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 
 # 10.10.1
  
