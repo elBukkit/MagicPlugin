@@ -3963,7 +3963,7 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
                     String[] keys = StringUtils.split(iconKey, ',');
                     iconKey = keys[r.nextInt(keys.length)];
                 }
-                setIcon(ConfigurationUtils.toMaterialAndData(iconKey));
+                setIcon(controller.createMaterialAndData(iconKey));
                 updateIcon();
                 playEffects("randomize");
             }

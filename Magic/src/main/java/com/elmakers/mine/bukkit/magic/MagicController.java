@@ -9029,6 +9029,13 @@ public class MagicController implements MageController, ChunkLoadListener {
 
     @Override
     public MaterialAndData createMaterialAndData(String materialKey) {
+        Icon icon = getIcon(materialKey);
+        if (icon != null) {
+            com.elmakers.mine.bukkit.api.block.MaterialAndData apiMaterial = icon.getItemMaterial(this);
+            if (apiMaterial instanceof MaterialAndData) {
+                return (MaterialAndData)apiMaterial;
+            }
+        }
         return new MaterialAndData(materialKey);
     }
 

@@ -8,6 +8,7 @@
  - Drop support for legacy (.schematic) schematic files, only .schem are supported now
  - Drop support for legacy material names, you may need to update customized configs to use modern material names!
    See the Spigot API for a list of modern names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+ - Support predifined icons (from icons config) in wand icons
 
 # 10.10.1
  
