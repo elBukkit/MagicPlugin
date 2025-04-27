@@ -7,7 +7,7 @@
 #
 conduit:
     icon: blaze_rod{CustomModelData:18006}
-    legacy_icon: wood_hoe:6
+    legacy_icon: wooden_hoe:6
     legacy_migrate_icon: gold_pickaxe
     inherit: architect
     override_properties:

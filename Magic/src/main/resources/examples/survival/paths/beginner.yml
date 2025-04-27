@@ -4,8 +4,8 @@
 #
 beginner:
     icon: stick{CustomModelData:18001}
-    legacy_icon: wood_hoe:1
-    legacy_migrate_icon: wood_hoe
+    legacy_icon: wooden_hoe:1
+    legacy_migrate_icon: wooden_hoe
     upgrade: student
     upgrade_item: student_upgrade
     inherit: default

@@ -2,7 +2,7 @@ cleansweep1:
     mode: cast
     path: broom
     active_spell: broom
-    migrate_icon: gold_spade
+    migrate_icon: golden_shovel
     legacy_icon: wand_icon:11
     icon: acacia_sapling{CustomModelData:18001}
     indestructible: false

@@ -193,7 +193,7 @@ doorshop:
         - oak_fence_gate@8
         - dark_oak_fence@8
         - spruce_fence@8
-        - nether_fence@8
+        - nether_brick_fence@8
         - cobble_wall@8
         - cobble_wall:1@8
 
@@ -256,7 +256,6 @@ clayshop:
     parameters:
         items:
         - clay@16
-        - hard_clay@16
         - black_terracotta@16
         - blue_terracotta@16
         - brown_terracotta@16
@@ -369,7 +368,7 @@ generalshop:
         - anvil
 
 coffeeshop:
-    icon: ink_sack:3
+    icon: brown_dye
     inherit: buyshop
     parameters:
         items:
@@ -496,7 +495,7 @@ brushshop:
             brush:yellow_stained_glass_pane: 300
 
 dyeshop:
-  icon: ink_sack
+  icon: white_dye
   inherit: buyshop
   parameters:
     items:

@@ -32,7 +32,7 @@ base_arena_sword:
 
 mage:
     inherit: base_arena
-    icon: wood_hoe:3
+    icon: wooden_hoe:3
     effect_color: "00FFAA"
     active_spell: missile
     mana_max: 100
@@ -47,7 +47,7 @@ mage:
 
 demolitions:
     inherit: base_arena
-    icon: wood_hoe:4
+    icon: wooden_hoe:4
     effect_color: "FF0000"
     active_spell: fire
     mana_max: 80
@@ -62,7 +62,7 @@ demolitions:
 
 healer:
     inherit: base_arena
-    icon: wood_hoe:1
+    icon: wooden_hoe:1
     effect_color: "FFFFFF"
     active_spell: heal
     mana_max: 75
@@ -93,7 +93,7 @@ rogue:
 
 warrior:
     inherit: base_arena_sword
-    icon: gold_sword:1
+    icon: golden_sword:1
     effect_color: "882222"
     active_spell: wound
     left_click: none
@@ -138,7 +138,7 @@ sith:
 
 bender:
     inherit: base_arena
-    icon: wood_hoe:23
+    icon: wooden_hoe:23
     effect_color: '999999'
     mana_regeneration: 10
     mana_max: 100
@@ -157,7 +157,7 @@ bender:
 
 mage2:
     inherit: base_arena
-    icon: wood_hoe:4
+    icon: wooden_hoe:4
     effect_color: "00FFAA"
     active_spell: missile
     mana_max: 300
@@ -186,7 +186,7 @@ mage2:
 
 demolitions2:
     inherit: base_arena
-    icon: wood_hoe:3
+    icon: wooden_hoe:3
     effect_color: "FF0000"
     active_spell: fire
     mana_max: 80
@@ -205,7 +205,7 @@ demolitions2:
 
 healer2:
     inherit: base_arena
-    icon: wood_hoe:6
+    icon: wooden_hoe:6
     effect_color: "FFFFFF"
     active_spell: heal
     mana_max: 75
@@ -250,7 +250,7 @@ rogue2:
 
 warrior2:
     inherit: base_arena
-    icon: gold_sword:1
+    icon: golden_sword:1
     effect_color: "882222"
     active_spell: wound
     left_click: none
@@ -305,7 +305,7 @@ sith2:
 
 bender2:
     inherit: base_arena
-    icon: wood_hoe:23
+    icon: wooden_hoe:23
     effect_color: '999999'
     mana_regeneration: 15
     mana_max: 200

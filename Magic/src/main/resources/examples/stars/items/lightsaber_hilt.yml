@@ -2,7 +2,7 @@ lightsaber_hilt:
   worth: 2000
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: WOOD_HOE
+    type: wooden_hoe
     damage: 14
     meta:
       ==: ItemMeta

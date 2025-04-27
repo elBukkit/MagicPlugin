@@ -1,5 +1,5 @@
 potterappearanceshop:
-    icon: wood_hoe
+    icon: wooden_hoe
     hidden: true
     actions:
         cast:

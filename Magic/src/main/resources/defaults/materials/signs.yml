@@ -1,7 +1,4 @@
 signs:
-- wall_sign
-- sign_post
-- sign
 - acacia_sign
 - acacia_wall_sign
 - birch_sign
@@ -24,9 +21,6 @@ signs:
 - cherry_wall_sign
 - bamboo_sign
 - bamboo_wall_sign
-
-
-# Hanging
 - acacia_hanging_sign
 - acacia_wall_hanging_sign
 - birch_hanging_sign

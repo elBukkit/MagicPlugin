@@ -15,7 +15,7 @@ tree:
         - sound: entity_generic_splash
         - class: EffectTrail
           particle: block_crack
-          material: log
+          material: oak_log
           particle_count: 4
           particle_offset_x: 0.05
           particle_offset_y: 0.05

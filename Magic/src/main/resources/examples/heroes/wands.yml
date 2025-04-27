@@ -2,7 +2,7 @@
 skillbook:
     heroes: true
     mode: skills
-    icon: wood_hoe:31
+    icon: wooden_hoe:31
     indestructible: true
     right_click: toggle
     undroppable: true

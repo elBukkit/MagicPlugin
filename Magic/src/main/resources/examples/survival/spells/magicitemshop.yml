@@ -1,5 +1,5 @@
 magicitemshop:
-    icon: ender_portal_frame
+    icon: end_portal_frame
     category: npc
     hidden: true
     inherit: buyshop

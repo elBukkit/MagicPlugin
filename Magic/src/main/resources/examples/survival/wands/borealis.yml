@@ -2,7 +2,7 @@ borealis:
     inherit: master
     legacy_icon: wand_icon:10
     icon: stick{CustomModelData:18010}
-    migrate_icon: gold_axe
+    migrate_icon: golden_axe
     quiet: 2
     effect_color: '00AACC'
     mode: chest

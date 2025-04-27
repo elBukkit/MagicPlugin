@@ -1,5 +1,5 @@
 airglider2:
-    icon: wood_hoe:33
+    icon: wooden_hoe:33
     category: utility
     worth: 1000
     quick_cast: true
@@ -47,7 +47,7 @@ airglider2:
         liftoff_thrust: 0
         direction: 0,1,0
         speed: 2
-        helmet_item: wood_hoe:33
+        helmet_item: wooden_hoe:33
         passenger: true
     costs:
         mana: 10

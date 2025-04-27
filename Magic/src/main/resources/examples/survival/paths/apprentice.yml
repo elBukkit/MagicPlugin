@@ -1,7 +1,7 @@
 apprentice:
     icon: stick{CustomModelData:18003}
-    legacy_icon: wood_hoe:3
-    legacy_migrate_icon: wood_hoe
+    legacy_icon: wooden_hoe:3
+    legacy_migrate_icon: wooden_hoe
     upgrade: master
     upgrade_item: master_upgrade
     inherit: student

@@ -1,12 +1,12 @@
 coal_ink:
   enabled: false
-  output: ink_sack
+  output: black_dye
   output_type: item
   auto_discover: true
   group: ""
   ingredients:
     o: coal
-    d: ink_sack:15
+    d: white_dye
   row_1: " o "
   row_2: "odo"
   row_3: " o "

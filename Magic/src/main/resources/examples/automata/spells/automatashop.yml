@@ -1,5 +1,5 @@
 automatashop:
-    icon: command
+    icon: redstone_block
     category: npc
     hidden: true
     inherit: sellshop

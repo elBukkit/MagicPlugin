@@ -1,5 +1,5 @@
 gunshop:
-    icon: wood_hoe:14
+    icon: wooden_hoe:14
     inherit: buyshop
     parameters:
         confirm: true

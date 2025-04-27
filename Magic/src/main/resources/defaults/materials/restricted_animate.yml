@@ -12,7 +12,7 @@ restricted_animate:
 - sandstone
 - all_stone
 - bedrock
-- command
+- commands
 - portals
 - spawner
 - beacon
@@ -29,7 +29,7 @@ restricted_animate:
 - iron_fence
 - cobble_fence
 - fence
-- nether_fence
+- nether_brick_fence
 - gravel
 - water
 - all_air
@@ -56,7 +56,6 @@ restricted_animate:
 - activator_rail
 - double_plant
 - carpet
-- hard_clay
 - diamond_block
 - emerald_block
 - iron_block

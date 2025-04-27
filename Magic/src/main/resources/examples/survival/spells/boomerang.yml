@@ -1,5 +1,5 @@
 boomerang:
-    icon: gold_sword
+    icon: golden_sword
     worth: 100
     actions:
         cast:

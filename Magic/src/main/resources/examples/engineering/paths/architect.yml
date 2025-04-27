@@ -1,6 +1,6 @@
 architect:
     icon: blaze_rod{CustomModelData:18039}
-    legacy_icon: wood_hoe:5
+    legacy_icon: wooden_hoe:5
     legacy_migrate_icon: gold_pickaxe
     inherit: engineer
     # The conduitshop is required for Conduit

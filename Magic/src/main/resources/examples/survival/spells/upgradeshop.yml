@@ -1,5 +1,5 @@
 upgradeshop:
-    icon: gold_axe
+    icon: golden_axe
     category: npc
     hidden: true
     inherit: buyshop

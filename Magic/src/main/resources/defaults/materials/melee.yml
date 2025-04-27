@@ -4,7 +4,7 @@ melee:
 - wooden_sword
 - iron_sword
 - stone_sword
-- gold_sword
+- golden_sword
 - golden_sword
 - netherite_sword
 - trident
@@ -14,6 +14,6 @@ melee:
 - wooden_axe
 - iron_axe
 - stone_axe
-- gold_axe
+- golden_axe
 - golden_axe
 - netherite_axe

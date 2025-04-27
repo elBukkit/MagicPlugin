@@ -1,5 +1,5 @@
 broomshop:
-    icon: gold_spade
+    icon: golden_shovel
     category: npc
     hidden: true
     inherit: buyshop

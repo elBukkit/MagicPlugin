@@ -6,7 +6,7 @@ goggles:
   ingredients:
     o: emerald
     i: magicheart
-    d: nether_fence
+    d: nether_brick_fence
   row_1: oio
   row_2: d d
   row_3: d d

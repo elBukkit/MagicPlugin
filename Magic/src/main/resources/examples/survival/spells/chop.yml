@@ -29,7 +29,7 @@ chop:
            sound_pitch: 0.4
         projectile:
         - location: origin
-          material: log
+          material: oak_log
           effectlib:
              class: Sphere
              duration: 5000

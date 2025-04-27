@@ -1,7 +1,7 @@
 master:
     icon: stick{CustomModelData:18004}
-    legacy_icon: wood_hoe:4
-    legacy_migrate_icon: gold_axe
+    legacy_icon: wooden_hoe:4
+    legacy_migrate_icon: golden_axe
     inherit: apprentice
     override_properties:
       mana_regeneration: 35

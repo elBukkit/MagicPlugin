@@ -1,7 +1,7 @@
 waterbending:
     inherit: base_bending
     class: waterbender
-    migrate_icon: gold_spade
+    migrate_icon: golden_shovel
     icon: wand_icon:20
     effect_color: '0000FF'
 
