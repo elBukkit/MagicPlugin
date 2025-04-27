@@ -5,82 +5,82 @@
 whiteeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:0
+    icon: white_carpet
     effect_color: 'FFFFFF'
 orangeeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:1
+    icon: orange_carpet
     effect_color: 'FFAA00'
 magentaeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:2
+    icon: magenta_carpet
     effect_color: 'FF00FF'
 lightblueeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:3
+    icon: light_blue_carpet
     effect_color: 'ADD8E6'
 yelloweffects:
     upgrade: true
     indestructible: false
-    icon: carpet:4
+    icon: yellow_carpet
     effect_color: 'FFFF00'
 greeneffects:
     upgrade: true
     indestructible: false
-    icon: carpet:5
+    icon: lime_carpet
     effect_color: '00FF00'
 pinkeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:6
+    icon: pink_carpet
     effect_color: 'FAAFBE'
 grayeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:7
+    icon: gray_carpet
     effect_color: '808080'
 lightgrayeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:8
+    icon: light_gray_carpet
     effect_color: 'D0D0D0'
 aquaeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:9
+    icon: cyan_carpet
     effect_color: '00FFFF'
 purpleeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:10
+    icon: purple_carpet
     effect_color: '800080'
 blueeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:11
+    icon: blue_carpet
     effect_color: '0000FF'
 browneffects:
     upgrade: true
     indestructible: false
-    icon: carpet:12
+    icon: brown_carpet
     effect_color: '806517'
 darkgreeneffects:
     upgrade: true
     indestructible: false
-    icon: carpet:13
+    icon: green_carpet
     effect_color: '254117'
 redeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:14
+    icon: red_carpet
     effect_color: 'FF0000'
 blackeffects:
     upgrade: true
     indestructible: false
-    icon: carpet:15
+    icon: black_carpet
     effect_color: '010101'
 randomeffects:
     upgrade: true
@@ -97,7 +97,7 @@ cleareffects:
     upgrade: true
     effect_bubbles: false
     effect_particle: ""
-    icon: barrier
+    icon: icon_no
     effects:
         activate: ""
 rainboweffects:
