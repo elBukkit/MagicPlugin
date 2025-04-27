@@ -1,5 +1,5 @@
 hawk_shotgun:
-  icon: war_icon:18
+  icon: diamond_pickaxe{18018}
   inherit: base_gun
   active_spell: hawk_shotgun
   alternate_spell: reload_hawk_shotgun

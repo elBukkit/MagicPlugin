@@ -1,21 +1,14 @@
 model3spawner:
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  creator: NathanWolf
   worth: 50000.0
   item:
-    type: SPAWNER
-    tags:
-      display:
-        Name: "{\"text\":\"Model 3 Spawner\"}"
-      BlockEntityTag:
-        SpawnPotentials: []
-        SpawnCount: 1
-        MaxNearbyEntities: 2
-        SpawnRange: 3
-        Delay: 200
-        MinSpawnDelay: 300
-        MaxSpawnDelay: 800
-        RequiredPlayerRange: 32
-        EntityId: armor_stand
-        SpawnData:
-          id: "minecraft:armor_stand"
-          CustomName: "{\"text\":\"Model 3\"}"
-
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:spawner
+    count: 1
+    components:
+      minecraft:custom_data: '{BlockEntityTag:{Delay:200,EntityId:"armor_stand",MaxNearbyEntities:2,MaxSpawnDelay:800,MinSpawnDelay:300,RequiredPlayerRange:32,SpawnCount:1,SpawnData:{CustomName:''{"text":"Model
+        3"}'',id:"minecraft:armor_stand"},SpawnPotentials:[],SpawnRange:3},display:{Name:''{"text":"Model
+        3 Spawner"}''}}'
+    schema_version: 1

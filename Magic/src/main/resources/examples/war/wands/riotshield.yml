@@ -1,5 +1,5 @@
 riotshield:
-  icon: shield:1
+  icon: shield{18001}
   indestructible: true
   block_chance: 1
   block_fov: 0.5

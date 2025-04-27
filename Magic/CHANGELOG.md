@@ -10,6 +10,7 @@
    See the Spigot API for a list of modern names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
  - Support predifined icons (from icons config) in wand icons
  - Fix/update lightsaber hilt item from stars config
+ - Update war config items to use custom model data
 
 # 10.10.1
  

@@ -1,5 +1,5 @@
 flashbang:
-  icon: war_icon:6
+  icon: diamond_pickaxe{18006}
   indestructible: true
   uses: 1
   right_click: cast

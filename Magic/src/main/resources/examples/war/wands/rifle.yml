@@ -1,5 +1,5 @@
 rifle:
-  icon: war_icon:17
+  icon: diamond_pickaxe{18017}
   inherit: base_gun
   active_spell: rifle
   alternate_spell: reload_rifle

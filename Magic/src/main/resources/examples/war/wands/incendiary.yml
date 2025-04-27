@@ -1,5 +1,5 @@
 incendiary:
-  icon: war_icon:8
+  icon: diamond_pickaxe{18008}
   indestructible: true
   uses: 1
   right_click: cast

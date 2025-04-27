@@ -1,20 +1,13 @@
 policespawner:
+  creator_id: 4cb358ae-719c-4423-93c7-8769ce46e9c3
+  creator: NathanWolf
   worth: 50000.0
   item:
-    type: SPAWNER
-    tags:
-      display:
-        Name: "{\"text\":\"Police Spawner\"}"
-      BlockEntityTag:
-        SpawnPotentials: []
-        SpawnCount: 1
-        MaxNearbyEntities: 5
-        SpawnRange: 8
-        Delay: 100
-        MinSpawnDelay: 200
-        MaxSpawnDelay: 500
-        RequiredPlayerRange: 32
-        SpawnData:
-          id: "minecraft:piglin"
-          CustomName: "{\"text\":\"Police\"}"
-
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:spawner
+    count: 1
+    components:
+      minecraft:custom_data: '{BlockEntityTag:{Delay:100,MaxNearbyEntities:5,MaxSpawnDelay:500,MinSpawnDelay:200,RequiredPlayerRange:32,SpawnCount:1,SpawnData:{CustomName:''{"text":"Police"}'',id:"minecraft:piglin"},SpawnPotentials:[],SpawnRange:8},display:{Name:''{"text":"Police
+        Spawner"}''}}'
+    schema_version: 1

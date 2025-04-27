@@ -1,6 +1,6 @@
 train:
   name: Steam Engine
-  icon: war_icon:12
+  icon: diamond_pickaxe{18012}
   active_spell: spawn_car
   right_click: cast
   indestructible: true
