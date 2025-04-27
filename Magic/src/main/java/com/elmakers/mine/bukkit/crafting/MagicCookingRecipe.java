@@ -11,6 +11,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 public abstract class MagicCookingRecipe extends MagicRecipe {
     protected Recipe recipe;
     protected ItemData ingredient;
+    protected String ingredientKey;
     protected String group;
     protected float experience;
     protected int cookingTime;
@@ -27,10 +28,10 @@ public abstract class MagicCookingRecipe extends MagicRecipe {
         }
         cookingTime = configuration.getInt("cooking_time") / 50;
         experience = (float)configuration.getDouble("experience");
-        String materialKey = configuration.getString("ingredient");
-        ingredient = controller.getOrCreateItem(materialKey);
+        ingredientKey = configuration.getString("ingredient");
+        ingredient = controller.getOrCreateItem(ingredientKey);
         if (ingredient == null) {
-            controller.getLogger().warning("Could not create " + getType() + " recipe ingredient: " + materialKey);
+            controller.getLogger().warning("Could not create " + getType() + " recipe ingredient: " + ingredientKey);
             return null;
         }
         recipe = createRecipe(item);

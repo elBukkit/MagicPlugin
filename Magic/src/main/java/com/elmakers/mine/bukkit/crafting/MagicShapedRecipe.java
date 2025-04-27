@@ -70,8 +70,13 @@ public class MagicShapedRecipe extends MagicRecipe {
                             input = new ItemStack(Material.AIR);
                         }
                         ItemData ingredient = controller.createItemData(input);
+                        ItemStack ingredientItem = ingredient == null ? null : ingredient.getItemStack();
+                        if (CompatibilityLib.getItemUtils().isEmpty(ingredientItem)) {
+                            controller.getLogger().warning("Invalid " + getType() + " recipe ingredient " + ingredientKey);
+                            return null;
+                        }
                         ingredients.put(ingredientKey, ingredient);
-                        if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(this.recipe, ingredientKey, ingredient.getItemStack(1), ignoreDamage)) {
+                        if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(this.recipe, ingredientKey, ingredientItem, ignoreDamage)) {
                             controller.getLogger().warning("Unable to set recipe ingredient from vanilla ingredient: " + input);
                             return null;
                         }
@@ -111,11 +116,12 @@ public class MagicShapedRecipe extends MagicRecipe {
                         continue;
                     }
                     ItemData ingredient = controller.getOrCreateItem(materialKey);
-                    if (ingredient == null) {
-                        controller.getLogger().warning("Invalid recipe ingredient " + materialKey);
+                    ItemStack ingredientItem = ingredient == null ? null : ingredient.getItemStack();
+                    if (CompatibilityLib.getItemUtils().isEmpty(ingredientItem)) {
+                        controller.getLogger().warning("Invalid " + getType() + " recipe ingredient " + materialKey);
                         return null;
                     }
-                    if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(shaped, key.charAt(0), ingredient.getItemStack(1), ignoreDamage)) {
+                    if (!CompatibilityLib.getCompatibilityUtils().setRecipeIngredient(shaped, key.charAt(0), ingredientItem, ignoreDamage)) {
                         controller.getLogger().warning("Unable to set recipe ingredient " + materialKey);
                         return null;
                     }

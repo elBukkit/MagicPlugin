@@ -32,12 +32,13 @@ public class MagicShapelessRecipe extends MagicRecipe {
         List<ItemStack> ingredients = new ArrayList<>();
         Collection<String> ingredientKeys = ConfigurationUtils.getStringList(configuration, "ingredients");
         for (String ingredientKey : ingredientKeys) {
-            ItemData ingredientItem = controller.getOrCreateItem(ingredientKey);
-            if (ingredientItem == null) {
-                controller.getLogger().warning("Could not create " + getType() + " recipe ingredient: " + ingredientKey);
+            ItemData ingredient = controller.getOrCreateItem(ingredientKey);
+            ItemStack ingredientItem = ingredient == null ? null : ingredient.getItemStack();
+            if (CompatibilityLib.getItemUtils().isEmpty(ingredientItem)) {
+                controller.getLogger().warning("Invalid " + getType() + " recipe ingredient " + ingredientKey);
                 return null;
             }
-            ingredients.add(ingredientItem.getItemStack());
+            ingredients.add(ingredientItem);
         }
         recipe = CompatibilityLib.getCompatibilityUtils().createShapelessRecipe(key, item, ingredients, ignoreDamage);
         if (recipe != null && group != null && !group.isEmpty()) {

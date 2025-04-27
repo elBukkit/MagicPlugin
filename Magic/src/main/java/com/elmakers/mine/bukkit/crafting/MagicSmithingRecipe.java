@@ -26,17 +26,19 @@ public class MagicSmithingRecipe extends MagicRecipe {
         }
         String materialKey = configuration.getString("ingredient");
         ingredient = controller.getOrCreateItem(materialKey);
-        if (ingredient == null) {
-            controller.getLogger().warning("Could not create smithing recipe ingredient: " + materialKey);
+        ItemStack ingredientItem = ingredient == null ? null : ingredient.getItemStack();
+        if (CompatibilityLib.getItemUtils().isEmpty(ingredientItem)) {
+            controller.getLogger().warning("Invalid " + getType() + " recipe ingredient " + materialKey);
             return null;
         }
         materialKey = configuration.getString("addition");
         addition = controller.getOrCreateItem(materialKey);
-        if (addition == null) {
-            controller.getLogger().warning("Could not create smithing recipe addition: " + materialKey);
+        ItemStack additionItem = addition == null ? null : ingredient.getItemStack();
+        if (CompatibilityLib.getItemUtils().isEmpty(additionItem)) {
+            controller.getLogger().warning("Invalid " + getType() + " recipe addition ingredient " + materialKey);
             return null;
         }
-        recipe = CompatibilityLib.getCompatibilityUtils().createSmithingRecipe(key, item, ingredient.getItemStack(1), addition.getItemStack(1));
+        recipe = CompatibilityLib.getCompatibilityUtils().createSmithingRecipe(key, item, ingredientItem, additionItem);
         if (recipe != null && group != null && !group.isEmpty()) {
             CompatibilityLib.getCompatibilityUtils().setRecipeGroup(recipe, group);
         }

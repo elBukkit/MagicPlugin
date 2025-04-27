@@ -13,7 +13,12 @@ public class MagicBlastingRecipe extends MagicCookingRecipe {
 
     @Override
     protected Recipe createRecipe(ItemStack item) {
-        return CompatibilityLib.getCompatibilityUtils().createBlastingRecipe(key, item, ingredient.getItemStack(1), ignoreDamage, experience, cookingTime);
+        ItemStack ingredientItem = ingredient == null ? null : ingredient.getItemStack();
+        if (CompatibilityLib.getItemUtils().isEmpty(ingredientItem)) {
+            controller.getLogger().warning("Invalid " + getType() + " recipe ingredient " + ingredient.getKey());
+            return null;
+        }
+        return CompatibilityLib.getCompatibilityUtils().createBlastingRecipe(key, item, ingredientItem, ignoreDamage, experience, cookingTime);
     }
 
     @Override

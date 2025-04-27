@@ -25,11 +25,12 @@ public class MagicStonecuttingRecipe extends MagicRecipe {
         }
         String materialKey = configuration.getString("ingredient");
         ingredient = controller.getOrCreateItem(materialKey);
-        if (ingredient == null) {
-            controller.getLogger().warning("Could not create stonecutting recipe ingredient: " + materialKey);
+        ItemStack ingredientItem = ingredient == null ? null : ingredient.getItemStack();
+        if (CompatibilityLib.getItemUtils().isEmpty(ingredientItem)) {
+            controller.getLogger().warning("Invalid " + getType() + " recipe ingredient " + materialKey);
             return null;
         }
-        recipe = CompatibilityLib.getCompatibilityUtils().createStonecuttingRecipe(key, item, ingredient.getItemStack(1), ignoreDamage);
+        recipe = CompatibilityLib.getCompatibilityUtils().createStonecuttingRecipe(key, item, ingredientItem, ignoreDamage);
         if (recipe != null && group != null && !group.isEmpty()) {
             CompatibilityLib.getCompatibilityUtils().setRecipeGroup(recipe, group);
         }

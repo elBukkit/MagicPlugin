@@ -13,7 +13,12 @@ public class MagicFurnaceRecipe extends MagicCookingRecipe {
 
     @Override
     protected Recipe createRecipe(ItemStack item) {
-        return CompatibilityLib.getCompatibilityUtils().createFurnaceRecipe(key, item, ingredient.getItemStack(1), ignoreDamage, experience, cookingTime);
+        ItemStack ingredientItem = ingredient == null ? null : ingredient.getItemStack();
+        if (CompatibilityLib.getItemUtils().isEmpty(ingredientItem)) {
+            controller.getLogger().warning("Invalid " + getType() + " recipe ingredient " + ingredientKey);
+            return null;
+        }
+        return CompatibilityLib.getCompatibilityUtils().createFurnaceRecipe(key, item, ingredientItem, ignoreDamage, experience, cookingTime);
     }
 
     @Override
