@@ -69,37 +69,45 @@ pollinate:
         uses_brush: false
         ignore_region_overrides: true
         brushes:
-        - yellow_flower
-        - red_rose
-        - red_rose:1
-        - red_rose:2
-        - red_rose:3
-        - red_rose:4
-        - red_rose:5
-        - red_rose:6
-        - red_rose:7
-        - red_rose:8
-        - double_plant
-        - double_plant:1
-        - double_plant:3
-        - double_plant:4
-        - double_plant:5
+        - dandelion
+        - poppy
+        - oxeye_daisy
+        - blue_orchid
+        - dandelion
+        - orange_tulip
+        - pink_tulip
+        - poppy
+        - red_tulip
+        - white_tulip
+        - allium
+        - azure_bluet
+        - cornflower
+        - lily_of_the_valley
+        - wither_rose
+        - sunflower
+        - peony
+        - rose_bush
+        - lilac
         flowers:
-        - yellow_flower
-        - red_rose
-        - red_rose:1
-        - red_rose:2
-        - red_rose:3
-        - red_rose:4
-        - red_rose:5
-        - red_rose:6
-        - red_rose:7
-        - red_rose:8
+        - dandelion
+        - poppy
+        - oxeye_daisy
+        - blue_orchid
+        - dandelion
+        - orange_tulip
+        - pink_tulip
+        - poppy
+        - red_tulip
+        - white_tulip
+        - allium
+        - azure_bluet
+        - cornflower
+        - lily_of_the_valley
+        - wither_rose
         tall_flowers:
-        - double_plant
-        - double_plant:1
-        - double_plant:3
-        - double_plant:4
-        - double_plant:5
+        - sunflower
+        - peony
+        - rose_bush
+        - lilac
     costs:
         mana: 100

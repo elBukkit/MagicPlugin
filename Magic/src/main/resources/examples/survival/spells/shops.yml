@@ -212,9 +212,7 @@ plantshop:
     inherit: buyshop
     parameters:
         items:
-        - water_lily
-        - yellow_flower
-        - red_rose
+        - lilypad
         - oxeye_daisy
         - blue_orchid
         - dandelion

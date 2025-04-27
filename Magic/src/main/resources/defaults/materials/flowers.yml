@@ -1,7 +1,5 @@
 flowers:
 - flowers_double
-- yellow_flower
-- red_rose
 - oxeye_daisy
 - blue_orchid
 - dandelion
@@ -15,3 +13,5 @@ flowers:
 - cornflower
 - lily_of_the_valley
 - wither_rose
+- open_eyeblosson
+- closed_eyeblosson

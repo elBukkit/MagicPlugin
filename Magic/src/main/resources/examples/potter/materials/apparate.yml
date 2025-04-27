@@ -1,19 +1,11 @@
 # Materials that can be apparated through
 apparate:
 - water
-- stationary_water
 - air
 - snow
-- wooden_door
-- long_grass
-- short_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- brown_mushroom
-- red_mushroom
-- double_plant
-- sapling
+- doors
+- plants
+- saplings
 - torch
 - fire
 - redstone_wire
@@ -29,7 +21,7 @@ apparate:
 - pumpkin_stem
 - melon_stem
 - vine
-- water_lily
+- lilypad
 - nether_warts
 - cocoa
 - tripwire_hook
@@ -38,10 +30,8 @@ apparate:
 - carrots
 - potatoes
 - buttons
-- skull
+- skulls
 - comparator
 - activator_rail
 - double_plant
 - carpets
-- lapis_ore
-

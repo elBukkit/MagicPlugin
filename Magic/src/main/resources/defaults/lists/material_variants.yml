@@ -158,9 +158,8 @@ material_variants:
   - - dead_tube_coral_block
     - dead_tube_coral_fan
     - dead_tube_coral_wall_fan
-  - - yellow_flower
-    - red_rose
-    - double_plant
+  - - dandelion
+    - poppy
     - oxeye_daisy
     - blue_orchid
     - dandelion

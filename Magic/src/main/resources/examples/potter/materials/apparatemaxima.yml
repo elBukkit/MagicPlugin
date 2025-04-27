@@ -1,54 +1,37 @@
 # A more extended list Apparate Maxima
 apparatemaxima:
-- water
-- stationary_water
-- air
-- snow
-- wooden_door
-- iron_door_block
-- long_grass
-- short_grass
-- dead_bush
-- yellow_flower
-- red_rose
-- brown_mushroom
-- red_mushroom
-- glass
-- thin_glass
-- stained_glasses
-- stained_glass_panes
-- double_plant
-- saplings
-- torch
-- fire
-- redstone_wire
-- rails
-- powered_rail
-- detector_rail
-- lever
-- redstone_torch
-- stone_button
-- sugar_cane
-- portal
-- repeater
-- pumpkin_stem
-- melon_stem
-- vine
-- water_lily
-- nether_warts
-- ender_portal
-- cocoa
-- tripwire_hook
-- tripwire
-- flower_pot
-- carrot
-- potato
-- wood_button
-- skulls
-- comparator
-- activator_rail
-- double_plant
-- carpet
-- lapis_ore
-
-
+  - water
+  - air
+  - snow
+  - doors
+  - plants
+  - saplings
+  - torch
+  - fire
+  - redstone_wire
+  - rails
+  - powered_rail
+  - detector_rail
+  - lever
+  - redstone_torch
+  - stone_button
+  - sugar_cane
+  - portals
+  - repeater
+  - pumpkin_stem
+  - melon_stem
+  - vine
+  - lilypad
+  - nether_warts
+  - cocoa
+  - tripwire_hook
+  - tripwire
+  - flower_pot
+  - carrots
+  - potatoes
+  - buttons
+  - skulls
+  - comparator
+  - activator_rail
+  - double_plant
+  - carpets

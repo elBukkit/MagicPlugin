@@ -57,8 +57,8 @@ farmsellshop:
   parameters:
     items:
         - apple
-        - carrot_item@4
-        - potato_item@4
+        - carrot@4
+        - potato@4
         - baked_potato@3
         - melon@2
         - pumpkin
@@ -84,24 +84,34 @@ naturesellshop:
     inherit: sellshop
     parameters:
         items:
-        - sapling@8
-        - sapling|1@8
-        - sapling|2@8
-        - sapling|3@8
-        - sapling|4@8
-        - sapling|5@8
-        - seeds@8
+        - wheat_seeds@8
         - apple@8
-        - flower_pot_item@4
-        - sapling@64
-        - sapling|1@64
-        - sapling|2@64
-        - sapling|3@64
-        - sapling|4@64
-        - sapling|5@64
-        - seeds@64
+        - flower_pot@4
+        - wheat_seeds@64
         - apple@64
-        - flower_pot_item@64
+        - flower_pot@64
+        - spruce_sapling@8
+        - acacia_sapling@8
+        - birch_sapling@8
+        - dark_oak_sapling@8
+        - jungle_sapling@8
+        - oak_sapling@8
+        - azalea@8
+        - flowering_azalea@8
+        - mangrove_propagule@8
+        - cherry_sapling@8
+        - pale_oak_sapling@8
+        - spruce_sapling@8
+        - acacia_sapling@64
+        - birch_sapling@64
+        - dark_oak_sapling@64
+        - jungle_sapling@64
+        - oak_sapling@64
+        - azalea@64
+        - flowering_azalea@64
+        - mangrove_propagule@64
+        - cherry_sapling@64
+        - pale_oak_sapling@64
 
 miningsellshop:
     inherit: sellshop
@@ -118,38 +128,55 @@ saplingsellshop:
     inherit: sellshop
     parameters:
         items:
-        - sapling@8
-        - sapling|1@8
-        - sapling|2@8
-        - sapling|3@8
-        - sapling|4@8
-        - sapling|5@8
-        - none
-        - none
+        - spruce_sapling@8
+        - acacia_sapling@8
+        - birch_sapling@8
+        - dark_oak_sapling@8
+        - jungle_sapling@8
+        - oak_sapling@8
+        - azalea@8
+        - flowering_azalea@8
+        - mangrove_propagule@8
+        - cherry_sapling@8
+        - pale_oak_sapling@8
+        - spruce_sapling@8
+        - acacia_sapling@64
+        - birch_sapling@64
+        - dark_oak_sapling@64
+        - jungle_sapling@64
+        - oak_sapling@64
+        - azalea@64
+        - flowering_azalea@64
+        - mangrove_propagule@64
+        - cherry_sapling@64
+        - pale_oak_sapling@64
         - apple@8
-        - sapling@64
-        - sapling|1@64
-        - sapling|2@64
-        - sapling|3@64
-        - sapling|4@64
-        - sapling|5@64
-        - none
-        - none
         - apple@64
 
 flowersellshop:
   inherit: sellshop
   parameters:
     items:
-      - red_rose:6@2
-      - water_lily
-      - red_rose:5@2
-      - red_rose:4@2
-      - red_rose:2@2
-      - red_rose:1@2
-      - red_rose:0@2
-      - yellow_flower:0@2
-
+      - lily_pad
+      - oxeye_daisy@2
+      - blue_orchid@2
+      - dandelion@2
+      - orange_tulip@2
+      - pink_tulip@2
+      - poppy@2
+      - red_tulip@2
+      - white_tulip@2
+      - allium@2
+      - azure_bluet@2
+      - cornflower@2
+      - lily_of_the_valley@2
+      - wither_rose@2
+      - sunflower@2
+      - peony@2
+      - rose_bush@2
+      - lilac@2
+      - open_eyeblosson
+      - closed_eyeblosson
 junksellshop:
   inherit: sellshop
   parameters:
