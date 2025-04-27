@@ -2,25 +2,10 @@ banner_mushroom:
   worth: 100.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 0
-    type: BLACK_BANNER
-    meta:
-      ==: ItemMeta
-      meta-type: BANNER
-      display-name: '{"extra":[{"text":"Mushroom Banner"}],"text":""}'
-      patterns:
-      - ==: Pattern
-        color: WHITE
-        pattern: sc
-      - ==: Pattern
-        color: RED
-        pattern: hh
-      - ==: Pattern
-        color: BLACK
-        pattern: cbo
-      - ==: Pattern
-        color: BLACK
-        pattern: ts
-      - ==: Pattern
-        color: GREEN
-        pattern: bts
+    DataVersion: 4325
+    id: minecraft:black_banner
+    count: 1
+    components:
+      minecraft:banner_patterns: '[{color:"white",pattern:"minecraft:straight_cross"},{color:"red",pattern:"minecraft:half_horizontal"},{color:"black",pattern:"minecraft:curly_border"},{color:"black",pattern:"minecraft:stripe_top"},{color:"green",pattern:"minecraft:triangles_bottom"}]'
+      minecraft:custom_name: '{extra:["Mushroom Banner"],text:""}'
+    schema_version: 1

@@ -2,28 +2,10 @@ banner_wolf:
   worth: 100.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 0
-    type: WHITE_BANNER
-    meta:
-      ==: ItemMeta
-      meta-type: BANNER
-      display-name: '{"extra":[{"text":"Wolf"}],"text":""}'
-      patterns:
-      - ==: Pattern
-        color: GRAY
-        pattern: mr
-      - ==: Pattern
-        color: GRAY
-        pattern: tt
-      - ==: Pattern
-        color: BLUE
-        pattern: ts
-      - ==: Pattern
-        color: BLUE
-        pattern: cbo
-      - ==: Pattern
-        color: LIGHT_GRAY
-        pattern: cre
-      - ==: Pattern
-        color: BLUE
-        pattern: bts
+    DataVersion: 4325
+    id: minecraft:white_banner
+    count: 1
+    components:
+      minecraft:banner_patterns: '[{color:"gray",pattern:"minecraft:rhombus"},{color:"gray",pattern:"minecraft:triangle_top"},{color:"blue",pattern:"minecraft:stripe_top"},{color:"blue",pattern:"minecraft:curly_border"},{color:"light_gray",pattern:"minecraft:creeper"},{color:"blue",pattern:"minecraft:triangles_bottom"}]'
+      minecraft:custom_name: '{extra:["Wolf"],text:""}'
+    schema_version: 1

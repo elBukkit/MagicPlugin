@@ -2,28 +2,10 @@ banner_bird:
   worth: 100.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 0
-    type: BLACK_BANNER
-    meta:
-      ==: ItemMeta
-      meta-type: BANNER
-      display-name: '{"extra":[{"text":"Bird"}],"text":""}'
-      patterns:
-      - ==: Pattern
-        color: CYAN
-        pattern: cr
-      - ==: Pattern
-        color: LIGHT_BLUE
-        pattern: mr
-      - ==: Pattern
-        color: BLACK
-        pattern: drs
-      - ==: Pattern
-        color: BLACK
-        pattern: lud
-      - ==: Pattern
-        color: BLACK
-        pattern: mc
-      - ==: Pattern
-        color: BLACK
-        pattern: bo
+    DataVersion: 4325
+    id: minecraft:black_banner
+    count: 1
+    components:
+      minecraft:banner_patterns: '[{color:"cyan",pattern:"minecraft:cross"},{color:"light_blue",pattern:"minecraft:rhombus"},{color:"black",pattern:"minecraft:stripe_downright"},{color:"black",pattern:"minecraft:diagonal_up_left"},{color:"black",pattern:"minecraft:circle"},{color:"black",pattern:"minecraft:border"}]'
+      minecraft:custom_name: '{extra:["Bird"],text:""}'
+    schema_version: 1

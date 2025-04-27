@@ -2,28 +2,10 @@ banner_taco:
   worth: 100.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 0
-    type: PINK_BANNER
-    meta:
-      ==: ItemMeta
-      meta-type: BANNER
-      display-name: '{"extra":[{"text":"Taco"}],"text":""}'
-      patterns:
-      - ==: Pattern
-        color: RED
-        pattern: sku
-      - ==: Pattern
-        color: RED
-        pattern: cre
-      - ==: Pattern
-        color: LIME
-        pattern: flo
-      - ==: Pattern
-        color: YELLOW
-        pattern: moj
-      - ==: Pattern
-        color: YELLOW
-        pattern: mc
-      - ==: Pattern
-        color: PINK
-        pattern: hhb
+    DataVersion: 4325
+    id: minecraft:pink_banner
+    count: 1
+    components:
+      minecraft:banner_patterns: '[{color:"red",pattern:"minecraft:skull"},{color:"red",pattern:"minecraft:creeper"},{color:"lime",pattern:"minecraft:flower"},{color:"yellow",pattern:"minecraft:mojang"},{color:"yellow",pattern:"minecraft:circle"},{color:"pink",pattern:"minecraft:half_horizontal_bottom"}]'
+      minecraft:custom_name: '{extra:["Taco"],text:""}'
+    schema_version: 1

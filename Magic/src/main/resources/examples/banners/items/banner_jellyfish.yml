@@ -2,22 +2,10 @@ banner_jellyfish:
   worth: 100.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    v: 0
-    type: PURPLE_BANNER
-    meta:
-      ==: ItemMeta
-      meta-type: BANNER
-      display-name: '{"extra":[{"text":"Jellyfish"}],"text":""}'
-      patterns:
-      - ==: Pattern
-        color: BLACK
-        pattern: ss
-      - ==: Pattern
-        color: MAGENTA
-        pattern: ts
-      - ==: Pattern
-        color: BLACK
-        pattern: bo
-      - ==: Pattern
-        color: BLACK
-        pattern: cbo
+    DataVersion: 4325
+    id: minecraft:purple_banner
+    count: 1
+    components:
+      minecraft:banner_patterns: '[{color:"black",pattern:"minecraft:small_stripes"},{color:"magenta",pattern:"minecraft:stripe_top"},{color:"black",pattern:"minecraft:border"},{color:"black",pattern:"minecraft:curly_border"}]'
+      minecraft:custom_name: '{extra:["Jellyfish"],text:""}'
+    schema_version: 1

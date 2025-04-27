@@ -2,27 +2,11 @@ hylian_banner:
   worth: 100
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: BANNER
-    meta:
-      ==: ItemMeta
-      meta-type: BANNER
-      display-name: §aHylian Banner
-      patterns:
-      - ==: Pattern
-        color: SILVER
-        pattern: cbo
-      - ==: Pattern
-        color: RED
-        pattern: flo
-      - ==: Pattern
-        color: BLUE
-        pattern: hh
-      - ==: Pattern
-        color: YELLOW
-        pattern: tt
-      - ==: Pattern
-        color: BLUE
-        pattern: ts
-      - ==: Pattern
-        color: SILVER
-        pattern: bo
+    DataVersion: 4325
+    id: minecraft:black_banner
+    count: 1
+    components:
+      minecraft:banner_patterns: '[{color:"light_gray",pattern:"minecraft:curly_border"},{color:"red",pattern:"minecraft:flower"},{color:"blue",pattern:"minecraft:half_horizontal"},{color:"yellow",pattern:"minecraft:triangle_top"},{color:"blue",pattern:"minecraft:stripe_top"},{color:"light_gray",pattern:"minecraft:border"}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"Hylian
+        Banner",underlined:0b}],text:""}'
+    schema_version: 1
