@@ -407,8 +407,6 @@ public interface CompatibilityUtils {
 
     boolean isSameKey(Plugin plugin, String key, Object keyed);
 
-    boolean isLegacyRecipes();
-
     boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage);
 
     boolean setAutoBlockState(Block block, Location target, BlockFace facing, boolean physics, Player originator);

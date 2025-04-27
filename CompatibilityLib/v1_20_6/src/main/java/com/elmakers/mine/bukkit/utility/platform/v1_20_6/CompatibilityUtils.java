@@ -1025,11 +1025,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean isLegacyRecipes() {
-        return false;
-    }
-
-    @Override
     public boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage) {
         if (ingredient == null) return false;
         try {

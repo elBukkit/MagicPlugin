@@ -233,10 +233,6 @@ public abstract class MagicRecipe {
     }
 
     public RecipeMatchType getMatchType(Recipe matchRecipe, ItemStack[] matrix) {
-        if (!CompatibilityLib.getCompatibilityUtils().isLegacyRecipes()) {
-            return isSameRecipe(matchRecipe) ? RecipeMatchType.MATCH : RecipeMatchType.NONE;
-        }
-        // I think this method is only ever called for shaped recipes anyway?
-        return RecipeMatchType.NONE;
+        return isSameRecipe(matchRecipe) ? RecipeMatchType.MATCH : RecipeMatchType.NONE;
     }
 }

@@ -13,7 +13,6 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.Recipe;
 import org.bukkit.inventory.ShapedRecipe;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.api.item.ItemData;
 import com.elmakers.mine.bukkit.magic.MagicController;
@@ -145,91 +144,7 @@ public class MagicShapedRecipe extends MagicRecipe {
     @Override
     public RecipeMatchType getMatchType(Recipe matchRecipe, ItemStack[] matrix) {
         if (recipe == null || matrix.length < 4) return RecipeMatchType.NONE;
-
-        // Modern minecraft versions account for custom data in ingredients,
-        // so we can leave the ingredient matching up to vanilla code.
-        // The complicated matrix matching code here is flawed, for instance it does not
-        // account for vanilla recipes being mirrorable.
-        if (!CompatibilityLib.getCompatibilityUtils().isLegacyRecipes()) {
-            return isSameRecipe(matchRecipe) ? RecipeMatchType.MATCH : RecipeMatchType.NONE;
-        }
-        int height = (int)Math.sqrt(matrix.length);
-        int width = height;
-        boolean[] rows = new boolean[width];
-        boolean[] columns = new boolean[height];
-        for (int matrixRow = 0; matrixRow < height; matrixRow++) {
-            for (int matrixColumn = 0; matrixColumn < width; matrixColumn++) {
-                int i = matrixRow * height + matrixColumn;
-                ItemStack ingredient = matrix[i];
-                if (ingredient != null && ingredient.getType() != Material.AIR) {
-                    rows[matrixRow] = true;
-                    break;
-                }
-            }
-        }
-        for (int matrixColumn = 0; matrixColumn < width; matrixColumn++) {
-            for (int matrixRow = 0; matrixRow < height; matrixRow++) {
-                int i = matrixRow * width + matrixColumn;
-                ItemStack ingredient = matrix[i];
-                if (ingredient != null && ingredient.getType() != Material.AIR) {
-                    columns[matrixColumn] = true;
-                    break;
-                }
-            }
-        }
-
-        String[] shape = recipe.getShape();
-        if (shape == null || shape.length < 1) return RecipeMatchType.NONE;
-
-        int shapeRow = 0;
-        for (int matrixRow = 0; matrixRow < height; matrixRow++) {
-            if (!rows[matrixRow]) continue;
-            int shapeColumn = 0;
-            for (int matrixColumn = 0; matrixColumn < width; matrixColumn++) {
-                if (!columns[matrixColumn]) continue;
-                if (shapeRow >= shape.length) return RecipeMatchType.NONE;
-
-                String row = shape[shapeRow];
-                char charAt = ' ';
-                if (shapeColumn >= row.length()) {
-                    return RecipeMatchType.NONE;
-                }
-                charAt = row.charAt(shapeColumn);
-                ItemData item = ingredients.get(charAt);
-                int i = matrixRow * width + matrixColumn;
-                ItemStack ingredient = matrix[i];
-                if (ingredient != null && ingredient.getType() == Material.AIR) {
-                    ingredient = null;
-                }
-                if (item == null && ingredient == null) {
-                    shapeColumn++;
-                    continue;
-                }
-                if (item == null && ingredient != null) return RecipeMatchType.NONE;
-                if (ingredient == null && item != null) return RecipeMatchType.NONE;
-                if (ingredient.getType() != item.getType()) {
-                    return RecipeMatchType.NONE;
-                }
-                if (!ignoreDamage && ingredient.getDurability() != item.getDurability()) {
-                    return RecipeMatchType.NONE;
-                }
-                ItemMeta meta = item.getItemMeta();
-                if (meta != null) {
-                    ItemStack compareItem = item.getItemStack();
-                    ItemStack ingredientItem = ingredient;
-                    if (ignoreDamage && compareItem.getDurability() != ingredientItem.getDurability()) {
-                        ingredientItem = ingredientItem.clone();
-                        ingredientItem.setDurability(compareItem.getDurability());
-                    }
-                    if (!controller.itemsAreEqual(ingredientItem, compareItem)) {
-                        return RecipeMatchType.PARTIAL;
-                    }
-                }
-                shapeColumn++;
-            }
-            shapeRow++;
-        }
-        return RecipeMatchType.MATCH;
+        return isSameRecipe(matchRecipe) ? RecipeMatchType.MATCH : RecipeMatchType.NONE;
     }
 
     @Override
