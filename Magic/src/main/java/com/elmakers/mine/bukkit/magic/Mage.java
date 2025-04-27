@@ -5277,6 +5277,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : (double)living.getMaximumAir();
             }
+            case "air_percentage": {
+                LivingEntity living = getLivingEntity();
+                if (living == null) {
+                    return 0.0;
+                }
+                return 100.0 * living.getRemainingAir() / living.getMaximumAir();
+            }
             case "hunger": {
                 Player player = getPlayer();
                 return player == null ? null : (double)player.getFoodLevel();
@@ -5284,6 +5291,13 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             case "health": {
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : living.getHealth();
+            }
+            case "health_percentage": {
+                LivingEntity living = getLivingEntity();
+                if (living == null) {
+                    return 0.0;
+                }
+                return 100.0 * living.getHealth() / CompatibilityLib.getCompatibilityUtils().getMaxHealth(living);
             }
             case "health_max": {
                 LivingEntity living = getLivingEntity();

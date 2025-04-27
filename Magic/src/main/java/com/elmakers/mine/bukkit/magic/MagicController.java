@@ -310,7 +310,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private static final int MAX_ERRORS = 10;
     protected static Random random = new Random();
     private final Set<String> builtinMageAttributes = ImmutableSet.of(
-            "health", "health_max",
+            "health", "health_max", "health_percentage",
             "armor",  "luck",
             "knockback_resistance", "movement_speed", "movement_speed_bps",
             "attack_damage",
@@ -319,7 +319,7 @@ public class MagicController implements MageController, ChunkLoadListener {
             "time", "moon", "fulltime", "difficulty",
             "mana", "mana_max", "xp", "level", "bowpull", "bowpower", "damage", "damage_dealt",
             "fall_distance",
-            "air", "air_max",
+            "air", "air_max", "air_percentage",
             "hunger", "play_time", "light",
             "velocity"
     );
