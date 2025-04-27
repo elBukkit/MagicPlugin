@@ -1047,58 +1047,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public Color getColor(PotionMeta meta) {
-        return meta.getColor();
-    }
-
-    @Override
-    public boolean setColor(PotionMeta meta, Color color) {
-        meta.setColor(color);
-        return true;
-    }
-
-    @Override
-    public boolean hasBlockDataSupport() {
-        return true;
-    }
-
-    @Override
-    public byte getLegacyBlockData(FallingBlock falling) {
-        return 0;
-    }
-
-    @Override
-    public Material getMaterial(FallingBlock falling) {
-        return falling.getBlockData().getMaterial();
-    }
-
-    @Override
-    public String getBlockData(FallingBlock fallingBlock) {
-        BlockData blockData = fallingBlock.getBlockData();
-        return blockData.getAsString();
-    }
-
-    @Override
-    public String getBlockData(Material material, byte data) {
-        @SuppressWarnings("deprecation")
-        BlockData blockData = platform.getDeprecatedUtils().getUnsafe().fromLegacy(material, data);
-        return blockData == null ? null : blockData.getAsString();
-    }
-
-    @Override
-    public String getBlockData(Block block) {
-        BlockData blockData = block.getBlockData();
-        return blockData == null ? null : blockData.getAsString();
-    }
-
-    @Override
-    public boolean setBlockData(Block block, String data) {
-        BlockData blockData = platform.getPlugin().getServer().createBlockData(data);
-        block.setBlockData(blockData, false);
-        return true;
-    }
-
-    @Override
     public boolean applyPhysics(Block block) {
         ServerLevel nmsWorld = ((CraftWorld)block.getWorld()).getHandle();
         BlockPos blockLocation = new BlockPos(block.getX(), block.getY(), block.getZ());
@@ -1106,47 +1054,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         clearItems(block.getLocation());
         platform.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte)0, false);
         return nmsWorld.setBlock(blockLocation, blockState, 3);
-    }
-
-    @Override
-    public boolean addRecipeToBook(ItemStack book, Plugin plugin, String recipeKey) {
-        if (book == null) return false;
-        ItemMeta meta = book.getItemMeta();
-        if (!(meta instanceof KnowledgeBookMeta)) return false;
-        KnowledgeBookMeta bookMeta = (KnowledgeBookMeta)meta;
-        NamespacedKey key = new NamespacedKey(plugin, recipeKey.toLowerCase());
-        bookMeta.addRecipe(key);
-        book.setItemMeta(bookMeta);
-        return true;
-    }
-
-    @Override
-    public boolean stopSound(Player player, Sound sound) {
-        player.stopSound(sound);
-        return true;
-    }
-
-    @Override
-    public boolean stopSound(Player player, String sound) {
-        player.stopSound(sound);
-        return true;
-    }
-
-    @Override
-    public boolean lockChunk(Chunk chunk) {
-        if (!platform.getPlugin().isEnabled()) return false;
-        if (!chunk.isLoaded()) {
-            platform.getLogger().info("Locking unloaded chunk");
-        }
-        chunk.addPluginChunkTicket(platform.getPlugin());
-        return true;
-    }
-
-    @Override
-    public boolean unlockChunk(Chunk chunk) {
-        if (!platform.getPlugin().isEnabled()) return false;
-        chunk.removePluginChunkTicket(platform.getPlugin());
-        return true;
     }
 
     @Override

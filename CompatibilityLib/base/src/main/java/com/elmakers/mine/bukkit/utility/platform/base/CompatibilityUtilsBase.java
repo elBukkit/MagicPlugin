@@ -2792,11 +2792,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public boolean hasBlockDataSupport() {
-        return true;
-    }
-
-    @Override
     public byte getLegacyBlockData(FallingBlock falling) {
         return 0;
     }

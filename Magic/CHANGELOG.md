@@ -5,6 +5,7 @@
 
  - Alter spell changed to work with material sets
  - Add `health_percentage` and `air_percentage` attributes
+ - Drop support for legacy (.schematic) schematic files, only .schem are supported now
 
 # 10.10.1
  

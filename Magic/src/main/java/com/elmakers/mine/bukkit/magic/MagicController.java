@@ -134,7 +134,6 @@ import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
 import com.elmakers.mine.bukkit.arena.ArenaController;
 import com.elmakers.mine.bukkit.block.BlockData;
 import com.elmakers.mine.bukkit.block.DefaultMaterials;
-import com.elmakers.mine.bukkit.block.LegacySchematic;
 import com.elmakers.mine.bukkit.block.MaterialAndData;
 import com.elmakers.mine.bukkit.block.MaterialBrush;
 import com.elmakers.mine.bukkit.block.magic.MagicBlock;
@@ -1412,43 +1411,22 @@ public class MagicController implements MageController, ChunkLoadListener {
                 }
             }
         }
+        final InputStream inputSchematic = findSchematic(schematicName, "schem");
+        if (inputSchematic != null) {
+            com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
+            schematics.put(schematicName, new WeakReference<>(schematic));
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+                try {
+                    CompatibilityLib.getSchematicUtils().loadSchematic(inputSchematic, schematic, getLogger());
+                    info("Finished loading schematic");
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            });
 
-        // Look for new schematic format first
-        if (CompatibilityLib.getCompatibilityUtils().hasBlockDataSupport()) {
-            final InputStream inputSchematic = findSchematic(schematicName, "schem");
-            if (inputSchematic != null) {
-                com.elmakers.mine.bukkit.block.Schematic schematic = new com.elmakers.mine.bukkit.block.Schematic(this);
-                schematics.put(schematicName, new WeakReference<>(schematic));
-                Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-                    try {
-                        CompatibilityLib.getSchematicUtils().loadSchematic(inputSchematic, schematic, getLogger());
-                        info("Finished loading schematic");
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                });
-
-                return schematic;
-            }
+            return schematic;
         }
-
-        // Look for legacy schematic
-        final InputStream legacySchematic = findSchematic(schematicName, "schematic");
-        if (legacySchematic == null) {
-            return null;
-        }
-        LegacySchematic schematic = new LegacySchematic(this);
-        schematics.put(schematicName, new WeakReference<>(schematic));
-        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
-            try {
-                CompatibilityLib.getSchematicUtils().loadLegacySchematic(legacySchematic, schematic);
-                info("Finished loading schematic");
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-        });
-
-        return schematic;
+        return null;
     }
 
     @Override

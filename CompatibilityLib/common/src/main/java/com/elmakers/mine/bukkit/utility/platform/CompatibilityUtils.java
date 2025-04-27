@@ -379,8 +379,6 @@ public interface CompatibilityUtils {
 
     boolean setBlockData(Block block, String data);
 
-    boolean hasBlockDataSupport();
-
     boolean isTopBlock(Block block);
 
     boolean applyPhysics(Block block);
