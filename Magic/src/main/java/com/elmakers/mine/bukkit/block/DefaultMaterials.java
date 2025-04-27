@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Nonnull;
@@ -53,6 +54,7 @@ public class DefaultMaterials {
     private Map<Material, Material> colorMap = new HashMap<>();
     private Map<Material, Material> blockItems = new HashMap<>();
     private Map<String, Biome> biomeMap = new HashMap<>();
+    private Map<String, Material> migrations = new HashMap<>();
 
     private Map<Material, List<Material>> materialVariants = new HashMap<>();
     private Map<Material, Material> variantMap = new HashMap<>();
@@ -79,6 +81,16 @@ public class DefaultMaterials {
         signs = manager.getMaterialSet("signs");
         saplings = manager.getMaterialSet("saplings");
         shulkerBoxes = manager.getMaterialSet("shulker_boxes");
+    }
+
+    public void addMigration(String key, Material material) {
+        if (material != null) {
+            migrations.put(key.toUpperCase(Locale.ROOT), material);
+        }
+    }
+
+    public Material migrateMaterial(String key) {
+        return migrations.get(key.toUpperCase(Locale.ROOT));
     }
 
     public void loadColors(Collection<ConfigurationSection> colors) {

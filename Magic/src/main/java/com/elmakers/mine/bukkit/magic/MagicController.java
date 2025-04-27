@@ -3415,6 +3415,9 @@ public class MagicController implements MageController, ChunkLoadListener {
 
     protected void loadOtherMaterials(ConfigurationSection configuration) {
         DefaultMaterials defaultMaterials = DefaultMaterials.getInstance();
+        for (String key : configuration.getKeys(false)) {
+            defaultMaterials.addMigration(key, getVersionedMaterial(configuration, key));
+        }
         defaultMaterials.setGroundSignBlock(getVersionedMaterial(configuration, "ground_sign_block"));
         defaultMaterials.setWallSignBlock(getVersionedMaterial(configuration, "wall_sign_block"));
         defaultMaterials.setFirework(getVersionedMaterial(configuration, "firework"));
@@ -8475,7 +8478,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         loadMobSkins(properties.getConfigurationSection("mob_skins"));
         loadMobEggs(properties.getConfigurationSection("mob_eggs"));
         loadSkulls(properties.getConfigurationSection("skulls"));
-        loadOtherMaterials(properties);
+        loadOtherMaterials(properties.getConfigurationSection("migrate_materials"));
         WandCommandExecutor.CONSOLE_BYPASS_MODIFIABLE = properties.getBoolean("console_bypass_modifiable", properties.getBoolean("console_bypass_locked_wands", true));
 
         maxPower = (float) properties.getDouble("max_power", maxPower);

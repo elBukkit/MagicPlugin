@@ -1,0 +1,14 @@
+# These define mappings of materials for backwards compatibility
+# They were all reduced to current material names in 10.10
+migrate_materials:
+  ground_sign_block: oak_sign
+  wall_sign_block: oak_wall_sign
+  firework: firework_rocket
+  firework_star: firework_star
+  wall_torch: wall_torch
+  redstone_torch: redstone_torch
+  redstone_wall_torch: redstone_wall_torch
+  mob_spawner: spawner
+  filled_map: filled_map
+  nether_portal: nether_portal
+  writable_book: writable_book
