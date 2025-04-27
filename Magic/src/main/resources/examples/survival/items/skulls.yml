@@ -89,8 +89,9 @@ skull_cookie:
   name: '&bCookie'
 
 skull_copperchunk:
-  item: skull{display:{Name:"{\"text\":\"Copper Chunk\"}"},SkullOwner:{Id:[I;-1036162939,-1851833705,-1803264362,-2044992477],Properties:{textures:[{Value:"eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODc2NDA2MGI4MThlNGE2NzA2NzEzYzg1MWRmNTJhZmZiNzAwODM3MDE5Y2JkNzcxMjZlYTE1NGU3MGNkNjcxYyJ9fX0="}]}}}
+  item: skull:http://textures.minecraft.net/texture/8764060b818e4a6706713c851df52affb700837019cbd77126ea154e70cd671c
   worth: 200
+  name: '&bCopper Chunk'
 
 skull_crate:
   item: skull:http://textures.minecraft.net/texture/8358fba2f1bdc519ba85e5366bab8def9bbe404ef639c2e3c654d10a1d8d3
