@@ -1,7 +1,7 @@
 animation:
    hidden: true
    name: Example Animation
-   icon: wood_door
+   icon: oak_door
    actions:
      cast:
      - class: Brush
