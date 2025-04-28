@@ -6,8 +6,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.ref.WeakReference;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -76,12 +74,10 @@ import org.bukkit.entity.AnimalTamer;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.ComplexEntityPart;
 import org.bukkit.entity.Damageable;
-import org.bukkit.entity.Enderman;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Fox;
-import org.bukkit.entity.Hanging;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
@@ -94,7 +90,6 @@ import org.bukkit.entity.Sittable;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Tameable;
 import org.bukkit.entity.ThrownPotion;
-import org.bukkit.entity.Witch;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
@@ -116,7 +111,6 @@ import org.bukkit.inventory.SmithingRecipe;
 import org.bukkit.inventory.SmokingRecipe;
 import org.bukkit.inventory.StonecuttingRecipe;
 import org.bukkit.inventory.meta.CompassMeta;
-import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.KnowledgeBookMeta;
 import org.bukkit.inventory.meta.PotionMeta;
@@ -133,7 +127,6 @@ import org.bukkit.util.VoxelShape;
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
 import com.elmakers.mine.bukkit.utility.ChatUtils;
-import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.DoorActionType;
 import com.elmakers.mine.bukkit.utility.EnteredStateTracker;
 import com.elmakers.mine.bukkit.utility.LoadingChunk;
@@ -285,33 +278,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void damage(Damageable target, double amount, Entity source, String damageType) {
-        if (target == null || target.isDead()) return;
-        if (damageType.equalsIgnoreCase("direct")) {
-            double health = target.getHealth() - amount;
-            target.setHealth(Math.max(health, 0));
-            return;
-        }
-        if (damageType.equalsIgnoreCase("magic")) {
-            magicDamage(target, amount, source);
-            return;
-        }
-        Object damageSource = (NMSUtils.damageSources == null) ? null : NMSUtils.damageSources.get(damageType.toUpperCase(Locale.ROOT));
-        if (damageSource == null || NMSUtils.class_EntityLiving_damageEntityMethod == null) {
-            magicDamage(target, amount, source);
-            return;
-        }
-
-        try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
-            damaging.touch();
-            Object targetHandle = NMSUtils.getHandle(target);
-            if (targetHandle == null) return;
-
-            NMSUtils.class_EntityLiving_damageEntityMethod.invoke(targetHandle, damageSource, (float) amount);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void damage(Damageable target, double amount, Entity source, String damageType);
 
     /**
      * Lazily creates potion entities that can be used when damaging players.
@@ -1124,23 +1091,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return setRawLore(itemStack, serializedLore);
     }
 
-    protected boolean sendActionBarPackets(Player player, String message) {
-        if (NMSUtils.class_PacketPlayOutChat == null) return false;
-        try {
-            Object chatComponent = NMSUtils.class_ChatComponentText_constructor.newInstance(message);
-            Object packet;
-            if (NMSUtils.enum_ChatMessageType_GAME_INFO == null) {
-                packet = NMSUtils.class_PacketPlayOutChat_constructor.newInstance(chatComponent, (byte)2);
-            } else {
-                packet = NMSUtils.class_PacketPlayOutChat_constructor.newInstance(chatComponent, NMSUtils.enum_ChatMessageType_GAME_INFO, emptyUUID);
-            }
-            NMSUtils.sendPacket(player, packet);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-        return true;
-    }
+    protected abstract boolean sendActionBarPackets(Player player, String message);
 
     @Override
     public boolean sendActionBar(Player player, String message) {
@@ -1609,55 +1560,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public Painting createPainting(Location location, BlockFace facing, Art art) {
-        Painting newPainting = null;
-        try {
-            Object worldHandle = NMSUtils.getHandle(location.getWorld());
-            Object newEntity;
-            @SuppressWarnings("unchecked")
-            Enum<?> directionEnum = Enum.valueOf(NMSUtils.class_EnumDirection, facing.name());
-            Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
-            newEntity = NMSUtils.class_EntityPaintingConstructor.newInstance(worldHandle, blockLocation, directionEnum);
-            if (newEntity != null) {
-                if (NMSUtils.class_EntityPainting_art != null) {
-                    Object notchArt = NMSUtils.class_CraftArt_NotchToBukkitMethod.invoke(null, art);
-                    NMSUtils.class_EntityPainting_art.set(newEntity, notchArt);
-                }
-                Entity bukkitEntity = getBukkitEntity(newEntity);
-                if (bukkitEntity == null || !(bukkitEntity instanceof Painting)) return null;
-
-                newPainting = (Painting) bukkitEntity;
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            newPainting = null;
-        }
-        return newPainting;
-    }
+    public abstract Painting createPainting(Location location, BlockFace facing, Art art);
 
     @Override
-    public ItemFrame createItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item) {
-        ItemFrame newItemFrame = null;
-        try {
-            Object worldHandle = NMSUtils.getHandle(location.getWorld());
-            Object newEntity;
-            @SuppressWarnings("unchecked")
-            Enum<?> directionEnum = Enum.valueOf(NMSUtils.class_EnumDirection, facing.name());
-            Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
-            newEntity = NMSUtils.class_EntityItemFrameConstructor.newInstance(worldHandle, blockLocation, directionEnum);
-            if (newEntity != null) {
-                Entity bukkitEntity = getBukkitEntity(newEntity);
-                if (bukkitEntity == null || !(bukkitEntity instanceof ItemFrame)) return null;
-
-                newItemFrame = (ItemFrame) bukkitEntity;
-                newItemFrame.setItem(platform.getItemUtils().getCopy(item));
-                newItemFrame.setRotation(rotation);
-            }
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return newItemFrame;
-    }
+    public abstract ItemFrame createItemFrame(Location location, BlockFace facing, Rotation rotation, ItemStack item);
 
     @Override
     public Entity createEntity(Location location, EntityType entityType) {
@@ -1672,18 +1578,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason) {
-        try {
-            Object worldHandle = NMSUtils.getHandle(world);
-            Object entityHandle = NMSUtils.getHandle(entity);
-            NMSUtils.class_World_addEntityMethod.invoke(worldHandle, entityHandle, reason);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
+    public abstract boolean addToWorld(World world, Entity entity, CreatureSpawnEvent.SpawnReason reason);
 
     @Override
     public Collection<Entity> getNearbyEntities(Location location, double x, double y, double z) {
@@ -1695,78 +1590,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void ageItem(Item item, int ticksToAge) {
-        try {
-            Class<?> itemClass = NMSUtils.fixBukkitClass("net.minecraft.server.EntityItem");
-            Object handle = NMSUtils.getHandle(item);
-            Field ageField = itemClass.getDeclaredField("age");
-            ageField.setAccessible(true);
-            ageField.set(handle, ticksToAge);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void ageItem(Item item, int ticksToAge);
 
     @Override
-    public void magicDamage(Damageable target, double amount, Entity source) {
-        try {
-            if (target == null || target.isDead()) return;
-
-            if (NMSUtils.class_EntityLiving_damageEntityMethod == null || NMSUtils.object_magicSource == null || NMSUtils.class_DamageSource_getMagicSourceMethod == null) {
-                damage(target, amount, source);
-                return;
-            }
-
-            // Special-case for witches .. witches are immune to magic damage :\
-            // And endermen are immune to indirect damage .. or something.
-            // Also armor stands suck.
-            // Might need to config-drive this, or just go back to defaulting to normal damage
-            if (!USE_MAGIC_DAMAGE || target instanceof Witch || target instanceof Enderman || target instanceof ArmorStand || !(target instanceof LivingEntity)) {
-                damage(target, amount, source);
-                return;
-            }
-
-            Object targetHandle = NMSUtils.getHandle(target);
-            if (targetHandle == null) return;
-
-            Object sourceHandle = NMSUtils.getHandle(source);
-
-            // Bukkit won't allow magic damage from anything but a potion..
-            if (sourceHandle != null && source instanceof LivingEntity) {
-                Location location = target.getLocation();
-
-                ThrownPotion potion = getOrCreatePotionEntity(location);
-                potion.setShooter((LivingEntity) source);
-
-                Object potionHandle = NMSUtils.getHandle(potion);
-                Object damageSource = NMSUtils.class_DamageSource_getMagicSourceMethod.invoke(null, potionHandle, sourceHandle);
-
-                // This is a bit of hack that lets us damage the ender dragon, who is a weird and annoying collection
-                // of various non-living entity pieces.
-                if (NMSUtils.class_EntityDamageSource_setThornsMethod != null) {
-                    NMSUtils.class_EntityDamageSource_setThornsMethod.invoke(damageSource);
-                }
-
-                try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
-                    damaging.touch();
-                    NMSUtils.class_EntityLiving_damageEntityMethod.invoke(
-                            targetHandle,
-                            damageSource,
-                            (float) amount);
-                }
-            } else {
-                try (EnteredStateTracker.Touchable damaging = isDamaging.enter()) {
-                    damaging.touch();
-                    NMSUtils.class_EntityLiving_damageEntityMethod.invoke(
-                            targetHandle,
-                            NMSUtils.object_magicSource,
-                            (float) amount);
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void magicDamage(Damageable target, double amount, Entity source);
 
     @Override
     public boolean isReady(Chunk chunk) {
@@ -1779,124 +1606,16 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public Object getTileEntityData(Location location) {
-        if (NMSUtils.class_TileEntity_saveMethod == null) return null;
-        Object tileEntity = getTileEntity(location);
-        if (tileEntity == null) return null;
-        Object data = null;
-        try {
-            data = NMSUtils.class_NBTTagCompound_constructor.newInstance();
-            NMSUtils.class_TileEntity_saveMethod.invoke(tileEntity, data);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return data;
-    }
+    public abstract Object getTileEntityData(Location location);
 
     @Override
-    public Object getTileEntity(Location location) {
-        if (NMSUtils.class_World_getTileEntityMethod != null) {
-            Object tileEntity = null;
-            try {
-                World world = location.getWorld();
-                Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
-                tileEntity = NMSUtils.class_World_getTileEntityMethod.invoke(NMSUtils.getHandle(world), blockLocation);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            return tileEntity;
-        }
-
-        if (NMSUtils.class_CraftWorld_getTileEntityAtMethod == null) return null;
-        Object tileEntity = null;
-        try {
-            World world = location.getWorld();
-            tileEntity = NMSUtils.class_CraftWorld_getTileEntityAtMethod.invoke(world, location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return tileEntity;
-    }
+    public abstract Object getTileEntity(Location location);
 
     @Override
-    public void clearItems(Location location) {
-        if (NMSUtils.class_TileEntity_loadMethod == null || NMSUtils.class_TileEntity_updateMethod == null || NMSUtils.class_TileEntity_saveMethod == null) return;
-        if (location == null) return;
-
-        Object tileEntity = getTileEntity(location);
-        if (tileEntity == null) return;
-        try {
-            // Capture current tile entity snapshot
-            Object entityData = NMSUtils.class_NBTTagCompound_constructor.newInstance();
-            NMSUtils.class_TileEntity_saveMethod.invoke(tileEntity, entityData);
-
-            // Remove items
-            NMSUtils.class_NBTTagCompound_removeMethod.invoke(entityData, "Item");
-            NMSUtils.class_NBTTagCompound_removeMethod.invoke(entityData, "Items");
-
-            // Reload tile entity
-            if (NMSUtils.class_IBlockData != null) {
-                Object worldHandle = NMSUtils.getHandle(location.getWorld());
-                Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-                Object blockType = NMSUtils.class_World_getTypeMethod.invoke(worldHandle, blockLocation);
-                NMSUtils.class_TileEntity_loadMethod.invoke(tileEntity, blockType, entityData);
-            } else {
-                NMSUtils.class_TileEntity_loadMethod.invoke(tileEntity, entityData);
-            }
-            NMSUtils.class_TileEntity_updateMethod.invoke(tileEntity);
-
-            // Clear records from jukebox. Equivalent to
-            // if (tileEntity instanceof TileEntityRecordPlayer)
-            // >> tileEntity.record = null
-            if (NMSUtils.class_TileEntityRecordPlayer_record != null
-                    && NMSUtils.class_TileEntityRecordPlayer.isInstance(tileEntity)) {
-                // TODO: Move into ItemUtils
-                Object emptyStack = NMSUtils.class_CraftItemStack_copyMethod.invoke(
-                        null,
-                        new Object[] { null });
-                NMSUtils.class_TileEntityRecordPlayer_record.set(
-                        tileEntity,
-                        emptyStack);
-            }
-
-            // Clear loot table
-            if (NMSUtils.class_Lootable_setLootTableMethod != null && NMSUtils.class_Lootable != null) {
-                Block block = location.getBlock();
-                BlockState blockState = block.getState();
-                if (NMSUtils.class_Lootable.isAssignableFrom(blockState.getClass())) {
-                    NMSUtils.class_Lootable_setLootTableMethod.invoke(blockState, new Object[]{ null });
-                    blockState.update();
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void clearItems(Location location);
 
     @Override
-    public void setTileEntityData(Location location, Object data) {
-        if (NMSUtils.class_TileEntity_loadMethod == null || NMSUtils.class_TileEntity_updateMethod == null) return;
-        if (location == null || data == null) return;
-        Object tileEntity = getTileEntity(location);
-        if (tileEntity == null) return;
-        try {
-            NMSUtils.class_NBTTagCompound_setIntMethod.invoke(data, "x", location.getBlockX());
-            NMSUtils.class_NBTTagCompound_setIntMethod.invoke(data, "y", location.getBlockY());
-            NMSUtils.class_NBTTagCompound_setIntMethod.invoke(data, "z", location.getBlockZ());
-
-            if (NMSUtils.class_IBlockData != null) {
-                Object worldHandle = NMSUtils.getHandle(location.getWorld());
-                Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-                Object blockType = NMSUtils.class_World_getTypeMethod.invoke(worldHandle, blockLocation);
-                NMSUtils.class_TileEntity_loadMethod.invoke(tileEntity, blockType, data);
-            } else {
-                NMSUtils.class_TileEntity_loadMethod.invoke(tileEntity, data);
-            }
-            NMSUtils.class_TileEntity_updateMethod.invoke(tileEntity);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setTileEntityData(Location location, Object data);
 
     @Override
     public void setEnvironment(World world, World.Environment environment) {
@@ -1969,34 +1688,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public Vector getPosition(Object entityData, String tag) {
-        if (NMSUtils.class_NBTTagList_getDoubleMethod == null) return null;
-        try {
-            Object posList = NMSUtils.class_NBTTagCompound_getListMethod.invoke(entityData, tag, CompatibilityConstants.NBT_TYPE_DOUBLE);
-            Double x = (Double) NMSUtils.class_NBTTagList_getDoubleMethod.invoke(posList, 0);
-            Double y = (Double) NMSUtils.class_NBTTagList_getDoubleMethod.invoke(posList, 1);
-            Double z = (Double) NMSUtils.class_NBTTagList_getDoubleMethod.invoke(posList, 2);
-            if (x != null && y != null && z != null) {
-                return new Vector(x, y, z);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
+    public abstract Vector getPosition(Object entityData, String tag);
 
     @Override
-    public BlockVector getBlockVector(Object entityData, String tag) {
-        if (NMSUtils.class_NBTTagCompound_getIntArrayMethod == null) return null;
-        try {
-            int[] coords = (int[]) NMSUtils.class_NBTTagCompound_getIntArrayMethod.invoke(entityData, tag);
-            if (coords == null || coords.length < 3) return null;
-            return new BlockVector(coords[0], coords[1], coords[2]);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
+    public abstract BlockVector getBlockVector(Object entityData, String tag);
 
     @Override
     public void setTNTSource(TNTPrimed tnt, LivingEntity source) {
@@ -2004,17 +1699,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void setEntityMotion(Entity entity, Vector motion) {
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            if (NMSUtils.class_Entity_motField != null) {
-                Object vec = NMSUtils.class_Vec3D_constructor.newInstance(motion.getX(), motion.getY(), motion.getZ());
-                NMSUtils.class_Entity_motField.set(handle, vec);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setEntityMotion(Entity entity, Vector motion);
 
     @Override
     public boolean setLock(Block block, String lockName) {
@@ -2053,29 +1738,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax)
-    {
-        Object entityHandle = NMSUtils.getHandle(entity);
-        if (entityHandle == null) return;
-        try {
-            NMSUtils.class_EntityFallingBlock_hurtEntitiesField.set(entityHandle, true);
-            NMSUtils.class_EntityFallingBlock_fallHurtAmountField.set(entityHandle, fallHurtAmount);
-            NMSUtils.class_EntityFallingBlock_fallHurtMaxField.set(entityHandle, fallHurtMax);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setFallingBlockDamage(FallingBlock entity, float fallHurtAmount, int fallHurtMax);
 
     @Override
-    public void setInvisible(Entity entity, boolean invisible) {
-        if (NMSUtils.class_Entity_setInvisible == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_setInvisible.invoke(handle, invisible);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setInvisible(Entity entity, boolean invisible);
 
     @Override
     public void setInvisible(ArmorStand armorStand, boolean invisible) {
@@ -2083,16 +1749,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public Boolean isInvisible(Entity entity) {
-        if (NMSUtils.class_Entity_isInvisible == null) return null;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            return (boolean) NMSUtils.class_Entity_isInvisible.invoke(handle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return null;
-    }
+    public abstract Boolean isInvisible(Entity entity);
 
     @Override
     public void setGravity(ArmorStand armorStand, boolean gravity) {
@@ -2106,239 +1763,40 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void setDisabledSlots(ArmorStand armorStand, int disabledSlots) {
-        if (NMSUtils.class_EntityArmorStand_disabledSlotsField == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(armorStand);
-            NMSUtils.class_EntityArmorStand_disabledSlotsField.set(handle, disabledSlots);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setDisabledSlots(ArmorStand armorStand, int disabledSlots);
 
     @Override
-    public int getDisabledSlots(ArmorStand armorStand) {
-        if (NMSUtils.class_EntityArmorStand_disabledSlotsField == null) return 0;
-        try {
-            Object handle = NMSUtils.getHandle(armorStand);
-            return (int) NMSUtils.class_EntityArmorStand_disabledSlotsField.get(handle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return 0;
-    }
+    public abstract int getDisabledSlots(ArmorStand armorStand);
 
     @Override
-    public boolean isPersistentInvisible(Entity entity) {
-        if (NMSUtils.class_Entity_persistentInvisibilityField == null) return false;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            return (boolean) NMSUtils.class_Entity_persistentInvisibilityField.get(handle);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
+    public abstract boolean isPersistentInvisible(Entity entity);
 
     @Override
-    public void setPersistentInvisible(Entity entity, boolean invisible) {
-        if (NMSUtils.class_Entity_persistentInvisibilityField == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            NMSUtils.class_Entity_persistentInvisibilityField.set(handle, invisible);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setPersistentInvisible(Entity entity, boolean invisible);
 
     @Override
-    public void setYawPitch(Entity entity, float yaw, float pitch) {
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            if (handle != null) {
-                NMSUtils.class_Entity_setYawPitchMethod.invoke(handle, yaw, pitch);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setYawPitch(Entity entity, float yaw, float pitch);
 
     @Override
-    public void setLocation(Entity entity, double x, double y, double z, float yaw, float pitch) {
-        try {
-            Object handle = NMSUtils.getHandle(entity);
-            if (handle != null) {
-                NMSUtils.class_Entity_setLocationMethod.invoke(handle, x, y, z, yaw, pitch);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setLocation(Entity entity, double x, double y, double z, float yaw, float pitch);
 
     @Override
-    public void addFlightExemption(Player player, int ticks) {
-        if (NMSUtils.class_PlayerConnection_floatCountField == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(player);
-            Object connection = NMSUtils.class_EntityPlayer_playerConnectionField.get(handle);
-            NMSUtils.class_PlayerConnection_floatCountField.set(connection, -ticks);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void addFlightExemption(Player player, int ticks);
 
     @Override
-    public boolean isValidProjectileClass(Class<?> projectileType) {
-        return projectileType != null
-                && (NMSUtils.class_EntityArrow.isAssignableFrom(projectileType)
-                || NMSUtils.class_EntityProjectile.isAssignableFrom(projectileType)
-                || NMSUtils.class_EntityFireball.isAssignableFrom(projectileType)
-                || (NMSUtils.class_IProjectile != null && NMSUtils.class_IProjectile.isAssignableFrom(projectileType))
-        );
-    }
+    public abstract boolean isValidProjectileClass(Class<?> projectileType);
 
     @Override
-    public Projectile spawnProjectile(Class<?> projectileType, Location location, Vector direction, ProjectileSource source, float speed, float spread, float spreadLocations, Random random) {
-        Constructor<? extends Object> constructor = null;
-        Method shootMethod = null;
-        Method setPositionRotationMethod = null;
-        Field projectileSourceField = null;
-        Field dirXField = null;
-        Field dirYField = null;
-        Field dirZField = null;
-        Object nmsWorld = NMSUtils.getHandle(location.getWorld());
-        Projectile projectile = null;
-        try {
-            Object entityType = null;
-            if (NMSUtils.entityTypes != null) {
-                constructor = projectileType.getConstructor(NMSUtils.class_entityTypes, NMSUtils.class_World);
-                entityType = NMSUtils.entityTypes.get(projectileType.getSimpleName());
-                if (entityType == null) {
-                    throw new Exception("Failed to find entity type for projectile class " + projectileType.getName());
-                }
-            } else {
-                constructor = projectileType.getConstructor(NMSUtils.class_World);
-            }
-
-            if (NMSUtils.class_EntityFireball.isAssignableFrom(projectileType)) {
-                dirXField = projectileType.getField("dirX");
-                dirYField = projectileType.getField("dirY");
-                dirZField = projectileType.getField("dirZ");
-            }
-
-            if (NMSUtils.class_EntityProjectile.isAssignableFrom(projectileType) || NMSUtils.class_EntityArrow.isAssignableFrom(projectileType)) {
-                shootMethod = projectileType.getMethod("shoot", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
-            }
-
-            setPositionRotationMethod = projectileType.getMethod("setPositionRotation", Double.TYPE, Double.TYPE, Double.TYPE, Float.TYPE, Float.TYPE);
-            projectileSourceField = projectileType.getField("projectileSource");
-
-            Object nmsProjectile = null;
-            try {
-                nmsProjectile = entityType == null ? constructor.newInstance(nmsWorld) : constructor.newInstance(entityType, nmsWorld);
-            } catch (Exception ex) {
-                nmsProjectile = null;
-                platform.getLogger().log(Level.WARNING, "Error spawning projectile of class " + projectileType.getName(), ex);
-            }
-
-            if (nmsProjectile == null) {
-                throw new Exception("Failed to spawn projectile of class " + projectileType.getName());
-            }
-
-            // Set position and rotation, and potentially velocity (direction)
-            // Velocity must be set manually- EntityFireball.setDirection applies a crazy-wide gaussian distribution!
-            if (dirXField != null && dirYField != null && dirZField != null) {
-                // Taken from EntityArrow
-                double spreadWeight = Math.min(0.4f,  spread * 0.007499999832361937D);
-
-                double dx = speed * (direction.getX() + (random.nextGaussian() * spreadWeight));
-                double dy = speed * (direction.getY() + (random.nextGaussian() * spreadWeight));
-                double dz = speed * (direction.getZ() + (random.nextGaussian() * spreadWeight));
-
-                dirXField.set(nmsProjectile, dx * 0.1D);
-                dirYField.set(nmsProjectile, dy * 0.1D);
-                dirZField.set(nmsProjectile, dz * 0.1D);
-            }
-            Vector modifiedLocation = location.toVector().clone();
-            if (NMSUtils.class_EntityFireball.isAssignableFrom(projectileType) && spreadLocations > 0) {
-                modifiedLocation.setX(modifiedLocation.getX() + direction.getX() + (random.nextGaussian() * spread / 5));
-                modifiedLocation.setY(modifiedLocation.getY() + direction.getY() + (random.nextGaussian() * spread / 5));
-                modifiedLocation.setZ(modifiedLocation.getZ() + direction.getZ() + (random.nextGaussian() * spread / 5));
-            }
-            setPositionRotationMethod.invoke(nmsProjectile, modifiedLocation.getX(), modifiedLocation.getY(), modifiedLocation.getZ(), location.getYaw(), location.getPitch());
-
-            if (shootMethod != null) {
-                shootMethod.invoke(nmsProjectile, direction.getX(), direction.getY(), direction.getZ(), speed, spread);
-            }
-
-            Entity entity = getBukkitEntity(nmsProjectile);
-            if (entity == null || !(entity instanceof Projectile)) {
-                throw new Exception("Got invalid bukkit entity from projectile of class " + projectileType.getName());
-            }
-
-            projectile = (Projectile)entity;
-            if (source != null) {
-                projectile.setShooter(source);
-                projectileSourceField.set(nmsProjectile, source);
-            }
-
-            NMSUtils.class_World_addEntityMethod.invoke(nmsWorld, nmsProjectile, CreatureSpawnEvent.SpawnReason.DEFAULT);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            return null;
-        }
-
-        return projectile;
-    }
+    public abstract Projectile spawnProjectile(Class<?> projectileType, Location location, Vector direction, ProjectileSource source, float speed, float spread, float spreadLocations, Random random);
 
     @Override
-    public void setDamage(Projectile projectile, double damage) {
-        if (NMSUtils.class_EntityArrow_damageField == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(projectile);
-            NMSUtils.class_EntityArrow_damageField.set(handle, damage);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void setDamage(Projectile projectile, double damage);
 
     @Override
-    public void decreaseLifespan(Projectile projectile, int ticks) {
-        if (NMSUtils.class_EntityArrow_lifeField == null) return;
-        try {
-            Object handle = NMSUtils.getHandle(projectile);
-            int currentLife = (Integer) NMSUtils.class_EntityArrow_lifeField.get(handle);
-            if (currentLife < ticks) {
-                NMSUtils.class_EntityArrow_lifeField.set(handle, ticks);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void decreaseLifespan(Projectile projectile, int ticks);
 
     @Override
-    public Entity spawnEntity(Location target, EntityType entityType, CreatureSpawnEvent.SpawnReason spawnReason)
-    {
-        if (NMSUtils.class_CraftWorld_spawnMethod == null) {
-            return target.getWorld().spawnEntity(target, entityType);
-        }
-        Entity entity = null;
-        try {
-            World world = target.getWorld();
-            try {
-                if (!NMSUtils.class_CraftWorld_spawnMethod_isLegacy) {
-                    entity = (Entity) NMSUtils.class_CraftWorld_spawnMethod.invoke(world, target, entityType.getEntityClass(), null, spawnReason);
-                } else {
-                    entity = (Entity) NMSUtils.class_CraftWorld_spawnMethod.invoke(world, target, entityType.getEntityClass(), spawnReason);
-                }
-            } catch (Exception ex) {
-                entity = target.getWorld().spawnEntity(target, entityType);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return entity;
-    }
+    public abstract Entity spawnEntity(Location target, EntityType entityType, CreatureSpawnEvent.SpawnReason spawnReason);
 
     @Override
     public String getResourcePack(Server server) {
@@ -2432,36 +1890,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public Object getEntityData(Entity entity) {
-        if (NMSUtils.class_Entity_saveMethod == null) return null;
-
-        Object data = null;
-        try {
-            Object nmsEntity = NMSUtils.getHandle(entity);
-            if (nmsEntity != null) {
-                data = NMSUtils.class_NBTTagCompound_constructor.newInstance();
-                NMSUtils.class_Entity_saveMethod.invoke(nmsEntity, data);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return data;
-    }
+    public abstract Object getEntityData(Entity entity);
 
     @Override
-    public String getEntityType(Entity entity) {
-        if (NMSUtils.class_Entity_getTypeMethod == null) return null;
-        String entityType = null;
-        try {
-            Object nmsEntity = NMSUtils.getHandle(entity);
-            if (nmsEntity != null) {
-                entityType = (String) NMSUtils.class_Entity_getTypeMethod.invoke(nmsEntity);
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return entityType;
-    }
+    public abstract String getEntityType(Entity entity);
 
     @Override
     public void swingOffhand(Entity entity) {
@@ -2485,15 +1917,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public void sendBreaking(Player player, long id, Location location, int breakAmount) {
-        try {
-            Object blockPosition = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
-            Object packet = NMSUtils.class_PacketPlayOutBlockBreakAnimation_Constructor.newInstance((int)id, blockPosition, breakAmount);
-            NMSUtils.sendPacket(player, packet);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+    public abstract void sendBreaking(Player player, long id, Location location, int breakAmount);
 
     @Override
     public Set<String> getTags(Entity entity) {
@@ -2501,37 +1925,13 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public boolean isJumping(LivingEntity entity) {
-        if (NMSUtils.class_Entity_jumpingField == null) return false;
-        try {
-            return (boolean) NMSUtils.class_Entity_jumpingField.get(NMSUtils.getHandle(entity));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
+    public abstract boolean isJumping(LivingEntity entity);
 
     @Override
-    public float getForwardMovement(LivingEntity entity) {
-        if (NMSUtils.class_Entity_moveForwardField == null) return 0.0f;
-        try {
-            return (float) NMSUtils.class_Entity_moveForwardField.get(NMSUtils.getHandle(entity));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return 0.0f;
-    }
+    public abstract float getForwardMovement(LivingEntity entity);
 
     @Override
-    public float getStrafeMovement(LivingEntity entity) {
-        if (NMSUtils.class_Entity_moveStrafingField == null) return 0.0f;
-        try {
-            return (float) NMSUtils.class_Entity_moveStrafingField.get(NMSUtils.getHandle(entity));
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return 0.0f;
-    }
+    public abstract float getStrafeMovement(LivingEntity entity);
 
     @Override
     public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
@@ -2549,13 +1949,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
 
     @Override
     public Block getHitBlock(ProjectileHitEvent event) {
-        if (NMSUtils.class_ProjectileHitEvent_getHitBlockMethod == null) return null;
-        try {
-            return (Block) NMSUtils.class_ProjectileHitEvent_getHitBlockMethod.invoke(event);
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return null;
+        return event.getHitBlock();
     }
 
     @Override
@@ -2611,27 +2005,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return entity.undiscoverRecipe(namespacedKey);
     }
 
-    @SuppressWarnings("deprecation")
-    protected Attribute getMaxHealthAttribute() {
-        // Paper and Spigot can no longer agree on what this should be called????
-        // Also stop deprecating crap that has no alternative omg
-        Attribute attribute = null;
-        try {
-            Attribute.valueOf("MAX_HEALTH");
-        } catch (Exception ignore) {
-            // Current spigot API claims this should be called MAX_HEALTH
-            // But running in Paper throws an error for that.
-        }
-        if (attribute == null) {
-            attribute = Attribute.valueOf("GENERIC_MAX_HEALTH");
-        }
-        return attribute;
-    }
-
     @Override
     public double getMaxHealth(Damageable li) {
         if (li instanceof LivingEntity) {
-            return ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).getValue();
+            return ((LivingEntity)li).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
         }
         return 0;
     }
@@ -2639,31 +2016,12 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public void setMaxHealth(Damageable li, double maxHealth) {
         if (li instanceof LivingEntity) {
-            ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).setBaseValue(maxHealth);
+            ((LivingEntity)li).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
         }
     }
 
     @Override
-    public boolean applyBonemeal(Location location) {
-        if (NMSUtils.class_ItemDye_bonemealMethod == null) return false;
-
-        if (dummyItem == null) {
-            dummyItem = new ItemStack(Material.DIRT, 64);
-            dummyItem = platform.getItemUtils().makeReal(dummyItem);
-        }
-        dummyItem.setAmount(64);
-
-        try {
-            Object world = NMSUtils.getHandle(location.getWorld());
-            Object itemStack = platform.getItemUtils().getHandle(dummyItem);
-            Object blockPosition = NMSUtils.class_BlockPosition_Constructor.newInstance(location.getX(), location.getY(), location.getZ());
-            Object result = NMSUtils.class_ItemDye_bonemealMethod.invoke(null, itemStack, world, blockPosition);
-            return (Boolean)result;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
+    public abstract boolean applyBonemeal(Location location);
 
     @Override
     public Color getColor(PotionMeta meta) {
@@ -2708,20 +2066,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public boolean applyPhysics(Block block) {
-        if (NMSUtils.class_World_setTypeAndDataMethod == null || NMSUtils.class_World_getTypeMethod == null || NMSUtils.class_BlockPosition_Constructor == null) return false;
-        try {
-            Object worldHandle = NMSUtils.getHandle(block.getWorld());
-            Object blockLocation = NMSUtils.class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
-            Object blockType = NMSUtils.class_World_getTypeMethod.invoke(worldHandle, blockLocation);
-            clearItems(block.getLocation());
-            platform.getDeprecatedUtils().setTypeAndData(block, Material.AIR, (byte)0, false);
-            return (boolean) NMSUtils.class_World_setTypeAndDataMethod.invoke(worldHandle, blockLocation, blockType, 3);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return false;
-    }
+    public abstract boolean applyPhysics(Block block);
 
     @Override
     public boolean addRecipeToBook(ItemStack book, Plugin plugin, String recipeKey) {
@@ -2765,22 +2110,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public Location getHangingLocation(Entity entity) {
-        Location location = entity.getLocation();
-        if (NMSUtils.class_EntityHanging_blockPosition == null || !(entity instanceof Hanging)) {
-            return location;
-        }
-        Object handle = NMSUtils.getHandle(entity);
-        try {
-            Object position = NMSUtils.class_EntityHanging_blockPosition.get(handle);
-            location.setX((int) NMSUtils.class_BlockPosition_getXMethod.invoke(position));
-            location.setY((int) NMSUtils.class_BlockPosition_getYMethod.invoke(position));
-            location.setZ((int) NMSUtils.class_BlockPosition_getZMethod.invoke(position));
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return location;
-    }
+    public abstract Location getHangingLocation(Entity entity);
 
     @Override
     public boolean isSameKey(Plugin plugin, String key, Object keyedObject) {
@@ -2825,50 +2155,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public boolean setAutoBlockState(Block block, Location target, BlockFace facing, boolean physics, Player originator) {
-        if (NMSUtils.class_CraftBlock == null || block == null || facing == null || target == null) return false;
-        try {
-            Object nmsBlock = NMSUtils.class_CraftBlock_getNMSBlockMethod.invoke(block);
-            if (nmsBlock == null) return false;
-            ItemStack blockItem = new ItemStack(block.getType());
-            Object originatorHandle = NMSUtils.getHandle(originator);
-            Object world = NMSUtils.getHandle(block.getWorld());
-            Object item = platform.getItemUtils().getHandle(platform.getItemUtils().makeReal(blockItem));
-            if (originatorHandle == null || world == null || item == null) {
-                return false;
-            }
-            Object blockPosition = NMSUtils.class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
-            Object vec3D = NMSUtils.class_Vec3D_constructor.newInstance(target.getX(), target.getY(), target.getZ());
-            Enum<?> directionEnum = Enum.valueOf(NMSUtils.class_EnumDirection, facing.name());
-            Object movingObject = NMSUtils.class_MovingObjectPositionBlock_createMethod.invoke(null, vec3D, directionEnum, blockPosition);
-            Object actionContext = NMSUtils.class_BlockActionContext_constructor.newInstance(world, originatorHandle, NMSUtils.enum_EnumHand_MAIN_HAND, item, movingObject);
-            Object placedState = NMSUtils.class_Block_getPlacedStateMethod.invoke(nmsBlock, actionContext);
-            if (placedState == null) return false;
-            NMSUtils.class_CraftBlock_setTypeAndDataMethod.invoke(block, placedState, physics);
-            // class_World_setTypeAndDataMethod.invoke(world, blockPosition, placedState, 11);
-            return true;
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+    public abstract boolean setAutoBlockState(Block block, Location target, BlockFace facing, boolean physics, Player originator);
 
     @Override
-    public boolean forceUpdate(Block block, boolean physics) {
-        if (NMSUtils.class_nms_Block_getBlockDataMethod == null) return false;
-        try {
-            Object nmsBlock = NMSUtils.class_CraftBlock_getNMSBlockMethod.invoke(block);
-            Object blockData = NMSUtils.class_nms_Block_getBlockDataMethod.invoke(nmsBlock);
-            Object world = NMSUtils.getHandle(block.getWorld());
-            Object blockPosition = NMSUtils.class_BlockPosition_Constructor.newInstance(block.getX(), block.getY(), block.getZ());
-            NMSUtils.class_World_setTypeAndDataMethod.invoke(world, blockPosition, blockData, 11);
-            return true;
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
+    public abstract boolean forceUpdate(Block block, boolean physics);
 
     @Override
     public int getPhantomSize(Entity entity) {
@@ -2911,99 +2201,13 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public Class<?> getProjectileClass(String projectileTypeName) {
-        Class<?> projectileType = NMSUtils.getBukkitClass("net.minecraft.server.Entity" + projectileTypeName);
-        if (!isValidProjectileClass(projectileType)) {
-            return null;
-        }
-        return projectileType;
-    }
+    public abstract Class<?> getProjectileClass(String projectileTypeName);
 
     @Override
-    public Entity spawnFireworkEffect(Material fireworkMaterial, Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown, boolean silent) {
-        Entity entity = null;
-        try {
-            if (fireworkMaterial == null) {
-                return null;
-            }
-            Object world = NMSUtils.getHandle(location.getWorld());
-            ItemStack itemStack = new ItemStack(fireworkMaterial);
-            FireworkMeta meta = (FireworkMeta) itemStack.getItemMeta();
-            meta.addEffect(effect);
-            meta.setPower(power);
-            itemStack.setItemMeta(meta);
-
-            Object item = platform.getItemUtils().getHandle(platform.getItemUtils().makeReal(itemStack));
-            final Object fireworkHandle = NMSUtils.class_EntityFireworkConstructor.newInstance(world, location.getX(), location.getY(), location.getZ(), item);
-
-            if (direction != null) {
-                if (NMSUtils.class_Entity_motField != null) {
-                    Object vec = NMSUtils.class_Vec3D_constructor.newInstance(direction.getX(), direction.getY(), direction.getZ());
-                    NMSUtils.class_Entity_motField.set(fireworkHandle, vec);
-                }
-            }
-
-            if (ticksFlown != null) {
-                NMSUtils.class_Firework_ticksFlownField.set(fireworkHandle, ticksFlown);
-            }
-            if (expectedLifespan != null) {
-                NMSUtils.class_Firework_expectedLifespanField.set(fireworkHandle, expectedLifespan);
-            }
-
-            if (direction == null)
-            {
-                Object fireworkPacket = NMSUtils.class_PacketSpawnEntityConstructor.newInstance(fireworkHandle, CompatibilityConstants.FIREWORK_TYPE);
-                Object fireworkId = NMSUtils.class_Entity_getIdMethod.invoke(fireworkHandle);
-                Object watcher = NMSUtils.class_Entity_getDataWatcherMethod.invoke(fireworkHandle);
-                Object metadataPacket = NMSUtils.class_PacketPlayOutEntityMetadata_Constructor.newInstance(fireworkId, watcher, true);
-                Object statusPacket = NMSUtils.class_PacketPlayOutEntityStatus_Constructor.newInstance(fireworkHandle, (byte)17);
-
-                Constructor<?> packetDestroyEntityConstructor = NMSUtils.class_PacketPlayOutEntityDestroy.getConstructor(int[].class);
-                Object destroyPacket = packetDestroyEntityConstructor.newInstance(new int[] {(Integer)fireworkId});
-
-                Collection<? extends Player> players = server.getOnlinePlayers();
-                NMSUtils.sendPacket(server, location, players, fireworkPacket);
-                NMSUtils.sendPacket(server, location, players, metadataPacket);
-                NMSUtils.sendPacket(server, location, players, statusPacket);
-                NMSUtils.sendPacket(server, location, players, destroyPacket);
-                return null;
-            }
-
-            NMSUtils.class_World_addEntityMethod.invoke(world, fireworkHandle, CreatureSpawnEvent.SpawnReason.CUSTOM);
-            entity = (Entity) NMSUtils.class_Entity_getBukkitEntityMethod.invoke(fireworkHandle);
-            entity.setSilent(true);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return entity;
-    }
+    public abstract Entity spawnFireworkEffect(Material fireworkMaterial, Server server, Location location, FireworkEffect effect, int power, Vector direction, Integer expectedLifespan, Integer ticksFlown, boolean silent);
 
     @Override
-    public boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag)
-    {
-        try {
-            Set<String> keys = platform.getNBTUtils().getTagKeys(tag);
-            if (keys == null) return false;
-
-            for (String tagName : keys) {
-                Object metaBase = NMSUtils.class_NBTTagCompound_getMethod.invoke(tag, tagName);
-                if (metaBase != null) {
-                    if (NMSUtils.class_NBTTagCompound.isAssignableFrom(metaBase.getClass())) {
-                        ConfigurationSection newSection = tags.createSection(tagName);
-                        loadAllTagsFromNBT(newSection, metaBase);
-                    } else {
-                        tags.set(tagName, platform.getNBTUtils().getTagValue(metaBase));
-                    }
-                }
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-
-        return true;
-    }
+    public abstract boolean loadAllTagsFromNBT(ConfigurationSection tags, Object tag);
 
     @Override
     public BoundingBox getHitbox(Entity entity) {
