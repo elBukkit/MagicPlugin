@@ -11,9 +11,9 @@ import org.bukkit.inventory.EquipmentSlotGroup;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.CompatibilityUtilsBase;
 
-public abstract class Modern2CompatibilityUtils extends CompatibilityUtilsBase {
+public abstract class CompatibilityUtilsBase_v1_21_4 extends CompatibilityUtilsBase {
 
-    public Modern2CompatibilityUtils(Platform platform) {
+    public CompatibilityUtilsBase_v1_21_4(Platform platform) {
         super(platform);
     }
 
