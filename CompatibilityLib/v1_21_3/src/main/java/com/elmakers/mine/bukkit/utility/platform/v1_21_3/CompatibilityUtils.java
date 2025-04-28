@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
@@ -16,14 +15,12 @@ import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.FireworkEffect;
-import org.bukkit.Keyed;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.Rotation;
 import org.bukkit.Server;
 import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
@@ -45,7 +42,6 @@ import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R2.scheduler.CraftTask;
 import org.bukkit.craftbukkit.v1_21_R2.util.CraftChatMessage;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Damageable;
 import org.bukkit.entity.Enderman;
@@ -53,30 +49,20 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
 import org.bukkit.entity.Hanging;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Painting;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
-import org.bukkit.entity.Sittable;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
 import org.bukkit.event.entity.CreatureSpawnEvent;
-import org.bukkit.event.entity.ProjectileHitEvent;
-import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.InventoryHolder;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.Recipe;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.loot.Lootable;
 import org.bukkit.map.MapView;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
@@ -185,65 +171,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public Inventory createInventory(InventoryHolder holder, int size, final String name) {
-        size = (int) (Math.ceil((double) size / 9) * 9);
-        size = Math.min(size, 54);
-        String translatedName = translateColors(name);
-        return Bukkit.createInventory(holder, size, translatedName);
-    }
-
-    @Override
-    public boolean isInvulnerable(Entity entity) {
-        return entity.isInvulnerable();
-    }
-
-    @Override
-    public void setInvulnerable(Entity entity, boolean flag) {
-        entity.setInvulnerable(flag);
-    }
-
-    @Override
-    public boolean isSilent(Entity entity) {
-        return entity.isSilent();
-    }
-
-    @Override
-    public void setSilent(Entity entity, boolean flag) {
-        entity.setSilent(flag);
-    }
-
-    @Override
-    public boolean isPersist(Entity entity) {
-        return entity.isPersistent();
-    }
-
-    @Override
-    public void setPersist(Entity entity, boolean flag) {
-        entity.setPersistent(flag);
-    }
-
-    @Override
-    public void setRemoveWhenFarAway(Entity entity, boolean flag) {
-        if (!(entity instanceof LivingEntity)) return;
-        LivingEntity li = (LivingEntity)entity;
-        li.setRemoveWhenFarAway(flag);
-    }
-
-    @Override
-    public boolean isSitting(Entity entity) {
-        if (!(entity instanceof Sittable)) return false;
-        Sittable sittable = (Sittable)entity;
-        return sittable.isSitting();
-    }
-
-    @Override
-    public void setSitting(Entity entity, boolean flag) {
-        if (!(entity instanceof Sittable)) return;
-        Sittable sittable = (Sittable)entity;
-        sittable.setSitting(flag);
-    }
-
-    @Override
     public Painting createPainting(Location location, BlockFace facing, Art art) {
         Painting newPainting = null;
         ServerLevel level = ((CraftWorld)location.getWorld()).getHandle();
@@ -283,18 +210,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
             newItemFrame.setRotation(rotation);
         }
         return newItemFrame;
-    }
-
-    @Override
-    public Entity createEntity(Location location, EntityType entityType) {
-        World world = location.getWorld();
-        Entity bukkitEntity = null;
-        try {
-            bukkitEntity = world.createEntity(location, entityType.getEntityClass());
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-        }
-        return bukkitEntity;
     }
 
     @Override
@@ -924,110 +839,9 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
-    public boolean setBlockFast(Chunk chunk, int x, int y, int z, Material material, int data) {
-        // Bailed on this in 1.20
-        chunk.getBlock(x, y, z).setType(material);
-        return true;
-    }
-
-    @Override
-    public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
-        if (!(projectile instanceof AbstractArrow)) return false;
-        AbstractArrow.PickupStatus status;
-        try {
-            status = AbstractArrow.PickupStatus.valueOf(pickupStatus.toUpperCase());
-        } catch (Throwable ex) {
-            platform.getLogger().warning("Invalid pickup status: " + pickupStatus);
-            return false;
-        }
-        ((AbstractArrow)projectile).setPickupStatus(status);
-        return true;
-    }
-
-    @Override
-    public Block getHitBlock(ProjectileHitEvent event) {
-        return event.getHitBlock();
-    }
-
-    @Override
     public Entity getEntity(World world, UUID uuid) {
         net.minecraft.world.entity.Entity nmsEntity = ((CraftWorld)world).getHandle().getEntity(uuid);
         return nmsEntity == null ? null : nmsEntity.getBukkitEntity();
-    }
-
-    @Override
-    public Entity getEntity(UUID uuid) {
-        return Bukkit.getEntity(uuid);
-    }
-
-    @Override
-    public boolean canRemoveRecipes() {
-        return true;
-    }
-
-    @Override
-    public boolean removeRecipe(Recipe recipe) {
-        if (!(recipe instanceof Keyed)) {
-            return false;
-        }
-        Keyed keyed = (Keyed)recipe;
-        return platform.getPlugin().getServer().removeRecipe(keyed.getKey());
-    }
-
-    @Override
-    public boolean removeRecipe(String key) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
-        return platform.getPlugin().getServer().removeRecipe(namespacedKey);
-    }
-
-    @Override
-    public ShapedRecipe createShapedRecipe(String key, ItemStack item) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
-        return new ShapedRecipe(namespacedKey, item);
-    }
-
-    @Override
-    public boolean discoverRecipe(HumanEntity entity, String key) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
-        return entity.discoverRecipe(namespacedKey);
-    }
-
-    @Override
-    public boolean undiscoverRecipe(HumanEntity entity, String key) {
-        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), key.toLowerCase());
-        return entity.undiscoverRecipe(namespacedKey);
-    }
-
-    @SuppressWarnings("deprecation")
-    protected Attribute getMaxHealthAttribute() {
-        // Paper and Spigot can no longer agree on what this should be called????
-        // Also stop deprecating crap that has no alternative omg
-        Attribute attribute = null;
-        try {
-            Attribute.valueOf("MAX_HEALTH");
-        } catch (Exception ignore) {
-            // Current spigot API claims this should be called MAX_HEALTH
-            // But running in Paper throws an error for that.
-        }
-        if (attribute == null) {
-            attribute = Attribute.valueOf("GENERIC_MAX_HEALTH");
-        }
-        return attribute;
-    }
-
-    @Override
-    public double getMaxHealth(Damageable li) {
-        if (li instanceof LivingEntity) {
-            return ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).getValue();
-        }
-        return 0;
-    }
-
-    @Override
-    public void setMaxHealth(Damageable li, double maxHealth) {
-        if (li instanceof LivingEntity) {
-            ((LivingEntity)li).getAttribute(getMaxHealthAttribute()).setBaseValue(maxHealth);
-        }
     }
 
     @Override
@@ -1063,48 +877,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         location.setY(position.getY());
         location.setZ(position.getZ());
         return location;
-    }
-
-    @Override
-    public boolean isSameKey(Plugin plugin, String key, Object keyedObject) {
-        if (!(keyedObject instanceof Keyed)) return false;
-        String namespace = plugin.getName().toLowerCase(Locale.ROOT);
-        key = key.toLowerCase(Locale.ROOT);
-        Keyed keyed = (Keyed)keyedObject;
-        NamespacedKey namespacedKey = keyed.getKey();
-        String keyNamespace = namespacedKey.getNamespace();
-        String keyKey = namespacedKey.getKey();
-        return keyNamespace.equals(namespace) && keyKey.equals(key);
-    }
-
-    @Override
-    public boolean setRecipeIngredient(ShapedRecipe recipe, char key, ItemStack ingredient, boolean ignoreDamage) {
-        if (ingredient == null) return false;
-        try {
-            short maxDurability = ingredient.getType().getMaxDurability();
-            if (ignoreDamage && maxDurability > 0) {
-                List<ItemStack> damaged = new ArrayList<>();
-                for (short damage = 0; damage < maxDurability; damage++) {
-                    ingredient = ingredient.clone();
-                    ItemMeta meta = ingredient.getItemMeta();
-                    if (meta == null || !(meta instanceof org.bukkit.inventory.meta.Damageable))  break;
-                    org.bukkit.inventory.meta.Damageable damageable = (org.bukkit.inventory.meta.Damageable)meta;
-                    damageable.setDamage(damage);
-                    ingredient.setItemMeta(meta);
-                    damaged.add(ingredient);
-                }
-                RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(damaged);
-                recipe.setIngredient(key, exactChoice);
-                return true;
-            }
-
-            RecipeChoice.ExactChoice exactChoice = new RecipeChoice.ExactChoice(ingredient);
-            recipe.setIngredient(key, exactChoice);
-            return true;
-        } catch (Throwable e) {
-            e.printStackTrace();
-        }
-        return false;
     }
 
     @Override
