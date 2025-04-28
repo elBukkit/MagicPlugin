@@ -6,6 +6,6 @@ philbertegg:
     id: minecraft:creeper_spawn_egg
     count: 1
     components:
-      minecraft:custom_data: '{EntityTag:{CustomName:''{"text":"Philbert"}'',powered:1b},display:{Name:''{"text":"Spawn
-        Philbert"}''}}'
+      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"philbert"},CanPickUpLoot:0b,CustomName:{extra:["Philbert"],text:""},DeathTime:0s,ExplosionRadius:3b,FallFlying:0b,Fire:-1s,Fuse:30s,Health:20.0f,HurtByTimestamp:0,HurtTime:0s,Invulnerable:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[280.0d,69.0d,90.0d],Paper.OriginWorld:[I;-554194265,-986362692,-1403414853,1011945568],Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:97,WorldUUIDLeast:-6027620895343701920L,WorldUUIDMost:-2380246240497152836L,attributes:[{base:0.25d,id:"minecraft:movement_speed"}],fall_distance:0.0d,id:"minecraft:creeper",ignited:0b,powered:0b}'
+      minecraft:custom_name: '{extra:["Philbert Spawn Egg"],text:""}'
     schema_version: 1

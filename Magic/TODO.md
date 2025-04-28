@@ -2,8 +2,7 @@
 
 # Actually Somewhat Recent
 
- - Magic mob spawn eggs don't work
- - Magic mob spawner blocks maybe don't work either ?
+ - Magic mob spawner blocks don't work
 
 # Next
 

@@ -6,6 +6,8 @@ warlockegg:
     id: minecraft:zombie_spawn_egg
     count: 1
     components:
-      minecraft:custom_data: '{EntityTag:{BukkitValues:{"magic:magicmob":"warlock"}},display:{Name:''{"text":"Spawn
-        Warlock"}''}}'
+      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"warlock"},CanBreakDoors:0b,CanPickUpLoot:0b,CustomName:{extra:["Warlock"],text:""},DeathTime:0s,DrownedConversionTime:-1,FallFlying:0b,Fire:0s,Health:50.0f,HurtByTimestamp:0,HurtTime:0s,InWaterTime:-1,Invulnerable:0b,IsBaby:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[281.0d,67.0d,93.0d],Paper.OriginWorld:[I;-554194265,-986362692,-1403414853,1011945568],Paper.ShouldBurnInDay:1b,Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:216,WorldUUIDLeast:-6027620895343701920L,WorldUUIDMost:-2380246240497152836L,attributes:[{base:2.0d,id:"minecraft:armor"},{base:50.0d,id:"minecraft:max_health"},{base:0.0d,id:"minecraft:armor_toughness"},{base:0.23000000417232513d,id:"minecraft:movement_speed"}],equipment:{chest:{components:{"minecraft:enchantments":{"minecraft:thorns":3}},count:1,id:"minecraft:chainmail_chestplate"},feet:{components:{"minecraft:enchantments":{"minecraft:feather_falling":10}},count:1,id:"minecraft:chainmail_boots"},head:{count:1,id:"minecraft:chainmail_helmet"},legs:{components:{"minecraft:enchantments":{"minecraft:thorns":3}},count:1,id:"minecraft:chainmail_leggings"},mainhand:{components:{"minecraft:custom_model_data":{floats:[18001.0f]},"minecraft:custom_name":{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"Warlock
+        wand",underlined:0b}],text:""},"minecraft:lore":[{extra:["It has lost its
+        power"],text:""}],"minecraft:tooltip_display":{hidden_components:["minecraft:attribute_modifiers","minecraft:unbreakable"]},"minecraft:unbreakable":{}},count:1,id:"minecraft:stick"}},fall_distance:0.0d,id:"minecraft:zombie"}'
+      minecraft:custom_name: '{extra:["Warlock Spawn Egg"],text:""}'
     schema_version: 1

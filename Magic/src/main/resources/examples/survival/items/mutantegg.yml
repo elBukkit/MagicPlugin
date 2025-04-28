@@ -3,9 +3,9 @@ mutantegg:
   item:
     ==: org.bukkit.inventory.ItemStack
     DataVersion: 4325
-    id: minecraft:zombie_spawn_egg
+    id: minecraft:zombified_piglin_spawn_egg
     count: 1
     components:
-      minecraft:custom_data: '{EntityTag:{ArmorItems:[{Count:1b,Damage:0,id:"minecraft:iron_boots"},{Count:1b,Damage:0,id:"minecraft:iron_leggings"},{Count:1b,Damage:0,id:"minecraft:iron_chestplate"},{Count:1b,Damage:0,id:"minecraft:iron_helmet"}],BukkitValues:{"magic:magicmob":"mutant"},CustomName:''{"text":"Mutant"}'',HandItems:[{Count:1b,Damage:0,id:"minecraft:iron_sword"}]},display:{Name:''{"text":"Spawn
-        Mutant"}''}}'
+      minecraft:entity_data: '{AbsorptionAmount:0.0f,Air:300s,AngerTime:0,Brain:{memories:{}},Bukkit.Aware:1b,Bukkit.updateLevel:2,BukkitValues:{"magic:magicmob":"mutant"},CanBreakDoors:0b,CanPickUpLoot:0b,CustomName:{extra:["Mutant"],text:""},DeathTime:0s,DrownedConversionTime:-1,FallFlying:0b,Fire:0s,Health:20.0f,HurtByTimestamp:0,HurtTime:0s,InWaterTime:-1,Invulnerable:0b,IsBaby:0b,LeftHanded:0b,OnGround:1b,Paper.Origin:[284.0d,67.0d,94.0d],Paper.OriginWorld:[I;-554194265,-986362692,-1403414853,1011945568],Paper.ShouldBurnInDay:1b,Paper.SpawnReason:"CUSTOM",PersistenceRequired:0b,Spigot.ticksLived:38,WorldUUIDLeast:-6027620895343701920L,WorldUUIDMost:-2380246240497152836L,attributes:[{base:2.0d,id:"minecraft:armor"},{base:20.0d,id:"minecraft:max_health"},{base:0.0d,id:"minecraft:armor_toughness"},{base:0.23000000417232513d,id:"minecraft:movement_speed"},{base:5.0d,id:"minecraft:attack_damage"}],equipment:{chest:{count:1,id:"minecraft:iron_chestplate"},feet:{count:1,id:"minecraft:iron_boots"},head:{components:{"minecraft:damage":1},count:1,id:"minecraft:iron_helmet"},legs:{count:1,id:"minecraft:iron_leggings"},mainhand:{count:1,id:"minecraft:iron_sword"}},fall_distance:0.0d,id:"minecraft:zombified_piglin"}'
+      minecraft:custom_name: '{extra:["Mutant Spawn Egg"],text:""}'
     schema_version: 1
