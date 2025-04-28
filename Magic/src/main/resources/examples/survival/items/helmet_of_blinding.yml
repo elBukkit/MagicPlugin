@@ -1,0 +1,12 @@
+helmet_of_blinding:
+  worth: 750.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:diamond_helmet
+    count: 1
+    components:
+      minecraft:lore: '[{extra:["For use outside of water"],text:""}]'
+      minecraft:enchantments: '{"minecraft:aqua_affinity":10}'
+      minecraft:custom_name: '{extra:["Helmet of Blinding"],text:""}'
+    schema_version: 1

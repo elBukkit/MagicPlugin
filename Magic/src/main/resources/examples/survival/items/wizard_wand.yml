@@ -1,0 +1,15 @@
+wizard_wand:
+  worth: 300.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:stick
+    count: 1
+    components:
+      minecraft:custom_model_data: '{floats:[18001.0f]}'
+      minecraft:unbreakable: '{}'
+      minecraft:lore: '[{extra:["It has lost its power"],text:""}]'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:unbreakable"]}'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"Wizard
+        wand",underlined:0b}],text:""}'
+    schema_version: 1

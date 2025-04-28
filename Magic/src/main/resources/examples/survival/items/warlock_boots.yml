@@ -1,0 +1,10 @@
+warlock_boots:
+  worth: 500.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:chainmail_boots
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:feather_falling":10}'
+    schema_version: 1

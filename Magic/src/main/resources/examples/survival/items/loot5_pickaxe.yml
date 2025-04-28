@@ -1,0 +1,10 @@
+loot5_pickaxe:
+  worth: 2500.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:diamond_pickaxe
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:fortune":5}'
+    schema_version: 1

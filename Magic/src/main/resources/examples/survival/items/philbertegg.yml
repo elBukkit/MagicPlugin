@@ -1,0 +1,11 @@
+philbertegg:
+  worth: 500.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:creeper_spawn_egg
+    count: 1
+    components:
+      minecraft:custom_data: '{EntityTag:{CustomName:''{"text":"Philbert"}'',powered:1b},display:{Name:''{"text":"Spawn
+        Philbert"}''}}'
+    schema_version: 1

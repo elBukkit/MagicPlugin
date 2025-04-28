@@ -1,0 +1,10 @@
+potion_splash_swiftness_long:
+  worth: 50.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:splash_potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{potion:"minecraft:long_swiftness"}'
+    schema_version: 1

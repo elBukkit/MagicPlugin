@@ -1,0 +1,11 @@
+warlockegg:
+  worth: 2000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:zombie_spawn_egg
+    count: 1
+    components:
+      minecraft:custom_data: '{EntityTag:{BukkitValues:{"magic:magicmob":"warlock"}},display:{Name:''{"text":"Spawn
+        Warlock"}''}}'
+    schema_version: 1

@@ -1,0 +1,10 @@
+silk_touch_pickaxe:
+  worth: 3000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:diamond_pickaxe
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:silk_touch":1}'
+    schema_version: 1

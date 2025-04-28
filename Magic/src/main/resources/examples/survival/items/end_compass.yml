@@ -1,14 +1,11 @@
 end_compass:
-  worth: 100
+  worth: 100.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: COMPASS
-    meta:
-      ==: ItemMeta
-      meta-type: COMPASS
-      display-name: 'Magnetic Compass (The End)'
-      LodestonePosWorld: minecraft:the_end
-      LodestonePosX: 0
-      LodestonePosY: 128
-      LodestonePosZ: -60000000
-      LodestoneTracked: false
+    DataVersion: 4325
+    id: minecraft:compass
+    count: 1
+    components:
+      minecraft:lodestone_tracker: '{target:{dimension:"minecraft:the_end",pos:[I;0,128,-60000000]},tracked:0b}'
+      minecraft:custom_name: '{extra:["Magnetic Compass (The End)"],text:""}'
+    schema_version: 1

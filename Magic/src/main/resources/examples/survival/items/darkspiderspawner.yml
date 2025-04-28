@@ -1,0 +1,11 @@
+darkspiderspawner:
+  worth: 20000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:spawner
+    count: 1
+    components:
+      minecraft:custom_data: '{BlockEntityTag:{Delay:100,MaxNearbyEntities:5,MaxSpawnDelay:500,MinSpawnDelay:200,RequiredPlayerRange:12,SpawnCount:1,SpawnData:{BukkitValues:{"magic:magicmob":"dark_spider"},id:"minecraft:cave_spider"},SpawnPotentials:[],SpawnRange:8},display:{Name:''{"text":"Dark
+        Spider Spawner"}''}}'
+    schema_version: 1

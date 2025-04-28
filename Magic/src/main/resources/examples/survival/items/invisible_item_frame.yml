@@ -1,6 +1,11 @@
 invisible_item_frame:
-  item: item_frame
-  worth: 100
-  tags:
-    EntityTag:
-      Invisible: 1
+  worth: 100.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:item_frame
+    count: 1
+    components:
+      minecraft:custom_name: '{extra:["Invisible Item Frame"],text:""}'
+      minecraft:custom_data: '{EntityTag:{Invisible:1}}'
+    schema_version: 1

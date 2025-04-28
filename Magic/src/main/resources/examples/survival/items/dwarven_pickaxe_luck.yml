@@ -1,0 +1,11 @@
+dwarven_pickaxe_luck:
+  worth: 1337.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:diamond_pickaxe
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:efficiency":3,"minecraft:fortune":3,"minecraft:unbreaking":3}'
+      minecraft:custom_name: '{extra:["Dwarven Pickaxe of Luck"],text:""}'
+    schema_version: 1

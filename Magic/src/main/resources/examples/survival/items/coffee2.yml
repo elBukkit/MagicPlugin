@@ -1,0 +1,11 @@
+coffee2:
+  worth: 10.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:potion
+    count: 1
+    components:
+      minecraft:potion_contents: '{custom_color:16777215,custom_effects:[{ambient:1b,amplifier:2b,duration:600,id:"minecraft:speed",show_icon:1b}]}'
+      minecraft:custom_name: '{extra:["Espresso"],text:""}'
+    schema_version: 1

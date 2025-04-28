@@ -1,0 +1,10 @@
+warlock_chestplate:
+  worth: 400.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:chainmail_chestplate
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:thorns":3}'
+    schema_version: 1

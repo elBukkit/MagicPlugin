@@ -1,0 +1,11 @@
+dwarven_battle_axe:
+  worth: 1000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:diamond_axe
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:sharpness":8,"minecraft:unbreaking":5}'
+      minecraft:custom_name: '{extra:["Dwarven Battle Axe"],text:""}'
+    schema_version: 1

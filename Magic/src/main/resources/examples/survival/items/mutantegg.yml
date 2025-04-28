@@ -1,0 +1,11 @@
+mutantegg:
+  worth: 400.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:zombie_spawn_egg
+    count: 1
+    components:
+      minecraft:custom_data: '{EntityTag:{ArmorItems:[{Count:1b,Damage:0,id:"minecraft:iron_boots"},{Count:1b,Damage:0,id:"minecraft:iron_leggings"},{Count:1b,Damage:0,id:"minecraft:iron_chestplate"},{Count:1b,Damage:0,id:"minecraft:iron_helmet"}],BukkitValues:{"magic:magicmob":"mutant"},CustomName:''{"text":"Mutant"}'',HandItems:[{Count:1b,Damage:0,id:"minecraft:iron_sword"}]},display:{Name:''{"text":"Spawn
+        Mutant"}''}}'
+    schema_version: 1

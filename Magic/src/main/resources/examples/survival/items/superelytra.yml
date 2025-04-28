@@ -2,9 +2,10 @@ superelytra:
   worth: 10000.0
   item:
     ==: org.bukkit.inventory.ItemStack
-    type: ELYTRA
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      display-name: Super Elytra
-      Unbreakable: true
+    DataVersion: 4325
+    id: minecraft:elytra
+    count: 1
+    components:
+      minecraft:unbreakable: '{}'
+      minecraft:custom_name: '{extra:["Super Elytra"],text:""}'
+    schema_version: 1

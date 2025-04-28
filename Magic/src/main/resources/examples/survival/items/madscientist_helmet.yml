@@ -1,0 +1,12 @@
+madscientist_helmet:
+  worth: 400.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:lectern
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:thorns":3}'
+      minecraft:custom_name: '{extra:["Mad Scientist Helmet"],text:""}'
+      minecraft:custom_model_data: '{floats:[18017.0f]}'
+    schema_version: 1

@@ -354,14 +354,3 @@ dragonwingrightyellow:
     red: 254
     blue: 61
     green: 216
-
-thorns:
-  item:
-    ==: org.bukkit.inventory.ItemStack
-    v: 0
-    type: FEATHER
-    meta:
-      ==: ItemMeta
-      meta-type: UNSPECIFIC
-      enchants:
-        THORNS: 3

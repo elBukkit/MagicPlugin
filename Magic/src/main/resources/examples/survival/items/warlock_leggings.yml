@@ -1,0 +1,10 @@
+warlock_leggings:
+  worth: 400.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:chainmail_leggings
+    count: 1
+    components:
+      minecraft:enchantments: '{"minecraft:thorns":3}'
+    schema_version: 1

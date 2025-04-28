@@ -1,0 +1,11 @@
+witherarcheregg:
+  worth: 300.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:wither_skeleton_spawn_egg
+    count: 1
+    components:
+      minecraft:custom_data: '{EntityTag:{CustomName:''{"text":"Wither Archer"}'',HandItems:[{Count:1b,Damage:0,id:"minecraft:bow"}]},display:{Name:''{"text":"Spawn
+        Wither Archer"}''}}'
+    schema_version: 1

@@ -1,5 +1,10 @@
 # TODO
 
+# Actually Somewhat Recent
+
+ - Magic mob spawn eggs don't work
+ - Magic mob spawner blocks maybe don't work either ?
+
 # Next
 
  - Add `relative_particle_offset`, make it a vector and translate to the vanilla offsets

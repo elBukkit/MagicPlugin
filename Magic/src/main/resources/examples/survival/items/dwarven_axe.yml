@@ -1,0 +1,12 @@
+dwarven_axe:
+  worth: 500.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:diamond_axe
+    count: 1
+    components:
+      minecraft:lore: '[{extra:["An axe used by many young dwarves"],text:""}]'
+      minecraft:enchantments: '{"minecraft:efficiency":1,"minecraft:unbreaking":1}'
+      minecraft:custom_name: '{extra:["Dwarven Axe"],text:""}'
+    schema_version: 1

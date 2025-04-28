@@ -1,0 +1,15 @@
+madscientist_wand:
+  worth: 500.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:blaze_rod
+    count: 1
+    components:
+      minecraft:custom_model_data: '{floats:[18007.0f]}'
+      minecraft:unbreakable: '{}'
+      minecraft:lore: '[{extra:["It has lost its power"],text:""}]'
+      minecraft:custom_name: '{extra:[{bold:0b,color:"green",italic:0b,obfuscated:0b,strikethrough:0b,text:"The
+        Wolf",underlined:0b}],text:""}'
+      minecraft:tooltip_display: '{hidden_components:["minecraft:attribute_modifiers","minecraft:unbreakable"]}'
+    schema_version: 1

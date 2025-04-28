@@ -1,0 +1,11 @@
+skelliehorseegg:
+  worth: 1000.0
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:skeleton_horse_spawn_egg
+    count: 1
+    components:
+      minecraft:custom_data: '{EntityTag:{Age:0,CustomName:''{"text":"Skellie Horse"}'',ForcedAge:0,SaddleItem:{Count:1b,Damage:0,id:"minecraft:saddle"},Tame:1b},display:{Name:''{"text":"Spawn
+        Skellie Horse"}''}}'
+    schema_version: 1
