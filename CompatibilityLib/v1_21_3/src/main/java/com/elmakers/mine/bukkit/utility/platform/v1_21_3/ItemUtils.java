@@ -9,7 +9,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -144,46 +143,6 @@ public class ItemUtils extends ItemUtilsBase {
         */
 
         return stack;
-    }
-
-    @Override
-    public boolean isUnbreakable(ItemStack stack) {
-        if (isEmpty(stack)) return false;
-        ItemMeta meta = stack.getItemMeta();
-        return meta.isUnbreakable();
-    }
-
-    @Override
-    public void makeUnbreakable(ItemStack stack) {
-        if (isEmpty(stack)) return;
-        ItemMeta meta = stack.getItemMeta();
-        meta.setUnbreakable(true);
-        stack.setItemMeta(meta);
-    }
-
-    @Override
-    public void removeUnbreakable(ItemStack stack) {
-        if (isEmpty(stack)) return;
-        ItemMeta meta = stack.getItemMeta();
-        meta.setUnbreakable(false);
-        stack.setItemMeta(meta);
-    }
-
-    @Override
-    public void hideFlags(ItemStack stack, int flags) {
-        if (isEmpty(stack)) return;
-        ItemMeta meta = stack.getItemMeta();
-        ItemFlag[] flagArray = ItemFlag.values();
-        for (int ordinal = 0; ordinal < flagArray.length; ordinal++) {
-            ItemFlag flag = flagArray[ordinal];
-            if ((flags & 1) == 1) {
-                meta.addItemFlags(flag);
-            } else {
-                meta.removeItemFlags(flag);
-            }
-            flags >>= 1;
-        }
-        stack.setItemMeta(meta);
     }
 
     @Override
