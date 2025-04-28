@@ -994,9 +994,8 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public void sendBlockChange(Player player, Block block) {
-        player.sendBlockChange(block.getLocation(), block.getType(), block.getData());
+        player.sendBlockChange(block.getLocation(), block.getBlockData());
     }
 
     @Override
@@ -1004,7 +1003,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         if (blockData != null) {
             player.sendBlockChange(location, platform.getPlugin().getServer().createBlockData(blockData));
         } else {
-            player.sendBlockChange(location, material, (byte)0);
+            player.sendBlockChange(location, platform.getPlugin().getServer().createBlockData(material));
         }
     }
 

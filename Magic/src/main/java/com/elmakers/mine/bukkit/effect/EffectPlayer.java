@@ -482,15 +482,15 @@ public abstract class EffectPlayer implements com.elmakers.mine.bukkit.api.effec
             target = null;
         }
         if (sampleTarget && target != null) {
-            return new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
+            return new MaterialAndData(target.getBlock().getType());
         }
         if (material1 != null) return material1;
         MaterialAndData result = material;
         Location origin = getOrigin();
         if (result == null && target != null) {
-            result = new MaterialAndData(target.getBlock().getType(), target.getBlock().getData());
+            result = new MaterialAndData(target.getBlock().getType());
         } else if (result == null && origin != null) {
-            result = new MaterialAndData(origin.getBlock().getType(), origin.getBlock().getData());
+            result = new MaterialAndData(origin.getBlock().getType());
         } else if (result == null) {
             result = new MaterialAndData(Material.AIR);
         }

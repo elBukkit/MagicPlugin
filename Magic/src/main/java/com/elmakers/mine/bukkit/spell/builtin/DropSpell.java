@@ -71,7 +71,7 @@ public class DropSpell extends BlockSpell
             drops.addAll(block.getDrops());
         } else if (falling) {
             Location blockLocation = block.getLocation();
-            FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, block.getType(), block.getData());
+            FallingBlock falling = block.getWorld().spawnFallingBlock(blockLocation, block.getBlockData());
             falling.setDropItem(false);
         }
         block.setType(Material.AIR);

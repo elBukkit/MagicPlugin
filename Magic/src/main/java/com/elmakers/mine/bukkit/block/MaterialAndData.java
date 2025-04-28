@@ -536,7 +536,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
 
         Material blockMaterial = block.getType();
         material = blockMaterial;
-        data = (short)block.getData();
+        data = 0;
 
         try {
             BlockState blockState = block.getState();
@@ -607,9 +607,8 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @SuppressWarnings("deprecation")
     public void modifyFast(Block block) {
         Material material = this.material == null ? block.getType() : this.material;
-        int data = this.data == null ? block.getData() : this.data;
-        if (material != block.getType() || data != block.getData()) {
-            CompatibilityLib.getCompatibilityUtils().setBlockFast(block, material, data);
+        if (material != block.getType()) {
+            CompatibilityLib.getCompatibilityUtils().setBlockFast(block, material, 0);
         }
     }
 
@@ -642,7 +641,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
             BlockState blockState = block.getState();
             if (material != null) {
                 Material currentMaterial = block.getType();
-                byte blockData = data != null ? (byte)(short)data : block.getData();
 
                 String extendedBlockData = this.blockData;
                 if (data == null && extendedBlockData == null) {
@@ -652,7 +650,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 // Clear chests and flower pots so they don't dump their contents.
                 clearItems(blockState);
 
-                CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, material, blockData, applyPhysics);
+                CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, material, (byte)0, applyPhysics);
                 if (extendedBlockData != null) {
                     if (currentMaterial != material) {
                         String currentBlockData =  CompatibilityLib.getCompatibilityUtils().getBlockData(block);
@@ -836,10 +834,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     @Override
     @SuppressWarnings("deprecation")
     public boolean is(Block block) {
-        if (CompatibilityLib.isCurrentVersion()) {
-            return material == block.getType();
-        }
-        return material == block.getType() && data == block.getData();
+        return material == block.getType();
     }
 
     @Override
@@ -853,12 +848,6 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         Material blockMaterial = block.getType();
         if (material != null && blockMaterial != material) {
             return true;
-        }
-        if (!CompatibilityLib.isCurrentVersion()) {
-            byte blockData = block.getData();
-            if (data != null && blockData != data) {
-                return true;
-            }
         }
         // Special cases
         if (DefaultMaterials.isBanner(material)) {

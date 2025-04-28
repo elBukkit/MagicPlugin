@@ -101,26 +101,17 @@ public class AlterSpell extends BlockSpell
             return SpellResult.NO_TARGET;
         }
 
-        int originalData = targetBlock.getData();
-
-        int materialIndex = adjustableMaterials.indexOf(targetBlock.getType().getId());
-        int minValue = minData.get(materialIndex);
-        int maxValue = maxData.get(materialIndex);
-        int dataSize = maxValue - minValue + 1;
-
-        byte data = (byte)((((originalData - minValue) + 1) % dataSize) + minValue);
-
         boolean recursive = recurseDistance > 0;
-        adjust(targetBlock, data, recursive, recurseDistance, 0);
+        adjust(targetBlock, recursive, recurseDistance, 0);
         registerForUndo();
         return SpellResult.CAST;
     }
 
-    protected void adjust(Block block, byte dataValue, boolean recursive, int recurseDistance, int rDepth)
+    protected void adjust(Block block, boolean recursive, int recurseDistance, int rDepth)
     {
         registerForUndo(block);
         try {
-            CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, block.getType(), dataValue, false);
+            CompatibilityLib.getDeprecatedUtils().setTypeAndData(block, block.getType(), (byte)0, false);
         } catch (Exception ex) {
             controller.getLogger().log(Level.WARNING, "Failed to alter block state: " + ex.getMessage());
         }
@@ -128,12 +119,12 @@ public class AlterSpell extends BlockSpell
         if (recursive && rDepth < recurseDistance)
         {
             Material targetMaterial = block.getType();
-            tryAdjust(block.getRelative(BlockFace.NORTH), dataValue,targetMaterial, recurseDistance, rDepth + 1);
-            tryAdjust(block.getRelative(BlockFace.WEST), dataValue,targetMaterial, recurseDistance, rDepth + 1);
-            tryAdjust(block.getRelative(BlockFace.SOUTH), dataValue,targetMaterial, recurseDistance, rDepth + 1);
-            tryAdjust(block.getRelative(BlockFace.EAST), dataValue,targetMaterial, recurseDistance, rDepth + 1);
-            tryAdjust(block.getRelative(BlockFace.UP), dataValue,targetMaterial, recurseDistance, rDepth + 1);
-            tryAdjust(block.getRelative(BlockFace.DOWN), dataValue,targetMaterial, recurseDistance, rDepth + 1);
+            tryAdjust(block.getRelative(BlockFace.NORTH), targetMaterial, recurseDistance, rDepth + 1);
+            tryAdjust(block.getRelative(BlockFace.WEST), targetMaterial, recurseDistance, rDepth + 1);
+            tryAdjust(block.getRelative(BlockFace.SOUTH), targetMaterial, recurseDistance, rDepth + 1);
+            tryAdjust(block.getRelative(BlockFace.EAST), targetMaterial, recurseDistance, rDepth + 1);
+            tryAdjust(block.getRelative(BlockFace.UP), targetMaterial, recurseDistance, rDepth + 1);
+            tryAdjust(block.getRelative(BlockFace.DOWN), targetMaterial, recurseDistance, rDepth + 1);
         }
     }
 
@@ -226,13 +217,13 @@ public class AlterSpell extends BlockSpell
         return SpellResult.CAST;
     }
 
-    protected void tryAdjust(Block target, byte dataValue, Material targetMaterial, int recurseDistance, int rDepth)
+    protected void tryAdjust(Block target, Material targetMaterial, int recurseDistance, int rDepth)
     {
         if (target.getType() != targetMaterial || contains(target))
         {
             return;
         }
 
-        adjust(target, dataValue, true, recurseDistance, rDepth);
+        adjust(target, true, recurseDistance, rDepth);
     }
 }

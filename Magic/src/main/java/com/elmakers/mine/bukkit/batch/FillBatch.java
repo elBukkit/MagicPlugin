@@ -5,6 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.entity.FallingBlock;
 
 import com.elmakers.mine.bukkit.api.block.MaterialBrush;
@@ -99,8 +100,7 @@ public class FillBatch extends BrushBatch {
             touch(block);
             boolean hasPermission = brush.isErase() ? spell.hasBreakPermission(block) : spell.hasBuildPermission(block);
             if (hasPermission && !spell.isIndestructible(block) && spell.isDestructible(block)) {
-                Material previousMaterial = block.getType();
-                byte previousData = block.getData();
+                BlockData previousBlockData = block.getBlockData();
 
                 if (brush.isDifferent(block)) {
                     if (consume && !context.isConsumeFree() && brush.getMaterial() != Material.AIR) {
@@ -121,7 +121,7 @@ public class FillBatch extends BrushBatch {
                     }
 
                     if (spawnFallingBlocks) {
-                        FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousMaterial, previousData);
+                        FallingBlock falling = block.getWorld().spawnFallingBlock(block.getLocation(), previousBlockData);
                         falling.setDropItem(false);
                     }
                     context.addResult(SpellResult.CAST);
