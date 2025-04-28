@@ -10,7 +10,6 @@ import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R2.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
@@ -228,21 +227,5 @@ public class ItemUtils extends ItemUtilsBase {
             ex.printStackTrace();
         }
         return null;
-    }
-
-    @Override
-    public int getCustomModelData(ItemStack itemStack) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) return 0;
-        if (!itemMeta.hasCustomModelData()) return 0;
-        return itemMeta.getCustomModelData();
-    }
-
-    @Override
-    public void setCustomModelData(ItemStack itemStack, int customModelData) {
-        ItemMeta itemMeta = itemStack.getItemMeta();
-        if (itemMeta == null) return;
-        itemMeta.setCustomModelData(customModelData);
-        itemStack.setItemMeta(itemMeta);
     }
 }
