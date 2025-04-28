@@ -13,7 +13,7 @@ import org.bukkit.inventory.ItemStack;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
-import com.elmakers.mine.bukkit.utility.platform.modern2.Modern2ItemUtils;
+import com.elmakers.mine.bukkit.utility.platform.base_v1_21_4.Modern2ItemUtils;
 
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
