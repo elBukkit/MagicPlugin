@@ -184,10 +184,7 @@ public class ItemUtils extends ItemUtilsBase {
             Logger logger = platform.getLogger();
             int size = listTag.size();
             for (int i = 0; i < size; i++) {
-                // Doesn't seem like this is ever going to get resolved, mappings issue:
-                // https://hub.spigotmc.org/jira/browse/SPIGOT-6550
-                // Tag entry = listTag.get(i);
-                Tag entry = (Tag)ReflectionUtils.getListItem(logger, listTag, i);
+                Tag entry = listTag.get(i);
                 list.add(entry.getAsString());
             }
         }

@@ -3,7 +3,6 @@ package com.elmakers.mine.bukkit.utility.platform.v1_21_1;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -181,13 +180,9 @@ public class ItemUtils extends ItemUtilsBase {
         ListTag listTag = compoundTag.getList(key, CompatibilityConstants.NBT_TYPE_STRING);
 
         if (listTag != null) {
-            Logger logger = platform.getLogger();
             int size = listTag.size();
             for (int i = 0; i < size; i++) {
-                // Doesn't seem like this is ever going to get resolved, mappings issue:
-                // https://hub.spigotmc.org/jira/browse/SPIGOT-6550
-                // Tag entry = listTag.get(i);
-                Tag entry = (Tag)ReflectionUtils.getListItem(logger, listTag, i);
+                Tag entry = listTag.get(i);
                 list.add(entry.getAsString());
             }
         }

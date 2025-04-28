@@ -12,12 +12,10 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
-import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
 
@@ -308,13 +306,9 @@ public class NBTUtils extends NBTUtilsBase {
 
         if (optional.isPresent()) {
             ListTag listTag = optional.get();
-            Logger logger = platform.getLogger();
             int size = listTag.size();
             for (int i = 0; i < size; i++) {
-                // Doesn't seem like this is ever going to get resolved, mappings issue:
-                // https://hub.spigotmc.org/jira/browse/SPIGOT-6550
-                // Tag entry = listTag.get(i);
-                Tag entry = (Tag)ReflectionUtils.getListItem(logger, listTag, i);
+                Tag entry = listTag.get(i);
                 list.add(entry);
             }
         }
