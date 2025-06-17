@@ -3,7 +3,7 @@
 
 # 10.10.2
 
- - Add support for 1.21.6
+ - Add support for 1.21.6 (Fails to load on Paper, working on Spigot with lots of errors .. to be continued)
  - Alter spell changed to work with material sets
  - Add `health_percentage` and `air_percentage` attributes
  - Drop support for legacy (.schematic) schematic files, only .schem are supported now
