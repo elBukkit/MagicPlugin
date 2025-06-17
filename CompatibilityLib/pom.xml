@@ -52,6 +52,7 @@
         <module>base_v1_21_4</module>
         <module>v1_21_4</module>
         <module>v1_21_5</module>
+        <module>v1_21_6</module>
         <module>main</module>
     </modules>
 
