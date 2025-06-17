@@ -92,6 +92,7 @@ import net.minecraft.server.level.ServerBossEvent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.server.network.ServerGamePacketListenerImpl;
+import net.minecraft.util.ProblemReporter;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageSources;
@@ -105,6 +106,9 @@ import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -358,7 +362,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
         tag.putInt("x", location.getBlockX());
         tag.putInt("y", location.getBlockY());
         tag.putInt("z", location.getBlockZ());
-        tileEntity.loadWithComponents(tag, tileEntity.getLevel().registryAccess());
+        ValueInput valueInput = TagValueInput.create(ProblemReporter.DISCARDING, tileEntity.getLevel().registryAccess(), tag);
+        tileEntity.loadWithComponents(valueInput);
         tileEntity.setChanged();
     }
 
@@ -394,7 +399,8 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
             ListTag itemList = optionalList.get();
             itemList.clear();
             tag.remove("Items");
-            tileEntity.loadWithComponents(tag, tileEntity.getLevel().registryAccess());
+            ValueInput valueInput = TagValueInput.create(ProblemReporter.DISCARDING, tileEntity.getLevel().registryAccess(), tag);
+            tileEntity.loadWithComponents(valueInput);
             tileEntity.setChanged();
         }
     }
@@ -606,9 +612,9 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
     @Override
     public CompoundTag getEntityData(Entity entity) {
         if (entity == null) return null;
-        CompoundTag data = new CompoundTag();
-        ((CraftEntity)entity).getHandle().save(data);
-        return data;
+        TagValueOutput valueOutput = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
+        ((CraftEntity)entity).getHandle().save(valueOutput);
+        return valueOutput.buildResult();
     }
 
     @Override
