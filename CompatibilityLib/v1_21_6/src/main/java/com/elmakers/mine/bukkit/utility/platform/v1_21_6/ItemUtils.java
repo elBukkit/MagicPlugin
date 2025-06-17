@@ -20,7 +20,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.util.ProblemReporter;
+import net.minecraft.world.ItemStackWithSlot;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.level.storage.TagValueInput;
+import net.minecraft.world.level.storage.ValueInput;
 
 public class ItemUtils extends ItemUtilsBase_v1_21_4 {
     public ItemUtils(Platform platform) {
@@ -168,39 +172,27 @@ public class ItemUtils extends ItemUtilsBase_v1_21_4 {
 
     @Override
     public ItemStack getItem(Object itemTag) {
-        if (itemTag == null || !(itemTag instanceof CompoundTag)) return null;
-        ItemStack item = null;
-        try {
-            CraftWorld world = (CraftWorld)Bukkit.getWorlds().get(0);
-            net.minecraft.world.item.ItemStack nmsStack = net.minecraft.world.item.ItemStack.parse(world.getHandle().registryAccess(), (CompoundTag)itemTag).get();
-            item = CraftItemStack.asCraftMirror(nmsStack);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-        return item;
+        // This was only called by getItems, which no longer uses this method
+        throw new RuntimeException("The getItem method is no longer supported");
+
     }
 
     @Override
     public ItemStack[] getItems(Object rootTag, String tagName) {
         if (rootTag == null || !(rootTag instanceof CompoundTag)) return null;
         CompoundTag compoundTag = (CompoundTag)rootTag;
+
         try {
-            Optional<ListTag> optionalListTag = compoundTag.getList(tagName);
-            if (!optionalListTag.isPresent()) return null;
-            ListTag itemList = optionalListTag.get();
-            int size = itemList.size();
-            ItemStack[] items = new ItemStack[size];
-            for (int i = 0; i < size; i++) {
-                try {
-                    Object itemData = itemList.get(i);
-                    if (itemData != null) {
-                        items[i] = getItem(itemData);
-                    }
-                } catch (Exception ex) {
-                    ex.printStackTrace();
-                }
+            CraftWorld world = (CraftWorld)Bukkit.getWorlds().get(0);
+            ProblemReporter discard = ProblemReporter.DISCARDING;
+            ValueInput valueInput = TagValueInput.create(discard, world.getHandle().registryAccess(), compoundTag);
+            ValueInput.TypedInputList<ItemStackWithSlot> list = valueInput.listOrEmpty(tagName, ItemStackWithSlot.CODEC);
+            List<ItemStack> itemList = new ArrayList<>();
+            for (ItemStackWithSlot stackWithSlot : list) {
+                ItemStack item = CraftItemStack.asCraftMirror(stackWithSlot.stack());
+                itemList.add(item);
             }
-            return items;
+            return itemList.toArray(new ItemStack[itemList.size()]);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
