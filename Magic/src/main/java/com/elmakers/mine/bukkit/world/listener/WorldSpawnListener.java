@@ -36,7 +36,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
     }
 
     public void load(ConfigurationSection config) {
-        List<String> reasonList = ConfigurationUtils.getStringList(config, "ignore_reasons");
+        List<String> reasonList = ConfigurationUtils.getStringList(config, "ignore_spawn_reasons");
         ignoreReasons.clear();
         if (reasonList != null) {
             for (String reason : reasonList) {
@@ -44,7 +44,7 @@ public class WorldSpawnListener implements Listener, ChunkLoadListener
                     SpawnReason ignoreReason = SpawnReason.valueOf(reason.toUpperCase());
                     ignoreReasons.add(ignoreReason);
                 } catch (Exception ex) {
-                    controller.getLogger().warning("Invalid spawn reason in ignore_reasons: " + reason);
+                    controller.getLogger().warning("Invalid spawn reason in ignore_spawn_reasons: " + reason);
                 }
             }
         }

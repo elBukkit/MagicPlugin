@@ -16,6 +16,7 @@
    This fixes the vanilla "legacy items and/or plugins" message.
    If you are still seeing this message, it is either from another plugin or from custom serialized items.
    Use `/mgive <item>` and then `/mitem save <item>` to update saved items.
+ - Fix the `ignore_spawn_reasons` config being ignored
 
 # 10.10.1
  
