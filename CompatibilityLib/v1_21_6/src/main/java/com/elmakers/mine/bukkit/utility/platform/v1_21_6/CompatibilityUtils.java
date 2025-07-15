@@ -22,9 +22,6 @@ import org.bukkit.Server;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.Jukebox;
-import org.bukkit.block.Lectern;
 import org.bukkit.boss.BossBar;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_21_R5.CraftArt;
@@ -56,7 +53,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
-import org.bukkit.loot.Lootable;
 import org.bukkit.projectiles.ProjectileSource;
 import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
@@ -105,10 +101,7 @@ import net.minecraft.world.entity.projectile.FireworkRocketEntity;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.TagValueOutput;
-import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -332,76 +325,6 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
             targetHandle.hurt(damageSource, (float)amount);
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-    }
-
-    @Override
-    public BlockEntity getTileEntity(Location location) {
-        ServerLevel world = ((CraftWorld)location.getWorld()).getHandle();
-        BlockPos blockPos = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
-        return world.getBlockEntity(blockPos, false);
-    }
-
-    @Override
-    public CompoundTag getTileEntityData(Location location) {
-        if (location == null) return null;
-        BlockEntity tileEntity = getTileEntity(location);
-        if (tileEntity == null) return null;
-        CompoundTag tag = tileEntity.saveWithFullMetadata(tileEntity.getLevel().registryAccess());
-        return tag;
-    }
-
-    @Override
-    public void setTileEntityData(Location location, Object data) {
-        if (location == null || data == null || !(data instanceof CompoundTag)) return;
-        BlockEntity tileEntity = getTileEntity(location);
-        if (tileEntity == null) return;
-        CompoundTag tag = (CompoundTag)data;
-        // We need to copy the tag, otherwise this will modify the item being used
-        tag = tag.copy();
-        tag.putInt("x", location.getBlockX());
-        tag.putInt("y", location.getBlockY());
-        tag.putInt("z", location.getBlockZ());
-        ValueInput valueInput = TagValueInput.create(ProblemReporter.DISCARDING, tileEntity.getLevel().registryAccess(), tag);
-        tileEntity.loadWithComponents(valueInput);
-        tileEntity.setChanged();
-    }
-
-    @Override
-    public void clearItems(Location location) {
-        if (location == null) return;
-
-        // Block-specific behaviors
-        Block block = location.getBlock();
-        BlockState blockState = block.getState();
-        if (blockState instanceof Lootable) {
-            Lootable lootable = (Lootable)blockState;
-            lootable.setLootTable(null);
-            blockState.update();
-        }
-        if (blockState instanceof Lectern) {
-            Lectern lectern = (Lectern)blockState;
-            lectern.getInventory().setItem(0, new ItemStack(Material.AIR));
-            blockState.update();
-        }
-        if (blockState instanceof Jukebox) {
-            ((Jukebox) blockState).setRecord(null);
-            blockState.update();
-        }
-
-        // TODO: Just clear inventory instead?
-        BlockEntity tileEntity = getTileEntity(location);
-        if (tileEntity == null) return;
-        CompoundTag tag = tileEntity.saveWithFullMetadata(tileEntity.getLevel().registryAccess());
-        Optional<ListTag> optionalList = tag.getList("Items");
-        // Is it really necessary to clear the list before removing it?
-        if (optionalList.isPresent()) {
-            ListTag itemList = optionalList.get();
-            itemList.clear();
-            tag.remove("Items");
-            ValueInput valueInput = TagValueInput.create(ProblemReporter.DISCARDING, tileEntity.getLevel().registryAccess(), tag);
-            tileEntity.loadWithComponents(valueInput);
-            tileEntity.setChanged();
         }
     }
 
