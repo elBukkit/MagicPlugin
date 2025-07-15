@@ -4,6 +4,7 @@
 # 10.10.2
 
  - Add support for 1.21.6
+ - Add support for 1.21.7
  - Use BlockState API for saving and restoring tile/block entities. (Fixing issues on 1.21.6 and up)
  - Alter spell changed to work with material sets
  - The `/mmob spawn` command will no longer spawn mobs in unloaded chunks
