@@ -200,6 +200,12 @@ public class MagicMobCommandExecutor extends MagicTabExecutor {
             sender.sendMessage(ChatColor.RED + "Unknown mob type " + ChatColor.YELLOW + mobKey);
             return true;
         }
+
+        if (!targetLocation.getBlock().getChunk().isLoaded()) {
+            sender.sendMessage(ChatColor.YELLOW + "Skipping " + ChatColor.WHITE + "spawn of " + ChatColor.GOLD + mobKey + ChatColor.WHITE + " in unloaded chunk");
+            return true;
+        }
+
         if (entityData.isNPC()) {
             sender.sendMessage(ChatColor.YELLOW + "Mob type " + ChatColor.GOLD + mobKey + ChatColor.YELLOW + " is meant to be an NPC");
             sender.sendMessage("  Spawning as a normal mob, use " + ChatColor.AQUA + "/mnpc add " + mobKey + ChatColor.WHITE + " to create as an NPC");

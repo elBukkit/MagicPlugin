@@ -6,6 +6,7 @@
  - Add support for 1.21.6
  - Use BlockState API for saving and restoring tile/block entities. (Fixing issues on 1.21.6 and up)
  - Alter spell changed to work with material sets
+ - The `/mmob spawn` command will no longer spawn mobs in unloaded chunks
  - Add `health_percentage` and `air_percentage` attributes
  - Drop support for legacy (.schematic) schematic files, only .schem are supported now
  - Drop support for legacy material names, you may need to update customized configs to use modern material names!
