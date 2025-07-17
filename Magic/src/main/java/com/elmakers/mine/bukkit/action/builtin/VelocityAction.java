@@ -44,6 +44,7 @@ public class VelocityAction extends BaseSpellAction
     private boolean registerDamaged;
     private double maxDistanceSquared;
     private boolean invertDistance;
+    private boolean allowMaxHeight;
 
     @Override
     public void prepare(CastContext context, ConfigurationSection parameters) {
@@ -65,6 +66,7 @@ public class VelocityAction extends BaseSpellAction
         double maxDistance = parameters.getDouble("velocity_max_distance");
         maxDistanceSquared = maxDistance * maxDistance;
         invertDistance = parameters.getBoolean("invert_distance", false);
+        allowMaxHeight = parameters.getBoolean("allow_max_height", true);
     }
 
     @Override
@@ -133,7 +135,7 @@ public class VelocityAction extends BaseSpellAction
             velocity.normalize().multiply(speed);
         }
 
-        if (context.getLocation().getBlockY() >= 256)
+        if (!allowMaxHeight && context.getLocation().getBlockY() >= context.getController().getMaxHeight(context.getLocation().getWorld()))
         {
             velocity.setY(0);
         }
