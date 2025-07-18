@@ -3,6 +3,7 @@
 
 # 10.10.3
 
+ - Add support for 1.21.8 (Thank you, shakil-muntasir!)
  - Add allow_max_height parameter to Velocity action, defaults to true. 
    The Velocity action will now work above y=256 by default.
 
