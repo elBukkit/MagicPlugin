@@ -28,6 +28,17 @@ public class MageConversation {
             return true;
         }
         String configuredLines = dialog.get(nextLine);
+        sayLine(target, configuredLines, speaker, formatString);
+        nextLine++;
+        return nextLine >= dialog.size();
+    }
+
+    public static void sayLine(Player target, String configuredLines, Mage speaker) {
+        String formatString = speaker.getController().getMessages().get("npc.dialog");
+        sayLine(target, configuredLines, speaker, formatString);
+    }
+
+    public static void sayLine(Player target, String configuredLines, Mage speaker, String formatString) {
         if (!configuredLines.isEmpty()) {
             String[] lines = configuredLines.split("\n");
             for (String line : lines) {
@@ -37,7 +48,5 @@ public class MageConversation {
                 target.sendMessage(CompatibilityLib.getCompatibilityUtils().translateColors(message));
             }
         }
-        nextLine++;
-        return nextLine >= dialog.size();
     }
 }

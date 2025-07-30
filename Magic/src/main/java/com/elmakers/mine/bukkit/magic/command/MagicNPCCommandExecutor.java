@@ -626,6 +626,7 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
             options.add("villager_profession");
             options.add("dialog_range");
             options.add("dialog_interval");
+            options.add("dialog_random");
             options.add("leash_range");
             if (controller.hasDisguises()) {
                 options.add("disguise.type");
@@ -638,7 +639,8 @@ public class MagicNPCCommandExecutor extends MagicTabExecutor {
                 options.add(spell.getKey());
             }
         } else if (args.length == 3 && args[0].equals("configure")
-               && (args[1].equals("ai") || args[1].equals("gravity") || args[1].equals("interact_spell_caster"))) {
+               && (args[1].equals("ai") || args[1].equals("gravity") || args[1].equals("interact_spell_caster") || args[1].equals("dialog_random"))
+        ) {
             options.add("true");
             options.add("false");
         } else if (args.length == 3 && args[0].equals("configure") && (args[1].equals("interact_spell_target") || args[1].equals("cast_target"))) {

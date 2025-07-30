@@ -24,6 +24,7 @@ base_npc:
   interact_command_source: console
   dialog_interval: 4000
   dialog_range: 3
+  dialog_random: false
   cancel_interact: true
   prevent_dismount: true
   default_drops: false

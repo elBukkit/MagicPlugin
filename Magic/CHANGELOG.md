@@ -6,6 +6,7 @@
  - Add support for 1.21.8 (Thank you, shakil-muntasir!)
  - Add allow_max_height parameter to Velocity action, defaults to true. 
    The Velocity action will now work above y=256 by default.
+ - Add `dialog_random` NPC option, for NPCs to say random lines of dialog instead of a list in order
 
 # 10.10.2
 

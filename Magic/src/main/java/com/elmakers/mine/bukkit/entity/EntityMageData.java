@@ -28,6 +28,7 @@ import com.elmakers.mine.bukkit.magic.MageConversation;
 import com.elmakers.mine.bukkit.magic.MobTrigger;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -49,6 +50,7 @@ public class EntityMageData {
     protected boolean isCancelLaunch = true;
     protected List<String> dialog;
     protected double dialogRadius;
+    protected boolean dialogRandom;
     protected boolean facePlayer;
 
     public EntityMageData(@Nonnull MageController controller, @Nonnull ConfigurationSection parameters) {
@@ -76,6 +78,7 @@ public class EntityMageData {
 
         dialog = ConfigurationUtils.getStringList(parameters, "dialog");
         dialogRadius = parameters.getDouble("dialog_range", 3);
+        dialogRandom = parameters.getBoolean("dialog_random", false);
         int dialogInterval = parameters.getInt("dialog_interval", 2000);
         boolean hasDialog = hasDialog();
         facePlayer = parameters.getBoolean("face_player", hasDialog && dialogFacePlayer);
@@ -216,12 +219,17 @@ public class EntityMageData {
                 if (!(targetEntity instanceof Player) || mage.getController().isNPC(targetEntity)) continue;
                 Player targetPlayer = (Player)targetEntity;
                 if (hasDialog) {
-                    MageConversation conversation = progress.get(targetPlayer);
-                    if (conversation == null) {
-                        conversation = new MageConversation(speaker, targetPlayer);
+                    if (dialogRandom) {
+                        String randomLine = dialog.get(RandomUtils.getRandomIntInclusive(0, dialog.size() - 1));
+                        MageConversation.sayLine(targetPlayer, randomLine, speaker);
+                    } else {
+                        MageConversation conversation = progress.get(targetPlayer);
+                        if (conversation == null) {
+                            conversation = new MageConversation(speaker, targetPlayer);
+                        }
+                        conversation.sayNextLine(dialog);
+                        conversations.put(targetPlayer, conversation);
                     }
-                    conversation.sayNextLine(dialog);
-                    conversations.put(targetPlayer, conversation);
                 }
                 if (targetLocation == null) {
                     targetLocation = targetPlayer.getLocation().clone();
