@@ -1,0 +1,49 @@
+giant:
+  type: husk
+  health: 100
+  entity_attributes:
+    generic_scale: 3
+  helmet:
+    golden_helmet: 10
+    iron_helmet: 20
+    diamond_helmet: 2
+    netherite_helmet: 1
+    leather_helmet: 30
+    chainmail_helmet: 5
+    none: 40
+  chestplate:
+    golden_chestplate: 10
+    iron_chestplate: 20
+    diamond_chestplate: 2
+    netherite_chestplate: 1
+    leather_chestplate: 30
+    chainmail_chestplate: 5
+    none: 40
+  boots:
+    golden_boots: 10
+    iron_boots: 20
+    netherite_boots: 1
+    diamond_boots: 2
+    leather_boots: 30
+    chainmail_boots: 5
+    none: 40
+  leggings:
+    golden_leggings: 10
+    iron_leggings: 20
+    netherite_leggings: 1
+    diamond_leggings: 2
+    leather_leggings: 30
+    chainmail_leggings: 5
+    none: 40
+  item:
+    golden_sword: 10
+    iron_sword: 20
+    diamond_sword: 2
+    stone_sword: 30
+    netherite_sword: 1
+    golden_axe: 10
+    iron_axe: 20
+    diamond_axe: 2
+    stone_axe: 30
+    netherite_axe: 1
+    none: 40

@@ -8,7 +8,7 @@
    The Velocity action will now work above y=256 by default.
  - Add `dialog_random` NPC option, for NPCs to say random lines of dialog instead of a list in order
  - Allow lists or probability maps for mob equipment
- - Added `giant` mob to test random equipment, and showcase the scale attribute
+ - Added `giant` mob to test random equipment, and showcase the scale attribute (added to spawnmobs example as well)
 
 # 10.10.2
 

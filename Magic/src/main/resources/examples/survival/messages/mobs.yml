@@ -123,3 +123,5 @@ mobs:
     name: Philbert
   spinny_fox:
     name: Spinny Fox
+  giant:
+    name: Giant

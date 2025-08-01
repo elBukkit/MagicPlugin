@@ -68,6 +68,7 @@ overworld_mobs:
         werewolf: 10
         madscientist: 1
         archer: 5
+        giant: 2
 
 nether_mobs:
   world: world_nether
