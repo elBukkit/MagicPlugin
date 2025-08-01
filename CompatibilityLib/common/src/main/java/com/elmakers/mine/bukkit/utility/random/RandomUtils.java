@@ -141,6 +141,18 @@ public class RandomUtils {
         RandomUtils.populateProbabilityMap(parser, probabilityMap, nodeMap, 0, 0, 0);
     }
 
+    public static <T extends Object> void populateProbabilityMap(ValueParser<T> parser, Deque<WeightedPair<T>> probabilityMap, ConfigurationSection parent, String key) {
+        populateProbabilityMap(parser, probabilityMap, parent, key, 0, 0, 0);
+    }
+
+    public static <T extends Object> void populateProbabilityMap(ValueParser<T> parser, Deque<WeightedPair<T>> probabilityMap, ConfigurationSection parent, String key, int levelIndex, int nextLevelIndex, float distance) {
+        if (parent.isConfigurationSection(key)) {
+            populateProbabilityMap(parser, probabilityMap, parent.getConfigurationSection(key), levelIndex, nextLevelIndex, distance);
+        } else {
+            populateProbabilityList(parser, probabilityMap, ConfigUtils.getStringList(parent, key));
+        }
+    }
+
     public static <T extends Object> void populateProbabilityMap(ValueParser<T> parser, Deque<WeightedPair<T>> probabilityMap, ConfigurationSection nodeMap, int levelIndex, int nextLevelIndex, float distance) {
         Float currentThreshold = 0.0f;
 
