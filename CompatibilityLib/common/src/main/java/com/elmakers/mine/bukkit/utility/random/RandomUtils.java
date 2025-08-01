@@ -123,6 +123,13 @@ public class RandomUtils {
         RandomUtils.populateProbabilityMap(ValueParser.FLOAT, probabilityMap, nodeMap, 0, 0, 0);
     }
 
+    public static <T extends Object> Deque<WeightedPair<T>> createProbabilityConstant(T value) {
+        if (value == null) return null;
+        Deque<WeightedPair<T>> probability = new ArrayDeque<>();
+        probability.add(new WeightedPair<>(value));
+        return probability;
+    }
+
     public static <T extends Object> void populateProbabilityConstant(ValueParser<T> parser, Deque<WeightedPair<T>> probabilityMap, String value) {
         probabilityMap.add(new WeightedPair<>(1.0f, 1.0f, value, parser));
     }
@@ -135,6 +142,13 @@ public class RandomUtils {
                 probabilityMap.add(new WeightedPair<>(currentThreshold, currentThreshold, key, parser));
             }
         }
+    }
+
+    public static <T extends Object>  Deque<WeightedPair<T>> createProbabilityMap(ValueParser<T> parser, ConfigurationSection parent, String key) {
+        if (parent.get(key) == null) return null;
+        Deque<WeightedPair<T>> probability = new ArrayDeque<>();
+        populateProbabilityMap(parser, probability, parent, key);
+        return probability;
     }
 
     public static <T extends Object> void populateProbabilityMap(ValueParser<T> parser, Deque<WeightedPair<T>> probabilityMap, ConfigurationSection nodeMap) {
