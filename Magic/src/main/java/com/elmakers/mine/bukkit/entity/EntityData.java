@@ -45,6 +45,7 @@ import org.bukkit.util.Vector;
 
 import com.elmakers.mine.bukkit.api.integration.ModelEngine;
 import com.elmakers.mine.bukkit.api.item.ItemData;
+import com.elmakers.mine.bukkit.api.item.ItemUpdatedCallback;
 import com.elmakers.mine.bukkit.api.magic.Mage;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.api.magic.MageModifier;
@@ -147,12 +148,12 @@ public class EntityData
     protected boolean isSuperProtected = false;
     protected boolean registerByName = false;
 
-    protected ItemData itemInHand;
-    protected ItemData itemInOffhand;
-    protected ItemData helmet;
-    protected ItemData chestplate;
-    protected ItemData leggings;
-    protected ItemData boots;
+    protected Deque<WeightedPair<ItemData>> itemInHand;
+    protected Deque<WeightedPair<ItemData>> itemInOffhand;
+    protected Deque<WeightedPair<ItemData>> helmet;
+    protected Deque<WeightedPair<ItemData>> chestplate;
+    protected Deque<WeightedPair<ItemData>> leggings;
+    protected Deque<WeightedPair<ItemData>> boots;
 
     protected Integer xp;
     protected Integer dropXp;
@@ -225,12 +226,12 @@ public class EntityData
             this.hasAI = li.hasAI();
 
             EntityEquipment equipment = li.getEquipment();
-            itemInHand = equipment == null ? null : getItem(equipment.getItemInMainHand());
-            itemInOffhand = equipment == null ? null : getItem(equipment.getItemInOffHand());
-            helmet = equipment == null ? null : getItem(equipment.getHelmet());
-            chestplate = equipment == null ? null : getItem(equipment.getChestplate());
-            leggings = equipment == null ? null : getItem(equipment.getLeggings());
-            boots = equipment == null ? null : getItem(equipment.getBoots());
+            itemInHand = equipment == null ? null : RandomUtils.createProbabilityConstant(getItem(equipment.getItemInMainHand()));
+            itemInOffhand = equipment == null ? null : RandomUtils.createProbabilityConstant(getItem(equipment.getItemInOffHand()));
+            helmet = equipment == null ? null : RandomUtils.createProbabilityConstant(getItem(equipment.getHelmet()));
+            chestplate = equipment == null ? null : RandomUtils.createProbabilityConstant(getItem(equipment.getChestplate()));
+            leggings = equipment == null ? null : RandomUtils.createProbabilityConstant(getItem(equipment.getLeggings()));
+            boots = equipment == null ? null : RandomUtils.createProbabilityConstant(getItem(equipment.getBoots()));
         }
 
         if (entity instanceof Tameable) {
@@ -557,12 +558,14 @@ public class EntityData
             }
         }
 
-        itemInHand = controller.getOrCreateItem(parameters.getString("item"));
-        itemInOffhand = controller.getOrCreateItem(parameters.getString("offhand"));
-        helmet = controller.getOrCreateItem(parameters.getString("helmet"));
-        chestplate = controller.getOrCreateItem(parameters.getString("chestplate"));
-        leggings = controller.getOrCreateItem(parameters.getString("leggings"));
-        boots = controller.getOrCreateItem(parameters.getString("boots"));
+        EquipmentParser parser = EquipmentParser.getInstance(controller);
+
+        itemInHand = RandomUtils.createProbabilityMap(parser, parameters, "item");
+        itemInOffhand = RandomUtils.createProbabilityMap(parser, parameters, "offhand");
+        helmet = RandomUtils.createProbabilityMap(parser, parameters, "helmet");
+        chestplate = RandomUtils.createProbabilityMap(parser, parameters, "chestplate");
+        leggings = RandomUtils.createProbabilityMap(parser, parameters, "leggings");
+        boots = RandomUtils.createProbabilityMap(parser, parameters, "boots");
 
         EntityMageData mageData = new EntityMageData(controller, parameters);
         if (!mageData.isEmpty()) {
@@ -1217,27 +1220,22 @@ public class EntityData
         }
     }
 
+    protected void copyEquipmentPieceTo(Deque<WeightedPair<ItemData>> item, ItemUpdatedCallback callback) {
+        ItemData itemData = RandomUtils.weightedRandom(item);
+        if (itemData != null) {
+            itemData.getItemStack(1, callback);
+        }
+    }
+
     public void copyEquipmentTo(LivingEntity entity) {
         EntityEquipment equipment = entity.getEquipment();
         if (equipment == null) return;
-        if (itemInHand != null) {
-            itemInHand.getItemStack(1, itemStack -> equipment.setItemInMainHand(itemStack));
-        }
-        if (itemInOffhand != null) {
-            itemInOffhand.getItemStack(1, itemStack -> equipment.setItemInOffHand(itemStack));
-        }
-        if (helmet != null) {
-            helmet.getItemStack(1, itemStack -> equipment.setHelmet(itemStack));
-        }
-        if (chestplate != null) {
-            chestplate.getItemStack(1, itemStack -> equipment.setChestplate(itemStack));
-        }
-        if (leggings != null) {
-            leggings.getItemStack(1, itemStack -> equipment.setLeggings(itemStack));
-        }
-        if (boots != null) {
-            boots.getItemStack(1, itemStack -> equipment.setBoots(itemStack));
-        }
+        copyEquipmentPieceTo(itemInHand, equipment::setItemInMainHand);
+        copyEquipmentPieceTo(itemInOffhand, equipment::setItemInOffHand);
+        copyEquipmentPieceTo(helmet, equipment::setHelmet);
+        copyEquipmentPieceTo(chestplate, equipment::setChestplate);
+        copyEquipmentPieceTo(leggings, equipment::setLeggings);
+        copyEquipmentPieceTo(boots, equipment::setBoots);
     }
 
     @Override
