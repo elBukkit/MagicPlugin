@@ -8,7 +8,6 @@ import javax.annotation.Nonnull;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.plugin.Plugin;
@@ -25,7 +24,6 @@ import com.elmakers.mine.bukkit.world.spawn.SpawnRule;
 
 public class ReplaceRule extends SpawnRule {
     // Keep these separate for efficiency
-    protected SpawnOption replaceWith;
     protected Deque<WeightedPair<SpawnOption>> replaceProbability;
     protected int yOffset;
     protected boolean atHighestBlock;
@@ -40,29 +38,18 @@ public class ReplaceRule extends SpawnRule {
             parameters.set("sub_type", parameters.get("replace_sub_type"));
         }
 
-        ConfigurationSection section = parameters.getConfigurationSection("type");
+        replaceProbability = new ArrayDeque<>();
         SpawnOptionParser parser = SpawnOptionParser.getInstance(controller);
-        if (section == null) {
-            replaceWith = parser.parse(parameters.getString("type"));
-        } else {
-            replaceProbability = new ArrayDeque<>();
-            RandomUtils.populateProbabilityMap(parser, replaceProbability, section);
-        }
-
-        if (replaceProbability == null && (replaceWith == null || replaceWith.getType() == null)) {
+        RandomUtils.populateProbabilityMap(parser, replaceProbability, parameters, "type");
+        if (replaceProbability.isEmpty()) {
             controller.getLogger().warning("Error reading in configuration for custom mob in " + worldName + " for rule " + key);
             return;
         }
-        String replaceDescription;
-        if (replaceWith != null) {
-            replaceDescription = replaceWith.describe();
-        } else {
-            List<String> names = new ArrayList<>();
-            for (WeightedPair<SpawnOption> option : replaceProbability) {
-                names.add(option.getValue().describe());
-            }
-            replaceDescription = StringUtils.join(names, ",");
+        List<String> names = new ArrayList<>();
+        for (WeightedPair<SpawnOption> option : replaceProbability) {
+            names.add(option.getValue().describe());
         }
+        String replaceDescription = StringUtils.join(names, ",");
         replaceDescription = ChatColor.stripColor(replaceDescription);
         atHighestBlock = parameters.getBoolean("highest_block", false);
         yOffset = parameters.getInt("y_offset");
@@ -72,11 +59,8 @@ public class ReplaceRule extends SpawnRule {
     @Override
     @Nonnull
     public SpawnResult onProcess(Plugin plugin, LivingEntity entity) {
-        if (replaceWith == null && replaceProbability == null) return SpawnResult.SKIP;
-        SpawnOption option = this.replaceWith;
-        if (replaceProbability != null) {
-            option = RandomUtils.weightedRandom(replaceProbability);
-        }
+        if (replaceProbability.isEmpty()) return SpawnResult.SKIP;
+        SpawnOption option = RandomUtils.weightedRandom(replaceProbability);
         if (option == null) return SpawnResult.SKIP;
         if (option.getType() == SpawnResult.REPLACE) {
             EntityData replacement = option.getReplacement();
