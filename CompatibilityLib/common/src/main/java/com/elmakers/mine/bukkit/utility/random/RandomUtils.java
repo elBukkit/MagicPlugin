@@ -101,6 +101,10 @@ public class RandomUtils {
         RandomUtils.populateProbabilityMap(ValueParser.STRING, probabilityMap, nodeMap, 0, 0, 0);
     }
 
+    public static Deque<WeightedPair<String>> createStringProbabilityMap(ConfigurationSection parent, String key) {
+        return createProbabilityMap(ValueParser.STRING, parent, key);
+    }
+
     public static void populateStringProbabilityList(Deque<WeightedPair<String>> probabilityMap, List<String> stringList) {
         populateProbabilityList(ValueParser.STRING, probabilityMap, stringList);
     }
