@@ -317,10 +317,23 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--
+          This is still needed for LibsDisguises Integration,
+          Even though LibsDisguises is no longer uses ProtocolLib
+          it seems there is no version of the newer ProtocolLib-less LibsDisguises
+          available anywhere as a Maven dependency, so we're stuck with this
+          build dependency
+        -->
+        <dependency>
+            <groupId>ProtocolLib</groupId>
+            <artifactId>ProtocolLib</artifactId>
+            <version>3.7.0-BETA</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>LibsDisguises</groupId>
             <artifactId>LibsDisguises</artifactId>
-            <version>10.0.25</version>
+            <version>10.0.42</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
