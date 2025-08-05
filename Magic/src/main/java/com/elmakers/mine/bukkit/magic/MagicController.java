@@ -6855,7 +6855,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Nullable
     @Override
     public String getPlayerSkin(Player player) {
-        return libsDisguiseManager == null ? null : libsDisguiseManager.getSkin(player);
+        return null;
     }
 
     @Override
