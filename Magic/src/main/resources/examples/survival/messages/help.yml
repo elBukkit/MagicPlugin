@@ -30,7 +30,7 @@ help:
         `<p>`The &6survival&f example includes a variety of colored dragon mobs you can spawn
         `<p>`These will spawn naturally using the `<help topic="examples.all" text="spawnmobs examples">`
         `<p>`Dragons require the `<link url="https://www.spigotmc.org/resources/libs-disguises-free.81/" text="LibsDisguises">` plugin
-        `<p>`which itself requires the `<link url="https://www.spigotmc.org/resources/protocollib.1997/" text="ProtocolLib">` plugin.
+        `<p>`which itself requires the `<link url="https://www.spigotmc.org/resources/packetevents-api.80279/" text="PacketEvents">` plugin.
         `<p>`Finally, players will need the `<help topic="resourcepack" text="resoure pack">` to see the dragons properly.
         `<p>`If the dragons are invisible, you are missing LibsDisguises or it is not working.
         `<p>`If the dragons look like a strange collection of leather horse armor, you are missing the resource pack.
