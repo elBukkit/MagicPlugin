@@ -9,7 +9,8 @@
  - Add `dialog_random` NPC option, for NPCs to say random lines of dialog instead of a list in order
  - Allow lists or probability maps for mob equipment and disguise skins
  - Added `giant` mob to test random equipment, and showcase the scale attribute (added to spawnmobs example as well)
-
+ - Fix `/mage skin` command, now uses new LibsDisguise format
+ 
 # 10.10.2
 
  - Add support for 1.21.6

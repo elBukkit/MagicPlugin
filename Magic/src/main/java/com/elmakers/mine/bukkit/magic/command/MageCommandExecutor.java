@@ -18,6 +18,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.profile.PlayerProfile;
 
 import com.elmakers.mine.bukkit.api.economy.Currency;
 import com.elmakers.mine.bukkit.api.magic.CasterProperties;
@@ -36,7 +37,10 @@ import com.elmakers.mine.bukkit.magic.BaseMagicProperties;
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.ProfileCallback;
+import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
 
 import de.slikey.effectlib.math.EquationStore;
 import de.slikey.effectlib.math.EquationTransform;
@@ -486,13 +490,19 @@ public class MageCommandExecutor extends MagicConfigurableExecutor {
 
     public boolean onMageSkin(CommandSender sender, Player player)
     {
-        String skinBlock = controller.getPlayerSkin(player);
-        if (skinBlock == null) {
-            sender.sendMessage("Could not get skin for player " + player.getName());
-            sender.sendMessage("(This command requires LibsDisguise to be installed!)");
-            return true;
-        }
-        sender.sendMessage(skinBlock);
+        SkinUtils skinUtils = CompatibilityLib.getSkinUtils();
+        skinUtils.fetchProfile(player.getUniqueId(), new ProfileCallback() {
+            @Override
+            public void result(ProfileResponse response) {
+                PlayerProfile playerProfile = response == null ? null : response.getPlayerProfile();
+                if (playerProfile != null) {
+                    String skinBlock = skinUtils.toDisguiseFormat(playerProfile);
+                    sender.sendMessage(skinBlock);
+                } else {
+                    sender.sendMessage("Could not get skin for player " + player.getName());
+                }
+            }
+        });
         return true;
     }
 

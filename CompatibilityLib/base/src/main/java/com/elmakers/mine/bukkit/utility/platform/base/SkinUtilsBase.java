@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.io.File;
+import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +21,8 @@ import com.elmakers.mine.bukkit.utility.ProfileCallback;
 import com.elmakers.mine.bukkit.utility.ProfileResponse;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.SkinUtils;
+import com.google.common.reflect.TypeToken;
+import com.google.gson.Gson;
 
 public class SkinUtilsBase implements SkinUtils {
     protected final Platform platform;
@@ -27,6 +30,14 @@ public class SkinUtilsBase implements SkinUtils {
     protected final Map<String, Object> loadingUUIDs = new HashMap<>();
     protected final Map<UUID, Object> loadingProfiles = new HashMap<>();
     protected long holdoff = 0;
+    private static Gson gson;
+
+    protected static Gson getGson() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        return gson;
+    }
 
     protected SkinUtilsBase(final Platform platform) {
         this.platform = platform;
@@ -246,5 +257,17 @@ public class SkinUtilsBase implements SkinUtils {
         // return playerProfile.isComplete()
         return playerProfile != null && playerProfile.getUniqueId() != null
                 && playerProfile.getName() != null && !playerProfile.getTextures().isEmpty();
+    }
+
+    public String toDisguiseFormat(PlayerProfile profile) {
+        Gson gson = getGson();
+        String bukkitFormat = gson.toJson(profile);
+        Type objectMapType = new TypeToken<Map<String, Object>>(){}.getType();
+        Map<String, Object> bukkitMap = gson.fromJson(bukkitFormat, objectMapType);
+        Map<String, Object> disguiseMap = new HashMap<>();
+        disguiseMap.put("uuid", profile.getUniqueId());
+        disguiseMap.put("name", profile.getName());
+        disguiseMap.put("textureProperties", bukkitMap.get("properties"));
+        return gson.toJson(disguiseMap);
     }
 }
