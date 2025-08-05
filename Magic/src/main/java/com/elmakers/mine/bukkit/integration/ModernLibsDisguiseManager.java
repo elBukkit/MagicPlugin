@@ -4,17 +4,14 @@ import static com.google.common.base.Verify.verifyNotNull;
 
 import java.util.Deque;
 import java.util.logging.Level;
-import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 
-import com.comphenix.protocol.wrappers.WrappedGameProfile;
 import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
@@ -30,7 +27,6 @@ import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.ArmorStandWatcher;
 import me.libraryaddict.disguise.disguisetypes.watchers.CreeperWatcher;
 import me.libraryaddict.disguise.disguisetypes.watchers.VillagerWatcher;
-import me.libraryaddict.disguise.utilities.DisguiseUtilities;
 
 public class ModernLibsDisguiseManager implements LibsDisguiseManager {
     private final Plugin disguisePlugin;
@@ -213,15 +209,5 @@ public class ModernLibsDisguiseManager implements LibsDisguiseManager {
             controller.getLogger().log(Level.WARNING, "Error applying disguise", ex);
             return false;
         }
-    }
-
-    @Override
-    @Nullable
-    public String getSkin(Player player) {
-        WrappedGameProfile profile = WrappedGameProfile.fromPlayer(player);
-        if (profile == null) {
-            return null;
-        }
-        return DisguiseUtilities.getGson().toJson(profile);
     }
 }

@@ -1,16 +1,12 @@
 package com.elmakers.mine.bukkit.integration;
 
 import java.util.logging.Level;
-import javax.annotation.Nullable;
 
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 import org.bukkit.plugin.Plugin;
-
-import com.comphenix.protocol.wrappers.WrappedGameProfile;
 
 import me.libraryaddict.disguise.DisguiseAPI;
 import me.libraryaddict.disguise.LibsDisguises;
@@ -22,7 +18,6 @@ import me.libraryaddict.disguise.disguisetypes.MobDisguise;
 import me.libraryaddict.disguise.disguisetypes.PlayerDisguise;
 import me.libraryaddict.disguise.disguisetypes.watchers.ArmorStandWatcher;
 import me.libraryaddict.disguise.disguisetypes.watchers.VillagerWatcher;
-import me.libraryaddict.disguise.utilities.DisguiseUtilities;
 
 public class LegacyLibsDisguiseManager implements LibsDisguiseManager {
     private final Plugin disguisePlugin;
@@ -132,15 +127,5 @@ public class LegacyLibsDisguiseManager implements LibsDisguiseManager {
             return false;
         }
         return true;
-    }
-
-    @Override
-    @Nullable
-    public String getSkin(Player player) {
-        WrappedGameProfile profile = WrappedGameProfile.fromPlayer(player);
-        if (profile == null) {
-            return null;
-        }
-        return DisguiseUtilities.getGson().toJson(profile);
     }
 }
