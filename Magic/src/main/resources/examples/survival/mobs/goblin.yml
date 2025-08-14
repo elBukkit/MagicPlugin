@@ -1,0 +1,44 @@
+# With thanks to @jamesol1
+goblin:
+  type: skeleton
+  disguise:
+    hide_name: true
+    type: player
+    skin:
+      - '{"uuid":"adde98be-68d3-44d7-8764-189a7d30f47c","name":"Jamesoul1","textureProperties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTc1NDIzNTQxMTcyOCwKICAicHJvZmlsZUlkIiA6ICJhZGRlOThiZTY4ZDM0NGQ3ODc2NDE4OWE3ZDMwZjQ3YyIsCiAgInByb2ZpbGVOYW1lIiA6ICJKYW1lc291bDEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWM1NmFjNWJjZDU4YzEzMzhjZjkyNDZmODViMmMxMTJmZWM0NTY4NjIyZTkwM2FmZDJjZDU5MmNjYjEyYzVlNSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9","signature":"ceiS6zu8twbO5GNVW15e4nhwxp2GtAwHD/9eKXMQj8RoeivDNJNKFJ1nby4Id0o6yt6jnGxQLy+dwDjkdNHkeKoXinVSr/abGSGj1rkiSEk0SAG6D2leXWhkSP7Pizlv9JYJ+jTOwIelxsQIVavrz6pRAYkep7N7FyVtxGvE2fBk40sd71Zjzf6U3OYpVHgSMmBEOksHrRpGL/IpPwDcb/wn6MCa9OBUvTWsvLZtBR7k9FXV3m6GIMbUL9QyEWl5sPR4cqYANtnsZ3bGHA6aumGQ1eg3u1/A/i7lVrIXKthUa8HkXPf21yK6jrsV6/4WwvxDhL3Geo1WlF00Z32NSXiqn5TnANvZCWy5ftfE5+I1e2sVQDk57U4583G6fjiQ82oi1inmXaS98s4QXCq4/z2bd5y6AjJO+di5LQyuJiqIi7Y9Uu1g/TbJmgvSxlHVLLZ2m3ZsJr3Dn0oEn7RSyzhVuIiNM+mokZ4pQBzKbYkSBXwzjCiRydMKzsKQKH92wOvW793/LWwUC1710VbyZfOS2uoCl0CfJt1HH6bKC6i0hiidcrSFr25Ck3bRZuXM1GkuBoMmVTtyVt+YyYvLAgB9BRBsWP7DoBbNV8ZOuC1RJjzirtTXHHyBEDlPEvX6FnSaehiDchQrg+YID4a7oLd7iJP3Jx3ylg04Mz1B90Y="}]}'
+      - '{"uuid":"adde98be-68d3-44d7-8764-189a7d30f47c","name":"Jamesoul1","textureProperties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTc1NTIwNjIxMjMxMiwKICAicHJvZmlsZUlkIiA6ICJhZGRlOThiZTY4ZDM0NGQ3ODc2NDE4OWE3ZDMwZjQ3YyIsCiAgInByb2ZpbGVOYW1lIiA6ICJKYW1lc291bDEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYWFmYTViNTE1MjM2ZDQxZmFmNWZhMDI5YjEwNjBhZDYyMDIxY2QxMTk4OWJmMTcyZjkyYWMzMTc4ZDM3YWU4NCIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9","signature":"u4XAGq+pv0V8Fb6W3xk3eZAKCO2N7RWxru8B4BzaqVlIDDK6c5VNhIabIp//koP4CAefUOlBaP2DQD9H5MIAryzq6nmnryNDmpOIyqnvInu9GnyJk4R5Kd+kwPWlLqR5yrr2tLdmI3g5xNYDYxxifGpCpwjKW9hpuaNIeR6dX4JL2P+7xagcolexZdye8BN5ry4DXU9UEnZEUiioO8DuSQ6luQy7gaOElr24ANdeZPDkiY8d0+cC82HcLiZDd/JOFBRk7lWxgbg0AlJkRT8BcqKRqvYiBR9H1oupH6LM+t6siwAdKw42R1PQgUvfp27KLPzXaSEf+rDNtW1xIT5UvHKtp2UQEr5FtnYi4Vs6jEJ0XXM+hLvMQXSc7LnGxQ5AD5Io8+TUMM0LvAKCZf0LrY4JGIRQbFLkqAad2KmGbQ7ch8pJDTHkZXq/z2waEOudhjNOEDWT6KUbNJVE/Dby9/8pyliD3mjZSsJ58BKgE2e5qZ1TrA5VYYDcg4a5PzILeiOQaIcgZbaygF7uD2zAH8ftH0PDga6JpW+nzo32UH8po780VlHg7lZQQ3pgA1VsfHgXoMXuw5pEkyS2WySeBRxpfo8Pio9zpFon61zKfbvjksop+sJk9yY+kIY7G713EzaXcMTPeqoBRzf6oIGZbZGblcdrEzWpjysTLT+Hmd8="}]}'
+      - '{"uuid":"adde98be-68d3-44d7-8764-189a7d30f47c","name":"Jamesoul1","textureProperties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTc1NTIwNjUxNDIyNSwKICAicHJvZmlsZUlkIiA6ICJhZGRlOThiZTY4ZDM0NGQ3ODc2NDE4OWE3ZDMwZjQ3YyIsCiAgInByb2ZpbGVOYW1lIiA6ICJKYW1lc291bDEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjdiZDg1ZWZhNmU0NDk0NjZhODM5Mjg2NWM1N2EyNTgzMGQyZjRiY2Y4ZTBkNGVmMWFmNDhmNzEwMWNjYjIyYSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9","signature":"sWdJ/24zg9Cc/6yhD1z41XfQRGaF+UQDC0SQXhxCb1L7fx8fPYy7MLJEyuoN7qONdwE0cHr87ojY5fyK0+FpYdWpjNh0P13iVcWDPNFgAp8BUybvC8lEsSF23TN1otXTn2Q4Gmtlq6GulBT2E4cRXBdIUii1kisbdQFCaZGh+/dT+nQ3frwf9d9gF8qHfD5P0Ov6jYlq1lzdGaFvgbF4aBdFxaZT77EwZa9ZfX0bmIZeyv4icnZ5Qx1O0uaBiZnAuEe4Vo8vQcNFzVM1izR+bXn1hyqT0MF3tlMjxmbeIKRBC4z/ALP/fLnEKXwvmoo7RP3UCJ9NLwqx121XAeKHXw0HLwj4/74MChqLhIIcJGdYMjwF2EJunVDXQNO3ADI3ZdGguoXaTFBPsAQezX2nav5q6MRXjCU3st3gjShBaS2uUe1BA8M8pw7cnHmCqzZrC2wdAMbaR2guYJnRrvi7NoSSVyBpdaHiGY3v4VsN2Bz2jh8E5c9XXaLqQ4xzM0EJdMDwNTOFiWSB1+5sl6Luzjn1RJmrP4ZN+NURjgFCv/D0qy3quktqsIXrIW5Z7+ZXuG8qJCyoi3q5XYLgS2oO5h+f+wq5aahw421bL8AksUHAqaxXZXvjcCkJvxniXlQzZDT18WlxOpNiy3v+sWOEhXESJIfNGINK3Uq7ktpOhLY="}]}'
+  health: 12
+  entity_attributes:
+    generic_scale: 0.8
+    generic_attack_speed: 1.1
+  transformable: false
+  item:
+    iron_axe: 20
+    stone_axe: 30
+    stone_sword: 30
+    bow: 80
+  chestplate:
+    chainmail_chestplate: 5
+    none: 40
+  boots:
+    leather_boots: 30
+    none: 40
+  leggings:
+    chainmail_leggings: 30
+    none: 40
+  default_drops: false
+  drops:
+    - iron_nugget@8: 30
+      iron_nugget@4: 50
+      none: 10
+    - gold_nugget@18: 50
+      gold_nugget@16: 100
+      gold_nugget@12: 50
+      gold_nugget@8: 20
+      none: 10
+    - diamond: 1
+      none: 100
+    - emerald: 10
+      none: 100
+    - sp:16

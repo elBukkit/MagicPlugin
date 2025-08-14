@@ -4,11 +4,16 @@
 # 10.10.3
 
  - Add support for 1.21.8 (Thank you, shakil-muntasir!)
+ - Wand icons changed to use ItemData instead of MaterialData
+   This should make wand icons generally compatible with all types of saved items, including those with 1.21 components
+   This was a big change, and there may be hidden issues, particularly with wands that have special active/inactive states
  - Add allow_max_height parameter to Velocity action, defaults to true. 
    The Velocity action will now work above y=256 by default.
  - Add `dialog_random` NPC option, for NPCs to say random lines of dialog instead of a list in order
  - Allow lists or probability maps for mob equipment and disguise skins
- - Added `giant` mob to test random equipment, and showcase the scale attribute (added to spawnmobs example as well)
+ - Added `giant` mob to test random equipment, and showcase the scale attribute (added to `spawnmobs` example as well)
+ - Added `goblin` mob (thanks to @jamesol1) to test randomized mob skins and equipment (added to `spawnmobs` example as well)
+ - Remove the scaredy cat spawn rule from the `spawnmobs` example
  - Fix `/mage skin` command, now uses new LibsDisguise format
  - Restore legacy serialized items for 1.20.x versions (e.g. emerald_sword)
    These items may not work in early 1.21.x since the format changed somewhat randomly in a minor release

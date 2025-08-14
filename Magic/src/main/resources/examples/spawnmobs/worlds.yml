@@ -9,14 +9,6 @@ overworld_mobs:
       probability: 0.05
       replace_type: philbert
 
-    replace_cats:
-      class: Replace
-      target_types:
-        - cat
-        - ocelot
-      probability: 0.05
-      replace_type: scaredy
-
     replace_flying:
       class: Replace
       y_offset: 32
@@ -69,6 +61,7 @@ overworld_mobs:
         madscientist: 1
         archer: 5
         giant: 2
+        goblin: 50
 
 nether_mobs:
   world: world_nether

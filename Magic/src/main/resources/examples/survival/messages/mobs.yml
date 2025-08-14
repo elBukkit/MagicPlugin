@@ -67,6 +67,8 @@ mobs:
     name: Fire Elemental
   healer:
     name: Healer
+  goblin:
+    name: "&aGoblin"
   ironman:
     name: Iron Man
   killer_bunny:
