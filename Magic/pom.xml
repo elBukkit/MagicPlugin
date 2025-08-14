@@ -317,6 +317,18 @@
                 </exclusion>
             </exclusions>
         </dependency>
+        <!--
+            PacketEvents is needed for LibsDisguises
+            I'm not sure why it's not picked up via transitive dependencies, though
+            Without this here we get an error about not being able to access UserProfile, even
+            though I'm not directly trying to access that class, it is just included in the PlayerDisguise class.
+        -->
+        <dependency>
+            <groupId>com.github.retrooper.packetevents</groupId>
+            <artifactId>spigot</artifactId>
+            <version>2.3.0</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>me.libraryaddict.disguises</groupId>
             <artifactId>libsdisguises</artifactId>
@@ -497,6 +509,11 @@
         <repository>
             <id>opencollab-snapshot</id>
             <url>https://repo.opencollab.dev/main/</url>
+        </repository>
+        <!-- This is here for PacketEvents, which is here for LibsDisguises -->
+        <repository>
+            <id>CodeMC</id>
+            <url>https://repo.codemc.io/repository/maven-public/</url>
         </repository>
         <!-- dead [For Geyser]
         <repository>
