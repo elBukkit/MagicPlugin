@@ -890,4 +890,6 @@ public interface MageController {
     void onEntitiesLoaded(Chunk chunk, List<Entity> entities);
     boolean onEntityPickupItem(Entity entity, Item item);
     Collection<Requirement> getRequirements(ConfigurationSection configuration);
+
+    boolean isDebugConfigurationFiles();
 }

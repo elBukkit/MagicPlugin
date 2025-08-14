@@ -1,12 +1,17 @@
 package com.elmakers.mine.bukkit.utility.platform.base;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -123,6 +128,7 @@ import org.bukkit.scheduler.BukkitTask;
 import org.bukkit.util.BlockVector;
 import org.bukkit.util.Vector;
 import org.bukkit.util.VoxelShape;
+import org.yaml.snakeyaml.Yaml;
 
 import com.elmakers.mine.bukkit.magic.MagicMetaKeys;
 import com.elmakers.mine.bukkit.utility.BoundingBox;
@@ -142,7 +148,7 @@ import com.elmakers.mine.bukkit.utility.platform.base.populator.OutOfBoundsEntit
 import com.google.common.collect.Multimap;
 
 public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
-    // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many time
+    // This is really here to prevent infinite loops, but sometimes these requests legitimately come in many times
     // (for instance when undoing a spell in an unloaded chunk that threw a ton of different falling blocks)
     // So putting some lower number on this will trigger a lot of false-positives.
     protected static final int MAX_CHUNK_LOAD_TRY = 10000;
@@ -159,7 +165,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected static final BoundingBox BLOCK_BOUNDING_BOX = new BoundingBox(0, 1, 0, 1, 0, 1);
     protected final List<BoundingBox> blockBoundingBoxes = new ArrayList<>();
 
-    protected final UUID emptyUUID = new UUID(0L, 0L);
     protected final Pattern hexColorPattern = Pattern.compile("&(#[A-Fa-f0-9]{6})");
     protected ItemStack dummyItem;
     protected boolean hasDumpedStack = false;
@@ -168,7 +173,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     protected final Map<LoadingChunk, Integer> loadingChunks = new HashMap<>();
     protected final EnteredStateTracker isDamaging = new EnteredStateTracker();
     protected final Map<World, WeakReference<ThrownPotion>> worldPotions = new WeakHashMap<>();
-    public Map<Integer, Material> materialIdMap;
     protected final Platform platform;
 
     protected CompatibilityUtilsBase(final Platform platform) {
@@ -319,42 +323,94 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return entity.getLocation();
     }
 
+    public YamlConfiguration debugLoadConfiguration(String fileName, String fileContents) {
+        Yaml yaml = new Yaml();
+        Map<String, Object> loadedMap = yaml.load(fileContents);
+        YamlConfiguration combined = new YamlConfiguration();
+        if (loadedMap == null) {
+            platform.getLogger().info("File is missing or empty: " + fileName);
+            return combined;
+        }
+        Map<String, Object> singleMap = new HashMap<>();
+        for (Map.Entry<String, Object> entry : loadedMap.entrySet()) {
+            String key = entry.getKey();
+            platform.getLogger().info("Loading " + entry.getKey() + " from " + fileName + ": ");
+            singleMap.clear();
+            singleMap.put(key, entry.getValue());
+            StringWriter writer = new StringWriter();
+            yaml.dump(singleMap, writer);
+            String valueString = writer.toString();
+            try {
+                YamlConfiguration nodeYaml = new YamlConfiguration();
+                nodeYaml.loadFromString(valueString);
+                Object nodeValue = nodeYaml.get(key);
+                if (nodeValue != null) {
+                    combined.set(key, nodeYaml.get(key));
+                } else {
+                    platform.getLogger().log(Level.SEVERE, " The node " + entry.getKey() + " from " + fileName + " was empty");
+                }
+            } catch (Throwable ex) {
+                platform.getLogger().log(Level.SEVERE, " Error loading " + entry.getKey() + " from " + fileName + ": " + ex.getMessage());
+            }
+        }
+        return combined;
+    }
+
     @Override
     public ConfigurationSection loadConfiguration(String fileName) throws IOException, InvalidConfigurationException {
+        if (platform.getController().isDebugConfigurationFiles()) {
+            return debugLoadConfiguration(fileName, Files.readString(Path.of(fileName)));
+        }
         YamlConfiguration configuration = new YamlConfiguration();
         try {
             configuration.load(fileName);
         } catch (FileNotFoundException ignore) {
 
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, " Error reading configuration file '" + fileName + "': " + ex.getMessage());
         }
         return configuration;
     }
 
     @Override
     public ConfigurationSection loadConfiguration(File file) throws IOException, InvalidConfigurationException {
+        if (platform.getController().isDebugConfigurationFiles()) {
+            return debugLoadConfiguration(file.getPath(), Files.readString(file.toPath()));
+        }
         YamlConfiguration configuration = new YamlConfiguration();
         try {
             configuration.load(file);
         } catch (FileNotFoundException ignore) {
 
         } catch (Throwable ex) {
-            platform.getLogger().log(Level.SEVERE, "Error reading configuration file '" + file.getAbsolutePath() + "'");
-            throw ex;
+            platform.getLogger().log(Level.SEVERE, " Error reading configuration file '" + file.getAbsolutePath() + "': " + ex.getMessage());
         }
         return configuration;
     }
 
     @Override
     public YamlConfiguration loadConfiguration(InputStream stream, String fileName) throws IOException, InvalidConfigurationException {
+        if (platform.getController().isDebugConfigurationFiles()) {
+            ByteArrayOutputStream result = new ByteArrayOutputStream();
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = stream.read(buffer)) != -1) {
+                result.write(buffer, 0, length);
+            }
+            String contents = result.toString(StandardCharsets.UTF_8.name());
+            return debugLoadConfiguration(fileName, contents);
+        }
         YamlConfiguration configuration = new YamlConfiguration();
         if (stream == null) {
             platform.getLogger().log(Level.SEVERE, "Could not find builtin configuration file '" + fileName + "'");
             return configuration;
         }
         try {
-            configuration.load(new InputStreamReader(stream, "UTF-8"));
+            configuration.load(new InputStreamReader(stream, StandardCharsets.UTF_8.name()));
         } catch (FileNotFoundException ignore) {
 
+        } catch (Throwable ex) {
+            platform.getLogger().log(Level.SEVERE, " Error reading configuration file '" + fileName + "': " + ex.getMessage());
         }
         return configuration;
     }

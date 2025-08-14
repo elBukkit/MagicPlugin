@@ -68,6 +68,15 @@ show_cast_messages: true
 # with Magic, the extra log info may help me find problems.
 log_verbosity: 0
 
+# Set this to true to load each item in a config file separately
+# This can help diagnose issues loading serialized items since Bukkit will spam the logs
+# for invalid materials
+# If the items are builtin, there may not be anything you can do other than ignore the items
+# or update to the latest server software
+# You may need to `/magic load` to see this take effect due to configuration load order.
+# It is not recommended to leave this on in production, it should only be used for debugging purposes.
+debug_configuration_files: false
+
 # Set this to false to turn off spell validation on config load
 # This may be necessary to avoid log spam if you are using placeholders in spell configs
 # This is because placeholders can not be evaluated without a player context.

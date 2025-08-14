@@ -627,6 +627,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     MaterialSet offhandMaterials = MaterialSets.empty();
     private GeyserManager geyserManager = null;
     private List<String> resourcePackPlugins = new ArrayList<>();
+    private boolean debugConfigurationFiles = false;
 
     public MagicController(final Plugin plugin) {
         this.plugin = plugin;
@@ -8376,6 +8377,11 @@ public class MagicController implements MageController, ChunkLoadListener {
         resourcePacks.load(properties, sender, !loaded);
 
         logVerbosity = properties.getInt("log_verbosity", 0);
+        debugConfigurationFiles = properties.getBoolean("debug_configuration_files", false);
+        if (debugConfigurationFiles) {
+            logger.info("Enabled configuration debugging, config files will be broken up into single nodes and loaded individually for debugging.");
+            logger.info("It is not recommended to use this in a production environment!");
+        }
         logger.setSilent(logVerbosity < 0);
         logger.setNotify(properties.getBoolean("log_notify", true));
         MaterialAndData.DEBUG = logVerbosity >= 10;
@@ -9164,5 +9170,10 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Override
     public List<String> getResourcePackPlugins() {
         return resourcePackPlugins;
+    }
+
+    @Override
+    public boolean isDebugConfigurationFiles() {
+        return debugConfigurationFiles;
     }
 }
