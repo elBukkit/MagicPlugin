@@ -1,0 +1,21 @@
+testskin:
+  type: zombie
+  disguise:
+    type: player
+    name: Test Skin
+    skin: '{"uuid":"adde98be-68d3-44d7-8764-189a7d30f47c","name":"Jamesoul1","textureProperties":[{"name":"textures","value":"ewogICJ0aW1lc3RhbXAiIDogMTc1NDIzNTQxMTcyOCwKICAicHJvZmlsZUlkIiA6ICJhZGRlOThiZTY4ZDM0NGQ3ODc2NDE4OWE3ZDMwZjQ3YyIsCiAgInByb2ZpbGVOYW1lIiA6ICJKYW1lc291bDEiLAogICJzaWduYXR1cmVSZXF1aXJlZCIgOiB0cnVlLAogICJ0ZXh0dXJlcyIgOiB7CiAgICAiU0tJTiIgOiB7CiAgICAgICJ1cmwiIDogImh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMWM1NmFjNWJjZDU4YzEzMzhjZjkyNDZmODViMmMxMTJmZWM0NTY4NjIyZTkwM2FmZDJjZDU5MmNjYjEyYzVlNSIsCiAgICAgICJtZXRhZGF0YSIgOiB7CiAgICAgICAgIm1vZGVsIiA6ICJzbGltIgogICAgICB9CiAgICB9CiAgfQp9","signature":"ceiS6zu8twbO5GNVW15e4nhwxp2GtAwHD/9eKXMQj8RoeivDNJNKFJ1nby4Id0o6yt6jnGxQLy+dwDjkdNHkeKoXinVSr/abGSGj1rkiSEk0SAG6D2leXWhkSP7Pizlv9JYJ+jTOwIelxsQIVavrz6pRAYkep7N7FyVtxGvE2fBk40sd71Zjzf6U3OYpVHgSMmBEOksHrRpGL/IpPwDcb/wn6MCa9OBUvTWsvLZtBR7k9FXV3m6GIMbUL9QyEWl5sPR4cqYANtnsZ3bGHA6aumGQ1eg3u1/A/i7lVrIXKthUa8HkXPf21yK6jrsV6/4WwvxDhL3Geo1WlF00Z32NSXiqn5TnANvZCWy5ftfE5+I1e2sVQDk57U4583G6fjiQ82oi1inmXaS98s4QXCq4/z2bd5y6AjJO+di5LQyuJiqIi7Y9Uu1g/TbJmgvSxlHVLLZ2m3ZsJr3Dn0oEn7RSyzhVuIiNM+mokZ4pQBzKbYkSBXwzjCiRydMKzsKQKH92wOvW793/LWwUC1710VbyZfOS2uoCl0CfJt1HH6bKC6i0hiidcrSFr25Ck3bRZuXM1GkuBoMmVTtyVt+YyYvLAgB9BRBsWP7DoBbNV8ZOuC1RJjzirtTXHHyBEDlPEvX6FnSaehiDchQrg+YID4a7oLd7iJP3Jx3ylg04Mz1B90Y="}]}'
+  health: 1000
+  default_drops: false
+  interval: 1000
+  helmet: nothing
+  triggers:
+    interval:
+      cast:
+        missile|4: 200
+        none: 20
+  drops:
+    - gold_ingot@30
+    - sp:200
+  potion_effects:
+    - type: speed
+      amplifier: 1
