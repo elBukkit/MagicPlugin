@@ -10,6 +10,11 @@
  - Allow lists or probability maps for mob equipment and disguise skins
  - Added `giant` mob to test random equipment, and showcase the scale attribute (added to spawnmobs example as well)
  - Fix `/mage skin` command, now uses new LibsDisguise format
+ - Restore legacy serialized items for 1.20.x versions (e.g. emerald_sword)
+   These items may not work in early 1.21.x since the format changed somewhat randomly in a minor release
+   In 1.20.x you will still get spammy log errors on load, but the items should work again
+   Only survival items were restored, items from other example configs still won't work
+   You may need to use an older version of Magic for all of this to really work properly - sorry!
  
 # 10.10.2
 
