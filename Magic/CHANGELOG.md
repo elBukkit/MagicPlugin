@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.10.4
+
 # 10.10.3
 
  - Add support for 1.21.8 (Thank you, shakil-muntasir!)
