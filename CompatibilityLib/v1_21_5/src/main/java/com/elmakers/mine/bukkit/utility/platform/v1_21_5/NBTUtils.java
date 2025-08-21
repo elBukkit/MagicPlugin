@@ -512,11 +512,13 @@ public class NBTUtils extends NBTUtilsBase {
             value = ((ShortTag)tag).asShort().orElse(null);
         } else if (tag instanceof ByteTag) {
             // This is kind of nasty. Really need a type-juggling container class for config properties.
-            value = ((ByteTag)tag).asByte();
-            if (value.equals((byte)0)) {
-                value = false;
-            } else if (value.equals((byte)1)) {
-                value = true;
+            value = ((ByteTag)tag).asByte().orElse(null);
+            if (value != null) {
+                if (value.equals((byte)0)) {
+                    value = false;
+                } else if (value.equals((byte)1)) {
+                    value = true;
+                }
             }
         } else if (tag instanceof ListTag) {
             List<Object> converted = new ArrayList<>();
