@@ -65,4 +65,8 @@ public interface ItemUtils {
     int getCustomModelData(ItemStack itemStack);
 
     void setCustomModelData(ItemStack itemStack, int customModelData);
+
+    Object getEquippable(ItemStack itemStack);
+
+    void setEquippable(ItemStack itemStack, Object equippable);
 }

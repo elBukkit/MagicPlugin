@@ -4,9 +4,7 @@
 # 10.10.3
 
  - Add support for 1.21.8 (Thank you, shakil-muntasir!)
- - Wand icons changed to use ItemData instead of MaterialData
-   This should make wand icons generally compatible with all types of saved items, including those with 1.21 components
-   This was a big change, and there may be hidden issues, particularly with wands that have special active/inactive states
+ - Add support for equippable components in wand icons (1.21.4 and up)
  - Add allow_max_height parameter to Velocity action, defaults to true. 
    The Velocity action will now work above y=256 by default.
  - Add `dialog_random` NPC option, for NPCs to say random lines of dialog instead of a list in order
@@ -21,7 +19,7 @@
    Only survival items were restored, items from other example configs still won't work
    You may need to use an older version of Magic for all of this to really work properly - sorry!
  - Fix uses of stained glass in star wars and automata configs, various other places
- - Fix loading boolean values from wand data
+ - Fix loading boolean values from wand data, fixes log spam from effect_bubbles upgrades
  
 # 10.10.2
 

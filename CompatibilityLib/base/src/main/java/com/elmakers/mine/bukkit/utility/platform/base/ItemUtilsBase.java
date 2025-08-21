@@ -183,4 +183,11 @@ public abstract class ItemUtilsBase implements ItemUtils {
         }
         stack.setItemMeta(meta);
     }
+
+    public Object getEquippable(ItemStack itemStack) {
+        return null;
+    }
+
+    public void setEquippable(ItemStack itemStack, Object equippable) {
+    }
 }

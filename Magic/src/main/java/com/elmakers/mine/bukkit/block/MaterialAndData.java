@@ -94,6 +94,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected Short data;
     protected int customModelData;
     protected MaterialExtraData extraData;
+    protected GenericExtraData genericExtraData;
     protected String blockData;
     protected boolean isValid = true;
     protected boolean isTargetValid = true;
@@ -186,6 +187,12 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (item.hasItemMeta()) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
             customModelData = CompatibilityLib.getItemUtils().getCustomModelData(item);
+
+            Object equippable = CompatibilityLib.getItemUtils().getEquippable(item);
+            if (equippable != null) {
+                genericExtraData = new GenericExtraData();
+                genericExtraData.setEquippable(equippable);
+            }
         }
     }
 
@@ -1032,6 +1039,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                 data.applyTo(book);
                 stack.setItemMeta(meta);
             }
+        }
+        if (genericExtraData != null) {
+            CompatibilityLib.getItemUtils().setEquippable(stack, genericExtraData.getEquippable());
         }
         if (!asynchronous && callback != null) {
             callback.updated(stack);
