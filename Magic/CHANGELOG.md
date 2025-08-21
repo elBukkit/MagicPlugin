@@ -21,6 +21,7 @@
    Only survival items were restored, items from other example configs still won't work
    You may need to use an older version of Magic for all of this to really work properly - sorry!
  - Fix uses of stained glass in star wars and automata configs, various other places
+ - Fix loading boolean values from wand data
  
 # 10.10.2
 

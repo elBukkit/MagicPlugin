@@ -16,3 +16,14 @@ rubysword:
 sapphiresword:
     name: Sapphire Sword
     item: diamond_sword{18003}
+
+cheese_overlay:
+  item:
+    ==: org.bukkit.inventory.ItemStack
+    DataVersion: 4325
+    id: minecraft:leather_helmet
+    count: 1
+    components:
+      minecraft:equippable: '{camera_overlay:"magic:other/cheese",slot:"head"}'
+      minecraft:custom_name: '{extra:["Equipable Overlay"],text:""}'
+    schema_version: 1

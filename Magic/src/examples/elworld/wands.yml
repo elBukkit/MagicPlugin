@@ -321,3 +321,7 @@ teleporter:
   spells:
     - teleportermenu
 
+cheesewand:
+  icon: cheese_overlay
+  cast_spell: healing
+  cast_interval: 2000
