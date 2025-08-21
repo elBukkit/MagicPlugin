@@ -96,6 +96,16 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
 
     @Nullable
     protected Double evaluate(String expression) {
+        // This is a hack to fix an issue with 1.21.5 NBT having saved Optional classes to a config
+        // in place of boolean values.
+        // Unfortunately once the string is in the config there was not a good fix, so I'm
+        // putting this here as a stopgap to avoid the affected wands being permanently broken.
+        if (expression.equals("Optional[1]")) {
+            expression = "1";
+        } else if (expression.equals("Optional[0]")) {
+            expression = "0";
+        }
+
         workingParameters = getParameters();
         if (workingParameters == null || workingParameters.isEmpty()) return null;
 
