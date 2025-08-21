@@ -513,4 +513,11 @@ public class ItemData implements com.elmakers.mine.bukkit.api.item.ItemData, Ite
         }
         discoverRecipes.add(recipe);
     }
+
+    @Override
+    public void applyToItem(ItemStack itemStack) {
+        ItemStack thisItem = getOrCreateItemStack();
+        itemStack.setType(thisItem.getType());
+        itemStack.setItemMeta(thisItem.getItemMeta());
+    }
 }

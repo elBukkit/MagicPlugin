@@ -37,6 +37,7 @@ public interface ItemData {
     @Nullable
     Collection<String> getDiscoverRecipes();
     void addDiscoverRecipe(String recipeKey);
+    void applyToItem(ItemStack itemStack);
 
     @Nullable
     @Deprecated
