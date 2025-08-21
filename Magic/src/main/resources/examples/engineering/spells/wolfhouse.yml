@@ -102,7 +102,7 @@ wolfhouse_destruct:
 wolfhouse_dome:
   inherit: wolfhouse_build
   parameters:
-    brush: stained_glass:15
+    brush: black_stained_glass
     thickness: 1
 
 wolfhouse_shields:

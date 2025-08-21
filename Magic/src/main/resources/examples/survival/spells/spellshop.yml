@@ -40,5 +40,5 @@ spellshop:
       show_free: true
       confirm: true
       auto_close: true
-      confirm_filler: stained_glass:5
+      confirm_filler: lime_stained_glass_pane
 

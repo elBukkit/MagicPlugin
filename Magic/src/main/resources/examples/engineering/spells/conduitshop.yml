@@ -10,7 +10,7 @@ conduitshop:
         requirements:
         - path_end: architect
         apply_to_caster: true
-        confirm_filler: stained_glass:9
+        confirm_filler: cyan_stained_glass_pane
         confirm: true
         spells:
         - none

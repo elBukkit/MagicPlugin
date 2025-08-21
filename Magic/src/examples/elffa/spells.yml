@@ -57,7 +57,7 @@ wandshop:
     parameters:
         loud: true
         confirm: true
-        confirm_filler: stained_glass:3
+        confirm_filler: lime_stained_glass_pane
         items:
           wand|beginner: 4000
           wand|student: 80000

@@ -16,16 +16,16 @@ starshop:
       items:
       - lightsaber_hilt
       - light_blue_stained_glass@2
-      - stained_glass:1@2
-      - stained_glass:2@2
-      - stained_glass:5@2
+      - orange_stained_glass@2
+      - purple_stained_glass@2
+      - lime_stained_glass@2
       cost: 5000
       limit: 1
     - unlock_class: sith
       selected: "You gave in to the dark side as a $name for $cost"
       items:
       - lightsaber_hilt
-      - stained_glass:14@2
+      - red_stained_glass@2
       cost: 5000
       limit: 1
     - item: blaster_blue

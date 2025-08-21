@@ -5,7 +5,7 @@ upgradeshop:
     inherit: buyshop
     parameters:
         quiet: true
-        confirm_filler: stained_glass:2
+        confirm_filler: lime_stained_glass_pane
         confirm: true
         requirements:
         - holding_wand: true

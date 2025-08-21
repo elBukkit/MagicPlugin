@@ -20,6 +20,7 @@
    In 1.20.x you will still get spammy log errors on load, but the items should work again
    Only survival items were restored, items from other example configs still won't work
    You may need to use an older version of Magic for all of this to really work properly - sorry!
+ - Fix uses of stained glass in star wars and automata configs, various other places
  
 # 10.10.2
 
@@ -32,7 +33,7 @@
  - Drop support for legacy (.schematic) schematic files, only .schem are supported now
  - Drop support for legacy material names, you may need to update customized configs to use modern material names!
    See the Spigot API for a list of modern names: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
- - Support predifined icons (from icons config) in wand icons
+ - Support predefined icons (from icons config) in wand icons
  - Fix/update lightsaber hilt item from stars config
  - Update war config items to use custom model data
  - Update all serialized items.

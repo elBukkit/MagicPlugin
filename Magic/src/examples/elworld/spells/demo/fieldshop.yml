@@ -2,7 +2,7 @@ fieldshop:
     inherit: buyshop
     parameters:
         confirm: true
-        confirm_filler: stained_glass:3
+        confirm_filler: lime_stained_glass_pane
         auto_close: true
         items:
         - item: beacon

@@ -34,7 +34,7 @@ worm:
         "worm_death radius 10 destructible $birth": 100,100,100
         "worm_death radius 12 destructible $birth": 20,50,200
     cast:
-        "blob brush stained_glass:15 radius 3 undo 5000": 20,80,90
+        "blob brush black_stained_glass radius 3 undo 5000": 20,80,90
         "curse": 80,90,100
         "blind": 60,100,150
         "shrink": 30,50,70
@@ -44,7 +44,7 @@ worm:
         "homing|3": 20,30,50
         "missile|3": 100,150,250
         "petrify|2": 30,50,70
-        "shell stained_glass:15 radius 3 undo 7000 indestructible $birth": 20,40,80
+        "shell black_stained_glass radius 3 undo 7000 indestructible $birth": 20,40,80
         "railgun indestructible $birth": 20,40,80
         "none": 20,10,5
     parameters:

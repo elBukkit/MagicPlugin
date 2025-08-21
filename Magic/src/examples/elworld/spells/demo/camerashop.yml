@@ -6,5 +6,5 @@ camerashop:
           cost: 100
         confirm: true
         auto_close: true
-        confirm_filler: stained_glass:3
+        confirm_filler: lime_stained_glass_pane
 

@@ -16,7 +16,7 @@ rankshop:
         auto_upgrade: false
         require_upgrade: false
         use_sp: true
-        confirm_filler: stained_glass:2
+        confirm_filler: lime_stained_glass_pane
         require_wand: true
         items:
           to_mystic: 100

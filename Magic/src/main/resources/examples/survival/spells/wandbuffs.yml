@@ -10,7 +10,7 @@ wandbuffshop:
       -  class: Selector
   parameters:
     confirm: true
-    confirm_filler: stained_glass:13
+    confirm_filler: lime_stained_glass_pane
     show_unavailable: true
     cost_type: sp
     requirements:

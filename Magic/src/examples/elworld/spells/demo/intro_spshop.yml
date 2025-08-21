@@ -8,7 +8,7 @@ intro_spshop:
         cooldown: 360000000
         confirm: true
         auto_close: true
-        confirm_filler: stained_glass:3
+        confirm_filler: lime_stained_glass_pane
         require_wand: true
         quiet: false
         loud: true
