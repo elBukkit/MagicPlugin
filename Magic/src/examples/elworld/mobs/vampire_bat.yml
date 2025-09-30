@@ -1,0 +1,44 @@
+vampire_bat:
+  type: bat
+  targeting:
+    radius: 32
+  brain:
+    goals:
+      - type: nearest_attackable_target
+        priority: 1
+      - type: move_towards_target
+        priority: 2
+      - type: melee_attack
+        priority: 3
+      - type: random_stroll
+        priority: 10
+
+vampire_pig:
+  type: pig
+  targeting:
+    radius: 32
+  brain:
+    goals:
+      - type: nearest_attackable_target
+        priority: 1
+      - type: move_towards_target
+        priority: 2
+      - type: melee_attack
+        priority: 3
+
+
+vampire_pigman:
+  type: zombified_piglin
+  targeting:
+    radius: 32
+  brain:
+    remove_default_goals: true
+    goals:
+      - type: look_at_player
+        priority: 2
+      - type: nearest_attackable_target
+        priority: 2
+      - type: move_towards_target
+        priority: 1
+      - type: melee_attack
+        priority: 3
