@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.craftbukkit.v1_21_R6.entity.CraftEntity;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
@@ -36,7 +38,9 @@ import net.minecraft.nbt.NbtIo;
 import net.minecraft.nbt.ShortTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.TypedEntityData;
 
 public class NBTUtils extends NBTUtilsBase {
     public NBTUtils(Platform platform) {
@@ -322,15 +326,17 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Object entityData) {
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData) {
         if (platform.getItemUtils().isEmpty(spawnEgg)) return false;
         if (entityData == null || !(entityData instanceof CompoundTag)) return false;
 
         Object handle = platform.getItemUtils().getHandle(spawnEgg);
         if (handle == null) return false;
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)handle;
-        CustomData customData = CustomData.of((CompoundTag)entityData);
-        itemStack.set(DataComponents.ENTITY_DATA, customData);
+        CraftEntity craft = (CraftEntity) entity;
+        net.minecraft.world.entity.Entity nmsEntity = craft.getHandle();
+        TypedEntityData<EntityType<?>> typedEntityData = TypedEntityData.of(nmsEntity.getType(), (CompoundTag)entityData);
+        itemStack.set(DataComponents.ENTITY_DATA, typedEntityData);
         return true;
     }
 

@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.logging.Level;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.CompatibilityConstants;
@@ -310,7 +311,7 @@ public class NBTUtils extends NBTUtilsBase {
     }
 
     @Override
-    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Object entityData) {
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData) {
         if (platform.getItemUtils().isEmpty(spawnEgg)) return false;
         if (entityData == null || !(entityData instanceof CompoundTag)) return false;
 

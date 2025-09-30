@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Entity;
 import org.bukkit.inventory.ItemStack;
 
 import com.elmakers.mine.bukkit.utility.ConfigUtils;
@@ -148,7 +149,7 @@ public abstract class NBTUtilsBase implements NBTUtils {
     }
 
     @Override
-    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Object entityData) {
+    public boolean setSpawnEggEntityData(ItemStack spawnEgg, Entity entity, Object entityData) {
         return setTag(spawnEgg, "EntityTag", entityData);
     }
 
