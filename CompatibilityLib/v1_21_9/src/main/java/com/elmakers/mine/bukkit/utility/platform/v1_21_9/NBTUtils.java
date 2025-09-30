@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
 
+import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
 import com.elmakers.mine.bukkit.utility.platform.base.NBTUtilsBase;
 
@@ -95,7 +96,7 @@ public class NBTUtils extends NBTUtilsBase {
                 tagObject = new CompoundTag();
                 // This makes a copy
                 CustomData customData = CustomData.of(tagObject);
-                tagObject = customData.getUnsafe();
+                tagObject = (CompoundTag) ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
                 ((net.minecraft.world.item.ItemStack)craft).set(DataComponents.CUSTOM_DATA, customData);
             }
             outputObject = new CompoundTag();
@@ -332,6 +333,7 @@ public class NBTUtils extends NBTUtilsBase {
         itemStack.set(DataComponents.ENTITY_DATA, customData);
         return true;
     }
+
     @Override
     public boolean addTagsToNBT(Map<String, Object> tags, Object node) {
         if (node == null) {

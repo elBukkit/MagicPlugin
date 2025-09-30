@@ -44,7 +44,7 @@ public class ItemUtils extends ItemUtilsBase_v1_21_4 {
         if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
         CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
-        return customData == null ? null : customData.getUnsafe();
+        return customData == null ? null : (CompoundTag)ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
     }
 
     @Override
@@ -77,10 +77,10 @@ public class ItemUtils extends ItemUtilsBase_v1_21_4 {
             tag = new CompoundTag();
             // This makes a copy
             customData = CustomData.of(tag);
-            tag = customData.getUnsafe();
+            tag = (CompoundTag)ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
             ((net.minecraft.world.item.ItemStack)mcItemStack).set(DataComponents.CUSTOM_DATA, customData);
         } else {
-            tag = customData.getUnsafe();
+            tag = (CompoundTag)ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
         }
         return tag;
     }
