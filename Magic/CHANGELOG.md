@@ -4,6 +4,7 @@
 # 10.10.4
 
  - Add support for 1.21.9
+ - Add support for 1.21.10
 
 # 10.10.3
 
