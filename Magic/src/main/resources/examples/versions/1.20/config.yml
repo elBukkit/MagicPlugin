@@ -1,0 +1,37 @@
+# Change to the skull format prior to 1.21.6
+alternate_resource_packs:
+  default:
+    url: "http://rp.elmakers.com/Magic-RP-1.21.5.zip"
+  borders:
+    url: "http://rp.elmakers.com/Magic-potter-RP-1.21.5.zip"
+  painterly:
+    url: "http://rp.elmakers.com/Magic-painterly-RP-1.21.5.zip"
+  lowres:
+    url: "http://rp.elmakers.com/Magic-lowres-RP-1.21.5.zip"
+  skulls:
+    url: "http://rp.elmakers.com/Magic-skulls-RP-1.21.5.zip"
+    url_icons_enabled: true
+  survival:
+    url: "http://rp.elmakers.com/Magic-RP-1.21.5.zip"
+  all:
+    url: "http://rp.elmakers.com/Magic-all-RP-1.21.5.zip"
+  modelengine:
+    url: "http://rp.elmakers.com/Magic-modelengine-RP-1.21.5.zip"
+  hires:
+    url: "http://rp.elmakers.com/Magic-hires-RP-1.21.5.zip"
+  hires-all:
+    url: "http://rp.elmakers.com/Magic-hires-all-RP-1.21.5.zip"
+  hires-modelengine:
+    url: "http://rp.elmakers.com/Magic-hires-modelengine-RP-1.21.5.zip"
+  hires-robes:
+    url: "http://rp.elmakers.com/Magic-hires-robes-RP-1.21.5.zip"
+  robes:
+    url: "http://rp.elmakers.com/Magic-robes-RP-1.21.5.zip"
+  vanilla:
+    url: "http://rp.elmakers.com/Magic-vanilla-RP-1.21.5.zip"
+  vanilla-all:
+    url: "http://rp.elmakers.com/Magic-vanilla-all-RP-1.21.5.zip"
+  vanilla-robes:
+    url: "http://rp.elmakers.com/Magic-vanilla-robes-RP-1.21.5.zip"
+  war:
+    url: "http://rp.elmakers.com/Magic-war-RP-1.21.5.zip"

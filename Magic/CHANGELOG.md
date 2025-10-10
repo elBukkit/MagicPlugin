@@ -5,6 +5,8 @@
 
  - Add support for 1.21.9
  - Add support for 1.21.10
+ - Fix player head items when using the RP in 1.21.6 and up
+   This *may* cause issues in version from 1.20 and 1.21.5
 
 # 10.10.3
 
