@@ -7,6 +7,8 @@
  - Add support for 1.21.10
  - Fix player head items when using the RP in 1.21.6 and up
    This *may* cause issues in version from 1.20 and 1.21.5
+ - Add Multiverse 5 integration (Thank you, ArcticFox!)
+ - Add support for colored leaf particles (Thank you again, ArcticFox!)
 
 # 10.10.3
 
