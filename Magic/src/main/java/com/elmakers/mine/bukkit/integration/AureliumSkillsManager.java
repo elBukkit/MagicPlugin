@@ -96,7 +96,7 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
         }
         controller.getLogger().info("AuraSkills found" + statusString);
         if (!useMana) {
-            controller.getLogger().info("  If you want Magic spells to use AuraSkills mana, use &7/mconfig configure config aura_skills.use_mana true");
+            controller.getLogger().info("  If you want Magic spells to use AuraSkills mana, use &7/mconfig configure config aurelium_skills.use_mana true");
         }
     }
 
