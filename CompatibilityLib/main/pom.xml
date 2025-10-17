@@ -5,7 +5,7 @@
     <parent>
         <groupId>com.elmakers.mine.bukkit.compatibility</groupId>
         <artifactId>CompatibilityLib-parent</artifactId>
-        <version>10.10.3</version>
+        <version>10.10.5-SNAPSHOT</version>
     </parent>
     <artifactId>CompatibilityLib</artifactId>
 
@@ -85,6 +85,20 @@
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>CompatibilityLib-v1_21_8</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>CompatibilityLib-v1_21_9</artifactId>
+            <version>${project.version}</version>
+            <type>jar</type>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>CompatibilityLib-v1_21_10</artifactId>
             <version>${project.version}</version>
             <type>jar</type>
             <scope>compile</scope>

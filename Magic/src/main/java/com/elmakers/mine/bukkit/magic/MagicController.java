@@ -219,6 +219,7 @@ import com.elmakers.mine.bukkit.protection.FactionsManager;
 import com.elmakers.mine.bukkit.protection.GriefPreventionManager;
 import com.elmakers.mine.bukkit.protection.LandsManager;
 import com.elmakers.mine.bukkit.protection.LocketteManager;
+import com.elmakers.mine.bukkit.protection.Multiverse5Manager;
 import com.elmakers.mine.bukkit.protection.MultiverseManager;
 import com.elmakers.mine.bukkit.protection.NCPManager;
 import com.elmakers.mine.bukkit.protection.PreciousStonesManager;
@@ -394,6 +395,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private final WorldGuardManager worldGuardManager = new WorldGuardManager();
     private final PvPManagerManager pvpManager = new PvPManagerManager();
     private final MultiverseManager multiverseManager = new MultiverseManager();
+    private final Multiverse5Manager multiverse5Manager = new Multiverse5Manager();
     private final PreciousStonesManager preciousStonesManager = new PreciousStonesManager();
     private final TownyManager townyManager = new TownyManager();
     private final GriefPreventionManager griefPreventionManager = new GriefPreventionManager();
@@ -1649,7 +1651,7 @@ public class MagicController implements MageController, ChunkLoadListener {
                             valueMap.put("Citizens", controller.citizens != null ? 1 : 0);
                             valueMap.put("CommandBook", controller.hasCommandBook ? 1 : 0);
                             valueMap.put("PvpManager", controller.pvpManager.isEnabled() ? 1 : 0);
-                            valueMap.put("Multiverse-Core", controller.multiverseManager.isEnabled() ? 1 : 0);
+                            valueMap.put("Multiverse-Core", controller.multiverseManager.isEnabled() || controller.multiverse5Manager.isEnabled() ? 1 : 0);
                             valueMap.put("Towny", controller.townyManager.isEnabled() ? 1 : 0);
                             valueMap.put("GriefPrevention", controller.griefPreventionManager.isEnabled() ? 1 : 0);
                             valueMap.put("PreciousStones", controller.preciousStonesManager.isEnabled() ? 1 : 0);
@@ -2191,6 +2193,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (worldGuardManager.isEnabled()) pvpManagers.add(worldGuardManager);
         if (pvpManager.isEnabled()) pvpManagers.add(pvpManager);
         if (multiverseManager.isEnabled()) pvpManagers.add(multiverseManager);
+        if (multiverse5Manager.isEnabled()) pvpManagers.add(multiverse5Manager);
         if (preciousStonesManager.isEnabled()) pvpManagers.add(preciousStonesManager);
         if (townyManager.isEnabled()) pvpManagers.add(townyManager);
         if (griefPreventionManager.isEnabled()) pvpManagers.add(griefPreventionManager);
@@ -8099,6 +8102,7 @@ public class MagicController implements MageController, ChunkLoadListener {
 
         // Link to Multiverse
         multiverseManager.initialize(plugin);
+        multiverse5Manager.initialize(plugin);
 
         // Link to DeadSouls
         Plugin deadSoulsPlugin = plugin.getServer().getPluginManager().getPlugin("DeadSouls");
@@ -8629,6 +8633,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         factionsManager.setEnabled(properties.getBoolean("factions_enabled", factionsManager.isEnabled()));
         pvpManager.setEnabled(properties.getBoolean("pvp_manager_enabled", pvpManager.isEnabled()));
         multiverseManager.setEnabled(properties.getBoolean("multiverse_enabled", multiverseManager.isEnabled()));
+        multiverse5Manager.setEnabled(properties.getBoolean("multiverse_enabled", multiverse5Manager.isEnabled()));
         preciousStonesManager.setEnabled(properties.getBoolean("precious_stones_enabled", preciousStonesManager.isEnabled()));
         preciousStonesManager.setOverride(properties.getBoolean("precious_stones_override", true));
         townyManager.setEnabled(properties.getBoolean("towny_enabled", townyManager.isEnabled()));
