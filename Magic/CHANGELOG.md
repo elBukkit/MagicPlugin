@@ -3,6 +3,8 @@
 
 # 10.10.5
 
+ - Update AureliumSkills integration to AuraSkills (Thank you, yuri-bastos and faedine!)
+
 # 10.10.4
 
  - Add support for 1.21.9
