@@ -14,12 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 
-import com.archyx.aureliumskills.api.AureliumAPI;
-import com.archyx.aureliumskills.configuration.Option;
-import com.archyx.aureliumskills.configuration.OptionL;
-import com.archyx.aureliumskills.skills.Skills;
-import com.archyx.aureliumskills.stats.Stat;
-import com.archyx.aureliumskills.stats.Stats;
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.event.EarnEvent;
 import com.elmakers.mine.bukkit.api.magic.Mage;
@@ -27,6 +21,12 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.ManaController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
+
+import dev.aurelium.auraskills.api.AuraSkillsApi;
+import dev.aurelium.auraskills.api.skill.Skills;
+import dev.aurelium.auraskills.api.stat.Stat;
+import dev.aurelium.auraskills.api.stat.Stats;
+import dev.aurelium.auraskills.api.user.SkillsUser;
 
 public class AureliumSkillsManager implements ManaController, AttributeProvider, Listener {
     private final MageController controller;
@@ -66,12 +66,14 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
 
         xpEarnRates.clear();
         ConfigurationSection earnRates = configuration.getConfigurationSection("xp_earn_from_sp");
-        for (String key : earnRates.getKeys(false)) {
-            try {
-                Skills skill = Skills.valueOf(key);
-                xpEarnRates.put(skill, earnRates.getDouble(key));
-            } catch (Exception ex) {
-                controller.getLogger().warning("Invalid AureliumSkills XP type in xp_earn_from_sp config: " + key);
+        if (earnRates != null) {
+            for (String key : earnRates.getKeys(false)) {
+                try {
+                    Skills skill = Skills.valueOf(key);
+                    xpEarnRates.put(skill, earnRates.getDouble(key));
+                } catch (Exception ex) {
+                    controller.getLogger().warning("Invalid AuraSkills XP type in xp_earn_from_sp config: " + key);
+                }
             }
         }
 
@@ -92,9 +94,9 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
             }
             statusString += StringUtils.join(integrations, ",");
         }
-        controller.getLogger().info("AureliumSkills found" + statusString);
+        controller.getLogger().info("AuraSkills found" + statusString);
         if (!useMana) {
-            controller.getLogger().info("  If you want Magic spells to use AureliumSkills mana, use &7/mconfig configure config aurelium_skills.use_mana true");
+            controller.getLogger().info("  If you want Magic spells to use AuraSkills mana, use &7/mconfig configure config aura_skills.use_mana true");
         }
     }
 
@@ -109,7 +111,7 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
                 controller.register(new AureliumSkillCurrency(this, skill, configuration));
                 names.add(skill.name());
             }
-            controller.getLogger().info("Registered AureliumSkills XP as currencies: " + StringUtils.join(names, ","));
+            controller.getLogger().info("Registered AuraSkills XP as currencies: " + StringUtils.join(names, ","));
         }
     }
 
@@ -125,30 +127,42 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
         return useAttributes;
     }
 
+    private SkillsUser getUser(Player player) {
+        return AuraSkillsApi.get().getUser(player.getUniqueId());
+    }
+
     @Override
     public double getMaxMana(Player player) {
-        return (int)(manaScale * AureliumAPI.getMaxMana(player));
+        SkillsUser user = getUser(player);
+        if (user == null) return 0;
+        return manaScale * user.getMaxMana();
     }
 
     @Override
     public double getManaRegen(Player player) {
-        double regen = OptionL.getDouble(Option.REGENERATION_BASE_MANA_REGEN) + AureliumAPI.getStatLevel(player, Stats.REGENERATION) * OptionL.getDouble(Option.REGENERATION_MANA_MODIFIER);
+        double regen = AuraSkillsApi.get().getUserManager().getUser(player.getUniqueId()).getStatLevel(Stats.REGENERATION);
         return (manaScale * regen);
     }
 
     @Override
     public double getMana(Player player) {
-        return (float)(manaScale * AureliumAPI.getMana(player));
+        SkillsUser user = getUser(player);
+        if (user == null) return 0;
+        return manaScale * user.getMana();
     }
 
     @Override
     public void removeMana(Player player, double amount) {
-        AureliumAPI.setMana(player, AureliumAPI.getMana(player) - (amount / manaScale));
+        SkillsUser user = getUser(player);
+        if (user == null) return;
+        user.setMana(user.getMana() - (amount / manaScale));
     }
 
     @Override
     public void setMana(Player player, double amount) {
-        AureliumAPI.setMana(player, amount / manaScale);
+        SkillsUser user = getUser(player);
+        if (user == null) return;
+        user.setMana(amount / manaScale);
     }
 
     @Override
@@ -166,14 +180,16 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
     @Nullable
     @Override
     public Double getAttributeValue(String attribute, Player player) {
+        SkillsUser user = getUser(player);
+        if (user == null) return null;
         try {
             Stat stat = Stats.valueOf(attribute);
-            return AureliumAPI.getStatLevel(player, stat);
+            return (double) user.getStatLevel(stat);
         } catch (Exception ignore) {
         }
         try {
             Skills skill = Skills.valueOf(attribute);
-            return (double)AureliumAPI.getSkillLevel(player, skill);
+            return (double) user.getSkillLevel(skill);
         } catch (Exception ignore) {
         }
         return null;
@@ -188,8 +204,10 @@ public class AureliumSkillsManager implements ManaController, AttributeProvider,
         if (event.getEarnCause() != EarnEvent.EarnCause.SPELL_CAST) return;
         Mage mage = event.getMage();
         if (!mage.isPlayer()) return;
+        SkillsUser user = getUser(mage.getPlayer());
+        if (user == null) return;
         for (Map.Entry<Skills, Double> xpEarnRate : xpEarnRates.entrySet()) {
-            AureliumAPI.addXp(mage.getPlayer(), xpEarnRate.getKey(), xpEarnRate.getValue() * event.getEarnAmount());
+            user.addSkillXp(xpEarnRate.getKey(), xpEarnRate.getValue() * event.getEarnAmount());
         }
     }
 }

@@ -7884,7 +7884,7 @@ public class MagicController implements MageController, ChunkLoadListener {
 
         // Try to link to AureliumSkills:
         try {
-            Plugin aureliumSkillsPlugin = pluginManager.getPlugin("AureliumSkills");
+            Plugin aureliumSkillsPlugin = pluginManager.getPlugin("AuraSkills");
             if (aureliumSkillsPlugin != null) {
                 aureliumSkillsManager = new AureliumSkillsManager(this);
             } else {
