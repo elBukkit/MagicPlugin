@@ -1,6 +1,10 @@
 package com.elmakers.mine.bukkit.utility.platform.base.entity;
 
+import java.util.Locale;
+
 import org.bukkit.DyeColor;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Wolf;
@@ -11,6 +15,7 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 public class EntityWolfData extends EntityAnimalData {
     private Boolean isAngry;
     private DyeColor collarColor;
+    private Wolf.Variant variant;
 
     public EntityWolfData(ConfigurationSection parameters, MageController controller) {
         super(parameters, controller);
@@ -24,6 +29,12 @@ public class EntityWolfData extends EntityAnimalData {
             }
         }
         isAngry = ConfigUtils.getOptionalBoolean(parameters, "angry");
+
+        String variantString = parameters.getString("variant");
+        if (variantString != null) {
+            NamespacedKey namespacedKey = NamespacedKey.minecraft(variantString.toLowerCase(Locale.ROOT));
+            variant = Registry.WOLF_VARIANT.get(namespacedKey);
+        }
     }
 
     public EntityWolfData(Entity entity) {
@@ -33,6 +44,7 @@ public class EntityWolfData extends EntityAnimalData {
             collarColor = wolf.getCollarColor();
             isAngry = wolf.isAngry();
             sitting = wolf.isSitting();
+            variant = wolf.getVariant();
         }
     }
 
@@ -46,6 +58,7 @@ public class EntityWolfData extends EntityAnimalData {
             }
             if (isAngry != null) wolf.setAngry(isAngry);
             if (sitting != null) wolf.setSitting(sitting);
+            if (variant != null) wolf.setVariant(variant);
         }
     }
 

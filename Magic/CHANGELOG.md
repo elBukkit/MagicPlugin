@@ -6,6 +6,7 @@
  - Update AureliumSkills integration to AuraSkills (Thank you, yuri-bastos and faedine!)
  - Update EffectLib for new Spell particle data type (size parameter can now be used with spell particles)
  - Upload prelogin mechanics for new Paper login API (gets rid of HorriblePlayerLoginEventHack nag)
+ - Add `variant` property for Wolf mobs
 
 # 10.10.4
 
