@@ -11,6 +11,7 @@ import org.bukkit.entity.EnderDragon;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.FallingBlock;
+import org.bukkit.entity.Frog;
 import org.bukkit.entity.Horse;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.ItemFrame;
@@ -39,6 +40,7 @@ import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEnderSignalDa
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityEndermiteData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFallingBlockData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFoxData;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityFrogData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityGoatData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityHorseData;
 import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityItemFrameData;
@@ -98,6 +100,8 @@ public class EntityUtilsBase implements EntityUtils {
             extraData = new EntityDroppedItemData(entity);
         } else if (entity instanceof Sheep) {
             extraData = new EntitySheepData(entity);
+        } else if (entity instanceof Frog) {
+            extraData = new EntityFrogData(entity);
         }
         return extraData;
     }
@@ -207,6 +211,8 @@ public class EntityUtilsBase implements EntityUtils {
                 return new EntityAxolotlData(parameters, controller);
             case EYE_OF_ENDER:
                 return new EntityEnderSignalData(parameters, controller);
+            case FROG:
+                return new EntityFrogData(parameters, controller);
             default:
                 return null;
         }
