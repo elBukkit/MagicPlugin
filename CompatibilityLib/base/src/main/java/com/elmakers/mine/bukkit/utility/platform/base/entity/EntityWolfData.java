@@ -73,6 +73,7 @@ public class EntityWolfData extends EntityAnimalData {
         DyeColor[] wolfColorValues = DyeColor.values();
         wolfColor = wolfColorValues[(wolfColor.ordinal() + 1) % wolfColorValues.length];
         wolf.setCollarColor(wolfColor);
+        wolf.setVariant(cycleRegistryValue(wolf.getVariant(), Registry.WOLF_VARIANT));
 
         return true;
     }
