@@ -40,3 +40,4 @@ passthrough:
 - nether_portal
 - end_portal
 - end_gateway
+- dirt_path
