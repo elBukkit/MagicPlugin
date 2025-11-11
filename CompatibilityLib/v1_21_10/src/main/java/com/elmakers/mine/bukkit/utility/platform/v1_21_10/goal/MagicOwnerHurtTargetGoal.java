@@ -1,5 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform.v1_21_10.goal;
 
+import java.lang.reflect.Method;
+
 import org.bukkit.entity.Entity;
 import org.bukkit.event.entity.EntityTargetEvent;
 
@@ -24,7 +26,18 @@ public class MagicOwnerHurtTargetGoal extends MagicOwnerTargetGoal {
 
     @Override
     public void start() {
-        this.mob.setTarget(this.target, EntityTargetEvent.TargetReason.OWNER_ATTACKED_TARGET, true);
+        try {
+            this.mob.setTarget(this.target, EntityTargetEvent.TargetReason.OWNER_ATTACKED_TARGET, true);
+        } catch (Error ignore) {
+            // Must be paper?
+            try {
+                Method setTargetMethod = this.mob.getClass().getMethod("setTarget", LivingEntity.class, EntityTargetEvent.TargetReason.class);
+                setTargetMethod.invoke(this.target, EntityTargetEvent.TargetReason.OWNER_ATTACKED_TARGET);
+            } catch (Exception e) {
+                // Fall back to API
+                ((org.bukkit.entity.Mob)(this.mob.getBukkitEntity())).setTarget((org.bukkit.entity.LivingEntity)this.target.getBukkitEntity());
+            }
+        }
         LivingEntity owner = this.tamed.getOwner();
         if (owner != null) {
             this.lastTargetUpdate = owner.getLastHurtMobTimestamp();
