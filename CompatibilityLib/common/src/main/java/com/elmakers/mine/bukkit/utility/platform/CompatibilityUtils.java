@@ -49,6 +49,7 @@ import org.bukkit.entity.Projectile;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.FurnaceRecipe;
@@ -538,4 +539,6 @@ public interface CompatibilityUtils {
     PotionEffectType getJumpPotionEffectType();
 
     Set<PotionEffectType> getNegativeEffects();
+
+    boolean isDestructive(EntityExplodeEvent explosion);
 }

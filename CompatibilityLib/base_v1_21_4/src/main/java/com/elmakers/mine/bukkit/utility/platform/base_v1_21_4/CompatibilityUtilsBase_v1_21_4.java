@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.platform.base_v1_21_4;
 
 import java.util.UUID;
 
+import org.bukkit.ExplosionResult;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -13,6 +14,7 @@ import org.bukkit.block.Jukebox;
 import org.bukkit.block.Lectern;
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.EquipmentSlotGroup;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.loot.Lootable;
@@ -121,5 +123,11 @@ public abstract class CompatibilityUtilsBase_v1_21_4 extends CompatibilityUtilsB
             ((Container) blockState).getInventory().clear();
             blockState.update();
         }
+    }
+
+    @Override
+    public boolean isDestructive(EntityExplodeEvent explosion) {
+        ExplosionResult result = explosion.getExplosionResult();
+        return result == ExplosionResult.DESTROY || result == ExplosionResult.DESTROY_WITH_DECAY;
     }
 }

@@ -82,6 +82,7 @@ public class ExplosionController implements Listener {
     }
 
     public void onNonMagicalExplosion(EntityExplodeEvent event) {
+        if (!CompatibilityLib.getCompatibilityUtils().isDestructive(event)) return;
         Iterator<Block> blockIterator = event.blockList().iterator();
         while (blockIterator.hasNext()) {
             Block block = blockIterator.next();
@@ -97,6 +98,7 @@ public class ExplosionController implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onEntityExplode(EntityExplodeEvent event) {
+        if (!CompatibilityLib.getCompatibilityUtils().isDestructive(event)) return;
         boolean cancel = event.isCancelled();
         Entity explodingEntity = event.getEntity();
         if (explodingEntity == null && !cancel) {
@@ -154,6 +156,7 @@ public class ExplosionController implements Listener {
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onEntityFinalizeExplode(EntityExplodeEvent event) {
+        if (!CompatibilityLib.getCompatibilityUtils().isDestructive(event)) return;
         Entity explodingEntity = event.getEntity();
         if (explodingEntity == null) return;
 

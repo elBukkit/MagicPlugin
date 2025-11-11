@@ -98,6 +98,7 @@ import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.ProjectileHitEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.inventory.BlastingRecipe;
@@ -2334,5 +2335,10 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             return;
         }
         ((org.bukkit.entity.Mob)entity).setAware(aware);
+    }
+
+    @Override
+    public boolean isDestructive(EntityExplodeEvent explosion) {
+        return true;
     }
 }

@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.ExplosionResult;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -59,6 +60,7 @@ import org.bukkit.entity.TNTPrimed;
 import org.bukkit.entity.ThrownPotion;
 import org.bukkit.entity.Witch;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.loot.Lootable;
@@ -1184,5 +1186,11 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     @Override
     public PotionEffectType getJumpPotionEffectType() {
         return PotionEffectType.JUMP_BOOST;
+    }
+
+    @Override
+    public boolean isDestructive(EntityExplodeEvent explosion) {
+        ExplosionResult result = explosion.getExplosionResult();
+        return result == ExplosionResult.DESTROY || result == ExplosionResult.DESTROY_WITH_DECAY;
     }
 }

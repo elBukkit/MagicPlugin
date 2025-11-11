@@ -7,6 +7,7 @@
  - Update EffectLib for new Spell particle data type (size parameter can now be used with spell particles)
  - Upload prelogin mechanics for new Paper login API (gets rid of HorriblePlayerLoginEventHack nag)
  - Add `variant` property for Frog and Wolf mobs, support for cycling variants (Alter spell)
+ - Fix hitting a breeze with a spell causing its wind charges to break blocks
 
 # 10.10.4
 
