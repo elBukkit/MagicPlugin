@@ -5,6 +5,7 @@
 
  - Update AureliumSkills integration to AuraSkills (Thank you, yuri-bastos and faedine!)
  - Update EffectLib for new Spell particle data type (size parameter can now be used with spell particles)
+ - EffectLib update also fixes console errors about bad particle data types
  - Upload prelogin mechanics for new Paper login API (gets rid of HorriblePlayerLoginEventHack nag)
  - Add `variant` property for Frog and Wolf mobs, support for cycling variants (Alter spell)
  - Fix hitting a breeze with a spell causing its wind charges to break blocks
