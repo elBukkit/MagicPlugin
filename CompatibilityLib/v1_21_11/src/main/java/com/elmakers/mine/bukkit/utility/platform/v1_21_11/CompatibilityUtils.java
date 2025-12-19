@@ -12,14 +12,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Level;
 
-import net.minecraft.world.entity.projectile.FishingHook;
-import net.minecraft.world.entity.projectile.LlamaSpit;
-import net.minecraft.world.entity.projectile.ShulkerBullet;
-import net.minecraft.world.entity.projectile.arrow.Arrow;
-import net.minecraft.world.entity.projectile.arrow.SpectralArrow;
-import net.minecraft.world.entity.projectile.arrow.ThrownTrident;
-import net.minecraft.world.entity.projectile.hurtingprojectile.*;
-import net.minecraft.world.entity.projectile.throwableitemprojectile.*;
 import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.FireworkEffect;
@@ -35,7 +27,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.craftbukkit.v1_21_R7.CraftArt;
 import org.bukkit.craftbukkit.v1_21_R7.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R7.block.CraftBlock;
-import org.bukkit.craftbukkit.v1_21_R7.entity.*;
+import org.bukkit.craftbukkit.v1_21_R7.entity.CraftArmorStand;
+import org.bukkit.craftbukkit.v1_21_R7.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R7.entity.CraftHanging;
+import org.bukkit.craftbukkit.v1_21_R7.entity.CraftItem;
+import org.bukkit.craftbukkit.v1_21_R7.entity.CraftPlayer;
 import org.bukkit.craftbukkit.v1_21_R7.scheduler.CraftTask;
 import org.bukkit.craftbukkit.v1_21_R7.util.CraftChatMessage;
 import org.bukkit.entity.ArmorStand;
@@ -100,6 +96,8 @@ import net.minecraft.world.entity.decoration.HangingEntity;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.projectile.FireworkRocketEntity;
+import net.minecraft.world.entity.projectile.hurtingprojectile.AbstractHurtingProjectile;
+import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -123,44 +121,44 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
 
     private void populateProjectileClasses() {
         // Can't use reflection, so gonna do this the hard (coded) way.
-        addProjectileClass("arrow", Arrow.class, net.minecraft.world.entity.EntityType.ARROW);
-        addProjectileClass("tippedarrow", Arrow.class, net.minecraft.world.entity.EntityType.ARROW);
-        addProjectileClass("tipped_arrow", Arrow.class, net.minecraft.world.entity.EntityType.ARROW);
-        addProjectileClass("dragonfireball", DragonFireball.class, net.minecraft.world.entity.EntityType.DRAGON_FIREBALL);
-        addProjectileClass("dragon_fireball", DragonFireball.class, net.minecraft.world.entity.EntityType.DRAGON_FIREBALL);
-        addProjectileClass("fireball", LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
-        addProjectileClass("largefireball", LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
-        addProjectileClass("large_fireball", LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
-        addProjectileClass("smallfireball", SmallFireball.class, net.minecraft.world.entity.EntityType.SMALL_FIREBALL);
-        addProjectileClass("small_fireball", SmallFireball.class, net.minecraft.world.entity.EntityType.SMALL_FIREBALL);
-        addProjectileClass("fireworks", FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
-        addProjectileClass("firework", FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
-        addProjectileClass("fireworkrocket", FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
-        addProjectileClass("firework_rocket", FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
-        addProjectileClass("fireworkrocketentity", FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
-        addProjectileClass("fishinghook", FishingHook.class, net.minecraft.world.entity.EntityType.FISHING_BOBBER);
-        addProjectileClass("fishing_hook", FishingHook.class, net.minecraft.world.entity.EntityType.FISHING_BOBBER);
-        addProjectileClass("fishing_bobber", FishingHook.class, net.minecraft.world.entity.EntityType.FISHING_BOBBER);
-        addProjectileClass("llamaspit", LlamaSpit.class, net.minecraft.world.entity.EntityType.LLAMA_SPIT);
-        addProjectileClass("llama_spit", LlamaSpit.class, net.minecraft.world.entity.EntityType.LLAMA_SPIT);
-        addProjectileClass("shulkerbullet", ShulkerBullet.class, net.minecraft.world.entity.EntityType.SHULKER_BULLET);
-        addProjectileClass("shulker_bullet", ShulkerBullet.class, net.minecraft.world.entity.EntityType.SHULKER_BULLET);
-        addProjectileClass("snowball", Snowball.class, net.minecraft.world.entity.EntityType.SNOWBALL);
-        addProjectileClass("spectralarrow", SpectralArrow.class, net.minecraft.world.entity.EntityType.SPECTRAL_ARROW);
-        addProjectileClass("spectral_arrow", SpectralArrow.class, net.minecraft.world.entity.EntityType.SPECTRAL_ARROW);
-        addProjectileClass("egg", ThrownEgg.class, net.minecraft.world.entity.EntityType.EGG);
-        addProjectileClass("thrownegg", ThrownEgg.class, net.minecraft.world.entity.EntityType.EGG);
-        addProjectileClass("enderpearl", ThrownEnderpearl.class, net.minecraft.world.entity.EntityType.ENDER_PEARL);
-        addProjectileClass("ender_pearl", ThrownEnderpearl.class, net.minecraft.world.entity.EntityType.ENDER_PEARL);
-        addProjectileClass("thrownenderpearl", ThrownEnderpearl.class, net.minecraft.world.entity.EntityType.ENDER_PEARL);
-        addProjectileClass("thrownexperiencebottle", ThrownExperienceBottle.class, net.minecraft.world.entity.EntityType.EXPERIENCE_BOTTLE);
-        addProjectileClass("experiencebottle", ThrownExperienceBottle.class, net.minecraft.world.entity.EntityType.EXPERIENCE_BOTTLE);
-        addProjectileClass("thrownpotion", ThrownSplashPotion.class, net.minecraft.world.entity.EntityType.SPLASH_POTION);
-        addProjectileClass("potion", ThrownSplashPotion.class, net.minecraft.world.entity.EntityType.SPLASH_POTION);
-        addProjectileClass("throwntrident", ThrownTrident.class, net.minecraft.world.entity.EntityType.TRIDENT);
-        addProjectileClass("trident", ThrownTrident.class, net.minecraft.world.entity.EntityType.TRIDENT);
-        addProjectileClass("witherskull", WitherSkull.class, net.minecraft.world.entity.EntityType.WITHER_SKULL);
-        addProjectileClass("wither_skull", WitherSkull.class, net.minecraft.world.entity.EntityType.WITHER_SKULL);
+        addProjectileClass("arrow", net.minecraft.world.entity.projectile.arrow.Arrow.class, net.minecraft.world.entity.EntityType.ARROW);
+        addProjectileClass("tippedarrow", net.minecraft.world.entity.projectile.arrow.Arrow.class, net.minecraft.world.entity.EntityType.ARROW);
+        addProjectileClass("tipped_arrow", net.minecraft.world.entity.projectile.arrow.Arrow.class, net.minecraft.world.entity.EntityType.ARROW);
+        addProjectileClass("dragonfireball", net.minecraft.world.entity.projectile.hurtingprojectile.DragonFireball.class, net.minecraft.world.entity.EntityType.DRAGON_FIREBALL);
+        addProjectileClass("dragon_fireball", net.minecraft.world.entity.projectile.hurtingprojectile.DragonFireball.class, net.minecraft.world.entity.EntityType.DRAGON_FIREBALL);
+        addProjectileClass("fireball", net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
+        addProjectileClass("largefireball", net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
+        addProjectileClass("large_fireball", net.minecraft.world.entity.projectile.hurtingprojectile.LargeFireball.class, net.minecraft.world.entity.EntityType.FIREBALL);
+        addProjectileClass("smallfireball", net.minecraft.world.entity.projectile.hurtingprojectile.SmallFireball.class, net.minecraft.world.entity.EntityType.SMALL_FIREBALL);
+        addProjectileClass("small_fireball", net.minecraft.world.entity.projectile.hurtingprojectile.SmallFireball.class, net.minecraft.world.entity.EntityType.SMALL_FIREBALL);
+        addProjectileClass("fireworks", net.minecraft.world.entity.projectile.FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
+        addProjectileClass("firework", net.minecraft.world.entity.projectile.FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
+        addProjectileClass("fireworkrocket", net.minecraft.world.entity.projectile.FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
+        addProjectileClass("firework_rocket", net.minecraft.world.entity.projectile.FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
+        addProjectileClass("fireworkrocketentity", net.minecraft.world.entity.projectile.FireworkRocketEntity.class, net.minecraft.world.entity.EntityType.FIREWORK_ROCKET);
+        addProjectileClass("fishinghook", net.minecraft.world.entity.projectile.FishingHook.class, net.minecraft.world.entity.EntityType.FISHING_BOBBER);
+        addProjectileClass("fishing_hook", net.minecraft.world.entity.projectile.FishingHook.class, net.minecraft.world.entity.EntityType.FISHING_BOBBER);
+        addProjectileClass("fishing_bobber", net.minecraft.world.entity.projectile.FishingHook.class, net.minecraft.world.entity.EntityType.FISHING_BOBBER);
+        addProjectileClass("llamaspit", net.minecraft.world.entity.projectile.LlamaSpit.class, net.minecraft.world.entity.EntityType.LLAMA_SPIT);
+        addProjectileClass("llama_spit", net.minecraft.world.entity.projectile.LlamaSpit.class, net.minecraft.world.entity.EntityType.LLAMA_SPIT);
+        addProjectileClass("shulkerbullet", net.minecraft.world.entity.projectile.ShulkerBullet.class, net.minecraft.world.entity.EntityType.SHULKER_BULLET);
+        addProjectileClass("shulker_bullet", net.minecraft.world.entity.projectile.ShulkerBullet.class, net.minecraft.world.entity.EntityType.SHULKER_BULLET);
+        addProjectileClass("snowball", net.minecraft.world.entity.projectile.throwableitemprojectile.Snowball.class, net.minecraft.world.entity.EntityType.SNOWBALL);
+        addProjectileClass("spectralarrow", net.minecraft.world.entity.projectile.arrow.SpectralArrow.class, net.minecraft.world.entity.EntityType.SPECTRAL_ARROW);
+        addProjectileClass("spectral_arrow", net.minecraft.world.entity.projectile.arrow.SpectralArrow.class, net.minecraft.world.entity.EntityType.SPECTRAL_ARROW);
+        addProjectileClass("egg", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEgg.class, net.minecraft.world.entity.EntityType.EGG);
+        addProjectileClass("thrownegg", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEgg.class, net.minecraft.world.entity.EntityType.EGG);
+        addProjectileClass("enderpearl", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEnderpearl.class, net.minecraft.world.entity.EntityType.ENDER_PEARL);
+        addProjectileClass("ender_pearl", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEnderpearl.class, net.minecraft.world.entity.EntityType.ENDER_PEARL);
+        addProjectileClass("thrownenderpearl", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEnderpearl.class, net.minecraft.world.entity.EntityType.ENDER_PEARL);
+        addProjectileClass("thrownexperiencebottle", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownExperienceBottle.class, net.minecraft.world.entity.EntityType.EXPERIENCE_BOTTLE);
+        addProjectileClass("experiencebottle", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownExperienceBottle.class, net.minecraft.world.entity.EntityType.EXPERIENCE_BOTTLE);
+        addProjectileClass("thrownpotion", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownSplashPotion.class, net.minecraft.world.entity.EntityType.SPLASH_POTION);
+        addProjectileClass("potion", net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownSplashPotion.class, net.minecraft.world.entity.EntityType.SPLASH_POTION);
+        addProjectileClass("throwntrident", net.minecraft.world.entity.projectile.arrow.ThrownTrident.class, net.minecraft.world.entity.EntityType.TRIDENT);
+        addProjectileClass("trident", net.minecraft.world.entity.projectile.arrow.ThrownTrident.class, net.minecraft.world.entity.EntityType.TRIDENT);
+        addProjectileClass("witherskull", net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull.class, net.minecraft.world.entity.EntityType.WITHER_SKULL);
+        addProjectileClass("wither_skull", net.minecraft.world.entity.projectile.hurtingprojectile.WitherSkull.class, net.minecraft.world.entity.EntityType.WITHER_SKULL);
     }
 
     @Override
@@ -432,7 +430,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
 
     @Override
     public boolean isValidProjectileClass(Class<?> projectileType) {
-        return projectileType != null && Projectile.class.isAssignableFrom(projectileType);
+        return projectileType != null && net.minecraft.world.entity.projectile.Projectile.class.isAssignableFrom(projectileType);
     }
 
     @Override
@@ -511,20 +509,20 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
     @Override
     public void setDamage(Projectile projectile, double damage) {
         net.minecraft.world.entity.Entity nms = ((CraftEntity)projectile).getHandle();
-        if (!(nms instanceof Arrow)) {
+        if (!(nms instanceof net.minecraft.world.entity.projectile.arrow.Arrow)) {
             return;
         }
-        Arrow arrow = (Arrow)nms;
+        net.minecraft.world.entity.projectile.arrow.Arrow arrow = (net.minecraft.world.entity.projectile.arrow.Arrow)nms;
         arrow.setBaseDamage(damage);
     }
 
     @Override
     public void decreaseLifespan(Projectile projectile, int ticks) {
         net.minecraft.world.entity.Entity nms = ((CraftEntity)projectile).getHandle();
-        if (!(nms instanceof Arrow)) {
+        if (!(nms instanceof net.minecraft.world.entity.projectile.arrow.Arrow)) {
             return;
         }
-        Arrow arrow = (Arrow)nms;
+        net.minecraft.world.entity.projectile.arrow.Arrow arrow = (net.minecraft.world.entity.projectile.arrow.Arrow)nms;
         arrow.life = ticks;
     }
 
