@@ -314,7 +314,7 @@
         <dependency>
             <groupId>fr.neatmonster</groupId>
             <artifactId>nocheatplus</artifactId>
-            <version>3.12.1-SNAPSHOT</version>
+            <version>3.16.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -344,7 +344,7 @@
         <dependency>
             <groupId>me.libraryaddict.disguises</groupId>
             <artifactId>libsdisguises</artifactId>
-            <version>11.0.0</version>
+            <version>11.0.13</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -577,6 +577,10 @@
             <id>nexus</id>
             <name>Lumine Releases</name>
             <url>https://mvn.lumine.io/repository/maven-public/</url>
+        </repository>
+        <repository>
+            <id>libsdisguises-public</id>
+            <url>https://mvn.lib.co.nz/public/</url>
         </repository>
         <!--
             All of the following repositories seem to be offline.
