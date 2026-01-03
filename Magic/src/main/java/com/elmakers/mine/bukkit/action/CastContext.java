@@ -1528,9 +1528,9 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 Player player = getTargetPlayer();
                 return player == null ? null : (double)player.getFoodLevel();
             }
-            case "target_armor": return getVanillaAttribute(Attribute.GENERIC_ARMOR);
-            case "target_luck": return getVanillaAttribute(Attribute.GENERIC_LUCK);
-            case "target_knockback_resistance": return getVanillaAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+            case "target_armor": return getVanillaAttribute(Attribute.ARMOR);
+            case "target_luck": return getVanillaAttribute(Attribute.LUCK);
+            case "target_knockback_resistance": return getVanillaAttribute(Attribute.KNOCKBACK_RESISTANCE);
             case "target_location_x": {
                 Location location = getTargetLocation();
                 return location == null ? null : location.getX();
