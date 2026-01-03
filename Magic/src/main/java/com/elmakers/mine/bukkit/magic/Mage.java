@@ -5303,12 +5303,12 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : CompatibilityLib.getCompatibilityUtils().getMaxHealth(living);
             }
-            case "armor": return getVanillaAttribute(Attribute.GENERIC_ARMOR);
-            case "attack_damage":  return getVanillaAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
-            case "luck": return getVanillaAttribute(Attribute.GENERIC_LUCK);
-            case "knockback_resistance": return getVanillaAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
-            case "movement_speed": return getVanillaAttribute(Attribute.GENERIC_MOVEMENT_SPEED);
-            case "movement_speed_bps": return getVanillaAttribute(Attribute.GENERIC_MOVEMENT_SPEED) * MOVEMENT_SPEED_BPS;
+            case "armor": return getVanillaAttribute(Attribute.ARMOR);
+            case "attack_damage":  return getVanillaAttribute(Attribute.ATTACK_DAMAGE);
+            case "luck": return getVanillaAttribute(Attribute.LUCK);
+            case "knockback_resistance": return getVanillaAttribute(Attribute.KNOCKBACK_RESISTANCE);
+            case "movement_speed": return getVanillaAttribute(Attribute.MOVEMENT_SPEED);
+            case "movement_speed_bps": return getVanillaAttribute(Attribute.MOVEMENT_SPEED) * MOVEMENT_SPEED_BPS;
             case "mana": return (double)getMana();
             case "mana_max": return (double)getEffectiveManaMax();
             case "xp": return (double)getExperience();

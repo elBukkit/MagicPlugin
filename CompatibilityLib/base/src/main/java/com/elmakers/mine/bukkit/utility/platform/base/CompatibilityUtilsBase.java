@@ -73,6 +73,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.AnimalTamer;
@@ -268,7 +270,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             if (target instanceof ArmorStand) {
                 double newHealth = Math.max(0, target.getHealth() - amount);
                 if (newHealth <= 0) {
-                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, new ArrayList<>());
+                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, DamageSource.builder(DamageType.MAGIC).build(), new ArrayList<>());
                     Bukkit.getPluginManager().callEvent(deathEvent);
                     target.remove();
                 } else {
@@ -302,7 +304,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         if (potion == null) {
             potion = (ThrownPotion) world.spawnEntity(
                     location,
-                    EntityType.POTION);
+                    EntityType.SPLASH_POTION);
             potion.remove();
 
             ref = new WeakReference<>(potion);
@@ -1893,6 +1895,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return true;
     }
 
+    @SuppressWarnings("all")
     protected AttributeModifier createAttributeModifier(UUID attributeUUID, double value, AttributeModifier.Operation operation, EquipmentSlotGroup equipmentSlotGroup) {
         return new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation, equipmentSlotGroup);
     }
@@ -2064,7 +2067,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public double getMaxHealth(Damageable li) {
         if (li instanceof LivingEntity) {
-            return ((LivingEntity)li).getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue();
+            return ((LivingEntity)li).getAttribute(Attribute.MAX_HEALTH).getValue();
         }
         return 0;
     }
@@ -2072,7 +2075,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     @Override
     public void setMaxHealth(Damageable li, double maxHealth) {
         if (li instanceof LivingEntity) {
-            ((LivingEntity)li).getAttribute(Attribute.GENERIC_MAX_HEALTH).setBaseValue(maxHealth);
+            ((LivingEntity)li).getAttribute(Attribute.MAX_HEALTH).setBaseValue(maxHealth);
         }
     }
 

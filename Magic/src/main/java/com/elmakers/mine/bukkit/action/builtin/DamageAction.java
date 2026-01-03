@@ -116,11 +116,11 @@ public class DamageAction extends BaseSpellAction
         Double previousKnockbackResistance = null;
         try {
             if (knockbackResistance != null && livingTarget != null) {
-                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.KNOCKBACK_RESISTANCE);
                 previousKnockbackResistance = knockBackAttribute.getBaseValue();
                 knockBackAttribute.setBaseValue(knockbackResistance);
             } else if (adaptiveKnockbackResistance != null && livingTarget != null) {
-                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.KNOCKBACK_RESISTANCE);
                 previousKnockbackResistance = knockBackAttribute.getBaseValue();
                 knockBackAttribute.setBaseValue(1.0 - ((1.0 - previousKnockbackResistance) * (1.0 - adaptiveKnockbackResistance)));
             }
@@ -209,7 +209,7 @@ public class DamageAction extends BaseSpellAction
             }
         } finally {
             if (previousKnockbackResistance != null && livingTarget != null) {
-                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.GENERIC_KNOCKBACK_RESISTANCE);
+                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.KNOCKBACK_RESISTANCE);
                 knockBackAttribute.setBaseValue(previousKnockbackResistance);
             }
         }

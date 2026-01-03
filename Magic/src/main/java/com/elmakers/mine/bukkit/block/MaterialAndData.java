@@ -10,10 +10,7 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.FireworkEffect;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -93,6 +90,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
     protected Material material;
     protected Short data;
     protected int customModelData;
+    protected String itemModel;
     protected MaterialExtraData extraData;
     protected GenericExtraData genericExtraData;
     protected String blockData;
@@ -187,6 +185,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (item.hasItemMeta()) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
             customModelData = CompatibilityLib.getItemUtils().getCustomModelData(item);
+            if (item.getItemMeta().hasItemModel()) {
+                itemModel = item.getItemMeta().getItemModel().toString();
+            }
 
             Object equippable = CompatibilityLib.getItemUtils().getEquippable(item);
             if (equippable != null) {
@@ -214,6 +215,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         other.data = data;
         // Note: shallow copies!
         other.customModelData = customModelData;
+        other.itemModel = itemModel;
         other.extraData = extraData;
         other.blockData = blockData;
         other.isValid = isValid;
@@ -270,6 +272,14 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
                         String key = entry.getKey();
                         Object value = entry.getValue();
                         switch (key) {
+                            case "item_model":
+                            case "ItemModel":
+                                try {
+                                    itemModel = value.toString();
+                                } catch (Exception ex) {
+                                    Bukkit.getLogger().info("[Magic] [" + originalKey + "] Unsupported ItemModel value: " + value);
+                                }
+                                break;
                             case "custom_model_data":
                             case "CustomModelData":
                                 if (value instanceof Integer) {
@@ -479,7 +489,11 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         com.elmakers.mine.bukkit.api.block.MaterialAndData other = (com.elmakers.mine.bukkit.api.block.MaterialAndData)obj;
-        return Objects.equal(other.getData(), data) && other.getMaterial() == material && customModelData == other.getCustomModelData();
+        MaterialAndData o = (MaterialAndData) other;
+        return Objects.equal(o.getData(), data)
+                && o.getMaterial() == material
+                && customModelData == o.customModelData
+                && Objects.equal(itemModel, o.itemModel);
     }
 
     @Override
@@ -826,7 +840,9 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (blockData != null) {
             materialKey += "?" + blockData;
         }
-        if (customModelData != 0) {
+        if (itemModel != null && !itemModel.isEmpty()) {
+            materialKey += "{item_model:" + itemModel + "}";
+        } else if (customModelData != 0) {
             materialKey += "{" + customModelData + "}";
         }
 
@@ -933,6 +949,15 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (customModelData != 0) {
             CompatibilityLib.getItemUtils().setCustomModelData(stack, customModelData);
         }
+
+        if (itemModel != null) {
+            ItemMeta meta = stack.getItemMeta();
+            if (meta != null) {
+                meta.setItemModel(NamespacedKey.fromString(itemModel));
+                stack.setItemMeta(meta);
+            }
+        }
+
         if (DefaultMaterials.isPlayerSkull(this))
         {
             ItemMeta meta = stack.getItemMeta();
