@@ -19,8 +19,6 @@ import java.util.logging.Level;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import com.elmakers.mine.bukkit.utility.platform.PaperUtils;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Color;
@@ -224,7 +222,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
     private String levelSpellsToPath = null;
     private boolean limitBrushesToPath = false;
     private Double resetManaOnActivate = null;
-    private boolean animation = false;
 
     private Particle effectParticle = null;
     private float effectParticleData = 0;
@@ -6029,11 +6026,6 @@ public class Wand extends WandProperties implements CostReducer, com.elmakers.mi
             CompatibilityLib.getNBTUtils().setBoolean(item, "keep", true);
         } else {
             CompatibilityLib.getNBTUtils().removeMeta(item, "keep");
-        }
-
-        if (getBoolean("animation")) {
-            PaperUtils paperUtils = CompatibilityLib.getPlatform().getPaperUtils();
-            paperUtils.setSwingAnimation(item);
         }
 
         // Add vanilla enchantments
