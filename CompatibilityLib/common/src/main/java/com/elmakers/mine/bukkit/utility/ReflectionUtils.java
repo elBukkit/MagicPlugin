@@ -24,6 +24,16 @@ public class ReflectionUtils {
         return null;
     }
 
+    public static Object getPrivateWithFallback(Logger logger, Object o, Class<?> c, String field, String fallback) {
+        try {
+            Field access = c.getDeclaredField(field);
+            access.setAccessible(true);
+            return access.get(o);
+        } catch (Exception ex) {
+            return getPrivate(logger, o, c, fallback);
+        }
+    }
+
     public static Object getHandle(Logger logger, BossBar bossBar) {
         try {
             if (bossBarHandleField == null) {

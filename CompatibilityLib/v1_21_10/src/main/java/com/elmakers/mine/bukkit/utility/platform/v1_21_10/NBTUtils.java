@@ -47,6 +47,10 @@ public class NBTUtils extends NBTUtilsBase {
         super(platform);
     }
 
+    protected CompoundTag getCompoundTagFromCustomData(CustomData customData) {
+        return customData == null ? null : (CompoundTag)ReflectionUtils.getPrivateWithFallback(platform.getLogger(), customData, CustomData.class, "tag", "e");
+    }
+
     @Override
     public Object getTag(ItemStack stack, String tag) {
         if (platform.getItemUtils().isEmpty(stack)) return null;
@@ -100,7 +104,7 @@ public class NBTUtils extends NBTUtilsBase {
                 tagObject = new CompoundTag();
                 // This makes a copy
                 CustomData customData = CustomData.of(tagObject);
-                tagObject = (CompoundTag) ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
+                tagObject = getCompoundTagFromCustomData(customData);
                 ((net.minecraft.world.item.ItemStack)craft).set(DataComponents.CUSTOM_DATA, customData);
             }
             outputObject = new CompoundTag();

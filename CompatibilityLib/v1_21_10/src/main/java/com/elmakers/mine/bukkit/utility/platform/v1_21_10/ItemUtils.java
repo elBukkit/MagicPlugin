@@ -39,12 +39,16 @@ public class ItemUtils extends ItemUtilsBase_v1_21_4 {
         return ReflectionUtils.getHandle(platform.getLogger(), stack, CraftItemStack.class);
     }
 
+    private CompoundTag getCompoundTagFromCustomData(CustomData customData) {
+        return ((NBTUtils)platform.getNBTUtils()).getCompoundTagFromCustomData(customData);
+    }
+
     @Override
     public CompoundTag getTag(Object mcItemStack) {
         if (mcItemStack == null || !(mcItemStack instanceof net.minecraft.world.item.ItemStack)) return null;
         net.minecraft.world.item.ItemStack itemStack = (net.minecraft.world.item.ItemStack)mcItemStack;
         CustomData customData = itemStack.get(DataComponents.CUSTOM_DATA);
-        return customData == null ? null : (CompoundTag)ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
+        return getCompoundTagFromCustomData(customData);
     }
 
     @Override
@@ -77,10 +81,10 @@ public class ItemUtils extends ItemUtilsBase_v1_21_4 {
             tag = new CompoundTag();
             // This makes a copy
             customData = CustomData.of(tag);
-            tag = (CompoundTag)ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
+            tag = getCompoundTagFromCustomData(customData);
             ((net.minecraft.world.item.ItemStack)mcItemStack).set(DataComponents.CUSTOM_DATA, customData);
         } else {
-            tag = (CompoundTag)ReflectionUtils.getPrivate(platform.getLogger(), customData, CustomData.class, "tag");
+            tag = getCompoundTagFromCustomData(customData);
         }
         return tag;
     }

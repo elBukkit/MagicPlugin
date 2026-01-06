@@ -3,6 +3,10 @@
 
 # 10.10.6
 
+ - Add support for 1.21.11 (Thanks for the help, Jazzkuh!)
+ - Fix Spigot support (only tested in 1.21.11)
+ - Add item model support (Thanks, Jazzkuh!)
+
 # 10.10.5
 
  - Update AureliumSkills integration to AuraSkills (Thank you, yuri-bastos and faedine!)
