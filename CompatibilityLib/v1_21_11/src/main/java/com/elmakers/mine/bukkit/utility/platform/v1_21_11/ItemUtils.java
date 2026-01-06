@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.Nullable;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.craftbukkit.v1_21_R7.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R7.inventory.CraftItemStack;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import com.elmakers.mine.bukkit.utility.ReflectionUtils;
 import com.elmakers.mine.bukkit.utility.platform.Platform;
@@ -197,5 +200,24 @@ public class ItemUtils extends ItemUtilsBase_v1_21_4 {
             ex.printStackTrace();
         }
         return null;
+    }
+
+    @Nullable
+    @Override
+    public String getItemModel(ItemStack item) {
+        ItemMeta itemMeta = item.getItemMeta();
+        if (itemMeta.hasItemModel()) {
+            return itemMeta.getItemModel().toString();
+        }
+        return null;
+    }
+
+    @Override
+    public void setItemModel(ItemStack itemStack, String itemModel) {
+        ItemMeta meta = itemStack.getItemMeta();
+        if (meta != null) {
+            meta.setItemModel(NamespacedKey.fromString(itemModel));
+            itemStack.setItemMeta(meta);
+        }
     }
 }

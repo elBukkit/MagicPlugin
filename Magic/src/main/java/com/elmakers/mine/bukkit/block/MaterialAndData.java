@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.block.Banner;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -189,9 +188,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         if (item.hasItemMeta()) {
             item = CompatibilityLib.getItemUtils().makeReal(item);
             customModelData = CompatibilityLib.getItemUtils().getCustomModelData(item);
-            if (item.getItemMeta().hasItemModel()) {
-                itemModel = item.getItemMeta().getItemModel().toString();
-            }
+            itemModel = CompatibilityLib.getItemUtils().getItemModel(item);
 
             Object equippable = CompatibilityLib.getItemUtils().getEquippable(item);
             if (equippable != null) {
@@ -955,11 +952,7 @@ public class MaterialAndData implements com.elmakers.mine.bukkit.api.block.Mater
         }
 
         if (itemModel != null) {
-            ItemMeta meta = stack.getItemMeta();
-            if (meta != null) {
-                meta.setItemModel(NamespacedKey.fromString(itemModel));
-                stack.setItemMeta(meta);
-            }
+            CompatibilityLib.getItemUtils().setItemModel(stack, itemModel);
         }
 
         if (DefaultMaterials.isPlayerSkull(this))

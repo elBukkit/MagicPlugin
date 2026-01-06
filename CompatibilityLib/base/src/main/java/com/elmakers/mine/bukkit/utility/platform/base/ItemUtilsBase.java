@@ -1,6 +1,7 @@
 package com.elmakers.mine.bukkit.utility.platform.base;
 
 import java.util.Objects;
+import javax.annotation.Nullable;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemFlag;
@@ -109,6 +110,17 @@ public abstract class ItemUtilsBase implements ItemUtils {
         if (itemMeta == null) return 0;
         if (!itemMeta.hasCustomModelData()) return 0;
         return itemMeta.getCustomModelData();
+    }
+
+    @Nullable
+    @Override
+    public String getItemModel(ItemStack item) {
+        return null;
+    }
+
+    @Override
+    public void setItemModel(ItemStack itemStack, String model) {
+
     }
 
     @Override

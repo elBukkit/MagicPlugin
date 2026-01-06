@@ -2,6 +2,7 @@ package com.elmakers.mine.bukkit.utility.platform;
 
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.Nullable;
 
 import org.bukkit.inventory.ItemStack;
 
@@ -62,9 +63,14 @@ public interface ItemUtils {
 
     boolean hasSameTags(ItemStack first, ItemStack second);
 
+    @Nullable
     int getCustomModelData(ItemStack itemStack);
 
     void setCustomModelData(ItemStack itemStack, int customModelData);
+
+    String getItemModel(ItemStack itemStack);
+
+    void setItemModel(ItemStack itemStack, String model);
 
     Object getEquippable(ItemStack itemStack);
 
