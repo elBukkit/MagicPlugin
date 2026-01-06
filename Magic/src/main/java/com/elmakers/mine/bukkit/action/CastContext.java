@@ -62,6 +62,7 @@ import com.elmakers.mine.bukkit.utility.CompatibilityLib;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.google.common.base.Preconditions;
 
 public class CastContext extends WandContext implements com.elmakers.mine.bukkit.api.action.CastContext, Replacer {
@@ -1503,6 +1504,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
     @Nullable
     @Override
     public Double getAttribute(String attributeKey) {
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         Double value = baseSpell.getAttribute(attributeKey);
         if (value != null) {
             return value;
@@ -1514,7 +1516,7 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
             }
             case "target_health_max": {
                 LivingEntity living = getTargetLivingEntity();
-                return living == null ? null : CompatibilityLib.getCompatibilityUtils().getMaxHealth(living);
+                return living == null ? null : compatibilityUtils.getMaxHealth(living);
             }
             case "target_air": {
                 LivingEntity living = getTargetLivingEntity();
@@ -1528,9 +1530,9 @@ public class CastContext extends WandContext implements com.elmakers.mine.bukkit
                 Player player = getTargetPlayer();
                 return player == null ? null : (double)player.getFoodLevel();
             }
-            case "target_armor": return getVanillaAttribute(Attribute.ARMOR);
-            case "target_luck": return getVanillaAttribute(Attribute.LUCK);
-            case "target_knockback_resistance": return getVanillaAttribute(Attribute.KNOCKBACK_RESISTANCE);
+            case "target_armor": return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("ARMOR"));
+            case "target_luck": return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("LUCK"));
+            case "target_knockback_resistance": return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("KNOCKBACK_RESISTANCE"));
             case "target_location_x": {
                 Location location = getTargetLocation();
                 return location == null ? null : location.getX();

@@ -132,6 +132,7 @@ import com.elmakers.mine.bukkit.utility.QueueSet;
 import com.elmakers.mine.bukkit.utility.Replacer;
 import com.elmakers.mine.bukkit.utility.StringUtils;
 import com.elmakers.mine.bukkit.utility.TextUtils;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 import com.elmakers.mine.bukkit.wand.ActiveWandSet;
 import com.elmakers.mine.bukkit.wand.Wand;
 import com.elmakers.mine.bukkit.wand.WandMode;
@@ -5264,6 +5265,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
 
     @Nullable
     private Double getBuiltinAttribute(String attributeKey) {
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         Double globalValue = controller.getBuiltinAttribute(attributeKey);
         if (globalValue != null) {
             return globalValue;
@@ -5297,18 +5299,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
                 if (living == null) {
                     return 0.0;
                 }
-                return 100.0 * living.getHealth() / CompatibilityLib.getCompatibilityUtils().getMaxHealth(living);
+                return 100.0 * living.getHealth() / compatibilityUtils.getMaxHealth(living);
             }
             case "health_max": {
                 LivingEntity living = getLivingEntity();
-                return living == null ? null : CompatibilityLib.getCompatibilityUtils().getMaxHealth(living);
+                return living == null ? null : compatibilityUtils.getMaxHealth(living);
             }
-            case "armor": return getVanillaAttribute(Attribute.ARMOR);
-            case "attack_damage":  return getVanillaAttribute(Attribute.ATTACK_DAMAGE);
-            case "luck": return getVanillaAttribute(Attribute.LUCK);
-            case "knockback_resistance": return getVanillaAttribute(Attribute.KNOCKBACK_RESISTANCE);
-            case "movement_speed": return getVanillaAttribute(Attribute.MOVEMENT_SPEED);
-            case "movement_speed_bps": return getVanillaAttribute(Attribute.MOVEMENT_SPEED) * MOVEMENT_SPEED_BPS;
+            case "armor": return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("ARMOR"));
+            case "attack_damage":  return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("ATTACK_DAMAGE"));
+            case "luck": return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("LUCK"));
+            case "knockback_resistance": return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("KNOCKBACK_RESISTANCE"));
+            case "movement_speed": return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("MOVEMENT_SPEED"));
+            case "movement_speed_bps": return getVanillaAttribute(compatibilityUtils.getMinecraftAttribute("MOVEMENT_SPEED")) * MOVEMENT_SPEED_BPS;
             case "mana": return (double)getMana();
             case "mana_max": return (double)getEffectiveManaMax();
             case "xp": return (double)getExperience();

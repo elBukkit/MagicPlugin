@@ -1,11 +1,13 @@
 package com.elmakers.mine.bukkit.utility.platform.base_v1_21_4;
 
+import java.util.Locale;
 import java.util.UUID;
 
 import org.bukkit.ExplosionResult;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
@@ -129,5 +131,11 @@ public abstract class CompatibilityUtilsBase_v1_21_4 extends CompatibilityUtilsB
     public boolean isDestructive(EntityExplodeEvent explosion) {
         ExplosionResult result = explosion.getExplosionResult();
         return result == ExplosionResult.DESTROY || result == ExplosionResult.DESTROY_WITH_DECAY;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public Attribute getMinecraftAttribute(String attributeKey) {
+        return Attribute.valueOf(attributeKey.toUpperCase(Locale.ROOT));
     }
 }

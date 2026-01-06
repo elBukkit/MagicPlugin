@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Damageable;
@@ -22,6 +21,7 @@ import com.elmakers.mine.bukkit.api.spell.SpellResult;
 import com.elmakers.mine.bukkit.magic.SourceLocation;
 import com.elmakers.mine.bukkit.spell.BaseSpell;
 import com.elmakers.mine.bukkit.utility.CompatibilityLib;
+import com.elmakers.mine.bukkit.utility.platform.CompatibilityUtils;
 
 public class DamageAction extends BaseSpellAction
 {
@@ -107,6 +107,7 @@ public class DamageAction extends BaseSpellAction
 
         double damage = 1;
 
+        CompatibilityUtils compatibilityUtils = CompatibilityLib.getCompatibilityUtils();
         Damageable targetEntity = (Damageable)entity;
         LivingEntity livingTarget = (entity instanceof LivingEntity) ? (LivingEntity)entity : null;
         context.registerDamaged(targetEntity);
@@ -116,11 +117,11 @@ public class DamageAction extends BaseSpellAction
         Double previousKnockbackResistance = null;
         try {
             if (knockbackResistance != null && livingTarget != null) {
-                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.KNOCKBACK_RESISTANCE);
+                AttributeInstance knockBackAttribute = livingTarget.getAttribute(compatibilityUtils.getMinecraftAttribute("KNOCKBACK_RESISTANCE"));
                 previousKnockbackResistance = knockBackAttribute.getBaseValue();
                 knockBackAttribute.setBaseValue(knockbackResistance);
             } else if (adaptiveKnockbackResistance != null && livingTarget != null) {
-                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.KNOCKBACK_RESISTANCE);
+                AttributeInstance knockBackAttribute = livingTarget.getAttribute(compatibilityUtils.getMinecraftAttribute("KNOCKBACK_RESISTANCE"));
                 previousKnockbackResistance = knockBackAttribute.getBaseValue();
                 knockBackAttribute.setBaseValue(1.0 - ((1.0 - previousKnockbackResistance) * (1.0 - adaptiveKnockbackResistance)));
             }
@@ -133,7 +134,7 @@ public class DamageAction extends BaseSpellAction
                     li.setNoDamageTicks(noDamageTicks);
                 }
                 if (percentage != null) {
-                    damage = percentage * CompatibilityLib.getCompatibilityUtils().getMaxHealth(targetEntity);
+                    damage = percentage * compatibilityUtils.getMaxHealth(targetEntity);
                 } else if (targetEntity instanceof Player) {
                     damage = playerDamage;
                 } else {
@@ -185,31 +186,31 @@ public class DamageAction extends BaseSpellAction
                     // Have to do magic damage to preserve the source, it seems like this is only important for player
                     // mages since other plugins may be tracking kills.
                     if (mage.isPlayer() && controller.getDamageTypes().contains(damageType)) {
-                        CompatibilityLib.getCompatibilityUtils().magicDamage(targetEntity, damage, mage.getEntity());
+                        compatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
                     } else {
-                        CompatibilityLib.getCompatibilityUtils().damage(targetEntity, damage, mage.getEntity(), damageType);
+                        compatibilityUtils.damage(targetEntity, damage, mage.getEntity(), damageType);
                     }
                 } else if (magicDamage && (magicEntityDamage || targetEntity instanceof Player)) {
                     mage.sendDebugMessage(ChatColor.RED + "Damaging (Magic) x " +  ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
-                    CompatibilityLib.getCompatibilityUtils().magicDamage(targetEntity, damage, mage.getEntity());
+                    compatibilityUtils.magicDamage(targetEntity, damage, mage.getEntity());
                 } else {
                     mage.sendDebugMessage(ChatColor.RED + "Damaging x " + ChatColor.DARK_RED + mageMultiplier + ChatColor.RED + " to " + ChatColor.BLUE + targetEntity.getType() + ": " + damage, 5);
-                    CompatibilityLib.getCompatibilityUtils().damage(targetEntity, damage, mage.getEntity());
+                    compatibilityUtils.damage(targetEntity, damage, mage.getEntity());
                 }
                 if (damageType != null && !damageType.isEmpty()) {
                     String typeDescription = context.getController().getMessages().get("damage_types." + damageType, damageType);
                     context.addMessageParameter("damage_type", typeDescription);
                 }
                 if (setLastDamaged) {
-                    CompatibilityLib.getCompatibilityUtils().setLastDamaged(targetEntity, mage.getEntity());
+                    compatibilityUtils.setLastDamaged(targetEntity, mage.getEntity());
                 }
                 if (setLastDamagedBy) {
-                    CompatibilityLib.getCompatibilityUtils().setLastDamagedBy(targetEntity, mage.getEntity());
+                    compatibilityUtils.setLastDamagedBy(targetEntity, mage.getEntity());
                 }
             }
         } finally {
             if (previousKnockbackResistance != null && livingTarget != null) {
-                AttributeInstance knockBackAttribute = livingTarget.getAttribute(Attribute.KNOCKBACK_RESISTANCE);
+                AttributeInstance knockBackAttribute = livingTarget.getAttribute(compatibilityUtils.getMinecraftAttribute("KNOCKBACK_RESISTANCE"));
                 knockBackAttribute.setBaseValue(previousKnockbackResistance);
             }
         }

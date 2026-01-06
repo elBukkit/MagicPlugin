@@ -541,4 +541,6 @@ public interface CompatibilityUtils {
     Set<PotionEffectType> getNegativeEffects();
 
     boolean isDestructive(EntityExplodeEvent explosion);
+
+    Attribute getMinecraftAttribute(String attributeKey);
 }
