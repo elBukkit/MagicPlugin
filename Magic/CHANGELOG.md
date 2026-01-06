@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.10.7
+
 # 10.10.6
 
  - Add support for 1.21.11 (Thanks for the help, Jazzkuh!)
