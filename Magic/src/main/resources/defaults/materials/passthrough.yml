@@ -41,3 +41,5 @@ passthrough:
 - end_portal
 - end_gateway
 - dirt_path
+- leaf_litter
+- pink_petals
