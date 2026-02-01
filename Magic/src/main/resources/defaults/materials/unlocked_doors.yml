@@ -17,5 +17,12 @@ unlocked_doors:
 
 # 1.20
 - cherry_door
-
 - bamboo_door
+- copper_door
+- exposed_copper_door
+- weathered_copper_door
+- oxidized_copper_door
+- waxed_copper_door
+- waxed_exposed_copper_door
+- waxed_weathered_copper_door
+- waxed_oxidized_copper_door
