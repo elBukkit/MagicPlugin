@@ -31,7 +31,7 @@ plugins that support forcing Bukkit commands. If used in spells.yml, these go in
 
 Examples of usage can always be found in the spells.defaults.yml file:
 
-https://github.com/elBukkit/MagicPlugin/blob/master/src/main/resources/defaults/spells.defaults.yml
+https://github.com/elBukkit/MagicPlugin/blob/master/Magic/src/main/resources/defaults/spells/default.yml
 
 If used command-line, they are paired as parameters, and can be used with /cast or /castp. Some examples:
 
@@ -127,7 +127,7 @@ See: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bu
 * materials : A name of a material list from materials.yml (or materials.defaults.yml)
 * target type : One of "block", "self", "other" or "any" - who is valid for targeting. Some spells only work with blocks or entities, 
 but most should try to do something reasonable for either target type.
-See https://raw.githubusercontent.com/elBukkit/MagicPlugin/master/src/main/java/com/elmakers/mine/bukkit/plugins/magic/TargetType.java
+See https://raw.githubusercontent.com/elBukkit/MagicPlugin/refs/heads/master/MagicAPI/src/main/java/com/elmakers/mine/bukkit/api/spell/TargetType.java
 * entity type : Taken from Bukkit's EntityType enum
 See https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/entity/EntityType.java
 * block coords : Can use "~" for relative coords, e.g. "px ~-10 py ~0 pz ~0". There is always a corresponding "world", e.g. "pworld"
@@ -211,7 +211,7 @@ enum reference:
 
 * Sound: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/Sound.java
 * Effect: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/Effect.java
-* ParticleType: https://raw.githubusercontent.com/elBukkit/MagicAPI/master/src/main/java/com/elmakers/mine/bukkit/api/effect/ParticleType.java
+* ParticleType: https://github.com/Slikey/EffectLib/blob/master/src/main/java/de/slikey/effectlib/util/ParticleEffect.java
 * FireworkEffect: https://raw.githubusercontent.com/Bukkit/Bukkit/master/src/main/java/org/bukkit/FireworkEffect.java
 * EffectLib Classes: http://dev.bukkit.org/bukkit-plugins/effectlib/
 
