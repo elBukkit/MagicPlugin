@@ -3,6 +3,10 @@
 
 # 10.10.7
 
+ - Add `horn_left` and `horn_right` support for goats
+ - Add `variant` support for zombie nautilus, cows, chickens and pigs (1.21.11 only)
+ - Add `sheared` parameter for bogged mobs
+
 # 10.10.6
 
  - Add support for 1.21.11 (Thanks for the help, Jazzkuh!)
