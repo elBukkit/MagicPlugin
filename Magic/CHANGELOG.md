@@ -6,6 +6,8 @@
  - Add `horn_left` and `horn_right` support for goats
  - Add `variant` support for zombie nautilus, cows, chickens and pigs (1.21.11 only)
  - Add `sheared` parameter for bogged mobs
+ - Fix brushes on builtin survival spells: 
+   - `blob`, `bubble`, `gills`, `platform`, `reflect`, `shell`, `walls`
 
 # 10.10.6
 

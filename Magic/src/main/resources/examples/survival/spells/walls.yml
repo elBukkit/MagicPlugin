@@ -52,7 +52,7 @@ walls:
         transparent: transparent_to_construction
         undo: 6000
         cooldown: 10000
-        brush: stained_clay
+        brush: white_terracotta
         brushcolor: true
         breakable: 3
         destructible: destructible_replace
