@@ -3770,8 +3770,9 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
                 return originalItemStack;
             }
+        } else {
+            itemStack = CompatibilityLib.getItemUtils().makeReal(itemStack);
         }
-
         return itemStack;
     }
 

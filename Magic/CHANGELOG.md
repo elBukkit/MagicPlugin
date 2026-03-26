@@ -8,6 +8,7 @@
  - Add `sheared` parameter for bogged mobs
  - Fix brushes on builtin survival spells: 
    - `blob`, `bubble`, `gills`, `platform`, `reflect`, `shell`, `walls`
+ - Fix the Ocarina
 
 # 10.10.6
 
