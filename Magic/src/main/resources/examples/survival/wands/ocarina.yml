@@ -1,4 +1,5 @@
 ocarina:
+    inherit: base_magic
     legacy_icon: wand_icon:18
     icon: stick{CustomModelData:18018}
     keep: false
