@@ -33,16 +33,17 @@ public class CompatibilityLib extends PlatformInterpreter {
         Logger logger = controller.getLogger();
         int[] version = getServerVersion(plugin);
         String versionDescription = StringUtils.join(ArrayUtils.toObject(version), ".");
-        if (version.length < 2 || version[0] != 1) {
+        if (version.length < 2) {
             logger.severe("Could not parse server version: " + versionDescription);
             return false;
         }
+        int majorVersion = version[0];
         int minorVersion = version[1];
-        if (minorVersion < 9) {
+        if (majorVersion <= 1 && minorVersion < 9) {
             logger.severe("Not compatible with version: " + versionDescription);
             return false;
         }
-        if (minorVersion >= 17) {
+        if (majorVersion > 1 || minorVersion >= 17) {
             logger.info("Loading modern compatibility layer for server version " + versionDescription);
             try {
                 String versionPackage = StringUtils.join(ArrayUtils.toObject(version), "_");
