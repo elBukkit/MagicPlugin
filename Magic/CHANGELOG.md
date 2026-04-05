@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.10.8
+
 # 10.10.7
 
  - Add `horn_left` and `horn_right` support for goats
