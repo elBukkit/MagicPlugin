@@ -424,8 +424,7 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
     @Override
     public void addFlightExemption(Player player, int ticks) {
         ServerPlayer nms = ((CraftPlayer)player).getHandle();
-        // net.minecraft.server.network.PlayerConnection
-        ReflectionUtils.setPrivateNeedsFixing(platform.getLogger(), nms.connection, ServerGamePacketListenerImpl.class, "aboveGroundTickCount", "J", -ticks);
+        ReflectionUtils.setPrivate(platform.getLogger(), nms.connection, ServerGamePacketListenerImpl.class, "aboveGroundTickCount", -ticks);
     }
 
     @Override

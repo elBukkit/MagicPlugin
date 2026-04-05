@@ -3,6 +3,9 @@
 
 # 10.10.8
 
+ - ** REQUIRES JAVA 25 **
+ - Add 26.1.1 compatibility
+
 # 10.10.7
 
  - Add `horn_left` and `horn_right` support for goats
