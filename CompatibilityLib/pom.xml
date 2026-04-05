@@ -15,7 +15,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <version.java>1.8</version.java>
+        <version.java>25</version.java>
         <findbugs.version>1.3.9</findbugs.version>
     </properties>
 
@@ -58,6 +58,7 @@
         <module>v1_21_9</module>
         <module>v1_21_10</module>
         <module>v1_21_11</module>
+        <module>v26_1_1</module>
         <module>main</module>
     </modules>
 
