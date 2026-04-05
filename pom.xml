@@ -82,7 +82,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
+                <version>3.15.0</version>
                 <configuration>
                     <!-- The name is confusing, but this actually prevents Maven from recompiling every single source file when only one has changed -->
                     <useIncrementalCompilation>false</useIncrementalCompilation>
@@ -94,6 +94,9 @@
                     <compilerArgs>
                         <arg>-Xlint:all,-serial,-fallthrough</arg>
                         <arg>-XDcompilePolicy=simple</arg>
+                        <arg>
+                            --should-stop=ifError=FLOW
+                        </arg>
                         <arg>
                             -Xplugin:ErrorProne -Xep:ProtectedMembersInFinalClass:ERROR -Xep:RemoveUnusedImports:ERROR -Xep:InlineMeSuggester:OFF -Xep:CatchAndPrintStackTrace:OFF
                         </arg>
@@ -115,7 +118,7 @@
                         <path>
                             <groupId>com.google.errorprone</groupId>
                             <artifactId>error_prone_core</artifactId>
-                            <version>2.28.0</version>
+                            <version>2.48.0</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
