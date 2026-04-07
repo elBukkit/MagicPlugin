@@ -6,6 +6,7 @@
  - ** REQUIRES JAVA 25 **
  - Add 26.1.1 compatibility
  - Fix cow, chicken and pig variant errors from 10.10.7
+ - Update default resource packs for 26.1 (thanks for the demon sword fix, fabianmakila!)
 
 # 10.10.7
 
