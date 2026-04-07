@@ -33,7 +33,8 @@ public class EntityWolfData extends EntityAnimalData {
         String variantString = parameters.getString("variant");
         if (variantString != null) {
             NamespacedKey namespacedKey = NamespacedKey.minecraft(variantString.toLowerCase(Locale.ROOT));
-            variant = Registry.WOLF_VARIANT.get(namespacedKey);
+            Registry<Wolf.Variant> registry = controller.getPlugin().getServer().getRegistry(Wolf.Variant.class);
+            variant = registry.get(namespacedKey);
         }
     }
 
@@ -73,7 +74,7 @@ public class EntityWolfData extends EntityAnimalData {
         DyeColor[] wolfColorValues = DyeColor.values();
         wolfColor = wolfColorValues[(wolfColor.ordinal() + 1) % wolfColorValues.length];
         wolf.setCollarColor(wolfColor);
-        wolf.setVariant(cycleRegistryValue(wolf.getVariant(), Registry.WOLF_VARIANT));
+        wolf.setVariant(cycleRegistryValue(wolf.getVariant(), entity.getServer().getRegistry(Wolf.Variant.class)));
 
         return true;
     }

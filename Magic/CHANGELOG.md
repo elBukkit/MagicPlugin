@@ -5,7 +5,7 @@
 
  - ** REQUIRES JAVA 25 **
  - Add 26.1.1 compatibility
- - Fix cow/etc variant errors from 10.10.7
+ - Fix cow, chicken and pig variant errors from 10.10.7
 
 # 10.10.7
 

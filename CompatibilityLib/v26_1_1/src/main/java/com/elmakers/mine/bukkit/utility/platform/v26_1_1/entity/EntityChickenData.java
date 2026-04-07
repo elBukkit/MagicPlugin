@@ -19,7 +19,8 @@ public class EntityChickenData extends EntityAnimalData {
         String variantString = parameters.getString("variant");
         if (variantString != null) {
             NamespacedKey namespacedKey = NamespacedKey.minecraft(variantString.toLowerCase(Locale.ROOT));
-            variant = Registry.CHICKEN_VARIANT.get(namespacedKey);
+            Registry<Chicken.Variant> registry = controller.getPlugin().getServer().getRegistry(Chicken.Variant.class);
+            variant = registry.get(namespacedKey);
         }
     }
 
@@ -47,7 +48,7 @@ public class EntityChickenData extends EntityAnimalData {
         }
 
         Chicken chicken = (Chicken)entity;
-        chicken.setVariant(cycleRegistryValue(chicken.getVariant(), Registry.CHICKEN_VARIANT));
+        chicken.setVariant(cycleRegistryValue(chicken.getVariant(), entity.getServer().getRegistry(Chicken.Variant.class)));
 
         return true;
     }

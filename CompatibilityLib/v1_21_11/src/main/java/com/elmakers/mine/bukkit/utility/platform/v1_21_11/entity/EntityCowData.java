@@ -19,7 +19,8 @@ public class EntityCowData extends EntityAnimalData {
         String variantString = parameters.getString("variant");
         if (variantString != null) {
             NamespacedKey namespacedKey = NamespacedKey.minecraft(variantString.toLowerCase(Locale.ROOT));
-            variant = Registry.COW_VARIANT.get(namespacedKey);
+            Registry<Cow.Variant> registry = controller.getPlugin().getServer().getRegistry(Cow.Variant.class);
+            variant = registry.get(namespacedKey);
         }
     }
 
@@ -47,7 +48,7 @@ public class EntityCowData extends EntityAnimalData {
         }
 
         Cow cow = (Cow)entity;
-        cow.setVariant(cycleRegistryValue(cow.getVariant(), Registry.COW_VARIANT));
+        cow.setVariant(cycleRegistryValue(cow.getVariant(), entity.getServer().getRegistry(Cow.Variant.class)));
 
         return true;
     }

@@ -19,7 +19,8 @@ public class EntityZombieNautilusData extends EntityAnimalData {
         String variantString = parameters.getString("variant");
         if (variantString != null) {
             NamespacedKey namespacedKey = NamespacedKey.minecraft(variantString.toLowerCase(Locale.ROOT));
-            variant = Registry.ZOMBIE_NAUTILUS_VARIANT.get(namespacedKey);
+            Registry<ZombieNautilus.Variant> registry = controller.getPlugin().getServer().getRegistry(ZombieNautilus.Variant.class);
+            variant = registry.get(namespacedKey);
         }
     }
 
@@ -47,7 +48,7 @@ public class EntityZombieNautilusData extends EntityAnimalData {
         }
 
         ZombieNautilus zombieNautilus = (ZombieNautilus)entity;
-        zombieNautilus.setVariant(cycleRegistryValue(zombieNautilus.getVariant(), Registry.ZOMBIE_NAUTILUS_VARIANT));
+        zombieNautilus.setVariant(cycleRegistryValue(zombieNautilus.getVariant(), entity.getServer().getRegistry(ZombieNautilus.Variant.class)));
 
         return true;
     }

@@ -18,7 +18,8 @@ public class EntityFrogData extends EntityAnimalData {
         String variantString = parameters.getString("variant");
         if (variantString != null) {
             NamespacedKey namespacedKey = NamespacedKey.minecraft(variantString.toLowerCase(Locale.ROOT));
-            variant = Registry.FROG_VARIANT.get(namespacedKey);
+            Registry<Frog.Variant> registry = controller.getPlugin().getServer().getRegistry(Frog.Variant.class);
+            variant = registry.get(namespacedKey);
         }
     }
 
@@ -46,7 +47,7 @@ public class EntityFrogData extends EntityAnimalData {
         }
 
         Frog frog = (Frog)entity;
-        frog.setVariant(cycleRegistryValue(frog.getVariant(), Registry.FROG_VARIANT));
+        frog.setVariant(cycleRegistryValue(frog.getVariant(), entity.getServer().getRegistry(Frog.Variant.class)));
 
         return true;
     }
