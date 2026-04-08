@@ -7,6 +7,8 @@
  - Add 26.1.1 compatibility
  - Fix cow, chicken and pig variant errors from 10.10.7
  - Update default resource packs for 26.1 (thanks for the demon sword fix, fabianmakila!)
+ - Add `cast` trigger, can be used to trigger a passive spell on any spell cast.
+   - Accepts an optional list of `spells` to respect
 
 # 10.10.7
 

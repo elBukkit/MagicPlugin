@@ -817,4 +817,6 @@ public interface Mage extends CostReducer, CooldownReducer {
     boolean showModalForm(Mage source, String title, String content, String[] buttonLabels, String[] buttonTriggers);
     boolean isPreventDismount();
     void setPreventDismount(boolean prevent);
+    void setLastSpellCast(Spell spell);
+    Spell getLastSpellCast();
 }

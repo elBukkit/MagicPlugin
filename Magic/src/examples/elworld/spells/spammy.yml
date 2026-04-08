@@ -1,0 +1,11 @@
+spammy:
+  passive: true
+  triggers:
+    - trigger: cast
+      spells: missile,blast
+  actions:
+    cast:
+      - class: Message
+        message: "SPAM SPAM SPAM"
+  parameters:
+    target: "self"

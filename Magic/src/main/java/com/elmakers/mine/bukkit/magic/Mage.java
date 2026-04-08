@@ -2659,8 +2659,18 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             controller.onCast(this, spell, result);
 
             // Save this as the last spell cast by this player
-            lastSpellCast = spell;
+            setLastSpellCast(spell);
         }
+    }
+
+    @Override
+    public void setLastSpellCast(Spell spell) {
+        lastSpellCast = spell;
+    }
+
+    @Override
+    public Spell getLastSpellCast() {
+        return lastSpellCast;
     }
 
     @Override

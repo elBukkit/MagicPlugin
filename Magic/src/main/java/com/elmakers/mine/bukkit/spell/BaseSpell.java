@@ -3371,6 +3371,14 @@ public class BaseSpell implements MageSpell, Cloneable {
                 }
             }
 
+            // Reset last spell cast, this points to the most recent cast or most recent finish
+            mage.setLastSpellCast(this);
+
+            // Trigger cast event, but not for passive spells so they don't trigger themselves
+            if (!isPassive()) {
+                mage.trigger("cast");
+            }
+
             // Reward SP
             Wand wand = context.getWand();
             CasterProperties activeProperties = mage.getActiveProperties();

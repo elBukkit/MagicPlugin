@@ -9,6 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.MemoryConfiguration;
 import org.bukkit.entity.EntityType;
 
+import com.elmakers.mine.bukkit.api.spell.Spell;
+
 public class Trigger {
     @Nonnull
     private final String trigger;
@@ -25,6 +27,7 @@ public class Trigger {
     private final String damageType;
     private final Set<String> damageTypes;
     private final Set<EntityType> projectileTypes;
+    private final Set<String> spells;
 
     private long lastTrigger;
 
@@ -52,6 +55,9 @@ public class Trigger {
         List<String> damageTypeList = configuration.getStringList("damage_types");
         damageTypeList.replaceAll(String::toLowerCase);
         damageTypes = damageTypeList.isEmpty() ? null : new HashSet<>(damageTypeList);
+        List<String> spellKeyList = configuration.getStringList("spells");
+        spellKeyList.replaceAll(String::toLowerCase);
+        spells = spellKeyList.isEmpty() ? null : new HashSet<>(spellKeyList);
         List<String> projectileTypeList = configuration.getStringList("projectile_types");
         String projectileType = configuration.getString("projectile_type");
         if (projectileType != null && !projectileType.isEmpty()) {
@@ -111,6 +117,9 @@ public class Trigger {
         EntityType lastProjectileType = mage.getLastProjectileType();
         if (damageTypes != null && (lastDamageType == null || !damageTypes.contains(lastDamageType.toLowerCase()))) return false;
         if (projectileTypes != null && (lastProjectileType == null || !projectileTypes.contains(lastProjectileType))) return false;
+
+        Spell spell = mage.getLastSpellCast();
+        if (spells != null && (spell == null || !spells.contains(spell.getSpellKey().getBaseKey()))) return false;
         return true;
     }
 
