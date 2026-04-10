@@ -8,10 +8,6 @@ import com.elmakers.mine.bukkit.api.magic.MageController;
 
 public interface MageDataStore {
     /**
-     * Implementing classes must have a default constructor.
-     */
-
-    /**
      * Initialize the data store. This will be called on load.
      * Any configuration parameters set in config.yml for this store
      * will be passed in to the ConfigurationSection here.
