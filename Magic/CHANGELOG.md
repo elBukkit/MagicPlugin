@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.9.9
+
 # 10.9.8
 
  - This lineage (10.9.x) is now only compatible with Minecraft 1.20.4 and below
