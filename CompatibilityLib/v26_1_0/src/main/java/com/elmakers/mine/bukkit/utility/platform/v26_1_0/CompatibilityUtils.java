@@ -29,6 +29,7 @@ import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.block.CraftBlock;
 import org.bukkit.craftbukkit.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.entity.CraftEntity;
+import org.bukkit.craftbukkit.entity.CraftEntityType;
 import org.bukkit.craftbukkit.entity.CraftHanging;
 import org.bukkit.craftbukkit.entity.CraftItem;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
@@ -101,7 +102,9 @@ import net.minecraft.world.entity.projectile.hurtingprojectile.Fireball;
 import net.minecraft.world.item.BoneMealItem;
 import net.minecraft.world.item.component.ItemLore;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.storage.TagValueInput;
 import net.minecraft.world.level.storage.TagValueOutput;
+import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 
@@ -537,6 +540,32 @@ public class CompatibilityUtils extends CompatibilityUtilsBase_v1_21_4 {
         TagValueOutput valueOutput = TagValueOutput.createWithoutContext(ProblemReporter.DISCARDING);
         ((CraftEntity)entity).getHandle().save(valueOutput);
         return valueOutput.buildResult();
+    }
+
+    @Override
+    public boolean setEntityData(Entity entity, Object tag) {
+        if (entity == null) return false;
+        try {
+            net.minecraft.world.entity.Entity nms = ((CraftEntity) entity).getHandle();
+            ValueInput valueInput = TagValueInput.create(ProblemReporter.DISCARDING, nms.level().registryAccess(), (CompoundTag)tag);
+            nms.load(valueInput);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Could not load entity data for: " + entity.getType());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public EntityType getEntityTypeFromNMS(World world, Object tag) {
+        net.minecraft.world.level.Level level = ((CraftWorld)world).getHandle();
+        ValueInput valueInput = TagValueInput.create(ProblemReporter.DISCARDING, level.registryAccess(), (CompoundTag)tag);
+        Optional<net.minecraft.world.entity.EntityType<?>> optionalType = net.minecraft.world.entity.EntityType.by(valueInput);
+        if (!optionalType.isPresent()) {
+            return null;
+        }
+
+        return CraftEntityType.minecraftToBukkit(optionalType.get());
     }
 
     @Override

@@ -1946,12 +1946,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public abstract Object getEntityData(Entity entity);
-
-    @Override
-    public abstract String getEntityType(Entity entity);
-
-    @Override
     public void swingOffhand(Entity entity) {
         if (!(entity instanceof LivingEntity)) {
             return;

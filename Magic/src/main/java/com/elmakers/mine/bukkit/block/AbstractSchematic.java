@@ -93,7 +93,10 @@ public abstract class AbstractSchematic implements Schematic {
         for (Object entity : entityData) {
             String type = CompatibilityLib.getNBTUtils().getString(entity, "id");
             if (type == null || type.isEmpty()) {
-                type =  CompatibilityLib.getNBTUtils().getString(entity, "Id");
+                type = CompatibilityLib.getNBTUtils().getString(entity, "Id");
+                // Not sure why this is Id here but NMS wants id?
+                CompatibilityLib.getNBTUtils().setString(entity, "id", type);
+                CompatibilityLib.getNBTUtils().removeMeta(entity, "Id");
             }
             Vector position = CompatibilityLib.getCompatibilityUtils().getPosition(entity, "Pos");
             if (position == null) continue;
@@ -130,6 +133,11 @@ public abstract class AbstractSchematic implements Schematic {
                 ItemStack item = CompatibilityLib.getItemUtils().getItem(CompatibilityLib.getNBTUtils().getTag(entity, "Item"));
                 EntityData itemFrame = com.elmakers.mine.bukkit.entity.EntityData.loadItemFrame(controller, position, item, getFacing(facing), rot);
                 entities.add(itemFrame);
+            } else {
+                EntityData nmsEntity = com.elmakers.mine.bukkit.entity.EntityData.loadNMS(controller, position, entity);
+                if (nmsEntity != null) {
+                    entities.add(nmsEntity);
+                }
             }
         }
     }

@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 import java.util.UUID;
@@ -37,6 +38,7 @@ import org.bukkit.craftbukkit.v1_21_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_21_R2.block.CraftBlock;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftArmorStand;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntity;
+import org.bukkit.craftbukkit.v1_21_R2.entity.CraftEntityType;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftHanging;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftItem;
 import org.bukkit.craftbukkit.v1_21_R2.entity.CraftPlayer;
@@ -740,6 +742,28 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
         CompoundTag data = new CompoundTag();
         ((CraftEntity)entity).getHandle().save(data);
         return data;
+    }
+
+    @Override
+    public boolean setEntityData(Entity entity, Object tag) {
+        if (entity == null) return false;
+        try {
+            net.minecraft.world.entity.Entity nms = ((CraftEntity) entity).getHandle();
+            nms.load((CompoundTag)tag);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Could not load entity data for: " + entity.getType());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public EntityType getEntityTypeFromNMS(World world, Object tag) {
+        Optional<net.minecraft.world.entity.EntityType<?>> optionalType = net.minecraft.world.entity.EntityType.by((CompoundTag)tag);
+        if (!optionalType.isPresent()) {
+            return null;
+        }
+        return CraftEntityType.minecraftToBukkit(optionalType.get());
     }
 
     @Override

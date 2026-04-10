@@ -19,6 +19,7 @@ import org.bukkit.Art;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Rotation;
+import org.bukkit.World;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
 import org.bukkit.block.BlockFace;
@@ -62,6 +63,7 @@ import com.elmakers.mine.bukkit.utility.ConfigUtils;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.SafetyUtils;
 import com.elmakers.mine.bukkit.utility.platform.MobUtils;
+import com.elmakers.mine.bukkit.utility.platform.base.entity.EntityNMSData;
 import com.elmakers.mine.bukkit.utility.random.RandomUtils;
 import com.elmakers.mine.bukkit.utility.random.WeightedPair;
 
@@ -607,6 +609,23 @@ public class EntityData
     public static EntityData loadItemFrame(MageController controller, Vector location, ItemStack item, BlockFace direction, Rotation rotation) {
         EntityData data = new EntityData(controller, EntityType.ITEM_FRAME);
         data.extraData = CompatibilityLib.getEntityUtils().getItemFrameData(item, direction, rotation);
+        data.relativeLocation = location.clone();
+        return data;
+    }
+
+    @Nullable
+    public static EntityData loadNMS(MageController controller, Vector location, Object tag) {
+        // We need a world for the registry, hopefully it doesn't matter what world?
+        World mainWorld = Bukkit.getWorlds().getFirst();
+        if (mainWorld == null) {
+            return null;
+        }
+        EntityType entityType = CompatibilityLib.getCompatibilityUtils().getEntityTypeFromNMS(mainWorld, tag);
+        if (entityType == null) {
+            return null;
+        }
+        EntityData data = new EntityData(controller, entityType);
+        data.extraData = new EntityNMSData(CompatibilityLib.getPlatform(), tag);
         data.relativeLocation = location.clone();
         return data;
     }
