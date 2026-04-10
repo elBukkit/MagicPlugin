@@ -28,6 +28,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
     private String context;
     private String contextField;
     private Set<String> workingParameters;
+    protected boolean silent = false;
 
     protected ParameterizedConfiguration(String context) {
         this.context = context;
@@ -87,7 +88,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
     }
 
     @Nullable
-    protected Double evaluate(String expression, String field) {
+    public Double evaluate(String expression, String field) {
         contextField = field;
         Double result = evaluate(expression);
         contextField = null;
@@ -118,7 +119,7 @@ public abstract class ParameterizedConfiguration extends ParameterizedConfigurat
         double value = transform.get();
         transform.setVariableProvider(null);
         Exception ex = transform.getException();
-        if (ex != null) {
+        if (ex != null && !silent) {
             String thisContext = context == null ? "unknown" : context;
             if (contextField != null) {
                 thisContext += "." + contextField;

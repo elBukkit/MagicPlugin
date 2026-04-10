@@ -13,12 +13,10 @@ import com.elmakers.mine.bukkit.api.magic.MagicAPI;
 import com.elmakers.mine.bukkit.api.magic.MagicConfigurable;
 import com.elmakers.mine.bukkit.api.spell.SpellKey;
 import com.elmakers.mine.bukkit.api.spell.SpellTemplate;
+import com.elmakers.mine.bukkit.configuration.MageConfigureParameters;
 import com.elmakers.mine.bukkit.magic.BaseMagicConfigurable;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
-
-import de.slikey.effectlib.math.EquationStore;
-import de.slikey.effectlib.math.EquationTransform;
 
 public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
     public MagicConfigurableExecutor(MagicAPI api, String command) {
@@ -66,13 +64,10 @@ public abstract class MagicConfigurableExecutor extends MagicTabExecutor {
             try {
                 transformed = Double.parseDouble(value);
             } catch (Exception ex) {
-                EquationTransform transform = EquationStore.getInstance().getTransform(value);
-                if (transform.getException() == null) {
-                    double property = target.getProperty(parameters[0], Double.NaN);
-                    if (!Double.isNaN(property)) {
-                        transform.setVariable("x", property);
-                        transformed = transform.get();
-                    }
+                MageConfigureParameters mageParameters = new MageConfigureParameters(mage, "configure", target, parameters[0]);
+                Double testTransformed = mageParameters.evaluate(value, parameters[0]);
+                if (testTransformed != null && Double.isFinite(testTransformed)) {
+                    transformed = testTransformed;
                 }
             }
 
