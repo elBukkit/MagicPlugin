@@ -66,7 +66,7 @@ public class CompatibilityLib extends PlatformInterpreter {
             }
             if (!foundExact) {
                 String layerDescription = StringUtils.join(ArrayUtils.toObject(layerVersion), ".");
-                logger.log(Level.INFO, "Using compatibility layer from version " + layerDescription + " for server version " + versionDescription + ". This may work fine, but if you run into issues please check for a plugin update or contact the developer.");
+                logger.log(Level.WARNING, "Using compatibility layer from version " + layerDescription + " for server version " + versionDescription + ". This may work fine, but if you run into issues please check for a plugin update or contact the developer.");
             }
 
             if (platform == null) {

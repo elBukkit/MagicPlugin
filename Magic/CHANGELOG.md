@@ -4,8 +4,11 @@
 # 10.10.8
 
  - ** REQUIRES JAVA 25 **
- - Add 26.1.1 compatibility
- - Fix cow, chicken and pig variant errors from 10.10.7
+ - Add 26.1 compatibility
+    - Compatibility layers have now been changed to be forward-compatible
+    - A warning will be printed if using a compatibility layer from a previous drop (minor version)
+    - Layers will be used within the same hofix without a warning
+ - Fix cow, chicken and pig variant errors from 10.10.7 (only Paper had an issue with this)
  - Update default resource packs for 26.1 (thanks for the demon sword fix, fabianmakila!)
  - Add `cast` trigger, can be used to trigger a passive spell on any spell cast.
    - Accepts an optional list of `spells` to respect
