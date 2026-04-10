@@ -1155,4 +1155,11 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     public BlockPopulator createOutOfBoundsPopulator(Logger logger) {
         return null;
     }
+
+    protected static String minecraftIdToBukkit(String id) {
+        if (id == null) return null;
+        id = id.toLowerCase();
+        id = id.replace("minecraft:", "");
+        return id;
+    }
 }

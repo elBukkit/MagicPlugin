@@ -1397,6 +1397,16 @@ public class CompatibilityUtils extends CompatibilityUtilsBase {
     }
 
     @Override
+    public boolean setEntityData(Entity entity, Object tag) {
+        return false;
+    }
+
+    @Override
+    public EntityType getEntityTypeFromNMS(World world, Object tag) {
+        return null;
+    }
+
+    @Override
     public String getEntityType(Entity entity) {
         if (NMSUtils.class_Entity_getTypeMethod == null) return null;
         String entityType = null;

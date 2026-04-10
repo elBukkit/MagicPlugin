@@ -249,6 +249,11 @@ public interface CompatibilityUtils {
 
     Object getEntityData(Entity entity);
 
+    boolean setEntityData(Entity entity, Object tag);
+
+    @Nullable
+    EntityType getEntityTypeFromNMS(World world, Object tag);
+
     String getEntityType(Entity entity);
 
     void applyItemData(ItemStack item, Block block);
