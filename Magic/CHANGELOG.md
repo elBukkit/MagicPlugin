@@ -1,6 +1,8 @@
 
 # CHANGELOG
 
+# 10.11.1
+
 # 10.11
 
  - ** REQUIRES JAVA 25 **
@@ -20,8 +22,8 @@
    - Levels exposed as attributes, one attribute per profile type.
      - Format is `valhalla_level_(profile)`, e.g. `valhalla_level_archery`
    - Skill and Profile XP exposed as currency, one currency per skill and one per profile
-     - Format is `valhalla_xp_(skill)`, e.g. `valhalla_xp_alchemy`
-     - Or is `valhalla_xp_(profile)`, e.g. `valhalla_xp_profile`
+     - Format is `valhalla_xp_(skill)`, e.g. `valhalla_xp_alchemy` (write-only)
+     - Or is `valhalla_xp_(profile)`, e.g. `valhalla_xp_archery` (read-only)
      - Skill XP is write-only, profile XP is read-only
  - Add `replacement` option for currency, so you can replace one currency (e.g. sp) with another 
 
