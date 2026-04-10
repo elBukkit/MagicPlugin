@@ -4,6 +4,9 @@
 # 10.11.1
 
  - Fix backwards compatibility by reverting plugin.yml api-version
+ - More Valhalla integration:
+   - Force update wand lore on level up, in case mana is driven by Valhalla
+   - Add a `magic` profile and associated skill, can be disabled via config
 
 # 10.11
 

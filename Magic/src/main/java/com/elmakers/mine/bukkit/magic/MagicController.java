@@ -1925,7 +1925,12 @@ public class MagicController implements MageController, ChunkLoadListener {
         }
         if (valhallaManager != null) {
             ConfigurationSection valhallaConfiguration = configuration.getConfigurationSection("valhalla");
-            valhallaManager.load(valhallaConfiguration);
+            try {
+                valhallaManager.load(valhallaConfiguration);
+            } catch (Exception ex) {
+                getLogger().log(Level.WARNING, "There was an error integrating with ValhallaMMO, disabling integration", ex);
+                valhallaManager = null;
+            }
         }
     }
 

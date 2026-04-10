@@ -291,6 +291,14 @@ ultimate_clans:
 valhalla:
   enabled: true
 
+  # Turn this off to avoid adding a profile
+  profile:
+    enabled: true
+    id: magic
+    skill:
+      id: magic
+      priority: 100
+
 # ModelEngine integration
 model_engine:
   enabled: false

@@ -17,6 +17,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.integration.valhalla.MagicProfile;
+import com.elmakers.mine.bukkit.integration.valhalla.MagicSkill;
 import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
@@ -67,6 +69,19 @@ public class ValhallaManager implements AttributeProvider, Listener {
         }
 
         controller.getLogger().info("Integrated with ValhallaMMO:");
+
+        ConfigurationSection profileConfig = config.getConfigurationSection("profile");
+        if (profileConfig != null && profileConfig.getBoolean("enabled")) {
+            ConfigurationSection skillConfig = profileConfig.getConfigurationSection("skill");
+            String skillId = skillConfig == null ? null : skillConfig.getString("id");
+            String profileId = profileConfig.getString("id");
+            if (skillId != null && profileId != null && !skillId.isEmpty() && !profileId.isEmpty()) {
+                ProfileRegistry.registerProfileType(new MagicProfile(profileId));
+                SkillRegistry.registerSkill(new MagicSkill(skillId, skillConfig.getInt("priority")));
+                controller.getLogger().info("  Added " + profileId + " profile using " + skillId + " skill ");
+            }
+        }
+
         controller.getLogger().info("  Added " + attributes.size() + " ValhallaMMO levels as attributes: " + StringUtils.join(attributes, ","));
     }
 
