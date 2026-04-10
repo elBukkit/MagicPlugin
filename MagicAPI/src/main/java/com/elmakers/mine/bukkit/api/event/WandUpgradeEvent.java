@@ -8,11 +8,6 @@ import com.elmakers.mine.bukkit.api.wand.Wand;
 import com.elmakers.mine.bukkit.api.wand.WandUpgradePath;
 
 /**
- * A custom event that the Magic plugin will fire whenever a player upgrades
- * a Wand to a new level
- */
-
-/**
  * This event is deprecated and will be replaced by PathUpgradeEvent.
  */
 // TODO: Actually deprecate this when we can.
