@@ -287,6 +287,10 @@ ultimate_clans:
   lands:
     enabled: true
 
+# Valhalla MMO
+valhalla:
+  enabled: true
+
 # ModelEngine integration
 model_engine:
   enabled: false

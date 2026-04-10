@@ -181,6 +181,7 @@ import com.elmakers.mine.bukkit.integration.SkillAPIManager;
 import com.elmakers.mine.bukkit.integration.SkriptManager;
 import com.elmakers.mine.bukkit.integration.TokenManagerController;
 import com.elmakers.mine.bukkit.integration.TradeSystemManager;
+import com.elmakers.mine.bukkit.integration.ValhallaManager;
 import com.elmakers.mine.bukkit.integration.VaultController;
 import com.elmakers.mine.bukkit.integration.mobarena.MobArenaManager;
 import com.elmakers.mine.bukkit.item.Icon;
@@ -593,6 +594,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private ConfigurationSection mobArenaConfiguration = null;
     private ConfigurationSection ajParkourConfiguration = null;
     private ConfigurationSection ultimateClansConfiguration = null;
+    private ConfigurationSection valhallaConfiguration = null;
     private boolean castConsoleFeedback = false;
     private String editorURL = null;
     private boolean reloadVerboseLogging = true;
@@ -620,6 +622,7 @@ public class MagicController implements MageController, ChunkLoadListener {
     private MythicMobManager mythicMobManager = null;
     private UltimateClansManager ultimateClansManager = null;
     private UltimateClansLandsManager landsManager = null;
+    private ValhallaManager valhallaManager = null;
     private boolean loading = false;
     private boolean showExampleInstructions = false;
     private int disableSpawnReplacement = 0;
@@ -8347,6 +8350,20 @@ public class MagicController implements MageController, ChunkLoadListener {
             getLogger().info("UltimateClans Lands integration disabled.");
         }
 
+        // ValhallaMMO
+        if (valhallaConfiguration.getBoolean("enabled")) {
+            if (pluginManager.isPluginEnabled("ValhallaMMO")) {
+                try {
+                    valhallaManager = new ValhallaManager(this);
+                    getLogger().info("Integrated with ValhallaMMO for level and XP information");
+                } catch (Throwable ex) {
+                    getLogger().log(Level.WARNING, "Error integrating with ValhallaMMO", ex);
+                }
+            }
+        } else {
+            getLogger().info("UltimateClans integration disabled.");
+        }
+
         // Load integrations for plugins that can't be attached until after load time
         loadPostIntegrations(mainConfiguration);
 
@@ -8564,6 +8581,7 @@ public class MagicController implements MageController, ChunkLoadListener {
         redProtectConfiguration = properties.getConfigurationSection("redprotect");
         ajParkourConfiguration = properties.getConfigurationSection("ajparkour");
         ultimateClansConfiguration = properties.getConfigurationSection("ultimate_clans");
+        valhallaConfiguration = properties.getConfigurationSection("valhalla");
         CompatibilityConstants.USE_METADATA_LOCATIONS = properties.getBoolean("vivecraft.enabled");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);

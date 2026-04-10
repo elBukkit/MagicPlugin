@@ -270,6 +270,12 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
+            <groupId>me.athlaeos</groupId>
+            <artifactId>valhallammo-dist</artifactId>
+            <version>premium_1.11.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
             <groupId>com.sk89q</groupId>
             <artifactId>worldedit</artifactId>
             <version>5.5.8</version>
@@ -521,6 +527,10 @@
         <repository>
             <id>opencollab-snapshot</id>
             <url>https://repo.opencollab.dev/main/</url>
+        </repository>
+        <repository>
+            <id>repsy</id>
+            <url>https://repo.repsy.io/mvn/athlaeos/valhallammo</url>
         </repository>
         <!-- This is here for PacketEvents, which is here for LibsDisguises -->
         <repository>
