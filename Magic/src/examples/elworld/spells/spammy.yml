@@ -6,6 +6,6 @@ spammy:
   actions:
     cast:
       - class: Message
-        message: "SPAM SPAM SPAM"
+        message: "SPAM SPAM SPAM $custom_model_data"
   parameters:
     target: "self"

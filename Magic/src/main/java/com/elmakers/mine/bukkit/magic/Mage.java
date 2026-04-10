@@ -5281,6 +5281,11 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
             return globalValue;
         }
         switch (attributeKey) {
+            case "custom_model_data": {
+                Player player = getPlayer();
+                ItemStack activeItem = player == null ? null : player.getInventory().getItemInMainHand();
+                return activeItem == null ? 0 : (double) CompatibilityLib.getItemUtils().getCustomModelData(activeItem);
+            }
             case "air": {
                 LivingEntity living = getLivingEntity();
                 return living == null ? null : (double)living.getRemainingAir();

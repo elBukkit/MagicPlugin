@@ -13,6 +13,7 @@
  - Add `cast` trigger, can be used to trigger a passive spell on any spell cast.
    - Accepts an optional list of `spells` to respect
  - Add support for loading entities from schematics
+ - Add `custom_model_data` mage attribute, reads CMD from the item in the main hand
 
 # 10.10.7
 
