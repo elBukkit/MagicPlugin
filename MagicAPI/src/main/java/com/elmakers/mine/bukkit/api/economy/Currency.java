@@ -23,6 +23,15 @@ public interface Currency extends MagicProvider {
     String getKey();
 
     /**
+     * Used to replace one currency with another. For instance, if you want to have
+     * spells award a currency supplied by another plugin.
+     *
+     * @return A currency id if set, or null
+     */
+    @Nullable
+    default String getReplacement() { return null; }
+
+    /**
      * Get the amount of this currency type a Mage has.
      *
      * @param mage The mage to check
@@ -157,5 +166,10 @@ public interface Currency extends MagicProvider {
      */
     boolean isValid();
 
+    /**
+     * Return true if this currency should not send messages on add/remove
+     *
+     * @return true if this is a silent currency
+     */
     default boolean isSilent() { return false; }
 }

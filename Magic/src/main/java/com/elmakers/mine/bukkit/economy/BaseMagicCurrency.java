@@ -28,6 +28,7 @@ public abstract class BaseMagicCurrency implements Currency {
     protected final String amountTemplate;
     protected final MaterialAndData icon;
     protected final boolean silent;
+    protected final String replacement;
 
     protected BaseMagicCurrency(MageController controller, String key, ConfigurationSection configuration) {
         this(controller, key, configuration, "");
@@ -44,6 +45,7 @@ public abstract class BaseMagicCurrency implements Currency {
         icon = ConfigurationUtils.getMaterialAndData(configuration, "icon");
         hasDecimals = configuration.contains("decimals") ? configuration.getBoolean("decimals") : null;
         silent = configuration.getBoolean("silent", false);
+        replacement = configuration.getString("replacement");
         if (configuration.contains("max")) {
             maxValue = configuration.getDouble("max");
         } else {
@@ -74,6 +76,7 @@ public abstract class BaseMagicCurrency implements Currency {
         shortName = null;
         amountTemplate = null;
         icon = null;
+        replacement = null;
     }
 
     @Override
@@ -158,5 +161,11 @@ public abstract class BaseMagicCurrency implements Currency {
     @Override
     public boolean isSilent() {
         return silent;
+    }
+
+    @Override
+    @Nullable
+    public String getReplacement() {
+        return replacement;
     }
 }

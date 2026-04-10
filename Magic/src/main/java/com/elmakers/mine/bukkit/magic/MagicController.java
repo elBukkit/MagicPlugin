@@ -1182,11 +1182,20 @@ public class MagicController implements MageController, ChunkLoadListener {
     @Override
     @Nullable
     public Currency getCurrency(String key) {
-        return currencies.get(key);
+        Currency currency = currencies.get(key);
+        int depth = 100;
+        while (depth >= 0 && currency != null && currency.getReplacement() != null) {
+            depth--;
+            currency = currencies.get(currency.getReplacement());
+        }
+        if (depth < 0) {
+            getLogger().warning("Found infinite loop in currency replacement for " + key);
+        }
+        return currency;
     }
 
     private Currency getCurrency(String key, double defaultWorth) {
-        Currency currency = currencies.get(key);
+        Currency currency = getCurrency(key);
         if (currency == null) {
             currency = new CustomCurrency(key, defaultWorth);
         }
@@ -5853,7 +5862,7 @@ public class MagicController implements MageController, ChunkLoadListener {
                     break;
                     default: {
                         // Currency
-                        Currency currency = currencies.get(itemKey);
+                        Currency currency = getCurrency(itemKey);
                         com.elmakers.mine.bukkit.api.block.MaterialAndData currencyIcon = currency == null ? null : currency.getIcon();
                         if (pieces.length > 1 && currencyIcon != null) {
                             itemStack = currencyIcon.getItemStack(1);

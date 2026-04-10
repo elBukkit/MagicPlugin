@@ -23,6 +23,7 @@
      - Format is `valhalla_xp_(skill)`, e.g. `valhalla_xp_alchemy`
      - Or is `valhalla_xp_(profile)`, e.g. `valhalla_xp_profile`
      - Skill XP is write-only, profile XP is read-only
+ - Add `replacement` option for currency, so you can replace one currency (e.g. sp) with another 
 
 # 10.10.7
 
