@@ -156,4 +156,6 @@ public interface Currency extends MagicProvider {
      * @return true if this currency is valid
      */
     boolean isValid();
+
+    default boolean isSilent() { return false; }
 }
