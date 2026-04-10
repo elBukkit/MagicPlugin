@@ -10,21 +10,27 @@ import java.util.Set;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.Nullable;
 
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
 import com.elmakers.mine.bukkit.api.magic.MageController;
+import com.elmakers.mine.bukkit.magic.Mage;
 import com.elmakers.mine.bukkit.magic.MagicController;
 import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
 import com.elmakers.mine.bukkit.utility.StringUtils;
+import com.elmakers.mine.bukkit.wand.Wand;
 
+import me.athlaeos.valhallammo.event.PlayerSkillLevelUpEvent;
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
 import me.athlaeos.valhallammo.skills.skills.Skill;
 import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 
-public class ValhallaManager implements AttributeProvider {
+public class ValhallaManager implements AttributeProvider, Listener {
     private final MagicController controller;
     private boolean enabled = false;
     private final Map<String, Profile> registeredProfiles = new HashMap<>();
@@ -33,6 +39,8 @@ public class ValhallaManager implements AttributeProvider {
 
     public ValhallaManager(MagicController controller) {
         this.controller = controller;
+        Plugin plugin = controller.getPlugin();
+        plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
     protected void buildData() {
@@ -116,5 +124,19 @@ public class ValhallaManager implements AttributeProvider {
             return (double)playerProfile.getLevel();
         }
         return null;
+    }
+
+    @EventHandler
+    public void onPlayerSkillLevelUp(PlayerSkillLevelUpEvent event) {
+        if (!enabled) return;
+
+        Mage mage = controller.getRegisteredMage(event.getPlayer());
+        if (mage == null) return;
+
+        Wand wand = mage.getActiveWand();
+        if (wand != null) {
+            // Force lore update in case mana or other properties are based on level
+            wand.updated();
+        }
     }
 }

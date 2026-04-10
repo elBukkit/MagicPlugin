@@ -3,9 +3,12 @@
 
 # 10.11.1
 
+ - More Valhalla integration:
+   - Force update wand lore on level up, in case mana is driven by Valhalla   
+
 # 10.11
 
- - ** REQUIRES JAVA 25 **
+ - **REQUIRES JAVA 25**
  - Add 26.1 compatibility
     - Compatibility layers have now been changed to be forward-compatible
     - A warning will be printed if using a compatibility layer from a previous drop (minor version)
