@@ -1,7 +1,7 @@
 
 # CHANGELOG
 
-# 10.10.8
+# 10.11
 
  - ** REQUIRES JAVA 25 **
  - Add 26.1 compatibility
