@@ -45,6 +45,7 @@ softdepend:
   - TokenManager
   - TradeSystem
   - zAuctionHouseV3
+  - ValhallaMMO
 loadbefore:
   - Scavenger
   - Quests
