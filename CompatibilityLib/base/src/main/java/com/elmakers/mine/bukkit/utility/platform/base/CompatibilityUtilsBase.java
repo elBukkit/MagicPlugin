@@ -1157,6 +1157,13 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return null;
     }
 
+    protected static String minecraftIdToBukkit(String id) {
+        if (id == null) return null;
+        id = id.toLowerCase();
+        id = id.replace("minecraft:", "");
+        return id;
+    }
+
     @Override
     public Enchantment getInfinityEnchantment() {
         return Enchantment.ARROW_INFINITE;

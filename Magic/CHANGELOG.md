@@ -3,6 +3,8 @@
 
 # 10.9.9
 
+ - Add support for loading schematics with entities in them
+
 # 10.9.8
 
  - This lineage (10.9.x) is now only compatible with Minecraft 1.20.4 and below

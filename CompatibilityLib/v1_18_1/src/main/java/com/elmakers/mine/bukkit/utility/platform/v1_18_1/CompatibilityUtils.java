@@ -938,6 +938,24 @@ public class CompatibilityUtils extends ModernCompatibilityUtils {
     }
 
     @Override
+    public boolean setEntityData(Entity entity, Object tag) {
+        if (entity == null) return false;
+        try {
+            net.minecraft.world.entity.Entity nms = ((CraftEntity) entity).getHandle();
+            nms.load((CompoundTag)tag);
+        } catch (Exception ex) {
+            platform.getLogger().log(Level.WARNING, "Could not load entity data for: " + entity.getType());
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public EntityType getEntityTypeFromNMS(World world, Object tag) {
+        return EntityType.fromName(minecraftIdToBukkit(platform.getNBTUtils().getString(tag, "id")));
+    }
+
+    @Override
     public String getEntityType(Entity entity) {
         if (entity == null) return null;
         return ((CraftEntity)entity).getHandle().getEncodeId();
