@@ -6254,7 +6254,7 @@ public class Mage implements CostReducer, com.elmakers.mine.bukkit.api.magic.Mag
     public void sendCurrencyMessage(String type, double amount) {
         Messages messages = controller.getMessages();
         Currency currency = controller.getCurrency(type);
-        if (currency != null) {
+        if (currency != null && !currency.isSilent()) {
             if (amount > 0) {
                 String earnMessage = messages.get("currency." + type + ".earned", messages.get("currency.default.earned"));
                 if (!earnMessage.isEmpty()) {

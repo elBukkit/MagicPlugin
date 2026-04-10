@@ -3573,6 +3573,9 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (aureliumSkillsManager != null) {
             aureliumSkillsManager.register(currencyConfiguration);
         }
+        if (valhallaManager != null) {
+            valhallaManager.registerCurrencies(currencyConfiguration);
+        }
         if (tokenManager != null) {
             tokenManager.register(currencyConfiguration);
         }

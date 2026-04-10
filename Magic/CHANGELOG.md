@@ -19,6 +19,10 @@
  - Add ValhallaMMO integration
    - Levels exposed as attributes, one attribute per profile type.
      - Format is `valhalla_level_(profile)`, e.g. `valhalla_level_archery`
+   - Skill and Profile XP exposed as currency, one currency per skill and one per profile
+     - Format is `valhalla_xp_(skill)`, e.g. `valhalla_xp_alchemy`
+     - Or is `valhalla_xp_(profile)`, e.g. `valhalla_xp_profile`
+     - Skill XP is write-only, profile XP is read-only
 
 # 10.10.7
 

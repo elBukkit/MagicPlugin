@@ -1,7 +1,10 @@
 package com.elmakers.mine.bukkit.integration;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -10,16 +13,22 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
 
 import com.elmakers.mine.bukkit.api.attributes.AttributeProvider;
+import com.elmakers.mine.bukkit.api.magic.MageController;
 import com.elmakers.mine.bukkit.magic.MagicController;
+import com.elmakers.mine.bukkit.utility.ConfigurationUtils;
+import com.elmakers.mine.bukkit.utility.StringUtils;
 
 import me.athlaeos.valhallammo.playerstats.profiles.Profile;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileCache;
 import me.athlaeos.valhallammo.playerstats.profiles.ProfileRegistry;
+import me.athlaeos.valhallammo.skills.skills.Skill;
+import me.athlaeos.valhallammo.skills.skills.SkillRegistry;
 
 public class ValhallaManager implements AttributeProvider {
     private final MagicController controller;
     private boolean enabled = false;
     private final Map<String, Profile> registeredProfiles = new HashMap<>();
+    private final Map<String, Skill> registeredSkills = new HashMap<>();
     private final Set<String> attributes = new HashSet<>();
 
     public ValhallaManager(MagicController controller) {
@@ -43,8 +52,46 @@ public class ValhallaManager implements AttributeProvider {
             registeredProfiles.put(profileId, profile);
             attributes.add("valhalla_level_" + profileId);
         }
+
+        for (Skill skill : SkillRegistry.getAllSkills().values()) {
+            String skillId = skill.getType().toLowerCase(Locale.ROOT);
+            registeredSkills.put(skillId, skill);
+        }
+
         controller.getLogger().info("Integrated with ValhallaMMO:");
-        controller.getLogger().info("  Added " + attributes.size() + " attributes as valhalla_level_<profile>");
+        controller.getLogger().info("  Added " + attributes.size() + " ValhallaMMO levels as attributes: " + StringUtils.join(attributes, ","));
+    }
+
+    public void registerCurrencies(ConfigurationSection currencyConfiguration) {
+        List<String> names = new ArrayList<>();
+        for (Map.Entry<String, Skill> entry : registeredSkills.entrySet()) {
+            String skillId = entry.getKey();
+            String currencyId = "valhalla_xp_" + skillId;
+            ConfigurationSection configuration = currencyConfiguration.getConfigurationSection(skillId);
+            if (configuration == null) {
+                configuration = ConfigurationUtils.newConfigurationSection();
+                // We will rely on Valhalla to send messages
+                configuration.set("silent", true);
+            }
+            controller.register(new ValhallaSkillCurrency(this, entry.getValue(), currencyId, configuration));
+            names.add(currencyId);
+        }
+
+        for (Map.Entry<String, Profile> entry : registeredProfiles.entrySet()) {
+            String profileId = entry.getKey();
+            String currencyId = "valhalla_xp_" + profileId;
+            ConfigurationSection configuration = currencyConfiguration.getConfigurationSection(profileId);
+            if (configuration == null) {
+                configuration = ConfigurationUtils.newConfigurationSection();
+            }
+            controller.register(new ValhallaProfileCurrency(this, entry.getValue(), profileId, configuration));
+            names.add(currencyId);
+        }
+        controller.getLogger().info("  Added " + names.size() + " ValhallaMMO XP as currencies: " + StringUtils.join(names, ","));
+    }
+
+    public MageController getController() {
+        return controller;
     }
 
     @Override
