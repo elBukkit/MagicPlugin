@@ -594,7 +594,6 @@ public class MagicController implements MageController, ChunkLoadListener {
     private ConfigurationSection mobArenaConfiguration = null;
     private ConfigurationSection ajParkourConfiguration = null;
     private ConfigurationSection ultimateClansConfiguration = null;
-    private ConfigurationSection valhallaConfiguration = null;
     private boolean castConsoleFeedback = false;
     private String editorURL = null;
     private boolean reloadVerboseLogging = true;
@@ -1915,6 +1914,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (heroesManager != null) {
             heroesManager.load(configuration);
         }
+        if (valhallaManager != null) {
+            ConfigurationSection valhallaConfiguration = configuration.getConfigurationSection("valhalla");
+            valhallaManager.load(valhallaConfiguration);
+        }
     }
 
     private void loadPostIntegrations(ConfigurationSection configuration) {
@@ -2258,6 +2261,10 @@ public class MagicController implements MageController, ChunkLoadListener {
         if (aureliumSkillsManager != null && aureliumSkillsManager.useAttributes()) {
             logger.setContext("aureliumskills");
             registerAttributes(aureliumSkillsManager);
+        }
+        if (valhallaManager != null) {
+            logger.setContext("valhalla");
+            registerAttributes(valhallaManager);
         }
         if (mythicMobManager != null) {
             logger.setContext("mythicmobs");
@@ -7890,6 +7897,18 @@ public class MagicController implements MageController, ChunkLoadListener {
             getLogger().warning(ex.getMessage());
         }
 
+        // ValhallaMMO
+        try {
+            Plugin valhallaPlugin = pluginManager.getPlugin("ValhallaMMO");
+            if (valhallaPlugin != null) {
+                valhallaManager = new ValhallaManager(this);
+            } else {
+                valhallaManager = null;
+            }
+        } catch (Throwable ex) {
+            getLogger().log(Level.WARNING, "Error integrating with ValhallaMMO", ex);
+        }
+
         // Try to link to TokenManager:
         try {
             Plugin tokenManagerPlugin = pluginManager.getPlugin("TokenManager");
@@ -8350,20 +8369,6 @@ public class MagicController implements MageController, ChunkLoadListener {
             getLogger().info("UltimateClans Lands integration disabled.");
         }
 
-        // ValhallaMMO
-        if (valhallaConfiguration.getBoolean("enabled")) {
-            if (pluginManager.isPluginEnabled("ValhallaMMO")) {
-                try {
-                    valhallaManager = new ValhallaManager(this);
-                    getLogger().info("Integrated with ValhallaMMO for level and XP information");
-                } catch (Throwable ex) {
-                    getLogger().log(Level.WARNING, "Error integrating with ValhallaMMO", ex);
-                }
-            }
-        } else {
-            getLogger().info("UltimateClans integration disabled.");
-        }
-
         // Load integrations for plugins that can't be attached until after load time
         loadPostIntegrations(mainConfiguration);
 
@@ -8581,7 +8586,6 @@ public class MagicController implements MageController, ChunkLoadListener {
         redProtectConfiguration = properties.getConfigurationSection("redprotect");
         ajParkourConfiguration = properties.getConfigurationSection("ajparkour");
         ultimateClansConfiguration = properties.getConfigurationSection("ultimate_clans");
-        valhallaConfiguration = properties.getConfigurationSection("valhalla");
         CompatibilityConstants.USE_METADATA_LOCATIONS = properties.getBoolean("vivecraft.enabled");
         if (mobArenaManager != null) {
             mobArenaManager.configure(mobArenaConfiguration);

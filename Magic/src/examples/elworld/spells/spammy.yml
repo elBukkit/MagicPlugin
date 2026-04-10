@@ -6,6 +6,6 @@ spammy:
   actions:
     cast:
       - class: Message
-        message: "SPAM SPAM SPAM $custom_model_data"
+        message: "SPAM SPAM SPAM $custom_model_data $valhalla_level_archery"
   parameters:
     target: "self"
