@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.v26_1_0.goal;
+package com.elmakers.mine.bukkit.utility.platform.base.goal;
 
 import java.util.EnumSet;
 import java.util.List;

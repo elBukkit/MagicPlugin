@@ -9,10 +9,21 @@
     </parent>
     <artifactId>CompatibilityLib-base</artifactId>
 
+    <properties>
+        <!-- Note that I could not get spigot 26.1 to build to Maven, but it should be the same API so whatever -->
+        <bukkit.version>26.1.1-R0.1-SNAPSHOT</bukkit.version>
+    </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
+            <version>${bukkit.version}</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot</artifactId>
             <version>${bukkit.version}</version>
             <scope>provided</scope>
         </dependency>

@@ -1,4 +1,4 @@
-package com.elmakers.mine.bukkit.utility.platform.v26_1_0.goal;
+package com.elmakers.mine.bukkit.utility.platform.base.goal;
 
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.Goal;

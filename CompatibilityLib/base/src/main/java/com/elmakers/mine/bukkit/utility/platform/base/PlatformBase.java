@@ -175,7 +175,7 @@ public abstract class PlatformBase implements Platform {
     }
 
     protected MobUtils createMobUtils() {
-        return new MobUtilsBase();
+        return new MobUtilsBase(this);
     }
 
     @Override
