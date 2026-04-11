@@ -37,6 +37,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Chunk;
 import org.bukkit.Color;
+import org.bukkit.ExplosionResult;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Keyed;
 import org.bukkit.Location;
@@ -52,6 +53,9 @@ import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Container;
+import org.bukkit.block.Jukebox;
+import org.bukkit.block.Lectern;
 import org.bukkit.block.Lockable;
 import org.bukkit.block.Sign;
 import org.bukkit.block.data.AnaloguePowerable;
@@ -73,6 +77,8 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.MemorySection;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.damage.DamageSource;
+import org.bukkit.damage.DamageType;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.AbstractArrow;
 import org.bukkit.entity.AnimalTamer;
@@ -120,6 +126,7 @@ import org.bukkit.inventory.meta.CompassMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.KnowledgeBookMeta;
 import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.loot.Lootable;
 import org.bukkit.map.MapView;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.potion.PotionEffect;
@@ -268,7 +275,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             if (target instanceof ArmorStand) {
                 double newHealth = Math.max(0, target.getHealth() - amount);
                 if (newHealth <= 0) {
-                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, new ArrayList<>());
+                    EntityDeathEvent deathEvent = new EntityDeathEvent((ArmorStand) target, DamageSource.builder(DamageType.MAGIC).withCausingEntity(source).build(), new ArrayList<>());
                     Bukkit.getPluginManager().callEvent(deathEvent);
                     target.remove();
                 } else {
@@ -302,7 +309,7 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         if (potion == null) {
             potion = (ThrownPotion) world.spawnEntity(
                     location,
-                    EntityType.POTION);
+                    EntityType.SPLASH_POTION);
             potion.remove();
 
             ref = new WeakReference<>(potion);
@@ -1664,16 +1671,55 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public abstract Object getTileEntityData(Location location);
+    public BlockState getTileEntityData(Location location) {
+        if (location == null) return null;
+        return location.getBlock().getState();
+    }
+
+    protected AttributeModifier createAttributeModifier(UUID attributeUUID, double value, AttributeModifier.Operation operation, EquipmentSlotGroup equipmentSlotGroup) {
+        NamespacedKey namespacedKey = new NamespacedKey(platform.getPlugin(), "modifier");
+        return new AttributeModifier(namespacedKey, value, operation, equipmentSlotGroup);
+    }
 
     @Override
-    public abstract Object getTileEntity(Location location);
+    public Object getTileEntity(Location location) {
+        throw new UnsupportedOperationException("The getTileEntity method is no longer supported");
+    }
 
     @Override
-    public abstract void clearItems(Location location);
+    public void clearItems(Location location) {
+        if (location == null) return;
+
+        // Block-specific behaviors
+        Block block = location.getBlock();
+        BlockState blockState = block.getState();
+        if (blockState instanceof Lootable) {
+            Lootable lootable = (Lootable)blockState;
+            lootable.setLootTable(null);
+            blockState.update();
+        }
+        if (blockState instanceof Lectern) {
+            Lectern lectern = (Lectern)blockState;
+            lectern.getInventory().setItem(0, new ItemStack(Material.AIR));
+            blockState.update();
+        }
+        if (blockState instanceof Jukebox) {
+            ((Jukebox) blockState).setRecord(null);
+            blockState.update();
+        }
+        if (blockState instanceof Container) {
+            ((Container) blockState).getInventory().clear();
+            blockState.update();
+        }
+    }
 
     @Override
-    public abstract void setTileEntityData(Location location, Object data);
+    public void setTileEntityData(Location location, Object data) {
+        if (location == null || data == null || !(data instanceof BlockState)) return;
+        BlockState blockState = (BlockState)data;
+        blockState.copy(location);
+        blockState.update();
+    }
 
     @Override
     public void setEnvironment(World world, World.Environment environment) {
@@ -1895,10 +1941,6 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
         return true;
     }
 
-    protected AttributeModifier createAttributeModifier(UUID attributeUUID, double value, AttributeModifier.Operation operation, EquipmentSlotGroup equipmentSlotGroup) {
-        return new AttributeModifier(attributeUUID, "Equipment Modifier", value, operation, equipmentSlotGroup);
-    }
-
     @Override
     public boolean setItemAttribute(ItemStack item, Attribute attribute, double value, String slot, int attributeOperation) {
         return setItemAttribute(item, attribute, value, slot, attributeOperation, UUID.randomUUID());
@@ -1977,13 +2019,49 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
-    public abstract boolean isJumping(LivingEntity entity);
+    public boolean isJumping(LivingEntity entity) {
+        if (entity instanceof Player) {
+            Player player = (Player)entity;
+            return player.getCurrentInput().isJump();
+        }
+        return false;
+    }
 
     @Override
-    public abstract float getForwardMovement(LivingEntity entity);
+    public float getForwardMovement(LivingEntity entity) {
+        if (entity instanceof Player) {
+            Player player = (Player)entity;
+            if (player.getCurrentInput().isForward()) {
+                // Forward + backwards cancels out
+                if (player.getCurrentInput().isBackward()) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            } else if (player.getCurrentInput().isBackward()) {
+                return -1;
+            }
+        }
+        return 0.0f;
+    }
 
     @Override
-    public abstract float getStrafeMovement(LivingEntity entity);
+    public float getStrafeMovement(LivingEntity entity) {
+        if (entity instanceof Player) {
+            Player player = (Player)entity;
+            if (player.getCurrentInput().isRight()) {
+                // Left + right cancels out
+                if (player.getCurrentInput().isLeft()) {
+                    return 0;
+                } else {
+                    return -1;
+                }
+            } else if (player.getCurrentInput().isLeft()) {
+                return 1;
+            }
+        }
+        return 0.0f;
+    }
 
     @Override
     public boolean setPickupStatus(Projectile projectile, String pickupStatus) {
@@ -2073,8 +2151,15 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
     }
 
     @Override
+    public boolean isDestructive(EntityExplodeEvent explosion) {
+        ExplosionResult result = explosion.getExplosionResult();
+        return result == ExplosionResult.DESTROY || result == ExplosionResult.DESTROY_WITH_DECAY;
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
     public Attribute getMinecraftAttribute(String attributeKey) {
-        return Attribute.valueOf("GENERIC_" + attributeKey.toUpperCase(Locale.ROOT));
+        return Attribute.valueOf(attributeKey.toUpperCase(Locale.ROOT));
     }
 
     @Override
@@ -2336,10 +2421,5 @@ public abstract class CompatibilityUtilsBase implements CompatibilityUtils {
             return;
         }
         ((org.bukkit.entity.Mob)entity).setAware(aware);
-    }
-
-    @Override
-    public boolean isDestructive(EntityExplodeEvent explosion) {
-        return true;
     }
 }
